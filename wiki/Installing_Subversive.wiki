@@ -1,8 +1,8 @@
 #summary How to install the Subversive plugin used to download and upload code.
 
- #Open Eclipse
- #Go to Help->Software Updates->Find and Install...
- #Select "Search for new features to install" and click next
- #Click "New Remote Site"
- #Name it whatever you want and use the url "http://www.polarion.org/projects/subversive/download/1.1/update-site/"  Click ok, then finish.
- #Select the Subversive features you want to install and click finish.  The plugin should now be installed and restart eclipse.
+ # Open Eclipse
+ # Go to Help->Software Updates->Find and Install...
+ # Select "Search for new features to install" and click next
+ # Click "New Remote Site"
+ # Name it whatever you want and use the url "http://www.polarion.org/projects/subversive/download/1.1/update-site/"  Click ok, then finish.
+ # Select the Subversive features you want to install and click finish.  The plugin should now be installed and restart eclipse.
