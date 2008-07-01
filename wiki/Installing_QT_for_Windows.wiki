@@ -1,0 +1,8 @@
+#summary How to install QT for Windows
+
+ # Download 'qt-win-opensource-4.2.1-mingw.exe' from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows onto your desktop or somewhere easy to locate
+ # Accept the license agreement and click next
+ # Use the destination folder "C:\msys\usr\qt\"
+ # Point the installer to the install location of MinGW (C:\MinGW) and click install
+
+To create the debug libraries, go to Start->All Programs->Qt by Trolltech 4.2.1(Build Debug Libraries)
