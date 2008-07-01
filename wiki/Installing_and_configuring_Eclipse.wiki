@@ -1,0 +1,22 @@
+#summary How to install the Eclipse devolpment platform
+
+Eclipse is an open source community whose projects are focus on building an extensible development platform, runtimes and application frameworks for building, deploying and managing software across the entire software lifecycle.
+
+Installing eclipse and CDT
+ # Download 'eclipse-SDK-3.2.1-win32.zip' from the eclipse website at http://www.eclipse.org/downloads/
+ # Extract the files from the archive into a new folder called eclipse and copy that folder to C:\
+ # Run the Eclipse executable from the folder and when asked for a workspace set it to C:\eclipse\workspace
+ # You must then point the eclipse download manager to CDT, which will allow you to compile and execute c++ code.  This is done from eclipse by selecting Help->Software Updates->Find and Install.
+ # Click the 'New Remote Site…' button
+ # Enter 'CDT' as the name and then enter the following as the url: 'http://download.eclipse.org/tools/cdt/releases/callisto' 
+ # Click 'ok' and then click finish.  Eclipse will now download updates to CDT automatically
+ # Open the C/C++ perspective by clicking Window->Open Perspective->Other->C/C++
+
+
+Configuring Eclipse for Tonatiuh
+ # You can edit the general project options in Eclipse by navigating Window->Preferences->General.  Under File Associations add the new types
+  * .ui  C:\msys\usr\qt\bin\designer
+  * .ts  C:\msys\usr\qt\bin\linguist
+ # In C\C++->Make->New Make Project 
+  * Under the Make Builder tab set the build command to C:\MinGW\bin\mingw32-make.exe
+  * Under Binary Parser select only PE Windows Parser
