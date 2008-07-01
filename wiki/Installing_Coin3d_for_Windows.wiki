@@ -8,7 +8,4 @@ Coin3D is a high-level 3D graphics toolkit for developing cross-platform real-ti
  # Next you need to set 3 environment variables by typing in the following commands one at a time: export QTDIR="/usr/qt" export COINDIR="/usr/local" export INCLUDE="/usr/local/include:/usr/qt/include"
  # Enter the coin_build folder and run the command ./../Coin-2/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
  # After the configuration has finished running, you can install Coin3D simply by typing 'make install'
- # You must then manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file
-#ifndef COIN_DLL
-#define COIN_DLL
-#endif 
+ # You must then manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file #ifndef COIN_DLL #define COIN_DLL #endif 
