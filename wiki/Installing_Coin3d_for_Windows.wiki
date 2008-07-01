@@ -1,0 +1,17 @@
+#summary How to install Coin3d for Windows from the source code
+
+Coin3D is a high-level 3D graphics toolkit for developing cross-platform real-time 3D visualization and visual simulation software
+
+ # Download 'Coin-2-latest.tar.gz' from the ftp site at http://ftp.coin3d.org/snapshots/ into the user directory under your MSYS folder.  This will typically be c:\msys\usr\home\username
+ # Navigate to your MSYS user directory and extract the archive from the file you just downloaded using WinZip or another extraction tool.  This should create a directory called 'Coin-2' in your user directory
+ # Using MSYS navigate to your home home directory and create a new folder called 'coin_build' by typing the following in the command prompt, 'mkdir coin_build'
+ # Next you need to set 3 environment variables by typing in the following commands one at a time: 
+export QTDIR="/usr/qt"
+export COINDIR="/usr/local"
+export INCLUDE="/usr/local/include:/usr/qt/include"
+ # Enter the coin_build folder and run the commang ./../Coin-2/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
+ # After the configuration has finished running, you can install Coin3D simply by typing 'make install'
+ # You must then manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file
+#ifndef COIN_DLL
+#define COIN_DLL
+#endif 
