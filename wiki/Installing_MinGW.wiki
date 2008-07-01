@@ -1,0 +1,5 @@
+#summary How to install MinGW using msys
+
+ # Download 'MinGW-5.1.2.exe' from the download page at the MinGW website http://www.mingw.org/download.shtml onto your desktop or somewhere easy to locate.  
+ # You can select to install everything or deselect the g77 compiler, Ada compiler, and Java compiler.
+ # Then select 'c:\MinGW' as your destination folder and click install
