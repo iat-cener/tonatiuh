@@ -1,0 +1,12 @@
+#summary How to download the Tonatiuh source code from the CVS repository using eclipse
+
+ # Open Eclipse and go to the CVS perspective by clicking Window->Open Perspective->Other->CVS Repository Exloring
+ # Create a new repository location by right clicking the project view and using the following options
+  * Host : secure.cener.com
+  * Repository path: /cvsroot/tonatiuh_project
+  * User: your username
+  * Password: your password
+  * Connection type: extshh
+  * Use port: 2401
+ # Click Head, navigate to the project you wish to download, select it and click Checkout.
+ # The code will automatically download
