@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+
+        <file>icons/ShapeParabolicDisk.png</file>
+    </qresource>
+</RCC>
