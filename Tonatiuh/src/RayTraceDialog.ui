@@ -1,0 +1,270 @@
+<ui version="4.0" >
+ <class>RayTraceDialog</class>
+ <widget class="QDialog" name="RayTraceDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>360</width>
+    <height>352</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Options</string>
+  </property>
+  <property name="sizeGripEnabled" >
+   <bool>true</bool>
+  </property>
+  <widget class="QGroupBox" name="raysGroupBox" >
+   <property name="geometry" >
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>301</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>Rays</string>
+   </property>
+   <widget class="QLabel" name="numberRaysLabel" >
+    <property name="geometry" >
+     <rect>
+      <x>40</x>
+      <y>15</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Number of Rays:</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="raysSpinBox" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>15</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="layoutDirection" >
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="minimum" >
+     <number>1</number>
+    </property>
+    <property name="maximum" >
+     <number>9999999</number>
+    </property>
+    <property name="singleStep" >
+     <number>1000</number>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="photonmapGroupBox" >
+   <property name="geometry" >
+    <rect>
+     <x>30</x>
+     <y>140</y>
+     <width>301</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>PhotonMap</string>
+   </property>
+   <widget class="QRadioButton" name="newMapRadioButton" >
+    <property name="geometry" >
+     <rect>
+      <x>40</x>
+      <y>20</y>
+      <width>191</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>New Photon Map</string>
+    </property>
+    <property name="checked" >
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="increaseMapRadioButton" >
+    <property name="geometry" >
+     <rect>
+      <x>40</x>
+      <y>50</y>
+      <width>83</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Increase</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="resultsGroupBox" >
+   <property name="geometry" >
+    <rect>
+     <x>30</x>
+     <y>220</y>
+     <width>301</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>Results File</string>
+   </property>
+   <widget class="QLineEdit" name="resultsFileLineEdit" >
+    <property name="geometry" >
+     <rect>
+      <x>42</x>
+      <y>30</y>
+      <width>211</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>results.dat</string>
+    </property>
+    <property name="readOnly" >
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="fileDialogButton" >
+    <property name="geometry" >
+     <rect>
+      <x>260</x>
+      <y>30</y>
+      <width>25</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>...</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QDialogButtonBox" name="buttonBox" >
+   <property name="geometry" >
+    <rect>
+     <x>33</x>
+     <y>310</y>
+     <width>221</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="standardButtons" >
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="applyPushButton" >
+   <property name="geometry" >
+    <rect>
+     <x>260</x>
+     <y>310</y>
+     <width>75</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Apply</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="raysGroupBox_2" >
+   <property name="geometry" >
+    <rect>
+     <x>30</x>
+     <y>70</y>
+     <width>301</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>Draw</string>
+   </property>
+   <widget class="QLabel" name="numberRaysLabel_2" >
+    <property name="geometry" >
+     <rect>
+      <x>40</x>
+      <y>15</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Rays to draw (%):</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="photonsCheckBox" >
+    <property name="geometry" >
+     <rect>
+      <x>40</x>
+      <y>40</y>
+      <width>91</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Draw photons</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="drawSpinBox" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>15</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum" >
+     <double>100.000000000000000</double>
+    </property>
+    <property name="singleStep" >
+     <double>5.000000000000000</double>
+    </property>
+    <property name="value" >
+     <double>10.000000000000000</double>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>RayTraceDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>143</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>179</x>
+     <y>175</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>RayTraceDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>143</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>179</x>
+     <y>175</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
