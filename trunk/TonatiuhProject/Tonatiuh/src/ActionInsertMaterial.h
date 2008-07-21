@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
 #ifndef ACTIONINSERTMATERIAL_H_
 #define ACTIONINSERTMATERIAL_H_
 
