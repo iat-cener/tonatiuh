@@ -2,7 +2,7 @@
 
 Qt is cross-platform application framework for GUI development. Before start with Qt intallation check that [Installing_MinGW MinGW] is installed.
 
- # Download _qt-win-opensource-4.4.1-mingw.exe_ from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows onto your desktop or somewhere easy to locate.
+ # Download _qt-win-opensource-latest-mingw.exe_ from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows onto your desktop or somewhere easy to locate.
  # Accept the license agreement and click next.
  # Use the destination folder _C:\msys\usr\qt\_.
  # Point the installer to the install location of MinGW, _C:\MinGW_ and click install.
