@@ -3,3 +3,5 @@
  # Download an installer executable from https://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780, for example'MinGW-5.1.4.exe' onto your desktop or somewhere easy to locate. Run it.
  # You can select a full install or deselect the g77 compiler, Ada compiler, and Java compiler.
  # Then select 'C:\MinGW' as your destination folder and click install.
+
+MinGW intallation is finished. 
