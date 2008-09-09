@@ -1,8 +1,14 @@
 #summary How to install QT for Windows
 
- # Download 'qt-win-opensource-4.2.1-mingw.exe' from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows onto your desktop or somewhere easy to locate
- # Accept the license agreement and click next
- # Use the destination folder "C:\msys\usr\qt\"
- # Point the installer to the install location of MinGW (C:\MinGW) and click install
+Qt is cross-platform application framework for GUI development. Before start with Qt intallation check that [Installing_MinGW MinGW] is installed.
 
-To create the debug libraries, go to Start->All Programs->Qt by Trolltech 4.2.1(Build Debug Libraries)
+ # Download _qt-win-opensource-4.4.1-mingw.exe_ from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows onto your desktop or somewhere easy to locate.
+ # Accept the license agreement and click next.
+ # Use the destination folder "C:\msys\usr\qt\".
+ # Point the installer to the install location of MinGW, _C:\MinGW_ and click install.
+
+To create the debug libraries, go to Start->All Programs->Qt by Trolltech 4.2.1(Build Debug Libraries).
+
+To continue with the resources intallation to Tonatiuh development, start with [Installing_Coin3d_for_Windows Coin3D] intallation.
+
+[http://code.google.com/p/tonatiuh/w/list Wiki]
