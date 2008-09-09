@@ -4,7 +4,7 @@ Qt is cross-platform application framework for GUI development. Before start wit
 
  # Download _qt-win-opensource-4.4.1-mingw.exe_ from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows onto your desktop or somewhere easy to locate.
  # Accept the license agreement and click next.
- # Use the destination folder "C:\msys\usr\qt\".
+ # Use the destination folder _C:\msys\usr\qt\_.
  # Point the installer to the install location of MinGW, _C:\MinGW_ and click install.
 
 To create the debug libraries, go to Start->All Programs->Qt by Trolltech 4.2.1(Build Debug Libraries).
