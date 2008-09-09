@@ -1,5 +1,7 @@
 #summary How to install MSYS shell environment for Windows
 
+MSYS is a collection of GNU utilities to build applications and programs which depend on UNIX.
+
  # Download 'MSYS-1.0.11-2004.04.30-1.exe' from the download page at the MinGW website http://www.mingw.org/download.shtml onto your desktop or somewhere easy to locate.
  # Double click on the executable, read the release notes, and continue with the installation.
  # When asked for the destination directory it is advisable that you install to the folder (C:\msys\usr\) in order to prevent possible problems later
