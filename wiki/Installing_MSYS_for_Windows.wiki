@@ -17,6 +17,7 @@ MSYS is a collection of GNU utilities to build applications and programs which d
   * [http://sourceforge.net/mingw/msysCORE-1.0.11-20080826.tar.gz msysCore]
   * [http://sourceforge.net/mingw/tar-1.13.19-MSYS-2005.06.08.tar.bz2 tar]
   * [http://sourceforge.net/mingw/texinfo-4.11-MSYS-1.0.11-1.tar.bz2 textinfo]
+
  # Create a msys directory folder in _C:\msys\usr_.
  # Extract downloaded files in the created folder.
  # Run _pi.bat_ in postinstall directory. A console window will be opened.
@@ -25,4 +26,4 @@ MSYS is a collection of GNU utilities to build applications and programs which d
   * The MinGW intallation directory is _c:/MinGW_.
   * Press a key to finish with the intallation.
 
-[http:// Home]
+[http://code.google.com/p/tonatiuh/w/list Home]
