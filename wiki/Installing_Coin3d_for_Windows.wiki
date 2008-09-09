@@ -16,3 +16,7 @@
  # After the configuration has finished running, you can install Coin3D simply by typing 'make install'.
  # You must then manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file:
   * _#ifndef COIN_DLL #define COIN_DLL #endif_
+
+Now, [Installing_SoQt SoQt] installation can be started.
+
+[http://code.google.com/p/tonatiuh/w/list Wiki]
