@@ -12,7 +12,8 @@
   * _export COINDIR="/usr/local"_
   * _export INCLUDE="/usr/local/include:/usr/qt/include"_
  # Enter in the coin_build folder and run configure command:
-  * _./../Coin-2/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local_
+  * _cd coin-build_
+  * _../Coin-2/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local_
  # After the configuration has finished running, you can install Coin3D simply by typing 'make install'.
  # You must then manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file:
   * _#ifndef COIN_DLL #define COIN_DLL #endif_
