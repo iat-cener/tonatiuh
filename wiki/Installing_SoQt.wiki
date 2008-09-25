@@ -1,5 +1,3 @@
-=Installing SoQT=
-
 [http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. Before SoQt installation check [Installing_QT_for_Windows Qt] and [Installing_Coin3d_for_Windows Coin3D] installations.
 
   # Download _SoQT-1.4.1.tar.gz_ from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view into the user directory under your MSYS folder. This will typically be _c:\msys\usr\home\username_.
