@@ -1,4 +1,4 @@
-#summary Procedure to install SoQt! under Windows Vista or XP from the source code.
+#summary Procedure to install SoQt¡ under Windows Vista or XP from the source code.
 
 = Introduction =
 [http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. This pages provides instruction regarding how to install SoQt in your computer under a Windows XP or Windows Vista OS.
