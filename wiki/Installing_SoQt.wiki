@@ -1,4 +1,4 @@
-=How to install SoQt from source code=
+=How to install SoQt from source code?=
 
 [http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. Before SoQt installation check [Installing_QT_for_Windows Qt] and [Installing_Coin3d_for_Windows Coin3D] installations.
 
