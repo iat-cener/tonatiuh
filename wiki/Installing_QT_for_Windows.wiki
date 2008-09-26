@@ -14,6 +14,7 @@ After the release version of the Qt libraries are installed, you can create the 
 -- Adding C:\"Windows\System32 to PATH
 -- QMAKESPEC set to win32-g++
 
+
 This will configure and compile qt in debug.
 The release libraries will not be recompiled.
 Press any key to continue..."
