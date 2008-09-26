@@ -1,9 +1,9 @@
 #summary How to install MinGW
 
- # Download an installer executable from https://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780, for example'MinGW-5.1.4.exe' onto your desktop or somewhere easy to locate. Run it.
- # You can select a full install or deselect the g77 compiler, Ada compiler, and Java compiler.
- # Then select 'C:\MinGW' as your destination folder and click install.
+Download a !MinGW the MinGW-5.1.4.exe installer from https://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780, and execute it.
 
-MinGW intallation is finished. Now, can be started with the intallation of [Installing_MSYS_for_Windows MSYS] shell environment.
+During the execution select just the g++ compiler to install. Then, accept the suggestion of installing the program in the C:MinGW directory.
+
+Once !MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instraction in the correspondigne wiki page "InstallingMSYSForWindows".
 
 [http://code.google.com/p/tonatiuh/w/list Home]
