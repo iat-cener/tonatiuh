@@ -24,7 +24,7 @@ shell> cd coin-build_
 shell> ../Coin-2/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
 }}}
 
-After the configuration process has ended, install Coin3D simply by typing:
+After the configuration process ends, install Coin3D by typing:
 {{{
 shell> make install
 }}}
