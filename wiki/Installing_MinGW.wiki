@@ -1,6 +1,6 @@
 #summary How to install MinGW
 
-Download a !MinGW the MinGW-5.1.4.exe installer from https://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780, and execute it.
+Download a MinGW the MinGW-5.1.4.exe installer from https://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780, and execute it.
 
 During the execution select just the g++ compiler to install. Then, accept the suggestion of installing the program in the C:MinGW directory.
 
