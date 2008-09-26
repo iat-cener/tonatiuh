@@ -7,11 +7,17 @@ Once the installer is running, you will be asked to accept the license agreement
 After the release version of the Qt libraries are installed, you can create the debug version of the libraries, by selecting Start->All Programs->Qt by Trolltech 4.2.1(Build Debug Libraries). This will open a console Window. Within it you will get the following message:
 
 "Setting up a MinGW/Qt only environment...
+
 -- QTDIR set to C:\msys\usr\qt
+
 -- PATH st to C:\msys\usr\qt\bin
+
 -- Adding C:\MinGW\bin to PATH
+
 -- Adding C:\"Windows\System32 to PATH
+
 -- QMAKESPEC set to win32-g++
+
 This will configure and compile qt in debug.
 The release libraries will not be recompiled.
 Press any key to continue..."
