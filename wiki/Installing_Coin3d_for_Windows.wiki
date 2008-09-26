@@ -10,18 +10,21 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 tar -zxvf Coin-3.0.0.tar.gz
 }}}
 
-you just downloaded using WinZip or another extraction tool.  This should create a directory called _Coin-2##_ in your user directory.
- # Using MSYS shell navigate to your home directory and create a new folder called _coin_build_ by typing the following in the command prompt:
-  * _cd /home/username_
-  * _mkdir coin_build_
- # Next you need to set 3 environment variables. Type the following commands:
-  * _export QTDIR="/usr/qt"_
-  * _export COINDIR="/usr/local"_
-  * _export INCLUDE="/usr/local/include:/usr/qt/include"_
- # Enter in the coin_build folder and run configure command:
-  * _cd coin-build_
-  * _../Coin-2/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local_
- # After the configuration has finished running, you can install Coin3D simply by typing 'make install'.
+This will create a directory called _Coin-3.0.0_ in your user directory. After this directory is created, using the MSYS shell navigate to your home directory and type:
+{{{
+shell> mkdir coin_build_
+shell> export QTDIR="/usr/qt"_
+shell> export COINDIR="/usr/local"_
+shell> export INCLUDE="/usr/local/include:/usr/qt/include"
+}}}
+
+Then, enter the just created coin_build folder and run the configure command typing:
+{{{
+shell> cd coin-build_
+shell> ../Coin-2/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
+}}}
+
+After the configuration has finished running, you can install Coin3D simply by typing 'make install'.
  # You must then manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file:
   * _#ifndef COIN_DLL #define COIN_DLL #endif_
 
