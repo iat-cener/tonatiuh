@@ -1,0 +1,34 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Qt is cross-platform application framework for GUI development. To install the Qt libraries in your computer download the installer file _qt-win-opensource-4.4.2-mingw.exe_ from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows and execute it.
+
+Once the installer is running, you will be asked to accept the license agreement. Accept it and click "next". Then, you will be asked to enter the destination folder. Enter _C:\msys\usr\qt\_, and click "install".
+
+After the release version of the Qt libraries are installed, you can create the debug version of the libraries, by selecting Start->All Programs->Qt by Trolltech 4.2.1(Build Debug Libraries). This will open a console Window. Within it you will get the following message:
+
+{{{
+"Setting up a MinGW/Qt only environment...
+-- QTDIR set to C:\msys\usr\qt
+-- PATH st to C:\msys\usr\qt\bin
+-- Adding C:\MinGW\bin to PATH
+-- Adding C:\"Windows\System32 to PATH
+-- QMAKESPEC set to win32-g++
+
+
+This will configure and compile qt in debug.
+The release libraries will not be recompiled.
+Press any key to continue..."
+}}}
+
+Press any key to start the configuration and compilation process of the debug versions of the Qt libraries. Depending on your computer, this process  may take several hours to complete.
+
+To continue with the resources intallation to Tonatiuh development, start with [Installing_Coin3d_for_Windows Coin3D] intallation.
+
+[http://code.google.com/p/tonatiuh/w/list Wiki]
