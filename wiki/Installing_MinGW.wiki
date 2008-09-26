@@ -4,6 +4,6 @@ Download a !MinGW the MinGW-5.1.4.exe installer from https://sourceforge.net/pro
 
 During the execution select just the g++ compiler to install. Then, accept the suggestion of installing the program in the C:MinGW directory.
 
-Once !MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instraction in the correspondigne wiki page "InstallingMSYSForWindows".
+Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instraction in the correspondigne wiki page "InstallingMSYSForWindows".
 
 [http://code.google.com/p/tonatiuh/w/list Home]
