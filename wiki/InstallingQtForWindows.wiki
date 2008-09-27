@@ -16,7 +16,7 @@ After the release version of the Qt libraries are installed, you can create the 
 {{{
 "Setting up a MinGW/Qt only environment...
 -- QTDIR set to C:\msys\usr\qt
--- PATH st to C:\msys\usr\qt\bin
+-- PATH set to C:\msys\usr\qt\bin
 -- Adding C:\MinGW\bin to PATH
 -- Adding C:\"Windows\System32 to PATH
 -- QMAKESPEC set to win32-g++
