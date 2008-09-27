@@ -5,7 +5,6 @@
 Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.0.0.tar.gz Coin 3.0.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder.  This will typically be _c:\msys\usr\home\username_.
  
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
-
 {{{
 tar -zxvf Coin-3.0.0.tar.gz
 }}}
@@ -24,14 +23,13 @@ make
 make install
 }}}
 
-The installation process may take several hours to finish. During it you could get errors, that could stop the process. There cases in which the error will trigger a warning in the MSYS shell console, together with instructions on how to solve it. In those cases, just follow the instructions to fix the problem. When the error does not trigger any warnings, usually it can be fixed by just typing:
+The installation process may take several hours to finish. During it you could get errors, that could stop the process. There cases in which the error will trigger a warning in the MSYS shell console, together with instructions on how to solve it. In those cases, just follow the instructions received in order to fix the problem. When the error does not trigger any warnings, usually it can be fixed by just typing:
 {{{
 make
 make install
 }}}
 
-
-After the installation process ends, you must then manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file:
+After the installation process ends, you should manually edit the file '/usr/local/include/Inventor/C/basic.h' by adding the following lines to the top of the file:
 {{{
 #ifndef COIN_DLL 
 #define COIN_DLL
