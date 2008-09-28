@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Procedure to install Qt for Windows Vista or XP
 
 = Introduction =
 
