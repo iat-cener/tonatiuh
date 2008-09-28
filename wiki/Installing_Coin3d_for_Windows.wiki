@@ -23,9 +23,9 @@ make
 make install
 }}}
 
-The installation process may take several hours . During it you may get errors, that may halt the installation and trigger warnings in the MSYS shell console complemented with instructions on how to solve them. If that is the case, follow the instructions that appear on the screen to fix the errors. In those cases in which you may get an error, but no instruction on how to solvw it, re-launch the make or the install process by typing "make" or "make install" as appropriate.
+The installation process may take several hours . During it you may get errors, that may trigger warnings in the MSYS shell console complemented with instructions on how to solve them. If that is the case, follow the instructions that appear on the screen to fix the errors. In those cases in which you may get an error, but no instruction on how to solvw it, re-launch the make or the install process by typing "make" or "make install" as appropriate.
 
-When the installation ends, edit the file '/usr/local/include/Inventor/C/basic.h' to add the following lines at its top:
+At the end of the installation process, edit the file '/usr/local/include/Inventor/C/basic.h' and and the following lines at the top:
 {{{
 #ifndef COIN_DLL 
 #define COIN_DLL
