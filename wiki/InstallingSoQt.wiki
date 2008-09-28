@@ -3,23 +3,20 @@
 = Introduction =
 [http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. This pages provides instruction regarding how to install SoQt in your computer under a Windows XP or Windows Vista OS.
 
-= Details =
 Before installing !SoQt, please, verify that Qt and Coin 3D are already installed and functioning on your PC. If they are not, install them firs by following the corresponding installation procedures InstallingQtForWindows and InstallingCoin3dForWindows.
 
+= Details =
 Download the latest realese of !SoQt, currently SoQt 1.4.1, from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder. This will typically be c:\msys\usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
 tar -zxvf SoQt-1.4.1.tar.gz
 }}}
-Using an MSYS shell navigate to your home directory and create a new folder called _soqt_build_ by typing the following in the command prompt:
-  * _cd /home/username_
-  * _mkdir soqt_build_
-  # Next you need to set 3 environment variables. Type the following commands:
-  * _export QTDIR="/usr/qt"_
-  * _export COINDIR="/usr/local"_
-  * _export INCLUDE="/usr/local/include:/usr/qt/include"_
-  # Enter the soqt_build folder and run configure command:
-  * _cd soqt-build_
-  * _../SoQT-##/configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-coin=/usr/local --prefix=/usr/local_
+This will create a directory called _SoQt-1.4.4_ in your user directory. Using the MSYS shell navigate to the just created SoQt-1.4.4. directory and type:
+{{{
+export QTDIR="/usr/qt"
+export COINDIR="/usr/local"
+export INCLUDE="/usr/local/include:/usr/qt/include"
+./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-coin=/usr/local --prefix=/usr/local
+}}}
   # After the configuration has finished running, you can install SoQT by typing _make install_
 
 [http://code.google.com/p/tonatiuh/w/list Wiki]
