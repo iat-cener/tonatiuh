@@ -1,4 +1,4 @@
-#summary Procedure to install Coin3d for Windows Vista or XP from the source code
+#summary Procedure to install Coin3d for Windows Vista or XP
 
 = Introduction =
 
