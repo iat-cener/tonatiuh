@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Procedure to install Coin3d for Windows Vista or XP from the source code
 
 = Introduction =
 
