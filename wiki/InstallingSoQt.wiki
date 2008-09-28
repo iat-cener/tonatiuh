@@ -15,8 +15,14 @@ This will create a directory called _!SoQt-1.4.1_ in your user directory. Using 
 export QTDIR="/usr/qt"
 export COINDIR="/usr/local"
 export INCLUDE="/usr/local/include:/usr/qt/include"
-./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-coin=/usr/local --prefix=/usr/local
+env ./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-coin=/usr/local --prefix=/usr/local
 }}}
-  # After the configuration has finished running, you can install SoQT by typing _make install_
-
+This will start the configuration process. This process should finish succesfully with the following message:
+{{{
+SoQt configuration settings:
+  Open Inventor brand: Coin
+  Static Materials:    Yes
+  Installation Prefix: /usr/local
+Now, run 'make install' to build and install SoQt
+}}} 
 [http://code.google.com/p/tonatiuh/w/list Wiki]
