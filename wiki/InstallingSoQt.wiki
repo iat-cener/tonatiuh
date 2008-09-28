@@ -10,7 +10,7 @@ Download the latest realese of !SoQt, currently !SoQt 1.4.1, from the Coin3D web
 {{{
 tar -zxvf SoQt-1.4.1.tar.gz
 }}}
-This will create a directory called _!SoQt-1.4.4_ in your user directory. Using the MSYS shell navigate to the just created SoQt-1.4.4. directory and type:
+This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the MSYS shell navigate to the just created SoQt-1.4.1. directory and type:
 {{{
 export QTDIR="/usr/qt"
 export COINDIR="/usr/local"
