@@ -2,12 +2,11 @@
 
 = Introduction =
 
-Add your content here.
-
+Qt is cross-platform application framework for GUI development. 
 
 = Details =
 
-Qt is cross-platform application framework for GUI development. To install the Qt libraries in your computer download the installer file _qt-win-opensource-4.4.2-mingw.exe_ from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows and execute it.
+To install the Qt libraries in your computer download the installer file _qt-win-opensource-4.4.2-mingw.exe_ from the Trolltech website at http://www.trolltech.com/developer/downloads/qt/windows and execute it.
 
 Once the installer is running, you will be asked to accept the license agreement. Accept it and click "next". Then, you will be asked to enter the destination folder. Enter _C:\msys\usr\qt\_, and click "install".
 
