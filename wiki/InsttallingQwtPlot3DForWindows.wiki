@@ -14,7 +14,14 @@ Download the latest realese of QwtPlot3D, currently QwtPlot3D 0.2.7, from the Qw
 tar -zxvf qwtplot3d-0.2.7.tar
 }}}
 
-This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. 
+This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, delete the following:
+
+{{{
+line 6: debug 
+line 7: MOC_DIR           = tmp
+line 8: OBJECTS_DIR       = tmp
+line 15: win32:TEMPLATE    = vclib
+}}}
 
 Using the MSYS shell navigate to the just created directory and type: 
 {{{
