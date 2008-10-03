@@ -26,6 +26,16 @@ line 15: win32:TEMPLATE    = vclib
 Using the MSYS shell navigate to the just created directory and type: 
 {{{
 export QTDIR="/usr/qt"
+qmake qwtplot3d.pro
+make -f Makefile.Debug
+make -f Makefile.Release
+}}}
+
+The library is created. Now, to put it into local:
+{{{
+cp -r include/* /usr/local/include/qwtplot3d
+cp lib/* /usr/local/lib/
+cp lib/*.dll /usr/local/bin/
 }}}
 
 
