@@ -23,6 +23,14 @@ line 8: OBJECTS_DIR       = tmp
 line 15: win32:TEMPLATE    = vclib
 }}}
 
+And add to end of the file:
+{{{
+contains(TEMPLATE,lib) { 
+	CONFIG(debug, debug|release) {
+		TARGET = $$member(TARGET, 0)d 
+	} 
+} 
+}}}
 Using the MSYS shell navigate to the just created directory and type: 
 {{{
 export QTDIR="/usr/qt"
