@@ -1,6 +1,6 @@
 #summary How to install the Eclipse Ganymede devolpment platform
 
-= Introduction =
+= Introduction = [http://tonatiuh.googlecode.com/svn/wiki/images/eclipseIcon.png]
 
 [http://www.eclipse.org/ Eclipse] is an open source community whose projects are focus on building an extensible development platform, runtimes and application frameworks for building, deploying and managing software across the entire software lifecycle.
 
