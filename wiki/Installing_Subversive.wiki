@@ -15,4 +15,4 @@
 
 To anonymous download of Tonatiuh code read [Anonymous_Download] or read [Upload_to_Repository] to download code and upload changes.
 
-[http://code.google.com/p/tonatiuh/w/list Wiki]
+[http://code.google.com/p/tonatiuh/w/list Wiki Home]
