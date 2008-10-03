@@ -19,3 +19,5 @@ Configuring Eclipse for Tonatiuh
  # In C\C++->Make->New Make Project 
   * Under the Make Builder tab set the build command to C:\MinGW\bin\mingw32-make.exe
   * Under Binary Parser select only PE Windows Parser
+
+[http://code.google.com/p/tonatiuh/w/list Wiki]
