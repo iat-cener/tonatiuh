@@ -9,8 +9,8 @@
  * Expand _"Ganymede Update Site"_.
  * Expand _"Collaboration Tools"_.
  * Select "Subversive SVN Team Provider" (Incubation) and push _"Install..."_. 
-
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/softwareUpdates.png]
+
  * Accept all. The plugin should now be installed and restart eclipse.
 
 To anonymous download of Tonatiuh code read [Anonymous_Download] or read [Upload_to_Repository] to download code and upload changes.
