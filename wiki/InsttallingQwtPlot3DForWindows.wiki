@@ -14,4 +14,12 @@ Download the latest realese of QwtPlot3D, currently QwtPlot3D 0.2.7, from the Qw
 tar -zxvf qwtplot3d-0.2.7.tar
 }}}
 
+This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. 
+
+Using the MSYS shell navigate to the just created directory and type: 
+{{{
+export QTDIR="/usr/qt"
+}}}
+
+
 [http://code.google.com/p/tonatiuh/w/list Wiki]
