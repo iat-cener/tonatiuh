@@ -2,7 +2,7 @@
 
 = Introduction =
 
-[www.eclipse.org/ Eclipse]is an open source community whose projects are focus on building an extensible development platform, runtimes and application frameworks for building, deploying and managing software across the entire software lifecycle.
+[http://www.eclipse.org/ Eclipse] is an open source community whose projects are focus on building an extensible development platform, runtimes and application frameworks for building, deploying and managing software across the entire software lifecycle.
 
 = Details =
 
