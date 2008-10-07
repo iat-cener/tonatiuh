@@ -13,5 +13,6 @@ The following links will guide the developer through all the process:
   * [InstallingQtForWindows Installing Qt]
   * [InstallingCoin3DForWindows Installing Coin3D]
   * [InstallingSoQt Installing SoQt]
+  * [InsttallingQwtPlot3DForWindows Installing QwtPlot3D]
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
