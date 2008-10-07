@@ -3,20 +3,20 @@
 MSYS is a collection of GNU utilities to build applications and programs which depend on UNIX. Before the installation of MSYS, [Installing_MinGW MinGW] must be intalled in _C:/MinGW_.
 
  # The components of MSYS can be downloaded from [http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=24963 SourceForge Web Page]:
-  * [http://sourceforge.net/project/downloading.php?group_id=2435&use_mirror=heanet&filename=bash-3.1-MSYS-1.0.11-1.tar.bz2&28137186 bash]
-  * [http://sourceforge.net/mingw/bzip2-1.0.3-MSYS-1.0.11-1.tar.bz2  bzip2]
-  * [http://sourceforge.net/mingw/coreutils-5.97-MSYS-1.0.11-snapshot.tar.bz2 coreutils]
-  * [http://sourceforge.net/mingw/cpmake-3.81-MSYS-1.0.11-1-bin.tar.gz cpmake]
-  * [http://sourceforge.net/mingw/csmake-3.81-MSYS-1.0.11-2.tar.bz2 csmake]
-  * [http://sourceforge.net/mingw/diffutils-2.8.7-MSYS-1.0.11-1.tar.bz2 diffutils]
-  * [http://sourceforge.net/mingw/findutils-4.3.0-MSYS-1.0.11-3-bin.tar.gz findutils]
-  * [http://sourceforge.net/mingw/gawk-3.1.5-MSYS-1.0.11-1.tar.bz2 gawk]
-  * [http://sourceforge.net/mingw/lzma-4.43-MSYS-1.0.11-1-bin.tar.gz lzma]
-  * [http://sourceforge.net/mingw/make-3.81-MSYS-1.0.11-2.tar.bz2 make]
-  * [http://sourceforge.net/mingw/MSYS-1.0.11-20080821-dll.tar.gz MSYS 1.0.11]
-  * [http://sourceforge.net/mingw/msysCORE-1.0.11-20080826.tar.gz msysCore]
-  * [http://sourceforge.net/mingw/tar-1.13.19-MSYS-2005.06.08.tar.bz2 tar]
-  * [http://sourceforge.net/mingw/texinfo-4.11-MSYS-1.0.11-1.tar.bz2 textinfo]
+  * bash
+  * bzip2
+  * coreutils
+  * cpmake
+  * csmake
+  * diffutils
+  * findutils
+  * gawk
+  * lzma
+  * make
+  * MSYS 1.0.11
+  * msysCore
+  * tar
+  * textinfo
 
  # Create a msys directory folder in _C:\msys\usr_.
  # Extract downloaded files in the created folder.
@@ -26,4 +26,4 @@ MSYS is a collection of GNU utilities to build applications and programs which d
   * The MinGW intallation directory is _c:/MinGW_.
   * Press a key to finish with the intallation.
 
-[http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[http://code.google.com/p/tonatiuh/w/edit/InstallingFowWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
