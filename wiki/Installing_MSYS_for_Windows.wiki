@@ -2,7 +2,7 @@
 
 MSYS is a collection of GNU utilities to build applications and programs which depend on UNIX. Before the installation of MSYS, [InstallingMinGWForWindows MinGW] must be intalled in _C:/MinGW_.
 
- # The components of MSYS can be downloaded from [http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=24963 SourceForge Web Page]:
+ # The components of MSYS can be downloaded from [http://sourceforge.net/project/ SourceForge Web] in Page MinGW - Minimalist GNU for Windows project [http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=24963 MSYS Base System package]:
   * bash
   * bzip2
   * coreutils
