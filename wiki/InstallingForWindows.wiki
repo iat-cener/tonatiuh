@@ -1,0 +1,17 @@
+#summary A guide to install and configurate development environment on Windows.
+#labels Phase-Implementation
+
+= Windows Configuration=
+
+Configuration of the standard Tonatiuh development environment in a Windows workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
+
+= Install and configurate development enviroment =
+
+The following links will guide the developer through all the process:
+  * [InstallingMinGWForWindows Installing MinGW]
+  * [Installing_MSYS_for_Windows Installing MSYS]
+  * [InstallingQtForWindows Installing Qt]
+  * [InstallingCoin3DForWindows Installing Coin3D]
+  * [InstallingSoQt Installing SoQt]
+
+[http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
