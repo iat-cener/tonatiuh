@@ -13,4 +13,4 @@ During the execution of the installer, select just the g++ compiler to install. 
 
 Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instruction in the correspondigne wiki page [Installing_MSYS_for_Windows]. 
 
-[http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[http://code.google.com/p/tonatiuh/wiki/InstallingFowWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
