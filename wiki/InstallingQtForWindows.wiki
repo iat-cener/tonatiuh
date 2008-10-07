@@ -1,4 +1,5 @@
 #summary Procedure to install Qt for Windows Vista or XP
+#labels Phase-Implementation
 
 = Introduction =
 [http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
