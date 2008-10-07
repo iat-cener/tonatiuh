@@ -1,7 +1,7 @@
 #summary Procedure to install Coin3d for Windows Vista or XP
 #labels Phase-Implementation
 
-= Introduction =
+http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
 [http://www.coin3d.org/ Coin3D] is a high-level 3D graphics toolkit for developing cross-platform real-time 3D visualization and visual simulation software. Install [InstallingQtForWindows Qt] before start with the installation.
 
