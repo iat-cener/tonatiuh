@@ -25,4 +25,4 @@ SoQt configuration settings:
   Installation Prefix: /usr/local
 Now, run 'make install' to build and install SoQt
 }}} 
-[http://code.google.com/p/tonatiuh/w/list Wiki]
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
