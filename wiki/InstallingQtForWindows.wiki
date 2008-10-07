@@ -29,6 +29,6 @@ Press any key to continue..."
 
 Press any key to start the configuration and compilation process of the debug versions of the Qt libraries. Depending on your computer, this process  may take several hours to complete.
 
-To continue with the resources intallation to Tonatiuh development, start with [Installing_Coin3d_for_Windows Coin3D] intallation.
+To continue with the resources intallation to Tonatiuh development, start with [InstallingCoin3DForWindows Coin3D] intallation.
 
-[http://code.google.com/p/tonatiuh/w/list Wiki]
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
