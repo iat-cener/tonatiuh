@@ -26,4 +26,4 @@ MSYS is a collection of GNU utilities to build applications and programs which d
   * The MinGW intallation directory is _c:/MinGW_.
   * Press a key to finish with the intallation.
 
-[http://code.google.com/p/tonatiuh/w/edit/InstallingFowWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
