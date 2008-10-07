@@ -1,11 +1,9 @@
 #summary How to install the Eclipse Ganymede devolpment platform
 
-= Introduction = 
+= Eclipse = 
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/eclipseIcon.png]
 
 [http://www.eclipse.org/ Eclipse] is an open source community whose projects are focus on building an extensible development platform, runtimes and application frameworks for building, deploying and managing software across the entire software lifecycle.
-
-= Details =
 
 == Installing eclipse Ganymede ==
  * Download _"Eclipse IDE for C/C++ Developers"_ from the eclipse website at http://www.eclipse.org/downloads/.
@@ -26,4 +24,4 @@
 
 To install svn to download and update Tonatiuh follow the corresponding installation procedures [Installing_Subversive].
 
-[http://code.google.com/p/tonatiuh/w/list Wiki]
+[http://code.google.com/p/tonatiuh/w/list Wiki Home]
