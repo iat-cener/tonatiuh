@@ -1,4 +1,5 @@
 #summary One-sentence summary of this page.
+#labels Phase-Implementation
 
 = Introduction =
 
@@ -47,4 +48,4 @@ cp lib/*.dll /usr/local/bin/
 }}}
 
 
-[http://code.google.com/p/tonatiuh/w/list Wiki]
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
