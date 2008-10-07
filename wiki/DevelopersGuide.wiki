@@ -7,6 +7,6 @@ Tonatiuh is a open source project. The basic design criterion for the developmen
 
 This guide provides instructions for install and configurate the enviroment for Toantiuh development. It includes information on: 
 
-  * [InstallingFowWindows Windows Configuration]
+  * [InstallingForWindows Windows Configuration]
  
 [http://code.google.com/p/tonatiuh/w/list Wiki Home]
