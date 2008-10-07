@@ -1,6 +1,7 @@
 #summary Procedure to install Qt for Windows Vista or XP
 
 = Introduction =
+[http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
 
 Qt is cross-platform application framework for GUI development. 
 
@@ -17,7 +18,7 @@ After the release version of the Qt libraries are installed, you can create the 
 -- QTDIR set to C:\msys\usr\qt
 -- PATH set to C:\msys\usr\qt\bin
 -- Adding C:\MinGW\bin to PATH
--- Adding C:\"Windows\System32 to PATH
+-- Adding C:\Windows\System32 to PATH
 -- QMAKESPEC set to win32-g++
 
 
