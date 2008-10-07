@@ -1,4 +1,5 @@
 #summary How to install the Subversive plugin used to download and upload code.
+#labels Phase-Implementation
 
  * Open Eclipse
  * Go to Help->Software Updates->Available Software.
