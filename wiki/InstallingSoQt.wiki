@@ -19,10 +19,10 @@ env CPPFLAGS="-DCOIN_DLL" ./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin"
 }}}
 This will start the configuration process. This process should finish succesfully with the following message:
 {{{
-SoQt configuration settings:
+"SoQt configuration settings:
   Open Inventor brand: Coin
   Static Materials:    Yes
   Installation Prefix: /usr/local
-Now, run 'make install' to build and install SoQt
+Now, run 'make install' to build and install SoQt"
 }}} 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
