@@ -31,7 +31,7 @@ mkdir /local/include/marble/AbstractLayer
 cp src/lib/AbstractLayer/*.h /local/include/marble/AbstractLayer/
 mkdir /local/include/marble/gps
 cp src/lib/gps/*.h /local/include/marble/gps
-mkdir /local/include/marble/kml"
+mkdir /local/include/marble/kml
 cp src/lib/kml/*.h /local/include/marble/kml/
 cp src/lib/libmarblewidget.dll /local/bin
 cp src/lib/libmarblewidget.dll.a /local/lib
