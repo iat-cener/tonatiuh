@@ -18,8 +18,6 @@ Configuration of the standard Tonatiuh development environment in a Mac workstat
 Install and configurate development enviroment
 The following links will guide the developer through all the process: 
 
-  * Installing MinGW 
-  * Installing MSYS 
   * Installing Qt 
   * Installing Coin3D 
   * Installing SoQt 
