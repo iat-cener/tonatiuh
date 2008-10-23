@@ -1,4 +1,4 @@
-#summary A guide to install and configurate development environment on Windows.
+#summary A guide to install and configurate development environment on Mac.
 #labels Phase-Implementation
 
 
