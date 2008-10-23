@@ -1,0 +1,31 @@
+#summary A guide to install and configurate development environment on Windows.
+#labels Phase-Implementation
+
+
+
+
+
+Developer's Guide | Wiki Home 
+
+
+= Mac Configuration =
+
+Configuration of the standard Tonatiuh development environment in a Mac workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
+
+
+= Install and configurate development enviroment=
+
+Install and configurate development enviroment
+The following links will guide the developer through all the process: 
+
+  * Installing MinGW 
+  * Installing MSYS 
+  * Installing Qt 
+  * Installing Coin3D 
+  * Installing SoQt 
+  * Installing Marble 
+  * Installing QwtPlot3D 
+  * [Installing_and_configuring_Eclipse Installing and Configuring Eclipse]
+  * [Installing_Subversive Installing Subversive]
+
+[http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
