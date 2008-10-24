@@ -25,29 +25,18 @@ make
 
 Copy lib files to install directory:
 {{{
- mkdir /local/include/marble
-cp src/lib/*.h /local/include/marble
-mkdir /local/include/marble/AbstractLayer
-cp src/lib/AbstractLayer/*.h /local/include/marble/AbstractLayer/
-mkdir /local/include/marble/geodata
-cp src/lib/geodata/*.h /local/include/marble/geodata
-mkdir /local/include/marble/geodata/data
-cp src/lib/geodata/data/*.h /local/include/marble/geodata/data
-mkdir /local/include/marble/geodata/handlers
-mkdir /local/include/marble/geodata/handlers/dgml
-cp src/lib/geodata/handlers/dgml/*.h /local/include/marble/geodata/handlers/dgml
-mkdir /local/include/marble/geodata/handlers/gpx
-cp src/lib/geodata/handlers/gpx/*.h /local/include/marble/geodata/handlers/gpx
-mkdir /local/include/marble/geodata/handlers/kml
-cp src/lib/geodata/handlers/kml/*.h /local/include/marble/geodata/handlers/kml
-mkdir /local/include/marble/geodata/parser
-cp src/lib/geodata/parser/*.h /local/include/marble/geodata/parser
-mkdir /local/include/marble/geodata/scene
-cp src/lib/geodata/scene/*.h /local/include/marble/geodata/scene
-mkdir /local/include/marble/gps
-cp src/lib/gps/*.h /local/include/marble/gps
-mkdir /local/include/marble/Projections
-cp src/lib/Projections/*.h /local/include/marble/Projections
+ mkdir /c/msysNuevo/usr/local/include/marble
+cp src/lib/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/AbstractLayer/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/data/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/handlers/dgml/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/handlers/gpx/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/handlers/kml/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/parser/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/scene/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/gps/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/Projections/*.h /c/msysNuevo/usr/local/include/marble
 cp src/lib/libmarblewidget.dll /local/bin
 cp src/lib/libmarblewidget.dll.a /local/lib
 }}}
