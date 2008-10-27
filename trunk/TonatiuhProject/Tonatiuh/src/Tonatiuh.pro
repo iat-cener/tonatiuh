@@ -19,6 +19,7 @@ unix: {
 }
  
 win32: {
+	RC_FILE = Tonatiuh.rc
     DEFINES+= COIN_DLL SOQT_DLL QWT3D_DLL
     INCLUDEPATH += . \
 					src \
@@ -27,6 +28,7 @@ win32: {
 					c:/msysNuevo/usr/local/include/qwtplot3d \
 					c:/msysNuevo/usr/local/include/marble \ 
 					c:/msysNuevo/usr/qt/include
+					
 }
 
 # Input
@@ -35,6 +37,8 @@ FORMS += *.ui
 SOURCES += *.cpp
 RESOURCES += tonatiuh.qrc
  
+
+
 win32: { 
 
 	LIBS += -L"c:\msysNuevo\usr\local\lib" -lSoQt -lCoin -lmarblewidget -L"c:\msysNuevo\usr\local\bin" -lqwtplot3d
