@@ -24,7 +24,7 @@ HEADERS = *.h \
            	../Tonatiuh/src/InstanceNode.h \
            	../Tonatiuh/src/Matrix4x4.h \
        		../Tonatiuh/src/MersenneTwister.h \
-       		../Tonatiuh/src/Normal.h \
+       		../Tonatiuh/src/NormalVector.h \
            	../Tonatiuh/src/Photon.h \
            	../Tonatiuh/src/PhotonMap.h \
        		../Tonatiuh/src/Point3D.h \
@@ -47,7 +47,7 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/DifferentialGeometry.cpp \
            	../Tonatiuh/src/Matrix4x4.cpp \
            	../Tonatiuh/src/MersenneTwister.cpp \
-           	../Tonatiuh/src/Normal.cpp \
+           	../Tonatiuh/src/NormalVector.cpp \
            	../Tonatiuh/src/Photon.cpp \
            	../Tonatiuh/src/PhotonMap.cpp \
            	../Tonatiuh/src/Point3D.cpp \
