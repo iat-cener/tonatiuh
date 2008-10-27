@@ -46,7 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class DifferentialGeometry;
 class RandomDeviate;
 class Ray;
-class Normal;
+class NormalVector;
 class Point3D;
 
 class TShapeKit : public SoShapeKit

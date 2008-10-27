@@ -42,7 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Point3D.h"
 #include "Vector3D.h"
 #include "BBox.h"
-#include "Normal.h"
+#include "NormalVector.h"
 #include "Photon.h"
 #include <vector>
 

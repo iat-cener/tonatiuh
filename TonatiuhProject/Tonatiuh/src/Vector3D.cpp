@@ -41,14 +41,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Vector3D.h"
 #include "Point3D.h"
-#include "Normal.h"
+#include "NormalVector.h"
 
 Vector3D::Vector3D( double dx, double dy, double dz )
 : x(dx), y(dy), z(dz)
 {
 }
 
-Vector3D::Vector3D( const Normal& norm )
+Vector3D::Vector3D( const NormalVector& norm )
 : x(norm.x), y(norm.y), z(norm.z)
 {
 }
@@ -194,12 +194,12 @@ double DotProduct( const Vector3D& vA, const Vector3D& vB )
     return vA.x*vB.x + vA.y*vB.y + vA.z*vB.z;
 }
 
-double DotProduct( const Vector3D& vA, const Normal& nB )
+double DotProduct( const Vector3D& vA, const NormalVector& nB )
 {
     return vA.x*nB.x + vA.y*nB.y + vA.z*nB.z;
 }
 
-double DotProduct( const Normal& nA, const Vector3D& vB )
+double DotProduct( const NormalVector& nA, const Vector3D& vB )
 {
     return nA.x*vB.x + nA.y*vB.y + nA.z*vB.z;
 }
@@ -209,12 +209,12 @@ double AbsDotProduct( const Vector3D& vA, const Vector3D& vB )
     return fabs( DotProduct( vA, vB ) );
 }
 
-double AbsDotProduct( const Vector3D& vA, const Normal& nB )
+double AbsDotProduct( const Vector3D& vA, const NormalVector& nB )
 {
     return fabs( DotProduct( vA, nB ) );
 }
 
-double AbsDotProduct( const Normal& nA, const Vector3D& vB )
+double AbsDotProduct( const NormalVector& nA, const Vector3D& vB )
 {
     return fabs( DotProduct( nA, vB ) );
 }
@@ -226,21 +226,21 @@ Vector3D CrossProduct( const Vector3D& vA, const Vector3D& vB )
                      ( vA.x*vB.y ) - ( vA.y*vB.x ) );
 }
 
-Vector3D CrossProduct( const Vector3D& vA, const Normal& nB )
+Vector3D CrossProduct( const Vector3D& vA, const NormalVector& nB )
 {
     return Vector3D( ( vA.y*nB.z ) - ( vA.z*nB.y ),
                      ( vA.z*nB.x ) - ( vA.x*nB.z ),
                      ( vA.x*nB.y ) - ( vA.y*nB.x ) );
 }
 
-Vector3D CrossProduct( const Normal& nA, const Vector3D& vB )
+Vector3D CrossProduct( const NormalVector& nA, const Vector3D& vB )
 {
     return Vector3D( ( nA.y*vB.z ) - ( nA.z*vB.y ),
                      ( nA.z*vB.x ) - ( nA.x*vB.z ),
                      ( nA.x*vB.y ) - ( nA.y*vB.x ) );
 }
 
-Vector3D Normalize( const Vector3D& vA )
+Vector3D NormalVectorize( const Vector3D& vA )
 {
     return vA / vA.Length();
 }

@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <cmath>
 #include <cfloat>
 #include "Transform.h"
-#include "Normal.h"
+#include "NormalVector.h"
 #include "Ray.h"
 #include "BBox.h"
 
@@ -152,15 +152,15 @@ void Transform::operator()( const Vector3D& vector, Vector3D* transformedVector 
 	transformedVector->z = m_mdir->m[2][0]*x + m_mdir->m[2][1]*y + m_mdir->m[2][2]*z;
 }
 
-Normal Transform::operator()( const Normal& normal ) const 
+NormalVector Transform::operator()( const NormalVector& normal ) const 
 {
 	double x = normal.x, y = normal.y, z = normal.z;
-	return Normal( m_minv->m[0][0]*x + m_minv->m[1][0]*y + m_minv->m[2][0]*z,
+	return NormalVector( m_minv->m[0][0]*x + m_minv->m[1][0]*y + m_minv->m[2][0]*z,
                    m_minv->m[0][1]*x + m_minv->m[1][1]*y + m_minv->m[2][1]*z,
                    m_minv->m[0][2]*x + m_minv->m[1][2]*y + m_minv->m[2][2]*z );
 }
 
-void Transform::operator()( const Normal& normal, Normal* transformedNormal ) const
+void Transform::operator()( const NormalVector& normal, NormalVector* transformedNormal ) const
 {
 	double x = normal.x, y = normal.y, z = normal.z;
 	transformedNormal->x = m_minv->m[0][0]*x + m_minv->m[1][0]*y + m_minv->m[2][0]*z;
@@ -350,7 +350,7 @@ Transform RotateZ( double angle )
 Transform Rotate( double angle, const Vector3D& axis ) 
 {
 	// angle is assumed to be in radians.
-	Vector3D a = Normalize( axis );
+	Vector3D a = NormalVectorize( axis );
 	double s = sin( angle );
 	double c = cos( angle );
 	double m[4][4];
@@ -387,8 +387,8 @@ Transform LookAt( const Point3D& pos, const Point3D& look, const Vector3D& up )
 	m[2][3] = pos.z;
 	m[3][3] = 1.0;
 	
-	Vector3D dir = Normalize( look - pos );
-	Vector3D right = CrossProduct( dir, Normalize( up ) );
+	Vector3D dir = NormalVectorize( look - pos );
+	Vector3D right = CrossProduct( dir, NormalVectorize( up ) );
 	Vector3D newUp = CrossProduct( right, dir );
 
 	m[0][0] = right.x;

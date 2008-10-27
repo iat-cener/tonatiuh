@@ -17,25 +17,25 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Acknowledgments: 
+Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, 
-then Chair of the Department of Engineering of the University of Texas at 
-Brownsville. From May 2004 to July 2008, it was supported by the Department 
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under 
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. 
-During 2007, NREL also contributed to the validation of Tonatiuh under the 
-framework of the Memorandum of Understanding signed with the Spanish 
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). 
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the 
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
- 
+
 #include <Inventor/SbBox.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -52,10 +52,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/misc/SoState.h>
-#include "TCube.h"
-#include "DifferentialGeometry.h"
-#include "tgf.h"
 
+#include "Point3D.h"
+#include "TCube.h"
+#include "tgf.h"
 #include "Trace.h"
 
 using namespace std;
@@ -76,12 +76,12 @@ void TCube::initClass()
 TCube::TCube()
 {
 	Trace trace("TCube::TCube", false );
-	
+
 	SO_NODE_CONSTRUCTOR(TCube);
 	SO_NODE_ADD_FIELD(m_width, (2.0));
 	SO_NODE_ADD_FIELD(m_height, (2.0));
 	SO_NODE_ADD_FIELD(m_depth, (2.0));
-	
+
 	// If this is the first time the constructor is called, set
 	// up the static normals.
 	if ( SO_NODE_IS_FIRST_INSTANCE() )
@@ -91,7 +91,7 @@ TCube::TCube()
 		leftNormal.setValue( 1.0, 0.0, 0.0 );
 		rightNormal.setValue( -1.0, 0.0, 0.0 );
 		baseNormal.setValue( 0.0, -1.0, 0.0 );
-		topNormal.setValue( 0.0, 1.0, 0.0 ); 
+		topNormal.setValue( 0.0, 1.0, 0.0 );
 	}
 }
 
@@ -101,10 +101,22 @@ TCube::~TCube()
 }
 
 
-QString TCube::getIcon() 
+QString TCube::getIcon()
 {
 	Trace trace("TCube::getIcon", false );
 	return ":/icons/tcube.png";
+}
+
+bool TCube::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGeometry* /*dg*/) const
+{
+//Yet to be implemented
+return false;
+}
+
+bool TCube::IntersectP( const Ray& /*objectRay*/ ) const
+{
+//Yet to be implemented
+return false;
 }
 
 void TCube::generatePrimitives(SoAction *action)
@@ -141,22 +153,22 @@ void TCube::generatePrimitives(SoAction *action)
    // We'll use this macro to make the code easier. It uses the
    // "point" variable to store the primitive vertex's point.
    SbVec3f  point;
-  
+
 #define GEN_VERTEX(pv, x, y, z, s, t, normal)   \
      point.setValue(halfWidth  * x,             \
                 halfHeight * y,                 \
                 halfDepth  * z);                \
      if (useTexFunc)                            \
-       texCoord = tce->get(point, normal);      \
+       texCoord = tce->get(SbVec3f( point ), SbVec3f( normal ) );      \
      else {                                     \
        texCoord[0] = s;                         \
        texCoord[1] = t;                         \
      }                                          \
      pv.setPoint(point);                        \
-     pv.setNormal(normal);                      \
+     pv.setNormal( SbVec3f( normal ) );         \
      pv.setTextureCoords(texCoord);             \
      shapeVertex(&pv)
-    
+
      // We will generate two triangles for the base, as a
      // triangle strip.
      beginShape(action, TRIANGLE_STRIP);
@@ -168,7 +180,7 @@ void TCube::generatePrimitives(SoAction *action)
      GEN_VERTEX(pv, -1.0, -1.0, -1.0, 1.0,  0.0, baseNormal);
 
      endShape();
-     
+
      // We will generate two triangles for the top, as a
      // triangle strip.
      beginShape(action, TRIANGLE_STRIP);
@@ -180,7 +192,7 @@ void TCube::generatePrimitives(SoAction *action)
      GEN_VERTEX(pv, -1.0, 1.0, -1.0, 1.0,  0.0, baseNormal);
 
      endShape();
-}    
+}
 
 
 void TCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
@@ -209,26 +221,14 @@ void TCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
    center.setValue(0.0, 0.0, 0.0);
 }
 
-bool TCube::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGeometry* /*dg*/) const 
-{
-    //Yet to be implemented
-	return false;
-}
-
-bool TCube::IntersectP( const Ray& /*objectRay*/ ) const 
-{	
-	//Yet to be implemented
-	return false;
-}
-
-
 Point3D TCube::Sample( double /*u1*/, double /*u2*/ ) const
 {
 	//Yet to be implemented
-	return Point3D( 0, 0, 0 );	
+	return Point3D( 0, 0, 0 );
 }
 
 SbVec3f TCube::GetNormal (double /*u*/, double /*v*/ ) const
 {
 	return SbVec3f( 0, 1, 0 );
 }
+

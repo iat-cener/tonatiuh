@@ -36,55 +36,42 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef MAPDIALOG_H_
-#define MAPDIALOG_H_
+#ifndef NORMALVECTOR_H
+#define NORMALVECTOR_H
 
-#include <QDialog>
-#include <QPixmap>
+#include <iostream>
 
-#include "MarbleControlBox.h"
+struct Vector3D;
 
-class MapThemeManager;
-class MarbleWidget;
-class QComboBox;
-class QDoubleSpinBox;
-class QSplitter;
-
-class MapDialog : public QDialog
+struct NormalVector
 {
-    Q_OBJECT
+    NormalVector( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
+    explicit NormalVector( const Vector3D& vector );
+    ~NormalVector( );
+    NormalVector& operator+=( const NormalVector& nRhs );
+    NormalVector& operator-=( const NormalVector& nRhs );
+    NormalVector& operator*=( double a );
+    NormalVector& operator/=( double a );
+    bool operator==( const NormalVector& norm ) const;
+    double operator[]( int i ) const;
+    double& operator[]( int i );
+    double LengthSquared( ) const;
+    double Length( ) const;
 
-public:
-    MapDialog( QWidget * = 0 );
-    virtual ~MapDialog(){}
-
-	void GetCoordinates( double* lon, double* lat ) const;
-	void SetCoordinates(  double lon, double lat );
-    void zoomIn();
-    void zoomOut();
-    void moveLeft();
-    void moveRight();
-    void moveUp();
-    void moveDown();
-
-    bool sideBarShown() const;
-
-public slots:
-    void changeGpsPosition( double lon, double lat, GeoDataPoint::Unit );
-
-private:
-    MarbleWidget*		m_marbleWidget;
-    MarbleControlBox*	m_control;
-    MapThemeManager*	m_mapThemeManager;
-    QSplitter*			m_splitter;
-
-    QDoubleSpinBox* 	m_latSpinBox;
-    QComboBox* 			m_latComboBox;
-    QDoubleSpinBox* 	m_lonSpinBox;
-    QComboBox* 			m_lonComboBox;
-
-    double 				m_longitude;
-    double 				m_latitude;
+    double x;
+    double y;
+    double z;
 };
 
-#endif /*MAPDIALOG_H_*/
+NormalVector operator-( const NormalVector& NormalVector );
+NormalVector operator+( const NormalVector& lhs, const NormalVector& rhs );
+NormalVector operator-( const NormalVector& lhs, const NormalVector& rhs );
+NormalVector operator*( const NormalVector& NormalVector, double scalar );
+NormalVector operator*( double scalar, const NormalVector& NormalVector );
+NormalVector operator/( const NormalVector& NormalVector, double scalar );
+std::ostream& operator<<( std::ostream& os, const NormalVector& NormalVector );
+double DotProduct( const NormalVector& nA, const NormalVector& nB );
+double AbsDotProduct( const NormalVector& nA, const NormalVector& nB );
+NormalVector NormalVectorize( const NormalVector& n );
+
+#endif

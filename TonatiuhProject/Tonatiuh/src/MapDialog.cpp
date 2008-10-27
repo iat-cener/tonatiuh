@@ -17,22 +17,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Acknowledgments: 
+Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, 
-then Chair of the Department of Engineering of the University of Texas at 
-Brownsville. From May 2004 to July 2008, it was supported by the Department 
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under 
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. 
-During 2007, NREL also contributed to the validation of Tonatiuh under the 
-framework of the Memorandum of Understanding signed with the Spanish 
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). 
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the 
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -49,7 +49,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QStringListModel>
 
 #include <MarbleDirs.h>
-#include "MarbleWidget.h"
+#include <MarbleWidget.h>
+#include <MapThemeManager.h>
 
 #include "MapDialog.h"
 #include "tgc.h"
@@ -151,17 +152,22 @@ MapDialog::MapDialog( QWidget *parent )
     tabLayout->addWidget( buttons );
 
     //Marble Widget
-    m_marbleWidget = new MarbleWidget( this );
+   	m_marbleWidget = new MarbleWidget( this );
     m_marbleWidget->setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
-    m_marbleWidget->setMinimumZoom( m_control->minimumZoom() );
-	m_control->addMarbleWidget( m_marbleWidget );
-    m_splitter->addWidget( m_marbleWidget );
+    m_control->addMarbleWidget( m_marbleWidget );
+	m_splitter->addWidget( m_marbleWidget );
+
+    m_mapThemeManager = new MapThemeManager;
+    m_control->setMapThemeModel(  m_mapThemeManager->mapThemeModel() );
+    m_marbleWidget->setMapThemeId( "earth/srtm/srtm.dgml" );
+    m_marbleWidget->setProjection( (Projection) 0 );
+
 
     m_splitter->setSizes( QList<int>() << 180 << width()-180 );
     m_splitter->setStretchFactor(m_splitter->indexOf(m_control), 0);
     m_splitter->setStretchFactor(m_splitter->indexOf(m_marbleWidget), 1);
 
-    connect( m_marbleWidget, SIGNAL( mouseClickGeoPosition( double, double, GeoPoint::Unit ) ), this, SLOT( changeGpsPosition( double, double, GeoPoint::Unit ) ) );
+    connect( m_marbleWidget, SIGNAL( mouseClickGeoPosition( double, double, GeoDataPoint::Unit ) ), this, SLOT( changeGpsPosition( double, double, GeoDataPoint::Unit ) ) );
 }
 
 void MapDialog::GetCoordinates( double* lon, double* lat ) const
@@ -175,8 +181,8 @@ void MapDialog::SetCoordinates(  double lon, double lat )
 	m_longitude = lon;
 	m_latitude = lat;
 
-	changeGpsPosition( m_longitude, -m_latitude, GeoPoint::Radian );
-	m_control->receiveGpsCoordinates( m_longitude, -m_latitude, GeoPoint::Radian );
+	changeGpsPosition( m_longitude, -m_latitude, GeoDataPoint::Radian );
+	m_control->receiveGpsCoordinates( m_longitude, -m_latitude, GeoDataPoint::Radian );
 }
 
 void MapDialog::zoomIn()
@@ -209,7 +215,14 @@ void MapDialog::moveDown()
     m_marbleWidget->moveDown();
 }
 
-void MapDialog::changeGpsPosition( double lon, double lat, GeoPoint::Unit )
+bool MapDialog::sideBarShown() const
+{
+	Trace trace( "MapDialog::sideBarShown", false );
+
+	return m_control->isVisible();
+}
+
+void MapDialog::changeGpsPosition( double lon, double lat, GeoDataPoint::Unit )
 {
 	Trace trace( "MapDialog::changeGpsPosition", false );
 

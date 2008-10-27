@@ -176,6 +176,7 @@ void TSquare::generatePrimitives(SoAction *action)
      pv.setTextureCoords(texCoord);             \
      shapeVertex(&pv)
 
+
     
     float u = 1;
     float v = 1;  
@@ -183,7 +184,7 @@ void TSquare::generatePrimitives(SoAction *action)
 	beginShape(action, QUADS );
     for( int i = 0; i < totalIndices; i++ )
     {
-    	//SbVec3f normal=GetNormal(finalvertex[i][0],finalvertex[i][1], finalvertex[i][2] );
+    	//SbVec3f NormalVector=GetNormalVector(finalvertex[i][0],finalvertex[i][1], finalvertex[i][2] );
     	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
     	GEN_VERTEX(pv,  finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2], u,  v, normal);
     }         		
