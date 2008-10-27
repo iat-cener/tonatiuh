@@ -48,7 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 struct Point3D;
 struct Vector3D;
-struct Normal;
+struct NormalVector;
 struct Ray;
 struct BBox;
 
@@ -72,8 +72,8 @@ public:
 	void operator()( const Point3D& point, Point3D* transformedPoint ) const;
 	Vector3D operator()( const Vector3D& vector ) const;
 	void operator()( const Vector3D& vector, Vector3D* transformedVector ) const;
-	Normal operator()( const Normal& normal ) const;
-	void operator()( const Normal& normal, Normal* transformedNormal ) const;
+	NormalVector operator()( const NormalVector& normal ) const;
+	void operator()( const NormalVector& normal, NormalVector* transformedNormal ) const;
 	Ray operator()( const Ray& ray ) const;
 	void operator()( const Ray& ray, Ray* transformedRay ) const;
 	BBox operator()( const BBox& bbox  ) const;

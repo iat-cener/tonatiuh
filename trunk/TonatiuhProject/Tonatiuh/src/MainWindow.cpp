@@ -998,7 +998,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	//progressDialog->setLabelText( "Saving Photon Map. Please wait..." );
 
 	//m_photonMap->savePhotonMap( m_resultsFile.toStdString().c_str() );
-	/*QFile resultsFile( m_resultsFile );
+	QFile resultsFile( m_resultsFile );
 
 	if(!resultsFile.open( QIODevice::WriteOnly ) )
 	{
@@ -1019,9 +1019,10 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		double prev_id = ( node->m_prev )? node->m_prev->m_id : 0;
 		double next_id = ( node->m_next )? node->m_next->m_id : -1;
 		out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+		//out<<id<<<<photon.x <<"\t"<<photon.y <<photon.z<<prev_id<<next_id;
 
 	}
-	resultsFile.close();*/
+	resultsFile.close();
 
 	progressDialog->setValue( m_raysPerIteration * 2 );
 

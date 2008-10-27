@@ -67,10 +67,10 @@ protected:
 	virtual void generatePrimitives(SoAction *action);
 	virtual void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center);                             
 	virtual ~TCube();
-	SbVec3f GetNormal (double u, double v) const;
+	SbVec3f GetNormal(double u, double v) const;
 
 private:
-    // Face normals. These are static because they are computed
+    // Face NormalVectors. These are static because they are computed
     // once and are shared by all instances
     static SbVec3d frontNormal, rearNormal;
     static SbVec3d leftNormal, rightNormal;

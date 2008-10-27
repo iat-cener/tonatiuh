@@ -21,12 +21,12 @@ unix: {
 win32: {
     DEFINES+= COIN_DLL SOQT_DLL QWT3D_DLL
     INCLUDEPATH += . \
-                   src \
-                   src/icons \
-                   C:/msys/usr/local/include \ 
-                   C:/msys/usr/local/include/qwtplot3d \
-                   C:/msys/usr/local/include/marble \ 
-                   C:/msys/usr/qt/include
+					src \
+					src/icons \
+					c:/msysNuevo/usr/local/include \ 
+					c:/msysNuevo/usr/local/include/qwtplot3d \
+					c:/msysNuevo/usr/local/include/marble \ 
+					c:/msysNuevo/usr/qt/include
 }
 
 # Input
@@ -37,8 +37,8 @@ RESOURCES += tonatiuh.qrc
  
 win32: { 
 
-	LIBS += -L"c:\msys\usr\local\lib" -lSoQt -lCoin -lmarblewidget -L"c:\msys\usr\local\bin" -lqwtplot3d
-    DESTDIR = C:\eclipse\workspace\Tonatiuh\release\
+	LIBS += -L"c:\msysNuevo\usr\local\lib" -lSoQt -lCoin -lmarblewidget -L"c:\msysNuevo\usr\local\bin" -lqwtplot3d
+#    DESTDIR = C:\eclipse\workspace\Tonatiuh\release\
 }
         
 unix: {

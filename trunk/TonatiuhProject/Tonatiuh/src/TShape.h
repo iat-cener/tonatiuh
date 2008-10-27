@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoShape.h>
 
 class DifferentialGeometry;
-class Normal;
+class NormalVector;
 class Point3D;
 class Ray;
 

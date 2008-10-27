@@ -42,12 +42,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 
 struct Point3D;
-struct Normal;
+struct NormalVector;
 
 struct Vector3D
 {
     Vector3D( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
-    Vector3D( const Normal& norm );
+    Vector3D( const NormalVector& norm );
     explicit Vector3D( Point3D point );
     ~Vector3D( );
     Vector3D& operator=( const Vector3D& vector );  
@@ -76,15 +76,15 @@ Vector3D operator*( double scalar, const Vector3D& vector );
 Vector3D operator/( const Vector3D& vector, double scalar );
 std::ostream& operator<<( std::ostream& os, const Vector3D& vector );
 double DotProduct( const Vector3D& vA, const Vector3D& vB );
-double DotProduct( const Vector3D& vA, const Normal& nB );
-double DotProduct( const Normal& nA, const Vector3D& vB );
+double DotProduct( const Vector3D& vA, const NormalVector& nB );
+double DotProduct( const NormalVector& nA, const Vector3D& vB );
 double AbsDotProduct( const Vector3D& vA, const Vector3D& vB );
-double AbsDotProduct( const Vector3D& vA, const Normal& nB );
-double AbsDotProduct( const Normal& nA, const Vector3D& vB );
+double AbsDotProduct( const Vector3D& vA, const NormalVector& nB );
+double AbsDotProduct( const NormalVector& nA, const Vector3D& vB );
 Vector3D CrossProduct( const Vector3D& vA, const Vector3D& vB );
-Vector3D CrossProduct( const Vector3D& vA, const Normal& nB );
-Vector3D CrossProduct( const Normal& nA, const Vector3D& vB );
-Vector3D Normalize( const Vector3D& vA );
+Vector3D CrossProduct( const Vector3D& vA, const NormalVector& nB );
+Vector3D CrossProduct( const NormalVector& nA, const Vector3D& vB );
+Vector3D NormalVectorize( const Vector3D& vA );
 bool SameHemisphere( const Vector3D& vA, const Vector3D& vB );
 
 #endif
