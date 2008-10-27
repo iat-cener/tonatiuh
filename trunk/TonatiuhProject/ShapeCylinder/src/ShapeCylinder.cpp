@@ -17,22 +17,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Acknowledgments: 
+Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, 
-then Chair of the Department of Engineering of the University of Texas at 
-Brownsville. From May 2004 to July 2008, it was supported by the Department 
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under 
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. 
-During 2007, NREL also contributed to the validation of Tonatiuh under the 
-framework of the Memorandum of Understanding signed with the Spanish 
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). 
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the 
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -56,14 +56,14 @@ SO_NODE_SOURCE(ShapeCylinder);
 void ShapeCylinder::initClass()
 {
 	Trace trace( "ShapeCylinder::initClass", false );
-	
+
 	SO_NODE_INIT_CLASS(ShapeCylinder, TShape, "TShape");
 }
 
 ShapeCylinder::ShapeCylinder( )
 {
 	Trace trace( "ShapeCylinder::ShapeCylinder", false );
-	
+
 	SO_NODE_CONSTRUCTOR(ShapeCylinder);
 	SO_NODE_ADD_FIELD(m_radius, (1.0));
 	SO_NODE_ADD_FIELD(m_z1, (0.0));
@@ -77,17 +77,17 @@ ShapeCylinder::~ShapeCylinder()
 }
 
 
-QString ShapeCylinder::getIcon() 
+QString ShapeCylinder::getIcon()
 {
 	Trace trace( "ShapeCylinder::getIcon", false );
-	
+
 	return ":/icons/ShapeCylinder.png";
 }
-	
+
 void ShapeCylinder::generatePrimitives(SoAction *action)
 {
 	Trace trace( "ShapeCylinder::generatePrimitives", false );
-	
+
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.
@@ -207,7 +207,7 @@ void ShapeCylinder::generatePrimitives(SoAction *action)
 void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 {
 	Trace trace( "ShapeCylinder::computeBBox", false );
-	
+
 	double cosPhiMax = cos( m_phiMax.getValue() );
 	double sinPhiMax = sin( m_phiMax.getValue() );
 
@@ -225,14 +225,14 @@ void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 bool ShapeCylinder::IntersectP( const Ray& worldRay ) const
 {
 	Trace trace( "ShapeCylinder::IntersectP", false );
-	
+
 	return Intersect( worldRay, 0, 0 );
 }
 
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 	Trace trace( "ShapeCylinder::Intersect", false );
-	
+
 	// Compute quadratic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.x*objectRay.direction.x + objectRay.direction.y*objectRay.direction.y;
@@ -302,7 +302,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N = Normalize( CrossProduct( dpdu, dpdv ) );
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );
@@ -331,21 +331,21 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 Point3D ShapeCylinder::Sample( double u, double v ) const
 {
 	Trace trace( "ShapeCylinder::Sample", false );
-	
+
 	return GetPoint3D( u, v );
 }
 
 bool ShapeCylinder::OutOfRange( double u, double v ) const
 {
 	Trace trace( "ShapeCylinder::OutOfRange", false );
-	
+
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 {
 	Trace trace( "ShapeCylinder::GetPoint3D", false );
-	
+
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
@@ -364,7 +364,7 @@ Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 SbVec3f ShapeCylinder::GetNormal (double u, double v) const
 {
 	Trace trace( "ShapeCylinder::GetNormal", false );
-	
+
 	Point3D point = GetPoint3D( u, v );
 	SbVec3f vector( point.x, point.y, 0 );
 	return SbVec3f ( -point.x/vector.length(), -point.y/vector.length(), 0 );
