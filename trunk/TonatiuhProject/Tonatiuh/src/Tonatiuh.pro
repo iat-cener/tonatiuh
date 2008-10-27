@@ -24,10 +24,10 @@ win32: {
     INCLUDEPATH += . \
 					src \
 					src/icons \
-					c:/msysNuevo/usr/local/include \ 
-					c:/msysNuevo/usr/local/include/qwtplot3d \
-					c:/msysNuevo/usr/local/include/marble \ 
-					c:/msysNuevo/usr/qt/include
+					c:/msys/usr/local/include \ 
+					c:/msys/usr/local/include/qwtplot3d \
+					c:/msys/usr/local/include/marble \ 
+					c:/msys/usr/qt/include
 					
 }
 
@@ -41,7 +41,7 @@ RESOURCES += tonatiuh.qrc
 
 win32: { 
 
-	LIBS += -L"c:\msysNuevo\usr\local\lib" -lSoQt -lCoin -lmarblewidget -L"c:\msysNuevo\usr\local\bin" -lqwtplot3d
+	LIBS += -L"c:\msys\usr\local\lib" -lSoQt -lCoin -lmarblewidget -L"c:\msys\usr\local\bin" -lqwtplot3d
 #    DESTDIR = C:\eclipse\workspace\Tonatiuh\release\
 }
         

@@ -72,6 +72,6 @@ NormalVector operator/( const NormalVector& NormalVector, double scalar );
 std::ostream& operator<<( std::ostream& os, const NormalVector& NormalVector );
 double DotProduct( const NormalVector& nA, const NormalVector& nB );
 double AbsDotProduct( const NormalVector& nA, const NormalVector& nB );
-NormalVector NormalVectorize( const NormalVector& n );
+NormalVector Normalize( const NormalVector& n );
 
 #endif
