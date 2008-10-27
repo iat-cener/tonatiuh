@@ -170,7 +170,7 @@ double AbsDotProduct( const NormalVector& nA, const NormalVector& nB )
     return fabs( DotProduct( nA, nB ) );
 }
 
-NormalVector NormalVectorize(const NormalVector& n)
+NormalVector Normalize(const NormalVector& n)
 {
     return n / n.Length();
 }
