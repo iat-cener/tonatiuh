@@ -71,17 +71,8 @@ win32	{
 
 unix	{
 
-	macx	{
 	
-		LIBS +=-L/usr/local/lib -framework Inventor -framework SoQt
-		
-	}
-	else	{
-	
-		LIBS +=-L/usr/local/lib -lCoin -lSoQt
-		
-	}
-	
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 	DESTDIR       = ../Tonatiuh/release/plugins/ShapeCone
 	
 }
