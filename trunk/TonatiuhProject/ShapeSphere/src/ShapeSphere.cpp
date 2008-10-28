@@ -60,7 +60,7 @@ void ShapeSphere::initClass()
 
 ShapeSphere::ShapeSphere( )
 {
-	Trace trace( "ShapeSphere::ShapeSphere", true );
+	Trace trace( "ShapeSphere::ShapeSphere", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeSphere);
 	SO_NODE_ADD_FIELD(m_radius, (10.0));
