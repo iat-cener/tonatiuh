@@ -17,22 +17,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Acknowledgments: 
+Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, 
-then Chair of the Department of Engineering of the University of Texas at 
-Brownsville. From May 2004 to July 2008, it was supported by the Department 
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under 
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. 
-During 2007, NREL also contributed to the validation of Tonatiuh under the 
-framework of the Memorandum of Understanding signed with the Spanish 
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). 
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the 
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/nodes/SoPickStyle.h> 
+#include <Inventor/nodes/SoPickStyle.h>
 
 #include "DifferentialGeometry.h"
 #include "ShapeTroughParabola.h"
@@ -56,7 +56,7 @@ SO_NODE_SOURCE(ShapeTroughParabola);
 void ShapeTroughParabola::initClass()
 {
 	Trace trace( "ShapeTroughParabola::initClass", false );
-	
+
 	SO_NODE_INIT_CLASS(ShapeTroughParabola, TShape, "TShape");
 	SO_ENABLE(SoPickAction, SoPickStyleElement);
 }
@@ -64,7 +64,7 @@ void ShapeTroughParabola::initClass()
 ShapeTroughParabola::ShapeTroughParabola()
 {
 	Trace trace( "ShapeTroughParabola::ShapeTroughParabola", false );
-	
+
 	SO_NODE_CONSTRUCTOR(ShapeTroughParabola);
 	SO_NODE_ADD_FIELD(m_focus, (1.0));
 	SO_NODE_ADD_FIELD(m_z1, (0.0));
@@ -81,24 +81,24 @@ ShapeTroughParabola::~ShapeTroughParabola()
 QString ShapeTroughParabola::getIcon()
 {
 	Trace trace( "ShapeTroughParabola::getIcon", false );
-	
+
 	return ":/icons/ShapeTroughParabola.png";
 }
 
 void ShapeTroughParabola::generatePrimitives(SoAction *action)
 {
 	Trace trace( "ShapeTroughParabola::generatePrimitives", false );
-	
+
     SoPrimitiveVertex   pv;
     SoState  *state = action->getState();
 
     SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) ==
                           SoTextureCoordinateElement::FUNCTION );
-                         
+
     const SoTextureCoordinateElement* tce;
-    SbVec4f texCoord;  
+    SbVec4f texCoord;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
-    else 
+    else
     {
         texCoord[2] = 0.0;
         texCoord[3] = 1.0;
@@ -106,16 +106,16 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
 
     SoMaterialBindingElement::Binding binding = SoMaterialBindingElement::get(state);
     SbBool materialPerPart = ( binding == SoMaterialBindingElement::PER_PART ||
-                               binding == SoMaterialBindingElement::PER_PART_INDEXED);   
+                               binding == SoMaterialBindingElement::PER_PART_INDEXED);
 
     SbVec3f  point;
-	
+
 	const int rows = 100; // Number of points per row
     const int columns = 100; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
-    
-    float vertex[totalPoints][6];    
-   
+
+    float vertex[totalPoints][6];
+
     int h = 0;
     double ui = 0;
 	double vj = 0;
@@ -123,41 +123,41 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     for (int i = 0; i < rows; i++)
     {
     	ui =( 1.0 /(double)(rows-1) ) * i;
-    	
+
     	for ( int j = 0 ; j < columns ; j++ )
     	{
-    		
+
     		vj = ( 1.0 /(double)(columns-1) ) * j;
-    		
+
     		Point3D point = GetPoint3D(ui, vj);
     		SbVec3f normal = GetNormal(ui, vj);
-    		
+
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
     		vertex[h][2] = point.z;
     		vertex[h][3] = normal[0];
     		vertex[h][4] = normal[1];
     		vertex[h][5] = normal[2];
-    		
+
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
-    		h++; //Increase h to the next point. 	
+    		h++; //Increase h to the next point.
     	}
     }
 
 	const int totalIndices  = (rows-1)*(columns-1)*4;
-    int32_t* indices = new int32_t[totalIndices]; 
+    int32_t* indices = new int32_t[totalIndices];
     int k = 0;
     for(int irow = 0; irow < (rows-1); irow++)
            for(int icolumn = 0; icolumn < (columns-1); icolumn++)
            {
            	indices[k] = irow*columns + icolumn;
-        	indices[k+1] = indices[k] + 1;        
-        	indices[k+3] = indices[k] + columns;        
+        	indices[k+1] = indices[k] + 1;
+        	indices[k+3] = indices[k] + columns;
         	indices[k+2] = indices[k+3] + 1;
-    
+
         	k+=4; //Set k to the first point of the next face.
            }
-           
+
     float finalvertex[totalIndices][6];
     for(int ivert = 0; ivert<totalIndices;ivert++)
     {
@@ -166,10 +166,10 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     	finalvertex[ivert][2] = vertex[indices[ivert]][2];
     	finalvertex[ivert][3] = vertex[indices[ivert]][3];
     	finalvertex[ivert][4] = vertex[indices[ivert]][4];
-    	finalvertex[ivert][5] = vertex[indices[ivert]][5];         
+    	finalvertex[ivert][5] = vertex[indices[ivert]][5];
     }
     delete[] indices;
-    
+
 #define GEN_VERTEX(pv, x, y, z, s, t, normal)   \
      point.setValue( x,                         \
                      y,                         \
@@ -185,53 +185,53 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
      pv.setTextureCoords(texCoord);             \
      shapeVertex(&pv)
 
-    
+
     float u = 1;
-    float v = 1;  
-	
+    float v = 1;
+
 	beginShape(action, QUADS);
     for( int i = 0; i < totalIndices; i++ )
     {
     	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
     	GEN_VERTEX(pv,  finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2], u,  v, normal);
-    }         		
+    }
     endShape();
 }
 
 void ShapeTroughParabola::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 {
 	Trace trace( "ShapeTroughParabola::computeBBox", false );
-	
+
 	double ymax = std::max(m_hNeg.getValue(), m_hPos.getValue());
 	double ymin = (m_hNeg.getValue() > 0.0 || m_hPos.getValue() > 0.0) ? 0.0 : std::min( m_hNeg.getValue(), m_hPos.getValue());
-	
-	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?  
+
+	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
 						sqrt(4*m_focus.getValue()*m_hPos.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
-								sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue()));										
-		
-	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?  
+								sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue()));
+
+	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
 					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
-	
+
 	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
 	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
 	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
 
-bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const 
+bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
 	Trace trace( "ShapeTroughParabola::Intersect", false );
-	
+
 	// Compute quadratic parabolic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.x*objectRay.direction.x;
     double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x - 2 * m_focus.getValue() * objectRay.direction.y);
 	double C = objectRay.origin.x * objectRay.origin.x - 4 * m_focus.getValue() * objectRay.origin.y;
-	
+
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
 	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
-	
+
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
     double thit = ( t0 > objectRay.mint )? t0 : t1 ;
@@ -242,131 +242,131 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	if( (thit - objectRay.mint) < tol ) return false;
 
 	// Compute parabolic cylinder hit position
-    Point3D hitPoint = objectRay( thit );	
-	
+    Point3D hitPoint = objectRay( thit );
+
 	// Test intersection against clipping parameters
 	double ymax = std::max(m_hNeg.getValue(), m_hPos.getValue());
 	double ymin = (m_hNeg.getValue() > 0.0 || m_hPos.getValue() > 0.0) ? 0.0 : std::min(m_hNeg.getValue(), m_hPos.getValue());
-	
-	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?  
+
+	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
 					sqrt(4*m_focus.getValue()*m_hPos.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 						sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue()));
-													
-	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?  
+
+	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
 					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
-							
-							
+
+
 	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
 	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
-		
-	if( hitPoint.z < zmin || 
-		hitPoint.z > zmax || 
-		hitPoint.y > ymax || hitPoint.y < ymin || 
-		hitPoint.x > xmax || hitPoint.x < xmin ) 
+
+	if( hitPoint.z < zmin ||
+		hitPoint.z > zmax ||
+		hitPoint.y > ymax || hitPoint.y < ymin ||
+		hitPoint.x > xmax || hitPoint.x < xmin )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
 		thit = t1;
-	
+
 		// Compute parabolic cylinder hit position
 		hitPoint = objectRay( thit );
-		
-		if( hitPoint.z < zmin || 
-			hitPoint.z > zmax || 
-			hitPoint.y > ymax || hitPoint.y < ymin || 
-			hitPoint.x > xmax || hitPoint.x < xmin) 
+
+		if( hitPoint.z < zmin ||
+			hitPoint.z > zmax ||
+			hitPoint.y > ymax || hitPoint.y < ymin ||
+			hitPoint.x > xmax || hitPoint.x < xmin)
 			return false;
 	}
-	
-	// Now check if the fucntion is being called from IntersectP, 
+
+	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ParabolicCyl::Intersect(...) called with null pointers" );
-	
+
 	// Compute definitive parabolic cylinder hit position
 	hitPoint = objectRay( thit );
 	double x = hitPoint.x;
 	double y = hitPoint.y;
-	
+
 	// Find parametric representation of paraboloid hit
 	double u = ( x - xmin ) / ( xmax - xmin );
 	double v = ( y - zmin ) / ( zmax - zmin );
-	
+
 	// Compute parabaloid \dpdu and \dpdv
 	Vector3D dpdu(1.0, x/(2.0*m_focus.getValue()), 0.0);
 	Vector3D dpdv(0.0, 0.0, 1.0);
-	
+
 	// Compute parabaloid \dndu and \dndv
 	Vector3D d2Pduu ( 0.0, 1.0/(2.0*m_focus.getValue()), 0.0 );
 	Vector3D d2Pduv ( 0.0, 0.0, 0.0 );
 	Vector3D d2Pdvv ( 0.0, 0.0, 0.0 );
-						   
+
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
-	Vector3D N = Normalize(CrossProduct(dpdu, dpdv));
+	Vector3D N = Normalize( NormalVector( CrossProduct(dpdu, dpdv) ) );
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
 	double g = DotProduct(N, d2Pdvv);
-	
+
 	// Compute \dndu and \dndv from fundamental form coefficients
 	double invEGF2 = 1.0 / (E*G - F*F);
 	Vector3D dndu = (f*F - e*G) * invEGF2 * dpdu +
 		(e*F - f*E) * invEGF2 * dpdv;
 	Vector3D dndv = (g*F - f*G) * invEGF2 * dpdu +
 		(f*F - g*E) * invEGF2 * dpdv;
-		
+
 	// Initialize _DifferentialGeometry_ from parametric information
-	*dg = DifferentialGeometry(hitPoint, dpdu, dpdv, dndu, dndv, u, v, this); 
-	
+	*dg = DifferentialGeometry(hitPoint, dpdu, dpdv, dndu, dndv, u, v, this);
+
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
 	return true;
 }
 
-bool ShapeTroughParabola::IntersectP( const Ray& objectRay ) const 
-{	
+bool ShapeTroughParabola::IntersectP( const Ray& objectRay ) const
+{
 	Trace trace( "ShapeTroughParabola::IntersectP", false );
-	
+
 	return Intersect( objectRay, 0, 0 );
 }
 
 Point3D ShapeTroughParabola::Sample( double u, double v ) const
 {
 	Trace trace( "ShapeTroughParabola::Sample", false );
-	
+
 	return GetPoint3D( u, v );
 }
 
 bool ShapeTroughParabola::OutOfRange( double u, double v ) const
 {
 	Trace trace( "ShapeTroughParabola::OutOfRange", false );
-	
+
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 {
 	Trace trace( "ShapeTroughParabola::GetPoint3D", false );
-	
+
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?  
+	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
 					sqrt(4*m_focus.getValue()*m_hPos.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 							sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue()));
-			
-	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?  
+
+	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
 					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
-	
+
 	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
 	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
-	
+
 	double width = u * ( xmax - xmin ) + xmin;
 	double length = v * ( zmax - zmin ) + zmin;
-	
+
 	double x = width;
 	double y = width*width/(4*m_focus.getValue());
 	double z = length;
@@ -378,12 +378,12 @@ Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 SbVec3f ShapeTroughParabola::GetNormal (double u ,double v) const
 {
 	Trace trace( "ShapeTroughParabola::GetNormal", false );
-	
-	Point3D point = GetPoint3D( u, v ); 
+
+	Point3D point = GetPoint3D( u, v );
 	Vector3D r( 0, 1, 0 );
-	Vector3D v1 = Normalize( Vector3D( -point.x, m_focus.getValue() - point.y, 0 ) );
-	Vector3D normal  =Normalize( r + v1 );
-	
+	Vector3D v1 = Normalize( NormalVector( -point.x, m_focus.getValue() - point.y, 0 ) );
+	Vector3D normal  = Normalize( NormalVector( r + v1 ) );
+
 	return SbVec3f ( normal.x , normal.y , 0 );
 
 }
