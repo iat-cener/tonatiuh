@@ -22,7 +22,7 @@ make install
 }}}
 
 
-Marble is installed, but we have to put maps data files in Tonatiuh project. If you have not Tonatiuh project created, follow procedures to  [InstallatingAndConfiguringEclipseForLinux install and configurate Eclipse for Linux] and [Installing_Subversive install Subversive] to take sources from the repository.
+Marble is installed, but we have to put maps data files in Tonatiuh project. If you have not Tonatiuh project created, follow procedures to  [InstallingAndConfiguringEclipseForLinux  	 install and configurate Eclipse for Linux] and [Installing_Subversive install Subversive] to take sources from the repository.
 
 {{{
 }}}
