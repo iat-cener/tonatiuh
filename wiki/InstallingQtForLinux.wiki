@@ -1,6 +1,5 @@
 #summary Procedure to install Qt for Linux
 
-= Introduction =
 [http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
 
 Qt is cross-platform application framework for GUI development. 
