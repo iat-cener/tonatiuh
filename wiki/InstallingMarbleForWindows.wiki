@@ -42,4 +42,4 @@ cp src/lib/libmarblewidget.dll.a /local/lib
 }}}
 
 
-[InstallingForLinux Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
