@@ -49,4 +49,4 @@ cp lib/*.dll /usr/local/bin/
 }}}
 
 
-[InstallingForLiunx Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
