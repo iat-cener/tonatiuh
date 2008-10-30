@@ -1,0 +1,32 @@
+#summary Procedure to install simage for Linux
+
+= Simage =
+
+Simage is a multiplatform library capable of loading, manipulating and saving images, creating and saving movies (AVI and mpeg), and loading audio.
+
+= Details =
+
+Download the latest realese of simage, currently [http://www.coin3d.org/lib/simage/releases/1.6.1 simage-1.6.1], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+
+Open a shell console and navigate to desktop and extract the archive by typing:
+{{{
+tar -zxvf simage-1.6.1.tar.gz
+}}}
+
+This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory and type:
+{{{
+./configure
+}}}
+
+This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
+{{{
+make 
+make install
+}}}
+
+
+
+At the end of the installation process, the libraries hab been installed at /usr/local directory. Now, [InstallingCoin3DtForLinux Coin3D] installation can be started.
+
+
+[InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
