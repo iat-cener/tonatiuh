@@ -16,4 +16,4 @@
 
 To anonymous download of Tonatiuh code read [Anonymous_Download] or read [Upload_to_Repository] to download code and upload changes.
 
-[http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[http://code.google.com/p/tonatiuh/wiki/InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
