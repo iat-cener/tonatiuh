@@ -10,4 +10,4 @@ You will need a password generate for you by google code at "http://code.google.
 
  * Now you can import projects to the repository by right clicking on the project in the repository tab and selecting import.
 
-[http://code.google.com/p/tonatiuh/w/list Wiki home]
+[http://code.google.com/p/tonatiuh/w/list Wiki Home]
