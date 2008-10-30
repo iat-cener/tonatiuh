@@ -17,7 +17,7 @@ tar -xvzf marble-version.tar.gz
 
 This will create a directory called _marble-version_ in your user directory. Using the MSYS shell navigate to just created marble-version directory and type:
 {{{
- export QTDIR="/usr/qt"_
+export QTDIR="/usr/qt"_
 export PATH=$PATH:/c/CMake-version/bin
 cmake -G"MinGW Makefiles" -DQTONLY=ON ../marble
 make
@@ -25,7 +25,7 @@ make
 
 Copy lib files to install directory:
 {{{
- mkdir /c/msysNuevo/usr/local/include/marble
+mkdir /c/msysNuevo/usr/local/include/marble
 cp src/lib/*.h /c/msysNuevo/usr/local/include/marble
 cp src/lib/AbstractLayer/*.h /c/msysNuevo/usr/local/include/marble
 cp src/lib/geodata/*.h /c/msysNuevo/usr/local/include/marble
