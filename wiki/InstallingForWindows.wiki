@@ -15,7 +15,7 @@ The following links will guide the developer through all the process:
   * [InstallingSoQt Installing SoQt]
   * [InstallingSMarbleForWindows Installing Marble]
   * [InsttallingQwtPlot3DForWindows Installing QwtPlot3D]
-  * [Installing_and_configuring_Eclipse Installing and Configuring Eclipse]
+  * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
