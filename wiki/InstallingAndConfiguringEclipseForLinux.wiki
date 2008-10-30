@@ -17,11 +17,6 @@
   # .ts  /usr/local/Trolltech/Qt-4.4.3/bin/linguist 
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
 
- * In C\C++->Make->New CDT project wizard-> Makefile project:
-  # Under the Make Builder tab set the build command to C:\MinGW\bin\mingw32-make.exe
-  # Under Binary Parser select only PE Windows Parser
-[http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/makefileProject.png]
-
 To install svn to download and update Tonatiuh follow the corresponding installation procedures [Installing_Subversive].
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
