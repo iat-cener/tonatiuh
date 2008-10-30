@@ -1,14 +1,14 @@
-#summary Procedure to install Coin3d for Windows Vista or XP
+#summary Procedure to install Coin3d for Linux
 
 http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
-[http://www.coin3d.org/ Coin3D] is a high-level 3D graphics toolkit for developing cross-platform real-time 3D visualization and visual simulation software. Install [InstallingQtForWindows Qt] before start with the installation.
+[http://www.coin3d.org/ Coin3D] is a high-level 3D graphics toolkit for developing cross-platform real-time 3D visualization and visual simulation software. 
 
 = Details =
 
-Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.0.0.tar.gz Coin 3.0.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder.  This will typically be _c:\msys\usr\home\username_.
- 
-Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
+Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.0.0.tar.gz Coin 3.0.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+
+Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
 tar -zxvf Coin-3.0.0.tar.gz
 }}}
@@ -36,4 +36,7 @@ At the end of the installation process, edit the file _'/usr/local/include/Inven
 #endif
 }}}
 
-Now, [InstallingSoQt SoQt] installation can be started.
+Now, [InstallingSoQtForLinux SoQt] installation can be started.
+
+
+[InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
