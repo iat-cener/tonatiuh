@@ -1,0 +1,18 @@
+#summary A guide to install and configurate development environment on Linux
+
+= Linux Configuration=
+
+Configuration of the standard Tonatiuh development environment in a Linux workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
+
+= Install and configurate development enviroment =
+
+The following links will guide the developer through all the process:
+  * [InstallingQtForLinux Installing Qt]
+  * [InstallingCoin3DForLinux Installing Coin3D]
+  * [InstallingSoQtForLinux Installing SoQt]
+  * [InstallingSMarbleForLinuxInstalling Marble]
+  * [InsttallingQwtPlot3DForLinux Installing QwtPlot3D]
+  * [Installing_and_configuring_Eclipse Installing and Configuring Eclipse]
+  * [Installing_Subversive Installing Subversive]
+
+[http://code.google.com/p/tonatiuh/wiki/DevelopersGuid
