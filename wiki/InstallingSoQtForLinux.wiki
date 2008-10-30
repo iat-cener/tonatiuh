@@ -7,7 +7,7 @@
 Before installing !SoQt, please, verify that Qt and Coin 3D are already installed and functioning on your PC. If they are not, install them first by following the corresponding installation procedures InstallingQtForLinux and [InstallingCoin3DForLinux].
 
 = Details =
-Download the latest realese of !SoQt, currently !SoQt 1.4.1, from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into desktop directory. Open a shell console, navigate to your desktoop directory and extract the archive by typing:
+Download the latest realese of !SoQt, currently !SoQt 1.4.1, from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into download on your home directory. Open a shell console, navigate to downlaod directory and extract the archive by typing:
 {{{
 tar -zxvf SoQt-1.4.1.tar.gz
 }}}
