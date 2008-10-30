@@ -1,0 +1,44 @@
+#summary This will guide you through the Marble Installation for Linux in order to develop the Tonatiuh project.
+
+= Marble - Desktop Globe =
+
+Marble is a Virtual Globe and World Atlas that you can use to learn more about Earth: You can pan and zoom around and you can look up places and roads. A mouse click on a place label will provide the respective Wikipedia article.
+
+= Details =
+
+To compile marble you need CMake, a cross-platform make. You can obtain it from http://www.cmake.org/cmake/resources/software.html. Download the last version of cmake for windows, you need a version newer than 2.4. Install CMake at _C:\CMake_version_.
+
+Now, download the source files from http://www.kde-apps.org/content/show.php/Marble+-+Desktop+Globe?content=55105 clicking on _Source download_ link. Place it into the user directory under your MSYS folder. This will typically be c:\msys\usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
+
+{{{
+tar -xvzf marble-version.tar.gz
+}}}
+
+This will create a directory called _marble-version_ in your user directory. Using the MSYS shell navigate to just created marble-version directory and type:
+{{{
+ export QTDIR="/usr/qt"_
+export PATH=$PATH:/c/CMake-version/bin
+cmake -G"MinGW Makefiles" -DQTONLY=ON ../marble
+make
+}}}
+
+Copy lib files to install directory:
+{{{
+ mkdir /c/msysNuevo/usr/local/include/marble
+cp src/lib/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/AbstractLayer/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/data/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/handlers/dgml/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/handlers/gpx/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/handlers/kml/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/parser/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/geodata/scene/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/gps/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/Projections/*.h /c/msysNuevo/usr/local/include/marble
+cp src/lib/libmarblewidget.dll /local/bin
+cp src/lib/libmarblewidget.dll.a /local/lib
+}}}
+
+
+[InstallingForLinux Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
