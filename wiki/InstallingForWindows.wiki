@@ -13,8 +13,8 @@ The following links will guide the developer through all the process:
   * [InstallingQtForWindows Installing Qt]
   * [InstallingCoin3DForWindows Installing Coin3D]
   * [InstallingSoQt Installing SoQt]
-  * [InstallingSMarbleForWindows Installing Marble]
   * [InsttallingQwtPlot3DForWindows Installing QwtPlot3D]
+  * [InstallingMarbleForWindows Installing Marble ]
   * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
 
