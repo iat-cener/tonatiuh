@@ -8,7 +8,7 @@ Before installing [http://qwtplot3d.sourceforge.net/ QwtPlot3D], please, verify 
 
 = Details =
 
-Download the latest realese of !QwtPlot3D, currently QwtPlot3D 0.2.7, from the !QwtPlot3D website at http://qwtplot3d.sourceforge.net/web/navigation/download_frame.html. Place it into desktop. Open a shell console, navigate to desktop directory and extract the archive by typing: 
+Download the latest realese of !QwtPlot3D, currently QwtPlot3D 0.2.7, from the !QwtPlot3D website at http://qwtplot3d.sourceforge.net/web/navigation/download_frame.html. Place it into downlaods on your home directory. Open a shell console, navigate to download directory directory and extract the archive by typing: 
 
 {{{
 tar -zxvf qwtplot3d-0.2.7.tar
@@ -45,7 +45,6 @@ The library is created. Now, to put it into local:
  mkdir /usr/local/include/qwtplot3d
 cp -r include/* /usr/local/include/qwtplot3d
 cp lib/* /usr/local/lib/
-cp lib/*.dll /usr/local/bin/
 }}}
 
 
