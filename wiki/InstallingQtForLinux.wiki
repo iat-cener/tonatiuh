@@ -7,28 +7,43 @@ Qt is cross-platform application framework for GUI development.
 
 = Details =
 
-To install the Qt libraries in your computer download the installer file _qt-x11-opensource-src-4.4.3.tar.gz_ from the Trolltech website at http://trolltech.com/downloads/opensource/appdev/linux-x11-cpp and execute it.
+To install the Qt libraries in your computer download the installer file _qt-x11-opensource-src-4.4.3.tar.gz_ from the Trolltech website at http://trolltech.com/downloads/opensource/appdev/linux-x11-cpp to downloads on your home directory, _/home/username/downloads_.
 
-Once the installer is running, you will be asked to accept the license agreement. Accept it and click "Next>". Then, you will be asked to enter the destination folder. Enter _C:\msys\usr\qt\_, and click "Next>". When you will askied to MinGW installation folder enter _C:\MinGW_ and click "Install".
-
-After the release version of the Qt libraries are installed, you can create the debug version of the libraries, by selecting Start->All Programs->Qt by Nokia v4.4.3 (OpenSource)->Qt 4.4.3 (Build Debug Libraries). This will open a console Window. Within it you will get the following message:
-
+Open a shell console and navigate to desktop. Extract donwloaded file typing:
 {{{
-"Setting up a MinGW/Qt only environment...
--- QTDIR set to C:\msys\usr\qt
--- PATH set to C:\msys\usr\qt\bin
--- Adding C:\MinGW\bin to PATH
--- Adding C:\Windows\System32 to PATH
--- QMAKESPEC set to win32-g++
-
-
-This will configure and compile qt in debug.
-The release libraries will not be recompiled.
-Press any key to continue..."
+tar -xvzf qt-x11-opensource-src-4.4.3.tar.gz
 }}}
 
-Press any key to start the configuration and compilation process of the debug versions of the Qt libraries. Depending on your computer, this process  may take several hours to complete.
+After extraction, a new directory, qt-x11-opensource-src-4.4.3, will be created. Go to the directory and type:
+{{{
+./configure
+}}}
 
-To continue with the resources intallation to Tonatiuh development, start with [InstallingCoin3DForWindows Coin3D] intallation.
+You will be asked to accept the license agreement. Accept it typing yes. 
+
+After qt configuration is finished, to install qt libraries typing:
+{{{
+make
+make install
+}}}
+
+After the release version of the Qt libraries are installed,  we must specify where Qt is installed. Type:
+{{{
+kwrite ~/.bashrc
+}}}
+
+Type the following in the file that will appear:
+{{{
+QTDIR=/usr/local/Trolltech/Qt-4.4.3
+export QTDIR
+
+PATH=$QTDIR/bin:$PATH
+export PATH
+
+}}}
+
+Save the changes and close editor.
+
+To continue with the resources intallation to Tonatiuh development, start with [InstallingCoin3DForLinux Coin3D] intallation.
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
