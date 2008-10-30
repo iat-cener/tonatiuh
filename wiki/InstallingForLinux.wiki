@@ -8,6 +8,7 @@ Configuration of the standard Tonatiuh development environment in a Linux workst
 
 The following links will guide the developer through all the process:
   * [InstallingQtForLinux Installing Qt]
+  * [InstallingSimageForLinux Installing Simage]
   * [InstallingCoin3DForLinux Installing Coin3D]
   * [InstallingSoQtForLinux Installing SoQt]
   * [InstallingSMarbleForLinuxInstalling Marble]
