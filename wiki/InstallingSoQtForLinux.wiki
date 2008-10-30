@@ -13,17 +13,25 @@ tar -zxvf SoQt-1.4.1.tar.gz
 }}}
 This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the MSYS shell navigate to the just created SoQt-1.4.1. directory and type:
 {{{
-export QTDIR="/usr/qt"
 export COINDIR="/usr/local"
 export INCLUDE="/usr/local/include:/usr/qt/include"
 env CPPFLAGS="-DCOIN_DLL" ./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-coin=/usr/local --prefix=/usr/local
 }}}
 This will start the configuration process. This process should finish succesfully with the following message:
 {{{
-"SoQt configuration settings:
-  Open Inventor brand: Coin
-  Static Materials:    Yes
-  Installation Prefix: /usr/local
-Now, run 'make install' to build and install SoQt"
+SoQt configuration settings:
+  Open Inventor brand:  Coin
+  Static Materials:     Yes
+  Installation Prefix:  /usr/local
+
+Now, run 'make install' to build and install SoQt.
 }}} 
+
+To install !SoQt libraries type:
+{{{
+make
+make install
+}}}
+
+
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
