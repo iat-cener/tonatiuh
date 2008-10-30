@@ -1,6 +1,6 @@
 #summary Procedure to install SoQt under Linux
 
-= Introduction =
+= SoQt =
 
 [http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. This pages provides instruction regarding how to install !SoQt in your computer under Linux.
 
