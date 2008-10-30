@@ -24,4 +24,4 @@
 
 To install svn to download and update Tonatiuh follow the corresponding installation procedures [Installing_Subversive].
 
-[http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[http://code.google.com/p/tonatiuh/wiki/InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
