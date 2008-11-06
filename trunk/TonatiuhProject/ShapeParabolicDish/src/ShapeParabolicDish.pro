@@ -60,30 +60,30 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/TShapeKit.cpp \
            	../Tonatiuh/src/Vector3D.cpp
 
-RESOURCES += ShapeParabolicDisk.qrc
+RESOURCES += ShapeParabolicDish.qrc
 
 win32	{
 
 	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR =  C:\eclipse\workspace\Tonatiuh\release\plugins\ShapeParabolicDisk\
+	DESTDIR =  C:\eclipse\workspace\Tonatiuh\release\plugins\ShapeParabolicDish\
 }
          	
 unix	{
 
 	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeParabolicDisk
+	DESTDIR       = ../Tonatiuh/release/plugins/ShapeParabolicDish
 }
 
 
 		
-TARGET        = ShapeParabolicDisk
+TARGET        = ShapeParabolicDish
 
     contains(TEMPLATE,lib) {
     
        CONFIG(debug, debug|release) {
        
           unix	{
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeParabolicDisk
+          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeParabolicDish
           	TARGET = $$member(TARGET, 0)_debug
           }
           else:TARGET = $$member(TARGET, 0)d
