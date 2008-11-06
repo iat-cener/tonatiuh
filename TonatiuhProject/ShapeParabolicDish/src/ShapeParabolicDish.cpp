@@ -42,36 +42,32 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
 #include "DifferentialGeometry.h"
-#include "ShapeParabolicDisk.h"
+#include "ShapeParabolicDish.h"
 #include "tgf.h"
 #include "tgc.h"
 #include "Vector3D.h"
 
-using tgc::Pi;
-using tgc::TwoPi;
-using namespace std;
+SO_NODE_SOURCE(ShapeParabolicDish);
 
-SO_NODE_SOURCE(ShapeParabolicDisk);
-
-void ShapeParabolicDisk::initClass()
+void ShapeParabolicDish::initClass()
 {
-	SO_NODE_INIT_CLASS(ShapeParabolicDisk, TShape, "TShape");
+	SO_NODE_INIT_CLASS(ShapeParabolicDish, TShape, "TShape");
 }
 
-ShapeParabolicDisk::ShapeParabolicDisk()
+ShapeParabolicDish::ShapeParabolicDish()
 {
-	SO_NODE_CONSTRUCTOR(ShapeParabolicDisk);
+	SO_NODE_CONSTRUCTOR(ShapeParabolicDish);
 	SO_NODE_ADD_FIELD(m_focus, (1.0));
 	SO_NODE_ADD_FIELD(m_radius, (10.0));
-	SO_NODE_ADD_FIELD(m_phiMax, (1.5*Pi));
+	SO_NODE_ADD_FIELD(m_phiMax, (tgc::TwoPi));
 }
 
-ShapeParabolicDisk::~ShapeParabolicDisk()
+ShapeParabolicDish::~ShapeParabolicDish()
 {
 
 }
 
-void ShapeParabolicDisk::generatePrimitives(SoAction *action)
+void ShapeParabolicDish::generatePrimitives(SoAction *action)
 {
     SoPrimitiveVertex   pv;
 
@@ -200,23 +196,23 @@ void ShapeParabolicDisk::generatePrimitives(SoAction *action)
     endShape();
 }
 
-void ShapeParabolicDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
+void ShapeParabolicDish::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 {
 	double cosPhiMax = cos( m_phiMax.getValue() );
 	double sinPhiMax = sin( m_phiMax.getValue() );
 
-	double xmin = ( m_phiMax.getValue() >= Pi ) ? -m_radius.getValue() : m_radius.getValue() * cosPhiMax;
+	double xmin = ( m_phiMax.getValue() >= tgc::Pi ) ? -m_radius.getValue() : m_radius.getValue() * cosPhiMax;
 	double xmax = m_radius.getValue();
 	double ymin = 0.0;
-	if( m_phiMax.getValue() > Pi ) ymin = ( m_phiMax.getValue() < 1.5*Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue();
-	double ymax = ( m_phiMax.getValue() < Pi/2.0 )? m_radius.getValue() * sinPhiMax : m_radius.getValue();
+	if( m_phiMax.getValue() > tgc::Pi ) ymin = ( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue();
+	double ymax = ( m_phiMax.getValue() < tgc::Pi/2.0 )? m_radius.getValue() * sinPhiMax : m_radius.getValue();
 
 	double zmax = m_radius.getValue()*m_radius.getValue()/(4*m_focus.getValue());
 	double zmin = 0.0;
 	box.setBounds(SbVec3f( xmin, ymin, zmin), SbVec3f( xmax, ymax, zmax));
 }
 
-bool ShapeParabolicDisk::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
+bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
 
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
@@ -262,23 +258,38 @@ bool ShapeParabolicDisk::Intersect(const Ray& objectRay, double* tHit, Different
 
 	// Compute definitive Circular Parabolic Facet hit position
     hitPoint = objectRay( thit );
-	double phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += TwoPi;
+
+    double phi;
+    if( hitPoint.y > 0 ) phi = atan2( hitPoint.y, hitPoint.x );
+    else phi = tgc::TwoPi+atan2( hitPoint.y, hitPoint.x );
+
+
 	double radius = sqrt(hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y);
 
 	// Find parametric representation of paraboloid hit
+
 	double u = phi / m_phiMax.getValue();
 	double v = radius /m_radius.getValue();
 
 	// Compute Circular Parabolic Facet \dpdu and \dpdv
+	Vector3D dpdu( 	m_radius.getValue()* cos( v * m_phiMax.getValue() ),
+					m_radius.getValue()* sin ( v * m_phiMax.getValue()),
+					( m_radius.getValue()* m_radius.getValue()* u  ) / ( 2 * m_focus.getValue() ) );
 
-	Vector3D dpdu( -radius*sin(phi), radius*cos(phi), 0.0 );
-	Vector3D dpdv( cos (phi), sin (phi), radius/(2*m_focus.getValue()) );
+	Vector3D dpdv( 	- u * m_radius.getValue() * m_phiMax.getValue() * sin( v * m_phiMax.getValue() ),
+					u * m_radius.getValue() * m_phiMax.getValue() * cos( v * m_phiMax.getValue() ),
+					0.0 );
+
+	SbVec3f normal = GetNormal( u, v );
 
 	// Compute Circular Parabolic Facet \dndu and \dndv
-	Vector3D d2Pduu ( -radius*cos(phi), -radius*sin(phi), 0.0 );
-	Vector3D d2Pduv ( -sin(phi), cos(phi), 0.0 );
-	Vector3D d2Pdvv ( 1.0, 1.0, 1.0/(2.0*m_focus.getValue()) );
+	Vector3D d2Pduu ( 0.0, 0.0,( m_radius.getValue()* m_radius.getValue() ) / ( 2 * m_focus.getValue() ) );
+	Vector3D d2Pduv ( 	- m_radius.getValue() * m_phiMax.getValue() * sin( v * m_phiMax.getValue() ),
+						 m_radius.getValue() * m_phiMax.getValue() * cos( v * m_phiMax.getValue() ),
+						 0.0 );
+	Vector3D d2Pdvv ( 	- u * m_radius.getValue() * m_phiMax.getValue() * m_phiMax.getValue() * sin( v * m_phiMax.getValue() ),
+			u * m_radius.getValue() * m_phiMax.getValue() * m_phiMax.getValue() * cos( v * m_phiMax.getValue() ),
+			0.0 );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
@@ -312,37 +323,37 @@ bool ShapeParabolicDisk::Intersect(const Ray& objectRay, double* tHit, Different
 	return true;
 }
 
-bool ShapeParabolicDisk::IntersectP( const Ray& worldRay ) const
+bool ShapeParabolicDish::IntersectP( const Ray& worldRay ) const
 {
 	return Intersect( worldRay, 0, 0 );
 }
 
-Point3D ShapeParabolicDisk::Sample( double u, double v ) const
+Point3D ShapeParabolicDish::Sample( double u, double v ) const
 {
 	return GetPoint3D( u, v );
 }
 
-bool ShapeParabolicDisk::OutOfRange( double u, double v ) const
+bool ShapeParabolicDish::OutOfRange( double u, double v ) const
 {
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
-Point3D ShapeParabolicDisk::GetPoint3D (double u, double v) const
+Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 {
-	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDisk::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
 
 	double radius = u * m_radius.getValue();
 	double phi = v * m_phiMax.getValue();
 
-	double x = radius*cos (phi);
-	double y = radius*sin (phi);
-	double z = radius*radius/(4*m_focus.getValue());
+	double x = radius * cos( phi );
+	double y = radius * sin( phi );
+	double z = radius * radius /( 4 * m_focus.getValue() );
 
 	return Point3D (x, y, z);
 
 }
 
-SbVec3f ShapeParabolicDisk::GetNormal (double u, double v) const
+SbVec3f ShapeParabolicDish::GetNormal (double u, double v) const
 {
 	Point3D point = GetPoint3D( u, v );
 
