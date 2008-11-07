@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ShapeParabolicDish.h"
 #include "tgf.h"
 #include "tgc.h"
+#include "Trace.h"
 #include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeParabolicDish);
@@ -214,6 +215,7 @@ void ShapeParabolicDish::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 
 bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
+	Trace trace( "ShapeParabolicDish::Intersect", false);
 
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.x*objectRay.direction.x + objectRay.direction.y*objectRay.direction.y;
@@ -260,16 +262,15 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
     hitPoint = objectRay( thit );
 
     double phi;
-    if( hitPoint.y > 0 ) phi = atan2( hitPoint.y, hitPoint.x );
+    if( ( hitPoint.y == 0.0 ) &&( hitPoint.x ==0.0 ) ) phi = 0.0;
+    else if( hitPoint.y > 0 ) phi = atan2( hitPoint.y, hitPoint.x );
     else phi = tgc::TwoPi+atan2( hitPoint.y, hitPoint.x );
 
-
-	double radius = sqrt(hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y);
+    double radius = sqrt(hitPoint.z * 4 * m_focus.getValue() );
 
 	// Find parametric representation of paraboloid hit
-
-	double u = phi / m_phiMax.getValue();
-	double v = radius /m_radius.getValue();
+	double u = radius /m_radius.getValue();
+	double v = phi / m_phiMax.getValue();
 
 	// Compute Circular Parabolic Facet \dpdu and \dpdv
 	Vector3D dpdu( 	m_radius.getValue()* cos( v * m_phiMax.getValue() ),
@@ -279,8 +280,6 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	Vector3D dpdv( 	- u * m_radius.getValue() * m_phiMax.getValue() * sin( v * m_phiMax.getValue() ),
 					u * m_radius.getValue() * m_phiMax.getValue() * cos( v * m_phiMax.getValue() ),
 					0.0 );
-
-	SbVec3f normal = GetNormal( u, v );
 
 	// Compute Circular Parabolic Facet \dndu and \dndv
 	Vector3D d2Pduu ( 0.0, 0.0,( m_radius.getValue()* m_radius.getValue() ) / ( 2 * m_focus.getValue() ) );
@@ -335,13 +334,15 @@ Point3D ShapeParabolicDish::Sample( double u, double v ) const
 
 bool ShapeParabolicDish::OutOfRange( double u, double v ) const
 {
+	Trace trace( "ShapeParabolicDish::OutOfRange", false);
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 {
-	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
+	Trace trace( "ShapeParabolicDish::GetPoint3D", false);
 
+	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
 	double radius = u * m_radius.getValue();
 	double phi = v * m_phiMax.getValue();
 
