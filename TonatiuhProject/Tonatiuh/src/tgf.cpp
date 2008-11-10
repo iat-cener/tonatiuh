@@ -295,7 +295,7 @@ void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, 
 		else intersection = false;
 	}
 
-	if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.00001;
+	if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
 
 	Point3D endOfRay = ray( ray.maxt );
 	Photon* lastNode = new Photon( endOfRay, node, 0 );
@@ -320,11 +320,11 @@ double tgf::computeSigmaOptica( double sigmaSlope, double sigmaSpecularity )
 
 SoSeparator* tgf::DrawPhotonMapPoints( const PhotonMap& map )
 {
-	Trace trace( "tgf::DrawPhotonMapPoints", true );
+	Trace trace( "tgf::DrawPhotonMapPoints", false );
 	SoSeparator* drawpoints=new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
-	for( unsigned long i = 0 ; i < map.StoredPhotons(); i++ )
+	for( unsigned long i = 1 ; i < map.StoredPhotons(); i++ )
 	{
 		Point3D photon = map.GetPhoton(i)->m_pos;
 		points->point.set1Value( i, photon.x, photon.y, photon.z );
