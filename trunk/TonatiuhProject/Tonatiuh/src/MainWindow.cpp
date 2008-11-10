@@ -171,7 +171,7 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
 : QMainWindow( parent, flags ), m_document(0), m_commandStack(0), m_commandView(0),
   m_materialsToolBar(0), m_shapeToolBar(0), m_trackersToolBar( 0 ),  m_sceneModel(0),
   m_photonMap( 0 ), m_pRays ( 0 ), m_pGrid( 0 ), m_pRand ( 0 ), m_coinNode_Buffer( 0 ), m_manipulators_Buffer( 0 ),
-  m_raysPerIteration ( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ), m_drawPhotons( false ), m_resultsFile( "results.dat" )
+  m_raysPerIteration ( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ), m_drawPhotons( false )
 {
 	Trace trace( "MainWindow::MainWindow", false );
 
@@ -643,10 +643,6 @@ void MainWindow::on_actionOpen_triggered()
         {
 
         	LoadFile( fileName );
-        	int index = fileName.lastIndexOf( "." );
-        	QString end("_res.dat");
-        	m_resultsFile = fileName.replace( index, 4, end );
-
         	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
 	   			actionDisplay_rays->setEnabled( false );
 
@@ -691,9 +687,6 @@ void MainWindow::OpenRecentFile()
         {
         	QString file = action->data().toString();
         	LoadFile( file );
-        	int index = file.lastIndexOf( "." );
-        	QString end("_res.dat");
-        	m_resultsFile = file.replace( index, 4, end );
 
         	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
 	   			actionDisplay_rays->setEnabled( false );
@@ -940,6 +933,8 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		//Transform ray to World coordinate system and trace the scene
 		ray = lightToWorld( ray );
 
+		//ray = Ray( Point3D( 0.141978, 0.943242, 5 ), Vector3D( -0.00129427, 0.00389558, -0.999991 ) );
+		//ray = Ray( Point3D( 0, 12, 0 ), Vector3D( 0.0, -1.0, 0.0 ) );
 		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
 
   	    //Update progressDiaglog when appropriate
@@ -998,7 +993,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	//progressDialog->setLabelText( "Saving Photon Map. Please wait..." );
 
 	//m_photonMap->savePhotonMap( m_resultsFile.toStdString().c_str() );
-	QFile resultsFile( m_resultsFile );
+	/*QFile resultsFile( m_resultsFile );
 
 	if(!resultsFile.open( QIODevice::WriteOnly ) )
 	{
@@ -1022,7 +1017,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		//out<<id<<<<photon.x <<"\t"<<photon.y <<photon.z<<prev_id<<next_id;
 
 	}
-	resultsFile.close();
+	resultsFile.close();*/
 
 	progressDialog->setValue( m_raysPerIteration * 2 );
 
@@ -1044,7 +1039,7 @@ void MainWindow::on_actionDisplay_rays_toggled()
 
 void MainWindow::on_actionResults_triggered()
 {
-	Trace trace( "MainWindow::on_actionResults_triggered" );
+	Trace trace( "MainWindow::on_actionResults_triggered", false );
 
 	if ( m_photonMap == NULL )
 	{
@@ -1095,15 +1090,48 @@ void MainWindow::on_actionResults_triggered()
 	m_pAnalyzerWindow->show();
 }
 
+
+void MainWindow::on_actionExport_PhotonMap_triggered()
+{
+	Trace trace( "MainWindow::on_actionExport_PhotonMap_triggered", false );
+
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Export PhotonMap"),
+			tr( "." ),
+            tr( "Binary data files (*.dat)" ) );
+
+	 if( !fileName.isEmpty() )
+	 {
+		 QFile exportFile( fileName );
+
+		 if(!exportFile.open( QIODevice::WriteOnly ) )
+		 {
+			 QMessageBox::information( this, "Tonatiuh Error",
+			                         "Tonatiuh can't open export file\n", 1);
+				return;
+		 }
+
+		QDataStream out( &exportFile );
+		for( long unsigned i=1; i<= m_photonMap->StoredPhotons(); i++ )
+		{
+			Photon* node = m_photonMap->GetPhoton(i);
+			Point3D photon = node->m_pos;
+			double id = node->m_id;
+			double prev_id = ( node->m_prev )? node->m_prev->m_id : 0;
+			double next_id = ( node->m_next )? node->m_next->m_id : -1;
+			out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+		}
+		exportFile.close();
+	 }
+}
+
 void MainWindow::on_actionRayTraceOptions_triggered()
 {
-	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_increasePhotonMap, m_resultsFile, this );
+	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_increasePhotonMap, this );
 	int dialog_code = options->exec();
 	if( !dialog_code ) return;
 
 	m_raysPerIteration = options->GetNumRays();
     m_increasePhotonMap = options->IncreasePhotonMap();
-    m_resultsFile = options->GetResultsFile();
     m_fraction = options->GetDrawRays();
     m_drawPhotons = options->DrawPhotons();
 }

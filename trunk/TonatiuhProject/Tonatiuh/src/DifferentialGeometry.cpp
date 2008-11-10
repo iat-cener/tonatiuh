@@ -50,7 +50,7 @@ DifferentialGeometry::DifferentialGeometry( const Point3D& P, const Vector3D& DP
 : point(P), u(uu), v(vv), pShape(sh),
   dpdu(DPDU), dpdv(DPDV), dndu(DNDU), dndv(DNDV)
 {
-    normal = NormalVector( NormalVectorize( CrossProduct( dpdu, dpdv ) ) );
+    normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 }
 
