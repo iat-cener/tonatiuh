@@ -1,9 +1,9 @@
 #summary This will guide you through the cppunit framework installation Mac for unit testing.
 #labels l
 
-= CppUnit =
+= !CppUnit =
 
-CppUnit is the C++ port of the famous JUnit framework for unit testing. Test output is in XML or text format for automatic testing and GUI based for supervised tests. 
+!CppUnit is the C++ port of the famous JUnit framework for unit testing. Test output is in XML or text format for automatic testing and GUI based for supervised tests. 
 
 
 First, download source files from [http://sourceforge.net/projects/cppunit/ CppUnit Project Site]. Place into your desktop directory. Open a console shell and navigate to your desktop directory . Extract archive file typing :
