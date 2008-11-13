@@ -11,11 +11,12 @@ First, download source files from [http://sourceforge.net/projects/cppunit/ CppU
 }}}
 
 Now, configure and install: 
-
+{{{
  cd cppunit-1.12.1
 ./configure
 make 
 make install
+}}}
 
 == !QxRunner== 
 
@@ -146,6 +147,7 @@ make
 
 After finish copy necesary files to /usr/local using the commands:
 {{{
+cd ../..
 cp -r include/* /usr/local/include
 cp lib/*.dll /usr/local/bin
 cp lib/*.a /usr/local/lib
