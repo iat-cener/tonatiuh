@@ -13,7 +13,7 @@ Developer's Guide | Wiki Home
 Configuration of the standard Tonatiuh development environment in a Mac workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
 
 
-= Install and configurate development enviroment=
+= Install and configurate development enviroment =
 
 Install and configurate development enviroment
 The following links will guide the developer through all the process: 
@@ -25,5 +25,15 @@ The following links will guide the developer through all the process:
   * Installing QwtPlot3D 
   * [Installing_and_configuring_Eclipse Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
+
+= Unit testing =
+
+Unit testing is the method selected to test that verifies the individual units of source code are working properly and ensure that the code have been written meets software requirements and behaves. Each test case must be independent from the others.
+
+CppUnit s a unit testing framework module for C++
+
+  *Installing CppUnit
+
+  *[http://code.google.com/p/tonatiuh/wiki/DevelopersGuideMac/InstallingCppUnit Installing CppUnit]
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
