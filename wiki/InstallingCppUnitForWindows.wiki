@@ -1,0 +1,15 @@
+#summary This will guide you through the cppunit framework installation on Windows.
+#labels Phase-Implementation
+
+= !CppUnit =
+
+!CppUnit is the C++ port of the famous JUnit framework for unit testing. Test output is in XML or text format for automatic testing and GUI based for supervised tests. 
+
+
+First, download source files from [http://sourceforge.net/projects/cppunit/ CppUnit Project Site]. Place into your home directory, typically be _c:\msys\usr\home\username_. Open a MSYS console and navigate to your directory. Extract archive file typing:
+{{{
+ tar -xzvf cppunit-1.12.1.tar.gz
+}}}
+
+
+[InstallingForWindows WindowsConfiguration ] |[http://code.google.com/p/tonatiuh/w/list Wiki Home]
