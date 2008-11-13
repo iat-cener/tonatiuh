@@ -1,5 +1,4 @@
 #summary This will guide you through the cppunit framework installation on Windows.
-#labels Phase-Implementation
 
 = !CppUnit =
 
@@ -26,8 +25,56 @@ The !QxRunner for !CppUnit (!QxCppUnit) library provides a GUI frontend for !Cpp
 
 Download library source files from [http://qxrunner.systest.ch/common/download.htm QxRunner Project Site]. The current version is qxrunner 0.9.2.Extract files tiping the following command in a shell:
 {{{
- tar xvf IbRwPa.tar
+ tar -xzvf qxrunner.0.9.2.tar.gz
 }}}
 
+First, create qxrunner library. 
+{{{
+ cd qxrunner/src/qxrunner
+}}}
 
+Open qxrunner.pro file with text editor and delete the following lines:
+{{{
+line 41:
+
+     }
+
+line 35 to line 39:
+    #----------------------------------------------------------------------
+    # Linux/Unix
+    #----------------------------------------------------------------------
+
+    unix {
+line 22 to line 29:
+    #----------------------------------------------------------------------
+    # MS Windows
+    #----------------------------------------------------------------------
+
+    win32 {
+        QMAKE_POST_LINK = $$winCopyLib()
+        debug: QMAKE_CXXFLAGS_DEBUG += $$compilerOptions()
+    }
+
+line 8 to line 10: 
+    include(../../qxconfig.pro)
+
+   TARGET = $$QX_RUNNERFILENAME    # From qxconfig
+}}}
+
+And add:
+{{{
+CONFIG += debug_and_release
+TARGET = qxrunner
+contains( TEMPLATE, lib ){
+    CONFIG( debug, debug|release){
+         TARGET=$$member(TARGET,0)d
+    }
+}
+}}}
+
+Now, type in the shell and execute the following commands:
+{{{
+qmake qxrunner.pro
+make all
+}}}
 [InstallingForWindows WindowsConfiguration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
