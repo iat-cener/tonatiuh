@@ -49,8 +49,11 @@ To configure and install:
 qmake qxrunner_all.pro CONFIG+=debug_dll
 make
 cp /lib/* /usr/local/lib
-csh make clean
+csh make_clean
+qmake qxrunner_all.pro CONFIG+=release_all
+make
+cp lib/* /usr/local/lib
+cp -r include/* /usr/local/include
+}}}
 
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+[InstallingForMac Mac Configuration ] |[http://code.google.com/p/tonatiuh/w/list Wiki Home]
