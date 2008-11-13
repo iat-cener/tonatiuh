@@ -11,5 +11,23 @@ First, download source files from [http://sourceforge.net/projects/cppunit/ CppU
  tar -xzvf cppunit-1.12.1.tar.gz
 }}}
 
+Now, configure and install: 
+
+ cd cppunit-1.12.1
+./configure
+make 
+make install
+
+== !QxRunner== 
+
+[http://qxrunner.systest.ch/qxrunner/ QxRunner] is a library to develop C++ GUI applications to execute user selected items from a list. 
+
+The !QxRunner for !CppUnit (!QxCppUnit) library provides a GUI frontend for !CppUnit test execution, shortly called the !QxTestRunner.
+
+Download library source files from [http://qxrunner.systest.ch/common/download.htm QxRunner Project Site]. The current version is qxrunner 0.9.2.Extract files tiping the following command in a shell:
+{{{
+ tar xvf IbRwPa.tar
+}}}
+
 
 [InstallingForWindows WindowsConfiguration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
