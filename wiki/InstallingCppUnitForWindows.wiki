@@ -87,4 +87,68 @@ Set CPPUNIT environment varible with
 {{{
 export CPPUNIT=/usr/local
 }}}
+
+Then, edit qxcppunit.pro file
+{{{
+line 52:
+    }
+
+line 46 to line 50:
+    #----------------------------------------------------------------------
+    # Linux/Unix
+    #----------------------------------------------------------------------
+
+    unix {
+
+line 22 to line 38:
+    #----------------------------------------------------------------------
+    # Libraries for linker.
+    #----------------------------------------------------------------------
+
+    dll {
+        LIBS += $$qxRunnerLibForLinker()
+        LIBS += $$cppUnitLibForLinker()
+     }
+
+     #----------------------------------------------------------------------
+     # MS Windows
+     #----------------------------------------------------------------------
+
+     win32 {
+         QMAKE_POST_LINK = $$winCopyLib()
+         debug: QMAKE_CXXFLAGS_DEBUG += $$compilerOptions()
+     }
+
+line 8 to line 10:
+     include(../../qxconfig.pro)
+
+     TARGET = $$QX_CPPUNITFILENAME   # From qxconfig
+}}}
+
+And add:
+{{{
+CONFIG += debug_and_release
+
+LIBS += -L$${QX_LIBDIR} -lqxrunner -L$${CPPUNIT}/lib -lcppunit
+TARGET = qxrunner
+contains( TEMPLATE, lib ){
+    CONFIG( debug, debug|release){
+         TARGET=$$member(TARGET,0)d
+    }
+}
+}}}
+
+Save changes before close editor. Type on the shell:
+{{{
+qmake qxcppunit.pro
+make
+}}}
+
+After finish copy necesary files to /usr/local using the commands:
+{{{
+cp -r include/* /usr/local/include
+cp lib/*.dll /usr/local/bin
+cp lib/*.a /usr/local/lib
+}}}
+
 [InstallingForWindows WindowsConfiguration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
