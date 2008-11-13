@@ -19,7 +19,7 @@ make
 make install
 }}}
 
-== QxRunner== 
+== !QxRunner== 
 
 [http://qxrunner.systest.ch/qxrunner/ QxRunner] is a library to develop C++ GUI applications to execute user selected items from a list. 
 
