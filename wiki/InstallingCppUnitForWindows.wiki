@@ -77,4 +77,14 @@ Now, type in the shell and execute the following commands:
 qmake qxrunner.pro
 make all
 }}}
+
+The qxrunner lib is created. Follow creating qxcppunit lib:
+{{{
+cd ../qxcppunit
+}}}
+
+Set CPPUNIT environment varible with
+{{{
+export CPPUNIT=/usr/local
+}}}
 [InstallingForWindows WindowsConfiguration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
