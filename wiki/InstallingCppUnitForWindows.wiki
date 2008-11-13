@@ -12,4 +12,4 @@ First, download source files from [http://sourceforge.net/projects/cppunit/ CppU
 }}}
 
 
-[InstallingForWindows WindowsConfiguration ] |[http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForWindows WindowsConfiguration ] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
