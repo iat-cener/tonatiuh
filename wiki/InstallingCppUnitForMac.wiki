@@ -48,7 +48,7 @@ To configure and install:
  cd qxrunner
 qmake qxrunner_all.pro CONFIG+=debug_dll
 make
-cp /lib/* /usr/local/lib
+cp lib/* /usr/local/lib
 csh make_clean
 qmake qxrunner_all.pro CONFIG+=release_all
 make
