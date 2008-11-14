@@ -34,37 +34,73 @@ First, create qxrunner library.
  cd qxrunner/src/qxrunner
 }}}
 
-Open qxrunner.pro file with text editor and delete the following lines:
+Open qxrunner.pro file with text editor and replace content with:
 {{{
-line 41:
+ TEMPLATE = lib
 
-     }
-
-line 35 to line 39:
-    #----------------------------------------------------------------------
-    # Linux/Unix
-    #----------------------------------------------------------------------
-
-    unix {
-line 22 to line 29:
-    #----------------------------------------------------------------------
-    # MS Windows
-    #----------------------------------------------------------------------
-
-    win32 {
-        QMAKE_POST_LINK = $$winCopyLib()
-        debug: QMAKE_CXXFLAGS_DEBUG += $$compilerOptions()
-    }
-
-line 8 to line 10: 
-    include(../../qxconfig.pro)
-
-   TARGET = $$QX_RUNNERFILENAME    # From qxconfig
-}}}
-
-And add:
-{{{
 CONFIG += debug_and_release
+
+RESOURCES   += resources/qxrunner.qrc
+DEPENDPATH  += ../../include/qxrunner
+INCLUDEPATH += . $$DEPENDPATH
+
+DEFINES += QXRUNNER_DLL_BUILD
+
+HEADERS = \
+        aboutdialog.h \
+        appsettings.h \
+        columnsdialog.h \
+        proxymodelcommon.h \
+        qxrunner_global.h \
+        resultsmodel.h \
+        resultsproxymodel.h \
+        resultsviewcontroller.h \
+        runner.h \
+        runneritem.h \
+        runnermodel.h \
+        runnermodelthread.h \
+        runnerproxymodel.h \
+        runnerviewcontroller.h \
+        runnerwindow.h \
+        runnerwindowclient.h \
+        settingsdialog.h \
+        statuswidget.h \
+        stoppingdialog.h \
+        utils.h \
+        viewcontrollercommon.h
+        
+SOURCES = \
+        aboutdialog.cpp \
+        appsettings.cpp \
+        columnsdialog.cpp \
+        proxymodelcommon.cpp \
+        qxrunner_global.cpp \
+        resultsmodel.cpp \
+        resultsproxymodel.cpp \
+        resultsviewcontroller.cpp \
+        runner.cpp \
+        runneritem.cpp \
+        runnermodel.cpp \
+        runnermodelthread.cpp \
+        runnerproxymodel.cpp \
+        runnerviewcontroller.cpp \
+        runnerwindow.cpp \
+        runnerwindowclient.cpp \
+        settingsdialog.cpp \
+        statuswidget.cpp \
+        stoppingdialog.cpp \
+        utils.cpp \
+        viewcontrollercommon.cpp
+
+INTERFACES = \
+        aboutdialog.ui \
+        columnsdialog.ui \
+        runnerwindow.ui \
+        settingsdialog.ui \
+        statuswidget.ui \
+        stoppingdialog.ui
+
+DESTDIR = ../../lib
 TARGET = qxrunner
 contains( TEMPLATE, lib ){
     CONFIG( debug, debug|release){
@@ -89,49 +125,38 @@ Set CPPUNIT environment varible with
 export CPPUNIT=/usr/local
 }}}
 
-Then, edit qxcppunit.pro file
+Then, edit qxcppunit.pro file replacing the content with:
 {{{
-line 52:
-    }
+TEMPLATE = lib
 
-line 46 to line 50:
-    #----------------------------------------------------------------------
-    # Linux/Unix
-    #----------------------------------------------------------------------
+CONFIG += debug_and_release
 
-    unix {
+DEFINES += QXCPPUNIT_DLL_BUILD
+DEFINES += QXRUNNER_DLL
+DEFINES += CPPUNIT_DLL
 
-line 22 to line 38:
-    #----------------------------------------------------------------------
-    # Libraries for linker.
-    #----------------------------------------------------------------------
 
-    dll {
-        LIBS += $$qxRunnerLibForLinker()
-        LIBS += $$cppUnitLibForLinker()
-     }
+DEPENDPATH  += $$(HOME)/qxrunner/include/qxcppunit
+INCLUDEPATH += . $$DEPENDPATH ../../include $$(CPPUNIT)/include/
 
-     #----------------------------------------------------------------------
-     # MS Windows
-     #----------------------------------------------------------------------
+LIBS += -L"../../lib" -lqxrunner -L$$(CPPUNIT)/lib -lcppunit
 
-     win32 {
-         QMAKE_POST_LINK = $$winCopyLib()
-         debug: QMAKE_CXXFLAGS_DEBUG += $$compilerOptions()
-     }
 
-line 8 to line 10:
-     include(../../qxconfig.pro)
 
-     TARGET = $$QX_CPPUNITFILENAME   # From qxconfig
-}}}
+HEADERS = \
+        cppunititem.h \
+        cppunitmodel.h \
+        qxcppunit_global.h \
+        testrunner.h
 
-And add:
-{{{
- CONFIG += debug_and_release
+SOURCES = \
+        cppunititem.cpp \
+        cppunitmodel.cpp \
+        testrunner.cpp
 
-INCLUDEPATH += $$(CPPUNIT)/include/cppunit
-LIBS += -L$$QX_LIBDIR -lqxrunner -L$$(CPPUNIT)/lib -lcppunit
+RESOURCES   += resources/qxcppunit.qrc
+
+DESTDIR = ../../lib
 TARGET = qxcppunit
 contains( TEMPLATE, lib ){
     CONFIG( debug, debug|release){
