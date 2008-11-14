@@ -128,14 +128,16 @@ line 8 to line 10:
 
 And add:
 {{{
-CONFIG += debug_and_release
+ CONFIG += debug_and_release
 
-LIBS += -L$${QX_LIBDIR} -lqxrunner -L$${CPPUNIT}/lib -lcppunit
-TARGET = qxrunner
+INCLUDEPATH += $$(CPPUNIT)/include/cppunit
+LIBS += -L$$QX_LIBDIR -lqxrunner -L$$(CPPUNIT)/lib -lcppunit
+TARGET = qxcppunit
 contains( TEMPLATE, lib ){
     CONFIG( debug, debug|release){
          TARGET=$$member(TARGET,0)d
     }
+
 }
 }}}
 
