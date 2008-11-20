@@ -9,6 +9,8 @@ unix:{
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\ 
 					src
+	
+	LIBS +=-L/usr/lib -lCoin -lSoQt
 }
 
 win32:{
@@ -17,6 +19,8 @@ INCLUDEPATH += . \
 				src \
 				../Tonatiuh/src\ 
 				C:/msys/usr/local/include 
+				
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
 
 # Input
@@ -64,25 +68,18 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/TShapeKit.cpp \
            	../Tonatiuh/src/Vector3D.cpp
 
-RESOURCES += ShapeFlatRectangle.qrc		
-	
-unix:	{
-	LIBS +=-L/usr/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeFlatRectangle
-}
-win32:	{
+RESOURCES += ShapeFlatRectangle.qrc			
 
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR       = ..\Tonatiuh\release\plugins\ShapeFlatRectangle
-}	
+DESTDIR = ../Tonatiuh/plugins/ShapeFlatRectangle
+
 TARGET        = RectangularFlatshape
 
-    contains(TEMPLATE,lib) {
-       CONFIG(debug, debug|release) {
-          unix:{
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeFlatRectangle
-          	TARGET = $$member(TARGET, 0)_debug
-          }
-          else:TARGET = $$member(TARGET, 0)d
-       }
-    }
+contains(TEMPLATE,lib) {
+   CONFIG(debug, debug|release) {
+      unix:{
+      	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeFlatRectangle
+      	TARGET = $$member(TARGET, 0)_debug
+      }
+      else:TARGET = $$member(TARGET, 0)d
+   }
+}
