@@ -36,13 +36,14 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QDataStream>
+
 #include "MaterialGeneric.h"
 #include "NormalVector.h"
 #include "tgc.h"
 #include "tgf.h"
 #include "Trace.h"
 
-#include <QTime>
 
 SO_NODE_SOURCE(MaterialGeneric);
 
@@ -176,7 +177,7 @@ void MaterialGeneric::updateTransparency( void* data, SoSensor* )
 
 Ray* MaterialGeneric::GetReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
-	Trace trace( "MaterialGeneric::GetReflectedRay", false );
+	/*Trace trace( "MaterialGeneric::GetReflectedRay", false );
 
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= m_reflectivity.getValue()  ) return 0;
@@ -185,42 +186,106 @@ Ray* MaterialGeneric::GetReflectedRay( const Ray& incident, DifferentialGeometry
 	Ray* reflected = new Ray();
 	reflected->origin = dg->point;
 	double cosTheta = DotProduct( dg->normal, incident.direction );
-	reflected->direction = incident.direction - 2.0 * dg->normal * cosTheta;
+	reflected->direction = Normalize( incident.direction - 2.0 * dg->normal * cosTheta );
 
-	double alfa = 0.0;
-	double ro = 0.0;
+	double sigmaOpt = sqrt( 4*( m_sigmaSlope.getValue() * m_sigmaSlope.getValue() ) + ( m_sigmaSpecularity.getValue() * m_sigmaSpecularity.getValue() ) ) / 1000;
+	if ( !( sigmaOpt > 0.0 )  )	return reflected;
 
+	Vector3D errorVector;
 	if ( m_distribution.getValue() == 0 )
 	{
-		alfa = tgc::TwoPi * rand.RandomDouble();
-		ro = m_sigmaOpt * rand.RandomDouble();
+		double phi = tgc::TwoPi * rand.RandomDouble();
+		double theta = sigmaOpt * rand.RandomDouble();
+
+		errorVector.x = sin( theta ) * sin( phi ) ;
+		errorVector.y = cos( theta );
+		errorVector.z = sin( theta ) * cos( phi );
 	 }
 	 else if (m_distribution.getValue() == 1 )
 	 {
-		alfa = tgc::Pi * rand.RandomDouble();
-		ro = m_sigmaOpt * tgf::AlternateBoxMuller( rand );
+		 errorVector.x = sigmaOpt * tgf::AlternateBoxMuller( rand );
+		 errorVector.y = 1.0;
+		 errorVector.z = sigmaOpt * tgf::AlternateBoxMuller( rand );
+
 	 }
 
 	//Compute unit vector s
-	Vector3D s = CrossProduct( dg->normal, reflected->direction );
+	Vector3D r = reflected->direction;
+	Vector3D s = CrossProduct( dg->normal, r );
+
 	Vector3D t;
 	if( s.Length() != 0 )
 	{
 		s = Normalize( NormalVector( s ) );
 
 	 	//Compute unit vector t
-	 	t = Normalize( NormalVector( CrossProduct( s, dg->normal ) ) );
+		t = Normalize( CrossProduct( s, r ) );
 	}
 	else
 	{
 		//Si el rayo reflejado y la normal son colineales dpdu y dpdv son
 		//perpendiculares al rayo reflejado
-		s = Normalize( NormalVector( dg->dpdu ) );
-		t = Normalize( NormalVector( dg->dpdv ) );
+		s = Normalize( dg->dpdu );
+		t = Normalize( dg->dpdv );
 
 	}
+	Transform trasform( s.x, s.y, s.z, 0.0,
+						r.x, r.y, r.z, 0.0,
+						t.x, t.y, t.z, 0.0,
+						0.0, 0.0, 0.0, 1.0);
 
-	 reflected->direction = Normalize( NormalVector( reflected->direction ) );
+	Vector3D reflectedDirection = trasform.GetInverse()( errorVector );
+	reflected->direction = Normalize( reflectedDirection );
+	return reflected;*/
 
-	 return reflected;
+	Trace trace( "MaterialGeneric::GetReflectedRay", false );
+
+	double randomNumber = rand.RandomDouble();
+	if ( randomNumber >= m_reflectivity.getValue()  ) return 0;
+
+	//Compute reflected ray (local coordinates )
+	Ray* reflected = new Ray();
+	reflected->origin = dg->point;
+
+	NormalVector normalVector;
+	double sigmaSlope = m_sigmaSlope.getValue() / 1000;
+	if( sigmaSlope > 0.0 )
+	{
+		NormalVector errorNormal;
+		if ( m_distribution.getValue() == 0 )
+		{
+			double phi = tgc::TwoPi * rand.RandomDouble();
+			double theta = sigmaSlope * rand.RandomDouble();
+
+			errorNormal.x = sin( theta ) * sin( phi ) ;
+			errorNormal.y = cos( theta );
+			errorNormal.z = sin( theta ) * cos( phi );
+		 }
+		 else if (m_distribution.getValue() == 1 )
+		 {
+			 errorNormal.x = sigmaSlope * tgf::AlternateBoxMuller( rand );
+			 errorNormal.y = 1.0;
+			 errorNormal.z = sigmaSlope * tgf::AlternateBoxMuller( rand );
+
+		 }
+		Vector3D r = dg->normal;
+		Vector3D s = Normalize( dg->dpdu );
+		Vector3D t = Normalize( dg->dpdv );
+		Transform trasform( s.x, s.y, s.z, 0.0,
+								r.x, r.y, r.z, 0.0,
+								t.x, t.y, t.z, 0.0,
+								0.0, 0.0, 0.0, 1.0);
+
+		NormalVector normalDirection = trasform.GetInverse()( errorNormal );
+		normalVector = Normalize( normalDirection );
+	}
+	else
+	{
+		normalVector = dg->normal;
+	}
+
+	double cosTheta = DotProduct( normalVector, incident.direction );
+	reflected->direction = Normalize( incident.direction - 2.0 * normalVector * cosTheta );
+	return reflected;
+
 }
