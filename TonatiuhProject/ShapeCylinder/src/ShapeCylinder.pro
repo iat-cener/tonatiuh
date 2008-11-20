@@ -2,20 +2,21 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-unix	{
-
+unix {
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\
 					src
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 }
-
-win32	{
+win32 {
 
 	DEFINES+= COIN_DLL SOQT_DLL
 	INCLUDEPATH += . \
 				src \
 				../Tonatiuh/src\
 				C:/msys/usr/local/include 
+				
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
 
 # Input
@@ -65,30 +66,17 @@ SOURCES = *.cpp \
 
 RESOURCES += ShapeCylinder.qrc
 
-win32	{
 
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR       = C:\eclipse\workspace\Tonatiuh\release\plugins\ShapeCylinder\
-	
-}		
-unix	{
-
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeCylinder
-	
-}
+DESTDIR       = ../Tonatiuh/plugins/ShapeCylinder
 	
 TARGET        = ShapeCylinder
 
-    contains(TEMPLATE,lib) {
-    
-       CONFIG(debug, debug|release) {
+contains(TEMPLATE,lib) {  
+	CONFIG(debug, debug|release) {
        
-          unix	{
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeCylinder
-          	TARGET = $$member(TARGET, 0)_debug
-          }
-          else:TARGET = $$member(TARGET, 0)d
-       }
-       
-    }
+		unix {
+			TARGET = $$member(TARGET, 0)_debug
+		}
+		else:TARGET = $$member(TARGET, 0)d
+	}
+}
