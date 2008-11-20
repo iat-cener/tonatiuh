@@ -61,7 +61,7 @@ MaterialGeneric::MaterialGeneric()
 	SO_NODE_CONSTRUCTOR( MaterialGeneric );
 	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
 	SO_NODE_ADD_FIELD( m_sigmaSlope, (2.0) );
-	SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
+	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
 	SO_NODE_ADD_FIELD( m_ambientColor, (0.2, 0.2, 0.2) );
 	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8, 0.8, 0.8) );
 	SO_NODE_ADD_FIELD( m_specularColor, (0.0, 0.0, 0.0) );
@@ -74,16 +74,8 @@ MaterialGeneric::MaterialGeneric()
   	SO_NODE_SET_SF_ENUM_TYPE(m_distribution, Distribution);
 	SO_NODE_ADD_FIELD( m_distribution, (PILLBOX) );
 
-	m_sigmaOpt = tgf::computeSigmaOptica( m_sigmaSlope.getValue(), m_sigmaSpecularity.getValue() );
-
 	SoFieldSensor* m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
 	m_reflectivitySensor->attach( &m_reflectivity );
-
-	m_sigmaSlopeSensor = new SoFieldSensor( updateSigmaOpt, this );
-	m_sigmaSlopeSensor->attach( &m_sigmaSlope );
-
-	m_sigmaSpecularitySensor = new SoFieldSensor( updateSigmaOpt, this );
-	m_sigmaSpecularitySensor->attach( &m_sigmaSpecularity );
 
 	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
 	m_ambientColorSensor->attach( &m_ambientColor );
@@ -109,13 +101,6 @@ QString MaterialGeneric::getIcon()
 	Trace trace( "MaterialGeneric::getIcon", false );
 
 	return QString(":icons/MaterialGeneric.png");
-}
-
-void MaterialGeneric::updateSigmaOpt( void* data, SoSensor* )
-{
-	Trace trace( "MaterialGeneric::updateSigmaOpt", false );
-	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
-   	material->m_sigmaOpt = tgf::computeSigmaOptica( material->m_sigmaSlope.getValue(), material->m_sigmaSpecularity.getValue() );
 }
 
 void MaterialGeneric::updateReflectivity( void* data, SoSensor* )
@@ -177,67 +162,6 @@ void MaterialGeneric::updateTransparency( void* data, SoSensor* )
 
 Ray* MaterialGeneric::GetReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
-	/*Trace trace( "MaterialGeneric::GetReflectedRay", false );
-
-	double randomNumber = rand.RandomDouble();
-	if ( randomNumber >= m_reflectivity.getValue()  ) return 0;
-
-	//Compute reflected ray (local coordinates )
-	Ray* reflected = new Ray();
-	reflected->origin = dg->point;
-	double cosTheta = DotProduct( dg->normal, incident.direction );
-	reflected->direction = Normalize( incident.direction - 2.0 * dg->normal * cosTheta );
-
-	double sigmaOpt = sqrt( 4*( m_sigmaSlope.getValue() * m_sigmaSlope.getValue() ) + ( m_sigmaSpecularity.getValue() * m_sigmaSpecularity.getValue() ) ) / 1000;
-	if ( !( sigmaOpt > 0.0 )  )	return reflected;
-
-	Vector3D errorVector;
-	if ( m_distribution.getValue() == 0 )
-	{
-		double phi = tgc::TwoPi * rand.RandomDouble();
-		double theta = sigmaOpt * rand.RandomDouble();
-
-		errorVector.x = sin( theta ) * sin( phi ) ;
-		errorVector.y = cos( theta );
-		errorVector.z = sin( theta ) * cos( phi );
-	 }
-	 else if (m_distribution.getValue() == 1 )
-	 {
-		 errorVector.x = sigmaOpt * tgf::AlternateBoxMuller( rand );
-		 errorVector.y = 1.0;
-		 errorVector.z = sigmaOpt * tgf::AlternateBoxMuller( rand );
-
-	 }
-
-	//Compute unit vector s
-	Vector3D r = reflected->direction;
-	Vector3D s = CrossProduct( dg->normal, r );
-
-	Vector3D t;
-	if( s.Length() != 0 )
-	{
-		s = Normalize( NormalVector( s ) );
-
-	 	//Compute unit vector t
-		t = Normalize( CrossProduct( s, r ) );
-	}
-	else
-	{
-		//Si el rayo reflejado y la normal son colineales dpdu y dpdv son
-		//perpendiculares al rayo reflejado
-		s = Normalize( dg->dpdu );
-		t = Normalize( dg->dpdv );
-
-	}
-	Transform trasform( s.x, s.y, s.z, 0.0,
-						r.x, r.y, r.z, 0.0,
-						t.x, t.y, t.z, 0.0,
-						0.0, 0.0, 0.0, 1.0);
-
-	Vector3D reflectedDirection = trasform.GetInverse()( errorVector );
-	reflected->direction = Normalize( reflectedDirection );
-	return reflected;*/
-
 	Trace trace( "MaterialGeneric::GetReflectedRay", false );
 
 	double randomNumber = rand.RandomDouble();

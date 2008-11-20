@@ -5,19 +5,22 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-
 win32{
-DEFINES+= COIN_DLL SOQT_DLL
-INCLUDEPATH += . \
+	DEFINES+= COIN_DLL SOQT_DLL
+	INCLUDEPATH += . \
 				src \
 				../Tonatiuh/src\ 
 				C:/msys/usr/local/include 
+				
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
 
 unix{
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\ 
 					src
+	
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 }
 
 # Input
@@ -64,38 +67,17 @@ SOURCES = *.cpp \
 
 RESOURCES += MaterialGeneric.qrc
 
-win32	{
-
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR =  ../Tonatiuh/release/plugins/MaterialGeneric
-	
-}
-          	
-unix	{
-
-
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-
-	
-	DESTDIR       = ../Tonatiuh/release/plugins/MaterialGeneric
-	
-}
-
-
-		
+DESTDIR       = ../Tonatiuh/plugins/MaterialGeneric	
 TARGET        = MaterialGeneric
-    contains(TEMPLATE,lib) {
-    
-       CONFIG(debug, debug|release) {
-       
-          unix	{
-          
-          	DESTDIR       = ../Tonatiuh/debug/plugins/MaterialGeneric
-          	TARGET = $$member(TARGET, 0)_debug
-          	
-          }
-          
-          else:TARGET = $$member(TARGET, 0)d
-       }
-       
-    }
+
+contains(TEMPLATE,lib) {
+   CONFIG(debug, debug|release) {
+      unix	{
+      	
+      	TARGET = $$member(TARGET, 0)_debug
+      	
+      } 
+      else:TARGET = $$member(TARGET, 0)d
+   }
+   
+}
