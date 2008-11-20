@@ -42,7 +42,6 @@ RESOURCES += tonatiuh.qrc
 win32: { 
 
 	LIBS += -L"c:\msys\usr\local\lib" -lSoQt -lCoin -lmarblewidget -L"c:\msys\usr\local\bin" -lqwtplot3d
-#    DESTDIR = C:\eclipse\workspace\Tonatiuh\release\
 }
         
 unix: {

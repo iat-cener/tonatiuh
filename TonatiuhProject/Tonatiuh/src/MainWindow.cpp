@@ -36,6 +36,12 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <ctime>
+#include <dirent.h>
+#include <sstream>
+#include <string>
+#include <vector>
+
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QItemSelectionModel>
@@ -93,11 +99,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <qwt3d_types.h>
 
-#include <dirent.h>
-#include <sstream>
-#include <string>
-#include <vector>
-
 #include "ActionInsertMaterial.h"
 #include "ActionInsertShape.h"
 #include "ActionInsertSunShape.h"
@@ -123,7 +124,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParametersDelegate.h"
 #include "ParametersView.h"
 #include "ParametersItem.h"
-#include "Ptr.h"
 #include "RayTraceDialog.h"
 #include "SceneModel.h"
 #include "SunDialog.h"
@@ -145,8 +145,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTrackerFactory.h"
 #include "TTracker.h"
 #include "Trace.h"
-#include "tgf.h"
-#include "tgc.h"
 
 
 const long unsigned int Max_Photon = 10000000 ;
@@ -191,7 +189,7 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
 
 MainWindow::~MainWindow()
 {
-	Trace trace( "MainWindow::~MainWindow" );
+	Trace trace( "MainWindow::~MainWindow", false );
 }
 
 void MainWindow::SetupActions()
@@ -540,7 +538,7 @@ QDir MainWindow::PluginDirectory()
 	// which the running version of Tonatiuh is located.
 	Trace trace( "MainWindow::PluginDirectory" );
     QDir directory( qApp->applicationDirPath() );
-  	directory.cd("plugins");
+  	directory.cd("../plugins");
 	return directory;
 }
 
@@ -874,6 +872,11 @@ void MainWindow::on_actionSunPosition_triggered()
 void MainWindow::on_actionRayTraceRun_triggered()
 {
     Trace trace( "MainWindow::on_actionRayTraceRun_triggered", false );
+
+	//Calculamos el tiempo de inicio
+	clock_t start,end;
+	start=clock();
+
 	actionDisplay_rays->setEnabled( false );
 
 	//Check if there is a scene
@@ -903,7 +906,18 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
 	SetBoundigBoxes( rootSeparatorInstance, region );
 
-	Transform lightToWorld( *lightTransform );
+	//Transform lightToWorld( *lightTransform );
+	SbMatrix coinMatrix;
+	coinMatrix.setTransform( lightTransform->translation.getValue(),
+								lightTransform->rotation.getValue(),
+								lightTransform->scaleFactor.getValue(),
+								lightTransform->scaleOrientation.getValue(),
+								lightTransform->center.getValue() );
+
+	Transform lightToWorld( coinMatrix[0][0], coinMatrix[1][0], coinMatrix[2][0], coinMatrix[3][0],
+			coinMatrix[0][1], coinMatrix[1][1], coinMatrix[2][1], coinMatrix[3][1],
+			coinMatrix[0][2], coinMatrix[1][2], coinMatrix[2][2], coinMatrix[3][2],
+			coinMatrix[0][3], coinMatrix[1][3], coinMatrix[2][3], coinMatrix[3][3] );
 
 	//Create the photon map where photons are going to be stored
 	if ( !m_increasePhotonMap )
@@ -915,14 +929,14 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	m_tracedRays += m_raysPerIteration;
 
 	//Ray tracing storing the generated photons in the Photon Map
-	QProgressDialog* progressDialog = new QProgressDialog ( "Tracing rays. Please wait..." , "Cancel", 0, ( m_raysPerIteration * 2 ), this );
+	QProgressDialog* progressDialog = new QProgressDialog ( "Tracing rays. Please wait..." , "Cancel", 0, m_raysPerIteration, this );
 	progressDialog->setModal( true );
 	progressDialog->setCancelButton( NULL);
 	progressDialog->setVisible( true );
 
 	//m_raysPerIteration = 1;
 	//Random Ray generator
-	for ( long unsigned i=0; i < m_raysPerIteration; i++ )
+	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
 	{
 		Ray ray;
 
@@ -931,10 +945,10 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		sunShape->generateRayDirection( ray.direction, *m_pRand );
 
 		//Transform ray to World coordinate system and trace the scene
+		//ray = Ray( Point3D( 0.0, 0.0, 0.0 ),Vector3D( 0.0, -1.0, 0.0 ) );
 		ray = lightToWorld( ray );
 
 		//ray = Ray( Point3D( 0.141978, 0.943242, 5 ), Vector3D( -0.00129427, 0.00389558, -0.999991 ) );
-		//ray = Ray( Point3D( 0, 12, 0 ), Vector3D( 0.0, -1.0, 0.0 ) );
 		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
 
   	    //Update progressDiaglog when appropriate
@@ -954,7 +968,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
  	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
  	{
   		m_document->GetRoot()->removeChild( m_pRays );
-  		m_pRays->unref();
+  		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
  	}
 
  	//progressDialog->setValue( ( m_raysPerIteration - 1 ) * 1.2 );
@@ -972,8 +986,8 @@ void MainWindow::on_actionRayTraceRun_triggered()
 			m_pRays->addChild(points);
 		}
 
-		progressDialog->setLabelText( "Drawing Scene. Please wait..." );
-		progressDialog->setValue( m_raysPerIteration * 1.4 );
+		//progressDialog->setLabelText( "Drawing Scene. Please wait..." );
+		//progressDialog->setValue( m_raysPerIteration * 1.4 );
 
 
 		if( m_fraction > 0.0 )
@@ -988,40 +1002,14 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 	}
 
-
-	//progressDialog->setValue( ( m_raysPerIteration - 1 ) * 1.6 );
-	//progressDialog->setLabelText( "Saving Photon Map. Please wait..." );
-
-	//m_photonMap->savePhotonMap( m_resultsFile.toStdString().c_str() );
-	/*QFile resultsFile( m_resultsFile );
-
-	if(!resultsFile.open( QIODevice::WriteOnly ) )
-	{
-		QMessageBox::information( this, "Tonatiuh Error",
-	                         "Tonatiuh can't open results file\n", 1);
-		return;
-	}
-
-	QDataStream out( &resultsFile );
-
-	progressDialog->setValue( ( m_raysPerIteration - 1 ) * 1.8 );
-
-	for( long unsigned i=1; i<= m_photonMap->StoredPhotons(); i++ )
-	{
-		Photon* node = m_photonMap->GetPhoton(i);
-		Point3D photon = node->m_pos;
-		double id = node->m_id;
-		double prev_id = ( node->m_prev )? node->m_prev->m_id : 0;
-		double next_id = ( node->m_next )? node->m_next->m_id : -1;
-		out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
-		//out<<id<<<<photon.x <<"\t"<<photon.y <<photon.z<<prev_id<<next_id;
-
-	}
-	resultsFile.close();*/
-
 	progressDialog->setValue( m_raysPerIteration * 2 );
 
  	delete progressDialog;
+
+	//Calculamos el tiempo de fin
+	end=clock();
+
+	std::cout <<"El tiempo necesario es:" <<(double)(end-start)/CLOCKS_PER_SEC<<std::endl;
 
 }
 

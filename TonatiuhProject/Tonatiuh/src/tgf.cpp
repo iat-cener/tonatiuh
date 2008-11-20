@@ -321,6 +321,7 @@ double tgf::computeSigmaOptica( double sigmaSlope, double sigmaSpecularity )
 SoSeparator* tgf::DrawPhotonMapPoints( const PhotonMap& map )
 {
 	Trace trace( "tgf::DrawPhotonMapPoints", false );
+
 	SoSeparator* drawpoints=new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
@@ -348,13 +349,14 @@ SoSeparator* tgf::DrawPhotonMapPoints( const PhotonMap& map )
 SoSeparator* tgf::DrawPhotonMapRays( const PhotonMap& map, unsigned long numberOfRays, double fraction )
 {
 	Trace trace( "tgf::DrawPhotonMapRays", false );
+
 	SoSeparator* drawrays = new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
-	unsigned long drawRays = (unsigned long) ( numberOfRays * ( fraction / 100 ) );
+	int drawRays = (int) ( numberOfRays * ( fraction / 100 ) );
 	if( drawRays == 0 ) drawRays = 1;
 	unsigned long ray = 0;
-	int lines[drawRays];
+	int* lines = new int[drawRays];
 
 	unsigned long rayLength = 0;
 	unsigned long drawnRay = 0;
@@ -363,6 +365,7 @@ SoSeparator* tgf::DrawPhotonMapRays( const PhotonMap& map, unsigned long numberO
 
 	for( unsigned long i = 1; i<= map.StoredPhotons(); i++ )
 	{
+
 		if ( !map.GetPhoton(i)->m_prev )
 		{
 			if ( ray % ( numberOfRays/drawRays ) == 0 )
@@ -396,11 +399,14 @@ SoSeparator* tgf::DrawPhotonMapRays( const PhotonMap& map, unsigned long numberO
   	lineset->numVertices.setValues( 0, drawnRay, lines );
   	drawrays->addChild( lineset );
 
+  	delete lines;
   	return drawrays;
 }
 
 double tgf::AlternateBoxMuller( RandomDeviate& rand )
 {
+	Trace trace( "tgf::AlternateBoxMuller", false );
+
 	static bool firsttime = true;
 	static double x1;
 	static double x2;

@@ -63,7 +63,7 @@ MapDialog::MapDialog( QWidget *parent )
    : QDialog(parent)
 {
 	QDir directory( qApp->applicationDirPath() );
-	directory.cd( "data" );
+	directory.cd( "../data" );
 
 	MarbleDirs::setMarbleDataPath( directory.absolutePath() );
 
