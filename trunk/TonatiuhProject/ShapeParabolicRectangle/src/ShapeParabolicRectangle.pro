@@ -7,17 +7,20 @@ CONFIG       += plugin debug_and_release
 
 
 win32{
-DEFINES+= COIN_DLL SOQT_DLL
-INCLUDEPATH += . \
-				src \
-				../Tonatiuh/src\ 
-				C:/msys/usr/local/include 
+	DEFINES+= COIN_DLL SOQT_DLL
+	INCLUDEPATH += . \
+					src \
+					../Tonatiuh/src \ 
+					C:/msys/usr/local/include
+	LIBS +=-L"c:/msys/usr/local/lib" -lCoin -lSoQt 
 }
 
 unix{
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\ 
 					src
+					
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 }
 
 
@@ -67,29 +70,17 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/Vector3D.cpp
 
 RESOURCES += ShapeParabolicRectangle.qrc
-
-win32	{
-
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR =  ../Tonatiuh/release/plugins/ShapeParabolicRectangle
+         
 	
-}
-          	
-unix	{
-
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeParabolicRectangle
-}
-	
+DESTDIR       = ../Tonatiuh/plugins/ShapeParabolicRectangle
 TARGET        = ShapeParabolicRectangle
-    contains(TEMPLATE,lib) {
-    
-       CONFIG(debug, debug|release) {
-       
-          unix	{
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeParabolicRectangle
-          	TARGET = $$member(TARGET, 0)_debug 	
-          }
-          else:TARGET = $$member(TARGET, 0)d
-       } 
-    }
+contains(TEMPLATE,lib) {
+
+   CONFIG(debug, debug|release) {
+   
+      unix	{
+      	TARGET = $$member(TARGET, 0)_debug 	
+      }
+      else:TARGET = $$member(TARGET, 0)d
+   } 
+}
