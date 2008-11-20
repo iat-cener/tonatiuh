@@ -40,20 +40,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "ShapeParabolicDishFactory.h"
 #include "ShapeParabolicDish.h"
+#include "Trace.h"
 
 
 QString ShapeParabolicDishFactory::TShapeName() const
 {
+	Trace trace( "ShapeParabolicDishFactory::TShapeName", false );
 	return QString("Parabolic dish");
 }
 
 QIcon ShapeParabolicDishFactory::TShapeIcon() const
 {
+	Trace trace( "ShapeParabolicDishFactory::TShapeIcon", false );
 	return QIcon( ":/icons/ShapeParabolicDish.png" );
 }
 
 ShapeParabolicDish* ShapeParabolicDishFactory::CreateTShape( ) const
 {
+	Trace trace( "ShapeParabolicDishFactory::CreateTShape", false );
+
 	static bool firstTime = true;
 	if ( firstTime )
 	{

@@ -52,11 +52,15 @@ SO_NODE_SOURCE(ShapeParabolicDish);
 
 void ShapeParabolicDish::initClass()
 {
+	Trace trace( "ShapeParabolicDish::initClass", false );
+
 	SO_NODE_INIT_CLASS(ShapeParabolicDish, TShape, "TShape");
 }
 
 ShapeParabolicDish::ShapeParabolicDish()
 {
+	Trace trace( "ShapeParabolicDish::ShapeParabolicDish", false );
+
 	SO_NODE_CONSTRUCTOR(ShapeParabolicDish);
 	SO_NODE_ADD_FIELD(m_focus, (1.0));
 	SO_NODE_ADD_FIELD(m_radius, (10.0));
@@ -65,11 +69,19 @@ ShapeParabolicDish::ShapeParabolicDish()
 
 ShapeParabolicDish::~ShapeParabolicDish()
 {
+	Trace trace( "ShapeParabolicDish::~ShapeParabolicDish", false );
+}
 
+QString ShapeParabolicDish::getIcon()
+{
+	Trace trace( "ShapeParabolicDish::getIcon", false );
+	return ":/icons/ShapeParabolicDish.png";
 }
 
 void ShapeParabolicDish::generatePrimitives(SoAction *action)
 {
+	Trace trace( "ShapeParabolicDish::generatePrimitives", false );
+
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.
@@ -112,10 +124,7 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
     double ui = 0;
 	double vj = 0;
 
-	//double u_step = 1.0 /(double)(rows-1); // Size of the step in parameter u to go from 0 to 1 in the number of rows
-	//double v_step = 1.0 /(double)(columns-1); // Size of the step in parameter v to go from 0 to 1 in the number of columns
-
-    for (int i = 0; i < rows; i++)
+	 for (int i = 0; i < rows; i++)
     {
     	ui =( 1.0 /(double)(rows-1) ) * i;
 
@@ -136,11 +145,8 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
 
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
     		h++; //Increase h to the next point.
-    		//vj += v_step; // Increase parameter vj to go from initial 0 to 1 at the end of the row (keep the same ui for the whole row)
 
     	}
-    	//vj = 0; // Re-initialize parameter vj to 0 in order to start from 0 in the next row
-		//ui += u_step; // Increase parameter ui to go from initial 0 to 1 in the last row.
 
     }
 
@@ -199,6 +205,8 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
 
 void ShapeParabolicDish::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 {
+	Trace trace( "ShapeParabolicDish::computeBBox", false );
+
 	double cosPhiMax = cos( m_phiMax.getValue() );
 	double sinPhiMax = sin( m_phiMax.getValue() );
 
@@ -294,7 +302,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
-	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	Vector3D N = Normalize( CrossProduct( dpdu, dpdv ) );
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
 	double g = DotProduct(N, d2Pdvv);
@@ -324,23 +332,25 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 
 bool ShapeParabolicDish::IntersectP( const Ray& worldRay ) const
 {
+	Trace trace( "ShapeParabolicDish::IntersectP", false );
 	return Intersect( worldRay, 0, 0 );
 }
 
 Point3D ShapeParabolicDish::Sample( double u, double v ) const
 {
+	Trace trace( "ShapeParabolicDish::Sample", false );
 	return GetPoint3D( u, v );
 }
 
 bool ShapeParabolicDish::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeParabolicDish::OutOfRange", false);
+	Trace trace( "ShapeParabolicDish::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 {
-	Trace trace( "ShapeParabolicDish::GetPoint3D", false);
+	Trace trace( "ShapeParabolicDish::GetPoint3D", false );
 
 	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
 	double radius = u * m_radius.getValue();
@@ -356,6 +366,8 @@ Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 
 SbVec3f ShapeParabolicDish::GetNormal (double u, double v) const
 {
+	Trace trace( "ShapeParabolicDish::GetNormal", false );
+
 	Point3D point = GetPoint3D( u, v );
 
 	Vector3D r( 0, 0, 1 );
