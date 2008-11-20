@@ -6,6 +6,9 @@ unix{
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\ 
 					src
+	
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt				
+	
 }
 
 win32{
@@ -14,6 +17,8 @@ win32{
 				src \
 				../Tonatiuh/src\ 
 				C:/msys/usr/local/include 
+	
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
 
 # Input
@@ -63,21 +68,9 @@ SOURCES = *.cpp \
 
 RESOURCES += ShapeCone.qrc	
 		
-win32	{
-
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR       = C:\eclipse\workspace\Tonatiuh\release\plugins\ShapeCone\
-}	
-
-unix	{
-
-	
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeCone
-	
-}
 
 
+DESTDIR       = ..\Tonatiuh\plugins\ShapeCone\
 TARGET        = ShapeCone
 
     contains(TEMPLATE,lib) {
@@ -85,8 +78,6 @@ TARGET        = ShapeCone
        CONFIG(debug, debug|release) {
        
           unix	{
-          
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeCone
           	TARGET = $$member(TARGET, 0)_debug
           	
           }
