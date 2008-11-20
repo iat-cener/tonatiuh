@@ -5,19 +5,21 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-
 win32{
-DEFINES+= COIN_DLL SOQT_DLL
-INCLUDEPATH += . \
-				src \
-				../Tonatiuh/src\ 
-				C:/msys/usr/local/include 
+	DEFINES+= COIN_DLL SOQT_DLL
+	INCLUDEPATH += . \
+					src \
+					../Tonatiuh/src \ 
+					c:/msys/usr/local/include 
+				
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
-
 unix{
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\ 
 					src
+
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 }
 
 
@@ -70,22 +72,7 @@ SOURCES = *.cpp \
 
 RESOURCES += ShapeSphericalPolygon.qrc
 
-win32	{
-
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR =  ../Tonatiuh/release/plugins/ShapeSphericalPolygon/
-	
-}
-          	
-unix	{
-
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeSphericalPolygon
-	
-}
-
-
-		
+DESTDIR = ../Tonatiuh/plugins		
 TARGET        = ShapeSphericalPolygon
     contains(TEMPLATE,lib) {
     
