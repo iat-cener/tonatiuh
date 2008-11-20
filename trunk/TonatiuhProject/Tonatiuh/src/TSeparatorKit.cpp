@@ -17,28 +17,28 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Acknowledgments: 
+Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, 
-then Chair of the Department of Engineering of the University of Texas at 
-Brownsville. From May 2004 to July 2008, it was supported by the Department 
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under 
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. 
-During 2007, NREL also contributed to the validation of Tonatiuh under the 
-framework of the Memorandum of Understanding signed with the Spanish 
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). 
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the 
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
- 
-#include <Inventor/actions/SoGetMatrixAction.h> 
-#include <Inventor/nodes/SoTransform.h> 
-#include <Inventor/nodes/SoMaterial.h> 
+
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoMaterial.h>
 
 #include "DifferentialGeometry.h"
 #include "Ray.h"
@@ -57,13 +57,13 @@ void TSeparatorKit::initClass()
 
 TSeparatorKit::TSeparatorKit()
 {
-	
+
 	SO_KIT_CONSTRUCTOR(TSeparatorKit);
 	SO_KIT_INIT_INSTANCE();
-	
-	SoTransform* transform = new SoTransform; 
+
+	SoTransform* transform = new SoTransform;
 	setPart("transform", transform);
-	
+
 }
 
 TSeparatorKit::~TSeparatorKit()
@@ -84,10 +84,10 @@ bool TSeparatorKit::IntersectP( const Ray& /*ray*/ ) const
 Ray* TSeparatorKit::Intersect( const Ray& ray, RandomDeviate& rand ) const
 {
 	Trace trace( "TSeparatorKit::Intersect", false );
-	
+
 	//Test if the ray intersects with this bounding box
 	SbBox3f box= m_boundigBox.project();
-	
+
 	double t0 = ray.mint;
 	double t1 = ray.maxt;
 
@@ -101,27 +101,38 @@ Ray* TSeparatorKit::Intersect( const Ray& ray, RandomDeviate& rand ) const
     	t1 = tFar < t1 ? tFar : t1;
     	if( t0 > t1 ) return 0;
     }
-   
+
 	Ray* result = 0;
-	 
+
 	//The ray intersects with the BoundingBox
 	//Transform the ray to call children intersect
 	SoTransform* coinTransform = static_cast< SoTransform* > ( transform.getValue() );
 	if ( coinTransform )
 	{
-		Transform objectToWorld( *coinTransform );
+		SbMatrix coinMatrix;
+		coinMatrix.setTransform( coinTransform->translation.getValue(),
+				coinTransform->rotation.getValue(),
+				coinTransform->scaleFactor.getValue(),
+				coinTransform->scaleOrientation.getValue(),
+				coinTransform->center.getValue() );
+
+		Transform objectToWorld( coinMatrix[0][0], coinMatrix[1][0], coinMatrix[2][0], coinMatrix[3][0],
+					coinMatrix[0][1], coinMatrix[1][1], coinMatrix[2][1], coinMatrix[3][1],
+					coinMatrix[0][2], coinMatrix[1][2], coinMatrix[2][2], coinMatrix[3][2],
+					coinMatrix[0][3], coinMatrix[1][3], coinMatrix[2][3], coinMatrix[3][3] );
+
 		Transform worldToObject = objectToWorld.GetInverse();
-		
-		Ray objectRay( worldToObject( ray ) );					 
+
+		Ray objectRay( worldToObject( ray ) );
 		objectRay.maxt = ray.maxt;
-		
+
 		Ray* reflected = 0;
 		Ray* childReflected = 0;
-		
+
 		SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( childList.getValue() );
-		
+
 	  	if( coinPartList )
-	  	{ 
+	  	{
 			for( int index = 0; index < coinPartList->getNumChildren(); index++ )
 			{
 				SoBaseKit* coinChild = dynamic_cast< SoBaseKit* >( coinPartList->getChild( index ) );
@@ -130,35 +141,35 @@ Ray* TSeparatorKit::Intersect( const Ray& ray, RandomDeviate& rand ) const
 					TSeparatorKit* child = dynamic_cast< TSeparatorKit* >( coinChild );
 					childReflected = child->Intersect( objectRay, rand );
 				}
-				else if(coinChild->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) 
+				else if(coinChild->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 				{
 					TShapeKit* child = dynamic_cast< TShapeKit* >( coinChild );
 					childReflected = child->Intersect( objectRay, rand );
-					
+
 				}
-				
+
 				if( ray.maxt != objectRay.maxt )
 				{
 					delete reflected;
-					reflected = 0;			
+					reflected = 0;
 				    ray.maxt = objectRay.maxt;
 				}
-				
-				if( childReflected ) 
+
+				if( childReflected )
 				{
 				    reflected = new Ray( *childReflected );
 				    delete childReflected;
 				    childReflected = 0;
 				}
 			}
-			
-			if( reflected ) 
-			{	
-				result = new Ray( objectToWorld( *reflected ) );	
+
+			if( reflected )
+			{
+				result = new Ray( objectToWorld( *reflected ) );
 				delete reflected;
 				reflected = 0;
 	  		}
-	  	}	
-	}		
-	return result;	
+	  	}
+	}
+	return result;
 }

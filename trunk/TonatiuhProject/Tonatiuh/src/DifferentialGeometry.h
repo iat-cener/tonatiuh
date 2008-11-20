@@ -39,10 +39,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef DIFFERENTIALGEOMETRY_H
 #define DIFFERENTIALGEOMETRY_H
 
-#include "Point3D.h"
-#include "Vector3D.h"
+
 #include "NormalVector.h"
+#include "Point3D.h"
 #include "TShape.h"
+#include "Vector3D.h"
 
 struct DifferentialGeometry
 {
