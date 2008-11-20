@@ -77,7 +77,6 @@ TARGET        = RectangularFlatshape
 contains(TEMPLATE,lib) {
    CONFIG(debug, debug|release) {
       unix:{
-      	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeFlatRectangle
       	TARGET = $$member(TARGET, 0)_debug
       }
       else:TARGET = $$member(TARGET, 0)d
