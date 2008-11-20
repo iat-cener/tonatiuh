@@ -5,6 +5,8 @@ unix{
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\ 
 					src
+	
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 }
 
 win32{
@@ -13,6 +15,8 @@ INCLUDEPATH += . \
 				src \
 				../Tonatiuh/src\ 
 				C:/msys/usr/local/include 
+	
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
 
 # Input
@@ -62,31 +66,18 @@ SOURCES = *.cpp \
 
 RESOURCES += ShapeParabolicDish.qrc
 
-win32	{
-
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR =  C:\eclipse\workspace\Tonatiuh\release\plugins\ShapeParabolicDish\
-}
-         	
-unix	{
-
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeParabolicDish
-}
-
-
+DESTDIR =  ..\Tonatiuh\plugins\ShapeParabolicDish\
 		
 TARGET        = ShapeParabolicDish
 
-    contains(TEMPLATE,lib) {
-    
-       CONFIG(debug, debug|release) {
-       
-          unix	{
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeParabolicDish
-          	TARGET = $$member(TARGET, 0)_debug
-          }
-          else:TARGET = $$member(TARGET, 0)d
-       }
-       
-    }
+contains(TEMPLATE,lib) {
+
+   CONFIG(debug, debug|release) {
+   
+      unix	{
+      	TARGET = $$member(TARGET, 0)_debug
+      }
+      else:TARGET = $$member(TARGET, 0)d
+   }
+   
+}

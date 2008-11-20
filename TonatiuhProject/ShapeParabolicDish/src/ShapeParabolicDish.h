@@ -50,7 +50,7 @@ class ShapeParabolicDish : public TShape
 public:
 	ShapeParabolicDish();
 	static void initClass();
-	QString getIcon() {return ":/icons/ShapeParabolicDish.png";}
+	QString getIcon();
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
