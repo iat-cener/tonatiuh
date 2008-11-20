@@ -72,7 +72,7 @@ SOURCES = *.cpp \
 
 RESOURCES += ShapeSphericalPolygon.qrc
 
-DESTDIR = ../Tonatiuh/plugins		
+DESTDIR = ../Tonatiuh/plugins/ShapeSphericalPolygon	
 TARGET        = ShapeSphericalPolygon
     contains(TEMPLATE,lib) {
     
