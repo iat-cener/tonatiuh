@@ -84,7 +84,7 @@ ShapeSphere::ShapeSphere( )
 
 ShapeSphere::~ShapeSphere()
 {
-
+	Trace trace( "ShapeSphere::~ShapeSphere", false );
 }
 
 QString ShapeSphere::getIcon()
@@ -96,6 +96,8 @@ QString ShapeSphere::getIcon()
 
 bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry* dg ) const
 {
+	Trace trace( "ShapeSphere::Intersect", false );
+
 	Ray objectRay = ray ;
 
 	// Compute quadratic ShapeSphere coefficients
@@ -195,11 +197,14 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 
 bool ShapeSphere::IntersectP( const Ray& ray ) const
 {
+	Trace trace( "ShapeSphere::IntersectP", false );
 	return Intersect( ray, 0, 0 );
 }
 
 SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 {
+	Trace trace( "ShapeSphere::copy", false );
+
 	// Use the standard version of the copy method to create
 	// a copy of this instance, including its field data
 	ShapeSphere* newShapeSphere = dynamic_cast< ShapeSphere* >( SoNode::copy( copyConnections ) );
@@ -213,11 +218,14 @@ SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 
 Point3D ShapeSphere::Sample( double u1, double u2 ) const
 {
+	Trace trace( "ShapeSphere::Sample", false );
 	return GetPoint3D( u1, u2 );
 }
 
 void ShapeSphere::updateMinMaxTheta( void *data, SoSensor * )
 {
+	Trace trace( "ShapeSphere::updateMinMaxTheta", false );
+
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 
 	//double zmin, zmax;
@@ -237,11 +245,14 @@ void ShapeSphere::updateMinMaxTheta( void *data, SoSensor * )
 
 bool ShapeSphere::OutOfRange( double u, double v ) const
 {
+	Trace trace( "ShapeSphere::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 SbVec3f ShapeSphere::GetNormal(double u, double v ) const
 {
+	Trace trace( "ShapeSphere::GetNormal", false );
+
 	Point3D point = GetPoint3D( u, v );
 
 	SbVec3f vector( point.x, point.y, point.z);
@@ -250,6 +261,8 @@ SbVec3f ShapeSphere::GetNormal(double u, double v ) const
 
 Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 {
+	Trace trace( "ShapeSphere::GetPoint3D", false );
+
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double zmin = std::min( m_z1.getValue(), m_z2.getValue() );
@@ -278,6 +291,8 @@ Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 
 void ShapeSphere::generatePrimitives(SoAction *action)
 {
+	Trace trace( "ShapeSphere::generatePrimitives", false );
+
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.
@@ -404,6 +419,8 @@ void ShapeSphere::generatePrimitives(SoAction *action)
 
 void ShapeSphere::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 {
+	Trace trace( "ShapeSphere::computeBBox", false );
+
    	double sinThetaMin = sin( m_thetaMin );
    	double sinThetaMax = sin( m_thetaMax );
    	double cosPhiMax = cos( m_phiMax.getValue() );
