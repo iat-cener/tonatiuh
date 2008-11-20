@@ -4,18 +4,22 @@
 
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
+
+win32{
+	DEFINES+= COIN_DLL SOQT_DLL
+	INCLUDEPATH += . \
+					src \
+					../Tonatiuh/src \ 
+					c:/msys/usr/local/include 
+				
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
+}
 unix{
 	INCLUDEPATH += 	. \
 					../Tonatiuh/src\ 
 					src
-}
 
-win32{
-DEFINES+= COIN_DLL SOQT_DLL
-INCLUDEPATH += . \
-				src \
-				../Tonatiuh/src\ 
-				C:/msys/usr/local/include 
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 }
 
 # Input
@@ -30,27 +34,16 @@ SOURCES = *.cpp \
 
 RESOURCES += SunshapePillbox.qrc	
 
-win32	{
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR  = ..\Tonatiuh\release\plugins\SunshapePillbox
-}
 
-unix	{
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/SunshapePillbox
-}
-	
+DESTDIR       = ../Tonatiuh/plugins/SunshapePillbox	
 TARGET        = SunshapePillbox
-    contains(TEMPLATE,lib) {
-    
-       CONFIG(debug, debug|release) {
-       
-          unix	{
-          	DESTDIR       = ../Tonatiuh/debug/plugins/SunshapePlugins/SunshapePillbox
-          	TARGET = $$member(TARGET, 0)_debug
-          	
-          }
-          else:TARGET = $$member(TARGET, 0)d
-       }
-       
-    }
+
+contains(TEMPLATE,lib) {
+   CONFIG(debug, debug|release) {     
+      unix	{
+      	TARGET = $$member(TARGET, 0)_debug
+      	
+      }
+      else:TARGET = $$member(TARGET, 0)d
+   } 
+}
