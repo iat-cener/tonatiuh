@@ -4,18 +4,21 @@ CONFIG       += plugin debug_and_release
 
 unix:{
 	INCLUDEPATH += 	. \
-					../Tonatiuh/src\ 
+					../Tonatiuh/src \ 
 					src
+					
+	LIBS +=-L/usr/lib -lCoin -lSoQt
 }
 
 win32:{
-DEFINES+= COIN_DLL SOQT_DLL
-INCLUDEPATH += . \
+	DEFINES+= COIN_DLL SOQT_DLL
+	INCLUDEPATH += . \
 				src \
 				../Tonatiuh/src\ 
 				C:/msys/usr/local/include 
+				
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
-
 
 # Input
 HEADERS = *.h \
@@ -64,23 +67,15 @@ SOURCES = *.cpp \
            	
 RESOURCES += ShapeFlatDisk.qrc		
 	
-unix:	{
-	LIBS +=-L/usr/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeFlatDisk
-}
-win32:	{
+DESTDIR = ..\Tonatiuh\plugins\ShapeFlatDisk
 
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR       = C:\eclipse\workspace\Tonatiuh\release\plugins\ShapeFlatDisk\
-}	
 TARGET        = ShapeFlatDisk
 
-    contains(TEMPLATE,lib) {
-       CONFIG(debug, debug|release) {
-          unix:{
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeFlatDisk
-          	TARGET = $$member(TARGET, 0)_debug
-          }
-          else:TARGET = $$member(TARGET, 0)d
-       }
-    }
+contains(TEMPLATE,lib) {
+   CONFIG(debug, debug|release) {
+      unix:{
+      	TARGET = $$member(TARGET, 0)_debug
+      }
+      else:TARGET = $$member(TARGET, 0)d
+   }
+}

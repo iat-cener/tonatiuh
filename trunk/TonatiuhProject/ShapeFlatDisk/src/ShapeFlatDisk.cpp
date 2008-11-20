@@ -17,22 +17,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Acknowledgments: 
+Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, 
-then Chair of the Department of Engineering of the University of Texas at 
-Brownsville. From May 2004 to July 2008, it was supported by the Department 
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under 
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. 
-During 2007, NREL also contributed to the validation of Tonatiuh under the 
-framework of the Memorandum of Understanding signed with the Spanish 
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). 
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the 
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -58,6 +58,11 @@ void ShapeFlatDisk::initClass()
 	SO_NODE_INIT_CLASS(ShapeFlatDisk, TShape, "TShape");
 }
 
+
+QString ShapeFlatDisk::getIcon()
+{
+	return ":/icons/ShapeFlatDisk.png";
+}
 
 ShapeFlatDisk::ShapeFlatDisk( )
 {
@@ -229,8 +234,8 @@ bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGe
 	double v = radius/m_radius.getValue();
 
 	// Compute rectangle \dpdu and \dpdv
-	Vector3D dpdu ( -v * m_radius.getValue() * sin(u*TwoPi) * TwoPi, 0.0, 0.0 );
-	Vector3D dpdv ( 0.0, 0.0, v * m_radius.getValue() * cos(u*TwoPi) * TwoPi );
+	Vector3D dpdu ( -v * m_radius.getValue() * sin( u * TwoPi ) * TwoPi, 0.0, v * m_radius.getValue() * cos( u * TwoPi ) * TwoPi );
+	Vector3D dpdv ( m_radius.getValue()* cos( u * TwoPi ), 0.0,  m_radius.getValue() * sin( u * TwoPi ) );
 
 	// Compute \dndu and \dndv from fundamental form coefficients
 	Vector3D dndu ( 0.0, 0.0, 0.0 );
@@ -288,7 +293,6 @@ Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
 SbVec3f ShapeFlatDisk::GetNormal (double u ,double v ) const
 {
 	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
-
-	return SbVec3f(0,1,0);
+	return SbVec3f( 0, 1, 0 );
 }
 
