@@ -4,18 +4,22 @@
 
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
-unix:{
-	INCLUDEPATH += 	. \
-					../Tonatiuh/src\
-					src
-}
 
-win32:{
-DEFINES+= COIN_DLL SOQT_DLL
-INCLUDEPATH += . \
-				src \
-				../Tonatiuh/src\
-				C:/msys/usr/local/include 
+win32{
+	DEFINES+= COIN_DLL SOQT_DLL
+	INCLUDEPATH += . \
+					src \
+					../Tonatiuh/src \ 
+					c:/msys/usr/local/include 
+				
+	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
+}
+unix{
+	INCLUDEPATH += 	. \
+					../Tonatiuh/src\ 
+					src
+
+	LIBS +=-L/usr/local/lib -lCoin -lSoQt
 }
 
 # Input
@@ -65,33 +69,15 @@ SOURCES = *.cpp \
 
 RESOURCES += ShapeTroughParabola.qrc
 
-unix:	{
-
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/release/plugins/ShapeTroughParabola
-	
-}
-win32:	{
-
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR  = C:\eclipse\workspace\Tonatiuh\release\plugins\ShapeTroughParabola\
-}
-
-		
+DESTDIR  = ..\Tonatiuh\plugins\ShapeTroughParabola
 TARGET        = ShapeTroughParabola
 
-    contains(TEMPLATE,lib) {
-    
-       CONFIG(debug, debug|release) {
-       
-       
-          unix	{
-          
-          	DESTDIR       = ../Tonatiuh/debug/plugins/ShapeTroughParabola
-          	TARGET = $$member(TARGET, 0)_debug
-          	
-          }
-          else:TARGET = $$member(TARGET, 0)d
-       }
-
-    }
+contains(TEMPLATE,lib) {
+   CONFIG(debug, debug|release) {
+      unix	{
+      	TARGET = $$member(TARGET, 0)_debug
+      	
+      }
+      else:TARGET = $$member(TARGET, 0)d
+   }
+}
