@@ -63,7 +63,7 @@ public:
 
 	SoSFDouble m_reflectivity;
 	SoSFDouble m_sigmaSlope;
-	//SoSFDouble m_sigmaSpecularity;
+	//SoSFDouble m_sigmaSpecularity; ** yet to implemented
 	SoSFEnum m_distribution;
 	SoMFColor  m_ambientColor;
 	SoMFColor  m_diffuseColor;
