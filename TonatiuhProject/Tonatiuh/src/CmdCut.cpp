@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Trace.h"
 
 CmdCut::CmdCut( const QModelIndex& selectedIndex, SoNode*& clipboard, SceneModel* model, QUndoCommand* parent )
-: QUndoCommand("Cut", parent), m_pClipboard ( clipboard ), m_previousNode ( 0 ),  m_pModel(model)
+: QUndoCommand("Cut", parent), m_pClipboard ( clipboard ), m_previousNode ( 0 ), m_coinNode( 0 ), m_coinParent( 0 ), m_pModel( model ), m_row ( -1 )
 {
 	Trace trace( "CmdCut::CmdCut", false );
 

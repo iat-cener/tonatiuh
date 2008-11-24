@@ -40,8 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define CMDDELETETRACKER_H_
 
 #include <QUndoCommand>
-#include <QModelIndex>
 
+class QModelIndex;
 class SceneModel;
 class TGateEngine;
 class TTracker;

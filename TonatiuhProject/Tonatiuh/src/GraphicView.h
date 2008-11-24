@@ -39,14 +39,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef GRAPHICVIEW_H_
 #define GRAPHICVIEW_H_
 
-#include <Inventor/nodes/SoCamera.h>
-
 #include <QAbstractItemView>
 
-class SoSelection;
 class QModelIndex;
-class SoQtExaminerViewer;
 class SbViewportRegion;
+class SoCamera;
+class SoQtExaminerViewer;
+class SoSelection;
 class TSeparatorKit;
 
 class GraphicView : public QAbstractItemView
@@ -55,6 +54,8 @@ class GraphicView : public QAbstractItemView
 
 public:
     GraphicView( QWidget* parent = 0 );
+    ~GraphicView();
+
     void SetSceneGraph( SoSelection* sceneGraphRoot );
     SbViewportRegion GetViewportRegion() const;
     SoCamera* GetCamera() const;
@@ -82,6 +83,6 @@ protected:
 private:
     SoSelection* m_sceneGraphRoot;
     SoQtExaminerViewer* m_myRenderArea;
- };
+};
 
 #endif /*GRAPHICVIEW_H_*/

@@ -42,8 +42,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "NormalVector.h"
 #include "Point3D.h"
-#include "TShape.h"
 #include "Vector3D.h"
+
+class TShape;
 
 struct DifferentialGeometry
 {

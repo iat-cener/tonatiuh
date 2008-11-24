@@ -55,6 +55,5 @@ ActionInsertSunShape::~ActionInsertSunShape()
 void ActionInsertSunShape::OnActionInsertSunShapeTriggered()
 {
 	Trace( "ActionInsertSunShape::OnActionInsertSunShapeTriggered", false );
-
 	emit CreateSunShape( m_pTSunShapeFactory );
 }

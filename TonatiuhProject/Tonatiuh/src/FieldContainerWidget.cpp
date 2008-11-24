@@ -36,75 +36,82 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/SbString.h>
-#include <Inventor/SbName.h>
-#include <Inventor/fields/SoField.h>
-#include <Inventor/lists/SoFieldList.h>
-#include <Inventor/fields/SoFieldData.h>
-#include <Inventor/fields/SoFieldContainer.h>
-#include <Inventor/sensors/SoFieldSensor.h>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QTreeView>
+#include <QVBoxLayout>
 
-#include <QtGui>
-#include <QStringList>
-#include <QTreeWidgetItem>
+#include <Inventor/SbName.h>
+#include <Inventor/SbString.h>
+#include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoFieldContainer.h>
+#include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/lists/SoFieldList.h>
 
 #include "FieldContainerWidget.h"
-#include "MainWindow.h"
 #include "ParametersDelegate.h"
 #include "ParametersItem.h"
 #include "ParametersModel.h"
-#include "ParametersView.h"
 #include "Trace.h"
 
 FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent )
-: m_pFieldContainer( fieldContainer ), m_pModel ( 0 ), m_containerName( containerName )
+:QWidget( parent ), m_ptreeView( 0 ), m_pFieldContainer( fieldContainer ), m_delegate( 0 ), m_pModel ( 0 ), m_containerName( containerName )
 {
 	Trace trace( "FieldContainerWidget::FieldContainerWidget", false );
 
-    m_ptreeView = new QTreeView;
-    m_ptreeView->setAlternatingRowColors( true );
-    connect (m_ptreeView, SIGNAL(doubleClicked ( const QModelIndex& ) ), this, SLOT( EditorOpened( const QModelIndex& ) ) );
+	m_ptreeView = new QTreeView;
+	m_ptreeView->setAlternatingRowColors( true );
+	connect (m_ptreeView, SIGNAL(doubleClicked ( const QModelIndex& ) ), this, SLOT( EditorOpened( const QModelIndex& ) ) );
 
 
-	ParametersDelegate* delegate = new ParametersDelegate( );
-    m_ptreeView->setItemDelegate( delegate );
-    connect (delegate, SIGNAL( closeEditor( QWidget* ) ), this, SLOT( EditorClosed( QWidget* ) ) );
+	m_delegate = new ParametersDelegate;
+	m_ptreeView->setItemDelegate( m_delegate );
+	connect( m_delegate, SIGNAL( closeEditor( QWidget* ) ), this, SLOT( EditorClosed( QWidget* ) ) );
 
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->addWidget( m_ptreeView );
-    setLayout( mainLayout );
+	QVBoxLayout* mainLayout = new QVBoxLayout;
+	mainLayout->addWidget( m_ptreeView );
+	setLayout( mainLayout );
 
-    m_pModel = new ParametersModel();
-    m_pModel->SetEditable( true );
-    m_pModel->setHorizontalHeaderLabels( QStringList() << tr("Parameter") << tr("Value") );
+	m_pModel = new ParametersModel();
+	m_pModel->SetEditable( true );
+	m_pModel->setHorizontalHeaderLabels( QStringList() << tr("Parameter") << tr("Value") );
 	m_ptreeView->setModel(m_pModel);
 
-    if( m_pFieldContainer ) ReadFields( );
+	if( m_pFieldContainer ) ReadFields( );
+}
+
+FieldContainerWidget::~FieldContainerWidget()
+{
+	Trace trace( "FieldContainerWidget::~FieldContainerWidget", false );
+ 	delete m_ptreeView;
+ 	delete m_delegate;
+ 	delete m_pModel;
+
 }
 
 void FieldContainerWidget::ReadFields( )
 {
 	Trace trace( "FieldContainerWidget::ReadFields", false );
 
-    SoFieldList fieldList;
-    int totalFields = m_pFieldContainer->getFields( fieldList );
+	SoFieldList fieldList;
+	int totalFields = m_pFieldContainer->getFields( fieldList );
 
-    SoField* pField = 0;
-    SbName fieldName;
-    SbString fieldValue = "null";
+	SoField* pField = 0;
+	SbName fieldName;
+	SbString fieldValue = "null";
 
 	for( int index = 0; index < totalFields; index++ )
 	{
 		pField = fieldList.get( index );
 		if( pField )
 		{
-    		pField->get( fieldValue );
-    	    if( m_pFieldContainer->getFieldName( pField, fieldName ) )
-    	    {
+			pField->get( fieldValue );
+			if( m_pFieldContainer->getFieldName( pField, fieldName ) )
+			{
 				m_pModel->setItem( index, false, new ParametersItem ( QString(fieldName.getString()), false, pField ));
 				ParametersItem* valueItem = new ParametersItem ( QString(fieldValue.getString()), true, pField );
 				m_pModel->setItem( index, true, valueItem );
-    	    }
+			}
 		}
 	}
 }
@@ -122,7 +129,7 @@ void FieldContainerWidget::EditorOpened( const QModelIndex& index )
 	m_lastEditingIndex = index;
 }
 
-void FieldContainerWidget::EditorClosed(  QWidget* editor )
+void FieldContainerWidget::EditorClosed( QWidget* editor )
 {
 	Trace trace( "FieldContainerWidget::EditorClosed", false );
 
@@ -132,13 +139,12 @@ void FieldContainerWidget::EditorClosed(  QWidget* editor )
 	{
 		QComboBox* combo = static_cast<QComboBox *>(editor);
 		newValue = combo->currentText( );
-
 	}
-	else
-	{
-		QLineEdit  *textEdit = dynamic_cast<QLineEdit *>(editor);
-		newValue = textEdit->text();
-	}
+		else
+		{
+			QLineEdit* textEdit = dynamic_cast<QLineEdit *>(editor);
+			newValue = textEdit->text();
+		}
 
 	SoFieldList fieldList;
 	int numFields = m_pFieldContainer->getFields (fieldList);
@@ -150,11 +156,11 @@ void FieldContainerWidget::EditorClosed(  QWidget* editor )
 		SbString indexValue;
 		fieldList[num]->get( indexValue );
 		oldValuesList->append( QString(indexValue.getString() ) );
-	}
+	 }
 
-	m_pModel->setData(m_lastEditingIndex, newValue, Qt::UserRole);
+	 m_pModel->setData(m_lastEditingIndex, newValue, Qt::UserRole);
 
-	emit valueModificated( *oldValuesList, m_containerName );
+	 emit valueModificated( *oldValuesList, m_containerName );
 }
 
 void FieldContainerWidget::Reset()
@@ -162,3 +168,4 @@ void FieldContainerWidget::Reset()
 	Trace trace( "FieldContainerWidget::Reset", false );
 	m_ptreeView->reset();
 }
+

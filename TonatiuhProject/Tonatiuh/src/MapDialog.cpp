@@ -36,7 +36,7 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QApplication>
+/*#include <QApplication>
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDir>
@@ -52,15 +52,34 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <MarbleWidget.h>
 #include <MapThemeManager.h>
 
+
+#include "tgc.h"
+#include "Trace.h"
+
+
+#include <iostream>*/
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QDir>
+#include <QDoubleSpinBox>
+#include <QLabel>
+#include <QSplitter>
+#include <QTabWidget>
+#include <QVBoxLayout>
+
+#include <MarbleDirs.h>
+#include <MarbleWidget.h>
+#include <MapThemeManager.h>
+
 #include "MapDialog.h"
 #include "tgc.h"
 #include "Trace.h"
 
 
-#include <iostream>
-
 MapDialog::MapDialog( QWidget *parent )
-   : QDialog(parent)
+:QDialog( parent ), m_marbleWidget( 0 ), m_control( 0 ), m_mapThemeManager( 0 ),
+m_splitter( 0 ), m_latSpinBox( 0 ), m_latComboBox( 0 ), m_lonSpinBox( 0 ),
+m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 {
 	QDir directory( qApp->applicationDirPath() );
 	directory.cd( "../data" );
@@ -172,12 +191,14 @@ MapDialog::MapDialog( QWidget *parent )
 
 void MapDialog::GetCoordinates( double* lon, double* lat ) const
 {
+	Trace trace( "MapDialog::GetCoordinates", false );
 	*lon = m_longitude;
 	*lat = m_latitude;
 }
 
 void MapDialog::SetCoordinates(  double lon, double lat )
 {
+	Trace trace( "MapDialog::SetCoordinates", false );
 	m_longitude = lon;
 	m_latitude = lat;
 
@@ -187,38 +208,43 @@ void MapDialog::SetCoordinates(  double lon, double lat )
 
 void MapDialog::zoomIn()
 {
+	Trace trace( "MapDialog::zoomIn", false );
     m_marbleWidget->zoomIn();
 }
 
 void MapDialog::zoomOut()
 {
+	Trace trace( "MapDialog::zoomOut", false );
     m_marbleWidget->zoomOut();
 }
 
 void MapDialog::moveLeft()
 {
+	Trace trace( "MapDialog::moveLeft", false );
     m_marbleWidget->moveLeft();
 }
 
 void MapDialog::moveRight()
 {
+	Trace trace( "MapDialog::moveRight", false );
     m_marbleWidget->moveRight();
 }
 
 void MapDialog::moveUp()
 {
+	Trace trace( "MapDialog::moveUp", false );
     m_marbleWidget->moveUp();
 }
 
 void MapDialog::moveDown()
 {
+	Trace trace( "MapDialog::moveDown", false );
     m_marbleWidget->moveDown();
 }
 
 bool MapDialog::sideBarShown() const
 {
 	Trace trace( "MapDialog::sideBarShown", false );
-
 	return m_control->isVisible();
 }
 
@@ -231,11 +257,11 @@ void MapDialog::changeGpsPosition( double lon, double lat, GeoDataPoint::Unit )
 	m_longitude = lon;
 	if( m_longitude < 0 ) m_lonComboBox->setCurrentIndex( 1 );
 	else m_lonComboBox->setCurrentIndex( 0 );
-	m_lonSpinBox->setValue( abs( m_longitude * ( 180 / tgc::Pi ) ) );
+	m_lonSpinBox->setValue( fabs( m_longitude * ( 180 / tgc::Pi ) ) );
 
 	m_latitude = -lat;
 	if( m_latitude < 0 ) m_latComboBox->setCurrentIndex( 1 );
 	else m_latComboBox->setCurrentIndex( 0 );
 
-	m_latSpinBox->setValue( abs( m_latitude * ( 180 / tgc::Pi ) ) );
+	m_latSpinBox->setValue( fabs( m_latitude * ( 180 / tgc::Pi ) ) );
 }

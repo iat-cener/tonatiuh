@@ -40,14 +40,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "BBox.h"
 #include "Ray.h"
+#include "tgc.h"
 #include "Trace.h"
 #include "Vector3D.h"
 
-const double Infinity = HUGE_VAL;
 
 
 BBox::BBox()
-: pMin( Infinity,  Infinity,  Infinity ), pMax( -Infinity, -Infinity, -Infinity )
+: pMin( tgc::Infinity, tgc::Infinity, tgc::Infinity ), pMax( -tgc::Infinity, -tgc::Infinity, -tgc::Infinity )
 {
 	Trace trace( "BBox::BBox", false );
 }

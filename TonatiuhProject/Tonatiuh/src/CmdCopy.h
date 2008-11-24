@@ -40,8 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define CMDCOPY_H_
 
 #include <QUndoCommand>
-#include <QModelIndex>
 
+class QModelIndex;
 class SoBaseKit;
 class SceneModel;
 

@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class QLabel;
 class SoSeparator;
 
+
 class CelestialWidget : public QWidget
 {
 	Q_OBJECT
@@ -60,16 +61,18 @@ private:
 	QLabel* m_rightValue;
 	QLabel* m_declinationValue;
 
-	SoSeparator* CelestialEquator(int r) const;
+	SoSeparator* CelestialEquator() const;
 	SoSeparator* Declination();
 	SoSeparator* Ecliptic() const;
 	SoSeparator* Ejes() const;
 	SoSeparator* Points() const;
 	SoSeparator* RightAscension();
-	SoSeparator* Sphere(int r) const;
+	SoSeparator* Sphere() const;
 	SoSeparator* Star();
 
 	SoSeparator* m_rootNode;
+
+	const double sphereRadio;
 
 	double m_declination;
 	double m_rightAscension;

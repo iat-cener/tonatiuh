@@ -53,6 +53,7 @@ class InstanceNode;
 class ParametersViewItem;
 class PhotonMap;
 class QAbstractItemModel;
+class QDateTime;
 class QItemSelection;
 class QItemSelectionModel;
 class QToolBar;
@@ -168,11 +169,9 @@ public slots:
 
     //for sunposdialog signals
     void SunPositionChanged( QDateTime* time, double longitude, double latitude );
-    void SunLightChanged( QDateTime* time, double longitude, double latitude );
 
 protected:
     void closeEvent( QCloseEvent* event );
-    //static void manipulatorChanged(void *data, SoDragger *);
 
 
 private:
@@ -212,11 +211,11 @@ private:
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
 	void SetBoundigBoxes( InstanceNode* instanceNode, SbViewportRegion region );
 	SoSeparator* createGrid( int size );
-private:
+
     enum { m_maxRecentFiles = 7 };
     QString m_currentFile;
     QStringList m_recentFiles;
-    QAction* m_recentFileActions[m_maxRecentFiles];
+    QAction** m_recentFileActions;//[m_maxRecentFiles];
     Document* m_document;
     QUndoStack* m_commandStack;
     QUndoView* m_commandView;
@@ -233,7 +232,6 @@ private:
     RandomDeviate* m_pRand;
     SoNode* m_coinNode_Buffer;
     QStringList* m_manipulators_Buffer;
-    AnalyzerWindow* m_pAnalyzerWindow;
     unsigned long m_tracedRays;
     unsigned long m_raysPerIteration;
     bool m_increasePhotonMap;

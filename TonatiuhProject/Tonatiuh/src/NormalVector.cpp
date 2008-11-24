@@ -37,9 +37,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
-#include <cfloat>
 
 #include "NormalVector.h"
+#include "Tgc.h"
 #include "Trace.h"
 #include "Vector3D.h"
 
@@ -106,9 +106,9 @@ bool NormalVector::operator==( const NormalVector& norm ) const
     	return true;
     else
     return(
-    	( fabs(x - norm.x) < DBL_EPSILON ) &&
-    	( fabs(y - norm.y) < DBL_EPSILON ) &&
-    	( fabs(z - norm.z) < DBL_EPSILON ) );
+    	( fabs(x - norm.x) < tgc::Epsilon ) &&
+    	( fabs(y - norm.y) < tgc::Epsilon ) &&
+    	( fabs(z - norm.z) < tgc::Epsilon ) );
 }
 
 double NormalVector::operator[]( int i ) const

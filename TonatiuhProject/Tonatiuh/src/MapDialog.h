@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define MAPDIALOG_H_
 
 #include <QDialog>
-#include <QPixmap>
 
 #include "MarbleControlBox.h"
 

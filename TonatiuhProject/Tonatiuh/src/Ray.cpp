@@ -36,23 +36,18 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <cmath>
-#include <cfloat>
-
 #include "Ray.h"
+#include "tgc.h"
 #include "Trace.h"
 
-const double Epsilon = DBL_EPSILON;
-const double Infinity = HUGE_VAL;
-
 Ray::Ray( )
-: mint( Epsilon ), maxt( Infinity )
+: mint( tgc::Epsilon ), maxt( tgc::Infinity )
 {
 	Trace trace( "Ray::Ray" ,false );
 }
 
 Ray::Ray( const Point3D& orig, const Vector3D& direc )
-: origin( orig ), direction( direc ), mint( Epsilon ), maxt( Infinity )
+: origin( orig ), direction( direc ), mint( tgc::Epsilon ), maxt( tgc::Infinity )
 {
 	Trace trace( "Ray::Ray" ,false );
 }
