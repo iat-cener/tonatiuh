@@ -40,10 +40,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define CMDPASTE_H_
 
 #include <QUndoCommand>
-#include <QModelIndex>
 
 #include "tgc.h"
 
+class QModelIndex;
 class SceneModel;
 class SoBaseKit;
 

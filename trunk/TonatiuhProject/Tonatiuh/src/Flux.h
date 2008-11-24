@@ -36,32 +36,28 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ANALYZERWINDOW_H_
-#define ANALYZERWINDOW_H_
-
-#include <QDialog>
+#ifndef FLUX_H_
+#define FLUX_H_
 
 #include <qwt3d_function.h>
 #include <qwt3d_surfaceplot.h>
 
-class PhotonMap;
+#include "PhotonMap.h"
+#include "Point3D.h"
+#include "TShape.h"
+
 class QLabel;
-class TShape;
 
-
-class AnalyzerWindow : public QDialog
+class Flux : public Qwt3D::Function
 {
-	Q_OBJECT
-
 public:
-	AnalyzerWindow( QWidget* parent = 0 );
-	~AnalyzerWindow();
+	Flux(Qwt3D::SurfacePlot& pw, PhotonMap* map, TShape* shape);
+	~Flux();
 
-	void Plot( PhotonMap* map, TShape* shape, unsigned int u, unsigned int v);
+   	double operator()(double x, double y);
 
 private:
-	Qwt3D::SurfacePlot* m_plot;
-
+	PhotonMap* m_map;
+	TShape* m_shape;
 };
-
-#endif /*ANALYZERWINDOW_H_*/
+#endif /*FLUX_H_*/

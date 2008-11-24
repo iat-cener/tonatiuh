@@ -37,13 +37,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cstring>
-#include <cmath>
-#include <cfloat>
 
 #include "Matrix4x4.h"
+#include "tgc.h"
 #include "Trace.h"
-
-const double Epsilon = DBL_EPSILON;
 
 Matrix4x4::Matrix4x4( )
 {
@@ -94,22 +91,22 @@ bool Matrix4x4::operator==( const Matrix4x4& mat ) const
     	return true;
     else
     return(
-    	( fabs(m[0][0] - mat.m[0][0]) < DBL_EPSILON ) &&
-    	( fabs(m[0][1] - mat.m[0][1]) < DBL_EPSILON ) &&
-    	( fabs(m[0][2] - mat.m[0][2]) < DBL_EPSILON ) &&
-    	( fabs(m[0][3] - mat.m[0][3]) < DBL_EPSILON ) &&
-    	( fabs(m[1][0] - mat.m[1][0]) < DBL_EPSILON ) &&
-    	( fabs(m[1][1] - mat.m[1][1]) < DBL_EPSILON ) &&
-    	( fabs(m[1][2] - mat.m[1][2]) < DBL_EPSILON ) &&
-    	( fabs(m[1][3] - mat.m[1][3]) < DBL_EPSILON ) &&
-    	( fabs(m[2][0] - mat.m[2][0]) < DBL_EPSILON ) &&
-    	( fabs(m[2][1] - mat.m[2][1]) < DBL_EPSILON ) &&
-    	( fabs(m[2][2] - mat.m[2][2]) < DBL_EPSILON ) &&
-    	( fabs(m[2][3] - mat.m[2][3]) < DBL_EPSILON ) &&
-    	( fabs(m[3][0] - mat.m[3][0]) < DBL_EPSILON ) &&
-    	( fabs(m[3][1] - mat.m[3][1]) < DBL_EPSILON ) &&
-    	( fabs(m[3][2] - mat.m[3][2]) < DBL_EPSILON ) &&
-    	( fabs(m[3][3] - mat.m[3][3]) < DBL_EPSILON ) );
+    	( fabs(m[0][0] - mat.m[0][0]) < tgc::Epsilon ) &&
+    	( fabs(m[0][1] - mat.m[0][1]) < tgc::Epsilon ) &&
+    	( fabs(m[0][2] - mat.m[0][2]) < tgc::Epsilon ) &&
+    	( fabs(m[0][3] - mat.m[0][3]) < tgc::Epsilon ) &&
+    	( fabs(m[1][0] - mat.m[1][0]) < tgc::Epsilon ) &&
+    	( fabs(m[1][1] - mat.m[1][1]) < tgc::Epsilon ) &&
+    	( fabs(m[1][2] - mat.m[1][2]) < tgc::Epsilon ) &&
+    	( fabs(m[1][3] - mat.m[1][3]) < tgc::Epsilon ) &&
+    	( fabs(m[2][0] - mat.m[2][0]) < tgc::Epsilon ) &&
+    	( fabs(m[2][1] - mat.m[2][1]) < tgc::Epsilon ) &&
+    	( fabs(m[2][2] - mat.m[2][2]) < tgc::Epsilon ) &&
+    	( fabs(m[2][3] - mat.m[2][3]) < tgc::Epsilon ) &&
+    	( fabs(m[3][0] - mat.m[3][0]) < tgc::Epsilon ) &&
+    	( fabs(m[3][1] - mat.m[3][1]) < tgc::Epsilon ) &&
+    	( fabs(m[3][2] - mat.m[3][2]) < tgc::Epsilon ) &&
+    	( fabs(m[3][3] - mat.m[3][3]) < tgc::Epsilon ) );
 }
 
 std::ostream& operator<<( std::ostream& os, const Matrix4x4& mat )
@@ -120,7 +117,7 @@ std::ostream& operator<<( std::ostream& os, const Matrix4x4& mat )
 		os << "[ ";
 		for (int j = 0; j < 4; ++j)
 		{
-			if( mat.m[i][j] < Epsilon && mat.m[i][j] > -Epsilon )
+			if( mat.m[i][j] < tgc::Epsilon && mat.m[i][j] > -tgc::Epsilon )
 				os << "0";
 			else
 				os << mat.m[i][j];

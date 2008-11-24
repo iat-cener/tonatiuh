@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <Inventor/nodekits/SoBaseKit.h>
+
 #include "CmdPaste.h"
 #include "SceneModel.h"
 #include "InstanceNode.h"
@@ -44,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 
 CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  SoNode*& coinClipboard, SceneModel& sceneModel, QUndoCommand* parent )
-: QUndoCommand("Paste", parent), m_pasteType( type ), m_coinParent( 0 ), m_coinChild( coinClipboard ), m_sceneModel( &sceneModel )
+: QUndoCommand("Paste", parent), m_pasteType( type ), m_coinParent( 0 ), m_coinChild( coinClipboard ), m_sceneModel( &sceneModel ), m_row( -1 )
 {
 	Trace trace( "CmdPaste::CmdPaste", false);
 
@@ -71,6 +72,5 @@ void CmdPaste::undo()
 void CmdPaste::redo( )
 {
 	Trace trace( "CmdPaste::redo", false );
-
 	m_sceneModel->Paste( m_pasteType, *m_coinParent, *m_coinChild, m_row );
 }

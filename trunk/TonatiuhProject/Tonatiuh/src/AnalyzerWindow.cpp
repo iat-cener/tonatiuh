@@ -38,13 +38,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QVBoxLayout>
 
 #include "AnalyzerWindow.h"
+#include "Flux.h"
 #include "tgf.h"
 #include "Trace.h"
 
 using namespace Qwt3D;
 
 AnalyzerWindow::AnalyzerWindow( QWidget* parent )
-:QDialog( parent )
+:QDialog( parent ), m_plot( 0 )
 {
 	Trace trace( "AnalyzerWindow::AnalyzerWindow", false );
 	setWindowTitle(tr("Results Analyzer"));
@@ -62,7 +63,7 @@ void AnalyzerWindow::Plot(PhotonMap* map, TShape* shape, unsigned int u, unsigne
 	Trace trace( "AnalyzerWindow::Plot", false );
 	m_plot = new SurfacePlot(this);
 
-    Flux flux(*m_plot, map, shape);
+    Flux flux( *m_plot, map, shape );
 
     flux.setMesh(u,v);
     flux.setDomain(0,100,0,100);

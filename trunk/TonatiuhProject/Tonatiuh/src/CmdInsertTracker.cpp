@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 
 CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SceneModel* model, QUndoCommand* parent )
-: QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_pModel( model )
+: QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_pModel( model ), m_row( -1 )
 {
 	Trace trace( "CmdInsertTracker::CmdInsertTracker", false );
 
@@ -54,7 +54,7 @@ CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& paren
 
 	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertTracker called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
-	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
+	m_coinParent = dynamic_cast< SoBaseKit* > ( instanceParent->GetNode() );
 }
 
 CmdInsertTracker::~CmdInsertTracker()

@@ -55,6 +55,5 @@ ActionInsertShape::~ActionInsertShape()
 void ActionInsertShape::OnActionInsertShapeTriggered()
 {
 	Trace( "ActionInsertShape::OnActionInsertShapeTriggered", false );
-
 	emit CreateShape( m_pTShapeFactory );
 }

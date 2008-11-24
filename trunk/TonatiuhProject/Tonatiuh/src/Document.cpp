@@ -61,7 +61,7 @@ void selectionFinishCallback( void * userData, SoSelection* selection )
 }
 
 Document::Document()
-: m_root(0), m_scene(0), m_isModified(false)
+: m_root(0), m_scene(0), m_isModified( false )
 {
     Trace trace( "Document::Document", false );
 	m_root = new SoSelection;

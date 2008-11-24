@@ -17,25 +17,25 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Acknowledgments: 
+Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, 
-then Chair of the Department of Engineering of the University of Texas at 
-Brownsville. From May 2004 to July 2008, it was supported by the Department 
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under 
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. 
-During 2007, NREL also contributed to the validation of Tonatiuh under the 
-framework of the Memorandum of Understanding signed with the Spanish 
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). 
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the 
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
- 
+
 #include "PhotonMap.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,9 +64,9 @@ PhotonMap :: PhotonMap( long unsigned maxPhotons )
 	m_maxPhotons = maxPhotons;
 	m_axis = 0;
 	m_photons = new Photon*[m_maxPhotons+1];
-	
+
 	if (!m_photons)  tgf::SevereError( "Out of memory initializing photon map" );
-	
+
 	BBox m_bbox();
 
 }
@@ -74,7 +74,7 @@ PhotonMap :: PhotonMap( long unsigned maxPhotons )
 PhotonMap :: ~PhotonMap()
 {
 	Trace trace( "PhotonMap::~PhotonMap", false );
-	for( long unsigned i = 1; i <= m_storedPhotons; i++) 
+	for( long unsigned i = 1; i <= m_storedPhotons; i++)
 	{
 		delete m_photons[i];
 	}
@@ -94,14 +94,14 @@ void PhotonMap::loadPhotonMap( char *filename )
 	FILE *fp;
 	fp=fopen(filename,"rb");
 	assert(fp);
-struct stat sbuf;
+	struct stat sbuf;
 	m_storedPhotons = sbuf.st_size/sizeof(Photon);
 	m_photons = new Photon*[m_maxPhotons+1];
-	int count = fread(m_photons,sizeof(Photon),m_storedPhotons,fp);
+	long unsigned count = fread(m_photons, sizeof(Photon), m_storedPhotons, fp );
 	fclose(fp);
-	if(count != m_storedPhotons)
+	if( count != m_storedPhotons )
 	{
-		std::cout << "PhotonMap::loadPhotonMap count != m_storePhotons" << std::endl;	
+		std::cout << "PhotonMap::loadPhotonMap count != m_storePhotons" << std::endl;
 	}
 	m_halfStoredPhotons = m_storedPhotons/2-1;
 }
@@ -110,7 +110,7 @@ void PhotonMap::locatePhotons( NearestPhotons* const np, const long unsigned ind
 {
     Photon* p = m_photons[index];
 	double dist1;
-	
+
     if ( index < m_halfStoredPhotons)
     {
 	    dist1 = np->m_pos[ p->m_plane ] - p->m_pos[ p->m_plane ];
@@ -127,7 +127,7 @@ void PhotonMap::locatePhotons( NearestPhotons* const np, const long unsigned ind
 	}
 
 	double dist2 = DistanceSquared(p->m_pos, np->m_pos);
-	
+
 	if ( dist2 < np->m_dist2[0] )
 	{
 	    if ( np->m_found < np->m_max )
@@ -164,10 +164,10 @@ void PhotonMap::locatePhotons( NearestPhotons* const np, const long unsigned ind
 	            }
 	            np->m_gotHeap = 1;
 	        }
-	
+
 	        // insert new photon into max heap
 	        // delete largest element, insert new and reorder the heap
-	
+
 	        parent=1;
 	        j = 2;
 	        while ( j <= np->m_found )
@@ -198,7 +198,7 @@ double PhotonMap::fluxAtPoint( const Point3D& point, int maxClosest ) const
 	np.m_found = 0;
 	np.m_gotHeap = 0;
 	np.m_dist2[0] = 10;
-	
+
 	locatePhotons(&np, 1);
 	Point3D furthest = np.m_index[np.m_found]->m_pos;
 	double radius = Distance(point, furthest);
@@ -210,11 +210,11 @@ double PhotonMap::fluxAtPoint( const Point3D& point, int maxClosest ) const
 void PhotonMap :: store( Photon* photon )
 {
 	if ( m_storedPhotons >= m_maxPhotons ) return;
-	
+
   	m_storedPhotons++;
   	photon->m_id = m_storedPhotons;
   	m_photons[m_storedPhotons] = photon;
-  	
+
 	m_bbox = Union( m_bbox,photon->m_pos );
 }
 
@@ -227,24 +227,24 @@ void PhotonMap::balance()
         // allocate two temporary arrays for the balancing procedure
 		Photon*** pa1 = new Photon**[m_maxPhotons+1];
 		Photon*** pa2 = new Photon**[m_maxPhotons+1];
-	
+
 		long unsigned i;
 		for ( i = 0; i <= m_storedPhotons; i++ ) pa2[i] = &m_photons[i];
 	   	balanceSegment( pa1, pa2, 1, 1, m_storedPhotons );
-		
+
 		delete[] pa2;
         pa2 = 0;
-	
+
 	    // reorganize balanced kd-tree (make a heap)
 	    long unsigned d;
 	    long unsigned j = 1;
 	    long unsigned foo = 1;
 	    Photon* foo_photon = m_photons[j];
 	    for ( i=1; i <= m_storedPhotons; i++ )
-	    {	
+	    {
 		    d = pa1[j]-m_photons;
 		    pa1[j] = 0;
-				
+
 		    if ( d != foo ) m_photons[j] = m_photons[d];
 		    else
 		    {
@@ -273,8 +273,8 @@ void PhotonMap::balance()
 // than the median in the upper half. The comparison
 // criteria is the axis (indicated by the axis parameter)
 // (inspired by routine in "Algorithms in C++" by Sedgewick)
-void PhotonMap::medianSplit( Photon*** p, const long unsigned start, const long unsigned end, 
-                             const long unsigned median, const long unsigned axis )         
+void PhotonMap::medianSplit( Photon*** p, const long unsigned start, const long unsigned end,
+                             const long unsigned median, const long unsigned axis )
 {
 
 	long unsigned left = start;
@@ -317,7 +317,7 @@ void PhotonMap::balanceSegment( Photon*** pbal, Photon*** porg, const long unsig
  	else if ( ( m_bbox.pMax[1] - m_bbox.pMin[1] ) > ( m_bbox.pMax[2] - m_bbox.pMin[2] ) ) axis = 1;
 
 	m_axis = axis;
-	
+
     //Partition photon block around the median
   	medianSplit( porg, start, end, median, axis );
 	porg[ median ][0]->m_plane = axis;
@@ -336,17 +336,17 @@ void PhotonMap::balanceSegment( Photon*** pbal, Photon*** porg, const long unsig
         }
         else pbal[ 2*index ] = porg[start];
     }
-  	
+
   	if ( median < end )
   	{
         //Balance right segment
     	if ( median+1 < end )
     	{
-      	    const double tmp = m_bbox.pMin[axis];     
+      	    const double tmp = m_bbox.pMin[axis];
      		m_bbox.pMin[axis] = pbal[index][0]->m_pos[axis];
       		balanceSegment( pbal, porg, 2*index+1, median+1, end );
       		m_bbox.pMin[axis] = tmp;
-    	} 
+    	}
     	else pbal[ 2*index+1 ] = porg[end];
     }
 }
@@ -354,5 +354,5 @@ void PhotonMap::balanceSegment( Photon*** pbal, Photon*** porg, const long unsig
 Photon* PhotonMap::GetPhoton( int index ) const
 {
 	Trace trace( "PhotonMap::GetPhoton", false );
-	return m_photons[index]; 
+	return m_photons[index];
 }

@@ -69,13 +69,15 @@ signals:
     void selectionFinish( SoSelection* selection );
 
 private:
+    SoSceneKit* GetSceneKitFromFile( const QString& fileName );
+    void InitializeScene();
+    void ClearScene();
+
 	SoSelection* m_root;
     SoSceneKit* m_scene;
     bool m_isModified;
 
-    SoSceneKit* GetSceneKitFromFile( const QString& fileName );
-    void InitializeScene();
-    void ClearScene();
+
 };
 
 #endif /*DOCUMENT_H_*/

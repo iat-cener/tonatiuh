@@ -40,8 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define CMDCUT_H_
 
 #include <QUndoCommand>
-#include <QModelIndex>
 
+class QModelIndex;
 class SceneModel;
 
 class CmdCut : public QUndoCommand

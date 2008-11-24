@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSeparatorKit.h"
 
 CmdInsertSeparatorKit::CmdInsertSeparatorKit( TSeparatorKit* separatorKit,  const QModelIndex& parentIndex, SceneModel* model, QUndoCommand* parent )
-: QUndoCommand("InsertSeparatorKit", parent), m_separatorKit ( separatorKit ), m_coinParent( 0 ), m_pModel( model )
+: QUndoCommand("InsertSeparatorKit", parent), m_separatorKit ( separatorKit ), m_coinParent( 0 ), m_pModel( model ), m_row( -1 )
 {
 	Trace trace( "CmdInsertSeparatorKit::CmdInsertSeparatorKit", false );
 
@@ -54,7 +54,7 @@ CmdInsertSeparatorKit::CmdInsertSeparatorKit( TSeparatorKit* separatorKit,  cons
 
 	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertSeparatorKit called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
-	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
+	m_coinParent = dynamic_cast< SoBaseKit* > ( instanceParent->GetNode() );
 }
 
 CmdInsertSeparatorKit::~CmdInsertSeparatorKit()

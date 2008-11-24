@@ -36,41 +36,33 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QVariant>
+
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
-#include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/SoFullPath.h>
-#include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoSelection.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 
 #include "GraphicView.h"
-#include "Trace.h"
-#include "InstanceNode.h"
-#include "SceneModel.h"
 #include "PathWrapper.h"
+#include "Trace.h"
 
-#include <QFont>
-#include <QItemSelection>
-#include <QItemSelectionModel>
-#include <QModelIndex>
-#include <QRect>
-#include <QSize>
-#include <QPoint>
-#include <QWidget>
-
-#include <QVariant>
 
 GraphicView::GraphicView( QWidget* parent )
-: QAbstractItemView( parent ), m_sceneGraphRoot(0)
+:QAbstractItemView( parent ), m_sceneGraphRoot( 0 ), m_myRenderArea( 0 )
 {
     Trace trace( "GraphicView::GraphicView", false );
+}
+
+GraphicView::~GraphicView()
+{
+    Trace trace( "GraphicView::~GraphicView", false );
+    delete m_myRenderArea;
 }
 
 void GraphicView::SetSceneGraph( SoSelection* sceneGraphRoot )
 {
     Trace trace( "GraphicView::SetSceneGraph", false );
+
     m_sceneGraphRoot = 	sceneGraphRoot;
     m_myRenderArea = new SoQtExaminerViewer( this );
     m_myRenderArea->setGLRenderAction( new SoBoxHighlightRenderAction() );
@@ -82,14 +74,12 @@ void GraphicView::SetSceneGraph( SoSelection* sceneGraphRoot )
 SbViewportRegion GraphicView::GetViewportRegion() const
 {
 	Trace trace( "GraphicView::GetViewportRegion", false );
-
 	return m_myRenderArea->getViewportRegion();
 }
 
 SoCamera* GraphicView::GetCamera() const
 {
 	Trace trace( "GraphicView::GetCamera", false );
-
 	return m_myRenderArea->getCamera();
 }
 
@@ -183,7 +173,7 @@ void GraphicView::currentChanged( const QModelIndex & current, const QModelIndex
     QVariant variant = current.data(Qt::UserRole);
     if ( variant.canConvert<PathWrapper>() )
     {
-    	path = static_cast< SoFullPath*>( variant.value<PathWrapper>().GetPath() );
+    	path = static_cast< SoFullPath*>( variant.value< PathWrapper >().GetPath() );
 	    m_sceneGraphRoot->select( path );
 
     }

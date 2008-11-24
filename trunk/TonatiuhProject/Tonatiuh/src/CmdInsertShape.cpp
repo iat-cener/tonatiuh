@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Trace.h"
 
 CmdInsertShape::CmdInsertShape( TShapeKit* shapeKit, TShape* shape, SceneModel* model, QUndoCommand * parent )
-: QUndoCommand("InsertShape", parent), m_shapeKit(shapeKit), m_previousShape(0),m_shape(shape), m_pModel( model )
+: QUndoCommand("InsertShape", parent), m_shapeKit(shapeKit), m_previousShape(0),m_shape(shape), m_pModel( model ), m_row( -1 )
 {
 	Trace trace( "CmdInsertShape::CmdInsertShape", false );
 	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertShape called with NULL TShapeKit*" );

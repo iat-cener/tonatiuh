@@ -48,7 +48,7 @@ RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
 }
 
 RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ), m_numRays( numRays ), m_fraction( fraction ), m_drawPhotons( drawPhotons ), m_increasePhotonMap( increasePhotonMap )
+:QDialog ( parent, f ), m_numRays( numRays ), m_fraction( fraction ), m_increasePhotonMap( increasePhotonMap ), m_drawPhotons( drawPhotons )
 {
 	setupUi( this );
 	raysSpinBox->setValue( m_numRays );

@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <vector>
 
 #include <QCloseEvent>
+#include <QDateTime>
 #include <QFileDialog>
 #include <QItemSelectionModel>
 #include <QItemSelection>
@@ -82,6 +83,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/manips/SoTrackballManip.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
 #include <Inventor/manips/SoTransformerManip.h>
+#include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoSelection.h>
@@ -166,11 +168,21 @@ void finishManipulator(void *data, SoDragger* /*dragger*/ )
 }
 
 MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
-: QMainWindow( parent, flags ), m_document(0), m_commandStack(0), m_commandView(0),
+: /*QMainWindow( parent, flags ), m_document(0), m_commandStack(0), m_commandView(0),
   m_materialsToolBar(0), m_shapeToolBar(0), m_trackersToolBar( 0 ),  m_sceneModel(0),
   m_photonMap( 0 ), m_pRays ( 0 ), m_pGrid( 0 ), m_pRand ( 0 ), m_coinNode_Buffer( 0 ), m_manipulators_Buffer( 0 ),
-  m_raysPerIteration ( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ), m_drawPhotons( false )
+  m_raysPerIteration ( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ), m_drawPhotons( false )*/
+QMainWindow( parent, flags ), m_currentFile( 0 ), m_recentFiles( 0 ),
+m_recentFileActions( 0 ), m_document( 0 ), m_commandStack( 0 ),
+m_commandView( 0 ), m_materialsToolBar( 0 ), m_shapeToolBar( 0 ),m_trackersToolBar( 0 ),
+m_TFlatShapeFactoryList( 0 ), m_TSunshapeFactoryList( 0 ),m_sceneModel( 0 ),
+m_selectionModel( 0 ), m_photonMap( 0 ), m_pRays( 0 ), m_pGrid( 0 ), m_pRand( 0 ),
+m_coinNode_Buffer( 0 ),m_manipulators_Buffer( 0 ), m_tracedRays( 0 ),
+m_raysPerIteration( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ),
+m_drawPhotons( false ),m_vrmlBackground( 0 ), m_graphicView( 0 ), m_focusView( 0 )
 {
+
+
 	Trace trace( "MainWindow::MainWindow", false );
 
     unsigned long seed = QTime::currentTime().msec();
@@ -190,17 +202,18 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
 MainWindow::~MainWindow()
 {
 	Trace trace( "MainWindow::~MainWindow", false );
+	delete[] m_recentFileActions;
 }
 
 void MainWindow::SetupActions()
 {
     Trace trace( "MainWindow::SetupActions", false );
+    m_recentFileActions = new QAction*[m_maxRecentFiles];
     for ( int i = 0; i < m_maxRecentFiles; ++i )
     {
     	m_recentFileActions[i] = new QAction( this );
     	m_recentFileActions[i]->setVisible( false );
-    	connect( m_recentFileActions[i], SIGNAL( triggered() ),
-    	this, SLOT( OpenRecentFile() ) );
+    	connect( m_recentFileActions[i], SIGNAL( triggered() ), this, SLOT( OpenRecentFile() ) );
     }
 }
 
@@ -244,7 +257,7 @@ void MainWindow::SetupDocument()
     m_document = new Document();
     if ( m_document )
     {
-        connect( m_document, SIGNAL(selectionFinish(SoSelection*)), this, SLOT(selectionFinish(SoSelection*)) );
+        connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ), this, SLOT(selectionFinish( SoSelection* ) ) );
     }
     else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
 }
@@ -285,11 +298,11 @@ void MainWindow::SetupGraphicView()
     Trace trace( "MainWindow::SetupGraphicView", false );
 
 	m_vrmlBackground = new SoVRMLBackground;
-    float gcolor[][3] = { 0.9843, 0.8862, 0.6745, 0.7843, 0.6157, 0.4785 };
+    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
     float gangle= 1.570f;
     m_vrmlBackground->groundColor.setValues( 0, 6, gcolor );
     m_vrmlBackground->groundAngle.setValue( gangle );
-    float scolor[][3] = { 0.0157, 0.0235, 0.4509, 0.5569, 0.6157, 0.8471 };
+    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
     float sangle= 1.570f;
     m_vrmlBackground->skyColor.setValues( 0,6,scolor );
     m_vrmlBackground->skyAngle.setValue( sangle );
@@ -423,9 +436,6 @@ void MainWindow::SetupTreeView()
         	treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
         	treeView->setRootIsDecorated(true);
 
-			//connect( treeView, SIGNAL( clicked ( const QModelIndex& ) ),
-			  //       this, SLOT ( itemSelectionChanged(  const QModelIndex& ) ) );
-
 			connect( treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
 			         this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
 			connect( treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
@@ -513,19 +523,22 @@ void MainWindow::LoadPlugins( )
 
 void MainWindow::BuildFileList( QDir parentDirectory, QStringList& fileList )
 {
-	Trace trace( "MainWindow::BuildFileList" );
+	Trace trace( "MainWindow::BuildFileList", false );
+
     QString parentDirectoryPath( parentDirectory.absolutePath().append( "/" ) );
 
-    foreach( QString fileName, parentDirectory.entryList( QDir::Files, QDir::Unsorted ) )
+    QStringList fileNameList = parentDirectory.entryList( QDir::Files, QDir::Unsorted );
+    for( int file = 0; file < fileNameList.size(); file++ )
     {
-    	fileList << parentDirectoryPath + fileName;
+    	fileList << (parentDirectoryPath + fileNameList[file]);
     }
 
-    foreach( QString directoryName, parentDirectory.entryList( QDir::Dirs, QDir::Unsorted ) )
-   	{
-   		if( ( directoryName != "." ) && ( directoryName!= ".." ) )
+    QStringList subDirList = parentDirectory.entryList( QDir::Dirs, QDir::Unsorted );
+    for( int dir = 0; dir < subDirList.size(); dir++ )
+   {
+   		if( ( subDirList[dir] != "." ) && ( subDirList[dir]!= ".." ) )
    		{
-   			QDir subdirectory( parentDirectoryPath + directoryName );
+   			QDir subdirectory( parentDirectoryPath + subDirList[dir] );
    			BuildFileList( subdirectory, fileList );
    		}
    	}
@@ -858,14 +871,14 @@ void MainWindow::on_actionSunPosition_triggered()
 {
 	Trace trace( "MainWindow::on_actionView_SunPosition_triggered", false );
 
-	SunPosDialog* sunpos = new SunPosDialog();
+	SunPosDialog* sunposDialog = new SunPosDialog();
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
-	if( lightKit ) sunpos->SetDateTime( lightKit->GetTime() );
+	if( lightKit ) sunposDialog->SetDateTime( lightKit->GetTime() );
 
-	connect( sunpos, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( SunPositionChanged( QDateTime*, double, double ) ) );
-	sunpos->show();
+	connect( sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( SunPositionChanged( QDateTime*, double, double ) ) );
+	sunposDialog->show();
 }
 
 //Ray trace menu actions
@@ -1062,20 +1075,10 @@ void MainWindow::on_actionResults_triggered()
 	}
 
 	int resolution = 100;
-/*	double res = 1 / (double)resolution;
-	double fluxArray[resolution*resolution];
-	for(int u=0;u<resolution;u++)
-	{
-		for(int v=0;v<resolution;v++)
-		{
-			Point3D point = shape->Sample(u*res,v*res);
-			fluxArray[(u*v)+v] = m_photonMap->fluxAtPoint( point, nearestPhotons );
-		}
-	}
-*/
-	m_pAnalyzerWindow = new AnalyzerWindow(this);
-	m_pAnalyzerWindow->Plot(m_photonMap, shape, resolution, resolution);
-	m_pAnalyzerWindow->show();
+
+	AnalyzerWindow* analyzerWindow = new AnalyzerWindow( this );
+	analyzerWindow->Plot(m_photonMap, shape, resolution, resolution);
+	analyzerWindow->show();
 }
 
 
@@ -1177,18 +1180,18 @@ void MainWindow::on_actionBackground_toggled()
 	Trace trace( "MainWindow::on_actionBackground_toggled", false );
 	if( actionBackground->isChecked() )
 	{
-		float gcolor[][3] = { 0.9843, 0.8862, 0.6745, 0.7843, 0.6157, 0.4785 };
+		float gcolor[][3] = { {0.9843, 0.8862, 0.6745}, {0.7843, 0.6157, 0.4785} };
 		float gangle= 1.570f;
 		m_vrmlBackground->groundColor.setValues( 0, 6, gcolor );
 		m_vrmlBackground->groundAngle.setValue( gangle );
-		float scolor[][3] = { 0.0157, 0.0235, 0.4509, 0.5569, 0.6157, 0.8471 };
+		float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
 		float sangle= 1.570f;
 		m_vrmlBackground->skyColor.setValues( 0,6,scolor );
 		m_vrmlBackground->skyAngle.setValue( sangle );
 	}
 	else
 	{
-		float color[][3] = { 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
+		float color[][3] = { {0.1, 0.1, 0.1}, {0.1, 0.1, 0.1} };
 		float angle= 1.570f;
 		m_vrmlBackground->groundColor.setValues( 0, 6, color );
 		m_vrmlBackground->groundAngle.setValue( angle );
@@ -1631,17 +1634,6 @@ void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex
 		SoBaseKit* selectedCoinNodeKit = static_cast< SoBaseKit* >( selectedCoinNode );
 		parametersView->ChangeParameters( selectedCoinNodeKit );
 	}
-
-	/*if( selectedCoinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )
-	{
-		actionCut->setEnabled( false );
-		actionCopy->setEnabled( false );
-	}
-	else
-	{
-		actionCut->setEnabled( true );
-		actionCopy->setEnabled( true );
-	}*/
 }
 
 //for treeview signals
@@ -1771,14 +1763,10 @@ void MainWindow::SunPositionChanged( QDateTime* time, double longitude, double l
 	}
 	else
 	{
-		CmdLightPositionModified * command = new CmdLightPositionModified( lightKit, *time, longitude, latitude );
+		CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, *time, longitude, latitude );
 		m_commandStack->push( command );
 	}
-}
-
-void MainWindow::SunLightChanged( QDateTime* time, double longitude, double latitude )
-{
-
+	delete time;
 }
 
 void MainWindow::closeEvent( QCloseEvent* event )
@@ -1788,18 +1776,13 @@ void MainWindow::closeEvent( QCloseEvent* event )
     {
     	WriteSettings();
     	event->accept();
-    	if( m_pAnalyzerWindow )
-    	{
-    		m_pAnalyzerWindow->close();
-			delete m_pAnalyzerWindow;
-    	}
     }
     else event->ignore();
 }
 
 void MainWindow::NewFile()
 {
-    Trace trace( "MainWindow::NewFile", true );
+    Trace trace( "MainWindow::NewFile", false );
     if ( OkToContinue() )
     {
     	m_document->New();

@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QModelIndex>
 #include <QWidget>
 
+class ParametersDelegate;
 class ParametersItem;
 class QStandardItem;
 class QTreeView;
@@ -58,6 +59,7 @@ class FieldContainerWidget : public QWidget
 
 public:
     FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent = 0 );
+    ~FieldContainerWidget();
     void ReadFields( );
    	void Reset();
 
@@ -73,10 +75,10 @@ signals:
 private:
     QTreeView* m_ptreeView;
     SoFieldContainer* m_pFieldContainer;
+    ParametersDelegate* m_delegate;
    	ParametersModel* m_pModel;
    	QString m_containerName;
    	QModelIndex m_lastEditingIndex;
-
 
 };
 

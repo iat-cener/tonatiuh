@@ -39,9 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef CMDDELETE_H_
 #define CMDDELETE_H_
 
-#include <QModelIndex>
 #include <QUndoCommand>
 
+class QModelIndex;
 class SceneModel;
 
 class CmdDelete : public QUndoCommand
