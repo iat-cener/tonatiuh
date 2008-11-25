@@ -39,48 +39,30 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <ui_mainwindow.h>
-#include <QDir>
-#include <QStringList>
-#include <vector>
-#include "tgc.h"
-#include "GraphicView.h"
-#include <Inventor/fields/SoFieldContainer.h>
 
-class AnalyzerWindow;
+#include "tgc.h"
+#include <ui_mainwindow.h>
+
 class Document;
+class GraphicView;
 class InstanceNode;
-class ParametersViewItem;
 class PhotonMap;
-class QAbstractItemModel;
-class QDateTime;
-class QItemSelection;
-class QItemSelectionModel;
-class QToolBar;
+class QDir;
 class QUndoStack;
 class QUndoView;
 class RandomDeviate;
-class SbStringList;
-class SbXfBox3f;
+class SbViewportRegion;
 class SceneModel;
-class SoBaseKit;
 class SoDragger;
-class SoNode;
-class SoPath;
-class SoPathList;
 class SoSelection;
 class SoSeparator;
-class SoTransformManip;
-class TGateEngine;
+class SoVRMLBackground;
 class TMaterialFactory;
-class TLightKit;
 class Transform;
-class TShape;
-class TShapeKit;
 class TShapeFactory;
+class TShapeKit;
 class TSunShapeFactory;
 class TTrackerFactory;
-class SoVRMLBackground;
 
 class MainWindow: public QMainWindow, private Ui::MainWindow
 {

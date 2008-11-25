@@ -36,46 +36,19 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <ctime>
-#include <dirent.h>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include <QCloseEvent>
-#include <QDateTime>
+#include <QDir>
 #include <QFileDialog>
-#include <QItemSelectionModel>
-#include <QItemSelection>
-#include <QList>
-#include <QLineEdit>
-#include <QMenu>
 #include <QMessageBox>
 #include <QPluginLoader>
 #include <QProgressDialog>
 #include <QSettings>
-#include <QString>
-#include <QTextStream>
 #include <QTime>
 #include <QUndoStack>
 #include <QUndoView>
 
-#include <Inventor/SbBox.h>
-#include <Inventor/SbString.h>
-#include <Inventor/SbLinear.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoBoxHighlightRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/draggers/SoDragger.h>
-#include <Inventor/engines/SoGate.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/fields/SoFieldContainer.h>
-#include <Inventor/lists/SoPickedPointList.h>
-#include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/manips/SoCenterballManip.h>
 #include <Inventor/manips/SoHandleBoxManip.h>
 #include <Inventor/manips/SoJackManip.h>
@@ -84,72 +57,56 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/manips/SoTransformBoxManip.h>
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoSelection.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/nodekits/SoNodekitCatalog.h>
 #include <Inventor/nodekits/SoSceneKit.h>
-#include <Inventor/Qt/SoQtRenderArea.h>
-#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
-
-#include <qwt3d_types.h>
 
 #include "ActionInsertMaterial.h"
 #include "ActionInsertShape.h"
-#include "ActionInsertSunShape.h"
 #include "ActionInsertTracker.h"
 #include "AnalyzerWindow.h"
 #include "CmdCopy.h"
 #include "CmdCut.h"
 #include "CmdDelete.h"
 #include "CmdDeleteTracker.h"
-#include "CmdLightKitModified.h"
-#include "CmdLightPositionModified.h"
 #include "CmdInsertMaterial.h"
+#include "CmdInsertSeparatorKit.h"
 #include "CmdInsertShape.h"
 #include "CmdInsertShapeKit.h"
-#include "CmdInsertSeparatorKit.h"
 #include "CmdInsertTracker.h"
+#include "CmdLightKitModified.h"
+#include "CmdLightPositionModified.h"
 #include "CmdParameterModified.h"
 #include "CmdPaste.h"
 #include "Document.h"
+#include "GraphicView.h"
 #include "InstanceNode.h"
 #include "MainWindow.h"
+#include "MersenneTwister.h"
 #include "NodeNameDelegate.h"
-#include "ParametersDelegate.h"
-#include "ParametersView.h"
-#include "ParametersItem.h"
+#include "PhotonMap.h"
+#include "RandomDeviate.h"
 #include "RayTraceDialog.h"
 #include "SceneModel.h"
 #include "SunDialog.h"
-#include "SunPosDialog.h"
+#include "SunposDialog.h"
 #include "SunPositionCalculatorDialog.h"
-#include "tgf.h"
-#include "TDefaultMaterial.h"
-#include "TDefaultTracker.h"
 #include "TGateEngine.h"
+#include "tgf.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
 #include "TMaterialFactory.h"
 #include "TSeparatorKit.h"
 #include "TShapeFactory.h"
-#include "TShapeKit.h"
-#include "TShape.h"
 #include "TSunShapeFactory.h"
-#include "TSunShape.h"
-#include "TTrackerFactory.h"
-#include "TTracker.h"
 #include "Trace.h"
+#include "TTracker.h"
+#include "TTrackerFactory.h"
 
-
-const long unsigned int Max_Photon = 10000000 ;
 
 void startManipulator(void *data, SoDragger* dragger)
 {
@@ -168,11 +125,7 @@ void finishManipulator(void *data, SoDragger* /*dragger*/ )
 }
 
 MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
-: /*QMainWindow( parent, flags ), m_document(0), m_commandStack(0), m_commandView(0),
-  m_materialsToolBar(0), m_shapeToolBar(0), m_trackersToolBar( 0 ),  m_sceneModel(0),
-  m_photonMap( 0 ), m_pRays ( 0 ), m_pGrid( 0 ), m_pRand ( 0 ), m_coinNode_Buffer( 0 ), m_manipulators_Buffer( 0 ),
-  m_raysPerIteration ( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ), m_drawPhotons( false )*/
-QMainWindow( parent, flags ), m_currentFile( 0 ), m_recentFiles( 0 ),
+:QMainWindow( parent, flags ), m_currentFile( 0 ), m_recentFiles( 0 ),
 m_recentFileActions( 0 ), m_document( 0 ), m_commandStack( 0 ),
 m_commandView( 0 ), m_materialsToolBar( 0 ), m_shapeToolBar( 0 ),m_trackersToolBar( 0 ),
 m_TFlatShapeFactoryList( 0 ), m_TSunshapeFactoryList( 0 ),m_sceneModel( 0 ),
@@ -871,7 +824,7 @@ void MainWindow::on_actionSunPosition_triggered()
 {
 	Trace trace( "MainWindow::on_actionView_SunPosition_triggered", false );
 
-	SunPosDialog* sunposDialog = new SunPosDialog();
+	SunposDialog* sunposDialog = new SunposDialog();
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
@@ -919,7 +872,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
 	SetBoundigBoxes( rootSeparatorInstance, region );
 
-	//Transform lightToWorld( *lightTransform );
 	SbMatrix coinMatrix;
 	coinMatrix.setTransform( lightTransform->translation.getValue(),
 								lightTransform->rotation.getValue(),
@@ -936,7 +888,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	if ( !m_increasePhotonMap )
 	{
 		delete m_photonMap;
-		m_photonMap = new PhotonMap( Max_Photon );
+		m_photonMap = new PhotonMap( tgc::Max_Photon );
 		m_tracedRays = 0;
 	}
 	m_tracedRays += m_raysPerIteration;
@@ -947,7 +899,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	progressDialog->setCancelButton( NULL);
 	progressDialog->setVisible( true );
 
-	//m_raysPerIteration = 1;
 	//Random Ray generator
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
 	{
@@ -958,10 +909,8 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		sunShape->generateRayDirection( ray.direction, *m_pRand );
 
 		//Transform ray to World coordinate system and trace the scene
-		//ray = Ray( Point3D( 0.0, 0.0, 0.0 ),Vector3D( 0.0, -1.0, 0.0 ) );
 		ray = lightToWorld( ray );
 
-		//ray = Ray( Point3D( 0.141978, 0.943242, 5 ), Vector3D( -0.00129427, 0.00389558, -0.999991 ) );
 		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
 
   	    //Update progressDiaglog when appropriate
@@ -972,19 +921,12 @@ void MainWindow::on_actionRayTraceRun_triggered()
  	}
 
 	progressDialog->setValue( m_raysPerIteration );
-	/*progressDialog->setLabelText( "Balancing Photon Map. Please wait..." );
- 	progressDialog->setValue( ( m_raysPerIteration - 1 ) * 1.1 );*/
-
- 	//Balancing the Photon Map to optimize searching
- 	//m_photonMap->balance();
 
  	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
  	{
   		m_document->GetRoot()->removeChild( m_pRays );
   		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
  	}
-
- 	//progressDialog->setValue( ( m_raysPerIteration - 1 ) * 1.2 );
 
  	if( m_fraction > 0.0 || m_drawPhotons )
  	{
@@ -998,10 +940,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 			SoSeparator* points = tgf::DrawPhotonMapPoints(*m_photonMap);
 			m_pRays->addChild(points);
 		}
-
-		//progressDialog->setLabelText( "Drawing Scene. Please wait..." );
-		//progressDialog->setValue( m_raysPerIteration * 1.4 );
-
 
 		if( m_fraction > 0.0 )
 		{
