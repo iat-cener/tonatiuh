@@ -145,7 +145,7 @@
     </property>
     <addaction name="actionDefine_SunLight" />
     <addaction name="actionDefineSunPosition" />
-    <addaction name="actionSunPosition" />
+    <addaction name="actionCalculateSunPosition" />
    </widget>
    <widget class="QMenu" name="menu_Raytrace" >
     <property name="title" >
@@ -540,14 +540,12 @@
     <string>Background</string>
    </property>
   </action>
-  <action name="actionSunPosition" >
+  <action name="actionCalculateSunPosition" >
+   <property name="checkable" >
+    <bool>false</bool>
+   </property>
    <property name="text" >
     <string>Sun Position Calculator ...</string>
-   </property>
-  </action>
-  <action name="actionDefineSunPosition" >
-   <property name="text" >
-    <string>Define Sun Position ...</string>
    </property>
   </action>
   <action name="actionExport_PhotonMap" >
@@ -557,6 +555,11 @@
    </property>
    <property name="text" >
     <string>Export PhotonMap</string>
+   </property>
+  </action>
+  <action name="actionDefineSunPosition" >
+   <property name="text" >
+    <string>Define Sun Position ...</string>
    </property>
   </action>
  </widget>

@@ -56,7 +56,6 @@ class SceneModel;
 class SoDragger;
 class SoSelection;
 class SoSeparator;
-class SoVRMLBackground;
 class TMaterialFactory;
 class Transform;
 class TShapeFactory;
@@ -103,7 +102,7 @@ public slots:
 	//Sun Light menu actions
 	void on_actionDefine_SunLight_triggered();
 	void on_actionDefineSunPosition_triggered();
-	void on_actionSunPosition_triggered();
+	void on_actionCalculateSunPosition_triggered();
 
 	//Ray trace menu actions
 	void on_actionRayTraceRun_triggered();
@@ -204,8 +203,8 @@ private:
     QToolBar* m_materialsToolBar;
     QToolBar* m_shapeToolBar;
     QToolBar* m_trackersToolBar;
-    std::vector< TShapeFactory* > m_TFlatShapeFactoryList;
-	std::vector< TSunShapeFactory* > m_TSunshapeFactoryList;
+    QVector< TShapeFactory* > m_TFlatShapeFactoryList;
+	QVector< TSunShapeFactory* > m_TSunshapeFactoryList;
     SceneModel* m_sceneModel;
     QItemSelectionModel* m_selectionModel;
     PhotonMap* m_photonMap;
@@ -219,7 +218,6 @@ private:
     bool m_increasePhotonMap;
     double m_fraction;
     bool m_drawPhotons;
-    SoVRMLBackground* m_vrmlBackground;
     std::vector<GraphicView*> m_graphicView;
     int m_focusView;
 
