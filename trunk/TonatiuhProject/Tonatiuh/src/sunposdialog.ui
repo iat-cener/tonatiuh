@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>SunPosDialog</class>
- <widget class="QWidget" name="SunPosDialog" >
+ <class>SunposDialog</class>
+ <widget class="QWidget" name="SunposDialog" >
   <property name="geometry" >
    <rect>
     <x>0</x>

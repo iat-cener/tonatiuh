@@ -36,24 +36,41 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "ActionInsertSunShape.h"
-#include "Trace.h"
-#include "TSunShapeFactory.h"
+#ifndef SUNPOSDIALOG_H_
+#define SUNPOSDIALOG_H_
 
+#include <QDateTime>
+#include <QDialog>
 
-ActionInsertSunShape::ActionInsertSunShape ( const QString& text, QObject* parent, TSunShapeFactory* pTSunshapeFactory )
-: QAction(text,parent), m_pTSunShapeFactory(pTSunshapeFactory)
+#include "ui_sunposdialog.h"
+
+class SunposDialog : public QDialog, private Ui::SunposDialog
 {
-	Trace( "ActionInsertSunShape::ActionInsertSunShape", false );
-}
+	Q_OBJECT
 
-ActionInsertSunShape::~ActionInsertSunShape()
-{
-	Trace( "ActionInsertSunShape::~ActionInsertSunShape", false );
-}
+public:
+	SunposDialog( QWidget* parent = 0 );
+	~SunposDialog();
 
-void ActionInsertSunShape::OnActionInsertSunShapeTriggered()
-{
-	Trace( "ActionInsertSunShape::OnActionInsertSunShapeTriggered", false );
-	emit CreateSunShape( m_pTSunShapeFactory );
-}
+	void ChangePosition( QDateTime time, double longitude, double latitude );
+    void SetDateTime( QDateTime time );
+
+private slots:
+	void on_updateButton_clicked();
+	void ChangeLongitude( double longitude );
+	void ChangeLatitude( double latitude );
+	void ChangeSunTime( QTime time );
+	void ChangeSunTimeZone( int timeZone );
+	void on_selectButton_clicked();
+
+signals:
+    void changeRepresentation( cSunCoordinates results );
+    void changeSunLight( QDateTime* time, double longitude, double latitude );
+
+private:
+	void CalculateSunPosition();
+	QDateTime* GetTime();
+
+};
+
+#endif /*SUNPOSDIALOG_H_*/
