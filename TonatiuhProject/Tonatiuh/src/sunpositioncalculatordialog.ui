@@ -1,165 +1,481 @@
 <ui version="4.0" >
  <class>SunPositionCalculatorDialog</class>
- <widget class="QDialog" name="SunPositionCalculatorDialog" >
+ <widget class="QWidget" name="SunPositionCalculatorDialog" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>340</width>
-    <height>228</height>
+    <width>841</width>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Sun Position Dialog</string>
+   <string>Sun Position Calculator</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox" >
+  <widget class="QTabWidget" name="viewWidget" >
    <property name="geometry" >
     <rect>
-     <x>60</x>
-     <y>180</y>
-     <width>261</width>
-     <height>32</height>
+     <x>9</x>
+     <y>9</y>
+     <width>531</width>
+     <height>441</height>
     </rect>
    </property>
-   <property name="orientation" >
-    <enum>Qt::Horizontal</enum>
+   <property name="font" >
+    <font>
+     <pointsize>8</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
    </property>
-   <property name="standardButtons" >
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+   <property name="mouseTracking" >
+    <bool>true</bool>
    </property>
+   <property name="currentIndex" >
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="mapTab" >
+    <attribute name="title" >
+     <string>Map</string>
+    </attribute>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="WorldMap" native="1" name="worldMap" >
+       <property name="font" >
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="mouseTracking" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalTab" >
+    <attribute name="title" >
+     <string>Horizontal Coordinates</string>
+    </attribute>
+    <layout class="QVBoxLayout" >
+     <item>
+      <widget class="HorizontalWidget" native="1" name="horizontalWidget" />
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="celestial" >
+    <attribute name="title" >
+     <string>Celestial Coordinates</string>
+    </attribute>
+    <layout class="QVBoxLayout" >
+     <item>
+      <widget class="CelestialWidget" native="1" name="celestialWidget" />
+     </item>
+    </layout>
+   </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox" >
+  <widget class="QWidget" native="1" name="widget_2" >
    <property name="geometry" >
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>300</width>
-     <height>150</height>
+     <x>550</x>
+     <y>10</y>
+     <width>281</width>
+     <height>435</height>
     </rect>
    </property>
-   <property name="title" >
-    <string>Definition of sun position</string>
+   <property name="font" >
+    <font>
+     <pointsize>8</pointsize>
+    </font>
    </property>
-   <widget class="QLabel" name="label" >
+   <widget class="QGroupBox" name="Hora" >
     <property name="geometry" >
      <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>60</width>
-      <height>22</height>
+      <x>9</x>
+      <y>190</y>
+      <width>263</width>
+      <height>90</height>
      </rect>
+    </property>
+    <property name="font" >
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
+    <property name="title" >
+     <string>Time</string>
+    </property>
+    <widget class="QRadioButton" name="UT" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>50</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text" >
+      <string>UT</string>
+     </property>
+     <property name="checked" >
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="CT" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>50</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text" >
+      <string>CT</string>
+     </property>
+    </widget>
+    <widget class="QTimeEdit" name="uTimeSpin" >
+     <property name="geometry" >
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+    </widget>
+    <widget class="QTimeEdit" name="cTimeSpin" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
+     <property name="geometry" >
+      <rect>
+       <x>70</x>
+       <y>50</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="zoneSpin" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
+     <property name="geometry" >
+      <rect>
+       <x>180</x>
+       <y>50</y>
+       <width>60</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="minimum" >
+      <number>-12</number>
+     </property>
+     <property name="maximum" >
+      <number>12</number>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="GBPosicion" >
+    <property name="geometry" >
+     <rect>
+      <x>9</x>
+      <y>290</y>
+      <width>263</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="font" >
+     <font>
+      <pointsize>8</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="title" >
+     <string>Position Coordinates</string>
+    </property>
+    <widget class="QLabel" name="longitudeLabel" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Longitude:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="latitudeLabel" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>80</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Latitude:</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="longitudeSpin" >
+     <property name="geometry" >
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="minimum" >
+      <double>-180.000000000000000</double>
+     </property>
+     <property name="maximum" >
+      <double>180.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="latitudeSpin" >
+     <property name="geometry" >
+      <rect>
+       <x>70</x>
+       <y>50</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="minimum" >
+      <double>-90.000000000000000</double>
+     </property>
+     <property name="maximum" >
+      <double>90.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="selectButton" >
+     <property name="geometry" >
+      <rect>
+       <x>180</x>
+       <y>50</y>
+       <width>60</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Select</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="updateButton" >
+    <property name="geometry" >
+     <rect>
+      <x>9</x>
+      <y>397</y>
+      <width>263</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font" >
+     <font>
+      <pointsize>8</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
     </property>
     <property name="text" >
-     <string>Azimuth:</string>
+     <string>Update Light</string>
+    </property>
+    <property name="default" >
+     <bool>true</bool>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="azimuthSpin" >
+   <widget class="QGroupBox" name="groupBox" >
     <property name="geometry" >
      <rect>
-      <x>110</x>
-      <y>30</y>
-      <width>160</width>
-      <height>22</height>
+      <x>9</x>
+      <y>9</y>
+      <width>263</width>
+      <height>182</height>
      </rect>
     </property>
-    <property name="decimals" >
-     <number>4</number>
+    <property name="font" >
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
-    <property name="maximum" >
-     <double>360.000000000000000</double>
+    <property name="title" >
+     <string>Date</string>
     </property>
-   </widget>
-   <widget class="QLabel" name="label_2" >
-    <property name="geometry" >
-     <rect>
-      <x>30</x>
-      <y>60</y>
-      <width>60</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>Elevation:</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="elevationSpin" >
-    <property name="geometry" >
-     <rect>
-      <x>110</x>
-      <y>60</y>
-      <width>161</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="decimals" >
-     <number>4</number>
-    </property>
-    <property name="maximum" >
-     <double>90.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3" >
-    <property name="geometry" >
-     <rect>
-      <x>30</x>
-      <y>90</y>
-      <width>60</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>Distance:</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="distanceSpin" >
-    <property name="geometry" >
-     <rect>
-      <x>110</x>
-      <y>90</y>
-      <width>160</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="decimals" >
-     <number>4</number>
-    </property>
-    <property name="maximum" >
-     <double>999999999.000000000000000</double>
-    </property>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QCalendarWidget" name="calendarWidget" >
+       <property name="font" >
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="firstDayOfWeek" >
+        <enum>Qt::Sunday</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>HorizontalWidget</class>
+   <extends>QWidget</extends>
+   <header>HorizontalWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CelestialWidget</class>
+   <extends>QWidget</extends>
+   <header>CelestialWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WorldMap</class>
+   <extends>QWidget</extends>
+   <header>WorldMap.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>SunPositionCalculatorDialog</receiver>
-   <slot>accept()</slot>
+   <sender>UT</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>uTimeSpin</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>248</x>
-     <y>254</y>
+     <x>593</x>
+     <y>230</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>157</x>
-     <y>274</y>
+     <x>678</x>
+     <y>230</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>SunPositionCalculatorDialog</receiver>
-   <slot>reject()</slot>
+   <sender>CT</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cTimeSpin</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>316</x>
+     <x>593</x>
      <y>260</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>286</x>
-     <y>274</y>
+     <x>678</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CT</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>zoneSpin</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>593</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>768</x>
+     <y>260</y>
     </hint>
    </hints>
   </connection>

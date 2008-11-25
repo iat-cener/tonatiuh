@@ -92,9 +92,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "RayTraceDialog.h"
 #include "SceneModel.h"
-#include "SunDialog.h"
-#include "SunposDialog.h"
+#include "LightDialog.h"
 #include "SunPositionCalculatorDialog.h"
+#include "SunPositionDialog.h"
 #include "TGateEngine.h"
 #include "tgf.h"
 #include "TLightKit.h"
@@ -132,7 +132,7 @@ m_TFlatShapeFactoryList( 0 ), m_TSunshapeFactoryList( 0 ),m_sceneModel( 0 ),
 m_selectionModel( 0 ), m_photonMap( 0 ), m_pRays( 0 ), m_pGrid( 0 ), m_pRand( 0 ),
 m_coinNode_Buffer( 0 ),m_manipulators_Buffer( 0 ), m_tracedRays( 0 ),
 m_raysPerIteration( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ),
-m_drawPhotons( false ),m_vrmlBackground( 0 ), m_graphicView( 0 ), m_focusView( 0 )
+m_drawPhotons( false ), m_graphicView( 0 ), m_focusView( 0 )
 {
 
 
@@ -250,17 +250,17 @@ void MainWindow::SetupGraphicView()
 {
     Trace trace( "MainWindow::SetupGraphicView", false );
 
-	m_vrmlBackground = new SoVRMLBackground;
+    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
     float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
     float gangle= 1.570f;
-    m_vrmlBackground->groundColor.setValues( 0, 6, gcolor );
-    m_vrmlBackground->groundAngle.setValue( gangle );
+    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
+    vrmlBackground->groundAngle.setValue( gangle );
     float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
     float sangle= 1.570f;
-    m_vrmlBackground->skyColor.setValues( 0,6,scolor );
-    m_vrmlBackground->skyAngle.setValue( sangle );
+    vrmlBackground->skyColor.setValues( 0,6,scolor );
+    vrmlBackground->skyAngle.setValue( sangle );
 
-	m_document->GetRoot()->insertChild( m_vrmlBackground, 0 );
+	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
 
 	QSplitter *pSplitter = findChild<QSplitter *>( "horizontalSplitter" );
 
@@ -771,7 +771,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 
 	TLightKit* currentLight = dynamic_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
 
-	SunDialog dialog( currentLight, m_TFlatShapeFactoryList, m_TSunshapeFactoryList );
+	LightDialog dialog( currentLight, m_TFlatShapeFactoryList, m_TSunshapeFactoryList );
 	if( dialog.exec() )
 	{
 
@@ -799,6 +799,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 		m_selectionModel->clear();
 		m_selectionModel->setCurrentIndex( lightIndex, QItemSelectionModel::ClearAndSelect );
 
+		delete coinSearch;
 		m_document->SetDocumentModified( true );
 	}
 }
@@ -806,12 +807,11 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 void MainWindow::on_actionDefineSunPosition_triggered()
 {
 	Trace trace( "MainWindow::on_actionDefineSunPosition_triggered", false );
-
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 	if( !lightKit ) return;
-	SunPositionCalculatorDialog* dialog = new SunPositionCalculatorDialog();
 
+	SunPositionDialog* dialog = new SunPositionDialog();
 	if( dialog->exec() )
 	{
 
@@ -820,18 +820,20 @@ void MainWindow::on_actionDefineSunPosition_triggered()
 	}
 }
 
-void MainWindow::on_actionSunPosition_triggered()
+void MainWindow::on_actionCalculateSunPosition_triggered()
 {
-	Trace trace( "MainWindow::on_actionView_SunPosition_triggered", false );
+	Trace trace( "MainWindow::on_actionCalculateSunPosition_triggered", false );
 
-	SunposDialog* sunposDialog = new SunposDialog();
+	SunPositionCalculatorDialog* sunposDialog = new SunPositionCalculatorDialog();
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 	if( lightKit ) sunposDialog->SetDateTime( lightKit->GetTime() );
 
 	connect( sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( SunPositionChanged( QDateTime*, double, double ) ) );
-	sunposDialog->show();
+	sunposDialog->exec();
+
+	delete sunposDialog;
 }
 
 //Ray trace menu actions
@@ -1116,25 +1118,29 @@ void MainWindow::on_actionGrid_toggled()
 void MainWindow::on_actionBackground_toggled()
 {
 	Trace trace( "MainWindow::on_actionBackground_toggled", false );
+
+	SoVRMLBackground* vrmlBackground = dynamic_cast< SoVRMLBackground* > ( m_document->GetRoot()->getChild( 0 ) );
+
 	if( actionBackground->isChecked() )
 	{
 		float gcolor[][3] = { {0.9843, 0.8862, 0.6745}, {0.7843, 0.6157, 0.4785} };
 		float gangle= 1.570f;
-		m_vrmlBackground->groundColor.setValues( 0, 6, gcolor );
-		m_vrmlBackground->groundAngle.setValue( gangle );
+
+		vrmlBackground->groundColor.setValues( 0, 6, gcolor );
+		vrmlBackground->groundAngle.setValue( gangle );
 		float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
 		float sangle= 1.570f;
-		m_vrmlBackground->skyColor.setValues( 0,6,scolor );
-		m_vrmlBackground->skyAngle.setValue( sangle );
+		vrmlBackground->skyColor.setValues( 0,6,scolor );
+		vrmlBackground->skyAngle.setValue( sangle );
 	}
 	else
 	{
 		float color[][3] = { {0.1, 0.1, 0.1}, {0.1, 0.1, 0.1} };
 		float angle= 1.570f;
-		m_vrmlBackground->groundColor.setValues( 0, 6, color );
-		m_vrmlBackground->groundAngle.setValue( angle );
-		m_vrmlBackground->skyColor.setValues( 0,6,color );
-		m_vrmlBackground->skyAngle.setValue( angle );
+		vrmlBackground->groundColor.setValues( 0, 6, color );
+		vrmlBackground->groundAngle.setValue( angle );
+		vrmlBackground->skyColor.setValues( 0,6,color );
+		vrmlBackground->skyAngle.setValue( angle );
 	}
 }
 

@@ -1,8 +1,11 @@
 <RCC>
     <qresource prefix="/" >
         <file>icons/AnalysisTool.png</file>
+        <file>icons/arrow-down.png</file>
+		<file>icons/arrow-left.png</file>
+        <file>icons/arrow-right.png</file>
+        <file>icons/arrow-up.png</file>
         <file>icons/CalculationRequest.png</file>
-        <file>icons/TMatrix.png</file>
         <file>icons/TonatiuhIcon.png</file>
         <file>icons/close.png</file>
         <file>icons/copy.png</file>
@@ -30,10 +33,6 @@
         <file>icons/viewer_viewXZ.png</file>
         <file>icons/viewer_viewYZ.png</file>
         <file>icons/WorldMapGray.BMP</file>
-        <file>icons/arrow-down.png</file>
-		<file>icons/arrow-left.png</file>
-        <file>icons/arrow-right.png</file>
-        <file>icons/arrow-up.png</file>
         <file>icons/go-home.png</file>
         <file>icons/zoom-in.png</file>
         <file>icons/zoom-out.png</file>

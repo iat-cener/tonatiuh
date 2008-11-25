@@ -36,41 +36,38 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SUNPOSDIALOG_H_
-#define SUNPOSDIALOG_H_
+#include "SunPositionDialog.h"
+#include "tgc.h"
+#include "Trace.h"
 
-#include <QDateTime>
-#include <QDialog>
-
-#include "ui_sunposdialog.h"
-
-class SunposDialog : public QDialog, private Ui::SunposDialog
+SunPositionDialog::SunPositionDialog( QWidget* parent )
+:QDialog( parent )
 {
-	Q_OBJECT
+	Trace trace( "SunPositionDialog::SunPositionDialog", false );
 
-public:
-	SunposDialog( QWidget* parent = 0 );
-	~SunposDialog();
+	setupUi( this );
+}
+SunPositionDialog::~SunPositionDialog()
+{
+	Trace trace( "SunPositionDialog::~SunPositionDialog", false );
+}
 
-	void ChangePosition( QDateTime time, double longitude, double latitude );
-    void SetDateTime( QDateTime time );
+double SunPositionDialog::GetAzimuth()
+{
+	Trace trace( "SunPositionDialog::GetAzimuth", false );
 
-private slots:
-	void on_updateButton_clicked();
-	void ChangeLongitude( double longitude );
-	void ChangeLatitude( double latitude );
-	void ChangeSunTime( QTime time );
-	void ChangeSunTimeZone( int timeZone );
-	void on_selectButton_clicked();
+	return ( azimuthSpin->value() * ( tgc::Pi  / 180 ) ) ;
+}
 
-signals:
-    void changeRepresentation( cSunCoordinates results );
-    void changeSunLight( QDateTime* time, double longitude, double latitude );
+double SunPositionDialog::GetDistance()
+{
+	Trace trace( "SunPositionDialog::GetDistance", false );
+	return distanceSpin->value();
+}
 
-private:
-	void CalculateSunPosition();
-	QDateTime* GetTime();
+double SunPositionDialog::GetElevation()
+{
+	Trace trace( "SunPositionDialog::GetElevation", false );
 
-};
-
-#endif /*SUNPOSDIALOG_H_*/
+	return ( elevationSpin->value() * ( tgc::Pi  / 180 ) );
+}
