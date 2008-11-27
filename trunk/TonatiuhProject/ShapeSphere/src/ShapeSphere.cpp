@@ -36,25 +36,25 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QString>
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "DifferentialGeometry.h"
+#include "Ray.h"
 #include "ShapeSphere.h"
-#include "tgf.h"
 #include "tgc.h"
+#include "tgf.h"
 #include "Trace.h"
-#include "Vector3D.h"
-
 
 SO_NODE_SOURCE(ShapeSphere);
 
 void ShapeSphere::initClass()
 {
 	Trace trace( "ShapeSphere::initClass", false );
-
 	SO_NODE_INIT_CLASS(ShapeSphere, TShape, "TShape");
 }
 
@@ -74,11 +74,11 @@ ShapeSphere::ShapeSphere( )
 	m_thetaMin = acos( zmax/m_radius.getValue() );
 	m_thetaMax = acos( zmin/m_radius.getValue() );
 
-	m_z1Sensor = new SoFieldSensor(updateMinMaxTheta, this);
+	SoFieldSensor* m_z1Sensor = new SoFieldSensor(updateMinMaxTheta, this);
 	m_z1Sensor->attach(&m_z1);
-	m_z2Sensor = new SoFieldSensor(updateMinMaxTheta, this);
+	SoFieldSensor* m_z2Sensor = new SoFieldSensor(updateMinMaxTheta, this);
 	m_z2Sensor->attach(&m_z2);
-	m_radiusSensor = new SoFieldSensor(updateMinMaxTheta, this);
+	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateMinMaxTheta, this);
 	m_radiusSensor->attach(&m_radius);
 }
 
@@ -87,10 +87,24 @@ ShapeSphere::~ShapeSphere()
 	Trace trace( "ShapeSphere::~ShapeSphere", false );
 }
 
+SoNode* ShapeSphere::copy( SbBool copyConnections ) const
+{
+	Trace trace( "ShapeSphere::copy", false );
+
+	// Use the standard version of the copy method to create
+	// a copy of this instance, including its field data
+	ShapeSphere* newShapeSphere = dynamic_cast< ShapeSphere* >( SoNode::copy( copyConnections ) );
+
+	// Copy the m_thetaMin, m_thetaMax private members explicitly
+	newShapeSphere->m_thetaMin = m_thetaMin;
+	newShapeSphere->m_thetaMax = m_thetaMax;
+
+	return newShapeSphere;
+}
+
 QString ShapeSphere::getIcon()
 {
 	Trace trace( "ShapeSphere::getIcon", false );
-
 	return QString( ":/icons/ShapeSphere.png" );
 }
 
@@ -201,21 +215,6 @@ bool ShapeSphere::IntersectP( const Ray& ray ) const
 	return Intersect( ray, 0, 0 );
 }
 
-SoNode* ShapeSphere::copy( SbBool copyConnections ) const
-{
-	Trace trace( "ShapeSphere::copy", false );
-
-	// Use the standard version of the copy method to create
-	// a copy of this instance, including its field data
-	ShapeSphere* newShapeSphere = dynamic_cast< ShapeSphere* >( SoNode::copy( copyConnections ) );
-
-	// Copy the m_thetaMin, m_thetaMax private members explicitly
-	newShapeSphere->m_thetaMin = m_thetaMin;
-	newShapeSphere->m_thetaMax = m_thetaMax;
-
-	return newShapeSphere;
-}
-
 Point3D ShapeSphere::Sample( double u1, double u2 ) const
 {
 	Trace trace( "ShapeSphere::Sample", false );
@@ -243,30 +242,11 @@ void ShapeSphere::updateMinMaxTheta( void *data, SoSensor * )
 	shapeSphere->m_thetaMax = acos( zmin/shapeSphere->m_radius.getValue() );
 }
 
-bool ShapeSphere::OutOfRange( double u, double v ) const
-{
-	Trace trace( "ShapeSphere::OutOfRange", false );
-	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
-}
-
-SbVec3f ShapeSphere::GetNormal(double u, double v ) const
-{
-	Trace trace( "ShapeSphere::GetNormal", false );
-
-	Point3D point = GetPoint3D( u, v );
-
-	SbVec3f vector( point.x, point.y, point.z);
-	return SbVec3f (-point.x/ vector.length(), -point.y/vector.length(),-point.z/vector.length());
-}
-
 Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 {
 	Trace trace( "ShapeSphere::GetPoint3D", false );
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
-
-	double zmin = std::min( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max( m_z1.getValue(), m_z2.getValue() );
 
 	double phi = u * m_phiMax.getValue();
 	double theta = v * ( m_thetaMax - m_thetaMin ) + m_thetaMin;
@@ -280,13 +260,55 @@ Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 	double y = m_radius.getValue() * sintheta * sinphi;
 	double z = m_radius.getValue() * costheta;
 
-	if( z < zmin )
-		z = zmin;
-	if( z > zmax )
-		z = zmax;
-
 	return Point3D (x, y, z);
 
+}
+
+NormalVector ShapeSphere::GetNormal(double u, double v ) const
+{
+	Trace trace( "ShapeSphere::GetNormal", false );
+
+	Point3D point = GetPoint3D( u, v );
+	return Normalize( NormalVector( point.x, point.y, point.z) );
+}
+
+bool ShapeSphere::OutOfRange( double u, double v ) const
+{
+	Trace trace( "ShapeSphere::OutOfRange", false );
+	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
+}
+
+void ShapeSphere::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
+{
+	Trace trace( "ShapeSphere::computeBBox", false );
+
+   	double sinThetaMin = sin( m_thetaMin );
+   	double sinThetaMax = sin( m_thetaMax );
+   	double cosPhiMax = cos( m_phiMax.getValue() );
+   	double sinPhiMax = sin( m_phiMax.getValue() );
+
+   	double xmin = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) ) ?
+						( m_phiMax.getValue() <=tgc::Pi / 2 ) ? m_radius.getValue() * std::min( sinThetaMin, sinThetaMax ) * cosPhiMax :
+   							( m_phiMax.getValue() >= tgc::Pi ) ? - m_radius.getValue() : m_radius.getValue() * cosPhiMax :
+   						( m_phiMax.getValue() >= tgc::Pi ) ? - m_radius.getValue() * std::max( sinThetaMin, sinThetaMax ):
+   							( m_phiMax.getValue() <=tgc::Pi / 2 ) ? m_radius.getValue() * std::min( sinThetaMin, sinThetaMax ) * cosPhiMax :
+								m_radius.getValue() * std::max( sinThetaMin, sinThetaMax ) * cosPhiMax;
+   	double xmax = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) )? m_radius.getValue() : m_radius.getValue() * std::max( sinThetaMin, sinThetaMax );
+
+   	double ymin = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) ) ?
+					( ( m_phiMax.getValue() <= tgc::Pi ) ? 0.0 :
+   									( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue() ) :
+					( (( m_phiMax.getValue() <= tgc::Pi ) ? 0.0 :
+						( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? std::min( m_radius.getValue()*sinThetaMin* sinPhiMax, m_radius.getValue()*sinThetaMax* sinPhiMax ) :
+								std::min( -m_radius.getValue()*sinThetaMin, -m_radius.getValue()*sinThetaMax ) ) );
+	double ymax = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) ) ?
+					( m_phiMax.getValue() >= tgc::Pi/2.0 ) ? m_radius.getValue() : m_radius.getValue() * sinPhiMax:
+					( m_phiMax.getValue() >= tgc::Pi/2.0 ) ? m_radius.getValue() *  std::max( sinThetaMin, sinThetaMax ) : m_radius.getValue() * std::max( sinThetaMin* sinPhiMax, sinThetaMax* sinPhiMax );
+
+   	double zmin = std::max( -m_radius.getValue(), std::min( m_z1.getValue(), m_z2.getValue() ) );
+	double zmax = std::min( m_radius.getValue(), std::max( m_z1.getValue(), m_z2.getValue() ) );
+
+	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
 
 void ShapeSphere::generatePrimitives(SoAction *action)
@@ -307,18 +329,7 @@ void ShapeSphere::generatePrimitives(SoAction *action)
     // function, we'll need an SoGLTextureCoordinateElement.
     // Otherwise, we'll set up the coordinates directly.
     const SoTextureCoordinateElement* tce = 0;
-    SbVec4f texCoord;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
-    else
-    {
-        texCoord[2] = 0.0;
-        texCoord[3] = 1.0;
-    }
-
-  // We'll use this macro to make the code easier. It uses the
-    // "point" variable to store the primitive vertex's point.
-    SbVec3f  point;
-
 
 	const int rows = 100; // Number of points per row
     const int columns = 100; // Number of points per column
@@ -330,10 +341,7 @@ void ShapeSphere::generatePrimitives(SoAction *action)
     double ui = 0;
 	double vj = 0;
 
-	//double u_step = 1.0 /(double)(rows-1); // Size of the step in parameter u to go from 0 to 1 in the number of rows
-	//double v_step = 1.0 /(double)(columns-1); // Size of the step in parameter v to go from 0 to 1 in the number of columns
-
-    for (int i = 0; i < rows; i++)
+	for (int i = 0; i < rows; i++)
     {
     	ui =( 1.0 /(double)(rows-1) ) * i;
 
@@ -343,23 +351,19 @@ void ShapeSphere::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
     		Point3D point = GetPoint3D(ui, vj);
-    		SbVec3f normal = GetNormal(ui, vj);
+    		NormalVector normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
     		vertex[h][2] = point.z;
-    		vertex[h][3] = normal[0];
-    		vertex[h][4] = normal[1];
-    		vertex[h][5] = normal[2];
+    		vertex[h][3] = normal.x;
+    		vertex[h][4] = normal.y;
+    		vertex[h][5] = normal.z;
 
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
     		h++; //Increase h to the next point.
-    		//vj += v_step; // Increase parameter vj to go from initial 0 to 1 at the end of the row (keep the same ui for the whole row)
 
     	}
-    	//vj = 0; // Re-initialize parameter vj to 0 in order to start from 0 in the next row
-		//ui += u_step; // Increase parameter ui to go from initial 0 to 1 in the last row.
-
     }
 
 	const int totalIndices  = (rows-1)*(columns-1)*4;
@@ -388,54 +392,22 @@ void ShapeSphere::generatePrimitives(SoAction *action)
     }
     delete[] indices;
 
-#define GEN_VERTEX(pv, x, y, z, s, t, normal)   \
-     point.setValue( x,                         \
-                     y,                         \
-                     z);                        \
-     if (useTexFunc)                            \
-       texCoord = tce->get(point, normal);      \
-     else {                                     \
-       texCoord[0] = s;                         \
-       texCoord[1] = t;                         \
-     }                                          \
-     pv.setPoint(point);                        \
-     pv.setNormal(normal);                      \
-     pv.setTextureCoords(texCoord);             \
-     shapeVertex(&pv)
-
-
     float u = 1;
     float v = 1;
 
 	beginShape(action, QUADS );
     for( int i = 0; i < totalIndices; i++ )
     {
-    	SbVec3f normal(finalvertex[i][3], finalvertex[i][4],  finalvertex[i][5]);
-    	GEN_VERTEX(pv,  finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2], u,  v, normal);
+    	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
+    	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
+		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
+
+		pv.setPoint(point);
+		pv.setNormal(normal);
+		pv.setTextureCoords(texCoord);
+		shapeVertex(&pv);
+
     }
     endShape();
 
-}
-
-void ShapeSphere::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
-{
-	Trace trace( "ShapeSphere::computeBBox", false );
-
-   	double sinThetaMin = sin( m_thetaMin );
-   	double sinThetaMax = sin( m_thetaMax );
-   	double cosPhiMax = cos( m_phiMax.getValue() );
-   	double sinPhiMax = sin( m_phiMax.getValue() );
-   	double rmin = m_radius.getValue() * std::min( sinThetaMin, sinThetaMax );
-   	double rmax = m_radius.getValue() * std::max( sinThetaMin, sinThetaMax );
-
-   	double xmin = ( m_phiMax.getValue() >= tgc::Pi ) ? - m_radius.getValue() : rmin * cosPhiMax;
-   	double xmax = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) )? m_radius.getValue() : rmax;
-   	double ymin = 0.0;
-   	if( m_phiMax.getValue() > tgc::Pi )
-   		ymin = ( m_phiMax.getValue() < 1.5*tgc::Pi ) ? rmax * sinPhiMax : -m_radius.getValue();
-   	double ymax = ( m_phiMax.getValue() < tgc::Pi/2.0 )? rmax * sinPhiMax : m_radius.getValue();
-
-   	double zmin = std::min( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max( m_z1.getValue(), m_z2.getValue() );
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
