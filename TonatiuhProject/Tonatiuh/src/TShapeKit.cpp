@@ -43,12 +43,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "DifferentialGeometry.h"
 #include "Ray.h"
-#include "TShape.h"
 #include "TCube.h"
-#include "Trace.h"
-#include "TShapeKit.h"
 #include "tgf.h"
 #include "TMaterial.h"
+#include "Trace.h"
+#include "Transform.h"
+#include "TShape.h"
+#include "TShapeKit.h"
 
 
 SO_KIT_SOURCE(TShapeKit);
@@ -66,7 +67,7 @@ TShapeKit::TShapeKit()
 	SO_KIT_CHANGE_ENTRY_TYPE(shape, TShape, TCube);
 	SO_KIT_INIT_INSTANCE();
 
-	setPart("shape", NULL);
+	setPart("shape", NULL );
 
 	SoTransform* transform = new SoTransform;
 	setPart("transform", transform);

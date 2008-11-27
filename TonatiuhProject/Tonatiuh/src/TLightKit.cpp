@@ -40,13 +40,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoLabel.h>
 
+#include "Matrix4x4.h"
+#include "Point3D.h"
 #include "sunpos.h"
+#include "TDefaultSunShape.h"
 #include "tgc.h"
+#include "tgf.h"
 #include "TLightKit.h"
 #include "Trace.h"
+#include "Transform.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
-#include "TDefaultSunShape.h"
 
 SO_KIT_SOURCE(TLightKit);
 
@@ -60,9 +64,9 @@ TLightKit::TLightKit()
 	Trace trace( "TLightKit::TLightKit()", false );
 	SO_KIT_CONSTRUCTOR(TLightKit);
 
-	SO_KIT_ADD_CATALOG_ENTRY(sunshapelabel, SoLabel, TRUE, this, , TRUE);
+	SO_KIT_ADD_CATALOG_ENTRY(sunshapelabel, SoLabel, TRUE, this, "", TRUE);
 	SO_KIT_CHANGE_ENTRY_TYPE(icon, TShape, TSquare );
-	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, SoNode, TDefaultSunShape, TRUE, this, , TRUE);
+	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, SoNode, TDefaultSunShape, TRUE, this, "", TRUE);
 
 	SO_KIT_INIT_INSTANCE();
 
@@ -118,35 +122,16 @@ void TLightKit::SetSunPosition( double azimuth, double zenith, double distance  
 {
 	Trace trace( "TLightKit::SetSunPosition" , false );
 
-	//Trasform calculation
-    Vector3D direction = Vector3D( sin( zenith ) * sin( azimuth ), cos( zenith ), -sin( zenith )*cos( azimuth ) );
+	Vector3D direction = Vector3D( sin( zenith ) * sin( azimuth ), cos( zenith ), -sin( zenith )*cos( azimuth ) );
 
-	Point3D center = Point3D( 0, 0, 0 ) + ( direction * distance );
-	SbMatrix translate;
-	translate.setTranslate( SbVec3f( center.x, center.y, center.z ) );
+	Vector3D center = direction * distance;
+	Transform translate = Translate( center.x, center.y, center.z );
 
-	SbMatrix rotX;
-	rotX.setRotate( SbRotation( SbVec3f( 1, 0, 0 ), -zenith ) );
+	Transform rotX  = RotateX( -zenith );
+	Transform rotY = RotateY( -azimuth );
 
-	SbMatrix rotY;
-	rotY.setRotate( SbRotation( SbVec3f( 0, 1, 0 ), -azimuth ) );
+	Transform transform = translate * rotY * rotX;
 
-	SbMatrix coinMatrix = rotX* rotY* translate;
-
-
-	SbMatrix inverse = coinMatrix.inverse();
-	SbVec3f dst;
-	coinMatrix.multDirMatrix(  SbVec3f( 0, 1, 0 ), dst );
-
-	SoTransform* transform = new SoTransform;
-	transform->setMatrix( coinMatrix );
-
-	//Set the new transfor to light
 	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
-	lightTransform->translation.setValue( transform->translation.getValue() );
-	lightTransform->rotation.setValue( transform->rotation.getValue() );
-	lightTransform->scaleFactor.setValue( transform->scaleFactor.getValue() );
-	lightTransform->scaleOrientation.setValue( transform->scaleOrientation.getValue() );
-	lightTransform->center.setValue( transform->center.getValue() );
-
+	lightTransform->setMatrix( tgf::MatrixFromTransform( transform ) );
 }

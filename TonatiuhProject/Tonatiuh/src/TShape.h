@@ -39,13 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TSHAPE_H_
 #define TSHAPE_H_
 
-#include <QString>
-
 #include <Inventor/nodes/SoShape.h>
 
 class DifferentialGeometry;
 class NormalVector;
 class Point3D;
+class QString;
 class Ray;
 
 class TShape : public SoShape
@@ -61,9 +60,11 @@ public:
 	virtual Point3D Sample( double u, double v ) const = 0;
 
 protected:
-	virtual SbVec3f GetNormal( double u, double v ) const = 0;
-	virtual void generatePrimitives(SoAction *action) = 0;
+	virtual Point3D GetPoint3D (double u, double v) const = 0;
+	virtual NormalVector GetNormal( double u, double v ) const = 0;
+
 	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) = 0;
+	virtual void generatePrimitives(SoAction *action) = 0;
 
     TShape();
     ~TShape();

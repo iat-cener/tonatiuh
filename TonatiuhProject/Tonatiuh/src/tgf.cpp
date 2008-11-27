@@ -36,72 +36,43 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/actions/SoSearchAction.h>
+#include <cmath>
+#include <iostream>
+
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-
-#include <cmath>
+#include <Inventor/nodes/SoTransform.h>
 
 #include "InstanceNode.h"
-#include "tgf.h"
-#include "tgc.h"
-#include "Vector3D.h"
+#include "Matrix4x4.h"
+#include "Photon.h"
+#include "PhotonMap.h"
+#include "RandomDeviate.h"
 #include "Ray.h"
-#include "DifferentialGeometry.h"
-#include "TMaterial.h"
+#include "tgf.h"
 #include "Trace.h"
+#include "Transform.h"
 #include "TSeparatorKit.h"
 
-
-
-
-
-#if (defined(__linux__) && defined(__i386__)) || defined(WIN32)
-#define FAST_INT 1
-#endif
-#define _doublemagicroundeps	      (.5-1.4e-11)
-
-double tgf::RandomDouble()
+void tgf::SevereError( std::string errorMessage )
 {
-	MersenneTwister* rand = 0;
-	static bool firstRandomDouble = true;
-
-	if ( firstRandomDouble )
-	{
-		rand = new MersenneTwister();
-		firstRandomDouble = false;
-	}
-	return rand->RandomDouble();
+	std::cerr << errorMessage << std::endl;
+	exit(-1);
 }
 
-double tgf::Radians(double deg)
+void tgf::Warning( std::string warningMessage )
 {
-	return (tgc::Pi/180.0) * deg;
+	std::cerr << warningMessage << std::endl;
 }
 
-bool tgf::IsPowerOf2(int v)
+bool tgf::IsOdd( int number )
 {
-	return (v & (v - 1)) == 0;
-}
-
-int tgf::Round2Int( double val )
-{
-	#ifdef FAST_INT
-	#define _doublemagic			double (6755399441055744.0)
-	//2^52 * 1.5,  uses limited precision to floor
-		val		= val + _doublemagic;
-		return ((long*)&val)[0];
-	#else
-		return int (val+_doublemagicroundeps);
-	#endif
-}
-
-int tgf::Log2Int( float v )
-{
-	return ((*(int *) &v) >> 23) - 127;
+	bool answer = number & 1;
+	return answer;
 }
 
 bool tgf::Quadratic( double A, double B, double C, double *t0, double *t1)
@@ -120,147 +91,40 @@ bool tgf::Quadratic( double A, double B, double C, double *t0, double *t1)
 	return true;
 }
 
-void tgf::ConcentricSampleDisk( double u1, double u2, double *dx, double *dy )
+double tgf::AlternateBoxMuller( RandomDeviate& rand )
 {
-	double r, theta;
-	// Map uniform random numbers to $[-1,1]^2$
-	double sx = 2 * u1 - 1;
-	double sy = 2 * u2 - 1;
-	// Map square to $(r,\theta)$
-	// Handle degeneracy at the origin
-	if (sx == 0.0 && sy == 0.0)
+	Trace trace( "tgf::AlternateBoxMuller", false );
+
+	static bool firsttime = true;
+	static double x1;
+	static double x2;
+
+	if (firsttime)
 	{
-		*dx = 0.0;
-		*dy = 0.0;
-		return;
-	}
-	if (sx >= -sy)
-	{
-		if (sx > sy)
+		double s = 2;
+		double u1;
+		double u2;
+		while(s > 1)
 		{
-			// Handle first region of disk
-			r = sx;
-			if (sy > 0.0)
-				theta = sy/r;
-			else
-				theta = 8.0 + sy/r;
+	 		u1 = 2 * rand.RandomDouble( ) - 1;
+	 		u2 = 2 * rand.RandomDouble( ) - 1;
+			s = u1 * u1 + u2 * u2;
 		}
-		else
-		{
-			// Handle second region of disk
-			r = sy;
-			theta = 2.0 - sx/r;
-		}
+
+		double z = sqrt( -2 * log( s ) / s );
+		x1 = z * u1;
+		x2 = z * u2;
+
+	 	firsttime = false;
+	 	return x1;
 	}
 	else
 	{
-		if (sx <= sy)
-		{
-			// Handle third region of disk
-			r = -sx;
-			theta = 4.0 - sy/r;
-		}
-		else {
-			// Handle fourth region of disk
-			r = -sy;
-			theta = 6.0f + sx/r;
-		}
+		firsttime = true;
+		return x2;
 	}
-	theta *= M_PI / 4.;
-	*dx = r*cos(theta);
-	*dy = r*sin(theta);
-}
 
-Vector3D tgf::CosineSampleHemisphere( double u1, double u2 )
-{
-	Vector3D ret;
-	ConcentricSampleDisk( u1, u2, &ret.x, &ret.y );
-	ret.z = sqrt( std::max( 0., 1. - ret.x*ret.x - ret.y*ret.y ) );
-	return ret;
-}
 
-bool tgf::SameHemisphere( const Vector3D &w, const Vector3D &wp )
-{
-	return w.z * wp.z > 0.0;
-}
-
-Vector3D tgf::UniformSampleHemisphere( double u1, double u2)
-{
-	double z = u1;
-	double r = sqrt(std::max(0.0, 1.0 - z*z));
-	double phi = 2 * tgc::Pi * u2;
-	double x = r * cos( phi );
-	double y = r * sin( phi );
-	return Vector3D(x, y, z);
-}
-
-void tgf::SevereError( std::string errorMessage )
-{
-	std::cerr << errorMessage << std::endl;
-	exit(-1);
-}
-
-void tgf::Warning( std::string warningMessage )
-{
-	std::cerr << warningMessage << std::endl;
-}
-
-double tgf::Clamp( double val, double low, double high )
-{
-	if ( val < low ) return low;
-	else if ( val > high ) return high;
-	else return val;
-}
-
-int tgf::Clamp( int val, int low, int high )
-{
-	if ( val < low ) return low;
-	else if ( val > high ) return high;
-	else return val;
-}
-
-double tgf::CosTheta( const Vector3D &w)
-{
-	return w.z;
-}
-
-double tgf::SinTheta( const Vector3D &w )
-{
-	return sqrt( std::max( 0.0, 1.0 - w.z*w.z ) );
-}
-
-double tgf::SinTheta2( const Vector3D &w )
-{
-	return 1.0 - CosTheta(w)*CosTheta(w);
-}
-
-double tgf::CosPhi(const Vector3D &w)
-{
-	return w.x / SinTheta(w);
-}
-
-double tgf::SinPhi(const Vector3D &w)
-{
-	return w.y / SinTheta(w);
-}
-
-void tgf::BuildFileList( QDir parentDirectory, QStringList& fileList )
-{
-    QString parentDirectoryPath( parentDirectory.absolutePath().append( "/" ) );
-
-    foreach( QString fileName, parentDirectory.entryList( QDir::Files, QDir::Unsorted ) )
-    {
-    	fileList << parentDirectoryPath + fileName;
-    }
-
-    foreach( QString directoryName, parentDirectory.entryList( QDir::Dirs, QDir::Unsorted ) )
-   	{
-   		if( ( directoryName != "." ) && ( directoryName!= ".." ) )
-   		{
-   			QDir subdirectory( parentDirectoryPath + directoryName );
-   			BuildFileList( subdirectory, fileList );
-   		}
-   	}
 }
 
 void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, RandomDeviate& rand)
@@ -285,7 +149,7 @@ void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, 
 
 			next = new Photon( point, node, 0 );
 			node->m_next = next;
-			photonMap.store(node);
+			photonMap.store( node );
 			node = next;
 
 			//Prepare node and ray for next iteration
@@ -302,20 +166,6 @@ void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, 
 	node->m_next = lastNode;
 	photonMap.store( node );
 	photonMap.store( lastNode );
-}
-
-bool tgf::IsOdd( int number )
-{
-	bool answer = number & 1;
-	return answer;
-}
-
-
-double tgf::computeSigmaOptica( double sigmaSlope, double sigmaSpecularity )
-{
-	//Computes the overall standard deviation of a reflective surface in milliradiands in terms of
-	//the corresponding standard deviations of the slope and specularity errors
-	return sqrt( 4*( sigmaSlope*sigmaSlope ) + ( sigmaSpecularity*sigmaSpecularity ) ) / 1000;
 }
 
 SoSeparator* tgf::DrawPhotonMapPoints( const PhotonMap& map )
@@ -403,38 +253,14 @@ SoSeparator* tgf::DrawPhotonMapRays( const PhotonMap& map, unsigned long numberO
   	return drawrays;
 }
 
-double tgf::AlternateBoxMuller( RandomDeviate& rand )
+SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 {
 	Trace trace( "tgf::AlternateBoxMuller", false );
 
-	static bool firsttime = true;
-	static double x1;
-	static double x2;
-
-	if (firsttime)
-	{
-		double s = 2;
-		double u1;
-		double u2;
-		while(s > 1)
-		{
-	 		u1 = 2 * rand.RandomDouble( ) - 1;
-	 		u2 = 2 * rand.RandomDouble( ) - 1;
-			s = u1 * u1 + u2 * u2;
-		}
-
-		double z = sqrt( -2 * log( s ) / s );
-		x1 = z * u1;
-		x2 = z * u2;
-
-	 	firsttime = false;
-	 	return x1;
-	}
-	else
-	{
-		firsttime = true;
-		return x2;
-	}
-
+	Ptr<Matrix4x4> transformMatrix = transform.GetMatrix()->Transpose();
+	return SbMatrix( transformMatrix->m[0][0], transformMatrix->m[0][1], transformMatrix->m[0][2], transformMatrix->m[0][3],
+											transformMatrix->m[1][0], transformMatrix->m[1][1], transformMatrix->m[1][2], transformMatrix->m[1][3],
+											transformMatrix->m[2][0], transformMatrix->m[2][1], transformMatrix->m[2][2], transformMatrix->m[2][3],
+											transformMatrix->m[3][0], transformMatrix->m[3][1], transformMatrix->m[3][2], transformMatrix->m[3][3] );
 
 }

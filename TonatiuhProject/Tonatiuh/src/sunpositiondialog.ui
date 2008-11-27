@@ -94,6 +94,9 @@
     <property name="decimals" >
      <number>4</number>
     </property>
+    <property name="minimum" >
+     <double>-90.000000000000000</double>
+    </property>
     <property name="maximum" >
      <double>90.000000000000000</double>
     </property>
@@ -129,6 +132,12 @@
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>azimuthSpin</tabstop>
+  <tabstop>elevationSpin</tabstop>
+  <tabstop>distanceSpin</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
