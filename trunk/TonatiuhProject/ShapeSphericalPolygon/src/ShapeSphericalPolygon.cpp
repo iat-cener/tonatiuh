@@ -36,12 +36,14 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QString>
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
 
 #include "DifferentialGeometry.h"
+#include "Ray.h"
 #include "ShapeSphericalPolygon.h"
 #include "tgf.h"
 #include "tgc.h"
@@ -54,7 +56,6 @@ SO_NODE_SOURCE(ShapeSphericalPolygon);
 void ShapeSphericalPolygon::initClass()
 {
 	Trace trace( "ShapeSphericalPolygon::initClass", false );
-
 	SO_NODE_INIT_CLASS( ShapeSphericalPolygon, TShape, "TShape" );
 }
 
@@ -100,22 +101,21 @@ SoNode* ShapeSphericalPolygon::copy( SbBool copyConnections ) const
 QString ShapeSphericalPolygon::getIcon()
 {
 	Trace trace( "ShapeSphericalPolygon::getIcon", false );
-
 	return ":/icons/ShapeSphericalPolygon.png";
 }
 
-bool ShapeSphericalPolygon::Intersect( const Ray& worldRay, double* tHit, DifferentialGeometry* dg ) const
+bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 	Trace trace( "ShapeSphericalPolygon::Intersect", false );
 
 	// Traslation of the coordinate system from the local coordinates with origin in the bottom of the sphere to the sphere center.
-	Ray objectRay = worldRay ;
-	objectRay.origin.z -= m_sphereRadius.getValue();
+	Ray originBottomRay = objectRay;
+	originBottomRay.origin.z -= m_sphereRadius.getValue();
 
 	// Compute quadratic sphere coefficients
-	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A = objectRay.direction.LengthSquared();
-    double B = 2.0 * DotProduct( vObjectRayOrigin, objectRay.direction );
+	Vector3D vObjectRayOrigin = Vector3D( originBottomRay.origin );
+	double A = originBottomRay.direction.LengthSquared();
+    double B = 2.0 * DotProduct( vObjectRayOrigin, originBottomRay.direction );
 	double C = vObjectRayOrigin.LengthSquared() - m_sphereRadius.getValue()*m_sphereRadius.getValue();
 
 	// Solve quadratic equation for _t_ values
@@ -123,16 +123,16 @@ bool ShapeSphericalPolygon::Intersect( const Ray& worldRay, double* tHit, Differ
 	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
-	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
-    double thit = ( t0 > objectRay.mint )? t0 : t1 ;
-    if( thit > objectRay.maxt ) return false;
+	if( t0 > originBottomRay.maxt || t1 < originBottomRay.mint ) return false;
+    double thit = ( t0 > originBottomRay.mint )? t0 : t1 ;
+    if( thit > originBottomRay.maxt ) return false;
 
     //Evaluate Tolerance
 	double tol = 0.0001;
-	if( (thit - objectRay.mint) < tol ) return false;
+	if( (thit - originBottomRay.mint) < tol ) return false;
 
 	// Compute sphere hit position and $\phi$
-    Point3D hitPoint = objectRay( thit );
+    Point3D hitPoint = originBottomRay( thit );
 	double phi = atan2( hitPoint.y, hitPoint.x );
 	if ( phi < 0. ) phi += tgc::TwoPi;
 
@@ -140,11 +140,11 @@ bool ShapeSphericalPolygon::Intersect( const Ray& worldRay, double* tHit, Differ
 	if( hitPoint.z > 0 )
 	{
 		if ( thit == t1 ) return false;
-		if ( t1 > objectRay.maxt ) return false;
+		if ( t1 > originBottomRay.maxt ) return false;
 		thit = t1;
 
 		// Compute sphere hit position and $\phi$
-		hitPoint = objectRay( thit );
+		hitPoint = originBottomRay( thit );
 		phi = atan2( hitPoint.y, hitPoint.x );
 	    if ( phi < 0. ) phi += tgc::TwoPi;
 
@@ -217,7 +217,6 @@ bool ShapeSphericalPolygon::Intersect( const Ray& worldRay, double* tHit, Differ
 bool ShapeSphericalPolygon::IntersectP( const Ray& worldRay ) const
 {
 	Trace trace( "ShapeSphericalPolygon::IntersectP", false );
-
 	return Intersect( worldRay, 0, 0 );
 }
 
@@ -247,13 +246,13 @@ Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 	return point;
 }
 
-SbVec3f ShapeSphericalPolygon::GetNormal(  double u, double v  ) const
+NormalVector ShapeSphericalPolygon::GetNormal(  double u, double v  ) const
 {
 	Trace trace( "ShapeSphericalPolygon::GetNormal", false );
 
 	Point3D point = GetPoint3D( u, v );
-	SbVec3f vector( point.x, point.y, point.z - m_sphereRadius.getValue());
-	return SbVec3f ( -point.x/vector.length(), -point.y/vector.length(), -(point.z-m_sphereRadius.getValue())/vector.length() );
+	Vector3D vector( point.x, point.y, point.z - m_sphereRadius.getValue());
+	return NormalVector( -point.x/vector.Length(), -point.y/vector.Length(), -(point.z-m_sphereRadius.getValue())/vector.Length() );
 }
 
 bool ShapeSphericalPolygon::IsInside( double u, double v ) const
@@ -357,13 +356,8 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
                           SoTextureCoordinateElement::FUNCTION );
 
     const SoTextureCoordinateElement* tce = 0;
-    SbVec4f texCoord;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
-    else
-    {
-        texCoord[2] = 0.0;
-        texCoord[3] = 1.0;
-    }
+
 
 	// Get the points in Phi,Theta correspondig with the first triangle of the polygon.
 	int num = 10;
@@ -416,36 +410,26 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 		}
 	}
 
-	SbVec3f  point;
-
-#define GEN_VERTEX( pv , phi , theta , s , t ) 								 							\
-																										\
-	 double sintheta = sin( theta );																	\
-	 double x = m_sphereRadius.getValue() * sintheta * cos( phi );										\
-	 double y = m_sphereRadius.getValue() * sintheta * sin( phi );										\
-	 double z = -m_sphereRadius.getValue() * cos( theta ) + m_sphereRadius.getValue();					\
-																										\
-     point.setValue( x , y , z );                  														\
-     SbVec3f vector( point[0], point[1], point[2] - m_sphereRadius.getValue() );													\
-	 SbVec3f normal( -point[0]/vector.length(), -point[1]/vector.length(), - ( point[2] - m_sphereRadius.getValue() ) /vector.length() );	\
-     if (useTexFunc)                            														\
-       texCoord = tce->get(point, normal);      														\
-     else {                                     														\
-       texCoord[0] = s;                         														\
-       texCoord[1] = t;                         														\
-     }                                          														\
-     pv.setPoint(point);                        														\
-     pv.setNormal(normal);                      														\
-     pv.setTextureCoords(texCoord);             														\
-     shapeVertex(&pv)
-
-
     float u = 1;
     float v = 1;
-	beginShape(action, QUADS );
+
+    beginShape(action, QUADS );
 	for ( int i = 0; i < totalIndex; i++ )
 	{
-    	GEN_VERTEX(pv , finalVertex[i][0] , finalVertex[i][1] , u ,  v );
+		double x = m_sphereRadius.getValue() * sin(  finalVertex[i][1] ) * cos( finalVertex[i][0] );
+		double y = m_sphereRadius.getValue() * sin(  finalVertex[i][1] ) * sin( finalVertex[i][0] );
+		double z = -m_sphereRadius.getValue() * cos(  finalVertex[i][1] ) + m_sphereRadius.getValue();
+
+		SbVec3f point( x, y ,z );
+		SbVec3f vector( point[0], point[1], point[2] - m_sphereRadius.getValue() );
+		SbVec3f normal( -point[0]/vector.length(), -point[1]/vector.length(), - ( point[2] - m_sphereRadius.getValue() ) /vector.length() );
+		SbVec4f texCoord = useTexFunc ? tce->get(point, normal) : SbVec4f( u, v, 0.0, 1.0 );
+
+	     pv.setPoint(point);
+	     pv.setNormal(normal);
+	     pv.setTextureCoords(texCoord);
+	     shapeVertex(&pv);
+
     }
     endShape();
 
