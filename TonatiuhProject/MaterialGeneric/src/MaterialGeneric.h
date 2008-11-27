@@ -45,6 +45,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TMaterial.h"
 
+class SoSensor;
+
 
 class MaterialGeneric : public TMaterial
 {

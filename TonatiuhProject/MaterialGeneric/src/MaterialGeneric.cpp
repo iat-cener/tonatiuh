@@ -36,13 +36,18 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QDataStream>
+#include <QString>
 
+#include <Inventor/sensors/SoFieldSensor.h>
+
+#include "DifferentialGeometry.h"
 #include "MaterialGeneric.h"
-#include "NormalVector.h"
+#include "RandomDeviate.h"
+#include "Ray.h"
 #include "tgc.h"
 #include "tgf.h"
 #include "Trace.h"
+#include "Transform.h"
 
 
 SO_NODE_SOURCE(MaterialGeneric);
@@ -50,7 +55,6 @@ SO_NODE_SOURCE(MaterialGeneric);
 void MaterialGeneric::initClass()
 {
 	Trace trace( "MaterialGeneric::MaterialGeneric", false );
-
 	 SO_NODE_INIT_CLASS( MaterialGeneric, TMaterial, "Material" );
 }
 
@@ -99,7 +103,6 @@ MaterialGeneric::~MaterialGeneric()
 QString MaterialGeneric::getIcon()
 {
 	Trace trace( "MaterialGeneric::getIcon", false );
-
 	return QString(":icons/MaterialGeneric.png");
 }
 
