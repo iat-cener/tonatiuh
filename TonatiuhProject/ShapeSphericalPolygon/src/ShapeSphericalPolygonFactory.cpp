@@ -39,8 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QIcon>
 
 #include "ShapeSphericalPolygonFactory.h"
-#include "ShapeSphericalPolygon.h"
-#include "tgf.h"
 #include "Trace.h"
 
 

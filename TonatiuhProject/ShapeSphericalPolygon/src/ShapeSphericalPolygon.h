@@ -57,8 +57,8 @@ public:
     SoNode* copy( SbBool copyConnections ) const;
     QString getIcon();
 
-	bool Intersect( const Ray& ray, double* tHit, DifferentialGeometry* dg ) const;
-	bool IntersectP( const Ray& ray ) const;
+	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
+	bool IntersectP( const Ray& objectRay ) const;
 
 	Point3D Sample( double u, double v ) const;
 
@@ -67,10 +67,9 @@ public:
 	SoSFInt32 m_sides;
 
 private:
-
    	~ShapeSphericalPolygon();
 	Point3D GetPoint3D( double u, double v ) const;
-	SbVec3f GetNormal( double u, double v ) const;
+	NormalVector GetNormal( double u, double v ) const;
 	bool IsInside( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
