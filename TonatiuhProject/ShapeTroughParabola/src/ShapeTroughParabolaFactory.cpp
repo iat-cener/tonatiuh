@@ -38,7 +38,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QIcon>
 
-#include "ShapeTroughParabola.h"
 #include "ShapeTroughParabolaFactory.h"
 #include "Trace.h"
 
