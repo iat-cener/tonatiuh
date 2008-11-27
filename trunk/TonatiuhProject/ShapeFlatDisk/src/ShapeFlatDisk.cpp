@@ -36,47 +36,152 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QString>
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
 #include "DifferentialGeometry.h"
+#include "Ray.h"
 #include "ShapeFlatDisk.h"
-#include "Vector3D.h"
 #include "tgf.h"
 #include "tgc.h"
-
-
-using tgc::Pi;
-using tgc::TwoPi;
+#include "Trace.h"
+#include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeFlatDisk);
 
 void ShapeFlatDisk::initClass()
 {
+	Trace trace( "ShapeFlatDisk::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeFlatDisk, TShape, "TShape");
-}
-
-
-QString ShapeFlatDisk::getIcon()
-{
-	return ":/icons/ShapeFlatDisk.png";
 }
 
 ShapeFlatDisk::ShapeFlatDisk( )
 {
+	Trace trace( "ShapeFlatDisk::ShapeFlatDisk", false );
 	SO_NODE_CONSTRUCTOR(ShapeFlatDisk);
 	SO_NODE_ADD_FIELD(m_radius, (10.0));
 }
 
 ShapeFlatDisk::~ShapeFlatDisk()
 {
+	Trace trace( "ShapeFlatDisk::~ShapeFlatDisk", false );
+}
 
+QString ShapeFlatDisk::getIcon()
+{
+	Trace trace( "ShapeFlatDisk::getIcon", false );
+	return ":/icons/ShapeFlatDisk.png";
+}
+
+bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
+{
+	Trace trace( "ShapeFlatDisk::Intersect", false );
+
+	// Solve equation for _t_ value
+	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction.y == 0 ) ) return false;
+	double t = -objectRay.origin.y/objectRay.direction.y;
+	// Compute intersection distance along ray
+	if( t > objectRay.maxt || t < objectRay.mint ) return false;
+
+    //Evaluate Tolerance
+	double tol = 0.00001;
+	if( (t - objectRay.mint) < tol ) return false;
+
+	// Compute rectangle hit position
+    Point3D hitPoint = objectRay( t );
+
+	// Test intersection against clipping parameters
+	if( sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) > m_radius.getValue()) return false;
+
+	// Now check if the fucntion is being called from IntersectP,
+	// in which case the pointers tHit and dg are 0
+	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
+
+	// Find parametric representation of the rectangle hit point
+	double phi = atan2( hitPoint.z, hitPoint.x );
+	if ( phi < 0. ) phi += tgc::TwoPi;
+	double radius = sqrt( hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z );
+
+	double u = phi/tgc::TwoPi;
+	double v = radius/m_radius.getValue();
+
+	// Compute rectangle \dpdu and \dpdv
+	Vector3D dpdu ( -v * m_radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * m_radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
+	Vector3D dpdv ( m_radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  m_radius.getValue() * sin( u * tgc::TwoPi ) );
+
+	// Compute \dndu and \dndv from fundamental form coefficients
+	Vector3D dndu ( 0.0, 0.0, 0.0 );
+	Vector3D dndv ( 0.0, 0.0, 0.0 );
+
+	// Initialize _DifferentialGeometry_ from parametric information
+	*dg = DifferentialGeometry( hitPoint ,
+		                        dpdu,
+								dpdv,
+		                        dndu,
+								dndv,
+		                        u, v, this );
+
+    // Update _tHit_ for quadric intersection
+    *tHit = t;
+
+	return true;
+}
+
+bool ShapeFlatDisk::IntersectP( const Ray& objectRay ) const
+{
+	Trace trace( "ShapeFlatDisk::TShapeName", false );
+	return Intersect( objectRay, 0, 0 );
+}
+
+Point3D ShapeFlatDisk::Sample( double u, double v ) const
+{
+	Trace trace( "ShapeFlatDisk::Sample", false );
+	return GetPoint3D( u, v );
+}
+
+Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
+{
+	Trace trace( "ShapeFlatDisk::GetPoint3D", false );
+
+	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
+
+	double theta = u * tgc::TwoPi;
+	double rad = v * m_radius.getValue();
+
+	return Point3D(rad*cos(theta),0,rad*sin(theta));
+}
+
+NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
+{
+	Trace trace( "ShapeFlatDisk::GetNormal", false );
+
+	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
+	return NormalVector( 0, 1, 0 );
+}
+
+bool ShapeFlatDisk::OutOfRange( double u, double v ) const
+{
+	Trace trace( "ShapeFlatDisk::OutOfRange", false );
+	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
+}
+
+void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
+{
+	Trace trace( "ShapeFlatDisk::computeBBox", false );
+
+	Point3D min = Point3D(-m_radius.getValue(), 0.0, -m_radius.getValue());
+	Point3D max = Point3D(m_radius.getValue(), 0.0, m_radius.getValue());
+	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
 }
 
 void ShapeFlatDisk::generatePrimitives(SoAction *action)
 {
+	Trace trace( "ShapeFlatDisk::generatePrimitives", false );
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.
@@ -90,26 +195,10 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
     // If we need to generate texture coordinates with a
     // function, we'll need an SoGLTextureCoordinateElement.
     // Otherwise, we'll set up the coordinates directly.
-    const SoTextureCoordinateElement* tce;
-    SbVec4f texCoord;
+    const SoTextureCoordinateElement* tce = 0;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
-    else
-    {
-        texCoord[2] = 0.0;
-        texCoord[3] = 1.0;
-    }
 
-    // Determine if there's a material bound per part.
-    SoMaterialBindingElement::Binding binding = SoMaterialBindingElement::get(state);
-    SbBool materialPerPart = ( binding == SoMaterialBindingElement::PER_PART ||
-                               binding == SoMaterialBindingElement::PER_PART_INDEXED);
-
-    // We'll use this macro to make the code easier. It uses the
-    // "point" variable to store the primitive vertex's point.
-    SbVec3f  point;
-
-
-	const int rows = 50; // Number of points per row
+   	const int rows = 50; // Number of points per row
     const int columns = 50; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
@@ -129,23 +218,20 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * ( (double) j );
 
     		Point3D point = GetPoint3D(ui, vj);
-    		SbVec3f normal = GetNormal(ui, vj);
+    		NormalVector normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
     		vertex[h][2] = point.z;
-    		vertex[h][3] = normal[0];
-    		vertex[h][4] = normal[1];
-    		vertex[h][5] = normal[2];
+    		vertex[h][3] = normal.x;
+    		vertex[h][4] = normal.y;
+    		vertex[h][5] = normal.z;
 
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
     		h++; //Increase h to the next point.
-    		//vj += v_step; // Increase parameter vj to go from initial 0 to 1 at the end of the row (keep the same ui for the whole row)
-
 
     	}
     	vj = 0; // Re-initialize parameter vj to 0 in order to start from 0 in the next row
-		//ui += u_step; // Increase parameter ui to go from initial 0 to 1 in the last row.
 
     }
 
@@ -174,21 +260,6 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
     	finalvertex[ivert][5] = vertex[indices[ivert]][5];
     }
     delete[] indices;
-#define GEN_VERTEX(pv, x, y, z, s, t, normal)   \
-     point.setValue( x,                         \
-                     y,                         \
-                     z);                        \
-     if (useTexFunc)                            \
-       texCoord = tce->get(point, normal);      \
-     else {                                     \
-       texCoord[0] = s;                         \
-       texCoord[1] = t;                         \
-     }                                          \
-     pv.setPoint(point);                        \
-     pv.setNormal(normal);                      \
-     pv.setTextureCoords(texCoord);             \
-     shapeVertex(&pv)
-
 
     float u = 1;
     float v = 1;
@@ -196,103 +267,15 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
 	beginShape(action, QUADS );
     for( int i = 0; i < totalIndices; i++ )
     {
+    	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
     	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
-    	GEN_VERTEX(pv,  finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2], u,  v, normal);
+		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
+
+		pv.setPoint(point);
+		pv.setNormal(normal);
+		pv.setTextureCoords(texCoord);
+		shapeVertex(&pv);
     }
     endShape();
-}
-
-bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
-{
-	// Solve equation for _t_ value
-	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction.y == 0 ) ) return false;
-	double t = -objectRay.origin.y/objectRay.direction.y;
-	// Compute intersection distance along ray
-	if( t > objectRay.maxt || t < objectRay.mint ) return false;
-
-    //Evaluate Tolerance
-	double tol = 0.00001;
-	if( (t - objectRay.mint) < tol ) return false;
-
-	// Compute rectangle hit position
-    Point3D hitPoint = objectRay( t );
-
-	// Test intersection against clipping parameters
-	if( sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) > m_radius.getValue()) return false;
-
-	// Now check if the fucntion is being called from IntersectP,
-	// in which case the pointers tHit and dg are 0
-	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
-
-	// Find parametric representation of the rectangle hit point
-	double phi = atan2( hitPoint.z, hitPoint.x );
-	if ( phi < 0. ) phi += TwoPi;
-	double radius = sqrt( hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z );
-
-	double u = phi/TwoPi;
-	double v = radius/m_radius.getValue();
-
-	// Compute rectangle \dpdu and \dpdv
-	Vector3D dpdu ( -v * m_radius.getValue() * sin( u * TwoPi ) * TwoPi, 0.0, v * m_radius.getValue() * cos( u * TwoPi ) * TwoPi );
-	Vector3D dpdv ( m_radius.getValue()* cos( u * TwoPi ), 0.0,  m_radius.getValue() * sin( u * TwoPi ) );
-
-	// Compute \dndu and \dndv from fundamental form coefficients
-	Vector3D dndu ( 0.0, 0.0, 0.0 );
-	Vector3D dndv ( 0.0, 0.0, 0.0 );
-
-	// Initialize _DifferentialGeometry_ from parametric information
-	*dg = DifferentialGeometry( hitPoint ,
-		                        dpdu,
-								dpdv,
-		                        dndu,
-								dndv,
-		                        u, v, this );
-
-    // Update _tHit_ for quadric intersection
-    *tHit = t;
-
-	return true;
-}
-
-bool ShapeFlatDisk::IntersectP( const Ray& objectRay ) const
-{
-	return Intersect( objectRay, 0, 0 );
-}
-
-void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
-{
-	Point3D min = Point3D(-m_radius.getValue(), 0.0, -m_radius.getValue());
-	Point3D max = Point3D(m_radius.getValue(), 0.0, m_radius.getValue());
-	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
-}
-
-Point3D ShapeFlatDisk::Sample( double u, double v ) const{
-
-
-	return GetPoint3D( u, v );
-
-}
-
-bool ShapeFlatDisk::OutOfRange( double u, double v ) const
-{
-	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
-}
-
-
-Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
-{
-	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
-
-	double theta = u * 2*Pi;
-	double rad = v * m_radius.getValue();
-
-	return Point3D(rad*cos(theta),0,rad*sin(theta));
-}
-
-SbVec3f ShapeFlatDisk::GetNormal (double u ,double v ) const
-{
-	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
-	return SbVec3f( 0, 1, 0 );
 }
 
