@@ -36,12 +36,14 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QString>
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
 
 #include "DifferentialGeometry.h"
+#include "Ray.h"
 #include "ShapeParabolicDish.h"
 #include "tgf.h"
 #include "tgc.h"
@@ -76,149 +78,6 @@ QString ShapeParabolicDish::getIcon()
 {
 	Trace trace( "ShapeParabolicDish::getIcon", false );
 	return ":/icons/ShapeParabolicDish.png";
-}
-
-void ShapeParabolicDish::generatePrimitives(SoAction *action)
-{
-	Trace trace( "ShapeParabolicDish::generatePrimitives", false );
-
-    SoPrimitiveVertex   pv;
-
-    // Access the state from the action.
-    SoState  *state = action->getState();
-
-    // See if we have to use a texture coordinate function,
-    // rather than generating explicit texture coordinates.
-    SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) ==
-                          SoTextureCoordinateElement::FUNCTION );
-
-    // If we need to generate texture coordinates with a
-    // function, we'll need an SoGLTextureCoordinateElement.
-    // Otherwise, we'll set up the coordinates directly.
-    const SoTextureCoordinateElement* tce;
-    SbVec4f texCoord;
-    if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
-    else
-    {
-        texCoord[2] = 0.0;
-        texCoord[3] = 1.0;
-    }
-
-    // Determine if there's a material bound per part.
-    SoMaterialBindingElement::Binding binding = SoMaterialBindingElement::get(state);
-    SbBool materialPerPart = ( binding == SoMaterialBindingElement::PER_PART ||
-                               binding == SoMaterialBindingElement::PER_PART_INDEXED);
-
-    // We'll use this macro to make the code easier. It uses the
-    // "point" variable to store the primitive vertex's point.
-    SbVec3f  point;
-
-
-	const int rows = 50; // Number of points per row
-    const int columns = 50; // Number of points per column
-    const int totalPoints = (rows)*(columns); // Total points in the grid
-
-    float vertex[totalPoints][6];
-
-    int h = 0;
-    double ui = 0;
-	double vj = 0;
-
-	 for (int i = 0; i < rows; i++)
-    {
-    	ui =( 1.0 /(double)(rows-1) ) * i;
-
-    	for ( int j = 0 ; j < columns ; j++ )
-    	{
-
-    		vj = ( 1.0 /(double)(columns-1) ) * j;
-
-    		Point3D point = GetPoint3D(ui, vj);
-    		SbVec3f normal = GetNormal(ui, vj);
-
-    		vertex[h][0] = point.x;
-    		vertex[h][1] = point.y;
-    		vertex[h][2] = point.z;
-    		vertex[h][3] = normal[0];
-    		vertex[h][4] = normal[1];
-    		vertex[h][5] = normal[2];
-
-    		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
-    		h++; //Increase h to the next point.
-
-    	}
-
-    }
-
-	const int totalIndices  = (rows-1)*(columns-1)*4;
-    int32_t* indices = new int32_t[totalIndices];
-    int k = 0;
-    for(int irow = 0; irow < (rows-1); irow++)
-           for(int icolumn = 0; icolumn < (columns-1); icolumn++)
-           {
-           	indices[k] = irow*columns + icolumn;
-        	indices[k+1] = indices[k] + 1;
-        	indices[k+3] = indices[k] + columns;
-        	indices[k+2] = indices[k+3] + 1;
-
-        	k+=4; //Set k to the first point of the next face.
-           }
-
-    float finalvertex[totalIndices][6];
-    for(int ivert = 0; ivert<totalIndices;ivert++)
-    {
-    	finalvertex[ivert][0] = vertex[indices[ivert]][0];
-    	finalvertex[ivert][1] = vertex[indices[ivert]][1];
-    	finalvertex[ivert][2] = vertex[indices[ivert]][2];
-    	finalvertex[ivert][3] = vertex[indices[ivert]][3];
-    	finalvertex[ivert][4] = vertex[indices[ivert]][4];
-    	finalvertex[ivert][5] = vertex[indices[ivert]][5];
-    }
-    delete[] indices;
-#define GEN_VERTEX(pv, x, y, z, s, t, normal)   \
-     point.setValue( x,                         \
-                     y,                         \
-                     z);                        \
-     if (useTexFunc)                            \
-       texCoord = tce->get(point, normal);      \
-     else {                                     \
-       texCoord[0] = s;                         \
-       texCoord[1] = t;                         \
-     }                                          \
-     pv.setPoint(point);                        \
-     pv.setNormal(normal);                      \
-     pv.setTextureCoords(texCoord);             \
-     shapeVertex(&pv)
-
-
-    float u = 1;
-    float v = 1;
-
-	beginShape(action, QUADS );
-    for( int i = 0; i < totalIndices; i++ )
-    {
-    	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
-    	GEN_VERTEX(pv,  finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2], u,  v, normal);
-    }
-    endShape();
-}
-
-void ShapeParabolicDish::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
-{
-	Trace trace( "ShapeParabolicDish::computeBBox", false );
-
-	double cosPhiMax = cos( m_phiMax.getValue() );
-	double sinPhiMax = sin( m_phiMax.getValue() );
-
-	double xmin = ( m_phiMax.getValue() >= tgc::Pi ) ? -m_radius.getValue() : m_radius.getValue() * cosPhiMax;
-	double xmax = m_radius.getValue();
-	double ymin = 0.0;
-	if( m_phiMax.getValue() > tgc::Pi ) ymin = ( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue();
-	double ymax = ( m_phiMax.getValue() < tgc::Pi/2.0 )? m_radius.getValue() * sinPhiMax : m_radius.getValue();
-
-	double zmax = m_radius.getValue()*m_radius.getValue()/(4*m_focus.getValue());
-	double zmin = 0.0;
-	box.setBounds(SbVec3f( xmin, ymin, zmin), SbVec3f( xmax, ymax, zmax));
 }
 
 bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
@@ -342,12 +201,6 @@ Point3D ShapeParabolicDish::Sample( double u, double v ) const
 	return GetPoint3D( u, v );
 }
 
-bool ShapeParabolicDish::OutOfRange( double u, double v ) const
-{
-	Trace trace( "ShapeParabolicDish::OutOfRange", false );
-	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
-}
-
 Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 {
 	Trace trace( "ShapeParabolicDish::GetPoint3D", false );
@@ -364,16 +217,142 @@ Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 
 }
 
-SbVec3f ShapeParabolicDish::GetNormal (double u, double v) const
+NormalVector ShapeParabolicDish::GetNormal (double u, double v) const
 {
 	Trace trace( "ShapeParabolicDish::GetNormal", false );
 
 	Point3D point = GetPoint3D( u, v );
 
 	Vector3D r( 0, 0, 1 );
-	Vector3D v1=Normalize( NormalVector( -point.x, -point.y, m_focus.getValue()-point.z ));
-	Vector3D normal = Normalize( NormalVector( r + v1 ) );
+	Vector3D v1= Normalize( Vector3D( -point.x, -point.y, m_focus.getValue()-point.z ) );
+	return Normalize( NormalVector( r + v1 ) );
+}
 
-	return SbVec3f ( normal.x, normal.y, normal.z );
+bool ShapeParabolicDish::OutOfRange( double u, double v ) const
+{
+	Trace trace( "ShapeParabolicDish::OutOfRange", false );
+	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
+}
 
+void ShapeParabolicDish::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
+{
+	Trace trace( "ShapeParabolicDish::computeBBox", false );
+
+	double cosPhiMax = cos( m_phiMax.getValue() );
+	double sinPhiMax = sin( m_phiMax.getValue() );
+
+	double xmin = ( m_phiMax.getValue() >= tgc::Pi ) ? -m_radius.getValue() : m_radius.getValue() * cosPhiMax;
+	double xmax = m_radius.getValue();
+	double ymin = 0.0;
+	if( m_phiMax.getValue() > tgc::Pi ) ymin = ( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue();
+	double ymax = ( m_phiMax.getValue() < tgc::Pi/2.0 )? m_radius.getValue() * sinPhiMax : m_radius.getValue();
+
+	double zmax = m_radius.getValue()*m_radius.getValue()/(4*m_focus.getValue());
+	double zmin = 0.0;
+	box.setBounds(SbVec3f( xmin, ymin, zmin), SbVec3f( xmax, ymax, zmax));
+}
+
+void ShapeParabolicDish::generatePrimitives(SoAction *action)
+{
+	Trace trace( "ShapeParabolicDish::generatePrimitives", false );
+
+    SoPrimitiveVertex   pv;
+
+    // Access the state from the action.
+    SoState  *state = action->getState();
+
+    // See if we have to use a texture coordinate function,
+    // rather than generating explicit texture coordinates.
+    SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) ==
+                          SoTextureCoordinateElement::FUNCTION );
+
+    // If we need to generate texture coordinates with a
+    // function, we'll need an SoGLTextureCoordinateElement.
+    // Otherwise, we'll set up the coordinates directly.
+    const SoTextureCoordinateElement* tce = 0;
+    SbVec4f texCoord;
+    if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
+
+   // We'll use this macro to make the code easier. It uses the
+    // "point" variable to store the primitive vertex's point.
+    SbVec3f  point;
+
+
+	const int rows = 50; // Number of points per row
+    const int columns = 50; // Number of points per column
+    const int totalPoints = (rows)*(columns); // Total points in the grid
+
+    float vertex[totalPoints][6];
+
+    int h = 0;
+    double ui = 0;
+	double vj = 0;
+
+	 for (int i = 0; i < rows; i++)
+    {
+    	ui =( 1.0 /(double)(rows-1) ) * i;
+
+    	for ( int j = 0 ; j < columns ; j++ )
+    	{
+
+    		vj = ( 1.0 /(double)(columns-1) ) * j;
+
+    		Point3D point = GetPoint3D(ui, vj);
+    		NormalVector normal = GetNormal(ui, vj);
+
+    		vertex[h][0] = point.x;
+    		vertex[h][1] = point.y;
+    		vertex[h][2] = point.z;
+    		vertex[h][3] = normal.x;
+    		vertex[h][4] = normal.y;
+    		vertex[h][5] = normal.z;
+
+    		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
+    		h++; //Increase h to the next point.
+
+    	}
+    }
+
+	const int totalIndices  = (rows-1)*(columns-1)*4;
+    int32_t* indices = new int32_t[totalIndices];
+    int k = 0;
+    for(int irow = 0; irow < (rows-1); irow++)
+           for(int icolumn = 0; icolumn < (columns-1); icolumn++)
+           {
+           	indices[k] = irow*columns + icolumn;
+        	indices[k+1] = indices[k] + 1;
+        	indices[k+3] = indices[k] + columns;
+        	indices[k+2] = indices[k+3] + 1;
+
+        	k+=4; //Set k to the first point of the next face.
+           }
+
+    float finalvertex[totalIndices][6];
+    for(int ivert = 0; ivert<totalIndices;ivert++)
+    {
+    	finalvertex[ivert][0] = vertex[indices[ivert]][0];
+    	finalvertex[ivert][1] = vertex[indices[ivert]][1];
+    	finalvertex[ivert][2] = vertex[indices[ivert]][2];
+    	finalvertex[ivert][3] = vertex[indices[ivert]][3];
+    	finalvertex[ivert][4] = vertex[indices[ivert]][4];
+    	finalvertex[ivert][5] = vertex[indices[ivert]][5];
+    }
+    delete[] indices;
+
+    float u = 1;
+    float v = 1;
+
+	beginShape(action, QUADS );
+    for( int i = 0; i < totalIndices; i++ )
+    {
+    	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
+    	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
+		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
+
+		pv.setPoint(point);
+		pv.setNormal(normal);
+		pv.setTextureCoords(texCoord);
+		shapeVertex(&pv);
+    }
+    endShape();
 }

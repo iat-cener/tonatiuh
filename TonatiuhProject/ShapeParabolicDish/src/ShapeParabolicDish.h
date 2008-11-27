@@ -40,9 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPEPARABOLICDISH_H_
 
 #include <Inventor/fields/SoSFDouble.h>
+
 #include "TShape.h"
 
-class Transform;
 
 class ShapeParabolicDish : public TShape
 {
@@ -62,12 +62,12 @@ public:
 	SoSFDouble m_phiMax;
 
 protected:
+	Point3D GetPoint3D ( double u, double v ) const;
+	NormalVector GetNormal ( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
-	Point3D GetPoint3D ( double u, double v ) const;
-	SbVec3f GetNormal ( double u, double v ) const;
-	virtual void generatePrimitives(SoAction *action);
 	virtual void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center);
+	virtual void generatePrimitives(SoAction *action);
 	virtual ~ShapeParabolicDish();
 };
 
