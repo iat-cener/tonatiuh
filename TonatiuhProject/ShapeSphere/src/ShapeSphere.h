@@ -39,10 +39,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPESPHERE_H_
 #define SHAPESPHERE_H_
 
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
+
+class SoSensor;
 
 class ShapeSphere : public TShape
 {
@@ -59,7 +60,6 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
-
 	SoSFDouble m_radius;
 	SoSFDouble m_z1;
 	SoSFDouble m_z2;
@@ -70,16 +70,13 @@ protected:
 
 	bool OutOfRange( double u, double v ) const;
 	Point3D GetPoint3D ( double u, double v ) const;
-	SbVec3f GetNormal( double u, double v ) const;
+	NormalVector GetNormal( double u, double v ) const;
+
+	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	virtual void generatePrimitives(SoAction *action);
-	virtual void computeBBox(SoAction *action,
-                              SbBox3f &box, SbVec3f &center);
    	virtual ~ShapeSphere();
 
 private:
-	SoFieldSensor* m_z1Sensor;
-	SoFieldSensor* m_z2Sensor;
-	SoFieldSensor* m_radiusSensor;
 	double m_thetaMin;
 	double m_thetaMax;
 };

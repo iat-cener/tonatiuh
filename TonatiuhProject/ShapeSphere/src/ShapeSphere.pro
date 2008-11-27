@@ -28,7 +28,6 @@ HEADERS = *.h \
            	../Tonatiuh/src/DifferentialGeometry.h \
            	../Tonatiuh/src/InstanceNode.h \
            	../Tonatiuh/src/Matrix4x4.h \
-       		../Tonatiuh/src/MersenneTwister.h \
        		../Tonatiuh/src/NormalVector.h \
            	../Tonatiuh/src/Photon.h \
            	../Tonatiuh/src/PhotonMap.h \
@@ -37,7 +36,6 @@ HEADERS = *.h \
           	../Tonatiuh/src/Ray.h \
            	../Tonatiuh/src/RefCount.h \
            	../Tonatiuh/src/tgf.h \
-           	../Tonatiuh/src/TMaterial.h \
            	../Tonatiuh/src/Trace.h \
            	../Tonatiuh/src/Transform.h \
            	../Tonatiuh/src/TSeparatorKit.h \
@@ -51,7 +49,6 @@ SOURCES = *.cpp \
  		   	../Tonatiuh/src/InstanceNode.cpp \
            	../Tonatiuh/src/DifferentialGeometry.cpp \
            	../Tonatiuh/src/Matrix4x4.cpp \
-           	../Tonatiuh/src/MersenneTwister.cpp \
            	../Tonatiuh/src/NormalVector.cpp \
            	../Tonatiuh/src/Photon.cpp \
            	../Tonatiuh/src/PhotonMap.cpp \
@@ -59,7 +56,6 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/Ray.cpp \
            	../Tonatiuh/src/RefCount.cpp \
            	../Tonatiuh/src/tgf.cpp \
-           	../Tonatiuh/src/TMaterial.cpp \
            	../Tonatiuh/src/Transform.cpp \
            	../Tonatiuh/src/TShape.cpp \
            	../Tonatiuh/src/Trace.cpp \
