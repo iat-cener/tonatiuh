@@ -25,32 +25,27 @@ win32{
 HEADERS = *.h \
 			../Tonatiuh/src/BBox.h \
            	../Tonatiuh/src/DifferentialGeometry.h \
-           	../Tonatiuh/src/InstanceNode.h \
+ 		   	../Tonatiuh/src/InstanceNode.h \
            	../Tonatiuh/src/Matrix4x4.h \
-       		../Tonatiuh/src/MersenneTwister.h \
-       		../Tonatiuh/src/NormalVector.h \
+           	../Tonatiuh/src/NormalVector.h \
            	../Tonatiuh/src/Photon.h \
            	../Tonatiuh/src/PhotonMap.h \
-       		../Tonatiuh/src/Point3D.h \
-          	../Tonatiuh/src/RandomDeviate.h \
-          	../Tonatiuh/src/Ray.h \
+           	../Tonatiuh/src/Point3D.h \
+           	../Tonatiuh/src/Ray.h \
            	../Tonatiuh/src/RefCount.h \
            	../Tonatiuh/src/tgf.h \
-           	../Tonatiuh/src/TMaterial.h \
            	../Tonatiuh/src/Trace.h \
            	../Tonatiuh/src/Transform.h \
            	../Tonatiuh/src/TSeparatorKit.h \
            	../Tonatiuh/src/TShape.h \
-           	../Tonatiuh/src/TShapeKit.h \
-           	../Tonatiuh/src/Vector3D.h 
-
+           	../Tonatiuh/src/TShapeKit.h \ 
+           	../Tonatiuh/src/Vector3D.h
 
 SOURCES = *.cpp \
 			../Tonatiuh/src/BBox.cpp \
- 		   	../Tonatiuh/src/InstanceNode.cpp \
            	../Tonatiuh/src/DifferentialGeometry.cpp \
+ 		   	../Tonatiuh/src/InstanceNode.cpp \
            	../Tonatiuh/src/Matrix4x4.cpp \
-           	../Tonatiuh/src/MersenneTwister.cpp \
            	../Tonatiuh/src/NormalVector.cpp \
            	../Tonatiuh/src/Photon.cpp \
            	../Tonatiuh/src/PhotonMap.cpp \
@@ -58,11 +53,10 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/Ray.cpp \
            	../Tonatiuh/src/RefCount.cpp \
            	../Tonatiuh/src/tgf.cpp \
-           	../Tonatiuh/src/TMaterial.cpp \
-           	../Tonatiuh/src/Transform.cpp \
-           	../Tonatiuh/src/TShape.cpp \
            	../Tonatiuh/src/Trace.cpp \
+           	../Tonatiuh/src/Transform.cpp \
            	../Tonatiuh/src/TSeparatorKit.cpp \
+           	../Tonatiuh/src/TShape.cpp \
            	../Tonatiuh/src/TShapeKit.cpp \
            	../Tonatiuh/src/Vector3D.cpp
 
