@@ -43,9 +43,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "TDefaultTracker.h"
-#include "Trace.h"
-#include "TSeparatorKit.h"
 #include "tgf.h"
+#include "Trace.h"
+#include "Transform.h"
+#include "TSeparatorKit.h"
+#include "TShapeKit.h"
 
 
 SO_KIT_SOURCE(TSeparatorKit);

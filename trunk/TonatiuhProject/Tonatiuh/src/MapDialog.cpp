@@ -36,28 +36,6 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-/*#include <QApplication>
-#include <QComboBox>
-#include <QDialogButtonBox>
-#include <QDir>
-#include <QDoubleSpinBox>
-#include <QLabel>
-#include <QLayout>
-#include <QObject>
-#include <QSpacerItem>
-#include <QSplitter>
-#include <QStringListModel>
-
-#include <MarbleDirs.h>
-#include <MarbleWidget.h>
-#include <MapThemeManager.h>
-
-
-#include "tgc.h"
-#include "Trace.h"
-
-
-#include <iostream>*/
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDir>

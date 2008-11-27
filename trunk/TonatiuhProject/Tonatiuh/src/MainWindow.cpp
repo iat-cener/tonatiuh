@@ -90,6 +90,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "NodeNameDelegate.h"
 #include "PhotonMap.h"
 #include "RandomDeviate.h"
+#include "Ray.h"
 #include "RayTraceDialog.h"
 #include "SceneModel.h"
 #include "LightDialog.h"
@@ -100,8 +101,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TLightKit.h"
 #include "TMaterial.h"
 #include "TMaterialFactory.h"
+#include "Transform.h"
 #include "TSeparatorKit.h"
 #include "TShapeFactory.h"
+#include "TShapeKit.h"
 #include "TSunShapeFactory.h"
 #include "Trace.h"
 #include "TTracker.h"
@@ -913,6 +916,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		//Transform ray to World coordinate system and trace the scene
 		ray = lightToWorld( ray );
 
+		//ray = Ray( Point3D( 0.5, 0.0, 5.0 ), Vector3D( 0.0, 0.0, -1.0 ) );
 		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
 
   	    //Update progressDiaglog when appropriate
@@ -1081,8 +1085,6 @@ void MainWindow::on_actionGrid_toggled()
 	Trace trace( "MainWindow::on_actionGrid_toggled", false );
 	if( actionGrid->isChecked() )
 	{
-		SbVec3f min, max;
-
 		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( treeView->rootIndex() );
 		if ( !sceneInstance )  return;
 		SoNode* rootNode = sceneInstance->GetNode();
@@ -1091,10 +1093,11 @@ void MainWindow::on_actionGrid_toggled()
 
 		SbViewportRegion region = m_graphicView[m_focusView]->GetViewportRegion();
 		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
-		if(nodePath)
-			bbAction->apply(nodePath);
+		if(nodePath)	bbAction->apply(nodePath);
 
 		SbXfBox3f box= bbAction->getXfBoundingBox();
+
+		SbVec3f min, max;
 		box.getBounds(min, max);
 
 
@@ -1196,18 +1199,16 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
 {
 	Trace trace( "MainWindow::CreateMaterial", false );
 
-	QModelIndex parentIndex;
-    if ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0,treeView->rootIndex());
-	else
-		parentIndex = treeView->currentIndex();
+	QModelIndex parentIndex = ( (! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex() ) ) ?
+								m_sceneModel->index( 0, 0, treeView->rootIndex( )):
+								treeView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = parentInstance->GetNode();
 	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
 
-	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
-	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
+	TShapeKit* shapeKit = dynamic_cast< TShapeKit* >( parentNode );
+	TMaterial* material = dynamic_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
 
     if ( material )
     {
@@ -1221,9 +1222,8 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
     material->setName( typeName.toStdString().c_str() );
 
     CmdInsertMaterial* createMaterial = new CmdInsertMaterial( shapeKit, material, m_sceneModel );
-    char string[50];
-    sprintf(string, "Create Material %s", pTMaterialFactory->TMaterialName().toLatin1().constData());
-    createMaterial->setText(string);
+    QString commandText = QString( "Create Material: %1").arg( pTMaterialFactory->TMaterialName().toLatin1().constData() );
+    createMaterial->setText(commandText);
     m_commandStack->push( createMaterial );
 
     m_document->SetDocumentModified( true );
@@ -1234,18 +1234,15 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
     Trace trace( "MainWindow::CreateShape", false );
 
-    QModelIndex parentIndex;
-    if ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0,treeView->rootIndex());
-	else
-		parentIndex = treeView->currentIndex();
+    QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
+								m_sceneModel->index (0,0,treeView->rootIndex()) : treeView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = parentInstance->GetNode();
 	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
 
-	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
-	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
+	TShapeKit* shapeKit = dynamic_cast< TShapeKit* >( parentNode );
+	TShape* shape = dynamic_cast< TShape* >( shapeKit->getPart( "shape", false ) );
 
     if (shape)
     {
@@ -1257,9 +1254,8 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
     	shape = pTShapeFactory->CreateTShape();
     	shape->setName( pTShapeFactory->TShapeName().toStdString().c_str() );
         CmdInsertShape* createShape = new CmdInsertShape( shapeKit, shape, m_sceneModel );
-        char string[50];
-        sprintf(string, "Create Shape %s", pTShapeFactory->TShapeName().toLatin1().constData());
-        createShape->setText(string);
+        QString commandText = QString( "Create Shape: %1" ).arg( pTShapeFactory->TShapeName().toLatin1().constData());
+        createShape->setText( commandText );
         m_commandStack->push( createShape );
 
         m_document->SetDocumentModified( true );
@@ -1270,11 +1266,9 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
 	Trace trace( "MainWindow::CreateTracker", false );
 
-	QModelIndex parentIndex;
-    if ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0,treeView->rootIndex());
-	else
-		parentIndex = treeView->currentIndex();
+	QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
+								m_sceneModel->index (0,0,treeView->rootIndex()):
+								treeView->currentIndex();
 
 	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = ancestor->GetNode();
@@ -1288,8 +1282,8 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	}
 
 	SoSceneKit* scene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
-   	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true) );
+	TLightKit* lightKit = dynamic_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
+   	SoTransform* lightTransform = dynamic_cast< SoTransform* > ( lightKit->getPart("transform", true) );
 
     TTracker* tracker = pTTrackerFactory->CreateTTracker( );
     QString typeName = pTTrackerFactory->TTrackerName();
@@ -1301,7 +1295,6 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 
 	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, m_sceneModel );
 	m_commandStack->push( command );
-
 
 }
 
@@ -1535,7 +1528,7 @@ void MainWindow::selectionFinish( SoSelection* selection )
 {
     Trace trace( "MainWindow::selectionFinish", false );
 
-    QModelIndex nodeIndex;
+
     if(selection->getNumSelected() == 0 ) return;
 
     SoPath* selectionPath = selection->getPath( 0 );
@@ -1544,12 +1537,10 @@ void MainWindow::selectionFinish( SoSelection* selection )
     if ( !selectionPath->containsNode ( m_document->GetSceneKit() ) ) return;
 
     SoNodeKitPath* nodeKitPath = static_cast< SoNodeKitPath* >( selectionPath );
-
     if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(SoDragger::getClassTypeId() ) ) return;
-	nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
 
+    QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
 	if ( !nodeIndex.isValid() ) return;
-
 	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
 
 }
@@ -2062,7 +2053,7 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 			m_manipulators_Buffer->push_back(QString( fieldValue.getString() ) );
 		}
 	}
-
+	delete coinSearch;
 }
 
 void MainWindow::FinishManipulation( )
@@ -2092,9 +2083,9 @@ SoSeparator* MainWindow::createGrid( int tsize )
     float step, i, s;
     int vnum, inum, mnum, m;
 
-    SbVec3f * vertices = new SbVec3f[vsum];
-    int * cindex = new int[isum];
-    int * mindex = new int[msum];
+    SbVec3f* vertices = new SbVec3f[vsum];
+    int* cindex = new int[isum];
+    int* mindex = new int[msum];
 
     vnum = inum = mnum = m = 0;
     step = 1.0;
@@ -2137,5 +2128,9 @@ SoSeparator* MainWindow::createGrid( int tsize )
     grid->addChild(lineset);
 
     grid->unrefNoDelete();
+
+    delete vertices;
+    delete[] cindex;
+    delete[] mindex;
     return grid;
 }
