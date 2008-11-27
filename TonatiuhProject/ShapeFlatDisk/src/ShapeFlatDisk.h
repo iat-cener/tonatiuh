@@ -43,8 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TShape.h"
 
-class Transform;
-
 class ShapeFlatDisk : public TShape
 {
 	SO_NODE_HEADER(TShapeFlatDisk);
@@ -59,14 +57,12 @@ public:
 
 	SoSFDouble m_radius;
 protected:
-
+	Point3D GetPoint3D (double u, double v) const;
+	NormalVector GetNormal(double u, double v) const;
 	bool OutOfRange( double u, double v ) const;
 
-	Point3D GetPoint3D (double u, double v) const;
-	SbVec3f GetNormal(double u, double v) const;
+	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	virtual void generatePrimitives(SoAction *action);
-	virtual void computeBBox(SoAction *action,
-                              SbBox3f &box, SbVec3f &center);
 	~ShapeFlatDisk();
 };
 
