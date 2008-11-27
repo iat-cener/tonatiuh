@@ -36,14 +36,14 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QIcon>
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/nodes/SoPickStyle.h>
 
 #include "DifferentialGeometry.h"
+#include "Ray.h"
 #include "ShapeTroughParabola.h"
 #include "tgf.h"
 #include "tgc.h"
@@ -58,7 +58,6 @@ void ShapeTroughParabola::initClass()
 	Trace trace( "ShapeTroughParabola::initClass", false );
 
 	SO_NODE_INIT_CLASS(ShapeTroughParabola, TShape, "TShape");
-	SO_ENABLE(SoPickAction, SoPickStyleElement);
 }
 
 ShapeTroughParabola::ShapeTroughParabola()
@@ -67,8 +66,7 @@ ShapeTroughParabola::ShapeTroughParabola()
 
 	SO_NODE_CONSTRUCTOR(ShapeTroughParabola);
 	SO_NODE_ADD_FIELD(m_focus, (1.0));
-	SO_NODE_ADD_FIELD(m_z1, (0.0));
-	SO_NODE_ADD_FIELD(m_z2, (10.0));
+	SO_NODE_ADD_FIELD(m_length, (10.0));
 	SO_NODE_ADD_FIELD(m_hPos, (1.0));
 	SO_NODE_ADD_FIELD(m_hNeg, (1.0));
 }
@@ -122,12 +120,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
 
-
-	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
-
-	if( hitPoint.z < zmin ||
-		hitPoint.z > zmax ||
+	if( hitPoint.z < 0.0 ||
+		hitPoint.z > m_length.getValue() ||
 		hitPoint.y > ymax || hitPoint.y < ymin ||
 		hitPoint.x > xmax || hitPoint.x < xmin )
 	{
@@ -138,8 +132,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 		// Compute parabolic cylinder hit position
 		hitPoint = objectRay( thit );
 
-		if( hitPoint.z < zmin ||
-			hitPoint.z > zmax ||
+		if( hitPoint.z < 0.0 ||
+			hitPoint.z > m_length.getValue() ||
 			hitPoint.y > ymax || hitPoint.y < ymin ||
 			hitPoint.x > xmax || hitPoint.x < xmin)
 			return false;
@@ -156,8 +150,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	double y = hitPoint.y;
 
 	// Find parametric representation of paraboloid hit
-	double u = ( x - xmin ) / ( xmax - xmin );
-	double v = ( y - zmin ) / ( zmax - zmin );
+	double u =  x  / m_length.getValue();
+	double v = y / m_length.getValue();
 
 	// Compute parabaloid \dpdu and \dpdv
 	Vector3D dpdu(1.0, x/(2.0*m_focus.getValue()), 0.0);
@@ -220,11 +214,9 @@ Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
 
-	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
 
 	double width = u * ( xmax - xmin ) + xmin;
-	double length = v * ( zmax - zmin ) + zmin;
+	double length = v * m_length.getValue();
 
 	double x = width;
 	double y = width*width/(4*m_focus.getValue());
@@ -234,16 +226,16 @@ Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 
 }
 
-SbVec3f ShapeTroughParabola::GetNormal (double u ,double v) const
+NormalVector ShapeTroughParabola::GetNormal (double u ,double v) const
 {
 	Trace trace( "ShapeTroughParabola::GetNormal", false );
 
 	Point3D point = GetPoint3D( u, v );
 	Vector3D r( 0, 1, 0 );
-	Vector3D v1 = Normalize( NormalVector( -point.x, m_focus.getValue() - point.y, 0 ) );
-	Vector3D normal  = Normalize( NormalVector( r + v1 ) );
+	Vector3D v1 = Normalize( Vector3D( -point.x, m_focus.getValue() - point.y, 0 ) );
+	NormalVector normal  = Normalize( NormalVector( r + v1 ) );
 
-	return SbVec3f ( normal.x , normal.y , 0 );
+	return NormalVector( normal.x , normal.y , 0 );
 
 }
 
@@ -268,8 +260,8 @@ void ShapeTroughParabola::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
 					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
 							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
 
-	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
+	double zmin = 0.0;
+	double zmax = m_length.getValue();
 	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
 
@@ -283,20 +275,8 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) ==
                           SoTextureCoordinateElement::FUNCTION );
 
-    const SoTextureCoordinateElement* tce;
-    SbVec4f texCoord;
+    const SoTextureCoordinateElement* tce = 0;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
-    else
-    {
-        texCoord[2] = 0.0;
-        texCoord[3] = 1.0;
-    }
-
-    SoMaterialBindingElement::Binding binding = SoMaterialBindingElement::get(state);
-    SbBool materialPerPart = ( binding == SoMaterialBindingElement::PER_PART ||
-                               binding == SoMaterialBindingElement::PER_PART_INDEXED);
-
-    SbVec3f  point;
 
 	const int rows = 100; // Number of points per row
     const int columns = 100; // Number of points per column
@@ -318,14 +298,14 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
     		Point3D point = GetPoint3D(ui, vj);
-    		SbVec3f normal = GetNormal(ui, vj);
+    		NormalVector normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
     		vertex[h][2] = point.z;
-    		vertex[h][3] = normal[0];
-    		vertex[h][4] = normal[1];
-    		vertex[h][5] = normal[2];
+    		vertex[h][3] = normal.x;
+    		vertex[h][4] = normal.y;
+    		vertex[h][5] = normal.z;
 
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
     		h++; //Increase h to the next point.
@@ -358,30 +338,20 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     }
     delete[] indices;
 
-#define GEN_VERTEX(pv, x, y, z, s, t, normal)   \
-     point.setValue( x,                         \
-                     y,                         \
-                     z);                        \
-     if (useTexFunc)                            \
-       texCoord = tce->get(point, normal);      \
-     else {                                     \
-       texCoord[0] = s;                         \
-       texCoord[1] = t;                         \
-     }                                          \
-     pv.setPoint(point);                        \
-     pv.setNormal(normal);                      \
-     pv.setTextureCoords(texCoord);             \
-     shapeVertex(&pv)
-
-
     float u = 1;
     float v = 1;
 
 	beginShape(action, QUADS);
     for( int i = 0; i < totalIndices; i++ )
     {
+    	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
     	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
-    	GEN_VERTEX(pv,  finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2], u,  v, normal);
+		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
+
+		pv.setPoint(point);
+		pv.setNormal(normal);
+		pv.setTextureCoords(texCoord);
+		shapeVertex(&pv);
     }
     endShape();
 }

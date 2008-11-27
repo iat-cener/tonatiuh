@@ -59,14 +59,13 @@ public:
 	Point3D Sample( double u, double v) const;
 
 	SoSFDouble m_focus;
-	SoSFDouble m_z1;
-	SoSFDouble m_z2;
+	SoSFDouble m_length;
 	SoSFDouble m_hPos;
 	SoSFDouble m_hNeg;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;
-	SbVec3f GetNormal( double u, double v ) const;
+	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
 	virtual void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center);
