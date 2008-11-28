@@ -21,7 +21,7 @@ win32	{
 
 unix {
 	INCLUDEPATH += /usr/local/include
-	LIBS +=-L/usr/local/lib  -lqxcppunitd -lqxrunnerd -lcppunit
+	LIBS +=-L/usr/local/lib  -lqxcppunit -lqxrunner -lcppunit
 }
 
 # Input
