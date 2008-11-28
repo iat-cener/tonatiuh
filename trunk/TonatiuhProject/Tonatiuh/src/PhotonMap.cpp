@@ -32,18 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "PhotonMap.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-
-#include "tgf.h"
-#include "Trace.h"
+#include <cmath>
 
 
 #ifdef __mips
@@ -51,6 +48,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #endif
 
 #include <sys/stat.h>
+
+
+#include "PhotonMap.h"
+#include "tgf.h"
+#include "Trace.h"
 
 /* This is the constructor for the photon map.
  * To create the photon map it is necessary to specify the
