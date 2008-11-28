@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -155,7 +155,7 @@ Point3D ShapeFlatRectangle::GetPoint3D (double u, double v) const
 	return Point3D(x,0,z);
 }
 
-NormalVector ShapeFlatRectangle::GetNormal (double u,double v ) const
+NormalVector ShapeFlatRectangle::GetNormal (double /*u*/,double /*v*/ ) const
 {
 	Trace trace( "ShapeFlatRectangle::GetNormal", false );
 
@@ -168,7 +168,7 @@ bool ShapeFlatRectangle::OutOfRange( double u, double v ) const
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
-void ShapeFlatRectangle::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
+void ShapeFlatRectangle::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
 	Trace trace( "ShapeFlatRectangle::computeBBox", false );
 
