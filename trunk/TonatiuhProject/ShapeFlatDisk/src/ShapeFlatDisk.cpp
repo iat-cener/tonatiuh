@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -170,7 +170,7 @@ bool ShapeFlatDisk::OutOfRange( double u, double v ) const
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
-void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
+void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 {
 	Trace trace( "ShapeFlatDisk::computeBBox", false );
 
