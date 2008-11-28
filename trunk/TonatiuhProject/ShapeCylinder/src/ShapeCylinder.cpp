@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -232,7 +232,7 @@ NormalVector ShapeCylinder::GetNormal (double u, double v) const
 	return NormalVector( -point.x/vector.Length(), -point.y/vector.Length(), 0 );
 }
 
-void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f &center)
+void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 {
 	Trace trace( "ShapeCylinder::computeBBox", false );
 
