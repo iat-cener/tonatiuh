@@ -19,7 +19,8 @@ This will create a directory called qwtplot3d in your user directory. Go to this
 debug
 }}}
 with
-{{{ debug_and_release
+{{{
+debug_and_release
 }}}
 
 and delete the following:
