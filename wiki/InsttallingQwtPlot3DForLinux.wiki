@@ -14,7 +14,15 @@ Download the latest realese of !QwtPlot3D, currently QwtPlot3D 0.2.7, from the !
 tar -zxvf qwtplot3d-0.2.7.tar
 }}}
 
-This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, delete the following:
+This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, replace in line 6
+{{{
+debug
+}}}
+with
+{{{ debug_and_release
+}}}
+
+and delete the following:
 
 {{{
 line 6: debug
@@ -34,7 +42,7 @@ contains(TEMPLATE,lib) {
 
 Using the shell navigate to the just created directory and type: 
 {{{
-export QTDIR="/usr/qt"
+export QTDIR="/usr/local/Trolltech/Qt-4.4.3"
 qmake qwtplot3d.pro
 make -f Makefile.Debug
 make -f Makefile.Release
