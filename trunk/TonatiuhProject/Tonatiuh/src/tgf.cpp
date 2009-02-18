@@ -127,15 +127,15 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
 
 }
 
-void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, RandomDeviate& rand)
+bool tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, RandomDeviate& rand)
 {
 	Trace trace( "tgf::TraceRay", false );
 
 	Ray* reflectedRay = 0;
 	Photon* node = new Photon( ray.origin, 0, 0 );
 	Photon* next = 0;
-
 	TSeparatorKit* coinNode = dynamic_cast< TSeparatorKit* > ( instanceNode->GetNode() );
+	int rayLength = 0;
 
 	//Trace the ray
 	bool intersection = true;
@@ -151,6 +151,7 @@ void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, 
 			node->m_next = next;
 			photonMap.store( node );
 			node = next;
+			rayLength++;
 
 			//Prepare node and ray for next iteration
 			ray = *reflectedRay;
@@ -159,6 +160,16 @@ void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, 
 		else intersection = false;
 	}
 
+
+	/*if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
+
+	Point3D endOfRay = ray( ray.maxt );
+	Photon* lastNode = new Photon( endOfRay, node, 0 );
+	node->m_next = lastNode;
+	photonMap.store( node );
+	photonMap.store( lastNode );*/
+
+	if( rayLength == 0 && ray.maxt == HUGE_VAL ) return false;
 	if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
 
 	Point3D endOfRay = ray( ray.maxt );
@@ -166,6 +177,7 @@ void tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, 
 	node->m_next = lastNode;
 	photonMap.store( node );
 	photonMap.store( lastNode );
+	return true;
 }
 
 SoSeparator* tgf::DrawPhotonMapPoints( const PhotonMap& map )
@@ -214,6 +226,7 @@ SoSeparator* tgf::DrawPhotonMapRays( const PhotonMap& map, unsigned long numberO
 	unsigned long numberOfPhoton = 0;
 
 	for( unsigned long i = 1; i<= map.StoredPhotons(); i++ )
+	//for( unsigned long i = 0; i < map.StoredPhotons(); i++ )
 	{
 
 		if ( !map.GetPhoton(i)->m_prev )

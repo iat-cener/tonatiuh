@@ -10,25 +10,16 @@ DEPENDPATH += . \
               src 
 QT += xml opengl svg
 
-unix: {
-    INCLUDEPATH += . \
-                   src \
-                   src/icons \
-                   /usr/local/include/qwtplot3d \
-                   /usr/local/include/marble 
-}
+INCLUDEPATH += . \
+			src \
+			src/icons \
+			$$(TDE_ROOT)/local/include \ 
+			$$(TDE_ROOT)/local/include/qwtplot3d \
+			$$(TDE_ROOT)/local/include/marble
  
 win32: {
 	RC_FILE = Tonatiuh.rc
     DEFINES+= COIN_DLL SOQT_DLL QWT3D_DLL
-    INCLUDEPATH += . \
-					src \
-					src/icons \
-					c:/msys/usr/local/include \ 
-					c:/msys/usr/local/include/qwtplot3d \
-					c:/msys/usr/local/include/marble \ 
-					c:/msys/usr/qt/include
-					
 }
 
 # Input
@@ -38,20 +29,12 @@ SOURCES += *.cpp
 RESOURCES += tonatiuh.qrc
  
 
+LIBS += -L$$(TDE_ROOT)\local\lib -lSoQt -lCoin -lmarblewidget -lqwtplot3d
 
-win32: { 
-
-	LIBS += -L"c:\msys\usr\local\lib" -lSoQt -lCoin -lmarblewidget -L"c:\msys\usr\local\bin" -lqwtplot3d
-}
-        
-unix: {
-
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt -lqwtplot3d -lmarblewidget
 	
-    CONFIG(debug, debug|release) {
-        DESTDIR = ../Tonatiuh/debug/
-    }
-    else {
-        DESTDIR  = ../Tonatiuh/release/
-    }
+CONFIG(debug, debug|release) {
+    DESTDIR = ../Tonatiuh/debug/
+}
+else {
+    DESTDIR  = ../Tonatiuh/release/
 }

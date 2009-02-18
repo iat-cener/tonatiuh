@@ -62,6 +62,7 @@ class TShapeFactory;
 class TShapeKit;
 class TSunShapeFactory;
 class TTrackerFactory;
+class TTreeSeparatorFactory;
 
 class MainWindow: public QMainWindow, private Ui::MainWindow
 {
@@ -110,6 +111,7 @@ public slots:
 	void on_actionResults_triggered();
 	void on_actionExport_PhotonMap_triggered();
 	void on_actionRayTraceOptions_triggered();
+	void on_actionBalance_triggered();
 
 	//View menu actions
 	void on_actionAxis_toggled();
@@ -159,6 +161,7 @@ private:
     void SetupActions();
     void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
     void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
+    void SetupActionInsertTreeSeparator( TTreeSeparatorFactory* pTTreeSeparatorFactory );
     void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
     void SetupMenus();
     void SetupToolBars();

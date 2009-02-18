@@ -560,8 +560,6 @@ void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
 	connect( actionInsertShape, SIGNAL( CreateShape( TShapeFactory* ) ), this, SLOT( CreateShape(TShapeFactory*) ) );
 }
 
-
-
 void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 {
 	Trace trace( "MainWindow::SetupActionInsertTracker", false );
@@ -904,28 +902,37 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	progressDialog->setCancelButton( NULL);
 	progressDialog->setVisible( true );
 
+	long unsigned tracedRays = 0;
 	//Random Ray generator
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
 	{
-		Ray ray;
+		bool intersected = false;
+		//while(!intersected )
+		//{
+			Ray ray;
 
-		//Generate ray origin and direction in the Light coordinate system
-		ray.origin = shape->Sample( m_pRand->RandomDouble( ), m_pRand->RandomDouble( ) );
-		sunShape->generateRayDirection( ray.direction, *m_pRand );
+			//Generate ray origin and direction in the Light coordinate system
+			ray.origin = shape->Sample( m_pRand->RandomDouble( ), m_pRand->RandomDouble( ) );
+			sunShape->generateRayDirection( ray.direction, *m_pRand );
 
-		//Transform ray to World coordinate system and trace the scene
-		ray = lightToWorld( ray );
+			//Transform ray to World coordinate system and trace the scene
+			//ray = Ray( Point3D( 0.0, 0.0, 0.0 ), Vector3D( 0.0, -1.0, 0.0 ) );
+			ray = lightToWorld( ray );
+			//ray = Ray( Point3D( -1.7353,4.0032, 25.253 ), Vector3D( 0.47849, -0.706039, 0.52207 ) );
+			//ray.origin = Point3D( -2.0064, 4.1307, 25.238 );
+			tracedRays ++;
 
-		//ray = Ray( Point3D( 0.5, 0.0, 5.0 ), Vector3D( 0.0, 0.0, -1.0 ) );
-		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
-
-  	    //Update progressDiaglog when appropriate
+			intersected = tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
+		//}
+		//Update progressDiaglog when appropriate
 		if( m_raysPerIteration >= 10 )
-  	    	if ( ( ( i+ 1 )%( m_raysPerIteration/10 ) ) == 0 ) progressDialog->setValue( ( i + 1 ) );
-  	    else
-  	    	progressDialog->setValue( ( i + 1 ) );
+			if ( ( ( i+ 1 )%( m_raysPerIteration/10 ) ) == 0 ) progressDialog->setValue( ( i + 1 ) );
+		else
+			progressDialog->setValue( ( i + 1 ) );
+
  	}
 
+	std::cout<<"Number of traced rays: "<<tracedRays<<std::endl;
 	progressDialog->setValue( m_raysPerIteration );
 
  	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
@@ -1069,6 +1076,12 @@ void MainWindow::on_actionRayTraceOptions_triggered()
     m_increasePhotonMap = options->IncreasePhotonMap();
     m_fraction = options->GetDrawRays();
     m_drawPhotons = options->DrawPhotons();
+}
+
+void MainWindow::on_actionBalance_triggered()
+{
+	Trace trace( "MainWindow::on_actionBalance_triggered", false);
+	m_photonMap->balance();
 }
 
 //View menu actions
@@ -1264,7 +1277,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
-	Trace trace( "MainWindow::CreateTracker", false );
+	Trace trace( "MainWindow::CreateTracker", true );
 
 	QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
 								m_sceneModel->index (0,0,treeView->rootIndex()):
