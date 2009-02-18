@@ -218,6 +218,7 @@
    </attribute>
    <addaction name="actionRayTraceRun" />
    <addaction name="actionResults" />
+   <addaction name="actionBalance" />
    <addaction name="actionExport_PhotonMap" />
   </widget>
   <widget class="QToolBar" name="toolBar" >
@@ -560,6 +561,11 @@
   <action name="actionDefineSunPosition" >
    <property name="text" >
     <string>Define Sun Position ...</string>
+   </property>
+  </action>
+  <action name="actionBalance" >
+   <property name="text" >
+    <string>Balance</string>
    </property>
   </action>
  </widget>

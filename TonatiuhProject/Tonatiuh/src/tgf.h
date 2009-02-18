@@ -57,7 +57,7 @@ namespace tgf
     bool Quadratic( double A, double B, double C, double* t0, double* t1);
 	double AlternateBoxMuller( RandomDeviate& rand );
 
-	void TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, RandomDeviate& rand );
+	bool TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, RandomDeviate& rand );
 
 	SoSeparator* DrawPhotonMapPoints( const PhotonMap& map );
 	SoSeparator* DrawPhotonMapRays( const PhotonMap& map, unsigned long numberOfRays, double fraction );
