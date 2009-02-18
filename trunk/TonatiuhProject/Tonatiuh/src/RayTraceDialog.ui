@@ -56,7 +56,7 @@
      <number>1</number>
     </property>
     <property name="maximum" >
-     <number>9999999</number>
+     <number>99999999</number>
     </property>
     <property name="singleStep" >
      <number>1000</number>
@@ -190,6 +190,15 @@
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>raysSpinBox</tabstop>
+  <tabstop>drawSpinBox</tabstop>
+  <tabstop>photonsCheckBox</tabstop>
+  <tabstop>newMapRadioButton</tabstop>
+  <tabstop>increaseMapRadioButton</tabstop>
+  <tabstop>applyPushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
