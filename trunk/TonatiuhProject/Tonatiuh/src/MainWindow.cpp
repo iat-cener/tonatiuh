@@ -592,7 +592,7 @@ void MainWindow::message()
 void MainWindow::on_actionNew_triggered()
 {
     Trace trace( "MainWindow::on_actionNew_triggered" );
-    NewFile();
+    if ( OkToContinue() ) StartOver( "" );
 }
 
 
@@ -604,16 +604,7 @@ void MainWindow::on_actionOpen_triggered()
         QString fileName = QFileDialog::getOpenFileName( this,
                                tr( "Open Tonatiuh document" ), ".",
                                tr( "Tonatiuh files (*.tnh)" ) );
-        if ( !fileName.isEmpty() )
-        {
-
-        	LoadFile( fileName );
-        	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
-	   			actionDisplay_rays->setEnabled( false );
-
-	   		m_commandStack->clear();
-        }
-
+        if ( !fileName.isEmpty() ) StartOver( fileName );
     }
 }
 
@@ -650,17 +641,12 @@ void MainWindow::OpenRecentFile()
 
         if ( action )
         {
-        	QString file = action->data().toString();
-        	LoadFile( file );
-
-        	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
-	   			actionDisplay_rays->setEnabled( false );
-
-	   		m_commandStack->clear();
+        	QString fileName = action->data().toString();
+        	StartOver( fileName );
         }
-
     }
 }
+
 // Edit menu actions
 void MainWindow::on_actionUndo_triggered()
 {
@@ -1076,12 +1062,6 @@ void MainWindow::on_actionRayTraceOptions_triggered()
     m_increasePhotonMap = options->IncreasePhotonMap();
     m_fraction = options->GetDrawRays();
     m_drawPhotons = options->DrawPhotons();
-}
-
-void MainWindow::on_actionBalance_triggered()
-{
-	Trace trace( "MainWindow::on_actionBalance_triggered", false);
-	m_photonMap->balance();
 }
 
 //View menu actions
@@ -1728,22 +1708,6 @@ void MainWindow::closeEvent( QCloseEvent* event )
     else event->ignore();
 }
 
-void MainWindow::NewFile()
-{
-    Trace trace( "MainWindow::NewFile", false );
-    if ( OkToContinue() )
-    {
-    	m_document->New();
-    	SetCurrentFile("");
-	    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-
-	   	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
-	   	actionDisplay_rays->setEnabled( false );
-
-	    m_commandStack->clear();
-    }
-}
-
 bool MainWindow::OkToContinue()
 {
     Trace trace( "MainWindow::OkToContinue", false );
@@ -1762,18 +1726,29 @@ bool MainWindow::OkToContinue()
 	return true;
 }
 
-bool MainWindow::LoadFile( const QString& fileName )
+bool MainWindow::StartOver( const QString& fileName )
 {
-    Trace trace( "MainWindow::LoadFile" );
-	if( !m_document->ReadFile( fileName ) )
-	{
-		statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
-		return false;
-	}
+    Trace trace( "MainWindow::StartOver" );
+    if( fileName.isEmpty() )
+    {
+    	m_document->New();
+        statusBar()->showMessage( tr( "New file" ), 2000 );
+    }
+    else
+    {
+    	if( !m_document->ReadFile( fileName ) )
+		{
+			statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
+			return false;
+		}
+        statusBar()->showMessage( tr( "File loaded" ), 2000 );
+    }
 
-	SetCurrentFile( fileName );
+    SetCurrentFile( fileName );
 	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-    statusBar()->showMessage( tr( "File loaded" ), 2000 );
+	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
+	actionDisplay_rays->setEnabled( false );
+	m_commandStack->clear();
     return true;
 }
 

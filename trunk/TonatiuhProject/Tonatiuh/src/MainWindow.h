@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include "tgc.h"
 #include <ui_mainwindow.h>
 
@@ -62,7 +61,12 @@ class TShapeFactory;
 class TShapeKit;
 class TSunShapeFactory;
 class TTrackerFactory;
-class TTreeSeparatorFactory;
+
+//!  Main window class.
+/*!
+  Tonatiuh's main window class. It includes the menu bars and all the actions, signals
+  and slots to provide user interaction with the program.
+*/
 
 class MainWindow: public QMainWindow, private Ui::MainWindow
 {
@@ -77,13 +81,16 @@ public:
     void StartManipulation( SoDragger* dragger );
 
 public slots:
-    // File menu actions
+
+	//File menu actions
 	void on_actionNew_triggered();
 	void on_actionOpen_triggered();
 	void on_actionSave_triggered();
 	void on_actionSaveAs_triggered();
 	void on_actionPrint_triggered();
 	void on_actionClose_triggered();
+
+	//File menu submenu
 	void OpenRecentFile();
 
     // Edit menu actions
@@ -111,7 +118,6 @@ public slots:
 	void on_actionResults_triggered();
 	void on_actionExport_PhotonMap_triggered();
 	void on_actionRayTraceOptions_triggered();
-	void on_actionBalance_triggered();
 
 	//View menu actions
 	void on_actionAxis_toggled();
@@ -137,20 +143,20 @@ public slots:
 	void SoTransform_to_SoTransformerManip();
 	void SoManip_to_SoTransform();
 
-    //for graphicview signals
+    //Slots for graphicview signals
     void selectionFinish( SoSelection* selection );
     void selectionChanged( const QModelIndex & current, const QModelIndex & previous );
     void mousePressEvent ( QMouseEvent * e );
 
-    //for treeview signals
+    //Slots for treeview signals
 	void itemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
 	void itemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
     void showMenu( const QModelIndex& index );
 
-    //for parameterview signals
+    //Slots for parameterview signals
     void parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart );
 
-    //for sunposdialog signals
+    //Slots for sunposdialog signals
     void SunPositionChanged( QDateTime* time, double longitude, double latitude );
 
 protected:
@@ -161,7 +167,6 @@ private:
     void SetupActions();
     void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
     void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
-    void SetupActionInsertTreeSeparator( TTreeSeparatorFactory* pTTreeSeparatorFactory );
     void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
     void SetupMenus();
     void SetupToolBars();
@@ -177,9 +182,8 @@ private:
     void ReadSettings();
     void BuildFileList( QDir parentDirectory, QStringList& fileList );
 
-    void NewFile();
     bool OkToContinue();
-    bool LoadFile( const QString& fileName );
+    bool StartOver( const QString& fileName );
     bool Save();
     bool SaveFile( const QString& fileName );
     bool SaveAs();
