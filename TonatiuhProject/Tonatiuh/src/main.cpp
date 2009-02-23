@@ -47,21 +47,22 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TCube.h"
 #include "TGateEngine.h"
 #include "TLightKit.h"
-#include "TMaterial.h"
 #include "TSeparatorKit.h"
-#include "TShape.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
-#include "TSunShape.h"
-#include "TTracker.h"
+
+//!  Application entry point.
+/*!
+  Tonatiuh's main() function. It starts SoQt and Coin3D. It also initializes the
+  application specific Coin3D extension subclasses, and the application loop.
+*/
 
 int main( int argc, char ** argv )
 {
+	QApplication::setColorSpec( QApplication::CustomColor );
 
     QApplication a( argc, argv );
 	SoQt::init( (QWidget *) NULL );
-
-	QApplication::setColorSpec( QApplication::CustomColor );
 
 	TMaterial::initClass();
 	TDefaultMaterial::initClass();
@@ -77,9 +78,8 @@ int main( int argc, char ** argv )
 	TTracker::initClass();
 	TDefaultTracker::initClass();
 
-   	MainWindow * mw = new MainWindow();
-    mw->show();
+   	MainWindow mw;
+    mw.show();
 
 	return a.exec();
 }
-
