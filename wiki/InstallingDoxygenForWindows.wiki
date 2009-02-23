@@ -1,0 +1,13 @@
+#summary A guide to install and configurate Doxygen for Eclipse.
+
+= Doxygen=
+
+[http://www.stack.nl/~dimitri/doxygen/index.html Doxygen] is a documentation generator for C++, C, Java, Objective-C, Python, IDL (versiones Corba y Microsoft), PHP, C#, and D. It is valid for Unix, Windows and Mac OS X. 
+Doxygen is the acronym of dox(document) gen(generator), source code documentation generator.
+
+
+= Installation=
+
+The doxygen sources and binaies are available on the doxygen download web page at http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc. For Windows you can download _doxygen binaries on a zip_ and extract the at C:\doxygen.
+
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
