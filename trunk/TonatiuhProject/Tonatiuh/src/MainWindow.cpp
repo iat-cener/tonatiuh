@@ -165,7 +165,7 @@ void MainWindow::SetupActions()
 {
     Trace trace( "MainWindow::SetupActions", false );
     m_recentFileActions = new QAction*[m_maxRecentFiles];
-    for ( int i = 0; i < m_maxRecentFiles; ++i )
+    for ( int i = 0; i < m_maxRecentFiles; i++ )
     {
     	m_recentFileActions[i] = new QAction( this );
     	m_recentFileActions[i]->setVisible( false );
@@ -176,7 +176,7 @@ void MainWindow::SetupActions()
 void MainWindow::SetupMenus()
 {
     Trace trace( "MainWindow::SetupMenus", false );
-    for ( int i = 0; i < m_maxRecentFiles; ++i )
+    for ( int i = 0; i < m_maxRecentFiles; i++ )
           menuRecent->addAction( m_recentFileActions[i] );
 }
 
@@ -1652,6 +1652,7 @@ void MainWindow::showMenu( const QModelIndex& index)
    	popupmenu.addAction(actionCut);
    	popupmenu.addAction(actionCopy);
   	popupmenu.addAction(actionPaste_Copy);
+  	popupmenu.addAction(actionPaste_Link);
   	popupmenu.addAction(actionDelete);
 
 	if( type.isDerivedFrom( SoBaseKit::getClassTypeId() ) )
@@ -1802,7 +1803,7 @@ bool MainWindow::Copy( )
 
 bool MainWindow::Paste( tgc::PasteType type )
 {
-	Trace trace( "MainWindow::PasteCopy", false );
+	Trace trace( "MainWindow::PasteCopy", true );
 
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( !m_coinNode_Buffer ) return false;
@@ -1813,13 +1814,6 @@ bool MainWindow::Paste( tgc::PasteType type )
 	if ( !selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) return false;
 	if ( ( selectedCoinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
 	( m_coinNode_Buffer->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) )	return false;
-
-	if ( ( selectedCoinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
-	( !m_coinNode_Buffer->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) )
-	{
-		TShapeKit* shapeKit = static_cast< TShapeKit* > (selectedCoinNode);
-		if( shapeKit->getPart("shape", false) ) return false;
-	}
 
 	if( ancestor->GetNode() == m_coinNode_Buffer)  return false;
 	while( ancestor->GetParent() )
