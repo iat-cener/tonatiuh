@@ -23,7 +23,7 @@ The following links will guide the developer through all the process:
   * [InstallingSoQtForMac  Installing SoQt]
   * [InstallingQwtPlot3DForMac Installing QwtPlot3D]
   * [InstallingMarbleForMac Installing Marble] 
-  * [Installing_and_configuring_Eclipse Installing and Configuring Eclipse]
+  * [InstallingAndConfiguringEclipseForMac Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
 
 = Unit testing =
