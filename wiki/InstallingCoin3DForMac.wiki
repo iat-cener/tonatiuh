@@ -6,7 +6,7 @@ Coin 3D is a high-level 3D graphics toolkit for developing cross-platform real-t
 
 = Details =
 
-Download the latest realese of Coin3D, currently [http://www.coin3d.org/lib/simage/releases/1.6.1 simage-1.6.1], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+Download the latest realese of Coin3D, currently [http://www.coin3d.org/lib/coin/releases/3.0.0 Coin3D-3.0.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
