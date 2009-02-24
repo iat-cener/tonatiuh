@@ -23,7 +23,7 @@ The doxygen sources and binaies are available on the doxygen download web page a
  * Accept all. The plugin should now be installed and restart eclipse.
 
 Now, indicate to Eclipse to use installed doxigen version:
- * Go to Window->Preferences.
+ * Go to Eclipse->Preferences.
  * Go to Doxygen and push "Add..." button.
  * Select in the file dialog the doxygen installation path: _C:\doxygen_.
  * Acept and verificate that added version is selected. Apply changes before finish.
