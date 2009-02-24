@@ -50,4 +50,4 @@ q
 
 To continue with the resources intallation to Tonatiuh development, start with [InstallingCoin3DForMac Coin3D] intallation.
 
-[InstallingForWindows Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
