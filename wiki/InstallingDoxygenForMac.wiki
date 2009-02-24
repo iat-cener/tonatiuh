@@ -8,7 +8,8 @@ Doxygen is the acronym of dox(document) gen(generator), source code documentatio
 
 = Installation=
 
-The doxygen sources and binaies are available on the doxygen download web page at http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc. For Windows you can download _doxygen binaries on a zip_ and extract them at _C:\doxygen_.
+The doxygen sources and binaies are available on the doxygen download web page at http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc. For Mac you can download _doxygen binaries_ and extract them at _C:\doxygen_.
+
 
 = Eclipse configuration for Doxygen =
 
