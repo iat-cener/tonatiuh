@@ -18,5 +18,5 @@ To anonymous download of Tonatiuh code read [Anonymous_Download] or read [Upload
 
 [http://code.google.com/p/tonatiuh/wiki/InstallingForWindows Windows Configuration] | 
 [InstallingForLinux Linux Configuration] | 
-[InstallingForMac Moc Configuration] | 
+[InstallingForMac Mac Configuration] | 
 [http://code.google.com/p/tonatiuh/w/list Wiki Home]
