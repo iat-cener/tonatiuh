@@ -28,4 +28,4 @@ Now, indicate to Eclipse to use installed doxigen version:
  * Select in the file dialog the doxygen installation path: _C:\doxygen_.
  * Acept and verificate that added version is selected. Apply changes before finish.
 
-[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
