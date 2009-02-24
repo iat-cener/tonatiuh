@@ -34,7 +34,7 @@ $ vi ~/.profile
 
 Type "e" to be able to write in the file. We should add the following text: 
 {{{
- PATH=/usr/local/Trolltech/Qt-4.3.0/bin:$PATH 
+PATH=/usr/local/Trolltech/Qt-4.3.0/bin:$PATH 
 export PATH 
 QTDIR=/usr/local/Trolltech/Qt-4.3.0 
 export QTDIR 
@@ -50,4 +50,4 @@ q
 
 To continue with the resources intallation to Tonatiuh development, start with [InstallingCoin3DForMac Coin3D] intallation.
 
-[InstallingForWindows MacConfiguration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForWindows Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
