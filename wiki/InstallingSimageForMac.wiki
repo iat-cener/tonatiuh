@@ -1,4 +1,4 @@
-Procedure to install simage for Mac
+#summary Procedure to install simage for Mac
 
 = Simage =
 
@@ -10,7 +10,7 @@ Download the latest realese of simage, currently [http://www.coin3d.org/lib/sima
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
-tar -zxvf simage-1.6.1.tar.gz
+tar -xvf simage-1.6.1.tar.gz
 }}}
 
 This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory and type:
