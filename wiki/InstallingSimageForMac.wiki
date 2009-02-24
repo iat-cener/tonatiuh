@@ -13,9 +13,9 @@ Open a shell console and navigate to desktop and extract the archive by typing:
 tar -xvf simage-1.6.1.tar.gz
 }}}
 
-This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory and type:
+This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory. First create release libraries by typing:
 {{{
-./configure
+./configure --enable-debug=no
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
@@ -24,6 +24,17 @@ make
 make install
 }}}
 
+Now, before start creating debug library clean all. Type:
+{{{
+make clean
+}}}
+
+And then generate library:
+{{{
+./configure --with-suffix=_debug
+make
+make install
+}}}
 
 At the end of the installation process, the libraries hab been installed at /usr/local directory. Now, [InstallingCoin3DForMac Coin3D] installation can be started.
 
