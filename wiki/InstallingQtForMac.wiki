@@ -48,6 +48,6 @@ w
 q
 }}}
 
-To continue with the resources intallation to Tonatiuh development, start with [InstallingCoin3DForMac Coin3D] intallation.
+To continue with the resources intallation to Tonatiuh development, start with [InstallingSimageForMac Simage] intallation.
 
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
