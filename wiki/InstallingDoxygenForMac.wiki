@@ -8,8 +8,7 @@ Doxygen is the acronym of dox(document) gen(generator), source code documentatio
 
 = Installation=
 
-The doxygen sources and binaies are available on the doxygen download web page at http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc. For Mac you can download _doxygen binaries_ and extract them at _C:\doxygen_.
-
+The doxygen sources and binaies are available on the doxygen download web page at http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc. For Mac you can download doxygen binaries _Doxygen-version.dmg_ . Open downloaded file and copy _Doxygen.app_ to _Application_ folder.
 
 = Eclipse configuration for Doxygen =
 
@@ -25,7 +24,7 @@ The doxygen sources and binaies are available on the doxygen download web page a
 Now, indicate to Eclipse to use installed doxigen version:
  * Go to Eclipse->Preferences.
  * Go to Doxygen and push "Add..." button.
- * Select in the file dialog the doxygen installation path: _C:\doxygen_.
+ * Select in the file dialog the doxygen installation path: _/Applications/Doxygen/Contents/Resources_.
  * Acept and verificate that added version is selected. Apply changes before finish.
 
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
