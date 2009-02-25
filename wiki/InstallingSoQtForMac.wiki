@@ -1,0 +1,44 @@
+#summary Procedure to install SoQt for Mac
+
+= SoQt =
+
+http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. This pages provides instruction regarding how to install SoQt in your computer.
+
+Before installing !SoQt, please, verify that Qt and Coin 3D are already installed and functioning on your PC. If they are not, install them firs by following the corresponding installation procedures InstallingQtForMac and [InstallingCoin3DForMac].
+
+= Details =
+
+Download the latest realese of !SoQt, currently [http://www.coin3d.org/lib/soqt/releases/1.4.1 SoQt-1.4.1], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+
+Open a shell console and navigate to desktop and extract the archive by typing:
+{{{
+tar -xvf SoQt-1.4.1.tar.gz
+}}}
+
+This will create a directory called _SoQt-1.4.1_ in your user directory. Using the shell navigate to just created SoQt-1.4.1 directory. First create release libraries by typing:
+{{{
+
+}}}
+
+This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
+{{{
+make 
+make install
+}}}
+
+Now, before start creating debug library clean all. Type:
+{{{
+make clean
+}}}
+
+And then generate library:
+{{{
+ CPPFLAGS="-I  /usr/local/Trolltech/Qt-4.4.3/include/Qt -I/usr/local/Trolltech/Qt-4.4.3/include/QtGui/ -I/usr/local/Trolltech/Qt-4.4.3/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.4.3/include/QtCore/" CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.4.3 ./configure --with-suffix=_debug --without-framework
+make
+make install
+}}}
+
+At the end of the installation process, the libraries hab been installed at /usr/local directory. Now, [InstallingCoin3DForMac Coin3D] installation can be started.
+
+
+[InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
