@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
-= !QwtPlot3D =
+=  !QwtPlot3D =
 
 
 ==Introduction==
@@ -52,4 +52,4 @@ cp lib/*.dll /usr/local/bin/
 }}}
 
 
-[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
