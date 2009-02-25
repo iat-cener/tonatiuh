@@ -55,7 +55,6 @@ The library is created. Now, to put it into local:
  mkdir /usr/local/include/qwtplot3d
 cp -r include/* /usr/local/include/qwtplot3d
 cp lib/* /usr/local/lib/
-cp lib/*.dll /usr/local/bin/
 }}}
 
 
