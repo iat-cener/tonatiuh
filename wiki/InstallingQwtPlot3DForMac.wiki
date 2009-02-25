@@ -16,7 +16,7 @@ Before installing [http://qwtplot3d.sourceforge.net/ QwtPlot3D], please, verify 
 Download the latest realese of QwtPlot3D, currently QwtPlot3D 0.2.7, from the QwtPlot3D website at http://qwtplot3d.sourceforge.net/web/navigation/download_frame.html. Place it into the user directory under your MSYS folder. This will typically be c:\msys\usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
 
 {{{
-tar -xvf qwtplot3d-0.2.7.tar
+tar xvf qwtplot3d-0.2.7.tar
 }}}
 
 This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, replace line 6:
