@@ -15,7 +15,7 @@ Open a shell console and navigate to desktop and extract the archive by typing:
 tar -xvf SoQt-1.4.1.tar.gz
 }}}
 
-This will create a directory called _SoQt-1.4.1_ in your user directory. Using the shell navigate to just created SoQt-1.4.1 directory. First create release libraries by typing:
+This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the shell navigate to just created !SoQt-1.4.1 directory. First create release libraries by typing:
 {{{
 
 }}}
