@@ -15,7 +15,7 @@ tar -xvf simage-1.6.1.tar.gz
 
 This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory. First create release libraries by typing:
 {{{
-./configure --enable-debug=no
+./configure --enable-debug=no --without-framework
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
@@ -31,7 +31,7 @@ make clean
 
 And then generate library:
 {{{
-./configure --with-suffix=_debug
+./configure --with-suffix=_debug --without-framework
 make
 make install
 }}}
