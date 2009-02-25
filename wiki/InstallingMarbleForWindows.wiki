@@ -44,12 +44,7 @@ cp src/lib/libmarblewidget.dll.a /local/lib
 Marble is installed, but we have to put maps data files in Tonatiuh project. If you have not Tonatiuh project created, follow procedures to  [InstallingAndConfiguringEclipseForWindows install and configurate Eclipse for Windows] and [Installing_Subversive install Subversive] to take sources from the repository. Type on the MSYS shell:
 
 {{{
-cp data/* /c/eclipse/workspace/Tonatiuh/release
-}}}
-
-or type the following if you are working on Debug mode:
-{{{
-cp data/* /c/eclipse/workspace/Tonatiuh/debug
+cp data/* /c/eclipse/workspace/Tonatiuh/data
 }}}
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
