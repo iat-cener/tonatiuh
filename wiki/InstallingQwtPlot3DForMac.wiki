@@ -1,4 +1,5 @@
 #summary Guide to install QwtPlot3D for Mac SO.
+#labels Phase-Implementation
 
 =  QwtPlot3D =
 
@@ -15,13 +16,20 @@ Before installing [http://qwtplot3d.sourceforge.net/ QwtPlot3D], please, verify 
 Download the latest realese of QwtPlot3D, currently QwtPlot3D 0.2.7, from the QwtPlot3D website at http://qwtplot3d.sourceforge.net/web/navigation/download_frame.html. Place it into the user directory under your MSYS folder. This will typically be c:\msys\usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
 
 {{{
-tar -zxvf qwtplot3d-0.2.7.tar
+tar -xvf qwtplot3d-0.2.7.tar
 }}}
 
-This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, delete the following:
-
+This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, replace line 6:
 {{{
- line 6: debug
+line 6: CONFIG           += qt warn_on opengl thread zlib debug
+}}}
+with:
+{{{
+CONFIG           += qt warn_on opengl thread zlib debug_and_release
+}}}
+
+Then, delete following lines:
+{{{
 line 7: MOC_DIR           = tmp
 line 8: OBJECTS_DIR       = tmp
 line 15: win32:TEMPLATE    = vclib
@@ -31,13 +39,12 @@ And add to end of the file:
 {{{
 contains(TEMPLATE,lib) { 
 	CONFIG(debug, debug|release) {
-		TARGET = $$member(TARGET, 0)d 
+		TARGET = $$member(TARGET, 0)_debug 
 	} 
 } 
 }}}
-Using the MSYS shell navigate to the just created directory and type: 
+Using the shell navigate to the just created directory and type: 
 {{{
-export QTDIR="/usr/qt"
 qmake qwtplot3d.pro
 make -f Makefile.Debug
 make -f Makefile.Release
