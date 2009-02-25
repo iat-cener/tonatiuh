@@ -7,44 +7,63 @@ TARGET =
 CONFIG       += debug_and_release
 CONFIG	-= app_bundle
 
-DEPENDPATH += . 
+DEPENDPATH += . \ 
+			src
 INCLUDEPATH += . \
 				src \
-				../Tonatiuh/src
+				../../TonatiuhProject/Tonatiuh/src \ 
+				$$(TDE_ROOT)/local/include 
 
 
 win32	{
-	DEFINES += COIN_DLL
-	INCLUDEPATH += c:/msys/usr/local/include
-	LIBS += -L"C:/msys/usr/local/lib" -lCoin -lqxcppunit -lqxrunner  -lcppunit
+	DEFINES += COIN_DLL SOQT_DLL
+		INCLUDEPATH += . \
+				src \
+				../../TonatiuhProject/Tonatiuh/src \  
+				$$(TDE_ROOT)/local/include 
+	
+	LIBS += -L"$$(TDE_ROOT)/local/lib" -lqxcppunit -lqxrunner
+	LIBS += -L"$$(TDE_ROOT)/local/lib" -lcppunit
+	LIBS += -L"$$(TDE_ROOT)/local/lib" -lSoQt -lCoin
 }
 
 unix {
-	INCLUDEPATH += /usr/local/include
-	LIBS +=-L/usr/local/lib  -lqxcppunit -lqxrunner -lcppunit
+	INCLUDEPATH += 	src \
+				../../TonatiuhProject/Tonatiuh/src \ 
+				/usr/local/include 
+
+	LIBS +=-L/usr/local/lib  -lSoQt -lCoin -lqxcppunit -lqxrunner -lcppunit
+	
 }
 
 # Input
 HEADERS += *.h \
-			../Tonatiuh/src/BBox.h \
-			../Tonatiuh/src/DifferentialGeometry.h \
-			../Tonatiuh/src/Matrix4x4.h \
-			../Tonatiuh/src/NormalVector.h \
-			../Tonatiuh/src/Point3D.h \
-			../Tonatiuh/src/Ray.h \
-			../Tonatiuh/src/RefCount.h \
-			../Tonatiuh/src/Trace.h \
-			../Tonatiuh/src/Transform.cpp \
-			../Tonatiuh/src/Vector3D.h
+			../../TonatiuhProject/Tonatiuh/src/BBox.h \
+			../../TonatiuhProject/Tonatiuh/src/DifferentialGeometry.h \
+			../../TonatiuhProject/Tonatiuh/src/Matrix4x4.h \
+			../../TonatiuhProject/Tonatiuh/src/NormalVector.h \
+			../../TonatiuhProject/Tonatiuh/src/Point3D.h \
+			../../TonatiuhProject/Tonatiuh/src/Ray.h \
+			../../TonatiuhProject/Tonatiuh/src/RefCount.h \
+			../../TonatiuhProject/Tonatiuh/src/Trace.h \
+			../../TonatiuhProject/Tonatiuh/src/Transform.cpp \
+			../../TonatiuhProject/Tonatiuh/src/Vector3D.h
 		
 SOURCES += *.cpp \
-			../Tonatiuh/src/BBox.cpp \
-			../Tonatiuh/src/DifferentialGeometry.cpp \
-			../Tonatiuh/src/Matrix4x4.cpp \
-			../Tonatiuh/src/NormalVector.cpp \
-			../Tonatiuh/src/Point3D.cpp \
-			../Tonatiuh/src/Ray.cpp \
-			../Tonatiuh/src/RefCount.cpp \
-			../Tonatiuh/src/Trace.cpp \
-			../Tonatiuh/src/Transform.cpp \
-			../Tonatiuh/src/Vector3D.cpp 
+			../../TonatiuhProject/Tonatiuh/src/BBox.cpp \
+			../../TonatiuhProject/Tonatiuh/src/DifferentialGeometry.cpp \
+			../../TonatiuhProject/Tonatiuh/src/Matrix4x4.cpp \
+			../../TonatiuhProject/Tonatiuh/src/NormalVector.cpp \
+			../../TonatiuhProject/Tonatiuh/src/Point3D.cpp \
+			../../TonatiuhProject/Tonatiuh/src/Ray.cpp \
+			../../TonatiuhProject/Tonatiuh/src/RefCount.cpp \
+			../../TonatiuhProject/Tonatiuh/src/Trace.cpp \
+			../../TonatiuhProject/Tonatiuh/src/Transform.cpp \
+			../../TonatiuhProject/Tonatiuh/src/Vector3D.cpp 
+    
+CONFIG(debug, debug|release) {
+        DESTDIR = debug/
+    }
+else {
+        DESTDIR  = release/
+}
