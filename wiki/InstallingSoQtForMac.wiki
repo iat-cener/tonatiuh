@@ -19,7 +19,7 @@ tar -xvf SoQt-1.4.1.tar.gz
 
 This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the shell navigate to just created !SoQt-1.4.1 directory. First create release libraries by typing:
 {{{
-$CPPFLAGS="-I  /usr/local/Trolltech/Qt-4.4.3/include/Qt -I/usr/local/Trolltech/Qt-4.4.3/include/QtGui/ 
+CPPFLAGS="-I  /usr/local/Trolltech/Qt-4.4.3/include/Qt -I/usr/local/Trolltech/Qt-4.4.3/include/QtGui/ 
 -I/usr/local/Trolltech/Qt-4.4.3/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.4.3/include/QtCore/" 
 CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.4.3 ./configure 
 --enable-debug=no  --without-framework
