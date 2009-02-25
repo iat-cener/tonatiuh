@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
-=  !QwtPlot3D =
+=  QwtPlot3D =
 
 
 ==Introduction==
