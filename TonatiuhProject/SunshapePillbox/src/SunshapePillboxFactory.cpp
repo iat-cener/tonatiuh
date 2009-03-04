@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 QString SunshapePillboxFactory::TSunShapeName() const
 {
 	Trace trace( "SunshapePillboxFactory::TSunShapeName", false );
-	return QString( "Pillbox Sunshape" );
+	return QString( "Pillbox_Sunshape" );
 }
 
 QIcon SunshapePillboxFactory::TSunShapeIcon() const
