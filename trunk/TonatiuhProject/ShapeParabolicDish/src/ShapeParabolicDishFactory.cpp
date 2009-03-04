@@ -46,7 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 QString ShapeParabolicDishFactory::TShapeName() const
 {
 	Trace trace( "ShapeParabolicDishFactory::TShapeName", false );
-	return QString("Parabolic dish");
+	return QString("Parabolic_dish");
 }
 
 QIcon ShapeParabolicDishFactory::TShapeIcon() const
