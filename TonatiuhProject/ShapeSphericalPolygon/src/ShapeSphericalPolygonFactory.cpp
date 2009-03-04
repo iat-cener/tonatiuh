@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 QString ShapeSphericalPolygonFactory::TShapeName() const
 {
 	Trace trace( "ShapeSphericalPolygonFactory::TShapeName", false );
-	return QString("Spherical polygon");
+	return QString("Spherical_polygon");
 }
 
 QIcon ShapeSphericalPolygonFactory::TShapeIcon() const
