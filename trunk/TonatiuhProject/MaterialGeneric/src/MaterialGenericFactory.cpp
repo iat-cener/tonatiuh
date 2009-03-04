@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 QString MaterialGenericFactory::TMaterialName() const
 {
 	Trace trace( "MaterialGenericFactory::TMaterialName", false );
-	return QString("Generic Material");
+	return QString("Generic_Material");
 }
 
 QIcon MaterialGenericFactory::TMaterialIcon() const
