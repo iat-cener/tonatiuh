@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 QString ShapeTroughParabolaFactory::TShapeName() const
 {
 	Trace trace( "ShapeTroughParabolaFactory::TShapeName", false );
-	return QString("Trough Parabola" );
+	return QString("Trough_Parabola" );
 }
 
 QIcon ShapeTroughParabolaFactory::TShapeIcon() const
