@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 QString ShapeParabolicRectangleFactory::TShapeName() const
 {
 	Trace trace( "ShapeParabolicRectangleFactory::TShapeName", false );
-	return QString( "Parabolic rectangle" );
+	return QString( "Parabolic_rectangle" );
 }
 
 QIcon ShapeParabolicRectangleFactory::TShapeIcon() const
