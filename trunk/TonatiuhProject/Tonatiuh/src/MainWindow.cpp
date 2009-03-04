@@ -888,35 +888,26 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	progressDialog->setCancelButton( NULL);
 	progressDialog->setVisible( true );
 
-	long unsigned tracedRays = 0;
 	//Random Ray generator
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
 	{
+		Ray ray;
 
-		bool intersected = false;
-		//while(!intersected )
-		//{
-			Ray ray;
+		//Generate ray origin and direction in the Light coordinate system
+		ray.origin = shape->Sample( m_pRand->RandomDouble( ), m_pRand->RandomDouble( ) );
+		sunShape->generateRayDirection( ray.direction, *m_pRand );
 
-			//Generate ray origin and direction in the Light coordinate system
-			ray.origin = shape->Sample( m_pRand->RandomDouble( ), m_pRand->RandomDouble( ) );
-			sunShape->generateRayDirection( ray.direction, *m_pRand );
+		//Transform ray to World coordinate system and trace the scene
+		ray = lightToWorld( ray );
 
-			//Transform ray to World coordinate system and trace the scene
-			//ray = Ray( Point3D( 0.0, 0.0, 0.0 ), Vector3D( 0.0, -1.0, 0.0 ) );
-			ray = lightToWorld( ray );
-			//ray = Ray( Point3D( -1.7353,4.0032, 25.253 ), Vector3D( 0.47849, -0.706039, 0.52207 ) );
-			//ray.origin = Point3D( -2.0064, 4.1307, 25.238 );
-			tracedRays ++;
+		//Perform Ray Trace
+		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
 
-			intersected = tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
-		//}
 		//Update progressDiaglog when appropriate
 		if( m_raysPerIteration >= 10 )
 			if ( ( ( i+ 1 )%( m_raysPerIteration/10 ) ) == 0 ) progressDialog->setValue( ( i + 1 ) );
 		else
 			progressDialog->setValue( ( i + 1 ) );
-
  	}
 
 	progressDialog->setValue( m_raysPerIteration );
@@ -931,7 +922,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
  	{
 	  	m_pRays = new SoSeparator;
 	  	m_pRays->ref();
-
   		m_pRays->setName("Rays");
 
 		if( m_drawPhotons )
@@ -939,7 +929,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 			SoSeparator* points = tgf::DrawPhotonMapPoints(*m_photonMap);
 			m_pRays->addChild(points);
 		}
-
 		if( m_fraction > 0.0 )
 		{
 			SoSeparator* currentRays = tgf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
@@ -949,18 +938,14 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		   	actionDisplay_rays->setChecked( true );
 		}
   		m_document->GetRoot()->addChild( m_pRays );
-
 	}
 
 	progressDialog->setValue( m_raysPerIteration * 2 );
-
  	delete progressDialog;
 
-	//Calculamos el tiempo de fin
+	//Calculate time
 	end=clock();
-
-	std::cout <<"El tiempo necesario es:" <<(double)(end-start)/CLOCKS_PER_SEC<<std::endl;
-
+	std::cout <<"Time Taken in Ray Trace Routine: " <<(double)(end-start)/CLOCKS_PER_SEC<<std::endl;
 }
 
 void MainWindow::on_actionDisplay_rays_toggled()
