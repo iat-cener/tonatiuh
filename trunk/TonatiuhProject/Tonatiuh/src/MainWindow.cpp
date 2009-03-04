@@ -892,6 +892,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	//Random Ray generator
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
 	{
+
 		bool intersected = false;
 		//while(!intersected )
 		//{
@@ -918,7 +919,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
  	}
 
-	std::cout<<"Number of traced rays: "<<tracedRays<<std::endl;
 	progressDialog->setValue( m_raysPerIteration );
 
  	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
@@ -927,7 +927,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
   		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
  	}
 
- 	if( m_fraction > 0.0 || m_drawPhotons )
+ 	if( m_fraction > 0.0 && m_drawPhotons )
  	{
 	  	m_pRays = new SoSeparator;
 	  	m_pRays->ref();
