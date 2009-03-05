@@ -70,12 +70,12 @@
 
  void TestVector3D::testDotProductWithNormal()
  {
- Vector3D vect(3.1,-1.0,2.4);
- NormalVector norm(4.3,1.9,2.7);
- double answer = 17.91;
- double result = DotProduct(norm,vect);
+	 Vector3D vect(3.1,-1.0,2.4);
+	 NormalVector norm(4.3,1.9,2.7);
+	 double answer = 17.91;
+	 double result = DotProduct(norm,vect);
 
- CPPUNIT_ASSERT_DOUBLES_EQUAL( result, answer, DBL_EPSILON);
+	 CPPUNIT_ASSERT_DOUBLES_EQUAL( result, answer, DBL_EPSILON);
  }
 
  void TestVector3D::testLength()
