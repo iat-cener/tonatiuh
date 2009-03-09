@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>icons/MaterialGeneric.png</file>
+    </qresource>
+</RCC>

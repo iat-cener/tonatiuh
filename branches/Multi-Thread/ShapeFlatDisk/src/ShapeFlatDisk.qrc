@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+
+        <file>icons/ShapeFlatDisk.png</file>
+    </qresource>
+</RCC>
