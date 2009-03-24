@@ -286,7 +286,7 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 
     	    	return references + nodeName;
     	    }
-    	    else return new QVariant();
+    	    else return QVariant();
     	}
 
         if ( role == Qt::UserRole )
@@ -298,7 +298,7 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 	            return QVariant::fromValue( pathWrapper );
 
         	}
-        	return new QVariant();
+        	return  QVariant();
         }
         if (role == Qt::DecorationRole)
         {

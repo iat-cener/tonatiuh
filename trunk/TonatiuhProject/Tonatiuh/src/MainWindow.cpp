@@ -89,6 +89,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "MersenneTwister.h"
 #include "NodeNameDelegate.h"
 #include "PhotonMap.h"
+#include "ProgressUpdater.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "RayTraceDialog.h"
@@ -828,10 +829,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 {
     Trace trace( "MainWindow::on_actionRayTraceRun_triggered", false );
 
-	//Calculamos el tiempo de inicio
-	clock_t start,end;
-	start=clock();
-
+	ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), 100, this);
 	actionDisplay_rays->setEnabled( false );
 
 	//Check if there is a scene
@@ -883,10 +881,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	m_tracedRays += m_raysPerIteration;
 
 	//Ray tracing storing the generated photons in the Photon Map
-	QProgressDialog* progressDialog = new QProgressDialog ( "Tracing rays. Please wait..." , "Cancel", 0, m_raysPerIteration, this );
-	progressDialog->setModal( true );
-	progressDialog->setCancelButton( NULL);
-	progressDialog->setVisible( true );
 
 	//Random Ray generator
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
@@ -904,13 +898,8 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
 
 		//Update progressDiaglog when appropriate
-		if( m_raysPerIteration >= 10 )
-			if ( ( ( i+ 1 )%( m_raysPerIteration/10 ) ) == 0 ) progressDialog->setValue( ( i + 1 ) );
-		else
-			progressDialog->setValue( ( i + 1 ) );
+		progress.Update();
  	}
-
-	progressDialog->setValue( m_raysPerIteration );
 
  	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
  	{
@@ -939,13 +928,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		}
   		m_document->GetRoot()->addChild( m_pRays );
 	}
-
-	progressDialog->setValue( m_raysPerIteration * 2 );
- 	delete progressDialog;
-
-	//Calculate time
-	end=clock();
-	std::cout <<"Time Taken in Ray Trace Routine: " <<(double)(end-start)/CLOCKS_PER_SEC<<std::endl;
+ 	progress.Done();
 }
 
 void MainWindow::on_actionDisplay_rays_toggled()
