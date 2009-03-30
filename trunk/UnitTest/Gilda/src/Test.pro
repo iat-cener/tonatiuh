@@ -25,7 +25,7 @@ win32	{
 
 unix {
 	INCLUDEPATH += 	src \
-				../../TonatiuhProject/Tonatiuh/src \ 
+				../../TonatiuhProject/Tonatiuh/src \  
 				/usr/local/include 
 
 	LIBS +=-L/usr/local/lib  -lSoQt -lCoin -lqxcppunit -lqxrunner -lcppunit
