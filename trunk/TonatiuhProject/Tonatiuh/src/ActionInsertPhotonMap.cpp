@@ -36,32 +36,22 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ANALYZERWINDOW_H_
-#define ANALYZERWINDOW_H_
+#include "ActionInsertPhotonMap.h"
+#include "Trace.h"
 
-#include <QDialog>
-
-#include <qwt3d_function.h>
-#include <qwt3d_surfaceplot.h>
-
-class TPhotonMap;
-class QLabel;
-class TShape;
-
-
-class AnalyzerWindow : public QDialog
+ActionInsertPhotonMap::ActionInsertPhotonMap( const QString& text, QObject* parent, TPhotonMapFactory* pTPhotonMapFactory )
+: QAction(text,parent), m_pTPhotonMapFactory( pTPhotonMapFactory )
 {
-	Q_OBJECT
+	Trace( "ActionInsertPhotonMap::ActionInsertPhotonMap", false );
+}
 
-public:
-	AnalyzerWindow( QWidget* parent = 0 );
-	~AnalyzerWindow();
+ActionInsertPhotonMap::~ActionInsertPhotonMap()
+{
+	Trace( "ActionInsertPhotonMap::~ActionInsertPhotonMap", false );
+}
 
-	void Plot( TPhotonMap* map, TShape* shape, unsigned int u, unsigned int v);
-
-private:
-	Qwt3D::SurfacePlot* m_plot;
-
-};
-
-#endif /*ANALYZERWINDOW_H_*/
+void ActionInsertPhotonMap::OnActionInsertPhotonMapTriggered()
+{
+	Trace( "ActionInsertPhotonMap::OnActionInsertPhotonMapTriggered", false );
+	emit CreatePhotonMap( m_pTPhotonMapFactory );
+}

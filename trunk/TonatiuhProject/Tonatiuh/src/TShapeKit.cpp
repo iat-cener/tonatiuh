@@ -45,9 +45,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "TCube.h"
 #include "tgf.h"
+#include "TDefaultPhotonMap.h"
 #include "TMaterial.h"
 #include "Trace.h"
 #include "Transform.h"
+#include "TPhotonMap.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 
@@ -65,9 +67,11 @@ TShapeKit::TShapeKit()
 	SO_KIT_CONSTRUCTOR(TShapeKit);
 
 	SO_KIT_CHANGE_ENTRY_TYPE(shape, TShape, TCube);
+	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY( photonMap, TPhotonMap, TDefaultPhotonMap, TRUE, this, "", TRUE );
 	SO_KIT_INIT_INSTANCE();
 
 	setPart("shape", NULL );
+	//setPart("tphotonmap", NULL);
 
 	SoTransform* transform = new SoTransform;
 	setPart("transform", transform);

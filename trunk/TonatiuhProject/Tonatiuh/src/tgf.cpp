@@ -50,7 +50,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "Matrix4x4.h"
 #include "Photon.h"
-#include "PhotonMap.h"
+#include "TPhotonMap.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
@@ -127,7 +127,7 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
 
 }
 
-bool tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, RandomDeviate& rand)
+bool tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, TPhotonMap& photonMap, RandomDeviate& rand)
 {
 	Trace trace( "tgf::TraceRay", false );
 
@@ -180,14 +180,14 @@ bool tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, 
 	return true;
 }
 
-SoSeparator* tgf::DrawPhotonMapPoints( const PhotonMap& map )
+SoSeparator* tgf::DrawPhotonMapPoints( const TPhotonMap& map )
 {
 	Trace trace( "tgf::DrawPhotonMapPoints", false );
 
 	SoSeparator* drawpoints=new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
-	for( unsigned long i = 1 ; i < map.StoredPhotons(); i++ )
+	for( unsigned long i = 1 ; i < map.StoredPhotons().getValue(); i++ )
 	{
 		Point3D photon = map.GetPhoton(i)->m_pos;
 		points->point.set1Value( i, photon.x, photon.y, photon.z );
@@ -208,7 +208,7 @@ SoSeparator* tgf::DrawPhotonMapPoints( const PhotonMap& map )
   	return drawpoints;
 }
 
-SoSeparator* tgf::DrawPhotonMapRays( const PhotonMap& map, unsigned long numberOfRays, double fraction )
+SoSeparator* tgf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction )
 {
 	Trace trace( "tgf::DrawPhotonMapRays", false );
 
@@ -225,7 +225,7 @@ SoSeparator* tgf::DrawPhotonMapRays( const PhotonMap& map, unsigned long numberO
 
 	unsigned long numberOfPhoton = 0;
 
-	for( unsigned long i = 1; i<= map.StoredPhotons(); i++ )
+	for( unsigned long i = 1; i<= map.StoredPhotons().getValue(); i++ )
 	//for( unsigned long i = 0; i < map.StoredPhotons(); i++ )
 	{
 

@@ -36,32 +36,30 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ANALYZERWINDOW_H_
-#define ANALYZERWINDOW_H_
+#ifndef CMDINSERTPHOTONMAP_H_
+#define CMDINSERTPHOTONMAP_H_
 
-#include <QDialog>
+#include <QUndoCommand>
 
-#include <qwt3d_function.h>
-#include <qwt3d_surfaceplot.h>
-
+class SceneModel;
+class TShapeKit;
 class TPhotonMap;
-class QLabel;
-class TShape;
 
-
-class AnalyzerWindow : public QDialog
+class CmdInsertPhotonMap : public QUndoCommand
 {
-	Q_OBJECT
-
 public:
-	AnalyzerWindow( QWidget* parent = 0 );
-	~AnalyzerWindow();
+	CmdInsertPhotonMap( TShapeKit* shapeKit, TPhotonMap* photonMap, SceneModel* model, QUndoCommand* parent = 0 );
+    ~CmdInsertPhotonMap();
 
-	void Plot( TPhotonMap* map, TShape* shape, unsigned int u, unsigned int v);
+     virtual void undo();
+     virtual void redo();
 
-private:
-	Qwt3D::SurfacePlot* m_plot;
-
+ private:
+     TShapeKit* m_shapeKit;
+     TPhotonMap* m_previousPhotonMap;
+     TPhotonMap* m_photonMap;
+     SceneModel* m_pModel;
+     int m_row;
 };
 
-#endif /*ANALYZERWINDOW_H_*/
+#endif /* CMDINSERTPHOTONMAP_H_ */

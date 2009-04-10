@@ -36,32 +36,64 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ANALYZERWINDOW_H_
-#define ANALYZERWINDOW_H_
+#ifndef TDEFAULTPHOTONMAP_H_
+#define TDEFAULTPHOTONMAP_H_
+#include <Inventor/SoType.h>
 
-#include <QDialog>
+#include "Point3D.h"
+#include "Vector3D.h"
+#include "BBox.h"
+#include "NormalVector.h"
+#include "Photon.h"
+#include "TPhotonMap.h"
+#include <vector>
 
-#include <qwt3d_function.h>
-#include <qwt3d_surfaceplot.h>
 
-class TPhotonMap;
-class QLabel;
-class TShape;
-
-
-class AnalyzerWindow : public QDialog
+typedef struct NearestPhotons
 {
-	Q_OBJECT
+	long unsigned m_max;
+	long unsigned m_found;
+	long unsigned m_gotHeap;
+	Point3D m_pos;
+	double* m_dist2;
+	Photon** m_index;
+}NearestPhotons;
 
+class TDefaultPhotonMap : public TPhotonMap
+{
+	SO_NODE_HEADER(TDefaultPhotonMap);
 public:
-	AnalyzerWindow( QWidget* parent = 0 );
-	~AnalyzerWindow();
+	TDefaultPhotonMap();
+	TDefaultPhotonMap( long unsigned maxPhotons );
+	~TDefaultPhotonMap();
 
-	void Plot( TPhotonMap* map, TShape* shape, unsigned int u, unsigned int v);
+	static void initClass();
+	SoNode* copy( SbBool copyConnections ) const;
+	QString getIcon();
+
+	void savePhotonMap( const char *filename );
+	void loadPhotonMap(char *filename);
+	//SoType getClassTypeId( void ) {return SoType::badType();}
+
+	void locatePhotons( NearestPhotons* const np, const long unsigned index ) const;
+	double fluxAtPoint( const Point3D& point, int maxClosest ) const;
+	void store( Photon* photon );
+	void balance();
+	Photon* GetPhoton( int index ) const;
+	SoSFInt32 StoredPhotons() const { return m_storedPhotons; };
 
 private:
-	Qwt3D::SurfacePlot* m_plot;
 
+	void balanceSegment( Photon*** pbal, Photon*** porg, const long unsigned index, const long unsigned start, const long unsigned end );
+	void medianSplit( Photon*** p, const long unsigned start, const long unsigned end, const long unsigned median, const long unsigned axis );
+
+	Photon** m_photons;
+	SoSFInt32 m_storedPhotons;
+	long unsigned m_halfStoredPhotons;
+	long unsigned m_maxPhotons;
+	long unsigned m_prevScale;
+	long unsigned m_axis;
+	BBox m_bbox;
 };
 
-#endif /*ANALYZERWINDOW_H_*/
+#endif /*TDEFAULTPHOTONMAP_H_*/

@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Flux.h"
 #include "Point3D.h"
 
-Flux::Flux(Qwt3D::SurfacePlot& pw, PhotonMap* map, TShape* shape)
+Flux::Flux(Qwt3D::SurfacePlot& pw, TPhotonMap* map, TShape* shape)
 :Function(pw), m_map(map), m_shape(shape)
 {
 }
@@ -54,5 +54,5 @@ double Flux::operator()( double x, double y )
 	double res = 1.0 / 100.0;
 	Point3D point = m_shape->Sample(x*res,y*res);
 
-	return m_map->fluxAtPoint( point, nearestPhotons );
+	return 0; //m_map->fluxAtPoint( point, nearestPhotons );
 }

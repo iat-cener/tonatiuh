@@ -42,15 +42,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <string.h>
 #include <cmath>
 
-
 #ifdef __mips
 #include <alloca.h>
 #endif
 
 #include <sys/stat.h>
 
+#include <QString>
 
-#include "PhotonMap.h"
+#include "TDefaultPhotonMap.h"
+#include "tgc.h"
 #include "tgf.h"
 #include "Trace.h"
 
@@ -59,7 +60,29 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * maximum number of photons that will be stored
 */
 
-PhotonMap :: PhotonMap( long unsigned maxPhotons )
+SO_NODE_SOURCE(TDefaultPhotonMap);
+
+void TDefaultPhotonMap::initClass()
+{
+	Trace trace( "TDefaultPhotonMap::initClass", false );
+	SO_NODE_INIT_CLASS( TDefaultPhotonMap, TPhotonMap, "tphotonmap" );
+}
+
+TDefaultPhotonMap::TDefaultPhotonMap()
+{
+	Trace trace( "TDefaultPhotonMap::TDefaultPhotonMap", false );
+    m_storedPhotons = 0;
+	m_prevScale = 1;
+	m_maxPhotons = tgc::Max_Photon;
+	m_axis = 0;
+	m_photons = new Photon*[m_maxPhotons+1];
+
+	if (!m_photons)  tgf::SevereError( "Out of memory initializing TDefaultPhotonMap" );
+
+	BBox m_bbox();
+}
+
+TDefaultPhotonMap :: TDefaultPhotonMap( long unsigned maxPhotons )
 {
     m_storedPhotons = 0;
 	m_prevScale = 1;
@@ -67,16 +90,15 @@ PhotonMap :: PhotonMap( long unsigned maxPhotons )
 	m_axis = 0;
 	m_photons = new Photon*[m_maxPhotons+1];
 
-	if (!m_photons)  tgf::SevereError( "Out of memory initializing photon map" );
+	if (!m_photons)  tgf::SevereError( "Out of memory initializing TDefaultPhotonMap" );
 
 	BBox m_bbox();
-
 }
 
-PhotonMap :: ~PhotonMap()
+TDefaultPhotonMap :: ~TDefaultPhotonMap()
 {
-	Trace trace( "PhotonMap::~PhotonMap", false );
-	for( long unsigned i = 1; i <= m_storedPhotons; i++)
+	Trace trace( "TDefaultPhotonMap::~TDefaultPhotonMap", false );
+	for( long unsigned i = 1; i <= m_storedPhotons.getValue(); i++)
 	{
 		delete m_photons[i];
 	}
@@ -84,14 +106,22 @@ PhotonMap :: ~PhotonMap()
 	m_photons = 0;
 }
 
-void PhotonMap::savePhotonMap( const char *filename )
+QString TDefaultPhotonMap::getIcon()
+{
+	Trace trace( "TDefaultPhotonMap::getIcon", false );
+
+	return QString(":icons/eclipse32.png");
+}
+
+
+void TDefaultPhotonMap::savePhotonMap( const char *filename )
 {
 	FILE *fp=fopen(filename,"wb");
-	fwrite(m_photons,sizeof(Photon),m_storedPhotons,fp);
+	fwrite(m_photons,sizeof(Photon),m_storedPhotons.getValue(),fp);
 	fclose(fp);
 }
 
-void PhotonMap::loadPhotonMap( char *filename )
+void TDefaultPhotonMap::loadPhotonMap( char *filename )
 {
 	FILE *fp;
 	fp=fopen(filename,"rb");
@@ -99,16 +129,16 @@ void PhotonMap::loadPhotonMap( char *filename )
 	struct stat sbuf;
 	m_storedPhotons = sbuf.st_size/sizeof(Photon);
 	m_photons = new Photon*[m_maxPhotons+1];
-	long unsigned count = fread(m_photons, sizeof(Photon), m_storedPhotons, fp );
+	long unsigned count = fread(m_photons, sizeof(Photon), m_storedPhotons.getValue(), fp );
 	fclose(fp);
-	if( count != m_storedPhotons )
+	if( count != m_storedPhotons.getValue() )
 	{
-		std::cout << "PhotonMap::loadPhotonMap count != m_storePhotons" << std::endl;
+		std::cout << "TDefaultPhotonMap::loadPhotonMap count != m_storePhotons" << std::endl;
 	}
-	m_halfStoredPhotons = m_storedPhotons/2-1;
+	m_halfStoredPhotons = m_storedPhotons.getValue()/2-1;
 }
 
-void PhotonMap::locatePhotons( NearestPhotons* const np, const long unsigned index ) const
+void TDefaultPhotonMap::locatePhotons( NearestPhotons* const np, const long unsigned index ) const
 {
     Photon* p = m_photons[index];
 	double dist1;
@@ -189,7 +219,7 @@ void PhotonMap::locatePhotons( NearestPhotons* const np, const long unsigned ind
     }
 }
 
-double PhotonMap::fluxAtPoint( const Point3D& point, int maxClosest ) const
+double TDefaultPhotonMap::fluxAtPoint( const Point3D& point, int maxClosest ) const
 {
 	NearestPhotons np;
 	//np.m_index = new Photon[maxClosest][];
@@ -209,30 +239,30 @@ double PhotonMap::fluxAtPoint( const Point3D& point, int maxClosest ) const
 	return maxClosest / radius;
 }
 
-void PhotonMap :: store( Photon* photon )
+void TDefaultPhotonMap :: store( Photon* photon )
 {
-	if ( m_storedPhotons >= m_maxPhotons ) return;
+	if ( m_storedPhotons.getValue() >= m_maxPhotons ) return;
 
-  	m_storedPhotons++;
-  	photon->m_id = m_storedPhotons;
-  	m_photons[m_storedPhotons] = photon;
+  	m_storedPhotons.setValue(m_storedPhotons.getValue()+1);
+  	photon->m_id = m_storedPhotons.getValue();
+  	m_photons[m_storedPhotons.getValue()] = photon;
 
 	m_bbox = Union( m_bbox,photon->m_pos );
 }
 
 // balance creates a left balanced kd-tree from the flat photon array.
 // * This function should be called before the photon map is used for rendering.
-void PhotonMap::balance()
+void TDefaultPhotonMap::balance()
 {
-    if ( m_storedPhotons > 1 )
+    if ( m_storedPhotons.getValue() > 1 )
 	{
         // allocate two temporary arrays for the balancing procedure
 		Photon*** pa1 = new Photon**[m_maxPhotons+1];
 		Photon*** pa2 = new Photon**[m_maxPhotons+1];
 
 		long unsigned i;
-		for ( i = 0; i <= m_storedPhotons; i++ ) pa2[i] = &m_photons[i];
-	   	balanceSegment( pa1, pa2, 1, 1, m_storedPhotons );
+		for ( i = 0; i <= m_storedPhotons.getValue(); i++ ) pa2[i] = &m_photons[i];
+	   	balanceSegment( pa1, pa2, 1, 1, m_storedPhotons.getValue() );
 
 		delete[] pa2;
         pa2 = 0;
@@ -242,7 +272,7 @@ void PhotonMap::balance()
 	    long unsigned j = 1;
 	    long unsigned foo = 1;
 	    Photon* foo_photon = m_photons[j];
-	    for ( i=1; i <= m_storedPhotons; i++ )
+	    for ( i=1; i <= m_storedPhotons.getValue(); i++ )
 	    {
 		    d = pa1[j]-m_photons;
 		    pa1[j] = 0;
@@ -251,9 +281,9 @@ void PhotonMap::balance()
 		    else
 		    {
 		        m_photons[j] = foo_photon;
-		        if ( i < m_storedPhotons )
+		        if ( i < m_storedPhotons.getValue() )
 		        {
-					for ( ; foo<= m_storedPhotons; foo++ ) if ( pa1[foo] != 0 ) break;
+					for ( ; foo<= m_storedPhotons.getValue(); foo++ ) if ( pa1[foo] != 0 ) break;
 					foo_photon = m_photons[foo];
 		          	j = foo;
 		        }
@@ -264,7 +294,7 @@ void PhotonMap::balance()
 	    delete[] pa1;
         pa1 = 0;
     }
-	m_halfStoredPhotons = m_storedPhotons / 2 - 1;
+	m_halfStoredPhotons = m_storedPhotons.getValue() / 2 - 1;
 }
 
 #define swap(ph,a,b) { Photon** ph2=ph[a]; ph[a]=ph[b]; ph[b]=ph2; }
@@ -275,10 +305,9 @@ void PhotonMap::balance()
 // than the median in the upper half. The comparison
 // criteria is the axis (indicated by the axis parameter)
 // (inspired by routine in "Algorithms in C++" by Sedgewick)
-void PhotonMap::medianSplit( Photon*** p, const long unsigned start, const long unsigned end,
+void TDefaultPhotonMap::medianSplit( Photon*** p, const long unsigned start, const long unsigned end,
                              const long unsigned median, const long unsigned axis )
 {
-
 	long unsigned left = start;
     long unsigned right = end;
 
@@ -300,7 +329,7 @@ void PhotonMap::medianSplit( Photon*** p, const long unsigned start, const long 
     }
 }
 
-void PhotonMap::balanceSegment( Photon*** pbal, Photon*** porg, const long unsigned index, const long unsigned start, const long unsigned end )
+void TDefaultPhotonMap::balanceSegment( Photon*** pbal, Photon*** porg, const long unsigned index, const long unsigned start, const long unsigned end )
 {
     long unsigned median=1;
   	while ( ( 4*median ) <= ( end-start+1 ) ) median += median;
@@ -353,8 +382,24 @@ void PhotonMap::balanceSegment( Photon*** pbal, Photon*** porg, const long unsig
     }
 }
 
-Photon* PhotonMap::GetPhoton( int index ) const
+Photon* TDefaultPhotonMap::GetPhoton( int index ) const
 {
-	Trace trace( "PhotonMap::GetPhoton", false );
+	Trace trace( "TDefaultPhotonMap::GetPhoton", false );
 	return m_photons[index];
+}
+
+SoNode* TDefaultPhotonMap::copy( SbBool copyConnections ) const
+{
+	// Use the standard version of the copy method to create
+	// a copy of this instance, including its field data
+	TDefaultPhotonMap* newPhotonMap = dynamic_cast< TDefaultPhotonMap* >( SoNode::copy( copyConnections ) );
+
+	newPhotonMap->m_storedPhotons = m_storedPhotons;
+	newPhotonMap->m_halfStoredPhotons = m_halfStoredPhotons;
+	newPhotonMap->m_maxPhotons = m_maxPhotons;
+	newPhotonMap->m_prevScale = m_prevScale;
+	newPhotonMap->m_axis = m_axis;
+	newPhotonMap->m_bbox = m_bbox;
+
+	return newPhotonMap;
 }

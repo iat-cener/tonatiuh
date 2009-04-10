@@ -36,32 +36,24 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ANALYZERWINDOW_H_
-#define ANALYZERWINDOW_H_
+#ifndef TPHOTONMAPFACTORY_H_
+#define TPHOTONMAPFACTORY_H_
 
-#include <QDialog>
+#include <QtPlugin>
 
-#include <qwt3d_function.h>
-#include <qwt3d_surfaceplot.h>
-
+class QString;
+class QIcon;
 class TPhotonMap;
-class QLabel;
-class TShape;
 
-
-class AnalyzerWindow : public QDialog
+class TPhotonMapFactory
 {
-	Q_OBJECT
-
 public:
-	AnalyzerWindow( QWidget* parent = 0 );
-	~AnalyzerWindow();
-
-	void Plot( TPhotonMap* map, TShape* shape, unsigned int u, unsigned int v);
-
-private:
-	Qwt3D::SurfacePlot* m_plot;
-
+	virtual ~TPhotonMapFactory() {}
+    virtual QString TPhotonMapName() const  = 0;
+    virtual QIcon TPhotonMapIcon() const = 0;
+    virtual TPhotonMap* CreateTPhotonMap( ) const = 0;
 };
 
-#endif /*ANALYZERWINDOW_H_*/
+Q_DECLARE_INTERFACE( TPhotonMapFactory, "tonatiuh.TPhotonMapFactory")
+
+#endif /* TPHOTONMAPFACTORY_H_ */
