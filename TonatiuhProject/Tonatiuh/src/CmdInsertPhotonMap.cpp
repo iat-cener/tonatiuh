@@ -36,32 +36,43 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ANALYZERWINDOW_H_
-#define ANALYZERWINDOW_H_
-
-#include <QDialog>
-
-#include <qwt3d_function.h>
-#include <qwt3d_surfaceplot.h>
-
-class TPhotonMap;
-class QLabel;
-class TShape;
+#include "CmdInsertPhotonMap.h"
+#include "SceneModel.h"
+#include "tgf.h"
+#include "TPhotonMap.h"
+#include "Trace.h"
+#include "TShapeKit.h"
 
 
-class AnalyzerWindow : public QDialog
+CmdInsertPhotonMap::CmdInsertPhotonMap( TShapeKit* shapeKit, TPhotonMap* photonMap, SceneModel* model, QUndoCommand * parent )
+: QUndoCommand("InsertPhotonMap", parent), m_shapeKit( shapeKit ), m_previousPhotonMap( 0 ), m_photonMap( photonMap ), m_pModel( model ), m_row( -1 )
 {
-	Q_OBJECT
+	Trace trace( "CmdInsertPhotonMap::CmdInsertPhotonMap", false );
 
-public:
-	AnalyzerWindow( QWidget* parent = 0 );
-	~AnalyzerWindow();
+	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertPhotonMap called with NULL TShapeKit" );
+	if( m_photonMap == 0 ) tgf::SevereError( "CmdInsertPhotonMap called with NULL TPhotonMap" );
+	m_photonMap->ref();
+    m_previousPhotonMap = dynamic_cast< TPhotonMap* >( m_shapeKit->getPart( "photonMap", false ) );
+}
 
-	void Plot( TPhotonMap* map, TShape* shape, unsigned int u, unsigned int v);
+CmdInsertPhotonMap::~CmdInsertPhotonMap()
+{
+	Trace trace( "CmdInsertPhotonMap::~CmdInsertPhotonMap", false );
+    m_photonMap->unref();
+}
 
-private:
-	Qwt3D::SurfacePlot* m_plot;
+void CmdInsertPhotonMap::undo()
+{
+	Trace trace( "CmdInsertPhotonMap::undo", false );
 
-};
+    m_shapeKit->setPart( "photonMap", NULL );
+	m_pModel->RemoveCoinNode( m_row, *m_shapeKit );
+}
 
-#endif /*ANALYZERWINDOW_H_*/
+void CmdInsertPhotonMap::redo( )
+{
+	Trace trace( "CmdInsertPhotonMap::redo", false );
+
+    m_shapeKit->setPart( "photonMap", m_photonMap );
+    m_row = m_pModel->InsertCoinNode( *m_photonMap, *m_shapeKit );
+}

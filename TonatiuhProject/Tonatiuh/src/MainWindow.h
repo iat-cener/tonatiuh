@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class Document;
 class GraphicView;
 class InstanceNode;
-class PhotonMap;
+class TDefaultPhotonMap;
 class QDir;
 class QUndoStack;
 class QUndoView;
@@ -56,6 +56,7 @@ class SoDragger;
 class SoSelection;
 class SoSeparator;
 class TMaterialFactory;
+class TPhotonMapFactory;
 class Transform;
 class TShapeFactory;
 class TShapeKit;
@@ -130,6 +131,7 @@ public slots:
 
 	//Create actions
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
+	void CreatePhotonMap( TPhotonMapFactory* pTPhotonMapFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 
@@ -166,6 +168,7 @@ protected:
 private:
     void SetupActions();
     void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
+    void SetupActionInsertPhotonMap( TPhotonMapFactory* pTPhotonMapFactory );
     void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
     void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
     void SetupMenus();
@@ -208,13 +211,14 @@ private:
     QUndoStack* m_commandStack;
     QUndoView* m_commandView;
     QToolBar* m_materialsToolBar;
+    QToolBar* m_photonMapToolBar;
     QToolBar* m_shapeToolBar;
     QToolBar* m_trackersToolBar;
     QVector< TShapeFactory* > m_TFlatShapeFactoryList;
 	QVector< TSunShapeFactory* > m_TSunshapeFactoryList;
     SceneModel* m_sceneModel;
     QItemSelectionModel* m_selectionModel;
-    PhotonMap* m_photonMap;
+    TDefaultPhotonMap* m_photonMap;
     SoSeparator* m_pRays;
     SoSeparator* m_pGrid;
     RandomDeviate* m_pRand;

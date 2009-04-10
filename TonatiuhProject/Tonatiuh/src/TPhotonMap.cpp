@@ -36,55 +36,29 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef PHOTONMAP_H_
-#define PHOTONMAP_H_
+#include <Inventor/SoType.h>
 
-#include "Point3D.h"
-#include "Vector3D.h"
-#include "BBox.h"
-#include "NormalVector.h"
-#include "Photon.h"
-#include <vector>
+#include "TPhotonMap.h"
+#include "Trace.h"
 
+SO_NODE_ABSTRACT_SOURCE(TPhotonMap);
 
-typedef struct NearestPhotons
+void TPhotonMap::initClass()
 {
-	long unsigned m_max;
-	long unsigned m_found;
-	long unsigned m_gotHeap;
-	Point3D m_pos;
-	double* m_dist2;
-	Photon** m_index;
-}NearestPhotons;
+	Trace trace( "TPhotonMap::initClass", false );
+	//SoType::createType(SoType::badType(), "TPhotonMap" );
+	SO_NODE_INIT_ABSTRACT_CLASS(TPhotonMap, SoNode, "Node");
 
-class PhotonMap
+}
+
+TPhotonMap::TPhotonMap()
 {
-public:
-	PhotonMap( long unsigned maxPhotons );
-	~PhotonMap();
+	Trace trace( "TPhotonMap::TPhotonMap", false );
+	//SO_NODE_CONSTRUCTOR( TPhotonMap );
 
-	void savePhotonMap( const char *filename );
-	void loadPhotonMap(char *filename);
+}
 
-	void locatePhotons( NearestPhotons* const np, const long unsigned index ) const;
-	double fluxAtPoint( const Point3D& point, int maxClosest ) const;
-	void store( Photon* photon );
-	void balance();
-	long unsigned StoredPhotons() const { return m_storedPhotons; };
-	Photon* GetPhoton( int index ) const;
-
-private:
-	void balanceSegment( Photon*** pbal, Photon*** porg, const long unsigned index, const long unsigned start, const long unsigned end );
-	void medianSplit( Photon*** p, const long unsigned start, const long unsigned end, const long unsigned median, const long unsigned axis );
-
-	Photon** m_photons;
-
-	long unsigned m_storedPhotons;
-	long unsigned m_halfStoredPhotons;
-	long unsigned m_maxPhotons;
-	long unsigned m_prevScale;
-	long unsigned m_axis;
-	BBox m_bbox;
-};
-
-#endif /*PHOTONMAP_H_*/
+TPhotonMap::~TPhotonMap()
+{
+	Trace trace( "TPhotonMap::~TPhotonMap", false );
+}

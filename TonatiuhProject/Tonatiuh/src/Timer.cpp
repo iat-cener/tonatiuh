@@ -53,7 +53,6 @@ Timer::Timer()
         m_running = 0;
 }
 
-
 double Timer::GetTime()
 {
 	Trace trace( "Timer::GetTime", false );

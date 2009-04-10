@@ -52,7 +52,7 @@ namespace tgc
     const double Infinity = HUGE_VAL;
     const double Epsilon = DBL_EPSILON;
     const double Ecliptic = 23.5  * Degree;
-    const long unsigned int Max_Photon = 10000000 ;
+    const long unsigned int Max_Photon = 1000000 ;
 
     enum PasteType { Shared, Copied };
 }

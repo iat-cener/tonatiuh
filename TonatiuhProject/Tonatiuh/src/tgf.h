@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TGF_H_
 
 class InstanceNode;
-class PhotonMap;
+class TPhotonMap;
 class RandomDeviate;
 class Ray;
 class SbMatrix;
@@ -57,10 +57,10 @@ namespace tgf
     bool Quadratic( double A, double B, double C, double* t0, double* t1);
 	double AlternateBoxMuller( RandomDeviate& rand );
 
-	bool TraceRay( Ray& ray, InstanceNode* instanceNode, PhotonMap& photonMap, RandomDeviate& rand );
+	bool TraceRay( Ray& ray, InstanceNode* instanceNode, TPhotonMap& photonMap, RandomDeviate& rand );
 
-	SoSeparator* DrawPhotonMapPoints( const PhotonMap& map );
-	SoSeparator* DrawPhotonMapRays( const PhotonMap& map, unsigned long numberOfRays, double fraction );
+	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map );
+	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
 
 	SbMatrix MatrixFromTransform( const Transform& transform );
 }

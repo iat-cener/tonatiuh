@@ -58,7 +58,7 @@ AnalyzerWindow::~AnalyzerWindow()
 	delete m_plot;
 }
 
-void AnalyzerWindow::Plot(PhotonMap* map, TShape* shape, unsigned int u, unsigned int v)
+void AnalyzerWindow::Plot(TPhotonMap* map, TShape* shape, unsigned int u, unsigned int v)
 {
 	Trace trace( "AnalyzerWindow::Plot", false );
 	m_plot = new SurfacePlot(this);

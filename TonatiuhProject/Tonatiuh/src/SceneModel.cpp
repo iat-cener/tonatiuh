@@ -48,8 +48,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "PathWrapper.h"
 #include "SceneModel.h"
 #include "tgf.h"
+#include "TDefaultPhotonMap.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
+#include "TPhotonMap.h"
 #include "Trace.h"
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
@@ -161,6 +163,16 @@ void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 			    QList< InstanceNode* > instanceNodeList;
 				m_mapCoinQt.insert( std::make_pair( material, instanceNodeList ) );
 				m_mapCoinQt[material].append( materialChild );
+			}
+			SoNode* photonmap = parentKit->getPart("photonMap", false);
+			if( photonmap )
+			{
+				InstanceNode* photonmapChild = new InstanceNode( photonmap );
+				instanceParent.AddChild( photonmapChild );
+
+				QList< InstanceNode* > instanceNodeList;
+				m_mapCoinQt.insert( std::make_pair( photonmap, instanceNodeList ) );
+				m_mapCoinQt[photonmap].append( photonmapChild );
 			}
 		}
 		else
@@ -333,6 +345,11 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 				TMaterial* material = static_cast<TMaterial*>( coinNode );
 				return QIcon(material->getIcon());
 			}
+			else if( coinNode->getTypeId().isDerivedFrom(TPhotonMap::getClassTypeId() ) )
+			{
+				TPhotonMap* photonmap = static_cast<TPhotonMap*>( coinNode );
+				return QIcon(photonmap->getIcon());
+			}
      	}
     }
     return QVariant();
@@ -361,6 +378,7 @@ int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
 		TShapeKit* shapeKit = static_cast< TShapeKit* > ( &coinParent );
 		if( shapeKit->getPart( "shape", false ) ) row++;
 		if( shapeKit->getPart( "appearance.material", false ) ) row++;
+		if( shapeKit->getPart( "photonMap", false ) ) row++;
 	}
 
 	QList<InstanceNode*>& instanceListParent = m_mapCoinQt[ &coinParent ];
@@ -543,12 +561,24 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	switch ( type )
 	{
 		case tgc::Copied :
-		    coinChild = dynamic_cast< SoNode* >( coinNode.copy( true ) );
-		    break;
+			if( coinNode.getTypeId().isDerivedFrom(TPhotonMap::getClassTypeId() ) )
+			{
+				TDefaultPhotonMap* newmap = new TDefaultPhotonMap;
+				coinChild = newmap;
+			}
+			else
+				coinChild = dynamic_cast< SoNode* >( coinNode.copy( true ) );
+			break;
 
 		case tgc::Shared :
 		default :
-		    coinChild = &coinNode;
+			if( coinNode.getTypeId().isDerivedFrom(TPhotonMap::getClassTypeId() ) )
+			{
+				TDefaultPhotonMap* newmap = new TDefaultPhotonMap;
+				coinChild = newmap;
+			}
+			else
+				coinChild = &coinNode;
 		    break;
 	}
 	if( ! coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
@@ -567,7 +597,7 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
     		}
 			coinParent.setPart("shape", coinChild );
 		}
-		else
+		else if( coinChild->getTypeId().isDerivedFrom( SoMaterial::getClassTypeId() ) )
 		{
 			TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
 			if (material)
@@ -576,6 +606,17 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
     			return;
     		}
 			coinParent.setPart("material", coinChild );
+		}
+		else if ( coinChild->getTypeId().isDerivedFrom( TPhotonMap::getClassTypeId() ) )
+		{
+			TPhotonMap* photonMap = static_cast< TPhotonMap* >( shapeKit->getPart( "photonMap", false ) );
+			if (photonMap)
+			{
+    			QMessageBox::warning( 0, tr( "Tonatiuh warning" ), tr( "This TShapeKit already contains a photonmap" ) );
+    			return;
+			}
+			TDefaultPhotonMap* newmap = new TDefaultPhotonMap;
+			coinParent.setPart("photonMap", newmap );
 		}
 	}
 	else

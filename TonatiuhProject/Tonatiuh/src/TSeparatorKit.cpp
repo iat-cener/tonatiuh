@@ -147,7 +147,6 @@ Ray* TSeparatorKit::Intersect( const Ray& ray, RandomDeviate& rand ) const
 				{
 					TShapeKit* child = dynamic_cast< TShapeKit* >( coinChild );
 					childReflected = child->Intersect( objectRay, rand );
-
 				}
 
 				if( ray.maxt != objectRay.maxt )

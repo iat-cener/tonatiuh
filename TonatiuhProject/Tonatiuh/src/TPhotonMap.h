@@ -36,32 +36,37 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ANALYZERWINDOW_H_
-#define ANALYZERWINDOW_H_
+#ifndef TPHOTONMAP_H_
+#define TPHOTONMAP_H_
 
-#include <QDialog>
+#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFInt32.h>
 
-#include <qwt3d_function.h>
-#include <qwt3d_surfaceplot.h>
+#include "Point3D.h"
+#include "Vector3D.h"
+#include "BBox.h"
+#include "NormalVector.h"
+#include "Photon.h"
+#include <vector>
 
-class TPhotonMap;
-class QLabel;
-class TShape;
+class QString;
 
-
-class AnalyzerWindow : public QDialog
+class TPhotonMap : public SoNode
 {
-	Q_OBJECT
+    SO_NODE_ABSTRACT_HEADER(TPhotonMap);
 
 public:
-	AnalyzerWindow( QWidget* parent = 0 );
-	~AnalyzerWindow();
+    static void initClass();
 
-	void Plot( TPhotonMap* map, TShape* shape, unsigned int u, unsigned int v);
+	virtual QString getIcon() = 0;
+	virtual void store( Photon* photon ) = 0;
+	virtual Photon* GetPhoton( int index ) const = 0;
+	virtual SoSFInt32 StoredPhotons() const = 0 ;
 
-private:
-	Qwt3D::SurfacePlot* m_plot;
+protected:
+	TPhotonMap();
+    virtual ~TPhotonMap();
 
 };
 
-#endif /*ANALYZERWINDOW_H_*/
+#endif /* TPHOTONMAP_H_ */

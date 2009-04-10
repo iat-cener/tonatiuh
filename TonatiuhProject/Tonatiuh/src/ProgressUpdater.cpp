@@ -58,7 +58,6 @@ ProgressUpdater::ProgressUpdater( int totalWork, const QString &title, int bar_l
 	m_timer->Start();
 }
 
-
 ProgressUpdater::~ProgressUpdater()
 {
 	Trace trace( "ProgressUpdater::~ProgressUpdater", false );
@@ -84,7 +83,7 @@ void ProgressUpdater::Update(int num) const
 			float percentDone = (float)m_barsPrinted / (float)m_totalBars;
 			float seconds = (float) m_timer->Time();
 			float estRemaining = seconds / percentDone - seconds;
-			cout << "(" <<seconds << "s|" <<estRemaining <<"s)" << endl;
+			cout << "(" << seconds << "s|" << estRemaining <<"s)" << endl;
 	}
 }
 

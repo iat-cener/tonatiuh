@@ -42,7 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <qwt3d_function.h>
 #include <qwt3d_surfaceplot.h>
 
-#include "PhotonMap.h"
+#include "TPhotonMap.h"
 #include "Point3D.h"
 #include "TShape.h"
 
@@ -51,13 +51,13 @@ class QLabel;
 class Flux : public Qwt3D::Function
 {
 public:
-	Flux(Qwt3D::SurfacePlot& pw, PhotonMap* map, TShape* shape);
+	Flux(Qwt3D::SurfacePlot& pw, TPhotonMap* map, TShape* shape);
 	~Flux();
 
    	double operator()(double x, double y);
 
 private:
-	PhotonMap* m_map;
+	TPhotonMap* m_map;
 	TShape* m_shape;
 };
 #endif /*FLUX_H_*/
