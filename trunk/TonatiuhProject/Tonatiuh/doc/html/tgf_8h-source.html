@@ -72,7 +72,7 @@
 <a name="l00040"></a>00040 <span class="preprocessor"></span><span class="preprocessor">#define TGF_H_</span>
 <a name="l00041"></a>00041 <span class="preprocessor"></span>
 <a name="l00042"></a>00042 <span class="keyword">class </span><a class="code" href="class_instance_node.html">InstanceNode</a>;
-<a name="l00043"></a>00043 <span class="keyword">class </span><a class="code" href="class_photon_map.html">PhotonMap</a>;
+<a name="l00043"></a>00043 <span class="keyword">class </span><a class="code" href="class_t_photon_map.html">TPhotonMap</a>;
 <a name="l00044"></a>00044 <span class="keyword">class </span><a class="code" href="class_random_deviate.html">RandomDeviate</a>;
 <a name="l00045"></a>00045 <span class="keyword">class </span><a class="code" href="struct_ray.html">Ray</a>;
 <a name="l00046"></a>00046 <span class="keyword">class </span>SbMatrix;
@@ -89,17 +89,17 @@
 <a name="l00057"></a>00057     <span class="keywordtype">bool</span> <a class="code" href="namespacetgf.html#451c478a80cde9bcbbc56c886d26a782">Quadratic</a>( <span class="keywordtype">double</span> A, <span class="keywordtype">double</span> B, <span class="keywordtype">double</span> C, <span class="keywordtype">double</span>* t0, <span class="keywordtype">double</span>* t1);
 <a name="l00058"></a>00058         <span class="keywordtype">double</span> <a class="code" href="namespacetgf.html#f2718b98d0fcc1dc9b21b176d1047c0d">AlternateBoxMuller</a>( <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand );
 <a name="l00059"></a>00059 
-<a name="l00060"></a>00060         <span class="keywordtype">bool</span> <a class="code" href="namespacetgf.html#8e09f8918efbe8f2734398727dd051dc">TraceRay</a>( <a class="code" href="struct_ray.html">Ray</a>&amp; ray, <a class="code" href="class_instance_node.html">InstanceNode</a>* instanceNode, <a class="code" href="class_photon_map.html">PhotonMap</a>&amp; photonMap, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand );
+<a name="l00060"></a>00060         <span class="keywordtype">bool</span> <a class="code" href="namespacetgf.html#43468def7a7835b4dd9f0a1561602c9d">TraceRay</a>( <a class="code" href="struct_ray.html">Ray</a>&amp; ray, <a class="code" href="class_instance_node.html">InstanceNode</a>* instanceNode, <a class="code" href="class_t_photon_map.html">TPhotonMap</a>&amp; photonMap, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand );
 <a name="l00061"></a>00061 
-<a name="l00062"></a>00062         SoSeparator* <a class="code" href="namespacetgf.html#70dc571cfa1509dc4874e399da82fd3c">DrawPhotonMapPoints</a>( <span class="keyword">const</span> <a class="code" href="class_photon_map.html">PhotonMap</a>&amp; map );
-<a name="l00063"></a>00063         SoSeparator* <a class="code" href="namespacetgf.html#427ebcda878c3e47e0cb1d405ce9bb9a">DrawPhotonMapRays</a>( <span class="keyword">const</span> <a class="code" href="class_photon_map.html">PhotonMap</a>&amp; map, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> numberOfRays, <span class="keywordtype">double</span> fraction );
+<a name="l00062"></a>00062         SoSeparator* <a class="code" href="namespacetgf.html#affd6581195f3afac8b227b2b2e22ca2">DrawPhotonMapPoints</a>( <span class="keyword">const</span> <a class="code" href="class_t_photon_map.html">TPhotonMap</a>&amp; map );
+<a name="l00063"></a>00063         SoSeparator* <a class="code" href="namespacetgf.html#cdcb873381b328866a3030abb0e85140">DrawPhotonMapRays</a>( <span class="keyword">const</span> <a class="code" href="class_t_photon_map.html">TPhotonMap</a>&amp; map, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> numberOfRays, <span class="keywordtype">double</span> fraction );
 <a name="l00064"></a>00064 
 <a name="l00065"></a>00065         SbMatrix <a class="code" href="namespacetgf.html#d1161db03d16a0c9ca592dd434567d6e">MatrixFromTransform</a>( <span class="keyword">const</span> <a class="code" href="class_transform.html">Transform</a>&amp; transform );
 <a name="l00066"></a>00066 }
 <a name="l00067"></a>00067 
 <a name="l00068"></a>00068 <span class="preprocessor">#endif </span><span class="comment">/*TGF_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Feb 23 18:16:33 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 20 16:46:16 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

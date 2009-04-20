@@ -107,6 +107,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#e5290e013a45eac1b50863bc609c102c">CreateMaterial</a> (<a class="el" href="class_t_material_factory.html">TMaterialFactory</a> *pTMaterialFactory)</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#73f4b6efe284469fe7076fdf0af710b0">CreatePhotonMap</a> (<a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> *pTPhotonMapFactory)</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#7803710ef6bf8410d5a3e0bcd16fe27a">CreateShape</a> (<a class="el" href="class_t_shape_factory.html">TShapeFactory</a> *pTShapeFactory)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#1c2ffad39395e3464d2b5b1a663e5d63">CreateTracker</a> (<a class="el" href="class_t_tracker_factory.html">TTrackerFactory</a> *pTTrackerFactory)</td></tr>
@@ -165,6 +167,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#03ebcf99c9feb22715fc2fa6d2b36cfa">SetupActions</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#5f9984b7d5380be1cdb4bfe6509336a6">SetupActionInsertMaterial</a> (<a class="el" href="class_t_material_factory.html">TMaterialFactory</a> *pTMaterialFactory)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#8b1616dc7c28fea5c7fb80c4f416177a">SetupActionInsertPhotonMap</a> (<a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> *pTPhotonMapFactory)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#f3443b509edc90998b023816800e9e03">SetupActionInsertShape</a> (<a class="el" href="class_t_shape_factory.html">TShapeFactory</a> *pTShapeFactory)</td></tr>
 
@@ -245,6 +249,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QToolBar *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#264db575ba0acaa9241d47b2bd8eee24">m_materialsToolBar</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">QToolBar *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">m_photonMapToolBar</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QToolBar *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#c32f6e73637a6d64974d507277ab7e7e">m_shapeToolBar</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QToolBar *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#fd2183050a6ce3cbc844141ed4953f74">m_trackersToolBar</a></td></tr>
@@ -257,7 +263,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QItemSelectionModel *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">m_selectionModel</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_photon_map.html">PhotonMap</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#c445ce09cd6a431decdbc5343f26fba4">m_photonMap</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_t_default_photon_map.html">TDefaultPhotonMap</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#6b935b1f8c5687ad580d4ba788f0d5bd">m_photonMap</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">SoSeparator *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">m_pRays</a></td></tr>
 
@@ -337,7 +343,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_pRand</a>, <a class="el" href="_main_window_8cpp-source.html#l01939">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l00164">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00210">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00176">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l00221">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00183">SetupToolBars()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00230">SetupViews()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>, <a class="el" href="_main_window_8h-source.html#l00224">m_pRand</a>, <a class="el" href="_main_window_8cpp-source.html#l01974">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l00169">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00215">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00181">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l00226">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00188">SetupToolBars()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00235">SetupViews()</a>.</p>
 
 </div>
 </div><p>
@@ -358,7 +364,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00206">m_recentFileActions</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00209">m_recentFileActions</a>.</p>
 
 </div>
 </div><p>
@@ -390,7 +396,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>.</p>
 
 </div>
 </div><p>
@@ -412,7 +418,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01712">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01931">WriteSettings()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01747">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01966">WriteSettings()</a>.</p>
 
 </div>
 </div><p>
@@ -433,9 +439,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00221">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00225">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00675">on_actionCopy_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00714">on_actionCopy_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -457,7 +463,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01076">on_actionGrid_toggled()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01082">on_actionGrid_toggled()</a>.</p>
 
 </div>
 </div><p>
@@ -479,9 +485,33 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00188">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
+<p>References <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00200">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00514">SetupActionInsertMaterial()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00526">SetupActionInsertMaterial()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="73f4b6efe284469fe7076fdf0af710b0"></a><!-- doxytag: member="MainWindow::CreatePhotonMap" ref="73f4b6efe284469fe7076fdf0af710b0" args="(TPhotonMapFactory *pTPhotonMapFactory)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::CreatePhotonMap           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> *&nbsp;</td>
+          <td class="paramname"> <em>pTPhotonMapFactory</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>References <a class="el" href="class_t_photon_map_factory.html#b918dd32f1c4cf961fca7b419770e9d4">TPhotonMapFactory::CreateTPhotonMap()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00200">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_photon_map_factory.html#3645ed1d592397fed45558ad66f082ef">TPhotonMapFactory::TPhotonMapName()</a>.</p>
+
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00556">SetupActionInsertPhotonMap()</a>.</p>
 
 </div>
 </div><p>
@@ -503,9 +533,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00188">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
+<p>References <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00200">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00544">SetupActionInsertShape()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00583">SetupActionInsertShape()</a>.</p>
 
 </div>
 </div><p>
@@ -527,9 +557,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetParent()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00188">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00056">TGateEngine::outputRotation</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00053">TGateEngine::rotation</a>, <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>, and <a class="el" href="class_t_tracker_factory.html#309406162c90242ff6735ceafab5d2ef">TTrackerFactory::TTrackerName()</a>.</p>
+<p>References <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetParent()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00200">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00056">TGateEngine::outputRotation</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00053">TGateEngine::rotation</a>, <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>, and <a class="el" href="class_t_tracker_factory.html#309406162c90242ff6735ceafab5d2ef">TTrackerFactory::TTrackerName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00563">SetupActionInsertTracker()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00602">SetupActionInsertTracker()</a>.</p>
 
 </div>
 </div><p>
@@ -550,9 +580,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00221">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00225">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00669">on_actionCut_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00708">on_actionCut_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -573,9 +603,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00695">on_actionDelete_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00734">on_actionDelete_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -596,9 +626,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00222">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01953">parameterModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00226">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01988">parameterModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>.</p>
 
 </div>
 </div><p>
@@ -670,9 +700,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00221">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00371">SetupTreeView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00376">SetupTreeView()</a>.</p>
 
 </div>
 </div><p>
@@ -703,9 +733,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00221">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00371">SetupTreeView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00376">SetupTreeView()</a>.</p>
 
 </div>
 </div><p>
@@ -726,9 +756,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00480">BuildFileList()</a>, <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="class_t_sun_shape_factory.html#1ea35ec3155b9f3a9302e45920d23151">TSunShapeFactory::CreateTSunShape()</a>, <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="class_t_shape_factory.html#7813da1592432fcd74af1febe40ef3ff">TShapeFactory::IsFlat()</a>, <a class="el" href="_main_window_8h-source.html#l00213">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00214">m_TSunshapeFactoryList</a>, <a class="el" href="_main_window_8cpp-source.html#l00503">PluginDirectory()</a>, <a class="el" href="_main_window_8cpp-source.html#l00514">SetupActionInsertMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l00544">SetupActionInsertShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l00563">SetupActionInsertTracker()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00492">BuildFileList()</a>, <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="class_t_photon_map_factory.html#b918dd32f1c4cf961fca7b419770e9d4">TPhotonMapFactory::CreateTPhotonMap()</a>, <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="class_t_sun_shape_factory.html#1ea35ec3155b9f3a9302e45920d23151">TSunShapeFactory::CreateTSunShape()</a>, <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="class_t_shape_factory.html#7813da1592432fcd74af1febe40ef3ff">TShapeFactory::IsFlat()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_TSunshapeFactoryList</a>, <a class="el" href="_main_window_8cpp-source.html#l00515">PluginDirectory()</a>, <a class="el" href="_main_window_8cpp-source.html#l00526">SetupActionInsertMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l00556">SetupActionInsertPhotonMap()</a>, <a class="el" href="_main_window_8cpp-source.html#l00583">SetupActionInsertShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l00602">SetupActionInsertTracker()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -749,7 +779,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00623">on_actionPrint_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00662">on_actionPrint_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -771,7 +801,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00229">m_focusView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00233">m_focusView</a>.</p>
 
 </div>
 </div><p>
@@ -792,9 +822,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00156">Document::IsModified()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, and <a class="el" href="_main_window_8cpp-source.html#l01756">Save()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00156">Document::IsModified()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, and <a class="el" href="_main_window_8cpp-source.html#l01791">Save()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01701">closeEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l00592">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00599">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00635">OpenRecentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01736">closeEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l00631">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00638">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00674">OpenRecentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -815,9 +845,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00233">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>.</p>
 
 </div>
 </div><p>
@@ -838,9 +868,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00233">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>.</p>
 
 </div>
 </div><p>
@@ -861,9 +891,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00233">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>.</p>
 
 </div>
 </div><p>
@@ -884,7 +914,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>.</p>
 
 </div>
 </div><p>
@@ -905,7 +935,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, and <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, and <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>.</p>
 
 </div>
 </div><p>
@@ -926,7 +956,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_t_light_kit_8cpp-source.html#l00116">TLightKit::GetTime()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_sun_position_calculator_dialog_8cpp-source.html#l00069">SunPositionCalculatorDialog::SetDateTime()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01683">SunPositionChanged()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_t_light_kit_8cpp-source.html#l00116">TLightKit::GetTime()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_sun_position_calculator_dialog_8cpp-source.html#l00069">SunPositionCalculatorDialog::SetDateTime()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01718">SunPositionChanged()</a>.</p>
 
 </div>
 </div><p>
@@ -966,7 +996,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01788">Copy()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01823">Copy()</a>.</p>
 
 </div>
 </div><p>
@@ -987,7 +1017,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01866">Cut()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01901">Cut()</a>.</p>
 
 </div>
 </div><p>
@@ -1008,7 +1038,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_light_dialog_8cpp-source.html#l00111">LightDialog::GetTLightKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00669">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00213">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00214">m_TSunshapeFactoryList</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_light_dialog_8cpp-source.html#l00111">LightDialog::GetTLightKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00710">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_TSunshapeFactoryList</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 </div>
 </div><p>
@@ -1029,7 +1059,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_sun_position_dialog_8cpp-source.html#l00055">SunPositionDialog::GetAzimuth()</a>, <a class="el" href="_sun_position_dialog_8cpp-source.html#l00062">SunPositionDialog::GetDistance()</a>, <a class="el" href="_sun_position_dialog_8cpp-source.html#l00068">SunPositionDialog::GetElevation()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_t_light_kit_8cpp-source.html#l00121">TLightKit::SetSunPosition()</a>.</p>
+<p>References <a class="el" href="_sun_position_dialog_8cpp-source.html#l00055">SunPositionDialog::GetAzimuth()</a>, <a class="el" href="_sun_position_dialog_8cpp-source.html#l00062">SunPositionDialog::GetDistance()</a>, <a class="el" href="_sun_position_dialog_8cpp-source.html#l00068">SunPositionDialog::GetElevation()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_t_light_kit_8cpp-source.html#l00121">TLightKit::SetSunPosition()</a>.</p>
 
 </div>
 </div><p>
@@ -1050,7 +1080,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01833">Delete()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01868">Delete()</a>.</p>
 
 </div>
 </div><p>
@@ -1071,7 +1101,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, and <a class="el" href="_main_window_8h-source.html#l00218">m_pRays</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, and <a class="el" href="_main_window_8h-source.html#l00222">m_pRays</a>.</p>
 
 </div>
 </div><p>
@@ -1092,7 +1122,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00229">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00233">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>.</p>
 
 </div>
 </div><p>
@@ -1113,7 +1143,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_photon_map_8cpp-source.html#l00356">PhotonMap::GetPhoton()</a>, <a class="el" href="_photon_8h-source.html#l00050">Photon::m_id</a>, <a class="el" href="_photon_8h-source.html#l00054">Photon::m_next</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_photonMap</a>, <a class="el" href="_photon_8h-source.html#l00051">Photon::m_pos</a>, <a class="el" href="_photon_8h-source.html#l00053">Photon::m_prev</a>, <a class="el" href="_photon_map_8h-source.html#l00073">PhotonMap::StoredPhotons()</a>, <a class="el" href="_point3_d_8h-source.html#l00060">Point3D::x</a>, <a class="el" href="_point3_d_8h-source.html#l00061">Point3D::y</a>, and <a class="el" href="_point3_d_8h-source.html#l00062">Point3D::z</a>.</p>
+<p>References <a class="el" href="_t_default_photon_map_8cpp-source.html#l00385">TDefaultPhotonMap::GetPhoton()</a>, <a class="el" href="_photon_8h-source.html#l00050">Photon::m_id</a>, <a class="el" href="_photon_8h-source.html#l00054">Photon::m_next</a>, <a class="el" href="_main_window_8h-source.html#l00221">m_photonMap</a>, <a class="el" href="_photon_8h-source.html#l00051">Photon::m_pos</a>, <a class="el" href="_photon_8h-source.html#l00053">Photon::m_prev</a>, <a class="el" href="_t_default_photon_map_8h-source.html#l00083">TDefaultPhotonMap::StoredPhotons()</a>, <a class="el" href="_point3_d_8h-source.html#l00060">Point3D::x</a>, <a class="el" href="_point3_d_8h-source.html#l00061">Point3D::y</a>, and <a class="el" href="_point3_d_8h-source.html#l00062">Point3D::z</a>.</p>
 
 </div>
 </div><p>
@@ -1134,7 +1164,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l02056">createGrid()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_pGrid</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l02090">createGrid()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00233">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00223">m_pGrid</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>.</p>
 
 </div>
 </div><p>
@@ -1155,7 +1185,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01712">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01747">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -1176,7 +1206,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00188">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00200">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
 
 </div>
 </div><p>
@@ -1197,7 +1227,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01712">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01747">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -1218,7 +1248,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="tgc_8h-source.html#l00057">tgc::Copied</a>, and <a class="el" href="_main_window_8cpp-source.html#l01804">Paste()</a>.</p>
+<p>References <a class="el" href="tgc_8h-source.html#l00057">tgc::Copied</a>, and <a class="el" href="_main_window_8cpp-source.html#l01839">Paste()</a>.</p>
 
 </div>
 </div><p>
@@ -1239,7 +1269,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01804">Paste()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01839">Paste()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
 
 </div>
 </div><p>
@@ -1260,7 +1290,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00585">message()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00624">message()</a>.</p>
 
 </div>
 </div><p>
@@ -1281,7 +1311,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00060">RayTraceDialog::DrawPhotons()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00058">RayTraceDialog::GetDrawRays()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00057">RayTraceDialog::GetNumRays()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00059">RayTraceDialog::IncreasePhotonMap()</a>, <a class="el" href="_main_window_8h-source.html#l00227">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00226">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_increasePhotonMap</a>, and <a class="el" href="_main_window_8h-source.html#l00224">m_raysPerIteration</a>.</p>
+<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00060">RayTraceDialog::DrawPhotons()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00058">RayTraceDialog::GetDrawRays()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00057">RayTraceDialog::GetNumRays()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00059">RayTraceDialog::IncreasePhotonMap()</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_increasePhotonMap</a>, and <a class="el" href="_main_window_8h-source.html#l00228">m_raysPerIteration</a>.</p>
 
 </div>
 </div><p>
@@ -1302,7 +1332,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8h-source.html#l00063">InstanceNode::children</a>, <a class="el" href="_ray_8h-source.html#l00058">Ray::direction</a>, <a class="el" href="tgf_8cpp-source.html#l00183">tgf::DrawPhotonMapPoints()</a>, <a class="el" href="tgf_8cpp-source.html#l00211">tgf::DrawPhotonMapRays()</a>, <a class="el" href="class_t_sun_shape.html#2ec1f70e81f684c4813fa3a448ed3653">TSunShape::generateRayDirection()</a>, <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00227">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00226">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_increasePhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_pRand</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_pRays</a>, <a class="el" href="_main_window_8h-source.html#l00224">m_raysPerIteration</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00223">m_tracedRays</a>, <a class="el" href="tgc_8h-source.html#l00055">tgc::Max_Photon</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_ray_8h-source.html#l00057">Ray::origin</a>, <a class="el" href="_random_deviate_8h-source.html#l00070">RandomDeviate::RandomDouble()</a>, <a class="el" href="class_t_shape.html#13f261f05c51016b0f2e99becd3ec097">TShape::Sample()</a>, <a class="el" href="_main_window_8cpp-source.html#l01961">SetBoundigBoxes()</a>, and <a class="el" href="tgf_8cpp-source.html#l00130">tgf::TraceRay()</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00063">InstanceNode::children</a>, <a class="el" href="_ray_8h-source.html#l00058">Ray::direction</a>, <a class="el" href="_progress_updater_8cpp-source.html#l00090">ProgressUpdater::Done()</a>, <a class="el" href="tgf_8cpp-source.html#l00183">tgf::DrawPhotonMapPoints()</a>, <a class="el" href="tgf_8cpp-source.html#l00211">tgf::DrawPhotonMapRays()</a>, <a class="el" href="class_t_sun_shape.html#2ec1f70e81f684c4813fa3a448ed3653">TSunShape::generateRayDirection()</a>, <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_increasePhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00221">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00224">m_pRand</a>, <a class="el" href="_main_window_8h-source.html#l00222">m_pRays</a>, <a class="el" href="_main_window_8h-source.html#l00228">m_raysPerIteration</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00227">m_tracedRays</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_ray_8h-source.html#l00057">Ray::origin</a>, <a class="el" href="_random_deviate_8h-source.html#l00070">RandomDeviate::RandomDouble()</a>, <a class="el" href="class_t_shape.html#13f261f05c51016b0f2e99becd3ec097">TShape::Sample()</a>, <a class="el" href="_main_window_8cpp-source.html#l01996">SetBoundigBoxes()</a>, <a class="el" href="tgf_8cpp-source.html#l00130">tgf::TraceRay()</a>, and <a class="el" href="_progress_updater_8cpp-source.html#l00068">ProgressUpdater::Update()</a>.</p>
 
 </div>
 </div><p>
@@ -1323,7 +1353,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>.</p>
 
 </div>
 </div><p>
@@ -1344,7 +1374,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00217">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_analyzer_window_8cpp-source.html#l00061">AnalyzerWindow::Plot()</a>, and <a class="el" href="_photon_map_8h-source.html#l00073">PhotonMap::StoredPhotons()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00221">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_analyzer_window_8cpp-source.html#l00061">AnalyzerWindow::Plot()</a>, and <a class="el" href="_t_default_photon_map_8h-source.html#l00083">TDefaultPhotonMap::StoredPhotons()</a>.</p>
 
 </div>
 </div><p>
@@ -1365,7 +1395,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01756">Save()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01791">Save()</a>.</p>
 
 </div>
 </div><p>
@@ -1386,7 +1416,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01777">SaveAs()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01812">SaveAs()</a>.</p>
 
 </div>
 </div><p>
@@ -1407,7 +1437,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00188">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00200">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
 
 </div>
 </div><p>
@@ -1428,7 +1458,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>.</p>
 
 </div>
 </div><p>
@@ -1449,7 +1479,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00209">m_commandView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00212">m_commandView</a>.</p>
 
 </div>
 </div><p>
@@ -1470,9 +1500,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01712">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01747">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00164">SetupActions()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00169">SetupActions()</a>.</p>
 
 </div>
 </div><p>
@@ -1509,9 +1539,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02041">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00408">SetupParametersView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02075">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00413">SetupParametersView()</a>.</p>
 
 </div>
 </div><p>
@@ -1533,9 +1563,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00221">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00681">on_actionPaste_Copy_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00688">on_actionPaste_Link_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00720">on_actionPaste_Copy_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00727">on_actionPaste_Link_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -1556,7 +1586,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>.</p>
 
 </div>
 </div><p>
@@ -1577,9 +1607,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00205">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l01905">UpdateRecentFileActions()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00208">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l01940">UpdateRecentFileActions()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -1600,9 +1630,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00204">m_currentFile</a>, <a class="el" href="_main_window_8cpp-source.html#l01777">SaveAs()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01763">SaveFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00207">m_currentFile</a>, <a class="el" href="_main_window_8cpp-source.html#l01812">SaveAs()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01798">SaveFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01712">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00611">on_actionSave_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01747">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00650">on_actionSave_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -1623,9 +1653,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01763">SaveFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01798">SaveFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00617">on_actionSaveAs_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01756">Save()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00656">on_actionSaveAs_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01791">Save()</a>.</p>
 
 </div>
 </div><p>
@@ -1647,9 +1677,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l01881">SetCurrentFile()</a>, and <a class="el" href="_document_8cpp-source.html#l00135">Document::WriteFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l01916">SetCurrentFile()</a>, and <a class="el" href="_document_8cpp-source.html#l00135">Document::WriteFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01756">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01777">SaveAs()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01791">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01812">SaveAs()</a>.</p>
 
 </div>
 </div><p>
@@ -1680,9 +1710,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00408">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01494">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01295">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01351">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01323">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01379">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01407">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01464">SoTransform_to_SoTransformerManip()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00413">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01529">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01386">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01358">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01414">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01442">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01470">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01499">SoTransform_to_SoTransformerManip()</a>.</p>
 
 </div>
 </div><p>
@@ -1704,9 +1734,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00669">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, and <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00710">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, and <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00210">SetupDocument()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00215">SetupDocument()</a>.</p>
 
 </div>
 </div><p>
@@ -1737,9 +1767,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8h-source.html#l00063">InstanceNode::children</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_t_shape_kit_8cpp-source.html#l00082">TShapeKit::SetBoundigBox()</a>, and <a class="el" href="_t_separator_kit_8cpp-source.html#l00076">TSeparatorKit::SetBoundigBox()</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00063">InstanceNode::children</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_t_shape_kit_8cpp-source.html#l00086">TShapeKit::SetBoundigBox()</a>, and <a class="el" href="_t_separator_kit_8cpp-source.html#l00076">TSeparatorKit::SetBoundigBox()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -1761,9 +1791,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00204">m_currentFile</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00205">m_recentFiles</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01899">StrippedName()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01905">UpdateRecentFileActions()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00207">m_currentFile</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_recentFiles</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01934">StrippedName()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01940">UpdateRecentFileActions()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01763">SaveFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01798">SaveFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -1785,9 +1815,33 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01191">CreateMaterial()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_materialsToolBar</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, <a class="el" href="class_t_material_factory.html#930d7ade0b6ac1db3302fd20bb146bc1">TMaterialFactory::TMaterialIcon()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01197">CreateMaterial()</a>, <a class="el" href="_main_window_8h-source.html#l00213">m_materialsToolBar</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, <a class="el" href="class_t_material_factory.html#930d7ade0b6ac1db3302fd20bb146bc1">TMaterialFactory::TMaterialIcon()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="8b1616dc7c28fea5c7fb80c4f416177a"></a><!-- doxytag: member="MainWindow::SetupActionInsertPhotonMap" ref="8b1616dc7c28fea5c7fb80c4f416177a" args="(TPhotonMapFactory *pTPhotonMapFactory)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::SetupActionInsertPhotonMap           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> *&nbsp;</td>
+          <td class="paramname"> <em>pTPhotonMapFactory</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01231">CreatePhotonMap()</a>, <a class="el" href="_main_window_8h-source.html#l00214">m_photonMapToolBar</a>, <a class="el" href="class_t_photon_map_factory.html#983437f072ed814f8fb51fff34a5b2a6">TPhotonMapFactory::TPhotonMapIcon()</a>, and <a class="el" href="class_t_photon_map_factory.html#3645ed1d592397fed45558ad66f082ef">TPhotonMapFactory::TPhotonMapName()</a>.</p>
+
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>.</p>
 
 </div>
 </div><p>
@@ -1809,9 +1863,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01226">CreateShape()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_shapeToolBar</a>, <a class="el" href="class_t_shape_factory.html#409dab17502a397600dc1a37ef67d59d">TShapeFactory::TShapeIcon()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01261">CreateShape()</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_shapeToolBar</a>, <a class="el" href="class_t_shape_factory.html#409dab17502a397600dc1a37ef67d59d">TShapeFactory::TShapeIcon()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>.</p>
 
 </div>
 </div><p>
@@ -1833,9 +1887,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01258">CreateTracker()</a>, <a class="el" href="_main_window_8h-source.html#l00212">m_trackersToolBar</a>, <a class="el" href="class_t_tracker_factory.html#fe4e071bcad7694194567c53e481b95a">TTrackerFactory::TTrackerIcon()</a>, and <a class="el" href="class_t_tracker_factory.html#309406162c90242ff6735ceafab5d2ef">TTrackerFactory::TTrackerName()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01293">CreateTracker()</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_trackersToolBar</a>, <a class="el" href="class_t_tracker_factory.html#fe4e071bcad7694194567c53e481b95a">TTrackerFactory::TTrackerIcon()</a>, and <a class="el" href="class_t_tracker_factory.html#309406162c90242ff6735ceafab5d2ef">TTrackerFactory::TTrackerName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>.</p>
 
 </div>
 </div><p>
@@ -1856,9 +1910,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00203">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00206">m_recentFileActions</a>, and <a class="el" href="_main_window_8cpp-source.html#l00635">OpenRecentFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00206">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00209">m_recentFileActions</a>, and <a class="el" href="_main_window_8cpp-source.html#l00674">OpenRecentFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -1879,9 +1933,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00209">m_commandView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00212">m_commandView</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00230">SetupViews()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00235">SetupViews()</a>.</p>
 
 </div>
 </div><p>
@@ -1902,9 +1956,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l01520">selectionFinish()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l01555">selectionFinish()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -1925,9 +1979,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00228">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l01160">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01170">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01180">on_action_Y_Z_Plane_triggered()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00233">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l01166">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01176">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01186">on_action_Y_Z_Plane_triggered()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00230">SetupViews()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00235">SetupViews()</a>.</p>
 
 </div>
 </div><p>
@@ -1948,9 +2002,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00203">m_maxRecentFiles</a>, and <a class="el" href="_main_window_8h-source.html#l00206">m_recentFileActions</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00206">m_maxRecentFiles</a>, and <a class="el" href="_main_window_8h-source.html#l00209">m_recentFileActions</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -1971,9 +2025,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00069">SceneModel::SetCoinRoot()</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00075">SceneModel::SetCoinScene()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00071">SceneModel::SetCoinRoot()</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00077">SceneModel::SetCoinScene()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -1994,9 +2048,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l01953">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l01988">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00230">SetupViews()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00235">SetupViews()</a>.</p>
 
 </div>
 </div><p>
@@ -2017,7 +2071,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00230">SetupViews()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00235">SetupViews()</a>.</p>
 
 </div>
 </div><p>
@@ -2038,9 +2092,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00211">m_shapeToolBar</a>, <a class="el" href="_main_window_8h-source.html#l00212">m_trackersToolBar</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00215">m_shapeToolBar</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -2061,9 +2115,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01603">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01624">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01638">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01659">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00230">SetupViews()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00235">SetupViews()</a>.</p>
 
 </div>
 </div><p>
@@ -2084,9 +2138,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00240">SetupCommandView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00408">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00426">SetupSunposView()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00371">SetupTreeView()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00245">SetupCommandView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00413">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00431">SetupSunposView()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00376">SetupTreeView()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -2108,9 +2162,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01494">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01295">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01351">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01323">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01379">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01407">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01464">SoTransform_to_SoTransformerManip()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01529">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01386">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01358">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01414">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01442">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01470">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01499">SoTransform_to_SoTransformerManip()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00371">SetupTreeView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00376">SetupTreeView()</a>.</p>
 
 </div>
 </div><p>
@@ -2131,9 +2185,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, and <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2154,9 +2208,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2177,9 +2231,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2200,9 +2254,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2223,9 +2277,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2246,9 +2300,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2269,9 +2323,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2292,9 +2346,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00122">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00197">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00127">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00087">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00209">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00082">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2316,9 +2370,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00669">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00222">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_selectionModel</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00710">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00226">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_selectionModel</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00114">startManipulator()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00119">startManipulator()</a>.</p>
 
 </div>
 </div><p>
@@ -2340,9 +2394,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_pRays</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_sceneModel</a>, <a class="el" href="_document_8cpp-source.html#l00098">Document::New()</a>, <a class="el" href="_document_8cpp-source.html#l00120">Document::ReadFile()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00075">SceneModel::SetCoinScene()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01881">SetCurrentFile()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00162">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00222">m_pRays</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_sceneModel</a>, <a class="el" href="_document_8cpp-source.html#l00098">Document::New()</a>, <a class="el" href="_document_8cpp-source.html#l00120">Document::ReadFile()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00077">SceneModel::SetCoinScene()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01916">SetCurrentFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00592">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00599">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00635">OpenRecentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00631">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00638">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00674">OpenRecentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -2364,7 +2418,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01881">SetCurrentFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01905">UpdateRecentFileActions()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01916">SetCurrentFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01940">UpdateRecentFileActions()</a>.</p>
 
 </div>
 </div><p>
@@ -2401,9 +2455,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00207">m_document</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00168">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00211">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00210">m_document</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00810">on_actionCalculateSunPosition_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00849">on_actionCalculateSunPosition_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2424,9 +2478,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00203">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00206">m_recentFileActions</a>, <a class="el" href="_main_window_8h-source.html#l00205">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l01899">StrippedName()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00206">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00209">m_recentFileActions</a>, <a class="el" href="_main_window_8h-source.html#l00208">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l01934">StrippedName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01939">ReadSettings()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01881">SetCurrentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01974">ReadSettings()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01916">SetCurrentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -2447,9 +2501,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00205">m_recentFiles</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00208">m_recentFiles</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01701">closeEvent()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01736">closeEvent()</a>.</p>
 
 </div>
 </div><p>
@@ -2467,7 +2521,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01788">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01866">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01603">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01624">itemDragAndDropCopy()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01804">Paste()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01823">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01901">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01638">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01659">itemDragAndDropCopy()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01839">Paste()</a>.</p>
 
 </div>
 </div><p>
@@ -2484,7 +2538,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01788">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01191">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01226">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01258">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l01866">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01833">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02041">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01603">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01624">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00752">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00703">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00657">on_actionRedo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00729">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00651">on_actionUndo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01953">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01804">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00240">SetupCommandView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01683">SunPositionChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01823">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01197">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01231">CreatePhotonMap()</a>, <a class="el" href="_main_window_8cpp-source.html#l01261">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01293">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l01901">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01868">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02075">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01638">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01659">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00791">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00742">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00696">on_actionRedo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00768">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00690">on_actionUndo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01988">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01839">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00245">SetupCommandView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01718">SunPositionChanged()</a>.</p>
 
 </div>
 </div><p>
@@ -2501,7 +2555,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00663">on_actionUndoView_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00240">SetupCommandView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00702">on_actionUndoView_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00245">SetupCommandView()</a>.</p>
 
 </div>
 </div><p>
@@ -2518,7 +2572,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01756">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01881">SetCurrentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01791">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01916">SetCurrentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -2535,7 +2589,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01788">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01191">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01226">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01258">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l01866">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01833">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l01603">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01624">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01712">OkToContinue()</a>, <a class="el" href="_main_window_8cpp-source.html#l01160">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01170">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01180">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01114">on_actionBackground_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00810">on_actionCalculateSunPosition_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00752">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00794">on_actionDefineSunPosition_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00966">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01076">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00703">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00729">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01804">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01763">SaveFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l01520">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l01881">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l00210">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00221">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l01494">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01295">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01351">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01323">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01379">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01407">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01464">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01994">StartManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01683">SunPositionChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01823">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01197">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01231">CreatePhotonMap()</a>, <a class="el" href="_main_window_8cpp-source.html#l01261">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01293">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l01901">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01868">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l01638">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01659">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01747">OkToContinue()</a>, <a class="el" href="_main_window_8cpp-source.html#l01166">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01176">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01186">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01120">on_actionBackground_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00849">on_actionCalculateSunPosition_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00791">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00833">on_actionDefineSunPosition_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00972">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01082">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00742">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00768">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01839">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01798">SaveFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l01555">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l01916">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l00215">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00226">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l01529">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01386">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01358">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01414">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01442">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01470">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01499">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l02028">StartManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01718">SunPositionChanged()</a>.</p>
 
 </div>
 </div><p>
@@ -2552,7 +2606,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01055">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01061">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2569,7 +2623,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01568">mousePressEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l01160">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01170">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01180">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01143">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01076">on_actionGrid_toggled()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01603">mousePressEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l01166">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01176">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01186">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01149">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01082">on_actionGrid_toggled()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>.</p>
 
 </div>
 </div><p>
@@ -2586,7 +2640,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01055">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01061">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2603,7 +2657,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01160">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01170">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01180">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01068">on_actionAxis_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01143">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01076">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01166">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01176">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01186">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01074">on_actionAxis_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01149">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01082">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>.</p>
 
 </div>
 </div><p>
@@ -2620,7 +2674,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01055">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01061">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2637,7 +2691,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02041">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01994">StartManipulation()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02075">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02028">StartManipulation()</a>.</p>
 
 </div>
 </div><p>
@@ -2654,7 +2708,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00514">SetupActionInsertMaterial()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00526">SetupActionInsertMaterial()</a>.</p>
 
 </div>
 </div><p>
@@ -2671,16 +2725,16 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01076">on_actionGrid_toggled()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01082">on_actionGrid_toggled()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="c445ce09cd6a431decdbc5343f26fba4"></a><!-- doxytag: member="MainWindow::m_photonMap" ref="c445ce09cd6a431decdbc5343f26fba4" args="" -->
+<a class="anchor" name="6b935b1f8c5687ad580d4ba788f0d5bd"></a><!-- doxytag: member="MainWindow::m_photonMap" ref="6b935b1f8c5687ad580d4ba788f0d5bd" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_photon_map.html">PhotonMap</a>* <a class="el" href="class_main_window.html#c445ce09cd6a431decdbc5343f26fba4">MainWindow::m_photonMap</a><code> [private]</code>          </td>
+          <td class="memname"><a class="el" href="class_t_default_photon_map.html">TDefaultPhotonMap</a>* <a class="el" href="class_main_window.html#6b935b1f8c5687ad580d4ba788f0d5bd">MainWindow::m_photonMap</a><code> [private]</code>          </td>
         </tr>
       </table>
 </div>
@@ -2688,7 +2742,24 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01022">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00978">on_actionResults_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01028">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00984">on_actionResults_triggered()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="d8dd318a0a6fae0a88fea139b7cf6730"></a><!-- doxytag: member="MainWindow::m_photonMapToolBar" ref="d8dd318a0a6fae0a88fea139b7cf6730" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QToolBar* <a class="el" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">MainWindow::m_photonMapToolBar</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00556">SetupActionInsertPhotonMap()</a>.</p>
 
 </div>
 </div><p>
@@ -2705,7 +2776,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00130">MainWindow()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00135">MainWindow()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2722,7 +2793,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00966">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00972">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -2739,7 +2810,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01055">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01061">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2756,7 +2827,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00164">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00176">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l01905">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00158">~MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00169">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00181">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l01940">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00163">~MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -2773,7 +2844,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01939">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l01881">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l01905">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01931">WriteSettings()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01974">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l01916">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l01940">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01966">WriteSettings()</a>.</p>
 
 </div>
 </div><p>
@@ -2790,7 +2861,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01788">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01191">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01226">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01258">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l01866">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01833">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02041">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01603">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01624">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00752">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01076">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00703">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00978">on_actionResults_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00729">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01804">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01541">selectionChanged()</a>, <a class="el" href="_main_window_8cpp-source.html#l01520">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00221">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00371">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>, <a class="el" href="_main_window_8cpp-source.html#l01494">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01295">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01351">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01323">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01379">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01407">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01464">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01994">StartManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01730">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01823">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01197">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01231">CreatePhotonMap()</a>, <a class="el" href="_main_window_8cpp-source.html#l01261">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01293">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l01901">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01868">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02075">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01638">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01659">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00791">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01082">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00742">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00984">on_actionResults_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00768">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01839">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01576">selectionChanged()</a>, <a class="el" href="_main_window_8cpp-source.html#l01555">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00226">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00376">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>, <a class="el" href="_main_window_8cpp-source.html#l01529">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01386">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01358">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01414">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01442">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01470">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01499">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l02028">StartManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01765">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -2807,7 +2878,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01788">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01866">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01833">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l00752">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00978">on_actionResults_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01804">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01520">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00252">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00221">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00408">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00371">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01641">showMenu()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01994">StartManipulation()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01823">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01901">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01868">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l00791">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00984">on_actionResults_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01839">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01555">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00257">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00226">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00413">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00376">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01676">showMenu()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02028">StartManipulation()</a>.</p>
 
 </div>
 </div><p>
@@ -2824,7 +2895,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00544">SetupActionInsertShape()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00183">SetupToolBars()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00583">SetupActionInsertShape()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00188">SetupToolBars()</a>.</p>
 
 </div>
 </div><p>
@@ -2841,7 +2912,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00752">on_actionDefine_SunLight_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00791">on_actionDefine_SunLight_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2858,7 +2929,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00827">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00866">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2875,7 +2946,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00563">SetupActionInsertTracker()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00183">SetupToolBars()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00602">SetupActionInsertTracker()</a>.</p>
 
 </div>
 </div><p>
@@ -2892,14 +2963,14 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00431">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00752">on_actionDefine_SunLight_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00436">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00791">on_actionDefine_SunLight_triggered()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_main_window_8h-source.html">MainWindow.h</a><li><a class="el" href="_main_window_8cpp.html">MainWindow.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Feb 23 18:16:34 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 20 16:46:17 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
