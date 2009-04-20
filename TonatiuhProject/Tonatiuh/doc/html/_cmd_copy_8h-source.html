@@ -77,27 +77,28 @@
 <a name="l00045"></a>00045 <span class="keyword">class </span>SoBaseKit;
 <a name="l00046"></a>00046 <span class="keyword">class </span><a class="code" href="class_scene_model.html">SceneModel</a>;
 <a name="l00047"></a>00047 
-<a name="l00048"></a><a class="code" href="class_cmd_copy.html">00048</a> <span class="keyword">class </span><a class="code" href="class_cmd_copy.html" title="CmdCopy class is the copy command stored in the command stack.">CmdCopy</a> : <span class="keyword">public</span> QUndoCommand
-<a name="l00049"></a>00049 {
-<a name="l00050"></a>00050 <span class="keyword">public</span>:
-<a name="l00051"></a>00051     <a class="code" href="class_cmd_copy.html#436118a14fec3a30e03227fc9fe3638d">CmdCopy</a>( <span class="keyword">const</span> QModelIndex&amp; index, SoNode*&amp; clipboard, <a class="code" href="class_scene_model.html">SceneModel</a>* model, QUndoCommand* parent = 0 );
-<a name="l00052"></a>00052     <a class="code" href="class_cmd_copy.html#9382bb594dc2b7a2d0c6a8a7fdaae885">~CmdCopy</a>();
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451">undo</a>();
-<a name="l00055"></a>00055      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9">redo</a>();
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057 <span class="keyword">private</span>:
-<a name="l00058"></a>00058 
-<a name="l00059"></a><a class="code" href="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f">00059</a>         SoNode*&amp; <a class="code" href="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f">m_pClipboard</a>;
-<a name="l00060"></a><a class="code" href="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0">00060</a>         SoNode* <a class="code" href="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0">m_pNode</a>;
-<a name="l00061"></a><a class="code" href="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f">00061</a>         SoNode* <a class="code" href="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f">m_previousNode</a>;
-<a name="l00062"></a><a class="code" href="class_cmd_copy.html#762d06b10d548855ded73d545827acc7">00062</a>         <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_cmd_copy.html#762d06b10d548855ded73d545827acc7">m_pModel</a>;
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064 };
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="preprocessor">#endif </span><span class="comment">/*CMDCOPY_H_*/</span>
+<a name="l00049"></a>00049 
+<a name="l00054"></a><a class="code" href="class_cmd_copy.html">00054</a> <span class="keyword">class </span><a class="code" href="class_cmd_copy.html" title="CmdCopy class is the copy command stored in the command stack.">CmdCopy</a> : <span class="keyword">public</span> QUndoCommand
+<a name="l00055"></a>00055 {
+<a name="l00056"></a>00056 <span class="keyword">public</span>:
+<a name="l00057"></a>00057     <a class="code" href="class_cmd_copy.html#436118a14fec3a30e03227fc9fe3638d">CmdCopy</a>( <span class="keyword">const</span> QModelIndex&amp; index, SoNode*&amp; clipboard, <a class="code" href="class_scene_model.html">SceneModel</a>* model, QUndoCommand* parent = 0 );
+<a name="l00058"></a>00058     <a class="code" href="class_cmd_copy.html#9382bb594dc2b7a2d0c6a8a7fdaae885">~CmdCopy</a>();
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451">undo</a>();
+<a name="l00061"></a>00061      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9">redo</a>();
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063 <span class="keyword">private</span>:
+<a name="l00064"></a>00064 
+<a name="l00065"></a><a class="code" href="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f">00065</a>         SoNode*&amp; <a class="code" href="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f">m_pClipboard</a>;
+<a name="l00066"></a><a class="code" href="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0">00066</a>         SoNode* <a class="code" href="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0">m_pNode</a>;
+<a name="l00067"></a><a class="code" href="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f">00067</a>         SoNode* <a class="code" href="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f">m_previousNode</a>;
+<a name="l00068"></a><a class="code" href="class_cmd_copy.html#762d06b10d548855ded73d545827acc7">00068</a>         <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_cmd_copy.html#762d06b10d548855ded73d545827acc7">m_pModel</a>;
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070 };
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 <span class="preprocessor">#endif </span><span class="comment">/*CMDCOPY_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Feb 23 18:16:32 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 20 16:46:15 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
