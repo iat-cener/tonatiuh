@@ -54,6 +54,10 @@ public:
 	CelestialWidget( QWidget* parent = 0 );
 	~CelestialWidget();
 
+	double getSphereRadio() {return sphereRadio;}
+	double getDeclination() {return m_declination;}
+	double getRightAscension() {return m_rightAscension;}
+
 public slots:
 	void CoordinatesChanged( cSunCoordinates coordinates );
 
