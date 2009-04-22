@@ -201,16 +201,15 @@ void MainWindow::SetupToolBars()
 	}
 	else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_pluginToolBar" );
 
-//	m_trackersToolBar = new QToolBar( menuInsert );
-//	if( m_trackersToolBar )
-//	{
- //  	    m_trackersToolBar->setOrientation( Qt::Horizontal );
-//	    addToolBar( m_trackersToolBar );
-//	}
-//	else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
+	m_trackersToolBar = new QToolBar( menuInsert );
+	if( m_trackersToolBar )
+	{
+  	    m_trackersToolBar->setOrientation( Qt::Horizontal );
+	    addToolBar( m_trackersToolBar );
+	}
+	else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
 
 }
-
 
 void MainWindow::SetupDocument()
 {
@@ -606,12 +605,14 @@ void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 	ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
     actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
     QMenu* menuTracker = menuInsert->findChild< QMenu* >( "trackerMenu" );
+
    	if( !menuTracker )
     {
     	menuTracker = new QMenu( "Tracker", menuInsert );
     	menuTracker->setObjectName( "trackerMenu" );
     	menuInsert->addMenu( menuTracker );
     }
+
 	menuTracker->addAction( actionInsertTracker );
 	m_trackersToolBar->addAction( actionInsertTracker );
 	m_trackersToolBar->addSeparator();
@@ -945,7 +946,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
   		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
  	}
 
- 	if( m_fraction > 0.0 && m_drawPhotons )
+ 	if( m_fraction > 0.0 || m_drawPhotons )
  	{
 	  	m_pRays = new SoSeparator;
 	  	m_pRays->ref();
@@ -1309,6 +1310,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 		ancestor = ancestor->GetParent();
 	}
 
+	std::cout<<"CreateTracker"<<std::endl;
 	SoSceneKit* scene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
    	SoTransform* lightTransform = dynamic_cast< SoTransform* > ( lightKit->getPart("transform", true) );
@@ -1838,7 +1840,7 @@ bool MainWindow::Copy( )
 
 bool MainWindow::Paste( tgc::PasteType type )
 {
-	Trace trace( "MainWindow::PasteCopy", true );
+	Trace trace( "MainWindow::PasteCopy", false );
 
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( !m_coinNode_Buffer ) return false;
