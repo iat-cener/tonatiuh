@@ -1,5 +1,5 @@
 #summary A guide to install and configurate development environment on Windows.
-#labels Phase-Implementation
+#labels Phase-Implementation,Windows
 
 = Windows Configuration=
 
