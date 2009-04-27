@@ -44,6 +44,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class QModelIndex;
 class SceneModel;
 
+//!  CmdCut class is the cut command stored in the command stack.
+/*!
+  CmdCut represents a single cut action on a scene, removes selected node from the scene and stores it in the clipboard.
+   \sa CmdCopy, CmdPaste, CmdDelete
+*/
+
 class CmdCut : public QUndoCommand
 {
 public:

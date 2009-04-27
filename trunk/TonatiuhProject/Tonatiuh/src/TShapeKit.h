@@ -50,23 +50,25 @@ class Ray;
 class NormalVector;
 class Point3D;
 
+//!  TShapeKit class groups what is necessary to the shape.
+/*!
+  TShapeKit groups the shape geometry, material and the transformation.
+
+*/
+
 class TShapeKit : public SoShapeKit
 {
     SO_KIT_HEADER(TShapeKit);
-    SO_KIT_CATALOG_ENTRY_HEADER(photonMap);
 
 public:
     TShapeKit();
     static void initClass();
-
-    void SetBoundigBox( SbXfBox3f boundingBox );
 
     bool IntersectP( const Ray& ray ) const;
 	Ray* Intersect( const Ray& ray, RandomDeviate& rand ) const;
 
 private:
     virtual ~TShapeKit();
-    SbXfBox3f m_boundigBox;
 
 };
 

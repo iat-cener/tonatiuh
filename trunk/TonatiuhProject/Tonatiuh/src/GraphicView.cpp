@@ -46,7 +46,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "PathWrapper.h"
 #include "Trace.h"
 
-
+/**
+ * Creates a new GraphicView with a \a parerent for the model data 3D representation.
+ *
+ * Use setModel() to set the model.
+ */
 GraphicView::GraphicView( QWidget* parent )
 :QAbstractItemView( parent ), m_sceneGraphRoot( 0 ), m_myRenderArea( 0 )
 {

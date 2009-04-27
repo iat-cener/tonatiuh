@@ -56,113 +56,88 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 SO_KIT_SOURCE(TShapeKit);
 
+/**
+ * Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system.
+ */
 void TShapeKit::initClass()
 {
 	SO_KIT_INIT_CLASS(TShapeKit, SoShapeKit, "ShapeKit");
 }
 
+/**
+ * Constructor.
+ *
+ */
 TShapeKit::TShapeKit()
 {
 
 	SO_KIT_CONSTRUCTOR(TShapeKit);
 
 	SO_KIT_CHANGE_ENTRY_TYPE(shape, TShape, TCube);
-	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY( photonMap, TPhotonMap, TDefaultPhotonMap, TRUE, this, "", TRUE );
 	SO_KIT_INIT_INSTANCE();
 
 	setPart("shape", NULL );
-	//setPart("tphotonmap", NULL);
 
 	SoTransform* transform = new SoTransform;
 	setPart("transform", transform);
 
 }
-
+/*!
+ * Destroys the TShapeKit object.
+ */
 TShapeKit::~TShapeKit()
 {
 	Trace trace("TShapeKit::~TShapeKit", false );
 }
 
-void TShapeKit::SetBoundigBox( SbXfBox3f boundingBox )
+/**
+ * Check if ray intersects with the node.
+ *
+ */
+bool TShapeKit::IntersectP( const Ray& ray ) const
 {
-	m_boundigBox = boundingBox;
-}
-
-
-bool TShapeKit::IntersectP( const Ray& /*ray*/ ) const
-{
+	Trace trace( "TShapeKit::IntersectP", false );
 	return false;
 }
 
-Ray* TShapeKit::Intersect( const Ray& ray, RandomDeviate& rand ) const
+/**
+ * Interect \a object ray with the shape and computed reflected ray. The \a object ray
+ * is on shape local coordinates.
+ *
+ *Return the reflected ray. If the returned value is null, there is not reflected ray.
+ */
+Ray* TShapeKit::Intersect( const Ray& objectRay, RandomDeviate& rand ) const
 {
 	Trace trace( "TShapeKit::Intersect", false );
 
-	//Test if the ray intersects with this bounding box
-	SbBox3f box= m_boundigBox.project();
-	double t0 = ray.mint;
-	double t1 = ray.maxt;
-
-    for( int i = 0; i < 3; ++i )
-    {
-    	double invRayDir = 1.0 / ray.direction[i];
-    	double tNear = ( box.getMin()[i] - ray.origin[i] ) * invRayDir;
-    	double tFar = ( box.getMax()[i] - ray.origin[i] ) * invRayDir;
-    	if( tNear > tFar ) std::swap( tNear, tFar );
-    	t0 = tNear > t0 ? tNear : t0;
-    	t1 = tFar < t1 ? tFar : t1;
-    	if( t0 > t1 ) return 0;
-    }
-
-	Ray* result = 0;
-
 	//The ray intersects with the BoundingBox
 	//Transform the ray to call children intersect
-	SoTransform* coinTransform = static_cast< SoTransform* > ( transform.getValue() );
-	if( coinTransform )
+
+	Ray* result = 0;
+	TShape* tshape = static_cast< TShape* >( shape.getValue() );
+
+	if( tshape )
 	{
-		SbMatrix coinMatrix;
-		coinMatrix.setTransform( coinTransform->translation.getValue(),
-						coinTransform->rotation.getValue(),
-						coinTransform->scaleFactor.getValue(),
-						coinTransform->scaleOrientation.getValue(),
-						coinTransform->center.getValue() );
-
-		Transform objectToWorld( coinMatrix[0][0], coinMatrix[1][0], coinMatrix[2][0], coinMatrix[3][0],
-							coinMatrix[0][1], coinMatrix[1][1], coinMatrix[2][1], coinMatrix[3][1],
-							coinMatrix[0][2], coinMatrix[1][2], coinMatrix[2][2], coinMatrix[3][2],
-							coinMatrix[0][3], coinMatrix[1][3], coinMatrix[2][3], coinMatrix[3][3] );
-
-		Transform worldToObject = objectToWorld.GetInverse();
-
-		Ray objectRay( worldToObject( ray ) );
-		objectRay.maxt = ray.maxt;
-
-		TShape* tshape = static_cast< TShape* >( shape.getValue() );
-
-		if( tshape )
+		double thit = 0.0;
+		DifferentialGeometry* dg = new DifferentialGeometry;
+		bool intersect = tshape->Intersect( objectRay, &thit, dg );
+		if( intersect )
 		{
-			double thit = 0.0;
-			DifferentialGeometry* dg = new DifferentialGeometry;
-			bool intersect = tshape->Intersect( objectRay, &thit, dg );
-			if( intersect )
-			{
-				ray.maxt = thit;
+			objectRay.maxt = thit;
 
-				SoAppearanceKit* soappearance = dynamic_cast< SoAppearanceKit* > ( appearance.getValue() );
-				if ( soappearance )
+			SoAppearanceKit* soappearance = dynamic_cast< SoAppearanceKit* > ( appearance.getValue() );
+			if ( soappearance )
+			{
+				TMaterial* tmaterial = dynamic_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
+				if( tmaterial )
 				{
-				    TMaterial* tmaterial = dynamic_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
-				    if( tmaterial )
-				    {
-				    	Ray* reflected = tmaterial->GetReflectedRay( objectRay, dg, rand );
-				        if( reflected ) result = new Ray( objectToWorld( *reflected ) );
-				        delete reflected;
-				    }
+					Ray* reflected = tmaterial->GetReflectedRay( objectRay, dg, rand );
+					if( reflected ) result = new Ray( *reflected );
+					delete reflected;
 				}
 			}
-		    delete dg;
 		}
+		delete dg;
 	}
 	return result;
 }

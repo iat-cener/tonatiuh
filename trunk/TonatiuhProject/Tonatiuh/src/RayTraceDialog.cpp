@@ -36,20 +36,38 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "RayTraceDialog.h"
-
+#include <QAbstractButton>
 #include <QFileDialog>
 #include <QDir>
+
+#include "RayTraceDialog.h"
+#include "Trace.h"
+
+/**
+ * Creates a dialog to ray tracer options with the given \a parent and \a f flags.
+ *
+ * The variables take the default values.
+ */
 RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
 :QDialog ( parent, f )
 {
+	Trace( "RayTraceDialog::RayTraceDialog", false );
+
 	setupUi( this );
 	connect( this, SIGNAL( accepted() ), this, SLOT( saveChanges() ) );
+	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( applyChanges( QAbstractButton* ) ) );
 }
 
+/**
+ * Creates a dialog to ray tracer options with the given \a parent and \a f flags.
+ *
+ * The variables take the values specified by \a numRats, \a faction, \a drawPhotons and \a increasePhotonMap.
+ */
 RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
 :QDialog ( parent, f ), m_numRays( numRays ), m_fraction( fraction ), m_increasePhotonMap( increasePhotonMap ), m_drawPhotons( drawPhotons )
 {
+	Trace( "RayTraceDialog::RayTraceDialog", false );
+
 	setupUi( this );
 	raysSpinBox->setValue( m_numRays );
 	drawSpinBox->setValue( m_fraction );
@@ -61,32 +79,33 @@ RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, 
 		newMapRadioButton->setChecked( true );
 
 	connect( this, SIGNAL( accepted() ), this, SLOT( saveChanges() ) );
+	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( applyChanges() ) );
 }
 
+/*!
+ * Destroys the RayTraceDialog object.
+ */
 RayTraceDialog::~RayTraceDialog()
 {
-
+	Trace( "RayTraceDialog::~RayTraceDialog", false );
 }
 
-void RayTraceDialog::on_applyPushButton_clicked( bool checked )
+/**
+ * If the applyChanges button is clicked the dialog values are saved.
+ */
+void RayTraceDialog::applyChanges( QAbstractButton* button  )
 {
-
-	m_numRays = raysSpinBox->value();
-
-	m_fraction = drawSpinBox->value();
-	m_drawPhotons = photonsCheckBox->isChecked();
-
-	if( newMapRadioButton->isChecked() )
-		m_increasePhotonMap = false;
-	else
-		m_increasePhotonMap = true;
-
-
-
+	Trace( "RayTraceDialog::applyChanges", false );
+	if( buttonBox->buttonRole( button ) == 8 ) saveChanges();
 }
 
+/**
+ * Saves the values of the dialog.
+ */
 void RayTraceDialog::saveChanges()
 {
+	Trace( "RayTraceDialog::saveChanges", false );
+
 	m_numRays = raysSpinBox->value();
 
 	m_fraction = drawSpinBox->value();
@@ -96,5 +115,4 @@ void RayTraceDialog::saveChanges()
 		m_increasePhotonMap = false;
 	else
 		m_increasePhotonMap = true;
-
 }

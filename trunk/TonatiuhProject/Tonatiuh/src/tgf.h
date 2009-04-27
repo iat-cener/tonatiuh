@@ -39,12 +39,18 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TGF_H_
 #define TGF_H_
 
+#include <QMap>;
+#include <QPair>
+
+#include <Inventor/SbBox.h>
+
 class InstanceNode;
-class TPhotonMap;
 class RandomDeviate;
 class Ray;
+class SbBox3f;
 class SbMatrix;
 class SoSeparator;
+class TPhotonMap;
 class Transform;
 
 namespace tgf
@@ -57,7 +63,7 @@ namespace tgf
     bool Quadratic( double A, double B, double C, double* t0, double* t1);
 	double AlternateBoxMuller( RandomDeviate& rand );
 
-	bool TraceRay( Ray& ray, InstanceNode* instanceNode, TPhotonMap& photonMap, RandomDeviate& rand );
+	bool TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, TPhotonMap& photonMap, RandomDeviate& rand );
 
 	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map );
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );

@@ -48,6 +48,12 @@ class SoQtExaminerViewer;
 class SoSelection;
 class TSeparatorKit;
 
+//!  GraphicView class implements a 3D representation of items from a model.
+/*!
+  GraphicView provides a model/view implementation of a 3D view. Implements the interfaces defined by
+  the QAbstractItemView class to allow it to display data provided by models derived from the QAbstractItemModel class.
+*/
+
 class GraphicView : public QAbstractItemView
 {
     Q_OBJECT

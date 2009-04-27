@@ -73,20 +73,33 @@ TSeparatorKit::~TSeparatorKit()
     Trace trace("TSeparatorKit exiting destructor", false);
 }
 
-void TSeparatorKit::SetBoundigBox( SbXfBox3f boundingBox )
+/*bool TSeparatorKit::IntersectP( const Ray& ray ) const
 {
-	m_boundigBox = boundingBox;
-}
+	//Test if the ray intersects with this bounding box
+	SbBox3f box= m_boundigBox.project();
 
-bool TSeparatorKit::IntersectP( const Ray& /*ray*/ ) const
-{
-	return false;
+	double t0 = ray.mint;
+	double t1 = ray.maxt;
+
+    for( int i = 0; i < 3; ++i )
+    {
+    	double invRayDir = 1.0 / ray.direction[i];
+    	double tNear = ( box.getMin()[i] - ray.origin[i] ) * invRayDir;
+    	double tFar = ( box.getMax()[i] - ray.origin[i] ) * invRayDir;
+    	if( tNear > tFar ) std::swap( tNear, tFar );
+    	t0 = tNear > t0 ? tNear : t0;
+    	t1 = tFar < t1 ? tFar : t1;
+    	if( t0 > t1 ) return false;
+    }
+    return true;
+    return false;
 }
 
 Ray* TSeparatorKit::Intersect( const Ray& ray, RandomDeviate& rand ) const
 {
 	Trace trace( "TSeparatorKit::Intersect", false );
 
+	return 0;
 	//Test if the ray intersects with this bounding box
 	SbBox3f box= m_boundigBox.project();
 
@@ -173,4 +186,4 @@ Ray* TSeparatorKit::Intersect( const Ray& ray, RandomDeviate& rand ) const
 	  	}
 	}
 	return result;
-}
+}*/

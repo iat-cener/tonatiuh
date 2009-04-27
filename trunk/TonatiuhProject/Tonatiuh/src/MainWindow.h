@@ -50,6 +50,7 @@ class QDir;
 class QUndoStack;
 class QUndoView;
 class RandomDeviate;
+class SbBox3f;
 class SbViewportRegion;
 class SceneModel;
 class SoDragger;
@@ -200,7 +201,7 @@ private:
     void WriteSettings();
     void message();
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
-	void SetBoundigBoxes( InstanceNode* instanceNode, SbViewportRegion region );
+	void ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
 	SoSeparator* createGrid( int size );
 
     enum { m_maxRecentFiles = 7 };

@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QUndoView>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/manips/SoCenterballManip.h>
@@ -210,6 +211,7 @@ void MainWindow::SetupToolBars()
 	else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
 
 }
+
 
 void MainWindow::SetupDocument()
 {
@@ -605,14 +607,12 @@ void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 	ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
     actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
     QMenu* menuTracker = menuInsert->findChild< QMenu* >( "trackerMenu" );
-
    	if( !menuTracker )
     {
     	menuTracker = new QMenu( "Tracker", menuInsert );
     	menuTracker->setObjectName( "trackerMenu" );
     	menuInsert->addMenu( menuTracker );
     }
-
 	menuTracker->addAction( actionInsertTracker );
 	m_trackersToolBar->addAction( actionInsertTracker );
 	m_trackersToolBar->addSeparator();
@@ -888,16 +888,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	SoTransform* lightTransform = dynamic_cast< SoTransform * >(lightKit->getPart("transform",true));
 	if( !lightTransform ) return;
 
-    //Check if there is a rootSeparator InstanceNode
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( treeView->rootIndex() );
-	if ( !sceneInstance )  return;
-	InstanceNode* rootSeparatorInstance = sceneInstance->children[1];
-	if( !rootSeparatorInstance ) return;
-
-    //Compute objects bounding boxes iteratively
-	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
-	SetBoundigBoxes( rootSeparatorInstance, region );
-
 	SbMatrix coinMatrix;
 	coinMatrix.setTransform( lightTransform->translation.getValue(),
 								lightTransform->rotation.getValue(),
@@ -909,6 +899,22 @@ void MainWindow::on_actionRayTraceRun_triggered()
 			coinMatrix[0][1], coinMatrix[1][1], coinMatrix[2][1], coinMatrix[3][1],
 			coinMatrix[0][2], coinMatrix[1][2], coinMatrix[2][2], coinMatrix[3][2],
 			coinMatrix[0][3], coinMatrix[1][3], coinMatrix[2][3], coinMatrix[3][3] );
+
+    //Check if there is a rootSeparator InstanceNode
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( treeView->rootIndex() );
+	if ( !sceneInstance )  return;
+	InstanceNode* rootSeparatorInstance = sceneInstance->children[1];
+	if( !rootSeparatorInstance ) return;
+
+    //Compute objects bounding boxes iteratively
+	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
+	//SetBoundigBoxes( rootSeparatorInstance, region );
+
+	QModelIndex rootIndex = treeView->rootIndex();
+	QPersistentModelIndex rootSepartorIndex = m_sceneModel->index ( 1, 0 );
+
+	QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< SbBox3f, Transform* > >();
+	ComputeSceneTreeMap( &rootSepartorIndex, region, sceneMap );
 
 	//Create the photon map where photons are going to be stored
 	if ( !m_increasePhotonMap )
@@ -934,7 +940,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		ray = lightToWorld( ray );
 
 		//Perform Ray Trace
-		tgf::TraceRay( ray, rootSeparatorInstance, *m_photonMap, *m_pRand );
+		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, *m_photonMap, *m_pRand );
 
 		//Update progressDiaglog when appropriate
 		progress.Update();
@@ -1310,7 +1316,6 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 		ancestor = ancestor->GetParent();
 	}
 
-	std::cout<<"CreateTracker"<<std::endl;
 	SoSceneKit* scene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
    	SoTransform* lightTransform = dynamic_cast< SoTransform* > ( lightKit->getPart("transform", true) );
@@ -1840,7 +1845,7 @@ bool MainWindow::Copy( )
 
 bool MainWindow::Paste( tgc::PasteType type )
 {
-	Trace trace( "MainWindow::PasteCopy", false );
+	Trace trace( "MainWindow::PasteCopy", true );
 
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( !m_coinNode_Buffer ) return false;
@@ -1995,35 +2000,76 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
 
 }
 
-void MainWindow::SetBoundigBoxes( InstanceNode* instanceNode, SbViewportRegion region )
+/**
+ * Compute a map with the InstanceNodes of sub-tree with top node \a nodeIndex.
+ *
+ *The map stores for each InstanceNode its BBox and its transform in global coordinates.
+ **/
+void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap )
 {
-	SoBaseKit* coinNode = dynamic_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoPath* nodePath = new SoPath( coinNode );
-	nodePath->ref();
+	Trace trace( "MainWindow::ComputeSceneTreeMap", false );
+
+	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( *nodeIndex );
+	SoBaseKit* coinNode = dynamic_cast< SoBaseKit* > ( instanceNode->GetNode() );
+
+	SoPath* pathFromRoot = m_sceneModel->PathFromIndex( *nodeIndex );
+
+	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( region );
+	getmatrixAction->apply(pathFromRoot);
+
+	SbMatrix pathTransformation = getmatrixAction->getMatrix();
+
+	Transform objectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
+					pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
+					pathTransformation[0][2], pathTransformation[1][2], pathTransformation[2][2], pathTransformation[3][2],
+					pathTransformation[0][3], pathTransformation[1][3], pathTransformation[2][3], pathTransformation[3][3] );
+
+	Transform* worldToObject = new Transform( objectToWorld.GetInverse() );
 
 	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
-	bbAction->apply(nodePath);
+	coinNode->getBoundingBox( bbAction );
+
+	sceneMap->insert( instanceNode , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), worldToObject ) );
+
 
 	SbXfBox3f box= bbAction->getXfBoundingBox();
-
 	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		TSeparatorKit* separatorNode = dynamic_cast< TSeparatorKit* >( instanceNode->GetNode() );
-		separatorNode->SetBoundigBox( box );
-
 		for( int index = 0; index < instanceNode->children.count() ; index++ )
 		{
-			InstanceNode* instanceChild = instanceNode->children[index];
-			SetBoundigBoxes( instanceChild, region );
+			QPersistentModelIndex childIndex = nodeIndex->child( index, nodeIndex->column() );
+			ComputeSceneTreeMap( &childIndex, region, sceneMap );
 		}
 	}
-	else if( coinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
+	else
 	{
-		TShapeKit* shapeNode = dynamic_cast< TShapeKit* >( instanceNode->GetNode() );
-		shapeNode->SetBoundigBox( box );
+		SoTransform* nodeTransform = static_cast< SoTransform* > ( coinNode->getPart( "transform", true ) );
+		if ( nodeTransform )
+		{
+			SbMatrix nodeMatrix;
+			nodeMatrix.setTransform( nodeTransform->translation.getValue(),
+					nodeTransform->rotation.getValue(),
+					nodeTransform->scaleFactor.getValue(),
+					nodeTransform->scaleOrientation.getValue(),
+					nodeTransform->center.getValue() );
+			pathTransformation = pathTransformation.multRight( nodeMatrix );
+
+			Transform shapeObjectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
+								pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
+								pathTransformation[0][2], pathTransformation[1][2], pathTransformation[2][2], pathTransformation[3][2],
+								pathTransformation[0][3], pathTransformation[1][3], pathTransformation[2][3], pathTransformation[3][3] );
+
+			Transform* shapeWorldToObject = new Transform( shapeObjectToWorld.GetInverse() );
+
+			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+				sceneMap->insert( instanceNode->children[0] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
+			else
+				sceneMap->insert( instanceNode->children[1] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
+		}
 	}
+
 	delete bbAction;
-	nodePath->unref();
+	delete getmatrixAction;
 
 }
 

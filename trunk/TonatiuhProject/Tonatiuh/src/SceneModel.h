@@ -82,13 +82,11 @@ public:
 
 	InstanceNode* NodeFromIndex( const QModelIndex& modelIndex ) const;
 	QModelIndex IndexFromPath( const SoNodeKitPath& coinNodePath ) const;
+	SoNodeKitPath* PathFromIndex( const QModelIndex& modelIndex ) const;
 
 private:
 	void GenerateInstanceTree( InstanceNode& instanceParent );
 	void DeleteInstanceTree( InstanceNode& instanceNode );
-	SoNodeKitPath* PathFromIndex( const QModelIndex& modelIndex ) const;
-
-
 
 private:
 	SoSelection* m_coinRoot;
