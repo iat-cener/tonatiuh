@@ -74,13 +74,13 @@
 <a name="l00042"></a>00042 <span class="preprocessor">#include &lt;QUndoCommand&gt;</span>
 <a name="l00043"></a>00043 
 <a name="l00044"></a>00044 <span class="keyword">class </span>QModelIndex;
-<a name="l00045"></a>00045 <span class="keyword">class </span><a class="code" href="class_t_shape_kit.html">TShapeKit</a>;
+<a name="l00045"></a>00045 <span class="keyword">class </span><a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>;
 <a name="l00046"></a>00046 <span class="keyword">class </span><a class="code" href="class_scene_model.html">SceneModel</a>;
 <a name="l00047"></a>00047 
 <a name="l00048"></a><a class="code" href="class_cmd_insert_shape_kit.html">00048</a> <span class="keyword">class </span><a class="code" href="class_cmd_insert_shape_kit.html">CmdInsertShapeKit</a> : <span class="keyword">public</span> QUndoCommand
 <a name="l00049"></a>00049 {
 <a name="l00050"></a>00050 <span class="keyword">public</span>:
-<a name="l00051"></a>00051     <a class="code" href="class_cmd_insert_shape_kit.html#fdc0104c9f2beeefe38a1dde8ae3dc2a">CmdInsertShapeKit</a>( <span class="keyword">const</span> QModelIndex&amp; parentIndex, <a class="code" href="class_t_shape_kit.html">TShapeKit</a>* shapeKit, <a class="code" href="class_scene_model.html">SceneModel</a>* model, QUndoCommand* parent = 0 );
+<a name="l00051"></a>00051     <a class="code" href="class_cmd_insert_shape_kit.html#fdc0104c9f2beeefe38a1dde8ae3dc2a">CmdInsertShapeKit</a>( <span class="keyword">const</span> QModelIndex&amp; parentIndex, <a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>* shapeKit, <a class="code" href="class_scene_model.html">SceneModel</a>* model, QUndoCommand* parent = 0 );
 <a name="l00052"></a>00052     <a class="code" href="class_cmd_insert_shape_kit.html#cb0d679cd42fe64679c22a9281f3dca0">~CmdInsertShapeKit</a>();
 <a name="l00053"></a>00053 
 <a name="l00054"></a>00054      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_insert_shape_kit.html#13274bf16107612fb5fc1d5d8883fee0">undo</a>();
@@ -88,7 +88,7 @@
 <a name="l00056"></a>00056 
 <a name="l00057"></a>00057  <span class="keyword">private</span>:
 <a name="l00058"></a><a class="code" href="class_cmd_insert_shape_kit.html#44ea674610286c09dad0189399d255ce">00058</a>          SoBaseKit* <a class="code" href="class_cmd_insert_shape_kit.html#44ea674610286c09dad0189399d255ce">m_coinParent</a>;
-<a name="l00059"></a><a class="code" href="class_cmd_insert_shape_kit.html#8dd69d44030976180057c881ba1c56b5">00059</a>      <a class="code" href="class_t_shape_kit.html">TShapeKit</a>* <a class="code" href="class_cmd_insert_shape_kit.html#8dd69d44030976180057c881ba1c56b5">m_shapeKit</a>;
+<a name="l00059"></a><a class="code" href="class_cmd_insert_shape_kit.html#8dd69d44030976180057c881ba1c56b5">00059</a>      <a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>* <a class="code" href="class_cmd_insert_shape_kit.html#8dd69d44030976180057c881ba1c56b5">m_shapeKit</a>;
 <a name="l00060"></a><a class="code" href="class_cmd_insert_shape_kit.html#e9c6080339e83fb95922e7ad4ea8f7dd">00060</a>      <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_cmd_insert_shape_kit.html#e9c6080339e83fb95922e7ad4ea8f7dd">m_pModel</a>;
 <a name="l00061"></a><a class="code" href="class_cmd_insert_shape_kit.html#e85b253598e6f941579162a55b760adb">00061</a>      <span class="keywordtype">int</span> <a class="code" href="class_cmd_insert_shape_kit.html#e85b253598e6f941579162a55b760adb">m_row</a>;
 <a name="l00062"></a>00062 
@@ -96,7 +96,7 @@
 <a name="l00064"></a>00064 
 <a name="l00065"></a>00065 <span class="preprocessor">#endif </span><span class="comment">/*CMDINSERTSHAPEKIT_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 20 16:46:15 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:37 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

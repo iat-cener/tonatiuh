@@ -86,33 +86,37 @@
 <a name="l00054"></a>00054         <a class="code" href="class_celestial_widget.html#82ac22df8b28092feef30ecd924c2fa9">CelestialWidget</a>( QWidget* parent = 0 );
 <a name="l00055"></a>00055         <a class="code" href="class_celestial_widget.html#d915b567a55205b2565435ec729e5bd9">~CelestialWidget</a>();
 <a name="l00056"></a>00056 
-<a name="l00057"></a>00057 <span class="keyword">public</span> slots:
-<a name="l00058"></a>00058         <span class="keywordtype">void</span> <a class="code" href="class_celestial_widget.html#5e5646a9bdb590799d2a5d848cde6864">CoordinatesChanged</a>( <a class="code" href="structc_sun_coordinates.html">cSunCoordinates</a> coordinates );
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="keyword">private</span>:
-<a name="l00061"></a><a class="code" href="class_celestial_widget.html#14d6046584957799e00c7288e2ca473a">00061</a>         QLabel* <a class="code" href="class_celestial_widget.html#14d6046584957799e00c7288e2ca473a">m_rightValue</a>;
-<a name="l00062"></a><a class="code" href="class_celestial_widget.html#9b216bd2df4423fcfcfb436aabcd008f">00062</a>         QLabel* <a class="code" href="class_celestial_widget.html#9b216bd2df4423fcfcfb436aabcd008f">m_declinationValue</a>;
+<a name="l00057"></a><a class="code" href="class_celestial_widget.html#77e18a0ba2d4ad42fc76b37e2e66e503">00057</a>         <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#77e18a0ba2d4ad42fc76b37e2e66e503">getSphereRadio</a>() {<span class="keywordflow">return</span> <a class="code" href="class_celestial_widget.html#1fb477d871dfd3a40aca5228222d6cfd">sphereRadio</a>;}
+<a name="l00058"></a><a class="code" href="class_celestial_widget.html#63bb58aebff6a4e7f8c853108e1df5f7">00058</a>         <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#63bb58aebff6a4e7f8c853108e1df5f7">getDeclination</a>() {<span class="keywordflow">return</span> <a class="code" href="class_celestial_widget.html#82fd149ed9ce52ffa652ce4282056f3b">m_declination</a>;}
+<a name="l00059"></a><a class="code" href="class_celestial_widget.html#469cfed7b33dab4481d5a6debe24379f">00059</a>         <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#469cfed7b33dab4481d5a6debe24379f">getRightAscension</a>() {<span class="keywordflow">return</span> <a class="code" href="class_celestial_widget.html#3206e816aa544e857d44bc84c027a9ce">m_rightAscension</a>;}
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061 <span class="keyword">public</span> slots:
+<a name="l00062"></a>00062         <span class="keywordtype">void</span> <a class="code" href="class_celestial_widget.html#5e5646a9bdb590799d2a5d848cde6864">CoordinatesChanged</a>( <a class="code" href="structc_sun_coordinates.html">cSunCoordinates</a> coordinates );
 <a name="l00063"></a>00063 
-<a name="l00064"></a>00064         SoSeparator* <a class="code" href="class_celestial_widget.html#7562d0fa92730bcc6ddb647e5051051b">CelestialEquator</a>() <span class="keyword">const</span>;
-<a name="l00065"></a>00065         SoSeparator* <a class="code" href="class_celestial_widget.html#2071557644476c368a8113da6bd03109">Declination</a>();
-<a name="l00066"></a>00066         SoSeparator* <a class="code" href="class_celestial_widget.html#f80b1e68a8fd4306a8f54503af12ef75">Ecliptic</a>() <span class="keyword">const</span>;
-<a name="l00067"></a>00067         SoSeparator* <a class="code" href="class_celestial_widget.html#5cf72c29f9d9705b005e5d67facd6c63">Ejes</a>() <span class="keyword">const</span>;
-<a name="l00068"></a>00068         SoSeparator* <a class="code" href="class_celestial_widget.html#906b8f9f1e13030615012b4e4e755104">Points</a>() <span class="keyword">const</span>;
-<a name="l00069"></a>00069         SoSeparator* <a class="code" href="class_celestial_widget.html#039e8a900a463d820a0539abdf8becf5">RightAscension</a>();
-<a name="l00070"></a>00070         SoSeparator* <a class="code" href="class_celestial_widget.html#39d67ed92196700e1796a3fe48221c01">Sphere</a>() <span class="keyword">const</span>;
-<a name="l00071"></a>00071         SoSeparator* <a class="code" href="class_celestial_widget.html#c58f19ef9b9e54147b804706e1506668">Star</a>();
-<a name="l00072"></a>00072 
-<a name="l00073"></a><a class="code" href="class_celestial_widget.html#db8b6f9ba6275d372f87d40633fbd715">00073</a>         SoSeparator* <a class="code" href="class_celestial_widget.html#db8b6f9ba6275d372f87d40633fbd715">m_rootNode</a>;
-<a name="l00074"></a>00074 
-<a name="l00075"></a><a class="code" href="class_celestial_widget.html#1fb477d871dfd3a40aca5228222d6cfd">00075</a>         <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#1fb477d871dfd3a40aca5228222d6cfd">sphereRadio</a>;
+<a name="l00064"></a>00064 <span class="keyword">private</span>:
+<a name="l00065"></a><a class="code" href="class_celestial_widget.html#14d6046584957799e00c7288e2ca473a">00065</a>         QLabel* <a class="code" href="class_celestial_widget.html#14d6046584957799e00c7288e2ca473a">m_rightValue</a>;
+<a name="l00066"></a><a class="code" href="class_celestial_widget.html#9b216bd2df4423fcfcfb436aabcd008f">00066</a>         QLabel* <a class="code" href="class_celestial_widget.html#9b216bd2df4423fcfcfb436aabcd008f">m_declinationValue</a>;
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068         SoSeparator* <a class="code" href="class_celestial_widget.html#7562d0fa92730bcc6ddb647e5051051b">CelestialEquator</a>() <span class="keyword">const</span>;
+<a name="l00069"></a>00069         SoSeparator* <a class="code" href="class_celestial_widget.html#2071557644476c368a8113da6bd03109">Declination</a>();
+<a name="l00070"></a>00070         SoSeparator* <a class="code" href="class_celestial_widget.html#f80b1e68a8fd4306a8f54503af12ef75">Ecliptic</a>() <span class="keyword">const</span>;
+<a name="l00071"></a>00071         SoSeparator* <a class="code" href="class_celestial_widget.html#5cf72c29f9d9705b005e5d67facd6c63">Ejes</a>() <span class="keyword">const</span>;
+<a name="l00072"></a>00072         SoSeparator* <a class="code" href="class_celestial_widget.html#906b8f9f1e13030615012b4e4e755104">Points</a>() <span class="keyword">const</span>;
+<a name="l00073"></a>00073         SoSeparator* <a class="code" href="class_celestial_widget.html#039e8a900a463d820a0539abdf8becf5">RightAscension</a>();
+<a name="l00074"></a>00074         SoSeparator* <a class="code" href="class_celestial_widget.html#39d67ed92196700e1796a3fe48221c01">Sphere</a>() <span class="keyword">const</span>;
+<a name="l00075"></a>00075         SoSeparator* <a class="code" href="class_celestial_widget.html#c58f19ef9b9e54147b804706e1506668">Star</a>();
 <a name="l00076"></a>00076 
-<a name="l00077"></a><a class="code" href="class_celestial_widget.html#82fd149ed9ce52ffa652ce4282056f3b">00077</a>         <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#82fd149ed9ce52ffa652ce4282056f3b">m_declination</a>;
-<a name="l00078"></a><a class="code" href="class_celestial_widget.html#3206e816aa544e857d44bc84c027a9ce">00078</a>         <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#3206e816aa544e857d44bc84c027a9ce">m_rightAscension</a>;
-<a name="l00079"></a>00079 };
+<a name="l00077"></a><a class="code" href="class_celestial_widget.html#db8b6f9ba6275d372f87d40633fbd715">00077</a>         SoSeparator* <a class="code" href="class_celestial_widget.html#db8b6f9ba6275d372f87d40633fbd715">m_rootNode</a>;
+<a name="l00078"></a>00078 
+<a name="l00079"></a><a class="code" href="class_celestial_widget.html#1fb477d871dfd3a40aca5228222d6cfd">00079</a>         <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#1fb477d871dfd3a40aca5228222d6cfd">sphereRadio</a>;
 <a name="l00080"></a>00080 
-<a name="l00081"></a>00081 <span class="preprocessor">#endif </span><span class="comment">/*CELESTIALWIDGET_H*/</span>
+<a name="l00081"></a><a class="code" href="class_celestial_widget.html#82fd149ed9ce52ffa652ce4282056f3b">00081</a>         <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#82fd149ed9ce52ffa652ce4282056f3b">m_declination</a>;
+<a name="l00082"></a><a class="code" href="class_celestial_widget.html#3206e816aa544e857d44bc84c027a9ce">00082</a>         <span class="keywordtype">double</span> <a class="code" href="class_celestial_widget.html#3206e816aa544e857d44bc84c027a9ce">m_rightAscension</a>;
+<a name="l00083"></a>00083 };
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 <span class="preprocessor">#endif </span><span class="comment">/*CELESTIALWIDGET_H*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 20 16:46:15 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:36 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
