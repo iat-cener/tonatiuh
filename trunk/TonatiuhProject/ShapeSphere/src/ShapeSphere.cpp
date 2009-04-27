@@ -67,6 +67,7 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_ADD_FIELD(m_z1, (-5.0));
 	SO_NODE_ADD_FIELD(m_z2, (5.0));
 	SO_NODE_ADD_FIELD(m_phiMax, (1.5 * tgc::Pi));
+	SO_NODE_ADD_FIELD(m_reverseOrientation, (false));
 
 	double zmin = std::min( m_z1.getValue(), m_z2.getValue() );
 	double zmax = std::max( m_z1.getValue(), m_z2.getValue() );
@@ -183,7 +184,19 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	Vector3D N;
+	if( m_reverseOrientation.getValue() == false )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) < 0 )
+	{
+		return false;
+	}
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );

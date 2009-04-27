@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPESPHERE_H_
 
 #include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFBool.h>
 
 #include "TShape.h"
 
@@ -64,6 +65,7 @@ public:
 	SoSFDouble m_z1;
 	SoSFDouble m_z2;
 	SoSFDouble m_phiMax;
+	SoSFBool m_reverseOrientation;
 
 protected:
 	static void updateMinMaxTheta(void *data, SoSensor *);
