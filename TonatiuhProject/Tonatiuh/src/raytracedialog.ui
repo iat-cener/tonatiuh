@@ -61,6 +61,9 @@
     <property name="singleStep" >
      <number>1000</number>
     </property>
+    <property name="value" >
+     <number>1000</number>
+    </property>
    </widget>
   </widget>
   <widget class="QGroupBox" name="photonmapGroupBox" >
