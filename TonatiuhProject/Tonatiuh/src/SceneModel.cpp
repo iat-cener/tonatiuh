@@ -584,8 +584,8 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	if( ! coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
 		TShapeKit* shapeKit = dynamic_cast< TShapeKit* >( pCoinParent );
-		if(!shapeKit)
-			return;
+		if(!shapeKit)	return;
+
 		if( coinChild->getTypeId().isDerivedFrom( SoShape::getClassTypeId() ) )
 		{
 			TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );

@@ -41,7 +41,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QList>
 
+#include <QPair>
+
+#include <Inventor/SbBox.h>
+
+class RandomDeviate;
+class Ray;
 class SoNode;
+class Transform;
 
 class InstanceNode
 {
@@ -59,11 +66,12 @@ public:
     void InsertChild( int row, InstanceNode* instanceChild);
     void Print( int level ) const;
 
-
     QList< InstanceNode* > children;
     friend QDataStream & operator<< ( QDataStream & s, const InstanceNode & node );
     friend QDataStream & operator>> ( QDataStream & s, const InstanceNode & node );
     friend bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode);
+
+    Ray* Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode );
 
 private:
     SoNode* m_coinNode;

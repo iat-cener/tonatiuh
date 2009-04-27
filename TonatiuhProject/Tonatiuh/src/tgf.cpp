@@ -127,27 +127,36 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
 
 }
 
-bool tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, TPhotonMap& photonMap, RandomDeviate& rand)
+/**
+ * Traces the given \a ray with the scene with top instance \a instanceNode and saved the intersections
+ * information in the \a photonMap.
+ *
+ * The \a sceneMap saves the scene elements BBox and Transform in global coordinates.
+ */
+bool tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, TPhotonMap& photonMap, RandomDeviate& rand )
 {
 	Trace trace( "tgf::TraceRay", false );
 
 	Ray* reflectedRay = 0;
 	Photon* node = new Photon( ray.origin, 0, 0 );
 	Photon* next = 0;
-	TSeparatorKit* coinNode = dynamic_cast< TSeparatorKit* > ( instanceNode->GetNode() );
 	int rayLength = 0;
+
+	InstanceNode* intersectedSurface = 0;
 
 	//Trace the ray
 	bool intersection = true;
 	while ( intersection )
 	{
-		reflectedRay = coinNode->Intersect( ray, rand );
+		intersectedSurface = 0;
+		reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface );
 
 		if( reflectedRay )
 		{
 			Point3D point = ray( ray.maxt );
 
 			next = new Photon( point, node, 0 );
+			node->m_intersectedSurface = intersectedSurface;
 			node->m_next = next;
 			photonMap.store( node );
 			node = next;
@@ -160,20 +169,12 @@ bool tgf::TraceRay( Ray& ray, InstanceNode* instanceNode, TPhotonMap& photonMap,
 		else intersection = false;
 	}
 
-
-	/*if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
-
-	Point3D endOfRay = ray( ray.maxt );
-	Photon* lastNode = new Photon( endOfRay, node, 0 );
-	node->m_next = lastNode;
-	photonMap.store( node );
-	photonMap.store( lastNode );*/
-
 	if( rayLength == 0 && ray.maxt == HUGE_VAL ) return false;
 	if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
 
 	Point3D endOfRay = ray( ray.maxt );
 	Photon* lastNode = new Photon( endOfRay, node, 0 );
+	node->m_intersectedSurface = intersectedSurface;
 	node->m_next = lastNode;
 	photonMap.store( node );
 	photonMap.store( lastNode );
