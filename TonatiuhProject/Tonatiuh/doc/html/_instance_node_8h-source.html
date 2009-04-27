@@ -73,39 +73,47 @@
 <a name="l00041"></a>00041 <span class="preprocessor"></span>
 <a name="l00042"></a>00042 <span class="preprocessor">#include &lt;QList&gt;</span>
 <a name="l00043"></a>00043 
-<a name="l00044"></a>00044 <span class="keyword">class </span>SoNode;
+<a name="l00044"></a>00044 <span class="preprocessor">#include &lt;QPair&gt;</span>
 <a name="l00045"></a>00045 
-<a name="l00046"></a><a class="code" href="class_instance_node.html">00046</a> <span class="keyword">class </span><a class="code" href="class_instance_node.html">InstanceNode</a>
-<a name="l00047"></a>00047 {
-<a name="l00048"></a>00048 <span class="keyword">public</span>:
-<a name="l00049"></a>00049     <a class="code" href="class_instance_node.html#2cc5e6a6d271897e1793cd0fbfd40e55">InstanceNode</a>( SoNode* node );
-<a name="l00050"></a>00050     <a class="code" href="class_instance_node.html#2cc5e6a6d271897e1793cd0fbfd40e55">InstanceNode</a>( <span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a>* node );
-<a name="l00051"></a>00051     <a class="code" href="class_instance_node.html#99812c3331b00a684f8c40a3da3d1f8e">~InstanceNode</a>();
+<a name="l00046"></a>00046 <span class="preprocessor">#include &lt;Inventor/SbBox.h&gt;</span>
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048 <span class="keyword">class </span><a class="code" href="class_random_deviate.html">RandomDeviate</a>;
+<a name="l00049"></a>00049 <span class="keyword">class </span><a class="code" href="struct_ray.html">Ray</a>;
+<a name="l00050"></a>00050 <span class="keyword">class </span>SoNode;
+<a name="l00051"></a>00051 <span class="keyword">class </span><a class="code" href="class_transform.html">Transform</a>;
 <a name="l00052"></a>00052 
-<a name="l00053"></a>00053     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#069a48502f7fe46c31e5b86e98e6ff54">SetNode</a>( SoNode* node );
-<a name="l00054"></a>00054     SoNode* <a class="code" href="class_instance_node.html#78fc759447a68d78f025eb7ba975241c">GetNode</a>() <span class="keyword">const</span>;
-<a name="l00055"></a>00055     <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35">GetParent</a>() <span class="keyword">const</span>;
-<a name="l00056"></a>00056     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#5e4c72420da221e2c44c4843db78ffcd">SetParent</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>* parent );
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#201dbc32e4bde1f36a053b00ca33a6c1">AddChild</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>* child );
-<a name="l00059"></a>00059     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#307c27c42cfda3954609b058e3863725">InsertChild</a>( <span class="keywordtype">int</span> row, <a class="code" href="class_instance_node.html">InstanceNode</a>* instanceChild);
-<a name="l00060"></a>00060     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#0285a33f05ae7f961bba51a191902df8">Print</a>( <span class="keywordtype">int</span> level ) <span class="keyword">const</span>;
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 
-<a name="l00063"></a><a class="code" href="class_instance_node.html#7dadd72277ef6cf08b384670e7a2589d">00063</a>     QList&lt; InstanceNode* &gt; <a class="code" href="class_instance_node.html#7dadd72277ef6cf08b384670e7a2589d">children</a>;
-<a name="l00064"></a>00064     <span class="keyword">friend</span> QDataStream &amp; <a class="code" href="class_instance_node.html#0ff30df9f83abe699e9b7f1ee1dfc74a">operator&lt;&lt; </a>( QDataStream &amp; s, <span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a> &amp; node );
-<a name="l00065"></a>00065     <span class="keyword">friend</span> QDataStream &amp; <a class="code" href="class_instance_node.html#785289129319d90c31140ace1a32e4d0">operator&gt;&gt; </a>( QDataStream &amp; s, <span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a> &amp; node );
-<a name="l00066"></a>00066     <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="class_instance_node.html#1cab31dbf3d494f1680f5b46202abd92">operator==</a>(<span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; thisNode,<span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; otherNode);
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="keyword">private</span>:
-<a name="l00069"></a><a class="code" href="class_instance_node.html#3debdb37430f8ba52ce1dac57eec0421">00069</a>     SoNode* <a class="code" href="class_instance_node.html#3debdb37430f8ba52ce1dac57eec0421">m_coinNode</a>;
-<a name="l00070"></a><a class="code" href="class_instance_node.html#2b2025d6d2476e483b038486c3bea58d">00070</a>     <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_instance_node.html#2b2025d6d2476e483b038486c3bea58d">m_parent</a>;
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072 };
+<a name="l00053"></a><a class="code" href="class_instance_node.html">00053</a> <span class="keyword">class </span><a class="code" href="class_instance_node.html">InstanceNode</a>
+<a name="l00054"></a>00054 {
+<a name="l00055"></a>00055 <span class="keyword">public</span>:
+<a name="l00056"></a>00056     <a class="code" href="class_instance_node.html#2cc5e6a6d271897e1793cd0fbfd40e55">InstanceNode</a>( SoNode* node );
+<a name="l00057"></a>00057     <a class="code" href="class_instance_node.html#2cc5e6a6d271897e1793cd0fbfd40e55">InstanceNode</a>( <span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a>* node );
+<a name="l00058"></a>00058     <a class="code" href="class_instance_node.html#99812c3331b00a684f8c40a3da3d1f8e">~InstanceNode</a>();
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#069a48502f7fe46c31e5b86e98e6ff54">SetNode</a>( SoNode* node );
+<a name="l00061"></a>00061     SoNode* <a class="code" href="class_instance_node.html#78fc759447a68d78f025eb7ba975241c">GetNode</a>() <span class="keyword">const</span>;
+<a name="l00062"></a>00062     <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35">GetParent</a>() <span class="keyword">const</span>;
+<a name="l00063"></a>00063     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#5e4c72420da221e2c44c4843db78ffcd">SetParent</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>* parent );
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#201dbc32e4bde1f36a053b00ca33a6c1">AddChild</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>* child );
+<a name="l00066"></a>00066     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#307c27c42cfda3954609b058e3863725">InsertChild</a>( <span class="keywordtype">int</span> row, <a class="code" href="class_instance_node.html">InstanceNode</a>* instanceChild);
+<a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="class_instance_node.html#0285a33f05ae7f961bba51a191902df8">Print</a>( <span class="keywordtype">int</span> level ) <span class="keyword">const</span>;
+<a name="l00068"></a>00068 
+<a name="l00069"></a><a class="code" href="class_instance_node.html#7dadd72277ef6cf08b384670e7a2589d">00069</a>     QList&lt; InstanceNode* &gt; <a class="code" href="class_instance_node.html#7dadd72277ef6cf08b384670e7a2589d">children</a>;
+<a name="l00070"></a>00070     <span class="keyword">friend</span> QDataStream &amp; <a class="code" href="class_instance_node.html#0ff30df9f83abe699e9b7f1ee1dfc74a">operator&lt;&lt; </a>( QDataStream &amp; s, <span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a> &amp; node );
+<a name="l00071"></a>00071     <span class="keyword">friend</span> QDataStream &amp; <a class="code" href="class_instance_node.html#785289129319d90c31140ace1a32e4d0">operator&gt;&gt; </a>( QDataStream &amp; s, <span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a> &amp; node );
+<a name="l00072"></a>00072     <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="class_instance_node.html#1cab31dbf3d494f1680f5b46202abd92">operator==</a>(<span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; thisNode,<span class="keyword">const</span> <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; otherNode);
 <a name="l00073"></a>00073 
-<a name="l00074"></a>00074 <span class="preprocessor">#endif </span><span class="comment">/*INSTANCENODE_H_*/</span>
+<a name="l00074"></a>00074     <a class="code" href="struct_ray.html">Ray</a>* <a class="code" href="class_instance_node.html#c31ef7232bca8a3074cbe3d687a5fbab">Intersect</a>( <span class="keyword">const</span> <a class="code" href="struct_ray.html">Ray</a>&amp; ray, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand, QMap&lt; <a class="code" href="class_instance_node.html">InstanceNode</a>*,QPair&lt; SbBox3f, Transform* &gt; &gt;* sceneMap, <a class="code" href="class_instance_node.html">InstanceNode</a>** modelNode );
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076 <span class="keyword">private</span>:
+<a name="l00077"></a><a class="code" href="class_instance_node.html#3debdb37430f8ba52ce1dac57eec0421">00077</a>     SoNode* <a class="code" href="class_instance_node.html#3debdb37430f8ba52ce1dac57eec0421">m_coinNode</a>;
+<a name="l00078"></a><a class="code" href="class_instance_node.html#2b2025d6d2476e483b038486c3bea58d">00078</a>     <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_instance_node.html#2b2025d6d2476e483b038486c3bea58d">m_parent</a>;
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080 };
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 <span class="preprocessor">#endif </span><span class="comment">/*INSTANCENODE_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 20 16:46:15 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:37 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

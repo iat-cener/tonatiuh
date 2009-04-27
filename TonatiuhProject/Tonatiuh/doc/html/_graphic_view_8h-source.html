@@ -80,46 +80,47 @@
 <a name="l00048"></a>00048 <span class="keyword">class </span>SoSelection;
 <a name="l00049"></a>00049 <span class="keyword">class </span><a class="code" href="class_t_separator_kit.html">TSeparatorKit</a>;
 <a name="l00050"></a>00050 
-<a name="l00051"></a><a class="code" href="class_graphic_view.html">00051</a> <span class="keyword">class </span><a class="code" href="class_graphic_view.html">GraphicView</a> : <span class="keyword">public</span> QAbstractItemView
-<a name="l00052"></a>00052 {
-<a name="l00053"></a>00053     Q_OBJECT
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 <span class="keyword">public</span>:
-<a name="l00056"></a>00056     <a class="code" href="class_graphic_view.html#0235093d39d21f50cffa9085f85c1486">GraphicView</a>( QWidget* parent = 0 );
-<a name="l00057"></a>00057     <a class="code" href="class_graphic_view.html#ec4e995f7c6d0f70b06595a32ef137d3">~GraphicView</a>();
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#4a1887ad8ba6c4ba8586d39455090b93">SetSceneGraph</a>( SoSelection* sceneGraphRoot );
-<a name="l00060"></a>00060     SbViewportRegion <a class="code" href="class_graphic_view.html#24f844b729dce45fb5324e88e070b395">GetViewportRegion</a>() <span class="keyword">const</span>;
-<a name="l00061"></a>00061     SoCamera* <a class="code" href="class_graphic_view.html#8465424dbbf8acc2153f5cd16f1b9b2a">GetCamera</a>() <span class="keyword">const</span>;
-<a name="l00062"></a>00062     <span class="keyword">virtual</span> QModelIndex <a class="code" href="class_graphic_view.html#9323b551d21ffbba079fee0f8d7e3c19">indexAt</a> ( <span class="keyword">const</span> QPoint &amp; point ) <span class="keyword">const</span>;
-<a name="l00063"></a>00063     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#dced9a7f29e256d82bbbe416589b25c6">scrollTo</a> ( <span class="keyword">const</span> QModelIndex &amp; index, ScrollHint hint = EnsureVisible );
-<a name="l00064"></a>00064     <span class="keyword">virtual</span> QRect <a class="code" href="class_graphic_view.html#76bbc2eb6e8e6df0745a2a38baf3e97e">visualRect</a> ( <span class="keyword">const</span> QModelIndex &amp; index ) <span class="keyword">const</span>;
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#2a57ae269ec852f4b7f934ea93a7385e">ViewDecoration</a>( <span class="keywordtype">bool</span> view );
-<a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#f6bdac62c7b7ca83c1c3d7ff34f98fa6">ViewCoordinateSystem</a>( <span class="keywordtype">bool</span> view );
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069 <span class="keyword">protected</span> slots:
-<a name="l00070"></a>00070     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#79040df42dbc0f224beddf465453912e">dataChanged</a>(<span class="keyword">const</span> QModelIndex &amp;topLeft, <span class="keyword">const</span> QModelIndex &amp;bottomRight);
-<a name="l00071"></a>00071     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#2807922f552382d6de8632603dbfbf77">rowsInserted</a>(<span class="keyword">const</span> QModelIndex &amp;parent, <span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end);
-<a name="l00072"></a>00072     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#02fcfb4c4b9667661fe58a84276193f2">rowsAboutToBeRemoved</a>(<span class="keyword">const</span> QModelIndex &amp;parent, <span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end);
-<a name="l00073"></a>00073     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#8e3d3b3dc1ead94dcf8263706c02f4ec">currentChanged</a> ( <span class="keyword">const</span> QModelIndex &amp; current, <span class="keyword">const</span> QModelIndex &amp; previous );
+<a name="l00052"></a>00052 
+<a name="l00057"></a><a class="code" href="class_graphic_view.html">00057</a> <span class="keyword">class </span><a class="code" href="class_graphic_view.html" title="GraphicView class implements a 3D representation of items from a model.">GraphicView</a> : <span class="keyword">public</span> QAbstractItemView
+<a name="l00058"></a>00058 {
+<a name="l00059"></a>00059     Q_OBJECT
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061 <span class="keyword">public</span>:
+<a name="l00062"></a>00062     <a class="code" href="class_graphic_view.html#0235093d39d21f50cffa9085f85c1486">GraphicView</a>( QWidget* parent = 0 );
+<a name="l00063"></a>00063     <a class="code" href="class_graphic_view.html#ec4e995f7c6d0f70b06595a32ef137d3">~GraphicView</a>();
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#4a1887ad8ba6c4ba8586d39455090b93">SetSceneGraph</a>( SoSelection* sceneGraphRoot );
+<a name="l00066"></a>00066     SbViewportRegion <a class="code" href="class_graphic_view.html#24f844b729dce45fb5324e88e070b395">GetViewportRegion</a>() <span class="keyword">const</span>;
+<a name="l00067"></a>00067     SoCamera* <a class="code" href="class_graphic_view.html#8465424dbbf8acc2153f5cd16f1b9b2a">GetCamera</a>() <span class="keyword">const</span>;
+<a name="l00068"></a>00068     <span class="keyword">virtual</span> QModelIndex <a class="code" href="class_graphic_view.html#9323b551d21ffbba079fee0f8d7e3c19">indexAt</a> ( <span class="keyword">const</span> QPoint &amp; point ) <span class="keyword">const</span>;
+<a name="l00069"></a>00069     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#dced9a7f29e256d82bbbe416589b25c6">scrollTo</a> ( <span class="keyword">const</span> QModelIndex &amp; index, ScrollHint hint = EnsureVisible );
+<a name="l00070"></a>00070     <span class="keyword">virtual</span> QRect <a class="code" href="class_graphic_view.html#76bbc2eb6e8e6df0745a2a38baf3e97e">visualRect</a> ( <span class="keyword">const</span> QModelIndex &amp; index ) <span class="keyword">const</span>;
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#2a57ae269ec852f4b7f934ea93a7385e">ViewDecoration</a>( <span class="keywordtype">bool</span> view );
+<a name="l00073"></a>00073     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#f6bdac62c7b7ca83c1c3d7ff34f98fa6">ViewCoordinateSystem</a>( <span class="keywordtype">bool</span> view );
 <a name="l00074"></a>00074 
-<a name="l00075"></a>00075 <span class="keyword">protected</span>:
-<a name="l00076"></a>00076     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#9306d0f4b02383e1adfdf40d87ba26f9">setSelection</a> ( <span class="keyword">const</span> QRect &amp; rect, QItemSelectionModel::SelectionFlags flags );
-<a name="l00077"></a>00077     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="class_graphic_view.html#4d748b9b47e48f45638fd1df80bdb4f8">horizontalOffset</a> () <span class="keyword">const</span>;
-<a name="l00078"></a>00078     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="class_graphic_view.html#38462d0ce318cfc3367d7bafee304551">verticalOffset</a>() <span class="keyword">const</span>;
-<a name="l00079"></a>00079     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_graphic_view.html#6d28cbc0381a9274bd9332346e465618">isIndexHidden</a> ( <span class="keyword">const</span> QModelIndex &amp; index ) <span class="keyword">const</span>;
-<a name="l00080"></a>00080     <span class="keyword">virtual</span> QModelIndex <a class="code" href="class_graphic_view.html#a2e447cb77de465c03a49623c45ff763">moveCursor</a> ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers );
-<a name="l00081"></a>00081     <span class="keyword">virtual</span> QRegion <a class="code" href="class_graphic_view.html#d4a42ba7f100e11c1294cc686a9b37f9">visualRegionForSelection</a> ( <span class="keyword">const</span> QItemSelection &amp; selection ) <span class="keyword">const</span>;
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 <span class="keyword">private</span>:
-<a name="l00084"></a><a class="code" href="class_graphic_view.html#50839251f7c85a3267c96e2a23452ef8">00084</a>     SoSelection* <a class="code" href="class_graphic_view.html#50839251f7c85a3267c96e2a23452ef8">m_sceneGraphRoot</a>;
-<a name="l00085"></a><a class="code" href="class_graphic_view.html#0a976fa7bbefdfb0dc1b39151aa04e0e">00085</a>     SoQtExaminerViewer* <a class="code" href="class_graphic_view.html#0a976fa7bbefdfb0dc1b39151aa04e0e">m_myRenderArea</a>;
-<a name="l00086"></a>00086 };
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088 <span class="preprocessor">#endif </span><span class="comment">/*GRAPHICVIEW_H_*/</span>
+<a name="l00075"></a>00075 <span class="keyword">protected</span> slots:
+<a name="l00076"></a>00076     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#79040df42dbc0f224beddf465453912e">dataChanged</a>(<span class="keyword">const</span> QModelIndex &amp;topLeft, <span class="keyword">const</span> QModelIndex &amp;bottomRight);
+<a name="l00077"></a>00077     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#2807922f552382d6de8632603dbfbf77">rowsInserted</a>(<span class="keyword">const</span> QModelIndex &amp;parent, <span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end);
+<a name="l00078"></a>00078     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#02fcfb4c4b9667661fe58a84276193f2">rowsAboutToBeRemoved</a>(<span class="keyword">const</span> QModelIndex &amp;parent, <span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end);
+<a name="l00079"></a>00079     <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#8e3d3b3dc1ead94dcf8263706c02f4ec">currentChanged</a> ( <span class="keyword">const</span> QModelIndex &amp; current, <span class="keyword">const</span> QModelIndex &amp; previous );
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081 <span class="keyword">protected</span>:
+<a name="l00082"></a>00082     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_graphic_view.html#9306d0f4b02383e1adfdf40d87ba26f9">setSelection</a> ( <span class="keyword">const</span> QRect &amp; rect, QItemSelectionModel::SelectionFlags flags );
+<a name="l00083"></a>00083     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="class_graphic_view.html#4d748b9b47e48f45638fd1df80bdb4f8">horizontalOffset</a> () <span class="keyword">const</span>;
+<a name="l00084"></a>00084     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="class_graphic_view.html#38462d0ce318cfc3367d7bafee304551">verticalOffset</a>() <span class="keyword">const</span>;
+<a name="l00085"></a>00085     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_graphic_view.html#6d28cbc0381a9274bd9332346e465618">isIndexHidden</a> ( <span class="keyword">const</span> QModelIndex &amp; index ) <span class="keyword">const</span>;
+<a name="l00086"></a>00086     <span class="keyword">virtual</span> QModelIndex <a class="code" href="class_graphic_view.html#a2e447cb77de465c03a49623c45ff763">moveCursor</a> ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers );
+<a name="l00087"></a>00087     <span class="keyword">virtual</span> QRegion <a class="code" href="class_graphic_view.html#d4a42ba7f100e11c1294cc686a9b37f9">visualRegionForSelection</a> ( <span class="keyword">const</span> QItemSelection &amp; selection ) <span class="keyword">const</span>;
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 <span class="keyword">private</span>:
+<a name="l00090"></a><a class="code" href="class_graphic_view.html#50839251f7c85a3267c96e2a23452ef8">00090</a>     SoSelection* <a class="code" href="class_graphic_view.html#50839251f7c85a3267c96e2a23452ef8">m_sceneGraphRoot</a>;
+<a name="l00091"></a><a class="code" href="class_graphic_view.html#0a976fa7bbefdfb0dc1b39151aa04e0e">00091</a>     SoQtExaminerViewer* <a class="code" href="class_graphic_view.html#0a976fa7bbefdfb0dc1b39151aa04e0e">m_myRenderArea</a>;
+<a name="l00092"></a>00092 };
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 <span class="preprocessor">#endif </span><span class="comment">/*GRAPHICVIEW_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 20 16:46:15 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:37 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
