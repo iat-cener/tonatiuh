@@ -1,22 +1,16 @@
 
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
-unix{
-	INCLUDEPATH += 	. \
-					../Tonatiuh/src\ 
-					src
-	
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-}
 
-win32{
-DEFINES+= COIN_DLL SOQT_DLL
 INCLUDEPATH += . \
 				src \
-				../Tonatiuh/src\ 
-				C:/msys/usr/local/include 
-	
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
+				../Tonatiuh/src \ 
+				$$(TDE_ROOT)/local/include
+
+LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+ 
+win32{
+	DEFINES+= COIN_DLL SOQT_DLL
 }
 
 # Input
