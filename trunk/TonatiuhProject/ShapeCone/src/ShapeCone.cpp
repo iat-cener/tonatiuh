@@ -85,21 +85,30 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 	Trace trace( "ShapeConeFactory::Intersect", false );
 
 	// Compute quadratic ShapeCone coefficients
-	double theta = atan2( ( m_height.getValue() ), (m_baseradius.getValue()-m_topradius.getValue()));
-	double sintheta = sin (theta);
-	double costheta = cos (theta);
+	double theta = atan2( m_height.getValue(), ( m_baseradius.getValue()-m_topradius.getValue() ) );
+	double invTan = 1 / tan(theta);
 
-	double A = ( (	objectRay.direction.x*objectRay.direction.x + objectRay.direction.y*objectRay.direction.y ) * costheta*costheta )
-				-( objectRay.direction.z*objectRay.direction.z* sintheta*sintheta );
-    double B = 2.0 * (  (((objectRay.origin.x*objectRay.direction.x)+(objectRay.origin.y*objectRay.direction.y))*costheta*costheta)-(objectRay.origin.z*objectRay.direction.z*sintheta*sintheta) );
-	double C = (((objectRay.origin.x*objectRay.origin.x)+(objectRay.origin.y*objectRay.origin.y))*costheta*costheta)-(objectRay.origin.z*objectRay.origin.z*sintheta*sintheta);
+	double A = ( objectRay.direction.x * objectRay.direction.x )
+				+ ( objectRay.direction.y * objectRay.direction.y  )
+				- ( objectRay.direction.z * objectRay.direction.z * invTan * invTan);
+	double B = 2.0 * ( ( objectRay.origin.x * objectRay.direction.x )
+						+ ( objectRay.origin.y * objectRay.direction.y )
+						+ ( m_baseradius.getValue() * invTan * objectRay.direction.z )
+						- ( invTan * invTan * objectRay.origin.z * objectRay.direction.z ) );
+	double C = ( objectRay.origin.x * objectRay.origin.x )
+				+ ( objectRay.origin.y * objectRay.origin.y )
+				- ( m_baseradius.getValue() * m_baseradius.getValue() )
+				+ ( 2 * m_baseradius.getValue() * invTan * objectRay.origin.z )
+				- ( invTan * invTan * objectRay.origin.z * objectRay.origin.z );
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
 	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
+
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
+
     double thit = ( t0 > objectRay.mint )? t0 : t1 ;
     if( thit > objectRay.maxt ) return false;
 
