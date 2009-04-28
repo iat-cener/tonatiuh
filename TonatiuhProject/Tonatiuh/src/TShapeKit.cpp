@@ -44,12 +44,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "TCube.h"
-#include "tgf.h"
 #include "TDefaultPhotonMap.h"
 #include "TMaterial.h"
 #include "Trace.h"
-#include "Transform.h"
-#include "TPhotonMap.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 

@@ -42,9 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoSeparatorKit.h>
 #include <Inventor/SbBox.h>
 
-class DifferentialGeometry;
-class RandomDeviate;
-class Ray;
 
 class TSeparatorKit : public SoSeparatorKit
 {
@@ -56,9 +53,6 @@ class TSeparatorKit : public SoSeparatorKit
 public:
     TSeparatorKit();
     static void initClass();
-
-    /*bool IntersectP( const Ray& ray ) const;
-	Ray* Intersect( const Ray& ray, RandomDeviate& rand ) const;*/
 
 protected:
     virtual ~TSeparatorKit();

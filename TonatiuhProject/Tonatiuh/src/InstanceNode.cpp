@@ -39,16 +39,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 
 #include <QMap>
-#include <QPair>
 
-#include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
 
 #include "InstanceNode.h"
 #include "Ray.h"
 #include "Trace.h"
 #include "Transform.h"
-#include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 

@@ -44,11 +44,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/SbBox.h>
 #include "TPhotonMap.h"
 
-class DifferentialGeometry;
 class RandomDeviate;
 class Ray;
-class NormalVector;
-class Point3D;
 
 //!  TShapeKit class groups what is necessary to the shape.
 /*!
@@ -65,7 +62,7 @@ public:
     static void initClass();
 
     bool IntersectP( const Ray& ray ) const;
-	Ray* Intersect( const Ray& ray, RandomDeviate& rand ) const;
+	Ray* Intersect( const Ray& objectRay, RandomDeviate& rand ) const;
 
 private:
     virtual ~TShapeKit();
