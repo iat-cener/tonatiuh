@@ -6,7 +6,7 @@ INCLUDEPATH += 	. \
 				src \
 				../Tonatiuh/src \
 				$$(TDE_ROOT)/local/include
-				
+				 				
 LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 
 win32 {
@@ -25,6 +25,7 @@ HEADERS = *.h \
            	../Tonatiuh/src/Ray.h \
            	../Tonatiuh/src/RefCount.h \
            	../Tonatiuh/src/tgf.h \
+           	../Tonatiuh/src/TMaterial.h \
            	../Tonatiuh/src/Trace.h  \
            	../Tonatiuh/src/Transform.h \
            	../Tonatiuh/src/TShape.h \ 
@@ -42,6 +43,7 @@ SOURCES = *.cpp  \
            	../Tonatiuh/src/Ray.cpp \
            	../Tonatiuh/src/RefCount.cpp \
            	../Tonatiuh/src/tgf.cpp \
+           	../Tonatiuh/src/TMaterial.cpp \
            	../Tonatiuh/src/Trace.cpp  \
            	../Tonatiuh/src/Transform.cpp \
            	../Tonatiuh/src/TShape.cpp \ 
