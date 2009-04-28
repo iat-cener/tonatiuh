@@ -1991,7 +1991,11 @@ void MainWindow::ReadSettings()
     UpdateRecentFileActions();
 
 }
-
+/**
+ * Creates a command for the modification of a node parameter.
+ *
+ *The command is stored at the stack.
+ **/
 void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart )
 {
     Trace trace( "MainWindow::parameterModified", false );
@@ -2052,7 +2056,7 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 					nodeTransform->scaleFactor.getValue(),
 					nodeTransform->scaleOrientation.getValue(),
 					nodeTransform->center.getValue() );
-			pathTransformation = pathTransformation.multRight( nodeMatrix );
+			pathTransformation = pathTransformation.multLeft( nodeMatrix );
 
 			Transform shapeObjectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
 								pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
