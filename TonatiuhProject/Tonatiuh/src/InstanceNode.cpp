@@ -170,14 +170,14 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 	//Check if the ray intersects with the BoundingBox
 	SbBox3f box = instanceData.first;
 
-	double t0 = ray.mint;
-	double t1 = ray.maxt;
+	double t0 = objectRay.mint;
+	double t1 = objectRay.maxt;
 
 	for( int i = 0; i < 3; ++i )
 	{
-		double invRayDir = 1.0 / ray.direction[i];
-		double tNear = ( box.getMin()[i] - ray.origin[i] ) * invRayDir;
-		double tFar = ( box.getMax()[i] - ray.origin[i] ) * invRayDir;
+		double invRayDir = 1.0 / objectRay.direction[i];
+		double tNear = ( box.getMin()[i] - objectRay.origin[i] ) * invRayDir;
+		double tFar = ( box.getMax()[i] - objectRay.origin[i] ) * invRayDir;
 		if( tNear > tFar ) std::swap( tNear, tFar );
 		t0 = tNear > t0 ? tNear : t0;
 		t1 = tFar < t1 ? tFar : t1;
@@ -193,9 +193,6 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 		Ray* childReflected = 0;
 
 		//Check if the ray intersects with the BoundingBox
-		//TSeparatorKit* separatorNode = dynamic_cast< TSeparatorKit* > ( GetNode() );
-		//if( !separatorNode->IntersectP( objectRay ) ) return 0;
-
 		for( int index = 0; index < children.size(); index++ )
 		{
 			InstanceNode* intersectedChild = 0;
