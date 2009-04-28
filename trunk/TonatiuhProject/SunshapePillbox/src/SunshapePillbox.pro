@@ -10,9 +10,10 @@ win32{
 	INCLUDEPATH += . \
 					src \
 					../Tonatiuh/src \ 
-					c:/msys/usr/local/include 
+					$$(TDE_ROOT)/local/include
+
 				
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
+	LIBS +=-L$$(TDE_ROOT)/local/lib -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
 }
 unix{
 	INCLUDEPATH += 	. \
