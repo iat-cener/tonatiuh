@@ -14,7 +14,7 @@ INCLUDEPATH += . \
 			../Tonatiuh/src\ 
 			$$(TDE_ROOT)/local/include 
 	
-LIBS += -L$$(TDE_ROOT)\local\lib -lSoQt -lCoin 
+LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin 
 			
 
 # Input
@@ -30,6 +30,7 @@ HEADERS = *.h \
 			../Tonatiuh/src/RefCount.h \
 			../Tonatiuh/src/Transform.h \
 			../Tonatiuh/src/tgf.h \
+			../Tonatiuh/src/TMaterial.h \
 			../Tonatiuh/src/TPhotonMap.h \
 			../Tonatiuh/src/Trace.h \
 			../Tonatiuh/src/TShape.h \
@@ -48,6 +49,7 @@ SOURCES = *.cpp \
 			../Tonatiuh/src/RefCount.cpp \
 			../Tonatiuh/src/Transform.cpp \
 			../Tonatiuh/src/tgf.cpp \
+			../Tonatiuh/src/TMaterial.cpp \
 			../Tonatiuh/src/TPhotonMap.cpp \
 			../Tonatiuh/src/Trace.cpp \
 			../Tonatiuh/src/TShape.cpp \
