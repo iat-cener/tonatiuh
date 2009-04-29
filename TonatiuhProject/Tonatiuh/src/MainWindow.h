@@ -45,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class Document;
 class GraphicView;
 class InstanceNode;
-class TDefaultPhotonMap;
 class QDir;
 class QUndoStack;
 class QUndoView;
@@ -57,6 +56,7 @@ class SoDragger;
 class SoSelection;
 class SoSeparator;
 class TMaterialFactory;
+class TPhotonMap;
 class TPhotonMapFactory;
 class Transform;
 class TShapeFactory;
@@ -169,7 +169,6 @@ protected:
 private:
     void SetupActions();
     void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
-    void SetupActionInsertPhotonMap( TPhotonMapFactory* pTPhotonMapFactory );
     void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
     void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
     void SetupMenus();
@@ -215,11 +214,18 @@ private:
     QToolBar* m_photonMapToolBar;
     QToolBar* m_shapeToolBar;
     QToolBar* m_trackersToolBar;
+
+	QVector< TPhotonMapFactory* > m_TPhotonMapFactoryList;
     QVector< TShapeFactory* > m_TFlatShapeFactoryList;
 	QVector< TSunShapeFactory* > m_TSunshapeFactoryList;
+
     SceneModel* m_sceneModel;
     QItemSelectionModel* m_selectionModel;
-    TDefaultPhotonMap* m_photonMap;
+
+    TPhotonMap* m_photonMap;
+    int m_selectedPhotonMap;
+    bool m_increasePhotonMap;
+
     SoSeparator* m_pRays;
     SoSeparator* m_pGrid;
     RandomDeviate* m_pRand;
@@ -227,7 +233,6 @@ private:
     QStringList* m_manipulators_Buffer;
     unsigned long m_tracedRays;
     unsigned long m_raysPerIteration;
-    bool m_increasePhotonMap;
     double m_fraction;
     bool m_drawPhotons;
     std::vector<GraphicView*> m_graphicView;

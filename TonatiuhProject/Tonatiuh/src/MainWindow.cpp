@@ -76,7 +76,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdDelete.h"
 #include "CmdDeleteTracker.h"
 #include "CmdInsertMaterial.h"
-#include "CmdInsertPhotonMap.h"
 #include "CmdInsertSeparatorKit.h"
 #include "CmdInsertShape.h"
 #include "CmdInsertShapeKit.h"
@@ -91,7 +90,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "MainWindow.h"
 #include "MersenneTwister.h"
 #include "NodeNameDelegate.h"
-#include "TDefaultPhotonMap.h"
 #include "ProgressUpdater.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
@@ -137,10 +135,10 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
 :QMainWindow( parent, flags ), m_currentFile( 0 ), m_recentFiles( 0 ),
 m_recentFileActions( 0 ), m_document( 0 ), m_commandStack( 0 ),
 m_commandView( 0 ), m_materialsToolBar( 0 ), m_shapeToolBar( 0 ),m_trackersToolBar( 0 ),
-m_TFlatShapeFactoryList( 0 ), m_TSunshapeFactoryList( 0 ),m_sceneModel( 0 ),
-m_selectionModel( 0 ), m_photonMap( 0 ), m_pRays( 0 ), m_pGrid( 0 ), m_pRand( 0 ),
-m_coinNode_Buffer( 0 ),m_manipulators_Buffer( 0 ), m_tracedRays( 0 ),
-m_raysPerIteration( 1000 ), m_increasePhotonMap( false ), m_fraction( 10 ),
+m_TPhotonMapFactoryList( 0 ), m_TFlatShapeFactoryList( 0 ), m_TSunshapeFactoryList( 0 ),m_sceneModel( 0 ),
+m_selectionModel( 0 ), m_photonMap( 0 ), m_selectedPhotonMap( -1 ), m_increasePhotonMap( false ),
+m_pRays( 0 ), m_pGrid( 0 ), m_pRand( 0 ), m_coinNode_Buffer( 0 ),m_manipulators_Buffer( 0 ),
+m_tracedRays( 0 ), m_raysPerIteration( 1000 ), m_fraction( 10 ),
 m_drawPhotons( false ), m_graphicView( 0 ), m_focusView( 0 )
 {
 
@@ -476,8 +474,8 @@ void MainWindow::LoadPlugins( )
         	{
         		TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
         		if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap Plugin not recognized" );
-        		SetupActionInsertPhotonMap( pTPhotonMapFactory );
         		pTPhotonMapFactory->CreateTPhotonMap();
+				m_TPhotonMapFactoryList.push_back( pTPhotonMapFactory );
         	}
         	if( plugin->inherits("TTrackerFactory") )
         	{
@@ -552,33 +550,6 @@ void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory 
 	m_materialsToolBar->addSeparator();
     connect( actionInsertMaterial, SIGNAL( triggered() ), actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
 	connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ), this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
-}
-
-void MainWindow::SetupActionInsertPhotonMap( TPhotonMapFactory* pTPhotonMapFactory )
-{
-	Trace trace( "MainWindow::SetupActionInsertPhotonMap", false );
-	ActionInsertPhotonMap* actionInsertPhotonMap = new ActionInsertPhotonMap( pTPhotonMapFactory->TPhotonMapName(), this, pTPhotonMapFactory );
-	actionInsertPhotonMap->setIcon( pTPhotonMapFactory->TPhotonMapIcon() );
-	QMenu* menuPhotonMap = menuInsert->findChild< QMenu* >( "photonmapMenu" );
-	if( !menuPhotonMap )
-	{
-		menuPhotonMap = new QMenu( "PhotonMap", menuInsert );
-		menuPhotonMap->setObjectName( "photonmapMenu" );
-		menuInsert->addMenu( menuPhotonMap );
-
-		m_photonMapToolBar = new QToolBar( menuPhotonMap );
-		if( m_photonMapToolBar )
-		{
-			m_photonMapToolBar->setObjectName( QString::fromUtf8( "photonMapToolBar" ) );
-			m_photonMapToolBar->setOrientation( Qt::Horizontal );
-			addToolBar( m_photonMapToolBar );
-		}
-	}
-	menuPhotonMap->addAction( actionInsertPhotonMap );
-	m_photonMapToolBar->addAction( actionInsertPhotonMap );
-	m_photonMapToolBar->addSeparator();
-	connect( actionInsertPhotonMap, SIGNAL( triggered() ), actionInsertPhotonMap, SLOT( OnActionInsertPhotonMapTriggered() ) );
-	connect( actionInsertPhotonMap, SIGNAL( CreatePhotonMap( TPhotonMapFactory*) ), this, SLOT( CreatePhotonMap(TPhotonMapFactory*) ) );
 }
 
 void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
@@ -908,7 +879,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
     //Compute objects bounding boxes iteratively
 	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
-	//SetBoundigBoxes( rootSeparatorInstance, region );
 
 	QModelIndex rootIndex = treeView->rootIndex();
 	QPersistentModelIndex rootSepartorIndex = m_sceneModel->index ( 1, 0 );
@@ -916,12 +886,23 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< SbBox3f, Transform* > >();
 	ComputeSceneTreeMap( &rootSepartorIndex, region, sceneMap );
 
+	//Check if there is a photon Map type selected;
+	if( m_selectedPhotonMap == -1 ) return;
+
 	//Create the photon map where photons are going to be stored
 	if ( !m_increasePhotonMap )
 	{
 		delete m_photonMap;
-		m_photonMap = new TDefaultPhotonMap(  );
+		m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
 		m_tracedRays = 0;
+	}
+	else
+	{
+		if( !m_photonMap )
+		{
+			m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
+			m_tracedRays = 0;
+		}
 	}
 	m_tracedRays += m_raysPerIteration;
 
@@ -1008,7 +989,7 @@ void MainWindow::on_actionResults_triggered()
 	}
 
 	long unsigned nearestPhotons = 100;
-	if ( nearestPhotons > m_photonMap->StoredPhotons().getValue() )
+	if ( nearestPhotons > m_photonMap->StoredPhotons() )
 	{
 		QMessageBox::information( this, "Tonatiuh Action",
 	                          "Flux requested with more points than are stored in photon map", 1);
@@ -1052,7 +1033,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 		 }
 
 		QDataStream out( &exportFile );
-		for( long unsigned i=1; i<= m_photonMap->StoredPhotons().getValue(); i++ )
+		for( long unsigned i=1; i<= m_photonMap->StoredPhotons(); i++ )
 		{
 			Photon* node = m_photonMap->GetPhoton(i);
 			Point3D photon = node->m_pos;
@@ -1065,16 +1046,22 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 	 }
 }
 
+/**
+ * Action slot to open a Ray Trace Options dialog.
+ */
 void MainWindow::on_actionRayTraceOptions_triggered()
 {
-	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_increasePhotonMap, this );
+	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedPhotonMap, m_increasePhotonMap, this );
 	int dialog_code = options->exec();
 	if( !dialog_code ) return;
 
 	m_raysPerIteration = options->GetNumRays();
-    m_increasePhotonMap = options->IncreasePhotonMap();
-    m_fraction = options->GetDrawRays();
+
+    m_fraction = options->GetRaysFactionToDraw();
     m_drawPhotons = options->DrawPhotons();
+
+	m_selectedPhotonMap =options->GetPhotonMapFactoryIndex();
+    m_increasePhotonMap = options->IncreasePhotonMap();
 }
 
 //View menu actions
@@ -1238,7 +1225,7 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
 void MainWindow::CreatePhotonMap( TPhotonMapFactory* pTPhotonMapFactory )
 {
 	Trace trace( "MainWindow::CreatePhotonMap", false);
-    QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
+    /*QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
 								m_sceneModel->index (0,0,treeView->rootIndex()) : treeView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
@@ -1262,7 +1249,7 @@ void MainWindow::CreatePhotonMap( TPhotonMapFactory* pTPhotonMapFactory )
         m_commandStack->push( createPhotonMap );
 
         m_document->SetDocumentModified( true );
-    }
+    }*/
 }
 
 void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )

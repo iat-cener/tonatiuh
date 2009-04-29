@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "MainWindow.h"
 #include "TDefaultMaterial.h"
-#include "TDefaultPhotonMap.h"
 #include "TDefaultSunShape.h"
 #include "TDefaultTracker.h"
 #include "TCube.h"
@@ -67,8 +66,6 @@ int main( int argc, char ** argv )
 
 	TMaterial::initClass();
 	TDefaultMaterial::initClass();
-	TPhotonMap::initClass();
-	TDefaultPhotonMap::initClass();
 	TSeparatorKit::initClass();
 	TShape::initClass();
 	TCube::initClass();

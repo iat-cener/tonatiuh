@@ -51,21 +51,22 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class QString;
 
-class TPhotonMap : public SoNode
+//!  TPhotonMap is the interface of the structures to store photons.
+/*!
+  This interface define the functions needed to a correct use and access to the photon map.
+  */
+
+class TPhotonMap
 {
-    SO_NODE_ABSTRACT_HEADER(TPhotonMap);
 
 public:
-    static void initClass();
+	TPhotonMap();
+    virtual ~TPhotonMap();
 
 	virtual QString getIcon() = 0;
 	virtual void store( Photon* photon ) = 0;
 	virtual Photon* GetPhoton( int index ) const = 0;
-	virtual SoSFInt32 StoredPhotons() const = 0 ;
-
-protected:
-	TPhotonMap();
-    virtual ~TPhotonMap();
+	virtual unsigned long StoredPhotons() const = 0 ;
 
 };
 

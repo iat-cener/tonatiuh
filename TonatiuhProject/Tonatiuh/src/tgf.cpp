@@ -188,7 +188,7 @@ SoSeparator* tgf::DrawPhotonMapPoints( const TPhotonMap& map )
 	SoSeparator* drawpoints=new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
-	for( unsigned long i = 1 ; i < map.StoredPhotons().getValue(); i++ )
+	for( unsigned long i = 1 ; i < map.StoredPhotons(); i++ )
 	{
 		Point3D photon = map.GetPhoton(i)->m_pos;
 		points->point.set1Value( i, photon.x, photon.y, photon.z );
@@ -226,7 +226,7 @@ SoSeparator* tgf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 
 	unsigned long numberOfPhoton = 0;
 
-	for( unsigned long i = 1; i<= map.StoredPhotons().getValue(); i++ )
+	for( unsigned long i = 1; i<= map.StoredPhotons(); i++ )
 	//for( unsigned long i = 0; i < map.StoredPhotons(); i++ )
 	{
 
