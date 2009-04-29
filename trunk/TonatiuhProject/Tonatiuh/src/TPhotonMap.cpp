@@ -36,28 +36,24 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/SoType.h>
-
 #include "TPhotonMap.h"
 #include "Trace.h"
 
-SO_NODE_ABSTRACT_SOURCE(TPhotonMap);
 
-void TPhotonMap::initClass()
-{
-	Trace trace( "TPhotonMap::initClass", false );
-	//SoType::createType(SoType::badType(), "TPhotonMap" );
-	SO_NODE_INIT_ABSTRACT_CLASS(TPhotonMap, SoNode, "Node");
-
-}
-
+/**
+ * Constructor.
+ *
+ */
 TPhotonMap::TPhotonMap()
 {
 	Trace trace( "TPhotonMap::TPhotonMap", false );
-	//SO_NODE_CONSTRUCTOR( TPhotonMap );
 
 }
 
+/**
+ * Destructor.
+ *
+ */
 TPhotonMap::~TPhotonMap()
 {
 	Trace trace( "TPhotonMap::~TPhotonMap", false );

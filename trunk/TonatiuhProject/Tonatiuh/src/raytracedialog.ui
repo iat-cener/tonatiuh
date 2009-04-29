@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>345</width>
-    <height>340</height>
+    <width>354</width>
+    <height>369</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -15,7 +15,7 @@
   <property name="sizeGripEnabled" >
    <bool>true</bool>
   </property>
-  <widget class="QGroupBox" name="raysGroupBox" >
+  <widget class="QGroupBox" name="raysGroup" >
    <property name="geometry" >
     <rect>
      <x>10</x>
@@ -45,12 +45,15 @@
      <rect>
       <x>150</x>
       <y>30</y>
-      <width>100</width>
+      <width>150</width>
       <height>25</height>
      </rect>
     </property>
     <property name="layoutDirection" >
      <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="alignment" >
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
     <property name="minimum" >
      <number>1</number>
@@ -66,23 +69,23 @@
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="photonmapGroupBox" >
+  <widget class="QGroupBox" name="photonmapGroup" >
    <property name="geometry" >
     <rect>
      <x>10</x>
      <y>185</y>
      <width>321</width>
-     <height>100</height>
+     <height>131</height>
     </rect>
    </property>
    <property name="title" >
     <string>PhotonMap</string>
    </property>
-   <widget class="QRadioButton" name="newMapRadioButton" >
+   <widget class="QRadioButton" name="newMapRadio" >
     <property name="geometry" >
      <rect>
-      <x>20</x>
-      <y>30</y>
+      <x>150</x>
+      <y>60</y>
       <width>150</width>
       <height>25</height>
      </rect>
@@ -94,17 +97,53 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="increaseMapRadioButton" >
+   <widget class="QRadioButton" name="increaseMapRadio" >
     <property name="geometry" >
      <rect>
-      <x>20</x>
-      <y>60</y>
-      <width>100</width>
+      <x>150</x>
+      <y>90</y>
+      <width>141</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text" >
-     <string>Increase</string>
+     <string>Increase Photon Map</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="photonmapTypeCombo" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>30</y>
+      <width>150</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="photonmapTypeLabel" >
+    <property name="geometry" >
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>46</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Type:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="constructionLabel" >
+    <property name="geometry" >
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>150</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Contruction:</string>
     </property>
    </widget>
   </widget>
@@ -112,7 +151,7 @@
    <property name="geometry" >
     <rect>
      <x>110</x>
-     <y>300</y>
+     <y>330</y>
      <width>221</width>
      <height>25</height>
     </rect>
@@ -121,7 +160,7 @@
     <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QGroupBox" name="raysGroupBox_2" >
+  <widget class="QGroupBox" name="drawBox" >
    <property name="geometry" >
     <rect>
      <x>10</x>
@@ -133,7 +172,7 @@
    <property name="title" >
     <string>Draw</string>
    </property>
-   <widget class="QLabel" name="numberRaysLabel_2" >
+   <widget class="QLabel" name="drawFractionLabel" >
     <property name="geometry" >
      <rect>
       <x>20</x>
@@ -146,7 +185,7 @@
      <string>Rays to draw (%):</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="photonsCheckBox" >
+   <widget class="QCheckBox" name="photonsCheck" >
     <property name="geometry" >
      <rect>
       <x>20</x>
@@ -159,14 +198,17 @@
      <string>Draw photons</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="drawSpinBox" >
+   <widget class="QDoubleSpinBox" name="drawSpin" >
     <property name="geometry" >
      <rect>
       <x>150</x>
       <y>30</y>
-      <width>100</width>
+      <width>150</width>
       <height>25</height>
      </rect>
+    </property>
+    <property name="alignment" >
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
     <property name="maximum" >
      <double>100.000000000000000</double>
@@ -182,10 +224,10 @@
  </widget>
  <tabstops>
   <tabstop>raysSpinBox</tabstop>
-  <tabstop>drawSpinBox</tabstop>
-  <tabstop>photonsCheckBox</tabstop>
-  <tabstop>newMapRadioButton</tabstop>
-  <tabstop>increaseMapRadioButton</tabstop>
+  <tabstop>drawSpin</tabstop>
+  <tabstop>photonsCheck</tabstop>
+  <tabstop>newMapRadio</tabstop>
+  <tabstop>increaseMapRadio</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>

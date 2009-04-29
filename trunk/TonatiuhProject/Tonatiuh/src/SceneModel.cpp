@@ -48,10 +48,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "PathWrapper.h"
 #include "SceneModel.h"
 #include "tgf.h"
-#include "TDefaultPhotonMap.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
-#include "TPhotonMap.h"
 #include "Trace.h"
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
@@ -345,11 +343,6 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 				TMaterial* material = static_cast<TMaterial*>( coinNode );
 				return QIcon(material->getIcon());
 			}
-			else if( coinNode->getTypeId().isDerivedFrom(TPhotonMap::getClassTypeId() ) )
-			{
-				TPhotonMap* photonmap = static_cast<TPhotonMap*>( coinNode );
-				return QIcon(photonmap->getIcon());
-			}
      	}
     }
     return QVariant();
@@ -561,24 +554,12 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	switch ( type )
 	{
 		case tgc::Copied :
-			if( coinNode.getTypeId().isDerivedFrom(TPhotonMap::getClassTypeId() ) )
-			{
-				TDefaultPhotonMap* newmap = new TDefaultPhotonMap;
-				coinChild = newmap;
-			}
-			else
-				coinChild = dynamic_cast< SoNode* >( coinNode.copy( true ) );
+			coinChild = dynamic_cast< SoNode* >( coinNode.copy( true ) );
 			break;
 
 		case tgc::Shared :
 		default :
-			if( coinNode.getTypeId().isDerivedFrom(TPhotonMap::getClassTypeId() ) )
-			{
-				TDefaultPhotonMap* newmap = new TDefaultPhotonMap;
-				coinChild = newmap;
-			}
-			else
-				coinChild = &coinNode;
+			coinChild = &coinNode;
 		    break;
 	}
 	if( ! coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
@@ -607,17 +588,7 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
     		}
 			coinParent.setPart("material", coinChild );
 		}
-		else if ( coinChild->getTypeId().isDerivedFrom( TPhotonMap::getClassTypeId() ) )
-		{
-			TPhotonMap* photonMap = static_cast< TPhotonMap* >( shapeKit->getPart( "photonMap", false ) );
-			if (photonMap)
-			{
-    			QMessageBox::warning( 0, tr( "Tonatiuh warning" ), tr( "This TShapeKit already contains a photonmap" ) );
-    			return;
-			}
-			TDefaultPhotonMap* newmap = new TDefaultPhotonMap;
-			coinParent.setPart("photonMap", newmap );
-		}
+
 	}
 	else
 	{

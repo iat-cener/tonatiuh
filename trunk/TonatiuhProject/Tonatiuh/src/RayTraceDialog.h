@@ -43,7 +43,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QDialog>
 #include <QString>
+#include <QVector>
 
+class TPhotonMapFactory;
 //!  RayTraceDialog class is the dialog to set ray trace options.
 /*!
   RayTraceDialog allow to the user modify ray tracer default options.
@@ -57,13 +59,16 @@ class RayTraceDialog: public QDialog, private Ui::RayTraceDialog
 
 public:
 	RayTraceDialog( QWidget * parent = 0, Qt::WindowFlags f = 0 );
-	RayTraceDialog( int numRays, double fraction, bool drawPhotons, bool increasePhotonMap, QWidget * parent = 0, Qt::WindowFlags f = 0 );
+	RayTraceDialog( int numRays, double fraction, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedPhotonMapFactory = 0, bool increasePhotonMap = false, QWidget * parent = 0, Qt::WindowFlags f = 0 );
     ~RayTraceDialog();
 
-    int GetNumRays() const { return m_numRays; };
-    double GetDrawRays() const { return m_fraction; };
-    bool IncreasePhotonMap() const { return m_increasePhotonMap; };
-    bool DrawPhotons() const {return m_drawPhotons; };
+    int GetNumRays() const;
+
+    double GetRaysFactionToDraw() const;
+    bool DrawPhotons() const;
+
+    int GetPhotonMapFactoryIndex() const;
+    bool IncreasePhotonMap() const;;
 
 public slots:
 	void applyChanges( QAbstractButton* button );
@@ -71,9 +76,12 @@ public slots:
 
 private:
 	int m_numRays; /*!< Number of rays to trace. */
+
 	double m_fraction; /*!< Faction of traced rays to draw. */
-	bool m_increasePhotonMap; /*!<This property holds whether traced phtons are going to added to the old photon map. */
 	bool m_drawPhotons;  /*!<This property holds whether photons are going to be drawn. */
+
+	int m_selectedPhotonMapFactory; /*!< The index of factory selected from TPhotonMapFactory list. */
+	bool m_increasePhotonMap; /*!<This property holds whether traced phtons are going to added to the old photon map. */
 
 };
 

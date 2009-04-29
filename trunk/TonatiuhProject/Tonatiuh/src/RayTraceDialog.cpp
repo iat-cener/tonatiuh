@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QDir>
 
 #include "RayTraceDialog.h"
+#include "TPhotonMapFactory.h"
 #include "Trace.h"
 
 /**
@@ -49,7 +50,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * The variables take the default values.
  */
 RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f )
+:QDialog ( parent, f ), m_numRays( 0 ), m_fraction( 0.0 ), m_drawPhotons( false ), m_selectedPhotonMapFactory( -1 ), m_increasePhotonMap( false )
 {
 	Trace( "RayTraceDialog::RayTraceDialog", false );
 
@@ -63,20 +64,26 @@ RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
  *
  * The variables take the values specified by \a numRats, \a faction, \a drawPhotons and \a increasePhotonMap.
  */
-RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ), m_numRays( numRays ), m_fraction( fraction ), m_increasePhotonMap( increasePhotonMap ), m_drawPhotons( drawPhotons )
+RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedPhotonMapFactory, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
+:QDialog ( parent, f ), m_numRays( numRays ), m_fraction( fraction ), m_drawPhotons( drawPhotons ), m_selectedPhotonMapFactory( selectedPhotonMapFactory ), m_increasePhotonMap( increasePhotonMap )
 {
 	Trace( "RayTraceDialog::RayTraceDialog", false );
 
 	setupUi( this );
 	raysSpinBox->setValue( m_numRays );
-	drawSpinBox->setValue( m_fraction );
-	photonsCheckBox->setChecked( m_drawPhotons );
+	drawSpin->setValue( m_fraction );
+	photonsCheck->setChecked( m_drawPhotons );
+
+	for( int index = 0; index < photonMapFactoryList.size(); index++ )
+	{
+		photonmapTypeCombo->addItem( photonMapFactoryList[index]->TPhotonMapIcon(), photonMapFactoryList[index]->TPhotonMapName() );
+	}
+	photonmapTypeCombo->setCurrentIndex( m_selectedPhotonMapFactory );
 
 	if ( m_increasePhotonMap )
-		increaseMapRadioButton->setChecked( true );
+		increaseMapRadio->setChecked( true );
 	else
-		newMapRadioButton->setChecked( true );
+		newMapRadio->setChecked( true );
 
 	connect( this, SIGNAL( accepted() ), this, SLOT( saveChanges() ) );
 	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( applyChanges() ) );
@@ -88,6 +95,52 @@ RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, 
 RayTraceDialog::~RayTraceDialog()
 {
 	Trace( "RayTraceDialog::~RayTraceDialog", false );
+}
+
+/**
+ * Returns the number of rays to trace.
+ */
+int RayTraceDialog::GetNumRays() const
+{
+	Trace( "RayTraceDialog::GetNumRays", false );
+	return m_numRays;
+}
+
+/**
+ * Returns the fraction of trace rays to draw.
+ */
+double RayTraceDialog::GetRaysFactionToDraw() const
+{
+	Trace( "RayTraceDialog::GetRaysFactionToDraw", false );
+	return m_fraction;
+};
+
+/**
+ * Returns if the photons are going to be represented.
+ */
+bool RayTraceDialog::DrawPhotons() const
+{
+	Trace( "RayTraceDialog::DrawPhotons", false );
+	return m_drawPhotons;
+}
+
+/**
+ * Returns the factory to create a new photon map.
+ */
+int RayTraceDialog::GetPhotonMapFactoryIndex() const
+{
+	Trace( "RayTraceDialog::GetPhotonMapFactory", false );
+
+	return m_selectedPhotonMapFactory;
+}
+
+/**
+ * Returns if the the tracer use the same photon map used in the previous tracer process.
+ */
+bool RayTraceDialog::IncreasePhotonMap() const
+{
+	Trace( "RayTraceDialog::IncreasePhotonMap", false );
+	return m_increasePhotonMap;
 }
 
 /**
@@ -108,10 +161,11 @@ void RayTraceDialog::saveChanges()
 
 	m_numRays = raysSpinBox->value();
 
-	m_fraction = drawSpinBox->value();
-	m_drawPhotons = photonsCheckBox->isChecked();
+	m_fraction = drawSpin->value();
+	m_drawPhotons = photonsCheck->isChecked();
 
-	if( newMapRadioButton->isChecked() )
+	m_selectedPhotonMapFactory = photonmapTypeCombo->currentIndex();
+	if( newMapRadio->isChecked() )
 		m_increasePhotonMap = false;
 	else
 		m_increasePhotonMap = true;
