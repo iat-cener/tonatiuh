@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "DifferentialGeometry.h"
+#include "NormalVector.h"
 #include "Ray.h"
 #include "ShapeCone.h"
 #include "tgf.h"
@@ -140,27 +141,38 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 
 	// Compute definitive ShapeCone hit position and $\phi$
     hitPoint = objectRay( thit );
+
 	phi = atan2( hitPoint.y, hitPoint.x );
 	if ( phi < 0. ) phi += tgc::TwoPi;
 
 	// Find parametric representation of ShapeCone hit
 	double zradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y );
-	double maxradius = std::max( m_baseradius.getValue(), m_topradius.getValue());
-	double minradius = std::min( m_baseradius.getValue(), m_topradius.getValue());
-	double u = phi / m_phiMax.getValue();
-	double v = (zradius-minradius)/(maxradius-minradius);
+
+	double rMin = std::min( m_baseradius.getValue(), m_topradius.getValue() );
+	double rMax = std::max( m_baseradius.getValue(), m_topradius.getValue() );
+
+	double u = ( zradius - rMin )/( rMax - rMin );
+	double v = phi / m_phiMax.getValue();
 
 	// Compute ShapeCone \dpdu and \dpdv
-	double invzradius = 1.0 / zradius;
-	double cosphi = hitPoint.x * invzradius;
-	double sinphi = hitPoint.y * invzradius;
-	Vector3D dpdu( -zradius*sinphi, zradius*cosphi, 0.0);
-	Vector3D dpdv( ((maxradius-minradius)*cosphi)-(minradius*sinphi), ((maxradius-minradius)*sinphi)+(minradius*cosphi) , ( ( -m_height.getValue() )*(maxradius-minradius))/(m_baseradius.getValue()-m_topradius.getValue()) );
+	double cosphi = cos( phi );
+	double sinphi = sin( phi );
+	Vector3D dpdu( ( rMax - rMin ) * cos( m_phiMax.getValue() * v ) ,
+					( rMax - rMin) * sin( m_phiMax.getValue() * v ) ,
+					(  m_height.getValue() * (-rMax + rMin) )/( m_baseradius.getValue()- m_topradius.getValue() ) );
+
+	Vector3D dpdv(	-m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * sin( m_phiMax.getValue() * v ),
+					m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * cos( m_phiMax.getValue() * v ),
+					0.0 );
 
 	// Compute ShapeCone \dndu and \dndv
-	Vector3D d2Pduu( -zradius*cosphi, -zradius*sinphi, 0.0);
-	Vector3D d2Pduv( -(maxradius-minradius)*sinphi, -(maxradius-minradius)*cosphi, 0.0 );
-	Vector3D d2Pdvv( 0.0, 0.0, 0.0 );
+	Vector3D d2Pduu( 0.0, 0.0, 0.0 );
+	Vector3D d2Pduv( 	- m_phiMax.getValue() * ( rMax - rMin ) * sinphi,
+						m_phiMax.getValue() * ( rMax - rMin ) * cosphi,
+						0.0 );
+	Vector3D d2Pdvv(-m_phiMax.getValue() * m_phiMax.getValue() * zradius * cosphi,
+					- m_phiMax.getValue() * m_phiMax.getValue() * zradius * sinphi,
+					0.0);
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct( dpdu, dpdu );
@@ -209,14 +221,14 @@ Point3D ShapeCone::GetPoint3D (double u, double v) const
 	Trace trace( "ShapeConeFactory::OutOfRange", false );
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeCone::GetPoint3D called with invalid parameters" );
 
-	double maxradius = std::max( m_baseradius.getValue(), m_topradius.getValue());
-	double minradius = std::min( m_baseradius.getValue(), m_topradius.getValue());
+	double rMin = std::min( m_baseradius.getValue(), m_topradius.getValue() );
+	double rMax = std::max( m_baseradius.getValue(), m_topradius.getValue() );
 
-	double phi = u * m_phiMax.getValue();
-	double radius = minradius + v * (maxradius-minradius);
+	double radius = rMin + u * ( rMax - rMin );
+	double phi = v * m_phiMax.getValue();
 
-	double x = radius*cos (phi);
-	double y = radius*sin (phi);
+	double x = radius * cos ( phi );
+	double y = radius * sin ( phi );
 	double z = ( ( ( m_height.getValue() ) / (m_baseradius.getValue() - m_topradius.getValue() ) ) * ( m_baseradius.getValue() - radius ) );
 
 	return Point3D (x, y, z);
@@ -226,12 +238,18 @@ NormalVector ShapeCone::GetNormal( double u ,double v ) const
 {
 	Trace trace( "ShapeConeFactory::GetNormal", false );
 
-	Point3D point = GetPoint3D( u, v );
+	double rMin = std::min( m_baseradius.getValue(), m_topradius.getValue() );
+	double rMax = std::max( m_baseradius.getValue(), m_topradius.getValue() );
 
-	NormalVector vector_aux( point.x, point.y, 0 );
-	NormalVector vector ( -point.x, -point.y, -( ( m_baseradius.getValue() - m_topradius.getValue() )/( m_height.getValue() ) ) * vector_aux.Length() );
-	if ( vector.Length() > 0 )	vector = vector/vector.Length();
+	Vector3D dpdu( ( rMax - rMin ) * cos( m_phiMax.getValue() * v ) ,
+					( rMax - rMin) * sin( m_phiMax.getValue() * v ) ,
+					(  m_height.getValue() * (-rMax + rMin) )/( m_baseradius.getValue()- m_topradius.getValue() ) );
 
+	Vector3D dpdv(	-m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * sin( m_phiMax.getValue() * v ),
+					m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * cos( m_phiMax.getValue() * v ),
+					0.0 );
+
+	NormalVector vector = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	return vector;
 
 }
