@@ -74,11 +74,12 @@ RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, 
 	drawSpin->setValue( m_fraction );
 	photonsCheck->setChecked( m_drawPhotons );
 
+	photonmapTypeCombo->addItem( "------------" );
 	for( int index = 0; index < photonMapFactoryList.size(); index++ )
 	{
 		photonmapTypeCombo->addItem( photonMapFactoryList[index]->TPhotonMapIcon(), photonMapFactoryList[index]->TPhotonMapName() );
 	}
-	photonmapTypeCombo->setCurrentIndex( m_selectedPhotonMapFactory );
+	photonmapTypeCombo->setCurrentIndex( m_selectedPhotonMapFactory + 1 );
 
 	if ( m_increasePhotonMap )
 		increaseMapRadio->setChecked( true );
@@ -86,7 +87,7 @@ RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, 
 		newMapRadio->setChecked( true );
 
 	connect( this, SIGNAL( accepted() ), this, SLOT( saveChanges() ) );
-	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( applyChanges() ) );
+	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( applyChanges( QAbstractButton* ) ) );
 }
 
 /*!
@@ -164,7 +165,7 @@ void RayTraceDialog::saveChanges()
 	m_fraction = drawSpin->value();
 	m_drawPhotons = photonsCheck->isChecked();
 
-	m_selectedPhotonMapFactory = photonmapTypeCombo->currentIndex();
+	m_selectedPhotonMapFactory = photonmapTypeCombo->currentIndex() - 1;
 	if( newMapRadio->isChecked() )
 		m_increasePhotonMap = false;
 	else

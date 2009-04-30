@@ -42,7 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/lists/SbStringList.h>
 
 #include <QModelIndex>
-#include <QWidget>
+#include <QTreeWidget>
 
 class ParametersDelegate;
 class ParametersItem;
