@@ -47,10 +47,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
-: QUndoCommand("Modify LightKit", parent), m_pPreviousLightKit( 0 ), m_pNewLightKit( newLightKit ), m_scene( scene ), m_pModel( &sceneModel )
+: QUndoCommand("Modify LightKit", parent), m_pPreviousLightKit( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
 {
     Trace trace( "CmdLightKitModified::CmdLightKitModified", false );
-	m_pNewLightKit->ref();
+
+    m_pNewLightKit = dynamic_cast< TLightKit* >( newLightKit->copy( true ) );
+    m_pNewLightKit->ref();
 
 	TLightKit* lightKit = dynamic_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
 	if( lightKit )	m_pPreviousLightKit = dynamic_cast< TLightKit* >( lightKit->copy( true ) );

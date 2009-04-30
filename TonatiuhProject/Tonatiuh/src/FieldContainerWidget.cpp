@@ -140,11 +140,11 @@ void FieldContainerWidget::EditorClosed( QWidget* editor )
 		QComboBox* combo = static_cast<QComboBox *>(editor);
 		newValue = combo->currentText( );
 	}
-		else
-		{
-			QLineEdit* textEdit = dynamic_cast<QLineEdit *>(editor);
-			newValue = textEdit->text();
-		}
+	else
+	{
+		QLineEdit* textEdit = dynamic_cast<QLineEdit *>(editor);
+		newValue = textEdit->text();
+	}
 
 	SoFieldList fieldList;
 	int numFields = m_pFieldContainer->getFields (fieldList);

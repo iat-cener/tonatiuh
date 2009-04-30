@@ -1053,7 +1053,7 @@ void MainWindow::on_actionRayTraceOptions_triggered()
 {
 	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedPhotonMap, m_increasePhotonMap, this );
 	int dialog_code = options->exec();
-	if( !dialog_code ) return;
+	//if( !dialog_code ) return;
 
 	m_raysPerIteration = options->GetNumRays();
 

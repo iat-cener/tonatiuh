@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>354</width>
-    <height>369</height>
+    <width>395</width>
+    <height>405</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -20,7 +20,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>321</width>
+     <width>375</width>
      <height>75</height>
     </rect>
    </property>
@@ -43,7 +43,7 @@
    <widget class="QSpinBox" name="raysSpinBox" >
     <property name="geometry" >
      <rect>
-      <x>150</x>
+      <x>160</x>
       <y>30</y>
       <width>150</width>
       <height>25</height>
@@ -73,9 +73,9 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>185</y>
-     <width>321</width>
-     <height>131</height>
+     <y>195</y>
+     <width>375</width>
+     <height>135</height>
     </rect>
    </property>
    <property name="title" >
@@ -84,7 +84,7 @@
    <widget class="QRadioButton" name="newMapRadio" >
     <property name="geometry" >
      <rect>
-      <x>150</x>
+      <x>160</x>
       <y>60</y>
       <width>150</width>
       <height>25</height>
@@ -100,9 +100,9 @@
    <widget class="QRadioButton" name="increaseMapRadio" >
     <property name="geometry" >
      <rect>
-      <x>150</x>
+      <x>160</x>
       <y>90</y>
-      <width>141</width>
+      <width>150</width>
       <height>25</height>
      </rect>
     </property>
@@ -113,11 +113,14 @@
    <widget class="QComboBox" name="photonmapTypeCombo" >
     <property name="geometry" >
      <rect>
-      <x>150</x>
+      <x>160</x>
       <y>30</y>
       <width>150</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="layoutDirection" >
+     <enum>Qt::LeftToRight</enum>
     </property>
    </widget>
    <widget class="QLabel" name="photonmapTypeLabel" >
@@ -126,7 +129,7 @@
       <x>20</x>
       <y>30</y>
       <width>46</width>
-      <height>22</height>
+      <height>25</height>
      </rect>
     </property>
     <property name="text" >
@@ -151,8 +154,8 @@
    <property name="geometry" >
     <rect>
      <x>110</x>
-     <y>330</y>
-     <width>221</width>
+     <y>350</y>
+     <width>275</width>
      <height>25</height>
     </rect>
    </property>
@@ -164,8 +167,8 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>85</y>
-     <width>321</width>
+     <y>90</y>
+     <width>375</width>
      <height>100</height>
     </rect>
    </property>
@@ -190,8 +193,8 @@
      <rect>
       <x>20</x>
       <y>60</y>
-      <width>100</width>
-      <height>18</height>
+      <width>110</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="text" >
@@ -201,7 +204,7 @@
    <widget class="QDoubleSpinBox" name="drawSpin" >
     <property name="geometry" >
      <rect>
-      <x>150</x>
+      <x>160</x>
       <y>30</y>
       <width>150</width>
       <height>25</height>
