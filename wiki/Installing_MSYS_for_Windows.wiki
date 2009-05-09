@@ -3,9 +3,9 @@
 MSYS is a collection of GNU utilities to build applications and programs which depend on UNIX. Before the installation of MSYS, [InstallingMinGWForWindows MinGW] must be intalled in _C:/MinGW_.
 
  # The components of MSYS can be downloaded from [http://sourceforge.net/ SourceForge Web] in Page _MinGW - Minimalist GNU for Windows_ project, [http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=24963 MSYS Base System package]:
-  || bash  || (bash-3.1-MSYS-1.0.11-1.tar.bz2)    ||
-  || bzip2 || (bzip2-1.0.3-MSYS-1.0.11-1.tar.bz2) ||
-  || coreutils || (coreutils-5.97-MSYS-1.0.11-snapshot.tar.bz2) ||
+  * bash (bash-3.1-MSYS-1.0.11-1.tar.bz2)
+  * bzip2 (bzip2-1.0.3-MSYS-1.0.11-1.tar.bz2)
+  * coreutils (coreutils-5.97-MSYS-1.0.11-snapshot.tar.bz2)
   * cpmake (cpmake-3.81-MSYS-1.0.11-1-bin.tar.gz)
   * csmake (csmake-3.81-MSYS-1.0.11-2.tar.bz2)
   * diffutils (diffutils-2.8.7-MSYS-1.0.11-1.tar.bz2)
