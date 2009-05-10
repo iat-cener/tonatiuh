@@ -8,7 +8,7 @@ Qt is cross-platform application framework for GUI development.
 
 = Details =
 
-To install the Qt SDK (complete development environment) in your computer download the installer file [http://www.qtsoftware.com/downloads/sdk-windows-cpp qt-sdk-win-opensource-2009.02.exe] from the [http://www.qtsoftware.com/ Qt] website and execute it.
+To install the Qt SDK (complete development environment) in your computer download the installer file [http://www.qtsoftware.com/downloads/windows-cpp qt-win-opensource-4.5.1-mingw.exe] from the [http://www.qtsoftware.com/ Qt] website and execute it.
 
 Once the installer is running, you will be asked to accept the license agreement. Accept it and click "Next>". Then, you will be asked to enter the destination folder. Enter _C:\msys\usr\qt\_, and click "Next>". When you will askied to MinGW installation folder enter _C:\MinGW_ and click "Install".
 
