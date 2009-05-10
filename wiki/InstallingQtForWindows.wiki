@@ -8,11 +8,11 @@ Qt is cross-platform application framework for GUI development.
 
 = Details =
 
-To install the Qt SDK (complete development environment) in your computer download the installer file [http://www.qtsoftware.com/downloads/windows-cpp qt-win-opensource-4.5.1-mingw.exe] from the [http://www.qtsoftware.com/ Qt] website and execute it.
+To install the Qt libraries for Open Source C++ development on Windows in your computer download the installer file [http://www.qtsoftware.com/downloads/windows-cpp qt-win-opensource-4.5.1-mingw.exe] from the [http://www.qtsoftware.com/ Qt] website and execute it.
 
 Once the installer is running, you will be asked to accept the license agreement. Accept it and click "Next>". Then, you will be asked to enter the destination folder. Enter _C:\msys\usr\qt\_, and click "Next>". When you will askied to MinGW installation folder enter _C:\MinGW_ and click "Install".
 
-After the release version of the Qt libraries are installed, you can create the debug version of the libraries, by selecting Start->All Programs->Qt by Nokia v4.4.3 (OpenSource)->Qt 4.4.3 (Build Debug Libraries). This will open a console Window. Within it you will get the following message:
+After the release version of the Qt libraries are installed, you can create the debug version of the libraries, by selecting Start->All Programs->Qt by Nokia v4.5.1 (OpenSource)->Qt 4.5.1 (Build Debug Libraries). This will open a console Window. Within it you will get the following message:
 
 {{{
 "Setting up a MinGW/Qt only environment...
