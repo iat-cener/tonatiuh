@@ -12,7 +12,7 @@ To install the Qt libraries for Open Source C++ development on Windows in your c
 
 Once the installer is running, you will be asked to accept the license agreement. Accept it and click "Next>". Then, you will be asked to enter the destination folder. Enter _C:\msys\usr\qt\_, and click "Next>". When you will askied to MinGW installation folder enter _C:\MinGW_ and click "Install".
 
-After the release version of the Qt libraries are installed, you can create the debug version of the libraries, by selecting Start->All Programs->Qt by Nokia v4.5.1 (OpenSource)->Qt 4.5.1 (Build Debug Libraries). This will open a console Window. Within it you will get the following message:
+After the release version of the Qt libraries are installed, you can create the debug version of the libraries, by selecting Start->All Programs->Qt by Nokia v4.5.1 ( OpenSource )->Qt 4.5.1 (Build Debug Libraries). This will open a console Window. Within it you will get the following message:
 
 {{{
 "Setting up a MinGW/Qt only environment...
