@@ -98,7 +98,7 @@ PhotonMapDefault :: ~PhotonMapDefault()
 	m_photons = 0;
 }
 
-QString PhotonMapDefault::getIcon()
+QString PhotonMapDefault::GetIcon()
 {
 	Trace trace( "PhotonMapDefault::getIcon", false );
 
@@ -239,7 +239,7 @@ double PhotonMapDefault::fluxAtPoint( const Point3D& point, int maxClosest ) con
 	return maxClosest / radius;
 }
 
-void PhotonMapDefault :: store( Photon* photon )
+void PhotonMapDefault :: Store( Photon* photon )
 {
 	Trace trace( "PhotonMapDefault::store", false );
 
@@ -390,28 +390,23 @@ void PhotonMapDefault::balanceSegment( Photon*** pbal, Photon*** porg, const lon
     }
 }
 
-Photon* PhotonMapDefault::GetPhoton( int index ) const
+Photon* PhotonMapDefault::GetPhoton( long unsigned index ) const
 {
 	Trace trace( "PhotonMapDefault::GetPhoton", false );
 	return m_photons[index];
 }
 
-/*PhotonMapDefault* PhotonMapDefault::copy( SbBool copyConnections ) const
+
+QList< Photon* > PhotonMapDefault::GetPhotons( InstanceNode* instance ) const
 {
-	Trace trace( "PhotonMapDefault::copy", false );
+	Trace trace( "PhotonMapDefault::GetPhoton", false );
 
-	// Use the standard version of the copy method to create
-	// a copy of this instance, including its field data
-	PhotonMapDefault* newPhotonMap = dynamic_cast< PhotonMapDefault* >( SoNode::copy( copyConnections ) );
+	QList< Photon* > surfacePhotonsList;
 
-	newPhotonMap->m_storedPhotons = m_storedPhotons;
-	newPhotonMap->m_halfStoredPhotons = m_halfStoredPhotons;
-	newPhotonMap->m_maxPhotons = m_maxPhotons;
-	newPhotonMap->m_prevScale = m_prevScale;
-	newPhotonMap->m_axis = m_axis;
-	newPhotonMap->m_bbox = m_bbox;
-
-	return newPhotonMap;
-}*/
-
-
+	for( long unsigned index = 1; index <= m_storedPhotons; index++ )
+	{
+		if( m_photons[index]->m_intersectedSurface == instance )
+			surfacePhotonsList.push_back( m_photons[index] );
+	}
+	return surfacePhotonsList;
+}
