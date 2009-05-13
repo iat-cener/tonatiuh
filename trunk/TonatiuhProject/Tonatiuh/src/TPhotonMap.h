@@ -63,10 +63,11 @@ public:
 	TPhotonMap();
     virtual ~TPhotonMap();
 
-	virtual QString getIcon() = 0;
-	virtual void store( Photon* photon ) = 0;
-	virtual Photon* GetPhoton( int index ) const = 0;
+	virtual QString GetIcon() = 0;
+	virtual void Store( Photon* photon ) = 0;
+	virtual Photon* GetPhoton( unsigned long index ) const = 0;
 	virtual unsigned long StoredPhotons() const = 0 ;
+	virtual QList< Photon* > GetPhotons( InstanceNode* instance ) const = 0;
 
 };
 
