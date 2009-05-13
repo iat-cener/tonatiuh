@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPECONE_H_
 #define SHAPECONE_H_
 
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFDouble.h>
 
@@ -60,10 +61,16 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
+	enum reverseOrientation {
+		INSIDE = 0,
+		OUTSIDE = 1,
+	   };
+
 	SoSFDouble m_baseradius;
 	SoSFDouble m_topradius;
 	SoSFDouble m_height;
 	SoSFDouble m_phiMax;
+	SoSFEnum m_reverseOrientation;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;
