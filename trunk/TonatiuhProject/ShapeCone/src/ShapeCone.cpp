@@ -67,7 +67,11 @@ ShapeCone::ShapeCone(  )
 	SO_NODE_ADD_FIELD(m_baseradius, (10.0));
 	SO_NODE_ADD_FIELD(m_topradius, (0.0));
 	SO_NODE_ADD_FIELD( m_height, (10.0));
-	SO_NODE_ADD_FIELD(m_phiMax, (1.5* tgc::Pi));
+	SO_NODE_ADD_FIELD(m_phiMax, (tgc::TwoPi ) );
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
+  	SO_NODE_SET_SF_ENUM_TYPE(m_reverseOrientation, reverseOrientation);
+	SO_NODE_ADD_FIELD( m_reverseOrientation, (OUTSIDE) );
 }
 
 ShapeCone::~ShapeCone()
@@ -178,7 +182,21 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N = Normalize( CrossProduct( dpdu, dpdv ) );
+	//Vector3D N = Normalize( CrossProduct( dpdu, dpdv ) );
+	Vector3D N;
+	if( m_reverseOrientation.getValue() == 0 )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+
+	if( DotProduct(N, objectRay.direction) < 0 )
+	{
+		return false;
+	}
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );
