@@ -119,6 +119,7 @@ public slots:
 	void on_actionDisplay_rays_toggled();
 	void on_actionResults_triggered();
 	void on_actionExport_PhotonMap_triggered();
+	void on_actionExport_Surface_PhotonMap_triggered();
 	void on_actionRayTraceOptions_triggered();
 
 	//View menu actions

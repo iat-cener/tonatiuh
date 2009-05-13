@@ -78,6 +78,7 @@ FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QS
 	m_ptreeView->setModel(m_pModel);
 
 	if( m_pFieldContainer ) ReadFields( );
+	m_ptreeView->resizeColumnToContents ( 1 );
 }
 
 FieldContainerWidget::~FieldContainerWidget()

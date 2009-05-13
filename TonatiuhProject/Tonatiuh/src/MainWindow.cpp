@@ -845,10 +845,12 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	//Check if there is a scene
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if ( !coinScene )  return;
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( treeView->rootIndex() );
 
     //Check if there is a light and is properly configured
 	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
 	if ( !lightKit )	return;
+	InstanceNode* lightInstance = sceneInstance->children[0];
 
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
 	if( !sunShape ) return;
@@ -872,7 +874,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 			coinMatrix[0][3], coinMatrix[1][3], coinMatrix[2][3], coinMatrix[3][3] );
 
     //Check if there is a rootSeparator InstanceNode
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( treeView->rootIndex() );
 	if ( !sceneInstance )  return;
 	InstanceNode* rootSeparatorInstance = sceneInstance->children[1];
 	if( !rootSeparatorInstance ) return;
@@ -921,7 +922,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		ray = lightToWorld( ray );
 
 		//Perform Ray Trace
-		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, *m_photonMap, *m_pRand );
+		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_pRand );
 
 		//Update progressDiaglog when appropriate
 		progress.Update();
@@ -1015,7 +1016,7 @@ void MainWindow::on_actionResults_triggered()
 
 void MainWindow::on_actionExport_PhotonMap_triggered()
 {
-	Trace trace( "MainWindow::on_actionExport_PhotonMap_triggered", false );
+	Trace trace( "MainWindow::on_actionExport_PhotonMap_triggered", true );
 
 	QString fileName = QFileDialog::getSaveFileName( this, tr("Export PhotonMap"),
 			tr( "." ),
@@ -1046,14 +1047,63 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 	 }
 }
 
+
+void MainWindow::on_actionExport_Surface_PhotonMap_triggered()
+{
+	Trace trace( "MainWindow::on_actionExport_Surface_PhotonMap_triggered", false );
+
+	if( !m_selectionModel->hasSelection() ) return;
+	if( m_selectionModel->currentIndex() == treeView->rootIndex() ) return;
+	if( m_selectionModel->currentIndex().parent() == treeView->rootIndex() ) return;
+
+	InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
+	if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return;
+
+	QList< Photon* > nodePhotonsList = m_photonMap->GetPhotons( selectedNode );
+
+	if( nodePhotonsList.size() == 0 )
+	{
+		QMessageBox::information( this, "Tonatiuh Error",
+									"There are not photons to export\n", 1);
+						return;
+	}
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Export PhotonMap"),
+				tr( "." ),
+	            tr( "Binary data files (*.dat)" ) );
+
+	 if( !fileName.isEmpty() )
+	 {
+		 QFile exportFile( fileName );
+
+		 if(!exportFile.open( QIODevice::WriteOnly ) )
+		 {
+			 QMessageBox::information( this, "Tonatiuh Error",
+									 "Tonatiuh can't open export file\n", 1);
+				return;
+		 }
+
+		QDataStream out( &exportFile );
+		for( long unsigned i = 0; i< nodePhotonsList.size(); i++ )
+		{
+
+			Photon* node = nodePhotonsList[i];
+			Point3D photon = node->m_pos;
+			double id = node->m_id;
+			double prev_id = ( node->m_prev )? node->m_prev->m_id : 0;
+			double next_id = ( node->m_next )? node->m_next->m_id : -1;
+			out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+		}
+		exportFile.close();
+	 }
+}
+
 /**
  * Action slot to open a Ray Trace Options dialog.
  */
 void MainWindow::on_actionRayTraceOptions_triggered()
 {
 	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedPhotonMap, m_increasePhotonMap, this );
-	int dialog_code = options->exec();
-	//if( !dialog_code ) return;
+	options->exec();
 
 	m_raysPerIteration = options->GetNumRays();
 

@@ -133,12 +133,13 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
  *
  * The \a sceneMap saves the scene elements BBox and Transform in global coordinates.
  */
-bool tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, TPhotonMap& photonMap, RandomDeviate& rand )
+bool tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode, TPhotonMap& photonMap, RandomDeviate& rand )
 {
 	Trace trace( "tgf::TraceRay", false );
 
 	Ray* reflectedRay = 0;
 	Photon* node = new Photon( ray.origin, 0, 0 );
+	node->m_intersectedSurface = lightNode;
 	Photon* next = 0;
 	int rayLength = 0;
 
@@ -156,9 +157,9 @@ bool tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 			Point3D point = ray( ray.maxt );
 
 			next = new Photon( point, node, 0 );
-			node->m_intersectedSurface = intersectedSurface;
+			next->m_intersectedSurface = intersectedSurface;
 			node->m_next = next;
-			photonMap.store( node );
+			photonMap.Store( node );
 			node = next;
 			rayLength++;
 
@@ -174,10 +175,10 @@ bool tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 
 	Point3D endOfRay = ray( ray.maxt );
 	Photon* lastNode = new Photon( endOfRay, node, 0 );
-	node->m_intersectedSurface = intersectedSurface;
+	lastNode->m_intersectedSurface = intersectedSurface;
 	node->m_next = lastNode;
-	photonMap.store( node );
-	photonMap.store( lastNode );
+	photonMap.Store( node );
+	photonMap.Store( lastNode );
 	return true;
 }
 
@@ -229,28 +230,30 @@ SoSeparator* tgf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 	for( unsigned long i = 1; i<= map.StoredPhotons(); i++ )
 	//for( unsigned long i = 0; i < map.StoredPhotons(); i++ )
 	{
-
-		if ( !map.GetPhoton(i)->m_prev )
+		if( map.GetPhoton(i) )
 		{
-			if ( ray % ( numberOfRays/drawRays ) == 0 )
+			if ( !map.GetPhoton(i)->m_prev )
 			{
-				Photon* node = map.GetPhoton(i);
-				rayLength = 0;
-
-				while ( node )
+				if ( ray % ( numberOfRays/drawRays ) == 0 )
 				{
-				    Point3D photon = node->m_pos;
-					points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
-					node = node->m_next;
-					rayLength++;
-					numberOfPhoton++;
+					Photon* node = map.GetPhoton(i);
+					rayLength = 0;
+
+					while ( node )
+					{
+						Point3D photon = node->m_pos;
+						points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
+						node = node->m_next;
+						rayLength++;
+						numberOfPhoton++;
+					}
+
+					lines[drawnRay]= rayLength;
+					drawnRay++;
+
 				}
-
-				lines[drawnRay]= rayLength;
-				drawnRay++;
-
+				ray++;
 			}
-			ray++;
 		}
 	}
 
