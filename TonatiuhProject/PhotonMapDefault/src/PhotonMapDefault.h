@@ -39,8 +39,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PHOTONMAPDEFAULT_H_
 #define PHOTONMAPDEFAULT_H_
 
+#include <QList>
 #include <Inventor/SoType.h>
 
+#include "InstanceNode.h"
 #include "Point3D.h"
 #include "Vector3D.h"
 #include "BBox.h"
@@ -71,17 +73,18 @@ public:
 	~PhotonMapDefault();
 
 	//SoNode* copy( SbBool copyConnections ) const;
-	QString getIcon();
+	QString GetIcon();
 
 	void savePhotonMap( const char *filename );
 	void loadPhotonMap(char *filename);
 
 	void locatePhotons( NearestPhotons* const np, const long unsigned index ) const;
 	double fluxAtPoint( const Point3D& point, int maxClosest ) const;
-	void store( Photon* photon );
+	void Store( Photon* photon );
 	void balance();
-	Photon* GetPhoton( int index ) const;
+	Photon* GetPhoton( long unsigned index ) const;
 	unsigned long StoredPhotons() const { return m_storedPhotons; };
+	QList< Photon* > GetPhotons( InstanceNode* instance ) const;
 
 private:
 
