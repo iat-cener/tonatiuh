@@ -1,13 +1,41 @@
-#summary One-sentence summary of this page.
+#summary Install the simage library for Windows
 
 = Introduction =
 
-Add your content here.
+Simage is a library capable of loading, manipulating and saving images, creating and saving movies (AVI and mpeg), and loading audio. The simage library relies heavily on 3rd party libraries to perform these tasks.
+
+Coin uses simage just to read textures, but the programmer is of course free to use the other features of the simage library directly.
 
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Download the latest realese of Simage, currently [http://ftp.coin3d.org/coin/src/all/simage-1.6.1.tar.gz simage-1.6.1], from the [http://www.coin3d.org/ Coin3D] website at [http://www.coin3d.org/lib/plonesoftwarecenter_view Open Source Downloads]. Place it into the user directory under your MSYS folder.  This will typically be _c:\msys\usr\home\username_.
+ 
+Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
+{{{
+tar -xvf simage-1.6.1.tar
+}}}
+
+This will create a directory called _Simage-1.6.1_ in your user directory. Using the MSYS shell navigate to just created directory.
+
+Type the following command to build on debug mode:
+{{{
+./configure --disable-msvc --with-qt=/usr/qt --enable-debug --enable-symbols --enable-qt-debug --with-qt=/usr/qt --with-suffix=d
+}}}
+
+To build the library in release mode type:
+{{{
+./configure --disable-msvc --with-qt=/usr/qt --enable-debug=no
+}}}
+
+This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the Simage library by typing:
+{{{
+make 
+make install
+}}}
+
+The installation process may take several minutes. At the end of the installation process, the libraries has been installed at /usr/local directory
+
+Now, [InstallingCoin3DForWindows Coin3D] installation can be started.
+
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
