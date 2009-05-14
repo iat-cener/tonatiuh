@@ -9,8 +9,6 @@ INCLUDEPATH += . \
 				src \
 				../Tonatiuh/src \ 
 				$$(TDE_ROOT)/local/include
-
-LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
  
 win32{
 	DEFINES+= COIN_DLL SOQT_DLL
@@ -19,7 +17,6 @@ win32{
 # Input
 HEADERS = *.h \
 			../Tonatiuh/src/BBox.h \
-			../Tonatiuh/src/TDefaultPhotonMap.h \
            	../Tonatiuh/src/DifferentialGeometry.h \
  			../Tonatiuh/src/InstanceNode.h \
            	../Tonatiuh/src/Matrix4x4.h \
@@ -40,7 +37,6 @@ HEADERS = *.h \
 
 SOURCES = *.cpp \
 			../Tonatiuh/src/BBox.cpp \
-			../Tonatiuh/src/TDefaultPhotonMap.cpp \
            	../Tonatiuh/src/DifferentialGeometry.cpp \
  			../Tonatiuh/src/InstanceNode.cpp \
            	../Tonatiuh/src/Matrix4x4.cpp \
@@ -65,11 +61,14 @@ DESTDIR  = ..\Tonatiuh\plugins\ShapeTroughParabola
 TARGET        = ShapeTroughParabola
 
 contains(TEMPLATE,lib) {
-   CONFIG(debug, debug|release) {
-      unix	{
-      	TARGET = $$member(TARGET, 0)_debug
-      	
-      }
-      else:TARGET = $$member(TARGET, 0)d
-   }
+	CONFIG(debug, debug|release) {
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
+		unix {
+			TARGET = $$member(TARGET, 0)_debug
+		}
+      	else:TARGET = $$member(TARGET, 0)d
+	}
+	else:{
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+	}
 }
