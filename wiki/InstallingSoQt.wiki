@@ -16,7 +16,7 @@ This will create a directory called _!SoQt-1.4.1_ in your user directory. Using 
 export QTDIR="/usr/qt"
 export COINDIR="/usr/local"
 export INCLUDE="/usr/local/include:/usr/qt/include"
-env CPPFLAGS="-DCOIN_DLL" ./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-coin=/usr/local --prefix=/usr/local
+./configure --disable-msvc --enable-debug=no --with-coin=/usr/local --with-qt=/usr/qt CXXFLAGS="-DCOIN_DLL"
 }}}
 This will start the configuration process. This process should finish succesfully with the following message:
 {{{
