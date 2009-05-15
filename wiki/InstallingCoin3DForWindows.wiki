@@ -19,7 +19,15 @@ This will create a directory called _Coin-3.0.0_ in your user directory. Using t
 export QTDIR="/usr/qt"_
 export COINDIR="/usr/local"_
 export INCLUDE="/usr/local/include:/usr/qt/include"
-./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
+}}}
+
+Now, to build the library in debug mode type:
+{{{
+./configure --disable-msvc --enable-universal --enable-debug --enable-symbols --with suffix=d
+}}}
+For the release mode type:
+{{{
+./configure --disable-msvc --enable-universal --enable-debug=no
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the Coin3D libraries by typing:
