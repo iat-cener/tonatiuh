@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QApplication>
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDir>
@@ -45,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+#include <MarbleControlBox.h>
 #include <MarbleDirs.h>
 #include <MarbleWidget.h>
 #include <MapThemeManager.h>
@@ -53,16 +55,24 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include "Trace.h"
 
+#include <iostream>
+
+using namespace Marble;
+
 
 MapDialog::MapDialog( QWidget *parent )
 :QDialog( parent ), m_marbleWidget( 0 ), m_control( 0 ), m_mapThemeManager( 0 ),
 m_splitter( 0 ), m_latSpinBox( 0 ), m_latComboBox( 0 ), m_lonSpinBox( 0 ),
 m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 {
+	Trace( "MapDialog::MapDialog" , false );
+
+	setMouseTracking( true );
+
 	QDir directory( qApp->applicationDirPath() );
 	directory.cd( "../data" );
 
-	MarbleDirs::setMarbleDataPath( directory.absolutePath() );
+	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );
 
     setWindowTitle(tr("Marble - Desktop Globe"));
 
@@ -103,12 +113,13 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
     m_latSpinBox->setMinimumSize(QSize(82, 0));
     m_latSpinBox->setDecimals(4);
     m_latSpinBox->setMaximum(90);
-
+    connect( m_latSpinBox, SIGNAL( valueChanged ( double ) ), this, SLOT( ChangeGPSPosition() ) );
     m_latComboBox = new QComboBox;
     m_latComboBox->insertItems(0, QStringList()
      << "N"
      << "S" );
     latLayout->addWidget( m_latComboBox );
+    connect( m_latComboBox, SIGNAL( currentIndexChanged ( int ) ), this, SLOT( ChangeGPSPosition() ) );
 
     QSpacerItem* spacerItem = new QSpacerItem(0, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     latLayout->addItem( spacerItem );
@@ -123,6 +134,7 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
     m_lonSpinBox->setMinimumSize(QSize(82, 0));
     m_lonSpinBox->setDecimals(4);
     m_lonSpinBox->setMaximum(180);
+    connect( m_lonSpinBox, SIGNAL( valueChanged ( double ) ), this, SLOT( ChangeGPSPosition() ) );
     lonLayout->addWidget( m_lonSpinBox );
 
     m_lonComboBox = new QComboBox;
@@ -130,6 +142,7 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
      << "E"
      << "W" );
     lonLayout->addWidget( m_lonComboBox );
+    connect( m_lonComboBox,SIGNAL( currentIndexChanged ( int ) ), this, SLOT( ChangeGPSPosition() ) );
 
     QSpacerItem* spacerItem2 = new QSpacerItem(0, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     lonLayout->addItem( spacerItem2 );
@@ -154,19 +167,24 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
     m_control->addMarbleWidget( m_marbleWidget );
 	m_splitter->addWidget( m_marbleWidget );
 
-    m_mapThemeManager = new MapThemeManager;
+    m_mapThemeManager = new Marble::MapThemeManager;
     m_control->setMapThemeModel(  m_mapThemeManager->mapThemeModel() );
     m_marbleWidget->setMapThemeId( "earth/srtm/srtm.dgml" );
-    m_marbleWidget->setProjection( (Projection) 0 );
+    m_marbleWidget->setProjection( (Marble::Projection) 0 );
 
 
     m_splitter->setSizes( QList<int>() << 180 << width()-180 );
     m_splitter->setStretchFactor(m_splitter->indexOf(m_control), 0);
     m_splitter->setStretchFactor(m_splitter->indexOf(m_marbleWidget), 1);
 
-    connect( m_marbleWidget, SIGNAL( mouseClickGeoPosition( double, double, GeoDataPoint::Unit ) ), this, SLOT( changeGpsPosition( double, double, GeoDataPoint::Unit ) ) );
+    connect( m_marbleWidget, SIGNAL( mouseClickGeoPosition( qreal, qreal, GeoDataCoordinates::Unit ) ), this, SLOT( UpdateCurrentPosition( qreal, qreal, GeoDataCoordinates::Unit ) ) );
+    connect( m_control, SIGNAL( gpsPositionChanged( qreal, qreal ) ), this, SLOT(UpdateCurrentPosition( qreal, qreal ) ) );
 }
 
+
+/*!
+ * Returns current coordinates as a decimal number
+ */
 void MapDialog::GetCoordinates( double* lon, double* lat ) const
 {
 	Trace trace( "MapDialog::GetCoordinates", false );
@@ -174,72 +192,60 @@ void MapDialog::GetCoordinates( double* lon, double* lat ) const
 	*lat = m_latitude;
 }
 
+/*!
+ * Set control tab visible.
+ */
 void MapDialog::SetCoordinates(  double lon, double lat )
 {
 	Trace trace( "MapDialog::SetCoordinates", false );
 	m_longitude = lon;
-	m_latitude = lat;
+	m_latitude = -lat;
 
-	changeGpsPosition( m_longitude, -m_latitude, GeoDataPoint::Radian );
-	m_control->receiveGpsCoordinates( m_longitude, -m_latitude, GeoDataPoint::Radian );
+	UpdateCurrentPosition( m_longitude, m_latitude, GeoDataCoordinates::Radian );
+	m_control->receiveGpsCoordinates( m_longitude, m_latitude, Marble::GeoDataCoordinates::Radian );
 }
 
-void MapDialog::zoomIn()
-{
-	Trace trace( "MapDialog::zoomIn", false );
-    m_marbleWidget->zoomIn();
-}
-
-void MapDialog::zoomOut()
-{
-	Trace trace( "MapDialog::zoomOut", false );
-    m_marbleWidget->zoomOut();
-}
-
-void MapDialog::moveLeft()
-{
-	Trace trace( "MapDialog::moveLeft", false );
-    m_marbleWidget->moveLeft();
-}
-
-void MapDialog::moveRight()
-{
-	Trace trace( "MapDialog::moveRight", false );
-    m_marbleWidget->moveRight();
-}
-
-void MapDialog::moveUp()
-{
-	Trace trace( "MapDialog::moveUp", false );
-    m_marbleWidget->moveUp();
-}
-
-void MapDialog::moveDown()
-{
-	Trace trace( "MapDialog::moveDown", false );
-    m_marbleWidget->moveDown();
-}
-
+/*!
+ * Set control tab visible.
+ */
 bool MapDialog::sideBarShown() const
 {
 	Trace trace( "MapDialog::sideBarShown", false );
 	return m_control->isVisible();
 }
 
-void MapDialog::changeGpsPosition( double lon, double lat, GeoDataPoint::Unit )
+/*!
+ * Update  current location coordinates.
+ */
+void MapDialog::UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates::Unit )
 {
 	Trace trace( "MapDialog::changeGpsPosition", false );
 
 	// Gps Position Coordinates are positive for south and east
-
-	m_longitude = lon;
-	if( m_longitude < 0 ) m_lonComboBox->setCurrentIndex( 1 );
+	if( lon < 0 ) m_lonComboBox->setCurrentIndex( 1 );
 	else m_lonComboBox->setCurrentIndex( 0 );
-	m_lonSpinBox->setValue( fabs( m_longitude * ( 180 / tgc::Pi ) ) );
+	m_lonSpinBox->setValue( fabs( lon * ( 180 / tgc::Pi ) ) );
 
-	m_latitude = -lat;
-	if( m_latitude < 0 ) m_latComboBox->setCurrentIndex( 1 );
+	m_latitude = lat;
+	if( lat < 0 ) m_latComboBox->setCurrentIndex( 1 );
 	else m_latComboBox->setCurrentIndex( 0 );
 
-	m_latSpinBox->setValue( fabs( m_latitude * ( 180 / tgc::Pi ) ) );
+	m_latSpinBox->setValue( fabs( lat * ( 180 / tgc::Pi ) ) );
+
+	m_longitude = lon;
+	m_latitude = lat;
+}
+
+/*!
+ * Save as a current location the user specified coordinates in the current location tab.
+ */
+void MapDialog::ChangeGPSPosition()
+{
+	Trace trace( "MapDialog::ChangeGPSPosition", false );
+
+	m_longitude = m_lonSpinBox->value() * tgc::Degree;
+	if( m_lonComboBox->currentIndex() == 1 ) m_longitude *= -1;
+
+	m_latitude = m_latSpinBox->value() * tgc::Degree;
+	if( m_latComboBox->currentIndex() == 1 ) m_latitude *= -1;
 }

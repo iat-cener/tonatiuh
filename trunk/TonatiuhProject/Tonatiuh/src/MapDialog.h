@@ -39,15 +39,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MAPDIALOG_H_
 #define MAPDIALOG_H_
 
+
 #include <QDialog>
 
-#include "MarbleControlBox.h"
+#include <GeoDataCoordinates.h>
 
-class MapThemeManager;
-class MarbleWidget;
+#include <MarbleControlBox.h>
+#include <MapThemeManager.h>
+#include <MarbleWidget.h>
+
 class QComboBox;
 class QDoubleSpinBox;
 class QSplitter;
+
+using namespace Marble;
+
+//!  MapDialog class is the dialog to select a localization.
+/*!
+  MapDialog is the dialog show a world map and select a localization in a easy way.
+*/
 
 class MapDialog : public QDialog
 {
@@ -59,22 +69,16 @@ public:
 
 	void GetCoordinates( double* lon, double* lat ) const;
 	void SetCoordinates(  double lon, double lat );
-    void zoomIn();
-    void zoomOut();
-    void moveLeft();
-    void moveRight();
-    void moveUp();
-    void moveDown();
-
     bool sideBarShown() const;
 
 public slots:
-    void changeGpsPosition( double lon, double lat, GeoDataPoint::Unit );
+    void UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates::Unit );
+    void ChangeGPSPosition();
 
 private:
-    MarbleWidget*		m_marbleWidget;
-    MarbleControlBox*	m_control;
-    MapThemeManager*	m_mapThemeManager;
+	Marble::MarbleWidget*		m_marbleWidget;
+    Marble::MarbleControlBox*	m_control;
+    Marble::MapThemeManager*	m_mapThemeManager;
     QSplitter*			m_splitter;
 
     QDoubleSpinBox* 	m_latSpinBox;
@@ -82,8 +86,8 @@ private:
     QDoubleSpinBox* 	m_lonSpinBox;
     QComboBox* 			m_lonComboBox;
 
-    double 				m_longitude;
-    double 				m_latitude;
+    double 				m_longitude; //positive east
+    double 				m_latitude;	//positive north
 };
 
 #endif /*MAPDIALOG_H_*/
