@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPECYLINDER_H_
 #define SHAPECYLINDER_H_
 
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFDouble.h>
 
@@ -58,12 +59,17 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
+	enum reverseOrientation {
+		INSIDE = 0,
+		OUTSIDE = 1,
+	   };
+
 	SoSFDouble m_radius;
-	SoSFDouble m_z1;
-	SoSFDouble m_z2;
+	SoSFDouble m_length;
 	SoSFDouble m_phiMax;
 	SoSFDouble m_thetaMin;
 	SoSFDouble m_thetaMax;
+	SoSFEnum m_reverseOrientation;
 
 protected:
 	bool OutOfRange( double u, double v ) const;

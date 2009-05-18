@@ -67,9 +67,12 @@ ShapeCylinder::ShapeCylinder( )
 
 	SO_NODE_CONSTRUCTOR(ShapeCylinder);
 	SO_NODE_ADD_FIELD(m_radius, (1.0));
-	SO_NODE_ADD_FIELD(m_z1, (0.0));
-	SO_NODE_ADD_FIELD(m_z2, (10.0));
+	SO_NODE_ADD_FIELD(m_length, (10.0));
 	SO_NODE_ADD_FIELD(m_phiMax, (1.5*Pi));
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
+  	SO_NODE_SET_SF_ENUM_TYPE(m_reverseOrientation, reverseOrientation);
+	SO_NODE_ADD_FIELD( m_reverseOrientation, (OUTSIDE) );
 }
 
 ShapeCylinder::~ShapeCylinder()
@@ -103,7 +106,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
     double thit = ( t0 > objectRay.mint )? t0 : t1 ;
     if( thit > objectRay.maxt ) return false;
 
-	// Compute possible cylinder hit position and $\phi$
+   //Compute possible cylinder hit position and $\phi
     Point3D hitPoint = objectRay( thit );
 	double phi = atan2( hitPoint.y, hitPoint.x );
 	if ( phi < 0. ) phi += TwoPi;
@@ -112,8 +115,8 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	double tol = 0.00001;
 	if( (thit - objectRay.mint) < tol ) return false;
 
-	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
+	double zmin = 0.0;
+	double zmax = m_length.getValue();
 
 	// Test intersection against clipping parameters
 	if( hitPoint.z < zmin || hitPoint.z > zmax || phi > m_phiMax.getValue() )
@@ -123,7 +126,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 		thit = t1;
 
 		hitPoint = objectRay( thit );
-
+		phi = atan2( hitPoint.y, hitPoint.x );
 		if ( hitPoint.z < zmin || hitPoint.z > zmax || phi > m_phiMax.getValue() ) return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
@@ -134,22 +137,26 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	// Compute definitive cylinder hit position and $\phi$
     hitPoint = objectRay( thit );
 	phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += TwoPi;
+	//if ( phi < 0. ) phi += TwoPi;
 
 	// Find parametric representation of Cylinder hit
 	double u = phi / m_phiMax.getValue();
-	double v = ( hitPoint.z - zmin ) / ( zmax - zmin );
+	double v = hitPoint.z /m_length.getValue();
 
 	// Compute cylinder \dpdu and \dpdv
 	double zradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y );
 	double invzradius = 1.0 / zradius;
 	double cosphi = hitPoint.x * invzradius;
 	double sinphi = hitPoint.y * invzradius;
-	Vector3D dpdu( -m_radius.getValue()*sinphi, m_radius.getValue()*cosphi, 0.0 );
-	Vector3D dpdv( 0.0, 0.0, zmax - zmin );
+	Vector3D dpdu( -m_phiMax.getValue() * m_radius.getValue() * sinphi,
+				m_phiMax.getValue() * m_radius.getValue() * cosphi,
+				0.0 );
+	Vector3D dpdv( 0.0, 0.0, m_length.getValue() );
 
 	// Compute cylinder \dndu and \dndv
-	Vector3D d2Pduu( -m_radius.getValue()*cosphi, -m_radius.getValue()*sinphi, 0 );
+	Vector3D d2Pduu( -m_phiMax.getValue() * m_phiMax.getValue() * m_radius.getValue() * cosphi,
+					-m_phiMax.getValue() * m_phiMax.getValue() * m_radius.getValue() * sinphi,
+					0 );
 	Vector3D d2Pduv( 0.0, 0.0, 0.0 );
 	Vector3D d2Pdvv( 0.0, 0.0, 0.0 );
 
@@ -157,7 +164,15 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	Vector3D N;
+
+	if( m_reverseOrientation.getValue() == 0 )
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	else
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+
+	if( DotProduct(N, -objectRay.direction) < 0 )	return false;
+
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );
@@ -210,11 +225,8 @@ Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
-
 	double phi = u * m_phiMax.getValue();
-	double length = v * ( zmax - zmin ) + zmin;
+	double length = v * m_length.getValue();
 
 	double x = m_radius.getValue()*cos (phi);
 	double y = m_radius.getValue()*sin (phi);
@@ -245,9 +257,9 @@ void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 	if( m_phiMax.getValue() > Pi ) ymin = ( m_phiMax.getValue() < 1.5*Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue();
 	double ymax = ( m_phiMax.getValue() < Pi/2.0 )? m_radius.getValue() * sinPhiMax : m_radius.getValue();
 
-	double zmin = std::min ( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max ( m_z1.getValue(), m_z2.getValue() );
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
+	double zmin = 0.0;
+	double zmax = m_length.getValue();
+	box.setBounds( SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
 
 void ShapeCylinder::generatePrimitives(SoAction *action)
