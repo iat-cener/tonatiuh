@@ -5,15 +5,18 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
+
+INCLUDEPATH += . \
+				src \
+				../Tonatiuh/src \
+				$$(TDE_ROOT)/local/include
+					
 win32{
 	DEFINES+= COIN_DLL SOQT_DLL
-	INCLUDEPATH += . \
-					src \
-					../Tonatiuh/src \ 
-					$$(TDE_ROOT)/local/include
+	
 
 				
-	LIBS +=-L$$(TDE_ROOT)/local/lib -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
+	
 }
 unix{
 	INCLUDEPATH += 	. \
@@ -40,11 +43,13 @@ DESTDIR       = ../Tonatiuh/plugins/SunshapePillbox
 TARGET        = SunshapePillbox
 
 contains(TEMPLATE,lib) {
-   CONFIG(debug, debug|release) {     
-      unix	{
-      	TARGET = $$member(TARGET, 0)_debug
-      	
-      }
-      else:TARGET = $$member(TARGET, 0)d
-   } 
+   CONFIG(debug, debug|release) {
+   
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind  
+		unix {
+			TARGET = $$member(TARGET, 0)_debug
+		}
+      	else:TARGET = $$member(TARGET, 0)d
+	}
+	else:LIBS +=-L$$(TDE_ROOT)/local/lib -lSoQt -lCoin  
 }
