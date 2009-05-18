@@ -19,7 +19,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDelete"><param name="Local" value="class_cmd_delete.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDeleteTracker"><param name="Local" value="class_cmd_delete_tracker.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertMaterial"><param name="Local" value="class_cmd_insert_material.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertPhotonMap"><param name="Local" value="class_cmd_insert_photon_map.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertSeparatorKit"><param name="Local" value="class_cmd_insert_separator_kit.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertShape"><param name="Local" value="class_cmd_insert_shape.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertShapeKit"><param name="Local" value="class_cmd_insert_shape_kit.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -43,7 +42,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MapDialog"><param name="Local" value="class_map_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Matrix4x4"><param name="Local" value="struct_matrix4x4.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MersenneTwister"><param name="Local" value="class_mersenne_twister.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="NearestPhotons"><param name="Local" value="struct_nearest_photons.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NodeNameDelegate"><param name="Local" value="class_node_name_delegate.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NormalVector"><param name="Local" value="struct_normal_vector.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ParametersDelegate"><param name="Local" value="class_parameters_delegate.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -66,7 +64,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionDialog"><param name="Local" value="class_sun_position_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TCube"><param name="Local" value="class_t_cube.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultMaterial"><param name="Local" value="class_t_default_material.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultPhotonMap"><param name="Local" value="class_t_default_photon_map.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultSunShape"><param name="Local" value="class_t_default_sun_shape.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultTracker"><param name="Local" value="class_t_default_tracker.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TGateEngine"><param name="Local" value="class_t_gate_engine.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -106,7 +103,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDelete"><param name="Local" value="class_cmd_delete.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDeleteTracker"><param name="Local" value="class_cmd_delete_tracker.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertMaterial"><param name="Local" value="class_cmd_insert_material.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertPhotonMap"><param name="Local" value="class_cmd_insert_photon_map.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertSeparatorKit"><param name="Local" value="class_cmd_insert_separator_kit.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertShape"><param name="Local" value="class_cmd_insert_shape.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertShapeKit"><param name="Local" value="class_cmd_insert_shape_kit.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -128,7 +124,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="LightDialog"><param name="Local" value="class_light_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MainWindow"><param name="Local" value="class_main_window.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MapDialog"><param name="Local" value="class_map_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="NearestPhotons"><param name="Local" value="struct_nearest_photons.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NodeNameDelegate"><param name="Local" value="class_node_name_delegate.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NormalVector"><param name="Local" value="struct_normal_vector.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ParametersDelegate"><param name="Local" value="class_parameters_delegate.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -163,10 +158,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultMaterial"><param name="Local" value="class_t_default_material.html"><param name="ImageNumber" value="11"></OBJECT>
     </UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TMaterialFactory"><param name="Local" value="class_t_material_factory.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="TPhotonMap"><param name="Local" value="class_t_photon_map.html"><param name="ImageNumber" value="1"></OBJECT>
-    <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultPhotonMap"><param name="Local" value="class_t_default_photon_map.html"><param name="ImageNumber" value="11"></OBJECT>
-    </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="TPhotonMap"><param name="Local" value="class_t_photon_map.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TPhotonMapFactory"><param name="Local" value="class_t_photon_map_factory.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Trace"><param name="Local" value="class_trace.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Tracer"><param name="Local" value="class_tracer.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -227,8 +219,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDeleteTracker.h"><param name="Local" value="_cmd_delete_tracker_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertMaterial.cpp"><param name="Local" value="_cmd_insert_material_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertMaterial.h"><param name="Local" value="_cmd_insert_material_8h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertPhotonMap.cpp"><param name="Local" value="_cmd_insert_photon_map_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertPhotonMap.h"><param name="Local" value="_cmd_insert_photon_map_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertSeparatorKit.cpp"><param name="Local" value="_cmd_insert_separator_kit_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertSeparatorKit.h"><param name="Local" value="_cmd_insert_separator_kit_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertShape.cpp"><param name="Local" value="_cmd_insert_shape_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -316,8 +306,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TCube.h"><param name="Local" value="_t_cube_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultMaterial.cpp"><param name="Local" value="_t_default_material_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultMaterial.h"><param name="Local" value="_t_default_material_8h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultPhotonMap.cpp"><param name="Local" value="_t_default_photon_map_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultPhotonMap.h"><param name="Local" value="_t_default_photon_map_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultSunShape.cpp"><param name="Local" value="_t_default_sun_shape_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultSunShape.h"><param name="Local" value="_t_default_sun_shape_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultTracker.cpp"><param name="Local" value="_t_default_tracker_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>

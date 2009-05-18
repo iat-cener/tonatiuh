@@ -48,26 +48,30 @@
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13">RayTraceDialog</a> (QWidget *parent=0, Qt::WindowFlags f=0)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#593ed4d37ea810365378676382c6934a">RayTraceDialog</a> (int numRays, double fraction, bool drawPhotons, bool increasePhotonMap, QWidget *parent=0, Qt::WindowFlags f=0)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#2d2489572b326ad1de59634790e82a87">RayTraceDialog</a> (int numRays, double fraction, bool drawPhotons, QVector&lt; <a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> * &gt; photonMapFactoryList, int selectedPhotonMapFactory=0, bool increasePhotonMap=false, QWidget *parent=0, Qt::WindowFlags f=0)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae">~RayTraceDialog</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54">GetNumRays</a> () const </td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#7032e91420b33da5029fed74e8d975a5">GetDrawRays</a> () const </td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1">IncreasePhotonMap</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371">GetRaysFactionToDraw</a> () const </td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#9595789ae3f3397b0ff4431c9009f4f6">DrawPhotons</a> () const </td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#2a4c513eead5e8a494f506d31b32163a">GetPhotonMapFactoryIndex</a> () const </td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1">IncreasePhotonMap</a> () const </td></tr>
 
 <tr><td colspan="2"><br><h2>Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#54a4c337a4cc95ba174561ba5d93bbdb">m_numRays</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#6c086a820c89a6a224ee4afdcb120867">m_fraction</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#93931024fd0b55f2810dd7c06c7b40bb">m_increasePhotonMap</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#fe8ecef1c7fcdbe141d9dffa151d1bf9">m_drawPhotons</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#85df880ba69bdbde03407b7bf0717dbf">m_selectedPhotonMapFactory</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#93931024fd0b55f2810dd7c06c7b40bb">m_increasePhotonMap</a></td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -102,11 +106,11 @@
 <p>
 Creates a dialog to ray tracer options with the given <em>parent</em> and <em>f</em> flags.<p>
 The variables take the default values. 
-<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00096">applyChanges()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00105">saveChanges()</a>.</p>
+<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00150">applyChanges()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="593ed4d37ea810365378676382c6934a"></a><!-- doxytag: member="RayTraceDialog::RayTraceDialog" ref="593ed4d37ea810365378676382c6934a" args="(int numRays, double fraction, bool drawPhotons, bool increasePhotonMap, QWidget *parent=0, Qt::WindowFlags f=0)" -->
+<a class="anchor" name="2d2489572b326ad1de59634790e82a87"></a><!-- doxytag: member="RayTraceDialog::RayTraceDialog" ref="2d2489572b326ad1de59634790e82a87" args="(int numRays, double fraction, bool drawPhotons, QVector&lt; TPhotonMapFactory * &gt; photonMapFactoryList, int selectedPhotonMapFactory=0, bool increasePhotonMap=false, QWidget *parent=0, Qt::WindowFlags f=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -131,8 +135,20 @@ The variables take the default values.
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">QVector&lt; <a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> * &gt;&nbsp;</td>
+          <td class="paramname"> <em>photonMapFactoryList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>selectedPhotonMapFactory</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">bool&nbsp;</td>
-          <td class="paramname"> <em>increasePhotonMap</em>, </td>
+          <td class="paramname"> <em>increasePhotonMap</em> = <code>false</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -158,7 +174,7 @@ The variables take the default values.
 <p>
 Creates a dialog to ray tracer options with the given <em>parent</em> and <em>f</em> flags.<p>
 The variables take the values specified by <em>numRats</em>, <em>faction</em>, <em>drawPhotons</em> and <em>increasePhotonMap</em>. 
-<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00096">applyChanges()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00076">m_drawPhotons</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00074">m_fraction</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00075">m_increasePhotonMap</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00073">m_numRays</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00105">saveChanges()</a>.</p>
+<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00150">applyChanges()</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00081">m_drawPhotons</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00080">m_fraction</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00084">m_increasePhotonMap</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00078">m_numRays</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00083">m_selectedPhotonMapFactory</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
 
 </div>
 </div><p>
@@ -200,9 +216,9 @@ Destroys the <a class="el" href="class_ray_trace_dialog.html" title="RayTraceDia
 
 <p>
 If the applyChanges button is clicked the dialog values are saved. 
-<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00105">saveChanges()</a>.</p>
+<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
 
-<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00051">RayTraceDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00052">RayTraceDialog()</a>.</p>
 
 </div>
 </div><p>
@@ -215,40 +231,17 @@ If the applyChanges button is clicked the dialog values are saved.
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
+          <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>
+Returns if the photons are going to be represented. 
+<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00081">m_drawPhotons</a>.</p>
 
-<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00076">m_drawPhotons</a>.</p>
-
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01068">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="7032e91420b33da5029fed74e8d975a5"></a><!-- doxytag: member="RayTraceDialog::GetDrawRays" ref="7032e91420b33da5029fed74e8d975a5" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double RayTraceDialog::GetDrawRays           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00074">m_fraction</a>.</p>
-
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01068">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01104">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -261,17 +254,63 @@ If the applyChanges button is clicked the dialog values are saved.
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
+          <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>
+Returns the number of rays to trace. 
+<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00078">m_numRays</a>.</p>
 
-<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00073">m_numRays</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01104">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01068">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
+</div>
+</div><p>
+<a class="anchor" name="2a4c513eead5e8a494f506d31b32163a"></a><!-- doxytag: member="RayTraceDialog::GetPhotonMapFactoryIndex" ref="2a4c513eead5e8a494f506d31b32163a" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RayTraceDialog::GetPhotonMapFactoryIndex           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns the factory to create a new photon map. 
+<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00083">m_selectedPhotonMapFactory</a>.</p>
+
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01104">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="45231f660f995dc7d6a9e0ff2c522371"></a><!-- doxytag: member="RayTraceDialog::GetRaysFactionToDraw" ref="45231f660f995dc7d6a9e0ff2c522371" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double RayTraceDialog::GetRaysFactionToDraw           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns the fraction of trace rays to draw. 
+<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00080">m_fraction</a>.</p>
+
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01104">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -284,17 +323,17 @@ If the applyChanges button is clicked the dialog values are saved.
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
+          <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>
+Returns if the the tracer use the same photon map used in the previous tracer process. 
+<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00084">m_increasePhotonMap</a>.</p>
 
-<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00075">m_increasePhotonMap</a>.</p>
-
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01068">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01104">MainWindow::on_actionRayTraceOptions_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -315,9 +354,9 @@ If the applyChanges button is clicked the dialog values are saved.
 
 <p>
 Saves the values of the dialog. 
-<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00076">m_drawPhotons</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00074">m_fraction</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00075">m_increasePhotonMap</a>, and <a class="el" href="_ray_trace_dialog_8h-source.html#l00073">m_numRays</a>.</p>
+<p>References <a class="el" href="_ray_trace_dialog_8h-source.html#l00081">m_drawPhotons</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00080">m_fraction</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00084">m_increasePhotonMap</a>, <a class="el" href="_ray_trace_dialog_8h-source.html#l00078">m_numRays</a>, and <a class="el" href="_ray_trace_dialog_8h-source.html#l00083">m_selectedPhotonMapFactory</a>.</p>
 
-<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00096">applyChanges()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00051">RayTraceDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00150">applyChanges()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00052">RayTraceDialog()</a>.</p>
 
 </div>
 </div><p>
@@ -335,7 +374,7 @@ Saves the values of the dialog.
 
 <p>
 This property holds whether photons are going to be drawn. 
-<p>Referenced by <a class="el" href="_ray_trace_dialog_8h-source.html#l00066">DrawPhotons()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00066">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00105">saveChanges()</a>.</p>
+<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00122">DrawPhotons()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00067">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
 
 </div>
 </div><p>
@@ -352,7 +391,7 @@ This property holds whether photons are going to be drawn.
 
 <p>
 Faction of traced rays to draw. 
-<p>Referenced by <a class="el" href="_ray_trace_dialog_8h-source.html#l00064">GetDrawRays()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00066">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00105">saveChanges()</a>.</p>
+<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00113">GetRaysFactionToDraw()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00067">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
 
 </div>
 </div><p>
@@ -369,7 +408,7 @@ Faction of traced rays to draw.
 
 <p>
 This property holds whether traced phtons are going to added to the old photon map. 
-<p>Referenced by <a class="el" href="_ray_trace_dialog_8h-source.html#l00065">IncreasePhotonMap()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00066">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00105">saveChanges()</a>.</p>
+<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00141">IncreasePhotonMap()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00067">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
 
 </div>
 </div><p>
@@ -386,14 +425,31 @@ This property holds whether traced phtons are going to added to the old photon m
 
 <p>
 Number of rays to trace. 
-<p>Referenced by <a class="el" href="_ray_trace_dialog_8h-source.html#l00063">GetNumRays()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00066">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00105">saveChanges()</a>.</p>
+<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00104">GetNumRays()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00067">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="85df880ba69bdbde03407b7bf0717dbf"></a><!-- doxytag: member="RayTraceDialog::m_selectedPhotonMapFactory" ref="85df880ba69bdbde03407b7bf0717dbf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_ray_trace_dialog.html#85df880ba69bdbde03407b7bf0717dbf">RayTraceDialog::m_selectedPhotonMapFactory</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+The index of factory selected from <a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> list. 
+<p>Referenced by <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00131">GetPhotonMapFactoryIndex()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00067">RayTraceDialog()</a>, and <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00159">saveChanges()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_ray_trace_dialog_8h-source.html">RayTraceDialog.h</a><li><a class="el" href="_ray_trace_dialog_8cpp.html">RayTraceDialog.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:39 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:22 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

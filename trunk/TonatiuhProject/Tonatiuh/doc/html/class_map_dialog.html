@@ -33,12 +33,17 @@
   </div>
 </div>
 <div class="contents">
-<h1>MapDialog Class Reference</h1><!-- doxytag: class="MapDialog" -->
+<h1>MapDialog Class Reference</h1><!-- doxytag: class="MapDialog" --><a class="el" href="class_map_dialog.html" title="MapDialog class is the dialog to select a localization.">MapDialog</a> class is the dialog to select a localization.  
+<a href="#_details">More...</a>
+<p>
+
 <p>
 <a href="class_map_dialog-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Slots</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#208b2c997dadfa389e2f163c557f52da">changeGpsPosition</a> (double lon, double lat, GeoDataPoint::Unit)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#0b40ad9c2c3687221c8f315c767c81bb">UpdateCurrentPosition</a> (qreal lon, qreal lat, GeoDataCoordinates::Unit)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#3d54a49543d03e021ed7dafa86ce17a4">ChangeGPSPosition</a> ()</td></tr>
 
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#8ea9ccfa4706e6674a1e6932bb7c4225">MapDialog</a> (QWidget *=0)</td></tr>
@@ -49,26 +54,14 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#9c9d373d5a111c5b8a652327148c6e6c">SetCoordinates</a> (double lon, double lat)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#52f5ffe55b94ac50af9a05baa1727557">zoomIn</a> ()</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#f9807818be76c2118fb4e44a536534d8">zoomOut</a> ()</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#02a92e79f1a7a08261e303a1d1984300">moveLeft</a> ()</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#0ef20c84c62f2f3ce9e53925c44360c9">moveRight</a> ()</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#6eb0337aabb7a653929d51befab669ec">moveUp</a> ()</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#b7ec1e57b96924974d369afa14d47224">moveDown</a> ()</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#d2fd5cbf058013431a325414473b5b93">sideBarShown</a> () const </td></tr>
 
 <tr><td colspan="2"><br><h2>Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">MarbleWidget *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#2970627b83441cc647ac7cffb8dd21bc">m_marbleWidget</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">Marble::MarbleWidget *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#ba27b7237c1fe612aa694bc994a7682e">m_marbleWidget</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">MarbleControlBox *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#6ff2864b6b4f1d850eedc99d1f2af101">m_control</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">Marble::MarbleControlBox *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#7971f08a6f1fd3bf7c1e1fcaa26c9798">m_control</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">MapThemeManager *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#a6f3515bb62a77cf6a96de271bdfdef5">m_mapThemeManager</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">Marble::MapThemeManager *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#85fd193a2d5fc28d64f7bdaad0e31b61">m_mapThemeManager</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QSplitter *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#ecf848bd3f6c73795a0302ef1184973b">m_splitter</a></td></tr>
 
@@ -85,7 +78,10 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_map_dialog.html#66591c7ba3d4e3c96af6da4c5d1ee938">m_latitude</a></td></tr>
 
 </table>
-<hr><h2>Constructor &amp; Destructor Documentation</h2>
+<hr><a name="_details"></a><h2>Detailed Description</h2>
+<a class="el" href="class_map_dialog.html" title="MapDialog class is the dialog to select a localization.">MapDialog</a> class is the dialog to select a localization. 
+<p>
+<a class="el" href="class_map_dialog.html" title="MapDialog class is the dialog to select a localization.">MapDialog</a> is the dialog show a world map and select a localization in a easy way. <hr><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" name="8ea9ccfa4706e6674a1e6932bb7c4225"></a><!-- doxytag: member="MapDialog::MapDialog" ref="8ea9ccfa4706e6674a1e6932bb7c4225" args="(QWidget *=0)" -->
 <div class="memitem">
 <div class="memproto">
@@ -104,7 +100,7 @@
 
 <p>
 
-<p>References <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, <a class="el" href="_map_dialog_8h-source.html#l00076">m_control</a>, <a class="el" href="_map_dialog_8h-source.html#l00081">m_latComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00080">m_latSpinBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00083">m_lonComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00082">m_lonSpinBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00077">m_mapThemeManager</a>, <a class="el" href="_map_dialog_8h-source.html#l00075">m_marbleWidget</a>, and <a class="el" href="_map_dialog_8h-source.html#l00078">m_splitter</a>.</p>
+<p>References <a class="el" href="_map_dialog_8cpp-source.html#l00242">ChangeGPSPosition()</a>, <a class="el" href="_map_dialog_8h-source.html#l00080">m_control</a>, <a class="el" href="_map_dialog_8h-source.html#l00085">m_latComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00084">m_latSpinBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00087">m_lonComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00086">m_lonSpinBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00081">m_mapThemeManager</a>, <a class="el" href="_map_dialog_8h-source.html#l00079">m_marbleWidget</a>, <a class="el" href="_map_dialog_8h-source.html#l00082">m_splitter</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 </div>
 </div><p>
@@ -128,42 +124,26 @@
 </div>
 </div><p>
 <hr><h2>Member Function Documentation</h2>
-<a class="anchor" name="208b2c997dadfa389e2f163c557f52da"></a><!-- doxytag: member="MapDialog::changeGpsPosition" ref="208b2c997dadfa389e2f163c557f52da" args="(double lon, double lat, GeoDataPoint::Unit)" -->
+<a class="anchor" name="3d54a49543d03e021ed7dafa86ce17a4"></a><!-- doxytag: member="MapDialog::ChangeGPSPosition" ref="3d54a49543d03e021ed7dafa86ce17a4" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void MapDialog::changeGpsPosition           </td>
+          <td class="memname">void MapDialog::ChangeGPSPosition           </td>
           <td>(</td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>lon</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>lat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">GeoDataPoint::Unit&nbsp;</td>
-          <td class="paramname"></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [slot]</code></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>
+Save as a current location the user specified coordinates in the current location tab. 
+<p>References <a class="el" href="tgc_8h-source.html#l00051">tgc::Degree</a>, <a class="el" href="_map_dialog_8h-source.html#l00085">m_latComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00090">m_latitude</a>, <a class="el" href="_map_dialog_8h-source.html#l00084">m_latSpinBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00087">m_lonComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00089">m_longitude</a>, and <a class="el" href="_map_dialog_8h-source.html#l00086">m_lonSpinBox</a>.</p>
 
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00081">m_latComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00086">m_latitude</a>, <a class="el" href="_map_dialog_8h-source.html#l00080">m_latSpinBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00083">m_lonComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00085">m_longitude</a>, <a class="el" href="_map_dialog_8h-source.html#l00082">m_lonSpinBox</a>, and <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>.</p>
-
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00177">SetCoordinates()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>.</p>
 
 </div>
 </div><p>
@@ -193,94 +173,10 @@
 <div class="memdoc">
 
 <p>
-
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00086">m_latitude</a>, and <a class="el" href="_map_dialog_8h-source.html#l00085">m_longitude</a>.</p>
+Returns current coordinates as a decimal number 
+<p>References <a class="el" href="_map_dialog_8h-source.html#l00090">m_latitude</a>, and <a class="el" href="_map_dialog_8h-source.html#l00089">m_longitude</a>.</p>
 
 <p>Referenced by <a class="el" href="_sun_position_calculator_dialog_8cpp-source.html#l00120">SunPositionCalculatorDialog::on_selectButton_clicked()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="b7ec1e57b96924974d369afa14d47224"></a><!-- doxytag: member="MapDialog::moveDown" ref="b7ec1e57b96924974d369afa14d47224" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MapDialog::moveDown           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00075">m_marbleWidget</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="02a92e79f1a7a08261e303a1d1984300"></a><!-- doxytag: member="MapDialog::moveLeft" ref="02a92e79f1a7a08261e303a1d1984300" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MapDialog::moveLeft           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00075">m_marbleWidget</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="0ef20c84c62f2f3ce9e53925c44360c9"></a><!-- doxytag: member="MapDialog::moveRight" ref="0ef20c84c62f2f3ce9e53925c44360c9" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MapDialog::moveRight           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00075">m_marbleWidget</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="6eb0337aabb7a653929d51befab669ec"></a><!-- doxytag: member="MapDialog::moveUp" ref="6eb0337aabb7a653929d51befab669ec" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MapDialog::moveUp           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00075">m_marbleWidget</a>.</p>
 
 </div>
 </div><p>
@@ -310,8 +206,8 @@
 <div class="memdoc">
 
 <p>
-
-<p>References <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, <a class="el" href="_map_dialog_8h-source.html#l00076">m_control</a>, <a class="el" href="_map_dialog_8h-source.html#l00086">m_latitude</a>, and <a class="el" href="_map_dialog_8h-source.html#l00085">m_longitude</a>.</p>
+Set control tab visible. 
+<p>References <a class="el" href="_map_dialog_8h-source.html#l00080">m_control</a>, <a class="el" href="_map_dialog_8h-source.html#l00090">m_latitude</a>, <a class="el" href="_map_dialog_8h-source.html#l00089">m_longitude</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 <p>Referenced by <a class="el" href="_sun_position_calculator_dialog_8cpp-source.html#l00120">SunPositionCalculatorDialog::on_selectButton_clicked()</a>.</p>
 
@@ -333,60 +229,57 @@
 <div class="memdoc">
 
 <p>
-
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00076">m_control</a>.</p>
+Set control tab visible. 
+<p>References <a class="el" href="_map_dialog_8h-source.html#l00080">m_control</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="52f5ffe55b94ac50af9a05baa1727557"></a><!-- doxytag: member="MapDialog::zoomIn" ref="52f5ffe55b94ac50af9a05baa1727557" args="()" -->
+<a class="anchor" name="0b40ad9c2c3687221c8f315c767c81bb"></a><!-- doxytag: member="MapDialog::UpdateCurrentPosition" ref="0b40ad9c2c3687221c8f315c767c81bb" args="(qreal lon, qreal lat, GeoDataCoordinates::Unit)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void MapDialog::zoomIn           </td>
+          <td class="memname">void MapDialog::UpdateCurrentPosition           </td>
           <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
+          <td class="paramtype">qreal&nbsp;</td>
+          <td class="paramname"> <em>lon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">qreal&nbsp;</td>
+          <td class="paramname"> <em>lat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GeoDataCoordinates::Unit&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [slot]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>
+Update current location coordinates. 
+<p>References <a class="el" href="_map_dialog_8h-source.html#l00085">m_latComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00090">m_latitude</a>, <a class="el" href="_map_dialog_8h-source.html#l00084">m_latSpinBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00087">m_lonComboBox</a>, <a class="el" href="_map_dialog_8h-source.html#l00089">m_longitude</a>, <a class="el" href="_map_dialog_8h-source.html#l00086">m_lonSpinBox</a>, and <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>.</p>
 
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00075">m_marbleWidget</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="f9807818be76c2118fb4e44a536534d8"></a><!-- doxytag: member="MapDialog::zoomOut" ref="f9807818be76c2118fb4e44a536534d8" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MapDialog::zoomOut           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>References <a class="el" href="_map_dialog_8h-source.html#l00075">m_marbleWidget</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00198">SetCoordinates()</a>.</p>
 
 </div>
 </div><p>
 <hr><h2>Member Data Documentation</h2>
-<a class="anchor" name="6ff2864b6b4f1d850eedc99d1f2af101"></a><!-- doxytag: member="MapDialog::m_control" ref="6ff2864b6b4f1d850eedc99d1f2af101" args="" -->
+<a class="anchor" name="7971f08a6f1fd3bf7c1e1fcaa26c9798"></a><!-- doxytag: member="MapDialog::m_control" ref="7971f08a6f1fd3bf7c1e1fcaa26c9798" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">MarbleControlBox* <a class="el" href="class_map_dialog.html#6ff2864b6b4f1d850eedc99d1f2af101">MapDialog::m_control</a><code> [private]</code>          </td>
+          <td class="memname">Marble::MarbleControlBox* <a class="el" href="class_map_dialog.html#7971f08a6f1fd3bf7c1e1fcaa26c9798">MapDialog::m_control</a><code> [private]</code>          </td>
         </tr>
       </table>
 </div>
@@ -394,7 +287,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00177">SetCoordinates()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00223">sideBarShown()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00198">SetCoordinates()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00211">sideBarShown()</a>.</p>
 
 </div>
 </div><p>
@@ -411,7 +304,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00242">ChangeGPSPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 </div>
 </div><p>
@@ -428,7 +321,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00170">GetCoordinates()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00177">SetCoordinates()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00242">ChangeGPSPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00188">GetCoordinates()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00198">SetCoordinates()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 </div>
 </div><p>
@@ -445,7 +338,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00242">ChangeGPSPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 </div>
 </div><p>
@@ -462,7 +355,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00242">ChangeGPSPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 </div>
 </div><p>
@@ -479,7 +372,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00170">GetCoordinates()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00177">SetCoordinates()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00242">ChangeGPSPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00188">GetCoordinates()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00198">SetCoordinates()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 </div>
 </div><p>
@@ -496,16 +389,16 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00229">changeGpsPosition()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00242">ChangeGPSPosition()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00220">UpdateCurrentPosition()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="a6f3515bb62a77cf6a96de271bdfdef5"></a><!-- doxytag: member="MapDialog::m_mapThemeManager" ref="a6f3515bb62a77cf6a96de271bdfdef5" args="" -->
+<a class="anchor" name="85fd193a2d5fc28d64f7bdaad0e31b61"></a><!-- doxytag: member="MapDialog::m_mapThemeManager" ref="85fd193a2d5fc28d64f7bdaad0e31b61" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">MapThemeManager* <a class="el" href="class_map_dialog.html#a6f3515bb62a77cf6a96de271bdfdef5">MapDialog::m_mapThemeManager</a><code> [private]</code>          </td>
+          <td class="memname">Marble::MapThemeManager* <a class="el" href="class_map_dialog.html#85fd193a2d5fc28d64f7bdaad0e31b61">MapDialog::m_mapThemeManager</a><code> [private]</code>          </td>
         </tr>
       </table>
 </div>
@@ -513,16 +406,16 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="2970627b83441cc647ac7cffb8dd21bc"></a><!-- doxytag: member="MapDialog::m_marbleWidget" ref="2970627b83441cc647ac7cffb8dd21bc" args="" -->
+<a class="anchor" name="ba27b7237c1fe612aa694bc994a7682e"></a><!-- doxytag: member="MapDialog::m_marbleWidget" ref="ba27b7237c1fe612aa694bc994a7682e" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">MarbleWidget* <a class="el" href="class_map_dialog.html#2970627b83441cc647ac7cffb8dd21bc">MapDialog::m_marbleWidget</a><code> [private]</code>          </td>
+          <td class="memname">Marble::MarbleWidget* <a class="el" href="class_map_dialog.html#ba27b7237c1fe612aa694bc994a7682e">MapDialog::m_marbleWidget</a><code> [private]</code>          </td>
         </tr>
       </table>
 </div>
@@ -530,7 +423,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00217">moveDown()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00199">moveLeft()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00205">moveRight()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00211">moveUp()</a>, <a class="el" href="_map_dialog_8cpp-source.html#l00187">zoomIn()</a>, and <a class="el" href="_map_dialog_8cpp-source.html#l00193">zoomOut()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>.</p>
 
 </div>
 </div><p>
@@ -547,14 +440,14 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00057">MapDialog()</a>.</p>
+<p>Referenced by <a class="el" href="_map_dialog_8cpp-source.html#l00063">MapDialog()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_map_dialog_8h-source.html">MapDialog.h</a><li><a class="el" href="_map_dialog_8cpp.html">MapDialog.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:38 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:21 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

@@ -45,7 +45,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_shape_kit.html#20732854ca4a7493e1282584f2904668">IntersectP</a> (const <a class="el" href="struct_ray.html">Ray</a> &amp;ray) const </td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="struct_ray.html">Ray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_shape_kit.html#8baa67afb8f515a2c9585ed0901625ac">Intersect</a> (const <a class="el" href="struct_ray.html">Ray</a> &amp;ray, <a class="el" href="class_random_deviate.html">RandomDeviate</a> &amp;rand) const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="struct_ray.html">Ray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_shape_kit.html#8cc6f1b75702cd63cf26d598c5136fe9">Intersect</a> (const <a class="el" href="struct_ray.html">Ray</a> &amp;objectRay, <a class="el" href="class_random_deviate.html">RandomDeviate</a> &amp;rand) const </td></tr>
 
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_shape_kit.html#db688b468a8dcaf49a8fd7544e0a677f">initClass</a> ()</td></tr>
@@ -116,11 +116,11 @@ Destroys the <a class="el" href="class_t_shape_kit.html" title="TShapeKit class 
 
 <p>
 Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. 
-<p>Referenced by <a class="el" href="main_8cpp-source.html#l00061">main()</a>.</p>
+<p>Referenced by <a class="el" href="main_8cpp-source.html#l00060">main()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="8baa67afb8f515a2c9585ed0901625ac"></a><!-- doxytag: member="TShapeKit::Intersect" ref="8baa67afb8f515a2c9585ed0901625ac" args="(const Ray &amp;ray, RandomDeviate &amp;rand) const " -->
+<a class="anchor" name="8cc6f1b75702cd63cf26d598c5136fe9"></a><!-- doxytag: member="TShapeKit::Intersect" ref="8cc6f1b75702cd63cf26d598c5136fe9" args="(const Ray &amp;objectRay, RandomDeviate &amp;rand) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -150,7 +150,7 @@ Interect <em>object</em> ray with the shape and computed reflected ray. The <em>
 Return the reflected ray. If the returned value is null, there is not reflected ray. 
 <p>References <a class="el" href="class_t_material.html#0e411fba66463425f33b5cd78fa3a786">TMaterial::GetReflectedRay()</a>, <a class="el" href="class_t_shape.html#04032277e551ce011a3bf7bf1b2ac92d">TShape::Intersect()</a>, and <a class="el" href="_ray_8h-source.html#l00060">Ray::maxt</a>.</p>
 
-<p>Referenced by <a class="el" href="_instance_node_8cpp-source.html#l00161">InstanceNode::Intersect()</a>.</p>
+<p>Referenced by <a class="el" href="_instance_node_8cpp-source.html#l00158">InstanceNode::Intersect()</a>.</p>
 
 </div>
 </div><p>
@@ -197,7 +197,7 @@ Check if ray intersects with the node.
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_t_shape_kit_8h-source.html">TShapeKit.h</a><li><a class="el" href="_t_shape_kit_8cpp.html">TShapeKit.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:39 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:22 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
