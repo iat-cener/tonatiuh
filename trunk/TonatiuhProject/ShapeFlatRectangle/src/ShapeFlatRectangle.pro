@@ -9,8 +9,6 @@ INCLUDEPATH += . \
 				src \
 				../Tonatiuh/src \ 
 				$$(TDE_ROOT)/local/include
-
-LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
  
 win32{
 	DEFINES+= COIN_DLL SOQT_DLL
@@ -52,6 +50,7 @@ SOURCES = *.cpp  \
            	../Tonatiuh/src/TShape.cpp \ 
            	../Tonatiuh/src/TShapeKit.cpp \
            	../Tonatiuh/src/Vector3D.cpp
+           	
 RESOURCES += ShapeFlatRectangle.qrc			
 
 DESTDIR = ../Tonatiuh/plugins/ShapeFlatRectangle
@@ -59,10 +58,13 @@ DESTDIR = ../Tonatiuh/plugins/ShapeFlatRectangle
 TARGET        = RectangularFlatshape
 
 contains(TEMPLATE,lib) {
-   CONFIG(debug, debug|release) {
-      unix:{
-      	TARGET = $$member(TARGET, 0)_debug
-      }
-      else:TARGET = $$member(TARGET, 0)d
-   }
+	CONFIG(debug, debug|release) {
+		
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
+		unix:{
+			TARGET = $$member(TARGET, 0)_debug
+		}
+		else:TARGET = $$member(TARGET, 0)d
+	}
+	else: LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 }
