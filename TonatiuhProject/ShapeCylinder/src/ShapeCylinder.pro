@@ -6,8 +6,6 @@ INCLUDEPATH += 	. \
 				src \
 				../Tonatiuh/src \
 				$$(TDE_ROOT)/local/include
-				 				
-LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 
 win32 {
 	DEFINES+= COIN_DLL SOQT_DLL
@@ -59,11 +57,13 @@ DESTDIR       = ../Tonatiuh/plugins/ShapeCylinder
 TARGET        = ShapeCylinder
 
 contains(TEMPLATE,lib) {  
-	CONFIG(debug, debug|release) {
-       
+	CONFIG(debug, debug|release) {	
+				 				
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
 		unix {
 			TARGET = $$member(TARGET, 0)_debug
 		}
 		else:TARGET = $$member(TARGET, 0)d
 	}
+	else: LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 }
