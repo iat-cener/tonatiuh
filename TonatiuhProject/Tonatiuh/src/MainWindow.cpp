@@ -1061,6 +1061,7 @@ void MainWindow::on_actionExport_Surface_PhotonMap_triggered()
 
 	QList< Photon* > nodePhotonsList = m_photonMap->GetPhotons( selectedNode );
 
+	std::cout<<"nodePhotonsList: "<<nodePhotonsList.size()<<std::endl;
 	if( nodePhotonsList.size() == 0 )
 	{
 		QMessageBox::information( this, "Tonatiuh Error",

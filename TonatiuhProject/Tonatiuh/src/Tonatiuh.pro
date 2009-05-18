@@ -29,8 +29,13 @@ SOURCES += *.cpp
 RESOURCES += tonatiuh.qrc
  
 
-LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin -lmarblewidget -lqwtplot3d
+CONFIG(debug, debug|release) {
 
+	LIBS += -L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind -lmarblewidgetd -lqwtplot3dd
+}
+else{
+	LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin -lmarblewidget -lqwtplot3d
+}
 	
 CONFIG(debug, debug|release) {
     DESTDIR = ../Tonatiuh/debug/
