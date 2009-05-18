@@ -76,32 +76,29 @@
 <a name="l00044"></a>00044 <span class="preprocessor">#include &lt;Inventor/SbBox.h&gt;</span>
 <a name="l00045"></a>00045 <span class="preprocessor">#include "<a class="code" href="_t_photon_map_8h.html">TPhotonMap.h</a>"</span>
 <a name="l00046"></a>00046 
-<a name="l00047"></a>00047 <span class="keyword">class </span><a class="code" href="struct_differential_geometry.html">DifferentialGeometry</a>;
-<a name="l00048"></a>00048 <span class="keyword">class </span><a class="code" href="class_random_deviate.html">RandomDeviate</a>;
-<a name="l00049"></a>00049 <span class="keyword">class </span><a class="code" href="struct_ray.html">Ray</a>;
-<a name="l00050"></a>00050 <span class="keyword">class </span><a class="code" href="struct_normal_vector.html">NormalVector</a>;
-<a name="l00051"></a>00051 <span class="keyword">class </span><a class="code" href="struct_point3_d.html">Point3D</a>;
-<a name="l00052"></a>00052 
-<a name="l00054"></a>00054 
-<a name="l00059"></a><a class="code" href="class_t_shape_kit.html">00059</a> <span class="keyword">class </span><a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a> : <span class="keyword">public</span> SoShapeKit
-<a name="l00060"></a>00060 {
-<a name="l00061"></a>00061     <a class="code" href="class_t_shape_kit.html#69c17750ed9da3d86cbef90a28057259">SO_KIT_HEADER</a>(<a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>);
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063 <span class="keyword">public</span>:
-<a name="l00064"></a>00064     <a class="code" href="class_t_shape_kit.html#247b092baea68dd7ab22076a819142de">TShapeKit</a>();
-<a name="l00065"></a>00065     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_shape_kit.html#db688b468a8dcaf49a8fd7544e0a677f">initClass</a>();
+<a name="l00047"></a>00047 <span class="keyword">class </span><a class="code" href="class_random_deviate.html">RandomDeviate</a>;
+<a name="l00048"></a>00048 <span class="keyword">class </span><a class="code" href="struct_ray.html">Ray</a>;
+<a name="l00049"></a>00049 
+<a name="l00051"></a>00051 
+<a name="l00056"></a><a class="code" href="class_t_shape_kit.html">00056</a> <span class="keyword">class </span><a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a> : <span class="keyword">public</span> SoShapeKit
+<a name="l00057"></a>00057 {
+<a name="l00058"></a>00058     <a class="code" href="class_t_shape_kit.html#69c17750ed9da3d86cbef90a28057259">SO_KIT_HEADER</a>(<a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>);
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="keyword">public</span>:
+<a name="l00061"></a>00061     <a class="code" href="class_t_shape_kit.html#247b092baea68dd7ab22076a819142de">TShapeKit</a>();
+<a name="l00062"></a>00062     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_shape_kit.html#db688b468a8dcaf49a8fd7544e0a677f">initClass</a>();
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     <span class="keywordtype">bool</span> <a class="code" href="class_t_shape_kit.html#20732854ca4a7493e1282584f2904668">IntersectP</a>( <span class="keyword">const</span> <a class="code" href="struct_ray.html">Ray</a>&amp; ray ) <span class="keyword">const</span>;
+<a name="l00065"></a>00065         <a class="code" href="struct_ray.html">Ray</a>* <a class="code" href="class_t_shape_kit.html#8cc6f1b75702cd63cf26d598c5136fe9">Intersect</a>( <span class="keyword">const</span> <a class="code" href="struct_ray.html">Ray</a>&amp; objectRay, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand ) <span class="keyword">const</span>;
 <a name="l00066"></a>00066 
-<a name="l00067"></a>00067     <span class="keywordtype">bool</span> <a class="code" href="class_t_shape_kit.html#20732854ca4a7493e1282584f2904668">IntersectP</a>( <span class="keyword">const</span> <a class="code" href="struct_ray.html">Ray</a>&amp; ray ) <span class="keyword">const</span>;
-<a name="l00068"></a>00068         <a class="code" href="struct_ray.html">Ray</a>* <a class="code" href="class_t_shape_kit.html#8baa67afb8f515a2c9585ed0901625ac">Intersect</a>( <span class="keyword">const</span> <a class="code" href="struct_ray.html">Ray</a>&amp; ray, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand ) <span class="keyword">const</span>;
+<a name="l00067"></a>00067 <span class="keyword">private</span>:
+<a name="l00068"></a>00068     <span class="keyword">virtual</span> <a class="code" href="class_t_shape_kit.html#96d5120fa5dbbf0e5418020c45eba611">~TShapeKit</a>();
 <a name="l00069"></a>00069 
-<a name="l00070"></a>00070 <span class="keyword">private</span>:
-<a name="l00071"></a>00071     <span class="keyword">virtual</span> <a class="code" href="class_t_shape_kit.html#96d5120fa5dbbf0e5418020c45eba611">~TShapeKit</a>();
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073 };
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 <span class="preprocessor">#endif </span><span class="comment">/*TSHAPEKIT_H_*/</span>
+<a name="l00070"></a>00070 };
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 <span class="preprocessor">#endif </span><span class="comment">/*TSHAPEKIT_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:37 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:20 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

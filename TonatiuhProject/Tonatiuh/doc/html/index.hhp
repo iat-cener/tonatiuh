@@ -25,7 +25,6 @@ _cmd_cut_8h-source.html
 _cmd_delete_8h-source.html
 _cmd_delete_tracker_8h-source.html
 _cmd_insert_material_8h-source.html
-_cmd_insert_photon_map_8h-source.html
 _cmd_insert_separator_kit_8h-source.html
 _cmd_insert_shape_8h-source.html
 _cmd_insert_shape_kit_8h-source.html
@@ -70,7 +69,6 @@ _sun_position_calculator_dialog_8h-source.html
 _sun_position_dialog_8h-source.html
 _t_cube_8h-source.html
 _t_default_material_8h-source.html
-_t_default_photon_map_8h-source.html
 _t_default_sun_shape_8h-source.html
 _t_default_tracker_8h-source.html
 _t_gate_engine_8h-source.html
@@ -120,8 +118,6 @@ _cmd_delete_tracker_8cpp.html
 _cmd_delete_tracker_8h.html
 _cmd_insert_material_8cpp.html
 _cmd_insert_material_8h.html
-_cmd_insert_photon_map_8cpp.html
-_cmd_insert_photon_map_8h.html
 _cmd_insert_separator_kit_8cpp.html
 _cmd_insert_separator_kit_8h.html
 _cmd_insert_shape_8cpp.html
@@ -209,8 +205,6 @@ _t_cube_8cpp.html
 _t_cube_8h.html
 _t_default_material_8cpp.html
 _t_default_material_8h.html
-_t_default_photon_map_8cpp.html
-_t_default_photon_map_8h.html
 _t_default_sun_shape_8cpp.html
 _t_default_sun_shape_8h.html
 _t_default_tracker_8cpp.html
@@ -351,8 +345,6 @@ class_cmd_delete_tracker.html
 class_cmd_delete_tracker-members.html
 class_cmd_insert_material.html
 class_cmd_insert_material-members.html
-class_cmd_insert_photon_map.html
-class_cmd_insert_photon_map-members.html
 class_cmd_insert_separator_kit.html
 class_cmd_insert_separator_kit-members.html
 class_cmd_insert_shape.html
@@ -399,8 +391,6 @@ struct_matrix4x4.html
 struct_matrix4x4-members.html
 class_mersenne_twister.html
 class_mersenne_twister-members.html
-struct_nearest_photons.html
-struct_nearest_photons-members.html
 class_node_name_delegate.html
 class_node_name_delegate-members.html
 struct_normal_vector.html
@@ -445,8 +435,6 @@ class_t_cube.html
 class_t_cube-members.html
 class_t_default_material.html
 class_t_default_material-members.html
-class_t_default_photon_map.html
-class_t_default_photon_map-members.html
 class_t_default_sun_shape.html
 class_t_default_sun_shape-members.html
 class_t_default_tracker.html

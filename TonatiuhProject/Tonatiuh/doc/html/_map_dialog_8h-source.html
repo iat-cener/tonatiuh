@@ -71,56 +71,56 @@
 <a name="l00039"></a>00039 <span class="preprocessor">#ifndef MAPDIALOG_H_</span>
 <a name="l00040"></a>00040 <span class="preprocessor"></span><span class="preprocessor">#define MAPDIALOG_H_</span>
 <a name="l00041"></a>00041 <span class="preprocessor"></span>
-<a name="l00042"></a>00042 <span class="preprocessor">#include &lt;QDialog&gt;</span>
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044 <span class="preprocessor">#include "MarbleControlBox.h"</span>
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="keyword">class </span>MapThemeManager;
-<a name="l00047"></a>00047 <span class="keyword">class </span>MarbleWidget;
-<a name="l00048"></a>00048 <span class="keyword">class </span>QComboBox;
-<a name="l00049"></a>00049 <span class="keyword">class </span>QDoubleSpinBox;
-<a name="l00050"></a>00050 <span class="keyword">class </span>QSplitter;
-<a name="l00051"></a>00051 
-<a name="l00052"></a><a class="code" href="class_map_dialog.html">00052</a> <span class="keyword">class </span><a class="code" href="class_map_dialog.html">MapDialog</a> : <span class="keyword">public</span> QDialog
-<a name="l00053"></a>00053 {
-<a name="l00054"></a>00054     Q_OBJECT
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="keyword">public</span>:
-<a name="l00057"></a>00057     <a class="code" href="class_map_dialog.html#8ea9ccfa4706e6674a1e6932bb7c4225">MapDialog</a>( QWidget * = 0 );
-<a name="l00058"></a><a class="code" href="class_map_dialog.html#a126f9537ae2ded0f88d9e3db5ecae3b">00058</a>     <span class="keyword">virtual</span> <a class="code" href="class_map_dialog.html#a126f9537ae2ded0f88d9e3db5ecae3b">~MapDialog</a>(){}
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060         <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#20556f504d31352331d1e87cd5ce04fa">GetCoordinates</a>( <span class="keywordtype">double</span>* lon, <span class="keywordtype">double</span>* lat ) <span class="keyword">const</span>;
-<a name="l00061"></a>00061         <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#9c9d373d5a111c5b8a652327148c6e6c">SetCoordinates</a>(  <span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat );
-<a name="l00062"></a>00062     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#52f5ffe55b94ac50af9a05baa1727557">zoomIn</a>();
-<a name="l00063"></a>00063     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#f9807818be76c2118fb4e44a536534d8">zoomOut</a>();
-<a name="l00064"></a>00064     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#02a92e79f1a7a08261e303a1d1984300">moveLeft</a>();
-<a name="l00065"></a>00065     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#0ef20c84c62f2f3ce9e53925c44360c9">moveRight</a>();
-<a name="l00066"></a>00066     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#6eb0337aabb7a653929d51befab669ec">moveUp</a>();
-<a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#b7ec1e57b96924974d369afa14d47224">moveDown</a>();
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069     <span class="keywordtype">bool</span> <a class="code" href="class_map_dialog.html#d2fd5cbf058013431a325414473b5b93">sideBarShown</a>() <span class="keyword">const</span>;
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="keyword">public</span> slots:
-<a name="l00072"></a>00072     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#208b2c997dadfa389e2f163c557f52da">changeGpsPosition</a>( <span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat, GeoDataPoint::Unit );
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043 <span class="preprocessor">#include &lt;QDialog&gt;</span>
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045 <span class="preprocessor">#include &lt;GeoDataCoordinates.h&gt;</span>
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047 <span class="preprocessor">#include &lt;MarbleControlBox.h&gt;</span>
+<a name="l00048"></a>00048 <span class="preprocessor">#include &lt;MapThemeManager.h&gt;</span>
+<a name="l00049"></a>00049 <span class="preprocessor">#include &lt;MarbleWidget.h&gt;</span>
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051 <span class="keyword">class </span>QComboBox;
+<a name="l00052"></a>00052 <span class="keyword">class </span>QDoubleSpinBox;
+<a name="l00053"></a>00053 <span class="keyword">class </span>QSplitter;
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 <span class="keyword">using namespace </span>Marble;
+<a name="l00056"></a>00056 
+<a name="l00058"></a>00058 
+<a name="l00062"></a><a class="code" href="class_map_dialog.html">00062</a> <span class="keyword">class </span><a class="code" href="class_map_dialog.html" title="MapDialog class is the dialog to select a localization.">MapDialog</a> : <span class="keyword">public</span> QDialog
+<a name="l00063"></a>00063 {
+<a name="l00064"></a>00064     Q_OBJECT
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066 <span class="keyword">public</span>:
+<a name="l00067"></a>00067     <a class="code" href="class_map_dialog.html#8ea9ccfa4706e6674a1e6932bb7c4225">MapDialog</a>( QWidget * = 0 );
+<a name="l00068"></a><a class="code" href="class_map_dialog.html#a126f9537ae2ded0f88d9e3db5ecae3b">00068</a>     <span class="keyword">virtual</span> <a class="code" href="class_map_dialog.html#a126f9537ae2ded0f88d9e3db5ecae3b">~MapDialog</a>(){}
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070         <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#20556f504d31352331d1e87cd5ce04fa">GetCoordinates</a>( <span class="keywordtype">double</span>* lon, <span class="keywordtype">double</span>* lat ) <span class="keyword">const</span>;
+<a name="l00071"></a>00071         <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#9c9d373d5a111c5b8a652327148c6e6c">SetCoordinates</a>(  <span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat );
+<a name="l00072"></a>00072     <span class="keywordtype">bool</span> <a class="code" href="class_map_dialog.html#d2fd5cbf058013431a325414473b5b93">sideBarShown</a>() <span class="keyword">const</span>;
 <a name="l00073"></a>00073 
-<a name="l00074"></a>00074 <span class="keyword">private</span>:
-<a name="l00075"></a><a class="code" href="class_map_dialog.html#2970627b83441cc647ac7cffb8dd21bc">00075</a>     MarbleWidget*               <a class="code" href="class_map_dialog.html#2970627b83441cc647ac7cffb8dd21bc">m_marbleWidget</a>;
-<a name="l00076"></a><a class="code" href="class_map_dialog.html#6ff2864b6b4f1d850eedc99d1f2af101">00076</a>     MarbleControlBox*   <a class="code" href="class_map_dialog.html#6ff2864b6b4f1d850eedc99d1f2af101">m_control</a>;
-<a name="l00077"></a><a class="code" href="class_map_dialog.html#a6f3515bb62a77cf6a96de271bdfdef5">00077</a>     MapThemeManager*    <a class="code" href="class_map_dialog.html#a6f3515bb62a77cf6a96de271bdfdef5">m_mapThemeManager</a>;
-<a name="l00078"></a><a class="code" href="class_map_dialog.html#ecf848bd3f6c73795a0302ef1184973b">00078</a>     QSplitter*                  <a class="code" href="class_map_dialog.html#ecf848bd3f6c73795a0302ef1184973b">m_splitter</a>;
-<a name="l00079"></a>00079 
-<a name="l00080"></a><a class="code" href="class_map_dialog.html#7b12b783d73de5cfa71eeef6a3742da8">00080</a>     QDoubleSpinBox*     <a class="code" href="class_map_dialog.html#7b12b783d73de5cfa71eeef6a3742da8">m_latSpinBox</a>;
-<a name="l00081"></a><a class="code" href="class_map_dialog.html#678f8d0a2068779791f0801b6d0d6df1">00081</a>     QComboBox*                  <a class="code" href="class_map_dialog.html#678f8d0a2068779791f0801b6d0d6df1">m_latComboBox</a>;
-<a name="l00082"></a><a class="code" href="class_map_dialog.html#2def02ac35b2d15046fb2e09349af56a">00082</a>     QDoubleSpinBox*     <a class="code" href="class_map_dialog.html#2def02ac35b2d15046fb2e09349af56a">m_lonSpinBox</a>;
-<a name="l00083"></a><a class="code" href="class_map_dialog.html#1d79a361597d80a8a53f34d64b2118b4">00083</a>     QComboBox*                  <a class="code" href="class_map_dialog.html#1d79a361597d80a8a53f34d64b2118b4">m_lonComboBox</a>;
-<a name="l00084"></a>00084 
-<a name="l00085"></a><a class="code" href="class_map_dialog.html#b1e1ee70a3b6d6d596349d3ee078b69e">00085</a>     <span class="keywordtype">double</span>                              <a class="code" href="class_map_dialog.html#b1e1ee70a3b6d6d596349d3ee078b69e">m_longitude</a>;
-<a name="l00086"></a><a class="code" href="class_map_dialog.html#66591c7ba3d4e3c96af6da4c5d1ee938">00086</a>     <span class="keywordtype">double</span>                              <a class="code" href="class_map_dialog.html#66591c7ba3d4e3c96af6da4c5d1ee938">m_latitude</a>;
-<a name="l00087"></a>00087 };
+<a name="l00074"></a>00074 <span class="keyword">public</span> slots:
+<a name="l00075"></a>00075     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#0b40ad9c2c3687221c8f315c767c81bb">UpdateCurrentPosition</a>( qreal lon, qreal lat, GeoDataCoordinates::Unit );
+<a name="l00076"></a>00076     <span class="keywordtype">void</span> <a class="code" href="class_map_dialog.html#3d54a49543d03e021ed7dafa86ce17a4">ChangeGPSPosition</a>();
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078 <span class="keyword">private</span>:
+<a name="l00079"></a><a class="code" href="class_map_dialog.html#ba27b7237c1fe612aa694bc994a7682e">00079</a>         Marble::MarbleWidget*           <a class="code" href="class_map_dialog.html#ba27b7237c1fe612aa694bc994a7682e">m_marbleWidget</a>;
+<a name="l00080"></a><a class="code" href="class_map_dialog.html#7971f08a6f1fd3bf7c1e1fcaa26c9798">00080</a>     Marble::MarbleControlBox*   <a class="code" href="class_map_dialog.html#7971f08a6f1fd3bf7c1e1fcaa26c9798">m_control</a>;
+<a name="l00081"></a><a class="code" href="class_map_dialog.html#85fd193a2d5fc28d64f7bdaad0e31b61">00081</a>     Marble::MapThemeManager*    <a class="code" href="class_map_dialog.html#85fd193a2d5fc28d64f7bdaad0e31b61">m_mapThemeManager</a>;
+<a name="l00082"></a><a class="code" href="class_map_dialog.html#ecf848bd3f6c73795a0302ef1184973b">00082</a>     QSplitter*                  <a class="code" href="class_map_dialog.html#ecf848bd3f6c73795a0302ef1184973b">m_splitter</a>;
+<a name="l00083"></a>00083 
+<a name="l00084"></a><a class="code" href="class_map_dialog.html#7b12b783d73de5cfa71eeef6a3742da8">00084</a>     QDoubleSpinBox*     <a class="code" href="class_map_dialog.html#7b12b783d73de5cfa71eeef6a3742da8">m_latSpinBox</a>;
+<a name="l00085"></a><a class="code" href="class_map_dialog.html#678f8d0a2068779791f0801b6d0d6df1">00085</a>     QComboBox*                  <a class="code" href="class_map_dialog.html#678f8d0a2068779791f0801b6d0d6df1">m_latComboBox</a>;
+<a name="l00086"></a><a class="code" href="class_map_dialog.html#2def02ac35b2d15046fb2e09349af56a">00086</a>     QDoubleSpinBox*     <a class="code" href="class_map_dialog.html#2def02ac35b2d15046fb2e09349af56a">m_lonSpinBox</a>;
+<a name="l00087"></a><a class="code" href="class_map_dialog.html#1d79a361597d80a8a53f34d64b2118b4">00087</a>     QComboBox*                  <a class="code" href="class_map_dialog.html#1d79a361597d80a8a53f34d64b2118b4">m_lonComboBox</a>;
 <a name="l00088"></a>00088 
-<a name="l00089"></a>00089 <span class="preprocessor">#endif </span><span class="comment">/*MAPDIALOG_H_*/</span>
+<a name="l00089"></a><a class="code" href="class_map_dialog.html#b1e1ee70a3b6d6d596349d3ee078b69e">00089</a>     <span class="keywordtype">double</span>                              <a class="code" href="class_map_dialog.html#b1e1ee70a3b6d6d596349d3ee078b69e">m_longitude</a>; <span class="comment">//positive east</span>
+<a name="l00090"></a><a class="code" href="class_map_dialog.html#66591c7ba3d4e3c96af6da4c5d1ee938">00090</a>     <span class="keywordtype">double</span>                              <a class="code" href="class_map_dialog.html#66591c7ba3d4e3c96af6da4c5d1ee938">m_latitude</a>;     <span class="comment">//positive north</span>
+<a name="l00091"></a>00091 };
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <span class="preprocessor">#endif </span><span class="comment">/*MAPDIALOG_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:37 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:20 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

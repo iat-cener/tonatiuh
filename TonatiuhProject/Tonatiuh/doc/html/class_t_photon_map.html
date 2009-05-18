@@ -33,41 +33,33 @@
   </div>
 </div>
 <div class="contents">
-<h1>TPhotonMap Class Reference</h1><!-- doxytag: class="TPhotonMap" --><div class="dynheader">
-Inheritance diagram for TPhotonMap:</div>
-<div class="dynsection">
-
-<p><center><img src="class_t_photon_map.png" usemap="#TPhotonMap_map" border="0" alt=""></center>
-<map name="TPhotonMap_map">
-<area href="class_t_default_photon_map.html" alt="TDefaultPhotonMap" shape="rect" coords="0,56,123,80">
-</map>
-</div>
+<h1>TPhotonMap Class Reference</h1><!-- doxytag: class="TPhotonMap" --><a class="el" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a> is the interface of the structures to store photons.  
+<a href="#_details">More...</a>
+<p>
 
 <p>
 <a href="class_t_photon_map-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual QString&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#6c832a0adfa65f3bb02ee10eec51d741">getIcon</a> ()=0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#4e3dbcf66cc3303daaddcc7898db56d1">store</a> (<a class="el" href="struct_photon.html">Photon</a> *photon)=0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="struct_photon.html">Photon</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#80da529aa17b37f5c9e969deb4bc16ca">GetPhoton</a> (int index) const =0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual SoSFInt32&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#f061b3bf1a8d432535d9314e7216a0bd">StoredPhotons</a> () const =0</td></tr>
-
-<tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#34f5aed4a47e6a90ef96dddbb61f19e0">initClass</a> ()</td></tr>
-
-<tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#754f423508929cfdc18f7ad03dfc9d55">TPhotonMap</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#e37e4a66264cdba6b33e737619658426">~TPhotonMap</a> ()</td></tr>
 
-<tr><td colspan="2"><br><h2>Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#f24aee240429551767bfd53f5bdc003f">SO_NODE_ABSTRACT_HEADER</a> (<a class="el" href="class_t_photon_map.html">TPhotonMap</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual QString&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#583737617ab0ba01bdb177ef9206024b">GetIcon</a> ()=0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#0e4aa517a0a00ef321115b0ab32dfd41">Store</a> (<a class="el" href="struct_photon.html">Photon</a> *photon)=0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="struct_photon.html">Photon</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#cf6511e9bcc2acf8631fe8eebf311220">GetPhoton</a> (unsigned long index) const =0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual unsigned long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#5eb140efe41a42c4279d118ab824baa5">StoredPhotons</a> () const =0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual QList&lt; <a class="el" href="struct_photon.html">Photon</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_photon_map.html#038fb89cbea5cf9f28a1fcc9c4f6d404">GetPhotons</a> (<a class="el" href="class_instance_node.html">InstanceNode</a> *instance) const =0</td></tr>
 
 </table>
-<hr><h2>Constructor &amp; Destructor Documentation</h2>
+<hr><a name="_details"></a><h2>Detailed Description</h2>
+<a class="el" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a> is the interface of the structures to store photons. 
+<p>
+This interface define the functions needed to a correct use and access to the photon map. <hr><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" name="754f423508929cfdc18f7ad03dfc9d55"></a><!-- doxytag: member="TPhotonMap::TPhotonMap" ref="754f423508929cfdc18f7ad03dfc9d55" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -77,14 +69,14 @@ Inheritance diagram for TPhotonMap:</div>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>
-
+Constructor. 
 </div>
 </div><p>
 <a class="anchor" name="e37e4a66264cdba6b33e737619658426"></a><!-- doxytag: member="TPhotonMap::~TPhotonMap" ref="e37e4a66264cdba6b33e737619658426" args="()" -->
@@ -96,23 +88,23 @@ Inheritance diagram for TPhotonMap:</div>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected, virtual]</code></td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>
-
+Destructor. 
 </div>
 </div><p>
 <hr><h2>Member Function Documentation</h2>
-<a class="anchor" name="6c832a0adfa65f3bb02ee10eec51d741"></a><!-- doxytag: member="TPhotonMap::getIcon" ref="6c832a0adfa65f3bb02ee10eec51d741" args="()=0" -->
+<a class="anchor" name="583737617ab0ba01bdb177ef9206024b"></a><!-- doxytag: member="TPhotonMap::GetIcon" ref="583737617ab0ba01bdb177ef9206024b" args="()=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual QString TPhotonMap::getIcon           </td>
+          <td class="memname">virtual QString TPhotonMap::GetIcon           </td>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
@@ -124,20 +116,16 @@ Inheritance diagram for TPhotonMap:</div>
 
 <p>
 
-<p>Implemented in <a class="el" href="class_t_default_photon_map.html#b203a0be019b4d9903004e95c87c937f">TDefaultPhotonMap</a>.</p>
-
-<p>Referenced by <a class="el" href="_scene_model_8cpp-source.html#l00260">SceneModel::data()</a>.</p>
-
 </div>
 </div><p>
-<a class="anchor" name="80da529aa17b37f5c9e969deb4bc16ca"></a><!-- doxytag: member="TPhotonMap::GetPhoton" ref="80da529aa17b37f5c9e969deb4bc16ca" args="(int index) const =0" -->
+<a class="anchor" name="cf6511e9bcc2acf8631fe8eebf311220"></a><!-- doxytag: member="TPhotonMap::GetPhoton" ref="cf6511e9bcc2acf8631fe8eebf311220" args="(unsigned long index) const =0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">virtual <a class="el" href="struct_photon.html">Photon</a>* TPhotonMap::GetPhoton           </td>
           <td>(</td>
-          <td class="paramtype">int&nbsp;</td>
+          <td class="paramtype">unsigned long&nbsp;</td>
           <td class="paramname"> <em>index</em>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td> const<code> [pure virtual]</code></td>
@@ -148,22 +136,21 @@ Inheritance diagram for TPhotonMap:</div>
 
 <p>
 
-<p>Implemented in <a class="el" href="class_t_default_photon_map.html#ee7526e7fda8a89a38f3500ae56eef3c">TDefaultPhotonMap</a>.</p>
-
-<p>Referenced by <a class="el" href="tgf_8cpp-source.html#l00184">tgf::DrawPhotonMapPoints()</a>, and <a class="el" href="tgf_8cpp-source.html#l00212">tgf::DrawPhotonMapRays()</a>.</p>
+<p>Referenced by <a class="el" href="tgf_8cpp-source.html#l00185">tgf::DrawPhotonMapPoints()</a>, <a class="el" href="tgf_8cpp-source.html#l00213">tgf::DrawPhotonMapRays()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01017">MainWindow::on_actionExport_PhotonMap_triggered()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="34f5aed4a47e6a90ef96dddbb61f19e0"></a><!-- doxytag: member="TPhotonMap::initClass" ref="34f5aed4a47e6a90ef96dddbb61f19e0" args="()" -->
+<a class="anchor" name="038fb89cbea5cf9f28a1fcc9c4f6d404"></a><!-- doxytag: member="TPhotonMap::GetPhotons" ref="038fb89cbea5cf9f28a1fcc9c4f6d404" args="(InstanceNode *instance) const =0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TPhotonMap::initClass           </td>
+          <td class="memname">virtual QList&lt; <a class="el" href="struct_photon.html">Photon</a>* &gt; TPhotonMap::GetPhotons           </td>
           <td>(</td>
-          <td class="paramname">          </td>
+          <td class="paramtype"><a class="el" href="class_instance_node.html">InstanceNode</a> *&nbsp;</td>
+          <td class="paramname"> <em>instance</em>          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [static]</code></td>
+          <td> const<code> [pure virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -171,38 +158,16 @@ Inheritance diagram for TPhotonMap:</div>
 
 <p>
 
-<p>Reimplemented in <a class="el" href="class_t_default_photon_map.html#22e8462bd8ed18117522fd9a7e3ec953">TDefaultPhotonMap</a>.</p>
-
-<p>Referenced by <a class="el" href="main_8cpp-source.html#l00061">main()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01051">MainWindow::on_actionExport_Surface_PhotonMap_triggered()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="f24aee240429551767bfd53f5bdc003f"></a><!-- doxytag: member="TPhotonMap::SO_NODE_ABSTRACT_HEADER" ref="f24aee240429551767bfd53f5bdc003f" args="(TPhotonMap)" -->
+<a class="anchor" name="0e4aa517a0a00ef321115b0ab32dfd41"></a><!-- doxytag: member="TPhotonMap::Store" ref="0e4aa517a0a00ef321115b0ab32dfd41" args="(Photon *photon)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">TPhotonMap::SO_NODE_ABSTRACT_HEADER           </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_t_photon_map.html">TPhotonMap</a>&nbsp;</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="4e3dbcf66cc3303daaddcc7898db56d1"></a><!-- doxytag: member="TPhotonMap::store" ref="4e3dbcf66cc3303daaddcc7898db56d1" args="(Photon *photon)=0" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void TPhotonMap::store           </td>
+          <td class="memname">virtual void TPhotonMap::Store           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_photon.html">Photon</a> *&nbsp;</td>
           <td class="paramname"> <em>photon</em>          </td>
@@ -215,18 +180,16 @@ Inheritance diagram for TPhotonMap:</div>
 
 <p>
 
-<p>Implemented in <a class="el" href="class_t_default_photon_map.html#8f3d898de805a7c94bde52a651359557">TDefaultPhotonMap</a>.</p>
-
 <p>Referenced by <a class="el" href="tgf_8cpp-source.html#l00136">tgf::TraceRay()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="f061b3bf1a8d432535d9314e7216a0bd"></a><!-- doxytag: member="TPhotonMap::StoredPhotons" ref="f061b3bf1a8d432535d9314e7216a0bd" args="() const =0" -->
+<a class="anchor" name="5eb140efe41a42c4279d118ab824baa5"></a><!-- doxytag: member="TPhotonMap::StoredPhotons" ref="5eb140efe41a42c4279d118ab824baa5" args="() const =0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual SoSFInt32 TPhotonMap::StoredPhotons           </td>
+          <td class="memname">virtual unsigned long TPhotonMap::StoredPhotons           </td>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
@@ -238,16 +201,14 @@ Inheritance diagram for TPhotonMap:</div>
 
 <p>
 
-<p>Implemented in <a class="el" href="class_t_default_photon_map.html#433c07650c7889b7b0c5831e0240627a">TDefaultPhotonMap</a>.</p>
-
-<p>Referenced by <a class="el" href="tgf_8cpp-source.html#l00184">tgf::DrawPhotonMapPoints()</a>, and <a class="el" href="tgf_8cpp-source.html#l00212">tgf::DrawPhotonMapRays()</a>.</p>
+<p>Referenced by <a class="el" href="tgf_8cpp-source.html#l00185">tgf::DrawPhotonMapPoints()</a>, <a class="el" href="tgf_8cpp-source.html#l00213">tgf::DrawPhotonMapRays()</a>, <a class="el" href="_main_window_8cpp-source.html#l01017">MainWindow::on_actionExport_PhotonMap_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00973">MainWindow::on_actionResults_triggered()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_t_photon_map_8h-source.html">TPhotonMap.h</a><li><a class="el" href="_t_photon_map_8cpp.html">TPhotonMap.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:39 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:22 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

@@ -82,7 +82,7 @@
 <a name="l00050"></a>00050 <span class="keyword">class </span>SbBox3f;
 <a name="l00051"></a>00051 <span class="keyword">class </span>SbMatrix;
 <a name="l00052"></a>00052 <span class="keyword">class </span>SoSeparator;
-<a name="l00053"></a>00053 <span class="keyword">class </span><a class="code" href="class_t_photon_map.html">TPhotonMap</a>;
+<a name="l00053"></a>00053 <span class="keyword">class </span><a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>;
 <a name="l00054"></a>00054 <span class="keyword">class </span><a class="code" href="class_transform.html">Transform</a>;
 <a name="l00055"></a>00055 
 <a name="l00056"></a><a class="code" href="namespacetgf.html">00056</a> <span class="keyword">namespace </span>tgf
@@ -95,17 +95,17 @@
 <a name="l00063"></a>00063     <span class="keywordtype">bool</span> <a class="code" href="namespacetgf.html#451c478a80cde9bcbbc56c886d26a782">Quadratic</a>( <span class="keywordtype">double</span> A, <span class="keywordtype">double</span> B, <span class="keywordtype">double</span> C, <span class="keywordtype">double</span>* t0, <span class="keywordtype">double</span>* t1);
 <a name="l00064"></a>00064         <span class="keywordtype">double</span> <a class="code" href="namespacetgf.html#f2718b98d0fcc1dc9b21b176d1047c0d">AlternateBoxMuller</a>( <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand );
 <a name="l00065"></a>00065 
-<a name="l00066"></a>00066         <span class="keywordtype">bool</span> <a class="code" href="namespacetgf.html#31200d44640516026027504fc21f273b">TraceRay</a>( <a class="code" href="struct_ray.html">Ray</a>&amp; ray, QMap&lt; <a class="code" href="class_instance_node.html">InstanceNode</a>*,QPair&lt; SbBox3f, Transform* &gt; &gt;* sceneMap, <a class="code" href="class_instance_node.html">InstanceNode</a>* instanceNode, <a class="code" href="class_t_photon_map.html">TPhotonMap</a>&amp; photonMap, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand );
+<a name="l00066"></a>00066         <span class="keywordtype">bool</span> <a class="code" href="namespacetgf.html#0d3037ee3f6aedeeda56f58d48d9cdb8">TraceRay</a>( <a class="code" href="struct_ray.html">Ray</a>&amp; ray, QMap&lt; <a class="code" href="class_instance_node.html">InstanceNode</a>*,QPair&lt; SbBox3f, Transform* &gt; &gt;* sceneMap, <a class="code" href="class_instance_node.html">InstanceNode</a>* instanceNode, <a class="code" href="class_instance_node.html">InstanceNode</a>* lightNode, <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>&amp; photonMap, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand );
 <a name="l00067"></a>00067 
-<a name="l00068"></a>00068         SoSeparator* <a class="code" href="namespacetgf.html#affd6581195f3afac8b227b2b2e22ca2">DrawPhotonMapPoints</a>( <span class="keyword">const</span> <a class="code" href="class_t_photon_map.html">TPhotonMap</a>&amp; map );
-<a name="l00069"></a>00069         SoSeparator* <a class="code" href="namespacetgf.html#cdcb873381b328866a3030abb0e85140">DrawPhotonMapRays</a>( <span class="keyword">const</span> <a class="code" href="class_t_photon_map.html">TPhotonMap</a>&amp; map, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> numberOfRays, <span class="keywordtype">double</span> fraction );
+<a name="l00068"></a>00068         SoSeparator* <a class="code" href="namespacetgf.html#affd6581195f3afac8b227b2b2e22ca2">DrawPhotonMapPoints</a>( <span class="keyword">const</span> <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>&amp; map );
+<a name="l00069"></a>00069         SoSeparator* <a class="code" href="namespacetgf.html#cdcb873381b328866a3030abb0e85140">DrawPhotonMapRays</a>( <span class="keyword">const</span> <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>&amp; map, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> numberOfRays, <span class="keywordtype">double</span> fraction );
 <a name="l00070"></a>00070 
 <a name="l00071"></a>00071         SbMatrix <a class="code" href="namespacetgf.html#d1161db03d16a0c9ca592dd434567d6e">MatrixFromTransform</a>( <span class="keyword">const</span> <a class="code" href="class_transform.html">Transform</a>&amp; transform );
 <a name="l00072"></a>00072 }
 <a name="l00073"></a>00073 
 <a name="l00074"></a>00074 <span class="preprocessor">#endif </span><span class="comment">/*TGF_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:37 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:20 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

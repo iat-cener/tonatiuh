@@ -77,18 +77,18 @@
 <a name="l00045"></a>00045 <span class="keyword">class </span><a class="code" href="class_document.html">Document</a>;
 <a name="l00046"></a>00046 <span class="keyword">class </span><a class="code" href="class_graphic_view.html" title="GraphicView class implements a 3D representation of items from a model.">GraphicView</a>;
 <a name="l00047"></a>00047 <span class="keyword">class </span><a class="code" href="class_instance_node.html">InstanceNode</a>;
-<a name="l00048"></a>00048 <span class="keyword">class </span><a class="code" href="class_t_default_photon_map.html">TDefaultPhotonMap</a>;
-<a name="l00049"></a>00049 <span class="keyword">class </span>QDir;
-<a name="l00050"></a>00050 <span class="keyword">class </span>QUndoStack;
-<a name="l00051"></a>00051 <span class="keyword">class </span>QUndoView;
-<a name="l00052"></a>00052 <span class="keyword">class </span><a class="code" href="class_random_deviate.html">RandomDeviate</a>;
-<a name="l00053"></a>00053 <span class="keyword">class </span>SbBox3f;
-<a name="l00054"></a>00054 <span class="keyword">class </span>SbViewportRegion;
-<a name="l00055"></a>00055 <span class="keyword">class </span><a class="code" href="class_scene_model.html">SceneModel</a>;
-<a name="l00056"></a>00056 <span class="keyword">class </span>SoDragger;
-<a name="l00057"></a>00057 <span class="keyword">class </span>SoSelection;
-<a name="l00058"></a>00058 <span class="keyword">class </span>SoSeparator;
-<a name="l00059"></a>00059 <span class="keyword">class </span><a class="code" href="class_t_material_factory.html">TMaterialFactory</a>;
+<a name="l00048"></a>00048 <span class="keyword">class </span>QDir;
+<a name="l00049"></a>00049 <span class="keyword">class </span>QUndoStack;
+<a name="l00050"></a>00050 <span class="keyword">class </span>QUndoView;
+<a name="l00051"></a>00051 <span class="keyword">class </span><a class="code" href="class_random_deviate.html">RandomDeviate</a>;
+<a name="l00052"></a>00052 <span class="keyword">class </span>SbBox3f;
+<a name="l00053"></a>00053 <span class="keyword">class </span>SbViewportRegion;
+<a name="l00054"></a>00054 <span class="keyword">class </span><a class="code" href="class_scene_model.html">SceneModel</a>;
+<a name="l00055"></a>00055 <span class="keyword">class </span>SoDragger;
+<a name="l00056"></a>00056 <span class="keyword">class </span>SoSelection;
+<a name="l00057"></a>00057 <span class="keyword">class </span>SoSeparator;
+<a name="l00058"></a>00058 <span class="keyword">class </span><a class="code" href="class_t_material_factory.html">TMaterialFactory</a>;
+<a name="l00059"></a>00059 <span class="keyword">class </span><a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>;
 <a name="l00060"></a>00060 <span class="keyword">class </span><a class="code" href="class_t_photon_map_factory.html">TPhotonMapFactory</a>;
 <a name="l00061"></a>00061 <span class="keyword">class </span><a class="code" href="class_transform.html">Transform</a>;
 <a name="l00062"></a>00062 <span class="keyword">class </span><a class="code" href="class_t_shape_factory.html">TShapeFactory</a>;
@@ -146,57 +146,57 @@
 <a name="l00119"></a>00119         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#b40e98eb702f8e85dcec079f50afa32e">on_actionDisplay_rays_toggled</a>();
 <a name="l00120"></a>00120         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#efb60deb9c2261da7a08d1f675de1bc0">on_actionResults_triggered</a>();
 <a name="l00121"></a>00121         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#743e7c76c6f71cbc94e6d5047ac0a0ba">on_actionExport_PhotonMap_triggered</a>();
-<a name="l00122"></a>00122         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768">on_actionRayTraceOptions_triggered</a>();
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124         <span class="comment">//View menu actions</span>
-<a name="l00125"></a>00125         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#f7e675513deb8304754dfd64b5003535">on_actionAxis_toggled</a>();
-<a name="l00126"></a>00126         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5103ef907a6072410493a53242787dc6">on_actionGrid_toggled</a>();
-<a name="l00127"></a>00127         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9658e73b0210a94e22ec5a63925657f2">on_actionBackground_toggled</a>();
-<a name="l00128"></a>00128         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9c6bb9c5382d2debb1ea8393fa6e1396">on_actionEdit_Mode_toggled</a>();
-<a name="l00129"></a>00129         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#2885e0c384516016a55390589798ab2f">on_action_X_Y_Plane_triggered</a>();
-<a name="l00130"></a>00130         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#702ff5689ee12caa3b9c361b1efed391">on_action_X_Z_Plane_triggered</a>();
-<a name="l00131"></a>00131         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#48fea7e3c53ab58b6eda4b9a49347351">on_action_Y_Z_Plane_triggered</a>();
-<a name="l00132"></a>00132 
-<a name="l00133"></a>00133         <span class="comment">//Create actions</span>
-<a name="l00134"></a>00134         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#e5290e013a45eac1b50863bc609c102c">CreateMaterial</a>( <a class="code" href="class_t_material_factory.html">TMaterialFactory</a>* pTMaterialFactory );
-<a name="l00135"></a>00135         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#73f4b6efe284469fe7076fdf0af710b0">CreatePhotonMap</a>( <a class="code" href="class_t_photon_map_factory.html">TPhotonMapFactory</a>* pTPhotonMapFactory );
-<a name="l00136"></a>00136     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#7803710ef6bf8410d5a3e0bcd16fe27a">CreateShape</a>( <a class="code" href="class_t_shape_factory.html">TShapeFactory</a>* pTShapeFactory );
-<a name="l00137"></a>00137         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#1c2ffad39395e3464d2b5b1a663e5d63">CreateTracker</a>( <a class="code" href="class_t_tracker_factory.html">TTrackerFactory</a>* pTTrackerFactory );
-<a name="l00138"></a>00138 
-<a name="l00139"></a>00139     <span class="comment">//Manipulators actions</span>
-<a name="l00140"></a>00140     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#63e64070666c348f6ecd8c74ee1b03f7">SoTransform_to_SoCenterballManip</a>();
-<a name="l00141"></a>00141         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#378ffbabdca4ab1dfd6f39adbb8464a0">SoTransform_to_SoJackManip</a>();
-<a name="l00142"></a>00142         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a47373213dce296ea0bec22c838e9cd3">SoTransform_to_SoHandleBoxManip</a>();
-<a name="l00143"></a>00143         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#da9ca0c82feabaa7db265d4e2a0f49f6">SoTransform_to_SoTabBoxManip</a>();
-<a name="l00144"></a>00144         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#1af58d4fc4448f15a312aab7b2d88b41">SoTransform_to_SoTrackballManip</a>();
-<a name="l00145"></a>00145         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9dc4ba67424b48fdf477e40d96b91def">SoTransform_to_SoTransformBoxManip</a>();
-<a name="l00146"></a>00146         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#8ef76977f75ec3afadbf24b274dbec08">SoTransform_to_SoTransformerManip</a>();
-<a name="l00147"></a>00147         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#588cdfd25a5d37a8f9efd33d418b785c">SoManip_to_SoTransform</a>();
-<a name="l00148"></a>00148 
-<a name="l00149"></a>00149     <span class="comment">//Slots for graphicview signals</span>
-<a name="l00150"></a>00150     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#2e772bf0dfc03d0984ea7b96a23d2e9a">selectionFinish</a>( SoSelection* selection );
-<a name="l00151"></a>00151     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a0757edddd9eee8d3458174dc9e56bfd">selectionChanged</a>( <span class="keyword">const</span> QModelIndex &amp; current, <span class="keyword">const</span> QModelIndex &amp; previous );
-<a name="l00152"></a>00152     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#ed2bdf63a7640182adfd5e959ea672d2">mousePressEvent</a> ( QMouseEvent * e );
-<a name="l00153"></a>00153 
-<a name="l00154"></a>00154     <span class="comment">//Slots for treeview signals</span>
-<a name="l00155"></a>00155         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#077b63dd509872609d2ba86a53c3a339">itemDragAndDrop</a>(<span class="keyword">const</span> QModelIndex&amp; newParent, <span class="keyword">const</span> QModelIndex&amp; node);
-<a name="l00156"></a>00156         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#7cac05000e6ab40706c6326c4528db0a">itemDragAndDropCopy</a>(<span class="keyword">const</span> QModelIndex&amp; newParent, <span class="keyword">const</span> QModelIndex&amp; node);
-<a name="l00157"></a>00157     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5d246a09c0ade7959222acb0fb0b5fce">showMenu</a>( <span class="keyword">const</span> QModelIndex&amp; index );
-<a name="l00158"></a>00158 
-<a name="l00159"></a>00159     <span class="comment">//Slots for parameterview signals</span>
-<a name="l00160"></a>00160     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#008c49cc8b137a002a34ad008f121ed6">parameterModified</a>( <span class="keyword">const</span> QStringList&amp; oldValueList, SoBaseKit* coinNode, QString coinPart );
-<a name="l00161"></a>00161 
-<a name="l00162"></a>00162     <span class="comment">//Slots for sunposdialog signals</span>
-<a name="l00163"></a>00163     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5ecf90459ccc6eb44c8f9323b450d988">SunPositionChanged</a>( QDateTime* time, <span class="keywordtype">double</span> longitude, <span class="keywordtype">double</span> latitude );
-<a name="l00164"></a>00164 
-<a name="l00165"></a>00165 <span class="keyword">protected</span>:
-<a name="l00166"></a>00166     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#4e20a4a065fbb0e4d3532a45a0a91425">closeEvent</a>( QCloseEvent* event );
-<a name="l00167"></a>00167 
+<a name="l00122"></a>00122         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#460ebdb7be5884b7a65bb3d0b753d057">on_actionExport_Surface_PhotonMap_triggered</a>();
+<a name="l00123"></a>00123         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768">on_actionRayTraceOptions_triggered</a>();
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125         <span class="comment">//View menu actions</span>
+<a name="l00126"></a>00126         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#f7e675513deb8304754dfd64b5003535">on_actionAxis_toggled</a>();
+<a name="l00127"></a>00127         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5103ef907a6072410493a53242787dc6">on_actionGrid_toggled</a>();
+<a name="l00128"></a>00128         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9658e73b0210a94e22ec5a63925657f2">on_actionBackground_toggled</a>();
+<a name="l00129"></a>00129         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9c6bb9c5382d2debb1ea8393fa6e1396">on_actionEdit_Mode_toggled</a>();
+<a name="l00130"></a>00130         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#2885e0c384516016a55390589798ab2f">on_action_X_Y_Plane_triggered</a>();
+<a name="l00131"></a>00131         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#702ff5689ee12caa3b9c361b1efed391">on_action_X_Z_Plane_triggered</a>();
+<a name="l00132"></a>00132         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#48fea7e3c53ab58b6eda4b9a49347351">on_action_Y_Z_Plane_triggered</a>();
+<a name="l00133"></a>00133 
+<a name="l00134"></a>00134         <span class="comment">//Create actions</span>
+<a name="l00135"></a>00135         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#e5290e013a45eac1b50863bc609c102c">CreateMaterial</a>( <a class="code" href="class_t_material_factory.html">TMaterialFactory</a>* pTMaterialFactory );
+<a name="l00136"></a>00136         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#73f4b6efe284469fe7076fdf0af710b0">CreatePhotonMap</a>( <a class="code" href="class_t_photon_map_factory.html">TPhotonMapFactory</a>* pTPhotonMapFactory );
+<a name="l00137"></a>00137     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#7803710ef6bf8410d5a3e0bcd16fe27a">CreateShape</a>( <a class="code" href="class_t_shape_factory.html">TShapeFactory</a>* pTShapeFactory );
+<a name="l00138"></a>00138         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#1c2ffad39395e3464d2b5b1a663e5d63">CreateTracker</a>( <a class="code" href="class_t_tracker_factory.html">TTrackerFactory</a>* pTTrackerFactory );
+<a name="l00139"></a>00139 
+<a name="l00140"></a>00140     <span class="comment">//Manipulators actions</span>
+<a name="l00141"></a>00141     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#63e64070666c348f6ecd8c74ee1b03f7">SoTransform_to_SoCenterballManip</a>();
+<a name="l00142"></a>00142         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#378ffbabdca4ab1dfd6f39adbb8464a0">SoTransform_to_SoJackManip</a>();
+<a name="l00143"></a>00143         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a47373213dce296ea0bec22c838e9cd3">SoTransform_to_SoHandleBoxManip</a>();
+<a name="l00144"></a>00144         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#da9ca0c82feabaa7db265d4e2a0f49f6">SoTransform_to_SoTabBoxManip</a>();
+<a name="l00145"></a>00145         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#1af58d4fc4448f15a312aab7b2d88b41">SoTransform_to_SoTrackballManip</a>();
+<a name="l00146"></a>00146         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9dc4ba67424b48fdf477e40d96b91def">SoTransform_to_SoTransformBoxManip</a>();
+<a name="l00147"></a>00147         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#8ef76977f75ec3afadbf24b274dbec08">SoTransform_to_SoTransformerManip</a>();
+<a name="l00148"></a>00148         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#588cdfd25a5d37a8f9efd33d418b785c">SoManip_to_SoTransform</a>();
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150     <span class="comment">//Slots for graphicview signals</span>
+<a name="l00151"></a>00151     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#2e772bf0dfc03d0984ea7b96a23d2e9a">selectionFinish</a>( SoSelection* selection );
+<a name="l00152"></a>00152     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a0757edddd9eee8d3458174dc9e56bfd">selectionChanged</a>( <span class="keyword">const</span> QModelIndex &amp; current, <span class="keyword">const</span> QModelIndex &amp; previous );
+<a name="l00153"></a>00153     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#ed2bdf63a7640182adfd5e959ea672d2">mousePressEvent</a> ( QMouseEvent * e );
+<a name="l00154"></a>00154 
+<a name="l00155"></a>00155     <span class="comment">//Slots for treeview signals</span>
+<a name="l00156"></a>00156         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#077b63dd509872609d2ba86a53c3a339">itemDragAndDrop</a>(<span class="keyword">const</span> QModelIndex&amp; newParent, <span class="keyword">const</span> QModelIndex&amp; node);
+<a name="l00157"></a>00157         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#7cac05000e6ab40706c6326c4528db0a">itemDragAndDropCopy</a>(<span class="keyword">const</span> QModelIndex&amp; newParent, <span class="keyword">const</span> QModelIndex&amp; node);
+<a name="l00158"></a>00158     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5d246a09c0ade7959222acb0fb0b5fce">showMenu</a>( <span class="keyword">const</span> QModelIndex&amp; index );
+<a name="l00159"></a>00159 
+<a name="l00160"></a>00160     <span class="comment">//Slots for parameterview signals</span>
+<a name="l00161"></a>00161     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#008c49cc8b137a002a34ad008f121ed6">parameterModified</a>( <span class="keyword">const</span> QStringList&amp; oldValueList, SoBaseKit* coinNode, QString coinPart );
+<a name="l00162"></a>00162 
+<a name="l00163"></a>00163     <span class="comment">//Slots for sunposdialog signals</span>
+<a name="l00164"></a>00164     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5ecf90459ccc6eb44c8f9323b450d988">SunPositionChanged</a>( QDateTime* time, <span class="keywordtype">double</span> longitude, <span class="keywordtype">double</span> latitude );
+<a name="l00165"></a>00165 
+<a name="l00166"></a>00166 <span class="keyword">protected</span>:
+<a name="l00167"></a>00167     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#4e20a4a065fbb0e4d3532a45a0a91425">closeEvent</a>( QCloseEvent* event );
 <a name="l00168"></a>00168 
-<a name="l00169"></a>00169 <span class="keyword">private</span>:
-<a name="l00170"></a>00170     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#03ebcf99c9feb22715fc2fa6d2b36cfa">SetupActions</a>();
-<a name="l00171"></a>00171     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5f9984b7d5380be1cdb4bfe6509336a6">SetupActionInsertMaterial</a>( <a class="code" href="class_t_material_factory.html">TMaterialFactory</a>* pTMaterialFactory );
-<a name="l00172"></a>00172     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#8b1616dc7c28fea5c7fb80c4f416177a">SetupActionInsertPhotonMap</a>( <a class="code" href="class_t_photon_map_factory.html">TPhotonMapFactory</a>* pTPhotonMapFactory );
+<a name="l00169"></a>00169 
+<a name="l00170"></a>00170 <span class="keyword">private</span>:
+<a name="l00171"></a>00171     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#03ebcf99c9feb22715fc2fa6d2b36cfa">SetupActions</a>();
+<a name="l00172"></a>00172     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#5f9984b7d5380be1cdb4bfe6509336a6">SetupActionInsertMaterial</a>( <a class="code" href="class_t_material_factory.html">TMaterialFactory</a>* pTMaterialFactory );
 <a name="l00173"></a>00173     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#f3443b509edc90998b023816800e9e03">SetupActionInsertShape</a>( <a class="code" href="class_t_shape_factory.html">TShapeFactory</a>* pTShapeFactory );
 <a name="l00174"></a>00174     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a372c2f065bd4966d6ed725d856a677b">SetupActionInsertTracker</a>( <a class="code" href="class_t_tracker_factory.html">TTrackerFactory</a>* pTTrackerFactory );
 <a name="l00175"></a>00175     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#b1004b5fadcd42c7909818f73240d817">SetupMenus</a>();
@@ -242,30 +242,36 @@
 <a name="l00215"></a><a class="code" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">00215</a>     QToolBar* <a class="code" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">m_photonMapToolBar</a>;
 <a name="l00216"></a><a class="code" href="class_main_window.html#c32f6e73637a6d64974d507277ab7e7e">00216</a>     QToolBar* <a class="code" href="class_main_window.html#c32f6e73637a6d64974d507277ab7e7e">m_shapeToolBar</a>;
 <a name="l00217"></a><a class="code" href="class_main_window.html#fd2183050a6ce3cbc844141ed4953f74">00217</a>     QToolBar* <a class="code" href="class_main_window.html#fd2183050a6ce3cbc844141ed4953f74">m_trackersToolBar</a>;
-<a name="l00218"></a><a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">00218</a>     QVector&lt; TShapeFactory* &gt; <a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">m_TFlatShapeFactoryList</a>;
-<a name="l00219"></a><a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">00219</a>         QVector&lt; TSunShapeFactory* &gt; <a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">m_TSunshapeFactoryList</a>;
-<a name="l00220"></a><a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">00220</a>     <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">m_sceneModel</a>;
-<a name="l00221"></a><a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">00221</a>     QItemSelectionModel* <a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">m_selectionModel</a>;
-<a name="l00222"></a><a class="code" href="class_main_window.html#6b935b1f8c5687ad580d4ba788f0d5bd">00222</a>     <a class="code" href="class_t_default_photon_map.html">TDefaultPhotonMap</a>* <a class="code" href="class_main_window.html#6b935b1f8c5687ad580d4ba788f0d5bd">m_photonMap</a>;
-<a name="l00223"></a><a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">00223</a>     SoSeparator* <a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">m_pRays</a>;
-<a name="l00224"></a><a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">00224</a>     SoSeparator* <a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">m_pGrid</a>;
-<a name="l00225"></a><a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">00225</a>     <a class="code" href="class_random_deviate.html">RandomDeviate</a>* <a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">m_pRand</a>;
-<a name="l00226"></a><a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">00226</a>     SoNode* <a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">m_coinNode_Buffer</a>;
-<a name="l00227"></a><a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">00227</a>     QStringList* <a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">m_manipulators_Buffer</a>;
-<a name="l00228"></a><a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">00228</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">m_tracedRays</a>;
-<a name="l00229"></a><a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">00229</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">m_raysPerIteration</a>;
-<a name="l00230"></a><a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">00230</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">m_increasePhotonMap</a>;
-<a name="l00231"></a><a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">00231</a>     <span class="keywordtype">double</span> <a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">m_fraction</a>;
-<a name="l00232"></a><a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">00232</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">m_drawPhotons</a>;
-<a name="l00233"></a><a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">00233</a>     std::vector&lt;GraphicView*&gt; <a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">m_graphicView</a>;
-<a name="l00234"></a><a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">00234</a>     <span class="keywordtype">int</span> <a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">m_focusView</a>;
-<a name="l00235"></a>00235 
-<a name="l00236"></a>00236 };
-<a name="l00237"></a>00237 
-<a name="l00238"></a>00238 <span class="preprocessor">#endif</span>
-<a name="l00239"></a>00239 <span class="preprocessor"></span>
+<a name="l00218"></a>00218 
+<a name="l00219"></a><a class="code" href="class_main_window.html#165c439314446ab2e09f5f658bcf03c4">00219</a>         QVector&lt; TPhotonMapFactory* &gt; <a class="code" href="class_main_window.html#165c439314446ab2e09f5f658bcf03c4">m_TPhotonMapFactoryList</a>;
+<a name="l00220"></a><a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">00220</a>     QVector&lt; TShapeFactory* &gt; <a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">m_TFlatShapeFactoryList</a>;
+<a name="l00221"></a><a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">00221</a>         QVector&lt; TSunShapeFactory* &gt; <a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">m_TSunshapeFactoryList</a>;
+<a name="l00222"></a>00222 
+<a name="l00223"></a><a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">00223</a>     <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">m_sceneModel</a>;
+<a name="l00224"></a><a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">00224</a>     QItemSelectionModel* <a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">m_selectionModel</a>;
+<a name="l00225"></a>00225 
+<a name="l00226"></a><a class="code" href="class_main_window.html#de079cf083cf1593f43653dabb2d6633">00226</a>     <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>* <a class="code" href="class_main_window.html#de079cf083cf1593f43653dabb2d6633">m_photonMap</a>;
+<a name="l00227"></a><a class="code" href="class_main_window.html#ebbc667a188b29ea3d1852050792eb77">00227</a>     <span class="keywordtype">int</span> <a class="code" href="class_main_window.html#ebbc667a188b29ea3d1852050792eb77">m_selectedPhotonMap</a>;
+<a name="l00228"></a><a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">00228</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">m_increasePhotonMap</a>;
+<a name="l00229"></a>00229 
+<a name="l00230"></a><a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">00230</a>     SoSeparator* <a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">m_pRays</a>;
+<a name="l00231"></a><a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">00231</a>     SoSeparator* <a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">m_pGrid</a>;
+<a name="l00232"></a><a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">00232</a>     <a class="code" href="class_random_deviate.html">RandomDeviate</a>* <a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">m_pRand</a>;
+<a name="l00233"></a><a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">00233</a>     SoNode* <a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">m_coinNode_Buffer</a>;
+<a name="l00234"></a><a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">00234</a>     QStringList* <a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">m_manipulators_Buffer</a>;
+<a name="l00235"></a><a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">00235</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">m_tracedRays</a>;
+<a name="l00236"></a><a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">00236</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">m_raysPerIteration</a>;
+<a name="l00237"></a><a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">00237</a>     <span class="keywordtype">double</span> <a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">m_fraction</a>;
+<a name="l00238"></a><a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">00238</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">m_drawPhotons</a>;
+<a name="l00239"></a><a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">00239</a>     std::vector&lt;GraphicView*&gt; <a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">m_graphicView</a>;
+<a name="l00240"></a><a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">00240</a>     <span class="keywordtype">int</span> <a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">m_focusView</a>;
+<a name="l00241"></a>00241 
+<a name="l00242"></a>00242 };
+<a name="l00243"></a>00243 
+<a name="l00244"></a>00244 <span class="preprocessor">#endif</span>
+<a name="l00245"></a>00245 <span class="preprocessor"></span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Apr 27 13:09:37 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:20 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
