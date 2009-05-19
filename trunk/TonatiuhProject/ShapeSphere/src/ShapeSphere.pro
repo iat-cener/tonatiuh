@@ -63,8 +63,7 @@ contains(TEMPLATE,lib) {
      		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
      	}
-     	else:
-     	{
+     	else {
      		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
      		TARGET = $$member(TARGET, 0)d
      	}
