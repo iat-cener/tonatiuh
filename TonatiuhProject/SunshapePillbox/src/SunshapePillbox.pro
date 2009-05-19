@@ -12,19 +12,9 @@ INCLUDEPATH += . \
 				$$(TDE_ROOT)/local/include
 					
 win32{
-	DEFINES+= COIN_DLL SOQT_DLL
-	
-
-				
-	
+	DEFINES+= COIN_DLL SOQT_DLL	
 }
-unix{
-	INCLUDEPATH += 	. \
-					../Tonatiuh/src\ 
-					src
 
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-}
 
 # Input
 HEADERS = *.h \
@@ -44,12 +34,15 @@ TARGET        = SunshapePillbox
 
 contains(TEMPLATE,lib) {
    CONFIG(debug, debug|release) {
-   
-		LIBS +=-L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind  
+    
 		unix {
 			TARGET = $$member(TARGET, 0)_debug
+			LIBS +=-L$$(TDE_ROOT)/local/lib -lSoQt_debug -lCoin_debug 
 		}
-      	else:TARGET = $$member(TARGET, 0)d
+      	else {
+      		TARGET = $$member(TARGET, 0)d
+      		LIBS +=-L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind 
+      	}
 	}
 	else:LIBS +=-L$$(TDE_ROOT)/local/lib -lSoQt -lCoin  
 }
