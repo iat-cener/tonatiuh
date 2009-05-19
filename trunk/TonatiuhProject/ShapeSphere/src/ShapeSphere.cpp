@@ -67,7 +67,11 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_ADD_FIELD(m_z1, (-5.0));
 	SO_NODE_ADD_FIELD(m_z2, (5.0));
 	SO_NODE_ADD_FIELD(m_phiMax, (1.5 * tgc::Pi));
-	SO_NODE_ADD_FIELD(m_reverseOrientation, (false));
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
+  	SO_NODE_SET_SF_ENUM_TYPE(m_reverseOrientation, reverseOrientation);
+	SO_NODE_ADD_FIELD( m_reverseOrientation, (INSIDE) );
+	//SO_NODE_ADD_FIELD(m_reverseOrientation, (false));
 
 	double zmin = std::min( m_z1.getValue(), m_z2.getValue() );
 	double zmax = std::max( m_z1.getValue(), m_z2.getValue() );
@@ -81,6 +85,10 @@ ShapeSphere::ShapeSphere( )
 	m_z2Sensor->attach(&m_z2);
 	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateMinMaxTheta, this);
 	m_radiusSensor->attach(&m_radius);
+
+
+	SoFieldSensor* m_phiMaxSensor = new SoFieldSensor(updatePhiMax, this);
+	m_phiMaxSensor->attach(&m_phiMax);
 }
 
 ShapeSphere::~ShapeSphere()
@@ -193,7 +201,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	{
 		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
 	}
-	if( DotProduct(N, objectRay.direction) < 0 )
+	if( DotProduct(N, objectRay.direction) > 0 )
 	{
 		return false;
 	}
@@ -253,6 +261,18 @@ void ShapeSphere::updateMinMaxTheta( void *data, SoSensor * )
 
 	shapeSphere->m_thetaMin = acos( zmax/shapeSphere->m_radius.getValue() );
 	shapeSphere->m_thetaMax = acos( zmin/shapeSphere->m_radius.getValue() );
+}
+
+
+void ShapeSphere::updatePhiMax( void *data, SoSensor* )
+{
+	Trace trace( "ShapeSphere::updatePhiMax", false );
+
+	ShapeSphere* shapeSphere = (ShapeSphere *) data;
+
+	if( shapeSphere->m_phiMax.getValue() < 0.0 ) shapeSphere->m_phiMax = 0.0;
+	if( shapeSphere->m_phiMax.getValue() > tgc::TwoPi ) shapeSphere->m_phiMax = tgc::TwoPi;
+
 }
 
 Point3D ShapeSphere::GetPoint3D( double u, double v ) const
