@@ -39,8 +39,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPESPHERE_H_
 #define SHAPESPHERE_H_
 
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFBool.h>
 
 #include "TShape.h"
 
@@ -61,14 +61,20 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
+	enum reverseOrientation {
+		INSIDE = 0,
+		OUTSIDE = 1,
+	   };
+
 	SoSFDouble m_radius;
 	SoSFDouble m_z1;
 	SoSFDouble m_z2;
 	SoSFDouble m_phiMax;
-	SoSFBool m_reverseOrientation;
+	SoSFEnum m_reverseOrientation;
 
 protected:
 	static void updateMinMaxTheta(void *data, SoSensor *);
+	static void updatePhiMax(void *data, SoSensor *);
 
 	bool OutOfRange( double u, double v ) const;
 	Point3D GetPoint3D ( double u, double v ) const;
