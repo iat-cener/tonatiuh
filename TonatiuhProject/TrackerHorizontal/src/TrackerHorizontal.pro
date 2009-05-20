@@ -1,24 +1,13 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
+INCLUDEPATH += 	. \
+				src \
+				../Tonatiuh/src \
+				$$(TDE_ROOT)/local/include
 
 win32{
 	DEFINES+= COIN_DLL SOQT_DLL
-	INCLUDEPATH += . \
-				src \
-				../Tonatiuh/src\ 
-				C:/msys/usr/local/include 
-				
-	LIBS += -L"c:\msys\usr\local\lib" -lmingw32 -lqtmain  -lSoQt -lCoin -lopengl32
-	DESTDIR =  ../Tonatiuh/plugins/TrackerHorizontal/
-}
-
-unix{
-	INCLUDEPATH += 	. \
-					../Tonatiuh/src\ 
-					src
-	LIBS +=-L/usr/local/lib -lCoin -lSoQt
-	DESTDIR       = ../Tonatiuh/plugins/TrackerHorizontal
 }
 
 # Input
@@ -33,7 +22,6 @@ HEADERS = *.h \
 			../Tonatiuh/src/Photon.h\
           	../Tonatiuh/src/Ray.h \
            	../Tonatiuh/src/RefCount.h \
-			../Tonatiuh/src/TDefaultPhotonMap.h\
 			../Tonatiuh/src/tgf.h\
            	../Tonatiuh/src/TMaterial.h \
 			../Tonatiuh/src/Trace.h\
@@ -58,7 +46,6 @@ SOURCES = *.cpp \
 			../Tonatiuh/src/Photon.cpp\
           	../Tonatiuh/src/Ray.cpp \
            	../Tonatiuh/src/RefCount.cpp \
-			../Tonatiuh/src/TDefaultPhotonMap.cpp\
 			../Tonatiuh/src/tgf.cpp \
            	../Tonatiuh/src/TMaterial.cpp \
 			../Tonatiuh/src/TPhotonMap.cpp\
@@ -71,20 +58,21 @@ SOURCES = *.cpp \
 			../Tonatiuh/src/Vector3D.cpp
 
 RESOURCES += TrackerHorizontal.qrc
-	
+
+
+DESTDIR       = ../Tonatiuh/plugins/TrackerHorizontal
 TARGET        = TrackerHorizontal
-    contains(TEMPLATE,lib) {
-    
-       CONFIG(debug, debug|release) {
-       
-          unix	{
-          
-          	DESTDIR       = ../Tonatiuh/plugins/TrackerHorizontal
-          	TARGET = $$member(TARGET, 0)_debug
-          	
-          }
-          
-          else:TARGET = $$member(TARGET, 0)d
-       }
-       
-    }
+
+contains(TEMPLATE,lib) {
+   CONFIG(debug, debug|release) {
+		unix {
+			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
+			TARGET = $$member(TARGET, 0)_debug
+		}
+		else {
+			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
+			TARGET = $$member(TARGET, 0)d
+		}
+	}
+	else: LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+}
