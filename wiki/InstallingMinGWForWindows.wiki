@@ -2,7 +2,7 @@
 
 = Introduction =
 
-To be able to further develop Tanatiuh under Windows XP or Windows Vista, you need to install a series of libraries, and the MSYS shell environment. The installation of the MinGW compiler is the first step in this process.
+To be able to further develop Tonatiuh under Windows XP or Windows Vista, you need to install a series of libraries, and the MSYS shell environment. The installation of the MinGW compiler is the first step in this process.
 
 
 = Details =
