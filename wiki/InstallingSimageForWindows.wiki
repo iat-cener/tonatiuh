@@ -13,7 +13,7 @@ Download the latest realese of Simage, currently [http://ftp.coin3d.org/coin/src
  
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
-tar -xvf simage-1.6.1.tar.ga
+tar -xvf simage-1.6.1.tar.gz
 }}}
 
 This will create a directory called _Simage-1.6.1_ in your user directory. Using the MSYS shell navigate to just created directory.
