@@ -19,6 +19,15 @@ This will create a directory called _Coin-3.0.0_ in your user directory. Using t
 export QTDIR="/usr/qt"_
 export COINDIR="/usr/local"_
 export INCLUDE="/usr/local/include:/usr/qt/include"
+}}}
+
+Type the following command to build on debug mode: 
+{{{
+./configure --enable-debug --enable-symbols LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-suffix=d --prefix=/usr/local
+}}}
+
+Or type to release mode:
+{{{
 ./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
 }}}
 
