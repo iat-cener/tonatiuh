@@ -33,6 +33,6 @@ This will start the configuration process. This process should finish succesfull
   Open Inventor brand: Coin
   Static Materials:    Yes
   Installation Prefix: /usr/local
-Now, run 'make install' to build and install SoQt"
+Now, run 'make'to build and 'make install' install SoQt"
 }}} 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
