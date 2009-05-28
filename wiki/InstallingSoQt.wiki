@@ -33,6 +33,13 @@ This will start the configuration process. This process should finish succesfull
   Open Inventor brand: Coin
   Static Materials:    Yes
   Installation Prefix: /usr/local
-Now, run 'make'to build and 'make install' install SoQt"
+
+Now, run 'make install'to build and install SoQt"
 }}} 
+
+Before start building !SoQt edit src/Inventor/!SoComponent.cpp file. Remplace on line 103
+'unsigned long key' with '!SbDict::Key key'. 
+
+Now, run 'make install'. The !SoQt library will be intalled to /usr/local directory.
+
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
