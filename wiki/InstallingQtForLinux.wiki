@@ -10,10 +10,10 @@ To install the Qt libraries in your computer download the installer file _qt-x11
 
 Open a shell console and navigate to desktop. Extract donwloaded file typing:
 {{{
-tar -xvzf qt-x11-opensource-src-4.4.3.tar.gz
+tar -xvzf qt-x11-opensource-src-4.5.1.tar.gz
 }}}
 
-After extraction, a new directory, qt-x11-opensource-src-4.4.3, will be created. Go to the directory and type:
+After extraction, a new directory, qt-x11-opensource-src-4.5.1, will be created. Go to the directory and type:
 {{{
 ./configure
 }}}
