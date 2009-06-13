@@ -6,7 +6,7 @@ http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
 = Details =
 
-Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.0.0.tar.gz Coin 3.0.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the download directory in your home, _/home/username/downloads. 
+Download the latest release of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.1.0.tar.gz Coin 3.1.0], from the [http://www.coin3d.org/ Coin3D] website to your downloads directory, e.g.,_/home/username/downloads_. 
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
