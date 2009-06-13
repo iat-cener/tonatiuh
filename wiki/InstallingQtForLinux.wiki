@@ -6,32 +6,29 @@ Qt is cross-platform application framework for GUI development.
 
 = Details =
 
-To install the Qt libraries in your computer download the installer file _qt-x11-opensource-src-4.4.3.tar.gz_ from the Trolltech website at http://www.qtsoftware.com/downloads/linux-x11-cpp to downloads on your home directory, _/home/username/downloads_.
+To install the Qt libraries in your computer download the installer file _qt-x11-opensource-src-4.5.1.tar.gz_ from the Trolltech website at http://www.qtsoftware.com/downloads/linux-x11-cpp on your "downloads" directory, e.g., _/home/username/downloads_.
 
-Open a shell console and navigate to desktop. Extract donwloaded file typing:
+Open a shell console, navigate to the downloads directory and extract the donwloaded file by typing:
 {{{
 tar -xvzf qt-x11-opensource-src-4.5.1.tar.gz
 }}}
 
-After extraction, a new directory, qt-x11-opensource-src-4.5.1, will be created. Go to the directory and type:
+This will create the new directory "qt-x11-opensource-src-4.5.1" under your downloads directory. Navigate within the command shell to the directory and type:
 {{{
 ./configure
 }}}
 
-You will be asked to accept the license agreement. Accept it typing yes. 
+You will be asked to accept the license agreement. Accept it by typing "yes". 
 
-After qt configuration is finished, to install qt libraries typing:
+Once the configuration of qt finishes, make and install the libraries by typing:
 {{{
 make
 make install
 }}}
 
-After the release version of the Qt libraries are installed,  we must specify where Qt is installed. Type:
-{{{
-kwrite ~/.bashrc
-}}}
+In some systems, to run "make install" you will need to start a superuser session within your command shell.
 
-Type the following in the file that will appear:
+After the Qt libraries are installed, you must add the appropriate information to your $PATH. To do that, edit the .bashrc file with your favorite editor to include the following at the end of the file:
 {{{
 QTDIR=/usr/local/Trolltech/Qt-4.4.3
 export QTDIR
@@ -41,8 +38,8 @@ export PATH
 
 }}}
 
-Save the changes and close editor.
+Once this is done, save the changes and close the editor.
 
-To continue with the resources intallation to Tonatiuh development, start with [InstallingCoin3DForLinux Coin3D] intallation.
+To continue with the intallation of the Tonatiuh development environment, start with [InstallingCoin3DForLinux Coin3D] intallation.
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
