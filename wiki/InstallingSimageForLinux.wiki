@@ -6,7 +6,7 @@ Simage is a multiplatform library capable of loading, manipulating and saving im
 
 = Details =
 
-Download the latest realese of simage, currently [http://www.coin3d.org/lib/simage/releases/1.6.1 simage-1.6.1], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+Download the latest realese of simage, currently _simage-1.6.1_, from the [http://www.coin3d.org/ Coin3D] website by clicking [http://ftp.coin3d.org/coin/src/all/simage-1.6.1.tar.gz here]. Place it into the desktop. 
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
