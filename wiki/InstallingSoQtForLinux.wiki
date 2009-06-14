@@ -1,6 +1,6 @@
-#summary Procedure to install SoQt under Linux
+#summary Procedure to install !SoQt under Linux
 
-= SoQt =
+= !SoQt =
 
 [http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. This pages provides instruction regarding how to install !SoQt in your computer under Linux.
 
@@ -26,8 +26,8 @@ SoQt configuration settings:
 
 Now, run 'make install' to build and install SoQt.
 }}} 
-
-To install !SoQt libraries type:
+Before start building SoQt edit src/Inventor/Qt/SoQtComponent.cpp file. Go to line 103 and replace 'unsigned long key' with 'SbDict::Key key'.
+Then, to install !SoQt libraries type:
 {{{
 make
 make install
