@@ -11,7 +11,7 @@ Download the latest release of !SoQt, currently !SoQt 1.4.1, from the Coin3D web
 {{{
 tar -zxvf SoQt-1.4.1.tar.gz
 }}}
-This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the MSYS shell navigate to the just created SoQt-1.4.1. directory and type:
+This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the MSYS shell navigate to the just created !SoQt-1.4.1. directory and type:
 {{{
 export COINDIR="/usr/local"
 export INCLUDE="/usr/local/include:/usr/local/Trolltech/Qt-4.5.1/include"
