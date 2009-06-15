@@ -30,7 +30,7 @@ In some systems, to run "make install" you will need to start a superuser sessio
 
 After the Qt libraries are installed, you must add the appropriate information to your $PATH. To do that, edit the .bashrc file with your favorite editor to include the following at the end of the file:
 {{{
-QTDIR=/usr/local/Trolltech/Qt-4.4.3
+QTDIR=/usr/local/Trolltech/Qt-4.5.1
 export QTDIR
 
 PATH=$QTDIR/bin:$PATH
