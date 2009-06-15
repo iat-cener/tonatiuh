@@ -5,7 +5,7 @@
 Marble is a Virtual Globe and World Atlas that you can use to learn more about Earth: You can pan and zoom around and you can look up places and roads. A mouse click on a place label will provide the respective Wikipedia article.
 
 = Details =
-To compile marble you need CMake, a cross-platform make. You can obtain it from http://www.cmake.org/cmake/resources/software.html. Download the last version of cmake for Linux, you need a version newer than 2.4. Install CMake at C:\CMake_version_. 
+To compile marble you need CMake -a cross-platform make. It can be download from http://www.cmake.org/cmake/resources/software.html. Download the latest binary version for Linux. You need a version newer than 2.4. Install it at C:\CMake_version_. 
 
 Now, download the source files from http://edu.kde.org/marble/download.php clicking on source download link. Pace it into downloads under your home folder. This will typically be  /home/username/downloads. Open a shell console and navigate to downloads directory. Extract the archive by typing: 
 
