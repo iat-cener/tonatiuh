@@ -19,7 +19,7 @@ export INCLUDE="/usr/local/include:/usr/local/Trolltech/Qt-4.5.1/include"
 
 The configure command is different if you want to build libraries in debug or release mode. For the debug mode type:
 {{{
-env "-DCOIN_DLL" ./configure --enable-qt-debug --enable-debug --enable-symbols --with-suffix=_debug --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.1 --prefix=/usr/local
+env CPPFLAGS=-DCOIN_DLL ./configure --enable-qt-debug --enable-debug --enable-symbols --with-suffix=_debug --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.1 --prefix=/usr/local
 }}}
 
 For release type:
