@@ -24,7 +24,7 @@ env CPPFLAGS=-DCOIN_DLL ./configure --enable-qt-debug --enable-debug --enable-sy
 
 For release type:
 {{{
-env "-DCOIN_DLL" ./configure --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.1 --prefix=/usr/local
+env CPPFLAGS=-DCOIN_DLL ./configure --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.1 --prefix=/usr/local
 }}}
 
 This will start the configuration process. This process should finish succesfully with the following message:
