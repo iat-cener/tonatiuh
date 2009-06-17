@@ -15,8 +15,18 @@ This will create a directory called _!SoQt-1.4.1_ in your user directory. Using 
 {{{
 export COINDIR="/usr/local"
 export INCLUDE="/usr/local/include:/usr/local/Trolltech/Qt-4.5.1/include"
-env "-DCOIN_DLL" ./configure --with-coin=/usr/local --prefix=/usr/local
 }}}
+
+The configure command is different if you want to build libraries in debug or release mode. For the debug mode type:
+{{{
+env "-DCOIN_DLL" ./configure --enable-qt-debug --enable-debug --enable-symbols --with-suffix=_debug --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.1 --prefix=/usr/local
+}}}
+
+For release type:
+{{{
+env "-DCOIN_DLL" ./configure --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.1 --prefix=/usr/local
+}}}
+
 This will start the configuration process. This process should finish succesfully with the following message:
 {{{
 SoQt configuration settings:
