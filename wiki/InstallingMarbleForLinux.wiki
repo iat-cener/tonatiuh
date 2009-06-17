@@ -5,7 +5,7 @@
 Marble is a Virtual Globe and World Atlas that you can use to learn more about Earth: You can pan and zoom around and you can look up places and roads. A mouse click on a place label will provide the respective Wikipedia article.
 
 = Details =
-To compile marble you need CMake -a cross-platform make. It can be download from http://www.cmake.org/cmake/resources/software.html. Download the latest binary version for Linux. You need a version newer than 2.4. Install it at C:\CMake_version_. 
+To compile marble you need CMake -a cross-platform make. It can be download from http://www.cmake.org/cmake/resources/software.html. Download the latest binary version for Linux. You need a version newer than 2.4.
 
 Now, download the source files from http://edu.kde.org/marble/download.php clicking on source download link. Pace it into downloads under your home folder. This will typically be  /home/username/downloads. Open a shell console and navigate to downloads directory. Extract the archive by typing: 
 
@@ -13,23 +13,19 @@ Now, download the source files from http://edu.kde.org/marble/download.php click
 tar -xvzf marble-version.tar.gz
 }}}
 
-This will create a directory called _marble-version_ in your user directory. Using the shell navigate to just created marble-version directory and type:
+This will create a directory called _marble-version_ in your user directory. Using the shell navigate to just created marble-version directory and type for debug mode:
+{{{
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE:String=debug -DCMAKE_DEBUG_POSTFIX=_debug -DQTONLY=ON ../marble
+}}}
+
+or type for release mode:
 {{{
 cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
+}}}
+To build the library type:
+{{{
 make
 make install
-}}}
-
-
-Marble is installed, but we have to put maps data files in Tonatiuh project. If you have not Tonatiuh project created, follow procedures to  [InstallingAndConfiguringEclipseForLinux  	 install and configurate Eclipse for Linux] and [Installing_Subversive install Subversive] to take sources from the repository.
-
-{{{
-cp data/* /home/username/eclipse/workspace/Tonatiuh/release
-}}}
-
-or type the following if you are working on Debug mode:
-{{{
-cp data/* /home/username/eclipse/workspace/Tonatiuh/debug
 }}}
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
