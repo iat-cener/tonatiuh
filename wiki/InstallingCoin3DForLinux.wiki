@@ -15,7 +15,7 @@ tar -zxvf Coin-3.1.0.tar.gz
 
 This will create a directory called _Coin-3.1.0_ in your user directory. Using shell navigate to just created Coin3.1.0 directory. Type the following command to build on debug mode: 
 {{{
-./configure --enable-debug --enable-symbols --with-suffix=d
+./configure --enable-debug --enable-symbols --with-suffix=_debug
 }}}
 
 Or type to release mode:
