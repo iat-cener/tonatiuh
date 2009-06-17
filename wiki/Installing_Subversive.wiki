@@ -3,16 +3,19 @@
 
  * Open Eclipse
  * Go to Help->Software Updates->Available Software.
- * Click _"Add Site..."_ button and write the following location: _http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site_.
+ * Click _"Add Site..."_ button and write the following location for Subversive plug-in: _http://download.eclipse.org/technology/subversive/0.7/update-site/_.
+ * Also the update site for SVN Connectors can be added in the same way. The URL is _http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/_ .
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/addSite.png]
 
- * Expand added site and select " Subversive SVN Connectors".
- * Expand _"Ganymede Update Site"_.
- * Expand _"Collaboration Tools"_.
- * Select "Subversive SVN Team Provider" (Incubation) and push _"Install..."_. 
+ * Expand added _"Subversive Site"_ and select select _Subversive SVN Team Provider Plugin (Incuvation)_. 
+ * Expand _"Subversive SVN Connectors Site"_ and select _"Suversive SVN Connectors"_.
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/softwareUpdates.png]
+ * Push _"Install..."_ to start with the plugins installation. 
+ * The update manager calculates dependencies. Select the features to install from the list and click the 'Next >'. 
+   [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/featuresToInstall.png]
 
- * Accept all. The plugin should now be installed and restart eclipse.
+ * Accept the terms of licesnse. The plugin should now be installed.
+ * Restart eclipse.
 
 To anonymous download of Tonatiuh code read [Anonymous_Download] or read [Upload_to_Repository] to download code and upload changes.
 
