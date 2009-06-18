@@ -29,15 +29,9 @@ make install
 
 To install marble in debug mode type:
 {{{
-cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=debug -DQTONLY=ON ../marble
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE:String=debug -DCMAKE_DEBUG_POSTFIX=_debug -DQTONLY=ON ../marble
 make
 make install
-}}}
-
-Marble is installed, but we have to put maps data files in Tonatiuh project. If you have not Tonatiuh project created, follow procedures to  [InstallingAndConfiguringEclipseForLinux  	 install and configurate Eclipse for Linux] and [Installing_Subversive install Subversive] to take sources from the repository.
-
-{{{
-cp data/* /home/username/eclipse/workspace/Tonatiuh/data
 }}}
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
