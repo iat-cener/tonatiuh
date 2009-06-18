@@ -36,7 +36,7 @@ make
 make install
 }}}
 
-At the end of the installation process, the libraries hab been installed at /usr/local directory. Now, [InstallingCoin3DForMac Coin3D] installation can be started.
+At the end of the installation process, the libraries hab been installed at /usr/local directory. Now, [InstallingSoQtForMac SoQt] installation can be started.
 
 
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
