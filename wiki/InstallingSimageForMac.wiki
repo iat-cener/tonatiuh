@@ -18,10 +18,6 @@ This will create a directory called _simage-1.6.1_ in your user directory. Using
 ./configure --enable-debug=no --with-qt=/usr/local/Trolltech/Qt-4.5.1
 }}}
 
-To create debug libraries type:
-{{{
-./configure --enable-debug --enable-symbols --with-suffix=_debug --enable-qt-debug --with-qt=/usr/local/Trolltech/Qt-4.5.1
-}}}
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
 {{{
 make 
@@ -35,7 +31,8 @@ make clean
 
 And then generate library:
 {{{
-./configure --with-suffix=_debug
+./configure --enable-debug --enable-symbols --with-suffix=_debug --enable-qt-debug --with-qt=/usr/local/Trolltech/Qt-4.5.1
+
 make
 make install
 }}}
