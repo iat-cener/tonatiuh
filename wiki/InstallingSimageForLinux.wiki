@@ -17,7 +17,7 @@ This will create a directory called _simage-1.6.1_ in your user directory. Using
 
 Type the following command to build on debug mode:
 {{{
-./configure --with-qt=/usr/local/Trolltech/Qt-4.5.1 --enable-debug --enable-symbols --enable-qt-debug --with-suffix=d
+./configure --enable-debug --enable-symbols --with-suffix=_debug
 }}}
 
 To build the library in release mode type:
