@@ -13,9 +13,16 @@ Open a shell console and navigate to desktop and extract the archive by typing:
 tar -zxvf simage-1.6.1.tar.gz
 }}}
 
-This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory and type:
+This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1.
+
+Type the following command to build on debug mode:
 {{{
-./configure
+./configure --disable-msvc --with-qt=/usr/qt --enable-debug --enable-symbols --enable-qt-debug --with-qt=/usr/qt --with-suffix=d
+}}}
+
+To build the library in release mode type:
+{{{
+./configure --disable-msvc --with-qt=/usr/qt --enable-debug=no
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
