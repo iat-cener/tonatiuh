@@ -30,14 +30,14 @@ RESOURCES += tonatiuh.qrc
  
 
 CONFIG(debug, debug|release) {
-	DESTDIR = ../Tonatiuh/debug
+	DESTDIR = ../Tonatiuh/bin/debug
 	unix  {
 		LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt_debug -lCoin_debug -lmarblewidget_debug -lqwtplot3d_debug
 	}	
 	else: LIBS += -L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind -lmarblewidgetd -lqwtplot3dd
 }
 else{
-	DESTDIR=../Tonatiuh/release
+	DESTDIR=../Tonatiuh/bin/release
 	LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin -lmarblewidget -lqwtplot3d
 }
 	

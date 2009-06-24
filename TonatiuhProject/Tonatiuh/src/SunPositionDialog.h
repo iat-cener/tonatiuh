@@ -48,6 +48,7 @@ class SunPositionDialog : public QDialog, private Ui::SunPositionDialog
 
 public:
 	SunPositionDialog( QWidget* parent = 0 );
+	SunPositionDialog( double azimuth, double elevation, double distance, QWidget* parent = 0 );
 	~SunPositionDialog();
 
 	double GetAzimuth();

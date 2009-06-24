@@ -518,7 +518,7 @@ QDir MainWindow::PluginDirectory()
 	// which the running version of Tonatiuh is located.
 	Trace trace( "MainWindow::PluginDirectory" );
     QDir directory( qApp->applicationDirPath() );
-  	directory.cd("../plugins");
+  	directory.cd("plugins");
 	return directory;
 }
 
@@ -809,11 +809,11 @@ void MainWindow::on_actionDefineSunPosition_triggered()
 	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 	if( !lightKit ) return;
 
-	SunPositionDialog* dialog = new SunPositionDialog();
+	SunPositionDialog* dialog = new SunPositionDialog( lightKit->azimuth.getValue() /tgc::Degree, 90 - lightKit->zenith.getValue() /tgc::Degree, lightKit->distance.getValue() );
 	if( dialog->exec() )
 	{
 
-		lightKit->SetSunPosition( dialog->GetAzimuth(), ( ( tgc::Pi / 2 ) - dialog->GetElevation() ), dialog->GetDistance()  );
+		lightKit->ChangePosition( dialog->GetAzimuth(), ( ( tgc::Pi / 2 ) - dialog->GetElevation() ), dialog->GetDistance()  );
 		m_document->SetDocumentModified( true );
 	}
 }
@@ -822,11 +822,19 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
 {
 	Trace trace( "MainWindow::on_actionCalculateSunPosition_triggered", false );
 
-	SunPositionCalculatorDialog* sunposDialog = new SunPositionCalculatorDialog();
-
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
-	if( lightKit ) sunposDialog->SetDateTime( lightKit->GetTime() );
+
+	SunPositionCalculatorDialog* sunposDialog= new SunPositionCalculatorDialog( );
+	if( lightKit )
+	{
+		QDateTime currentTime;
+		double longitude;
+		double latitude;
+
+		lightKit->GetPositionData( &currentTime, &longitude, &latitude );
+		sunposDialog->ChangePosition( currentTime, longitude, latitude );
+	}
 
 	connect( sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( SunPositionChanged( QDateTime*, double, double ) ) );
 	sunposDialog->exec();
@@ -911,6 +919,9 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 	//Random Ray generator
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
+	//long unsigned i = 0;
+	//long unsigned numberOfRays = 0;
+	//while( i < m_raysPerIteration)
 	{
 		Ray ray;
 
@@ -922,11 +933,20 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		ray = lightToWorld( ray );
 
 		//Perform Ray Trace
-		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_pRand );
+		bool traced = tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_pRand );
 
-		//Update progressDiaglog when appropriate
-		progress.Update();
+
+		//if( traced)
+		//{
+		//	i++;
+
+			//Update progressDiaglog when appropriate
+			progress.Update();
+		//}
+		//numberOfRays++;
+
  	}
+	//std::cout<<"numberOfRays: "<<numberOfRays<<std::endl;
 
  	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
  	{
@@ -1337,7 +1357,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
-	Trace trace( "MainWindow::CreateTracker", true );
+	Trace trace( "MainWindow::CreateTracker", false );
 
 	QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
 								m_sceneModel->index (0,0,treeView->rootIndex()):
@@ -1356,6 +1376,13 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 
 	SoSceneKit* scene = m_document->GetSceneKit();
 	TLightKit* lightKit = dynamic_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
+	if( !lightKit )
+	{
+    	QMessageBox::information( this, "Tonatiuh Action",
+	                          "Define a sun light before insert a tracker", 1);
+    	return;
+	}
+
    	SoTransform* lightTransform = dynamic_cast< SoTransform* > ( lightKit->getPart("transform", true) );
 
     TTracker* tracker = pTTrackerFactory->CreateTTracker( );
