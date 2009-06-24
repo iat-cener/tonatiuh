@@ -1,0 +1,3 @@
+#Mon Jun 01 09:34:00 CEST 2009
+eclipse.preferences.version=1
+environment/project/preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.2052748707=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<environment append\="true" appendContributed\="true">\r\n<variable delimiter\=";" name\="QMAKESPEC" operation\="append" value\="win32-g++"/>\r\n<variable delimiter\=";" name\="PATH" operation\="append" value\="C\:\\MinGW\\bin;C\:\\tde\\usr\\qt\\bin;C\:\\tde\\usr\\local\\bin"/>\r\n<variable delimiter\=";" name\="TDE_ROOT" operation\="append" value\="C\:\\tde\\usr"/>\r\n</environment>\r\n

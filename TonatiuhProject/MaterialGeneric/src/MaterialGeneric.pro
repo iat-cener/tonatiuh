@@ -58,11 +58,11 @@ SOURCES = *.cpp \
 
 RESOURCES += MaterialGeneric.qrc
 
-DESTDIR       = ../Tonatiuh/plugins/MaterialGeneric	
 TARGET        = MaterialGeneric
 
 contains(TEMPLATE,lib) {
    CONFIG(debug, debug|release) {
+	DESTDIR       = ../Tonatiuh/bin/debug/plugins/MaterialGeneric	
       unix	{
       	
       	TARGET = $$member(TARGET, 0)_debug
@@ -70,5 +70,6 @@ contains(TEMPLATE,lib) {
       } 
       else:TARGET = $$member(TARGET, 0)d
    }
+   else: DESTDIR       = ../Tonatiuh/bin/release/plugins/MaterialGeneric
    
 }
