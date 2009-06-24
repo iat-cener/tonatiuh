@@ -11,8 +11,6 @@ INCLUDEPATH += . \
 				../Tonatiuh/src \ 
 				$$(TDE_ROOT)/local/include
 
-LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
- 
 win32{
 	DEFINES+= COIN_DLL SOQT_DLL
 }
