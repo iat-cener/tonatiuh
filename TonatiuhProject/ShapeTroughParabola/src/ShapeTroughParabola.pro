@@ -56,22 +56,22 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/Vector3D.cpp
 
 RESOURCES += ShapeTroughParabola.qrc
-
-DESTDIR  = ..\Tonatiuh\plugins\ShapeTroughParabola
 TARGET        = ShapeTroughParabola
 
-contains(TEMPLATE,lib) {
+contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
+		DESTDIR       = ../Tonatiuh/bin/debug/plugins/ShapeTroughParabola	
 		unix {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
 		}
-      	else {
+		else {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
 			TARGET = $$member(TARGET, 0)d
 		}
 	}
-	else:{
+	else { 
 		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+		DESTDIR       = ../Tonatiuh/bin/release/plugins/ShapeTroughParabola
 	}
 }
