@@ -48,9 +48,7 @@ CmdLightPositionModified::CmdLightPositionModified( TLightKit* light, QDateTime 
 
 	if( light == 0 ) tgf::SevereError( "CmdLinghtPositionModified called with NULL TLightKit" );
 
-	oldTime = light->GetTime();
-	oldLongitude = light->longitude.getValue();
-	oldLatitude = light->latitude.getValue();
+	light->GetPositionData( &oldTime, &oldLongitude, &oldLatitude );
 }
 
 CmdLightPositionModified::~CmdLightPositionModified()
@@ -61,16 +59,12 @@ void CmdLightPositionModified::undo()
 {
 	Trace trace( "CmdLightKitModified::undo", false );
 
-	lightKit->longitude = oldLongitude;
-	lightKit->latitude = oldLatitude;
-	lightKit->ChangePosition( oldTime );
+	lightKit->ChangePosition( oldTime, oldLongitude, oldLatitude );
 }
 
 void CmdLightPositionModified::redo()
 {
 	Trace trace( "CmdLightKitModified::redo", false );
 
-	lightKit->longitude = newLongitude;
-	lightKit->latitude = newLatitude;
-	lightKit->ChangePosition( newTime );
+	lightKit->ChangePosition( newTime, newLongitude, newLatitude );
 }

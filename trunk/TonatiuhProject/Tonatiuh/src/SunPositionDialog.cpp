@@ -47,6 +47,19 @@ SunPositionDialog::SunPositionDialog( QWidget* parent )
 
 	setupUi( this );
 }
+
+SunPositionDialog::SunPositionDialog( double azimuth, double elevation, double distance, QWidget* parent )
+:QDialog( parent )
+{
+	Trace trace( "SunPositionDialog::SunPositionDialog", false );
+
+	setupUi( this );
+	azimuthSpin->setValue( azimuth );
+	elevationSpin->setValue( elevation );
+	distanceSpin->setValue( distance );
+
+}
+
 SunPositionDialog::~SunPositionDialog()
 {
 	Trace trace( "SunPositionDialog::~SunPositionDialog", false );

@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Image.h"
 #include "tgc.h"
+#include "Trace.h"
 #include "WorldMap.h"
 
 #include <iostream>
@@ -56,7 +57,9 @@ WorldMap::WorldMap(QWidget* widget)
 	m_gray = new Image(":/icons/WorldMapGray.BMP");
 	m_map.load( ":/icons/mundo.BMP" );
 	m_sun.load( ":/icons/sunIcon.png" );
+	m_position.load( ":/icons/position.png" );
 	m_sun = m_sun.scaledToWidth( 15 );
+	m_position = m_position.scaledToWidth( 15 );
 
 }
 
@@ -67,6 +70,8 @@ WorldMap::~WorldMap()
 
 void WorldMap::mouseMoveEvent( QMouseEvent* e)
 {
+	Trace trace( "WorldMap::mouseMoveEvent", false );
+
 	int x=e->x();
 	int y=e->y();
 
@@ -77,13 +82,24 @@ void WorldMap::mouseMoveEvent( QMouseEvent* e)
 
 }
 
+void WorldMap::LocalLatitudeChanged( double latitude )
+{
+	Trace trace( "WorldMap::LocalLatitudeChanged", false );
+	m_latitude = latitude;
+
+
+}
+
 void WorldMap::LocalLongitudeChanged( double longitude )
 {
+	Trace trace( "WorldMap::LocalLongitudeChanged", false );
 	m_longitude = longitude;
 }
 
 void WorldMap::SunChanged( cSunCoordinates coordinates )
 {
+	Trace trace( "WorldMap::SunChanged", false );
+
 	int width = m_map.width();
 	int height = m_map.height();
 
@@ -158,7 +174,7 @@ void WorldMap::paintEvent(QPaintEvent* /*event*/ )
 		for( int index = 0; index < m_points.size()-1; index++ )
 		{
 			points.append( m_points[index] );
-			points.append( m_points[index] );
+			//points.append( m_points[index] );
 		}
 		points.append( m_points[m_points.size()-1] );
 		painter.drawLines( points );
@@ -166,7 +182,12 @@ void WorldMap::paintEvent(QPaintEvent* /*event*/ )
 		int x = int ( ( ( -m_hourAngle + tgc::Pi) * m_map.width() ) / tgc::TwoPi );
 		if( x < 0 )	x = m_map.width() + x;
 		int y = int ( (m_map.height()/ 2) + ( (-m_declination   * ( m_map.height()/ 2 ) )  / ( tgc::Pi / 2 ) ) );
-		painter.drawImage( x, y, m_sun );
+		painter.drawImage( x, y-10, m_sun );
+
+		x = int ( ( ( m_longitude* tgc::Degree + tgc::Pi) * m_map.width() ) / tgc::TwoPi );
+		if( x < 0 )	x = m_map.width() + x;
+		y = int ( (m_map.height()/ 2) + ( (-m_latitude* tgc::Degree   * ( m_map.height()/ 2 ) )  / ( tgc::Pi / 2 ) ) );
+		painter.drawImage( x, y-10, m_position );
 
 		//Draw Text
 		painter.setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::RoundCap ) );
