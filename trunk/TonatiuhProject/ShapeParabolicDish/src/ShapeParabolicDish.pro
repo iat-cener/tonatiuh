@@ -49,15 +49,12 @@ SOURCES = *.cpp  \
            	../Tonatiuh/src/TShapeKit.cpp \
            	../Tonatiuh/src/Vector3D.cpp
 
-RESOURCES += ShapeParabolicDish.qrc
-
-DESTDIR =  ..\Tonatiuh\plugins\ShapeParabolicDish\
-		
+RESOURCES += ShapeParabolicDish.qrc	
 TARGET        = ShapeParabolicDish
 
-contains(TEMPLATE,lib) {
+contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
-		
+		DESTDIR       = ../Tonatiuh/bin/debug/plugins/ShapeParabolicDish	
 		unix {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
@@ -65,7 +62,10 @@ contains(TEMPLATE,lib) {
 		else {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
 			TARGET = $$member(TARGET, 0)d
-		}	
+		}
 	}
-	else: LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+	else { 
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+		DESTDIR       = ../Tonatiuh/bin/release/plugins/ShapeParabolicDish
+	}
 }
