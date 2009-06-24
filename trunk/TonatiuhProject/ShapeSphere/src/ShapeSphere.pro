@@ -53,20 +53,22 @@ SOURCES = *.cpp  \
            	../Tonatiuh/src/Vector3D.cpp
 
 RESOURCES += ShapeSphere.qrc
-
-DESTDIR       = ../Tonatiuh/plugins/ShapeSphere		
 TARGET        = ShapeSphere
 
-contains(TEMPLATE,lib) {
+contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
-		unix	{
-     		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
+		DESTDIR       = ../Tonatiuh/bin/debug/plugins/ShapeSphere	
+		unix {
+			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
-     	}
-     	else {
-     		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
-     		TARGET = $$member(TARGET, 0)d
-     	}
-   }
-   else: LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+		}
+		else {
+			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
+			TARGET = $$member(TARGET, 0)d
+		}
+	}
+	else { 
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+		DESTDIR       = ../Tonatiuh/bin/release/plugins/ShapeSphere
+	}
 }
