@@ -63,8 +63,9 @@ RESOURCES += TrackerHorizontal.qrc
 DESTDIR       = ../Tonatiuh/plugins/TrackerHorizontal
 TARGET        = TrackerHorizontal
 
-contains(TEMPLATE,lib) {
-   CONFIG(debug, debug|release) {
+contains(TEMPLATE,lib) {  
+	CONFIG(debug, debug|release) {
+		DESTDIR       = ../Tonatiuh/bin/debug/plugins/TrackerHorizontal	
 		unix {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
@@ -74,5 +75,8 @@ contains(TEMPLATE,lib) {
 			TARGET = $$member(TARGET, 0)d
 		}
 	}
-	else: LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+	else { 
+		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+		DESTDIR       = ../Tonatiuh/bin/release/plugins/TrackerHorizontal
+	}
 }
