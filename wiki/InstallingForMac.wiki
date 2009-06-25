@@ -26,6 +26,7 @@ The following links will guide the developer through all the process:
   * [InstallingMarbleForMac Installing Marble] 
   * [InstallingAndConfiguringEclipseForMac Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
+  * [BuildingTonatiuhOnMac Builing Tonatiuh and plugins]
 
 = Unit testing =
 
