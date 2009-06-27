@@ -10,10 +10,10 @@ To install the Qt libraries in your computer download the installer file _qt-x11
 
 Open a shell console, navigate to the downloads directory and extract the donwloaded file by typing:
 {{{
-tar -xvzf qt-x11-opensource-src-4.5.1.tar.gz
+tar -xvzf qt-x11-opensource-src-4.5.2.tar.gz
 }}}
 
-This will create the new directory "qt-x11-opensource-src-4.5.1" under your downloads directory. Navigate within the command shell to the directory and type:
+This will create the new directory "qt-x11-opensource-src-4.5.2" under your downloads directory. Navigate within the command shell to the directory and type:
 {{{
 ./configure
 }}}
@@ -30,7 +30,7 @@ In some systems, to run "make install" you will need to start a superuser sessio
 
 After the Qt libraries are installed, you must add the appropriate information to your $PATH. To do that, edit the .bashrc file with your favorite editor to include the following at the end of the file:
 {{{
-QTDIR=/usr/local/Trolltech/Qt-4.5.1
+QTDIR=/usr/local/Trolltech/Qt-4.5.2
 export QTDIR
 
 PATH=$QTDIR/bin:$PATH
