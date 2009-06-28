@@ -6,7 +6,7 @@ Simage is a multiplatform library capable of loading, manipulating and saving im
 
 = Details =
 
-Download the latest realese of simage, currently _simage-1.6.1_, from the [http://www.coin3d.org/ Coin3D] website by clicking [http://ftp.coin3d.org/coin/src/all/simage-1.6.1.tar.gz here]. Place it into the desktop. 
+To install de Simage library in your computer download the latest release of the installer file, currently `simage-1.6.1.tar.gz`, from the [http://www.qtsoftware.com/ Qt website] by clicking [http://ftp.coin3d.org/coin/src/all/simage-1.6.1.tar.gz here]. Place it into the desktop. 
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
