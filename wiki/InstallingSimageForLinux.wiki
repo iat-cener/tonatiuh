@@ -33,7 +33,7 @@ make install
 
 
 
-At the end of the installation process, the libraries will be installed at _/usr/local/lib_ directory. Now, you can start with the installation of [InstallingCoin3DForLinux Coin3D].
+At the end of the installation process, the libraries will be installed at _/usr/local/lib_. Now, you can proceed to the installation of [InstallingCoin3DForLinux Coin3D].
 
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
