@@ -20,7 +20,7 @@ Type the following command to build the debug version of the simage library:
 ./configure --with-qt=/usr/local/Trolltech/Qt-4.5.2 --enable-debug --enable-symbols --with-suffix=_debug
 }}}
 
-To build the library in release mode type:
+Type the following command to build the release version of the simage library:
 {{{
 ./configure --with-qt=/usr/local/Trolltech/Qt-4.5.2 --enable-debug=no
 }}}
@@ -33,7 +33,7 @@ make install
 
 
 
-At the end of the installation process, the libraries hab been installed at /usr/local directory. Now, [InstallingCoin3DForLinux Coin3D] installation can be started.
+At the end of the installation process, the libraries will be installed at _/usr/local/lib_ directory. Now, you can start with the installation of [InstallingCoin3DForLinux Coin3D].
 
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
