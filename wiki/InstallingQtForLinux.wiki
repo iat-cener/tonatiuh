@@ -20,7 +20,7 @@ This will create the new directory "qt-x11-opensource-src-4.5.2" under your down
 
 You will be asked which edition of QT do you want to use. Type 'o' to use the Open Source Edition and push `<ENTER>`.
 
-Then, you will be informed that you are licensed to use the software under the terms of the GNU GPL 3, and will be asked to type 'yes' to accept the license agreement. Type 'yes' and push <ENTER>.
+Then, you will be informed that you are licensed to use the software under the terms of the GNU GPL 3, and will be asked to type 'yes' to accept the license agreement. Type 'yes' and push `<ENTER>`.
 
 
 Once the configuration of qt finishes, make and install the libraries by typing:
