@@ -1,4 +1,4 @@
-#summary Procedure to install simage for Linux
+#summary Procedure to install Simage for Linux
 
 = Simage =
 
