@@ -11,7 +11,7 @@ Before installing [http://qwtplot3d.sourceforge.net/ QwtPlot3D], please, verify 
 Download the latest realese of QwtPlot3D, currently QwtPlot3D 0.2.7, from the QwtPlot3D website at http://qwtplot3d.sourceforge.net/web/navigation/download_frame.html. Place it into downlaods on your home directory. Open a shell console, navigate to download directory directory and extract the archive by typing: 
 
 {{{
-tar -zxvf qwtplot3d-0.2.7.tar
+tar -zxvf qwtplot3d-0.2.7.tgz
 }}}
 
 This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, replace in line 6
