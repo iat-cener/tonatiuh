@@ -43,6 +43,6 @@ export PATH
 
 Once this is done, save the changes and close the editor.
 
-To continue with the intallation of the Tonatiuh development environment, start with [InstallingCoin3DForLinux Coin3D] intallation.
+To continue with the intallation of the Tonatiuh development environment install [InstallingSimageForLinux Simage] now.
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
