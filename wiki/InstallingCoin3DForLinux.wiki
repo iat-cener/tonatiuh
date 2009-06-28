@@ -8,7 +8,7 @@ http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
 To install de Coin3D library in your computer download the latest release of the installer file, _Coin-3.1.0.tar.gz_, from the [http://www.coin3d.org/ Coin3D] website by clicking [http://ftp.coin3d.org/coin/src/all/Coin-3.1.0.tar.gz here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
 
-Open a shell console and navigate to desktop and extract the archive by typing:
+Open a shell console, navigate to your download directory, and extract the content of the installer file by typing:
 {{{
 tar -zxvf Coin-3.1.0.tar.gz
 }}}
