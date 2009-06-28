@@ -13,7 +13,7 @@ Open a shell console, navigate to your download directory, and extract the conte
 tar -zxvf simage-1.6.1.tar.gz
 }}}
 
-This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1.
+This will create a directory called _simage-1.6.1_ in your download directory. Using the shell, navigate to just created simage-1.6.1 directory.
 
 Type the following command to build on debug mode:
 {{{
