@@ -43,7 +43,7 @@ contains(TEMPLATE,lib) {
 
 Using the shell navigate to the just created directory and type: 
 {{{
-export QTDIR="/usr/local/Trolltech/Qt-4.5.1"
+export QTDIR="/usr/local/Trolltech/Qt-4.5.2"
 qmake qwtplot3d.pro
 make -f Makefile.Debug
 make -f Makefile.Release
