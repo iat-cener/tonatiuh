@@ -15,7 +15,7 @@ tar -zxvf simage-1.6.1.tar.gz
 
 This will create a directory called _simage-1.6.1_ in your download directory. Using the shell, navigate to the just created simage-1.6.1 directory.
 
-Type the following command to build on debug mode:
+Type the following command to build the debug version of the simage library:
 {{{
 ./configure --enable-debug --enable-symbols --with-suffix=_debug
 }}}
