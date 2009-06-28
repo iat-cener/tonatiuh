@@ -18,18 +18,18 @@ This will create the new directory "qt-x11-opensource-src-4.5.2" under your down
 ./configure
 }}}
 
-You will be asked which edition of QT do you want to use. Type 'o' to use the Open Source Edition and push `<ENTER>`.
+You will be asked which edition of Qt do you want to use. Type 'o' to use the Open Source Edition and push `<ENTER>`.
 
 Then, you will be informed that you are licensed to use the software under the terms of the GNU GPL 3, and will be asked to type 'yes' to accept the license agreement. Type 'yes' and push `<ENTER>`.
 
 
-Once the configuration of qt finishes, make and install the libraries by typing:
+Once the configuration of Qt finishes, make and install the libraries by typing:
 {{{
 make
 make install
 }}}
 
-In some systems, to run "make install" you will need to start a superuser session within your command shell.
+In some systems, to run "make install" you will need to start a super user session within your command shell.
 
 After the Qt libraries are installed, you must add the appropriate information to your $PATH. To do that, edit the .bashrc file with your favorite editor to include the following at the end of the file:
 {{{
