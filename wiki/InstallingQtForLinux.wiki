@@ -5,8 +5,7 @@
 Qt is cross-platform application framework for GUI development. 
 
 = Details =
-
-To install the Qt libraries in your computer download the installer file _qt-x11-opensource-src-4.5.1.tar.gz_ from the Trolltech website at http://www.qtsoftware.com/downloads/linux-x11-cpp on your "downloads" directory, e.g., _/home/username/downloads_.
+To install the Qt libraries library in your computer download the latest release of the installer file, _qt-x11-opensource-src-4.5.1.tar.gz_ , from the [http://www.qtsoftware.com/ Qt website] by clicking [http://www.qtsoftware.com/downloads/linux-x11-cpp here]. Place it on your "downloads" directory, e.g., _/home/username/downloads_.
 
 Open a shell console, navigate to the downloads directory and extract the donwloaded file by typing:
 {{{
