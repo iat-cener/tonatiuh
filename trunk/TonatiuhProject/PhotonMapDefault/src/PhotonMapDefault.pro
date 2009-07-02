@@ -13,9 +13,6 @@ INCLUDEPATH += . \
 			src \
 			../Tonatiuh/src\ 
 			$$(TDE_ROOT)/local/include 
-	
-LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin 
-			
 
 # Input
 HEADERS = *.h \
