@@ -324,8 +324,18 @@ void PhotonMapDefault::medianSplit( Photon*** p, const long unsigned start, cons
         long unsigned j = right;
         for (;;)
         {
-            while ( p[++i][0]->m_pos[axis]< v && i < right );
-            while ( p[--j][0]->m_pos[axis] > v && j>left );
+            while ( p[++i][0]->m_pos[axis]< v && i < right )
+            {
+            	/*empty body on purpose,
+            	 * the action is on the conditions
+            	 */
+            }
+            while ( p[--j][0]->m_pos[axis] > v && j>left )
+            {
+            	/*empty body on purpose,
+            	 * the action is on the conditions
+            	 */
+            }
             if ( i >= j ) break;
             swap(p,i,j);
         }
