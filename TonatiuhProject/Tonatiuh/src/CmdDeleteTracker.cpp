@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -58,10 +58,10 @@ CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SceneModel
 
 	SoEngineOutput* gateOutput;
 	m_tracker->sunRotation.getConnectedEngine( gateOutput );
-	m_gate = dynamic_cast< TGateEngine* > (gateOutput->getContainer() );
+	m_gate = static_cast< TGateEngine* > (gateOutput->getContainer() );
 	m_gate->ref();
 
-	m_coinParent = dynamic_cast< SoBaseKit* > ( instanceNode->GetParent()->GetNode() );
+	m_coinParent = static_cast< SoBaseKit* > ( instanceNode->GetParent()->GetNode() );
 	m_row = instanceNode->GetParent()->children.indexOf( instanceNode );
 }
 

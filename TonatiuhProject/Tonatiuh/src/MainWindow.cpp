@@ -139,7 +139,7 @@ m_TPhotonMapFactoryList( 0 ), m_TFlatShapeFactoryList( 0 ), m_TSunshapeFactoryLi
 m_selectionModel( 0 ), m_photonMap( 0 ), m_selectedPhotonMap( -1 ), m_increasePhotonMap( false ),
 m_pRays( 0 ), m_pGrid( 0 ), m_pRand( 0 ), m_coinNode_Buffer( 0 ),m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ), m_raysPerIteration( 1000 ), m_fraction( 10 ),
-m_drawPhotons( false ), m_graphicView( 0 ), m_focusView( 0 )
+m_drawPhotons( false ), m_graphicView( 0 ), m_treeView( 0 ), m_focusView( 0 )
 {
 
 
@@ -378,29 +378,29 @@ void MainWindow::SetupTreeView()
     QSplitter *pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
     if( pSplitter )
     {
-        SceneModelView* treeView = pSplitter->findChild< SceneModelView* >( "treeView" );
+        m_treeView = pSplitter->findChild< SceneModelView* >( "treeView" );
 
-    	if ( treeView )
+    	if ( m_treeView )
     	{
 
     		NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
-   			treeView->setItemDelegate( delegate );
+   			m_treeView->setItemDelegate( delegate );
 
-			treeView->setModel( m_sceneModel );
-			treeView->setSelectionModel( m_selectionModel );
-			treeView->setDragEnabled(true);
-        	treeView->setAcceptDrops(true);
-			treeView->setDropIndicatorShown(true);
-			treeView->setDragDropMode(QAbstractItemView::DragDrop);
-			treeView->setSelectionMode(QAbstractItemView::SingleSelection);
-        	treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-        	treeView->setRootIsDecorated(true);
+			m_treeView->setModel( m_sceneModel );
+			m_treeView->setSelectionModel( m_selectionModel );
+			m_treeView->setDragEnabled(true);
+        	m_treeView->setAcceptDrops(true);
+			m_treeView->setDropIndicatorShown(true);
+			m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
+			m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
+        	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+        	m_treeView->setRootIsDecorated(true);
 
-			connect( treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
+			connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
 			         this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
-			connect( treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
+			connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
 			         this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
-			connect( treeView, SIGNAL( showMenu( const QModelIndex& ) ),
+			connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
 			         this, SLOT ( showMenu( const QModelIndex& ) ) );
 
     	}
@@ -716,10 +716,10 @@ void MainWindow::on_actionNode_triggered()
     Trace trace( "MainWindow::on_actionNode_triggered", false );
 
 	QModelIndex parentIndex;
-    if ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0,treeView->rootIndex());
+    if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
+    	parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
 	else
-		parentIndex = treeView->currentIndex();
+		parentIndex = m_treeView->currentIndex();
 
 	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
 
@@ -742,10 +742,10 @@ void MainWindow::on_actionShapeKit_triggered()
 	Trace trace( "MainWindow::on_actionShapeKit_triggered", false );
 
 	QModelIndex parentIndex;
-    if ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0,treeView->rootIndex());
+    if (( ! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex()))
+    	parentIndex = m_sceneModel->index (0,0, m_treeView->rootIndex());
 	else
-		parentIndex = treeView->currentIndex();
+		parentIndex = m_treeView->currentIndex();
 
    	SoNode* selectedCoinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
 	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
@@ -767,7 +767,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
 
-	TLightKit* currentLight = dynamic_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
 
 	LightDialog dialog( currentLight, m_TFlatShapeFactoryList, m_TSunshapeFactoryList );
 	if( dialog.exec() )
@@ -780,7 +780,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 		m_commandStack->push( command );
 
 		//Select lightKit
-	    TLightKit* newLightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
+	    TLightKit* newLightKit = static_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 
 	    SoSearchAction* coinSearch = new SoSearchAction();
 		coinSearch->setNode( newLightKit );
@@ -806,7 +806,7 @@ void MainWindow::on_actionDefineSunPosition_triggered()
 {
 	Trace trace( "MainWindow::on_actionDefineSunPosition_triggered", false );
 	SoSceneKit* coinScene = m_document->GetSceneKit();
-	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 	if( !lightKit ) return;
 
 	SunPositionDialog* dialog = new SunPositionDialog( lightKit->azimuth.getValue() /tgc::Degree, 90 - lightKit->zenith.getValue() /tgc::Degree, lightKit->distance.getValue() );
@@ -823,7 +823,7 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
 	Trace trace( "MainWindow::on_actionCalculateSunPosition_triggered", false );
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
-	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 
 	SunPositionCalculatorDialog* sunposDialog= new SunPositionCalculatorDialog( );
 	if( lightKit )
@@ -842,88 +842,120 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
 	delete sunposDialog;
 }
 
-//Ray trace menu actions
-void MainWindow::on_actionRayTraceRun_triggered()
+bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
 {
-    Trace trace( "MainWindow::on_actionRayTraceRun_triggered", false );
-
-	ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), 100, this);
-	actionDisplay_rays->setEnabled( false );
-
 	//Check if there is a scene
 	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if ( !coinScene )  return;
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( treeView->rootIndex() );
+	if ( !coinScene )  return false;
 
-    //Check if there is a light and is properly configured
-	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
-	if ( !lightKit )	return;
-	InstanceNode* lightInstance = sceneInstance->children[0];
+	//Check if there is a rootSeparator InstanceNode
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
+	if ( !sceneInstance )  return false;
+	rootSeparatorInstance = sceneInstance->children[1];
+	if( !rootSeparatorInstance ) return false;
 
-	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	if( !sunShape ) return;
+	//Check if there is a light and is properly configured
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	if ( !lightKit )	return false;
+	lightInstance = sceneInstance->children[0];
+	if ( !lightInstance ) return false;
 
-	TShape* shape = static_cast< TShape * >(lightKit->getPart( "icon", false ) );
-	if( !shape ) return;
+	sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+	if( !sunShape ) return false;
 
-	SoTransform* lightTransform = dynamic_cast< SoTransform * >(lightKit->getPart("transform",true));
-	if( !lightTransform ) return;
+	raycastingShape = static_cast< TShape * >(lightKit->getPart( "icon", false ) );
+	if( !raycastingShape ) return false;
 
-	SbMatrix coinMatrix;
-	coinMatrix.setTransform( lightTransform->translation.getValue(),
-								lightTransform->rotation.getValue(),
-								lightTransform->scaleFactor.getValue(),
-								lightTransform->scaleOrientation.getValue(),
-								lightTransform->center.getValue() );
+	lightTransform = static_cast< SoTransform * >(lightKit->getPart("transform",true));
+	if( !lightTransform ) return false;
 
-	Transform lightToWorld( coinMatrix[0][0], coinMatrix[1][0], coinMatrix[2][0], coinMatrix[3][0],
-			coinMatrix[0][1], coinMatrix[1][1], coinMatrix[2][1], coinMatrix[3][1],
-			coinMatrix[0][2], coinMatrix[1][2], coinMatrix[2][2], coinMatrix[3][2],
-			coinMatrix[0][3], coinMatrix[1][3], coinMatrix[2][3], coinMatrix[3][3] );
-
-    //Check if there is a rootSeparator InstanceNode
-	if ( !sceneInstance )  return;
-	InstanceNode* rootSeparatorInstance = sceneInstance->children[1];
-	if( !rootSeparatorInstance ) return;
-
-    //Compute objects bounding boxes iteratively
-	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
-
-	QModelIndex rootIndex = treeView->rootIndex();
-	QPersistentModelIndex rootSepartorIndex = m_sceneModel->index ( 1, 0 );
-
-	QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< SbBox3f, Transform* > >();
-	ComputeSceneTreeMap( &rootSepartorIndex, region, sceneMap );
-
-	//Check if there is a photon Map type selected;
-	if( m_selectedPhotonMap == -1 ) return;
+	//Check if there is a photon map type selected;
+	if( m_selectedPhotonMap == -1 ) return false;
 
 	//Create the photon map where photons are going to be stored
-	if ( !m_increasePhotonMap )
+	if( !m_increasePhotonMap )
 	{
 		delete m_photonMap;
+		m_photonMap = 0;
+	}
+
+	if( !m_photonMap )
+	{
 		m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
 		m_tracedRays = 0;
 	}
-	else
-	{
-		if( !m_photonMap )
-		{
-			m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
-			m_tracedRays = 0;
-		}
-	}
-	m_tracedRays += m_raysPerIteration;
 
-	//Ray tracing storing the generated photons in the Photon Map
+	return true;
+}
+
+void MainWindow::ShowRaysIn3DView()
+{
+    Trace trace( "MainWindow::ShowRaysIn3DView", true );
+
+	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
+	{
+		m_document->GetRoot()->removeChild( m_pRays );
+		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
+	}
+
+	if( m_fraction > 0.0 || m_drawPhotons )
+	{
+		m_pRays = new SoSeparator;
+		m_pRays->ref();
+		m_pRays->setName("Rays");
+
+
+		if( m_drawPhotons )
+		{
+			SoSeparator* points = tgf::DrawPhotonMapPoints(*m_photonMap);
+			m_pRays->addChild(points);
+
+		    std::cout << "m_pRays " << m_pRays << std::endl;
+		}
+		if( m_fraction > 0.0 )
+		{
+			SoSeparator* currentRays = tgf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
+			m_pRays->addChild(currentRays);
+
+			actionDisplay_rays->setEnabled( true );
+			actionDisplay_rays->setChecked( true );
+		}
+		m_document->GetRoot()->addChild( m_pRays );
+	}
+}
+
+//Ray trace menu actions
+void MainWindow::on_actionRayTraceRun_triggered()
+{
+    Trace trace( "MainWindow::on_actionRayTraceRun_triggered", true );
+
+    // Verify that propram options are the scene are properly configured for ray tracing
+	InstanceNode* rootSeparatorInstance = 0;
+	InstanceNode* lightInstance = 0;
+	SoTransform* lightTransform = 0;
+	TSunShape* sunShape = 0;
+	TShape* raycastingShape = 0;
+	if( !ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingShape ) ) return;
+
+	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
+
+    //Compute objects bounding boxes iteratively
+	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
+	QModelIndex rootIndex = m_treeView->rootIndex();
+	QPersistentModelIndex rootSeparatorIndex = m_sceneModel->index ( 1, 0 );
+	QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< SbBox3f, Transform* > >();
+	ComputeSceneTreeMap( &rootSeparatorIndex, region, sceneMap );
+
 
 	//Random Ray generator
+	ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), 100, this);
+
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
 	{
 		Ray ray;
 
 		//Generate ray origin and direction in the Light coordinate system
-		ray.origin = shape->Sample( m_pRand->RandomDouble( ), m_pRand->RandomDouble( ) );
+		ray.origin = raycastingShape->Sample( m_pRand->RandomDouble( ), m_pRand->RandomDouble( ) );
 		sunShape->generateRayDirection( ray.direction, *m_pRand );
 
 		//Transform ray to World coordinate system and trace the scene
@@ -933,35 +965,10 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_pRand );
 		progress.Update();
  	}
+	m_tracedRays += m_raysPerIteration;
 
- 	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
- 	{
-  		m_document->GetRoot()->removeChild( m_pRays );
-  		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
- 	}
-
- 	if( m_fraction > 0.0 || m_drawPhotons )
- 	{
-	  	m_pRays = new SoSeparator;
-	  	m_pRays->ref();
-  		m_pRays->setName("Rays");
-
-		if( m_drawPhotons )
-		{
-			SoSeparator* points = tgf::DrawPhotonMapPoints(*m_photonMap);
-			m_pRays->addChild(points);
-		}
-		if( m_fraction > 0.0 )
-		{
-			SoSeparator* currentRays = tgf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
-		   	m_pRays->addChild(currentRays);
-
-		   	actionDisplay_rays->setEnabled( true );
-		   	actionDisplay_rays->setChecked( true );
-		}
-  		m_document->GetRoot()->addChild( m_pRays );
-	}
- 	progress.Done();
+	ShowRaysIn3DView();
+	progress.Done();
 }
 
 void MainWindow::on_actionDisplay_rays_toggled()
@@ -1003,8 +1010,8 @@ void MainWindow::on_actionResults_triggered()
 	    return;
 	}
 
-	TShapeKit* shapeKit = dynamic_cast<TShapeKit*>( m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() )->GetNode() );
-	TShape* shape = dynamic_cast< TShape* >( shapeKit->getPart( "shape", false ) );
+	TShapeKit* shapeKit = static_cast<TShapeKit*>( m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() )->GetNode() );
+	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
 	if(!shape)
 	{
 		QMessageBox::information( this, "Tonatiuh Action",
@@ -1059,8 +1066,8 @@ void MainWindow::on_actionExport_Surface_PhotonMap_triggered()
 	Trace trace( "MainWindow::on_actionExport_Surface_PhotonMap_triggered", false );
 
 	if( !m_selectionModel->hasSelection() ) return;
-	if( m_selectionModel->currentIndex() == treeView->rootIndex() ) return;
-	if( m_selectionModel->currentIndex().parent() == treeView->rootIndex() ) return;
+	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return;
+	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return;
 
 	InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
 	if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return;
@@ -1135,7 +1142,7 @@ void MainWindow::on_actionGrid_toggled()
 	Trace trace( "MainWindow::on_actionGrid_toggled", false );
 	if( actionGrid->isChecked() )
 	{
-		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( treeView->rootIndex() );
+		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
 		if ( !sceneInstance )  return;
 		SoNode* rootNode = sceneInstance->GetNode();
 		SoPath* nodePath = new SoPath( rootNode );
@@ -1172,7 +1179,7 @@ void MainWindow::on_actionBackground_toggled()
 {
 	Trace trace( "MainWindow::on_actionBackground_toggled", false );
 
-	SoVRMLBackground* vrmlBackground = dynamic_cast< SoVRMLBackground* > ( m_document->GetRoot()->getChild( 0 ) );
+	SoVRMLBackground* vrmlBackground = static_cast< SoVRMLBackground* > ( m_document->GetRoot()->getChild( 0 ) );
 
 	if( actionBackground->isChecked() )
 	{
@@ -1249,16 +1256,16 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
 {
 	Trace trace( "MainWindow::CreateMaterial", false );
 
-	QModelIndex parentIndex = ( (! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex() ) ) ?
-								m_sceneModel->index( 0, 0, treeView->rootIndex( )):
-								treeView->currentIndex();
+	QModelIndex parentIndex = ( (! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex() ) ) ?
+								m_sceneModel->index( 0, 0, m_treeView->rootIndex( )):
+								m_treeView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = parentInstance->GetNode();
 	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
 
-	TShapeKit* shapeKit = dynamic_cast< TShapeKit* >( parentNode );
-	TMaterial* material = dynamic_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
 
     if ( material )
     {
@@ -1282,15 +1289,15 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
 void MainWindow::CreatePhotonMap( TPhotonMapFactory* )
 {
 	Trace trace( "MainWindow::CreatePhotonMap", false);
-    /*QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
-								m_sceneModel->index (0,0,treeView->rootIndex()) : treeView->currentIndex();
+    /*QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
+								m_sceneModel->index (0,0,m_treeView->rootIndex()) : m_treeView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = parentInstance->GetNode();
 	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
 
-	TShapeKit* shapeKit = dynamic_cast< TShapeKit* >( parentNode );
-	TPhotonMap* photonMap = dynamic_cast< TPhotonMap* >( shapeKit->getPart( "photonMap", false ) );
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TPhotonMap* photonMap = static_cast< TPhotonMap* >( shapeKit->getPart( "photonMap", false ) );
     if (photonMap)
     {
     	QMessageBox::information( this, "Tonatiuh Action",
@@ -1313,15 +1320,15 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
     Trace trace( "MainWindow::CreateShape", false );
 
-    QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
-								m_sceneModel->index (0,0,treeView->rootIndex()) : treeView->currentIndex();
+    QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
+								m_sceneModel->index (0,0,m_treeView->rootIndex()) : m_treeView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = parentInstance->GetNode();
 	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
 
-	TShapeKit* shapeKit = dynamic_cast< TShapeKit* >( parentNode );
-	TShape* shape = dynamic_cast< TShape* >( shapeKit->getPart( "shape", false ) );
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
 
     if (shape)
     {
@@ -1345,9 +1352,9 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
 	Trace trace( "MainWindow::CreateTracker", false );
 
-	QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?
-								m_sceneModel->index (0,0,treeView->rootIndex()):
-								treeView->currentIndex();
+	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
+								m_sceneModel->index (0,0,m_treeView->rootIndex()):
+								m_treeView->currentIndex();
 
 	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = ancestor->GetNode();
@@ -1361,7 +1368,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	}
 
 	SoSceneKit* scene = m_document->GetSceneKit();
-	TLightKit* lightKit = dynamic_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
+	TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
 	if( !lightKit )
 	{
     	QMessageBox::information( this, "Tonatiuh Action",
@@ -1369,7 +1376,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
     	return;
 	}
 
-   	SoTransform* lightTransform = dynamic_cast< SoTransform* > ( lightKit->getPart("transform", true) );
+   	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true) );
 
     TTracker* tracker = pTTrackerFactory->CreateTTracker( );
     QString typeName = pTTrackerFactory->TTrackerName();
@@ -1390,7 +1397,7 @@ void MainWindow::SoTransform_to_SoCenterballManip()
 	Trace trace( "MainWindow::SoTransform_to_SoCenterballManip", false );
 
 	//Transform to a SoCenterballManip manipulator
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1418,7 +1425,7 @@ void MainWindow::SoTransform_to_SoJackManip()
 	Trace trace( "MainWindow::SoTransform_to_SoJackManip", false );
 
 	//Transform to a SoJackManip manipulator
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1446,7 +1453,7 @@ void MainWindow::SoTransform_to_SoHandleBoxManip()
 	Trace trace( "MainWindow::SoTransform_to_SoHandleBoxManip", false );
 
 	//Transform to a SoHandleBoxManip manipulator
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1474,7 +1481,7 @@ void MainWindow::SoTransform_to_SoTabBoxManip()
 	Trace trace( "MainWindow::SoTransform_to_SoTabBoxManip", false );
 
 	//Transform to a SoTabBoxManip manipulator
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1502,7 +1509,7 @@ void MainWindow::SoTransform_to_SoTrackballManip()
 	Trace trace( "MainWindow::SoTransform_to_SoTrackballManip", false );
 
 	//Transform to a SoTrackballManip manipulator
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1530,7 +1537,7 @@ void MainWindow::SoTransform_to_SoTransformBoxManip()
 	Trace trace( "MainWindow::SoTransform_to_SoTransformBoxManip", false );
 
 	//Transform to a SoTransformBoxManip manipulator
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1559,7 +1566,7 @@ void MainWindow::SoTransform_to_SoTransformerManip()
 	Trace trace( "MainWindow::SoTransform_to_SoTransformerManip", false );
 
 	//Transform to a SoTransformerManip manipulator
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1589,7 +1596,7 @@ void MainWindow::SoManip_to_SoTransform()
 	Trace trace( "MainWindow::SoManip_to_SoTransform", false );
 
 	//Transform manipulator to a SoTransform
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1697,7 +1704,7 @@ void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelInd
 {
 	Trace trace( "MainWindow::itemDragAndDrop", false );
 
-	if( node == treeView->rootIndex() ) return;
+	if( node == m_treeView->rootIndex() ) return;
 
 	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
 	SoNode* coinNode = nodeInstnace->GetNode();
@@ -1759,7 +1766,7 @@ void MainWindow::showMenu( const QModelIndex& index)
 		popupmenu.addAction( tr("Convert to SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
 
 	    SoBaseKit* coinKit = static_cast< SoBaseKit* > ( coinNode );
-   		SoTransform* transform = dynamic_cast< SoTransform* >( coinKit->getPart("transform", true) );
+   		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
 		SoType type = transform->getTypeId();
 
       	//Manipuladores
@@ -1778,7 +1785,7 @@ void MainWindow::SunPositionChanged( QDateTime* time, double longitude, double l
 	Trace trace( "MainWindow::closeEvent", false);
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
-	TLightKit* lightKit = dynamic_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
 	if ( !lightKit )
 	{
 		QMessageBox::warning( this, "Toantiuh warning", tr( "Sun not defined in scene" ) );
@@ -1883,8 +1890,8 @@ bool MainWindow::Copy( )
 	Trace trace( "MainWindow::Copy", false );
 
 	if( !m_selectionModel->hasSelection() ) return false;
-	if( m_selectionModel->currentIndex() == treeView->rootIndex() ) return false;
-	if( m_selectionModel->currentIndex().parent() == treeView->rootIndex() ) return false;
+	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
+	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
 
 
 	CmdCopy* command = new CmdCopy( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
@@ -1931,9 +1938,9 @@ bool MainWindow::Delete( )
 
 	if( !m_selectionModel->currentIndex().isValid()) return false;
 
-	if( m_selectionModel->currentIndex() == treeView->rootIndex() ) return false;
+	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
 
-	if( m_selectionModel->currentIndex().parent() == treeView->rootIndex() ) return false;
+	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
 	SoNode* coinNode = instanceNode->GetNode();
@@ -1961,8 +1968,8 @@ bool MainWindow::Cut()
 	Trace trace( "MainWindow::Cut", false );
 
 	if( !m_selectionModel->hasSelection() ) return false;
-	if( m_selectionModel->currentIndex() == treeView->rootIndex() ) return false;
-	if( m_selectionModel->currentIndex().parent() == treeView->rootIndex() ) return false;
+	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
+	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
 
 	CmdCut* command = new CmdCut( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
@@ -2065,7 +2072,7 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 	Trace trace( "MainWindow::ComputeSceneTreeMap", false );
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( *nodeIndex );
-	SoBaseKit* coinNode = dynamic_cast< SoBaseKit* > ( instanceNode->GetNode() );
+	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
 
 	SoPath* pathFromRoot = m_sceneModel->PathFromIndex( *nodeIndex );
 
@@ -2179,7 +2186,7 @@ void MainWindow::FinishManipulation( )
 {
 	Trace trace( "MainWindow::FinishManipulation", false );
 
-	QModelIndex currentIndex = treeView->currentIndex();
+	QModelIndex currentIndex = m_treeView->currentIndex();
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( m_sceneModel->NodeFromIndex(currentIndex)->GetNode() );
 
 	CmdParameterModified* parameterModified;

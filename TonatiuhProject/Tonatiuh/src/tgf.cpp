@@ -282,3 +282,21 @@ SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 											transformMatrix->m[3][0], transformMatrix->m[3][1], transformMatrix->m[3][2], transformMatrix->m[3][3] );
 
 }
+
+Transform tgf::TransformFromSoTransform( SoTransform*& soTransform )
+{
+	SbMatrix sbMatrix;
+	sbMatrix.setTransform( 	soTransform->translation.getValue(),
+							soTransform->rotation.getValue(),
+						    soTransform->scaleFactor.getValue(),
+						    soTransform->scaleOrientation.getValue(),
+						    soTransform->center.getValue() );
+
+	Transform transform( sbMatrix[0][0], sbMatrix[1][0], sbMatrix[2][0], sbMatrix[3][0],
+						 sbMatrix[0][1], sbMatrix[1][1], sbMatrix[2][1], sbMatrix[3][1],
+						 sbMatrix[0][2], sbMatrix[1][2], sbMatrix[2][2], sbMatrix[3][2],
+						 sbMatrix[0][3], sbMatrix[1][3], sbMatrix[2][3], sbMatrix[3][3] );
+
+	return transform;
+}
+

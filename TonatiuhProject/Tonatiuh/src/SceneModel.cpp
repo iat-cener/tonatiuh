@@ -84,14 +84,14 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
     m_mapCoinQt.insert( std::make_pair( &coinScene, instanceRootNodeList ) );
     m_mapCoinQt[&coinScene].append( m_instanceRoot );
 
-    TLightKit* coinLight = dynamic_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", false ) );
+    TLightKit* coinLight = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", false ) );
     if ( coinLight )
     {
     	InstanceNode* instanceLight = new InstanceNode( coinLight );
    		m_instanceRoot->AddChild( instanceLight );
     }
 
-    SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
+    SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
 
     if ( coinPartList && coinPartList->getNumChildren() == 0 )
     {
@@ -112,7 +112,7 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
     else
     {
 		//Is TSeparatorKit node
-		TSeparatorKit* coinChild = dynamic_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
+		TSeparatorKit* coinChild = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
 		if ( !coinChild ) return;
 
         InstanceNode* instanceChild = new InstanceNode( coinChild );
@@ -176,12 +176,12 @@ void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 		else
 		{
 			//Is TSeparatorKit node
-			SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( parentKit->getPart( "childList", false ) );
+			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( parentKit->getPart( "childList", false ) );
    			if ( !coinPartList ) return;
 
    			for( int index = 0; index < coinPartList->getNumChildren(); index++ )
     		{
-	            SoBaseKit* coinChild = dynamic_cast< SoBaseKit* >( coinPartList->getChild( index ) );
+	            SoBaseKit* coinChild = static_cast< SoBaseKit* >( coinPartList->getChild( index ) );
 	            InstanceNode* instanceChild = new InstanceNode( coinChild );
 	    	    instanceParent.AddChild( instanceChild );
 
@@ -357,7 +357,7 @@ int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
 	{
 		SoBaseKit* childKit = static_cast< SoBaseKit* >( &coinChild );
 
-		SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
 		if ( !coinPartList ) return -1;
 
 		row = coinPartList->getNumChildren();
@@ -397,7 +397,7 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 {
 	Trace trace( "SceneModel::InsertLightNode", false );
 
-	TLightKit* previousLightKit = dynamic_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", true) );
+	TLightKit* previousLightKit = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", true) );
     if ( !previousLightKit )
     {
     	InstanceNode* separatorNode = m_instanceRoot->children[0];
@@ -420,7 +420,7 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 
 	if (coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
 	    if ( coinPartList ) coinPartList->removeChild( row );
 	}
 
@@ -442,7 +442,7 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 {
 	Trace trace( "SceneModel::RemoveLightNode", false );
 
-	SoNodeKitListPart* lightList = dynamic_cast< SoNodeKitListPart* >( m_coinScene->getPart( "lightList", true ) );
+	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "lightList", true ) );
     if ( lightList ) lightList->removeChild( &coinLight );
 
     m_instanceRoot->children.removeAt( 0 );
@@ -502,7 +502,7 @@ void SceneModel::Cut( SoBaseKit& coinParent, int row )
 	else
 	{
 
-		SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
 		if( !coinPartList ) tgf::SevereError( "SceneModel::Cut Null coinPartList pointer" );
 
 		coinChild = coinPartList->getChild( row );
@@ -554,7 +554,7 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	switch ( type )
 	{
 		case tgc::Copied :
-			coinChild = dynamic_cast< SoNode* >( coinNode.copy( true ) );
+			coinChild = static_cast< SoNode* >( coinNode.copy( true ) );
 			break;
 
 		case tgc::Shared :
@@ -564,7 +564,7 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	}
 	if( ! coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
-		TShapeKit* shapeKit = dynamic_cast< TShapeKit* >( pCoinParent );
+		TShapeKit* shapeKit = static_cast< TShapeKit* >( pCoinParent );
 		if(!shapeKit)	return;
 
 		if( coinChild->getTypeId().isDerivedFrom( SoShape::getClassTypeId() ) )
@@ -592,7 +592,7 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	}
 	else
 	{
-		SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
 		if( !coinPartList ) tgf::SevereError( "SceneModel::Paste Null coinPartList pointer" );
 		if( row > 0 && row < coinPartList->getNumChildren( ) ) coinPartList->insertChild( coinChild, row );
 		else coinPartList->insertChild( coinChild, row );
@@ -670,7 +670,7 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 		}
 
 		for( int i = nodeList.getLength(); i > 0; i--){
-			SoBaseKit* coinNode = dynamic_cast< SoBaseKit* >( nodeList[i-1] );
+			SoBaseKit* coinNode = static_cast< SoBaseKit* >( nodeList[i-1] );
 			if ( coinNode )
 				nodePath->append( coinNode );
 		}
@@ -682,19 +682,19 @@ QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
 {
 	Trace trace( "SceneModel::IndexFromPath", FALSE );
 
-	SoBaseKit* coinNode = dynamic_cast< SoBaseKit* >( coinNodePath.getTail() );
+	SoBaseKit* coinNode = static_cast< SoBaseKit* >( coinNodePath.getTail() );
 	if( !coinNode ) tgf::SevereError( "IndexFromPath Null coinNode." );
 
 	if( coinNode->getTypeId().getName().getString() == SbName("TLightKit") ) return index( 0, 0 );
 
 	if ( coinNodePath.getLength() > 1 )
 	{
-		SoBaseKit* coinParent = dynamic_cast< SoBaseKit* >( coinNodePath.getNodeFromTail(1) );
+		SoBaseKit* coinParent = static_cast< SoBaseKit* >( coinNodePath.getNodeFromTail(1) );
 		if( !coinParent ) tgf::SevereError( "IndexFromPath Null coinParent." );
 
 		if( coinParent->getTypeId().getName() == SbName( "TLightKit") ) return index( 0, 0 );
 
-		SoNodeKitListPart* coinPartList = dynamic_cast< SoNodeKitListPart* >( coinParent->getPart( "childList", true ) );
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent->getPart( "childList", true ) );
     	if( !coinPartList ) tgf::SevereError( "IndexFromPath Null coinPartList." );
 
     	int row = coinPartList->findChild(coinNode);

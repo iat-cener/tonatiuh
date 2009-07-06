@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -162,7 +162,7 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 	QPair< SbBox3f, Transform* > instanceData =  sceneMap->value( this );
 
 	//Transform ray to InstaceNode coordinates
-	Transform* worldToObject =  instanceData. second;
+	Transform* worldToObject =  instanceData.second;
 
 	Ray objectRay( (*worldToObject)( ray ) );
 	objectRay.maxt = ray.maxt;
@@ -227,7 +227,7 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 	}
 	else
 	{
-		TShapeKit* shapeKit  = dynamic_cast< TShapeKit* > ( GetNode() );
+		TShapeKit* shapeKit  = static_cast< TShapeKit* > ( GetNode() );
 
 		QPair< SbBox3f, Transform* > childData;
 		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
@@ -235,7 +235,7 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 		else
 			childData = sceneMap->value( children[1] );
 
-		Transform* shapeWorldToObject =  childData. second;
+		Transform* shapeWorldToObject =  childData.second;
 
 		Ray childCoordinatesRay( (*shapeWorldToObject)( ray ) );
 		childCoordinatesRay.maxt = ray.maxt;

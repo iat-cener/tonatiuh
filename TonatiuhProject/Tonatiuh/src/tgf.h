@@ -50,6 +50,7 @@ class Ray;
 class SbBox3f;
 class SbMatrix;
 class SoSeparator;
+class SoTransform;
 class TPhotonMap;
 class Transform;
 
@@ -69,6 +70,8 @@ namespace tgf
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
 
 	SbMatrix MatrixFromTransform( const Transform& transform );
+	Transform TransformFromSoTransform( SoTransform*& soTransform );
+
 }
 
 #endif /*TGF_H_*/

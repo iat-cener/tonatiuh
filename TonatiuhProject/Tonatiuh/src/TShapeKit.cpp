@@ -121,10 +121,10 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, RandomDeviate& rand ) const
 		{
 			objectRay.maxt = thit;
 
-			SoAppearanceKit* soappearance = dynamic_cast< SoAppearanceKit* > ( appearance.getValue() );
+			SoAppearanceKit* soappearance = static_cast< SoAppearanceKit* > ( appearance.getValue() );
 			if ( soappearance )
 			{
-				TMaterial* tmaterial = dynamic_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
+				TMaterial* tmaterial = static_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
 				if( tmaterial )
 				{
 					Ray* reflected = tmaterial->GetReflectedRay( objectRay, dg, rand );
