@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -54,7 +54,7 @@ CmdInsertSeparatorKit::CmdInsertSeparatorKit( TSeparatorKit* separatorKit,  cons
 
 	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertSeparatorKit called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
-	m_coinParent = dynamic_cast< SoBaseKit* > ( instanceParent->GetNode() );
+	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
 }
 
 CmdInsertSeparatorKit::~CmdInsertSeparatorKit()

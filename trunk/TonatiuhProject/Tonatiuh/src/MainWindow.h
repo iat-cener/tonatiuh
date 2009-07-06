@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -52,6 +52,7 @@ class RandomDeviate;
 class SbBox3f;
 class SbViewportRegion;
 class SceneModel;
+class SoTransform;
 class SoDragger;
 class SoSelection;
 class SoSeparator;
@@ -61,7 +62,9 @@ class TPhotonMapFactory;
 class Transform;
 class TShapeFactory;
 class TShapeKit;
+class TShape;
 class TSunShapeFactory;
+class TSunShape;
 class TTrackerFactory;
 
 //!  Main window class.
@@ -115,6 +118,8 @@ public slots:
 	void on_actionCalculateSunPosition_triggered();
 
 	//Ray trace menu actions
+	bool ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& shape );
+	void ShowRaysIn3DView();
 	void on_actionRayTraceRun_triggered();
 	void on_actionDisplay_rays_toggled();
 	void on_actionResults_triggered();
@@ -237,6 +242,7 @@ private:
     double m_fraction;
     bool m_drawPhotons;
     std::vector<GraphicView*> m_graphicView;
+    SceneModelView* m_treeView;
     int m_focusView;
 
 };

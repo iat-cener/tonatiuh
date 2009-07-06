@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -51,11 +51,11 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
 {
     Trace trace( "CmdLightKitModified::CmdLightKitModified", false );
 
-    m_pNewLightKit = dynamic_cast< TLightKit* >( newLightKit->copy( true ) );
+    m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
     m_pNewLightKit->ref();
 
-	TLightKit* lightKit = dynamic_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
-	if( lightKit )	m_pPreviousLightKit = dynamic_cast< TLightKit* >( lightKit->copy( true ) );
+	TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
+	if( lightKit )	m_pPreviousLightKit = static_cast< TLightKit* >( lightKit->copy( true ) );
 
 }
 
@@ -71,12 +71,12 @@ void CmdLightKitModified::undo()
 
     if( m_pPreviousLightKit )
     {
-    	TLightKit* lightKit = dynamic_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
+    	TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
 
-   		TShape* shape = dynamic_cast< TShape* > ( m_pPreviousLightKit->getPart("icon", false) );
+   		TShape* shape = static_cast< TShape* > ( m_pPreviousLightKit->getPart("icon", false) );
    		lightKit->setPart("icon", shape );
 
-   		TSunShape* sunhape = dynamic_cast< TSunShape* > ( m_pPreviousLightKit->getPart("tsunshape", false) );
+   		TSunShape* sunhape = static_cast< TSunShape* > ( m_pPreviousLightKit->getPart("tsunshape", false) );
    		lightKit->setPart("tsunshape", sunhape );
     }
     else
@@ -95,12 +95,12 @@ void CmdLightKitModified::redo( )
    	}
    	else
    	{
-   		TLightKit* lightKit = dynamic_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
+   		TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
 
-   		TShape* shape =dynamic_cast< TShape* > ( m_pNewLightKit->getPart("icon", false) );
+   		TShape* shape =static_cast< TShape* > ( m_pNewLightKit->getPart("icon", false) );
    		lightKit->setPart("icon", shape );
 
-   		TSunShape* sunhape =dynamic_cast< TSunShape* > ( m_pNewLightKit->getPart("tsunshape", false) );
+   		TSunShape* sunhape =static_cast< TSunShape* > ( m_pNewLightKit->getPart("tsunshape", false) );
    		lightKit->setPart("tsunshape", sunhape );
 
    	}
