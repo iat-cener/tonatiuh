@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -133,7 +133,7 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
  *
  * The \a sceneMap saves the scene elements BBox and Transform in global coordinates.
  */
-bool tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode, TPhotonMap& photonMap, RandomDeviate& rand )
+void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode, TPhotonMap& photonMap, RandomDeviate& rand )
 {
 	Trace trace( "tgf::TraceRay", false );
 
@@ -170,16 +170,17 @@ bool tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 		else intersection = false;
 	}
 
-	if( rayLength == 0 && ray.maxt == HUGE_VAL ) return false;
-	if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
+	if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+	{
+		if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
 
-	Point3D endOfRay = ray( ray.maxt );
-	Photon* lastNode = new Photon( endOfRay, node, 0 );
-	lastNode->m_intersectedSurface = intersectedSurface;
-	node->m_next = lastNode;
-	photonMap.Store( node );
-	photonMap.Store( lastNode );
-	return true;
+		Point3D endOfRay = ray( ray.maxt );
+		Photon* lastNode = new Photon( endOfRay, node, 0 );
+		lastNode->m_intersectedSurface = intersectedSurface;
+		node->m_next = lastNode;
+		photonMap.Store( node );
+		photonMap.Store( lastNode );
+	}
 }
 
 SoSeparator* tgf::DrawPhotonMapPoints( const TPhotonMap& map )

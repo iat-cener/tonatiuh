@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -919,9 +919,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 	//Random Ray generator
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
-	//long unsigned i = 0;
-	//long unsigned numberOfRays = 0;
-	//while( i < m_raysPerIteration)
 	{
 		Ray ray;
 
@@ -933,20 +930,9 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		ray = lightToWorld( ray );
 
 		//Perform Ray Trace
-		bool traced = tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_pRand );
-
-
-		//if( traced)
-		//{
-		//	i++;
-
-			//Update progressDiaglog when appropriate
-			progress.Update();
-		//}
-		//numberOfRays++;
-
+		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_pRand );
+		progress.Update();
  	}
-	//std::cout<<"numberOfRays: "<<numberOfRays<<std::endl;
 
  	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
  	{
@@ -1104,7 +1090,7 @@ void MainWindow::on_actionExport_Surface_PhotonMap_triggered()
 		 }
 
 		QDataStream out( &exportFile );
-		for( long unsigned i = 0; i< nodePhotonsList.size(); i++ )
+		for( int i = 0; i< nodePhotonsList.size(); i++ )
 		{
 
 			Photon* node = nodePhotonsList[i];
@@ -1293,7 +1279,7 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
     m_document->SetDocumentModified( true );
 }
 
-void MainWindow::CreatePhotonMap( TPhotonMapFactory* pTPhotonMapFactory )
+void MainWindow::CreatePhotonMap( TPhotonMapFactory* )
 {
 	Trace trace( "MainWindow::CreatePhotonMap", false);
     /*QModelIndex parentIndex = ((! treeView->currentIndex().isValid() ) || (treeView->currentIndex() == treeView->rootIndex())) ?

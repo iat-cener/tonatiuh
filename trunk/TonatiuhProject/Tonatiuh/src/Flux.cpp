@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -48,11 +48,12 @@ Flux::~Flux()
 {
 }
 
-double Flux::operator()( double x, double y )
+double Flux::operator()( double /* x */, double /* y */ )
 {
+/*  ---- THIS FUNCTION STILL HAS TO BE PROPELY IMPLEMENTED----
 	int nearestPhotons = 100;
 	double res = 1.0 / 100.0;
 	Point3D point = m_shape->Sample(x*res,y*res);
-
+*/
 	return 0; //m_map->fluxAtPoint( point, nearestPhotons );
 }
