@@ -1,7 +1,7 @@
- 
+
 #ifndef RNGSTREAM_H
 #define RNGSTREAM_H
- 
+
 #include <string>
 
 #include "RandomDeviate.h"
@@ -26,7 +26,7 @@ private:
 	int RandInt (int i, int j);
 	double U01 ();
 	double U01d ();
-	
+
 private:
 	double m_cg[6], m_bg[6], m_ig[6];
 	bool m_anti, m_incPrec;
@@ -37,9 +37,9 @@ private:
 
 inline void RngStream::FillArray( double* array, const unsigned long arraySize )
 {
-    for( int i = 0; i < arraySize; i++ ) array[i] = RandU01 ();
+    for( unsigned long i = 0; i < arraySize; i++ ) array[i] = RandU01 ();
 }
- 
+
 #endif
- 
+
 

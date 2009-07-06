@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -685,7 +685,7 @@ QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
 	SoBaseKit* coinNode = dynamic_cast< SoBaseKit* >( coinNodePath.getTail() );
 	if( !coinNode ) tgf::SevereError( "IndexFromPath Null coinNode." );
 
-	if( coinNode->getTypeId().getName().getString() == "TLightKit") return index( 0, 0 );
+	if( coinNode->getTypeId().getName().getString() == SbName("TLightKit") ) return index( 0, 0 );
 
 	if ( coinNodePath.getLength() > 1 )
 	{

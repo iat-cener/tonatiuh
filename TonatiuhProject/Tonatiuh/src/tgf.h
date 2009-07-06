@@ -32,14 +32,14 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #ifndef TGF_H_
 #define TGF_H_
 
-#include <QMap>;
+#include <QMap>
 #include <QPair>
 
 #include <Inventor/SbBox.h>
@@ -63,7 +63,7 @@ namespace tgf
     bool Quadratic( double A, double B, double C, double* t0, double* t1);
 	double AlternateBoxMuller( RandomDeviate& rand );
 
-	bool TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode, TPhotonMap& photonMap, RandomDeviate& rand );
+	void TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode, TPhotonMap& photonMap, RandomDeviate& rand );
 
 	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map );
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );

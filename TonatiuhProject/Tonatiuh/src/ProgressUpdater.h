@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -49,7 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class ProgressUpdater
 {
 public:
-	ProgressUpdater(int totalWork, const QString &title, int barLength, QWidget *creator);
+	ProgressUpdater(int totalWork, const QString &title, int barLength, QWidget* creator);
 	~ProgressUpdater();
 
 	void Update(int num = 1) const;
