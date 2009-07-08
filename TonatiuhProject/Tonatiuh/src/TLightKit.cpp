@@ -32,13 +32,14 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoLabel.h>
+#include <Inventor/nodekits/SoNodekitCatalog.h>
 
 #include "Matrix4x4.h"
 #include "Point3D.h"
@@ -65,13 +66,13 @@ TLightKit::TLightKit()
 	SO_KIT_CONSTRUCTOR(TLightKit);
 
 	SO_KIT_ADD_CATALOG_ENTRY(sunshapelabel, SoLabel, TRUE, this, "", TRUE);
+	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, TSunShape, TDefaultSunShape, TRUE, this, sunshapelabel, TRUE);
 	SO_KIT_CHANGE_ENTRY_TYPE(icon, TShape, TSquare );
-	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, SoNode, TDefaultSunShape, TRUE, this, "", TRUE);
+
 
 	SO_NODE_ADD_FIELD( azimuth, (0.0) );
 	SO_NODE_ADD_FIELD( zenith, (0.0) );
 	SO_NODE_ADD_FIELD( distance, (0.0) );
-
 
 	SO_KIT_INIT_INSTANCE();
 
@@ -80,7 +81,6 @@ TLightKit::TLightKit()
 
 	SoTransform* transform = new SoTransform;
 	setPart( "transform", transform );
-
 }
 
 TLightKit::~TLightKit()

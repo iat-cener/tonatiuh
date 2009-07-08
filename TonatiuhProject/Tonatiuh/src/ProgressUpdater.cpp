@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -83,13 +83,13 @@ void ProgressUpdater::Update(int num) const
 			float percentDone = (float)m_barsPrinted / (float)m_totalBars;
 			float seconds = (float) m_timer->Time();
 			float estRemaining = seconds / percentDone - seconds;
-			cout << "(" << seconds << "s|" << estRemaining <<"s)" << endl;
+			// cout << "(" << seconds << "s|" << estRemaining <<"s)" << endl;
 	}
 }
 
 void ProgressUpdater::Done() const
 {
 	Trace trace( "ProgressUpdater::Done", false );
-	cout << "Total Time: " << m_timer->Time();
+	// cout << "Total Time: " << m_timer->Time();
 }
 

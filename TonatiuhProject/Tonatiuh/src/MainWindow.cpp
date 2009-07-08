@@ -374,7 +374,7 @@ void MainWindow::SetupGraphicView()
 
 void MainWindow::SetupTreeView()
 {
-    Trace trace( "MainWindow::SetupTreeView" );
+    Trace trace( "MainWindow::SetupTreeView", false );
     QSplitter *pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
     if( pSplitter )
     {
@@ -411,7 +411,7 @@ void MainWindow::SetupTreeView()
 
 void MainWindow::SetupParametersView()
 {
-    Trace trace( "MainWindow::SetupParametersView" );
+    Trace trace( "MainWindow::SetupParametersView", false );
     QSplitter *pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
     if( pSplitter )
     {
@@ -516,7 +516,8 @@ QDir MainWindow::PluginDirectory()
 	// This function returns the path to the top level (i.e., root) plugin directory.
 	// It is assumed that this is a subdirectory named "plugins" of the directory in
 	// which the running version of Tonatiuh is located.
-	Trace trace( "MainWindow::PluginDirectory" );
+
+	Trace trace( "MainWindow::PluginDirectory", false );
     QDir directory( qApp->applicationDirPath() );
   	directory.cd("plugins");
 	return directory;
@@ -524,6 +525,7 @@ QDir MainWindow::PluginDirectory()
 
 void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory )
 {
+	Trace trace( "MMainWindow::SetupActionInsertMaterial", false );
 	ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
     actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
     QMenu* menuMaterial = menuInsert->findChild< QMenu* >( "menuMaterial" );
@@ -595,21 +597,21 @@ void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 
 void MainWindow::message()
 {
-    Trace trace( "MainWindow::message" );
+    Trace trace( "MainWindow::message", false );
 	QMessageBox::information( this, "Tonatiuh Action",
 	                          "This action is yet to be implemented", 1);
 }
 
 void MainWindow::on_actionNew_triggered()
 {
-    Trace trace( "MainWindow::on_actionNew_triggered" );
+    Trace trace( "MainWindow::on_actionNew_triggered", false );
     if ( OkToContinue() ) StartOver( "" );
 }
 
 
 void MainWindow::on_actionOpen_triggered()
 {
-    Trace trace( "MainWindow::on_actionOpen_triggered" );
+    Trace trace( "MainWindow::on_actionOpen_triggered", false );
     if ( OkToContinue() )
     {
         QString fileName = QFileDialog::getOpenFileName( this,
@@ -621,31 +623,31 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    Trace trace( "MainWindow::on_actionSave_triggered" );
+    Trace trace( "MainWindow::on_actionSave_triggered", false );
     Save();
 }
 
 void MainWindow::on_actionSaveAs_triggered()
 {
-    Trace trace( "MainWindow::on_actionSaveAs_triggered" );
+    Trace trace( "MainWindow::on_actionSaveAs_triggered", false );
     SaveAs();
 }
 
 void MainWindow::on_actionPrint_triggered()
 {
-    Trace trace( "MainWindow::on_actionPrint_triggered" );
+    Trace trace( "MainWindow::on_actionPrint_triggered", false );
 	message();
 }
 
 void MainWindow::on_actionClose_triggered()
 {
-    Trace trace( "MainWindow::on_actionClose_triggered" );
+    Trace trace( "MainWindow::on_actionClose_triggered", false );
 	close();
 }
 
 void MainWindow::OpenRecentFile()
 {
-    Trace trace( "MainWindow::OpenRecentFile" );
+    Trace trace( "MainWindow::OpenRecentFile", false );
     if ( OkToContinue() )
     {
         QAction* action = qobject_cast<QAction *>( sender() );
@@ -661,19 +663,19 @@ void MainWindow::OpenRecentFile()
 // Edit menu actions
 void MainWindow::on_actionUndo_triggered()
 {
-    Trace trace( "MainWindow::on_actionUndo_triggered" );
+    Trace trace( "MainWindow::on_actionUndo_triggered", false );
     m_commandStack->undo();
 }
 
 void MainWindow::on_actionRedo_triggered()
 {
-    Trace trace( "MainWindow::on_actionRedo_triggered" );
+    Trace trace( "MainWindow::on_actionRedo_triggered", false );
     m_commandStack->redo();
 }
 
 void MainWindow:: on_actionUndoView_triggered()
 {
-    Trace trace( "MainWindow:: on_actionUndoView_triggered" );
+    Trace trace( "MainWindow:: on_actionUndoView_triggered", false );
     m_commandView->show();
 }
 
@@ -767,7 +769,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
 
-	TLightKit* currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
 	LightDialog dialog( currentLight, m_TFlatShapeFactoryList, m_TSunshapeFactoryList );
 	if( dialog.exec() )
@@ -844,6 +846,8 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
 
 bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
 {
+
+	Trace trace( "MainWindow::ReadyForRaytracing", false );
 	//Check if there is a scene
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if ( !coinScene )  return false;
@@ -890,7 +894,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 
 void MainWindow::ShowRaysIn3DView()
 {
-    Trace trace( "MainWindow::ShowRaysIn3DView", true );
+    Trace trace( "MainWindow::ShowRaysIn3DView", false );
 
 	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
 	{
@@ -909,8 +913,6 @@ void MainWindow::ShowRaysIn3DView()
 		{
 			SoSeparator* points = tgf::DrawPhotonMapPoints(*m_photonMap);
 			m_pRays->addChild(points);
-
-		    std::cout << "m_pRays " << m_pRays << std::endl;
 		}
 		if( m_fraction > 0.0 )
 		{
@@ -927,7 +929,7 @@ void MainWindow::ShowRaysIn3DView()
 //Ray trace menu actions
 void MainWindow::on_actionRayTraceRun_triggered()
 {
-    Trace trace( "MainWindow::on_actionRayTraceRun_triggered", true );
+    Trace trace( "MainWindow::on_actionRayTraceRun_triggered", false );
 
     // Verify that propram options are the scene are properly configured for ray tracing
 	InstanceNode* rootSeparatorInstance = 0;
@@ -973,6 +975,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 void MainWindow::on_actionDisplay_rays_toggled()
 {
+	Trace trace( "MainWindow::on_actionDisplay_rays_toggled", false );
 	if ( actionDisplay_rays->isChecked() && (m_pRays ) )
 	{
 	  	m_document->GetRoot()->addChild(m_pRays);
@@ -1029,7 +1032,7 @@ void MainWindow::on_actionResults_triggered()
 
 void MainWindow::on_actionExport_PhotonMap_triggered()
 {
-	Trace trace( "MainWindow::on_actionExport_PhotonMap_triggered", true );
+	Trace trace( "MainWindow::on_actionExport_PhotonMap_triggered", false );
 
 	QString fileName = QFileDialog::getSaveFileName( this, tr("Export PhotonMap"),
 			tr( "." ),
@@ -1116,6 +1119,7 @@ void MainWindow::on_actionExport_Surface_PhotonMap_triggered()
  */
 void MainWindow::on_actionRayTraceOptions_triggered()
 {
+	Trace trace( "MainWindow::on_actionRayTraceOptions_triggered", false );
 	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedPhotonMap, m_increasePhotonMap, this );
 	options->exec();
 
@@ -1131,6 +1135,8 @@ void MainWindow::on_actionRayTraceOptions_triggered()
 //View menu actions
 void MainWindow::on_actionAxis_toggled()
 {
+	Trace trace( "MainWindow::on_actionAxis_toggled", false );
+
 	m_graphicView[0]->ViewCoordinateSystem( actionAxis->isChecked() );
 	m_graphicView[1]->ViewCoordinateSystem( actionAxis->isChecked() );
 	m_graphicView[2]->ViewCoordinateSystem( actionAxis->isChecked() );
@@ -1140,6 +1146,7 @@ void MainWindow::on_actionAxis_toggled()
 void MainWindow::on_actionGrid_toggled()
 {
 	Trace trace( "MainWindow::on_actionGrid_toggled", false );
+
 	if( actionGrid->isChecked() )
 	{
 		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
@@ -1206,6 +1213,8 @@ void MainWindow::on_actionBackground_toggled()
 
 void MainWindow::on_actionEdit_Mode_toggled()
 {
+	Trace trace( "MainWindow::on_actionEdit_Mode_toggled", false );
+
 	if ( !actionEdit_Mode->isChecked() )
 	{
 		m_graphicView[1]->hide();
@@ -1224,6 +1233,7 @@ void MainWindow::on_actionEdit_Mode_toggled()
 void MainWindow::on_action_X_Y_Plane_triggered()
 {
 	Trace trace( "MainWindow::on_action_X_Y_Plane_triggered", false );
+
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 0, 1 ) );
@@ -1234,6 +1244,7 @@ void MainWindow::on_action_X_Y_Plane_triggered()
 void MainWindow::on_action_X_Z_Plane_triggered()
 {
 	Trace trace( "MainWindow::on_action_X_Z_Plane_triggered", false );
+
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 1, 0 ) );
@@ -1244,6 +1255,7 @@ void MainWindow::on_action_X_Z_Plane_triggered()
 void MainWindow::on_action_Y_Z_Plane_triggered()
 {
 	Trace trace( "MainWindow::on_action_Y_Z_Plane_triggered", false );
+
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( -1, 0, 0 ) );
@@ -1289,6 +1301,7 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
 void MainWindow::CreatePhotonMap( TPhotonMapFactory* )
 {
 	Trace trace( "MainWindow::CreatePhotonMap", false);
+
     /*QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
 								m_sceneModel->index (0,0,m_treeView->rootIndex()) : m_treeView->currentIndex();
 
@@ -1740,7 +1753,7 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 
 void MainWindow::showMenu( const QModelIndex& index)
 {
-
+	Trace trace( "MainWindow::showMenu", false );
 	if( !index.isValid() ) return;
 	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
 
@@ -1801,6 +1814,7 @@ void MainWindow::SunPositionChanged( QDateTime* time, double longitude, double l
 void MainWindow::closeEvent( QCloseEvent* event )
 {
     Trace trace( "MainWindow::closeEvent", false);
+
     if ( OkToContinue() )
     {
     	WriteSettings();
@@ -1812,6 +1826,7 @@ void MainWindow::closeEvent( QCloseEvent* event )
 bool MainWindow::OkToContinue()
 {
     Trace trace( "MainWindow::OkToContinue", false );
+
 	if ( m_document->IsModified() )
 	{
 		int answer = QMessageBox::warning( this, tr( "Tonatiuh" ),
@@ -1829,7 +1844,8 @@ bool MainWindow::OkToContinue()
 
 bool MainWindow::StartOver( const QString& fileName )
 {
-    Trace trace( "MainWindow::StartOver" );
+    Trace trace( "MainWindow::StartOver", false );
+
     if( fileName.isEmpty() )
     {
     	m_document->New();
@@ -1856,6 +1872,7 @@ bool MainWindow::StartOver( const QString& fileName )
 bool MainWindow::Save()
 {
     Trace trace( "MainWindow::Save", false );
+
 	if ( m_currentFile.isEmpty() ) return SaveAs();
 	else return SaveFile( m_currentFile );
 }
@@ -1863,6 +1880,7 @@ bool MainWindow::Save()
 bool MainWindow::SaveFile( const QString& fileName )
 {
     Trace trace( "MainWindow::SaveFile", false );
+
 	if( !m_document->WriteFile( fileName ) )
 	{
 		statusBar()->showMessage( tr( "Saving canceled" ), 2000 );
@@ -1877,6 +1895,7 @@ bool MainWindow::SaveFile( const QString& fileName )
 bool MainWindow::SaveAs()
 {
     Trace trace( "MainWindow::SaveAs", false );
+
 	QString fileName = QFileDialog::getSaveFileName( this,
 	                       tr( "Save Tonatiuh document" ), ".",
 	                       tr( "Tonatiuh files (*.tnh)" ) );
@@ -1935,11 +1954,8 @@ bool MainWindow::Delete( )
 	Trace trace( "MainWindow::Delete", false );
 
 	if( !m_selectionModel->hasSelection() ) return false;
-
 	if( !m_selectionModel->currentIndex().isValid()) return false;
-
 	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
-
 	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
@@ -1981,6 +1997,7 @@ bool MainWindow::Cut()
 void MainWindow::SetCurrentFile( const QString& fileName )
 {
     Trace trace( "MainWindow::SetCurrentFile", false );
+
 	m_currentFile = fileName;
 	m_document->SetDocumentModified( false );
 
@@ -1998,13 +2015,15 @@ void MainWindow::SetCurrentFile( const QString& fileName )
 
 QString MainWindow::StrippedName( const QString& fullFileName )
 {
-    Trace trace( "MainWindow::StrippedName" );
+    Trace trace( "MainWindow::StrippedName", false );
+
 	return QFileInfo( fullFileName ).fileName();
 }
 
 void MainWindow::UpdateRecentFileActions()
 {
-    Trace trace( "MainWindow::UpdateRecentFileActions" );
+    Trace trace( "MainWindow::UpdateRecentFileActions", false );
+
 	QMutableStringListIterator iterator( m_recentFiles );
 	while ( iterator.hasNext() )
 	{
@@ -2026,11 +2045,10 @@ void MainWindow::UpdateRecentFileActions()
 	}
 }
 
-
-
 void MainWindow::WriteSettings()
 {
     Trace trace( "MainWindow::WriteSettings", false );
+
 	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
 	settings.setValue( "geometry", geometry() );
     settings.setValue( "recentFiles", m_recentFiles );
@@ -2057,9 +2075,9 @@ void MainWindow::ReadSettings()
 void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart )
 {
     Trace trace( "MainWindow::parameterModified", false );
-   	CmdParameterModified* parameterModified = new CmdParameterModified( oldValueList, coinNode, coinPart );
-	if ( m_commandStack )	m_commandStack->push( parameterModified );
 
+   	CmdParameterModified* parameterModified = new CmdParameterModified( oldValueList, coinNode, coinPart );
+	if ( m_commandStack ) m_commandStack->push( parameterModified );
 }
 
 /**
