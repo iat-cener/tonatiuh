@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -113,8 +113,8 @@ TLightKit* LightDialog::GetTLightKit()
 	Trace trace( "LightDialog::GetTLightKit", false );
 
 	TLightKit* lightKit = new TLightKit;
-	lightKit->setPart( "tsunshape", m_newSunShape );
-	lightKit->setPart( "icon", m_newShape );
+	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
+	if( m_newShape ) lightKit->setPart( "icon", m_newShape );
 
 	return lightKit;
 
