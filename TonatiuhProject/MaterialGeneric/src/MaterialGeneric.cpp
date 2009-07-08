@@ -165,7 +165,7 @@ void MaterialGeneric::updateTransparency( void* data, SoSensor* )
 
 Ray* MaterialGeneric::GetReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
-	Trace trace( "MaterialGeneric::GetReflectedRay", true );
+	Trace trace( "MaterialGeneric::GetReflectedRay", false );
 
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= m_reflectivity.getValue()  ) return 0;
