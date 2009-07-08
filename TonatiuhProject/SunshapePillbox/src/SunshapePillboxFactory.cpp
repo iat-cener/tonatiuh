@@ -61,7 +61,6 @@ SunshapePillbox* SunshapePillboxFactory::CreateTSunShape( ) const
 	static bool firstTimeSunShape = true;
 	if ( firstTimeSunShape )
 	{
-//		TSunShape::initClass();
 	    SunshapePillbox::initClass();
 	    firstTimeSunShape = false;
 	}
