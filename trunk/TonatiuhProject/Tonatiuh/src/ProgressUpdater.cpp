@@ -77,15 +77,19 @@ void ProgressUpdater::Update(int num) const
 				m_progressDialog->setValue(m_barsPrinted);
 			updatedAny = true;
 	}
+/*
+
 	if (updatedAny)
 	{
 			// Update elapsed time and estimated time to completion
 			float percentDone = (float)m_barsPrinted / (float)m_totalBars;
 			float seconds = (float) m_timer->Time();
-			float estRemaining = seconds / percentDone - seconds;
+			// float estRemaining = seconds / percentDone - seconds;
 			// cout << "(" << seconds << "s|" << estRemaining <<"s)" << endl;
 	}
+*/
 }
+
 
 void ProgressUpdater::Done() const
 {

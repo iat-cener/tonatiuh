@@ -47,7 +47,6 @@ void TSunShape::initClass()
 
 TSunShape::TSunShape()
 {
-	SO_NODE_CONSTRUCTOR( TSunShape );
 }
 
 TSunShape::~TSunShape()
