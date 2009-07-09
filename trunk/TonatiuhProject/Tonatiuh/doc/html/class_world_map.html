@@ -40,6 +40,8 @@
 <tr><td colspan="2"><br><h2>Public Slots</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#775021e20c5b033ad7ca4d63d219b42d">mouseMoveEvent</a> (QMouseEvent *e)</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#d29382aa29b38228cde702d29855ed60">LocalLatitudeChanged</a> (double latitude)</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#4a91459f1c68b933175e0406c8909f62">LocalLongitudeChanged</a> (double longitude)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#d3b3674f3eb55f84a0243f2a89f2fead">SunChanged</a> (<a class="el" href="structc_sun_coordinates.html">cSunCoordinates</a> coordinates)</td></tr>
@@ -59,6 +61,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QImage&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#24d4754f0e792cb79080adef7dd171a4">m_sun</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">QImage&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#45adf3e5c48b0ee0ed5793fe2eeb7cbc">m_position</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QVector&lt; QPoint &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#e6d7aa4e681325e4203e0ec4b6058fbe">m_points</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#ea67b52382b0ec8966ef118ccfb81c56">m_hourAngle</a></td></tr>
@@ -70,6 +74,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#2e0bc739d85357417eccf32aeadabe04">m_azimuth</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#476a99584feec63013da07e6df71dc2c">m_zenith</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#cc5a034c901ad65e801f994e69e6cd4d">m_latitude</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_map.html#5f6beb1088028bc78b8a43d97acaa6a4">m_longitude</a></td></tr>
 
@@ -93,7 +99,7 @@
 
 <p>
 
-<p>References <a class="el" href="_world_map_8h-source.html#l00071">m_gray</a>, <a class="el" href="_world_map_8h-source.html#l00072">m_map</a>, and <a class="el" href="_world_map_8h-source.html#l00073">m_sun</a>.</p>
+<p>References <a class="el" href="_world_map_8h-source.html#l00072">m_gray</a>, <a class="el" href="_world_map_8h-source.html#l00073">m_map</a>, <a class="el" href="_world_map_8h-source.html#l00075">m_position</a>, and <a class="el" href="_world_map_8h-source.html#l00074">m_sun</a>.</p>
 
 </div>
 </div><p>
@@ -117,6 +123,28 @@
 </div>
 </div><p>
 <hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="d29382aa29b38228cde702d29855ed60"></a><!-- doxytag: member="WorldMap::LocalLatitudeChanged" ref="d29382aa29b38228cde702d29855ed60" args="(double latitude)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WorldMap::LocalLatitudeChanged           </td>
+          <td>(</td>
+          <td class="paramtype">double&nbsp;</td>
+          <td class="paramname"> <em>latitude</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>References <a class="el" href="_world_map_8h-source.html#l00083">m_latitude</a>.</p>
+
+</div>
+</div><p>
 <a class="anchor" name="4a91459f1c68b933175e0406c8909f62"></a><!-- doxytag: member="WorldMap::LocalLongitudeChanged" ref="4a91459f1c68b933175e0406c8909f62" args="(double longitude)" -->
 <div class="memitem">
 <div class="memproto">
@@ -135,7 +163,7 @@
 
 <p>
 
-<p>References <a class="el" href="_world_map_8h-source.html#l00081">m_longitude</a>.</p>
+<p>References <a class="el" href="_world_map_8h-source.html#l00084">m_longitude</a>.</p>
 
 </div>
 </div><p>
@@ -157,7 +185,7 @@
 
 <p>
 
-<p>References <a class="el" href="_image_8cpp-source.html#l00055">Image::country()</a>, and <a class="el" href="_world_map_8h-source.html#l00071">m_gray</a>.</p>
+<p>References <a class="el" href="_image_8cpp-source.html#l00055">Image::country()</a>, and <a class="el" href="_world_map_8h-source.html#l00072">m_gray</a>.</p>
 
 </div>
 </div><p>
@@ -179,7 +207,7 @@
 
 <p>
 
-<p>References <a class="el" href="_world_map_8h-source.html#l00079">m_azimuth</a>, <a class="el" href="_world_map_8h-source.html#l00078">m_declination</a>, <a class="el" href="_world_map_8h-source.html#l00076">m_hourAngle</a>, <a class="el" href="_world_map_8h-source.html#l00072">m_map</a>, <a class="el" href="_world_map_8h-source.html#l00075">m_points</a>, <a class="el" href="_world_map_8h-source.html#l00077">m_rightAscension</a>, <a class="el" href="_world_map_8h-source.html#l00073">m_sun</a>, <a class="el" href="_world_map_8h-source.html#l00080">m_zenith</a>, <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>, and <a class="el" href="tgc_8h-source.html#l00048">tgc::TwoPi</a>.</p>
+<p>References <a class="el" href="tgc_8h-source.html#l00051">tgc::Degree</a>, <a class="el" href="_world_map_8h-source.html#l00081">m_azimuth</a>, <a class="el" href="_world_map_8h-source.html#l00080">m_declination</a>, <a class="el" href="_world_map_8h-source.html#l00078">m_hourAngle</a>, <a class="el" href="_world_map_8h-source.html#l00083">m_latitude</a>, <a class="el" href="_world_map_8h-source.html#l00084">m_longitude</a>, <a class="el" href="_world_map_8h-source.html#l00073">m_map</a>, <a class="el" href="_world_map_8h-source.html#l00077">m_points</a>, <a class="el" href="_world_map_8h-source.html#l00075">m_position</a>, <a class="el" href="_world_map_8h-source.html#l00079">m_rightAscension</a>, <a class="el" href="_world_map_8h-source.html#l00074">m_sun</a>, <a class="el" href="_world_map_8h-source.html#l00082">m_zenith</a>, <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>, and <a class="el" href="tgc_8h-source.html#l00048">tgc::TwoPi</a>.</p>
 
 </div>
 </div><p>
@@ -201,7 +229,7 @@
 
 <p>
 
-<p>References <a class="el" href="sunpos_8h-source.html#l00070">cSunCoordinates::dAzimuth</a>, <a class="el" href="sunpos_8h-source.html#l00067">cSunCoordinates::dDeclination</a>, <a class="el" href="tgc_8h-source.html#l00051">tgc::Degree</a>, <a class="el" href="sunpos_8h-source.html#l00068">cSunCoordinates::dHourAngle</a>, <a class="el" href="sunpos_8h-source.html#l00066">cSunCoordinates::dRightAscension</a>, <a class="el" href="sunpos_8h-source.html#l00069">cSunCoordinates::dZenithAngle</a>, <a class="el" href="_world_map_8h-source.html#l00079">m_azimuth</a>, <a class="el" href="_world_map_8h-source.html#l00078">m_declination</a>, <a class="el" href="_world_map_8h-source.html#l00076">m_hourAngle</a>, <a class="el" href="_world_map_8h-source.html#l00081">m_longitude</a>, <a class="el" href="_world_map_8h-source.html#l00072">m_map</a>, <a class="el" href="_world_map_8h-source.html#l00075">m_points</a>, <a class="el" href="_world_map_8h-source.html#l00077">m_rightAscension</a>, <a class="el" href="_world_map_8h-source.html#l00080">m_zenith</a>, <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>, and <a class="el" href="tgc_8h-source.html#l00048">tgc::TwoPi</a>.</p>
+<p>References <a class="el" href="sunpos_8h-source.html#l00070">cSunCoordinates::dAzimuth</a>, <a class="el" href="sunpos_8h-source.html#l00067">cSunCoordinates::dDeclination</a>, <a class="el" href="tgc_8h-source.html#l00051">tgc::Degree</a>, <a class="el" href="sunpos_8h-source.html#l00068">cSunCoordinates::dHourAngle</a>, <a class="el" href="sunpos_8h-source.html#l00066">cSunCoordinates::dRightAscension</a>, <a class="el" href="sunpos_8h-source.html#l00069">cSunCoordinates::dZenithAngle</a>, <a class="el" href="_world_map_8h-source.html#l00081">m_azimuth</a>, <a class="el" href="_world_map_8h-source.html#l00080">m_declination</a>, <a class="el" href="_world_map_8h-source.html#l00078">m_hourAngle</a>, <a class="el" href="_world_map_8h-source.html#l00084">m_longitude</a>, <a class="el" href="_world_map_8h-source.html#l00073">m_map</a>, <a class="el" href="_world_map_8h-source.html#l00077">m_points</a>, <a class="el" href="_world_map_8h-source.html#l00079">m_rightAscension</a>, <a class="el" href="_world_map_8h-source.html#l00082">m_zenith</a>, <a class="el" href="tgc_8h-source.html#l00047">tgc::Pi</a>, and <a class="el" href="tgc_8h-source.html#l00048">tgc::TwoPi</a>.</p>
 
 </div>
 </div><p>
@@ -219,7 +247,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>.</p>
 
 </div>
 </div><p>
@@ -236,7 +264,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>.</p>
 
 </div>
 </div><p>
@@ -253,7 +281,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00068">mouseMoveEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00053">WorldMap()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00071">mouseMoveEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00054">WorldMap()</a>.</p>
 
 </div>
 </div><p>
@@ -270,7 +298,24 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="cc5a034c901ad65e801f994e69e6cd4d"></a><!-- doxytag: member="WorldMap::m_latitude" ref="cc5a034c901ad65e801f994e69e6cd4d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_world_map.html#cc5a034c901ad65e801f994e69e6cd4d">WorldMap::m_latitude</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00085">LocalLatitudeChanged()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>.</p>
 
 </div>
 </div><p>
@@ -287,7 +332,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00080">LocalLongitudeChanged()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00093">LocalLongitudeChanged()</a>, <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>.</p>
 
 </div>
 </div><p>
@@ -304,7 +349,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00053">WorldMap()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00054">WorldMap()</a>.</p>
 
 </div>
 </div><p>
@@ -321,7 +366,24 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="45adf3e5c48b0ee0ed5793fe2eeb7cbc"></a><!-- doxytag: member="WorldMap::m_position" ref="45adf3e5c48b0ee0ed5793fe2eeb7cbc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QImage <a class="el" href="class_world_map.html#45adf3e5c48b0ee0ed5793fe2eeb7cbc">WorldMap::m_position</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00054">WorldMap()</a>.</p>
 
 </div>
 </div><p>
@@ -338,7 +400,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>.</p>
 
 </div>
 </div><p>
@@ -355,7 +417,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00053">WorldMap()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00054">WorldMap()</a>.</p>
 
 </div>
 </div><p>
@@ -372,14 +434,14 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00120">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00085">SunChanged()</a>.</p>
+<p>Referenced by <a class="el" href="_world_map_8cpp-source.html#l00136">paintEvent()</a>, and <a class="el" href="_world_map_8cpp-source.html#l00099">SunChanged()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_world_map_8h-source.html">WorldMap.h</a><li><a class="el" href="_world_map_8cpp.html">WorldMap.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:22 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jul 9 11:24:18 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
