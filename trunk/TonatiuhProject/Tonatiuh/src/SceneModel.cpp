@@ -397,18 +397,13 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 {
 	Trace trace( "SceneModel::InsertLightNode", false );
 
-	TLightKit* previousLightKit = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", true) );
-    if ( !previousLightKit )
-    {
-    	InstanceNode* separatorNode = m_instanceRoot->children[0];
-    	m_instanceRoot->AddChild( separatorNode );
-    }
+	if ( m_coinScene->getPart( "lightList[0]", false ) )
+		m_instanceRoot->children.removeAt( 0 );
 
-    m_coinScene->setPart( "lightList[0]", &coinLight );
-    m_instanceRoot->children.removeAt( 0 );
+	m_coinScene->setPart( "lightList[0]", &coinLight );
 
-    InstanceNode* instanceLight = new InstanceNode( &coinLight );
-   	m_instanceRoot->InsertChild( 0, instanceLight );
+	InstanceNode* instanceLight = new InstanceNode( &coinLight );
+	m_instanceRoot->InsertChild( 0, instanceLight );
 
    emit layoutChanged();
 }
