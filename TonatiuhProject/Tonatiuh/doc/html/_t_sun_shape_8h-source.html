@@ -49,25 +49,25 @@
 <a name="l00017"></a>00017 <span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <a name="l00018"></a>00018 <span class="comment"></span>
 <a name="l00019"></a>00019 <span class="comment"></span>
-<a name="l00020"></a>00020 <span class="comment">Acknowledgments: </span>
+<a name="l00020"></a>00020 <span class="comment">Acknowledgments:</span>
 <a name="l00021"></a>00021 <span class="comment"></span>
-<a name="l00022"></a>00022 <span class="comment">The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco, </span>
-<a name="l00023"></a>00023 <span class="comment">then Chair of the Department of Engineering of the University of Texas at </span>
-<a name="l00024"></a>00024 <span class="comment">Brownsville. From May 2004 to July 2008, it was supported by the Department </span>
-<a name="l00025"></a>00025 <span class="comment">of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under </span>
-<a name="l00026"></a>00026 <span class="comment">the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06. </span>
-<a name="l00027"></a>00027 <span class="comment">During 2007, NREL also contributed to the validation of Tonatiuh under the </span>
-<a name="l00028"></a>00028 <span class="comment">framework of the Memorandum of Understanding signed with the Spanish </span>
-<a name="l00029"></a>00029 <span class="comment">National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117). </span>
-<a name="l00030"></a>00030 <span class="comment">Since June 2006, the development of Tonatiuh is being led by the CENER, under the </span>
+<a name="l00022"></a>00022 <span class="comment">The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,</span>
+<a name="l00023"></a>00023 <span class="comment">then Chair of the Department of Engineering of the University of Texas at</span>
+<a name="l00024"></a>00024 <span class="comment">Brownsville. From May 2004 to July 2008, it was supported by the Department</span>
+<a name="l00025"></a>00025 <span class="comment">of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under</span>
+<a name="l00026"></a>00026 <span class="comment">the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.</span>
+<a name="l00027"></a>00027 <span class="comment">During 2007, NREL also contributed to the validation of Tonatiuh under the</span>
+<a name="l00028"></a>00028 <span class="comment">framework of the Memorandum of Understanding signed with the Spanish</span>
+<a name="l00029"></a>00029 <span class="comment">National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).</span>
+<a name="l00030"></a>00030 <span class="comment">Since June 2006, the development of Tonatiuh is being led by the CENER, under the</span>
 <a name="l00031"></a>00031 <span class="comment">direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.</span>
 <a name="l00032"></a>00032 <span class="comment"></span>
 <a name="l00033"></a>00033 <span class="comment">Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.</span>
 <a name="l00034"></a>00034 <span class="comment"></span>
-<a name="l00035"></a>00035 <span class="comment">Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, </span>
+<a name="l00035"></a>00035 <span class="comment">Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,</span>
 <a name="l00036"></a>00036 <span class="comment">Juana Amieva, Azael Mancillas, Cesar Cantu.</span>
 <a name="l00037"></a>00037 <span class="comment">***************************************************************************/</span>
-<a name="l00038"></a>00038  
+<a name="l00038"></a>00038 
 <a name="l00039"></a>00039 <span class="preprocessor">#ifndef TSUNSHAPE_H_</span>
 <a name="l00040"></a>00040 <span class="preprocessor"></span><span class="preprocessor">#define TSUNSHAPE_H_</span>
 <a name="l00041"></a>00041 <span class="preprocessor"></span>
@@ -81,22 +81,22 @@
 <a name="l00049"></a>00049 
 <a name="l00050"></a><a class="code" href="class_t_sun_shape.html">00050</a> <span class="keyword">class </span><a class="code" href="class_t_sun_shape.html">TSunShape</a> : <span class="keyword">public</span> SoNode
 <a name="l00051"></a>00051 {
-<a name="l00052"></a>00052         
+<a name="l00052"></a>00052 
 <a name="l00053"></a>00053         <a class="code" href="class_t_sun_shape.html#345e739dd4b31a377fa16d13ba52716d">SO_NODE_ABSTRACT_HEADER</a>(<a class="code" href="class_t_sun_shape.html">TSunShape</a>);
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055 <span class="keyword">public</span>:
 <a name="l00056"></a>00056     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_sun_shape.html#236b900a217c42c165149d0955a80e02">initClass</a>();
 <a name="l00057"></a>00057 
 <a name="l00058"></a>00058         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_sun_shape.html#2ec1f70e81f684c4813fa3a448ed3653">generateRayDirection</a>( <a class="code" href="struct_vector3_d.html">Vector3D</a>&amp; direction, <a class="code" href="class_random_deviate.html">RandomDeviate</a>&amp; rand ) <span class="keyword">const</span> = 0;
-<a name="l00059"></a>00059 <span class="keyword">protected</span>:
-<a name="l00060"></a>00060 
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="keyword">protected</span>:
 <a name="l00061"></a>00061     <a class="code" href="class_t_sun_shape.html#fe33f1c6c87fe263fb5bd37c6e96f11f">TSunShape</a>();
-<a name="l00062"></a>00062     <span class="keyword">virtual</span> <a class="code" href="class_t_sun_shape.html#84c8fde049729e78e30a9a164a76b6f0">~TSunShape</a>();       
+<a name="l00062"></a>00062     <span class="keyword">virtual</span> <a class="code" href="class_t_sun_shape.html#84c8fde049729e78e30a9a164a76b6f0">~TSunShape</a>();
 <a name="l00063"></a>00063 };
 <a name="l00064"></a>00064 
 <a name="l00065"></a>00065 <span class="preprocessor">#endif </span><span class="comment">/*TSUNSHAPE_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon May 18 09:24:20 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jul 9 11:24:16 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
