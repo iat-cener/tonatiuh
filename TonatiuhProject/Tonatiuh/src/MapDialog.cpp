@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -70,7 +70,7 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 	setMouseTracking( true );
 
 	QDir directory( qApp->applicationDirPath() );
-	directory.cd( "../data" );
+	directory.cd( "../../data" );
 
 	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );
 
