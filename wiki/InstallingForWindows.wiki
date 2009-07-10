@@ -18,6 +18,7 @@ The following links will guide the developer through all the process:
   * [InstallingMarbleForWindows Installing Marble ]
   * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
+  * [BuildingTonatiuhOnWindiows Building Tonatiuh and plugins]
 
 = Unit testing =
 
