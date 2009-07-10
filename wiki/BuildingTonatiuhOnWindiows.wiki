@@ -29,6 +29,6 @@ First, build Tonatiuh.
  * To generate Makefile run "qmake". When the qmake command finishes run "all".
 
 ==Building Plugins==
-To building repository plugins follow the same steps used to build Toantiuh application. On qmake target replace Tonatiuh.pro name with plugin *.pro file.
+To building repository plugins follow the same steps used to build Toantiuh application. On qmake target replace Tonatiuh.pro name with plugin .pro file.
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
