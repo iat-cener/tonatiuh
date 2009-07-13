@@ -171,6 +171,9 @@
        <bold>false</bold>
       </font>
      </property>
+     <property name="displayFormat">
+      <string>hh:mm:ss</string>
+     </property>
     </widget>
     <widget class="QTimeEdit" name="cTimeSpin">
      <property name="enabled">
@@ -190,6 +193,9 @@
        <weight>50</weight>
        <bold>false</bold>
       </font>
+     </property>
+     <property name="displayFormat">
+      <string>hh:mm:ss</string>
      </property>
     </widget>
     <widget class="QSpinBox" name="zoneSpin">
