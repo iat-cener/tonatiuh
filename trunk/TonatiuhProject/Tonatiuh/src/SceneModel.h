@@ -54,6 +54,7 @@ class TLightKit;
 
 class SceneModel : public QAbstractItemModel
 {
+	Q_OBJECT
 
 public:
 	SceneModel( QObject* parent = 0);
@@ -83,6 +84,9 @@ public:
 	InstanceNode* NodeFromIndex( const QModelIndex& modelIndex ) const;
 	QModelIndex IndexFromPath( const SoNodeKitPath& coinNodePath ) const;
 	SoNodeKitPath* PathFromIndex( const QModelIndex& modelIndex ) const;
+
+signals:
+	void LightNodeStateChanged( int newState );
 
 private:
 	void GenerateInstanceTree( InstanceNode& instanceParent );

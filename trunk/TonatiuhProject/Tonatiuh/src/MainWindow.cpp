@@ -97,7 +97,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SceneModel.h"
 #include "LightDialog.h"
 #include "SunPositionCalculatorDialog.h"
-#include "SunPositionDialog.h"
 #include "TGateEngine.h"
 #include "tgf.h"
 #include "TLightKit.h"
@@ -229,6 +228,8 @@ void MainWindow::SetupModels()
     m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
     m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
     m_selectionModel = new QItemSelectionModel( m_sceneModel );
+
+    connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ), this, SLOT( SetEnabled_SunPositionCalculator( int ) ) );
 }
 
 void MainWindow::SetupViews()
@@ -801,22 +802,8 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 
 		delete coinSearch;
 		m_document->SetDocumentModified( true );
-	}
-}
 
-void MainWindow::on_actionDefineSunPosition_triggered()
-{
-	Trace trace( "MainWindow::on_actionDefineSunPosition_triggered", false );
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
-	if( !lightKit ) return;
-
-	SunPositionDialog* dialog = new SunPositionDialog( lightKit->azimuth.getValue() /tgc::Degree, 90 - lightKit->zenith.getValue() /tgc::Degree, lightKit->distance.getValue() );
-	if( dialog->exec() )
-	{
-
-		lightKit->ChangePosition( dialog->GetAzimuth(), ( ( tgc::Pi / 2 ) - dialog->GetElevation() ), dialog->GetDistance()  );
-		m_document->SetDocumentModified( true );
+		actionCalculateSunPosition->setEnabled( true );
 	}
 }
 
@@ -838,7 +825,7 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
 		sunposDialog->ChangePosition( currentTime, longitude, latitude );
 	}
 
-	connect( sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( SunPositionChanged( QDateTime*, double, double ) ) );
+	connect( sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( ChangeSunPosition( QDateTime*, double, double ) ) );
 	sunposDialog->exec();
 
 	delete sunposDialog;
@@ -1793,9 +1780,9 @@ void MainWindow::showMenu( const QModelIndex& index)
 }
 
 //for sunposdialog signals
-void MainWindow::SunPositionChanged( QDateTime* time, double longitude, double latitude )
+void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double latitude )
 {
-	Trace trace( "MainWindow::closeEvent", false);
+	Trace trace( "MainWindow::ChangeSunPosition", false);
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
@@ -1809,6 +1796,19 @@ void MainWindow::SunPositionChanged( QDateTime* time, double longitude, double l
 		m_commandStack->push( command );
 	}
 	delete time;
+}
+
+/*!
+ * This property holds whether the SunPositionCalculator action is enabled.
+ * If the action is disabled, it does not disappear from menu, but it is displayed
+ * in a way which indicates that they are unavailable.
+ */
+void MainWindow::SetEnabled_SunPositionCalculator( int enabled )
+{
+	Trace trace( "MainWindow::SetEnabled_SunPositionCalculator", false );
+
+	actionCalculateSunPosition->setEnabled( enabled );
+
 }
 
 void MainWindow::closeEvent( QCloseEvent* event )
@@ -1842,9 +1842,18 @@ bool MainWindow::OkToContinue()
 	return true;
 }
 
+/*!
+ * Returns to the start origin state and starts with a new model defined in \a fileName.
+ * If the file name is not defined, it starts with an empty scene.
+ */
 bool MainWindow::StartOver( const QString& fileName )
 {
     Trace trace( "MainWindow::StartOver", false );
+
+	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
+	actionDisplay_rays->setEnabled( false );
+	m_commandStack->clear();
+	SetEnabled_SunPositionCalculator( 0 );
 
     if( fileName.isEmpty() )
     {
@@ -1863,9 +1872,7 @@ bool MainWindow::StartOver( const QString& fileName )
 
     SetCurrentFile( fileName );
 	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
-	actionDisplay_rays->setEnabled( false );
-	m_commandStack->clear();
+
     return true;
 }
 

@@ -72,7 +72,7 @@ TLightKit::TLightKit()
 
 	SO_NODE_ADD_FIELD( azimuth, (0.0) );
 	SO_NODE_ADD_FIELD( zenith, (0.0) );
-	SO_NODE_ADD_FIELD( distance, (0.0) );
+	SO_NODE_ADD_FIELD( distance, (200.0) );
 
 	SO_KIT_INIT_INSTANCE();
 
@@ -88,7 +88,12 @@ TLightKit::~TLightKit()
 
 }
 
-bool TLightKit::ChangePosition( QDateTime newTime, double longitude, double latitude )
+/*!
+ * Computes the sun position local coordinates for the \a longitude and \a latitude in the \a newTime.
+ * The light is positioned at these coordinates.
+ * \a longitude  and \a latitude are in degrees.
+ */
+void TLightKit::ChangePosition( QDateTime newTime, double longitude, double latitude )
 {
 	Trace trace( "TLightKit::ChangePosition" , false );
 	m_time = newTime;
@@ -115,13 +120,14 @@ bool TLightKit::ChangePosition( QDateTime newTime, double longitude, double lati
 
 	azimuth.setValue( results.dAzimuth * tgc::Degree );
 	zenith = results.dZenithAngle * tgc::Degree;
-	distance = 200;
 	UpdateSunPosition();
-
-	if ( results.dZenithAngle > 90.0 ) return true;
-	else return false;
 }
 
+/*!
+ * Changes the light position to \a azimuth, \a zenith, and \a distance from the scene centre.
+ * Azimuth and Zenith are in radians.
+ * \sa redo().
+ */
 void TLightKit::ChangePosition( double newAzimuth, double newZenith, double newDistance )
 {
 	Trace trace( "TLightKit::ChangePosition", false );

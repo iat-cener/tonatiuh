@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LightDialog</class>
+ <widget class="QDialog" name="LightDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>380</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Define Sun Light</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="sunPositionTab">
+      <attribute name="title">
+       <string>Sun Position</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>338</width>
+         <height>131</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Definition of sun position</string>
+       </property>
+       <widget class="QLabel" name="azimuthLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>100</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Azimuth:</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="azimuthSpin">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>30</y>
+          <width>150</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="elevationLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>60</y>
+          <width>60</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Elevation:</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="elevationSpin">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>60</y>
+          <width>150</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-90.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>90.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="distanceLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>100</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Distance:</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="distanceSpin">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>90</y>
+          <width>150</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>999999999.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>200.000000000000000</double>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="sunShapeTab">
+      <attribute name="title">
+       <string>Sun Shape</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="sunshapeBox">
+         <property name="title">
+          <string>Sun Shape</string>
+         </property>
+         <widget class="QLabel" name="sunshapeLabel">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>100</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Sunshape Type:</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="sunshapeCombo">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>30</y>
+            <width>150</width>
+            <height>25</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QFrame" name="sunshapeParametersFrame">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>60</y>
+            <width>170</width>
+            <height>100</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="apertureBox">
+         <property name="title">
+          <string>Input Aperture</string>
+         </property>
+         <widget class="QLabel" name="shapeLabel">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>100</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Shape Type:</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="shapeCombo">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>30</y>
+            <width>150</width>
+            <height>25</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QFrame" name="shapeParametersFrame">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>60</y>
+            <width>170</width>
+            <height>100</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>LightDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>LightDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
