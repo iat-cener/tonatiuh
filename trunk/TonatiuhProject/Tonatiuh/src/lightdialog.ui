@@ -35,122 +35,8 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="sunPositionTab">
-      <attribute name="title">
-       <string>Sun Position</string>
-      </attribute>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>338</width>
-         <height>131</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Definition of sun position</string>
-       </property>
-       <widget class="QLabel" name="azimuthLabel">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>30</y>
-          <width>100</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Azimuth:</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="azimuthSpin">
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>30</y>
-          <width>150</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="decimals">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <double>360.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="elevationLabel">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>60</y>
-          <width>60</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Elevation:</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="elevationSpin">
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>60</y>
-          <width>150</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="decimals">
-         <number>4</number>
-        </property>
-        <property name="minimum">
-         <double>-90.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>90.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>90.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="distanceLabel">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>90</y>
-          <width>100</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Distance:</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="distanceSpin">
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>90</y>
-          <width>150</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="decimals">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <double>999999999.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>200.000000000000000</double>
-        </property>
-       </widget>
-      </widget>
-     </widget>
      <widget class="QWidget" name="sunShapeTab">
       <attribute name="title">
        <string>Sun Shape</string>
@@ -161,45 +47,35 @@
          <property name="title">
           <string>Sun Shape</string>
          </property>
-         <widget class="QLabel" name="sunshapeLabel">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>30</y>
-            <width>100</width>
-            <height>25</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Sunshape Type:</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="sunshapeCombo">
-          <property name="geometry">
-           <rect>
-            <x>150</x>
-            <y>30</y>
-            <width>150</width>
-            <height>25</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QFrame" name="sunshapeParametersFrame">
-          <property name="geometry">
-           <rect>
-            <x>140</x>
-            <y>60</y>
-            <width>170</width>
-            <height>100</height>
-           </rect>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="sunshapeLabel">
+            <property name="text">
+             <string>Sunshape Type:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="sunshapeCombo">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QFrame" name="sunshapeParametersFrame">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -207,46 +83,167 @@
          <property name="title">
           <string>Input Aperture</string>
          </property>
-         <widget class="QLabel" name="shapeLabel">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>30</y>
-            <width>100</width>
-            <height>25</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Shape Type:</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="shapeCombo">
-          <property name="geometry">
-           <rect>
-            <x>150</x>
-            <y>30</y>
-            <width>150</width>
-            <height>25</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QFrame" name="shapeParametersFrame">
-          <property name="geometry">
-           <rect>
-            <x>140</x>
-            <y>60</y>
-            <width>170</width>
-            <height>100</height>
-           </rect>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="shapeLabel">
+            <property name="text">
+             <string>Shape Type:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="shapeCombo">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QFrame" name="shapeParametersFrame">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="sunPositionTab">
+      <attribute name="title">
+       <string>Sun Position</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Definition of sun position</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="azimuthLabel">
+            <property name="text">
+             <string>Azimuth:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="azimuthSpin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="maximum">
+             <double>360.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="elevationLabel">
+            <property name="text">
+             <string>Elevation:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDoubleSpinBox" name="elevationSpin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-90.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>90.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>90.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="distanceLabel">
+            <property name="text">
+             <string>Distance:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="distanceSpin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="maximum">
+             <double>999999999.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>200.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
