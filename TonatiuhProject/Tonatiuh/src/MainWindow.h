@@ -114,7 +114,6 @@ public slots:
 
 	//Sun Light menu actions
 	void on_actionDefine_SunLight_triggered();
-	void on_actionDefineSunPosition_triggered();
 	void on_actionCalculateSunPosition_triggered();
 
 	//Ray trace menu actions
@@ -166,7 +165,11 @@ public slots:
     void parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart );
 
     //Slots for sunposdialog signals
-    void SunPositionChanged( QDateTime* time, double longitude, double latitude );
+    void ChangeSunPosition( QDateTime* time, double longitude, double latitude );
+
+    void SetEnabled_SunPositionCalculator( int enabled );
+
+
 
 protected:
     void closeEvent( QCloseEvent* event );

@@ -57,8 +57,8 @@ public:
     TLightKit();
     static void initClass();
 
-    bool ChangePosition( QDateTime newTime, double longitude, double latitude );
-    void ChangePosition( double newAzimuth, double newZenith, double newDistance = 100 );
+    void ChangePosition( QDateTime newTime, double longitude, double latitude );
+    void ChangePosition( double newAzimuth, double newZenith, double newDistance );
     void GetPositionData( QDateTime* time, double* longitude, double* latitude );
 
     SoSFDouble azimuth;

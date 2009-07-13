@@ -42,6 +42,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QDialog>
 #include <QMap>
 
+
+#include "ui_lightdialog.h"
+
 class QComboBox;
 class QFrame;
 class QGroupBox;
@@ -52,7 +55,7 @@ class TShapeFactory;
 class TSunShape;
 class TSunShapeFactory;
 
-class LightDialog : public QDialog
+class LightDialog : public QDialog, private Ui::LightDialog
 {
 	Q_OBJECT
 
@@ -67,15 +70,10 @@ protected slots:
 	void changeSunshape( int index );
 
 private:
+	void SunPositionTab();
 	void SunshapeTab();
-	void ShapeBox( QGroupBox* shapeBox );
-	void SunshapeBox( QGroupBox* sunshapeBox );
-
-    QTabWidget* m_tabWidget;
-    QComboBox* m_sunshapeCombox;
-    QComboBox* m_shapeCombox;
-    QFrame* m_sunshapeParameters;
-    QFrame* m_shapeParameters;
+	void ShapeBox();
+	void SunshapeBox();
 
 
     TLightKit* m_currentLightKit;

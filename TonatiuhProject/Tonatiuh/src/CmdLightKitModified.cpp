@@ -46,6 +46,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Trace.h"
 
 
+/**
+ * Creates a new lightKit modification command that represents a new light defined as \newLightKit to the \a scene.
+ *
+ * If the model has not previous light a light node is added to \a sceneModel.
+ */
+
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Modify LightKit", parent), m_pPreviousLightKit( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
 {
@@ -59,12 +65,19 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
 
 }
 
+/*!
+ * Destroys the CmdLightKitModified object.
+ */
 CmdLightKitModified::~CmdLightKitModified()
 {
 	Trace trace( "CmdLightKitModified::~CmdLightKitModified", false );
 	m_pNewLightKit->unref();
 }
 
+/*!
+ * Reverts to the previous light. After undo() is called, the state of the scene will be the same as before redo() was called.
+ *  * \sa redo().
+ */
 void CmdLightKitModified::undo()
 {
 	Trace trace( "CmdLightKitModified::undo", false );
@@ -78,12 +91,19 @@ void CmdLightKitModified::undo()
 
    		TSunShape* sunhape = static_cast< TSunShape* > ( m_pPreviousLightKit->getPart("tsunshape", false) );
    		lightKit->setPart("tsunshape", sunhape );
+
+   		lightKit->ChangePosition( m_pPreviousLightKit->azimuth.getValue(), m_pPreviousLightKit->zenith.getValue(), m_pPreviousLightKit->distance.getValue() );
     }
     else
     {
     	m_pModel->RemoveLightNode( *m_pNewLightKit );
     }
 }
+
+/*!
+ * Applies a change to the light. After redo() scene will contain the light with the new definition.
+ * \sa undo().
+ */
 
 void CmdLightKitModified::redo( )
 {
@@ -103,6 +123,7 @@ void CmdLightKitModified::redo( )
    		TSunShape* sunhape =static_cast< TSunShape* > ( m_pNewLightKit->getPart("tsunshape", false) );
    		lightKit->setPart("tsunshape", sunhape );
 
+   		lightKit->ChangePosition( m_pNewLightKit->azimuth.getValue(), m_pNewLightKit->zenith.getValue(), m_pNewLightKit->distance.getValue() );
    	}
 
 }

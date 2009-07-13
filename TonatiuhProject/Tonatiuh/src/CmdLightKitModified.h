@@ -45,6 +45,13 @@ class SceneModel;
 class SoSceneKit;
 class TLightKit;
 
+//!  CmdLightKitModified class is the light definition command stored in the command stack.
+/*!
+  CmdLightKitModified represents a modification of the scene light. The modification could be a new light definition,
+  a modificaiton of the light position on the scene or change on the sun shape parameters value.
+   \sa CmdLightPositionModified
+*/
+
 class CmdLightKitModified : public QUndoCommand
 {
 public:

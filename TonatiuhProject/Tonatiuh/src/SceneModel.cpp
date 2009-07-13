@@ -87,8 +87,7 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
     TLightKit* coinLight = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", false ) );
     if ( coinLight )
     {
-    	InstanceNode* instanceLight = new InstanceNode( coinLight );
-   		m_instanceRoot->AddChild( instanceLight );
+    	InsertLightNode( *coinLight );
     }
 
     SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
@@ -405,7 +404,9 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 	InstanceNode* instanceLight = new InstanceNode( &coinLight );
 	m_instanceRoot->InsertChild( 0, instanceLight );
 
-   emit layoutChanged();
+
+	emit LightNodeStateChanged( 1 );
+	emit layoutChanged();
 }
 
 
@@ -442,6 +443,7 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 
     m_instanceRoot->children.removeAt( 0 );
 
+	emit LightNodeStateChanged( 0 );
     emit layoutChanged();
 
 }
