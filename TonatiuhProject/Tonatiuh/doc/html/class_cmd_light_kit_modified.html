@@ -33,7 +33,10 @@
   </div>
 </div>
 <div class="contents">
-<h1>CmdLightKitModified Class Reference</h1><!-- doxytag: class="CmdLightKitModified" -->
+<h1>CmdLightKitModified Class Reference</h1><!-- doxytag: class="CmdLightKitModified" --><a class="el" href="class_cmd_light_kit_modified.html" title="CmdLightKitModified class is the light definition command stored in the command stack...">CmdLightKitModified</a> class is the light definition command stored in the command stack.  
+<a href="#_details">More...</a>
+<p>
+
 <p>
 <a href="class_cmd_light_kit_modified-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
@@ -56,6 +59,10 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_scene_model.html">SceneModel</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_light_kit_modified.html#fbaba5c8ea9f117827b2d2e64876b37e">m_pModel</a></td></tr>
 
 </table>
+<hr><a name="_details"></a><h2>Detailed Description</h2>
+<a class="el" href="class_cmd_light_kit_modified.html" title="CmdLightKitModified class is the light definition command stored in the command stack...">CmdLightKitModified</a> class is the light definition command stored in the command stack. 
+<p>
+<a class="el" href="class_cmd_light_kit_modified.html" title="CmdLightKitModified class is the light definition command stored in the command stack...">CmdLightKitModified</a> represents a modification of the scene light. The modification could be a new light definition, a modificaiton of the light position on the scene or change on the sun shape parameters value. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_light_position_modified.html">CmdLightPositionModified</a> </dd></dl>
 <hr><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" name="9d1e7ab8e456d00e6ad4d6be36f71d0b"></a><!-- doxytag: member="CmdLightKitModified::CmdLightKitModified" ref="9d1e7ab8e456d00e6ad4d6be36f71d0b" args="(TLightKit *newLightKit, SoSceneKit *scene, SceneModel &amp;sceneModel, QUndoCommand *parent=0)" -->
 <div class="memitem">
@@ -95,8 +102,9 @@
 <div class="memdoc">
 
 <p>
-
-<p>References <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00059">m_pNewLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00058">m_pPreviousLightKit</a>, and <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00060">m_scene</a>.</p>
+Creates a new lightKit modification command that represents a new light defined as <em>newLightKit</em> to the <em>scene</em>.<p>
+If the model has not previous light a light node is added to <em>sceneModel</em>. 
+<p>References <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00066">m_pNewLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00065">m_pPreviousLightKit</a>, and <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00067">m_scene</a>.</p>
 
 </div>
 </div><p>
@@ -116,8 +124,8 @@
 <div class="memdoc">
 
 <p>
-
-<p>References <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00059">m_pNewLightKit</a>.</p>
+Destroys the <a class="el" href="class_cmd_light_kit_modified.html" title="CmdLightKitModified class is the light definition command stored in the command stack...">CmdLightKitModified</a> object. 
+<p>References <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00066">m_pNewLightKit</a>.</p>
 
 </div>
 </div><p>
@@ -138,8 +146,9 @@
 <div class="memdoc">
 
 <p>
+Applies a change to the light. After <a class="el" href="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e">redo()</a> scene will contain the light with the new definition. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675">undo()</a>. </dd></dl>
 
-<p>References <a class="el" href="_scene_model_8cpp-source.html#l00396">SceneModel::InsertLightNode()</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00061">m_pModel</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00059">m_pNewLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00058">m_pPreviousLightKit</a>, and <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00060">m_scene</a>.</p>
+<p>References <a class="el" href="_t_light_kit_8h-source.html#l00064">TLightKit::azimuth</a>, <a class="el" href="_t_light_kit_8cpp-source.html#l00096">TLightKit::ChangePosition()</a>, <a class="el" href="_t_light_kit_8h-source.html#l00066">TLightKit::distance</a>, <a class="el" href="_scene_model_8cpp-source.html#l00413">SceneModel::InsertLightNode()</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00068">m_pModel</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00066">m_pNewLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00065">m_pPreviousLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00067">m_scene</a>, and <a class="el" href="_t_light_kit_8h-source.html#l00065">TLightKit::zenith</a>.</p>
 
 </div>
 </div><p>
@@ -159,8 +168,9 @@
 <div class="memdoc">
 
 <p>
+Reverts to the previous light. After <a class="el" href="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675">undo()</a> is called, the state of the scene will be the same as before <a class="el" href="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e">redo()</a> was called. * <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e">redo()</a>. </dd></dl>
 
-<p>References <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00061">m_pModel</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00059">m_pNewLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00058">m_pPreviousLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00060">m_scene</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00441">SceneModel::RemoveLightNode()</a>.</p>
+<p>References <a class="el" href="_t_light_kit_8h-source.html#l00064">TLightKit::azimuth</a>, <a class="el" href="_t_light_kit_8cpp-source.html#l00096">TLightKit::ChangePosition()</a>, <a class="el" href="_t_light_kit_8h-source.html#l00066">TLightKit::distance</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00068">m_pModel</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00066">m_pNewLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00065">m_pPreviousLightKit</a>, <a class="el" href="_cmd_light_kit_modified_8h-source.html#l00067">m_scene</a>, <a class="el" href="_scene_model_8cpp-source.html#l00455">SceneModel::RemoveLightNode()</a>, and <a class="el" href="_t_light_kit_8h-source.html#l00065">TLightKit::zenith</a>.</p>
 
 </div>
 </div><p>
@@ -178,7 +188,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00088">redo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00068">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00113">redo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00086">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -195,7 +205,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00049">CmdLightKitModified()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00088">redo()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00068">undo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00062">~CmdLightKitModified()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00055">CmdLightKitModified()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00113">redo()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00086">undo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00076">~CmdLightKitModified()</a>.</p>
 
 </div>
 </div><p>
@@ -212,7 +222,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00049">CmdLightKitModified()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00088">redo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00068">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00055">CmdLightKitModified()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00113">redo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00086">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -229,14 +239,14 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00049">CmdLightKitModified()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00088">redo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00068">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00055">CmdLightKitModified()</a>, <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00113">redo()</a>, and <a class="el" href="_cmd_light_kit_modified_8cpp-source.html#l00086">undo()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_cmd_light_kit_modified_8h-source.html">CmdLightKitModified.h</a><li><a class="el" href="_cmd_light_kit_modified_8cpp.html">CmdLightKitModified.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jul 9 11:24:17 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Jul 14 14:22:53 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

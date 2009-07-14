@@ -86,50 +86,54 @@
 <a name="l00054"></a>00054 
 <a name="l00055"></a><a class="code" href="class_scene_model.html">00055</a> <span class="keyword">class </span><a class="code" href="class_scene_model.html">SceneModel</a> : <span class="keyword">public</span> QAbstractItemModel
 <a name="l00056"></a>00056 {
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keyword">public</span>:
-<a name="l00059"></a>00059         <a class="code" href="class_scene_model.html#bf2f796cdacb25636d65654c9a24b5d5">SceneModel</a>( QObject* <a class="code" href="class_scene_model.html#5e8cdb886910a66cf2f9ee987c88595b">parent</a> = 0);
-<a name="l00060"></a>00060         <a class="code" href="class_scene_model.html#d4e125cfdc3d4a11d492e4869f3aae0a">~SceneModel</a>();
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#e54f87ee7b4b08eaa54a856557074047">SetCoinRoot</a>( SoSelection&amp; coinRoot );
-<a name="l00063"></a>00063         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#20bf706bb6be8ca0ae32f00025c37498">SetCoinScene</a>( SoSceneKit&amp; coinScene );
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065         QModelIndex <a class="code" href="class_scene_model.html#f9be9817a14fee285cbc93a20724e55e">index</a>( <span class="keywordtype">int</span> row, <span class="keywordtype">int</span> column, <span class="keyword">const</span> QModelIndex&amp; parentModelIndex = QModelIndex()) <span class="keyword">const</span>;
-<a name="l00066"></a>00066         <span class="keywordtype">int</span> <a class="code" href="class_scene_model.html#d01e24fd0707e307ab79e914cde8d411">rowCount</a>( <span class="keyword">const</span> QModelIndex&amp; parentModelIndex ) <span class="keyword">const</span>;
-<a name="l00067"></a>00067         <span class="keywordtype">int</span> <a class="code" href="class_scene_model.html#098f3adc25069ec8b81cd3e8d9a915b2">columnCount</a> ( <span class="keyword">const</span> QModelIndex&amp; ) <span class="keyword">const</span>;
-<a name="l00068"></a>00068         QModelIndex <a class="code" href="class_scene_model.html#5e8cdb886910a66cf2f9ee987c88595b">parent</a> ( <span class="keyword">const</span> QModelIndex&amp; childModelIndex ) <span class="keyword">const</span>;
-<a name="l00069"></a>00069         QVariant <a class="code" href="class_scene_model.html#7179f24b917a72559ca0c358d334f321">headerData</a> ( <span class="keywordtype">int</span> section, Qt::Orientation orientation, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
-<a name="l00070"></a>00070         QVariant <a class="code" href="class_scene_model.html#00192087be6db10292fea09935836a05">data</a> ( <span class="keyword">const</span> QModelIndex&amp; modelIndex, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
-<a name="l00071"></a>00071         Qt::ItemFlags <a class="code" href="class_scene_model.html#e715b7837cea680df718121b52902bf6">flags</a>(<span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const</span>;
-<a name="l00072"></a>00072     Qt::DropActions <a class="code" href="class_scene_model.html#e2b44adfd3e422e8195474f7fe59ca4c">supportedDropActions</a>() <span class="keyword">const</span>;
-<a name="l00073"></a>00073         Qt::DropActions <a class="code" href="class_scene_model.html#4e2c1c67abbb787cf39a779647481873">supportedDragActions</a>() <span class="keyword">const</span>;
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075     <span class="keywordtype">int</span> <a class="code" href="class_scene_model.html#71efdbe460e33dc5bbadb51fb1dbecaa">InsertCoinNode</a>( SoNode&amp; coinChild, SoBaseKit&amp; coinParent );
-<a name="l00076"></a>00076         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#7ab1a4d0f26b44f41e6d3548031d1a1e">InsertLightNode</a>( <a class="code" href="class_t_light_kit.html">TLightKit</a>&amp; coinLight );
-<a name="l00077"></a>00077         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#f3d5fa7205809ba8ef19054005ec2177">RemoveCoinNode</a>( <span class="keywordtype">int</span> row, SoBaseKit&amp; coinParent );
-<a name="l00078"></a>00078         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#2f53824e7f1c57a79fdae7a346ed8d71">RemoveLightNode</a>( <a class="code" href="class_t_light_kit.html">TLightKit</a>&amp; coinLight );
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080     <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#39b6ca1a3289de5402e4b890ba908472">Cut</a>( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
-<a name="l00081"></a>00081         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#f5b2b5bc67cc734beb9f0bf943dbbf90">Paste</a>( <a class="code" href="namespacetgc.html#fa9b17e8584600916a7480330d470667">tgc::PasteType</a> type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083         <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_scene_model.html#6d02dce253100f61c08f12922788b6ac">NodeFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00084"></a>00084         QModelIndex <a class="code" href="class_scene_model.html#8b26636c15d4d823234aea8ef6484223">IndexFromPath</a>( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
-<a name="l00085"></a>00085         SoNodeKitPath* <a class="code" href="class_scene_model.html#f762fbda5d9b6f07aad39db748991a44">PathFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087 <span class="keyword">private</span>:
-<a name="l00088"></a>00088         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#30a74576bfbbf6b0b300a803aabe727b">GenerateInstanceTree</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; instanceParent );
-<a name="l00089"></a>00089         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#2610220c166aaf1fbd99a9dc30934bce">DeleteInstanceTree</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; instanceNode );
+<a name="l00057"></a>00057         Q_OBJECT
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 <span class="keyword">public</span>:
+<a name="l00060"></a>00060         <a class="code" href="class_scene_model.html#bf2f796cdacb25636d65654c9a24b5d5">SceneModel</a>( QObject* <a class="code" href="class_scene_model.html#5e8cdb886910a66cf2f9ee987c88595b">parent</a> = 0);
+<a name="l00061"></a>00061         <a class="code" href="class_scene_model.html#d4e125cfdc3d4a11d492e4869f3aae0a">~SceneModel</a>();
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#e54f87ee7b4b08eaa54a856557074047">SetCoinRoot</a>( SoSelection&amp; coinRoot );
+<a name="l00064"></a>00064         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#20bf706bb6be8ca0ae32f00025c37498">SetCoinScene</a>( SoSceneKit&amp; coinScene );
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066         QModelIndex <a class="code" href="class_scene_model.html#f9be9817a14fee285cbc93a20724e55e">index</a>( <span class="keywordtype">int</span> row, <span class="keywordtype">int</span> column, <span class="keyword">const</span> QModelIndex&amp; parentModelIndex = QModelIndex()) <span class="keyword">const</span>;
+<a name="l00067"></a>00067         <span class="keywordtype">int</span> <a class="code" href="class_scene_model.html#d01e24fd0707e307ab79e914cde8d411">rowCount</a>( <span class="keyword">const</span> QModelIndex&amp; parentModelIndex ) <span class="keyword">const</span>;
+<a name="l00068"></a>00068         <span class="keywordtype">int</span> <a class="code" href="class_scene_model.html#098f3adc25069ec8b81cd3e8d9a915b2">columnCount</a> ( <span class="keyword">const</span> QModelIndex&amp; ) <span class="keyword">const</span>;
+<a name="l00069"></a>00069         QModelIndex <a class="code" href="class_scene_model.html#5e8cdb886910a66cf2f9ee987c88595b">parent</a> ( <span class="keyword">const</span> QModelIndex&amp; childModelIndex ) <span class="keyword">const</span>;
+<a name="l00070"></a>00070         QVariant <a class="code" href="class_scene_model.html#7179f24b917a72559ca0c358d334f321">headerData</a> ( <span class="keywordtype">int</span> section, Qt::Orientation orientation, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
+<a name="l00071"></a>00071         QVariant <a class="code" href="class_scene_model.html#00192087be6db10292fea09935836a05">data</a> ( <span class="keyword">const</span> QModelIndex&amp; modelIndex, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
+<a name="l00072"></a>00072         Qt::ItemFlags <a class="code" href="class_scene_model.html#e715b7837cea680df718121b52902bf6">flags</a>(<span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const</span>;
+<a name="l00073"></a>00073     Qt::DropActions <a class="code" href="class_scene_model.html#e2b44adfd3e422e8195474f7fe59ca4c">supportedDropActions</a>() <span class="keyword">const</span>;
+<a name="l00074"></a>00074         Qt::DropActions <a class="code" href="class_scene_model.html#4e2c1c67abbb787cf39a779647481873">supportedDragActions</a>() <span class="keyword">const</span>;
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076     <span class="keywordtype">int</span> <a class="code" href="class_scene_model.html#71efdbe460e33dc5bbadb51fb1dbecaa">InsertCoinNode</a>( SoNode&amp; coinChild, SoBaseKit&amp; coinParent );
+<a name="l00077"></a>00077         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#7ab1a4d0f26b44f41e6d3548031d1a1e">InsertLightNode</a>( <a class="code" href="class_t_light_kit.html">TLightKit</a>&amp; coinLight );
+<a name="l00078"></a>00078         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#f3d5fa7205809ba8ef19054005ec2177">RemoveCoinNode</a>( <span class="keywordtype">int</span> row, SoBaseKit&amp; coinParent );
+<a name="l00079"></a>00079         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#2f53824e7f1c57a79fdae7a346ed8d71">RemoveLightNode</a>( <a class="code" href="class_t_light_kit.html">TLightKit</a>&amp; coinLight );
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081     <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#39b6ca1a3289de5402e4b890ba908472">Cut</a>( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
+<a name="l00082"></a>00082         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#f5b2b5bc67cc734beb9f0bf943dbbf90">Paste</a>( <a class="code" href="namespacetgc.html#fa9b17e8584600916a7480330d470667">tgc::PasteType</a> type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084         <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_scene_model.html#6d02dce253100f61c08f12922788b6ac">NodeFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
+<a name="l00085"></a>00085         QModelIndex <a class="code" href="class_scene_model.html#8b26636c15d4d823234aea8ef6484223">IndexFromPath</a>( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
+<a name="l00086"></a>00086         SoNodeKitPath* <a class="code" href="class_scene_model.html#f762fbda5d9b6f07aad39db748991a44">PathFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088 signals:
+<a name="l00089"></a>00089         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#55a928c107295f9ff01cc7870e2ca2f7">LightNodeStateChanged</a>( <span class="keywordtype">int</span> newState );
 <a name="l00090"></a>00090 
 <a name="l00091"></a>00091 <span class="keyword">private</span>:
-<a name="l00092"></a><a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">00092</a>         SoSelection* <a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">m_coinRoot</a>;
-<a name="l00093"></a><a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">00093</a>     SoSceneKit* <a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">m_coinScene</a>;
-<a name="l00094"></a><a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">00094</a>         <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">m_instanceRoot</a>;
-<a name="l00095"></a><a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">00095</a>         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; <a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">m_mapCoinQt</a>;
-<a name="l00096"></a>00096 };
-<a name="l00097"></a>00097 
-<a name="l00098"></a>00098 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
+<a name="l00092"></a>00092         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#30a74576bfbbf6b0b300a803aabe727b">GenerateInstanceTree</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; instanceParent );
+<a name="l00093"></a>00093         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#2610220c166aaf1fbd99a9dc30934bce">DeleteInstanceTree</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; instanceNode );
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 <span class="keyword">private</span>:
+<a name="l00096"></a><a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">00096</a>         SoSelection* <a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">m_coinRoot</a>;
+<a name="l00097"></a><a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">00097</a>     SoSceneKit* <a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">m_coinScene</a>;
+<a name="l00098"></a><a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">00098</a>         <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">m_instanceRoot</a>;
+<a name="l00099"></a><a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">00099</a>         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; <a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">m_mapCoinQt</a>;
+<a name="l00100"></a>00100 };
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jul 9 11:24:16 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Jul 14 14:22:51 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

@@ -35,6 +35,7 @@
 <div class="contents">
 <h1>MainWindow Member List</h1>This is the complete list of members for <a class="el" href="class_main_window.html">MainWindow</a>, including all inherited members.<p><table>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#bbe5156b5f1a95ef1810964b6ad3a8ab">BuildFileList</a>(QDir parentDirectory, QStringList &amp;fileList)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_main_window.html#01d9edd6bf29b148e6545f18a7480907">ChangeSunPosition</a>(QDateTime *time, double longitude, double latitude)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#4e20a4a065fbb0e4d3532a45a0a91425">closeEvent</a>(QCloseEvent *event)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [protected]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#1ac75f45c347bde30dff160dd3a6641b">ComputeSceneTreeMap</a>(QPersistentModelIndex *nodeIndex, SbViewportRegion region, QMap&lt; InstanceNode *, QPair&lt; SbBox3f, Transform * &gt; &gt; *sceneMap)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#ca13ca83a16deeaed049628ab0c9845d">Copy</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
@@ -95,7 +96,6 @@
   <tr class="memlist"><td><a class="el" href="class_main_window.html#d961df58a2f20f09dd16c856b1f3040a">on_actionCopy_triggered</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#02df09004a7752e6f1bd3355a19999d3">on_actionCut_triggered</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#76eb33dc5792f982a973ef6bc91a57f2">on_actionDefine_SunLight_triggered</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_main_window.html#8a15b0201988f3f09ebeca7586211585">on_actionDefineSunPosition_triggered</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#989d6c4bed813efdae201945fe7475fc">on_actionDelete_triggered</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#b40e98eb702f8e85dcec079f50afa32e">on_actionDisplay_rays_toggled</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#9c6bb9c5382d2debb1ea8393fa6e1396">on_actionEdit_Mode_toggled</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
@@ -129,6 +129,7 @@
   <tr class="memlist"><td><a class="el" href="class_main_window.html#a0757edddd9eee8d3458174dc9e56bfd">selectionChanged</a>(const QModelIndex &amp;current, const QModelIndex &amp;previous)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#2e772bf0dfc03d0984ea7b96a23d2e9a">selectionFinish</a>(SoSelection *selection)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#9d6225870dd477b8a56a85e8ab2ce36f">SetCurrentFile</a>(const QString &amp;fileName)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_main_window.html#273eaf8e1fd63c33a11ab7e5b41f1ac0">SetEnabled_SunPositionCalculator</a>(int enabled)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#5f9984b7d5380be1cdb4bfe6509336a6">SetupActionInsertMaterial</a>(TMaterialFactory *pTMaterialFactory)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#f3443b509edc90998b023816800e9e03">SetupActionInsertShape</a>(TShapeFactory *pTShapeFactory)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#a372c2f065bd4966d6ed725d856a677b">SetupActionInsertTracker</a>(TTrackerFactory *pTTrackerFactory)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
@@ -156,12 +157,11 @@
   <tr class="memlist"><td><a class="el" href="class_main_window.html#56bd608397f177cc024da9c644388771">StartManipulation</a>(SoDragger *dragger)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#1f87ccf62d872d2e3667970097bd4a87">StartOver</a>(const QString &amp;fileName)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#67786e7bcc0b50d4805bb000606aadb5">StrippedName</a>(const QString &amp;fullFileName)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_main_window.html#5ecf90459ccc6eb44c8f9323b450d988">SunPositionChanged</a>(QDateTime *time, double longitude, double latitude)</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [slot]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#e9a9900a62aa2e9e2934200e18cbe6e6">UpdateRecentFileActions</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#56a5e4d5e0a022e8c1ecf350d2916ade">WriteSettings</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_main_window.html#e98d00a93bc118200eeef9f9bba1dba7">~MainWindow</a>()</td><td><a class="el" href="class_main_window.html">MainWindow</a></td><td></td></tr>
 </table></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jul 9 11:24:18 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Jul 14 14:22:53 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

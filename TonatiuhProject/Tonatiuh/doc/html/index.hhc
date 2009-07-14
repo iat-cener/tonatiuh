@@ -61,7 +61,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SceneModel"><param name="Local" value="class_scene_model.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SceneModelView"><param name="Local" value="class_scene_model_view.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionCalculatorDialog"><param name="Local" value="class_sun_position_calculator_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionDialog"><param name="Local" value="class_sun_position_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TCube"><param name="Local" value="class_t_cube.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultMaterial"><param name="Local" value="class_t_default_material.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultSunShape"><param name="Local" value="class_t_default_sun_shape.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -149,7 +148,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SceneModel"><param name="Local" value="class_scene_model.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SceneModelView"><param name="Local" value="class_scene_model_view.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionCalculatorDialog"><param name="Local" value="class_sun_position_calculator_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionDialog"><param name="Local" value="class_sun_position_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TGateEngine"><param name="Local" value="class_t_gate_engine.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Timer"><param name="Local" value="class_timer.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TLightKit"><param name="Local" value="class_t_light_kit.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -300,8 +298,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="sunpos.h"><param name="Local" value="sunpos_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionCalculatorDialog.cpp"><param name="Local" value="_sun_position_calculator_dialog_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionCalculatorDialog.h"><param name="Local" value="_sun_position_calculator_dialog_8h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionDialog.cpp"><param name="Local" value="_sun_position_dialog_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="SunPositionDialog.h"><param name="Local" value="_sun_position_dialog_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TCube.cpp"><param name="Local" value="_t_cube_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TCube.h"><param name="Local" value="_t_cube_8h.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TDefaultMaterial.cpp"><param name="Local" value="_t_default_material_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>

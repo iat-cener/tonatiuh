@@ -77,25 +77,26 @@
 <a name="l00045"></a>00045 <span class="keyword">class </span>SoSceneKit;
 <a name="l00046"></a>00046 <span class="keyword">class </span><a class="code" href="class_t_light_kit.html">TLightKit</a>;
 <a name="l00047"></a>00047 
-<a name="l00048"></a><a class="code" href="class_cmd_light_kit_modified.html">00048</a> <span class="keyword">class </span><a class="code" href="class_cmd_light_kit_modified.html">CmdLightKitModified</a> : <span class="keyword">public</span> QUndoCommand
-<a name="l00049"></a>00049 {
-<a name="l00050"></a>00050 <span class="keyword">public</span>:
-<a name="l00051"></a>00051     <a class="code" href="class_cmd_light_kit_modified.html#9d1e7ab8e456d00e6ad4d6be36f71d0b">CmdLightKitModified</a>( <a class="code" href="class_t_light_kit.html">TLightKit</a>* newLightKit, SoSceneKit* scene, <a class="code" href="class_scene_model.html">SceneModel</a>&amp; sceneModel, QUndoCommand* parent = 0 );
-<a name="l00052"></a>00052     <a class="code" href="class_cmd_light_kit_modified.html#1a619f08d037316bbe57bb54cefc9716">~CmdLightKitModified</a>();
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675">undo</a>();
-<a name="l00055"></a>00055      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e">redo</a>();
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057 <span class="keyword">private</span>:
-<a name="l00058"></a><a class="code" href="class_cmd_light_kit_modified.html#797d5ae89dc7a1fba59c41f65c1a5382">00058</a>         <a class="code" href="class_t_light_kit.html">TLightKit</a>* <a class="code" href="class_cmd_light_kit_modified.html#797d5ae89dc7a1fba59c41f65c1a5382">m_pPreviousLightKit</a>;
-<a name="l00059"></a><a class="code" href="class_cmd_light_kit_modified.html#753827df1341e0161ac2f424a7a9e277">00059</a>         <a class="code" href="class_t_light_kit.html">TLightKit</a>* <a class="code" href="class_cmd_light_kit_modified.html#753827df1341e0161ac2f424a7a9e277">m_pNewLightKit</a>;
-<a name="l00060"></a><a class="code" href="class_cmd_light_kit_modified.html#7a6479c87ba0f7e54ecec39b94dab871">00060</a>         SoSceneKit* <a class="code" href="class_cmd_light_kit_modified.html#7a6479c87ba0f7e54ecec39b94dab871">m_scene</a>;
-<a name="l00061"></a><a class="code" href="class_cmd_light_kit_modified.html#fbaba5c8ea9f117827b2d2e64876b37e">00061</a>         <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_cmd_light_kit_modified.html#fbaba5c8ea9f117827b2d2e64876b37e">m_pModel</a>;
-<a name="l00062"></a>00062 };
+<a name="l00049"></a>00049 
+<a name="l00055"></a><a class="code" href="class_cmd_light_kit_modified.html">00055</a> <span class="keyword">class </span><a class="code" href="class_cmd_light_kit_modified.html" title="CmdLightKitModified class is the light definition command stored in the command stack...">CmdLightKitModified</a> : <span class="keyword">public</span> QUndoCommand
+<a name="l00056"></a>00056 {
+<a name="l00057"></a>00057 <span class="keyword">public</span>:
+<a name="l00058"></a>00058     <a class="code" href="class_cmd_light_kit_modified.html#9d1e7ab8e456d00e6ad4d6be36f71d0b">CmdLightKitModified</a>( <a class="code" href="class_t_light_kit.html">TLightKit</a>* newLightKit, SoSceneKit* scene, <a class="code" href="class_scene_model.html">SceneModel</a>&amp; sceneModel, QUndoCommand* parent = 0 );
+<a name="l00059"></a>00059     <a class="code" href="class_cmd_light_kit_modified.html#1a619f08d037316bbe57bb54cefc9716">~CmdLightKitModified</a>();
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675">undo</a>();
+<a name="l00062"></a>00062      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e">redo</a>();
 <a name="l00063"></a>00063 
-<a name="l00064"></a>00064 <span class="preprocessor">#endif </span><span class="comment">/*CMDLIGHTKITMODIFIED_H_*/</span>
+<a name="l00064"></a>00064 <span class="keyword">private</span>:
+<a name="l00065"></a><a class="code" href="class_cmd_light_kit_modified.html#797d5ae89dc7a1fba59c41f65c1a5382">00065</a>         <a class="code" href="class_t_light_kit.html">TLightKit</a>* <a class="code" href="class_cmd_light_kit_modified.html#797d5ae89dc7a1fba59c41f65c1a5382">m_pPreviousLightKit</a>;
+<a name="l00066"></a><a class="code" href="class_cmd_light_kit_modified.html#753827df1341e0161ac2f424a7a9e277">00066</a>         <a class="code" href="class_t_light_kit.html">TLightKit</a>* <a class="code" href="class_cmd_light_kit_modified.html#753827df1341e0161ac2f424a7a9e277">m_pNewLightKit</a>;
+<a name="l00067"></a><a class="code" href="class_cmd_light_kit_modified.html#7a6479c87ba0f7e54ecec39b94dab871">00067</a>         SoSceneKit* <a class="code" href="class_cmd_light_kit_modified.html#7a6479c87ba0f7e54ecec39b94dab871">m_scene</a>;
+<a name="l00068"></a><a class="code" href="class_cmd_light_kit_modified.html#fbaba5c8ea9f117827b2d2e64876b37e">00068</a>         <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_cmd_light_kit_modified.html#fbaba5c8ea9f117827b2d2e64876b37e">m_pModel</a>;
+<a name="l00069"></a>00069 };
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071 <span class="preprocessor">#endif </span><span class="comment">/*CMDLIGHTKITMODIFIED_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jul 9 11:24:16 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Jul 14 14:22:51 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
