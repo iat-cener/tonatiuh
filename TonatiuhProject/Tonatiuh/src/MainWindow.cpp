@@ -2124,7 +2124,7 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
  **/
 void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap )
 {
-	Trace trace( "MainWindow::ComputeSceneTreeMap", false );
+	Trace trace( "MainWindow::ComputeSceneTreeMap", true );
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( *nodeIndex );
 	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
@@ -2178,11 +2178,17 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 
 			Transform* shapeWorldToObject = new Transform( shapeObjectToWorld.GetInverse() );
 
-			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-				sceneMap->insert( instanceNode->children[0] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
-			else
-				sceneMap->insert( instanceNode->children[1] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
+			if(  instanceNode->children.count() > 0 )
+			{
+
+				if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+					sceneMap->insert( instanceNode->children[0] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
+				else if(  instanceNode->children.count() > 1 ) sceneMap->insert( instanceNode->children[1] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
+
+			}
+
 		}
+
 	}
 
 	delete bbAction;

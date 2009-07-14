@@ -230,10 +230,14 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 		TShapeKit* shapeKit  = static_cast< TShapeKit* > ( GetNode() );
 
 		QPair< SbBox3f, Transform* > childData;
+		if( children.count() == 0 ) return result;
+
 		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
 			childData = sceneMap->value( children[0] );
-		else
-			childData = sceneMap->value( children[1] );
+		else if( ( children.count() > 1 ) && ( children[1]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) ) )
+					childData = sceneMap->value( children[1] );
+		else return result;
+
 
 		Transform* shapeWorldToObject =  childData.second;
 
@@ -256,6 +260,7 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 			delete reflected;
 			*modelNode = this;
 		}
+
 	}
 
 	return result;
