@@ -103,6 +103,7 @@ void Document::InitializeScene()
 	if ( m_scene ) ClearScene();
 
 	m_scene = new SoSceneKit;
+	m_scene->ref();
 	m_root->addChild( m_scene );
     m_scene->setSearchingChildren( true );
 }
@@ -126,7 +127,7 @@ void Document::ClearScene()
     	if ( m_scene )
     	{
     	    if ( m_root ) m_root->removeChild( m_scene );
-   	        if ( m_scene ) while ( m_scene->getRefCount( ) > 1 ) m_scene->unref();
+   	        if ( m_scene )	while ( m_scene->getRefCount( ) > 1 )	m_scene->unref();
     	}
     }
 

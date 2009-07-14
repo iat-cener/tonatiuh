@@ -406,12 +406,16 @@ int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
 	return row;
 }
 
+/*!
+ * Insert a light node to the model. If the model has an other light node, the previous node
+ * will be deleted.
+ */
 void SceneModel::InsertLightNode( TLightKit& coinLight )
 {
 	Trace trace( "SceneModel::InsertLightNode", false );
 
-	if ( m_coinScene->getPart( "lightList[0]", false ) )
-		m_instanceRoot->children.removeAt( 0 );
+	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* > ( m_coinScene->getPart("lightList", true ) ) ;
+	if ( lightList->getNumChildren() > 0 )	m_instanceRoot->children.removeAt( 0 );
 
 	m_coinScene->setPart( "lightList[0]", &coinLight );
 
