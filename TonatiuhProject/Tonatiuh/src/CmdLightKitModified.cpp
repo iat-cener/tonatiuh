@@ -47,7 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 /**
- * Creates a new lightKit modification command that represents a new light defined as \newLightKit to the \a scene.
+ * Creates a new lightKit modification command that represents a new light defined as \a newLightKit to the \a scene.
  *
  * If the model has not previous light a light node is added to \a sceneModel.
  */

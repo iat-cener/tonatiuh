@@ -55,23 +55,37 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeKit.h"
 #include "TTracker.h"
 
+/*!
+ * Creates an empty model.
+ */
 SceneModel::SceneModel( QObject* parent)
 :QAbstractItemModel( parent ), m_coinRoot( 0 ), m_coinScene(0), m_instanceRoot( 0 )
 {
 	Trace trace( "SceneModel::SceneModel", false );
 }
 
+/*!
+ * Destroys the model.
+ */
 SceneModel::~SceneModel()
 {
 	Trace trace( "SceneModel::~SceneModel", false  );
 }
 
+/*!
+ * Sets \a coinRoot as the model root.
+ */
 void SceneModel::SetCoinRoot( SoSelection& coinRoot )
 {
 	Trace trace( "SceneModel::SetCoinRoot", false );
 	m_coinRoot = &coinRoot;
 }
 
+/*!
+ * Sets the model scene to the given \a coinScene.
+ *
+ * Creates nodes for the model to the scene subnodes.
+ */
 void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 {
 	Trace trace( "SceneModel::SetCoinScene", false );
@@ -84,9 +98,9 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
     m_mapCoinQt.insert( std::make_pair( &coinScene, instanceRootNodeList ) );
     m_mapCoinQt[&coinScene].append( m_instanceRoot );
 
-    TLightKit* coinLight = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", false ) );
-    if ( coinLight )
+    if ( m_coinScene->getPart("lightList[0]", false ) )
     {
+    	TLightKit* coinLight = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", false ) );
     	InsertLightNode( *coinLight );
     }
 

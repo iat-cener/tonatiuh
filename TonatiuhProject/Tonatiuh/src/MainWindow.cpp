@@ -887,6 +887,7 @@ void MainWindow::ShowRaysIn3DView()
 	{
 		m_document->GetRoot()->removeChild( m_pRays );
 		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
+		m_pRays = 0;
 	}
 
 	if( m_fraction > 0.0 || m_drawPhotons )
@@ -1823,6 +1824,10 @@ void MainWindow::closeEvent( QCloseEvent* event )
     else event->ignore();
 }
 
+/*!
+ * Returns \a true if the application is ready to start with other model. Otherwise,
+ * returns \a false.
+ */
 bool MainWindow::OkToContinue()
 {
     Trace trace( "MainWindow::OkToContinue", false );
@@ -1850,15 +1855,25 @@ bool MainWindow::StartOver( const QString& fileName )
 {
     Trace trace( "MainWindow::StartOver", false );
 
-	if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
 	actionDisplay_rays->setEnabled( false );
+	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
+	{
+		m_document->GetRoot()->removeChild(m_pRays);
+		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
+		m_pRays = 0;
+
+	}
 	m_commandStack->clear();
 	SetEnabled_SunPositionCalculator( 0 );
+
+	QStatusBar* statusbar = new QStatusBar;
+	setStatusBar( statusbar );
 
     if( fileName.isEmpty() )
     {
     	m_document->New();
-        statusBar()->showMessage( tr( "New file" ), 2000 );
+    	statusbar->showMessage( tr( "New file" ), 2000 );
+    	//statusBar()->showMessage( tr( "New file" ), 2000 );
     }
     else
     {
@@ -1867,7 +1882,8 @@ bool MainWindow::StartOver( const QString& fileName )
 			statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
 			return false;
 		}
-        statusBar()->showMessage( tr( "File loaded" ), 2000 );
+        //statusBar()->showMessage( tr( "File loaded" ), 2000 );
+    	statusbar->showMessage( tr( "File loaded" ), 2000 );
     }
 
     SetCurrentFile( fileName );
@@ -1927,9 +1943,15 @@ bool MainWindow::Copy( )
 	return true;
 }
 
+/*!
+ * Creates a new \a type paste command. The clipboard node was inerted as selected node
+ * child.
+ *
+ * Returns \a true if the node was successfully pasted, otherwise returns \a false.
+ */
 bool MainWindow::Paste( tgc::PasteType type )
 {
-	Trace trace( "MainWindow::PasteCopy", true );
+	Trace trace( "MainWindow::Paste", false );
 
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( !m_coinNode_Buffer ) return false;
@@ -1956,6 +1978,12 @@ bool MainWindow::Paste( tgc::PasteType type )
 
 }
 
+/*!
+ * Creates a new delete command, where the selected node was deleted.
+ * child.
+ *
+ * Returns \a true if the node was successfully deleted, otherwise returns \a false.
+ */
 bool MainWindow::Delete( )
 {
 	Trace trace( "MainWindow::Delete", false );
@@ -2085,6 +2113,8 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
 
    	CmdParameterModified* parameterModified = new CmdParameterModified( oldValueList, coinNode, coinPart );
 	if ( m_commandStack ) m_commandStack->push( parameterModified );
+
+	m_document->SetDocumentModified( true );
 }
 
 /**

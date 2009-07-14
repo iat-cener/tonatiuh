@@ -60,6 +60,9 @@ void selectionFinishCallback( void * userData, SoSelection* selection )
     if ( document ) document->selectionFinishCBAux( selection );
 }
 
+/*!
+ * Creates a new document object.
+ */
 Document::Document()
 : m_root(0), m_scene(0), m_isModified( false )
 {
@@ -73,18 +76,27 @@ Document::Document()
     InitializeScene();
 }
 
+/*!
+ * Destroys the document object.
+ */
 Document::~Document()
 {
 	Trace trace( "Document::~Document", false );
 	if ( m_root ) m_root->unref();
 }
 
+/*!
+ * Set the state of the document to \a status. If the status is true the document have been modified.
+ */
 void Document::SetDocumentModified( bool status )
 {
     Trace trace( "Document::SetDocumentModified", false );
     m_isModified = status;
 }
 
+/*!
+ * Initializes a new empty scene a scene and sets it to the document.
+ */
 void Document::InitializeScene()
 {
     Trace trace( "Document::InitializeScene", false );
@@ -95,6 +107,7 @@ void Document::InitializeScene()
     m_scene->setSearchingChildren( true );
 }
 
+
 void Document::New()
 {
     Trace trace( "Document::New", false );
@@ -102,6 +115,9 @@ void Document::New()
 	m_isModified = false;
 }
 
+/*!
+ * Clears the scene of the document.
+ */
 void Document::ClearScene()
 {
     Trace trace( "Document::ClearScene", false );
@@ -132,6 +148,11 @@ bool Document::ReadFile( const QString& fileName )
 	return false;
 }
 
+/*!
+ * Writes the document scene to a file with the given \a fileName.
+ *
+ * Returns true if the scene was successfully written; otherwise returns false.
+ */
 bool Document::WriteFile( const QString& fileName )
 {
     Trace trace( "Document::WriteFile", false );
@@ -153,18 +174,27 @@ bool Document::WriteFile( const QString& fileName )
 	return true;
 }
 
+/*!
+ * Returns whether the scene was modified.
+ */
 bool Document::IsModified( )
 {
     Trace trace( "Document::IsModified", false );
     return m_isModified;
 }
 
+/*!
+ * Returns the document root.
+ */
 SoSelection* Document::GetRoot() const
 {
     Trace trace( "Document::GetRoot", false );
 	return m_root;
 }
 
+/*!
+ * Returns the document scene.
+ */
 SoSceneKit* Document::GetSceneKit() const
 {
     Trace trace( "Document::GetSceneKit", false );
@@ -172,6 +202,11 @@ SoSceneKit* Document::GetSceneKit() const
 }
 
 
+/*!
+ * Reads the scene saved on the file with given \a filename and return a pointer to the scene.
+ *
+ * Returns null on any error.
+ */
 SoSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
 {
     Trace trace( "Document::GetSceneKitFromFile", false );
