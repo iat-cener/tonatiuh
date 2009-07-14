@@ -60,8 +60,13 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
     m_pNewLightKit->ref();
 
-	TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
-	if( lightKit )	m_pPreviousLightKit = static_cast< TLightKit* >( lightKit->copy( true ) );
+    if( m_scene->getPart("lightList[0]", false) )
+    {
+    	std::cout<<"m_pPreviousLightKit"<<std::endl;
+    	//TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
+    	m_pPreviousLightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false)->copy( true ) );
+    }
+
 
 }
 
