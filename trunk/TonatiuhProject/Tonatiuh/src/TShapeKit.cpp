@@ -110,10 +110,11 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, RandomDeviate& rand ) const
 	//Transform the ray to call children intersect
 
 	Ray* result = 0;
-	TShape* tshape = static_cast< TShape* >( shape.getValue() );
 
-	if( tshape )
+	if( shape.getValue() )
 	{
+		TShape* tshape = static_cast< TShape* >( shape.getValue() );
+
 		double thit = 0.0;
 		DifferentialGeometry* dg = new DifferentialGeometry;
 		bool intersect = tshape->Intersect( objectRay, &thit, dg );
@@ -121,12 +122,13 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, RandomDeviate& rand ) const
 		{
 			objectRay.maxt = thit;
 
-			SoAppearanceKit* soappearance = static_cast< SoAppearanceKit* > ( appearance.getValue() );
-			if ( soappearance )
+			if ( appearance.getValue() )
 			{
-				TMaterial* tmaterial = static_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
-				if( tmaterial )
+				SoAppearanceKit* soappearance = static_cast< SoAppearanceKit* > ( appearance.getValue() );
+				if( soappearance->getPart( "material", false ) )
 				{
+					TMaterial* tmaterial = static_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
+
 					Ray* reflected = tmaterial->GetReflectedRay( objectRay, dg, rand );
 					if( reflected ) result = new Ray( *reflected );
 					delete reflected;
