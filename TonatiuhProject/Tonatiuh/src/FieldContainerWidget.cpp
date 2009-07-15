@@ -138,12 +138,12 @@ void FieldContainerWidget::EditorClosed( QWidget* editor )
 	SoField* field = m_pModel->ModelItem( m_lastEditingIndex )->GetField();
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
 	{
-		QComboBox* combo = static_cast<QComboBox *>(editor);
+		QComboBox* combo = qobject_cast<QComboBox *>(editor);
 		newValue = combo->currentText( );
 	}
 	else
 	{
-		QLineEdit* textEdit = static_cast<QLineEdit *>(editor);
+		QLineEdit* textEdit = qobject_cast<QLineEdit *>(editor);
 		newValue = textEdit->text();
 	}
 

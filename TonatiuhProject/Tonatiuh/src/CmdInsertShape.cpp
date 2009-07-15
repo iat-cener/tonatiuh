@@ -43,22 +43,33 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 #include "Trace.h"
 
+/**
+ * Creates a new shape insert command that adds a \a shape to \a shapekit node in the \a model.
+ *
+ * If \a parent is not null, this command is appended to parent's child list and then owns this command.
+ */
 CmdInsertShape::CmdInsertShape( TShapeKit* shapeKit, TShape* shape, SceneModel* model, QUndoCommand * parent )
-: QUndoCommand("InsertShape", parent), m_shapeKit(shapeKit), m_previousShape(0),m_shape(shape), m_pModel( model ), m_row( -1 )
+: QUndoCommand("InsertShape", parent), m_shapeKit(shapeKit), m_shape(shape), m_pModel( model ), m_row( -1 )
 {
 	Trace trace( "CmdInsertShape::CmdInsertShape", false );
 	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertShape called with NULL TShapeKit*" );
 	if( m_shape == 0 ) tgf::SevereError( "CmdInsertShape called with NULL TShape*" );
 	m_shape->ref();
-    m_previousShape = static_cast< TShape* >( m_shapeKit->getPart( "shape", false ) );
 }
 
+/*!
+ * Destroys the CmdInsertShape object.
+ */
 CmdInsertShape::~CmdInsertShape()
 {
 	Trace trace( "CmdInsertShape::~CmdInsertShape", false );
     m_shape->unref();
 }
 
+/*!
+ * Reverts model state. After undo() is called, the shapekit node will not contain a shape type node.
+ * \sa redo().
+ */
 void CmdInsertShape::undo()
 {
 	Trace trace( "CmdInsertShape::undo", false );
@@ -67,6 +78,10 @@ void CmdInsertShape::undo()
 	m_pModel->RemoveCoinNode( m_row, *m_shapeKit );
 }
 
+/*!
+ * Applies a change to the model. After redo() the model will contain new shape node located as shapekit type node child.
+ * \sa undo().
+ */
 void CmdInsertShape::redo( )
 {
 	Trace trace( "CmdInsertShape::redo", false );

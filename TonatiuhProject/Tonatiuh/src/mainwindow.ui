@@ -155,7 +155,6 @@
     <addaction name="actionDisplay_rays"/>
     <addaction name="actionResults"/>
     <addaction name="actionExport_PhotonMap"/>
-    <addaction name="actionExport_Surface_PhotonMap"/>
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
    </widget>
@@ -568,15 +567,6 @@
   <action name="actionBalance">
    <property name="text">
     <string>Balance</string>
-   </property>
-  </action>
-  <action name="actionExport_Surface_PhotonMap">
-   <property name="icon">
-    <iconset resource="tonatiuh.qrc">
-     <normaloff>:/icons/exportSurface.png</normaloff>:/icons/exportSurface.png</iconset>
-   </property>
-   <property name="text">
-    <string>Export Surface PhotonMap</string>
    </property>
   </action>
  </widget>

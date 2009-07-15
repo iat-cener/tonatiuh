@@ -52,8 +52,9 @@ CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  S
 	if( !parentModelIndex.isValid() ) tgf::SevereError( "CmdPaste called with invalid ModelIndex." );
 
 	InstanceNode* instanceParent = m_sceneModel->NodeFromIndex( parentModelIndex );
+	if( !instanceParent-> GetNode() ) tgf::SevereError( "CmdPaste NULL m_coinParent." );
 	m_coinParent = static_cast< SoBaseKit* > ( instanceParent-> GetNode() );
-	if( !m_coinParent ) tgf::SevereError( "CmdPaste Null m_coinParent." );
+
 
 	m_row = instanceParent->children.size();
 }

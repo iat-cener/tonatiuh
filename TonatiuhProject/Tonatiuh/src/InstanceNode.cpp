@@ -205,7 +205,6 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 				delete reflected;
 				reflected = 0;
 				*modelNode = intersectedChild;
-
 			}
 
 			if( childReflected )
@@ -214,7 +213,6 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 				delete childReflected;
 				childReflected = 0;
 			}
-
 
 		}
 		if( reflected )
