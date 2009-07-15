@@ -43,24 +43,35 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Trace.h"
 #include "TShapeKit.h"
 
-
+/**
+ * Creates a new material insert command that adds a \a material to \a shapekit node in the \a model.
+ *
+ * If \a parent is not null, this command is appended to parent's child list and then owns this command.
+ */
 CmdInsertMaterial::CmdInsertMaterial( TShapeKit* shapeKit, TMaterial* material, SceneModel* model, QUndoCommand * parent )
-: QUndoCommand("InsertMaterial", parent), m_shapeKit( shapeKit ), m_previousMaterial( 0 ), m_material( material ), m_pModel( model ), m_row( -1 )
+: QUndoCommand("InsertMaterial", parent), m_shapeKit( shapeKit ),m_material( material ), m_pModel( model ), m_row( -1 )
 {
 	Trace trace( "CmdInsertMaterial::CmdInsertMaterial", false );
 
 	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertMaterial called with NULL TShapeKit" );
 	if( m_material == 0 ) tgf::SevereError( "CmdInsertMaterial called with NULL TMaterial" );
 	m_material->ref();
-    m_previousMaterial = static_cast< TMaterial* >( m_shapeKit->getPart( "material", false ) );
+
 }
 
+/*!
+ * Destroys the CmdInsertMaterial object.
+ */
 CmdInsertMaterial::~CmdInsertMaterial()
 {
 	Trace trace( "CmdInsertMaterial::~CmdInsertMaterial", false );
     m_material->unref();
 }
 
+/*!
+ * Reverts model state. After undo() is called, the shapekit node will not contain a material type node.
+ * \sa redo().
+ */
 void CmdInsertMaterial::undo()
 {
 	Trace trace( "CmdInsertMaterial::undo", false );
@@ -69,6 +80,10 @@ void CmdInsertMaterial::undo()
 	m_pModel->RemoveCoinNode( m_row, *m_shapeKit );
 }
 
+/*!
+ * Applies a change to the model. After redo() the model will contain new material node located as shapekit type node child.
+ * \sa undo().
+ */
 void CmdInsertMaterial::redo( )
 {
 	Trace trace( "CmdInsertMaterial::redo", false );

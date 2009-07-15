@@ -57,17 +57,11 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
 {
     Trace trace( "CmdLightKitModified::CmdLightKitModified", false );
 
+    if( newLightKit == 0 ) tgf::SevereError( "CmdLightKitModified called with NULL TLightKit*" );
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
     m_pNewLightKit->ref();
 
-    if( m_scene->getPart("lightList[0]", false) )
-    {
-    	std::cout<<"m_pPreviousLightKit"<<std::endl;
-    	//TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
-    	m_pPreviousLightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false)->copy( true ) );
-    }
-
-
+    if( m_scene->getPart("lightList[0]", false) )	m_pPreviousLightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false)->copy( true ) );
 }
 
 /*!
