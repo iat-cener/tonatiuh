@@ -74,6 +74,8 @@ void SolarFurnaceAnalysis::RunSolTrace() const
 		double  heightCells = ( 2 * m_rMax ) / m_matrixHeight;
 		double cellArea = widthCells * heightCells;
 
+		double xSum = 0;
+		double ySum = 0;
 		QMap< QPair< int, int >, Point3D> photonsMatrix;
 		while ( !in.atEnd() )
 		{
@@ -88,6 +90,9 @@ void SolarFurnaceAnalysis::RunSolTrace() const
 				photonCellId.first = floor( photon.x /widthCells ) + m_matrixWidth / 2;
 				photonCellId.second = floor( photon.y /heightCells ) + m_matrixHeight / 2;
 				photonsMatrix.insertMulti( photonCellId, photon );
+
+				xSum += photon.x;
+				ySum += photon.y;
 
 				//std::cout<<photonCellId.first<<" - "<<photonCellId.second<<" - "<<photon<<std::endl;
 			}
@@ -120,6 +125,10 @@ void SolarFurnaceAnalysis::RunSolTrace() const
 			std_dev = std_dev + pow( radiusList[photon] - mean, 2 );;
 		}
 		double radiusStandardDeviation = sqrt( std_dev /( photonsVector.size() - 1 ) );
+
+		//Centro de gravedad
+		double xcentro =  xSum / photonsVector.size();
+		double ycentro =  ySum / photonsVector.size();
 
 
 		QDir resultsDir( *m_saveDirectory );
@@ -154,7 +163,7 @@ void SolarFurnaceAnalysis::RunSolTrace() const
 		}
 
 		saveFluxFile.close();
-		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
+		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<ycentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
 	}
 	saveResultsFile.close();
 }
@@ -192,6 +201,9 @@ void SolarFurnaceAnalysis::RunTonatiuh() const
 		double  heightCells = ( 2 * m_rMax ) / m_matrixHeight;
 		double cellArea = widthCells * heightCells;
 
+		double xSum = 0;
+		double zSum = 0;
+
 		QMap< QPair< int, int >, Point3D> photonsMatrix;
 		while ( !in.atEnd() )
 		{
@@ -204,6 +216,9 @@ void SolarFurnaceAnalysis::RunTonatiuh() const
 			photonCellId.first = floor( photon.x /widthCells ) + m_matrixWidth / 2;
 			photonCellId.second = floor( photon.z /heightCells ) + m_matrixHeight / 2;
 			photonsMatrix.insertMulti( photonCellId, photon );
+
+			xSum += photon.x;
+			zSum += photon.z;
 		}
 
 		dataFile.close();
@@ -232,6 +247,11 @@ void SolarFurnaceAnalysis::RunTonatiuh() const
 		double radiusStandardDeviation = sqrt( std_dev /( photonsVector.size() - 1 ) );
 
 
+		//Centro de gravedad
+		double xcentro =  xSum / photonsVector.size();
+		double zcentro =  zSum / photonsVector.size();
+
+		//Matrix de flujo
 		QDir resultsDir( *m_saveDirectory );
 		QFileInfo photonMapFile( filesName[index] );
 		QFile saveFluxFile( resultsDir.filePath( photonMapFile.baseName().append(".flx")) );
@@ -242,7 +262,7 @@ void SolarFurnaceAnalysis::RunTonatiuh() const
 		}
 
 		QTextStream fluxOut( &saveFluxFile );
-		//Matrix de flujo
+
 		int maxPhotonsInCell = 0;
 
 		int totalPhotons = 0;
@@ -269,7 +289,7 @@ void SolarFurnaceAnalysis::RunTonatiuh() const
 		//Power compute
 		double targetPower = totalPhotons * wPhoton /1000;
 
-		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
+		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<zcentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
 	}
 	saveResultsFile.close();
 }
