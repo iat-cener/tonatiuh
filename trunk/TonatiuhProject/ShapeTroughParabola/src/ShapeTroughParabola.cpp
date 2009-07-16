@@ -76,6 +76,13 @@ ShapeTroughParabola::~ShapeTroughParabola()
 	Trace trace( "ShapeTroughParabola::~ShapeTroughParabola", false );
 }
 
+
+double ShapeTroughParabola::GetArea() const
+{
+	Trace trace( "ShapeTroughParabola::GetArea", false );
+	return -1;
+}
+
 QString ShapeTroughParabola::getIcon()
 {
 	Trace trace( "ShapeTroughParabola::getIcon", false );

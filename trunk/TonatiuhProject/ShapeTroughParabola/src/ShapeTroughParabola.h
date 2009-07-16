@@ -51,6 +51,7 @@ class ShapeTroughParabola : public TShape
 public:
 	ShapeTroughParabola( );
 	static void initClass();
+	double GetArea() const;
 	QString getIcon();
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
