@@ -1071,7 +1071,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->irradiance.getValue();
+	double irradiance = sunShape->irradiance();
 
 	if( !lightKit->getPart( "icon", false ) ) return;
 	TShape* raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
