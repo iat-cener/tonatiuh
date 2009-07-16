@@ -73,6 +73,12 @@ ShapeParabolicRectangle::~ShapeParabolicRectangle()
 	Trace trace( "ShapeParabolicRectangle::~ShapeParabolicRectangle", false );
 }
 
+double ShapeParabolicRectangle::GetArea() const
+{
+	Trace trace( "ShapeParabolicRectangle::GetArea", false );
+	return -1;
+}
+
 QString ShapeParabolicRectangle::getIcon()
 {
 	Trace trace( "ShapeParabolicRectangle::getIcon", false );

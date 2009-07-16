@@ -51,6 +51,7 @@ class ShapeParabolicRectangle : public TShape
 public:
 	ShapeParabolicRectangle();
 	static void initClass();
+	double GetArea() const;
 	QString getIcon();
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
