@@ -74,6 +74,12 @@ ShapeFlatRectangle::~ShapeFlatRectangle()
 	Trace trace( "ShapeFlatRectangle::~ShapeFlatRectangle", false );
 }
 
+double ShapeFlatRectangle::GetArea() const
+{
+	Trace trace( "ShapeFlatRectangle::GetArea", false );
+	return ( m_width.getValue() * m_height.getValue() );
+}
+
 QString ShapeFlatRectangle::getIcon()
 {
 	Trace trace( "ShapeFlatRectangle::getIcon", false );
