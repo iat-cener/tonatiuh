@@ -74,6 +74,14 @@ ShapeParabolicDish::~ShapeParabolicDish()
 	Trace trace( "ShapeParabolicDish::~ShapeParabolicDish", false );
 }
 
+
+double ShapeParabolicDish::GetArea() const
+{
+	Trace trace( "ShapeParabolicDish::GetArea", false );
+
+	return -1;
+}
+
 QString ShapeParabolicDish::getIcon()
 {
 	Trace trace( "ShapeParabolicDish::getIcon", false );
