@@ -15,17 +15,18 @@ class PhotonMapAnalysis
 
 public:
 	PhotonMapAnalysis();
-	~PhotonMapAnalysis();
+	virtual ~PhotonMapAnalysis();
 
 	virtual QString ModelName() const = 0;
-	virtual void Run() const = 0;
+	virtual void RunSolTrace() const = 0;
+	virtual void RunTonatiuh() const = 0;
 	void SetAnalysisData(  QString dataDirectory, QString saveDirectory, int matrixWidth, int matrixHeight );
 
 protected:
 	QString* m_dataDirectory;
 	QString* m_saveDirectory;
 	int m_matrixWidth;
-	int m_matrixHeigth;
+	int m_matrixHeight;
 };
 
 

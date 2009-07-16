@@ -10,7 +10,9 @@
 #include <QMessageBox>
 
 #include "EuroDishAnalysis.h"
+#include "LS3Analysis.h"
 #include "MainWindow.h"
+#include "SolarFurnaceAnalysis.h"
 #include "Trace.h"
 
 
@@ -23,6 +25,8 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
 	setWindowTitle(  tr( "Photons Analyzer" ) );
 
 	m_modelAnalysisList<< new EuroDishAnalysis();
+	m_modelAnalysisList<< new LS3Analysis();
+	m_modelAnalysisList<< new SolarFurnaceAnalysis();
 	for( int index = 0; index < m_modelAnalysisList.count(); index++ )
 		modelCombo->addItem( m_modelAnalysisList.at(index)->ModelName() );
 
@@ -97,7 +101,9 @@ void MainWindow::RunAnalysis( bool )
 
     PhotonMapAnalysis* analysisType = m_modelAnalysisList.at( modelCombo->currentIndex() );
     analysisType->SetAnalysisData( directoryLine->text(), resultsDirectoryLine->text(), matrixWidthSpin->value(), matrixHeightSpin->value() );
-    analysisType->Run();
+
+    if( tonatiuhRadio->isChecked() )	analysisType->RunTonatiuh();
+    else	analysisType->RunSolTrace();
 
     statusbar->clearMessage();
     delete statusbar;
