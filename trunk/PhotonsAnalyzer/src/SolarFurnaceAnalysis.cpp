@@ -1,7 +1,7 @@
 /*
- * EuroDishAnalysis.cpp
+ * SolarFurnaceAnalysis.cpp
  *
- *  Created on: 15-jul-2009
+ *  Created on: 16-jul-2009
  *      Author: amutuberria
  */
 
@@ -16,49 +16,39 @@
 #include <QTextStream>
 #include <QVector>
 
-#include "EuroDishAnalysis.h"
+#include "SolarFurnaceAnalysis.h"
 #include "Point3D.h"
 #include "Trace.h"
 
 
-EuroDishAnalysis::EuroDishAnalysis( )
-:PhotonMapAnalysis(), m_rMax( 0.3 )
+SolarFurnaceAnalysis::SolarFurnaceAnalysis( )
+:PhotonMapAnalysis(), m_rMax( 0.15 )
 {
-	Trace trace( "EuroDishAnalysis::EuroDishAnalysis", false);
+	Trace trace( "SolarFurnaceAnalysis::SolarFurnaceAnalysis", false);
 }
 
-EuroDishAnalysis::~EuroDishAnalysis()
+SolarFurnaceAnalysis::~SolarFurnaceAnalysis()
 {
-	Trace trace( "EuroDishAnalysis::~EuroDishAnalysis", false);
+	Trace trace( "SolarFurnaceAnalysis::~SolarFurnaceAnalysis", false);
 }
 
-QString EuroDishAnalysis::ModelName() const
+QString SolarFurnaceAnalysis::ModelName() const
 {
-	Trace trace( "EuroDishAnalysis::ModelName", false);
-	return QString( "EuroDish" );
+	Trace trace( "SolarFurnaceAnalysis::ModelName", false);
+	return QString( "SolarFurnace" );
 }
 
 
-void EuroDishAnalysis::RunSolTrace() const
+void SolarFurnaceAnalysis::RunSolTrace() const
 {
-	Trace trace( "EuroDishAnalysis::ModelName", false);
+	Trace trace( "SolarFurnaceAnalysis::RunSolTrace", false);
 
 	QDir photonMapsDir( *m_dataDirectory );
 	QStringList filesName =  photonMapsDir.entryList ( QDir::Files );
 
 	QDir resultsDir( *m_saveDirectory );
 
-	int fileNumber = 0;
-	QString fileName = QString( "photonMapsAnalysis_%1.txt" ).arg( QString::number( fileNumber ) );
-	QFile saveResultsFile( resultsDir.filePath( fileName ) );
-
-	while( saveResultsFile.exists() )
-	{
-		fileNumber++;
-		fileName = QString( "photonMapsAnalysis_%1.txt" ).arg( QString::number( fileNumber ) );
-		saveResultsFile.setFileName( resultsDir.filePath( fileName ) );
-	}
-
+	QFile saveResultsFile( resultsDir.filePath( "photonMapsAnalysis.txt") );
 	if( !saveResultsFile.open( QIODevice::WriteOnly ) )
 	{
 		std::cout<<"Can not open flux save file" <<std::endl;
@@ -84,9 +74,6 @@ void EuroDishAnalysis::RunSolTrace() const
 		double  heightCells = ( 2 * m_rMax ) / m_matrixHeight;
 		double cellArea = widthCells * heightCells;
 
-		double xSum = 0;
-		double ySum = 0;
-
 		QMap< QPair< int, int >, Point3D> photonsMatrix;
 		while ( !in.atEnd() )
 		{
@@ -102,8 +89,6 @@ void EuroDishAnalysis::RunSolTrace() const
 				photonCellId.second = floor( photon.y /heightCells ) + m_matrixHeight / 2;
 				photonsMatrix.insertMulti( photonCellId, photon );
 
-				xSum += photon.x;
-				ySum += photon.y;
 				//std::cout<<photonCellId.first<<" - "<<photonCellId.second<<" - "<<photon<<std::endl;
 			}
 		}
@@ -111,6 +96,9 @@ void EuroDishAnalysis::RunSolTrace() const
 		dataFile.close();
 
 		QList< Point3D > photonsVector = photonsMatrix.values();
+
+		//Power compute
+		double targetPower = photonsVector.size() * wPhoton / 1000;
 
 
 		//Radius StandarDeviation Compute
@@ -134,12 +122,6 @@ void EuroDishAnalysis::RunSolTrace() const
 		double radiusStandardDeviation = sqrt( std_dev /( photonsVector.size() - 1 ) );
 
 
-		//Centro de gravedad
-		double xcentro =  xSum / photonsVector.size();
-		double ycentro =  ySum / photonsVector.size();
-
-		//Matrix de flujo
-
 		QDir resultsDir( *m_saveDirectory );
 		QFileInfo photonMapFile( filesName[index] );
 		QFile saveFluxFile( resultsDir.filePath( photonMapFile.baseName().append(".flx")) );
@@ -150,9 +132,8 @@ void EuroDishAnalysis::RunSolTrace() const
 		}
 
 		QTextStream fluxOut( &saveFluxFile );
-
+		//Matrix de flujo
 		int maxPhotonsInCell = 0;
-		int totalPhotons = 0;
 
 		for( int width = 0; width < m_matrixWidth; width++ )
 		{
@@ -163,43 +144,31 @@ void EuroDishAnalysis::RunSolTrace() const
 				matrixCellID.second = height;
 
 				int numberPhotons = photonsMatrix.count( matrixCellID );
-				totalPhotons += numberPhotons;
+
+				//std::cout<<matrixCellID.first<<" - "<<matrixCellID.second<<" - "<<numberPhotons<<std::endl;
 				if( maxPhotonsInCell < numberPhotons ) maxPhotonsInCell = numberPhotons;
 
-				fluxOut<< ( ( numberPhotons * wPhoton ) / cellArea )<<"\t";
+				fluxOut<< ( ( numberPhotons * wPhoton ) / cellArea )/1000<<"\t";
 			}
 			fluxOut<<"\n";
 		}
 
-		//Power compute
-		double targetPower = totalPhotons * wPhoton;
-
 		saveFluxFile.close();
-		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<ycentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
 	}
 	saveResultsFile.close();
 }
 
-void EuroDishAnalysis::RunTonatiuh() const
+void SolarFurnaceAnalysis::RunTonatiuh() const
 {
-	Trace trace( "EuroDishAnalysis::RunTonatiuh", false );
+	Trace trace( "SolarFurnaceAnalysis::RunTonatiuh", false );
 
 	QDir photonMapsDir( *m_dataDirectory );
 	QStringList filesName =  photonMapsDir.entryList ( QDir::Files );
 
 	QDir resultsDir( *m_saveDirectory );
 
-	int fileNumber = 0;
-	QString fileName = QString( "photonMapsAnalysis_%1.txt" ).arg( QString::number( fileNumber ) );
-	QFile saveResultsFile( resultsDir.filePath( fileName ) );
-
-	while( saveResultsFile.exists() )
-	{
-		fileNumber++;
-		fileName = QString( "photonMapsAnalysis_%1.txt" ).arg( QString::number( fileNumber ) );
-		saveResultsFile.setFileName( resultsDir.filePath( fileName ) );
-	}
-
+	QFile saveResultsFile( resultsDir.filePath( "photonMapsAnalysis.txt") );
 	if( !saveResultsFile.open( QIODevice::WriteOnly ) )
 	{
 		std::cout<<"Can not open flux save file" <<std::endl;
@@ -223,9 +192,6 @@ void EuroDishAnalysis::RunTonatiuh() const
 		double  heightCells = ( 2 * m_rMax ) / m_matrixHeight;
 		double cellArea = widthCells * heightCells;
 
-		double xSum = 0;
-		double zSum = 0;
-
 		QMap< QPair< int, int >, Point3D> photonsMatrix;
 		while ( !in.atEnd() )
 		{
@@ -238,14 +204,12 @@ void EuroDishAnalysis::RunTonatiuh() const
 			photonCellId.first = floor( photon.x /widthCells ) + m_matrixWidth / 2;
 			photonCellId.second = floor( photon.z /heightCells ) + m_matrixHeight / 2;
 			photonsMatrix.insertMulti( photonCellId, photon );
-
-			xSum += photon.x;
-			zSum += photon.z;
 		}
 
 		dataFile.close();
 
 		QList< Point3D > photonsVector = photonsMatrix.values();
+
 
 		//Radius StandarDeviation Compute
 		QVector< double > radiusList;
@@ -268,12 +232,6 @@ void EuroDishAnalysis::RunTonatiuh() const
 		double radiusStandardDeviation = sqrt( std_dev /( photonsVector.size() - 1 ) );
 
 
-		//Centro de gravedad
-		double xcentro =  xSum / photonsVector.size();
-		double zcentro =  zSum / photonsVector.size();
-
-		//Matrix de flujo
-
 		QDir resultsDir( *m_saveDirectory );
 		QFileInfo photonMapFile( filesName[index] );
 		QFile saveFluxFile( resultsDir.filePath( photonMapFile.baseName().append(".flx")) );
@@ -282,11 +240,12 @@ void EuroDishAnalysis::RunTonatiuh() const
 			std::cout<<"Can not open flux save file" <<std::endl;
 			return;
 		}
+
 		QTextStream fluxOut( &saveFluxFile );
-
+		//Matrix de flujo
 		int maxPhotonsInCell = 0;
-		int totalPhotons = 0;
 
+		int totalPhotons = 0;
 		for( int width = 0; width < m_matrixWidth; width++ )
 		{
 			for( int height = 0; height < m_matrixHeight; height++ )
@@ -299,16 +258,18 @@ void EuroDishAnalysis::RunTonatiuh() const
 				totalPhotons += numberPhotons;
 				if( maxPhotonsInCell < numberPhotons ) maxPhotonsInCell = numberPhotons;
 
-				fluxOut<< ( ( numberPhotons * wPhoton ) / cellArea )<<"\t";
+				fluxOut<< ( ( numberPhotons * wPhoton ) / cellArea )/1000<<"\t";
+
 			}
 			fluxOut<<"\n";
 		}
 
-		//Power compute
-		double targetPower = totalPhotons * wPhoton;
-
 		saveFluxFile.close();
-		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<zcentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+
+		//Power compute
+		double targetPower = totalPhotons * wPhoton /1000;
+
+		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
 	}
 	saveResultsFile.close();
 }

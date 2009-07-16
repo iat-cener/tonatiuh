@@ -1,7 +1,7 @@
 /*
- * EuroDishAnalysis.cpp
+ * LS3Analyis.cpp
  *
- *  Created on: 15-jul-2009
+ *  Created on: 16-jul-2009
  *      Author: amutuberria
  */
 
@@ -16,32 +16,33 @@
 #include <QTextStream>
 #include <QVector>
 
-#include "EuroDishAnalysis.h"
+#include "LS3Analysis.h"
 #include "Point3D.h"
+#include "tgc.h"
 #include "Trace.h"
 
 
-EuroDishAnalysis::EuroDishAnalysis( )
-:PhotonMapAnalysis(), m_rMax( 0.3 )
+LS3Analysis::LS3Analysis( )
+:PhotonMapAnalysis(), m_receiverRadius( 0.035 ), m_receiverLength( 10.0 )
 {
-	Trace trace( "EuroDishAnalysis::EuroDishAnalysis", false);
+	Trace trace( "LS3Analysis::LS3Analysis", false);
 }
 
-EuroDishAnalysis::~EuroDishAnalysis()
+LS3Analysis::~LS3Analysis()
 {
-	Trace trace( "EuroDishAnalysis::~EuroDishAnalysis", false);
+	Trace trace( "LS3Analysis::~LS3Analysis", false);
 }
 
-QString EuroDishAnalysis::ModelName() const
+QString LS3Analysis::ModelName() const
 {
-	Trace trace( "EuroDishAnalysis::ModelName", false);
-	return QString( "EuroDish" );
+	Trace trace( "LS3Analysis::ModelName", false);
+	return QString( "LS-3" );
 }
 
 
-void EuroDishAnalysis::RunSolTrace() const
+void LS3Analysis::RunSolTrace() const
 {
-	Trace trace( "EuroDishAnalysis::ModelName", false);
+	Trace trace( "LS3Analysis::ModelName", false);
 
 	QDir photonMapsDir( *m_dataDirectory );
 	QStringList filesName =  photonMapsDir.entryList ( QDir::Files );
@@ -80,14 +81,11 @@ void EuroDishAnalysis::RunSolTrace() const
 
 		for( int line = 0; line < 9; line++ ) in.readLine();
 
-		double widthCells = ( 2 * m_rMax ) / m_matrixWidth;
-		double  heightCells = ( 2 * m_rMax ) / m_matrixHeight;
-		double cellArea = widthCells * heightCells;
+		double widthCells = ( 2 * tgc::Pi ) / m_matrixWidth;
+		double heightCells = m_receiverLength / m_matrixHeight;
+		double cellArea = ( ( 2 * tgc::Pi * m_receiverRadius ) / m_matrixWidth ) * ( m_receiverLength / m_matrixHeight );
 
-		double xSum = 0;
-		double ySum = 0;
-
-		QMap< QPair< int, int >, Point3D> photonsMatrix;
+		QMap< QPair< int, int >, QPair< double, double> > photonsMatrix;
 		while ( !in.atEnd() )
 		{
 			QString line = in.readLine();
@@ -95,51 +93,23 @@ void EuroDishAnalysis::RunSolTrace() const
 
 			if( photonInfo.size() == 8 )
 			{
-				Point3D photon( photonInfo[0].toDouble(),photonInfo[1].toDouble(),photonInfo[2].toDouble() );
+				Point3D photonPoint( photonInfo[0].toDouble(), photonInfo[1].toDouble(), photonInfo[2].toDouble() );
+
+				QPair< double, double > photonValue;
+				photonValue.first = atan2( photonPoint.x, photonPoint.z - m_receiverRadius );
+				photonValue.second = photonPoint.y;
 
 				QPair< int, int > photonCellId;
-				photonCellId.first = floor( photon.x /widthCells ) + m_matrixWidth / 2;
-				photonCellId.second = floor( photon.y /heightCells ) + m_matrixHeight / 2;
-				photonsMatrix.insertMulti( photonCellId, photon );
+				photonCellId.first = floor( photonValue.first /widthCells ) + m_matrixWidth / 2;
+				photonCellId.second = floor( photonValue.second /heightCells )+ m_matrixHeight / 2;
+				photonsMatrix.insertMulti( photonCellId, photonValue );
 
-				xSum += photon.x;
-				ySum += photon.y;
-				//std::cout<<photonCellId.first<<" - "<<photonCellId.second<<" - "<<photon<<std::endl;
 			}
 		}
 
 		dataFile.close();
 
-		QList< Point3D > photonsVector = photonsMatrix.values();
-
-
-		//Radius StandarDeviation Compute
-		QVector< double > radiusList;
-		for(int photon = 0; photon < photonsVector.size(); photon++ )
-		{
-			double radius = Distance( Point3D( 0.0, 0.0, 0.0 ), photonsVector[photon] );
-			radiusList << radius;
-		}
-
-		double sum = 0;
-		for(int photon = 0; photon < photonsVector.size(); photon++ )	sum = sum + radiusList[photon];
-		double mean = sum / photonsVector.size();
-
-		double std_dev = 0; // returning zero's
-
-		for(int photon = 0; photon < photonsVector.size(); photon++ )
-		{
-			std_dev = std_dev + pow( radiusList[photon] - mean, 2 );;
-		}
-		double radiusStandardDeviation = sqrt( std_dev /( photonsVector.size() - 1 ) );
-
-
-		//Centro de gravedad
-		double xcentro =  xSum / photonsVector.size();
-		double ycentro =  ySum / photonsVector.size();
-
 		//Matrix de flujo
-
 		QDir resultsDir( *m_saveDirectory );
 		QFileInfo photonMapFile( filesName[index] );
 		QFile saveFluxFile( resultsDir.filePath( photonMapFile.baseName().append(".flx")) );
@@ -164,6 +134,7 @@ void EuroDishAnalysis::RunSolTrace() const
 
 				int numberPhotons = photonsMatrix.count( matrixCellID );
 				totalPhotons += numberPhotons;
+
 				if( maxPhotonsInCell < numberPhotons ) maxPhotonsInCell = numberPhotons;
 
 				fluxOut<< ( ( numberPhotons * wPhoton ) / cellArea )<<"\t";
@@ -175,14 +146,14 @@ void EuroDishAnalysis::RunSolTrace() const
 		double targetPower = totalPhotons * wPhoton;
 
 		saveFluxFile.close();
-		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<ycentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
 	}
 	saveResultsFile.close();
 }
 
-void EuroDishAnalysis::RunTonatiuh() const
+void LS3Analysis::RunTonatiuh() const
 {
-	Trace trace( "EuroDishAnalysis::RunTonatiuh", false );
+	Trace trace( "LS3Analysis::RunTonatiuh", false );
 
 	QDir photonMapsDir( *m_dataDirectory );
 	QStringList filesName =  photonMapsDir.entryList ( QDir::Files );
@@ -219,61 +190,30 @@ void EuroDishAnalysis::RunTonatiuh() const
 		double wPhoton;
 		in >>wPhoton;
 
-		double widthCells = ( 2 * m_rMax ) / m_matrixWidth;
-		double  heightCells = ( 2 * m_rMax ) / m_matrixHeight;
-		double cellArea = widthCells * heightCells;
+		double widthCells = ( 2 * tgc::Pi ) / m_matrixWidth;
+		double heightCells = m_receiverLength / m_matrixHeight;
+		double cellArea = ( ( 2 * tgc::Pi * m_receiverRadius ) / m_matrixWidth ) * ( m_receiverLength / m_matrixHeight );
 
-		double xSum = 0;
-		double zSum = 0;
-
-		QMap< QPair< int, int >, Point3D> photonsMatrix;
+		QMap< QPair< int, int >, QPair< double, double> > photonsMatrix;
 		while ( !in.atEnd() )
 		{
 
 			double id, x, y, z, prev, next;
 			in >> id >> x >> y >> z >> prev >> next;
-			Point3D photon( x, y, z );
+
+			QPair< double, double > photonValue;
+			photonValue.first = atan2( x, y );
+			photonValue.second = z;
 
 			QPair< int, int > photonCellId;
-			photonCellId.first = floor( photon.x /widthCells ) + m_matrixWidth / 2;
-			photonCellId.second = floor( photon.z /heightCells ) + m_matrixHeight / 2;
-			photonsMatrix.insertMulti( photonCellId, photon );
-
-			xSum += photon.x;
-			zSum += photon.z;
+			photonCellId.first = floor( photonValue.first /widthCells ) + m_matrixWidth / 2;
+			photonCellId.second = floor( photonValue.second /heightCells );
+			photonsMatrix.insertMulti( photonCellId, photonValue );
 		}
 
 		dataFile.close();
 
-		QList< Point3D > photonsVector = photonsMatrix.values();
-
-		//Radius StandarDeviation Compute
-		QVector< double > radiusList;
-		for(int photon = 0; photon < photonsVector.size(); photon++ )
-		{
-			double radius = Distance( Point3D( 0.0, 0.0, 0.0 ), photonsVector[photon] );
-			radiusList << radius;
-		}
-
-		double sum = 0;
-		for(int photon = 0; photon < photonsVector.size(); photon++ )	sum = sum + radiusList[photon];
-		double mean = sum / photonsVector.size();
-
-		double std_dev = 0; // returning zero's
-
-		for(int photon = 0; photon < photonsVector.size(); photon++ )
-		{
-			std_dev = std_dev + pow( radiusList[photon] - mean, 2 );;
-		}
-		double radiusStandardDeviation = sqrt( std_dev /( photonsVector.size() - 1 ) );
-
-
-		//Centro de gravedad
-		double xcentro =  xSum / photonsVector.size();
-		double zcentro =  zSum / photonsVector.size();
-
 		//Matrix de flujo
-
 		QDir resultsDir( *m_saveDirectory );
 		QFileInfo photonMapFile( filesName[index] );
 		QFile saveFluxFile( resultsDir.filePath( photonMapFile.baseName().append(".flx")) );
@@ -282,6 +222,7 @@ void EuroDishAnalysis::RunTonatiuh() const
 			std::cout<<"Can not open flux save file" <<std::endl;
 			return;
 		}
+
 		QTextStream fluxOut( &saveFluxFile );
 
 		int maxPhotonsInCell = 0;
@@ -297,6 +238,7 @@ void EuroDishAnalysis::RunTonatiuh() const
 
 				int numberPhotons = photonsMatrix.count( matrixCellID );
 				totalPhotons += numberPhotons;
+
 				if( maxPhotonsInCell < numberPhotons ) maxPhotonsInCell = numberPhotons;
 
 				fluxOut<< ( ( numberPhotons * wPhoton ) / cellArea )<<"\t";
@@ -308,7 +250,7 @@ void EuroDishAnalysis::RunTonatiuh() const
 		double targetPower = totalPhotons * wPhoton;
 
 		saveFluxFile.close();
-		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<zcentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
 	}
 	saveResultsFile.close();
 }

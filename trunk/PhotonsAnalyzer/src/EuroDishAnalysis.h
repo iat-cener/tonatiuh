@@ -18,12 +18,11 @@ public:
 	~EuroDishAnalysis();
 
 	QString ModelName() const;
-	void Run() const;
+	void RunSolTrace() const;
+	void RunTonatiuh() const;
 
 private:
-	double m_sunInputArea;
-	double m_irradiance;
-
+	double m_rMax;
 };
 
 #endif /* EURODISHALYSIS_H_ */

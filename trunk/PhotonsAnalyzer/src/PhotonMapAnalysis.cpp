@@ -10,7 +10,7 @@
 
 
 PhotonMapAnalysis::PhotonMapAnalysis()
-: m_dataDirectory( 0 ), m_saveDirectory( 0 ), m_matrixWidth( -1 ), m_matrixHeigth ( -1 )
+: m_dataDirectory( 0 ), m_saveDirectory( 0 ), m_matrixWidth( -1 ), m_matrixHeight ( -1 )
 {
 	Trace trace( "PhotonMapAnalysis::PhotonMapAnalysis", false);
 }
@@ -28,5 +28,5 @@ void PhotonMapAnalysis::SetAnalysisData(  QString dataDirectory, QString saveDir
 	m_dataDirectory = &dataDirectory;
 	m_saveDirectory = &saveDirectory;
 	m_matrixWidth =  matrixWidth;
-	m_matrixHeigth = matrixHeight;
+	m_matrixHeight = matrixHeight;
 }
