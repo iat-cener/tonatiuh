@@ -98,6 +98,13 @@ SoNode* ShapeSphericalPolygon::copy( SbBool copyConnections ) const
 	return newShapeSphericalPolygon;
 }
 
+
+double ShapeSphericalPolygon::GetArea() const
+{
+	Trace trace( "ShapeSphericalPolygon::GetArea", false );
+	return -1;
+}
+
 QString ShapeSphericalPolygon::getIcon()
 {
 	Trace trace( "ShapeSphericalPolygon::getIcon", false );
