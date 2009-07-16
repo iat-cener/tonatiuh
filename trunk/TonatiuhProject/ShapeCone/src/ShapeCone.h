@@ -54,6 +54,7 @@ class ShapeCone : public TShape
 public:
 	ShapeCone( );
 	static void initClass();
+	double GetArea() const;
 	QString getIcon();
 
 	bool Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg ) const;
