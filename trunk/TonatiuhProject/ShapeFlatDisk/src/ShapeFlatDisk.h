@@ -49,6 +49,7 @@ class ShapeFlatDisk : public TShape
 public:
 	ShapeFlatDisk( );
 	static void initClass();
+	double GetArea() const;
 	QString getIcon();
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
