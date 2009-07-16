@@ -111,6 +111,12 @@ SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 	return newShapeSphere;
 }
 
+double ShapeSphere::GetArea() const
+{
+	Trace trace( "ShapeSphere::GetArea", false );
+	return ( 4 * tgc::Pi * m_radius.getValue() * m_radius.getValue() );
+}
+
 QString ShapeSphere::getIcon()
 {
 	Trace trace( "ShapeSphere::getIcon", false );
