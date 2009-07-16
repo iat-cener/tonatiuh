@@ -54,6 +54,7 @@ public:
 	ShapeSphere( );
 	static void initClass();
     SoNode* copy( SbBool copyConnections ) const;
+	double GetArea() const;
     QString getIcon();
 
     Point3D Sample( double u1, double u2 ) const;
