@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -53,6 +53,7 @@ SunshapePillbox::SunshapePillbox( )
 	Trace trace( "SunshapePillbox::SunshapePillbox", false );
 
 	SO_NODE_CONSTRUCTOR(SunshapePillbox);
+	SO_NODE_ADD_FIELD(m_irradiance, (1000.0));
 	SO_NODE_ADD_FIELD(m_thetaMax, (0.00465));
 
 }
@@ -79,6 +80,11 @@ void SunshapePillbox::generateRayDirection( Vector3D& direction, RandomDeviate& 
     direction.z = sinTheta*cosPhi;
 }
 
+double SunshapePillbox::irradiance( void ) const
+{
+	return m_irradiance.getValue();
+}
+
 SoNode* SunshapePillbox::copy( SbBool copyConnections ) const
 {
 	Trace trace( "SunshapePillbox::copy", false );
@@ -88,7 +94,7 @@ SoNode* SunshapePillbox::copy( SbBool copyConnections ) const
 	SunshapePillbox* newSunShape = dynamic_cast< SunshapePillbox* >( SoNode::copy( copyConnections ) );
 
 	// Copy the m_thetaMin, m_thetaMax private members explicitly
-	newSunShape->irradiance = irradiance;
+	newSunShape->m_irradiance = m_irradiance;
 	newSunShape->m_thetaMax = m_thetaMax;
 
 	return newSunShape;
