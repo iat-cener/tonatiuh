@@ -80,6 +80,13 @@ ShapeCylinder::~ShapeCylinder()
 	Trace trace( "ShapeCylinder::~ShapeCylinder", false );
 }
 
+double ShapeCylinder::GetArea() const
+{
+	Trace trace( "ShapeCylinder::getIcon", false );
+
+	return (2 * tgc::Pi * m_radius.getValue() * m_length.getValue() );
+
+}
 
 QString ShapeCylinder::getIcon()
 {
@@ -223,7 +230,7 @@ Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 {
 	Trace trace( "ShapeCylinder::GetPoint3D", false );
 
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double phi = u * m_phiMax.getValue();
 	double length = v * m_length.getValue();
