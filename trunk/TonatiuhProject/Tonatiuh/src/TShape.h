@@ -56,6 +56,7 @@ public:
 
 	virtual bool IntersectP( const Ray& objectRay ) const = 0;
 	virtual bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const = 0;
+	virtual double GetArea() const = 0;
 	virtual QString getIcon() = 0;
 	virtual Point3D Sample( double u, double v ) const = 0;
 

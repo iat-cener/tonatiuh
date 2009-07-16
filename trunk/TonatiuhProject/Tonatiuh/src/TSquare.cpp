@@ -72,6 +72,12 @@ TSquare::~TSquare()
 
 }
 
+double TSquare::GetArea() const
+{
+	Trace trace( "TSquare::GetArea", false );
+	return ( m_sideLength.getValue() * m_sideLength.getValue() );
+}
+
 QString TSquare::getIcon()
 {
 	Trace trace( "TSquare::getIcon", false );
