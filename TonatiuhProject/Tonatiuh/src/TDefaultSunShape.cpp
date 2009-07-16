@@ -65,8 +65,8 @@ void TDefaultSunShape::initClass()
 TDefaultSunShape::TDefaultSunShape( )
 {
 	SO_NODE_CONSTRUCTOR(TDefaultSunShape);
-	SO_NODE_ADD_FIELD(m_irradiance, (10.0));
-	SO_NODE_ADD_FIELD(m_thetaMax, (-5.0));
+	SO_NODE_ADD_FIELD( irradiance, (10.0) );
+	SO_NODE_ADD_FIELD( m_thetaMax, (-5.0) );
 
 }
 
@@ -97,7 +97,7 @@ SoNode* TDefaultSunShape::copy( SbBool copyConnections ) const
 	TDefaultSunShape* newSunShape = static_cast< TDefaultSunShape* >( SoNode::copy( copyConnections ) );
 
 	// Copy the m_thetaMin, m_thetaMax private members explicitly
-	newSunShape->m_irradiance = m_irradiance;
+	newSunShape->irradiance = irradiance;
 	newSunShape->m_thetaMax = m_thetaMax;
 
 	return newSunShape;

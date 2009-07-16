@@ -92,6 +92,18 @@ TCube::~TCube()
 }
 
 
+double TCube::GetArea() const
+{
+	Trace trace( "TCube::GetArea", false );
+
+	double frontArea = m_width.getValue() * m_height.getValue();
+	double leftArea = m_height.getValue() * m_depth.getValue();
+	double baseArea = m_depth.getValue() * m_depth.getValue();
+
+	return ( 2 * frontArea ) + ( 2 * leftArea ) + (2 * baseArea );
+
+}
+
 QString TCube::getIcon()
 {
 	Trace trace("TCube::getIcon", false );

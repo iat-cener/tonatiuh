@@ -1060,8 +1060,26 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 								 "Tonatiuh can't open export file\n", 1);
 			return;
 	 }
-
 	QDataStream out( &exportFile );
+
+	//Compute photon power
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene ) return;
+	if( !coinScene->getPart( "lightList[0]", false ) ) return;
+	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+
+
+	if( !lightKit->getPart( "tsunshape", false ) ) return;
+	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+	double irradiance = sunShape->irradiance.getValue();
+
+	if( !lightKit->getPart( "icon", false ) ) return;
+	TShape* raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
+	double inputAperture = raycastingShape->GetArea();
+
+	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
+
+	out<< wPhoton;
 
 	if( exportDialog.GetSelectedPhotons() == 0 )
 	{
