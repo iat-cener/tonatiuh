@@ -71,6 +71,12 @@ ShapeFlatDisk::~ShapeFlatDisk()
 	Trace trace( "ShapeFlatDisk::~ShapeFlatDisk", false );
 }
 
+double ShapeFlatDisk::GetArea() const
+{
+	Trace trace( "ShapeFlatDisk::GetArea", false );
+	return ( tgc::Pi * m_radius.getValue() * m_radius.getValue() );
+}
+
 QString ShapeFlatDisk::getIcon()
 {
 	Trace trace( "ShapeFlatDisk::getIcon", false );
