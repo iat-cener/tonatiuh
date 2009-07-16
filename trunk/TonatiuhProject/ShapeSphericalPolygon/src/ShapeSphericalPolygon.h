@@ -55,6 +55,7 @@ public:
 	ShapeSphericalPolygon();
 	static void initClass();
     SoNode* copy( SbBool copyConnections ) const;
+	double GetArea() const;
     QString getIcon();
 
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
