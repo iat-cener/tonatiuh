@@ -65,7 +65,7 @@ void TDefaultSunShape::initClass()
 TDefaultSunShape::TDefaultSunShape( )
 {
 	SO_NODE_CONSTRUCTOR(TDefaultSunShape);
-	SO_NODE_ADD_FIELD( irradiance, (10.0) );
+	SO_NODE_ADD_FIELD( m_irradiance, (1000.0) );
 	SO_NODE_ADD_FIELD( m_thetaMax, (-5.0) );
 
 }
@@ -90,6 +90,11 @@ void TDefaultSunShape::generateRayDirection( Vector3D& direction, RandomDeviate&
     direction.z = sinTheta*sinPhi;
 }
 
+double TDefaultSunShape::irradiance() const
+{
+	return m_irradiance.getValue();
+}
+
 SoNode* TDefaultSunShape::copy( SbBool copyConnections ) const
 {
 	// Use the standard version of the copy method to create
@@ -97,7 +102,7 @@ SoNode* TDefaultSunShape::copy( SbBool copyConnections ) const
 	TDefaultSunShape* newSunShape = static_cast< TDefaultSunShape* >( SoNode::copy( copyConnections ) );
 
 	// Copy the m_thetaMin, m_thetaMax private members explicitly
-	newSunShape->irradiance = irradiance;
+	newSunShape->m_irradiance = m_irradiance;
 	newSunShape->m_thetaMax = m_thetaMax;
 
 	return newSunShape;

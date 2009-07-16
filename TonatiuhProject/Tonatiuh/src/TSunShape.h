@@ -56,8 +56,8 @@ public:
     static void initClass();
 
 	virtual void generateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;
+	virtual double irradiance() const = 0;
 
-	SoSFDouble irradiance;
 protected:
     TSunShape();
     virtual ~TSunShape();
