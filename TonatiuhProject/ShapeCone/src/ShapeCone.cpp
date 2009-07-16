@@ -79,6 +79,13 @@ ShapeCone::~ShapeCone()
 	Trace trace( "ShapeConeFactory::~ShapeCone", false );
 }
 
+
+double ShapeCone::GetArea() const
+{
+	Trace trace( "ShapeConeFactory::GetArea", false );
+	return -1;
+}
+
 QString ShapeCone::getIcon()
 {
 	Trace trace( "ShapeConeFactory::getIcon", false );
