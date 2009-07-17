@@ -23,20 +23,18 @@ public:
 	MainWindow( QWidget* parent = 0, Qt::WindowFlags flags = 0 );
     ~MainWindow();
 
-public slots:
-
-	//File menu actions
-	void on_actionOpen_triggered();
-
 private slots:
 	void on_openButton_clicked();
 	void on_saveButton_clicked();
 
 	void RunAnalysis( bool );
 
+protected:
+	void closeEvent( QCloseEvent* event );
+
 private:
-	bool StartOver( const QString& fileName );
-	bool OkToContinue();
+	void ReadSettings();
+	void WriteSettings();
 
 private:
 	QList< PhotonMapAnalysis* > m_modelAnalysisList;

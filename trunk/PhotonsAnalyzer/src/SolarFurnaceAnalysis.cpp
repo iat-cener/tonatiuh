@@ -39,7 +39,7 @@ QString SolarFurnaceAnalysis::ModelName() const
 }
 
 
-void SolarFurnaceAnalysis::RunSolTrace() const
+void SolarFurnaceAnalysis::RunSolTrace()
 {
 	Trace trace( "SolarFurnaceAnalysis::RunSolTrace", false);
 
@@ -164,11 +164,15 @@ void SolarFurnaceAnalysis::RunSolTrace() const
 
 		saveFluxFile.close();
 		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<ycentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
+
+		//Update Analysis Progress
+		int progress = ( index * 100 ) / filesName.count();
+		emit AnalysisProgressChanged( progress );
 	}
 	saveResultsFile.close();
 }
 
-void SolarFurnaceAnalysis::RunTonatiuh() const
+void SolarFurnaceAnalysis::RunTonatiuh()
 {
 	Trace trace( "SolarFurnaceAnalysis::RunTonatiuh", false );
 
@@ -290,6 +294,10 @@ void SolarFurnaceAnalysis::RunTonatiuh() const
 		double targetPower = totalPhotons * wPhoton /1000;
 
 		resultsOut<<filesName[index]<< "\t"<<photonsVector.size()<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<zcentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )/1000<<"\n";
+
+		//Update Analysis Progress
+		int progress = ( index * 100 ) / filesName.count();
+		emit AnalysisProgressChanged( progress );
 	}
 	saveResultsFile.close();
 }

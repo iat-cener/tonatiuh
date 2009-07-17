@@ -19,8 +19,8 @@ public:
 	~LS3Analysis();
 
 	QString ModelName() const;
-	void RunSolTrace() const;
-	void RunTonatiuh() const;
+	void RunSolTrace();
+	void RunTonatiuh();
 
 private:
 	double m_receiverRadius;

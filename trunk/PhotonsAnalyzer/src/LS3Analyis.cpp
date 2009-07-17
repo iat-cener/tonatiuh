@@ -40,7 +40,7 @@ QString LS3Analysis::ModelName() const
 }
 
 
-void LS3Analysis::RunSolTrace() const
+void LS3Analysis::RunSolTrace()
 {
 	Trace trace( "LS3Analysis::ModelName", false);
 
@@ -147,11 +147,15 @@ void LS3Analysis::RunSolTrace() const
 
 		saveFluxFile.close();
 		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+
+		//Update Analysis Progress
+		int progress = ( index * 100 ) / filesName.count();
+		emit AnalysisProgressChanged( progress );
 	}
 	saveResultsFile.close();
 }
 
-void LS3Analysis::RunTonatiuh() const
+void LS3Analysis::RunTonatiuh()
 {
 	Trace trace( "LS3Analysis::RunTonatiuh", false );
 
@@ -251,6 +255,10 @@ void LS3Analysis::RunTonatiuh() const
 
 		saveFluxFile.close();
 		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+
+		//Update Analysis Progress
+		int progress = ( index * 100 ) / filesName.count();
+		emit AnalysisProgressChanged( progress );
 	}
 	saveResultsFile.close();
 }

@@ -12,16 +12,18 @@
 
 class EuroDishAnalysis : public PhotonMapAnalysis
 {
+    Q_OBJECT
 
 public:
 	EuroDishAnalysis();
 	~EuroDishAnalysis();
 
 	QString ModelName() const;
-	void RunSolTrace() const;
-	void RunTonatiuh() const;
+	void RunSolTrace();
+	void RunTonatiuh();
 
 private:
+	void UpdateProgress();
 	double m_rMax;
 };
 
