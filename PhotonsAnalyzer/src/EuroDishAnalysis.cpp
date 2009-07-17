@@ -39,7 +39,7 @@ QString EuroDishAnalysis::ModelName() const
 }
 
 
-void EuroDishAnalysis::RunSolTrace() const
+void EuroDishAnalysis::RunSolTrace()
 {
 	Trace trace( "EuroDishAnalysis::ModelName", false);
 
@@ -98,8 +98,8 @@ void EuroDishAnalysis::RunSolTrace() const
 				Point3D photon( photonInfo[0].toDouble(),photonInfo[1].toDouble(),photonInfo[2].toDouble() );
 
 				QPair< int, int > photonCellId;
-				photonCellId.first = floor( photon.x /widthCells ) + m_matrixWidth / 2;
-				photonCellId.second = floor( photon.y /heightCells ) + m_matrixHeight / 2;
+				photonCellId.first = int ( floor( photon.x /widthCells ) + m_matrixWidth / 2 );
+				photonCellId.second = int ( floor( photon.y /heightCells ) + m_matrixHeight / 2 );
 				photonsMatrix.insertMulti( photonCellId, photon );
 
 				xSum += photon.x;
@@ -176,11 +176,15 @@ void EuroDishAnalysis::RunSolTrace() const
 
 		saveFluxFile.close();
 		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<ycentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+
+		//Update Analysis Progress
+		int progress = ( index * 100 ) / filesName.count();
+		emit AnalysisProgressChanged( progress );
 	}
 	saveResultsFile.close();
 }
 
-void EuroDishAnalysis::RunTonatiuh() const
+void EuroDishAnalysis::RunTonatiuh()
 {
 	Trace trace( "EuroDishAnalysis::RunTonatiuh", false );
 
@@ -235,8 +239,8 @@ void EuroDishAnalysis::RunTonatiuh() const
 			Point3D photon( x, y, z );
 
 			QPair< int, int > photonCellId;
-			photonCellId.first = floor( photon.x /widthCells ) + m_matrixWidth / 2;
-			photonCellId.second = floor( photon.z /heightCells ) + m_matrixHeight / 2;
+			photonCellId.first = int ( floor( photon.x /widthCells ) + m_matrixWidth / 2 );
+			photonCellId.second = int ( floor( photon.z /heightCells ) + m_matrixHeight / 2 );
 			photonsMatrix.insertMulti( photonCellId, photon );
 
 			xSum += photon.x;
@@ -309,6 +313,10 @@ void EuroDishAnalysis::RunTonatiuh() const
 
 		saveFluxFile.close();
 		resultsOut<<filesName[index]<< "\t"<<totalPhotons<<"\t"<<targetPower<<"\t"<<radiusStandardDeviation<<"\t"<<xcentro<<"\t"<<zcentro<<"\t"<<( ( maxPhotonsInCell * wPhoton ) / cellArea )<<"\n";
+
+		//Update Analysis Progress
+		int progress = ( index * 100 ) / filesName.count();
+		emit AnalysisProgressChanged( progress );
 	}
 	saveResultsFile.close();
 }

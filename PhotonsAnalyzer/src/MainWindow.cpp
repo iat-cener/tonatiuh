@@ -6,13 +6,18 @@
  *
  */
 
+#include <QCloseEvent>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QProgressBar>
+#include <QSettings>
+
 
 #include "EuroDishAnalysis.h"
 #include "LS3Analysis.h"
 #include "MainWindow.h"
 #include "SolarFurnaceAnalysis.h"
+#include "StatusBarWidget.h"
 #include "Trace.h"
 
 
@@ -32,23 +37,13 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
 
 	QPushButton* applyButton = buttonBox->button( QDialogButtonBox::Apply );
 	connect( applyButton, SIGNAL( clicked( bool ) ), this, SLOT( RunAnalysis( bool ) ) );
+
+	ReadSettings();
 }
 
 MainWindow::~MainWindow()
 {
 	Trace trace( "MainWindow::~MainWindow", false );
-}
-
-void MainWindow::on_actionOpen_triggered()
-{
-    Trace trace( "MainWindow::on_actionOpen_triggered", false );
-    if ( OkToContinue() )
-    {
-        QString fileName = QFileDialog::getOpenFileName( this,
-                               tr( "Open binary data files" ), ".",
-                               tr( "Binary data files (*.dat)" ) );
-        if ( !fileName.isEmpty() ) StartOver( fileName );
-    }
 }
 
 void MainWindow::on_openButton_clicked()
@@ -77,9 +72,12 @@ void MainWindow::RunAnalysis( bool )
 {
     Trace trace( "MainWindow::RunAnalysis", false );
 
-    QStatusBar* statusbar = new QStatusBar;
-    setStatusBar( statusbar );
-    statusbar->showMessage( tr( "Running Analysis" ), 0 );
+    QStatusBar* statusbar = statusBar();
+
+    StatusBarWidget* statusBarWidget = new StatusBarWidget;
+    statusbar->addWidget( statusBarWidget, width() );
+    statusBarWidget->SetText( "Running Analysis" );
+    statusBarWidget->SetProgress( 0 );
 
     if( directoryLine->text().isEmpty() )
 	{
@@ -102,54 +100,63 @@ void MainWindow::RunAnalysis( bool )
     PhotonMapAnalysis* analysisType = m_modelAnalysisList.at( modelCombo->currentIndex() );
     analysisType->SetAnalysisData( directoryLine->text(), resultsDirectoryLine->text(), matrixWidthSpin->value(), matrixHeightSpin->value() );
 
+    connect( analysisType, SIGNAL( AnalysisProgressChanged( int ) ), statusBarWidget, SLOT( SetProgress( int ) ) );
+
     if( tonatiuhRadio->isChecked() )	analysisType->RunTonatiuh();
     else	analysisType->RunSolTrace();
 
-    statusbar->clearMessage();
-    delete statusbar;
+    statusBarWidget->SetProgress( 100 );
+    statusBarWidget->SetText( "Analysis successfully finished" );
+
+    statusbar->removeWidget( statusBarWidget );
+    delete statusBarWidget;
 }
 
-bool MainWindow::OkToContinue()
+void MainWindow::closeEvent( QCloseEvent* event )
 {
-	return true;
+    Trace trace( "MainWindow::closeEvent", false );
+
+    WriteSettings();
+    event->accept();
 }
 
-bool MainWindow::StartOver( const QString& /* fileName */ )
+void MainWindow::ReadSettings()
 {
-    Trace trace( "MainWindow::StartOver", false );
-/*
-	actionDisplay_rays->setEnabled( false );
-	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
-	{
-		m_document->GetRoot()->removeChild(m_pRays);
-		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
-		m_pRays = 0;
+    Trace trace( "MainWindow::ReadSettings", false );
 
-	}
-	m_commandStack->clear();
-	SetEnabled_SunPositionCalculator( 0 );
+    QSettings settings( "NREL UTB CENER", "PhotonsAnalyzer" );
+    QRect rect = settings.value( "geometry", QRect(200, 200, 400, 400 ) ).toRect();
+    move( rect.topLeft() );
+    resize( rect.size() );
+    directoryLine->setText( settings.value( "dataDirectory", "" ).toString() );
 
-	QStatusBar* statusbar = new QStatusBar;
-	setStatusBar( statusbar );
+    modelCombo->setCurrentIndex( settings.value( "modelIndex", 0 ).toInt() );
 
-    if( fileName.isEmpty() )
-    {
-    	m_document->New();
-    	statusbar->showMessage( tr( "New file" ), 2000 );
-    }
-    else
-    {
-    	if( !m_document->ReadFile( fileName ) )
-		{
-			statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
-			return false;
-		}
-        //statusBar()->showMessage( tr( "File loaded" ), 2000 );
-    	statusbar->showMessage( tr( "File loaded" ), 2000 );
-    }
+    int fileType = settings.value( "fileType", 0 ).toInt();
+    if( fileType == 0 ) tonatiuhRadio->setChecked( true );
+    else solTraceRadio->setChecked( true );
 
-    SetCurrentFile( fileName );
-	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-*/
-    return true;
+    matrixWidthSpin->setValue( settings.value( "matrixWidth", 50 ).toInt() );
+    matrixHeightSpin->setValue( settings.value( "matrixHeight",  50 ).toInt() );
+
+	resultsDirectoryLine->setText( settings.value( "resultsDirectory", "" ).toString() );
+}
+
+void MainWindow::WriteSettings()
+{
+    Trace trace( "MainWindow::WriteSettings", false );
+
+	QSettings settings( "NREL UTB CENER", "PhotonsAnalyzer" );
+	settings.setValue( "geometry", geometry() );
+    settings.setValue( "dataDirectory", directoryLine->text() );
+
+    settings.setValue( "modelIndex", modelCombo->currentIndex() );
+
+    if( tonatiuhRadio->isChecked() ) settings.setValue( "fileType", 0 );
+    else settings.setValue( "fileType", 1 );
+
+    settings.setValue( "matrixWidth", matrixWidthSpin->value() );
+    settings.setValue( "matrixHeight", matrixHeightSpin->value() );
+
+    settings.setValue( "resultsDirectory", resultsDirectoryLine->text() );
 }
