@@ -45,6 +45,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeFactory.h"
 #include "TSunShapeFactory.h"
 
+/**
+ * Creates a new dialog for the light definition.
+ *
+ * The dialog present a list given by \a sunshapeFactoryList to define light sunshape, \a shapeFactoryList for the light input
+ * aperture and shows the the light parameters defined in the light \a currentLightKit.
+ */
+
 LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TShapeFactory* > shapeFactoryList, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent )
 :QDialog( parent ), m_currentLightKit( currentLightKit ), m_currentSunShapeIndex( -1 ), m_currentShapeIndex( -1 ),
 m_newShape( 0 ), m_newSunShape( 0 )
@@ -75,11 +82,17 @@ m_newShape( 0 ), m_newSunShape( 0 )
 	SunshapeTab();
 }
 
+/*!
+ * Destroys the LightDialog object.
+ */
 LightDialog::~LightDialog()
 {
 
 }
 
+/*!
+ * Resutrn a lightkit with the parameters defined in the dialog.
+ */
 TLightKit* LightDialog::GetTLightKit()
 {
 	Trace trace( "LightDialog::GetTLightKit", false );
@@ -93,6 +106,9 @@ TLightKit* LightDialog::GetTLightKit()
 
 }
 
+/*!
+ * Changes parameters of the shunshape paraneters view to sunshape type given by \a index.
+ */
 void LightDialog::changeSunshape( int index )
 {
 	Trace trace( "LightDialog::changeSunshape", false );
@@ -116,6 +132,11 @@ void LightDialog::changeSunshape( int index )
 	nodeContainer->setFixedSize( QSize( 170, 100 ) );
 	frameLayout->addWidget( nodeContainer );
 }
+
+
+/*!
+ * Changes parameters of the shape paraneters view to shape type given by \a index.
+ */
 
 void LightDialog::changeShape( int index )
 {
@@ -142,7 +163,9 @@ void LightDialog::changeShape( int index )
 	frameLayout->addWidget( nodeContainer );
 }
 
-
+/*!
+ * Updates the sun position tab values to the values of the current light.
+ */
 void LightDialog::SunPositionTab()
 {
 	Trace trace( "LightDialog::SunshapeTab", false );
@@ -150,12 +173,15 @@ void LightDialog::SunPositionTab()
 	if( m_currentLightKit )
 	{
 		azimuthSpin->setValue( m_currentLightKit->azimuth.getValue() / tgc::Degree );
-		elevationSpin->setValue( ( 90 - m_currentLightKit->zenith.getValue() ) / tgc::Degree );
+		elevationSpin->setValue( 90 - ( m_currentLightKit->zenith.getValue() / tgc::Degree ) );
 		distanceSpin->setValue( m_currentLightKit->distance.getValue() );
 	}
 
 }
 
+/*!
+ * Updates the dialog values to the values of the current light.
+ */
 void LightDialog::SunshapeTab()
 {
 	Trace trace( "LightDialog::SunshapeTab", false );
@@ -163,7 +189,6 @@ void LightDialog::SunshapeTab()
 	SunshapeBox();
 	ShapeBox();
 }
-
 
 void LightDialog::ShapeBox( )
 {
