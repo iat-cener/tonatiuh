@@ -52,4 +52,4 @@ cp src/lib/Projections/*.h /usr/local/include/marble
 cp src/lib/libmarblewidget.* /usr/local/lib
 }}}
 
-[InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
