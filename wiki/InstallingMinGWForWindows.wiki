@@ -30,6 +30,6 @@ During the execution of the installer:
 
 After that, enter the path of the directory or folder where you want to install the program, and you are done.
 
-Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instruction in the wiki page: [Installing_MSYS_for_Windows]. 
+Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do it, follow the instruction here: [Installing_MSYS_for_Windows]. 
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
