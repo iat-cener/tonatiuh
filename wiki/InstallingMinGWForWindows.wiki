@@ -7,14 +7,15 @@ To be able to further develop Tonatiuh under Windows XP or Windows Vista, you ne
 
 = Details =
 
-Download the latest stable version of the MinGW installer. Do it, click on the following figure to go to the "Files" section of the MinGW project website at !SourceForge.
+Download the latest stable version of the MinGW installer. Do it, click on the following figure (Figure 1) to go to the "Files" section of the MinGW project website at !SourceForge.
 
 ||[http://sourceforge.net/projects/mingw/files http://lh3.ggpht.com/_tmEVMS15i5Y/Smsd1ThGKMI/AAAAAAAAANU/4OVmgnQZpEs/s800/MinGW_SourceForge_01.jpg]||
-||*Figure 1. View of the "Files" section of MinGW in SourceForge.* ||
+||*Figure 1. View of the "Files" section of MinGW in !SourceForge.* ||
 
-Once you are there do a vertical scroll until you find the link to the executable file: 'MinGW-5.1.4.exe' as shown on the next figure, and click on it.
+Once you are there, do a vertical scroll until you find the link to the executable file: 'MinGW-5.1.4.exe' as shown in Figure 2, and click on it.
 
-http://lh3.ggpht.com/_tmEVMS15i5Y/SmsnrD7ncbI/AAAAAAAAAQU/grPuoNCyqhc/s800/MinGW_SourceForge_02.jpg
+|| http://lh3.ggpht.com/_tmEVMS15i5Y/SmsnrD7ncbI/AAAAAAAAAQU/grPuoNCyqhc/s800/MinGW_SourceForge_02.jpg ||
+||*Figure 2. View of the link to download the MinGW installer.*||
 
 A window will popup asking you if you want to excute the file or store it in your computer. Store it in your PC and, after that, execute it.
  
