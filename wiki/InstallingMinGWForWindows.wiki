@@ -11,7 +11,7 @@ Download the MinGW installer entitled 'MinGW-5.1.4.exe installer' from this [htt
 
 [http://lh4.ggpht.com/_tmEVMS15i5Y/SmsIjjUmsoI/AAAAAAAAANI/fEX9BmaQbCU/s800/MinGW_SourceForge_01_small.jpg]
 
-<a href="http://lh4.ggpht.com/_tmEVMS15i5Y/SmsIjjUmsoI/AAAAAAAAANI/fEX9BmaQbCU/s800/MinGW_SourceForge_01_small.jpg" target="_blank">Go to Yahoo</a> 
+<a href="http://lh4.ggpht.com/_tmEVMS15i5Y/SmsIjjUmsoI/AAAAAAAAANI/fEX9BmaQbCU/s800/MinGW_SourceForge_01_small.jpg" target="_blank">http://lh4.ggpht.com/_tmEVMS15i5Y/SmsIjjUmsoI/AAAAAAAAANI/fEX9BmaQbCU/s800/MinGW_SourceForge_01_small.jpg</a> 
 
 During the execution of the installer, select just the g++ compiler to install. Then, accept the suggestion of installing the program in the C:\MinGW directory, and you are done.
 
