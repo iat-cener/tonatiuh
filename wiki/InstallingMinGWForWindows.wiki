@@ -27,7 +27,6 @@ During the execution of the installer:
   * Select "MinGW base tools", "g++ compiler", and "MinGW make" as the components to install (see Figure 3).
 || http://lh3.ggpht.com/_tmEVMS15i5Y/SmtBOR7qt9I/AAAAAAAAAQY/KUKVBVa61Cg/s800/MinGW_Installer_components_dialog.jpg ||
 || *Figure 3. Dialog of the MinGW installer to choose the components to install.* ||
-
 After that, enter the path of the directory or folder where you want to install the program, and you are done.
 
 Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instruction in the wiki page: [Installing_MSYS_for_Windows]. 
