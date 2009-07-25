@@ -19,7 +19,17 @@ Once you are there, do a vertical scroll until you find the link to the executab
 
 A window will popup asking you if you want to excute the file or store it in your computer. Store it in your PC and, after that, execute it.
  
-During the execution of the installer, select just the g++ compiler to install. Then, accept the suggestion of installing the program in the C:\MinGW directory, and you are done.
+During the execution of the installer:
+Select "Download and install", 
+Click the "I gree" button to accept the terms of the license agreement,
+Select "Current" to install the current official release version of the program,
+Select "Custom" as the type of install, and 
+Select "MinGW base tools", "g++ compiler", and "MinGW make" as the components to install (see Figure 3).
+
+|| http://lh3.ggpht.com/_tmEVMS15i5Y/SmtBOR7qt9I/AAAAAAAAAQY/KUKVBVa61Cg/s800/MinGW_Installer_components_dialog.jpg ||
+|| *Figure 3. Dialog of the MinGW installer to choose the components to install.* ||
+
+Then, accept the suggestion of installing the program in the C:\MinGW directory, and you are done.
 
 Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instruction in the correspondigne wiki page [Installing_MSYS_for_Windows]. 
 
