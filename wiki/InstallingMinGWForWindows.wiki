@@ -28,8 +28,8 @@ During the execution of the installer:
 || http://lh3.ggpht.com/_tmEVMS15i5Y/SmtBOR7qt9I/AAAAAAAAAQY/KUKVBVa61Cg/s800/MinGW_Installer_components_dialog.jpg ||
 || *Figure 3. Dialog of the MinGW installer to choose the components to install.* ||
 
-Then, enter the path of the directory or folder where you want to install the program, and you are done.
+After that, enter the path of the directory or folder where you want to install the program, and you are done.
 
-Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instruction in the correspondigne wiki page [Installing_MSYS_for_Windows]. 
+Once MinGW is properly installed, the next step is to install the MSYS shell environment. To do this follow the instruction in the wiki page: [Installing_MSYS_for_Windows]. 
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
