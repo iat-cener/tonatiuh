@@ -36,32 +36,72 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QApplication>
+#include <Inventor/SbLinear.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <QString>
+#include <iostream>
 
-#include <Inventor/Qt/SoQt.h>
-#include <qxcppunit/testrunner.h>
-#include <qxcppunit/testrunner.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
+#include "tgf.h"
+#include "TestTGF.h"
+#include "Matrix4x4.h"
+#include "Transform.h"
 
-#include "TShape.h"
-#include "TCube.h"
-#include "TSquare.h"
+using namespace std;
 
-int main(int argc, char *argv[])
+CPPUNIT_TEST_SUITE_REGISTRATION( TestTGF );
+
+void TestTGF::setUp()
 {
-	QApplication app(argc, argv);
 
-	SoQt::init( (QWidget *) NULL );
-	TShape::initClass();
-	TCube::initClass();
-	TSquare::initClass();
-
-	QxCppUnit::TestRunner runner;
-
-	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
-	runner.run();
-
-	return 0;
 }
 
+void TestTGF::tearDown()
+{
 
+}
+
+void TestTGF::test_isOdd()
+{
+	int test = 1;
+	bool answer;
+
+	answer = tgf::IsOdd(test);
+	CPPUNIT_ASSERT_MESSAGE("Expected true, got false", answer);
+	answer = tgf::IsOdd(test+1);
+
+	CPPUNIT_ASSERT_EQUAL( answer, false );
+}
+
+void TestTGF::test_Quadratic()
+{
+	double a = 1;
+	double b = -3;
+	double c = -4;
+	double val1,val2;
+
+	double answer1 = -1;
+	double answer2 = 4;
+
+	tgf::Quadratic(a,b,c,&val1,&val2);
+
+	CPPUNIT_ASSERT_EQUAL( val1, answer1 );
+	CPPUNIT_ASSERT_EQUAL( val2, answer2 );
+
+}
+
+void TestTGF::test_MatrixFromTransform()
+{
+	Transform tran(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+	SbMatrix start(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+	SbMatrix expected = start.transpose();
+	SbMatrix result;
+
+	result = tgf::MatrixFromTransform(tran);
+	SbBool answer = expected.equals(result.getValue(),.01f);
+
+	CPPUNIT_ASSERT_MESSAGE("Matrix from transform failed", answer);
+}

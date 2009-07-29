@@ -36,32 +36,61 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QApplication>
+#include "TestRay.h"
+#include "Ray.h"
+#include"Point3D.h"
+#include "Vector3D.h"
+#include "tgc.h"
+#include "Trace.h"
+#include <iostream>
 
-#include <Inventor/Qt/SoQt.h>
-#include <qxcppunit/testrunner.h>
-#include <qxcppunit/testrunner.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
 
-#include "TShape.h"
-#include "TCube.h"
-#include "TSquare.h"
+CPPUNIT_TEST_SUITE_REGISTRATION( TestRay );
 
-int main(int argc, char *argv[])
+class Vector3D;
+class Point3D;
+class Ray;
+
+void TestRay ::setUp()
 {
-	QApplication app(argc, argv);
-
-	SoQt::init( (QWidget *) NULL );
-	TShape::initClass();
-	TCube::initClass();
-	TSquare::initClass();
-
-	QxCppUnit::TestRunner runner;
-
-	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
-	runner.run();
-
-	return 0;
+    Point3D origin( 1.0, -1.0, 2.0 );
+    Vector3D direction( -1.0, 1.0, 3.0 );
+    double mint( 1.0 );
+    double maxt( 3.0 );
+    m_ray1 = new Ray( origin, direction, mint, maxt );
 }
 
+void TestRay ::tearDown()
+{
+	delete m_ray1;
+}
+
+void TestRay:: test_direction()
+{
+	CPPUNIT_ASSERT_EQUAL( m_ray1->direction.x, -1.0 );
+    CPPUNIT_ASSERT_EQUAL( m_ray1->direction.y, 1.0 );
+    CPPUNIT_ASSERT_EQUAL( m_ray1->direction.z, 3.0 );
+}
+
+void TestRay::test_maxt()
+{
+	CPPUNIT_ASSERT_EQUAL( m_ray1->maxt, 3.0 );
+}
+
+void TestRay::test_mint()
+{
+	CPPUNIT_ASSERT_EQUAL( m_ray1->mint, 1.0 );
+}
+
+void TestRay::test_origin()
+{
+	CPPUNIT_ASSERT_EQUAL( m_ray1->origin.x, 1.0 );
+    CPPUNIT_ASSERT_EQUAL( m_ray1->origin.y, -1.0 );
+    CPPUNIT_ASSERT_EQUAL( m_ray1->origin.z, 2.0 );
+}
+
+void TestRay::test_operator()
+{
+
+}
 

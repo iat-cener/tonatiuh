@@ -37,30 +37,46 @@ unix {
 }
 
 # Input
-HEADERS += *.h \
-			../../TonatiuhProject/Tonatiuh/src/BBox.h \
-			../../TonatiuhProject/Tonatiuh/src/DifferentialGeometry.h \
-			../../TonatiuhProject/Tonatiuh/src/Matrix4x4.h \
-			../../TonatiuhProject/Tonatiuh/src/NormalVector.h \
-			../../TonatiuhProject/Tonatiuh/src/Point3D.h \
-			../../TonatiuhProject/Tonatiuh/src/Ray.h \
-			../../TonatiuhProject/Tonatiuh/src/RefCount.h \
-			../../TonatiuhProject/Tonatiuh/src/Trace.h \
-			../../TonatiuhProject/Tonatiuh/src/Transform.cpp \
-			../../TonatiuhProject/Tonatiuh/src/Vector3D.h
-		
-SOURCES += *.cpp \
-			../../TonatiuhProject/Tonatiuh/src/BBox.cpp \
-			../../TonatiuhProject/Tonatiuh/src/DifferentialGeometry.cpp \
-			../../TonatiuhProject/Tonatiuh/src/Matrix4x4.cpp \
-			../../TonatiuhProject/Tonatiuh/src/NormalVector.cpp \
-			../../TonatiuhProject/Tonatiuh/src/Point3D.cpp \
-			../../TonatiuhProject/Tonatiuh/src/Ray.cpp \
-			../../TonatiuhProject/Tonatiuh/src/RefCount.cpp \
-			../../TonatiuhProject/Tonatiuh/src/Trace.cpp \
-			../../TonatiuhProject/Tonatiuh/src/Transform.cpp \
-			../../TonatiuhProject/Tonatiuh/src/Vector3D.cpp 
-    
+HEADERS = *.h \ 
+		../../TonatiuhProject/Tonatiuh/src/BBox.h \
+           	../../TonatiuhProject/Tonatiuh/src/DifferentialGeometry.h \
+ 		../../TonatiuhProject/Tonatiuh/src/InstanceNode.h \
+           	../../TonatiuhProject/Tonatiuh/src/Matrix4x4.h \
+           	../../TonatiuhProject/Tonatiuh/src/NormalVector.h \
+           	../../TonatiuhProject/Tonatiuh/src/Photon.h \
+           	../../TonatiuhProject/Tonatiuh/src/Point3D.h \
+           	../../TonatiuhProject/Tonatiuh/src/Ray.h \
+           	../../TonatiuhProject/Tonatiuh/src/RefCount.h \
+           	../../TonatiuhProject/Tonatiuh/src/tgf.h \
+		../../TonatiuhProject/Tonatiuh/src/TCube.h \
+           	../../TonatiuhProject/Tonatiuh/src/TMaterial.h \
+           	../../TonatiuhProject/Tonatiuh/src/Trace.h  \
+           	../../TonatiuhProject/Tonatiuh/src/Transform.h \
+           	../../TonatiuhProject/Tonatiuh/src/TShape.h \ 
+           	../../TonatiuhProject/Tonatiuh/src/TShapeKit.h \
+		../../TonatiuhProject/Tonatiuh/src/TSquare.h \
+           	../../TonatiuhProject/Tonatiuh/src/Vector3D.h
+
+SOURCES = *.cpp  \ 
+		../../TonatiuhProject/Tonatiuh/src/BBox.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/DifferentialGeometry.cpp \
+ 		../../TonatiuhProject/Tonatiuh/src/InstanceNode.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/Matrix4x4.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/NormalVector.cpp \ 
+           	../../TonatiuhProject/Tonatiuh/src/Photon.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/Point3D.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/Ray.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/RefCount.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/tgf.cpp \
+		../../TonatiuhProject/Tonatiuh/src/TCube.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/TMaterial.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/Trace.cpp  \
+           	../../TonatiuhProject/Tonatiuh/src/Transform.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/TShape.cpp \ 
+           	../../TonatiuhProject/Tonatiuh/src/TShapeKit.cpp \
+		../../TonatiuhProject/Tonatiuh/src/TSquare.cpp \
+           	../../TonatiuhProject/Tonatiuh/src/Vector3D.cpp	
+	    
 CONFIG(debug, debug|release) {
         DESTDIR = debug/
     }

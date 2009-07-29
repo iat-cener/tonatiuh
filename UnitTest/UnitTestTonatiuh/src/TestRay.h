@@ -36,32 +36,44 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QApplication>
+#ifndef RAYTEST_H_
+#define RAYTEST_H_
 
-#include <Inventor/Qt/SoQt.h>
-#include <qxcppunit/testrunner.h>
-#include <qxcppunit/testrunner.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/extensions/HelperMacros.h>
+#include <iostream>
+#include "Point3D.h"
+#include "Vector3D.h"
 
-#include "TShape.h"
-#include "TCube.h"
-#include "TSquare.h"
+struct Point3D;
+struct Vector3D;
+class Ray;
 
-int main(int argc, char *argv[])
+class TestRay : public CPPUNIT_NS::TestFixture
 {
-	QApplication app(argc, argv);
+    CPPUNIT_TEST_SUITE(TestRay);
+    CPPUNIT_TEST(test_direction);
+    CPPUNIT_TEST(test_maxt);
+    CPPUNIT_TEST(test_mint);
+    CPPUNIT_TEST(test_origin);
+    CPPUNIT_TEST(test_operator);
+    CPPUNIT_TEST_SUITE_END();
 
-	SoQt::init( (QWidget *) NULL );
-	TShape::initClass();
-	TCube::initClass();
-	TSquare::initClass();
+public:
+	void setUp();
+	void tearDown();
 
-	QxCppUnit::TestRunner runner;
+protected:
+	void test_direction();
+	void test_maxt();
+	void test_mint();
+	void test_origin();
+	void test_operator();
 
-	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
-	runner.run();
+private:
+	Ray* m_ray1;
+};
 
-	return 0;
-}
-
+#endif
 
