@@ -36,32 +36,50 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QApplication>
+#ifndef TESTCUBE_H_
+#define TESTCUBE_H_
 
-#include <Inventor/Qt/SoQt.h>
-#include <qxcppunit/testrunner.h>
-#include <qxcppunit/testrunner.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-
+#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/SbLinear.h>
 #include "TShape.h"
+#include <cppunit/TestFixture.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/extensions/HelperMacros.h>
+#include "BBox.h"
+#include "Point3D.h"
 #include "TCube.h"
-#include "TSquare.h"
 
-int main(int argc, char *argv[])
+class BBox;
+struct Point3D;
+struct NormalVector;
+
+class TestCube: public CPPUNIT_NS::TestFixture
 {
-	QApplication app(argc, argv);
+	CPPUNIT_TEST_SUITE(TestCube);
+	CPPUNIT_TEST(test_computeBBox);
+	CPPUNIT_TEST(test_get_Normal);
+	CPPUNIT_TEST(test_get_Icon);
+	CPPUNIT_TEST(test_intersect);
+	CPPUNIT_TEST(test_intersectP);
+	CPPUNIT_TEST(test_Sample);
+	CPPUNIT_TEST_SUITE_END();
 
-	SoQt::init( (QWidget *) NULL );
-	TShape::initClass();
-	TCube::initClass();
-	TSquare::initClass();
+public:
+	void setUp();
+	void tearDown();
 
-	QxCppUnit::TestRunner runner;
+protected:
+	void test_init_Class();
+	void test_computeBBox();
+	void test_get_Normal();
+	void test_get_Icon();
+	void test_intersect();
+	void test_intersectP();
+	void test_Sample();
 
-	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
-	runner.run();
+private:
+	SbBox3f m_bbox;
+    TCube* m_cube;
+};
 
-	return 0;
-}
-
-
+#endif /* TESTCUBE_H_ */

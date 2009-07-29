@@ -36,32 +36,37 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QApplication>
+#ifndef TESTTGF_H_
+#define TESTTGF_H_
 
-#include <Inventor/Qt/SoQt.h>
-#include <qxcppunit/testrunner.h>
-#include <qxcppunit/testrunner.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/SbLinear.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/extensions/HelperMacros.h>
 
-#include "TShape.h"
-#include "TCube.h"
-#include "TSquare.h"
+class SbMatrix;
+struct Point3D;
+struct NormalVector;
 
-int main(int argc, char *argv[])
+class TestTGF: public CPPUNIT_NS::TestFixture
 {
-	QApplication app(argc, argv);
+	CPPUNIT_TEST_SUITE(TestTGF);
+	CPPUNIT_TEST(test_isOdd);
+	CPPUNIT_TEST(test_Quadratic);
+	CPPUNIT_TEST(test_MatrixFromTransform);
+	CPPUNIT_TEST_SUITE_END();
 
-	SoQt::init( (QWidget *) NULL );
-	TShape::initClass();
-	TCube::initClass();
-	TSquare::initClass();
+public:
+	void setUp();
+	void tearDown();
 
-	QxCppUnit::TestRunner runner;
+protected:
+	void test_isOdd();
+	void test_Quadratic();
+	void test_MatrixFromTransform();
+private:
 
-	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
-	runner.run();
+};
 
-	return 0;
-}
-
-
+#endif /* TESTTGF_H_ */
