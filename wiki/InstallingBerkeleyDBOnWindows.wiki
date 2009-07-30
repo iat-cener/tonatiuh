@@ -2,24 +2,31 @@
 
 == Berkeley DB ==
 
-Add your content here.
+Oracle Berkeley DB is the industry-leading open source, embeddable database engine that provides developers with fast, reliable, local persistence with zero administration. Oracle Berkeley DB is a library that links directly into your application.
 
 
 == Installing ==
+
+Download the latest stable version of the Berkeley DB from the [http://www.oracle.com/technology/software/products/berkeley-db/index.html link] to your home directory. Open a Msys shell and extract downloaded files typing:
 
 {{{
 tar -xzvf db-4.7.25.tar.gz
 }}}
 
+Change to the build directory with:
 {{{
-cd db-4.7.25
+cd db-4.7.25/build_unix
 }}}
 
+To configure the Berkeley DB type the following command:
 {{{
 ../dist/configure --enable-mingw --enable-cxx --prefix=/usr/local
 }}}
 
+To build and install the library use the commands:
 {{{
 make
 make install
 }}}
+
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
