@@ -29,4 +29,17 @@ make
 make install
 }}}
 
+== Building an application==
+To build an application with Berkeley DB library add the library headers path to include
+variable as: 
+{{{
+INCLUDEPATH += 		$$(TDE_ROOT)/local/include 
+
+}}}
+
+Also, add the library to LIBS variable:
+{{{
+LIBS += -L$$(TDE_ROOT)/local/lib -ldb_cxx
+}}}
+
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
