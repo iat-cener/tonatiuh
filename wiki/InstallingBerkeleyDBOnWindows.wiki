@@ -1,0 +1,25 @@
+#summary One-sentence summary of this page.
+
+== Berkeley DB ==
+
+Add your content here.
+
+
+== Installing ==
+
+{{{
+tar -xzvf db-4.7.25.tar.gz
+}}}
+
+{{{
+cd db-4.7.25
+}}}
+
+{{{
+../dist/configure --enable-mingw --enable-cxx --prefix=/usr/local
+}}}
+
+{{{
+make
+make install
+}}}
