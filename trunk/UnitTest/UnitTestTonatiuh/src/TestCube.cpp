@@ -67,11 +67,13 @@ void TestCube::setUp()
 	m_cube->m_width = 4.0;
 	m_cube->m_height = 5.0;
 	m_cube->m_depth = 3.0;
+	m_cube->ref();
 }
 
 void TestCube::tearDown()
 {
 
+	m_cube->unref();
 }
 
 void TestCube::test_computeBBox()
