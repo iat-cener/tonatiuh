@@ -211,6 +211,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	{
 		return false;
 	}
+
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );
