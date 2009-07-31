@@ -8,7 +8,7 @@ CONFIG       += plugin debug_and_release
 
 INCLUDEPATH += . \
 				src \
-				../Tonatiuh/src \
+				$$(TONATIUH_ROOT)/src \
 				$$(TDE_ROOT)/local/include
 					
 win32{
@@ -18,23 +18,23 @@ win32{
 
 # Input
 HEADERS = *.h \
-           	../Tonatiuh/src/Trace.h \
-           	../Tonatiuh/src/TSunShape.h 
+           	$$(TONATIUH_ROOT)/src/Trace.h \
+           	$$(TONATIUH_ROOT)/src/TSunShape.h 
 
 
 SOURCES = *.cpp \
-           	../Tonatiuh/src/Trace.cpp \
-           	../Tonatiuh/src/TSunShape.cpp
+           	$$(TONATIUH_ROOT)/src/Trace.cpp \
+           	$$(TONATIUH_ROOT)/src/TSunShape.cpp
 
 RESOURCES += SunshapePillbox.qrc	
 
 
-DESTDIR       = ../Tonatiuh/plugins/SunshapePillbox	
+DESTDIR       = $$(TONATIUH_ROOT)/plugins/SunshapePillbox	
 TARGET        = SunshapePillbox
 
 contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
-		DESTDIR       = ../Tonatiuh/bin/debug/plugins/SunshapePillbox	
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/SunshapePillbox	
 		unix {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
@@ -46,6 +46,6 @@ contains(TEMPLATE,lib) {
 	}
 	else { 
 		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
-		DESTDIR       = ../Tonatiuh/bin/release/plugins/SunshapePillbox
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/SunshapePillbox
 	}
 }
