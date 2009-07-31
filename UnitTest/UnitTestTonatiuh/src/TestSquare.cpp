@@ -36,13 +36,17 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
+#include <QString>
+
+
 #include <Inventor/SbLinear.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <QString>
-#include <iostream>
+
 #include "TestSquare.h"
 #include "NormalVector.h"
 #include "Point3D.h"
@@ -102,9 +106,10 @@ void TestSquare::test_get_Icon()
 
 void TestSquare::test_get_Normal()
 {
-	NormalVector expected(0.0,1.0,0.0);
-	NormalVector returned = m_square->GetNormal(0.5,0.5);
-	CPPUNIT_ASSERT_EQUAL(expected, returned);
+	CPPUNIT_ASSERT_MESSAGE( "Not Implemented", (1==0) );
+	/*NormalVector expected(0.0,1.0,0.0);
+	NormalVector returned = m_square->GetNormal( 0.5, 0.5 );
+	CPPUNIT_ASSERT_EQUAL(expected, returned);*/
 }
 
 void TestSquare::test_intersect()
@@ -119,11 +124,12 @@ void TestSquare::test_intersectP()
 
 void TestSquare::test_GetPoint3D()
 {
-	Point3D expected(0.0,0.0,0.0);
+	CPPUNIT_ASSERT_MESSAGE( "Not Implemented", (1==0) );
+	/*Point3D expected(0.0,0.0,0.0);
 	Point3D returned;
 
 	returned = m_square->GetPoint3D(.5,.5);
-	CPPUNIT_ASSERT_EQUAL(expected, returned);
+	CPPUNIT_ASSERT_EQUAL(expected, returned);*/
 }
 
 void TestSquare::	test_Sample()
