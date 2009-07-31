@@ -24,7 +24,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>Tonatiuh 1.0</string>
+   <string>Tonatiuh</string>
   </property>
   <property name="windowIcon">
    <iconset>
