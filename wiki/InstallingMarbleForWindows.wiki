@@ -23,12 +23,12 @@ export PATH=$PATH:/c/sde/CMake/bin:/usr/qt/bin
 
 The command to create Makefiles on debug mode type:
 {{{
-cmake -G"MSYS Makefiles" -DQTONLY=ON ../marble
+cmake -G"MSYS Makefiles" -Wno-dev -DQTONLY=ON ../marble
 }}}
 
 or type the following to release mode:
 {{{
-cmake -G"MSYS Makefiles" -DCMAKE_BUILD_TYPE=debug -DQTONLY=ON ../marble
+cmake -G"MSYS Makefiles" -Wno-dev -DCMAKE_BUILD_TYPE=debug -DQTONLY=ON ../marble
 }}}
 
 Then,
