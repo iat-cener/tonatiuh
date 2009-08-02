@@ -36,7 +36,7 @@ Then,
 make
 }}}
 
-Copy marble include files to the folder: "/local/include/marble".
+Copy marble include files to the folder "/local/include/marble".
 {{{
 mkdir /usr/local/include/marble
 cp src/lib/*.h /usr/local/include/marble
