@@ -23,12 +23,12 @@ export PATH=$PATH:/c/sde/CMake/bin:/usr/qt/bin
 
 The command to create Makefiles on debug mode type:
 {{{
-cmake -G"MSYS Makefiles" -Wno-dev -DQTONLY=ON ../marble
+cmake -G"MSYS Makefiles" -Wno-dev -DCMAKE_BUILD_TYPE=debug -DQTONLY=ON ../marble
 }}}
 
 or type the following to release mode:
 {{{
-cmake -G"MSYS Makefiles" -Wno-dev -DCMAKE_BUILD_TYPE=debug -DQTONLY=ON ../marble
+cmake -G"MSYS Makefiles" -Wno-dev -DQTONLY=ON ../marble
 }}}
 
 Then,
@@ -52,6 +52,14 @@ cp src/lib/gps/*.h /usr/local/include/marble
 cp src/lib/Projections/*.h /usr/local/include/marble
 cp src/lib/libmarblewidget.dll /usr/local/bin
 cp src/lib/libmarblewidget.dll.a /usr/local/lib
+mkdir /usr/local/bin/marble
+cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/stars/libMarbleStarsPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/mapscale/libMapScaleFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libMarbleOverviewMap.dll /usr/local/bin/marble
+cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/geodata/libMarbleGeoDataPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/crosshairs/libMarbleCrosshairsPlugin.dll /usr/local/bin/marble
 }}}
 
 
