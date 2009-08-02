@@ -36,7 +36,7 @@ Then,
 make
 }}}
 
-Copy lib files to install directory:
+Copy marble include files to the folder: "/local/include/marble".
 {{{
 mkdir /usr/local/include/marble
 cp src/lib/*.h /usr/local/include/marble
@@ -50,8 +50,20 @@ cp src/lib/geodata/parser/*.h /usr/local/include/marble
 cp src/lib/geodata/scene/*.h /usr/local/include/marble
 cp src/lib/gps/*.h /usr/local/include/marble
 cp src/lib/Projections/*.h /usr/local/include/marble
+}}}
+Copy executable files to the folder "/local/include/bin".
+{{{
+cp src/marble.exe /usr/local/bin
+cp src/tilecreator/tilecreator.exe /usr/local/bin
+cp src/lib/geodatatest.exe /usr/local/bin
+}}}
+Copy main library files to the appropriate "/usr/local" folders.
+{{{
 cp src/lib/libmarblewidget.dll /usr/local/bin
 cp src/lib/libmarblewidget.dll.a /usr/local/lib
+}}}
+Copy mable plugins to the folder "/usr/local/bin/marble".
+{{{
 mkdir /usr/local/bin/marble
 cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
 cp src/plugins/render/stars/libMarbleStarsPlugin.dll /usr/local/bin/marble
