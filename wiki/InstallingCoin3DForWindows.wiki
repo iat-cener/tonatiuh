@@ -7,14 +7,14 @@ http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
 = Details =
 
-Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.0.0.tar.gz Coin 3.0.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder.  This will typically be _c:\msys\usr\home\username_.
+Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.1.0.tar.gz Coin 3.1.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder.  This will typically be _c:\msys\usr\home\username_.
  
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
-tar -zxvf Coin-3.0.0.tar.gz
+tar -zxvf Coin-3.1.0.tar.gz
 }}}
 
-This will create a directory called _Coin-3.0.0_ in your user directory. Using the MSYS shell navigate to just created Coin3.0.0 directory and type:
+This will create a directory called _Coin-3.1.0_ in your user directory. Using the MSYS shell navigate to just created Coin3.0.0 directory and type:
 {{{
 export QTDIR="/usr/qt"_
 export COINDIR="/usr/local"_
