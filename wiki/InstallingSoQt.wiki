@@ -37,7 +37,7 @@ This will start the configuration process. This process should finish succesfull
 Now, run 'make install'to build and install SoQt"
 }}} 
 
-Before start building !SoQt edit src/Inventor/!SoComponent.cpp file. Remplace on line 103
+Before start building !SoQt edit src/Inventor/!Qt/!SoComponent.cpp file. Remplace on line 103
 'unsigned long key' with '!SbDict::Key key'. 
 
 Now, run 'make install'. The !SoQt library will be intalled to /usr/local directory.
