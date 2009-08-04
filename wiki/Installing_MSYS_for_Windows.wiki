@@ -11,7 +11,7 @@ Download the latest stable version of the MSYS installer (version MSYS-1.0.11). 
 Once you are there, expand the Current Release_MSYS-1.0.11 section of the page, and clik on the link to the executable file: 'MSYS-1.0.11.exe' as shown in Figure 1.
 
 ||http://lh5.ggpht.com/_tmEVMS15i5Y/Snid5ss27LI/AAAAAAAAATA/X3tDvPWItbQ/s800/MSYS_installation01.jpg||
-|| *Figure 1. Link to download the MSYS installer as located in the MSYS Base System section of the MinGW website in !SourceForge.*||
+|| *Figure 1. Link to download the MSYS installer as located in the MSYS Base System section of the MinGW website.*||
 
  # Create a msys directory folder in _C:\msys\usr_.
  # Extract downloaded files in the created folder.
