@@ -16,7 +16,7 @@ Once you are there, expand the Current Release_MSYS-1.0.11 section of the page, 
 A window will popup asking you if you want to execute the file or store it in your computer. Store it in your PC and, after that, execute it.
 
 During the execution of the installer:
-  * In the License Agreement Dialog select the "Yes" button to accept the terms of the License Agreement.
+  * In the License Agreement Dialog click the "Yes" button to accept the terms of the License Agreement.
   * In the Select Destination Directory Dialog type "C:\sde\msys\usr" as the installation folder.
   * In the first post-install window, to the question "Do you wish to continue with the post install?" type: "y". To the question "Do you have MinGW installed? type "y". To the question "Where is your MinGW installation? type "c:/sde/MinGW".
   * In the last installation program dialog click on the "Finish" button.
