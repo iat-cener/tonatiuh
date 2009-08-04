@@ -13,12 +13,12 @@ Once you are there, expand the Current Release_MSYS-1.0.11 section of the page, 
 ||http://lh5.ggpht.com/_tmEVMS15i5Y/Snid5ss27LI/AAAAAAAAATA/X3tDvPWItbQ/s800/MSYS_installation01.jpg||
 || *Figure 1. Link to download the MSYS installer as located in the MSYS Base System section of the MinGW website.*||
 
- # Create a msys directory folder in _C:\msys\usr_.
- # Extract downloaded files in the created folder.
- # Run _pi.bat_ in postinstall directory. A console window will be opened.
-  * Press _y_ to continue with the intallation.
-  * Press _y_ to indicate that MinGW is intalled.
-  * The MinGW intallation directory is _c:/MinGW_.
-  * Press a key to finish with the intallation.
+A window will popup asking you if you want to execute the file or store it in your computer. Store it in your PC and, after that, execute it.
+
+During the execution of the installer:
+  * In the License Agreement Dialog select the "Yes" button to accept the terms of the License Agreement.
+  * In the Select Destination Directory Dialog type "C:\sde\msys\usr" as the installation folder.
+  * In the first post-install window, to the question "Do you wish to continue with the post install?" type: "y". To the question "Do you have MinGW installed? type "y". To the question "Where is your MinGW installation? type "c:/sde/MinGW".
+  * In the last installation program dialog click on the "Finish" button.
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
