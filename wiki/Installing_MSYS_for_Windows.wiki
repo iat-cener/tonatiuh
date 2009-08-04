@@ -21,4 +21,6 @@ During the execution of the installer:
   * In the first post-install window, to the question "Do you wish to continue with the post install?" type: "y". To the question "Do you have MinGW installed? type "y". To the question "Where is your MinGW installation? type "c:/sde/MinGW".
   * In the last installation program dialog click on the "Finish" button.
 
+Once MSYS is installed the next step is to install the Qt libraries. To do it, follow the instructions in the following wiki page: [InstallingQtForWindows]
+
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
