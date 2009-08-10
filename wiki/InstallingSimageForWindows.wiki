@@ -36,8 +36,6 @@ make install
 
 The installation process may take several minutes. At the end of the installation process, the libraries has been installed at /usr/local directory.
 
-Once the Simage library is installed the next step is to install the Coin3D library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows Simage] 
-
-Now, [InstallingCoin3DForWindows Coin3D] installation can be started.
+Once the Simage library is installed the next step is to install the Coin3D library. To do it, follow the instructions in the following wiki page: [InstallingCoin3DForWindows Coin3D]
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
