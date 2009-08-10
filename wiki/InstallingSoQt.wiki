@@ -9,7 +9,7 @@ Before installing !SoQt, please, verify that Qt and Coin 3D are already installe
 = Details =
 Download the latest release of !SoQt, currently !SoQt 1.4.1, from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view. The file you have to download is !SoQt-1.4.1.tar.gz. 
 
-*Note: If you are using Windows XP, be sure the operating system does not change the extension of the file from ".tar.gz" to ".tar.tar" while it is dowloading it.*
+*(Note: If you are using Windows XP, be sure the operating system does not change the extension of the file from ".tar.gz" to ".tar.tar" while it is dowloading it. If it does, after downloading the file change its extensio back to ".tar.gz")*
 
 Place it into the user directory under your MSYS folder. This will typically be c:\msys\usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
