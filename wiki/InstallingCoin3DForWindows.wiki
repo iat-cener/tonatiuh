@@ -46,6 +46,6 @@ At the end of the installation process, edit the file _'/usr/local/include/Inven
 #endif
 }}}
 
-Now, [InstallingSoQt SoQt] installation can be started.
+Once the Coin3D library is installed the next step is to install the SoQt library. To do it, follow the instructions in the following wiki page: [InstallingCoin3DForWindows Coin3D]
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
