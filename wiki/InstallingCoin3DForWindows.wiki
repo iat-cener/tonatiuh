@@ -39,13 +39,6 @@ make install
 
 The installation process may take several hours . During it you may get errors, that may trigger warnings in the MSYS shell console complemented with instructions on how to solve them. If that is the case, follow the instructions that appear on the screen to fix the errors. In those cases in which you may get an error, but no instruction on how to solvw it, re-launch the make or the install process by typing "make" or "make install" as appropriate.
 
-At the end of the installation process, edit the file _'/usr/local/include/Inventor/C/basic.h'_ to add the following lines at the top:
-{{{
-#ifndef COIN_DLL 
-#define COIN_DLL
-#endif
-}}}
-
 Once the Coin3D library is installed the next step is to install the !SoQt library. To do it, follow the instructions in the following wiki page: [InstallingSoQt InstallingSoQt]
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
