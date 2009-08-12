@@ -68,7 +68,7 @@ mkdir /usr/local/bin/marble
 cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
 cp src/plugins/render/stars/libStarsPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/mapscale/libMapScaleFloatItem.dll /usr/local/bin/marble
-cp src/plugins/render/overviewmap/libMarbleOverviewMap.dll /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libOverviewMap.dll /usr/local/bin/marble
 cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble
 cp src/plugins/render/geodata/libMarbleGeoDataPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/crosshairs/libMarbleCrosshairsPlugin.dll /usr/local/bin/marble
