@@ -18,7 +18,7 @@ tar -zxvf qwtplot3d-0.2.7.gz
 This will create a directory called qwtplot3d in your user directory. Go to this directory and open with a text editor _qwtplot3d.pro_ file. Now, delete the following:
 
 {{{
- line 6: debug
+line 6: debug
 line 7: MOC_DIR           = tmp
 line 8: OBJECTS_DIR       = tmp
 line 15: win32:TEMPLATE    = vclib
@@ -42,7 +42,7 @@ make -f Makefile.Release
 
 The library is created. Now, to put it into local:
 {{{
- mkdir /usr/local/include/qwtplot3d
+mkdir /usr/local/include/qwtplot3d
 cp -r include/* /usr/local/include/qwtplot3d
 cp lib/* /usr/local/lib/
 cp lib/*.dll /usr/local/bin/
