@@ -202,7 +202,7 @@ void MapDialog::SetCoordinates(  double lon, double lat )
 	m_latitude = -lat;
 
 	UpdateCurrentPosition( m_longitude, m_latitude, GeoDataCoordinates::Radian );
-	m_control->receiveGpsCoordinates( m_longitude, m_latitude, Marble::GeoDataCoordinates::Radian );
+	m_control->receiveGpsCoordinates( GeoDataCoordinates( m_longitude, m_latitude, 0, Marble::GeoDataCoordinates::Radian ), 0 );
 }
 
 /*!
