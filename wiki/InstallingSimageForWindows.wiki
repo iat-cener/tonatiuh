@@ -25,7 +25,7 @@ Type the following command to build on debug mode:
 
 To build the library in release mode type:
 {{{
-./configure --disable-msvc --with-qt=/usr/qt --enable-debug=no
+./configure --disable-msvc --with-qt=/usr/qt --enable-debug=no --enable-symbols=no CPPFLAGS="-D_GLIBCXX_DLL" LDFLAGS="-lstdc++_s" --enable-cxx -disable-static --enable-shared
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the Simage library by typing:
