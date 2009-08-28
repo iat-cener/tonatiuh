@@ -20,7 +20,7 @@ This will create a directory called _Simage-1.6.1_ in your user directory. Using
 
 Type the following command to build on debug mode:
 {{{
-./configure --disable-msvc --with-qt=/usr/qt --enable-debug --enable-symbols --enable-qt-debug --with-qt=/usr/qt --with-suffix=d
+./configure --disable-msvc --with-qt=/usr/qt --enable-qt-debug --with-suffix=d CPPFLAGS="-D_GLIBCXX_DLL" LDFLAGS="-lstdc++_s" --enable-cxx -disable-static --enable-shared
 }}}
 
 To build the library in release mode type:
