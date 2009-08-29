@@ -23,9 +23,8 @@ export INCLUDE="/usr/local/include:/usr/qt/include"
 
 Type the following command to build on debug mode: 
 {{{
-./configure --enable-debug --enable-symbols LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --with-suffix=d --prefix=/usr/local
+./configure --disable-msvc --enable-qt-debug --with-suffix=d
 }}}
-
 Or type to release mode:
 {{{
 ./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
