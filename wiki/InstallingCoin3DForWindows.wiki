@@ -27,7 +27,7 @@ Type the following command to build on debug mode:
 }}}
 Or type to release mode:
 {{{
-./configure LDFLAGS="-mno-cygwin" CFLAGS="-mno-cygwin" CXXFLAGS="-mno-cygwin"  --disable-msvc --without-mesa --without-x --prefix=/usr/local
+./configure --disable-msvc --enable-debug=no --enable-symbols=no
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the Coin3D libraries by typing:
