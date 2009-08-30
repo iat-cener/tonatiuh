@@ -24,7 +24,7 @@ export INCLUDE="/usr/local/include:/usr/qt/include"
 
 The configure command is different if you want to build libraries in debug or release mode. For the debug mode type:
 {{{
-./configure --disable-msvc --enable-qt-debug --enable-debug --enable-symbols --with-suffix=d --with-coin=/usr/local --with-qt=/usr/qt
+./configure --disable-msvc --enable-qt-debug --with-suffix=d
 }}}
 
 And for release type:
