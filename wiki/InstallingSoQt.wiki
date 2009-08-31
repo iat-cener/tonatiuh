@@ -29,7 +29,7 @@ The configure command is different if you want to build libraries in debug or re
 
 And for release type:
 {{{
-./configure --disable-msvc --enable-debug=no --with-coin=/usr/local --with-qt=/usr/qt
+./configure --disable-msvc --enable-debug=no --enable-symbols=no
 }}}
 This will start the configuration process. This process should finish succesfully with the following message:
 {{{
