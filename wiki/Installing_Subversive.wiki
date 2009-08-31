@@ -23,7 +23,8 @@
 == Enabling Subversion Auto-Props ==
 Open your Subversion _config_ file in a text editor. The file locations are as follows: 
 
- * Windows: C:\Documents and Settings\_username_\Application Data\Subversion\config 
+ * Windows XP: C:\Documents and Settings\_username_\Application Data\Subversion\config
+ * Windows Vista: C:\Users\_username_\AppData\Roaming\Subversion\config
  * Mac OS X:  ~/.subversion/config 
  * Linux: ~/.subversion/config 
 
