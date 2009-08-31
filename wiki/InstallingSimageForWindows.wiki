@@ -16,7 +16,7 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 tar -zxvf simage-1.6.1.tar.gz
 }}}
 
-This will create a directory called _Simage-1.6.1_ in your user directory. Using the MSYS shell navigate to just created directory.
+This will create a directory called _simage-1.6.1_ in your user directory. Using the MSYS shell navigate to just created directory.
 
 Type the following command to build on debug mode:
 {{{
