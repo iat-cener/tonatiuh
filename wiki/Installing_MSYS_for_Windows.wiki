@@ -8,7 +8,7 @@ MSYS is a collection of GNU utilities to build applications and programs which d
 
 Download the latest stable version of the MSYS installer (version MSYS-1.0.11). To do it, click on the following [http://sourceforge.net/projects/mingw/files/MSYS%20Base%20System link] to go to the MSYS Base System section of the MinGW website.
 
-Once you are there, expand the Current Release_MSYS-1.0.11 section of the page, and clik on the link to the executable file: 'MSYS-1.0.11.exe' as shown in Figure 1.
+Once you are there, expand the Current Release_MSYS-1.0.11 section of the page, and click on the link to the executable file: 'MSYS-1.0.11.exe' as shown in Figure 1.
 
 ||http://lh5.ggpht.com/_tmEVMS15i5Y/Snid5ss27LI/AAAAAAAAATA/X3tDvPWItbQ/s800/MSYS_installation01.jpg||
 || *Figure 1. Link to download the MSYS installer as located in the MSYS Base System section of the MinGW website.*||
