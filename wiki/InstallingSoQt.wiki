@@ -11,7 +11,7 @@ Download the latest release of !SoQt, currently !SoQt 1.4.1, from the Coin3D web
 
 *(Note: If you are using Windows XP, be sure the operating system does not change the extension of the file from ".tar.gz" to ".tar.tar" while it is dowloading it. If it does, after downloading the file change its extension back to ".tar.gz")*
 
-Place the downloaded file into the user directory under your MSYS folder. This will typically be c:\msys\usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
+Place the downloaded file into the user directory under your MSYS folder. This will typically be c:\sde\msys\usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
 tar -zxvf SoQt-1.4.1.tar.gz
 }}}
