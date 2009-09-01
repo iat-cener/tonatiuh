@@ -19,10 +19,10 @@ tar -xvf SoQt-1.4.1.tar.gz
 
 This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the shell navigate to just created !SoQt-1.4.1 directory. First create release libraries by typing:
 {{{
-CPPFLAGS="-I  /usr/local/Trolltech/Qt-4.5.1/include/Qt -I/usr/local/Trolltech/Qt-4.5.1/include/QtGui/ 
--I/usr/local/Trolltech/Qt-4.5.1/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.5.1/include/QtCore/" 
-CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.5.1 ./configure 
---enable-debug=no  --with-qt=/usr/local/Trolltech/Qt-4.5.1 --with-coin=/usr/local --without-framework
+CPPFLAGS="-I/usr/local/Trolltech/Qt-4.5.2/include/Qt -I/usr/local/Trolltech/Qt-4.5.2/include/QtGui/ 
+-I/usr/local/Trolltech/Qt-4.5.2/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.5.2/include/QtCore/" 
+CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.5.2 ./configure 
+--enable-debug=no  --enable-symbols=no --with-qt=/usr/local/Trolltech/Qt-4.5.2 --with-coin=/usr/local --without-framework
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
