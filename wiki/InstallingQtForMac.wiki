@@ -16,7 +16,7 @@ tar -xvf qt-mac-opensource-src-4.5.2.tar
 
 After extraction, a new directory, qt-mac-opensource-src-4.5.2, will be created. Go to the directory and type: 
 {{{
-./configure -debug-and-release -no-framework - universal
+./configure -opensource -debug-and-release -no-framework 
 }}}
 You will be asked to accept the license agreement. Accept it typing yes. 
 
