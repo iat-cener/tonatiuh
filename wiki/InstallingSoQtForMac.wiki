@@ -36,12 +36,12 @@ Now, before start creating debug library clean all. Type:
 make clean
 }}}
 
-And then generate library:
+And then generate debug library:
 {{{
-CPPFLAGS="-I/usr/local/Trolltech/Qt-4.5.1/include/Qt -I/usr/local/Trolltech/Qt-4.5.1/include/QtGui/ 
--I/usr/local/Trolltech/Qt-4.5.1/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.4.3/include/QtCore/" 
-CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.5.1 ./configure 
---enable-qt-debug --enable-symbols --with-suffix=_debug --with-qt=/usr/local/Trolltech/Qt-4.5.1 
+CPPFLAGS="-I/usr/local/Trolltech/Qt-4.5.2/include/Qt -I/usr/local/Trolltech/Qt-4.5.2/include/QtGui/ 
+-I/usr/local/Trolltech/Qt-4.5.2/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.5.2/include/QtCore/" 
+CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.5.2 ./configure 
+--enable-qt-debug --enable-symbols --with-suffix=_debug --with-qt=/usr/local/Trolltech/Qt-4.5.2
 --with-coin=/usr/local --without-framework
 
 make
