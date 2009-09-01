@@ -14,7 +14,7 @@ make
 make install
 }}}
 
-Now, download the source files from http://www.kde-apps.org/content/show.php/Marble+-+Desktop+Globe?content=55105 clicking on _Source download_ link. Place it into downloads under your home folder. This will typically be  /home/username/downloads. Open a shell console and navigate to downloads directory. Extract the archive by typing: 
+Now, download the source files from http://edu.kde.org/marble/download.php link. Place it into downloads under your home folder. This will typically be  /home/username/downloads. Open a shell console and navigate to downloads directory. Extract the archive by typing: 
 
 {{{
 tar xvf marble-version.tar.gz
