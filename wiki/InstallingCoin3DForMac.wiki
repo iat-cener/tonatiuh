@@ -6,14 +6,14 @@ Coin 3D is a high-level 3D graphics toolkit for developing cross-platform real-t
 
 = Details =
 
-Download the latest realese of Coin3D, currently [http://www.coin3d.org/lib/coin/releases/3.0.0 Coin3D-3.0.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+Download the latest realese of Coin3D, currently [http://www.coin3d.org/lib/coin/releases/3.1.0 Coin3D-3.1.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
-tar -xvf simage-1.6.1.tar.gz
+tar xvf Coin-3.1.0.tar
 }}}
 
-This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory. First create release libraries by typing:
+This will create a directory called _Coin-3.1.0_ in your user directory. Using the shell navigate to just created directory. First create release libraries by typing:
 {{{
 ./configure --enable-debug=no --without-framework
 }}}
