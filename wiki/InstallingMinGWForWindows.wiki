@@ -51,6 +51,12 @@ Execute the installer again:
 
 Enter the same destination folder path to the program in the Install Location dialog. After that click on the "Next" button, and then on the "Install" button.
 
+Now, to install debugger for Mingw:
+  * Click on the following [http://sourceforge.net/projects/mingw/files link], and go to the "All Files". 
+  * Download the current release of the "GNU Source-Level Debugger".
+  * Execute downloaded setup,
+  * Accept the terms of the license agreement, and
+  * Set MinGW instalation path as installation folder path.
 
 Once MinGW is installed, the next step is to install the MSYS environment. To do it, follow the instruction in the following wike page: [Installing_MSYS_for_Windows]. 
 
