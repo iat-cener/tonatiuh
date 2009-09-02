@@ -35,21 +35,37 @@ make install
 }}}
 
 
-Copy header and lib files to working directory:
+Copy marble include files to the folder "/local/include/marble".
 {{{
-mkdir /usr/local/include/marble 
-cp src/lib/*.h /usr/local/include/marble 
-cp src/lib/AbstractLayer/*.h /usr/local/include/marble 
-cp src/lib/geodata/*.h /usr/local/include/marble 
-cp src/lib/geodata/data/*.h /usr/local/include/marble 
-cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble 
-cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble 
-cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble 
-cp src/lib/geodata/parser/*.h /usr/local/include/marble 
-cp src/lib/geodata/scene/*.h /usr/local/include/marble 
-cp src/lib/gps/*.h /usr/local/include/marble 
-cp src/lib/Projections/*.h /usr/local/include/marble 
-cp src/lib/libmarblewidget.* /usr/local/lib
+mkdir /usr/local/include/marble
+cp src/lib/*.h /usr/local/include/marble
+cp src/lib/AbstractLayer/*.h /usr/local/include/marble
+cp src/lib/geodata/*.h /usr/local/include/marble
+cp src/lib/geodata/data/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble
+cp src/lib/geodata/parser/*.h /usr/local/include/marble
+cp src/lib/geodata/scene/*.h /usr/local/include/marble
+cp src/lib/gps/*.h /usr/local/include/marble
+cp src/lib/Projections/*.h /usr/local/include/marble
 }}}
+
+Copy executable files to the folder "/local/include/bin".
+{{{
+cp -r src/marble.app /usr/local/bin
+cp src/tilecreator/tilecreator /usr/local/bin
+cp src/lib/geodatatest /usr/local/bin
+}}}
+
+Copy main library files to the appropriate "/usr/local" folders.
+{{{
+cp src/lib/libmarblewidget*.dylib /usr/local/lib
+}}}
+
+Copy mable plugins to the folder "/usr/local/bin/marble".
+
+mkdir /usr/local/bin/plugins
+cp -r src/plugins/* /usr/local/bin/plugins
 
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
