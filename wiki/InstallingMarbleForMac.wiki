@@ -22,14 +22,14 @@ tar xvf marble-version.tar.gz
 
 This will create a directory called _marble-version_ in your user directory. Using the shell navigate to just created marble-version directory and type:
 {{{
-cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
+cmake -G"Unix Makefiles" -Wno-dev -DQTONLY=ON ../marble
 make
 make install
 }}}
 
 To install marble in debug mode type:
 {{{
-cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE:String=debug -DCMAKE_DEBUG_POSTFIX=_debug -DQTONLY=ON ../marble
+cmake -G"Unix Makefiles" -Wno-dev -DCMAKE_BUILD_TYPE:String=debug -DCMAKE_DEBUG_POSTFIX=_debug -DQTONLY=ON ../marble
 make
 make install
 }}}
