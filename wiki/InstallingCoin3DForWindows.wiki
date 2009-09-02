@@ -16,7 +16,7 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 tar -zxvf Coin-3.1.0.tar.gz
 }}}
 
-This will create a directory called _Coin-3.1.0_ in your user directory. Using the MSYS shell navigate to just created Coin3.0.0 directory and type:
+This will create a directory called _Coin-3.1.0_ in your user directory. Using the MSYS shell navigate to just created Coin-3.1.0 directory and type:
 {{{
 export QTDIR="/usr/qt"_
 export COINDIR="/usr/local"_
