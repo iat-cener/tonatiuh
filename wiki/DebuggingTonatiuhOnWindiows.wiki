@@ -1,0 +1,24 @@
+#summary Debugging Tonatiuh with eclipse on Windows.
+
+= Introduction =
+
+
+
+== Creating a Debug Configuration ==
+
+To create a run configuration:
+  * Go to Run menu on Eclipse Window.
+  * Select "Debug Configurations...".
+  * Click New
+  * Define a name to launch.
+  * On "Main" tab select "Toantiuh" as a project and debug version of Tonatiuh binaries as
+  C/C++ Application.
+  * Go to "Environment" tab and add "PATH" variable with "C:\sde\msys\usr\qt\bin;C:\msys\usr\local\bin" value.
+  * In "Debugger" tab select "MinGW gdb Debugger". Set the followings options to debugger:
+  ** GDB debugger: gdb
+  ** GDB command file: .gdbinit
+  ** GDB command set: Standard (Windows)
+  ** Protocol: mi
+
+[InstallingForWindows Windows Configuration] | 
+[http://code.google.com/p/tonatiuh/w/list Wiki Home]
