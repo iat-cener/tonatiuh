@@ -12,7 +12,7 @@ To compile marble you need CMake, a cross-platform make. You can obtain it from 
 Now, download the source files from http://edu.kde.org/marble/download.php clicking on _Source download_ link. Place it into the user directory under your MSYS folder. This will typically be \usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
 
 {{{
-tar -xvzf marble-0.8.0_rev1005857.tar.gz
+tar -zxvf marble-0.8.0_rev1005857.tar.gz
 }}}
 
 This will create a directory called _marble-version_ in your user directory. Using the MSYS shell navigate to just created marble-version directory and type:
