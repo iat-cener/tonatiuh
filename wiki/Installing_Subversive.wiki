@@ -6,14 +6,15 @@
 
  * Open Eclipse
  * Go to Help->Install New Software...
- * Click _"Add Site..."_ button and write the following location for Subversive plug-in: _http://download.eclipse.org/technology/subversive/0.7/update-site/_.
- * Also the update site for SVN Connectors can be added in the same way. The URL is _http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/_ .
+ * Click _"Available Software Sites".
+   [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/installDialog.png]
+ * Find _http://download.eclipse.org/technology/subversive/0.7/update-site/_ site and enable it.
+ * Click on "Add ..."_ button and write the update site for SVN Connectors. The URL is _http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/_ .
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/addSite.png]
-
- * Expand added _"Subversive Site"_ and select select _Subversive SVN Team Provider Plugin (Incuvation)_. 
- * Expand _"Subversive SVN Connectors Site"_ and select _"Suversive SVN Connectors"_.
+ * "Ok" to finish with the update sites.
+ * In the install dialog window select _Subversive SVN Team Provider Plugin (Incuvation)_ and _"Suversive SVN Connectors"_.
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/softwareUpdates.png]
- * Push _"Install..."_ to start with the plugins installation. 
+ * Push _"Next..."_ and then _"Finish"_ to start with the plugins installation. 
  * The update manager calculates dependencies. Select the features to install from the list and click the 'Next >'. 
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/featuresToInstall.png]
 
