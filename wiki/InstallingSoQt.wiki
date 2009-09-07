@@ -52,6 +52,6 @@ static void delete_dict_value(SbDict::Key key, void * value)
 
 Now, run 'make install'. The !SoQt library will be intalled to /usr/local directory.
 
-Once the !SoQt library is installed the next step is to install the !QwtPlot3D library. To do it, follow the instructions in the following wiki page: [InsttallingQwtPlot3DForWindows InstallingQwtPlot3DForWindows]
+Once the !SoQt library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InsttallingMarbleForWindows InstallingMarbleForWindows]
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
