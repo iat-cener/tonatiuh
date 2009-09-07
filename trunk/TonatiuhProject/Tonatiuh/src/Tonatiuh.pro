@@ -19,7 +19,7 @@ INCLUDEPATH += . \
  
 win32: {
 	RC_FILE = Tonatiuh.rc
-    DEFINES+= COIN_DLL SOQT_DLL QWT3D_DLL
+    DEFINES+= COIN_DLL SOQT_DLL
 }
 
 # Input
@@ -32,12 +32,12 @@ RESOURCES += tonatiuh.qrc
 CONFIG(debug, debug|release) {
 	DESTDIR = ../Tonatiuh/bin/debug
 	unix  {
-		LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt_debug -lCoin_debug -lmarblewidget_debug -lqwtplot3d_debug
+		LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt_debug -lCoin_debug -lmarblewidget_debug 
 	}	
-	else: LIBS += -L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind -lmarblewidgetd -lqwtplot3dd
+	else: LIBS += -L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind -lmarblewidgetd
 }
 else{
 	DESTDIR=../Tonatiuh/bin/release
-	LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin -lmarblewidget -lqwtplot3d
+	LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin -lmarblewidget
 }
 	
