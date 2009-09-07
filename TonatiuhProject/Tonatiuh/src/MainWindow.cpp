@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -70,7 +71,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ActionInsertPhotonMap.h"
 #include "ActionInsertShape.h"
 #include "ActionInsertTracker.h"
-#include "AnalyzerWindow.h"
 #include "CmdCopy.h"
 #include "CmdCut.h"
 #include "CmdDelete.h"
@@ -982,49 +982,6 @@ void MainWindow::on_actionDisplay_rays_toggled()
 	{
 		if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
 	}
-}
-
-void MainWindow::on_actionResults_triggered()
-{
-	Trace trace( "MainWindow::on_actionResults_triggered", false );
-
-	if ( m_photonMap == NULL )
-	{
-		QMessageBox::information( this, "Tonatiuh Action",
-	                          "No Photon Map stored", 1);
-	    return;
-	}
-
-	QString type = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() )->GetNode()->getTypeId().getName().getString();
-	if ( type != "TShapeKit" )
-	{
-		QMessageBox::information( this, "Tonatiuh Action",
-	                          "Analysis requested with no surface selected", 1);
-	    return;
-	}
-	TShapeKit* shapeKit = static_cast<TShapeKit*>( m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() )->GetNode() );
-
-	if(!shapeKit->getPart( "shape", false ) )
-	{
-		QMessageBox::information( this, "Tonatiuh Action",
-							  "Invalid Shape", 1);
-		return;
-	}
-	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
-
-	long unsigned nearestPhotons = 100;
-	if ( nearestPhotons > m_photonMap->StoredPhotons() )
-	{
-		QMessageBox::information( this, "Tonatiuh Action",
-	                          "Flux requested with more points than are stored in photon map", 1);
-	    return;
-	}
-
-	int resolution = 100;
-
-	AnalyzerWindow* analyzerWindow = new AnalyzerWindow( this );
-	analyzerWindow->Plot(m_photonMap, shape, resolution, resolution);
-	analyzerWindow->show();
 }
 
 /*!

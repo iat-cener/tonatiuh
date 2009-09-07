@@ -121,7 +121,6 @@ public slots:
 	void ShowRaysIn3DView();
 	void on_actionRayTraceRun_triggered();
 	void on_actionDisplay_rays_toggled();
-	void on_actionResults_triggered();
 	void on_actionExport_PhotonMap_triggered();
 	void on_actionRayTraceOptions_triggered();
 

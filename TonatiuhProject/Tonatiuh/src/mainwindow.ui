@@ -153,7 +153,6 @@
     </property>
     <addaction name="actionRayTraceRun"/>
     <addaction name="actionDisplay_rays"/>
-    <addaction name="actionResults"/>
     <addaction name="actionExport_PhotonMap"/>
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
@@ -217,7 +216,6 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionRayTraceRun"/>
-   <addaction name="actionResults"/>
    <addaction name="actionBalance"/>
    <addaction name="actionExport_PhotonMap"/>
   </widget>
@@ -452,15 +450,6 @@
   <action name="actionRayTraceOptions">
    <property name="text">
     <string>Ray Trace Options ...</string>
-   </property>
-  </action>
-  <action name="actionResults">
-   <property name="icon">
-    <iconset resource="tonatiuh.qrc">
-     <normaloff>:/icons/AnalysisTool.png</normaloff>:/icons/AnalysisTool.png</iconset>
-   </property>
-   <property name="text">
-    <string>Analyze tool ...</string>
    </property>
   </action>
   <action name="actionShapeKit">
