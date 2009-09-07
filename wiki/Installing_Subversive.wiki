@@ -5,7 +5,7 @@
 == Installing Subversion ==
 
  * Open Eclipse
- * Go to Help->Software Updates->Available Software.
+ * Go to Help->Install New Software...
  * Click _"Add Site..."_ button and write the following location for Subversive plug-in: _http://download.eclipse.org/technology/subversive/0.7/update-site/_.
  * Also the update site for SVN Connectors can be added in the same way. The URL is _http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/_ .
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/addSite.png]
