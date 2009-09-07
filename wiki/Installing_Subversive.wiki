@@ -13,12 +13,8 @@
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/addSite.png]
  * "Ok" to finish with the update sites.
  * In the install dialog window select _Subversive SVN Team Provider Plugin (Incuvation)_ and _"Suversive SVN Connectors"_.
-   [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/softwareUpdates.png]
- * Push _"Next..."_ and then _"Finish"_ to start with the plugins installation. 
- * The update manager calculates dependencies. Select the features to install from the list and click the 'Next >'. 
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/featuresToInstall.png]
-
- * Accept the terms of licesnse. The plugin should now be installed.
+ * Push _"Next..."_ and then _"Finish"_ to start with the plugins installation. 
  * Restart eclipse.
 
 == Enabling Subversion Auto-Props ==
