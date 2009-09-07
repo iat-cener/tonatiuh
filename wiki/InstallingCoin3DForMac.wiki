@@ -31,7 +31,7 @@ make clean
 
 And then generate library:
 {{{
-./configure --enable-debug --enable-symbols --with-suffix=_debug --without-framework
+./configure --enable-qt-debug --with-suffix=_debug --without-framework
 make
 make install
 }}}
