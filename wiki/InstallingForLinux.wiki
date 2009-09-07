@@ -11,7 +11,6 @@ The following links will guide the developer through all the process:
   * [InstallingSimageForLinux Installing Simage]
   * [InstallingCoin3DForLinux Installing Coin3D]
   * [InstallingSoQtForLinux Installing SoQt]
-  * [InsttallingQwtPlot3DForLinux Installing QwtPlot3D]
   * [InstallingMarbleForLinux Installing Marble]
   * [InstallingAndConfiguringEclipseForLinux Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
