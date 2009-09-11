@@ -104,55 +104,46 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	double yd= objectRay.direction.y;
 	double zd= objectRay.direction.z;
 
-	double t0 = ( 1 / ( b.getValue()* b.getValue() *  yd * yd - a.getValue() * a.getValue() * ( xd * xd  + zd * zd) ) )
-					* ( a.getValue() *  b.getValue() * b.getValue() *  yd - b.getValue() * b.getValue() * yd * yo
-							+ a.getValue() * a.getValue() * (xd * xo + zd * zo )
-							- 0.5 * sqrt( 4 * ( a.getValue() * b.getValue() * b.getValue()*  yd
-												- b.getValue()* b.getValue() * yd * yo
-												+ a.getValue()* a.getValue() * (xd * xo + zd * zo ) )
-											* ( a.getValue() * b.getValue() * b.getValue()*  yd
-												- b.getValue()* b.getValue() * yd * yo
-												+ a.getValue()* a.getValue() * (xd * xo + zd * zo ) )
-										- 4  * ( -b.getValue() * b.getValue() * yd * yd + a.getValue() * a.getValue() * ( xd * xd + zd * zd ) )
-										* ( 2 * a.getValue() * b.getValue() * b.getValue() * yo - b.getValue() * b.getValue() * yo*  yo
-												+ a.getValue() * a.getValue() *  (xo * xo + zo * zo ) ) ) );
-	double t1 = ( 1 / ( b.getValue()* b.getValue() *  yd * yd - a.getValue() * a.getValue() * ( xd * xd  + zd * zd) ) )
-						* ( a.getValue() *  b.getValue() * b.getValue() *  yd - b.getValue() * b.getValue() * yd * yo
-								+ a.getValue() * a.getValue() * (xd * xo + zd * zo )
-								+ 0.5 * sqrt( 4 * ( a.getValue() * b.getValue() * b.getValue()*  yd
-													- b.getValue()* b.getValue() * yd * yo
-													+ a.getValue()* a.getValue() * (xd * xo + zd * zo ) )
-												* ( a.getValue() * b.getValue() * b.getValue()*  yd
-													- b.getValue()* b.getValue() * yd * yo
-													+ a.getValue()* a.getValue() * (xd * xo + zd * zo ) )
-											- 4  * ( -b.getValue() * b.getValue() * yd * yd + a.getValue() * a.getValue() * ( xd * xd + zd * zd ) )
-											* ( 2 * a.getValue() * b.getValue() * b.getValue() * yo - b.getValue() * b.getValue() * yo*  yo
-													+ a.getValue() * a.getValue() *  (xo * xo + zo * zo ) ) ) );
+	double A =  (b.getValue() * b.getValue() * yd * yd  - a.getValue() * a.getValue() * (xd * xd  + zd * zd ) );
+	double B = 2 * (a.getValue()  * b.getValue() * b.getValue() * yd + b.getValue() * b.getValue() * yd * yo - a.getValue() * a.getValue() * (xd * xo + zd * zo ) );
+	double C = 2 *a.getValue() * b.getValue() * b.getValue() * yo + b.getValue() * b.getValue() * yo * yo -a.getValue() * a.getValue()*  (xo * xo + zo * zo );
+
+	// Solve quadratic equation for _t_ values
+	double t0, t1;
+	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
 	double thit = ( t0 > objectRay.mint )? t0 : t1 ;
 	if( thit > objectRay.maxt ) return false;
 
-   //Compute possible cylinder hit position and $\phi
+   //Compute possible hyperbola hit position
 	Point3D hitPoint = objectRay( thit );
-	double phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += TwoPi;
 
 	//Evaluate Tolerance
 	double tol = 0.00001;
+
 	if( (thit - objectRay.mint) < tol ) return false;
 
-	double ymin = a.getValue() + ( sqrt( a.getValue() * a.getValue() * b.getValue() * b.getValue() * b.getValue() * b.getValue() ) / ( b.getValue() * b.getValue() ) );
 	double r = diameter.getValue() / 2;
+	double ymax = -a.getValue()
+								+( sqrt(  a.getValue() * a.getValue() * b.getValue() * b.getValue()
+											*  ( b.getValue() * b.getValue() + r * r) )
+						/ ( b.getValue() * b.getValue() ) );
+
+
+	double ymin  = 0.0;
+	/*double ymin = a.getValue() + ( sqrt( a.getValue() * a.getValue() * b.getValue() * b.getValue() * b.getValue() * b.getValue() ) / ( b.getValue() * b.getValue() ) );
+
 	double ymax = ( a.getValue() * b.getValue() * b.getValue()
 						+ sqrt(  a.getValue() * a.getValue() * b.getValue() * b.getValue()
 									*  ( b.getValue() * b.getValue() +  r * r  ) ) )
-				/ ( b.getValue() * b.getValue() );
+				/ ( b.getValue() * b.getValue() );*/
 
 
 	// Test intersection against clipping parameters
 
-	double yradius = hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z;
+	double yradius = sqrt(hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z);
 	if( hitPoint.y < ymin || hitPoint.y > ymax ||  yradius > r )
 	{
 		if ( thit == t1 ) return false;
@@ -160,7 +151,7 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 		thit = t1;
 
 		hitPoint = objectRay( thit );
-		yradius = hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z;
+		yradius = sqrt(hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z);
 		if( hitPoint.y < ymin || hitPoint.y > ymax ||  yradius > r ) return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
@@ -168,10 +159,12 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
-
 	// Find parametric representation of hyperbola hit
 	double u = yradius / ( diameter.getValue() / 2 );
-	double v = acos( hitPoint.x / yradius );
+	double phi = atan2( hitPoint.z , hitPoint.x );
+	if( phi < 0.0 ) phi = phi + tgc::TwoPi;
+	double v = phi / tgc::TwoPi;
+
 
 	Vector3D dpdu = Dpdu( u, v );
 	Vector3D dpdv = Dpdv( u, v );
@@ -257,7 +250,7 @@ Point3D ShapeHyperboloid::GetPoint3D (double u, double v) const
 
 	double x = cos(phi0 )* r0;
 	double z = sin( phi0 ) * r0;
-	double y = a.getValue()+ ( sqrt( a.getValue() * a.getValue() * b.getValue() * b.getValue()
+	double y = -a.getValue() + ( sqrt( a.getValue() * a.getValue() * b.getValue() * b.getValue()
 						*  ( b.getValue() * b.getValue()  +  x* x + z * z ) )
 			/ ( b.getValue() * b.getValue() ) );
 	return Point3D( x, y, z );
@@ -267,14 +260,8 @@ NormalVector ShapeHyperboloid::GetNormal (double u, double v) const
 {
 	Trace trace( "ShapeHyperboloid::GetNormal", false );
 
-	Vector3D dpdu = Vector3D( 0.5 * diameter.getValue() * cos( tgc::TwoPi *  v ),
-			( pow( a.getValue(), 2 ) * pow( diameter.getValue(), 2 ) * u )
-				/ ( 2 * sqrt( pow( a.getValue(), 2 ) * pow( b.getValue(), 2 ) *
-						( 4 * pow( b.getValue(), 2 )  +  ( pow( diameter.getValue(), 2 ) * u * u ) ) ) ),
-			0.5 * diameter.getValue() * sin( tgc::TwoPi * v ) );
-	Vector3D dpdv = Vector3D( - diameter.getValue() * Pi * u * sin( tgc::TwoPi * v ),
-			0.0,
-			diameter.getValue() * Pi * u * cos( tgc::TwoPi * v ) );
+	Vector3D dpdu = Dpdu( u, v );
+	Vector3D dpdv = Dpdv( u, v );
 	return NormalVector( Normalize( CrossProduct( dpdu, dpdv ) ) );
 }
 
@@ -284,12 +271,14 @@ void ShapeHyperboloid::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/
 
 	double xmin = - ( diameter.getValue() / 2 );
 	double xmax = diameter.getValue() / 2;
-	double ymin = a.getValue() + ( sqrt( a.getValue() * a.getValue() * b.getValue() * b.getValue() * b.getValue() * b.getValue() ) / ( b.getValue() * b.getValue() ) );
 	double r = diameter.getValue() / 2;
-	double ymax = ( a.getValue() * b.getValue() * b.getValue()
-						+ sqrt(  a.getValue() * a.getValue() * b.getValue() * b.getValue()
-									*  ( b.getValue() * b.getValue() + r * r  ) ) )
-				/ ( b.getValue() * b.getValue() );
+	double ymax = -a.getValue()
+							+( sqrt(  a.getValue() * a.getValue() * b.getValue() * b.getValue()
+										*  ( b.getValue() * b.getValue() + r * r) )
+					/ ( b.getValue() * b.getValue() ) );
+
+
+	double ymin  = 0.0;
 
 	double zmin = - ( diameter.getValue() / 2 );
 	double zmax = diameter.getValue() / 2;
