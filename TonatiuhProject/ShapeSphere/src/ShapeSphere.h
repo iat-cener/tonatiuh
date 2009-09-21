@@ -67,11 +67,11 @@ public:
 		OUTSIDE = 1,
 	   };
 
-	SoSFDouble m_radius;
-	SoSFDouble m_z1;
-	SoSFDouble m_z2;
-	SoSFDouble m_phiMax;
-	SoSFEnum m_reverseOrientation;
+	SoSFDouble radius;
+	SoSFDouble z1;
+	SoSFDouble z2;
+	SoSFDouble phiMax;
+	SoSFEnum activeSide;
 
 protected:
 	static void updateMinMaxTheta(void *data, SoSensor *);

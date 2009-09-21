@@ -63,32 +63,29 @@ ShapeSphere::ShapeSphere( )
 	Trace trace( "ShapeSphere::ShapeSphere", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeSphere);
-	SO_NODE_ADD_FIELD(m_radius, (10.0));
-	SO_NODE_ADD_FIELD(m_z1, (-5.0));
-	SO_NODE_ADD_FIELD(m_z2, (5.0));
-	SO_NODE_ADD_FIELD(m_phiMax, (1.5 * tgc::Pi));
+	SO_NODE_ADD_FIELD( radius, (0.5) );
+	SO_NODE_ADD_FIELD( z1, (-0.5) );
+	SO_NODE_ADD_FIELD( z2, (0.5) );
+	SO_NODE_ADD_FIELD( phiMax, ( tgc::TwoPi) );
 	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
   	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
-  	SO_NODE_SET_SF_ENUM_TYPE(m_reverseOrientation, reverseOrientation);
-	SO_NODE_ADD_FIELD( m_reverseOrientation, (INSIDE) );
-	//SO_NODE_ADD_FIELD(m_reverseOrientation, (false));
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation );
+	SO_NODE_ADD_FIELD( activeSide, (INSIDE) );
 
-	double zmin = std::min( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max( m_z1.getValue(), m_z2.getValue() );
+	double zmin = std::min( z1.getValue(), z2.getValue() );
+	double zmax = std::max( z1.getValue(), z2.getValue() );
 
-	m_thetaMin = acos( zmax/m_radius.getValue() );
-	m_thetaMax = acos( zmin/m_radius.getValue() );
+	m_thetaMin = acos( zmax/radius.getValue() );
+	m_thetaMax = acos( zmin/radius.getValue() );
 
 	SoFieldSensor* m_z1Sensor = new SoFieldSensor(updateMinMaxTheta, this);
-	m_z1Sensor->attach(&m_z1);
+	m_z1Sensor->attach( &z1 );
 	SoFieldSensor* m_z2Sensor = new SoFieldSensor(updateMinMaxTheta, this);
-	m_z2Sensor->attach(&m_z2);
+	m_z2Sensor->attach( &z2 );
 	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateMinMaxTheta, this);
-	m_radiusSensor->attach(&m_radius);
-
-
+	m_radiusSensor->attach( &radius );
 	SoFieldSensor* m_phiMaxSensor = new SoFieldSensor(updatePhiMax, this);
-	m_phiMaxSensor->attach(&m_phiMax);
+	m_phiMaxSensor->attach( &phiMax );
 }
 
 ShapeSphere::~ShapeSphere()
@@ -114,7 +111,7 @@ SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 double ShapeSphere::GetArea() const
 {
 	Trace trace( "ShapeSphere::GetArea", false );
-	return ( 4 * tgc::Pi * m_radius.getValue() * m_radius.getValue() );
+	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() );
 }
 
 QString ShapeSphere::getIcon()
@@ -133,7 +130,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.LengthSquared();
     double B = 2.0 * DotProduct( vObjectRayOrigin, objectRay.direction );
-	double C = vObjectRayOrigin.LengthSquared() - m_radius.getValue()*m_radius.getValue();
+	double C = vObjectRayOrigin.LengthSquared() - radius.getValue() * radius.getValue();
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -153,11 +150,11 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	double phi = atan2( hitPoint.y, hitPoint.x );
 	if ( phi < 0. ) phi += tgc::TwoPi;
 
-	double zmin = std::min( m_z1.getValue(), m_z2.getValue() );
-	double zmax = std::max( m_z1.getValue(), m_z2.getValue() );
+	double zmin = std::min( z1.getValue(), z2.getValue() );
+	double zmax = std::max( z1.getValue(), z2.getValue() );
 
 	// Test intersection against clipping parameters
-	if( hitPoint.z < zmin || hitPoint.z > zmax || phi > m_phiMax.getValue() )
+	if( hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
@@ -168,7 +165,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 		phi = atan2( hitPoint.y, hitPoint.x );
 	    if ( phi < 0. ) phi += tgc::TwoPi;
 
-		if ( hitPoint.z < zmin || hitPoint.z > zmax || phi > m_phiMax.getValue() ) return false;
+		if ( hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() ) return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -176,8 +173,8 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of ShapeSphere hit
-	double u = phi / m_phiMax.getValue();
-	double theta = acos( hitPoint.z / m_radius.getValue() );
+	double u = phi / phiMax.getValue();
+	double theta = acos( hitPoint.z / radius.getValue() );
 	double v = ( theta - m_thetaMin ) / ( m_thetaMax - m_thetaMin );
 
 	// Compute ShapeSphere \dpdu and \dpdv
@@ -185,13 +182,13 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	double invzradius = 1.0 / zradius;
 	double cosphi = hitPoint.x * invzradius;
 	double sinphi = hitPoint.y * invzradius;
-	Vector3D dpdu( -m_phiMax.getValue() * hitPoint.y, m_phiMax.getValue() * hitPoint.x, 0.0 );
+	Vector3D dpdu( -phiMax.getValue() * hitPoint.y, phiMax.getValue() * hitPoint.x, 0.0 );
 	Vector3D dpdv = ( m_thetaMax - m_thetaMin ) *
-	                  Vector3D( hitPoint.z * cosphi, hitPoint.z * sinphi, -m_radius.getValue() * sin( theta ) );
+	                  Vector3D( hitPoint.z * cosphi, hitPoint.z * sinphi, - radius.getValue() * sin( theta ) );
 
 	// Compute ShapeSphere \dndu and \dndv
-	Vector3D d2Pduu = -m_phiMax.getValue() * m_phiMax.getValue() * Vector3D( hitPoint.x, hitPoint.y, 0 );
-	Vector3D d2Pduv = ( m_thetaMax - m_thetaMin ) * hitPoint.z * m_phiMax.getValue() * Vector3D( -sinphi, cosphi, 0. );
+	Vector3D d2Pduu = -phiMax.getValue() * phiMax.getValue() * Vector3D( hitPoint.x, hitPoint.y, 0 );
+	Vector3D d2Pduv = ( m_thetaMax - m_thetaMin ) * hitPoint.z * phiMax.getValue() * Vector3D( -sinphi, cosphi, 0. );
 	Vector3D d2Pdvv = -( m_thetaMax - m_thetaMin ) * ( m_thetaMax - m_thetaMin ) * Vector3D( hitPoint.x, hitPoint.y, hitPoint.z );
 
 	// Compute coefficients for fundamental forms
@@ -199,7 +196,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
 	Vector3D N;
-	if( m_reverseOrientation.getValue() == false )
+	if( activeSide.getValue() == false )
 	{
 		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	}
@@ -256,18 +253,18 @@ void ShapeSphere::updateMinMaxTheta( void *data, SoSensor * )
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 
 	//double zmin, zmax;
-	double zmin = std::min( shapeSphere->m_z1.getValue(), shapeSphere->m_z2.getValue() );
-	double zmax = std::max( shapeSphere->m_z1.getValue(), shapeSphere->m_z2.getValue() );
+	double zmin = std::min( shapeSphere->z1.getValue(), shapeSphere->z2.getValue() );
+	double zmax = std::max( shapeSphere->z1.getValue(), shapeSphere->z2.getValue() );
 
 
-	if( shapeSphere->m_radius.getValue() < fabs( zmin ) )
-		zmin = -shapeSphere->m_radius.getValue();
+	if( shapeSphere->radius.getValue() < fabs( zmin ) )
+		zmin = -shapeSphere->radius.getValue();
 
-	if(shapeSphere->m_radius.getValue() < zmax )
-		zmax = shapeSphere->m_radius.getValue();
+	if(shapeSphere->radius.getValue() < zmax )
+		zmax = shapeSphere->radius.getValue();
 
-	shapeSphere->m_thetaMin = acos( zmax/shapeSphere->m_radius.getValue() );
-	shapeSphere->m_thetaMax = acos( zmin/shapeSphere->m_radius.getValue() );
+	shapeSphere->m_thetaMin = acos( zmax/shapeSphere->radius.getValue() );
+	shapeSphere->m_thetaMax = acos( zmin/shapeSphere->radius.getValue() );
 }
 
 
@@ -277,8 +274,8 @@ void ShapeSphere::updatePhiMax( void *data, SoSensor* )
 
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 
-	if( shapeSphere->m_phiMax.getValue() < 0.0 ) shapeSphere->m_phiMax = 0.0;
-	if( shapeSphere->m_phiMax.getValue() > tgc::TwoPi ) shapeSphere->m_phiMax = tgc::TwoPi;
+	if( shapeSphere->phiMax.getValue() < 0.0 ) shapeSphere->phiMax = 0.0;
+	if( shapeSphere->phiMax.getValue() > tgc::TwoPi ) shapeSphere->phiMax = tgc::TwoPi;
 
 }
 
@@ -288,7 +285,7 @@ Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double phi = u * m_phiMax.getValue();
+	double phi = u * phiMax.getValue();
 	double theta = v * ( m_thetaMax - m_thetaMin ) + m_thetaMin;
 
 	double cosphi = cos (phi);
@@ -296,9 +293,9 @@ Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 	double costheta = cos (theta);
 	double sintheta = sin (theta);
 
-	double x = m_radius.getValue() * sintheta * cosphi;
-	double y = m_radius.getValue() * sintheta * sinphi;
-	double z = m_radius.getValue() * costheta;
+	double x = radius.getValue() * sintheta * cosphi;
+	double y = radius.getValue() * sintheta * sinphi;
+	double z = radius.getValue() * costheta;
 
 	return Point3D (x, y, z);
 
@@ -324,29 +321,29 @@ void ShapeSphere::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 
    	double sinThetaMin = sin( m_thetaMin );
    	double sinThetaMax = sin( m_thetaMax );
-   	double cosPhiMax = cos( m_phiMax.getValue() );
-   	double sinPhiMax = sin( m_phiMax.getValue() );
+   	double cosPhiMax = cos( phiMax.getValue() );
+   	double sinPhiMax = sin( phiMax.getValue() );
 
    	double xmin = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) ) ?
-						( m_phiMax.getValue() <=tgc::Pi / 2 ) ? m_radius.getValue() * std::min( sinThetaMin, sinThetaMax ) * cosPhiMax :
-   							( m_phiMax.getValue() >= tgc::Pi ) ? - m_radius.getValue() : m_radius.getValue() * cosPhiMax :
-   						( m_phiMax.getValue() >= tgc::Pi ) ? - m_radius.getValue() * std::max( sinThetaMin, sinThetaMax ):
-   							( m_phiMax.getValue() <=tgc::Pi / 2 ) ? m_radius.getValue() * std::min( sinThetaMin, sinThetaMax ) * cosPhiMax :
-								m_radius.getValue() * std::max( sinThetaMin, sinThetaMax ) * cosPhiMax;
-   	double xmax = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) )? m_radius.getValue() : m_radius.getValue() * std::max( sinThetaMin, sinThetaMax );
+						( phiMax.getValue() <=tgc::Pi / 2 ) ? radius.getValue() * std::min( sinThetaMin, sinThetaMax ) * cosPhiMax :
+   							( phiMax.getValue() >= tgc::Pi ) ? - radius.getValue() : radius.getValue() * cosPhiMax :
+   						( phiMax.getValue() >= tgc::Pi ) ? - radius.getValue() * std::max( sinThetaMin, sinThetaMax ):
+   							( phiMax.getValue() <=tgc::Pi / 2 ) ? radius.getValue() * std::min( sinThetaMin, sinThetaMax ) * cosPhiMax :
+								radius.getValue() * std::max( sinThetaMin, sinThetaMax ) * cosPhiMax;
+   	double xmax = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) )? radius.getValue() : radius.getValue() * std::max( sinThetaMin, sinThetaMax );
 
    	double ymin = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) ) ?
-					( ( m_phiMax.getValue() <= tgc::Pi ) ? 0.0 :
-   									( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue() ) :
-					( (( m_phiMax.getValue() <= tgc::Pi ) ? 0.0 :
-						( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? std::min( m_radius.getValue()*sinThetaMin* sinPhiMax, m_radius.getValue()*sinThetaMax* sinPhiMax ) :
-								std::min( -m_radius.getValue()*sinThetaMin, -m_radius.getValue()*sinThetaMax ) ) );
+					( ( phiMax.getValue() <= tgc::Pi ) ? 0.0 :
+   									( phiMax.getValue() < 1.5 * tgc::Pi ) ? radius.getValue() * sinPhiMax : -radius.getValue() ) :
+					( (( phiMax.getValue() <= tgc::Pi ) ? 0.0 :
+						( phiMax.getValue() < 1.5 * tgc::Pi ) ? std::min( radius.getValue()*sinThetaMin* sinPhiMax, radius.getValue()*sinThetaMax* sinPhiMax ) :
+								std::min( -radius.getValue()*sinThetaMin, -radius.getValue()*sinThetaMax ) ) );
 	double ymax = ( ( m_thetaMin <= tgc::Pi/2.0 ) && ( m_thetaMax >= tgc::Pi/2.0 ) ) ?
-					( m_phiMax.getValue() >= tgc::Pi/2.0 ) ? m_radius.getValue() : m_radius.getValue() * sinPhiMax:
-					( m_phiMax.getValue() >= tgc::Pi/2.0 ) ? m_radius.getValue() *  std::max( sinThetaMin, sinThetaMax ) : m_radius.getValue() * std::max( sinThetaMin* sinPhiMax, sinThetaMax* sinPhiMax );
+					( phiMax.getValue() >= tgc::Pi/2.0 ) ? radius.getValue() : radius.getValue() * sinPhiMax:
+					( phiMax.getValue() >= tgc::Pi/2.0 ) ? radius.getValue() *  std::max( sinThetaMin, sinThetaMax ) : radius.getValue() * std::max( sinThetaMin* sinPhiMax, sinThetaMax* sinPhiMax );
 
-   	double zmin = std::max( -m_radius.getValue(), std::min( m_z1.getValue(), m_z2.getValue() ) );
-	double zmax = std::min( m_radius.getValue(), std::max( m_z1.getValue(), m_z2.getValue() ) );
+   	double zmin = std::max( -radius.getValue(), std::min( z1.getValue(), z2.getValue() ) );
+	double zmax = std::min( radius.getValue(), std::max( z1.getValue(), z2.getValue() ) );
 
 	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
