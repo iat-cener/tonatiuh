@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPETROUGHPARABOLA_H_
 #define SHAPETROUGHPARABOLA_H_
 
+#include <Inventor/fields/SoSFEnum.h> 
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
@@ -59,11 +60,17 @@ public:
 
 	Point3D Sample( double u, double v) const;
 
-	SoSFDouble m_focus;
-	SoSFDouble m_length;
-	SoSFDouble m_hPos;
-	SoSFDouble m_hNeg;
+    enum reverseOrientation {
+             INSIDE = 0,
+             OUTSIDE = 1,
+	};
 
+
+	SoSFDouble focusLength;
+	SoSFDouble length;
+	SoSFDouble width;
+    SoSFEnum orientation;
+ 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
