@@ -64,22 +64,26 @@ ShapeSphericalPolygon::ShapeSphericalPolygon()
 	Trace trace( "ShapeSphericalPolygon::ShapeSphericalPolygon", false );
 
 	SO_NODE_CONSTRUCTOR( ShapeSphericalPolygon );
-	SO_NODE_ADD_FIELD( m_sphereRadius, (10.0) );
-	SO_NODE_ADD_FIELD( m_radius, (3.0) );
-	SO_NODE_ADD_FIELD( m_sides, (6) );
+	SO_NODE_ADD_FIELD( sphereRadius, (0.5) );
+	SO_NODE_ADD_FIELD( radius, (0.5) );
+	SO_NODE_ADD_FIELD( polygonSides, (6) );
+	SO_NODE_DEFINE_ENUM_VALUE(side, INSIDE);
+  	SO_NODE_DEFINE_ENUM_VALUE(side, OUTSIDE);
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, side);
+	SO_NODE_ADD_FIELD( activeSide, (INSIDE) );
 
-    m_thetaMax = asin( m_radius.getValue() / m_sphereRadius.getValue() );
-    m_phiMax = tgc::Pi/m_sides.getValue();
-    m_xMax = m_radius.getValue() * cos( m_phiMax );
+    m_thetaMax = asin( radius.getValue() / sphereRadius.getValue() );
+    m_phiMax = tgc::Pi/polygonSides.getValue();
+    m_xMax = radius.getValue() * cos( m_phiMax );
 
 	m_sphereRadiusSensor = new SoFieldSensor( SphereRadiusChanged, this );
-	m_sphereRadiusSensor->attach( &m_sphereRadius );
+	m_sphereRadiusSensor->attach( &sphereRadius );
 
 	m_radiusSensor = new SoFieldSensor( RadiusChanged, this );
-	m_radiusSensor->attach( &m_radius );
+	m_radiusSensor->attach( &radius );
 
 	m_sidesSensor = new SoFieldSensor( SidesChanged, this );
-	m_sidesSensor->attach( &m_sides );
+	m_sidesSensor->attach( &polygonSides );
 }
 
 ShapeSphericalPolygon::~ShapeSphericalPolygon()
@@ -117,13 +121,13 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 
 	// Traslation of the coordinate system from the local coordinates with origin in the bottom of the sphere to the sphere center.
 	Ray originBottomRay = objectRay;
-	originBottomRay.origin.z -= m_sphereRadius.getValue();
+	originBottomRay.origin.z -= sphereRadius.getValue();
 
 	// Compute quadratic sphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( originBottomRay.origin );
 	double A = originBottomRay.direction.LengthSquared();
     double B = 2.0 * DotProduct( vObjectRayOrigin, originBottomRay.direction );
-	double C = vObjectRayOrigin.LengthSquared() - m_sphereRadius.getValue()*m_sphereRadius.getValue();
+	double C = vObjectRayOrigin.LengthSquared() - sphereRadius.getValue() * sphereRadius.getValue();
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -161,7 +165,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	// Find parametric representation of sphere hit
 
 	double u = phi / tgc::TwoPi;
-	double theta = acos( -hitPoint.z / m_sphereRadius.getValue() );
+	double theta = acos( -hitPoint.z / sphereRadius.getValue() );
 	double v = theta  / m_thetaMax ;
 
 	// Test intersection against polygon clipping parameters
@@ -180,7 +184,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	double sinphi = hitPoint.y * invzradius;
 	Vector3D dpdu( -tgc::TwoPi * hitPoint.y, tgc::TwoPi * hitPoint.x, 0.0 );
 	Vector3D dpdv = ( tgc::Pi - m_thetaMax ) *
-	                  Vector3D( hitPoint.z * cosphi, hitPoint.z * sinphi, -m_sphereRadius.getValue() * sin( theta ) );
+	                  Vector3D( hitPoint.z * cosphi, hitPoint.z * sinphi, -sphereRadius.getValue() * sin( theta ) );
 
 	// Compute sphere \dndu and \dndv
 	Vector3D d2Pduu = -tgc::TwoPi *tgc::TwoPi * Vector3D( hitPoint.x, hitPoint.y, 0 );
@@ -191,7 +195,19 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	Vector3D N;
+	if( activeSide.getValue() == false )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) > 0 )
+	{
+		return false;
+	}
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );
@@ -206,7 +222,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	// Initialize _DifferentialGeometry_ from parametric information
 
 	// Back to the Shape coordinate sistem with the origin in the botom of the sphere.
-	hitPoint.z += m_sphereRadius.getValue();
+	hitPoint.z += sphereRadius.getValue();
 
 	*dg = DifferentialGeometry( hitPoint ,
 		                        dpdu,
@@ -244,9 +260,9 @@ Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 	double theta = v * m_thetaMax;
 	double sintheta = sin( theta );
 
-	double x = m_sphereRadius.getValue() * sintheta * cos( phi );
-	double y = m_sphereRadius.getValue() * sintheta * sin( phi );
-	double z =  m_sphereRadius.getValue() * ( 1 - cos( m_thetaMax ) );
+	double x = sphereRadius.getValue() * sintheta * cos( phi );
+	double y = sphereRadius.getValue() * sintheta * sin( phi );
+	double z = sphereRadius.getValue() * ( 1 - cos( m_thetaMax ) );
 
 	Point3D point = Point3D( x, y, z );
 
@@ -258,8 +274,8 @@ NormalVector ShapeSphericalPolygon::GetNormal(  double u, double v  ) const
 	Trace trace( "ShapeSphericalPolygon::GetNormal", false );
 
 	Point3D point = GetPoint3D( u, v );
-	Vector3D vector( point.x, point.y, point.z - m_sphereRadius.getValue());
-	return NormalVector( -point.x/vector.Length(), -point.y/vector.Length(), -(point.z-m_sphereRadius.getValue())/vector.Length() );
+	Vector3D vector( point.x, point.y, point.z - sphereRadius.getValue());
+	return NormalVector( -point.x/ vector.Length(), -point.y/vector.Length(), -( point.z - sphereRadius.getValue() )/vector.Length() );
 }
 
 bool ShapeSphericalPolygon::IsInside( double u, double v ) const
@@ -272,9 +288,9 @@ bool ShapeSphericalPolygon::IsInside( double u, double v ) const
 	double ratio = phi/m_phiMax;
 	double integerPart;
 	double fractionalPart = modf( ratio, &integerPart );
-	double phiReduced =  (tgf::IsOdd( integerPart ) ? ((1.0-fractionalPart) * m_phiMax ) : ( fractionalPart * m_phiMax ) ) ;
+	double phiReduced =  (tgf::IsOdd( integerPart ) ? ( (1.0 - fractionalPart) * m_phiMax ) : ( fractionalPart * m_phiMax ) ) ;
 
-	double xReduced = m_sphereRadius.getValue() * sin( theta ) * cos( phiReduced );
+	double xReduced = sphereRadius.getValue() * sin( theta ) * cos( phiReduced );
 	return ( xReduced > m_xMax ) ? false : true;
 }
 
@@ -306,8 +322,8 @@ std::vector< std::pair<double,double> > ShapeSphericalPolygon::MeshTriangle( con
 
 	double num = distribution.size();
 	std::vector< std::pair<double,double> > points;
-	double xmax = m_radius.getValue() * cos( m_phiMax );
-	double ymax = m_radius.getValue() * sin( m_phiMax );
+	double xmax = radius.getValue() * cos( m_phiMax );
+	double ymax = radius.getValue() * sin( m_phiMax );
 
 	for (int i = 0 ; i < num ; i++)
 		{
@@ -315,10 +331,10 @@ std::vector< std::pair<double,double> > ShapeSphericalPolygon::MeshTriangle( con
 		for (int j = 0 ; j <= i ; j++)
 			{
 			double y = ymax * distribution[j];
-			double z = sqrt( m_sphereRadius.getValue() * m_sphereRadius.getValue() - (x*x + y*y));
+			double z = sqrt( sphereRadius.getValue() * sphereRadius.getValue() - (x*x + y*y));
 
 			double phi = ( x > 0 )? atan2( y, x ) : 0 ;
-			double theta = acos( z / m_sphereRadius.getValue() );
+			double theta = acos( z / sphereRadius.getValue() );
 			std::pair<double,double> newpoint(phi,theta);
 			points.push_back(newpoint);
 			}
@@ -331,8 +347,9 @@ void ShapeSphericalPolygon::RadiusChanged( void* data, SoSensor* )
 	Trace trace( "ShapeSphericalPolygon::RadiusChanged", false );
 
 	ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
-	polygon->m_thetaMax = asin(  polygon->m_radius.getValue() /  polygon->m_sphereRadius.getValue() );
-	polygon->m_xMax = polygon->m_radius.getValue() * cos( polygon->m_phiMax );
+	//if( polygon->radius.getValue() > polygon->sphereRadius.getValue() )
+	polygon->m_thetaMax = asin(  polygon->radius.getValue() /  polygon->sphereRadius.getValue() );
+	polygon->m_xMax = polygon->radius.getValue() * cos( polygon->m_phiMax );
 }
 
 void ShapeSphericalPolygon::SidesChanged( void* data, SoSensor* )
@@ -340,8 +357,8 @@ void ShapeSphericalPolygon::SidesChanged( void* data, SoSensor* )
 	Trace trace( "ShapeSphericalPolygon::SidesChanged", false );
 
     ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
-    polygon->m_phiMax = tgc::Pi/ polygon->m_sides.getValue();
-    polygon->m_xMax =  polygon->m_radius.getValue() * cos(  polygon->m_phiMax );
+    polygon->m_phiMax = tgc::Pi/ polygon->polygonSides.getValue();
+    polygon->m_xMax =  polygon->radius.getValue() * cos(  polygon->m_phiMax );
 }
 
 void ShapeSphericalPolygon::SphereRadiusChanged( void* data, SoSensor* )
@@ -349,7 +366,7 @@ void ShapeSphericalPolygon::SphereRadiusChanged( void* data, SoSensor* )
 	Trace trace( "ShapeSphericalPolygon::SphereRadiusChanged", false );
 
 	ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
-	polygon->m_thetaMax = asin(  polygon->m_radius.getValue() /  polygon->m_sphereRadius.getValue() );
+	polygon->m_thetaMax = asin(  polygon->radius.getValue() /  polygon->sphereRadius.getValue() );
 }
 
 void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
@@ -401,12 +418,12 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 	//Once we have the triangle points and indexes, proceed to compute the whole polygon points
 	// and indexes
 
-	int totalIndex = triangleIndex * 2 * m_sides.getValue();
+	int totalIndex = triangleIndex * 2 * polygonSides.getValue();
 	float finalVertex[totalIndex][2];
 
 	double twoPhiMax = 2*m_phiMax;
 
-	for (int i = 0 ; i < m_sides.getValue() ; i++)
+	for (int i = 0 ; i < polygonSides.getValue() ; i++)
 	{
 		for ( int j = 0 ; j < triangleIndex ; j++ )
 		{
@@ -423,13 +440,13 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
     beginShape(action, QUADS );
 	for ( int i = 0; i < totalIndex; i++ )
 	{
-		double x = m_sphereRadius.getValue() * sin(  finalVertex[i][1] ) * cos( finalVertex[i][0] );
-		double y = m_sphereRadius.getValue() * sin(  finalVertex[i][1] ) * sin( finalVertex[i][0] );
-		double z = -m_sphereRadius.getValue() * cos(  finalVertex[i][1] ) + m_sphereRadius.getValue();
+		double x = sphereRadius.getValue() * sin(  finalVertex[i][1] ) * cos( finalVertex[i][0] );
+		double y = sphereRadius.getValue() * sin(  finalVertex[i][1] ) * sin( finalVertex[i][0] );
+		double z = -sphereRadius.getValue() * cos(  finalVertex[i][1] ) + sphereRadius.getValue();
 
 		SbVec3f point( x, y ,z );
-		SbVec3f vector( point[0], point[1], point[2] - m_sphereRadius.getValue() );
-		SbVec3f normal( -point[0]/vector.length(), -point[1]/vector.length(), - ( point[2] - m_sphereRadius.getValue() ) /vector.length() );
+		SbVec3f vector( point[0], point[1], point[2] - sphereRadius.getValue() );
+		SbVec3f normal( -point[0]/vector.length(), -point[1]/vector.length(), - ( point[2] - sphereRadius.getValue() ) /vector.length() );
 		SbVec4f texCoord = useTexFunc ? tce->get(point, normal) : SbVec4f( u, v, 0.0, 1.0 );
 
 	     pv.setPoint(point);
@@ -446,9 +463,9 @@ void ShapeSphericalPolygon::computeBBox(SoAction *, SbBox3f& box, SbVec3f& cente
 {
 	Trace trace( "ShapeSphericalPolygon::computeBBox", false );
 
-	double xmax = m_radius.getValue();
-	double ymax = m_radius.getValue();
-	double zmax = m_sphereRadius.getValue() * ( 1 - cos( m_thetaMax ) );
+	double xmax = radius.getValue();
+	double ymax = radius.getValue();
+	double zmax = sphereRadius.getValue() * ( 1 - cos( m_thetaMax ) );
 
 	center.setValue(0,0,zmax);
 
