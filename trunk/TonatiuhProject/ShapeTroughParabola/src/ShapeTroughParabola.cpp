@@ -65,10 +65,14 @@ ShapeTroughParabola::ShapeTroughParabola()
 	Trace trace( "ShapeTroughParabola::ShapeTroughParabola", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeTroughParabola);
-	SO_NODE_ADD_FIELD(m_focus, (1.0));
-	SO_NODE_ADD_FIELD(m_length, (10.0));
-	SO_NODE_ADD_FIELD(m_hPos, (1.0));
-	SO_NODE_ADD_FIELD(m_hNeg, (1.0));
+	SO_NODE_ADD_FIELD( focusLength, (0.125));
+	SO_NODE_ADD_FIELD( length, (1.0));
+	SO_NODE_ADD_FIELD( width, (1.0));
+    SO_NODE_DEFINE_ENUM_VALUE( reverseOrientation, INSIDE);
+    SO_NODE_DEFINE_ENUM_VALUE( reverseOrientation, OUTSIDE);
+    SO_NODE_SET_SF_ENUM_TYPE( orientation, reverseOrientation );
+    SO_NODE_ADD_FIELD( orientation, (INSIDE) );
+
 }
 
 ShapeTroughParabola::~ShapeTroughParabola()
@@ -96,8 +100,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	// Compute quadratic parabolic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.x*objectRay.direction.x;
-    double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x - 2 * m_focus.getValue() * objectRay.direction.y);
-	double C = objectRay.origin.x * objectRay.origin.x - 4 * m_focus.getValue() * objectRay.origin.y;
+    double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x - 2 * focusLength.getValue() * objectRay.direction.y);
+	double C = objectRay.origin.x * objectRay.origin.x - 4 * focusLength.getValue() * objectRay.origin.y;
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -116,19 +120,14 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
     Point3D hitPoint = objectRay( thit );
 
 	// Test intersection against clipping parameters
-	double ymax = std::max(m_hNeg.getValue(), m_hPos.getValue());
-	double ymin = (m_hNeg.getValue() > 0.0 || m_hPos.getValue() > 0.0) ? 0.0 : std::min(m_hNeg.getValue(), m_hPos.getValue());
+	double xmin = -width.getValue() / 2;
+	double xmax = width.getValue() / 2;
 
-	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
-					sqrt(4*m_focus.getValue()*m_hPos.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
-						sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue()));
-
-	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
-					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
-							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
+	double ymin = 0.0;
+	double ymax = ( (width.getValue() / 2) * (width.getValue() / 2) ) / ( 4 * focusLength.getValue() );
 
 	if( hitPoint.z < 0.0 ||
-		hitPoint.z > m_length.getValue() ||
+		hitPoint.z > length.getValue() ||
 		hitPoint.y > ymax || hitPoint.y < ymin ||
 		hitPoint.x > xmax || hitPoint.x < xmin )
 	{
@@ -140,7 +139,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 		hitPoint = objectRay( thit );
 
 		if( hitPoint.z < 0.0 ||
-			hitPoint.z > m_length.getValue() ||
+			hitPoint.z > length.getValue() ||
 			hitPoint.y > ymax || hitPoint.y < ymin ||
 			hitPoint.x > xmax || hitPoint.x < xmin)
 			return false;
@@ -157,15 +156,15 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	double y = hitPoint.y;
 
 	// Find parametric representation of paraboloid hit
-	double u =  x  / m_length.getValue();
-	double v = y / m_length.getValue();
+	double u =  x  / focusLength.getValue();
+	double v = y / length.getValue();
 
 	// Compute parabaloid \dpdu and \dpdv
-	Vector3D dpdu(1.0, x/(2.0*m_focus.getValue()), 0.0);
+	Vector3D dpdu(1.0, x /( 2.0 * focusLength.getValue() ), 0.0);
 	Vector3D dpdv(0.0, 0.0, 1.0);
 
 	// Compute parabaloid \dndu and \dndv
-	Vector3D d2Pduu ( 0.0, 1.0/(2.0*m_focus.getValue()), 0.0 );
+	Vector3D d2Pduu ( 0.0, 1.0/( 2.0* focusLength.getValue() ), 0.0 );
 	Vector3D d2Pduv ( 0.0, 0.0, 0.0 );
 	Vector3D d2Pdvv ( 0.0, 0.0, 0.0 );
 
@@ -173,7 +172,20 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
-	Vector3D N = Normalize( NormalVector( CrossProduct(dpdu, dpdv) ) );
+
+	Vector3D N;
+	if( orientation.getValue() == 1 )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) > 0 )
+	{
+		return false;
+	}
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
 	double g = DotProduct(N, d2Pdvv);
@@ -213,21 +225,9 @@ Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
-					sqrt(4*m_focus.getValue()*m_hPos.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
-							sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue()));
-
-	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
-					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
-							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
-
-
-	double width = u * ( xmax - xmin ) + xmin;
-	double length = v * m_length.getValue();
-
-	double x = width;
-	double y = width*width/(4*m_focus.getValue());
-	double z = length;
+		double x = u * width.getValue() - width.getValue() / 2;
+	double y = ( x * x ) /( 4 * focusLength.getValue() );
+	double z = v * length.getValue();
 
 	return Point3D (x, y, z);
 
@@ -239,7 +239,7 @@ NormalVector ShapeTroughParabola::GetNormal (double u ,double v) const
 
 	Point3D point = GetPoint3D( u, v );
 	Vector3D r( 0, 1, 0 );
-	Vector3D v1 = Normalize( Vector3D( -point.x, m_focus.getValue() - point.y, 0 ) );
+	Vector3D v1 = Normalize( Vector3D( -point.x, focusLength.getValue() - point.y, 0 ) );
 	NormalVector normal  = Normalize( NormalVector( r + v1 ) );
 
 	return NormalVector( normal.x , normal.y , 0 );
@@ -256,19 +256,14 @@ void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center
 {
 	Trace trace( "ShapeTroughParabola::computeBBox", false );
 
-	double ymax = std::max(m_hNeg.getValue(), m_hPos.getValue());
-	double ymin = (m_hNeg.getValue() > 0.0 || m_hPos.getValue() > 0.0) ? 0.0 : std::min( m_hNeg.getValue(), m_hPos.getValue());
+	double xmin = -width.getValue() / 2;
+	double xmax = width.getValue() / 2;
 
-	double xmax = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
-						sqrt(4*m_focus.getValue()*m_hPos.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
-								sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hPos.getValue()));
-
-	double xmin = ((m_hNeg.getValue() >= 0.0) && (m_hPos.getValue()>=0.0)) ?
-					-sqrt(4*m_focus.getValue()*m_hNeg.getValue()):(fabs(m_hPos.getValue()) > fabs(m_hNeg.getValue())) ?
-							sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue())): -sqrt(4*m_focus.getValue()*fabs(m_hNeg.getValue()));
+	double ymin = 0.0;
+	double ymax = ( (width.getValue() / 2) * (width.getValue() / 2) ) / ( 4 * focusLength.getValue() );
 
 	double zmin = 0.0;
-	double zmax = m_length.getValue();
+	double zmax = length.getValue();
 	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
 
