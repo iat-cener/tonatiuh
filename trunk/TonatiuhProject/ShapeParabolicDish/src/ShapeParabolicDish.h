@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEPARABOLICDISH_H_
 #define SHAPEPARABOLICDISH_H_
 
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
@@ -58,9 +59,15 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble m_focus;
-	SoSFDouble m_radius;
-	SoSFDouble m_phiMax;
+	enum reverseOrientation {
+		INSIDE = 0,
+		OUTSIDE = 1,
+	   };
+
+	SoSFDouble focusLength;
+	SoSFDouble dishMaxRadius;
+	SoSFDouble phiMax;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;

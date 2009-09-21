@@ -64,9 +64,13 @@ ShapeParabolicDish::ShapeParabolicDish()
 	Trace trace( "ShapeParabolicDish::ShapeParabolicDish", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeParabolicDish);
-	SO_NODE_ADD_FIELD(m_focus, (1.0));
-	SO_NODE_ADD_FIELD(m_radius, (10.0));
-	SO_NODE_ADD_FIELD(m_phiMax, (tgc::TwoPi));
+	SO_NODE_ADD_FIELD( focusLength, (0.125));
+	SO_NODE_ADD_FIELD( dishMaxRadius, (1.0));
+	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi) );
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation );
+	SO_NODE_ADD_FIELD( activeSide, (INSIDE) );
 }
 
 ShapeParabolicDish::~ShapeParabolicDish()
@@ -93,9 +97,9 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	Trace trace( "ShapeParabolicDish::Intersect", false);
 
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A = objectRay.direction.x*objectRay.direction.x + objectRay.direction.y*objectRay.direction.y;
-    double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x + objectRay.direction.y*objectRay.origin.y - 2 * m_focus.getValue() * objectRay.direction.z);
-	double C = objectRay.origin.x * objectRay.origin.x + objectRay.origin.y * objectRay.origin.y - 4 * m_focus.getValue() * objectRay.origin.z;
+	double A = objectRay.direction.x*objectRay.direction.x + objectRay.direction.z*objectRay.direction.z;
+    double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x + objectRay.direction.z * objectRay.origin.z - 2 * focusLength.getValue() * objectRay.direction.y );
+	double C = objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z - 4 * focusLength.getValue() * objectRay.origin.y;
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -115,7 +119,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 
     // Test intersection against clipping parameters
 
-	if( sqrt(hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y) > m_radius.getValue())
+	if( sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) > dishMaxRadius.getValue())
 		{
 			if ( thit == t1 ) return false;
 			if ( t1 > objectRay.maxt ) return false;
@@ -123,7 +127,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 
 			hitPoint = objectRay( thit );
 
-			if( sqrt(hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y) > m_radius.getValue()) return false;
+			if( sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) > dishMaxRadius.getValue()) return false;
 		}
 
 	// Now check if the function is being called from IntersectP,
@@ -137,39 +141,53 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
     hitPoint = objectRay( thit );
 
     double phi;
-    if( ( hitPoint.y == 0.0 ) &&( hitPoint.x ==0.0 ) ) phi = 0.0;
-    else if( hitPoint.y > 0 ) phi = atan2( hitPoint.y, hitPoint.x );
-    else phi = tgc::TwoPi+atan2( hitPoint.y, hitPoint.x );
+    if( ( hitPoint.z == 0.0 ) &&( hitPoint.x ==0.0 ) ) phi = 0.0;
+    else if( hitPoint.z > 0 ) phi = atan2( hitPoint.z, hitPoint.x );
+    else phi = tgc::TwoPi+atan2( hitPoint.z, hitPoint.x );
 
-    double radius = sqrt(hitPoint.z * 4 * m_focus.getValue() );
+    double radius = sqrt(hitPoint.y * 4 * focusLength.getValue() );
 
 	// Find parametric representation of paraboloid hit
-	double u = radius /m_radius.getValue();
-	double v = phi / m_phiMax.getValue();
+	double u = phi / phiMax.getValue();
+	double v = radius /dishMaxRadius.getValue();
 
 	// Compute Circular Parabolic Facet \dpdu and \dpdv
-	Vector3D dpdu( 	m_radius.getValue()* cos( v * m_phiMax.getValue() ),
-					m_radius.getValue()* sin ( v * m_phiMax.getValue()),
-					( m_radius.getValue()* m_radius.getValue()* u  ) / ( 2 * m_focus.getValue() ) );
+	Vector3D dpdu( -phiMax.getValue()* dishMaxRadius.getValue() * v * sin( phiMax.getValue() * u ),
+									0.0,
+									phiMax.getValue() * dishMaxRadius.getValue() * v * cos( phiMax.getValue() * u ) );
 
-	Vector3D dpdv( 	- u * m_radius.getValue() * m_phiMax.getValue() * sin( v * m_phiMax.getValue() ),
-					u * m_radius.getValue() * m_phiMax.getValue() * cos( v * m_phiMax.getValue() ),
-					0.0 );
+	Vector3D dpdv( dishMaxRadius.getValue() * cos( phiMax.getValue() * u ),
+									( dishMaxRadius.getValue()* dishMaxRadius.getValue() * v)/(2 * focusLength.getValue() ),
+									dishMaxRadius.getValue() * sin( phiMax.getValue() * u) );
 
 	// Compute Circular Parabolic Facet \dndu and \dndv
-	Vector3D d2Pduu ( 0.0, 0.0,( m_radius.getValue()* m_radius.getValue() ) / ( 2 * m_focus.getValue() ) );
-	Vector3D d2Pduv ( 	- m_radius.getValue() * m_phiMax.getValue() * sin( v * m_phiMax.getValue() ),
-						 m_radius.getValue() * m_phiMax.getValue() * cos( v * m_phiMax.getValue() ),
-						 0.0 );
-	Vector3D d2Pdvv ( 	- u * m_radius.getValue() * m_phiMax.getValue() * m_phiMax.getValue() * sin( v * m_phiMax.getValue() ),
-			u * m_radius.getValue() * m_phiMax.getValue() * m_phiMax.getValue() * cos( v * m_phiMax.getValue() ),
-			0.0 );
+	Vector3D d2Pduu ( -phiMax.getValue()* phiMax.getValue() * dishMaxRadius.getValue() * v * cos( phiMax.getValue()* u),
+					0.0,
+					-phiMax.getValue()* phiMax.getValue() * dishMaxRadius.getValue() * v * sin( phiMax.getValue() * u ) );
+	Vector3D d2Pduv ( -phiMax.getValue()* dishMaxRadius.getValue() *sin( phiMax.getValue() * u ),
+					0.0,
+					phiMax.getValue()* dishMaxRadius.getValue() * cos( phiMax.getValue() * u ) );
+	Vector3D d2Pdvv (0, ( dishMaxRadius.getValue() * dishMaxRadius.getValue() ) /(2 * focusLength.getValue() ), 0 );
+
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
-	Vector3D N = Normalize( CrossProduct( dpdu, dpdv ) );
+	Vector3D N;
+	if( activeSide.getValue() == false )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) > 0 )
+	{
+		return false;
+	}
+
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
 	double g = DotProduct(N, d2Pdvv);
@@ -214,12 +232,12 @@ Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 	Trace trace( "ShapeParabolicDish::GetPoint3D", false );
 
 	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
-	double radius = u * m_radius.getValue();
-	double phi = v * m_phiMax.getValue();
+	double radius = u * dishMaxRadius.getValue();
+	double phi = v * phiMax.getValue();
 
 	double x = radius * cos( phi );
-	double y = radius * sin( phi );
-	double z = radius * radius /( 4 * m_focus.getValue() );
+	double y = radius * radius /( 4 * focusLength.getValue() );
+	double z = radius * sin( phi );
 
 	return Point3D (x, y, z);
 
@@ -229,11 +247,17 @@ NormalVector ShapeParabolicDish::GetNormal (double u, double v) const
 {
 	Trace trace( "ShapeParabolicDish::GetNormal", false );
 
-	Point3D point = GetPoint3D( u, v );
+	Vector3D dpdu( -phiMax.getValue()* dishMaxRadius.getValue() * v * sin( phiMax.getValue() * u ),
+								0.0,
+								phiMax.getValue() * dishMaxRadius.getValue() * v * cos( phiMax.getValue() * u ) );
 
-	Vector3D r( 0, 0, 1 );
-	Vector3D v1= Normalize( Vector3D( -point.x, -point.y, m_focus.getValue()-point.z ) );
-	return Normalize( NormalVector( r + v1 ) );
+	Vector3D dpdv( dishMaxRadius.getValue() * cos( phiMax.getValue() * u ),
+								( dishMaxRadius.getValue()* dishMaxRadius.getValue() * v)/(2 * focusLength.getValue() ),
+								dishMaxRadius.getValue() * sin( phiMax.getValue() * u) );
+
+
+
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 }
 
 bool ShapeParabolicDish::OutOfRange( double u, double v ) const
@@ -246,17 +270,18 @@ void ShapeParabolicDish::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 {
 	Trace trace( "ShapeParabolicDish::computeBBox", false );
 
-	double cosPhiMax = cos( m_phiMax.getValue() );
-	double sinPhiMax = sin( m_phiMax.getValue() );
+	double cosPhiMax = cos( phiMax.getValue() );
+	double sinPhiMax = sin( phiMax.getValue() );
 
-	double xmin = ( m_phiMax.getValue() >= tgc::Pi ) ? -m_radius.getValue() : m_radius.getValue() * cosPhiMax;
-	double xmax = m_radius.getValue();
-	double ymin = 0.0;
-	if( m_phiMax.getValue() > tgc::Pi ) ymin = ( m_phiMax.getValue() < 1.5 * tgc::Pi ) ? m_radius.getValue() * sinPhiMax : -m_radius.getValue();
-	double ymax = ( m_phiMax.getValue() < tgc::Pi/2.0 )? m_radius.getValue() * sinPhiMax : m_radius.getValue();
-
-	double zmax = m_radius.getValue()*m_radius.getValue()/(4*m_focus.getValue());
+	double xmin = ( phiMax.getValue() >= tgc::Pi ) ? -dishMaxRadius.getValue() : dishMaxRadius.getValue() * cosPhiMax;
+	double xmax = dishMaxRadius.getValue();
 	double zmin = 0.0;
+	if( phiMax.getValue() > tgc::Pi ) zmin = ( phiMax.getValue() < 1.5 * tgc::Pi ) ? dishMaxRadius.getValue() * sinPhiMax : -dishMaxRadius.getValue();
+	double zmax = ( phiMax.getValue() < tgc::Pi/2.0 )? dishMaxRadius.getValue() * sinPhiMax : dishMaxRadius.getValue();
+
+	double ymin = 0.0;
+	double ymax = dishMaxRadius.getValue()*dishMaxRadius.getValue()/(4*focusLength.getValue());
+
 	box.setBounds(SbVec3f( xmin, ymin, zmin), SbVec3f( xmax, ymax, zmax));
 }
 
