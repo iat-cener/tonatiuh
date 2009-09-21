@@ -69,9 +69,9 @@ ShapeHyperboloid::ShapeHyperboloid( )
 	Trace trace( "ShapeHyperboloid::ShapeHyperboloid", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeHyperboloid);
-	SO_NODE_ADD_FIELD(a, (3.0) );
-	SO_NODE_ADD_FIELD(b, (2.0) );
-	SO_NODE_ADD_FIELD(diameter, (4.0) );
+	SO_NODE_ADD_FIELD(	focusLegth, (0.1) );
+	SO_NODE_ADD_FIELD( distanceTwoFocus, (10.0) );
+	SO_NODE_ADD_FIELD( reflectorMaxDiameter, (1.0) );
 }
 
 ShapeHyperboloid::~ShapeHyperboloid()
@@ -104,9 +104,13 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	double yd= objectRay.direction.y;
 	double zd= objectRay.direction.z;
 
-	double A =  (b.getValue() * b.getValue() * yd * yd  - a.getValue() * a.getValue() * (xd * xd  + zd * zd ) );
-	double B = 2 * (a.getValue()  * b.getValue() * b.getValue() * yd + b.getValue() * b.getValue() * yd * yo - a.getValue() * a.getValue() * (xd * xo + zd * zo ) );
-	double C = 2 *a.getValue() * b.getValue() * b.getValue() * yo + b.getValue() * b.getValue() * yo * yo -a.getValue() * a.getValue()*  (xo * xo + zo * zo );
+	double cConic = fabs( distanceTwoFocus.getValue() /2 );
+	double aConic = cConic - focusLegth.getValue();
+	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
+
+	double A =  ( bConic * bConic * yd * yd  - aConic * aConic * (xd * xd  + zd * zd ) );
+	double B = 2 * (aConic  * bConic * bConic * yd + bConic * bConic * yd * yo - aConic * aConic * (xd * xo + zd * zo ) );
+	double C = 2 * aConic * bConic * bConic * yo + bConic * bConic * yo * yo - aConic * aConic*  (xo * xo + zo * zo );
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -125,11 +129,10 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 
 	if( (thit - objectRay.mint) < tol ) return false;
 
-	double r = diameter.getValue() / 2;
-	double ymax = -a.getValue()
-								+( sqrt(  a.getValue() * a.getValue() * b.getValue() * b.getValue()
-											*  ( b.getValue() * b.getValue() + r * r) )
-						/ ( b.getValue() * b.getValue() ) );
+	double r = reflectorMaxDiameter.getValue() / 2;
+	double ymax = -aConic + ( sqrt( aConic * aConic * bConic * bConic
+											*  ( bConic * bConic + r * r) )
+								/ ( bConic * bConic ) );
 
 
 	double ymin  = 0.0;
@@ -160,7 +163,7 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of hyperbola hit
-	double u = yradius / ( diameter.getValue() / 2 );
+	double u = yradius / ( reflectorMaxDiameter.getValue() / 2 );
 	double phi = atan2( hitPoint.z , hitPoint.x );
 	if( phi < 0.0 ) phi = phi + tgc::TwoPi;
 	double v = phi / tgc::TwoPi;
@@ -171,17 +174,17 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 
 	// Compute cylinder \dndu and \dndv
 	Vector3D d2Pduu( 0.0,
-					(2 * pow( a.getValue(), 4) * pow( b.getValue(), 4 ) *  diameter.getValue() *  diameter.getValue() )
-					/ ( pow( a.getValue(), 2 )* pow( b.getValue(), 2)
-							* pow( 4 *  b.getValue() * b.getValue() + diameter.getValue() * diameter.getValue() * u * u , 3 / 2.0 ) ),
+					(2 * pow( aConic, 4) * pow( bConic, 4 ) *  reflectorMaxDiameter.getValue() *  reflectorMaxDiameter.getValue() )
+					/ ( pow( aConic, 2 )* pow( bConic, 2)
+							* pow( 4 *  bConic * bConic + reflectorMaxDiameter.getValue() * reflectorMaxDiameter.getValue() * u * u , 3 / 2.0 ) ),
 					0.0 );
 
-	Vector3D d2Pduv( - diameter.getValue() *tgc::Pi * sin( tgc::TwoPi * v ),
+	Vector3D d2Pduv( - reflectorMaxDiameter.getValue() *tgc::Pi * sin( tgc::TwoPi * v ),
 					0.0,
-					diameter.getValue() *tgc::Pi * cos( tgc::TwoPi * v ) );
-	Vector3D d2Pdvv( -2.0 * diameter.getValue() * tgc::Pi * tgc::Pi * u * cos( tgc::TwoPi * v),
+					reflectorMaxDiameter.getValue() *tgc::Pi * cos( tgc::TwoPi * v ) );
+	Vector3D d2Pdvv( -2.0 * reflectorMaxDiameter.getValue() * tgc::Pi * tgc::Pi * u * cos( tgc::TwoPi * v),
 					0.0,
-					-2.0 * diameter.getValue() * tgc::Pi * tgc::Pi * u * sin( tgc::TwoPi * v ) );
+					-2.0 * reflectorMaxDiameter.getValue() * tgc::Pi * tgc::Pi * u * sin( tgc::TwoPi * v ) );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct( dpdu, dpdu );
@@ -244,15 +247,19 @@ Point3D ShapeHyperboloid::GetPoint3D (double u, double v) const
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
 
+	double cConic = fabs( distanceTwoFocus.getValue() /2 );
+	double aConic = cConic - focusLegth.getValue();
+	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
 
-	double r0 = ( diameter.getValue() / 2 ) * u;
+
+	double r0 = ( reflectorMaxDiameter.getValue() / 2 ) * u;
 	double phi0 = tgc::TwoPi * v;
 
 	double x = cos(phi0 )* r0;
 	double z = sin( phi0 ) * r0;
-	double y = -a.getValue() + ( sqrt( a.getValue() * a.getValue() * b.getValue() * b.getValue()
-						*  ( b.getValue() * b.getValue()  +  x* x + z * z ) )
-			/ ( b.getValue() * b.getValue() ) );
+	double y = -aConic + ( sqrt( aConic * aConic * bConic * bConic
+						*  ( bConic * bConic  +  x* x + z * z ) )
+			/ ( bConic * bConic ) );
 	return Point3D( x, y, z );
 }
 
@@ -269,19 +276,23 @@ void ShapeHyperboloid::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/
 {
 	Trace trace( "ShapeHyperboloid::computeBBox", false );
 
-	double xmin = - ( diameter.getValue() / 2 );
-	double xmax = diameter.getValue() / 2;
-	double r = diameter.getValue() / 2;
-	double ymax = -a.getValue()
-							+( sqrt(  a.getValue() * a.getValue() * b.getValue() * b.getValue()
-										*  ( b.getValue() * b.getValue() + r * r) )
-					/ ( b.getValue() * b.getValue() ) );
+	double cConic = fabs( distanceTwoFocus.getValue() /2 );
+	double aConic = cConic - focusLegth.getValue();
+	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
+
+	double xmin = - ( reflectorMaxDiameter.getValue() / 2 );
+	double xmax = reflectorMaxDiameter.getValue() / 2;
+	double r = reflectorMaxDiameter.getValue() / 2;
+	double ymax = -aConic
+							+( sqrt(  aConic * aConic * bConic * bConic
+										*  ( bConic * bConic + r * r) )
+					/ ( bConic * bConic ) );
 
 
 	double ymin  = 0.0;
 
-	double zmin = - ( diameter.getValue() / 2 );
-	double zmax = diameter.getValue() / 2;
+	double zmin = - ( reflectorMaxDiameter.getValue() / 2 );
+	double zmax = reflectorMaxDiameter.getValue() / 2;
 	box.setBounds( SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
 
@@ -389,20 +400,23 @@ void ShapeHyperboloid::generatePrimitives(SoAction *action)
 Vector3D ShapeHyperboloid::Dpdu( double u, double v ) const
 {
 	Trace trace( "ShapeHyperboloid::Dpdu", false );
+	double cConic = fabs( distanceTwoFocus.getValue() /2 );
+	double aConic = cConic - focusLegth.getValue();
+	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
 
-	Vector3D dpdu = Vector3D( 0.5 * diameter.getValue() * cos( tgc::TwoPi *  v ),
-			( pow( a.getValue(), 2 ) * pow( diameter.getValue(), 2 ) * u )
-				/ ( 2 * sqrt( pow( a.getValue(), 2 ) * pow( b.getValue(), 2 ) *
-						( 4 * pow( b.getValue(), 2 )  +  ( pow( diameter.getValue(), 2 ) * u * u ) ) ) ),
-			0.5 * diameter.getValue() * sin( tgc::TwoPi * v ) );
+	Vector3D dpdu = Vector3D( 0.5 * reflectorMaxDiameter.getValue() * cos( tgc::TwoPi *  v ),
+			( pow( aConic, 2 ) * pow( reflectorMaxDiameter.getValue(), 2 ) * u )
+				/ ( 2 * sqrt( pow( aConic, 2 ) * pow( bConic, 2 ) *
+						( 4 * pow( bConic, 2 )  +  ( pow( reflectorMaxDiameter.getValue(), 2 ) * u * u ) ) ) ),
+			0.5 * reflectorMaxDiameter.getValue() * sin( tgc::TwoPi * v ) );
 	return dpdu;
 }
 
 Vector3D ShapeHyperboloid::Dpdv( double u, double v ) const
 {
 	Trace trace( "ShapeHyperboloid::Dpdv", false );
-	Vector3D dpdv = Vector3D( - diameter.getValue() * Pi * u * sin( tgc::TwoPi * v ),
+	Vector3D dpdv = Vector3D( - reflectorMaxDiameter.getValue() * Pi * u * sin( tgc::TwoPi * v ),
 			0.0,
-			diameter.getValue() * Pi * u * cos( tgc::TwoPi * v ) );
+			reflectorMaxDiameter.getValue() * Pi * u * cos( tgc::TwoPi * v ) );
 	return dpdv;
 }

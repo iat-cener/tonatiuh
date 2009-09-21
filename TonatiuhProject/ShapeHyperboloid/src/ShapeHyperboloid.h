@@ -62,9 +62,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble a;
-	SoSFDouble b;
-	SoSFDouble diameter;
+	SoSFDouble focusLegth;
+	SoSFDouble distanceTwoFocus;
+	SoSFDouble reflectorMaxDiameter;
 
 protected:
 	bool OutOfRange( double u, double v ) const;
