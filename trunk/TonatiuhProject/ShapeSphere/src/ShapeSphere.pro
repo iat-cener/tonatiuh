@@ -7,8 +7,7 @@ CONFIG       += plugin debug_and_release
 
 INCLUDEPATH += . \
 				src \
-				$$(TONATIUH_ROOT)/src \ 
-				$$(TDE_ROOT)/local/include
+				$$(TONATIUH_ROOT)/src
 
  
 win32{
@@ -57,17 +56,20 @@ TARGET        = ShapeSphere
 
 contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeSphere	
+		INCLUDEPATH += $$(TDE_ROOT)/local/include
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/plugins/ShapeSphere	
 		unix {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
 		}
 		else {
+			INCLUDEPATH += $$(TDE_ROOT)/local/include
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
 			TARGET = $$member(TARGET, 0)d
 		}
 	}
 	else { 
+		INCLUDEPATH += $$(TDE_ROOT)/local/include
 		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeSphere
 	}
