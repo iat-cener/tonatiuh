@@ -72,6 +72,10 @@ ShapeHyperboloid::ShapeHyperboloid( )
 	SO_NODE_ADD_FIELD(	focusLegth, (0.1) );
 	SO_NODE_ADD_FIELD( distanceTwoFocus, (10.0) );
 	SO_NODE_ADD_FIELD( reflectorMaxDiameter, (1.0) );
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation );
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeHyperboloid::~ShapeHyperboloid()
@@ -136,16 +140,8 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 
 
 	double ymin  = 0.0;
-	/*double ymin = a.getValue() + ( sqrt( a.getValue() * a.getValue() * b.getValue() * b.getValue() * b.getValue() * b.getValue() ) / ( b.getValue() * b.getValue() ) );
-
-	double ymax = ( a.getValue() * b.getValue() * b.getValue()
-						+ sqrt(  a.getValue() * a.getValue() * b.getValue() * b.getValue()
-									*  ( b.getValue() * b.getValue() +  r * r  ) ) )
-				/ ( b.getValue() * b.getValue() );*/
-
 
 	// Test intersection against clipping parameters
-
 	double yradius = sqrt(hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z);
 	if( hitPoint.y < ymin || hitPoint.y > ymax ||  yradius > r )
 	{
@@ -191,7 +187,19 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
 
-	Vector3D N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	Vector3D N;
+	if( activeSide.getValue() == 1 )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) > 0 )
+	{
+		return false;
+	}
 
 
 	double e = DotProduct( N, d2Pduu );
@@ -269,7 +277,17 @@ NormalVector ShapeHyperboloid::GetNormal (double u, double v) const
 
 	Vector3D dpdu = Dpdu( u, v );
 	Vector3D dpdv = Dpdv( u, v );
-	return NormalVector( Normalize( CrossProduct( dpdu, dpdv ) ) );
+
+	NormalVector normal;
+	if( activeSide.getValue() == 1 )
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	return normal;
 }
 
 void ShapeHyperboloid::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )

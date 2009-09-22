@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef ShapeHyperboloid_H_
 #define ShapeHyperboloid_H_
 
-
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
@@ -62,9 +62,15 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
+	enum reverseOrientation {
+		INSIDE = 0,
+		OUTSIDE = 1,
+	   };
+
 	SoSFDouble focusLegth;
 	SoSFDouble distanceTwoFocus;
 	SoSFDouble reflectorMaxDiameter;
+	SoSFEnum activeSide;
 
 protected:
 	bool OutOfRange( double u, double v ) const;
