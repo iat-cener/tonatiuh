@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEFLATDISK_H_
 #define SHAPEFLATDISK_H_
 
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
@@ -56,7 +57,14 @@ public:
 	bool IntersectP( const Ray &ray ) const;
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble m_radius;
+	enum reverseOrientation {
+		TOP = 0,
+		BASE = 1,
+	   };
+
+	SoSFDouble radius;
+	SoSFEnum activeSide;
+
 protected:
 	Point3D GetPoint3D (double u, double v) const;
 	NormalVector GetNormal(double u, double v) const;
