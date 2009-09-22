@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEPARABOLICRECTANGLE_H_
 #define SHAPEPARABOLICRECTANGLE_H_
 
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
@@ -59,9 +60,15 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble m_xlength;
-	SoSFDouble m_ylength;
-	SoSFDouble m_depth;
+	enum reverseOrientation {
+			INSIDE = 0,
+			OUTSIDE = 1,
+	};
+
+	SoSFDouble xlength;
+	SoSFDouble zlength;
+	SoSFDouble depth;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;
