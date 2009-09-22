@@ -67,11 +67,11 @@ public:
 		OUTSIDE = 1,
 	   };
 
-	SoSFDouble m_baseradius;
-	SoSFDouble m_topradius;
-	SoSFDouble m_height;
-	SoSFDouble m_phiMax;
-	SoSFEnum m_reverseOrientation;
+	SoSFDouble baseRadius;
+	SoSFDouble topRadius;
+	SoSFDouble height;
+	SoSFDouble phiMax;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;

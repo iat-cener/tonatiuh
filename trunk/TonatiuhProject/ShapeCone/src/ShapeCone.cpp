@@ -64,14 +64,14 @@ ShapeCone::ShapeCone(  )
 	Trace trace( "ShapeConeFactory::ShapeCone", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeCone);
-	SO_NODE_ADD_FIELD(m_baseradius, (10.0));
-	SO_NODE_ADD_FIELD(m_topradius, (0.0));
-	SO_NODE_ADD_FIELD( m_height, (10.0));
-	SO_NODE_ADD_FIELD(m_phiMax, (tgc::TwoPi ) );
+	SO_NODE_ADD_FIELD( baseRadius, (0.5) );
+	SO_NODE_ADD_FIELD( topRadius, (0.0));
+	SO_NODE_ADD_FIELD( height, (1.0));
+	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi ) );
 	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
   	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
-  	SO_NODE_SET_SF_ENUM_TYPE(m_reverseOrientation, reverseOrientation);
-	SO_NODE_ADD_FIELD( m_reverseOrientation, (OUTSIDE) );
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation);
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeCone::~ShapeCone()
@@ -97,21 +97,21 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 	Trace trace( "ShapeConeFactory::Intersect", false );
 
 	// Compute quadratic ShapeCone coefficients
-	double theta = atan2( m_height.getValue(), ( m_baseradius.getValue()-m_topradius.getValue() ) );
+	double theta = atan2( height.getValue(), ( baseRadius.getValue() - topRadius.getValue() ) );
 	double invTan = 1 / tan(theta);
 
 	double A = ( objectRay.direction.x * objectRay.direction.x )
-				+ ( objectRay.direction.y * objectRay.direction.y  )
-				- ( objectRay.direction.z * objectRay.direction.z * invTan * invTan);
+				+ ( objectRay.direction.z * objectRay.direction.z  )
+				- ( objectRay.direction.y * objectRay.direction.y * invTan * invTan);
 	double B = 2.0 * ( ( objectRay.origin.x * objectRay.direction.x )
-						+ ( objectRay.origin.y * objectRay.direction.y )
-						+ ( m_baseradius.getValue() * invTan * objectRay.direction.z )
-						- ( invTan * invTan * objectRay.origin.z * objectRay.direction.z ) );
+						+ ( objectRay.origin.z * objectRay.direction.z )
+						+ ( baseRadius.getValue() * invTan * objectRay.direction.y )
+						- ( invTan * invTan * objectRay.origin.y * objectRay.direction.y ) );
 	double C = ( objectRay.origin.x * objectRay.origin.x )
-				+ ( objectRay.origin.y * objectRay.origin.y )
-				- ( m_baseradius.getValue() * m_baseradius.getValue() )
-				+ ( 2 * m_baseradius.getValue() * invTan * objectRay.origin.z )
-				- ( invTan * invTan * objectRay.origin.z * objectRay.origin.z );
+				+ ( objectRay.origin.z * objectRay.origin.z )
+				- ( baseRadius.getValue() * baseRadius.getValue() )
+				+ ( 2 * baseRadius.getValue() * invTan * objectRay.origin.y )
+				- ( invTan * invTan * objectRay.origin.y * objectRay.origin.y );
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -130,20 +130,18 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 
 	// Compute possible ShapeCone hit position and $\phi$
     Point3D hitPoint = objectRay( thit );
-	double phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += tgc::TwoPi;
-
+	double phi = atan2( hitPoint.z, hitPoint.x );
 
 	// Test intersection against clipping parameters
-	if( hitPoint.z < 0 || hitPoint.z > m_height.getValue() || phi > m_phiMax.getValue() )
+	if( hitPoint.y < 0 || hitPoint.y > height.getValue() || phi > phiMax.getValue() )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
 		thit = t1;
 
 		hitPoint = objectRay( thit );
-
-		if ( hitPoint.z < 0 || hitPoint.z > m_height.getValue() || phi > m_phiMax.getValue() ) return false;
+		phi = atan2( hitPoint.z, hitPoint.x );
+		if ( hitPoint.y < 0 || hitPoint.y > height.getValue() || phi > phiMax.getValue() ) return false;
 	}
 	// Now check if the function is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -153,37 +151,42 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 	// Compute definitive ShapeCone hit position and $\phi$
     hitPoint = objectRay( thit );
 
-	phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += tgc::TwoPi;
+	//phi = atan2( hitPoint.z, hitPoint.x );
+	//if ( phi < 0. ) phi += tgc::TwoPi;
 
 	// Find parametric representation of ShapeCone hit
-	double zradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y );
+	//double zradius = sqrt( hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z );
 
-	double rMin = std::min( m_baseradius.getValue(), m_topradius.getValue() );
-	double rMax = std::max( m_baseradius.getValue(), m_topradius.getValue() );
+	//double rMin = std::min( baseRadius.getValue(), topRadius.getValue() );
+	//double rMax = std::max( baseRadius.getValue(), topRadius.getValue() );
 
-	double u = ( zradius - rMin )/( rMax - rMin );
-	double v = phi / m_phiMax.getValue();
+	double u = phi / phiMax.getValue();
+	double v = hitPoint.y / height.getValue();
 
 	// Compute ShapeCone \dpdu and \dpdv
-	double cosphi = cos( phi );
-	double sinphi = sin( phi );
-	Vector3D dpdu( ( rMax - rMin ) * cos( m_phiMax.getValue() * v ) ,
-					( rMax - rMin) * sin( m_phiMax.getValue() * v ) ,
-					(  m_height.getValue() * (-rMax + rMin) )/( m_baseradius.getValue()- m_topradius.getValue() ) );
+	Vector3D dpdu( -phiMax.getValue() *  ( baseRadius.getValue() - baseRadius.getValue() * v + topRadius.getValue() * v ) * sin( phiMax.getValue() * u ),
+						0.0,
+						phiMax.getValue() * ( baseRadius.getValue() - baseRadius.getValue() * v + topRadius.getValue() * v ) *  cos( phiMax.getValue() * u ) );
 
-	Vector3D dpdv(	-m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * sin( m_phiMax.getValue() * v ),
-					m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * cos( m_phiMax.getValue() * v ),
-					0.0 );
+
+	Vector3D dpdv( -height.getValue()* cos( phiMax.getValue()* u )
+						 / tan ( atan2( height.getValue(), ( baseRadius.getValue() - topRadius.getValue() ) ) ),
+			   height.getValue(),
+			   -height.getValue()  / tan ( atan2( height.getValue(), ( baseRadius.getValue() - topRadius.getValue() ) ) )
+						   * sin( phiMax.getValue() *  u ) );
+
 
 	// Compute ShapeCone \dndu and \dndv
-	Vector3D d2Pduu( 0.0, 0.0, 0.0 );
-	Vector3D d2Pduv( 	- m_phiMax.getValue() * ( rMax - rMin ) * sinphi,
-						m_phiMax.getValue() * ( rMax - rMin ) * cosphi,
-						0.0 );
-	Vector3D d2Pdvv(-m_phiMax.getValue() * m_phiMax.getValue() * zradius * cosphi,
-					- m_phiMax.getValue() * m_phiMax.getValue() * zradius * sinphi,
-					0.0);
+	Vector3D d2Pduu( -phiMax.getValue() * phiMax.getValue() * ( baseRadius.getValue() - baseRadius.getValue() * v + topRadius.getValue() * v )
+							* cos( phiMax.getValue() * u ),
+					   0.0,
+					   -phiMax.getValue() * phiMax.getValue() * ( baseRadius.getValue() - baseRadius.getValue() * v + topRadius.getValue() * v )
+						   * sin( phiMax.getValue() * u ) );
+
+	Vector3D d2Pduv( phiMax.getValue() * ( baseRadius.getValue() - topRadius.getValue() ) * sin( phiMax.getValue() * u ),
+						0.0,
+						phiMax.getValue() * ( -baseRadius.getValue() + topRadius.getValue() ) * cos( phiMax.getValue() * u )  );
+	Vector3D d2Pdvv( 0.0, 0.0, 0.0 );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct( dpdu, dpdu );
@@ -191,7 +194,8 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 	double G = DotProduct( dpdv, dpdv );
 	//Vector3D N = Normalize( CrossProduct( dpdu, dpdv ) );
 	Vector3D N;
-	if( m_reverseOrientation.getValue() == 0 )
+
+	if( activeSide.getValue() == 1 )
 	{
 		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	}
@@ -246,35 +250,39 @@ Point3D ShapeCone::GetPoint3D (double u, double v) const
 	Trace trace( "ShapeConeFactory::OutOfRange", false );
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeCone::GetPoint3D called with invalid parameters" );
 
-	double rMin = std::min( m_baseradius.getValue(), m_topradius.getValue() );
-	double rMax = std::max( m_baseradius.getValue(), m_topradius.getValue() );
+	double theta = atan2( height.getValue() ,( baseRadius.getValue() - topRadius.getValue() ) );
+	double iheight = v * height.getValue();
 
-	double radius = rMin + u * ( rMax - rMin );
-	double phi = v * m_phiMax.getValue();
+	double r= ( ( height.getValue() - iheight) / tan( theta ) ) + topRadius.getValue();
+	double phi = u * phiMax.getValue();
 
-	double x = radius * cos ( phi );
-	double y = radius * sin ( phi );
-	double z = ( ( ( m_height.getValue() ) / (m_baseradius.getValue() - m_topradius.getValue() ) ) * ( m_baseradius.getValue() - radius ) );
-
-	return Point3D (x, y, z);
+	return Point3D (r * cos( phi ), iheight , r * sin( phi ) );
 }
 
 NormalVector ShapeCone::GetNormal( double u ,double v ) const
 {
 	Trace trace( "ShapeConeFactory::GetNormal", false );
 
-	double rMin = std::min( m_baseradius.getValue(), m_topradius.getValue() );
-	double rMax = std::max( m_baseradius.getValue(), m_topradius.getValue() );
+	Vector3D dpdu( -phiMax.getValue() *  ( baseRadius.getValue() - baseRadius.getValue() * v + topRadius.getValue() * v ) * sin( phiMax.getValue() * u ),
+					0.0,
+					phiMax.getValue() * ( baseRadius.getValue() - baseRadius.getValue() * v + topRadius.getValue() * v ) *  cos( phiMax.getValue() * u ) );
 
-	Vector3D dpdu( ( rMax - rMin ) * cos( m_phiMax.getValue() * v ) ,
-					( rMax - rMin) * sin( m_phiMax.getValue() * v ) ,
-					(  m_height.getValue() * (-rMax + rMin) )/( m_baseradius.getValue()- m_topradius.getValue() ) );
+	Vector3D dpdv( -height.getValue()* cos( phiMax.getValue()* u )
+	                     / tan ( atan2( height.getValue(), ( baseRadius.getValue() - topRadius.getValue() ) ) ),
+			   height.getValue(),
+			   -height.getValue()  / tan ( atan2( height.getValue(), ( baseRadius.getValue() - topRadius.getValue() ) ) )
+						   * sin( phiMax.getValue() *  u ) );
+	NormalVector vector;
+	if( activeSide.getValue() == 0 )
+	{
+		vector = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		vector = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
 
-	Vector3D dpdv(	-m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * sin( m_phiMax.getValue() * v ),
-					m_phiMax.getValue() * (rMin + (rMax - rMin)  * u) * cos( m_phiMax.getValue() * v ),
-					0.0 );
 
-	NormalVector vector = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	return vector;
 
 }
@@ -289,18 +297,20 @@ void ShapeCone::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 {
 	Trace trace( "ShapeConeFactory::computeBBox", false );
 
-	double cosPhiMax = cos( m_phiMax.getValue() );
-	double sinPhiMax = sin( m_phiMax.getValue() );
-	double maxradius = std::max( m_baseradius.getValue(), m_topradius.getValue());
+	double cosPhiMax = cos( phiMax.getValue() );
+	double sinPhiMax = sin( phiMax.getValue() );
+	double maxradius = std::max( baseRadius.getValue(), topRadius.getValue());
 
-	double xmin = ( m_phiMax.getValue() >= tgc::Pi ) ? -maxradius : maxradius * cosPhiMax;
+	double xmin = ( phiMax.getValue() >= tgc::Pi ) ? -maxradius : maxradius * cosPhiMax;
 	double xmax = maxradius;
-	double ymin = ( m_phiMax.getValue() > tgc::Pi ) ?
-					( ( m_phiMax.getValue() < 1.5*tgc::Pi ) ? maxradius * sinPhiMax : -maxradius ) :
-					0.0;
-	double ymax = ( m_phiMax.getValue() < tgc::Pi/2.0 )? maxradius * sinPhiMax : maxradius;
+	double ymin = 0.0;
+	double ymax = height.getValue();
+	double zmin = ( phiMax.getValue() > tgc::Pi ) ?
+						( ( phiMax.getValue() < 1.5*tgc::Pi ) ? maxradius * sinPhiMax : -maxradius ) :
+						0.0;
+	double zmax = ( phiMax.getValue() < tgc::Pi/2.0 )? maxradius * sinPhiMax : maxradius;
 
-	box.setBounds(SbVec3f( xmin, ymin, 0 ), SbVec3f( xmax, ymax,  m_height.getValue() ) );
+	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 
 }
 
