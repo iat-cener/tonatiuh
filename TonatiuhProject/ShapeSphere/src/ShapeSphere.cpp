@@ -182,9 +182,19 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	double invzradius = 1.0 / zradius;
 	double cosphi = hitPoint.x * invzradius;
 	double sinphi = hitPoint.y * invzradius;
-	Vector3D dpdu( -phiMax.getValue() * hitPoint.y, phiMax.getValue() * hitPoint.x, 0.0 );
-	Vector3D dpdv = ( m_thetaMax - m_thetaMin ) *
-	                  Vector3D( hitPoint.z * cosphi, hitPoint.z * sinphi, - radius.getValue() * sin( theta ) );
+
+	Vector3D dpdu( -phiMax.getValue() * radius.getValue() *sin( phiMax.getValue() * u )
+							* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+						phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * u)
+							* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+						0.0 );
+
+	Vector3D dpdv( radius.getValue() * ( m_thetaMax - m_thetaMin ) * cos( phiMax.getValue() * u)
+						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+					radius.getValue() * ( m_thetaMax - m_thetaMin )
+						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) * sin( phiMax.getValue() * u ),
+					radius.getValue() * ( -m_thetaMax + m_thetaMin )
+						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) );
 
 	// Compute ShapeSphere \dndu and \dndv
 	Vector3D d2Pduu = -phiMax.getValue() * phiMax.getValue() * Vector3D( hitPoint.x, hitPoint.y, 0 );
@@ -305,8 +315,29 @@ NormalVector ShapeSphere::GetNormal(double u, double v ) const
 {
 	Trace trace( "ShapeSphere::GetNormal", false );
 
-	Point3D point = GetPoint3D( u, v );
-	return Normalize( NormalVector( point.x, point.y, point.z) );
+	Vector3D dpdu( -phiMax.getValue() * radius.getValue() *sin( phiMax.getValue() * u )
+						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+					phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * u)
+						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+					0.0 );
+
+	Vector3D dpdv( radius.getValue() * ( m_thetaMax - m_thetaMin ) * cos( phiMax.getValue() * u)
+						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+					radius.getValue() * ( m_thetaMax - m_thetaMin )
+						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) * sin( phiMax.getValue() * u ),
+					radius.getValue() * ( -m_thetaMax + m_thetaMin )
+						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) );
+
+	NormalVector normal;
+	if( activeSide.getValue() == false )
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	return normal;
 }
 
 bool ShapeSphere::OutOfRange( double u, double v ) const
