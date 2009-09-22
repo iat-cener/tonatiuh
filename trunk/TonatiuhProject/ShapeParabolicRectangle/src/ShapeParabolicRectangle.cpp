@@ -63,9 +63,14 @@ ShapeParabolicRectangle::ShapeParabolicRectangle()
 	Trace trace( "ShapeParabolicRectangle::ShapeParabolicRectangle", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeParabolicRectangle);
-	SO_NODE_ADD_FIELD(m_xlength, (2.0));
-	SO_NODE_ADD_FIELD(m_ylength, (2.0));
-	SO_NODE_ADD_FIELD(m_depth, (1.0));
+	SO_NODE_ADD_FIELD( xlength, (1.0) );
+	SO_NODE_ADD_FIELD( zlength, (1.0) );
+	SO_NODE_ADD_FIELD( depth, (1.0) );
+
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation);
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeParabolicRectangle::~ShapeParabolicRectangle()
@@ -90,24 +95,24 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	Trace trace( "ShapeParabolicRectangle::Intersect", false );
 
 	// Compute quadratic coefficients for the 1st parabola XZ
-	double xmin = -m_xlength.getValue()/2;
-	double xmax = m_xlength.getValue()/2;
-	double xFocus = ( xmax * xmax ) / ( 4 * m_depth.getValue() );
+	double xmin = -xlength.getValue()/2;
+	double xmax = xlength.getValue()/2;
+	double xFocus = ( xmax * xmax ) / ( 4 * depth.getValue() );
 
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A1 = objectRay.direction.x*objectRay.direction.x;
-	double B1 = 2.0 * ( objectRay.direction.x* objectRay.origin.x - 2 * xFocus * objectRay.direction.z);
-	double C1 = objectRay.origin.x * objectRay.origin.x - 4 * xFocus* objectRay.origin.z;
+	double B1 = 2.0 * ( objectRay.direction.x* objectRay.origin.x - 2 * xFocus * objectRay.direction.y );
+	double C1 = objectRay.origin.x * objectRay.origin.x - 4 * xFocus* objectRay.origin.y;
 
 	// Compute quadratic coefficients for the 2nd parabola YZ
-	double ymin = -m_ylength.getValue()/2;
-	double ymax = m_ylength.getValue()/2;
-	double yFocus = ( ymax * ymax ) / ( 4 * m_depth.getValue() );
+	double zmin = -zlength.getValue()/2;
+	double zmax = zlength.getValue()/2;
+	double zFocus = ( zmax * zmax ) / ( 4 * depth.getValue() );
 
 
-	double A2 = objectRay.direction.y*objectRay.direction.y;
-	double B2 = 2.0 * ( objectRay.direction.y* objectRay.origin.y - 2 * yFocus * objectRay.direction.z);
-	double C2 = objectRay.origin.y * objectRay.origin.y - 4 * yFocus * (objectRay.origin.z);
+	double A2 = objectRay.direction.z * objectRay.direction.z;
+	double B2 = 2.0 * ( objectRay.direction.z* objectRay.origin.z - 2 * zFocus * objectRay.direction.y);
+	double C2 = objectRay.origin.z * objectRay.origin.z - 4 * zFocus * objectRay.origin.y;
 
 	double t10 = objectRay.mint -1.0, t11 = objectRay.mint -1.0;
 	double t20 = objectRay.mint -1.0, t21 = objectRay.mint -1.0;
@@ -152,8 +157,8 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	// Compute possible parabolic cylinder hit position for the 1st parabolic cylinder XZ
     Point3D hitPoint = objectRay( thit );
 
-    if( hitPoint.x < xmin || hitPoint.x > xmax || hitPoint.y > ymax || hitPoint.y < ymin ) return false;
-    if( hitPoint.z < 0.0 || hitPoint.z > m_depth.getValue() ) return false;
+    if( hitPoint.x < xmin || hitPoint.x > xmax || hitPoint.z > zmax || hitPoint.z < zmin ) return false;
+    if( hitPoint.y < 0.0 || hitPoint.y > depth.getValue() ) return false;
 
     // Now check if the function is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -164,21 +169,22 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 
 	// Compute possible parabola hit position
 
-	double x = hitPoint.x;
-	double y = hitPoint.y;
-
-
 	// Find parametric representation of paraboloid hit
-	double u = (x-xmin) / (xmax-xmin);
-	double v = (y-ymin) / (ymax-ymin);
+	double u = (hitPoint.x-xmin) / (xmax-xmin);
+	double v = (hitPoint.z-zmin) / (zmax-zmin);
 
 	// Compute parabaloid \dpdu and \dpdv
+	Vector3D dpdu;
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
+		dpdu = Vector3D( xlength.getValue(), 4 * depth.getValue()*  (-1 + 2 * u), 0.0 );
+	else
+		dpdu = Vector3D( xlength.getValue(), 0.0, 0.0 );
 
-	Vector3D dpdu = (intersectWithFirst)? Vector3D( 1.0, 0.0, x/(2.0 *xFocus) )
-					: Vector3D( 1.0, 0.0, 0.0 );
-	Vector3D dpdv = (intersectWithFirst)?
-					Vector3D( 0.0, 1.0, 0.0)
-					: Vector3D( 0.0, 1.0, y/(2.0 * yFocus ) );
+	Vector3D dpdv;
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
+		dpdv = Vector3D( 0.0, 0.0, zlength.getValue() );
+	else
+		dpdv = Vector3D( 0.0, 4 * depth.getValue() * (-1 + 2 * v), zlength.getValue() );
 
 	// Compute parabaloid \dndu and \dndv
 	Vector3D d2Pduu = (intersectWithFirst)?
@@ -187,13 +193,27 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	Vector3D d2Pduv ( 0.0, 0.0, 0.0 );
 	Vector3D d2Pdvv = (intersectWithFirst)?
 					Vector3D( 0.0, 0.0, 0.0)
-					: Vector3D( 0.0, 0.0, 1.0/ (2.0 * yFocus ) );
+					: Vector3D( 0.0, 0.0, 1.0/ (2.0 * zFocus ) );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
-	Vector3D N = Normalize( NormalVector( CrossProduct(dpdu, dpdv) ) );
+
+	NormalVector N;
+	if( activeSide.getValue() == 0 )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) < 0 )
+	{
+		return false;
+	}
+
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
 	double g = DotProduct(N, d2Pdvv);
@@ -245,21 +265,19 @@ Point3D ShapeParabolicRectangle::GetPoint3D( double u, double v ) const
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double xmin = -m_xlength.getValue()/2;
-	double xmax = m_xlength.getValue()/2;
-	double xFocus = ( xmax * xmax ) / ( 4 * m_depth.getValue() );
 
 
-	double ymin = -m_ylength.getValue()/2;
-	double ymax = m_ylength.getValue()/2;
-	double yFocus = ( ymax * ymax ) / ( 4 * m_depth.getValue() );
 
-	double xpos = u * ( xmax - xmin ) + xmin;
-	double ypos = v * ( ymax - ymin ) + ymin;
+	double xpos = u * xlength.getValue() -( xlength.getValue() / 2 );
+	double zpos = v * zlength.getValue() - ( zlength.getValue() / 2 );
+
+
+	double xFocus = ( ( xlength.getValue()/2 ) * ( xlength.getValue()/2 ) ) / ( 4 * depth.getValue() );
+	double zFocus = ( ( zlength.getValue()/2 ) * ( zlength.getValue()/2 ) ) / ( 4 * depth.getValue() );
 
 	double x = xpos;
-	double y = ypos;
-	double z = std::max( xpos*xpos /(4* xFocus), ypos*ypos /( 4*yFocus ) );
+	double y = std::max( xpos * xpos /(4 * xFocus), zpos * zpos /( 4 * zFocus ) );
+	double z = zpos;
 
 	return Point3D (x, y, z);
 
@@ -269,21 +287,41 @@ NormalVector ShapeParabolicRectangle::GetNormal( double u, double v ) const
 {
 	Trace trace( "ShapeParabolicRectangle::GetNormal", false );
 
-	Point3D point = GetPoint3D( u, v );
-	return NormalVector( -point.x/2, 1.0, 0.0 );
+	Vector3D dpdu;
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
+		dpdu = Vector3D( xlength.getValue(), 4 * depth.getValue()*  (-1 + 2 * u), 0.0 );
+	else
+		dpdu = Vector3D( xlength.getValue(), 0.0, 0.0 );
+
+	Vector3D dpdv;
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
+		dpdv = Vector3D( 0.0, 0.0, zlength.getValue() );
+	else
+		dpdv = Vector3D( 0.0, 4 * depth.getValue() * (-1 + 2 * v), zlength.getValue() );
+
+	NormalVector normal;
+	if( activeSide.getValue() == 1 )
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	return normal;
 }
 void ShapeParabolicRectangle::computeBBox( SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
 {
 	Trace trace( "ShapeParabolicRectangle::computeBBox", false );
 
-	double xmin = -m_xlength.getValue()/2;
-	double xmax = m_xlength.getValue()/2;
+	double xmin = -xlength.getValue()/2;
+	double xmax = xlength.getValue()/2;
 
-	double ymin = -m_ylength.getValue()/2;
-	double ymax = m_ylength.getValue()/2;
+	double ymin = 0.0;
+	double ymax = depth.getValue();
 
-	double zmin = 0.0;
-	double zmax = m_depth.getValue();
+	double zmin = -zlength.getValue()/2;
+	double zmax = zlength.getValue()/2;
 
 	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ));
 }
