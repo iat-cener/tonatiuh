@@ -39,6 +39,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEFLARRECTANGULE_H_
 #define SHAPEFLARRECTANGULE_H_
 
+#include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
@@ -59,8 +61,14 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble m_width;
-	SoSFDouble m_height;
+	enum reverseOrientation {
+		TOP = 0,
+		BASE = 1,
+	   };
+
+	SoSFDouble width;
+	SoSFDouble height;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;

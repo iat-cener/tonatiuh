@@ -65,8 +65,12 @@ ShapeFlatRectangle::ShapeFlatRectangle( )
 	Trace trace( "ShapeFlatRectangle::ShapeFlatRectangle", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeFlatRectangle);
-	SO_NODE_ADD_FIELD(m_width, (10.0));
-	SO_NODE_ADD_FIELD(m_height, (10.0));
+	SO_NODE_ADD_FIELD(width, (1.0) );
+	SO_NODE_ADD_FIELD(height, (1.0) );
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, TOP );
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, BASE );
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation);
+	SO_NODE_ADD_FIELD( activeSide, (BASE) );
 }
 
 ShapeFlatRectangle::~ShapeFlatRectangle()
@@ -77,7 +81,7 @@ ShapeFlatRectangle::~ShapeFlatRectangle()
 double ShapeFlatRectangle::GetArea() const
 {
 	Trace trace( "ShapeFlatRectangle::GetArea", false );
-	return ( m_width.getValue() * m_height.getValue() );
+	return ( width.getValue() * height.getValue() );
 }
 
 QString ShapeFlatRectangle::getIcon()
@@ -104,7 +108,7 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
     Point3D hitPoint = objectRay( t );
 
 	// Test intersection against clipping parameters
-	if( hitPoint.z < -m_height.getValue()/2 || hitPoint.z > m_height.getValue()/2 || hitPoint.x < -m_width.getValue()/2 || hitPoint.x > m_width.getValue()/2 ) return false;
+	if( hitPoint.z < -height.getValue()/2 || hitPoint.z > height.getValue()/2 || hitPoint.x < -width.getValue()/2 || hitPoint.x > width.getValue()/2 ) return false;
 
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -112,12 +116,26 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of the rectangle hit point
-	double u = ( hitPoint.x + m_width.getValue()/2 ) / ( m_width.getValue() );
-	double v = ( hitPoint.z + m_height.getValue()/2 ) / ( m_height.getValue() );
+	double u = ( hitPoint.x + width.getValue()/2 ) / ( width.getValue() );
+	double v = ( hitPoint.z + height.getValue()/2 ) / ( height.getValue() );
 
 	// Compute rectangle \dpdu and \dpdv
-	Vector3D dpdu ( m_width.getValue(), 0.0, 0.0 );
-	Vector3D dpdv ( 0.0, 0.0, m_height.getValue() );
+	Vector3D dpdu ( width.getValue(), 0.0, 0.0 );
+	Vector3D dpdv ( 0.0, 0.0, height.getValue() );
+
+	NormalVector N;
+	if( activeSide.getValue() == 0 )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) < 0 )
+	{
+		return false;
+	}
 
 	// Compute \dndu and \dndv from fundamental form coefficients
 	Vector3D dndu ( 0.0, 0.0, 0.0 );
@@ -155,8 +173,8 @@ Point3D ShapeFlatRectangle::GetPoint3D (double u, double v) const
 
 	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function ShapeFlatRectangle::GetPoint3D called with invalid parameters" );
 
-	double x = (u * m_width.getValue()) - (m_width.getValue()/2);
-	double z = v * m_height.getValue() - (m_height.getValue()/2);
+	double x = (u * width.getValue()) - (width.getValue()/2);
+	double z = v * height.getValue() - (height.getValue()/2);
 
 	return Point3D(x,0,z);
 }
@@ -165,7 +183,20 @@ NormalVector ShapeFlatRectangle::GetNormal (double /*u*/,double /*v*/ ) const
 {
 	Trace trace( "ShapeFlatRectangle::GetNormal", false );
 
-	return NormalVector( 0 , 1, 0);
+	Vector3D dpdu ( width.getValue(), 0.0, 0.0 );
+	Vector3D dpdv ( 0.0, 0.0, height.getValue() );
+
+	NormalVector normal;
+	if( activeSide.getValue() == 1 )
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	return normal;
+	//return NormalVector( 0 , 1, 0);
 }
 
 bool ShapeFlatRectangle::OutOfRange( double u, double v ) const
@@ -178,8 +209,8 @@ void ShapeFlatRectangle::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 {
 	Trace trace( "ShapeFlatRectangle::computeBBox", false );
 
-	Point3D min = Point3D(-m_width.getValue()/2,0.0, -m_height.getValue()/2);
-	Point3D max = Point3D(m_width.getValue()/2,0.0,m_height.getValue()/2);
+	Point3D min = Point3D(-width.getValue()/2,0.0, -height.getValue()/2);
+	Point3D max = Point3D(width.getValue()/2,0.0,height.getValue()/2);
 	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
 }
 
