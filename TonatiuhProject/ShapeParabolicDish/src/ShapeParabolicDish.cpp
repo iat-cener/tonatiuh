@@ -65,7 +65,7 @@ ShapeParabolicDish::ShapeParabolicDish()
 
 	SO_NODE_CONSTRUCTOR(ShapeParabolicDish);
 	SO_NODE_ADD_FIELD( focusLength, (0.125));
-	SO_NODE_ADD_FIELD( dishMaxRadius, (1.0));
+	SO_NODE_ADD_FIELD( dishMaxRadius, (0.5) );
 	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi) );
 	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
   	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
@@ -170,6 +170,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	Vector3D d2Pdvv (0, ( dishMaxRadius.getValue() * dishMaxRadius.getValue() ) /(2 * focusLength.getValue() ), 0 );
 
 
+
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
@@ -232,12 +233,10 @@ Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 	Trace trace( "ShapeParabolicDish::GetPoint3D", false );
 
 	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
-	double radius = u * dishMaxRadius.getValue();
-	double phi = v * phiMax.getValue();
 
-	double x = radius * cos( phi );
-	double y = radius * radius /( 4 * focusLength.getValue() );
-	double z = radius * sin( phi );
+	double x = v * dishMaxRadius.getValue() * cos( u * phiMax.getValue() );
+	double y = ( ( v * dishMaxRadius.getValue() ) * ( v * dishMaxRadius.getValue() ) ) /( 4 * focusLength.getValue() );
+	double z = v * dishMaxRadius.getValue() * sin( u * phiMax.getValue() );
 
 	return Point3D (x, y, z);
 
@@ -256,8 +255,16 @@ NormalVector ShapeParabolicDish::GetNormal (double u, double v) const
 								dishMaxRadius.getValue() * sin( phiMax.getValue() * u) );
 
 
-
-	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	NormalVector normal;
+	if( activeSide.getValue() == 0 )
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	return normal;
 }
 
 bool ShapeParabolicDish::OutOfRange( double u, double v ) const
