@@ -48,7 +48,7 @@ class TSeparatorKit : public SoSeparatorKit
 	typedef SoSeparatorKit inherited;
 
     SO_KIT_HEADER(TSeparatorKit);
-    SO_KIT_CATALOG_ENTRY_HEADER(tracker);
+
 
 public:
     TSeparatorKit();

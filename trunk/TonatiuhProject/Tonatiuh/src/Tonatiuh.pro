@@ -12,10 +12,7 @@ QT += xml opengl svg
 
 INCLUDEPATH += . \
 			src \
-			src/icons \
-			$$(TDE_ROOT)/local/include \ 
-			$$(TDE_ROOT)/local/include/qwtplot3d \
-			$$(TDE_ROOT)/local/include/marble
+			src/icons 
  
 win32: {
 	RC_FILE = Tonatiuh.rc
@@ -30,14 +27,18 @@ RESOURCES += tonatiuh.qrc
  
 
 CONFIG(debug, debug|release) {
+	INCLUDEPATH += $$(TDE_ROOT)/local/debug/include \
+				$$(TDE_ROOT)/local/debug/include/marble
 	DESTDIR = ../Tonatiuh/bin/debug
 	unix  {
-		LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt_debug -lCoin_debug -lmarblewidget_debug 
+		LIBS += -L$$(TDE_ROOT)/local/debug/lib -lSoQt_debug -lCoin_debug -lmarblewidget_debug 
 	}	
-	else: LIBS += -L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind -lmarblewidgetd
+	else: LIBS += -L$$(TDE_ROOT)/local/debug/lib -lSoQtd -lCoind -lmarblewidgetd
 }
 else{
+	INCLUDEPATH += $$(TDE_ROOT)/local/release/include \
+				$$(TDE_ROOT)/local/release/include/marble
 	DESTDIR=../Tonatiuh/bin/release
-	LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin -lmarblewidget
+	LIBS += -L$$(TDE_ROOT)/local/release/lib -lSoQt -lCoin -lmarblewidget
 }
 	

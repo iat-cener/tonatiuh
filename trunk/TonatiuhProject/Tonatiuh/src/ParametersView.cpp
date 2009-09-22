@@ -86,14 +86,15 @@ void ParametersView::ChangeParameters( SoBaseKit* coinNode )
 		else
 		{
 			QStringList parts;
-			parts<<QString( "transform" );
-
+			//parts<<QString( "transform" );
 			SelectionChanged( nodeKit, parts );
 
 			if( type == "TShapeKit" )
 			{
 				parts<<QString( "shape" )<<QString( "appearance.material" );
 			}
+			else
+				parts<<QString( "transform" );
 			SelectionChanged( nodeKit, parts );
 		}
 	}

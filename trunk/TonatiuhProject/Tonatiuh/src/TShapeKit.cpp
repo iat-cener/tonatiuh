@@ -74,8 +74,8 @@ TShapeKit::TShapeKit()
 
 	setPart("shape", NULL );
 
-	SoTransform* transform = new SoTransform;
-	setPart("transform", transform);
+	//SoTransform* transform = new SoTransform;
+	//setPart("transform",  NULL);
 
 }
 /*!

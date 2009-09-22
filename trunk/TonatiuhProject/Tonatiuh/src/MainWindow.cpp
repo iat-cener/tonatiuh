@@ -1361,7 +1361,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
-	Trace trace( "MainWindow::CreateTracker", false );
+	Trace trace( "MainWindow::CreateTracker", true );
 
 	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
 								m_sceneModel->index (0,0,m_treeView->rootIndex()):
@@ -1766,7 +1766,7 @@ void MainWindow::showMenu( const QModelIndex& index)
   	popupmenu.addAction(actionPaste_Link);
   	popupmenu.addAction(actionDelete);
 
-	if( type.isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		popupmenu.addAction( tr("Convert to SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
 		popupmenu.addAction( tr("Convert to SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
@@ -2017,7 +2017,7 @@ bool MainWindow::Delete( )
 		m_commandStack->push( commandDelete );
 	}
 
-	m_selectionModel->clearSelection ();
+	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
 
 	m_document->SetDocumentModified( true );
 	return true;
@@ -2170,6 +2170,18 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 	}
 	else
 	{
+		if(  instanceNode->children.count() > 0 )
+		{
+
+			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+				sceneMap->insert( instanceNode->children[0] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), worldToObject ) );
+			else if(  instanceNode->children.count() > 1 ) sceneMap->insert( instanceNode->children[1] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), worldToObject ) );
+
+		}
+
+	}
+	/*else
+	{
 		SoTransform* nodeTransform = static_cast< SoTransform* > ( coinNode->getPart( "transform", true ) );
 		if ( nodeTransform )
 		{
@@ -2199,10 +2211,10 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 
 		}
 
-	}
+	}*/
 
-	delete bbAction;
-	delete getmatrixAction;
+	//delete bbAction;
+	//delete getmatrixAction;
 
 }
 
