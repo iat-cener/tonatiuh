@@ -446,7 +446,12 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 
 		SbVec3f point( x, y ,z );
 		SbVec3f vector( point[0], point[1], point[2] - sphereRadius.getValue() );
-		SbVec3f normal( -point[0]/vector.length(), -point[1]/vector.length(), - ( point[2] - sphereRadius.getValue() ) /vector.length() );
+		SbVec3f normal;
+		if( activeSide.getValue() == 0 )
+				normal.setValue( -point[0]/vector.length(), -point[1]/vector.length(), - ( point[2] - sphereRadius.getValue() ) /vector.length() );
+
+		else
+			normal.setValue( point[0]/vector.length(), point[1]/vector.length(),  ( point[2] - sphereRadius.getValue() ) /vector.length() );
 		SbVec4f texCoord = useTexFunc ? tce->get(point, normal) : SbVec4f( u, v, 0.0, 1.0 );
 
 	     pv.setPoint(point);
