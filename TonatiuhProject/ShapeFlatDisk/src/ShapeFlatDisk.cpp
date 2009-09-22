@@ -63,7 +63,11 @@ ShapeFlatDisk::ShapeFlatDisk( )
 {
 	Trace trace( "ShapeFlatDisk::ShapeFlatDisk", false );
 	SO_NODE_CONSTRUCTOR(ShapeFlatDisk);
-	SO_NODE_ADD_FIELD(m_radius, (10.0));
+	SO_NODE_ADD_FIELD(radius, (0.5) );
+	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, TOP);
+  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, BASE);
+  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation);
+	SO_NODE_ADD_FIELD( activeSide, (BASE) );
 }
 
 ShapeFlatDisk::~ShapeFlatDisk()
@@ -74,7 +78,7 @@ ShapeFlatDisk::~ShapeFlatDisk()
 double ShapeFlatDisk::GetArea() const
 {
 	Trace trace( "ShapeFlatDisk::GetArea", false );
-	return ( tgc::Pi * m_radius.getValue() * m_radius.getValue() );
+	return ( tgc::Pi * radius.getValue() * radius.getValue() );
 }
 
 QString ShapeFlatDisk::getIcon()
@@ -101,7 +105,7 @@ bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGe
     Point3D hitPoint = objectRay( t );
 
 	// Test intersection against clipping parameters
-	if( sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) > m_radius.getValue()) return false;
+	if( sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) > radius.getValue()) return false;
 
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -111,14 +115,29 @@ bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGe
 	// Find parametric representation of the rectangle hit point
 	double phi = atan2( hitPoint.z, hitPoint.x );
 	if ( phi < 0. ) phi += tgc::TwoPi;
-	double radius = sqrt( hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z );
+	double iradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z );
 
 	double u = phi/tgc::TwoPi;
-	double v = radius/m_radius.getValue();
+	double v = iradius/radius.getValue();
 
 	// Compute rectangle \dpdu and \dpdv
-	Vector3D dpdu ( -v * m_radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * m_radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
-	Vector3D dpdv ( m_radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  m_radius.getValue() * sin( u * tgc::TwoPi ) );
+	Vector3D dpdu ( -v * radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
+	Vector3D dpdv ( radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  radius.getValue() * sin( u * tgc::TwoPi ) );
+
+	NormalVector N;
+	if( activeSide.getValue() == 1 )
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	if( DotProduct(N, objectRay.direction) < 0 )
+	{
+		return false;
+	}
+
 
 	// Compute \dndu and \dndv from fundamental form coefficients
 	Vector3D dndu ( 0.0, 0.0, 0.0 );
@@ -157,7 +176,7 @@ Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
 	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
 
 	double theta = u * tgc::TwoPi;
-	double rad = v * m_radius.getValue();
+	double rad = v * radius.getValue();
 
 	return Point3D(rad*cos(theta),0,rad*sin(theta));
 }
@@ -167,7 +186,21 @@ NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
 	Trace trace( "ShapeFlatDisk::GetNormal", false );
 
 	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
-	return NormalVector( 0, 1, 0 );
+	//return NormalVector( 0, 1, 0 );
+
+	Vector3D dpdu ( -v * radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
+	Vector3D dpdv ( radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  radius.getValue() * sin( u * tgc::TwoPi ) );
+
+	NormalVector normal;
+	if( activeSide.getValue() == 0 )
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+	return normal;
 }
 
 bool ShapeFlatDisk::OutOfRange( double u, double v ) const
@@ -180,8 +213,8 @@ void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 {
 	Trace trace( "ShapeFlatDisk::computeBBox", false );
 
-	Point3D min = Point3D(-m_radius.getValue(), 0.0, -m_radius.getValue());
-	Point3D max = Point3D(m_radius.getValue(), 0.0, m_radius.getValue());
+	Point3D min = Point3D(-radius.getValue(), 0.0, -radius.getValue());
+	Point3D max = Point3D(radius.getValue(), 0.0, radius.getValue());
 	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
 }
 
