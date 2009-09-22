@@ -151,19 +151,20 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	double v = hitPoint.z /length.getValue();
 
 	// Compute cylinder \dpdu and \dpdv
-	double zradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y );
-	double invzradius = 1.0 / zradius;
-	double cosphi = hitPoint.x * invzradius;
-	double sinphi = hitPoint.y * invzradius;
-	Vector3D dpdu( -phiMax.getValue() * radius.getValue() * sinphi,
-					phiMax.getValue() * radius.getValue() * cosphi,
-					0.0 );
+	//double zradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y );
+	//double invzradius = 1.0 / zradius;
+
+	Vector3D dpdu( -phiMax.getValue() * radius.getValue() * sin ( phiMax.getValue() * u ),
+						phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * u ),
+						0.0 );
 	Vector3D dpdv( 0.0, 0.0, length.getValue() );
 
 	// Compute cylinder \dndu and \dndv
-	Vector3D d2Pduu( -phiMax.getValue() * phiMax.getValue() * radius.getValue() * cosphi,
-					-phiMax.getValue() * phiMax.getValue() * radius.getValue() * sinphi,
-					0 );
+	Vector3D d2Pduu( -phiMax.getValue() * phiMax.getValue() * radius.getValue()
+							* cos( phiMax.getValue() * u ),
+						-phiMax.getValue() * phiMax.getValue() * radius.getValue()
+							* sin( phiMax.getValue() * u ),
+						0.0 );
 	Vector3D d2Pduv( 0.0, 0.0, 0.0 );
 	Vector3D d2Pdvv( 0.0, 0.0, 0.0 );
 
@@ -246,9 +247,20 @@ NormalVector ShapeCylinder::GetNormal (double u, double v) const
 {
 	Trace trace( "ShapeCylinder::GetNormal", false );
 
-	Point3D point = GetPoint3D( u, v );
-	Vector3D vector( point.x, point.y, 0 );
-	return NormalVector( -point.x/vector.Length(), -point.y/vector.Length(), 0 );
+
+	Vector3D dpdu( -phiMax.getValue() * radius.getValue() * sin ( phiMax.getValue() * u ),
+					phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * u ),
+					0.0 );
+	Vector3D dpdv( 0.0, 0.0, length.getValue() );
+
+	NormalVector normal;
+	if( activeSide.getValue() == 0 )
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	else
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+
+	return normal;
+
 }
 
 void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
