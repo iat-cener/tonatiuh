@@ -65,12 +65,10 @@ public:
 		OUTSIDE = 1,
 	   };
 
-	SoSFDouble m_radius;
-	SoSFDouble m_length;
-	SoSFDouble m_phiMax;
-	SoSFDouble m_thetaMin;
-	SoSFDouble m_thetaMax;
-	SoSFEnum m_reverseOrientation;
+	SoSFDouble radius;
+	SoSFDouble length;
+	SoSFDouble phiMax;
+	SoSFEnum activeSide;
 
 protected:
 	bool OutOfRange( double u, double v ) const;
