@@ -176,6 +176,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	Vector3D N;
 	if( orientation.getValue() == 1 )
 	{
+
 		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	}
 	else
@@ -238,11 +239,21 @@ NormalVector ShapeTroughParabola::GetNormal (double u ,double v) const
 	Trace trace( "ShapeTroughParabola::GetNormal", false );
 
 	Point3D point = GetPoint3D( u, v );
-	Vector3D r( 0, 1, 0 );
-	Vector3D v1 = Normalize( Vector3D( -point.x, focusLength.getValue() - point.y, 0 ) );
-	NormalVector normal  = Normalize( NormalVector( r + v1 ) );
+	Vector3D dpdu(1.0, point.x /( 2.0 * focusLength.getValue() ), 0.0);
+	Vector3D dpdv(0.0, 0.0, 1.0);
 
-	return NormalVector( normal.x , normal.y , 0 );
+	NormalVector normal;
+	if( orientation.getValue() == 1 )
+	{
+
+		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	}
+	else
+	{
+		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
+	}
+
+	return normal;
 
 }
 
