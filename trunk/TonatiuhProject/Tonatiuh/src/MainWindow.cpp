@@ -50,6 +50,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/manips/SoCenterballManip.h>
 #include <Inventor/manips/SoHandleBoxManip.h>
@@ -635,6 +636,13 @@ void MainWindow::on_actionSaveAs_triggered()
     SaveAs();
 }
 
+
+void MainWindow::on_actionSaveComponent_triggered()
+{
+    Trace trace( "MainWindow::on_actionSaveComponent_triggered", false );
+    SaveComponent();
+}
+
 void MainWindow::on_actionPrint_triggered()
 {
     Trace trace( "MainWindow::on_actionPrint_triggered", false );
@@ -761,6 +769,56 @@ void MainWindow::on_actionShapeKit_triggered()
 
 	    m_document->SetDocumentModified( true );
 	}
+}
+
+
+void MainWindow::on_actionUserComponent_triggered()
+{
+	Trace trace( "MainWindow::on_actionUserComponent_triggered", false );
+
+	QModelIndex parentIndex;
+    if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
+    	parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
+	else
+		parentIndex = m_treeView->currentIndex();
+
+	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
+
+	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
+
+	QString fileName = QFileDialog::getOpenFileName( this,
+	                               tr( "Open Tonatiuh document" ), ".",
+	                               tr( "Tonatiuh component (*.tcmp)" ) );
+
+	if ( fileName.isEmpty() ) return;
+
+	SoInput componentInput;
+	if ( !componentInput.openFile( fileName.toLatin1().constData() ) )
+	{
+        QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
+                              tr( "Cannot open file %1:\n%2." ).arg( fileName ) );
+		return;
+	}
+
+	SoSeparator* componentSeparator = SoDB::readAll( &componentInput );
+	componentInput.closeFile();
+
+	if ( !componentSeparator )
+	{
+        QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
+                              tr( "Error reading file %1:\n%2." )
+                             .arg( fileName ) );
+		return;
+	}
+
+   TSeparatorKit* componentRoot = static_cast< TSeparatorKit* >( componentSeparator->getChild(0) );
+
+   CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRoot, QPersistentModelIndex(parentIndex), m_sceneModel );
+	cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
+	m_commandStack->push( cmdInsertSeparatorKit );
+
+	m_document->SetDocumentModified( true );
+
 }
 
 //Sun Light menu actions
@@ -1363,7 +1421,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
 	Trace trace( "MainWindow::CreateTracker", true );
 
-	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
+	/*QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
 								m_sceneModel->index (0,0,m_treeView->rootIndex()):
 								m_treeView->currentIndex();
 
@@ -1398,7 +1456,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	tracker->sunRotation.connectFrom( &gate->outputRotation );
 
 	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, m_sceneModel );
-	m_commandStack->push( command );
+	m_commandStack->push( command );*/
 
 }
 
@@ -1935,6 +1993,51 @@ bool MainWindow::SaveAs()
 	if( fileName.isEmpty() ) return false;
 
 	return SaveFile( fileName );
+}
+
+
+bool MainWindow::SaveComponent()
+{
+    Trace trace( "MainWindow::SaveComponent", false );
+
+    if( !m_selectionModel->hasSelection() ) return false;
+    if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
+
+    QModelIndex componentIndex = m_treeView->currentIndex();
+
+    SoNode* coinNode = m_sceneModel->NodeFromIndex( componentIndex )->GetNode();
+
+    if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+    {
+    	QMessageBox::warning( 0, tr( "Tonatiuh" ),
+                                  tr( "Selected node in not valid  for component node" ) );
+    	return false;
+    }
+
+    TSeparatorKit* componentRoot = dynamic_cast< TSeparatorKit* > ( coinNode );
+    if( !componentRoot ) return false;
+
+
+	QString fileName = QFileDialog::getSaveFileName( this,
+	                       tr( "Save Tonatiuh component" ), ".",
+	                       tr( "Tonatiuh component (*.tcmp)" ) );
+	if( fileName.isEmpty() ) return false;
+
+    SoWriteAction SceneOuput;
+    if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
+	{
+        QMessageBox::warning( 0, tr( "Tonatiuh" ),
+                              tr( "Cannot open file %1:\n%2. " )
+                            .arg( fileName ));
+   		return false;
+   	}
+
+    QApplication::setOverrideCursor( Qt::WaitCursor );
+   	SceneOuput.getOutput()->setBinary( false );
+   	SceneOuput.apply( componentRoot );
+   	SceneOuput.getOutput()->closeFile();
+   	QApplication::restoreOverrideCursor();
+	return true;
 }
 
 bool MainWindow::Copy( )
