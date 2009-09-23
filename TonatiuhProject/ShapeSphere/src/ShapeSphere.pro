@@ -57,7 +57,7 @@ TARGET        = ShapeSphere
 contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
 		INCLUDEPATH += $$(TDE_ROOT)/local/include
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/plugins/ShapeSphere	
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeSphere	
 		unix {
 			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
