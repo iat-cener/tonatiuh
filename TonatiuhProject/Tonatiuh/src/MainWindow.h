@@ -92,6 +92,7 @@ public slots:
 	void on_actionOpen_triggered();
 	void on_actionSave_triggered();
 	void on_actionSaveAs_triggered();
+	void on_actionSaveComponent_triggered();
 	void on_actionPrint_triggered();
 	void on_actionClose_triggered();
 
@@ -111,6 +112,7 @@ public slots:
 	// Insert menu actions
 	void on_actionNode_triggered();
 	void on_actionShapeKit_triggered();
+	void on_actionUserComponent_triggered();
 
 	//Sun Light menu actions
 	void on_actionDefine_SunLight_triggered();
@@ -197,6 +199,7 @@ private:
     bool Save();
     bool SaveFile( const QString& fileName );
     bool SaveAs();
+    bool SaveComponent();
     bool Copy();
     bool Paste( tgc::PasteType type );
     bool Cut();
