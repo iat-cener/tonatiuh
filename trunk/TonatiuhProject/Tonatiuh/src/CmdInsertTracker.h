@@ -45,11 +45,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class InstanceNode;
 class TTracker;
 class SceneModel;
+class SoSceneKit;
 
 class CmdInsertTracker : public QUndoCommand
 {
 public:
-    CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SceneModel* model, QUndoCommand* parent = 0 );
+    CmdInsertTracker( TTracker* tracker, const QModelIndex& parentIndex, SoSceneKit* scene, SceneModel* model, QUndoCommand* parent = 0 );
     ~CmdInsertTracker();
 
      virtual void undo();
@@ -58,9 +59,9 @@ public:
 private:
 
      TTracker* m_tracker;
-     SoBaseKit* m_coinParent;
+     SoBaseKit* m_coinParent;;
+     SoSceneKit* m_scene;
      SceneModel* m_pModel;
-     int m_row;
      
 };
 

@@ -39,30 +39,32 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TTRACKER_H_
 #define TTRACKER_H_
 
+#include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoSFRotation.h> 
-
-#include "TSeparatorKit.h" 
 
 class QString; 
 
 class SoSFRotation;
 
-class TTracker : public TSeparatorKit
+class TTracker : public SoEngine
 {
-	  SO_KIT_HEADER( TTracker );
-	   
-	
+	SO_ENGINE_ABSTRACT_HEADER( TrackerTwoAxis );
+
 public:
     static void initClass();
-	virtual QString getIcon();
+	virtual QString getIcon() = 0;
 		
-	//Constructor
-	TTracker();
 	
-	SoSFRotation sunRotation;
+	SoSFRotation inputRotation;
+	SoEngineOutput outputRotation;
 	 
 protected:
+	//Constructor
+	TTracker();
 	virtual ~TTracker(); 
+
+private:
+  virtual void evaluate() = 0;
 };
 
 #endif /*TTRACKER_H_*/

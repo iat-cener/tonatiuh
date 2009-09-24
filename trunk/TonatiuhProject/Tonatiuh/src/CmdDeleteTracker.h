@@ -42,14 +42,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QUndoCommand>
 
 class QModelIndex;
+class SoSceneKit;
 class SceneModel;
-class TGateEngine;
 class TTracker;
 
 class CmdDeleteTracker : public QUndoCommand
 {
 public:
-    CmdDeleteTracker( const QModelIndex& selectedIndex, SceneModel& model, QUndoCommand* parent = 0 );
+    CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit* scene, SceneModel& model, QUndoCommand* parent = 0 );
     ~CmdDeleteTracker();
 
      virtual void undo();
@@ -57,10 +57,10 @@ public:
 
 private:
 	TTracker* m_tracker;
-	TGateEngine* m_gate;
-	SoBaseKit* m_coinParent;
+
+	SoBaseKit* m_coiNode;
+    SoSceneKit* m_scene;
 	SceneModel* m_pModel;
-	int m_row;
 };
 
 #endif /*CMDDELETETRACKER_H_*/

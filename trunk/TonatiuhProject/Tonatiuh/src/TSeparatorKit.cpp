@@ -36,13 +36,15 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoMaterial.h>
+#include <iostream>
 
+#include <QString>
+
+#include <Inventor/nodes/SoTransform.h>
+
+#include "TDefaultTracker.h"
 #include "Trace.h"
 #include "TSeparatorKit.h"
-
 
 SO_KIT_SOURCE(TSeparatorKit);
 
@@ -65,4 +67,40 @@ TSeparatorKit::TSeparatorKit()
 TSeparatorKit::~TSeparatorKit()
 {
     Trace trace("TSeparatorKit exiting destructor", false);
+}
+
+QString TSeparatorKit::getIcon()
+{
+    Trace trace("TSeparatorKit::getIcon", false );
+
+    SoTransform* transformNode = dynamic_cast< SoTransform* > ( getPart( "transform", false ) );
+    if( !transformNode  )	return QString(":/icons/separatorKit.png");
+
+    if( !transformNode->rotation.isConnected() ) return QString(":/icons/separatorKit.png");
+
+    SoEngineOutput* outputEngine;
+    transformNode->rotation.getConnectedEngine( outputEngine );
+    if( !outputEngine  )	return QString(":/icons/separatorKit.png");
+
+    TTracker* trackerNode = dynamic_cast<TTracker* > ( outputEngine->getContainer() );
+    if( trackerNode != 0 ) return trackerNode->getIcon();
+
+    return QString(":/icons/separatorKit.png");
+
+}
+
+bool  TSeparatorKit::IsConnected()
+{
+    Trace trace("TSeparatorKit::IsConnected", false );
+
+    SoTransform* transformNode = dynamic_cast< SoTransform* > ( getPart( "transform", false ) );
+    if( !transformNode  )	return false;
+
+    if( !transformNode->rotation.isConnected() ) return false;
+
+    SoEngineOutput* outputEngine;
+    transformNode->rotation.getConnectedEngine( outputEngine );
+    if( !outputEngine  )	return false;
+
+    return true;
 }

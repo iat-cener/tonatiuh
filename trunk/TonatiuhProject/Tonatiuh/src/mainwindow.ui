@@ -559,6 +559,15 @@
     <string>Save Component</string>
    </property>
   </action>
+  <action name="actionDeleteTracker">
+   <property name="icon">
+    <iconset resource="tonatiuh.qrc">
+     <normaloff>:/icons/deleteTracker.png</normaloff>:/icons/deleteTracker.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete Tracker</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>

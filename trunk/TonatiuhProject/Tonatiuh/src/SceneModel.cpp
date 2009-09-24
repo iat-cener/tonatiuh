@@ -331,13 +331,19 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TSeparatorKit::getClassTypeId() ) )
 			{
-				if( coinNode->getTypeId().isDerivedFrom(TTracker::getClassTypeId() ) )
+				/*if( coinNode->getTypeId().isDerivedFrom(TTracker::getClassTypeId() ) )
 				{
 					TTracker* tracker = static_cast<TTracker*>( coinNode );
 					QString icon = tracker->getIcon();
 					return QIcon(icon);
 				}
-				return QIcon(":/icons/separatorKit.png");
+
+				return QIcon(":/icons/separatorKit.png");*/
+
+				TSeparatorKit* separatorKit = static_cast<TSeparatorKit*>( coinNode );
+
+				return QIcon( separatorKit->getIcon() );
+
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TShapeKit::getClassTypeId() ) )
 			{
