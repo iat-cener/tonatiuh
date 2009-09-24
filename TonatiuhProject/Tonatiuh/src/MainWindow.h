@@ -108,6 +108,7 @@ public slots:
 	void on_actionPaste_Link_triggered();
 	void on_actionPaste_Copy_triggered();
 	void on_actionDelete_triggered();
+	void on_actionDeleteTracker_triggered();
 
 	// Insert menu actions
 	void on_actionNode_triggered();
@@ -204,6 +205,7 @@ private:
     bool Paste( tgc::PasteType type );
     bool Cut();
     bool Delete();
+    bool DeleteTracker();
     void SetCurrentFile( const QString& fileName );
     QString StrippedName( const QString& fullFileName );
     void UpdateRecentFileActions();

@@ -42,17 +42,21 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoSeparatorKit.h>
 #include <Inventor/SbBox.h>
 
+class QString;
 
 class TSeparatorKit : public SoSeparatorKit
 {
 	typedef SoSeparatorKit inherited;
 
-    SO_KIT_HEADER(TSeparatorKit);
+    SO_KIT_HEADER( TSeparatorKit );
 
 
 public:
     TSeparatorKit();
     static void initClass();
+    QString getIcon();
+
+    bool IsConnected();
 
 protected:
     virtual ~TSeparatorKit();

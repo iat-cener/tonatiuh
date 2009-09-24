@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class QString;
 class QIcon;
-class TTracker;
+class TTrackers;
 
 class TTrackerFactory
 {

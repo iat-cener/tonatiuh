@@ -36,21 +36,27 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodekits/SoSceneKit.h>
+
 #include "CmdInsertTracker.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
 #include "Trace.h"
 #include "tgf.h"
+#include "TLightKit.h"
 #include "TTracker.h"
 
-CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SceneModel* model, QUndoCommand* parent )
-: QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_pModel( model ), m_row( -1 )
+CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SoSceneKit* scene, SceneModel* model, QUndoCommand* parent )
+: QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_scene( scene ), m_pModel( model )
 {
 	Trace trace( "CmdInsertTracker::CmdInsertTracker", false );
 
 	if( !m_tracker ) tgf::SevereError( "CmdInsertTracker Null tracker." );
 	m_tracker->ref();
+
+	if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdInsertTracker Null lightKit." );
 
 	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertTracker called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
@@ -67,13 +73,23 @@ CmdInsertTracker::~CmdInsertTracker()
 void CmdInsertTracker::undo()
 {
 	Trace trace( "CmdInsertTracker::undo", false );
-	m_pModel->RemoveCoinNode( m_row, *m_coinParent );
+
+	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
+	parentTransform->rotation.disconnect();
+	m_tracker->inputRotation.disconnect();
 }
 
 void CmdInsertTracker::redo()
 {
 	Trace trace( "CmdInsertTracker::redo", false );
 
-	m_row = m_pModel->InsertCoinNode( *m_tracker, *m_coinParent );
+	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
+	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true ) );
+	if( !lightTransform ) tgf::SevereError( "CmdInsertTracker Null lightTransform." );
+	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
+	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null parentTransform." );
+
+	m_tracker->inputRotation.connectFrom( &lightTransform->rotation );
+	parentTransform->rotation.connectFrom( &m_tracker->outputRotation );
 
 }

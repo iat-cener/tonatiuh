@@ -41,27 +41,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 #include "Trace.h"
 
-SO_KIT_SOURCE(TTracker);
+
+SO_ENGINE_ABSTRACT_SOURCE( TTracker );
 
 void TTracker::initClass()
 {
-	Trace trace( "TTracker::initClass", false );
-	SO_KIT_INIT_CLASS(TTracker, TSeparatorKit, "TSeparatorKit");
+	Trace trace( "TrackerTwoAxis::initClass", false );
+
+	SO_ENGINE_INIT_ABSTRACT_CLASS( TTracker, SoEngine, "Engine" );
+
 }
 
 TTracker::TTracker()
 {
 	Trace trace( "TTracker::TTracker", false );
-	SO_KIT_CONSTRUCTOR(TTracker);
-	SO_KIT_ADD_FIELD( sunRotation, (0.0, 0.0, 1.0, 0.0) );
-	SO_KIT_INIT_INSTANCE();	
+
 }
 
 TTracker::~TTracker()
 {
 	
 }
-QString TTracker::getIcon()
-{
-	return QString();
-}
+

@@ -49,7 +49,7 @@ class SoSensor;
 
 class TDefaultTracker : public TTracker
 {
-	SO_KIT_HEADER( TDefaultTracker );
+	SO_ENGINE_HEADER( TDefaultTracker );
 	
 public:
     static void initClass();
@@ -60,12 +60,9 @@ public:
 
 protected:	
 	virtual ~TDefaultTracker();
-	
-	static void fielSensorCB(void* data, SoSensor* sensor );
-    void setRotation();
+private:
+  virtual void evaluate();
 
-    SoFieldSensor* m_rotSensor;
-    
 };
 
 #endif /*TDEFAULTTRACKER_H_*/

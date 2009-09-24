@@ -47,21 +47,23 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TDefaultTracker.h"
 #include "Trace.h"
 
-SO_KIT_SOURCE( TDefaultTracker );
+SO_ENGINE_SOURCE( TDefaultTracker );
 
 void TDefaultTracker::initClass()
 {
 	Trace trace( "TDefaultTracker::initClass", false );
-	SO_KIT_INIT_CLASS( TDefaultTracker, TTracker, "Tracker" );
+	SO_ENGINE_INIT_CLASS( TDefaultTracker, TTracker, "Tracker" );
 }
 
 TDefaultTracker::TDefaultTracker()
 {
 	Trace trace( "TDefaultTracker::TDefaultTracker", false );
 
-	SO_KIT_CONSTRUCTOR(TDefaultTracker);
-	m_rotSensor = new SoFieldSensor( fielSensorCB, this );
-	m_rotSensor->attach( &sunRotation );
+	SO_ENGINE_CONSTRUCTOR(TDefaultTracker);
+
+	// Define input fields and their default values
+	SO_ENGINE_ADD_INPUT(inputRotation, ( 0.0, 0.0, 1.0, 0.0 ) );
+	SO_ENGINE_ADD_OUTPUT( outputRotation, SoSFRotation );
 }
 
 TDefaultTracker::~TDefaultTracker()
@@ -70,28 +72,27 @@ TDefaultTracker::~TDefaultTracker()
 }
 QString TDefaultTracker::getIcon()
 {
-	Trace trace( "TDefaultTracker::~TDefaultTracker", false );
+	Trace trace( "TDefaultTracker::getIcon", false );
 	return QString(":/icons/HorizontalTracker.png");
 }
 
-void TDefaultTracker::fielSensorCB(void* data, SoSensor* )
+
+void TDefaultTracker::evaluate()
 {
-	Trace trace( "TDefaultTracker::fielSensorCB", false );
-	TDefaultTracker* tracker = (TDefaultTracker* ) data;
-	if( tracker ) tracker->setRotation();
-}
+	Trace trace( "TDefaultTracker::evaluate", false );
 
-void TDefaultTracker::setRotation()
-{
-	Trace trace( "TDefaultTracker::setRotation", false );
+	SbMatrix matrix;
+	matrix.setRotate( inputRotation.getValue() );
 
+	SbVec3f sunVector;
+	matrix.multDirMatrix(  SbVec3f( 0.0, 1.0, 0.0 ), sunVector );
 
-	SbVec3f dir;
-	float angle;
+	SbVec3f from(0, 1, 0);
+	SbVec3f to = -sunVector;
+	//std::cout<<to<<std::endl;
 
-	sunRotation.getValue (dir, angle );
-	SoTransform* trackerTransform = static_cast< SoTransform* > ( transform.getValue() );
-	trackerTransform->rotation.setValue( dir, angle );
+    SbRotation rot(from, to);
+    SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rot ) );
 
 }
 

@@ -99,7 +99,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SceneModel.h"
 #include "LightDialog.h"
 #include "SunPositionCalculatorDialog.h"
-#include "TGateEngine.h"
 #include "tgf.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
@@ -720,6 +719,13 @@ void MainWindow::on_actionDelete_triggered()
 	Trace trace( "MainWindow::on_actionDelete_triggered", false );
 	Delete ();
 
+}
+
+
+void MainWindow::on_actionDeleteTracker_triggered()
+{
+	Trace trace( "MainWindow::on_actionDeleteTracker_triggered", false );
+	DeleteTracker();
 }
 
 // Insert menu actions
@@ -1421,18 +1427,18 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
 	Trace trace( "MainWindow::CreateTracker", true );
 
-	/*QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
-								m_sceneModel->index (0,0,m_treeView->rootIndex()):
-								m_treeView->currentIndex();
+	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
+									m_sceneModel->index (0,0,m_treeView->rootIndex()):
+									m_treeView->currentIndex();
 
 	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = ancestor->GetNode();
 
 	if( parentNode->getTypeId() != TSeparatorKit::getClassTypeId() ) return;
 
+
 	while( ancestor->GetParent() )
 	{
-		if(ancestor->GetParent()->GetNode()->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )	return;
 		ancestor = ancestor->GetParent();
 	}
 
@@ -1440,24 +1446,26 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
 	if( !lightKit )
 	{
-    	QMessageBox::information( this, "Tonatiuh Action",
-	                          "Define a sun light before insert a tracker", 1);
-    	return;
+		QMessageBox::information( this, "Tonatiuh Action",
+							  "Define a sun light before insert a tracker", 1);
+		return;
 	}
 
-   	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true) );
+	TSeparatorKit* parentNodeKit = dynamic_cast< TSeparatorKit* > ( parentNode );
+	SoTransform* parentTransform = static_cast< SoTransform* > ( parentNodeKit->getPart("transform", true ) );
+	if( parentTransform->rotation.isConnected() )
+	{
+		QMessageBox::information( this, "Tonatiuh Action",
+										  "Delete previous tracker before define a new one", 1);
+				return;
+	}
 
-    TTracker* tracker = pTTrackerFactory->CreateTTracker( );
-    QString typeName = pTTrackerFactory->TTrackerName();
-    tracker->setName( typeName.toStdString().c_str() );
+	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
 
-	TGateEngine* gate = new TGateEngine;
-	gate->rotation.connectFrom( &lightTransform->rotation );
-	tracker->sunRotation.connectFrom( &gate->outputRotation );
+	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
+	m_commandStack->push( command );
 
-	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, m_sceneModel );
-	m_commandStack->push( command );*/
-
+	m_document->SetDocumentModified( true );
 }
 
 //Manipulators actions
@@ -1777,7 +1785,7 @@ void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelInd
 
 	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
 	SoNode* coinNode = nodeInstnace->GetNode();
-	if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
+	//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
 
 	QUndoCommand* dragAndDrop = new QUndoCommand();
 	dragAndDrop->setText("Drag and Drop node");
@@ -1796,7 +1804,7 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 
 	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
 	SoNode* coinNode = nodeInstnace->GetNode();
-	if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
+	//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
 
 	QUndoCommand* dragAndDropCopy = new QUndoCommand();
 	dragAndDropCopy->setText("Drag and Drop Copy");
@@ -1826,6 +1834,9 @@ void MainWindow::showMenu( const QModelIndex& index)
 
 	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
+		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
+		if( coinKit->IsConnected() ) popupmenu.addAction( actionDeleteTracker );
+
 		popupmenu.addAction( tr("Convert to SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
 		popupmenu.addAction( tr("Convert to SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
 		popupmenu.addAction( tr("Convert to SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
@@ -1834,12 +1845,12 @@ void MainWindow::showMenu( const QModelIndex& index)
 		popupmenu.addAction( tr("Convert to SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
 		popupmenu.addAction( tr("Convert to SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
 
-	    SoBaseKit* coinKit = static_cast< SoBaseKit* > ( coinNode );
-   		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
-		SoType type = transform->getTypeId();
+
+		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
+		SoType transformType = transform->getTypeId();
 
       	//Manipuladores
-		if ( type.isDerivedFrom(SoTransformManip::getClassTypeId()) )	popupmenu.addAction( tr("Convert to SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
+		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	popupmenu.addAction( tr("Convert to SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
 
 	}
 
@@ -2106,21 +2117,39 @@ bool MainWindow::Delete( )
 	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
 	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
 
+
+	CmdDelete* commandDelete = new CmdDelete( m_selectionModel->currentIndex(), *m_sceneModel );
+	m_commandStack->push( commandDelete );
+
+
+	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
+
+	m_document->SetDocumentModified( true );
+	return true;
+}
+
+
+bool MainWindow::DeleteTracker()
+{
+	Trace trace( "MainWindow::DeleteTracker", false );
+
+	if( !m_selectionModel->hasSelection() ) return false;
+	if( !m_selectionModel->currentIndex().isValid()) return false;
+	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
+	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
+
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
 	SoNode* coinNode = instanceNode->GetNode();
 
-	if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )
-	{
-		CmdDeleteTracker* commandDelete = new CmdDeleteTracker( m_selectionModel->currentIndex(), *m_sceneModel );
-		m_commandStack->push( commandDelete );
-	}
-	else
-	{
-		CmdDelete* commandDelete = new CmdDelete( m_selectionModel->currentIndex(), *m_sceneModel );
-		m_commandStack->push( commandDelete );
-	}
+	if( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return false;
 
-	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
+	TSeparatorKit* separatorNode = dynamic_cast< TSeparatorKit* > ( coinNode );
+	if( !separatorNode ) return false;
+
+	if( !separatorNode->IsConnected() ) return false;
+
+	CmdDeleteTracker* commandDelete = new CmdDeleteTracker( m_selectionModel->currentIndex(), m_document->GetSceneKit(), *m_sceneModel );
+	m_commandStack->push( commandDelete );
 
 	m_document->SetDocumentModified( true );
 	return true;

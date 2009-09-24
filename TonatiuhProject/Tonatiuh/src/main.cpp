@@ -45,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TDefaultSunShape.h"
 #include "TDefaultTracker.h"
 #include "TCube.h"
-#include "TGateEngine.h"
 #include "TLightKit.h"
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
@@ -74,7 +73,6 @@ int main( int argc, char ** argv )
 	TLightKit::initClass();
 	TSunShape::initClass();
 	TDefaultSunShape::initClass();
-	TGateEngine::initClass();
 	TTracker::initClass();
 	TDefaultTracker::initClass();
 

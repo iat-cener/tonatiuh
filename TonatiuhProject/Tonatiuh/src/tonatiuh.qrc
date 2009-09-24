@@ -10,6 +10,7 @@
         <file>icons/copy.png</file>
         <file>icons/cut.png</file>
         <file>icons/delete.png</file>
+        <file>icons/deleteTracker.png</file>
         <file>icons/export.png</file>
         <file>icons/exportSurface.png</file>
         <file>icons/lightKit.png</file>

@@ -36,33 +36,46 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/engines/SoEngine.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodekits/SoSceneKit.h>
 
 #include "CmdDeleteTracker.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "TGateEngine.h"
+#include "tgf.h"
+#include "TLightKit.h"
 #include "Trace.h"
 #include "TTracker.h"
 
 
-CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SceneModel& model, QUndoCommand* parent )
-: QUndoCommand("Delete", parent), m_tracker( 0 ), m_gate( 0 ), m_coinParent( 0 ),  m_pModel( &model ), m_row( -1 )
+CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit* scene, SceneModel& model, QUndoCommand* parent )
+: QUndoCommand("Delete", parent), m_tracker( 0 ),  m_coiNode( 0 ),  m_scene( scene ), m_pModel( &model )
 {
 	Trace trace( "CmdDeleteTracker::CmdDeleteTracker", false );
 
-	InstanceNode* instanceNode = m_pModel->NodeFromIndex( selectedIndex );
-	m_tracker = static_cast< TTracker* > ( instanceNode->GetNode() );
+
+
+	if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdDeleteTracker Null lightKit." );
+
+	if( !selectedIndex.isValid() ) tgf::SevereError( "CmdDeleteTracker called with invalid ModelIndex." );
+	InstanceNode* instanceSelection = m_pModel->NodeFromIndex( selectedIndex );
+	if( !instanceSelection->GetNode() ) tgf::SevereError( "CmdDeleteTracker called with NULL selection node." );
+	m_coiNode = static_cast< SoBaseKit* > ( instanceSelection->GetNode() );
+
+	SoTransform* transformNode = dynamic_cast< SoTransform* > ( m_coiNode->getPart( "transform", false ) );
+	if( !transformNode  )	 tgf::SevereError( "CmdDeleteTracker Null node transform." );
+
+	if( !transformNode->rotation.isConnected() ) tgf::SevereError( "CmdDeleteTracker Null tracker." );
+
+	SoEngineOutput* outputEngine;
+	transformNode->rotation.getConnectedEngine( outputEngine );
+	if( !outputEngine  )	tgf::SevereError( "CmdDeleteTracker Null tracker." );
+
+	m_tracker = dynamic_cast<TTracker* > ( outputEngine->getContainer() );
+	if( !m_tracker ) tgf::SevereError( "CmdDeleteTracker Null tracker." );
 	m_tracker->ref();
 
-	SoEngineOutput* gateOutput;
-	m_tracker->sunRotation.getConnectedEngine( gateOutput );
-	m_gate = static_cast< TGateEngine* > (gateOutput->getContainer() );
-	m_gate->ref();
-
-	m_coinParent = static_cast< SoBaseKit* > ( instanceNode->GetParent()->GetNode() );
-	m_row = instanceNode->GetParent()->children.indexOf( instanceNode );
 }
 
 CmdDeleteTracker::~CmdDeleteTracker()
@@ -70,23 +83,28 @@ CmdDeleteTracker::~CmdDeleteTracker()
 	Trace trace( "CmdDeleteTracker::~CmdDeleteTracker", false );
 
 	m_tracker->unref();
-	m_gate->unref();
 }
 
 void CmdDeleteTracker::undo()
 {
 	Trace trace( "CmdDeleteTracker::undo", false );
 
-	if( m_gate )	m_tracker->sunRotation.connectFrom( &m_gate->outputRotation  );
+	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
+	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true ) );
+	if( !lightTransform ) tgf::SevereError( "CmdInsertTracker Null lightTransform." );
+	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coiNode->getPart("transform", true ) );
+	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null node transform." );
 
-	m_pModel->Paste( tgc::Shared, *m_coinParent, *m_tracker, m_row );
+	m_tracker->inputRotation.connectFrom( &lightTransform->rotation );
+	parentTransform->rotation.connectFrom( &m_tracker->outputRotation );
 }
 
 void CmdDeleteTracker::redo( )
 {
 	Trace trace( "CmdDeleteTracker::redo", false );
 
-	m_tracker->sunRotation.disconnect( &m_gate->outputRotation );
-	m_pModel->Cut( *m_coinParent, m_row );
+	SoTransform* transform = static_cast< SoTransform* > ( m_coiNode->getPart("transform", true ) );
+	transform->rotation.disconnect();
+	m_tracker->inputRotation.disconnect();
 
 }
