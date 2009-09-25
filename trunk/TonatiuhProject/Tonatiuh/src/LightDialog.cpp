@@ -56,7 +56,7 @@ LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TShapeFactory* >
 :QDialog( parent ), m_currentLightKit( currentLightKit ), m_currentSunShapeIndex( -1 ), m_currentShapeIndex( -1 ),
 m_newShape( 0 ), m_newSunShape( 0 )
 {
-	Trace trace( "LightDialog::LightDialog", false );
+	Trace trace( "LightDialog::LightDialog", true );
 
 	setupUi( this );
 
@@ -95,7 +95,7 @@ LightDialog::~LightDialog()
  */
 TLightKit* LightDialog::GetTLightKit()
 {
-	Trace trace( "LightDialog::GetTLightKit", false );
+	Trace trace( "LightDialog::GetTLightKit", true );
 
 	TLightKit* lightKit = new TLightKit;
 	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );

@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <MapThemeManager.h>
 #include <MarbleWidget.h>
 
+#define DUMP_GEONODE_LEAKS 0
 class QComboBox;
 class QDoubleSpinBox;
 class QSplitter;
@@ -58,6 +59,7 @@ using namespace Marble;
 /*!
   MapDialog is the dialog show a world map and select a localization in a easy way.
 */
+
 
 class MapDialog : public QDialog
 {

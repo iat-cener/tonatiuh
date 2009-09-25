@@ -39,6 +39,7 @@
 #include "MapDialog.h"
 #include "SunPositionCalculatorDialog.h"
 #include "tgc.h"
+#include "Trace.h"
 
 SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 : QDialog( parent )
@@ -120,6 +121,8 @@ void SunPositionCalculatorDialog::ChangeSunTimeZone( int /*timeZone*/ )
 
 void SunPositionCalculatorDialog::on_selectButton_clicked()
 {
+	Trace( "SunPositionCalculatorDialog::on_selectButton_clicked" , true );
+
 	MapDialog marbleDialog;
 	marbleDialog.SetCoordinates( longitudeSpin->value()*( tgc::Pi / 180), -latitudeSpin->value()*( tgc::Pi / 180) );
 	if( marbleDialog.exec() )

@@ -830,7 +830,7 @@ void MainWindow::on_actionUserComponent_triggered()
 //Sun Light menu actions
 void MainWindow::on_actionDefine_SunLight_triggered()
 {
-	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", false );
+	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", true );
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;

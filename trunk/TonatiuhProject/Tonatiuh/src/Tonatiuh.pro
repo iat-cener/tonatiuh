@@ -16,7 +16,7 @@ INCLUDEPATH += . \
  
 win32: {
 	RC_FILE = Tonatiuh.rc
-    DEFINES+= COIN_DLL SOQT_DLL
+    DEFINES+= COIN_DLL SOQT_DLL 
 }
 
 # Input
