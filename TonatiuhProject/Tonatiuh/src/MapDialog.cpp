@@ -72,12 +72,10 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 
 	setMouseTracking( true );
 
-	/*QDir directory( qApp->applicationDirPath() );
+	QDir directory( qApp->applicationDirPath() );
 	directory.cd( "../../data" );
 
-	std::cout<<directory.absolutePath().toStdString()<<std::endl;
-
-	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );*/
+	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );
 
 
     setWindowTitle(tr("Marble - Desktop Globe"));
