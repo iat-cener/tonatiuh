@@ -34,6 +34,7 @@ HEADERS = *.h \
            	$$(TONATIUH_ROOT)/src/TSeparatorKit.h \
            	$$(TONATIUH_ROOT)/src/TShape.h \
            	$$(TONATIUH_ROOT)/src/TShapeKit.h \ 
+           	$$(TONATIUH_ROOT)/src/TTracker.h \
            	$$(TONATIUH_ROOT)/src/Vector3D.h
 
 SOURCES = *.cpp \
@@ -54,6 +55,7 @@ SOURCES = *.cpp \
            	$$(TONATIUH_ROOT)/src/TSeparatorKit.cpp \
            	$$(TONATIUH_ROOT)/src/TShape.cpp \
            	$$(TONATIUH_ROOT)/src/TShapeKit.cpp \
+           	$$(TONATIUH_ROOT)/src/TTracker.cpp \
            	$$(TONATIUH_ROOT)/src/Vector3D.cpp
 
 RESOURCES += ShapeSphericalPolygon.qrc
