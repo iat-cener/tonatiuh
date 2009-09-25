@@ -89,10 +89,10 @@ void TrackerTwoAxis::evaluate()
 	matrix.multDirMatrix(  SbVec3f( 0.0, 1.0, 0.0 ), sunVector );
 
 	SbVec3f from(0, 1, 0);
-	SbVec3f to = -sunVector;
+	SbVec3f to = sunVector;
 	//std::cout<<to<<std::endl;
 
     SbRotation rot(from, to);
-    SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rot ) );
+    SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( inputRotation.getValue() ) );
 
 }
