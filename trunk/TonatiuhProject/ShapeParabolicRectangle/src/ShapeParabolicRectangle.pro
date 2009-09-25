@@ -34,6 +34,7 @@ HEADERS = *.h \
        	../Tonatiuh/src/TSeparatorKit.h \
        	../Tonatiuh/src/TShape.h \
        	../Tonatiuh/src/TShapeKit.h \ 
+        ../Tonatiuh/src/TTracker.h \
        	../Tonatiuh/src/Vector3D.h
 
 SOURCES = *.cpp \
@@ -54,6 +55,7 @@ SOURCES = *.cpp \
            	../Tonatiuh/src/TSeparatorKit.cpp \
            	../Tonatiuh/src/TShape.cpp \
            	../Tonatiuh/src/TShapeKit.cpp \
+           	../Tonatiuh/src/TTracker.cpp \
            	../Tonatiuh/src/Vector3D.cpp
 
 RESOURCES += ShapeParabolicRectangle.qrc
