@@ -46,8 +46,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+#include <HttpDownloadManager.h>
 #include <MarbleControlBox.h>
 #include <MarbleDirs.h>
+#include <MarbleMap.h>
+#include <MarbleModel.h>
 #include <MarbleWidget.h>
 #include <MapThemeManager.h>
 
@@ -65,14 +68,17 @@ MapDialog::MapDialog( QWidget *parent )
 m_splitter( 0 ), m_latSpinBox( 0 ), m_latComboBox( 0 ), m_lonSpinBox( 0 ),
 m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 {
-	Trace( "MapDialog::MapDialog" , false );
+	Trace( "MapDialog::MapDialog" , true );
 
 	setMouseTracking( true );
 
-	QDir directory( qApp->applicationDirPath() );
+	/*QDir directory( qApp->applicationDirPath() );
 	directory.cd( "../../data" );
 
-	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );
+	std::cout<<directory.absolutePath().toStdString()<<std::endl;
+
+	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );*/
+
 
     setWindowTitle(tr("Marble - Desktop Globe"));
 
@@ -164,17 +170,17 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
     //Marble Widget
    	m_marbleWidget = new MarbleWidget( this );
     m_marbleWidget->setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
+    m_marbleWidget->map()->model()->downloadManager()->setDownloadEnabled( false );
     m_control->addMarbleWidget( m_marbleWidget );
 	m_splitter->addWidget( m_marbleWidget );
 
-    m_mapThemeManager = new Marble::MapThemeManager;
-    m_control->setMapThemeModel(  m_mapThemeManager->mapThemeModel() );
-    m_marbleWidget->setMapThemeId( "earth/srtm/srtm.dgml" );
+	m_mapThemeManager = new Marble::MapThemeManager;
+	m_control->setMapThemeModel(  m_mapThemeManager->mapThemeModel() );
     m_marbleWidget->setProjection( (Marble::Projection) 0 );
 
 
-    m_splitter->setSizes( QList<int>() << 180 << width()-180 );
-    m_splitter->setStretchFactor(m_splitter->indexOf(m_control), 0);
+	m_splitter->setSizes( QList<int>() << 180 << width()-180 );
+	m_splitter->setStretchFactor(m_splitter->indexOf(m_control), 0);
     m_splitter->setStretchFactor(m_splitter->indexOf(m_marbleWidget), 1);
 
     connect( m_marbleWidget, SIGNAL( mouseClickGeoPosition( qreal, qreal, GeoDataCoordinates::Unit ) ), this, SLOT( UpdateCurrentPosition( qreal, qreal, GeoDataCoordinates::Unit ) ) );
@@ -197,7 +203,7 @@ void MapDialog::GetCoordinates( double* lon, double* lat ) const
  */
 void MapDialog::SetCoordinates(  double lon, double lat )
 {
-	Trace trace( "MapDialog::SetCoordinates", false );
+	Trace trace( "MapDialog::SetCoordinates", true );
 	m_longitude = lon;
 	m_latitude = -lat;
 
@@ -219,7 +225,7 @@ bool MapDialog::sideBarShown() const
  */
 void MapDialog::UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates::Unit )
 {
-	Trace trace( "MapDialog::changeGpsPosition", false );
+	Trace trace( "MapDialog::changeGpsPosition", true );
 
 	// Gps Position Coordinates are positive for south and east
 	if( lon < 0 ) m_lonComboBox->setCurrentIndex( 1 );
