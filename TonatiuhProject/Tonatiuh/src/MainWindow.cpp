@@ -830,7 +830,7 @@ void MainWindow::on_actionUserComponent_triggered()
 //Sun Light menu actions
 void MainWindow::on_actionDefine_SunLight_triggered()
 {
-	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", true );
+	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", false );
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
@@ -1425,7 +1425,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
-	Trace trace( "MainWindow::CreateTracker", true );
+	Trace trace( "MainWindow::CreateTracker", false );
 
 	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
 									m_sceneModel->index (0,0,m_treeView->rootIndex()):
@@ -1443,7 +1443,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	}
 
 	SoSceneKit* scene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", true) );
+	TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", false ) );
 	if( !lightKit )
 	{
 		QMessageBox::information( this, "Tonatiuh Action",
