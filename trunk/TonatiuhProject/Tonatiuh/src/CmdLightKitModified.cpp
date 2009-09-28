@@ -55,7 +55,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Modify LightKit", parent), m_pPreviousLightKit( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
 {
-    Trace trace( "CmdLightKitModified::CmdLightKitModified", true );
+    Trace trace( "CmdLightKitModified::CmdLightKitModified", false );
 
     if( newLightKit == 0 ) tgf::SevereError( "CmdLightKitModified called with NULL TLightKit*" );
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
@@ -106,7 +106,7 @@ void CmdLightKitModified::undo()
 
 void CmdLightKitModified::redo( )
 {
-	Trace trace( "CmdLightKitModified::redo", true );
+	Trace trace( "CmdLightKitModified::redo", false );
 
    if( !m_pPreviousLightKit )
    	{
