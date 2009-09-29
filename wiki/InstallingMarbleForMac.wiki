@@ -64,8 +64,15 @@ cp src/lib/libmarblewidget*.dylib /usr/local/lib
 }}}
 
 Copy mable plugins to the folder "/usr/local/bin/marble".
-
-mkdir /usr/local/bin/plugins
-cp -r src/plugins/* /usr/local/bin/plugins
+{{{
+mkdir /usr/local/bin/marble
+cp src/plugins/render/navigation/libNavigationFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/mapscale/libMapScaleFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libOverviewMap.so /usr/local/bin/marble
+cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/geodata/libGeoRendererPlugin.so /usr/local/bin/marble
+cp src/plugins/render/crosshairs/libCrosshairsPlugin.so /usr/local/bin/marble
+}}}
 
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
