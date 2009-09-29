@@ -68,14 +68,21 @@ MapDialog::MapDialog( QWidget *parent )
 m_splitter( 0 ), m_latSpinBox( 0 ), m_latComboBox( 0 ), m_lonSpinBox( 0 ),
 m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 {
-	Trace( "MapDialog::MapDialog" , true );
+	Trace( "MapDialog::MapDialog", false );
 
 	setMouseTracking( true );
+
+	QDir plugisDirectory( qApp->applicationDirPath() );
+	plugisDirectory.cd("marble");
+
+	Marble::MarbleDirs::setMarblePluginPath( plugisDirectory.absolutePath() );
 
 	QDir directory( qApp->applicationDirPath() );
 	directory.cd( "../../data" );
 
 	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );
+
+
 
 
     setWindowTitle(tr("Marble - Desktop Globe"));
@@ -201,7 +208,7 @@ void MapDialog::GetCoordinates( double* lon, double* lat ) const
  */
 void MapDialog::SetCoordinates(  double lon, double lat )
 {
-	Trace trace( "MapDialog::SetCoordinates", true );
+	Trace trace( "MapDialog::SetCoordinates", false );
 	m_longitude = lon;
 	m_latitude = -lat;
 
@@ -223,7 +230,7 @@ bool MapDialog::sideBarShown() const
  */
 void MapDialog::UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates::Unit )
 {
-	Trace trace( "MapDialog::changeGpsPosition", true );
+	Trace trace( "MapDialog::changeGpsPosition", false );
 
 	// Gps Position Coordinates are positive for south and east
 	if( lon < 0 ) m_lonComboBox->setCurrentIndex( 1 );
