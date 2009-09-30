@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QApplication>
+#include <QDir>
 
 #include <Inventor/Qt/SoQt.h>
 
@@ -59,6 +60,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 int main( int argc, char ** argv )
 {
 	QApplication::setColorSpec( QApplication::CustomColor );
+	QApplication::addLibraryPath( QApplication::applicationDirPath()
+	        + QDir::separator() + "marble" );
+
 
     QApplication a( argc, argv );
 	SoQt::init( (QWidget *) NULL );
