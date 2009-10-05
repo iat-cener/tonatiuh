@@ -60,12 +60,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 int main( int argc, char ** argv )
 {
 	QApplication::setColorSpec( QApplication::CustomColor );
+
+    QApplication a( argc, argv );
+
+
 	QApplication::addLibraryPath( QApplication::applicationDirPath()
 	        + QDir::separator() + "marble" );
 
-
-    QApplication a( argc, argv );
 	SoQt::init( (QWidget *) NULL );
+
 
 	TMaterial::initClass();
 	TDefaultMaterial::initClass();
