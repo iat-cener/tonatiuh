@@ -4,7 +4,7 @@
  
 TEMPLATE = app
 CONFIG       += qt warn_on thread debug_and_release 
-CONFIG -=app_bundle
+#CONFIG -=app_bundle
 TARGET =   
 DEPENDPATH += . \
               src 
@@ -17,6 +17,10 @@ INCLUDEPATH += . \
 win32: {
 	RC_FILE = Tonatiuh.rc
     DEFINES+= COIN_DLL SOQT_DLL 
+}
+
+mac:{
+	ICON = icons/Tonatiuh.icns
 }
 
 # Input
