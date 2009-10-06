@@ -49,6 +49,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#13c4c0a6c4054f42525db08a92213ed0">on_actionSaveAs_triggered</a> ()</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#f850fcd9e30e2af53fb1e93f037f66a2">on_actionSaveComponent_triggered</a> ()</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#214a1a535fdbf35b0ed12e26231eef56">on_actionPrint_triggered</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#189b458b701fa572969a22f8718ce5b0">on_actionClose_triggered</a> ()</td></tr>
@@ -74,6 +76,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#eeb1d530f77574ca03fa472e19bd6029">on_actionNode_triggered</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#c559f0056965f51e463bc2c02e75b142">on_actionShapeKit_triggered</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#02579221979fb8f446ae5ca47e3892d8">on_actionUserComponent_triggered</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#76eb33dc5792f982a973ef6bc91a57f2">on_actionDefine_SunLight_triggered</a> ()</td></tr>
 
@@ -106,8 +110,6 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#48fea7e3c53ab58b6eda4b9a49347351">on_action_Y_Z_Plane_triggered</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#e5290e013a45eac1b50863bc609c102c">CreateMaterial</a> (<a class="el" href="class_t_material_factory.html">TMaterialFactory</a> *pTMaterialFactory)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#73f4b6efe284469fe7076fdf0af710b0">CreatePhotonMap</a> (<a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> *pTPhotonMapFactory)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#7803710ef6bf8410d5a3e0bcd16fe27a">CreateShape</a> (<a class="el" href="class_t_shape_factory.html">TShapeFactory</a> *pTShapeFactory)</td></tr>
 
@@ -209,6 +211,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#c16113ab28437528855f827c26c3f1eb">SaveFile</a> (const QString &amp;fileName)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb">SaveAs</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#562646f9a32f7ae72740d7fab9df88d6">SaveComponent</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ca13ca83a16deeaed049628ab0c9845d">Copy</a> ()</td></tr>
 
@@ -349,7 +353,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, <a class="el" href="_main_window_8h-source.html#l00238">m_pRand</a>, <a class="el" href="_main_window_8cpp-source.html#l02102">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l00168">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00214">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00180">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00187">SetupToolBars()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00236">SetupViews()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, <a class="el" href="_main_window_8h-source.html#l00240">m_pRand</a>, <a class="el" href="_main_window_8cpp-source.html#l02177">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l00168">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00214">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00180">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00187">SetupToolBars()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00236">SetupViews()</a>.</p>
 
 </div>
 </div><p>
@@ -370,7 +374,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00216">m_recentFileActions</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00218">m_recentFileActions</a>.</p>
 
 </div>
 </div><p>
@@ -439,9 +443,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00812">on_actionCalculateSunPosition_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00869">on_actionCalculateSunPosition_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -463,7 +467,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01841">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02093">WriteSettings()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01870">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02168">WriteSettings()</a>.</p>
 
 </div>
 </div><p>
@@ -501,9 +505,9 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 <p>
 Compute a map with the InstanceNodes of sub-tree with top node <em>nodeIndex</em>.<p>
 The map stores for each <a class="el" href="class_instance_node.html">InstanceNode</a> its <a class="el" href="struct_b_box.html">BBox</a> and its transform in global coordinates. 
-<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_transform_8cpp-source.html#l00099">Transform::GetInverse()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00651">SceneModel::PathFromIndex()</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_transform_8cpp-source.html#l00099">Transform::GetInverse()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00708">SceneModel::PathFromIndex()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -524,9 +528,9 @@ The map stores for each <a class="el" href="class_instance_node.html">InstanceNo
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00239">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00241">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00690">on_actionCopy_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00697">on_actionCopy_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -548,7 +552,7 @@ The map stores for each <a class="el" href="class_instance_node.html">InstanceNo
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01144">on_actionGrid_toggled()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01201">on_actionGrid_toggled()</a>.</p>
 
 </div>
 </div><p>
@@ -570,29 +574,9 @@ The map stores for each <a class="el" href="class_instance_node.html">InstanceNo
 
 <p>
 
-<p>References <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00211">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
+<p>References <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00216">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00528">SetupActionInsertMaterial()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="73f4b6efe284469fe7076fdf0af710b0"></a><!-- doxytag: member="MainWindow::CreatePhotonMap" ref="73f4b6efe284469fe7076fdf0af710b0" args="(TPhotonMapFactory *pTPhotonMapFactory)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MainWindow::CreatePhotonMap           </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_t_photon_map_factory.html">TPhotonMapFactory</a> *&nbsp;</td>
-          <td class="paramname"> <em>pTPhotonMapFactory</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [slot]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
 
 </div>
 </div><p>
@@ -614,7 +598,7 @@ The map stores for each <a class="el" href="class_instance_node.html">InstanceNo
 
 <p>
 
-<p>References <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00211">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
+<p>References <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00216">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00559">SetupActionInsertShape()</a>.</p>
 
@@ -638,7 +622,7 @@ The map stores for each <a class="el" href="class_instance_node.html">InstanceNo
 
 <p>
 
-<p>References <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00211">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00056">TGateEngine::outputRotation</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00053">TGateEngine::rotation</a>, <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>, and <a class="el" href="class_t_tracker_factory.html#309406162c90242ff6735ceafab5d2ef">TTrackerFactory::TTrackerName()</a>.</p>
+<p>References <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00216">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_t_tracker_8cpp-source.html#l00089">TTracker::SetSceneKit()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00578">SetupActionInsertTracker()</a>.</p>
 
@@ -661,9 +645,9 @@ The map stores for each <a class="el" href="class_instance_node.html">InstanceNo
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00239">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00241">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00684">on_actionCut_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00691">on_actionCut_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -685,9 +669,9 @@ The map stores for each <a class="el" href="class_instance_node.html">InstanceNo
 <p>
 Creates a new delete command, where the selected node was deleted. child.<p>
 Returns <em>true</em> if the node was successfully deleted, otherwise returns <em>false</em>. 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00710">on_actionDelete_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00717">on_actionDelete_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -708,7 +692,7 @@ Returns <em>true</em> if the node was successfully deleted, otherwise returns <e
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00240">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02120">parameterModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00242">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02195">parameterModified()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>.</p>
 
@@ -782,7 +766,7 @@ Returns <em>true</em> if the node was successfully deleted, otherwise returns <e
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00239">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00241">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>.</p>
 
@@ -815,7 +799,7 @@ Returns <em>true</em> if the node was successfully deleted, otherwise returns <e
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00239">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00241">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>.</p>
 
@@ -838,7 +822,7 @@ Returns <em>true</em> if the node was successfully deleted, otherwise returns <e
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00493">BuildFileList()</a>, <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="class_t_photon_map_factory.html#b918dd32f1c4cf961fca7b419770e9d4">TPhotonMapFactory::CreateTPhotonMap()</a>, <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="class_t_sun_shape_factory.html#1ea35ec3155b9f3a9302e45920d23151">TSunShapeFactory::CreateTSunShape()</a>, <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="class_t_shape_factory.html#7813da1592432fcd74af1febe40ef3ff">TShapeFactory::IsFlat()</a>, <a class="el" href="_main_window_8h-source.html#l00226">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_TPhotonMapFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00227">m_TSunshapeFactoryList</a>, <a class="el" href="_main_window_8cpp-source.html#l00516">PluginDirectory()</a>, <a class="el" href="_main_window_8cpp-source.html#l00528">SetupActionInsertMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l00559">SetupActionInsertShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l00578">SetupActionInsertTracker()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00493">BuildFileList()</a>, <a class="el" href="class_t_material_factory.html#38a9546699fde278a7b8a1ec73ac30d8">TMaterialFactory::CreateTMaterial()</a>, <a class="el" href="class_t_photon_map_factory.html#b918dd32f1c4cf961fca7b419770e9d4">TPhotonMapFactory::CreateTPhotonMap()</a>, <a class="el" href="class_t_shape_factory.html#d3676e8c1596ec434ba1583ca7c2a8b2">TShapeFactory::CreateTShape()</a>, <a class="el" href="class_t_sun_shape_factory.html#1ea35ec3155b9f3a9302e45920d23151">TSunShapeFactory::CreateTSunShape()</a>, <a class="el" href="class_t_tracker_factory.html#bfc30d1aa5724b89c297bc747b4cf4cd">TTrackerFactory::CreateTTracker()</a>, <a class="el" href="class_t_shape_factory.html#7813da1592432fcd74af1febe40ef3ff">TShapeFactory::IsFlat()</a>, <a class="el" href="_main_window_8h-source.html#l00228">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00227">m_TPhotonMapFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_TSunshapeFactoryList</a>, <a class="el" href="_main_window_8cpp-source.html#l00516">PluginDirectory()</a>, <a class="el" href="_main_window_8cpp-source.html#l00528">SetupActionInsertMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l00559">SetupActionInsertShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l00578">SetupActionInsertTracker()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>.</p>
 
@@ -861,7 +845,7 @@ Returns <em>true</em> if the node was successfully deleted, otherwise returns <e
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00638">on_actionPrint_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00645">on_actionPrint_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -883,7 +867,7 @@ Returns <em>true</em> if the node was successfully deleted, otherwise returns <e
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00247">m_focusView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00249">m_focusView</a>.</p>
 
 </div>
 </div><p>
@@ -904,9 +888,9 @@ Returns <em>true</em> if the node was successfully deleted, otherwise returns <e
 
 <p>
 Returns <em>true</em> if the application is ready to start with other model. Otherwise, returns <em>false</em>. 
-<p>References <a class="el" href="_document_8cpp-source.html#l00181">Document::IsModified()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, and <a class="el" href="_main_window_8cpp-source.html#l01905">Save()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00181">Document::IsModified()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, and <a class="el" href="_main_window_8cpp-source.html#l01934">Save()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01825">closeEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l00607">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00614">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00650">OpenRecentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01854">closeEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l00607">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00614">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00657">OpenRecentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -927,7 +911,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00249">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>.</p>
 
@@ -950,7 +934,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00249">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>.</p>
 
@@ -973,7 +957,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00249">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>.</p>
 
@@ -996,7 +980,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>.</p>
 
 </div>
 </div><p>
@@ -1017,7 +1001,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, and <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, and <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>.</p>
 
 </div>
 </div><p>
@@ -1038,7 +1022,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_sun_position_calculator_dialog_8cpp-source.html#l00078">SunPositionCalculatorDialog::ChangePosition()</a>, <a class="el" href="_main_window_8cpp-source.html#l01794">ChangeSunPosition()</a>, <a class="el" href="_t_light_kit_8cpp-source.html#l00142">TLightKit::GetPositionData()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, and <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>.</p>
+<p>References <a class="el" href="_sun_position_calculator_dialog_8cpp-source.html#l00079">SunPositionCalculatorDialog::ChangePosition()</a>, <a class="el" href="_main_window_8cpp-source.html#l01823">ChangeSunPosition()</a>, <a class="el" href="_t_light_kit_8cpp-source.html#l00142">TLightKit::GetPositionData()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, and <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>.</p>
 
 </div>
 </div><p>
@@ -1078,7 +1062,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01940">Copy()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l02014">Copy()</a>.</p>
 
 </div>
 </div><p>
@@ -1099,7 +1083,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l02027">Cut()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l02102">Cut()</a>.</p>
 
 </div>
 </div><p>
@@ -1120,7 +1104,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_light_dialog_8cpp-source.html#l00096">LightDialog::GetTLightKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00696">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00226">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00227">m_TSunshapeFactoryList</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_light_dialog_8cpp-source.html#l00096">LightDialog::GetTLightKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00753">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00228">m_TFlatShapeFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_TSunshapeFactoryList</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 </div>
 </div><p>
@@ -1141,7 +1125,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01997">Delete()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l02071">Delete()</a>.</p>
 
 </div>
 </div><p>
@@ -1162,7 +1146,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, and <a class="el" href="_main_window_8h-source.html#l00236">m_pRays</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, and <a class="el" href="_main_window_8h-source.html#l00238">m_pRays</a>.</p>
 
 </div>
 </div><p>
@@ -1183,7 +1167,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00247">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00249">m_focusView</a>, and <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>.</p>
 
 </div>
 </div><p>
@@ -1204,7 +1188,7 @@ Returns <em>true</em> if the application is ready to start with other model. Oth
 
 <p>
 Writes the photons stored at the photon map at user defined file. 
-<p>References <a class="el" href="class_t_shape.html#05e6601a64e1424712768031b5b6fef7">TShape::GetArea()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00074">ExportDialog::GetCoordinateSystem()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00089">ExportDialog::GetExportFileName()</a>, <a class="el" href="_transform_8cpp-source.html#l00099">Transform::GetInverse()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="class_t_photon_map.html#cf6511e9bcc2acf8631fe8eebf311220">TPhotonMap::GetPhoton()</a>, <a class="el" href="class_t_photon_map.html#038fb89cbea5cf9f28a1fcc9c4f6d404">TPhotonMap::GetPhotons()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00097">ExportDialog::GetSelectedPhotons()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00110">ExportDialog::GetSelectedSurface()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00696">SceneModel::IndexFromPath()</a>, <a class="el" href="class_t_sun_shape.html#e30e615b2d1d66931dc557defc4ed006">TSunShape::irradiance()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>, <a class="el" href="_photon_8h-source.html#l00051">Photon::m_id</a>, <a class="el" href="_photon_8h-source.html#l00055">Photon::m_next</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_photonMap</a>, <a class="el" href="_photon_8h-source.html#l00052">Photon::m_pos</a>, <a class="el" href="_photon_8h-source.html#l00054">Photon::m_prev</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00241">m_tracedRays</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="class_t_photon_map.html#5eb140efe41a42c4279d118ab824baa5">TPhotonMap::StoredPhotons()</a>, <a class="el" href="_point3_d_8h-source.html#l00060">Point3D::x</a>, <a class="el" href="_point3_d_8h-source.html#l00061">Point3D::y</a>, and <a class="el" href="_point3_d_8h-source.html#l00062">Point3D::z</a>.</p>
+<p>References <a class="el" href="class_t_shape.html#05e6601a64e1424712768031b5b6fef7">TShape::GetArea()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00074">ExportDialog::GetCoordinateSystem()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00089">ExportDialog::GetExportFileName()</a>, <a class="el" href="_transform_8cpp-source.html#l00099">Transform::GetInverse()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="class_t_photon_map.html#cf6511e9bcc2acf8631fe8eebf311220">TPhotonMap::GetPhoton()</a>, <a class="el" href="class_t_photon_map.html#038fb89cbea5cf9f28a1fcc9c4f6d404">TPhotonMap::GetPhotons()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00097">ExportDialog::GetSelectedPhotons()</a>, <a class="el" href="_export_dialog_8cpp-source.html#l00110">ExportDialog::GetSelectedSurface()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00753">SceneModel::IndexFromPath()</a>, <a class="el" href="class_t_sun_shape.html#e30e615b2d1d66931dc557defc4ed006">TSunShape::irradiance()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>, <a class="el" href="_photon_8h-source.html#l00051">Photon::m_id</a>, <a class="el" href="_photon_8h-source.html#l00055">Photon::m_next</a>, <a class="el" href="_main_window_8h-source.html#l00234">m_photonMap</a>, <a class="el" href="_photon_8h-source.html#l00052">Photon::m_pos</a>, <a class="el" href="_photon_8h-source.html#l00054">Photon::m_prev</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00243">m_tracedRays</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="class_t_photon_map.html#5eb140efe41a42c4279d118ab824baa5">TPhotonMap::StoredPhotons()</a>, <a class="el" href="_point3_d_8h-source.html#l00060">Point3D::x</a>, <a class="el" href="_point3_d_8h-source.html#l00061">Point3D::y</a>, and <a class="el" href="_point3_d_8h-source.html#l00062">Point3D::z</a>.</p>
 
 </div>
 </div><p>
@@ -1225,7 +1209,7 @@ Writes the photons stored at the photon map at user defined file.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l02271">createGrid()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00237">m_pGrid</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l02358">createGrid()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00249">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00239">m_pGrid</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>.</p>
 
 </div>
 </div><p>
@@ -1246,7 +1230,7 @@ Writes the photons stored at the photon map at user defined file.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01841">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01870">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -1267,7 +1251,7 @@ Writes the photons stored at the photon map at user defined file.
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00211">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00216">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
 </div>
 </div><p>
@@ -1288,7 +1272,7 @@ Writes the photons stored at the photon map at user defined file.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01841">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01870">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -1309,7 +1293,7 @@ Writes the photons stored at the photon map at user defined file.
 
 <p>
 
-<p>References <a class="el" href="tgc_8h-source.html#l00057">tgc::Copied</a>, and <a class="el" href="_main_window_8cpp-source.html#l01962">Paste()</a>.</p>
+<p>References <a class="el" href="tgc_8h-source.html#l00057">tgc::Copied</a>, and <a class="el" href="_main_window_8cpp-source.html#l02036">Paste()</a>.</p>
 
 </div>
 </div><p>
@@ -1330,7 +1314,7 @@ Writes the photons stored at the photon map at user defined file.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01962">Paste()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l02036">Paste()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
 
 </div>
 </div><p>
@@ -1372,7 +1356,7 @@ Writes the photons stored at the photon map at user defined file.
 
 <p>
 Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el" href="class_trace.html">Trace</a> Options dialog. 
-<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00122">RayTraceDialog::DrawPhotons()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00104">RayTraceDialog::GetNumRays()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00131">RayTraceDialog::GetPhotonMapFactoryIndex()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00113">RayTraceDialog::GetRaysFactionToDraw()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00141">RayTraceDialog::IncreasePhotonMap()</a>, <a class="el" href="_main_window_8h-source.html#l00244">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00243">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00234">m_increasePhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00242">m_raysPerIteration</a>, <a class="el" href="_main_window_8h-source.html#l00233">m_selectedPhotonMap</a>, and <a class="el" href="_main_window_8h-source.html#l00225">m_TPhotonMapFactoryList</a>.</p>
+<p>References <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00122">RayTraceDialog::DrawPhotons()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00104">RayTraceDialog::GetNumRays()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00131">RayTraceDialog::GetPhotonMapFactoryIndex()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00113">RayTraceDialog::GetRaysFactionToDraw()</a>, <a class="el" href="_ray_trace_dialog_8cpp-source.html#l00141">RayTraceDialog::IncreasePhotonMap()</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00245">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00236">m_increasePhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00244">m_raysPerIteration</a>, <a class="el" href="_main_window_8h-source.html#l00235">m_selectedPhotonMap</a>, and <a class="el" href="_main_window_8h-source.html#l00227">m_TPhotonMapFactoryList</a>.</p>
 
 </div>
 </div><p>
@@ -1393,7 +1377,7 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l02135">ComputeSceneTreeMap()</a>, <a class="el" href="_ray_8h-source.html#l00058">Ray::direction</a>, <a class="el" href="_progress_updater_8cpp-source.html#l00094">ProgressUpdater::Done()</a>, <a class="el" href="class_t_sun_shape.html#2ec1f70e81f684c4813fa3a448ed3653">TSunShape::generateRayDirection()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00211">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00238">m_pRand</a>, <a class="el" href="_main_window_8h-source.html#l00242">m_raysPerIteration</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00241">m_tracedRays</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_ray_8h-source.html#l00057">Ray::origin</a>, <a class="el" href="_random_deviate_8h-source.html#l00070">RandomDeviate::RandomDouble()</a>, <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>, <a class="el" href="class_t_shape.html#13f261f05c51016b0f2e99becd3ec097">TShape::Sample()</a>, <a class="el" href="_main_window_8cpp-source.html#l00892">ShowRaysIn3DView()</a>, <a class="el" href="tgf_8cpp-source.html#l00136">tgf::TraceRay()</a>, <a class="el" href="tgf_8cpp-source.html#l00286">tgf::TransformFromSoTransform()</a>, and <a class="el" href="_progress_updater_8cpp-source.html#l00068">ProgressUpdater::Update()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l02210">ComputeSceneTreeMap()</a>, <a class="el" href="_ray_8h-source.html#l00058">Ray::direction</a>, <a class="el" href="_progress_updater_8cpp-source.html#l00094">ProgressUpdater::Done()</a>, <a class="el" href="class_t_sun_shape.html#2ec1f70e81f684c4813fa3a448ed3653">TSunShape::generateRayDirection()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00216">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00234">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00240">m_pRand</a>, <a class="el" href="_main_window_8h-source.html#l00244">m_raysPerIteration</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00243">m_tracedRays</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_ray_8h-source.html#l00057">Ray::origin</a>, <a class="el" href="_random_deviate_8h-source.html#l00070">RandomDeviate::RandomDouble()</a>, <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>, <a class="el" href="class_t_shape.html#13f261f05c51016b0f2e99becd3ec097">TShape::Sample()</a>, <a class="el" href="_main_window_8cpp-source.html#l00949">ShowRaysIn3DView()</a>, <a class="el" href="tgf_8cpp-source.html#l00136">tgf::TraceRay()</a>, <a class="el" href="tgf_8cpp-source.html#l00286">tgf::TransformFromSoTransform()</a>, and <a class="el" href="_progress_updater_8cpp-source.html#l00068">ProgressUpdater::Update()</a>.</p>
 
 </div>
 </div><p>
@@ -1414,7 +1398,7 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>.</p>
 
 </div>
 </div><p>
@@ -1435,7 +1419,7 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01905">Save()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01934">Save()</a>.</p>
 
 </div>
 </div><p>
@@ -1456,7 +1440,28 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01928">SaveAs()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01957">SaveAs()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="f850fcd9e30e2af53fb1e93f037f66a2"></a><!-- doxytag: member="MainWindow::on_actionSaveComponent_triggered" ref="f850fcd9e30e2af53fb1e93f037f66a2" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::on_actionSaveComponent_triggered           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01970">SaveComponent()</a>.</p>
 
 </div>
 </div><p>
@@ -1477,7 +1482,7 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00211">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00216">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
 </div>
 </div><p>
@@ -1498,7 +1503,7 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>.</p>
 
 </div>
 </div><p>
@@ -1519,7 +1524,28 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00219">m_commandView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00221">m_commandView</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="02579221979fb8f446ae5ca47e3892d8"></a><!-- doxytag: member="MainWindow::on_actionUserComponent_triggered" ref="02579221979fb8f446ae5ca47e3892d8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::on_actionUserComponent_triggered           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00216">SceneModel::index()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
 </div>
 </div><p>
@@ -1540,7 +1566,7 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01841">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01870">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00168">SetupActions()</a>.</p>
 
@@ -1580,9 +1606,9 @@ Action slot to open a <a class="el" href="struct_ray.html">Ray</a> <a class="el"
 <p>
 Creates a command for the modification of a node parameter.<p>
 The command is stored at the stack. 
-<p>References <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02256">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00414">SetupParametersView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02343">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00414">SetupParametersView()</a>.</p>
 
 </div>
 </div><p>
@@ -1605,9 +1631,9 @@ The command is stored at the stack.
 <p>
 Creates a new <em>type</em> paste command. The clipboard node was inerted as selected node child.<p>
 Returns <em>true</em> if the node was successfully pasted, otherwise returns <em>false</em>. 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00239">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00241">m_coinNode_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00696">on_actionPaste_Copy_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00703">on_actionPaste_Link_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00703">on_actionPaste_Copy_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00710">on_actionPaste_Link_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -1649,7 +1675,7 @@ Returns <em>true</em> if the node was successfully pasted, otherwise returns <em
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00215">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l02068">UpdateRecentFileActions()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00217">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l02143">UpdateRecentFileActions()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>.</p>
 
@@ -1700,9 +1726,9 @@ Returns <em>true</em> if the node was successfully pasted, otherwise returns <em
 
 <p>
 Checks wheter a ray tracing can be started with the current light and model. 
-<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00234">m_increasePhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00233">m_selectedPhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_TPhotonMapFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00241">m_tracedRays</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00236">m_increasePhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00234">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00235">m_selectedPhotonMap</a>, <a class="el" href="_main_window_8h-source.html#l00227">m_TPhotonMapFactoryList</a>, <a class="el" href="_main_window_8h-source.html#l00243">m_tracedRays</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -1723,9 +1749,9 @@ Checks wheter a ray tracing can be started with the current light and model.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00214">m_currentFile</a>, <a class="el" href="_main_window_8cpp-source.html#l01928">SaveAs()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01913">SaveFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00216">m_currentFile</a>, <a class="el" href="_main_window_8cpp-source.html#l01957">SaveAs()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01942">SaveFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01841">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00626">on_actionSave_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01870">OkToContinue()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00626">on_actionSave_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -1746,9 +1772,32 @@ Checks wheter a ray tracing can be started with the current light and model.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01913">SaveFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01942">SaveFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00632">on_actionSaveAs_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01905">Save()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00632">on_actionSaveAs_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01934">Save()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="562646f9a32f7ae72740d7fab9df88d6"></a><!-- doxytag: member="MainWindow::SaveComponent" ref="562646f9a32f7ae72740d7fab9df88d6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::SaveComponent           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>.</p>
+
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00639">on_actionSaveComponent_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -1770,9 +1819,9 @@ Checks wheter a ray tracing can be started with the current light and model.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l02042">SetCurrentFile()</a>, and <a class="el" href="_document_8cpp-source.html#l00157">Document::WriteFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l02117">SetCurrentFile()</a>, and <a class="el" href="_document_8cpp-source.html#l00157">Document::WriteFile()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01905">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01928">SaveAs()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01934">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01957">SaveAs()</a>.</p>
 
 </div>
 </div><p>
@@ -1803,9 +1852,9 @@ Checks wheter a ray tracing can be started with the current light and model.
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00414">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01605">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01406">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01462">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01434">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01490">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01518">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01546">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformerManip()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00414">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01634">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01491">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01463">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01519">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01547">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01604">SoTransform_to_SoTransformerManip()</a>.</p>
 
 </div>
 </div><p>
@@ -1827,7 +1876,7 @@ Checks wheter a ray tracing can be started with the current light and model.
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00696">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, and <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00753">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, and <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00214">SetupDocument()</a>.</p>
 
@@ -1851,9 +1900,9 @@ Checks wheter a ray tracing can be started with the current light and model.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00214">m_currentFile</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_recentFiles</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l02061">StrippedName()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02068">UpdateRecentFileActions()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00216">m_currentFile</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_recentFiles</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l02136">StrippedName()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02143">UpdateRecentFileActions()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01913">SaveFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01942">SaveFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -1875,7 +1924,7 @@ Checks wheter a ray tracing can be started with the current light and model.
 
 <p>
 This property holds whether the SunPositionCalculator action is enabled. If the action is disabled, it does not disappear from menu, but it is displayed in a way which indicates that they are unavailable. 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -1897,7 +1946,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01265">CreateMaterial()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_materialsToolBar</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, <a class="el" href="class_t_material_factory.html#930d7ade0b6ac1db3302fd20bb146bc1">TMaterialFactory::TMaterialIcon()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01322">CreateMaterial()</a>, <a class="el" href="_main_window_8h-source.html#l00222">m_materialsToolBar</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, <a class="el" href="class_t_material_factory.html#930d7ade0b6ac1db3302fd20bb146bc1">TMaterialFactory::TMaterialIcon()</a>, and <a class="el" href="class_t_material_factory.html#9e4bc976fd2a9792f63dc4f642db2eac">TMaterialFactory::TMaterialName()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>.</p>
 
@@ -1921,7 +1970,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01330">CreateShape()</a>, <a class="el" href="_main_window_8h-source.html#l00222">m_shapeToolBar</a>, <a class="el" href="class_t_shape_factory.html#409dab17502a397600dc1a37ef67d59d">TShapeFactory::TShapeIcon()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01356">CreateShape()</a>, <a class="el" href="_main_window_8h-source.html#l00224">m_shapeToolBar</a>, <a class="el" href="class_t_shape_factory.html#409dab17502a397600dc1a37ef67d59d">TShapeFactory::TShapeIcon()</a>, and <a class="el" href="class_t_shape_factory.html#966098b85af15b3bad4b4e9c5db1529b">TShapeFactory::TShapeName()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>.</p>
 
@@ -1945,7 +1994,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01362">CreateTracker()</a>, <a class="el" href="_main_window_8h-source.html#l00223">m_trackersToolBar</a>, <a class="el" href="class_t_tracker_factory.html#fe4e071bcad7694194567c53e481b95a">TTrackerFactory::TTrackerIcon()</a>, and <a class="el" href="class_t_tracker_factory.html#309406162c90242ff6735ceafab5d2ef">TTrackerFactory::TTrackerName()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01388">CreateTracker()</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_trackersToolBar</a>, <a class="el" href="class_t_tracker_factory.html#fe4e071bcad7694194567c53e481b95a">TTrackerFactory::TTrackerIcon()</a>, and <a class="el" href="class_t_tracker_factory.html#309406162c90242ff6735ceafab5d2ef">TTrackerFactory::TTrackerName()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>.</p>
 
@@ -1968,7 +2017,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00213">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_recentFileActions</a>, and <a class="el" href="_main_window_8cpp-source.html#l00650">OpenRecentFile()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00215">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_recentFileActions</a>, and <a class="el" href="_main_window_8cpp-source.html#l00657">OpenRecentFile()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>.</p>
 
@@ -1991,7 +2040,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00219">m_commandView</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, and <a class="el" href="_main_window_8h-source.html#l00221">m_commandView</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00236">SetupViews()</a>.</p>
 
@@ -2014,7 +2063,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l01631">selectionFinish()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8cpp-source.html#l01660">selectionFinish()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>.</p>
 
@@ -2037,7 +2086,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00245">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l01231">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01242">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01253">on_action_Y_Z_Plane_triggered()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00249">m_focusView</a>, <a class="el" href="_main_window_8h-source.html#l00247">m_graphicView</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l01288">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01299">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01310">on_action_Y_Z_Plane_triggered()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00236">SetupViews()</a>.</p>
 
@@ -2060,7 +2109,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00213">m_maxRecentFiles</a>, and <a class="el" href="_main_window_8h-source.html#l00216">m_recentFileActions</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00215">m_maxRecentFiles</a>, and <a class="el" href="_main_window_8h-source.html#l00218">m_recentFileActions</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>.</p>
 
@@ -2083,7 +2132,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00078">SceneModel::SetCoinRoot()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00089">SceneModel::SetCoinScene()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01817">SetEnabled_SunPositionCalculator()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00078">SceneModel::SetCoinRoot()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00089">SceneModel::SetCoinScene()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01846">SetEnabled_SunPositionCalculator()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>.</p>
 
@@ -2106,7 +2155,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l02120">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8cpp-source.html#l02195">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00236">SetupViews()</a>.</p>
 
@@ -2150,7 +2199,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00222">m_shapeToolBar</a>, <a class="el" href="_main_window_8h-source.html#l00223">m_trackersToolBar</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00224">m_shapeToolBar</a>, <a class="el" href="_main_window_8h-source.html#l00225">m_trackersToolBar</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>.</p>
 
@@ -2173,7 +2222,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l01714">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01735">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l01743">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01764">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00236">SetupViews()</a>.</p>
 
@@ -2220,7 +2269,7 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01605">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01406">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01462">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01434">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01490">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01518">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01546">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformerManip()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01634">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01491">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01463">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01519">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01547">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01604">SoTransform_to_SoTransformerManip()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>.</p>
 
@@ -2243,9 +2292,9 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 
 <p>
 Shows the rays and photons stored at the photon map in the 3D view. 
-<p>References <a class="el" href="tgf_8cpp-source.html#l00186">tgf::DrawPhotonMapPoints()</a>, <a class="el" href="tgf_8cpp-source.html#l00214">tgf::DrawPhotonMapRays()</a>, <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00244">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00243">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00236">m_pRays</a>, and <a class="el" href="_main_window_8h-source.html#l00241">m_tracedRays</a>.</p>
+<p>References <a class="el" href="tgf_8cpp-source.html#l00186">tgf::DrawPhotonMapPoints()</a>, <a class="el" href="tgf_8cpp-source.html#l00214">tgf::DrawPhotonMapRays()</a>, <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_drawPhotons</a>, <a class="el" href="_main_window_8h-source.html#l00245">m_fraction</a>, <a class="el" href="_main_window_8h-source.html#l00234">m_photonMap</a>, <a class="el" href="_main_window_8h-source.html#l00238">m_pRays</a>, and <a class="el" href="_main_window_8h-source.html#l00243">m_tracedRays</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2266,9 +2315,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, and <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2289,9 +2338,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2312,9 +2361,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2335,9 +2384,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2358,9 +2407,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2381,9 +2430,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2404,9 +2453,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2427,9 +2476,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00246">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
+<p>References <a class="el" href="_main_window_8cpp-source.html#l00126">finishManipulator()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00248">m_treeView</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_document_8cpp-source.html#l00091">Document::SetDocumentModified()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>.</p>
 
 </div>
 </div><p>
@@ -2451,7 +2500,7 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00696">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00240">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00230">m_selectionModel</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00753">SceneModel::IndexFromPath()</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00242">m_manipulators_Buffer</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_main_window_8h-source.html#l00232">m_selectionModel</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 <p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00118">startManipulator()</a>.</p>
 
@@ -2475,9 +2524,9 @@ Shows the rays and photons stored at the photon map in the 3D view.
 
 <p>
 Returns to the start origin state and starts with a new model defined in <em>fileName</em>. If the file name is not defined, it starts with an empty scene. 
-<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00236">m_pRays</a>, <a class="el" href="_main_window_8h-source.html#l00229">m_sceneModel</a>, <a class="el" href="_document_8cpp-source.html#l00112">Document::New()</a>, <a class="el" href="_document_8cpp-source.html#l00137">Document::ReadFile()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00089">SceneModel::SetCoinScene()</a>, <a class="el" href="_main_window_8cpp-source.html#l02042">SetCurrentFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01817">SetEnabled_SunPositionCalculator()</a>.</p>
+<p>References <a class="el" href="_document_8cpp-source.html#l00190">Document::GetRoot()</a>, <a class="el" href="_document_8cpp-source.html#l00199">Document::GetSceneKit()</a>, <a class="el" href="_main_window_8h-source.html#l00220">m_commandStack</a>, <a class="el" href="_main_window_8h-source.html#l00219">m_document</a>, <a class="el" href="_main_window_8h-source.html#l00238">m_pRays</a>, <a class="el" href="_main_window_8h-source.html#l00231">m_sceneModel</a>, <a class="el" href="_document_8cpp-source.html#l00112">Document::New()</a>, <a class="el" href="_document_8cpp-source.html#l00137">Document::ReadFile()</a>, <a class="el" href="_scene_model_8cpp-source.html#l00089">SceneModel::SetCoinScene()</a>, <a class="el" href="_main_window_8cpp-source.html#l02117">SetCurrentFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01846">SetEnabled_SunPositionCalculator()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00607">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00614">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00650">OpenRecentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00607">on_actionNew_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00614">on_actionOpen_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00657">OpenRecentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -2499,7 +2548,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02042">SetCurrentFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02068">UpdateRecentFileActions()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02117">SetCurrentFile()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02143">UpdateRecentFileActions()</a>.</p>
 
 </div>
 </div><p>
@@ -2520,9 +2569,9 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00213">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00216">m_recentFileActions</a>, <a class="el" href="_main_window_8h-source.html#l00215">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l02061">StrippedName()</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00215">m_maxRecentFiles</a>, <a class="el" href="_main_window_8h-source.html#l00218">m_recentFileActions</a>, <a class="el" href="_main_window_8h-source.html#l00217">m_recentFiles</a>, and <a class="el" href="_main_window_8cpp-source.html#l02136">StrippedName()</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02102">ReadSettings()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02042">SetCurrentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02177">ReadSettings()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02117">SetCurrentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -2543,9 +2592,9 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>References <a class="el" href="_main_window_8h-source.html#l00215">m_recentFiles</a>.</p>
+<p>References <a class="el" href="_main_window_8h-source.html#l00217">m_recentFiles</a>.</p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01825">closeEvent()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01854">closeEvent()</a>.</p>
 
 </div>
 </div><p>
@@ -2563,7 +2612,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01940">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l02027">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01714">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01735">itemDragAndDropCopy()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01962">Paste()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02014">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l02102">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01743">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01764">itemDragAndDropCopy()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02036">Paste()</a>.</p>
 
 </div>
 </div><p>
@@ -2580,7 +2629,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01794">ChangeSunPosition()</a>, <a class="el" href="_main_window_8cpp-source.html#l01940">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01265">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01362">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02027">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01997">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02256">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01714">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01735">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00767">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00718">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00672">on_actionRedo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00744">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00666">on_actionUndo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l02120">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01962">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00246">SetupCommandView()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01823">ChangeSunPosition()</a>, <a class="el" href="_main_window_8cpp-source.html#l02014">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01322">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01356">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01388">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02102">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l02071">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02343">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01743">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01764">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00824">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00725">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00679">on_actionRedo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00751">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00673">on_actionUndo_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00774">on_actionUserComponent_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l02195">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l02036">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00246">SetupCommandView()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -2597,7 +2646,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00678">on_actionUndoView_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00246">SetupCommandView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00685">on_actionUndoView_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00246">SetupCommandView()</a>.</p>
 
 </div>
 </div><p>
@@ -2614,7 +2663,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01905">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02042">SetCurrentFile()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01934">Save()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02117">SetCurrentFile()</a>.</p>
 
 </div>
 </div><p>
@@ -2631,7 +2680,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01794">ChangeSunPosition()</a>, <a class="el" href="_main_window_8cpp-source.html#l01940">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01265">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01362">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02027">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01997">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l01714">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01735">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01841">OkToContinue()</a>, <a class="el" href="_main_window_8cpp-source.html#l01231">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01242">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01253">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01183">on_actionBackground_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00812">on_actionCalculateSunPosition_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00767">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00974">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00990">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01144">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00718">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00744">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l02120">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l01962">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>, <a class="el" href="_main_window_8cpp-source.html#l01913">SaveFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l01631">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l02042">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l00214">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00892">ShowRaysIn3DView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01605">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01406">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01462">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01434">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01490">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01518">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01546">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l02209">StartManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01823">ChangeSunPosition()</a>, <a class="el" href="_main_window_8cpp-source.html#l02014">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01322">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01356">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01388">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02102">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l02071">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l01743">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01764">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01870">OkToContinue()</a>, <a class="el" href="_main_window_8cpp-source.html#l01288">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01299">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01310">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01240">on_actionBackground_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00869">on_actionCalculateSunPosition_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00824">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01031">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01047">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01201">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00725">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00751">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00774">on_actionUserComponent_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l02195">parameterModified()</a>, <a class="el" href="_main_window_8cpp-source.html#l02036">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>, <a class="el" href="_main_window_8cpp-source.html#l01942">SaveFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l01660">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l02117">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l00214">SetupDocument()</a>, <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00949">ShowRaysIn3DView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01634">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01491">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01463">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01519">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01547">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01604">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l02296">StartManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -2648,7 +2697,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01118">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00892">ShowRaysIn3DView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01175">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00949">ShowRaysIn3DView()</a>.</p>
 
 </div>
 </div><p>
@@ -2665,7 +2714,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01679">mousePressEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l01231">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01242">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01253">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01212">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01144">on_actionGrid_toggled()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01708">mousePressEvent()</a>, <a class="el" href="_main_window_8cpp-source.html#l01288">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01299">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01310">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01269">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01201">on_actionGrid_toggled()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>.</p>
 
 </div>
 </div><p>
@@ -2682,7 +2731,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01118">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00892">ShowRaysIn3DView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01175">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00949">ShowRaysIn3DView()</a>.</p>
 
 </div>
 </div><p>
@@ -2699,7 +2748,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01231">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01242">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01253">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01134">on_actionAxis_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01212">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00990">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01144">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01288">on_action_X_Y_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01299">on_action_X_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01310">on_action_Y_Z_Plane_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01191">on_actionAxis_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01269">on_actionEdit_Mode_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l01047">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01201">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>.</p>
 
 </div>
 </div><p>
@@ -2716,7 +2765,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01118">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01175">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>.</p>
 
 </div>
 </div><p>
@@ -2733,7 +2782,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02256">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02209">StartManipulation()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02343">FinishManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02296">StartManipulation()</a>.</p>
 
 </div>
 </div><p>
@@ -2767,7 +2816,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01144">on_actionGrid_toggled()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01201">on_actionGrid_toggled()</a>.</p>
 
 </div>
 </div><p>
@@ -2784,7 +2833,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00990">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00892">ShowRaysIn3DView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01047">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00949">ShowRaysIn3DView()</a>.</p>
 
 </div>
 </div><p>
@@ -2816,7 +2865,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00134">MainWindow()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2833,7 +2882,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00974">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00892">ShowRaysIn3DView()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01031">on_actionDisplay_rays_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00949">ShowRaysIn3DView()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -2850,7 +2899,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01118">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01175">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2867,7 +2916,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00168">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00180">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l02068">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00162">~MainWindow()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00168">SetupActions()</a>, <a class="el" href="_main_window_8cpp-source.html#l00180">SetupMenus()</a>, <a class="el" href="_main_window_8cpp-source.html#l02143">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00162">~MainWindow()</a>.</p>
 
 </div>
 </div><p>
@@ -2884,7 +2933,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02102">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l02042">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l02068">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02093">WriteSettings()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02177">ReadSettings()</a>, <a class="el" href="_main_window_8cpp-source.html#l02117">SetCurrentFile()</a>, <a class="el" href="_main_window_8cpp-source.html#l02143">UpdateRecentFileActions()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02168">WriteSettings()</a>.</p>
 
 </div>
 </div><p>
@@ -2901,7 +2950,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02135">ComputeSceneTreeMap()</a>, <a class="el" href="_main_window_8cpp-source.html#l01940">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01265">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01362">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02027">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01997">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02256">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01714">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01735">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00767">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00990">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01144">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00718">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00744">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01962">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>, <a class="el" href="_main_window_8cpp-source.html#l01652">selectionChanged()</a>, <a class="el" href="_main_window_8cpp-source.html#l01631">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>, <a class="el" href="_main_window_8cpp-source.html#l01605">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01406">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01462">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01434">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01490">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01518">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01546">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l02209">StartManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01864">StartOver()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02210">ComputeSceneTreeMap()</a>, <a class="el" href="_main_window_8cpp-source.html#l02014">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01322">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01356">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01388">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02102">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l02071">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02343">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01743">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01764">itemDragAndDropCopy()</a>, <a class="el" href="_main_window_8cpp-source.html#l00824">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01047">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01201">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00725">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00751">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00774">on_actionUserComponent_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l02036">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>, <a class="el" href="_main_window_8cpp-source.html#l01970">SaveComponent()</a>, <a class="el" href="_main_window_8cpp-source.html#l01681">selectionChanged()</a>, <a class="el" href="_main_window_8cpp-source.html#l01660">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>, <a class="el" href="_main_window_8cpp-source.html#l01634">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01491">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01463">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01519">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01547">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01604">SoTransform_to_SoTransformerManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l02296">StartManipulation()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01893">StartOver()</a>.</p>
 
 </div>
 </div><p>
@@ -2918,7 +2967,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01118">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01175">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>.</p>
 
 </div>
 </div><p>
@@ -2935,7 +2984,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01940">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l02027">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01997">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l00767">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l01962">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01631">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00414">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01752">showMenu()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02209">StartManipulation()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02014">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l02102">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l02071">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l00824">on_actionDefine_SunLight_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l02036">Paste()</a>, <a class="el" href="_main_window_8cpp-source.html#l01970">SaveComponent()</a>, <a class="el" href="_main_window_8cpp-source.html#l01660">selectionFinish()</a>, <a class="el" href="_main_window_8cpp-source.html#l00258">SetupGraphicView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00225">SetupModels()</a>, <a class="el" href="_main_window_8cpp-source.html#l00414">SetupParametersView()</a>, <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01781">showMenu()</a>, and <a class="el" href="_main_window_8cpp-source.html#l02296">StartManipulation()</a>.</p>
 
 </div>
 </div><p>
@@ -2969,7 +3018,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00767">on_actionDefine_SunLight_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00824">on_actionDefine_SunLight_triggered()</a>.</p>
 
 </div>
 </div><p>
@@ -2986,7 +3035,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, <a class="el" href="_main_window_8cpp-source.html#l01118">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, <a class="el" href="_main_window_8cpp-source.html#l01175">on_actionRayTraceOptions_triggered()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>.</p>
 
 </div>
 </div><p>
@@ -3003,7 +3052,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00990">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00892">ShowRaysIn3DView()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01047">on_actionExport_PhotonMap_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00949">ShowRaysIn3DView()</a>.</p>
 
 </div>
 </div><p>
@@ -3037,7 +3086,7 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l01940">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01265">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01330">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01362">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02027">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l01997">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02256">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01714">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01144">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00718">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00928">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00744">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00839">ReadyForRaytracing()</a>, <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01605">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01406">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01462">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01434">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01490">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01518">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01546">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformerManip()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l02014">Copy()</a>, <a class="el" href="_main_window_8cpp-source.html#l01322">CreateMaterial()</a>, <a class="el" href="_main_window_8cpp-source.html#l01356">CreateShape()</a>, <a class="el" href="_main_window_8cpp-source.html#l01388">CreateTracker()</a>, <a class="el" href="_main_window_8cpp-source.html#l02102">Cut()</a>, <a class="el" href="_main_window_8cpp-source.html#l02071">Delete()</a>, <a class="el" href="_main_window_8cpp-source.html#l02343">FinishManipulation()</a>, <a class="el" href="_main_window_8cpp-source.html#l01743">itemDragAndDrop()</a>, <a class="el" href="_main_window_8cpp-source.html#l01201">on_actionGrid_toggled()</a>, <a class="el" href="_main_window_8cpp-source.html#l00725">on_actionNode_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00985">on_actionRayTraceRun_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00751">on_actionShapeKit_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00774">on_actionUserComponent_triggered()</a>, <a class="el" href="_main_window_8cpp-source.html#l00896">ReadyForRaytracing()</a>, <a class="el" href="_main_window_8cpp-source.html#l01970">SaveComponent()</a>, <a class="el" href="_main_window_8cpp-source.html#l00377">SetupTreeView()</a>, <a class="el" href="_main_window_8cpp-source.html#l01634">SoManip_to_SoTransform()</a>, <a class="el" href="_main_window_8cpp-source.html#l01435">SoTransform_to_SoCenterballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01491">SoTransform_to_SoHandleBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01463">SoTransform_to_SoJackManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01519">SoTransform_to_SoTabBoxManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01547">SoTransform_to_SoTrackballManip()</a>, <a class="el" href="_main_window_8cpp-source.html#l01575">SoTransform_to_SoTransformBoxManip()</a>, and <a class="el" href="_main_window_8cpp-source.html#l01604">SoTransform_to_SoTransformerManip()</a>.</p>
 
 </div>
 </div><p>
@@ -3054,14 +3103,14 @@ Returns to the start origin state and starts with a new model defined in <em>fil
 
 <p>
 
-<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00767">on_actionDefine_SunLight_triggered()</a>.</p>
+<p>Referenced by <a class="el" href="_main_window_8cpp-source.html#l00437">LoadPlugins()</a>, and <a class="el" href="_main_window_8cpp-source.html#l00824">on_actionDefine_SunLight_triggered()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_main_window_8h-source.html">MainWindow.h</a><li><a class="el" href="_main_window_8cpp.html">MainWindow.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Sep 21 13:04:47 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:57 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

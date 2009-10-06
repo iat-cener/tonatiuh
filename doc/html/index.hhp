@@ -69,7 +69,6 @@ _t_cube_8h-source.html
 _t_default_material_8h-source.html
 _t_default_sun_shape_8h-source.html
 _t_default_tracker_8h-source.html
-_t_gate_engine_8h-source.html
 tgc_8h-source.html
 tgf_8h-source.html
 _timer_8h-source.html
@@ -124,8 +123,8 @@ _cmd_insert_tracker_8cpp.html
 _cmd_insert_tracker_8h.html
 _cmd_light_kit_modified_8cpp.html
 _cmd_light_kit_modified_8h.html
+_cmd_light_position_modified_8cpp.html
 _cmd_light_position_modified_8h.html
-_cmd_linght_position_modified_8cpp.html
 _cmd_parameter_modified_8cpp.html
 _cmd_parameter_modified_8h.html
 _cmd_paste_8cpp.html
@@ -203,8 +202,6 @@ _t_default_sun_shape_8cpp.html
 _t_default_sun_shape_8h.html
 _t_default_tracker_8cpp.html
 _t_default_tracker_8h.html
-_t_gate_engine_8cpp.html
-_t_gate_engine_8h.html
 tgc_8h.html
 tgf_8cpp.html
 tgf_8h.html
@@ -430,8 +427,6 @@ class_t_default_sun_shape.html
 class_t_default_sun_shape-members.html
 class_t_default_tracker.html
 class_t_default_tracker-members.html
-class_t_gate_engine.html
-class_t_gate_engine-members.html
 class_timer.html
 class_timer-members.html
 class_t_light_kit.html

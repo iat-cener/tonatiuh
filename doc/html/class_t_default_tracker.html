@@ -39,8 +39,7 @@ Inheritance diagram for TDefaultTracker:</div>
 
 <p><center><img src="class_t_default_tracker.png" usemap="#TDefaultTracker_map" border="0" alt=""></center>
 <map name="TDefaultTracker_map">
-<area href="class_t_tracker.html" alt="TTracker" shape="rect" coords="0,56,103,80">
-<area href="class_t_separator_kit.html" alt="TSeparatorKit" shape="rect" coords="0,0,103,24">
+<area href="class_t_tracker.html" alt="TTracker" shape="rect" coords="0,0,103,24">
 </map>
 </div>
 
@@ -58,16 +57,10 @@ Inheritance diagram for TDefaultTracker:</div>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_default_tracker.html#5fe18d77d480dbc50681b80f9d92a16d">~TDefaultTracker</a> ()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_default_tracker.html#7886513682b7cb91f27bc28c8b2993ca">setRotation</a> ()</td></tr>
-
-<tr><td colspan="2"><br><h2>Static Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_default_tracker.html#e33a59965e58ee27aa086e7d66722681">fielSensorCB</a> (void *data, SoSensor *sensor)</td></tr>
-
-<tr><td colspan="2"><br><h2>Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">SoFieldSensor *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_default_tracker.html#db637745f0f149a2e5381de2105114af">m_rotSensor</a></td></tr>
-
 <tr><td colspan="2"><br><h2>Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_default_tracker.html#5a0e78f73555787b15ae7341ba9957d2">SO_KIT_HEADER</a> (<a class="el" href="class_t_default_tracker.html">TDefaultTracker</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_default_tracker.html#71627342d07b455562e9df51d9a4b0d7">SO_NODEENGINE_HEADER</a> (<a class="el" href="class_t_default_tracker.html">TDefaultTracker</a>)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_default_tracker.html#b4842965f9fa215e80fafe1e1a4c04ea">evaluate</a> ()</td></tr>
 
 </table>
 <hr><h2>Constructor &amp; Destructor Documentation</h2>
@@ -88,7 +81,7 @@ Inheritance diagram for TDefaultTracker:</div>
 
 <p>
 
-<p>References <a class="el" href="_t_default_tracker_8cpp-source.html#l00077">fielSensorCB()</a>, <a class="el" href="_t_default_tracker_8h-source.html#l00067">m_rotSensor</a>, and <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>.</p>
+<p>References <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::outputRotation</a>.</p>
 
 </div>
 </div><p>
@@ -112,26 +105,16 @@ Inheritance diagram for TDefaultTracker:</div>
 </div>
 </div><p>
 <hr><h2>Member Function Documentation</h2>
-<a class="anchor" name="e33a59965e58ee27aa086e7d66722681"></a><!-- doxytag: member="TDefaultTracker::fielSensorCB" ref="e33a59965e58ee27aa086e7d66722681" args="(void *data, SoSensor *sensor)" -->
+<a class="anchor" name="b4842965f9fa215e80fafe1e1a4c04ea"></a><!-- doxytag: member="TDefaultTracker::evaluate" ref="b4842965f9fa215e80fafe1e1a4c04ea" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TDefaultTracker::fielSensorCB           </td>
+          <td class="memname">void TDefaultTracker::evaluate           </td>
           <td>(</td>
-          <td class="paramtype">void *&nbsp;</td>
-          <td class="paramname"> <em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">SoSensor *&nbsp;</td>
-          <td class="paramname"> <em>sensor</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [static, protected]</code></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private, virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -139,9 +122,9 @@ Inheritance diagram for TDefaultTracker:</div>
 
 <p>
 
-<p>References <a class="el" href="_t_default_tracker_8cpp-source.html#l00084">setRotation()</a>.</p>
+<p>Implements <a class="el" href="class_t_tracker.html#246d52c94666511cdaa5544d3b89351f">TTracker</a>.</p>
 
-<p>Referenced by <a class="el" href="_t_default_tracker_8cpp-source.html#l00058">TDefaultTracker()</a>.</p>
+<p>References <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::outputRotation</a>.</p>
 
 </div>
 </div><p>
@@ -162,7 +145,7 @@ Inheritance diagram for TDefaultTracker:</div>
 
 <p>
 
-<p>Reimplemented from <a class="el" href="class_t_tracker.html#fe3e313131f86e6abe05ac2c1a6b6bec">TTracker</a>.</p>
+<p>Implements <a class="el" href="class_t_tracker.html#deec16167a8d31fb8864dfa7c852b09e">TTracker</a>.</p>
 
 </div>
 </div><p>
@@ -189,35 +172,12 @@ Inheritance diagram for TDefaultTracker:</div>
 
 </div>
 </div><p>
-<a class="anchor" name="7886513682b7cb91f27bc28c8b2993ca"></a><!-- doxytag: member="TDefaultTracker::setRotation" ref="7886513682b7cb91f27bc28c8b2993ca" args="()" -->
+<a class="anchor" name="71627342d07b455562e9df51d9a4b0d7"></a><!-- doxytag: member="TDefaultTracker::SO_NODEENGINE_HEADER" ref="71627342d07b455562e9df51d9a4b0d7" args="(TDefaultTracker)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TDefaultTracker::setRotation           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>References <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>.</p>
-
-<p>Referenced by <a class="el" href="_t_default_tracker_8cpp-source.html#l00077">fielSensorCB()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="5a0e78f73555787b15ae7341ba9957d2"></a><!-- doxytag: member="TDefaultTracker::SO_KIT_HEADER" ref="5a0e78f73555787b15ae7341ba9957d2" args="(TDefaultTracker)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TDefaultTracker::SO_KIT_HEADER           </td>
+          <td class="memname">TDefaultTracker::SO_NODEENGINE_HEADER           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_t_default_tracker.html">TDefaultTracker</a>&nbsp;</td>
           <td class="paramname">          </td>
@@ -232,28 +192,10 @@ Inheritance diagram for TDefaultTracker:</div>
 
 </div>
 </div><p>
-<hr><h2>Member Data Documentation</h2>
-<a class="anchor" name="db637745f0f149a2e5381de2105114af"></a><!-- doxytag: member="TDefaultTracker::m_rotSensor" ref="db637745f0f149a2e5381de2105114af" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SoFieldSensor* <a class="el" href="class_t_default_tracker.html#db637745f0f149a2e5381de2105114af">TDefaultTracker::m_rotSensor</a><code> [protected]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>Referenced by <a class="el" href="_t_default_tracker_8cpp-source.html#l00058">TDefaultTracker()</a>.</p>
-
-</div>
-</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_t_default_tracker_8h-source.html">TDefaultTracker.h</a><li><a class="el" href="_t_default_tracker_8cpp.html">TDefaultTracker.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Sep 21 13:04:48 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:58 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

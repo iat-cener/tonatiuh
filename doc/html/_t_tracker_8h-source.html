@@ -71,35 +71,46 @@
 <a name="l00039"></a>00039 <span class="preprocessor">#ifndef TTRACKER_H_</span>
 <a name="l00040"></a>00040 <span class="preprocessor"></span><span class="preprocessor">#define TTRACKER_H_</span>
 <a name="l00041"></a>00041 <span class="preprocessor"></span>
-<a name="l00042"></a>00042 <span class="preprocessor">#include &lt;Inventor/fields/SoSFRotation.h&gt;</span> 
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044 <span class="preprocessor">#include "<a class="code" href="_t_separator_kit_8h.html">TSeparatorKit.h</a>"</span> 
+<a name="l00042"></a>00042 <span class="preprocessor">#include &lt;Inventor/engines/SoNodeEngine.h&gt;</span>
+<a name="l00043"></a>00043 <span class="preprocessor">#include &lt;Inventor/engines/SoSubNodeEngine.h&gt;</span>
+<a name="l00044"></a>00044 <span class="preprocessor">#include &lt;Inventor/fields/SoSFDouble.h&gt;</span>
 <a name="l00045"></a>00045 
 <a name="l00046"></a>00046 <span class="keyword">class </span>QString; 
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048 <span class="keyword">class </span>SoSFRotation;
-<a name="l00049"></a>00049 
-<a name="l00050"></a><a class="code" href="class_t_tracker.html">00050</a> <span class="keyword">class </span><a class="code" href="class_t_tracker.html">TTracker</a> : <span class="keyword">public</span> <a class="code" href="class_t_separator_kit.html">TSeparatorKit</a>
-<a name="l00051"></a>00051 {
-<a name="l00052"></a>00052           <a class="code" href="class_t_tracker.html#8896f235534607c3451c25cbc7f2c7c5">SO_KIT_HEADER</a>( <a class="code" href="class_t_tracker.html">TTracker</a> );
-<a name="l00053"></a>00053            
-<a name="l00054"></a>00054         
-<a name="l00055"></a>00055 <span class="keyword">public</span>:
-<a name="l00056"></a>00056     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_tracker.html#13d9695d296f4e136d89c81ba1a6660a">initClass</a>();
-<a name="l00057"></a>00057         <span class="keyword">virtual</span> QString <a class="code" href="class_t_tracker.html#fe3e313131f86e6abe05ac2c1a6b6bec">getIcon</a>();
-<a name="l00058"></a>00058                 
-<a name="l00059"></a>00059         <span class="comment">//Constructor</span>
-<a name="l00060"></a>00060         <a class="code" href="class_t_tracker.html#70ff696b932eaf930b25c231bf3326d2">TTracker</a>();
-<a name="l00061"></a>00061         
-<a name="l00062"></a><a class="code" href="class_t_tracker.html#66b72abc99d96fa76d2097bb24ea737a">00062</a>         SoSFRotation <a class="code" href="class_t_tracker.html#66b72abc99d96fa76d2097bb24ea737a">sunRotation</a>;
+<a name="l00047"></a>00047 <span class="keyword">class </span>SoSceneKit;
+<a name="l00048"></a>00048 
+<a name="l00049"></a><a class="code" href="class_t_tracker.html">00049</a> <span class="keyword">class </span><a class="code" href="class_t_tracker.html">TTracker</a> : <span class="keyword">public</span> SoNodeEngine
+<a name="l00050"></a>00050 {
+<a name="l00051"></a>00051         <a class="code" href="class_t_tracker.html#2234c6f193b9df3c0b79038363674e12">SO_NODEENGINE_ABSTRACT_HEADER</a>( <a class="code" href="class_t_tracker.html">TTracker</a> );
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053 <span class="keyword">public</span>:
+<a name="l00054"></a>00054     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_tracker.html#13d9695d296f4e136d89c81ba1a6660a">initClass</a>();
+<a name="l00055"></a>00055         <span class="keyword">virtual</span> QString <a class="code" href="class_t_tracker.html#deec16167a8d31fb8864dfa7c852b09e">getIcon</a>() = 0;
+<a name="l00056"></a>00056                 
+<a name="l00057"></a>00057         <span class="keywordtype">void</span> <a class="code" href="class_t_tracker.html#b02f87826296a7433eb786b24212fad0">Disconnect</a>();
+<a name="l00058"></a>00058         <span class="keywordtype">void</span> <a class="code" href="class_t_tracker.html#bfa93ac173d4b28ee49088a1d606406d">SetAzimuthAngle</a>( SoSFDouble&amp; azimuthField );
+<a name="l00059"></a>00059         <span class="keywordtype">void</span> <a class="code" href="class_t_tracker.html#175b1e2782e21173c4be7a63f2a7d543">SetZenithAngle</a>( SoSFDouble&amp; zenithField );
+<a name="l00060"></a>00060         <span class="keywordtype">void</span> <a class="code" href="class_t_tracker.html#0c7745b6aea205683f9e7eaa0531b146">SetSceneKit</a>( SoSceneKit* scene );
+<a name="l00061"></a>00061 
+<a name="l00062"></a><a class="code" href="class_t_tracker.html#cfb829f718e0a94efc2f13a2d887a9a1">00062</a>         SoEngineOutput <a class="code" href="class_t_tracker.html#cfb829f718e0a94efc2f13a2d887a9a1">outputRotation</a>;
 <a name="l00063"></a>00063          
 <a name="l00064"></a>00064 <span class="keyword">protected</span>:
-<a name="l00065"></a>00065         <span class="keyword">virtual</span> <a class="code" href="class_t_tracker.html#7480f2e747153dcfc7cfa3cbf9266cb9">~TTracker</a>(); 
-<a name="l00066"></a>00066 };
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="preprocessor">#endif </span><span class="comment">/*TTRACKER_H_*/</span>
+<a name="l00065"></a>00065         <span class="comment">//Constructor</span>
+<a name="l00066"></a>00066         <a class="code" href="class_t_tracker.html#70ff696b932eaf930b25c231bf3326d2">TTracker</a>();
+<a name="l00067"></a>00067         <span class="keyword">virtual</span> <a class="code" href="class_t_tracker.html#7480f2e747153dcfc7cfa3cbf9266cb9">~TTracker</a>(); 
+<a name="l00068"></a>00068 
+<a name="l00069"></a><a class="code" href="class_t_tracker.html#fb965f41d5c30384b6f235d9f082f174">00069</a>         SoSFDouble <a class="code" href="class_t_tracker.html#fb965f41d5c30384b6f235d9f082f174">m_azimuth</a>;
+<a name="l00070"></a><a class="code" href="class_t_tracker.html#b425611b763a9a474bddabd4b2288607">00070</a>         SoSFDouble <a class="code" href="class_t_tracker.html#b425611b763a9a474bddabd4b2288607">m_zenith</a>;
+<a name="l00071"></a><a class="code" href="class_t_tracker.html#eab6aeb67c0c204bd22094a7fc7c695c">00071</a>         SoSceneKit* <a class="code" href="class_t_tracker.html#eab6aeb67c0c204bd22094a7fc7c695c">m_scene</a>;
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073 <span class="keyword">private</span>:
+<a name="l00074"></a>00074   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_tracker.html#246d52c94666511cdaa5544d3b89351f">evaluate</a>() = 0;
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077 };
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 <span class="preprocessor">#endif </span><span class="comment">/*TTRACKER_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Sep 21 13:04:46 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:56 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

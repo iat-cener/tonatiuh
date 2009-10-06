@@ -108,7 +108,7 @@
 <p>
 Creates a new cut command that represents the cut the node located with <em>index</em> from the <em>model</em>. The node is stored at the <em>clipborad</em>.<p>
 If <em>parent</em> is not null, this command is appended to parent's child list and then owns this command. 
-<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_cmd_cut_8h-source.html#l00065">m_coinNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00066">m_coinParent</a>, <a class="el" href="_cmd_cut_8h-source.html#l00067">m_pModel</a>, <a class="el" href="_cmd_cut_8h-source.html#l00064">m_previousNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00068">m_row</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_cmd_cut_8h-source.html#l00065">m_coinNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00066">m_coinParent</a>, <a class="el" href="_cmd_cut_8h-source.html#l00067">m_pModel</a>, <a class="el" href="_cmd_cut_8h-source.html#l00064">m_previousNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00068">m_row</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>.</p>
 
 </div>
 </div><p>
@@ -152,7 +152,7 @@ Destroys the <a class="el" href="class_cmd_cut.html" title="CmdCut class is the 
 <p>
 Applies a change to the scene and clipboard. After <a class="el" href="class_cmd_cut.html#5eab68232b3d774797ba7ac5b16c82b8">redo()</a> clipboard will contain the node located on the model as index and the node will remove from the scene. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_cut.html#6a6d40c7a475df168868bef3751bf7e9">undo()</a>. </dd></dl>
 
-<p>References <a class="el" href="_scene_model_8cpp-source.html#l00497">SceneModel::Cut()</a>, <a class="el" href="_cmd_cut_8h-source.html#l00065">m_coinNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00066">m_coinParent</a>, <a class="el" href="_cmd_cut_8h-source.html#l00063">m_pClipboard</a>, <a class="el" href="_cmd_cut_8h-source.html#l00067">m_pModel</a>, and <a class="el" href="_cmd_cut_8h-source.html#l00068">m_row</a>.</p>
+<p>References <a class="el" href="_scene_model_8cpp-source.html#l00529">SceneModel::Cut()</a>, <a class="el" href="_cmd_cut_8h-source.html#l00065">m_coinNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00066">m_coinParent</a>, <a class="el" href="_cmd_cut_8h-source.html#l00063">m_pClipboard</a>, <a class="el" href="_cmd_cut_8h-source.html#l00067">m_pModel</a>, and <a class="el" href="_cmd_cut_8h-source.html#l00068">m_row</a>.</p>
 
 </div>
 </div><p>
@@ -174,7 +174,7 @@ Applies a change to the scene and clipboard. After <a class="el" href="class_cmd
 <p>
 Reverts clipboard and scene contain. After <a class="el" href="class_cmd_cut.html#6a6d40c7a475df168868bef3751bf7e9">undo()</a> is called, the state of the scene and clipboard will be the same as before <a class="el" href="class_cmd_cut.html#5eab68232b3d774797ba7ac5b16c82b8">redo()</a> was called. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_cut.html#5eab68232b3d774797ba7ac5b16c82b8">redo()</a>. </dd></dl>
 
-<p>References <a class="el" href="_cmd_cut_8h-source.html#l00065">m_coinNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00066">m_coinParent</a>, <a class="el" href="_cmd_cut_8h-source.html#l00063">m_pClipboard</a>, <a class="el" href="_cmd_cut_8h-source.html#l00067">m_pModel</a>, <a class="el" href="_cmd_cut_8h-source.html#l00064">m_previousNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00068">m_row</a>, <a class="el" href="_scene_model_8cpp-source.html#l00558">SceneModel::Paste()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
+<p>References <a class="el" href="_cmd_cut_8h-source.html#l00065">m_coinNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00066">m_coinParent</a>, <a class="el" href="_cmd_cut_8h-source.html#l00063">m_pClipboard</a>, <a class="el" href="_cmd_cut_8h-source.html#l00067">m_pModel</a>, <a class="el" href="_cmd_cut_8h-source.html#l00064">m_previousNode</a>, <a class="el" href="_cmd_cut_8h-source.html#l00068">m_row</a>, <a class="el" href="_scene_model_8cpp-source.html#l00601">SceneModel::Paste()</a>, and <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>.</p>
 
 </div>
 </div><p>
@@ -284,7 +284,7 @@ Reverts clipboard and scene contain. After <a class="el" href="class_cmd_cut.htm
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_cmd_cut_8h-source.html">CmdCut.h</a><li><a class="el" href="_cmd_cut_8cpp.html">CmdCut.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Sep 21 13:04:47 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:57 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

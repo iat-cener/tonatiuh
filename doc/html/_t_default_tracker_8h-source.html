@@ -81,7 +81,7 @@
 <a name="l00049"></a>00049 
 <a name="l00050"></a><a class="code" href="class_t_default_tracker.html">00050</a> <span class="keyword">class </span><a class="code" href="class_t_default_tracker.html">TDefaultTracker</a> : <span class="keyword">public</span> <a class="code" href="class_t_tracker.html">TTracker</a>
 <a name="l00051"></a>00051 {
-<a name="l00052"></a>00052         <a class="code" href="class_t_default_tracker.html#5a0e78f73555787b15ae7341ba9957d2">SO_KIT_HEADER</a>( <a class="code" href="class_t_default_tracker.html">TDefaultTracker</a> );
+<a name="l00052"></a>00052         <a class="code" href="class_t_default_tracker.html#71627342d07b455562e9df51d9a4b0d7">SO_NODEENGINE_HEADER</a>( <a class="code" href="class_t_default_tracker.html">TDefaultTracker</a> );
 <a name="l00053"></a>00053         
 <a name="l00054"></a>00054 <span class="keyword">public</span>:
 <a name="l00055"></a>00055     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_default_tracker.html#9e62fbd114dd2755cd5686b56b0b0487">initClass</a>();
@@ -92,17 +92,14 @@
 <a name="l00060"></a>00060 
 <a name="l00061"></a>00061 <span class="keyword">protected</span>:      
 <a name="l00062"></a>00062         <span class="keyword">virtual</span> <a class="code" href="class_t_default_tracker.html#5fe18d77d480dbc50681b80f9d92a16d">~TDefaultTracker</a>();
-<a name="l00063"></a>00063         
-<a name="l00064"></a>00064         <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_default_tracker.html#e33a59965e58ee27aa086e7d66722681">fielSensorCB</a>(<span class="keywordtype">void</span>* data, SoSensor* sensor );
-<a name="l00065"></a>00065     <span class="keywordtype">void</span> <a class="code" href="class_t_default_tracker.html#7886513682b7cb91f27bc28c8b2993ca">setRotation</a>();
-<a name="l00066"></a>00066 
-<a name="l00067"></a><a class="code" href="class_t_default_tracker.html#db637745f0f149a2e5381de2105114af">00067</a>     SoFieldSensor* <a class="code" href="class_t_default_tracker.html#db637745f0f149a2e5381de2105114af">m_rotSensor</a>;
-<a name="l00068"></a>00068     
-<a name="l00069"></a>00069 };
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="preprocessor">#endif </span><span class="comment">/*TDEFAULTTRACKER_H_*/</span>
+<a name="l00063"></a>00063 <span class="keyword">private</span>:
+<a name="l00064"></a>00064   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_default_tracker.html#b4842965f9fa215e80fafe1e1a4c04ea">evaluate</a>();
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066 };
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068 <span class="preprocessor">#endif </span><span class="comment">/*TDEFAULTTRACKER_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Sep 21 13:04:46 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:56 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

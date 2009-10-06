@@ -38,7 +38,7 @@
 <a href="class_cmd_delete_tracker-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#91747a87cd2c926bb081a525ffa3b03a">CmdDeleteTracker</a> (const QModelIndex &amp;selectedIndex, <a class="el" href="class_scene_model.html">SceneModel</a> &amp;model, QUndoCommand *parent=0)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#4973eb033366118613c887b2faa5e1f6">CmdDeleteTracker</a> (const QModelIndex &amp;selectedIndex, SoSceneKit *scene, <a class="el" href="class_scene_model.html">SceneModel</a> &amp;model, QUndoCommand *parent=0)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#b943084d05ddc2ae461ac4f1e3cc8e86">~CmdDeleteTracker</a> ()</td></tr>
 
@@ -49,9 +49,9 @@
 <tr><td colspan="2"><br><h2>Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_t_tracker.html">TTracker</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#6e00fa83f4440bb06947a4afab4718fd">m_tracker</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_t_gate_engine.html">TGateEngine</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#ec8b70f9cc47d3e87c5e7b387553d8fc">m_gate</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_t_separator_kit.html">TSeparatorKit</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#bf528064b9a1e589ac0c59d32d0ea3ae">m_coinParent</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">SoBaseKit *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#c105a0e1eb882967533004b8d63ed335">m_coinParent</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">SoSceneKit *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#626b19695b945736155d68296c6ede6b">m_scene</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_scene_model.html">SceneModel</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_delete_tracker.html#ef397b52fb0b839188b231ce3e37a4f1">m_pModel</a></td></tr>
 
@@ -59,7 +59,7 @@
 
 </table>
 <hr><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" name="91747a87cd2c926bb081a525ffa3b03a"></a><!-- doxytag: member="CmdDeleteTracker::CmdDeleteTracker" ref="91747a87cd2c926bb081a525ffa3b03a" args="(const QModelIndex &amp;selectedIndex, SceneModel &amp;model, QUndoCommand *parent=0)" -->
+<a class="anchor" name="4973eb033366118613c887b2faa5e1f6"></a><!-- doxytag: member="CmdDeleteTracker::CmdDeleteTracker" ref="4973eb033366118613c887b2faa5e1f6" args="(const QModelIndex &amp;selectedIndex, SoSceneKit *scene, SceneModel &amp;model, QUndoCommand *parent=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -68,6 +68,12 @@
           <td>(</td>
           <td class="paramtype">const QModelIndex &amp;&nbsp;</td>
           <td class="paramname"> <em>selectedIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoSceneKit *&nbsp;</td>
+          <td class="paramname"> <em>scene</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -92,7 +98,7 @@
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_gate</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00062">m_pModel</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00063">m_row</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00059">m_tracker</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_instance_node_8cpp-source.html#l00099">InstanceNode::GetParent()</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00063">m_pModel</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00064">m_row</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00062">m_scene</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_tracker</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 </div>
 </div><p>
@@ -113,7 +119,7 @@
 
 <p>
 
-<p>References <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_gate</a>, and <a class="el" href="_cmd_delete_tracker_8h-source.html#l00059">m_tracker</a>.</p>
+<p>References <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_tracker</a>.</p>
 
 </div>
 </div><p>
@@ -135,7 +141,7 @@
 
 <p>
 
-<p>References <a class="el" href="_scene_model_8cpp-source.html#l00497">SceneModel::Cut()</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_gate</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00062">m_pModel</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00063">m_row</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00059">m_tracker</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00056">TGateEngine::outputRotation</a>, and <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>.</p>
+<p>References <a class="el" href="_scene_model_8cpp-source.html#l00529">SceneModel::Cut()</a>, <a class="el" href="_t_tracker_8cpp-source.html#l00068">TTracker::Disconnect()</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00063">m_pModel</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00064">m_row</a>, and <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_tracker</a>.</p>
 
 </div>
 </div><p>
@@ -156,17 +162,17 @@
 
 <p>
 
-<p>References <a class="el" href="_cmd_delete_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_gate</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00062">m_pModel</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00063">m_row</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00059">m_tracker</a>, <a class="el" href="_t_gate_engine_8h-source.html#l00056">TGateEngine::outputRotation</a>, <a class="el" href="_scene_model_8cpp-source.html#l00558">SceneModel::Paste()</a>, <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>, and <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::sunRotation</a>.</p>
+<p>References <a class="el" href="_t_light_kit_8h-source.html#l00064">TLightKit::azimuth</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00063">m_pModel</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00064">m_row</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00062">m_scene</a>, <a class="el" href="_cmd_delete_tracker_8h-source.html#l00060">m_tracker</a>, <a class="el" href="_t_tracker_8h-source.html#l00062">TTracker::outputRotation</a>, <a class="el" href="_scene_model_8cpp-source.html#l00601">SceneModel::Paste()</a>, <a class="el" href="_t_tracker_8cpp-source.html#l00076">TTracker::SetAzimuthAngle()</a>, <a class="el" href="_t_tracker_8cpp-source.html#l00083">TTracker::SetZenithAngle()</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, <a class="el" href="tgc_8h-source.html#l00057">tgc::Shared</a>, and <a class="el" href="_t_light_kit_8h-source.html#l00065">TLightKit::zenith</a>.</p>
 
 </div>
 </div><p>
 <hr><h2>Member Data Documentation</h2>
-<a class="anchor" name="c105a0e1eb882967533004b8d63ed335"></a><!-- doxytag: member="CmdDeleteTracker::m_coinParent" ref="c105a0e1eb882967533004b8d63ed335" args="" -->
+<a class="anchor" name="bf528064b9a1e589ac0c59d32d0ea3ae"></a><!-- doxytag: member="CmdDeleteTracker::m_coinParent" ref="bf528064b9a1e589ac0c59d32d0ea3ae" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">SoBaseKit* <a class="el" href="class_cmd_delete_tracker.html#c105a0e1eb882967533004b8d63ed335">CmdDeleteTracker::m_coinParent</a><code> [private]</code>          </td>
+          <td class="memname"><a class="el" href="class_t_separator_kit.html">TSeparatorKit</a>* <a class="el" href="class_cmd_delete_tracker.html#bf528064b9a1e589ac0c59d32d0ea3ae">CmdDeleteTracker::m_coinParent</a><code> [private]</code>          </td>
         </tr>
       </table>
 </div>
@@ -174,24 +180,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00050">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00085">redo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00076">undo()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="ec8b70f9cc47d3e87c5e7b387553d8fc"></a><!-- doxytag: member="CmdDeleteTracker::m_gate" ref="ec8b70f9cc47d3e87c5e7b387553d8fc" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_t_gate_engine.html">TGateEngine</a>* <a class="el" href="class_cmd_delete_tracker.html#ec8b70f9cc47d3e87c5e7b387553d8fc">CmdDeleteTracker::m_gate</a><code> [private]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00050">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00085">redo()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00076">undo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00068">~CmdDeleteTracker()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00052">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00097">redo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00081">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -208,7 +197,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00050">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00085">redo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00076">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00052">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00097">redo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00081">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -225,7 +214,24 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00050">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00085">redo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00076">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00052">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00097">redo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00081">undo()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="626b19695b945736155d68296c6ede6b"></a><!-- doxytag: member="CmdDeleteTracker::m_scene" ref="626b19695b945736155d68296c6ede6b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoSceneKit* <a class="el" href="class_cmd_delete_tracker.html#626b19695b945736155d68296c6ede6b">CmdDeleteTracker::m_scene</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00052">CmdDeleteTracker()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00081">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -242,14 +248,14 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00050">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00085">redo()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00076">undo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00068">~CmdDeleteTracker()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00052">CmdDeleteTracker()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00097">redo()</a>, <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00081">undo()</a>, and <a class="el" href="_cmd_delete_tracker_8cpp-source.html#l00074">~CmdDeleteTracker()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_cmd_delete_tracker_8h-source.html">CmdDeleteTracker.h</a><li><a class="el" href="_cmd_delete_tracker_8cpp.html">CmdDeleteTracker.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Sep 21 13:04:47 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:57 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

@@ -38,7 +38,7 @@
 <a href="class_cmd_insert_tracker-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_insert_tracker.html#d3081ff482a68320319aa437ddd5d317">CmdInsertTracker</a> (<a class="el" href="class_t_tracker.html">TTracker</a> *tracker, const QModelIndex &amp;parentIndex, <a class="el" href="class_scene_model.html">SceneModel</a> *model, QUndoCommand *parent=0)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_insert_tracker.html#3ef9f942db034bdbf81b59e26c0eb6c3">CmdInsertTracker</a> (<a class="el" href="class_t_tracker.html">TTracker</a> *tracker, const QModelIndex &amp;parentIndex, SoSceneKit *scene, <a class="el" href="class_scene_model.html">SceneModel</a> *model, QUndoCommand *parent=0)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_insert_tracker.html#14f3463301e4128a81aaadd5391d9d9e">~CmdInsertTracker</a> ()</td></tr>
 
@@ -51,13 +51,15 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">SoBaseKit *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_insert_tracker.html#c894536f8d21e58a0dfe52fa82e2a2e5">m_coinParent</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">SoSceneKit *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_insert_tracker.html#3888fafb4bd02e71b15cf9c7404e6448">m_scene</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_scene_model.html">SceneModel</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_insert_tracker.html#3a6372f73a611c727a0886543542a2c8">m_pModel</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_insert_tracker.html#e3d99fb2a8cd1e79c14f1f4e3d0db469">m_row</a></td></tr>
 
 </table>
 <hr><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" name="d3081ff482a68320319aa437ddd5d317"></a><!-- doxytag: member="CmdInsertTracker::CmdInsertTracker" ref="d3081ff482a68320319aa437ddd5d317" args="(TTracker *tracker, const QModelIndex &amp;parentIndex, SceneModel *model, QUndoCommand *parent=0)" -->
+<a class="anchor" name="3ef9f942db034bdbf81b59e26c0eb6c3"></a><!-- doxytag: member="CmdInsertTracker::CmdInsertTracker" ref="3ef9f942db034bdbf81b59e26c0eb6c3" args="(TTracker *tracker, const QModelIndex &amp;parentIndex, SoSceneKit *scene, SceneModel *model, QUndoCommand *parent=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -72,6 +74,12 @@
           <td></td>
           <td class="paramtype">const QModelIndex &amp;&nbsp;</td>
           <td class="paramname"> <em>parentIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoSceneKit *&nbsp;</td>
+          <td class="paramname"> <em>scene</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -96,7 +104,7 @@
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_pModel</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00060">m_tracker</a>, <a class="el" href="_scene_model_8cpp-source.html#l00220">SceneModel::NodeFromIndex()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_instance_node_8cpp-source.html#l00093">InstanceNode::GetNode()</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_coinParent</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00064">m_pModel</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_scene</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00061">m_tracker</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 </div>
 </div><p>
@@ -117,7 +125,7 @@
 
 <p>
 
-<p>References <a class="el" href="_cmd_insert_tracker_8h-source.html#l00060">m_tracker</a>.</p>
+<p>References <a class="el" href="_cmd_insert_tracker_8h-source.html#l00061">m_tracker</a>.</p>
 
 </div>
 </div><p>
@@ -139,7 +147,7 @@
 
 <p>
 
-<p>References <a class="el" href="_scene_model_8cpp-source.html#l00364">SceneModel::InsertCoinNode()</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_pModel</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00063">m_row</a>, and <a class="el" href="_cmd_insert_tracker_8h-source.html#l00060">m_tracker</a>.</p>
+<p>References <a class="el" href="_t_light_kit_8h-source.html#l00064">TLightKit::azimuth</a>, <a class="el" href="_scene_model_8cpp-source.html#l00370">SceneModel::InsertCoinNode()</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_coinParent</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00064">m_pModel</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00065">m_row</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_scene</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00061">m_tracker</a>, <a class="el" href="_t_tracker_8cpp-source.html#l00076">TTracker::SetAzimuthAngle()</a>, <a class="el" href="_t_tracker_8cpp-source.html#l00083">TTracker::SetZenithAngle()</a>, <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>, and <a class="el" href="_t_light_kit_8h-source.html#l00065">TLightKit::zenith</a>.</p>
 
 </div>
 </div><p>
@@ -160,7 +168,7 @@
 
 <p>
 
-<p>References <a class="el" href="_cmd_insert_tracker_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_pModel</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00063">m_row</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00431">SceneModel::RemoveCoinNode()</a>.</p>
+<p>References <a class="el" href="_t_tracker_8cpp-source.html#l00068">TTracker::Disconnect()</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00062">m_coinParent</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00064">m_pModel</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00065">m_row</a>, <a class="el" href="_cmd_insert_tracker_8h-source.html#l00061">m_tracker</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00450">SceneModel::RemoveCoinNode()</a>.</p>
 
 </div>
 </div><p>
@@ -178,7 +186,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00047">CmdInsertTracker()</a>, <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">redo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00067">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00051">CmdInsertTracker()</a>, <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00081">redo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -195,7 +203,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00047">CmdInsertTracker()</a>, <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">redo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00067">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00051">CmdInsertTracker()</a>, <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00081">redo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -212,7 +220,24 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">redo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00067">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00081">redo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">undo()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="3888fafb4bd02e71b15cf9c7404e6448"></a><!-- doxytag: member="CmdInsertTracker::m_scene" ref="3888fafb4bd02e71b15cf9c7404e6448" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoSceneKit* <a class="el" href="class_cmd_insert_tracker.html#3888fafb4bd02e71b15cf9c7404e6448">CmdInsertTracker::m_scene</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00051">CmdInsertTracker()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00081">redo()</a>.</p>
 
 </div>
 </div><p>
@@ -229,14 +254,14 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00047">CmdInsertTracker()</a>, <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">redo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00061">~CmdInsertTracker()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00051">CmdInsertTracker()</a>, <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00081">redo()</a>, <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00073">undo()</a>, and <a class="el" href="_cmd_insert_tracker_8cpp-source.html#l00067">~CmdInsertTracker()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_cmd_insert_tracker_8h-source.html">CmdInsertTracker.h</a><li><a class="el" href="_cmd_insert_tracker_8cpp.html">CmdInsertTracker.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Sep 21 13:04:47 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:57 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
