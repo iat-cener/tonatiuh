@@ -49,7 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 
 CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SoSceneKit* scene, SceneModel* model, QUndoCommand* parent )
-: QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_scene( scene ), m_pModel( model )
+: QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_scene( scene ), m_pModel( model ), m_row( 0 )
 {
 	Trace trace( "CmdInsertTracker::CmdInsertTracker", false );
 
@@ -74,22 +74,21 @@ void CmdInsertTracker::undo()
 {
 	Trace trace( "CmdInsertTracker::undo", false );
 
-	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
-	parentTransform->rotation.disconnect();
-	m_tracker->inputRotation.disconnect();
+	m_tracker->Disconnect();
+	m_pModel->RemoveCoinNode( m_row, *m_coinParent );
 }
 
 void CmdInsertTracker::redo()
 {
 	Trace trace( "CmdInsertTracker::redo", false );
 
-	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
-	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true ) );
-	if( !lightTransform ) tgf::SevereError( "CmdInsertTracker Null lightTransform." );
 	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
 	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null parentTransform." );
+	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
+	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true ) );
 
-	m_tracker->inputRotation.connectFrom( &lightTransform->rotation );
-	parentTransform->rotation.connectFrom( &m_tracker->outputRotation );
+	m_tracker->SetAzimuthAngle( lightKit->azimuth );
+	m_tracker->SetZenithAngle( lightKit->zenith );
+    m_row = m_pModel->InsertCoinNode( *m_tracker, *m_coinParent );
 
 }

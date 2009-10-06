@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/SbLinear.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -47,23 +48,22 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TDefaultTracker.h"
 #include "Trace.h"
 
-SO_ENGINE_SOURCE( TDefaultTracker );
+SO_NODEENGINE_SOURCE( TDefaultTracker );
 
 void TDefaultTracker::initClass()
 {
 	Trace trace( "TDefaultTracker::initClass", false );
-	SO_ENGINE_INIT_CLASS( TDefaultTracker, TTracker, "Tracker" );
+	SO_NODEENGINE_INIT_CLASS( TDefaultTracker, TTracker, "Tracker" );
 }
 
 TDefaultTracker::TDefaultTracker()
 {
 	Trace trace( "TDefaultTracker::TDefaultTracker", false );
 
-	SO_ENGINE_CONSTRUCTOR(TDefaultTracker);
+	SO_NODE_CONSTRUCTOR(TDefaultTracker);
 
 	// Define input fields and their default values
-	SO_ENGINE_ADD_INPUT(inputRotation, ( 0.0, 0.0, 1.0, 0.0 ) );
-	SO_ENGINE_ADD_OUTPUT( outputRotation, SoSFRotation );
+	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation );
 }
 
 TDefaultTracker::~TDefaultTracker()
@@ -81,18 +81,7 @@ void TDefaultTracker::evaluate()
 {
 	Trace trace( "TDefaultTracker::evaluate", false );
 
-	SbMatrix matrix;
-	matrix.setRotate( inputRotation.getValue() );
-
-	SbVec3f sunVector;
-	matrix.multDirMatrix(  SbVec3f( 0.0, 1.0, 0.0 ), sunVector );
-
-	SbVec3f from(0, 1, 0);
-	SbVec3f to = -sunVector;
-	//std::cout<<to<<std::endl;
-
-    SbRotation rot(from, to);
-    SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rot ) );
+    SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
 
 }
 

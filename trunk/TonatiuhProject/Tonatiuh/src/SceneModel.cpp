@@ -175,20 +175,25 @@ void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 				m_mapCoinQt.insert( std::make_pair( material, instanceNodeList ) );
 				m_mapCoinQt[material].append( materialChild );
 			}
-			SoNode* photonmap = parentKit->getPart("photonMap", false);
-			if( photonmap )
-			{
-				InstanceNode* photonmapChild = new InstanceNode( photonmap );
-				instanceParent.AddChild( photonmapChild );
-
-				QList< InstanceNode* > instanceNodeList;
-				m_mapCoinQt.insert( std::make_pair( photonmap, instanceNodeList ) );
-				m_mapCoinQt[photonmap].append( photonmapChild );
-			}
 		}
 		else
 		{
+
 			//Is TSeparatorKit node
+			SoNode* tracker = parentKit->getPart( "tracker", false );
+			if( tracker )
+			{
+				TTracker* trackerNode = dynamic_cast< TTracker* >( tracker );
+				trackerNode->SetSceneKit( m_coinScene );
+
+				InstanceNode* trackerChild = new InstanceNode( tracker );
+				instanceParent.AddChild( trackerChild );
+
+				QList< InstanceNode* > trackerNodeList;
+				m_mapCoinQt.insert( std::make_pair( tracker, trackerNodeList ) );
+				m_mapCoinQt[tracker].append( trackerChild );
+			}
+
 			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( parentKit->getPart( "childList", false ) );
    			if ( !coinPartList ) return;
 
@@ -331,17 +336,7 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TSeparatorKit::getClassTypeId() ) )
 			{
-				/*if( coinNode->getTypeId().isDerivedFrom(TTracker::getClassTypeId() ) )
-				{
-					TTracker* tracker = static_cast<TTracker*>( coinNode );
-					QString icon = tracker->getIcon();
-					return QIcon(icon);
-				}
-
-				return QIcon(":/icons/separatorKit.png");*/
-
 				TSeparatorKit* separatorKit = static_cast<TSeparatorKit*>( coinNode );
-
 				return QIcon( separatorKit->getIcon() );
 
 			}
@@ -362,6 +357,11 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 				TMaterial* material = static_cast<TMaterial*>( coinNode );
 				return QIcon(material->getIcon());
 			}
+			else if( coinNode->getTypeId().isDerivedFrom(TTracker::getClassTypeId() ) )
+			{
+				TTracker* tracer = static_cast<TTracker*>( coinNode );
+				return QIcon(tracer->getIcon());
+			}
      	}
     }
     return QVariant();
@@ -374,24 +374,36 @@ int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
 	int row = -1;
 	if (coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		SoBaseKit* childKit = static_cast< SoBaseKit* >( &coinChild );
+		if( coinChild.getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )
+		{
+			coinParent.setPart( "tracker", &coinChild );
+			row = 0;
+		}
+		else
+		{
 
-		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
-		if ( !coinPartList ) return -1;
+			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
+			if ( !coinPartList ) return -1;
 
-		row = coinPartList->getNumChildren();
+			row = coinPartList->getNumChildren();
 
-		coinPartList->addChild( childKit );
-	  	childKit->setSearchingChildren( true );
+			if( coinChild.getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+			{
+				SoBaseKit* childKit = static_cast< SoBaseKit* >( &coinChild );
+				coinPartList->addChild( childKit );
+				childKit->setSearchingChildren( true );
+
+				if( coinParent.getPart( "tracker", false ) ) row++;
+			}
+		}
 
 	}
-	else
-	{
-		TShapeKit* shapeKit = static_cast< TShapeKit* > ( &coinParent );
-		if( shapeKit->getPart( "shape", false ) ) row++;
-		if( shapeKit->getPart( "appearance.material", false ) ) row++;
-		if( shapeKit->getPart( "photonMap", false ) ) row++;
-	}
+    else
+    {
+    	TShapeKit* shapeKit = static_cast< TShapeKit* > ( &coinParent );
+    	if( shapeKit->getPart( "shape", false ) ) row++;
+    	if( shapeKit->getPart( "appearance.material", false ) ) row++;
+    }
 
 	QList<InstanceNode*>& instanceListParent = m_mapCoinQt[ &coinParent ];
 	for ( int index = 0; index < instanceListParent.count(); index++ )
@@ -411,6 +423,7 @@ int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
 
 	return row;
 }
+
 
 /*!
  * Insert a light node to the model. If the model has an other light node, the previous node
@@ -440,8 +453,21 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 
 	if (coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
-	    if ( coinPartList ) coinPartList->removeChild( row );
+		if( ( row == 0 ) && coinParent.getPart( "tracker", false ) )
+		{
+			coinParent.setPart( "tracker", NULL );
+		}
+		else
+		{
+			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
+			if ( coinPartList )
+			{
+				if( coinParent.getPart( "tracker", false ) )	coinPartList->removeChild( row - 1 );
+				else coinPartList->removeChild( row );
+			}
+
+		}
+
 	}
 
     QList<InstanceNode*> instanceListParent = m_mapCoinQt[ &coinParent ];
@@ -504,31 +530,42 @@ void SceneModel::Cut( SoBaseKit& coinParent, int row )
 {
 	Trace trace( "SceneModel::Cut", false );
 
+
 	if( row < 0 ) tgf::SevereError( "SceneModel::Cut invalid row number" );
 
-	SoNode* coinChild;
+	QList<InstanceNode*> instanceListParent = m_mapCoinQt[ &coinParent ];
+	InstanceNode* instanceParent = instanceListParent[0];
 
-	if (!coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	SoNode* coinChild = instanceParent->children[row]->GetNode();
+	if( !coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
-		QList<InstanceNode*> instanceListParent = m_mapCoinQt[ &coinParent ];
-		InstanceNode* instanceParent = instanceListParent[0];
-
-		coinChild = instanceParent->children[row]->GetNode();
 		SbString partName = coinParent.getPartString( coinChild );
 		if( partName.getLength() == 0 ) partName = "material";
 
 		coinParent.setPart( partName, NULL );
-
 	}
 	else
 	{
+		if( coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+		{
+			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
+			if( !coinPartList ) tgf::SevereError( "SceneModel::Cut Null coinPartList pointer" );
 
-		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
-		if( !coinPartList ) tgf::SevereError( "SceneModel::Cut Null coinPartList pointer" );
 
-		coinChild = coinPartList->getChild( row );
-		if( !coinChild ) tgf::SevereError( "SceneModel::Cut Null coinChild pointer" );
-	    coinPartList->removeChild( row );
+			if( coinParent.getPart( "tracker", false ) )
+			{
+				coinChild = coinPartList->getChild( row-1 );
+			    coinPartList->removeChild( row -1 );
+			}
+			else
+			{
+				coinChild = coinPartList->getChild( row );
+			    coinPartList->removeChild( row );
+			}
+
+			if( !coinChild ) tgf::SevereError( "SceneModel::Cut Null coinChild pointer" );
+
+		}
 	}
 
 	QList<InstanceNode*> instanceList = m_mapCoinQt[ coinChild ];
@@ -583,13 +620,25 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 			coinChild = &coinNode;
 		    break;
 	}
-	if( ! coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+	if( !coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
-		TShapeKit* shapeKit = static_cast< TShapeKit* >( pCoinParent );
-		if(!shapeKit)	return;
+		if( coinChild->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )
+		{
+			TSeparatorKit* separatorKit = static_cast< TSeparatorKit* >( pCoinParent );
+			TTracker* tracker = static_cast< TTracker* >( separatorKit->getPart( "tracker", false ) );
+			if (tracker)
+			{
+				QMessageBox::warning( 0, tr( "Tonatiuh warning" ), tr( "This TSeparatorKit already contains a tracker" ) );
+				return;
+			}
+			coinParent.setPart( "tracker", coinChild );
+
+		}
 
 		if( coinChild->getTypeId().isDerivedFrom( SoShape::getClassTypeId() ) )
 		{
+			TShapeKit* shapeKit = static_cast< TShapeKit* >( pCoinParent );
+			if(!shapeKit)	return;
 			TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
 
     		if (shape)
@@ -599,8 +648,10 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
     		}
 			coinParent.setPart("shape", coinChild );
 		}
-		else if( coinChild->getTypeId().isDerivedFrom( SoMaterial::getClassTypeId() ) )
+		if( coinChild->getTypeId().isDerivedFrom( SoMaterial::getClassTypeId() ) )
 		{
+			TShapeKit* shapeKit = static_cast< TShapeKit* >( pCoinParent );
+			if(!shapeKit)	return;
 			TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
 			if (material)
     		{
@@ -615,7 +666,7 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	{
 		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
 		if( !coinPartList ) tgf::SevereError( "SceneModel::Paste Null coinPartList pointer" );
-		if( row > 0 && row < coinPartList->getNumChildren( ) ) coinPartList->insertChild( coinChild, row );
+		if( coinParent.getPart( "tracker", false ) ) coinPartList->insertChild( coinChild, row -1 );
 		else coinPartList->insertChild( coinChild, row );
 	}
 
@@ -701,7 +752,7 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 
 QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
 {
-	Trace trace( "SceneModel::IndexFromPath", FALSE );
+	Trace trace( "SceneModel::IndexFromPath", false );
 
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( coinNodePath.getTail() );
 	if( !coinNode ) tgf::SevereError( "IndexFromPath Null coinNode." );

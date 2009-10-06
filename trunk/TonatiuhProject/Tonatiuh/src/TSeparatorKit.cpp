@@ -57,6 +57,8 @@ TSeparatorKit::TSeparatorKit()
 {
 
 	SO_KIT_CONSTRUCTOR(TSeparatorKit);
+	SO_KIT_ADD_CATALOG_ENTRY( tracker, TTracker, TRUE, this, "", TRUE);
+
 	SO_KIT_INIT_INSTANCE();
 
 	SoTransform* transform = new SoTransform;
@@ -69,38 +71,29 @@ TSeparatorKit::~TSeparatorKit()
     Trace trace("TSeparatorKit exiting destructor", false);
 }
 
+SbBool  TSeparatorKit::setPart(const SbName& partname, SoNode* from )
+{
+    Trace trace("TSeparatorKit::setPart", false);
+
+    if( partname == "tracker" )
+    {
+    	SoTransform* parentTransform = static_cast< SoTransform* > ( getPart("transform", true ) );
+    	if( !parentTransform ) return false;
+
+    	if( !from )	parentTransform->rotation.disconnect();
+    	else
+    	{
+        	TTracker* trackerNode = dynamic_cast< TTracker* >( from );
+        	parentTransform->rotation.connectFrom( &trackerNode->outputRotation );
+    	}
+    }
+   return SoSeparatorKit::setPart( partname, from );;
+}
+
 QString TSeparatorKit::getIcon()
 {
     Trace trace("TSeparatorKit::getIcon", false );
 
-    SoTransform* transformNode = dynamic_cast< SoTransform* > ( getPart( "transform", false ) );
-    if( !transformNode  )	return QString(":/icons/separatorKit.png");
-
-    if( !transformNode->rotation.isConnected() ) return QString(":/icons/separatorKit.png");
-
-    SoEngineOutput* outputEngine;
-    transformNode->rotation.getConnectedEngine( outputEngine );
-    if( !outputEngine  )	return QString(":/icons/separatorKit.png");
-
-    TTracker* trackerNode = dynamic_cast<TTracker* > ( outputEngine->getContainer() );
-    if( trackerNode != 0 ) return trackerNode->getIcon();
-
     return QString(":/icons/separatorKit.png");
 
-}
-
-bool  TSeparatorKit::IsConnected()
-{
-    Trace trace("TSeparatorKit::IsConnected", false );
-
-    SoTransform* transformNode = dynamic_cast< SoTransform* > ( getPart( "transform", false ) );
-    if( !transformNode  )	return false;
-
-    if( !transformNode->rotation.isConnected() ) return false;
-
-    SoEngineOutput* outputEngine;
-    transformNode->rotation.getConnectedEngine( outputEngine );
-    if( !outputEngine  )	return false;
-
-    return true;
 }

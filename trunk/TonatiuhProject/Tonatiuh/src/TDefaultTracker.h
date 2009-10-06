@@ -49,7 +49,7 @@ class SoSensor;
 
 class TDefaultTracker : public TTracker
 {
-	SO_ENGINE_HEADER( TDefaultTracker );
+	SO_NODEENGINE_HEADER( TDefaultTracker );
 	
 public:
     static void initClass();

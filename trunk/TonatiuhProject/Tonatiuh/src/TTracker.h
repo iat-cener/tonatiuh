@@ -39,23 +39,26 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TTRACKER_H_
 #define TTRACKER_H_
 
-#include <Inventor/engines/SoSubEngine.h>
-#include <Inventor/fields/SoSFRotation.h> 
+#include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/engines/SoSubNodeEngine.h>
+#include <Inventor/fields/SoSFDouble.h>
 
 class QString; 
+class SoSceneKit;
 
-class SoSFRotation;
-
-class TTracker : public SoEngine
+class TTracker : public SoNodeEngine
 {
-	SO_ENGINE_ABSTRACT_HEADER( TrackerTwoAxis );
+	SO_NODEENGINE_ABSTRACT_HEADER( TTracker );
 
 public:
     static void initClass();
 	virtual QString getIcon() = 0;
 		
-	
-	SoSFRotation inputRotation;
+	void Disconnect();
+	void SetAzimuthAngle( SoSFDouble& azimuthField );
+	void SetZenithAngle( SoSFDouble& zenithField );
+	void SetSceneKit( SoSceneKit* scene );
+
 	SoEngineOutput outputRotation;
 	 
 protected:
@@ -63,8 +66,14 @@ protected:
 	TTracker();
 	virtual ~TTracker(); 
 
+	SoSFDouble m_azimuth;
+	SoSFDouble m_zenith;
+	SoSceneKit* m_scene;
+
 private:
   virtual void evaluate() = 0;
+
+
 };
 
 #endif /*TTRACKER_H_*/

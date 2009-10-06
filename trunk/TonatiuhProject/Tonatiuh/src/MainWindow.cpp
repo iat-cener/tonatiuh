@@ -721,13 +721,6 @@ void MainWindow::on_actionDelete_triggered()
 
 }
 
-
-void MainWindow::on_actionDeleteTracker_triggered()
-{
-	Trace trace( "MainWindow::on_actionDeleteTracker_triggered", false );
-	DeleteTracker();
-}
-
 // Insert menu actions
 void MainWindow::on_actionNode_triggered()
 {
@@ -1360,37 +1353,6 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
     m_document->SetDocumentModified( true );
 }
 
-void MainWindow::CreatePhotonMap( TPhotonMapFactory* )
-{
-	Trace trace( "MainWindow::CreatePhotonMap", false);
-
-    /*QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
-								m_sceneModel->index (0,0,m_treeView->rootIndex()) : m_treeView->currentIndex();
-
-	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	SoNode* parentNode = parentInstance->GetNode();
-	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
-
-	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
-	TPhotonMap* photonMap = static_cast< TPhotonMap* >( shapeKit->getPart( "photonMap", false ) );
-    if (photonMap)
-    {
-    	QMessageBox::information( this, "Tonatiuh Action",
-	                          "This TShapeKit already contains a photonMap", 1);
-    }
-    else
-    {
-    	photonMap = pTPhotonMapFactory->CreateTPhotonMap();
-    	photonMap->setName( pTPhotonMapFactory->TPhotonMapName().toStdString().c_str() );
-        CmdInsertPhotonMap* createPhotonMap = new CmdInsertPhotonMap( shapeKit, photonMap, m_sceneModel );
-        QString commandText = QString( "Create PhotonMap: %1" ).arg( pTPhotonMapFactory->TPhotonMapName().toLatin1().constData());
-        createPhotonMap->setText( commandText );
-        m_commandStack->push( createPhotonMap );
-
-        m_document->SetDocumentModified( true );
-    }*/
-}
-
 void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
     Trace trace( "MainWindow::CreateShape", false );
@@ -1461,6 +1423,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	}
 
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
+	tracker->SetSceneKit( scene );
 
 	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
 	m_commandStack->push( command );
@@ -1834,9 +1797,6 @@ void MainWindow::showMenu( const QModelIndex& index)
 
 	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
-		if( coinKit->IsConnected() ) popupmenu.addAction( actionDeleteTracker );
-
 		popupmenu.addAction( tr("Convert to SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
 		popupmenu.addAction( tr("Convert to SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
 		popupmenu.addAction( tr("Convert to SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
@@ -1845,7 +1805,7 @@ void MainWindow::showMenu( const QModelIndex& index)
 		popupmenu.addAction( tr("Convert to SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
 		popupmenu.addAction( tr("Convert to SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
 
-
+		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
 		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
 		SoType transformType = transform->getTypeId();
 
@@ -2117,9 +2077,20 @@ bool MainWindow::Delete( )
 	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
 	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
 
+	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
+	SoNode* coinNode = instanceNode->GetNode();
 
-	CmdDelete* commandDelete = new CmdDelete( m_selectionModel->currentIndex(), *m_sceneModel );
-	m_commandStack->push( commandDelete );
+	if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )
+	{
+		CmdDeleteTracker* commandDelete = new CmdDeleteTracker( m_selectionModel->currentIndex(), m_document->GetSceneKit(), *m_sceneModel );
+		m_commandStack->push( commandDelete );
+	}
+	else
+	{
+		CmdDelete* commandDelete = new CmdDelete( m_selectionModel->currentIndex(), *m_sceneModel );
+		m_commandStack->push( commandDelete );
+	}
+
 
 
 	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
@@ -2127,34 +2098,6 @@ bool MainWindow::Delete( )
 	m_document->SetDocumentModified( true );
 	return true;
 }
-
-
-bool MainWindow::DeleteTracker()
-{
-	Trace trace( "MainWindow::DeleteTracker", false );
-
-	if( !m_selectionModel->hasSelection() ) return false;
-	if( !m_selectionModel->currentIndex().isValid()) return false;
-	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
-	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
-	SoNode* coinNode = instanceNode->GetNode();
-
-	if( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return false;
-
-	TSeparatorKit* separatorNode = dynamic_cast< TSeparatorKit* > ( coinNode );
-	if( !separatorNode ) return false;
-
-	if( !separatorNode->IsConnected() ) return false;
-
-	CmdDeleteTracker* commandDelete = new CmdDeleteTracker( m_selectionModel->currentIndex(), m_document->GetSceneKit(), *m_sceneModel );
-	m_commandStack->push( commandDelete );
-
-	m_document->SetDocumentModified( true );
-	return true;
-}
-
 
 bool MainWindow::Cut()
 {

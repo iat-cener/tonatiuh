@@ -38,17 +38,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QString>
 
+#include <Inventor/nodekits/SoSceneKit.h>
+
 #include "TTracker.h"
 #include "Trace.h"
 
 
-SO_ENGINE_ABSTRACT_SOURCE( TTracker );
+SO_NODEENGINE_ABSTRACT_SOURCE( TTracker );
 
 void TTracker::initClass()
 {
 	Trace trace( "TrackerTwoAxis::initClass", false );
 
-	SO_ENGINE_INIT_ABSTRACT_CLASS( TTracker, SoEngine, "Engine" );
+	SO_NODEENGINE_INIT_ABSTRACT_CLASS( TTracker, SoNodeEngine, "NodeEngine" );
 
 }
 
@@ -63,3 +65,29 @@ TTracker::~TTracker()
 	
 }
 
+void TTracker::Disconnect()
+{
+	Trace trace( "TTracker::Disconnect", true );
+
+	m_azimuth.disconnect();
+	m_zenith.disconnect();
+}
+
+void TTracker::SetAzimuthAngle( SoSFDouble& azimuthField )
+{
+	Trace trace( "TTracker::SetAzimuthAngle", false );
+	m_azimuth.connectFrom( &azimuthField );
+
+}
+
+void TTracker::SetZenithAngle( SoSFDouble& zenithField )
+{
+	Trace trace( "TTracker::SetZenithAngle", false );
+	m_zenith.connectFrom( &zenithField );
+}
+
+void TTracker::SetSceneKit( SoSceneKit* scene )
+{
+	Trace trace( "TTracker::SetSceneKit", true );
+	m_scene = scene;
+}

@@ -51,17 +51,18 @@ class CmdInsertTracker : public QUndoCommand
 {
 public:
     CmdInsertTracker( TTracker* tracker, const QModelIndex& parentIndex, SoSceneKit* scene, SceneModel* model, QUndoCommand* parent = 0 );
-    ~CmdInsertTracker();
+	~CmdInsertTracker();
 
-     virtual void undo();
-     virtual void redo();
+	virtual void undo();
+	virtual void redo();
 
 private:
 
-     TTracker* m_tracker;
-     SoBaseKit* m_coinParent;;
-     SoSceneKit* m_scene;
-     SceneModel* m_pModel;
+	TTracker* m_tracker;
+	SoBaseKit* m_coinParent;;
+	SoSceneKit* m_scene;
+	SceneModel* m_pModel;
+	int m_row;
      
 };
 

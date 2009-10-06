@@ -49,14 +49,15 @@ class TSeparatorKit : public SoSeparatorKit
 	typedef SoSeparatorKit inherited;
 
     SO_KIT_HEADER( TSeparatorKit );
-
+ 	SO_KIT_CATALOG_ENTRY_HEADER( tracker );
 
 public:
     TSeparatorKit();
     static void initClass();
-    QString getIcon();
 
-    bool IsConnected();
+    virtual SbBool  setPart (const SbName& partname, SoNode* from );
+
+    QString getIcon();
 
 protected:
     virtual ~TSeparatorKit();
