@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class QModelIndex;
 class SoSceneKit;
 class SceneModel;
+class TSeparatorKit;
 class TTracker;
 
 class CmdDeleteTracker : public QUndoCommand
@@ -57,10 +58,10 @@ public:
 
 private:
 	TTracker* m_tracker;
-
-	SoBaseKit* m_coiNode;
+	TSeparatorKit* m_coinParent;
     SoSceneKit* m_scene;
 	SceneModel* m_pModel;
+    int m_row;
 };
 
 #endif /*CMDDELETETRACKER_H_*/
