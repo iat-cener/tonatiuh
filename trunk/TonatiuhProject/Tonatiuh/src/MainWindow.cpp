@@ -150,12 +150,13 @@ m_drawPhotons( false ), m_graphicView( 0 ), m_treeView( 0 ), m_focusView( 0 )
 	setupUi( this );
     SetupActions();
     SetupMenus();
-	SetupToolBars();
     SetupDocument();
     SetupModels();
 	SetupViews();
     LoadPlugins();
+
     ReadSettings();
+
 
 }
 
@@ -177,37 +178,14 @@ void MainWindow::SetupActions()
     }
 }
 
+/**
+ * Creates a menu for last used files
+ **/
 void MainWindow::SetupMenus()
 {
     Trace trace( "MainWindow::SetupMenus", false );
     for ( int i = 0; i < m_maxRecentFiles; i++ )
           menuRecent->addAction( m_recentFileActions[i] );
-}
-
-void MainWindow::SetupToolBars()
-{
-    Trace trace( "MainWindow::SetupToolBars", false );
-
-	//Create a new toolbar for plugins
-	m_shapeToolBar = new QToolBar( menuInsert );
-
-	if( m_shapeToolBar )
-	{
-   	    m_shapeToolBar->setObjectName( QString::fromUtf8("pluginToolBar" ) );
-   	    m_shapeToolBar->setOrientation( Qt::Horizontal );
-	    addToolBar( m_shapeToolBar );
-
-	}
-	else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_pluginToolBar" );
-
-	m_trackersToolBar = new QToolBar( menuInsert );
-	if( m_trackersToolBar )
-	{
-  	    m_trackersToolBar->setOrientation( Qt::Horizontal );
-	    addToolBar( m_trackersToolBar );
-	}
-	else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
-
 }
 
 
@@ -384,6 +362,11 @@ void MainWindow::SetupTreeView()
 
     	if ( m_treeView )
     	{
+    		connect( m_treeView, SIGNAL( collapsed( const QModelIndex& ) ),
+    				m_treeView, SLOT ( resizeColumnToContents ( 0 ) ) );
+    		connect( m_treeView, SIGNAL( expanded ( const QModelIndex& ) ),
+    				m_treeView, SLOT ( resizeColumnToContents ( 0 ) ) );
+
 
     		NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
    			m_treeView->setItemDelegate( delegate );
@@ -527,7 +510,7 @@ QDir MainWindow::PluginDirectory()
 
 void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory )
 {
-	Trace trace( "MMainWindow::SetupActionInsertMaterial", false );
+	Trace trace( "MainWindow::SetupActionInsertMaterial", false );
 	ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
     actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
     QMenu* menuMaterial = menuInsert->findChild< QMenu* >( "menuMaterial" );
@@ -555,7 +538,9 @@ void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory 
     connect( actionInsertMaterial, SIGNAL( triggered() ), actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
 	connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ), this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
 }
-
+/**
+ * Creates an action for the /a pTShapeFactory and adds to shape insert menu and toolbar.
+ */
 void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
 {
     Trace trace( "MainWindow::SetupActionInsertShape", false );
@@ -567,6 +552,16 @@ void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
     	menuShape = new QMenu( "Shape", menuInsert );
     	menuShape->setObjectName( "shapeMenu" );
     	menuInsert->addMenu( menuShape );
+
+    	//Create a new toolbar for trackers
+    	m_shapeToolBar = new QToolBar( menuShape );
+		if( m_shapeToolBar )
+		{
+			m_shapeToolBar->setObjectName( QString::fromUtf8( "shapeToolBar" ) );
+			m_shapeToolBar->setOrientation( Qt::Horizontal );
+	    	addToolBar( m_shapeToolBar );
+		}
+		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
     }
 	menuShape->addAction( actionInsertShape );
 	m_shapeToolBar->addAction( actionInsertShape );
@@ -587,6 +582,17 @@ void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
     	menuTracker = new QMenu( "Tracker", menuInsert );
     	menuTracker->setObjectName( "trackerMenu" );
     	menuInsert->addMenu( menuTracker );
+
+    	//Create a new toolbar for trackers
+    	m_trackersToolBar = new QToolBar( menuTracker );
+		if( m_trackersToolBar )
+		{
+			m_trackersToolBar->setObjectName( QString::fromUtf8("trackersToolBar" ) );
+			m_trackersToolBar->setOrientation( Qt::Horizontal );
+	    	addToolBar( m_trackersToolBar );
+		}
+		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
+
     }
 	menuTracker->addAction( actionInsertTracker );
 	m_trackersToolBar->addAction( actionInsertTracker );
@@ -823,7 +829,7 @@ void MainWindow::on_actionUserComponent_triggered()
 //Sun Light menu actions
 void MainWindow::on_actionDefine_SunLight_triggered()
 {
-	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", false );
+	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", true );
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
@@ -2165,15 +2171,34 @@ void MainWindow::UpdateRecentFileActions()
 	}
 }
 
+/**
+ * Saves application settings.
+ **/
 void MainWindow::WriteSettings()
 {
     Trace trace( "MainWindow::WriteSettings", false );
 
 	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
 	settings.setValue( "geometry", geometry() );
+
+	Qt::WindowStates states = windowState();
+	if( states.testFlag( Qt::WindowNoState ) )	settings.setValue( "windowNoState", true );
+	else	settings.setValue( "windowNoState", false );
+	if( states.testFlag( Qt::WindowMinimized ) )	settings.setValue( "windowMinimized", true );
+	else	settings.setValue( "windowMinimized", false );
+	if( states.testFlag( Qt::WindowMaximized ) )	settings.setValue( "windowMaximized", true );
+	else	settings.setValue( "windowMaximized", false );
+	if( states.testFlag( Qt::WindowFullScreen ) )	settings.setValue( "windowFullScreen", true );
+	else	settings.setValue( "windowFullScreen", false );
+	if( states.testFlag( Qt::WindowActive ) )	settings.setValue( "windowActive", true );
+	else	settings.setValue( "windowActive", false );
+
     settings.setValue( "recentFiles", m_recentFiles );
 }
 
+/**
+ * Restores application settings.
+ **/
 void MainWindow::ReadSettings()
 {
     Trace trace( "MainWindow::ReadSettings", false );
@@ -2183,6 +2208,12 @@ void MainWindow::ReadSettings()
     move( rect.topLeft() );
     resize( rect.size() );
 
+    setWindowState( Qt::WindowNoState );
+    if( settings.value( "windowNoState", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowNoState );
+    if( settings.value( "windowMinimized", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowMinimized );
+    if( settings.value( "windowMaximized", true ).toBool() )	setWindowState( windowState() ^ Qt::WindowMaximized );
+    if( settings.value( "windowFullScreen", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowFullScreen );
+    if( settings.value( "windowActive", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowActive );
     m_recentFiles = settings.value( "recentFiles" ).toStringList();
     UpdateRecentFileActions();
 

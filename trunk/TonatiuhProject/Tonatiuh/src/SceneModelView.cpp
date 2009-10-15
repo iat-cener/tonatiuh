@@ -48,12 +48,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoBaseKit.h> 
 #include <Inventor/nodekits/SoNodeKitListPart.h> 
 
+
+/**
+ * Creates a new view for a model. This
+ */
 SceneModelView::SceneModelView(QWidget *parent)
     : QTreeView(parent)
 {
     setAcceptDrops(true);
+
+	connect( this, SIGNAL( collapsed( const QModelIndex& ) ),
+			this, SLOT ( resizeViewToContents ( const QModelIndex& ) ) );
+	connect( this, SIGNAL( expanded ( const QModelIndex& ) ),
+			this, SLOT ( resizeViewToContents ( const QModelIndex& ) ) );
+
 }
 
+/**
+ * Not yet docummented
+ */
 void SceneModelView::mousePressEvent(QMouseEvent *event)
 {
 	
@@ -67,6 +80,9 @@ void SceneModelView::mousePressEvent(QMouseEvent *event)
     QTreeView::mousePressEvent(event);
 }
 
+/**
+ * Not yet docummented
+ */
 void SceneModelView::mouseMoveEvent(QMouseEvent *event)
 {
 	Trace trace( "SceneModelView::mouseMoveEvent", false );
@@ -78,6 +94,9 @@ void SceneModelView::mouseMoveEvent(QMouseEvent *event)
    // QTreeView::mouseMoveEvent(event);
 }
 
+/**
+ * Not yet docummented
+ */
 void SceneModelView::dragEnterEvent(QDragEnterEvent *event)
 {
 	Trace trace( "SceneModelView::dragEnterEvent", false );
@@ -85,6 +104,9 @@ void SceneModelView::dragEnterEvent(QDragEnterEvent *event)
 	event->accept();
 }
 
+/**
+ * Not yet docummented
+ */
 void SceneModelView::dragMoveEvent(QDragMoveEvent *event)
 {
 	Trace trace( "SceneModelView::dragMoveEvent", false );
@@ -92,6 +114,9 @@ void SceneModelView::dragMoveEvent(QDragMoveEvent *event)
 	event->accept();
 }
 
+/**
+ * Not yet docummented
+ */
 void SceneModelView::dropEvent(QDropEvent *event)
 {
 	Trace trace( "SceneModelView::dropEvent", false );
@@ -155,6 +180,18 @@ void SceneModelView::dropEvent(QDropEvent *event)
 
 }
 
+/**
+ * Resizes the view to the size of its contents.
+ */
+void SceneModelView::resizeViewToContents( const QModelIndex& index )
+{
+	Trace trace( "SceneModelView::resizeViewToContents", false );
+	resizeColumnToContents( index.column() );
+}
+
+/**
+ * Not yet docummented
+ */
 void SceneModelView::startDrag(QMouseEvent *event)
 {
 	Trace trace( "SceneModelView::startDrag", false );

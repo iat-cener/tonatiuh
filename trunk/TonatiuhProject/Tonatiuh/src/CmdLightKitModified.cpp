@@ -55,13 +55,21 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Modify LightKit", parent), m_pPreviousLightKit( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
 {
-    Trace trace( "CmdLightKitModified::CmdLightKitModified", false );
+    Trace trace( "CmdLightKitModified::CmdLightKitModified", true );
 
     if( newLightKit == 0 ) tgf::SevereError( "CmdLightKitModified called with NULL TLightKit*" );
+    std::cout<<"newLightKit"<<std::endl;
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
+    std::cout<<"m_pNewLightKit"<<std::endl;
     m_pNewLightKit->ref();
 
-    if( m_scene->getPart("lightList[0]", false) )	m_pPreviousLightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false)->copy( true ) );
+    std::cout<<"lightList[0]"<<std::endl;
+    if( m_scene->getPart("lightList[0]", false) )
+    {
+    	TLightKit* lightKit = dynamic_cast< TLightKit* >( m_scene->getPart("lightList[0]", false ) );
+    	m_pPreviousLightKit = dynamic_cast< TLightKit* >( lightKit->copy( true ) );
+    	m_pPreviousLightKit->ref();
+    }
 }
 
 /*!
@@ -71,6 +79,7 @@ CmdLightKitModified::~CmdLightKitModified()
 {
 	Trace trace( "CmdLightKitModified::~CmdLightKitModified", false );
 	m_pNewLightKit->unref();
+	m_pPreviousLightKit->unref();
 }
 
 /*!
