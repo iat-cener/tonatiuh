@@ -60,6 +60,9 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
 
+protected slots:
+	void resizeViewToContents( const QModelIndex& index );
+
 private:
     void startDrag(QMouseEvent *event);
     

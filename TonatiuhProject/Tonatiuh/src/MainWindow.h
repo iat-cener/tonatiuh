@@ -180,7 +180,6 @@ private:
     void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
     void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
     void SetupMenus();
-    void SetupToolBars();
     void SetupDocument();
     void SetupModels();
     void SetupViews();
