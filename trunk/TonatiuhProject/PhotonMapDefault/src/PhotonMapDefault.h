@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define PHOTONMAPDEFAULT_H_
 
 #include <QList>
-#include <Inventor/SoType.h>
+#include <QMap>
 
 #include "InstanceNode.h"
 #include "Point3D.h"
@@ -72,32 +72,21 @@ public:
 	PhotonMapDefault( long unsigned maxPhotons );
 	~PhotonMapDefault();
 
-	//SoNode* copy( SbBool copyConnections ) const;
 	QString GetIcon();
 
-	void savePhotonMap( const char *filename );
-	void loadPhotonMap(char *filename);
-
-	void locatePhotons( NearestPhotons* const np, const long unsigned index ) const;
-	double fluxAtPoint( const Point3D& point, int maxClosest ) const;
-	void Store( Photon* photon );
-	void balance();
-	Photon* GetPhoton( long unsigned index ) const;
+	Photon* GetPhoton( double photonID ) const;
+	QList< Photon* > GetAllPhotons() const;
+	QList< Photon* > GetSurfacePhotons( InstanceNode* instance ) const;
+	void StoreRay( Photon* rayFirstPhoton );
 	unsigned long StoredPhotons() const { return m_storedPhotons; };
-	QList< Photon* > GetPhotons( InstanceNode* instance ) const;
 
 private:
 
-	void balanceSegment( Photon*** pbal, Photon*** porg, const long unsigned index, const long unsigned start, const long unsigned end );
-	void medianSplit( Photon*** p, const long unsigned start, const long unsigned end, const long unsigned median, const long unsigned axis );
 
-	Photon** m_photons;
+	QMap< double, Photon*> m_photons;
 	unsigned long  m_storedPhotons;
-	long unsigned m_halfStoredPhotons;
 	long unsigned m_maxPhotons;
-	long unsigned m_prevScale;
-	long unsigned m_axis;
-	BBox m_bbox;
+
 };
 
 #endif /* PHOTONMAPDEFAULT_H_ */
