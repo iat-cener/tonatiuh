@@ -44,16 +44,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 struct Photon
 {
-	Photon();
 	Photon( Point3D pos, Photon* previous = 0, Photon* next = 0, double id = 0 );
 	~Photon();
 
-	double m_id;
-	Point3D m_pos;
+	double id;
+	Point3D pos;
 	short m_plane;
-	Photon* m_prev;
-	Photon* m_next;
-	InstanceNode* m_intersectedSurface;
+	Photon* prev;
+	Photon* next;
+	InstanceNode* intersectedSurface;
 };
 
 #endif /*PHOTON_H_*/

@@ -133,14 +133,16 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
  *
  * The \a sceneMap saves the scene elements BBox and Transform in global coordinates.
  */
-void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode, TPhotonMap& photonMap, RandomDeviate& rand )
+void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode,
+					TPhotonMap& photonMap, RandomDeviate& rand )
 {
 	Trace trace( "tgf::TraceRay", false );
 
 	Ray* reflectedRay = 0;
-	Photon* node = new Photon( ray.origin, 0, 0 );
-	node->m_intersectedSurface = lightNode;
 	Photon* next = 0;
+	Photon* first = new Photon( ray.origin );
+	Photon* node = first;
+	node->intersectedSurface = lightNode;
 	int rayLength = 0;
 
 	InstanceNode* intersectedSurface = 0;
@@ -156,10 +158,9 @@ void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 		{
 			Point3D point = ray( ray.maxt );
 
-			next = new Photon( point, node, 0 );
-			next->m_intersectedSurface = intersectedSurface;
-			node->m_next = next;
-			photonMap.Store( node );
+			next = new Photon( point, node );
+			next->intersectedSurface = intersectedSurface;
+			node->next = next;
 			node = next;
 			rayLength++;
 
@@ -175,12 +176,13 @@ void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 		if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
 
 		Point3D endOfRay = ray( ray.maxt );
-		Photon* lastNode = new Photon( endOfRay, node, 0 );
-		lastNode->m_intersectedSurface = intersectedSurface;
-		node->m_next = lastNode;
-		photonMap.Store( node );
-		photonMap.Store( lastNode );
+		Photon* lastNode = new Photon( endOfRay, node );
+		lastNode->intersectedSurface = intersectedSurface;
+		node->next = lastNode;
+
 	}
+
+	photonMap.StoreRay( first );
 }
 
 SoSeparator* tgf::DrawPhotonMapPoints( const TPhotonMap& map )
@@ -190,9 +192,11 @@ SoSeparator* tgf::DrawPhotonMapPoints( const TPhotonMap& map )
 	SoSeparator* drawpoints=new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
-	for( unsigned long i = 1 ; i < map.StoredPhotons(); i++ )
+	QList< Photon* > photonsList = map.GetAllPhotons();
+
+	for (int i = 0; i < photonsList.size(); ++i)
 	{
-		Point3D photon = map.GetPhoton(i)->m_pos;
+		Point3D photon = photonsList[i]->pos;
 		points->point.set1Value( i, photon.x, photon.y, photon.z );
 	}
 
@@ -228,33 +232,34 @@ SoSeparator* tgf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 
 	unsigned long numberOfPhoton = 0;
 
-	for( unsigned long i = 1; i<= map.StoredPhotons(); i++ )
-	//for( unsigned long i = 0; i < map.StoredPhotons(); i++ )
+	QList< Photon* > photonsList = map.GetAllPhotons();
+
+	for (int i = 0; i < photonsList.size(); ++i)
 	{
-		if( map.GetPhoton(i) )
+		if ( photonsList[i]->prev == 0 )
 		{
-			if ( !map.GetPhoton(i)->m_prev )
+			if ( ray % ( numberOfRays/drawRays ) == 0 )
 			{
-				if ( ray % ( numberOfRays/drawRays ) == 0 )
+				Photon* node = photonsList[i];
+				rayLength = 0;
+
+				while ( node != 0 )
 				{
-					Photon* node = map.GetPhoton(i);
-					rayLength = 0;
+					Point3D photon = node->pos;
+					points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
 
-					while ( node )
-					{
-						Point3D photon = node->m_pos;
-						points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
-						node = node->m_next;
-						rayLength++;
-						numberOfPhoton++;
-					}
+					if( node->next != 0 )	node = map.GetPhoton( node->next->id );
+					else	node = 0;
 
-					lines[drawnRay]= rayLength;
-					drawnRay++;
-
+					rayLength++;
+					numberOfPhoton++;
 				}
-				ray++;
+
+				lines[drawnRay]= rayLength;
+				drawnRay++;
+
 			}
+			ray++;
 		}
 	}
 

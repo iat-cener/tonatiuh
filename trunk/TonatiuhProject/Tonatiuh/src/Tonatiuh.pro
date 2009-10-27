@@ -6,6 +6,9 @@ TEMPLATE = app
 CONFIG       += qt warn_on thread debug_and_release 
 #CONFIG -=app_bundle
 TARGET =   
+
+VERSION = 0.9beta
+
 DEPENDPATH += . \
               src 
 QT += xml opengl svg

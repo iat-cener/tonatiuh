@@ -96,10 +96,26 @@ SoNode* InstanceNode::GetNode() const
 	return m_coinNode;
 }
 
+/**
+ * Returns parent instance.
+ */
 InstanceNode* InstanceNode::GetParent() const
 {
 	Trace trace( "InstanceNode::GetParent", false );
 	return m_parent;
+}
+
+/**
+ * Returns node URL.
+ */
+QString InstanceNode::GetNodeURL() const
+{
+	Trace trace( "InstanceNode::GetNodeURL", false );
+	QString url;
+	if( GetParent() ) url = GetParent()->GetNodeURL();
+
+	url.append( "/" + QString( m_coinNode->getName().getString() ) );
+	return url;
 }
 
 void InstanceNode::Print( int level ) const
@@ -114,6 +130,9 @@ void InstanceNode::Print( int level ) const
     }
 }
 
+/**
+ * Appends new \a child node to the end of the child list.
+**/
 void InstanceNode::AddChild( InstanceNode* child )
 {
 	Trace trace( "InstanceNode::AddChild", false );
@@ -122,6 +141,9 @@ void InstanceNode::AddChild( InstanceNode* child )
     child->SetParent( this );
 }
 
+/**
+ * Inserts the \a instanceChild node as child number \a row.
+**/
 void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
 {
 	Trace trace( "InstanceNode::InsertChild", false );

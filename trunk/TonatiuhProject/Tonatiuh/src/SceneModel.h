@@ -78,8 +78,10 @@ public:
 	void RemoveCoinNode( int row, SoBaseKit& coinParent );
 	void RemoveLightNode( TLightKit& coinLight );
 
-    void Cut( SoBaseKit& coinParent, int row );
-	void Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinChild, int row );
+    bool Cut( SoBaseKit& coinParent, int row );
+	bool Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinChild, int row );
+
+	bool SetNodeName( SoNode& coinChild, QString newName );
 
 	InstanceNode* NodeFromIndex( const QModelIndex& modelIndex ) const;
 	QModelIndex IndexFromPath( const SoNodeKitPath& coinNodePath ) const;

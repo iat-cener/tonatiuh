@@ -50,6 +50,12 @@ class Ray;
 class SoNode;
 class Transform;
 
+
+//!  InstanceNode class represents a instance of a node in the scene.
+/*! In a scene, a node can be shared by more that one parent. Each of these shared instances is represented in a scene as a InstanceNode object.
+ * Any change made whitin a shared node is reflected in all node's InstanceNode.
+*/
+
 class InstanceNode
 {
 public:
@@ -64,6 +70,8 @@ public:
 
     void AddChild( InstanceNode* child );
     void InsertChild( int row, InstanceNode* instanceChild);
+
+    QString GetNodeURL() const;
     void Print( int level ) const;
 
     QList< InstanceNode* > children;

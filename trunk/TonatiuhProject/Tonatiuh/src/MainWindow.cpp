@@ -164,6 +164,7 @@ MainWindow::~MainWindow()
 {
 	Trace trace( "MainWindow::~MainWindow", false );
 	delete[] m_recentFileActions;
+	delete m_photonMap;
 }
 
 void MainWindow::SetupActions()
@@ -459,7 +460,7 @@ void MainWindow::LoadPlugins( )
         	{
         		TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
         		if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap Plugin not recognized" );
-        		pTPhotonMapFactory->CreateTPhotonMap();
+        		//pTPhotonMapFactory->CreateTPhotonMap();
 				m_TPhotonMapFactoryList.push_back( pTPhotonMapFactory );
         	}
         	if( plugin->inherits("TTrackerFactory") )
@@ -738,7 +739,12 @@ void MainWindow::on_actionNode_triggered()
 	else
 		parentIndex = m_treeView->currentIndex();
 
-	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
+    InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+    if( !parentInstance ) return;
+
+	SoNode* coinNode = parentInstance->GetNode();
+    if( !coinNode ) return;
+
 
 	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
@@ -747,6 +753,14 @@ void MainWindow::on_actionNode_triggered()
 		CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( separatorKit, QPersistentModelIndex(parentIndex), m_sceneModel );
 		cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
 		m_commandStack->push( cmdInsertSeparatorKit );
+
+		int count = 1;
+		QString nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
+		while ( !m_sceneModel->SetNodeName( *separatorKit, nodeName ) )
+		{
+			count++;
+			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
+		}
 
 		m_document->SetDocumentModified( true );
 
@@ -764,7 +778,12 @@ void MainWindow::on_actionShapeKit_triggered()
 	else
 		parentIndex = m_treeView->currentIndex();
 
-   	SoNode* selectedCoinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
+    InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+    if( !parentInstance ) return;
+
+   	SoNode* selectedCoinNode = parentInstance->GetNode();
+    if( !selectedCoinNode ) return;
+
 	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		TShapeKit* shapeKit = new TShapeKit;
@@ -772,6 +791,13 @@ void MainWindow::on_actionShapeKit_triggered()
 		CmdInsertShapeKit* insertShapeKit = new CmdInsertShapeKit( parentIndex, shapeKit, m_sceneModel );
 	    m_commandStack->push( insertShapeKit );
 
+		int count = 1;
+		QString nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
+		while ( !m_sceneModel->SetNodeName( *shapeKit, nodeName ) )
+		{
+			count++;
+			nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
+		}
 	    m_document->SetDocumentModified( true );
 	}
 }
@@ -843,6 +869,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 
 		TLightKit* lightKit = dialog.GetTLightKit();
 		if( !lightKit ) return;
+		lightKit->setName( "Light" );
 
  		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
 		m_commandStack->push( command );
@@ -990,7 +1017,9 @@ void MainWindow::ShowRaysIn3DView()
 //Ray trace menu actions
 void MainWindow::on_actionRayTraceRun_triggered()
 {
-    Trace trace( "MainWindow::on_actionRayTraceRun_triggered", false );
+	Trace trace( "MainWindow::on_actionRayTraceRun_triggered", false );
+
+	QDateTime date1 = QDateTime::currentDateTime();
 
     // Verify that propram options are the scene are properly configured for ray tracing
 	InstanceNode* rootSeparatorInstance = 0;
@@ -1032,6 +1061,10 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 	ShowRaysIn3DView();
 	progress.Done();
+
+	QDateTime date2 = QDateTime::currentDateTime();
+	std::cout<<"Finish time: "<<date2.toString().toStdString()<<std::endl;
+	std::cout<<"time: "<<date1.secsTo( date2 )<<std::endl;
 }
 
 void MainWindow::on_actionDisplay_rays_toggled()
@@ -1103,14 +1136,14 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 	if( exportDialog.GetSelectedPhotons() == 0 )
 	{
-
-		for( long unsigned i=1; i<= m_photonMap->StoredPhotons(); i++ )
+		QList< Photon* > photonsList = m_photonMap->GetAllPhotons();
+		for (int i = 0; i < photonsList.size(); ++i)
 		{
-			Photon* node = m_photonMap->GetPhoton(i);
-			Point3D photon = node->m_pos;
-			double id = node->m_id;
-			double prev_id = ( node->m_prev )? node->m_prev->m_id : 0;
-			double next_id = ( node->m_next )? node->m_next->m_id : -1;
+			Photon* node = photonsList[i];
+			Point3D photon = node->pos;
+			double id = node->id;
+			double prev_id = ( node->prev ) ? node->prev->id : 0;
+			double next_id = ( node->next ) ? node->next->id : 0;
 			out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
 		}
 
@@ -1122,7 +1155,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( nodeKitIndex );
 		if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return;
 
-		QList< Photon* > nodePhotonsList = m_photonMap->GetPhotons( selectedNode );
+		QList< Photon* > nodePhotonsList = m_photonMap->GetSurfacePhotons( selectedNode );
 
 		if( nodePhotonsList.size() == 0 )
 		{
@@ -1164,10 +1197,10 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 		{
 
 			Photon* node = nodePhotonsList[i];
-			Point3D photon = worldToObject( node->m_pos );
-			double id = node->m_id;
-			double prev_id = ( node->m_prev )? node->m_prev->m_id : 0;
-			double next_id = ( node->m_next )? node->m_next->m_id : -1;
+			Point3D photon = worldToObject( node->pos );
+			double id = node->id;
+			double prev_id = ( node->prev ) ? node->prev->id : 0;
+			double next_id = ( node->next ) ? node->next->id : 0;
 			out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
 		}
 
@@ -2062,6 +2095,16 @@ bool MainWindow::Paste( tgc::PasteType type )
 
 	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
 	m_commandStack->push( commandPaste );
+
+	/*QString nodeName( m_coinNode_Buffer->getName().getString() );
+	int count = 1;
+	QString newName = nodeName;
+	while ( !m_sceneModel->SetNodeName( *m_coinNode_Buffer, newName ) )
+	{
+		count++;
+		newName = QString( "%1_copy%2").arg( nodeName, QString::number( count) );
+	}*/
+
 
 	m_document->SetDocumentModified( true );
 	return true;
