@@ -66,7 +66,7 @@ namespace tgf
 
 	void TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode, TPhotonMap& photonMap, RandomDeviate& rand );
 
-	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map );
+	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map);
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
 
 	SbMatrix MatrixFromTransform( const Transform& transform );

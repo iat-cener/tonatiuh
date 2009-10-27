@@ -45,18 +45,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 
 CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  SoNode*& coinClipboard, SceneModel& sceneModel, QUndoCommand* parent )
-: QUndoCommand("Paste", parent), m_pasteType( type ), m_coinParent( 0 ), m_coinChild( coinClipboard ), m_sceneModel( &sceneModel ), m_row( -1 )
+: QUndoCommand("Paste", parent), m_pasteType( type ), m_parentInstance( 0 ), m_coinChild( coinClipboard ), m_sceneModel( &sceneModel ), m_oldNodeName( 0 ),  m_row( -1 )
 {
 	Trace trace( "CmdPaste::CmdPaste", false);
 
 	if( !parentModelIndex.isValid() ) tgf::SevereError( "CmdPaste called with invalid ModelIndex." );
 
-	InstanceNode* instanceParent = m_sceneModel->NodeFromIndex( parentModelIndex );
-	if( !instanceParent-> GetNode() ) tgf::SevereError( "CmdPaste NULL m_coinParent." );
-	m_coinParent = static_cast< SoBaseKit* > ( instanceParent-> GetNode() );
+	//InstanceNode* instanceParent = m_sceneModel->NodeFromIndex( parentModelIndex );
+	m_parentInstance = m_sceneModel->NodeFromIndex( parentModelIndex );
+	if( !m_parentInstance-> GetNode() ) tgf::SevereError( "CmdPaste NULL m_coinParent." );
+	//m_coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
 
-
-	m_row = instanceParent->children.size();
+	m_row = m_parentInstance->children.size();
+	m_oldNodeName = QString( coinClipboard->getName().getString() );
 }
 
 CmdPaste::~CmdPaste()
@@ -67,11 +68,26 @@ CmdPaste::~CmdPaste()
 void CmdPaste::undo()
 {
 	Trace trace( "CmdPaste::undo", false );
-	m_sceneModel->Cut( *m_coinParent, m_row );
+
+	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
+	m_sceneModel->Cut( *coinParent, m_row );
+	m_sceneModel->SetNodeName( *m_coinChild, m_oldNodeName );
 }
 
 void CmdPaste::redo( )
 {
 	Trace trace( "CmdPaste::redo", false );
-	m_sceneModel->Paste( m_pasteType, *m_coinParent, *m_coinChild, m_row );
+
+	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
+	if( !m_sceneModel->Paste( m_pasteType, *coinParent, *m_coinChild, m_row ) ) return;
+
+	SoNode* newNode = m_parentInstance->children[m_row]->GetNode();
+
+	int count = 0;
+	QString newName = m_oldNodeName;
+	while ( !m_sceneModel->SetNodeName( *newNode, newName ) )
+	{
+		count++;
+		newName = QString( "%1_copy%2").arg( m_oldNodeName, QString::number( count) );
+	}
 }

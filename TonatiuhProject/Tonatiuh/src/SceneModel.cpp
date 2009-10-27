@@ -526,12 +526,17 @@ Qt::DropActions SceneModel::supportedDragActions() const
 	return Qt::CopyAction | Qt::MoveAction;
 }
 
-void SceneModel::Cut( SoBaseKit& coinParent, int row )
+/**
+ * Cuts the \a row child from \a coinParent node.
+ *
+ * Returns whether the cut is successfully done.
+**/
+bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 {
 	Trace trace( "SceneModel::Cut", false );
 
 
-	if( row < 0 ) tgf::SevereError( "SceneModel::Cut invalid row number" );
+	if( row < 0 ) return false;
 
 	QList<InstanceNode*> instanceListParent = m_mapCoinQt[ &coinParent ];
 	InstanceNode* instanceParent = instanceListParent[0];
@@ -549,7 +554,7 @@ void SceneModel::Cut( SoBaseKit& coinParent, int row )
 		if( coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 		{
 			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
-			if( !coinPartList ) tgf::SevereError( "SceneModel::Cut Null coinPartList pointer" );
+			if( !coinPartList ) return false;
 
 
 			if( coinParent.getPart( "tracker", false ) )
@@ -595,10 +600,17 @@ void SceneModel::Cut( SoBaseKit& coinParent, int row )
 			}
 		}
 	}
+
+
 	emit layoutChanged();
+	return true;
 }
 
-void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinNode, int row )
+/**
+ * Adds a child to \a coinParent as \a row child. If \a type is tgc::Copied, the added child is a copy of \a coinNode. But the type is tgc::Shared the node is shared with previous parent.
+ * Return true if the paste action is correctly done. Otherwise returns false.
+**/
+bool SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinNode, int row )
 {
 	Trace trace( "SceneModel::Paste", false );
 
@@ -629,7 +641,7 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 			if (tracker)
 			{
 				QMessageBox::warning( 0, tr( "Tonatiuh warning" ), tr( "This TSeparatorKit already contains a tracker" ) );
-				return;
+				return false;
 			}
 			coinParent.setPart( "tracker", coinChild );
 
@@ -638,25 +650,25 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 		if( coinChild->getTypeId().isDerivedFrom( SoShape::getClassTypeId() ) )
 		{
 			TShapeKit* shapeKit = static_cast< TShapeKit* >( pCoinParent );
-			if(!shapeKit)	return;
+			if(!shapeKit)	return false;
 			TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
 
     		if (shape)
     		{
     			QMessageBox::warning( 0, tr( "Tonatiuh warning" ), tr( "This TShapeKit already contains a shape" ) );
-    			return;
+    			return false;
     		}
 			coinParent.setPart("shape", coinChild );
 		}
 		if( coinChild->getTypeId().isDerivedFrom( SoMaterial::getClassTypeId() ) )
 		{
 			TShapeKit* shapeKit = static_cast< TShapeKit* >( pCoinParent );
-			if(!shapeKit)	return;
+			if(!shapeKit)	return false;
 			TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
 			if (material)
     		{
     			QMessageBox::warning( 0, tr( "Tonatiuh warning" ), tr( "This TShapeKit already contains a material" ) );
-    			return;
+    			return false;
     		}
 			coinParent.setPart("material", coinChild );
 		}
@@ -685,6 +697,35 @@ void SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	}
 
 	emit layoutChanged();
+	return true;
+}
+
+
+bool SceneModel::SetNodeName( SoNode& coinChild, QString newName )
+{
+	Trace trace( "SceneModel::SetNodeName", false );
+
+	QList< InstanceNode* > nodeInstances = m_mapCoinQt[ &coinChild ];
+	if( nodeInstances.size() == 0 ) return false;
+
+	QList< InstanceNode* > instancesParent;
+	for( int index = 0; index < nodeInstances.size(); index++ )
+	{
+		InstanceNode* instance = nodeInstances[index];
+		QList< InstanceNode* > parentChildren = instance->GetParent()->children;
+		int childIndex = parentChildren.indexOf( instance );
+		for( int child = 0; child < parentChildren.size(); child++ )
+		{
+			SbName idChildName = parentChildren[child]->GetNode()->getName();
+			if( child!= childIndex && idChildName == newName.toStdString().c_str() )	return false;
+		}
+	}
+	coinChild.setName( newName.toStdString().c_str() );
+
+
+	emit layoutChanged();
+	return true;
+
 }
 
 void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )

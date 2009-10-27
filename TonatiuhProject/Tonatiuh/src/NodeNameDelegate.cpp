@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QModelIndex>
 #include <QObject>
 
@@ -49,27 +50,44 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Trace.h"
 
+/**
+ * Creates a new delegate to facilitate editing node names.
+ */
 NodeNameDelegate::NodeNameDelegate( SceneModel* sceneModel,  QObject* parent)
  : QItemDelegate(parent), m_pModel( sceneModel )
 {
 	Trace trace( "NodeNameDelegate::NodeNameDelegate", false );
 }
 
+/**
+ * Destroys the NodeNameDelegate.
+ */
 NodeNameDelegate::~NodeNameDelegate()
 {
 	Trace trace( "NodeNameDelegate::~NodeNameDelegate", false );
 
 }
 
+/**
+ * Returns a line edit editor with a validates the input names. The names must start with a alphabetic character and optionally followed with some
+ * alphanumeric characters.
+ */
 QWidget* NodeNameDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const
 {
 	Trace trace( "NodeNameDelegate::createEditor", false );
-	QLineEdit  *editor = new QLineEdit (parent);
-	connect ( editor, SIGNAL (editingFinished()), this, SLOT (commitChangesAndClose()) );
+
+	QLineEdit * editor = new QLineEdit (parent);
+	QRegExp rx("[a-zA-Z]\\S*");
+	QValidator* validator = new QRegExpValidator( rx, 0 );
+	editor->setValidator(validator);
+
 	return editor;
 
 }
 
+/**
+ * Takes the name of the selected node and sets to de editor to display it.
+ */
 void NodeNameDelegate::setEditorData(QWidget *editor,
                                      const QModelIndex &index) const
 {
@@ -90,22 +108,21 @@ void NodeNameDelegate::setEditorData(QWidget *editor,
 
 }
 
+/**
+ * Takes the editor data and set the name to node if the defined name is a valid name.
+ */
 void NodeNameDelegate::setModelData(QWidget* editor, QAbstractItemModel* /*model*/, const QModelIndex& index ) const
 {
 	Trace trace( "NodeNameDelegate::setModelData", false );
-	QLineEdit  *textEdit = static_cast<QLineEdit *>(editor);
+
+	QLineEdit* textEdit = static_cast<QLineEdit *>( editor );
 
 	SoNode* coinNode =m_pModel->NodeFromIndex( index )->GetNode();
 
-	SbName* coinName = new SbName( textEdit->text().toStdString().c_str() );
-	coinNode->setName( *coinName );
-	delete coinName;
+	bool changed = m_pModel->SetNodeName( *coinNode, textEdit->text() );
+	if( !changed )
+	{
+		QMessageBox::critical( 0, "Tonatiuh Action", "Tonatiuh can not change the name to node. There is a node with the same name. Define other name" );
 
-}
-
-void NodeNameDelegate::commitChangesAndClose()
-{
-	QLineEdit *editor = qobject_cast< QLineEdit* >(sender());
-	emit commitData(editor);
-	emit closeEditor(editor);
+	}
 }
