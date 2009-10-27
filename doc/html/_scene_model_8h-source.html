@@ -75,7 +75,7 @@
 <a name="l00043"></a>00043 
 <a name="l00044"></a>00044 <span class="preprocessor">#include "<a class="code" href="tgc_8h.html">tgc.h</a>"</span>
 <a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="keyword">class </span><a class="code" href="class_instance_node.html">InstanceNode</a>;
+<a name="l00046"></a>00046 <span class="keyword">class </span><a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>;
 <a name="l00047"></a>00047 <span class="keyword">class </span>QModelIndex;
 <a name="l00048"></a>00048 <span class="keyword">class </span>SoBaseKit;
 <a name="l00049"></a>00049 <span class="keyword">class </span>SoNode;
@@ -110,30 +110,32 @@
 <a name="l00078"></a>00078         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#f3d5fa7205809ba8ef19054005ec2177">RemoveCoinNode</a>( <span class="keywordtype">int</span> row, SoBaseKit&amp; coinParent );
 <a name="l00079"></a>00079         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#2f53824e7f1c57a79fdae7a346ed8d71">RemoveLightNode</a>( <a class="code" href="class_t_light_kit.html">TLightKit</a>&amp; coinLight );
 <a name="l00080"></a>00080 
-<a name="l00081"></a>00081     <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#39b6ca1a3289de5402e4b890ba908472">Cut</a>( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
-<a name="l00082"></a>00082         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#f5b2b5bc67cc734beb9f0bf943dbbf90">Paste</a>( <a class="code" href="namespacetgc.html#fa9b17e8584600916a7480330d470667">tgc::PasteType</a> type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
+<a name="l00081"></a>00081     <span class="keywordtype">bool</span> <a class="code" href="class_scene_model.html#131531fdf536a4601dd0e6b5f2c61b7c">Cut</a>( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
+<a name="l00082"></a>00082         <span class="keywordtype">bool</span> <a class="code" href="class_scene_model.html#4fb186de994db889657920ae71d88ac6">Paste</a>( <a class="code" href="namespacetgc.html#fa9b17e8584600916a7480330d470667">tgc::PasteType</a> type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084         <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_scene_model.html#6d02dce253100f61c08f12922788b6ac">NodeFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00085"></a>00085         QModelIndex <a class="code" href="class_scene_model.html#8b26636c15d4d823234aea8ef6484223">IndexFromPath</a>( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
-<a name="l00086"></a>00086         SoNodeKitPath* <a class="code" href="class_scene_model.html#f762fbda5d9b6f07aad39db748991a44">PathFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088 signals:
-<a name="l00089"></a>00089         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#55a928c107295f9ff01cc7870e2ca2f7">LightNodeStateChanged</a>( <span class="keywordtype">int</span> newState );
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 <span class="keyword">private</span>:
-<a name="l00092"></a>00092         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#30a74576bfbbf6b0b300a803aabe727b">GenerateInstanceTree</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; instanceParent );
-<a name="l00093"></a>00093         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#2610220c166aaf1fbd99a9dc30934bce">DeleteInstanceTree</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>&amp; instanceNode );
-<a name="l00094"></a>00094 
-<a name="l00095"></a>00095 <span class="keyword">private</span>:
-<a name="l00096"></a><a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">00096</a>         SoSelection* <a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">m_coinRoot</a>;
-<a name="l00097"></a><a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">00097</a>     SoSceneKit* <a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">m_coinScene</a>;
-<a name="l00098"></a><a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">00098</a>         <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">m_instanceRoot</a>;
-<a name="l00099"></a><a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">00099</a>         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; <a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">m_mapCoinQt</a>;
-<a name="l00100"></a>00100 };
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
+<a name="l00084"></a>00084         <span class="keywordtype">bool</span> <a class="code" href="class_scene_model.html#5b668e13a04006592ca8d907ce980d83">SetNodeName</a>( SoNode&amp; coinChild, QString newName );
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* <a class="code" href="class_scene_model.html#6d02dce253100f61c08f12922788b6ac">NodeFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
+<a name="l00087"></a>00087         QModelIndex <a class="code" href="class_scene_model.html#8b26636c15d4d823234aea8ef6484223">IndexFromPath</a>( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
+<a name="l00088"></a>00088         SoNodeKitPath* <a class="code" href="class_scene_model.html#f762fbda5d9b6f07aad39db748991a44">PathFromIndex</a>( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090 signals:
+<a name="l00091"></a>00091         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#55a928c107295f9ff01cc7870e2ca2f7">LightNodeStateChanged</a>( <span class="keywordtype">int</span> newState );
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <span class="keyword">private</span>:
+<a name="l00094"></a>00094         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#30a74576bfbbf6b0b300a803aabe727b">GenerateInstanceTree</a>( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceParent );
+<a name="l00095"></a>00095         <span class="keywordtype">void</span> <a class="code" href="class_scene_model.html#2610220c166aaf1fbd99a9dc30934bce">DeleteInstanceTree</a>( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNode );
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097 <span class="keyword">private</span>:
+<a name="l00098"></a><a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">00098</a>         SoSelection* <a class="code" href="class_scene_model.html#33b307bcceb80d703fe9a6a443a7d899">m_coinRoot</a>;
+<a name="l00099"></a><a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">00099</a>     SoSceneKit* <a class="code" href="class_scene_model.html#65a4d9d54f2a08f3a2f47f30bccfaa71">m_coinScene</a>;
+<a name="l00100"></a><a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">00100</a>         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* <a class="code" href="class_scene_model.html#b543ed8d817f3e0b4135c48702a11668">m_instanceRoot</a>;
+<a name="l00101"></a><a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">00101</a>         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; <a class="code" href="class_scene_model.html#31f50e88293c6686d96328c2a22fc69e">m_mapCoinQt</a>;
+<a name="l00102"></a>00102 };
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:56 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 27 10:54:40 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

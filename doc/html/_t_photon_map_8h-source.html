@@ -92,16 +92,17 @@
 <a name="l00064"></a>00064     <span class="keyword">virtual</span> <a class="code" href="class_t_photon_map.html#e37e4a66264cdba6b33e737619658426">~TPhotonMap</a>();
 <a name="l00065"></a>00065 
 <a name="l00066"></a>00066         <span class="keyword">virtual</span> QString <a class="code" href="class_t_photon_map.html#583737617ab0ba01bdb177ef9206024b">GetIcon</a>() = 0;
-<a name="l00067"></a>00067         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_photon_map.html#0e4aa517a0a00ef321115b0ab32dfd41">Store</a>( <a class="code" href="struct_photon.html">Photon</a>* photon ) = 0;
-<a name="l00068"></a>00068         <span class="keyword">virtual</span> <a class="code" href="struct_photon.html">Photon</a>* <a class="code" href="class_t_photon_map.html#cf6511e9bcc2acf8631fe8eebf311220">GetPhoton</a>( <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> index ) <span class="keyword">const</span> = 0;
-<a name="l00069"></a>00069         <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_t_photon_map.html#5eb140efe41a42c4279d118ab824baa5">StoredPhotons</a>() <span class="keyword">const</span> = 0 ;
-<a name="l00070"></a>00070         <span class="keyword">virtual</span> QList&lt; Photon* &gt; <a class="code" href="class_t_photon_map.html#038fb89cbea5cf9f28a1fcc9c4f6d404">GetPhotons</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>* instance ) <span class="keyword">const</span> = 0;
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072 };
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074 <span class="preprocessor">#endif </span><span class="comment">/* TPHOTONMAP_H_ */</span>
+<a name="l00067"></a>00067         <span class="keyword">virtual</span> QList&lt; Photon* &gt; <a class="code" href="class_t_photon_map.html#30600a53689963df3375bdb767d8b50b">GetAllPhotons</a>() <span class="keyword">const</span> = 0;
+<a name="l00068"></a>00068         <span class="keyword">virtual</span> <a class="code" href="struct_photon.html">Photon</a>* <a class="code" href="class_t_photon_map.html#06d254dc6774a624dbe2614a0bdd3926">GetPhoton</a>( <span class="keywordtype">double</span> photonID ) <span class="keyword">const</span> = 0;
+<a name="l00069"></a>00069         <span class="keyword">virtual</span> QList&lt; Photon* &gt; <a class="code" href="class_t_photon_map.html#1043ae09e5f1d004f60c13e40335b53c">GetSurfacePhotons</a>( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* instance ) <span class="keyword">const</span> = 0;
+<a name="l00070"></a>00070         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_photon_map.html#f4780254d4af226b302205f1b8c10e70">StoreRay</a>( <a class="code" href="struct_photon.html">Photon</a>* rayFirstPhoton ) = 0;
+<a name="l00071"></a>00071         <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_t_photon_map.html#5eb140efe41a42c4279d118ab824baa5">StoredPhotons</a>() <span class="keyword">const</span> = 0 ;
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073 };
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 <span class="preprocessor">#endif </span><span class="comment">/* TPHOTONMAP_H_ */</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:56 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 27 10:54:40 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

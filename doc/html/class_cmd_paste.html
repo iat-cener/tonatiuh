@@ -33,7 +33,10 @@
   </div>
 </div>
 <div class="contents">
-<h1>CmdPaste Class Reference</h1><!-- doxytag: class="CmdPaste" -->
+<h1>CmdPaste Class Reference</h1><!-- doxytag: class="CmdPaste" --><a class="el" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a> class is the paste command stored in the command stack.  
+<a href="#_details">More...</a>
+<p>
+
 <p>
 <a href="class_cmd_paste-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
@@ -49,15 +52,21 @@
 <tr><td colspan="2"><br><h2>Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="namespacetgc.html#fa9b17e8584600916a7480330d470667">tgc::PasteType</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#6b0ac3ce7d08a64122cc4f0a5e3b3d93">m_pasteType</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">SoBaseKit *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#d28b529fafc91085a52da7acabaca4e7">m_coinParent</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_instance_node.html">InstanceNode</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#05d9a5d7cca43e0a286480cd5af8527d">m_parentInstance</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">SoNode *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#03dab07e4fb4a4ed5ae980d8192a32ce">m_coinChild</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_scene_model.html">SceneModel</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#e54a16c775818440b28d8f1739660f8b">m_sceneModel</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">QString&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#3c936af16c34b556701bd639a46d5532">m_oldNodeName</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#929df3232c27c8106a08ceed4b27d027">m_row</a></td></tr>
 
 </table>
+<hr><a name="_details"></a><h2>Detailed Description</h2>
+<a class="el" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a> class is the paste command stored in the command stack. 
+<p>
+<a class="el" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a> represents a single paste action on a scene, paste the node on the clipboard to selected node in the scene. If the <a class="el" href="namespacetgc.html#fa9b17e8584600916a7480330d47066745c32215929382351876bf6144847cb5">tgc::Shared</a> parameter defined to the command, the node at the clipboard is shared between the previous parents and the new parent. tgc::Copy to create a new node before the paste. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_copy.html" title="CmdCopy class is the copy command stored in the command stack.">CmdCopy</a>, <a class="el" href="class_cmd_cut.html" title="CmdCut class is the cut command stored in the command stack.">CmdCut</a>, <a class="el" href="class_cmd_delete.html">CmdDelete</a> </dd></dl>
 <hr><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" name="d85bed8ed753b25d7a773e246380fe43"></a><!-- doxytag: member="CmdPaste::CmdPaste" ref="d85bed8ed753b25d7a773e246380fe43" args="(tgc::PasteType type, const QModelIndex &amp;parentModelIndex, SoNode *&amp;coinClipboard, SceneModel &amp;sceneModel, QUndoCommand *parent=0)" -->
 <div class="memitem">
@@ -104,7 +113,7 @@
 
 <p>
 
-<p>References <a class="el" href="_instance_node_8h-source.html#l00069">InstanceNode::children</a>, <a class="el" href="_cmd_paste_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_paste_8h-source.html#l00064">m_row</a>, <a class="el" href="_cmd_paste_8h-source.html#l00063">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00077">InstanceNode::children</a>, <a class="el" href="_cmd_paste_8h-source.html#l00072">m_oldNodeName</a>, <a class="el" href="_cmd_paste_8h-source.html#l00069">m_parentInstance</a>, <a class="el" href="_cmd_paste_8h-source.html#l00073">m_row</a>, <a class="el" href="_cmd_paste_8h-source.html#l00071">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00225">SceneModel::NodeFromIndex()</a>, and <a class="el" href="tgf_8cpp-source.html#l00061">tgf::SevereError()</a>.</p>
 
 </div>
 </div><p>
@@ -145,7 +154,7 @@
 
 <p>
 
-<p>References <a class="el" href="_cmd_paste_8h-source.html#l00062">m_coinChild</a>, <a class="el" href="_cmd_paste_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_paste_8h-source.html#l00060">m_pasteType</a>, <a class="el" href="_cmd_paste_8h-source.html#l00064">m_row</a>, <a class="el" href="_cmd_paste_8h-source.html#l00063">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00601">SceneModel::Paste()</a>.</p>
+<p>References <a class="el" href="_instance_node_8h-source.html#l00077">InstanceNode::children</a>, <a class="el" href="_cmd_paste_8h-source.html#l00070">m_coinChild</a>, <a class="el" href="_cmd_paste_8h-source.html#l00072">m_oldNodeName</a>, <a class="el" href="_cmd_paste_8h-source.html#l00069">m_parentInstance</a>, <a class="el" href="_cmd_paste_8h-source.html#l00068">m_pasteType</a>, <a class="el" href="_cmd_paste_8h-source.html#l00073">m_row</a>, <a class="el" href="_cmd_paste_8h-source.html#l00071">m_sceneModel</a>, <a class="el" href="_scene_model_8cpp-source.html#l00613">SceneModel::Paste()</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00704">SceneModel::SetNodeName()</a>.</p>
 
 </div>
 </div><p>
@@ -166,7 +175,7 @@
 
 <p>
 
-<p>References <a class="el" href="_scene_model_8cpp-source.html#l00529">SceneModel::Cut()</a>, <a class="el" href="_cmd_paste_8h-source.html#l00061">m_coinParent</a>, <a class="el" href="_cmd_paste_8h-source.html#l00064">m_row</a>, and <a class="el" href="_cmd_paste_8h-source.html#l00063">m_sceneModel</a>.</p>
+<p>References <a class="el" href="_scene_model_8cpp-source.html#l00534">SceneModel::Cut()</a>, <a class="el" href="_cmd_paste_8h-source.html#l00070">m_coinChild</a>, <a class="el" href="_cmd_paste_8h-source.html#l00072">m_oldNodeName</a>, <a class="el" href="_cmd_paste_8h-source.html#l00069">m_parentInstance</a>, <a class="el" href="_cmd_paste_8h-source.html#l00073">m_row</a>, <a class="el" href="_cmd_paste_8h-source.html#l00071">m_sceneModel</a>, and <a class="el" href="_scene_model_8cpp-source.html#l00704">SceneModel::SetNodeName()</a>.</p>
 
 </div>
 </div><p>
@@ -184,16 +193,16 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00073">redo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00077">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00068">undo()</a>.</p>
 
 </div>
 </div><p>
-<a class="anchor" name="d28b529fafc91085a52da7acabaca4e7"></a><!-- doxytag: member="CmdPaste::m_coinParent" ref="d28b529fafc91085a52da7acabaca4e7" args="" -->
+<a class="anchor" name="3c936af16c34b556701bd639a46d5532"></a><!-- doxytag: member="CmdPaste::m_oldNodeName" ref="3c936af16c34b556701bd639a46d5532" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">SoBaseKit* <a class="el" href="class_cmd_paste.html#d28b529fafc91085a52da7acabaca4e7">CmdPaste::m_coinParent</a><code> [private]</code>          </td>
+          <td class="memname">QString <a class="el" href="class_cmd_paste.html#3c936af16c34b556701bd639a46d5532">CmdPaste::m_oldNodeName</a><code> [private]</code>          </td>
         </tr>
       </table>
 </div>
@@ -201,7 +210,24 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00047">CmdPaste()</a>, <a class="el" href="_cmd_paste_8cpp-source.html#l00073">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00067">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00047">CmdPaste()</a>, <a class="el" href="_cmd_paste_8cpp-source.html#l00077">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00068">undo()</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="05d9a5d7cca43e0a286480cd5af8527d"></a><!-- doxytag: member="CmdPaste::m_parentInstance" ref="05d9a5d7cca43e0a286480cd5af8527d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_instance_node.html">InstanceNode</a>* <a class="el" href="class_cmd_paste.html#05d9a5d7cca43e0a286480cd5af8527d">CmdPaste::m_parentInstance</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00047">CmdPaste()</a>, <a class="el" href="_cmd_paste_8cpp-source.html#l00077">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00068">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -218,7 +244,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00073">redo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00077">redo()</a>.</p>
 
 </div>
 </div><p>
@@ -235,7 +261,7 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00047">CmdPaste()</a>, <a class="el" href="_cmd_paste_8cpp-source.html#l00073">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00067">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00047">CmdPaste()</a>, <a class="el" href="_cmd_paste_8cpp-source.html#l00077">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00068">undo()</a>.</p>
 
 </div>
 </div><p>
@@ -252,14 +278,14 @@
 
 <p>
 
-<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00047">CmdPaste()</a>, <a class="el" href="_cmd_paste_8cpp-source.html#l00073">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00067">undo()</a>.</p>
+<p>Referenced by <a class="el" href="_cmd_paste_8cpp-source.html#l00047">CmdPaste()</a>, <a class="el" href="_cmd_paste_8cpp-source.html#l00077">redo()</a>, and <a class="el" href="_cmd_paste_8cpp-source.html#l00068">undo()</a>.</p>
 
 </div>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_cmd_paste_8h-source.html">CmdPaste.h</a><li><a class="el" href="_cmd_paste_8cpp.html">CmdPaste.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:57 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 27 10:54:41 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

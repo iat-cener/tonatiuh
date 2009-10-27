@@ -76,21 +76,20 @@
 <a name="l00044"></a>00044 
 <a name="l00045"></a><a class="code" href="struct_photon.html">00045</a> <span class="keyword">struct </span><a class="code" href="struct_photon.html">Photon</a>
 <a name="l00046"></a>00046 {
-<a name="l00047"></a>00047         <a class="code" href="struct_photon.html#962be18928ae3923586487eae3bd5ce0">Photon</a>();
-<a name="l00048"></a>00048         <a class="code" href="struct_photon.html#962be18928ae3923586487eae3bd5ce0">Photon</a>( <a class="code" href="struct_point3_d.html">Point3D</a> pos, <a class="code" href="struct_photon.html">Photon</a>* previous = 0, <a class="code" href="struct_photon.html">Photon</a>* next = 0, <span class="keywordtype">double</span> <span class="keywordtype">id</span> = 0 );
-<a name="l00049"></a>00049         <a class="code" href="struct_photon.html#bf7ea9e523933932c34ee51ebc5a54ff">~Photon</a>();
-<a name="l00050"></a>00050 
-<a name="l00051"></a><a class="code" href="struct_photon.html#cbcdbdc7c4e790ad054a42d2e5c3276b">00051</a>         <span class="keywordtype">double</span> <a class="code" href="struct_photon.html#cbcdbdc7c4e790ad054a42d2e5c3276b">m_id</a>;
-<a name="l00052"></a><a class="code" href="struct_photon.html#e083d3a0cbe6b1e8042b48c09d162939">00052</a>         <a class="code" href="struct_point3_d.html">Point3D</a> <a class="code" href="struct_photon.html#e083d3a0cbe6b1e8042b48c09d162939">m_pos</a>;
-<a name="l00053"></a><a class="code" href="struct_photon.html#5a96a11c2fdbf4d4ee2f6ea189655d51">00053</a>         <span class="keywordtype">short</span> <a class="code" href="struct_photon.html#5a96a11c2fdbf4d4ee2f6ea189655d51">m_plane</a>;
-<a name="l00054"></a><a class="code" href="struct_photon.html#5c5691562ef0ad41b631200b9ad7ef16">00054</a>         <a class="code" href="struct_photon.html">Photon</a>* <a class="code" href="struct_photon.html#5c5691562ef0ad41b631200b9ad7ef16">m_prev</a>;
-<a name="l00055"></a><a class="code" href="struct_photon.html#9ff3539de84d1bfbcab4734f25359dfc">00055</a>         <a class="code" href="struct_photon.html">Photon</a>* <a class="code" href="struct_photon.html#9ff3539de84d1bfbcab4734f25359dfc">m_next</a>;
-<a name="l00056"></a><a class="code" href="struct_photon.html#ecbba5902c2b7f44d9799f5e9258c8fb">00056</a>         <a class="code" href="class_instance_node.html">InstanceNode</a>* <a class="code" href="struct_photon.html#ecbba5902c2b7f44d9799f5e9258c8fb">m_intersectedSurface</a>;
-<a name="l00057"></a>00057 };
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="preprocessor">#endif </span><span class="comment">/*PHOTON_H_*/</span>
+<a name="l00047"></a>00047         <a class="code" href="struct_photon.html#bb32c621d67656222dfcaa3229b5d4b4">Photon</a>( <a class="code" href="struct_point3_d.html">Point3D</a> <a class="code" href="struct_photon.html#0b9d3e36a05650385c22dd56516ae98a">pos</a>, <a class="code" href="struct_photon.html">Photon</a>* previous = 0, <a class="code" href="struct_photon.html">Photon</a>* <a class="code" href="struct_photon.html#0cb621c0c8b39b133b14dd3384e15279">next</a> = 0, <span class="keywordtype">double</span> <span class="keywordtype">id</span> = 0 );
+<a name="l00048"></a>00048         <a class="code" href="struct_photon.html#bf7ea9e523933932c34ee51ebc5a54ff">~Photon</a>();
+<a name="l00049"></a>00049 
+<a name="l00050"></a><a class="code" href="struct_photon.html#e41a1c9420e23399c61d6963291627a8">00050</a>         <span class="keywordtype">double</span> <a class="code" href="struct_photon.html#e41a1c9420e23399c61d6963291627a8">id</a>;
+<a name="l00051"></a><a class="code" href="struct_photon.html#0b9d3e36a05650385c22dd56516ae98a">00051</a>         <a class="code" href="struct_point3_d.html">Point3D</a> pos;
+<a name="l00052"></a><a class="code" href="struct_photon.html#5a96a11c2fdbf4d4ee2f6ea189655d51">00052</a>         <span class="keywordtype">short</span> <a class="code" href="struct_photon.html#5a96a11c2fdbf4d4ee2f6ea189655d51">m_plane</a>;
+<a name="l00053"></a><a class="code" href="struct_photon.html#ce800fcced2c1c18b1077412c1abe2f4">00053</a>         <a class="code" href="struct_photon.html">Photon</a>* <a class="code" href="struct_photon.html#ce800fcced2c1c18b1077412c1abe2f4">prev</a>;
+<a name="l00054"></a><a class="code" href="struct_photon.html#0cb621c0c8b39b133b14dd3384e15279">00054</a>         <a class="code" href="struct_photon.html">Photon</a>* <a class="code" href="struct_photon.html#0cb621c0c8b39b133b14dd3384e15279">next</a>;
+<a name="l00055"></a><a class="code" href="struct_photon.html#8422b2aedfe4d79a166d9653325eb95c">00055</a>         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* <a class="code" href="struct_photon.html#8422b2aedfe4d79a166d9653325eb95c">intersectedSurface</a>;
+<a name="l00056"></a>00056 };
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058 <span class="preprocessor">#endif </span><span class="comment">/*PHOTON_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:56 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 27 10:54:40 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

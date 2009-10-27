@@ -76,7 +76,7 @@
 <a name="l00044"></a>00044 
 <a name="l00045"></a>00045 <span class="keyword">class </span><a class="code" href="class_document.html">Document</a>;
 <a name="l00046"></a>00046 <span class="keyword">class </span><a class="code" href="class_graphic_view.html" title="GraphicView class implements a 3D representation of items from a model.">GraphicView</a>;
-<a name="l00047"></a>00047 <span class="keyword">class </span><a class="code" href="class_instance_node.html">InstanceNode</a>;
+<a name="l00047"></a>00047 <span class="keyword">class </span><a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>;
 <a name="l00048"></a>00048 <span class="keyword">class </span>QDir;
 <a name="l00049"></a>00049 <span class="keyword">class </span>QUndoStack;
 <a name="l00050"></a>00050 <span class="keyword">class </span>QUndoView;
@@ -146,7 +146,7 @@
 <a name="l00119"></a>00119         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#2b3ccc53170cc52285706e0cc7fb0595">on_actionCalculateSunPosition_triggered</a>();
 <a name="l00120"></a>00120 
 <a name="l00121"></a>00121         <span class="comment">//Ray trace menu actions</span>
-<a name="l00122"></a>00122         <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#6017d43535c81c10e65a20163b7dac8a">ReadyForRaytracing</a>( <a class="code" href="class_instance_node.html">InstanceNode</a>*&amp; rootSeparatorInstance, <a class="code" href="class_instance_node.html">InstanceNode</a>*&amp; lightInstance, SoTransform*&amp; lightTransform, <a class="code" href="class_t_sun_shape.html">TSunShape</a>*&amp; sunShape, <a class="code" href="class_t_shape.html">TShape</a>*&amp; shape );
+<a name="l00122"></a>00122         <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#6017d43535c81c10e65a20163b7dac8a">ReadyForRaytracing</a>( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>*&amp; rootSeparatorInstance, <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>*&amp; lightInstance, SoTransform*&amp; lightTransform, <a class="code" href="class_t_sun_shape.html">TSunShape</a>*&amp; sunShape, <a class="code" href="class_t_shape.html">TShape</a>*&amp; shape );
 <a name="l00123"></a>00123         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#68dea9a15289cb06b948aa018e191f7f">ShowRaysIn3DView</a>();
 <a name="l00124"></a>00124         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#3a3636ca997995566b7c788800fc71d5">on_actionRayTraceRun_triggered</a>();
 <a name="l00125"></a>00125         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#b40e98eb702f8e85dcec079f50afa32e">on_actionDisplay_rays_toggled</a>();
@@ -207,80 +207,79 @@
 <a name="l00180"></a>00180     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#f3443b509edc90998b023816800e9e03">SetupActionInsertShape</a>( <a class="code" href="class_t_shape_factory.html">TShapeFactory</a>* pTShapeFactory );
 <a name="l00181"></a>00181     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a372c2f065bd4966d6ed725d856a677b">SetupActionInsertTracker</a>( <a class="code" href="class_t_tracker_factory.html">TTrackerFactory</a>* pTTrackerFactory );
 <a name="l00182"></a>00182     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#b1004b5fadcd42c7909818f73240d817">SetupMenus</a>();
-<a name="l00183"></a>00183     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#24a68115dfb4d53d912586f516620411">SetupToolBars</a>();
-<a name="l00184"></a>00184     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#cbebf78f381b85c3a250aa17f409ca18">SetupDocument</a>();
-<a name="l00185"></a>00185     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#81d65f755af509fb8574eb5fcc1d1716">SetupModels</a>();
-<a name="l00186"></a>00186     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#fd814f1f8fc7a5b7438a1530ccc2dd06">SetupViews</a>();
-<a name="l00187"></a>00187     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#eb6ec4b5c5920c57bca678edb640b4ee">SetupCommandView</a>();
-<a name="l00188"></a>00188     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#bd6b8d8fe35820e570e09ae9c02e3889">SetupGraphicView</a>();
-<a name="l00189"></a>00189         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#57237997e14649a1b262224942c758e0">SetupTreeView</a>();
-<a name="l00190"></a>00190         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9d69e5c426928351c97b68a999045380">SetupParametersView</a>();
-<a name="l00191"></a>00191         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#125a17b9b6e25e97065fb098144b914e">SetupSunposView</a>();
-<a name="l00192"></a>00192         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9778847c4afb9c0c201dc4a415497985">LoadPlugins</a>( );
-<a name="l00193"></a>00193     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#4abba2c52f756524c0f388d0d3e6d6ec">ReadSettings</a>();
-<a name="l00194"></a>00194     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#bbe5156b5f1a95ef1810964b6ad3a8ab">BuildFileList</a>( QDir parentDirectory, QStringList&amp; fileList );
-<a name="l00195"></a>00195 
-<a name="l00196"></a>00196     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#0130dcbfd54d8f640db7ba43d1267ac7">OkToContinue</a>();
-<a name="l00197"></a>00197     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#1f87ccf62d872d2e3667970097bd4a87">StartOver</a>( <span class="keyword">const</span> QString&amp; fileName );
-<a name="l00198"></a>00198     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#29aa2dc30d643263ac5df01ef9caefea">Save</a>();
-<a name="l00199"></a>00199     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#c16113ab28437528855f827c26c3f1eb">SaveFile</a>( <span class="keyword">const</span> QString&amp; fileName );
-<a name="l00200"></a>00200     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb">SaveAs</a>();
-<a name="l00201"></a>00201     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#562646f9a32f7ae72740d7fab9df88d6">SaveComponent</a>();
-<a name="l00202"></a>00202     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#ca13ca83a16deeaed049628ab0c9845d">Copy</a>();
-<a name="l00203"></a>00203     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#be736da971623f32da4172e9bef8af51">Paste</a>( <a class="code" href="namespacetgc.html#fa9b17e8584600916a7480330d470667">tgc::PasteType</a> type );
-<a name="l00204"></a>00204     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#2d186d27744e745241e98da35b00d97e">Cut</a>();
-<a name="l00205"></a>00205     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#230457e230b7b901d8af4c13d3f3489c">Delete</a>();
-<a name="l00206"></a>00206     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9d6225870dd477b8a56a85e8ab2ce36f">SetCurrentFile</a>( <span class="keyword">const</span> QString&amp; fileName );
-<a name="l00207"></a>00207     QString <a class="code" href="class_main_window.html#67786e7bcc0b50d4805bb000606aadb5">StrippedName</a>( <span class="keyword">const</span> QString&amp; fullFileName );
-<a name="l00208"></a>00208     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#e9a9900a62aa2e9e2934200e18cbe6e6">UpdateRecentFileActions</a>();
-<a name="l00209"></a>00209     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#56a5e4d5e0a022e8c1ecf350d2916ade">WriteSettings</a>();
-<a name="l00210"></a>00210     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a86327e2ed8ed2b5cb791d7f2fe62629">message</a>();
-<a name="l00211"></a>00211     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#2a292da90bf7a99c6d4ec9455af74721">GetShapeTransformations</a>( SoBaseKit* coinNode, SbViewportRegion region, std::map&lt; <a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>*, QList&lt; Transform &gt; &gt;&amp; objectToWorld, std::map&lt; <a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>*, QList&lt; Transform &gt; &gt;&amp; worldToObject );
-<a name="l00212"></a>00212         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#1ac75f45c347bde30dff160dd3a6641b">ComputeSceneTreeMap</a>( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap&lt; <a class="code" href="class_instance_node.html">InstanceNode</a>*,QPair&lt; SbBox3f, Transform* &gt; &gt;* sceneMap );
-<a name="l00213"></a>00213         SoSeparator* <a class="code" href="class_main_window.html#3fd37a4cf2a2eeb3da1b0c3ad4a03781">createGrid</a>( <span class="keywordtype">int</span> size );
-<a name="l00214"></a>00214 
-<a name="l00215"></a><a class="code" href="class_main_window.html#0ee5fdf298d8f30b5e29418348ecaacf6b5e54edc5e8694537d581e0c5786e18">00215</a>     <span class="keyword">enum</span> { <a class="code" href="class_main_window.html#0ee5fdf298d8f30b5e29418348ecaacf6b5e54edc5e8694537d581e0c5786e18">m_maxRecentFiles</a> = 7 };
-<a name="l00216"></a><a class="code" href="class_main_window.html#0c70bc3bad812c334ce8bed6c22304f2">00216</a>     QString <a class="code" href="class_main_window.html#0c70bc3bad812c334ce8bed6c22304f2">m_currentFile</a>;
-<a name="l00217"></a><a class="code" href="class_main_window.html#b228d2c53bd13b3b9ab75aa54bca6f07">00217</a>     QStringList <a class="code" href="class_main_window.html#b228d2c53bd13b3b9ab75aa54bca6f07">m_recentFiles</a>;
-<a name="l00218"></a><a class="code" href="class_main_window.html#c7540082efc31fc156d68595f52aa5d9">00218</a>     QAction** <a class="code" href="class_main_window.html#c7540082efc31fc156d68595f52aa5d9">m_recentFileActions</a>;<span class="comment">//[m_maxRecentFiles];</span>
-<a name="l00219"></a><a class="code" href="class_main_window.html#ac330847249812f4671b3020521e42b3">00219</a>     <a class="code" href="class_document.html">Document</a>* <a class="code" href="class_main_window.html#ac330847249812f4671b3020521e42b3">m_document</a>;
-<a name="l00220"></a><a class="code" href="class_main_window.html#7a64a21a4103e253f2690304d8ca393a">00220</a>     QUndoStack* <a class="code" href="class_main_window.html#7a64a21a4103e253f2690304d8ca393a">m_commandStack</a>;
-<a name="l00221"></a><a class="code" href="class_main_window.html#e9a01cf1a871c740907dba3a84e40875">00221</a>     QUndoView* <a class="code" href="class_main_window.html#e9a01cf1a871c740907dba3a84e40875">m_commandView</a>;
-<a name="l00222"></a><a class="code" href="class_main_window.html#264db575ba0acaa9241d47b2bd8eee24">00222</a>     QToolBar* <a class="code" href="class_main_window.html#264db575ba0acaa9241d47b2bd8eee24">m_materialsToolBar</a>;
-<a name="l00223"></a><a class="code" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">00223</a>     QToolBar* <a class="code" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">m_photonMapToolBar</a>;
-<a name="l00224"></a><a class="code" href="class_main_window.html#c32f6e73637a6d64974d507277ab7e7e">00224</a>     QToolBar* <a class="code" href="class_main_window.html#c32f6e73637a6d64974d507277ab7e7e">m_shapeToolBar</a>;
-<a name="l00225"></a><a class="code" href="class_main_window.html#fd2183050a6ce3cbc844141ed4953f74">00225</a>     QToolBar* <a class="code" href="class_main_window.html#fd2183050a6ce3cbc844141ed4953f74">m_trackersToolBar</a>;
-<a name="l00226"></a>00226 
-<a name="l00227"></a><a class="code" href="class_main_window.html#165c439314446ab2e09f5f658bcf03c4">00227</a>         QVector&lt; TPhotonMapFactory* &gt; <a class="code" href="class_main_window.html#165c439314446ab2e09f5f658bcf03c4">m_TPhotonMapFactoryList</a>;
-<a name="l00228"></a><a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">00228</a>     QVector&lt; TShapeFactory* &gt; <a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">m_TFlatShapeFactoryList</a>;
-<a name="l00229"></a><a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">00229</a>         QVector&lt; TSunShapeFactory* &gt; <a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">m_TSunshapeFactoryList</a>;
-<a name="l00230"></a>00230 
-<a name="l00231"></a><a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">00231</a>     <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">m_sceneModel</a>;
-<a name="l00232"></a><a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">00232</a>     QItemSelectionModel* <a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">m_selectionModel</a>;
-<a name="l00233"></a>00233 
-<a name="l00234"></a><a class="code" href="class_main_window.html#de079cf083cf1593f43653dabb2d6633">00234</a>     <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>* <a class="code" href="class_main_window.html#de079cf083cf1593f43653dabb2d6633">m_photonMap</a>;
-<a name="l00235"></a><a class="code" href="class_main_window.html#ebbc667a188b29ea3d1852050792eb77">00235</a>     <span class="keywordtype">int</span> <a class="code" href="class_main_window.html#ebbc667a188b29ea3d1852050792eb77">m_selectedPhotonMap</a>;
-<a name="l00236"></a><a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">00236</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">m_increasePhotonMap</a>;
-<a name="l00237"></a>00237 
-<a name="l00238"></a><a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">00238</a>     SoSeparator* <a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">m_pRays</a>;
-<a name="l00239"></a><a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">00239</a>     SoSeparator* <a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">m_pGrid</a>;
-<a name="l00240"></a><a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">00240</a>     <a class="code" href="class_random_deviate.html">RandomDeviate</a>* <a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">m_pRand</a>;
-<a name="l00241"></a><a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">00241</a>     SoNode* <a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">m_coinNode_Buffer</a>;
-<a name="l00242"></a><a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">00242</a>     QStringList* <a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">m_manipulators_Buffer</a>;
-<a name="l00243"></a><a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">00243</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">m_tracedRays</a>;
-<a name="l00244"></a><a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">00244</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">m_raysPerIteration</a>;
-<a name="l00245"></a><a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">00245</a>     <span class="keywordtype">double</span> <a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">m_fraction</a>;
-<a name="l00246"></a><a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">00246</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">m_drawPhotons</a>;
-<a name="l00247"></a><a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">00247</a>     std::vector&lt;GraphicView*&gt; <a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">m_graphicView</a>;
-<a name="l00248"></a><a class="code" href="class_main_window.html#4a29e336a31faf1ea06b1060c7f352a7">00248</a>     <a class="code" href="class_scene_model_view.html">SceneModelView</a>* <a class="code" href="class_main_window.html#4a29e336a31faf1ea06b1060c7f352a7">m_treeView</a>;
-<a name="l00249"></a><a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">00249</a>     <span class="keywordtype">int</span> <a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">m_focusView</a>;
-<a name="l00250"></a>00250 
-<a name="l00251"></a>00251 };
-<a name="l00252"></a>00252 
-<a name="l00253"></a>00253 <span class="preprocessor">#endif</span>
-<a name="l00254"></a>00254 <span class="preprocessor"></span>
+<a name="l00183"></a>00183     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#cbebf78f381b85c3a250aa17f409ca18">SetupDocument</a>();
+<a name="l00184"></a>00184     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#81d65f755af509fb8574eb5fcc1d1716">SetupModels</a>();
+<a name="l00185"></a>00185     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#fd814f1f8fc7a5b7438a1530ccc2dd06">SetupViews</a>();
+<a name="l00186"></a>00186     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#eb6ec4b5c5920c57bca678edb640b4ee">SetupCommandView</a>();
+<a name="l00187"></a>00187     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#bd6b8d8fe35820e570e09ae9c02e3889">SetupGraphicView</a>();
+<a name="l00188"></a>00188         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#57237997e14649a1b262224942c758e0">SetupTreeView</a>();
+<a name="l00189"></a>00189         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9d69e5c426928351c97b68a999045380">SetupParametersView</a>();
+<a name="l00190"></a>00190         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#125a17b9b6e25e97065fb098144b914e">SetupSunposView</a>();
+<a name="l00191"></a>00191         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9778847c4afb9c0c201dc4a415497985">LoadPlugins</a>( );
+<a name="l00192"></a>00192     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#4abba2c52f756524c0f388d0d3e6d6ec">ReadSettings</a>();
+<a name="l00193"></a>00193     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#bbe5156b5f1a95ef1810964b6ad3a8ab">BuildFileList</a>( QDir parentDirectory, QStringList&amp; fileList );
+<a name="l00194"></a>00194 
+<a name="l00195"></a>00195     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#0130dcbfd54d8f640db7ba43d1267ac7">OkToContinue</a>();
+<a name="l00196"></a>00196     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#1f87ccf62d872d2e3667970097bd4a87">StartOver</a>( <span class="keyword">const</span> QString&amp; fileName );
+<a name="l00197"></a>00197     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#29aa2dc30d643263ac5df01ef9caefea">Save</a>();
+<a name="l00198"></a>00198     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#c16113ab28437528855f827c26c3f1eb">SaveFile</a>( <span class="keyword">const</span> QString&amp; fileName );
+<a name="l00199"></a>00199     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb">SaveAs</a>();
+<a name="l00200"></a>00200     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#562646f9a32f7ae72740d7fab9df88d6">SaveComponent</a>();
+<a name="l00201"></a>00201     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#ca13ca83a16deeaed049628ab0c9845d">Copy</a>();
+<a name="l00202"></a>00202     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#be736da971623f32da4172e9bef8af51">Paste</a>( <a class="code" href="namespacetgc.html#fa9b17e8584600916a7480330d470667">tgc::PasteType</a> type );
+<a name="l00203"></a>00203     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#2d186d27744e745241e98da35b00d97e">Cut</a>();
+<a name="l00204"></a>00204     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#230457e230b7b901d8af4c13d3f3489c">Delete</a>();
+<a name="l00205"></a>00205     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#9d6225870dd477b8a56a85e8ab2ce36f">SetCurrentFile</a>( <span class="keyword">const</span> QString&amp; fileName );
+<a name="l00206"></a>00206     QString <a class="code" href="class_main_window.html#67786e7bcc0b50d4805bb000606aadb5">StrippedName</a>( <span class="keyword">const</span> QString&amp; fullFileName );
+<a name="l00207"></a>00207     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#e9a9900a62aa2e9e2934200e18cbe6e6">UpdateRecentFileActions</a>();
+<a name="l00208"></a>00208     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#56a5e4d5e0a022e8c1ecf350d2916ade">WriteSettings</a>();
+<a name="l00209"></a>00209     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a86327e2ed8ed2b5cb791d7f2fe62629">message</a>();
+<a name="l00210"></a>00210     <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#2a292da90bf7a99c6d4ec9455af74721">GetShapeTransformations</a>( SoBaseKit* coinNode, SbViewportRegion region, std::map&lt; <a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>*, QList&lt; Transform &gt; &gt;&amp; objectToWorld, std::map&lt; <a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>*, QList&lt; Transform &gt; &gt;&amp; worldToObject );
+<a name="l00211"></a>00211         <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#1ac75f45c347bde30dff160dd3a6641b">ComputeSceneTreeMap</a>( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap&lt; <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>*,QPair&lt; SbBox3f, Transform* &gt; &gt;* sceneMap );
+<a name="l00212"></a>00212         SoSeparator* <a class="code" href="class_main_window.html#3fd37a4cf2a2eeb3da1b0c3ad4a03781">createGrid</a>( <span class="keywordtype">int</span> size );
+<a name="l00213"></a>00213 
+<a name="l00214"></a><a class="code" href="class_main_window.html#0ee5fdf298d8f30b5e29418348ecaacf6b5e54edc5e8694537d581e0c5786e18">00214</a>     <span class="keyword">enum</span> { <a class="code" href="class_main_window.html#0ee5fdf298d8f30b5e29418348ecaacf6b5e54edc5e8694537d581e0c5786e18">m_maxRecentFiles</a> = 7 };
+<a name="l00215"></a><a class="code" href="class_main_window.html#0c70bc3bad812c334ce8bed6c22304f2">00215</a>     QString <a class="code" href="class_main_window.html#0c70bc3bad812c334ce8bed6c22304f2">m_currentFile</a>;
+<a name="l00216"></a><a class="code" href="class_main_window.html#b228d2c53bd13b3b9ab75aa54bca6f07">00216</a>     QStringList <a class="code" href="class_main_window.html#b228d2c53bd13b3b9ab75aa54bca6f07">m_recentFiles</a>;
+<a name="l00217"></a><a class="code" href="class_main_window.html#c7540082efc31fc156d68595f52aa5d9">00217</a>     QAction** <a class="code" href="class_main_window.html#c7540082efc31fc156d68595f52aa5d9">m_recentFileActions</a>;<span class="comment">//[m_maxRecentFiles];</span>
+<a name="l00218"></a><a class="code" href="class_main_window.html#ac330847249812f4671b3020521e42b3">00218</a>     <a class="code" href="class_document.html">Document</a>* <a class="code" href="class_main_window.html#ac330847249812f4671b3020521e42b3">m_document</a>;
+<a name="l00219"></a><a class="code" href="class_main_window.html#7a64a21a4103e253f2690304d8ca393a">00219</a>     QUndoStack* <a class="code" href="class_main_window.html#7a64a21a4103e253f2690304d8ca393a">m_commandStack</a>;
+<a name="l00220"></a><a class="code" href="class_main_window.html#e9a01cf1a871c740907dba3a84e40875">00220</a>     QUndoView* <a class="code" href="class_main_window.html#e9a01cf1a871c740907dba3a84e40875">m_commandView</a>;
+<a name="l00221"></a><a class="code" href="class_main_window.html#264db575ba0acaa9241d47b2bd8eee24">00221</a>     QToolBar* <a class="code" href="class_main_window.html#264db575ba0acaa9241d47b2bd8eee24">m_materialsToolBar</a>;
+<a name="l00222"></a><a class="code" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">00222</a>     QToolBar* <a class="code" href="class_main_window.html#d8dd318a0a6fae0a88fea139b7cf6730">m_photonMapToolBar</a>;
+<a name="l00223"></a><a class="code" href="class_main_window.html#c32f6e73637a6d64974d507277ab7e7e">00223</a>     QToolBar* <a class="code" href="class_main_window.html#c32f6e73637a6d64974d507277ab7e7e">m_shapeToolBar</a>;
+<a name="l00224"></a><a class="code" href="class_main_window.html#fd2183050a6ce3cbc844141ed4953f74">00224</a>     QToolBar* <a class="code" href="class_main_window.html#fd2183050a6ce3cbc844141ed4953f74">m_trackersToolBar</a>;
+<a name="l00225"></a>00225 
+<a name="l00226"></a><a class="code" href="class_main_window.html#165c439314446ab2e09f5f658bcf03c4">00226</a>         QVector&lt; TPhotonMapFactory* &gt; <a class="code" href="class_main_window.html#165c439314446ab2e09f5f658bcf03c4">m_TPhotonMapFactoryList</a>;
+<a name="l00227"></a><a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">00227</a>     QVector&lt; TShapeFactory* &gt; <a class="code" href="class_main_window.html#081b609cb757f7d1c54c0c0a6dc3119a">m_TFlatShapeFactoryList</a>;
+<a name="l00228"></a><a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">00228</a>         QVector&lt; TSunShapeFactory* &gt; <a class="code" href="class_main_window.html#f73c8f86ab383e387f7860f87d49d369">m_TSunshapeFactoryList</a>;
+<a name="l00229"></a>00229 
+<a name="l00230"></a><a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">00230</a>     <a class="code" href="class_scene_model.html">SceneModel</a>* <a class="code" href="class_main_window.html#b89bce44d3675cc5873090eaed22aa4c">m_sceneModel</a>;
+<a name="l00231"></a><a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">00231</a>     QItemSelectionModel* <a class="code" href="class_main_window.html#98a6d9dc7eeec9e1dbfa565a81f1ffa9">m_selectionModel</a>;
+<a name="l00232"></a>00232 
+<a name="l00233"></a><a class="code" href="class_main_window.html#de079cf083cf1593f43653dabb2d6633">00233</a>     <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>* <a class="code" href="class_main_window.html#de079cf083cf1593f43653dabb2d6633">m_photonMap</a>;
+<a name="l00234"></a><a class="code" href="class_main_window.html#ebbc667a188b29ea3d1852050792eb77">00234</a>     <span class="keywordtype">int</span> <a class="code" href="class_main_window.html#ebbc667a188b29ea3d1852050792eb77">m_selectedPhotonMap</a>;
+<a name="l00235"></a><a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">00235</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#76d791ffbf68a0106ae41dd4feb17792">m_increasePhotonMap</a>;
+<a name="l00236"></a>00236 
+<a name="l00237"></a><a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">00237</a>     SoSeparator* <a class="code" href="class_main_window.html#f1f3a1979c2ce25cf5ee262c84c12851">m_pRays</a>;
+<a name="l00238"></a><a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">00238</a>     SoSeparator* <a class="code" href="class_main_window.html#b536738324b330da42e557f9a775e935">m_pGrid</a>;
+<a name="l00239"></a><a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">00239</a>     <a class="code" href="class_random_deviate.html">RandomDeviate</a>* <a class="code" href="class_main_window.html#469322cebf166b117a2078a8859c2e92">m_pRand</a>;
+<a name="l00240"></a><a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">00240</a>     SoNode* <a class="code" href="class_main_window.html#b9899cbf01248df1eda7ed837a6e325a">m_coinNode_Buffer</a>;
+<a name="l00241"></a><a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">00241</a>     QStringList* <a class="code" href="class_main_window.html#35889f0af973290b10642fc784671530">m_manipulators_Buffer</a>;
+<a name="l00242"></a><a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">00242</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#be0f98269b75ab4d27c9ba53d1de84f9">m_tracedRays</a>;
+<a name="l00243"></a><a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">00243</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_main_window.html#38348f046ecfa90834c3b4f69cb7f8d1">m_raysPerIteration</a>;
+<a name="l00244"></a><a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">00244</a>     <span class="keywordtype">double</span> <a class="code" href="class_main_window.html#e2366dc4baaae3d293cddb26954ab5a8">m_fraction</a>;
+<a name="l00245"></a><a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">00245</a>     <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#edf5d31cacc29a2fd2fb0aa0004786df">m_drawPhotons</a>;
+<a name="l00246"></a><a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">00246</a>     std::vector&lt;GraphicView*&gt; <a class="code" href="class_main_window.html#b030c131dd5148f1e3da90ca04fa1494">m_graphicView</a>;
+<a name="l00247"></a><a class="code" href="class_main_window.html#4a29e336a31faf1ea06b1060c7f352a7">00247</a>     <a class="code" href="class_scene_model_view.html">SceneModelView</a>* <a class="code" href="class_main_window.html#4a29e336a31faf1ea06b1060c7f352a7">m_treeView</a>;
+<a name="l00248"></a><a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">00248</a>     <span class="keywordtype">int</span> <a class="code" href="class_main_window.html#c2bbe59d31ededc16ca986ef99e04579">m_focusView</a>;
+<a name="l00249"></a>00249 
+<a name="l00250"></a>00250 };
+<a name="l00251"></a>00251 
+<a name="l00252"></a>00252 <span class="preprocessor">#endif</span>
+<a name="l00253"></a>00253 <span class="preprocessor"></span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:56 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 27 10:54:40 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

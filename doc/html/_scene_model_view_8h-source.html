@@ -92,16 +92,19 @@
 <a name="l00060"></a>00060     <span class="keywordtype">void</span> <a class="code" href="class_scene_model_view.html#39586ebc3e94e96b718ef7a9132508eb">dragMoveEvent</a>(QDragMoveEvent *event);
 <a name="l00061"></a>00061     <span class="keywordtype">void</span> <a class="code" href="class_scene_model_view.html#47eaef2d362b718e45208e096b3c72cd">dropEvent</a>(QDropEvent *event);
 <a name="l00062"></a>00062 
-<a name="l00063"></a>00063 <span class="keyword">private</span>:
-<a name="l00064"></a>00064     <span class="keywordtype">void</span> <a class="code" href="class_scene_model_view.html#81ca294f1fa5b55eccfb9ead5f350487">startDrag</a>(QMouseEvent *event);
-<a name="l00065"></a>00065     
-<a name="l00066"></a><a class="code" href="class_scene_model_view.html#7a00e84e5b9646f1ba2f8a9dd1b8f28d">00066</a>     QPoint <a class="code" href="class_scene_model_view.html#7a00e84e5b9646f1ba2f8a9dd1b8f28d">startPos</a>;
-<a name="l00067"></a>00067     
-<a name="l00068"></a>00068 };
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODELVIEW_H_*/</span>
+<a name="l00063"></a>00063 <span class="keyword">protected</span> slots:
+<a name="l00064"></a>00064         <span class="keywordtype">void</span> <a class="code" href="class_scene_model_view.html#2ada106dc4b25581ae129534e0690e1c">resizeViewToContents</a>( <span class="keyword">const</span> QModelIndex&amp; index );
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066 <span class="keyword">private</span>:
+<a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="class_scene_model_view.html#81ca294f1fa5b55eccfb9ead5f350487">startDrag</a>(QMouseEvent *event);
+<a name="l00068"></a>00068     
+<a name="l00069"></a><a class="code" href="class_scene_model_view.html#7a00e84e5b9646f1ba2f8a9dd1b8f28d">00069</a>     QPoint <a class="code" href="class_scene_model_view.html#7a00e84e5b9646f1ba2f8a9dd1b8f28d">startPos</a>;
+<a name="l00070"></a>00070     
+<a name="l00071"></a>00071 };
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODELVIEW_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 6 17:35:56 2009 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Oct 27 10:54:40 2009 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
