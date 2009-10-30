@@ -55,7 +55,7 @@ public:
 	virtual QString getIcon() = 0;
 		
 	void Disconnect();
-	void SetAzimuthAngle( SoSFDouble& azimuthField );
+	void SetAzimuthAngle( SoSFDouble* azimuthField );
 	void SetZenithAngle( SoSFDouble& zenithField );
 	void SetSceneKit( SoSceneKit* scene );
 
@@ -71,8 +71,7 @@ protected:
 	SoSceneKit* m_scene;
 
 private:
-  virtual void evaluate() = 0;
-
+	virtual void evaluate() = 0;
 
 };
 

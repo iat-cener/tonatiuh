@@ -1833,23 +1833,26 @@ void MainWindow::showMenu( const QModelIndex& index)
   	popupmenu.addAction(actionPaste_Copy);
   	popupmenu.addAction(actionPaste_Link);
   	popupmenu.addAction(actionDelete);
-
+  	QMenu transformMenu( "Convert to ", &popupmenu );
 	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		popupmenu.addAction( tr("Convert to SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
-		popupmenu.addAction( tr("Convert to SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
-		popupmenu.addAction( tr("Convert to SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
-		popupmenu.addAction( tr("Convert to SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
-		popupmenu.addAction( tr("Convert to SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
-		popupmenu.addAction( tr("Convert to SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
-		popupmenu.addAction( tr("Convert to SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
+		//QMenu transformMenu( &popupmenu );
+		//transformMenu.setTitle( "Convert to ");
+		popupmenu.addAction( transformMenu.menuAction() );
+		transformMenu.addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
+		transformMenu.addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
+		transformMenu.addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
+		transformMenu.addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
+		transformMenu.addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
+		transformMenu.addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
+		transformMenu.addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
 
 		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
 		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
 		SoType transformType = transform->getTypeId();
 
       	//Manipuladores
-		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	popupmenu.addAction( tr("Convert to SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
+		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu.addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
 
 	}
 

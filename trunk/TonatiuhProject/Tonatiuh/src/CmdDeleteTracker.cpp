@@ -87,7 +87,7 @@ void CmdDeleteTracker::undo()
 	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
 	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null node transform." );
 
-	m_tracker->SetAzimuthAngle( lightKit->azimuth );
+	m_tracker->SetAzimuthAngle( &lightKit->azimuth );
 	m_tracker->SetZenithAngle( lightKit->zenith );
 	parentTransform->rotation.connectFrom( &m_tracker->outputRotation );
 
