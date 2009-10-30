@@ -229,8 +229,8 @@ void ShapeFlatRectangle::generatePrimitives(SoAction *action)
     if( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
 
-	const int rows = 50; // Number of points per row
-    const int columns = 50; // Number of points per column
+	const int rows = 10; // Number of points per row
+    const int columns = 10; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
     float vertex[totalPoints][6];
