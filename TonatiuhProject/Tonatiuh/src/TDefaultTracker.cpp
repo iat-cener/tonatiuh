@@ -36,52 +36,63 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <Inventor/engines/SoSubEngine.h>
-#include <Inventor/SbLinear.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include <QString>
-
-#include <cmath>
 
 #include "TDefaultTracker.h"
 #include "Trace.h"
 
 SO_NODEENGINE_SOURCE( TDefaultTracker );
 
+/**
+ * Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system.
+ *
+ */
 void TDefaultTracker::initClass()
 {
 	Trace trace( "TDefaultTracker::initClass", false );
-	SO_NODEENGINE_INIT_CLASS( TDefaultTracker, TTracker, "Tracker" );
+	SO_NODEENGINE_INIT_CLASS( TDefaultTracker, TTracker, "TTracker" );
 }
 
+/**
+ * TDefaultTracker constructor
+ */
 TDefaultTracker::TDefaultTracker()
 {
 	Trace trace( "TDefaultTracker::TDefaultTracker", false );
 
-	SO_NODE_CONSTRUCTOR(TDefaultTracker);
+	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
 
 	// Define input fields and their default values
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation );
 }
 
+/**
+ * TDefaultTracker destructor
+ */
 TDefaultTracker::~TDefaultTracker()
 {
 	Trace trace( "TDefaultTracker::~TDefaultTracker", false );
 }
+
+/**
+ * Returns the icon that represents the TDefaultTracker.
+ */
 QString TDefaultTracker::getIcon()
 {
 	Trace trace( "TDefaultTracker::getIcon", false );
 	return QString(":/icons/HorizontalTracker.png");
 }
 
-
+/**
+ * Computes the rotation ouput.
+ */
 void TDefaultTracker::evaluate()
 {
 	Trace trace( "TDefaultTracker::evaluate", false );
 
-    SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
+   SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
 
 }
-

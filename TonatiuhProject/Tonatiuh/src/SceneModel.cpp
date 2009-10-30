@@ -811,6 +811,12 @@ QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
     	if( !coinPartList ) tgf::SevereError( "IndexFromPath Null coinPartList." );
 
     	int row = coinPartList->findChild(coinNode);
+    	if( coinParent->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+		{
+
+    		//TSeparatorKit* parentSeparator = dynamic_cast< TSeparatorKit* >( coinParent );
+    		if( coinParent->getPart( "tracker", false ) ) row++;
+		}
 		if(coinNodePath.getNodeFromTail(1) == m_coinScene )
 		{
 			int child = 0;

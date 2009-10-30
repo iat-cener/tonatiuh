@@ -40,6 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 
+#include <iostream>
+
 #include "CmdInsertTracker.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
@@ -78,17 +80,17 @@ void CmdInsertTracker::undo()
 	m_pModel->RemoveCoinNode( m_row, *m_coinParent );
 }
 
+/**
+ *
+ */
 void CmdInsertTracker::redo()
 {
 	Trace trace( "CmdInsertTracker::redo", false );
 
-	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
-	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null parentTransform." );
 	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
-	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart("transform", true ) );
 
-	m_tracker->SetAzimuthAngle( lightKit->azimuth );
+	m_tracker->SetAzimuthAngle( &lightKit->azimuth );
 	m_tracker->SetZenithAngle( lightKit->zenith );
-    m_row = m_pModel->InsertCoinNode( *m_tracker, *m_coinParent );
+	m_row = m_pModel->InsertCoinNode( *m_tracker, *m_coinParent );
 
 }
