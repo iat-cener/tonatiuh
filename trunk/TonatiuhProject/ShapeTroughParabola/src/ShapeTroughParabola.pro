@@ -27,13 +27,10 @@ HEADERS = *.h \
            	$$(TONATIUH_ROOT)/src/RefCount.h \
            	$$(TONATIUH_ROOT)/src/tgf.h \
            	$$(TONATIUH_ROOT)/src/TMaterial.h \
-			$$(TONATIUH_ROOT)/src/TPhotonMap.h \
-           	$$(TONATIUH_ROOT)/src/Trace.h \
+           	$$(TONATIUH_ROOT)/src/Trace.h  \
            	$$(TONATIUH_ROOT)/src/Transform.h \
-           	$$(TONATIUH_ROOT)/src/TSeparatorKit.h \
-           	$$(TONATIUH_ROOT)/src/TShape.h \
-           	$$(TONATIUH_ROOT)/src/TShapeKit.h \ 
-           	$$(TONATIUH_ROOT)/src/TTracker.h \ 
+           	$$(TONATIUH_ROOT)/src/TShape.h \ 
+           	$$(TONATIUH_ROOT)/src/TShapeKit.h \
            	$$(TONATIUH_ROOT)/src/Vector3D.h
 
 SOURCES = *.cpp \
@@ -41,20 +38,17 @@ SOURCES = *.cpp \
            	$$(TONATIUH_ROOT)/src/DifferentialGeometry.cpp \
  			$$(TONATIUH_ROOT)/src/InstanceNode.cpp \
            	$$(TONATIUH_ROOT)/src/Matrix4x4.cpp \
-           	$$(TONATIUH_ROOT)/src/NormalVector.cpp \
+           	$$(TONATIUH_ROOT)/src/NormalVector.cpp \ 
            	$$(TONATIUH_ROOT)/src/Photon.cpp \
            	$$(TONATIUH_ROOT)/src/Point3D.cpp \
            	$$(TONATIUH_ROOT)/src/Ray.cpp \
            	$$(TONATIUH_ROOT)/src/RefCount.cpp \
            	$$(TONATIUH_ROOT)/src/tgf.cpp \
-			$$(TONATIUH_ROOT)/src/TPhotonMap.cpp \
            	$$(TONATIUH_ROOT)/src/TMaterial.cpp \
-           	$$(TONATIUH_ROOT)/src/Trace.cpp \
+           	$$(TONATIUH_ROOT)/src/Trace.cpp  \
            	$$(TONATIUH_ROOT)/src/Transform.cpp \
-           	$$(TONATIUH_ROOT)/src/TSeparatorKit.cpp \
-           	$$(TONATIUH_ROOT)/src/TShape.cpp \
+           	$$(TONATIUH_ROOT)/src/TShape.cpp \ 
            	$$(TONATIUH_ROOT)/src/TShapeKit.cpp \
-           	$$(TONATIUH_ROOT)/src/TTracker.cpp \ 
            	$$(TONATIUH_ROOT)/src/Vector3D.cpp
 
 RESOURCES += ShapeTroughParabola.qrc
