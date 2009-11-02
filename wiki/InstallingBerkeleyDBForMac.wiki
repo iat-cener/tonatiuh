@@ -9,7 +9,7 @@ Oracle Berkeley DB is the industry-leading open source, embeddable database engi
 Download the latest stable version of the Berkeley DB from the [http://www.oracle.com/technology/software/products/berkeley-db/index.html link] to your home directory. Open a shell and extract downloaded files typing:
 
 {{{
-tar -xzvf db-4.7.25.tar.gz
+tar -xvf db-4.7.25.tar
 }}}
 
 Change to the build directory with:
@@ -17,9 +17,23 @@ Change to the build directory with:
 cd db-4.7.25/build_unix
 }}}
 
-To configure the Berkeley DB type the following command:
+To configure the Berkeley DB on release mode type the following command:
 {{{
 ../dist/configure --enable-cxx --prefix=/usr/local
+make
+make install
+}}}
+
+Now, before start creating debug library clean all. Type: 
+{{{
+make clean
+}}}
+
+And then generate debug library: 
+{{{
+../dist/configure --enable-cxx --enable-debug --prefix=/usr/local
+make
+make install
 }}}
 
 
