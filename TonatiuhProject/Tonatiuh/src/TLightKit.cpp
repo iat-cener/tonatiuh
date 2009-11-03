@@ -55,19 +55,26 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 SO_KIT_SOURCE(TLightKit);
 
+/**
+ * Initializates TLightKit componets
+ */
 void TLightKit::initClass()
 {
 	SO_KIT_INIT_CLASS(TLightKit, SoLightKit, "LightKit");
 }
 
+
+/**
+ * Creates a new TLightKit.
+ */
 TLightKit::TLightKit()
 {
 	Trace trace( "TLightKit::TLightKit()", false );
 	SO_KIT_CONSTRUCTOR(TLightKit);
 
-	SO_KIT_ADD_CATALOG_ENTRY(sunshapelabel, SoLabel, TRUE, this, "", TRUE);
-	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, TSunShape, TDefaultSunShape, TRUE, this, sunshapelabel, TRUE);
-	SO_KIT_CHANGE_ENTRY_TYPE(icon, TShape, TSquare );
+	//SO_KIT_ADD_CATALOG_ENTRY(sunshapelabel, SoLabel, TRUE, this, "", TRUE);
+	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, TSunShape, TDefaultSunShape, TRUE, transformGroup, "", TRUE);
+	//SO_KIT_CHANGE_ENTRY_TYPE(icon, TShape, TSquare );
 
 
 	SO_NODE_ADD_FIELD( azimuth, (0.0) );
@@ -83,6 +90,9 @@ TLightKit::TLightKit()
 	setPart( "transform", transform );
 }
 
+/**
+ * Destructor.
+ */
 TLightKit::~TLightKit()
 {
 
@@ -139,6 +149,12 @@ void TLightKit::ChangePosition( double newAzimuth, double newZenith, double newD
 
 }
 
+/*!
+ * Returns local time at \a time, \a zenith, and the localization \a longitue and \a latitude.
+ * \a longitude  and \a latitude are in degrees.
+ *
+ * \sa ChangePosition()
+ */
 void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* latitude )
 {
 	Trace trace( "TLightKit::GetPositionData" , false );

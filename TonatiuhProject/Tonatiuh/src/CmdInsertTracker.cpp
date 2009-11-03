@@ -58,7 +58,7 @@ CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& paren
 	if( !m_tracker ) tgf::SevereError( "CmdInsertTracker Null tracker." );
 	m_tracker->ref();
 
-	if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdInsertTracker Null lightKit." );
+	//if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdInsertTracker Null lightKit." );
 
 	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertTracker called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
@@ -81,16 +81,18 @@ void CmdInsertTracker::undo()
 }
 
 /**
- *
+ *Inserts the tracker in the scene model.
  */
 void CmdInsertTracker::redo()
 {
 	Trace trace( "CmdInsertTracker::redo", false );
 
 	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
-
-	m_tracker->SetAzimuthAngle( &lightKit->azimuth );
-	m_tracker->SetZenithAngle( lightKit->zenith );
+	if( lightKit )
+	{
+		m_tracker->SetAzimuthAngle( &lightKit->azimuth );
+		m_tracker->SetZenithAngle( &lightKit->zenith );
+	}
 	m_row = m_pModel->InsertCoinNode( *m_tracker, *m_coinParent );
 
 }

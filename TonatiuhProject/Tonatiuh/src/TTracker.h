@@ -56,10 +56,15 @@ public:
 		
 	void Disconnect();
 	void SetAzimuthAngle( SoSFDouble* azimuthField );
-	void SetZenithAngle( SoSFDouble& zenithField );
+	void SetZenithAngle( SoSFDouble* zenithField );
 	void SetSceneKit( SoSceneKit* scene );
 
-	SoEngineOutput outputRotation;
+	SoEngineOutput  outputTranslation;
+	SoEngineOutput  outputRotation;
+	SoEngineOutput  outputScaleFactor;
+	SoEngineOutput  outputScaleOrientation ;
+	SoEngineOutput  outputCenter;
+
 	 
 protected:
 	//Constructor

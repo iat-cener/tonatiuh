@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <iostream>
 #include <Inventor/engines/SoSubEngine.h>
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFVec3f.h>
 
 #include <QString>
 
@@ -66,7 +68,11 @@ TDefaultTracker::TDefaultTracker()
 	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
 
 	// Define input fields and their default values
-	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation );
+	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
+	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
+	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
+	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
+	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
 }
 
 /**
@@ -93,6 +99,13 @@ void TDefaultTracker::evaluate()
 {
 	Trace trace( "TDefaultTracker::evaluate", false );
 
-   SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
+	if( !m_azimuth.isConnected() ) return;
+	if( !m_zenith.isConnected() ) return;
+
+	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
+	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
+	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( 1.0, 1.0, 1.0 ) );
+	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
+	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
 
 }

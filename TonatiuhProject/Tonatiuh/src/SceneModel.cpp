@@ -79,6 +79,7 @@ void SceneModel::SetCoinRoot( SoSelection& coinRoot )
 {
 	Trace trace( "SceneModel::SetCoinRoot", false );
 	m_coinRoot = &coinRoot;
+	m_mapCoinQt.clear();
 }
 
 /*!
@@ -90,6 +91,7 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 {
 	Trace trace( "SceneModel::SetCoinScene", false );
 
+	m_mapCoinQt.clear();
     m_coinScene = &coinScene;
     delete m_instanceRoot;
     m_instanceRoot = new InstanceNode( m_coinScene );
@@ -438,6 +440,20 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 
 	m_coinScene->setPart( "lightList[0]", &coinLight );
 
+	SoSearchAction* tracersSearch = new SoSearchAction();
+	tracersSearch->setType( TTracker::getClassTypeId() );
+	tracersSearch->setInterest( SoSearchAction::ALL);
+	tracersSearch->apply( m_coinRoot );
+	SoPathList& trackersPath = tracersSearch->getPaths();
+
+	for( int index = 0; index <trackersPath.getLength(); index++ )
+	{
+		SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
+		TTracker* tracker = dynamic_cast< TTracker* >( trackerPath->getTail() );
+		tracker->SetAzimuthAngle( &coinLight.azimuth );
+		tracker->SetZenithAngle( &coinLight.zenith );
+	}
+
 	InstanceNode* instanceLight = new InstanceNode( &coinLight );
 	m_instanceRoot->InsertChild( 0, instanceLight );
 
@@ -490,8 +506,20 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 
 	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "lightList", true ) );
     if ( lightList ) lightList->removeChild( &coinLight );
-
     m_instanceRoot->children.removeAt( 0 );
+
+	SoSearchAction* tracersSearch = new SoSearchAction();
+	tracersSearch->setType( TTracker::getClassTypeId() );
+	tracersSearch->setInterest( SoSearchAction::ALL);
+	tracersSearch->apply( m_coinRoot );
+	SoPathList& trackersPath = tracersSearch->getPaths();
+
+	for( int index = 0; index <trackersPath.getLength(); index++ )
+	{
+		SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
+		TTracker* tracker = dynamic_cast< TTracker* >( trackerPath->getTail() );
+		tracker->Disconnect();
+	}
 
 	emit LightNodeStateChanged( 0 );
     emit layoutChanged();
@@ -701,26 +729,28 @@ bool SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 }
 
 
-bool SceneModel::SetNodeName( SoNode& coinChild, QString newName )
+bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 {
 	Trace trace( "SceneModel::SetNodeName", false );
 
-	QList< InstanceNode* > nodeInstances = m_mapCoinQt[ &coinChild ];
+	QList< InstanceNode* > nodeInstances = m_mapCoinQt[ coinChild ];
 	if( nodeInstances.size() == 0 ) return false;
 
 	QList< InstanceNode* > instancesParent;
 	for( int index = 0; index < nodeInstances.size(); index++ )
 	{
+
 		InstanceNode* instance = nodeInstances[index];
 		QList< InstanceNode* > parentChildren = instance->GetParent()->children;
 		int childIndex = parentChildren.indexOf( instance );
 		for( int child = 0; child < parentChildren.size(); child++ )
 		{
+
 			SbName idChildName = parentChildren[child]->GetNode()->getName();
 			if( child!= childIndex && idChildName == newName.toStdString().c_str() )	return false;
 		}
 	}
-	coinChild.setName( newName.toStdString().c_str() );
+	coinChild->setName( newName.toStdString().c_str() );
 
 
 	emit layoutChanged();

@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TDEFAULTTRACKER_H_
 #define TDEFAULTTRACKER_H_
 
-#include <Inventor/fields/SoSFRotation.h> 
 
 #include "TTracker.h"
 
