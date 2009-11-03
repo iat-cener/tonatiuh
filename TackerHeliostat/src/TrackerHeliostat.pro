@@ -3,7 +3,7 @@ CONFIG       += plugin debug_and_release
 
 INCLUDEPATH += 	. \
 				src \
-				../Tonatiuh/src \
+				$$(TONATIUH_ROOT)src \
 				$$(TDE_ROOT)/local/include
 
 win32{

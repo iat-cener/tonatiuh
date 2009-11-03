@@ -75,7 +75,13 @@ TrackerHeliostat::TrackerHeliostat()
 	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
 	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
 	SO_NODE_ADD_FIELD( aimingPoint, ( 0.0, 0.0, 0.0 ) );
-	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation );
+
+
+	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
+	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
+	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
+	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
+	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
 
 
 }
@@ -142,6 +148,10 @@ void TrackerHeliostat::evaluate()
 	SbRotation rotation = xRotation;
 	rotation *= yRotation;
 
+	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
 	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rotation ) );
+	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( 1.0, 1.0, 1.0 ) );
+	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
+	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
 
 }
