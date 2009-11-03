@@ -89,11 +89,22 @@ SbBool  TSeparatorKit::setPart(const SbName& partname, SoNode* from )
     	SoTransform* parentTransform = static_cast< SoTransform* > ( getPart("transform", true ) );
     	if( !parentTransform ) return false;
 
-    	if( !from )	parentTransform->rotation.disconnect();
+    	if( !from )
+    	{
+    		parentTransform->translation.disconnect();
+    		parentTransform->rotation.disconnect();
+    		parentTransform->scaleFactor.disconnect();
+    		parentTransform->scaleOrientation.disconnect();
+    		parentTransform->center.disconnect();
+    	}
     	else
     	{
         	TTracker* trackerNode = dynamic_cast< TTracker* >( from );
+        	parentTransform->translation.connectFrom( &trackerNode->outputTranslation );
         	parentTransform->rotation.connectFrom( &trackerNode->outputRotation );
+        	parentTransform->scaleFactor.connectFrom( &trackerNode->outputScaleFactor );
+        	parentTransform->scaleOrientation.connectFrom( &trackerNode->outputScaleOrientation );
+        	parentTransform->center.connectFrom( &trackerNode->outputCenter );
     	}
     }
 

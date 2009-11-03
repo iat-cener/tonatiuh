@@ -78,10 +78,10 @@ void TTracker::SetAzimuthAngle( SoSFDouble* azimuthField )
 
 }
 
-void TTracker::SetZenithAngle( SoSFDouble& zenithField )
+void TTracker::SetZenithAngle( SoSFDouble* zenithField )
 {
 	Trace trace( "TTracker::SetZenithAngle", false );
-	m_zenith.connectFrom( &zenithField );
+	m_zenith.connectFrom( zenithField );
 }
 
 void TTracker::SetSceneKit( SoSceneKit* scene )

@@ -81,7 +81,7 @@ public:
     bool Cut( SoBaseKit& coinParent, int row );
 	bool Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinChild, int row );
 
-	bool SetNodeName( SoNode& coinChild, QString newName );
+	bool SetNodeName( SoNode* coinChild, QString newName );
 
 	InstanceNode* NodeFromIndex( const QModelIndex& modelIndex ) const;
 	QModelIndex IndexFromPath( const SoNodeKitPath& coinNodePath ) const;

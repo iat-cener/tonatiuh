@@ -44,6 +44,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class SceneModel;
 class SoSceneKit;
 class TLightKit;
+class TShape;
+class TSunShape;
 
 //!  CmdLightKitModified class is the light definition command stored in the command stack.
 /*!
@@ -62,10 +64,16 @@ public:
      virtual void redo();
 
 private:
-	TLightKit* m_pPreviousLightKit;
-	TLightKit* m_pNewLightKit;
-	SoSceneKit* m_scene;
-	SceneModel* m_pModel;
+     bool m_previousLightKit;
+     double m_previousAzimuth;
+     double m_previousZenith;
+     double m_previousDistance;
+     TShape* m_pPreviousShape;
+     TSunShape* m_pPreviousSunShape;
+     //TLightKit* m_pPreviousLightKit;
+     TLightKit* m_pNewLightKit;
+     SoSceneKit* m_scene;
+     SceneModel* m_pModel;
 };
 
 #endif /*CMDLIGHTKITMODIFIED_H_*/

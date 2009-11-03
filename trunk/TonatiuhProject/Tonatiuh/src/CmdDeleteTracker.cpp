@@ -48,13 +48,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSeparatorKit.h"
 #include "TTracker.h"
 
-
+/**
+ * Contructor.
+ */
 CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit* scene, SceneModel& model, QUndoCommand* parent )
 : QUndoCommand("Delete", parent), m_tracker( 0 ),  m_coinParent( 0 ),  m_scene( scene ), m_pModel( &model ), m_row( 0 )
 {
 	Trace trace( "CmdDeleteTracker::CmdDeleteTracker", false );
 
-	if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdDeleteTracker Null lightKit." );
+	//if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdDeleteTracker Null lightKit." );
 
 	if( !selectedIndex.isValid() ) tgf::SevereError( "CmdDeleteTracker called with invalid ModelIndex." );
 	InstanceNode* instanceSelection = m_pModel->NodeFromIndex( selectedIndex );
@@ -71,6 +73,9 @@ CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit
 
 }
 
+/**
+ * Destructor.
+ */
 CmdDeleteTracker::~CmdDeleteTracker()
 {
 	Trace trace( "CmdDeleteTracker::~CmdDeleteTracker", false );
@@ -78,28 +83,48 @@ CmdDeleteTracker::~CmdDeleteTracker()
 	m_tracker->unref();
 }
 
+/**
+ * Restores the tracker to the state before deletion.
+ * \sa redo
+ */
 void CmdDeleteTracker::undo()
 {
 	Trace trace( "CmdDeleteTracker::undo", false );
 
-	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
 
 	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
 	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null node transform." );
 
-	m_tracker->SetAzimuthAngle( &lightKit->azimuth );
-	m_tracker->SetZenithAngle( lightKit->zenith );
+	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
+	if( lightKit )
+	{
+		m_tracker->SetAzimuthAngle( &lightKit->azimuth );
+		m_tracker->SetZenithAngle( &lightKit->zenith );
+	}
+
+	parentTransform->translation.connectFrom( &m_tracker->outputTranslation );
 	parentTransform->rotation.connectFrom( &m_tracker->outputRotation );
+	parentTransform->scaleFactor.connectFrom( &m_tracker->outputScaleFactor );
+	parentTransform->scaleOrientation.connectFrom( &m_tracker->outputScaleOrientation );
+	parentTransform->center.connectFrom( &m_tracker->outputCenter );
 
 	m_pModel->Paste( tgc::Shared, *m_coinParent, *m_tracker, m_row );
 }
 
+/**
+ * Deletes a tracker from the scene.
+ * \sa undo
+ */
 void CmdDeleteTracker::redo( )
 {
-	Trace trace( "CmdDeleteTracker::redo", true );
+	Trace trace( "CmdDeleteTracker::redo", false );
 
 	SoTransform* transform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
+	transform->translation.disconnect();
 	transform->rotation.disconnect();
+	transform->scaleFactor.disconnect();
+	transform->scaleOrientation.disconnect();
+	transform->center.disconnect();
 	m_tracker->Disconnect();
 
 	m_pModel->Cut( *m_coinParent, m_row );

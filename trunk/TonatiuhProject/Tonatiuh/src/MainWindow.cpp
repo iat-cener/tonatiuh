@@ -99,6 +99,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SceneModel.h"
 #include "LightDialog.h"
 #include "SunPositionCalculatorDialog.h"
+#include "TDefaultTracker.h"
 #include "tgf.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
@@ -205,8 +206,8 @@ void MainWindow::SetupModels()
 {
     Trace trace( "MainWindow::SetupModels", false );
     m_sceneModel = new SceneModel();
-    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
     m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
+    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
     m_selectionModel = new QItemSelectionModel( m_sceneModel );
 
     connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ), this, SLOT( SetEnabled_SunPositionCalculator( int ) ) );
@@ -363,11 +364,6 @@ void MainWindow::SetupTreeView()
 
     	if ( m_treeView )
     	{
-    		connect( m_treeView, SIGNAL( collapsed( const QModelIndex& ) ),
-    				m_treeView, SLOT ( resizeColumnToContents ( 0 ) ) );
-    		connect( m_treeView, SIGNAL( expanded ( const QModelIndex& ) ),
-    				m_treeView, SLOT ( resizeColumnToContents ( 0 ) ) );
-
 
     		NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
    			m_treeView->setItemDelegate( delegate );
@@ -756,7 +752,7 @@ void MainWindow::on_actionNode_triggered()
 
 		int count = 1;
 		QString nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
-		while ( !m_sceneModel->SetNodeName( *separatorKit, nodeName ) )
+		while ( !m_sceneModel->SetNodeName( separatorKit, nodeName ) )
 		{
 			count++;
 			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
@@ -793,7 +789,7 @@ void MainWindow::on_actionShapeKit_triggered()
 
 		int count = 1;
 		QString nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
-		while ( !m_sceneModel->SetNodeName( *shapeKit, nodeName ) )
+		while ( !m_sceneModel->SetNodeName( shapeKit, nodeName ) )
 		{
 			count++;
 			nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
@@ -855,7 +851,7 @@ void MainWindow::on_actionUserComponent_triggered()
 //Sun Light menu actions
 void MainWindow::on_actionDefine_SunLight_triggered()
 {
-	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", true );
+	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", false );
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
@@ -1444,7 +1440,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	}
 
 	SoSceneKit* scene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", false ) );
+	/*TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", false ) );
 	if( !lightKit )
 	{
 		QMessageBox::information( this, "Tonatiuh Action",
@@ -1459,7 +1455,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 		QMessageBox::information( this, "Tonatiuh Action",
 										  "Delete previous tracker before define a new one", 1);
 				return;
-	}
+	}*/
 
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
 	tracker->SetSceneKit( scene );

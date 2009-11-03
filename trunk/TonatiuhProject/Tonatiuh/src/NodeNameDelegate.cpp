@@ -119,7 +119,7 @@ void NodeNameDelegate::setModelData(QWidget* editor, QAbstractItemModel* /*model
 
 	SoNode* coinNode =m_pModel->NodeFromIndex( index )->GetNode();
 
-	bool changed = m_pModel->SetNodeName( *coinNode, textEdit->text() );
+	bool changed = m_pModel->SetNodeName( coinNode, textEdit->text() );
 	if( !changed )
 	{
 		QMessageBox::critical( 0, "Tonatiuh Action", "Tonatiuh can not change the name to node. There is a node with the same name. Define other name" );

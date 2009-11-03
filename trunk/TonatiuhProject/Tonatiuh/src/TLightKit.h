@@ -46,10 +46,44 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "TSunShape.h"
 
+
+/*!
+  \class TLightKit TLightKit.h TLightKit.h
+  \brief The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents the sun light.
+
+
+  The TLightKit structure:
+  \verbatim
+  CLASS TLightKit
+  -->"this"
+        "callbackList"
+  -->   "transformGroup"
+  -->      "transform"
+  -->      "light"
+  -->      "iconSeparator"
+  -->         "icon"
+  -->      "tsunshape"
+  \endverbatim
+
+  Detailed information on catalog parts:
+  \verbatim
+  CLASS TLightKit
+  PVT   "this",  TLightKit  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "transformGroup",  SoTransformSeparator  ---
+        "transform",  SoTransform  ---
+        "light",  SoLight  --- , (default type = SoDirectionalLight)
+  PVT   "iconSeparator",  SoSeparator  ---
+        "icon",  SoNode  --- , (default type = SoCube)
+        "tsunshape",  TSunShape  --- , (default type = TDefaultSunShape)
+  \endverbatim
+
+*/
+
 class TLightKit : public SoLightKit
 {
     SO_KIT_HEADER(TLightKit);
- 	SO_KIT_CATALOG_ENTRY_HEADER(sunshapelabel);
+ 	//SO_KIT_CATALOG_ENTRY_HEADER(sunshapelabel);
  	SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
 
 

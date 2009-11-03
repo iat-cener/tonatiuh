@@ -71,7 +71,7 @@ void CmdPaste::undo()
 
 	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
 	m_sceneModel->Cut( *coinParent, m_row );
-	m_sceneModel->SetNodeName( *m_coinChild, m_oldNodeName );
+	m_sceneModel->SetNodeName( m_coinChild, m_oldNodeName );
 }
 
 void CmdPaste::redo( )
@@ -85,7 +85,7 @@ void CmdPaste::redo( )
 
 	int count = 0;
 	QString newName = m_oldNodeName;
-	while ( !m_sceneModel->SetNodeName( *newNode, newName ) )
+	while ( !m_sceneModel->SetNodeName( newNode, newName ) )
 	{
 		count++;
 		newName = QString( "%1_copy%2").arg( m_oldNodeName, QString::number( count) );

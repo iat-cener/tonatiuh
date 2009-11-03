@@ -53,7 +53,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
-: QUndoCommand("Modify LightKit", parent), m_pPreviousLightKit( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
+: QUndoCommand("Modify LightKit", parent),m_previousLightKit( false ), m_previousAzimuth( 0 ), m_previousZenith( 0 ), m_previousDistance( 0 ),  m_pPreviousShape( 0 ), m_pPreviousSunShape( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
 {
     Trace trace( "CmdLightKitModified::CmdLightKitModified", false );
 
@@ -61,11 +61,20 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
     m_pNewLightKit->ref();
 
-    if( m_scene->getPart("lightList[0]", false) )
+    if( m_scene->getPart("lightList[0]", false ) )
     {
+    	m_previousLightKit = true;
     	TLightKit* lightKit = dynamic_cast< TLightKit* >( m_scene->getPart("lightList[0]", false ) );
-    	m_pPreviousLightKit = dynamic_cast< TLightKit* >( lightKit->copy( true ) );
-    	m_pPreviousLightKit->ref();
+
+    	m_previousAzimuth = lightKit->azimuth.getValue();
+    	m_previousZenith = lightKit->zenith.getValue();
+    	m_previousDistance = lightKit->distance.getValue();
+
+    	m_pPreviousShape = dynamic_cast< TShape* >( lightKit->getPart( "icon", false )->copy( true ) );
+    	m_pPreviousShape->ref();
+
+    	m_pPreviousSunShape = dynamic_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
+    	m_pPreviousSunShape->ref();
     }
 }
 
@@ -76,7 +85,11 @@ CmdLightKitModified::~CmdLightKitModified()
 {
 	Trace trace( "CmdLightKitModified::~CmdLightKitModified", false );
 	m_pNewLightKit->unref();
-	m_pPreviousLightKit->unref();
+	if( m_previousLightKit )
+	{
+		m_pPreviousShape->unref();
+		m_pPreviousSunShape->unref();
+	}
 }
 
 /*!
@@ -87,22 +100,14 @@ void CmdLightKitModified::undo()
 {
 	Trace trace( "CmdLightKitModified::undo", false );
 
-    if( m_pPreviousLightKit )
+    if( m_previousLightKit )
     {
     	TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
-
-   		TShape* shape = static_cast< TShape* > ( m_pPreviousLightKit->getPart("icon", false) );
-   		lightKit->setPart("icon", shape );
-
-   		TSunShape* sunhape = static_cast< TSunShape* > ( m_pPreviousLightKit->getPart("tsunshape", false) );
-   		lightKit->setPart("tsunshape", sunhape );
-
-   		lightKit->ChangePosition( m_pPreviousLightKit->azimuth.getValue(), m_pPreviousLightKit->zenith.getValue(), m_pPreviousLightKit->distance.getValue() );
+    	lightKit->setPart( "icon", m_pPreviousShape );
+   		lightKit->setPart("tsunshape", m_pPreviousSunShape );
+   		lightKit->ChangePosition( m_previousAzimuth, m_previousZenith, m_previousDistance );
     }
-    else
-    {
-    	m_pModel->RemoveLightNode( *m_pNewLightKit );
-    }
+    else	m_pModel->RemoveLightNode( *m_pNewLightKit );
 }
 
 /*!
@@ -112,9 +117,9 @@ void CmdLightKitModified::undo()
 
 void CmdLightKitModified::redo( )
 {
-	Trace trace( "CmdLightKitModified::redo", false );
+	Trace trace( "CmdLightKitModified::redo", true );
 
-   if( !m_pPreviousLightKit )
+   if( !m_previousLightKit )
    	{
    		 m_pModel->InsertLightNode( *m_pNewLightKit );
    	}
