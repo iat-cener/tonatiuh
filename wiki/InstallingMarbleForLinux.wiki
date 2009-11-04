@@ -25,7 +25,44 @@ cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
 To build the library type:
 {{{
 make
-make install
 }}}
+
+Copy marble include files to the folder "/local/include/marble".
+{{{
+mkdir /usr/local/include/marble
+cp src/lib/*.h /usr/local/include/marble
+cp src/lib/AbstractLayer/*.h /usr/local/include/marble
+cp src/lib/geodata/*.h /usr/local/include/marble
+cp src/lib/geodata/data/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble
+cp src/lib/geodata/parser/*.h /usr/local/include/marble
+cp src/lib/geodata/scene/*.h /usr/local/include/marble
+cp src/lib/gps/*.h /usr/local/include/marble
+cp src/lib/Projections/*.h /usr/local/include/marble
+}}}
+
+Copy main library files to the appropriate "/usr/local" folders.
+{{{
+cp src/lib/libmarblewidget.so* /usr/local/lib
+}}}
+
+Copy mable plugins to the folder "/usr/local/bin/marble".
+{{{
+mkdir /usr/local/lib/marble
+mkdir /usr/local/lib/marble/plugins
+cp src/plugins/network/qnam/libQNamNetworkPlugin.so  /usr/local/bin/marble/plugins
+cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble/plugins
+cp src/plugins/render/crosshairs/libCrosshairsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/geodata/libGeoRendererPlugin.so /usr/local/bin/marble
+cp src/plugins/render/graticule/libGraticulePlugin.so /usr/local/bin/marble
+cp src/plugins/render/mapscale/libMapScaleFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/navigation/libNavigationFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libOverviewMap.so /usr/local/bin/marble
+cp src/plugins/render/photo/libPhoto.so /usr/local/bin/marble
+cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
+}}}
+file:///root/Desktop/marble/src/plugins/render/wikipedia/libWikipedia.so
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
