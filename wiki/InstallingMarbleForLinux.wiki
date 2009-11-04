@@ -62,7 +62,7 @@ cp src/plugins/render/navigation/libNavigationFloatItem.so /usr/local/bin/marble
 cp src/plugins/render/overviewmap/libOverviewMap.so /usr/local/bin/marble
 cp src/plugins/render/photo/libPhoto.so /usr/local/bin/marble
 cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/wikipedia/libWikipedia.so /usr/local/bin/marble
 }}}
-file:///root/Desktop/marble/src/plugins/render/wikipedia/libWikipedia.so
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
