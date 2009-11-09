@@ -11,8 +11,8 @@ First, build Tonatiuh.
  * Expand C/C++ Build and select Environment properties.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/tonatiuhPropertiesWindows.png]
  * Add new variables: 
-  ** Name: TDE_ROOT, Value: C:/msys/usr.
-  ** Name: PATH, Value: C:/MinGW/bin;C:/msys/usr/qt/bin;C:/msys/usr/local/bin.
+  ** Name: TDE_ROOT, Value: C:/sde/msys/usr.
+  ** Name: PATH, Value: C:/sde/MinGW/bin;C:/sde/msys/usr/qt/bin;C:/sde/msys/usr/local/bin.
   ** Name: QMAKESPEC, Value: win32-g++.
  * On Settings select PE Windows Parser.
  * Apply changes. Ok to finish with properties.
