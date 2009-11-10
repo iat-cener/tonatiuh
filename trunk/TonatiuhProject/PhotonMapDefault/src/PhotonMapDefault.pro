@@ -5,14 +5,11 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-win32{
-	DEFINES+= COIN_DLL SOQT_DLL
-}
+include( $$(TONATIUH_ROOT)/config.pri)
 
 INCLUDEPATH += . \
 			src \
-			$$(TONATIUH_ROOT)/src\ 
-			$$(TDE_ROOT)/local/include 
+			$$(TONATIUH_ROOT)/src
 
 # Input
 HEADERS = *.h \
@@ -57,19 +54,12 @@ RESOURCES += PhotonMapDefault.qrc
 TARGET        = PhotonMapDefault
 
 contains(TEMPLATE,lib) {  
+
 	CONFIG(debug, debug|release) {
 		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/PhotonMapDefault	
-		unix {
-			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
-			TARGET = $$member(TARGET, 0)_debug
-		}
-		else {
-			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
-			TARGET = $$member(TARGET, 0)d
-		}
+
 	}
 	else { 
-		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/PhotonMapDefault
 	}
 }
