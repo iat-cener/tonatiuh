@@ -2,16 +2,12 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-INCLUDEPATH += 	. \
-				src \
-				$$(TONATIUH_ROOT)/src \
-				$$(TDE_ROOT)/local/include
+include( $$(TONATIUH_ROOT)/config.pri)
+
+INCLUDEPATH += . \
+			src \
+			$$(TONATIUH_ROOT)/src
 			
-win32 {
-	DEFINES+= COIN_DLL SOQT_DLL
-}
-
-
 # Input
 HEADERS = *.h \ 
 			$$(TONATIUH_ROOT)/src/BBox.h \
@@ -51,24 +47,12 @@ SOURCES = *.cpp  \
 
 RESOURCES += ShapeCone.qrc	
 		
-
-DESTDIR       = ..\Tonatiuh\plugins\ShapeCone\
 TARGET        = ShapeCone
 
-contains(TEMPLATE,lib) {  
-	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeCone	
-		unix {
-			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
-			TARGET = $$member(TARGET, 0)_debug
-		}
-		else {
-			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
-			TARGET = $$member(TARGET, 0)d
-		}
-	}
-	else { 
-		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeCone
-	}
+CONFIG(debug, debug|release) {
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeCone	
 }
+else { 
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeCone
+}
+
