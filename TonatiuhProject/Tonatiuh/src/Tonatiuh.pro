@@ -4,22 +4,18 @@
  
 TEMPLATE = app
 CONFIG       += qt warn_on thread debug_and_release 
-#CONFIG -=app_bundle
-TARGET =   
 
-VERSION = 0.9beta
+include( ../config.pri )
+TARGET =   
 
 DEPENDPATH += . \
               src 
 QT += xml opengl svg
 
-INCLUDEPATH += . \
-			src \
-			src/icons 
+
  
 win32: {
 	RC_FILE = Tonatiuh.rc
-    DEFINES+= COIN_DLL SOQT_DLL 
 }
 
 mac:{
@@ -34,18 +30,9 @@ RESOURCES += tonatiuh.qrc
  
 
 CONFIG(debug, debug|release) {
-	INCLUDEPATH += $$(TDE_ROOT)/local/include \
-				$$(TDE_ROOT)/local/include/marble
 	DESTDIR = ../Tonatiuh/bin/debug
-	unix  {
-		LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt_debug -lCoin_debug -lmarblewidget_debug 
-	}	
-	else: LIBS += -L$$(TDE_ROOT)/local/lib -lSoQtd -lCoind -lmarblewidgetd
 }
 else{
-	INCLUDEPATH += $$(TDE_ROOT)/local/include \
-				$$(TDE_ROOT)/local/include/marble
 	DESTDIR=../Tonatiuh/bin/release
-	LIBS += -L$$(TDE_ROOT)/local/lib -lSoQt -lCoin -lmarblewidget
 }
 	
