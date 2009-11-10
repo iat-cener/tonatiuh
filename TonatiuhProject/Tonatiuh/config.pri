@@ -1,21 +1,34 @@
 
 VERSION = 0.9.2
 
+COINDIR = $$(TDE_ROOT)/local
+MARBLEDIR = $$(TDE_ROOT)/local
+BERKELEYDBDIR = $$(TDE_ROOT)/local
+
 INCLUDEPATH += 	. \
 				src \
-				$$(TDE_ROOT)/local \
-				$$(TDE_ROOT)/local/include
+				$${COINDIR}/include 
 
 win32 {
 	DEFINES+= COIN_DLL SOQT_DLL
 }
 
 
+LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
+
 contains( CONFIG, plugin ){  
-	LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
+
+	CONFIG(debug, debug|release) {	
+		unix {
+			TARGET = $$member(TARGET, 0)_debug
+		}
+		else {
+			TARGET = $$member(TARGET, 0)d
+		}
+	}
 }
 else{
-	INCLUDEPATH += $$(TDE_ROOT)/local/include/marble
-	LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt -lmarblewidget
+	INCLUDEPATH += $${MARBLEDIR}/include/marble
+	LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
 }
 
