@@ -5,16 +5,12 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
+include( $$(TONATIUH_ROOT)/config.pri )
+
 				
 INCLUDEPATH += . \
 				src \
-				$$(TONATIUH_ROOT)/src \ 
-				$$(TDE_ROOT)/local/include
-
-win32{
-	DEFINES+= COIN_DLL SOQT_DLL
-}
-
+				$$(TONATIUH_ROOT)/src 
 
 # Input
 HEADERS = *.h \
@@ -62,16 +58,13 @@ contains(TEMPLATE,lib) {
 	CONFIG(debug, debug|release) {
 		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/MaterialGeneric	
 		unix {
-			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin_debug -lSoQt_debug
 			TARGET = $$member(TARGET, 0)_debug
 		}
 		else {
-			LIBS +=-L$$(TDE_ROOT)/local/lib -lCoind -lSoQtd
 			TARGET = $$member(TARGET, 0)d
 		}
 	}
 	else { 
-		LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/MaterialGeneric
 	}
 }
