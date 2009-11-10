@@ -246,15 +246,11 @@ void PhotonMapDB::StoreRay( Photon* rayFirstPhoton )
 		photonData.surface = m_surfaceURL_ID.value( rayFirstPhoton->intersectedSurface );
 	}
 
-
-	DbTxn* txn = 0;
-	m_dbEnv->txn_begin( NULL, &txn, 0 );
-
 	db_recno_t recnoID = (db_recno_t ) rayFirstPhoton->id;
 	Dbt key( &recnoID, sizeof( recnoID ) );
 	Dbt data( &photonData, sizeof( PHOTON ) );
 
-	int ret = m_photonMapDB->put( txn, &key, &data, DB_APPEND );
+	int ret = m_photonMapDB->put( NULL, &key, &data, DB_APPEND );
 	if( ret == DB_KEYEXIST )	m_photonMapDB->err( ret, "Put failed because key %f already exists", rayFirstPhoton->id );
 
 	m_storedPhotons++;
@@ -280,7 +276,7 @@ void PhotonMapDB::StoreRay( Photon* rayFirstPhoton )
 		Dbt key( &recnoID, sizeof( recnoID ) );
 				Dbt data( &photonData, sizeof( PHOTON ) );
 
-		int ret = m_photonMapDB->put( txn, &key, &data, DB_APPEND );
+		int ret = m_photonMapDB->put( NULL, &key, &data, DB_APPEND );
 
 		if( ret == DB_KEYEXIST )	m_photonMapDB->err( ret, "Put failed because key %f already exists", currentNode->id );
 
@@ -290,8 +286,6 @@ void PhotonMapDB::StoreRay( Photon* rayFirstPhoton )
 	}
 
 	delete currentNode;
-
-	txn->commit( 0 );
 }
 
 /**
@@ -354,13 +348,12 @@ void PhotonMapDB::Open()
 		QString spmFileName = dbDir.absoluteFilePath( "PhotonMap.sdb ");
 
 		//Open the database: concurrently usable by multiple threads
-		m_photonMapDB->open( NULL, pmFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE | DB_AUTO_COMMIT, 0 );
-		//m_photonMapDB->open( NULL, pmFileName.toStdString().c_str(), NULL, DB_QUEUE, DB_CREATE | DB_AUTO_COMMIT , 0 );
-		//m_photonMapDB->open(NULL, pmFileName.toStdString().c_str(), NULL, DB_BTREE, DB_CREATE , 0 );
-		m_surfacesDB->open( NULL, sFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE | DB_AUTO_COMMIT, 0 );
+		//m_photonMapDB->open( NULL, pmFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE | DB_AUTO_COMMIT, 0 );
+		m_photonMapDB->open( NULL, pmFileName.toStdString().c_str(), NULL, DB_QUEUE, DB_CREATE , 0 );
 		//m_surfacesDB->open( NULL, sFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE | DB_AUTO_COMMIT , 0 );
-		//m_surfacesDB->open(NULL, sFileName.toStdString().c_str(), NULL, DB_BTREE, DB_CREATE , 0 );
-		m_secondaryPMDB->open( NULL, spmFileName.toStdString().c_str(), NULL, DB_BTREE, DB_CREATE | DB_AUTO_COMMIT, 0 );
+		m_surfacesDB->open( NULL, sFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE , 0 );
+		//m_secondaryPMDB->open( NULL, spmFileName.toStdString().c_str(), NULL, DB_BTREE, DB_CREATE | DB_AUTO_COMMIT, 0 );
+		m_secondaryPMDB->open( NULL, spmFileName.toStdString().c_str(), NULL, DB_BTREE, DB_CREATE, 0 );
 		m_photonMapDB->associate( NULL, m_secondaryPMDB, get_photon_surface, 0 );
 
 	}
@@ -384,8 +377,8 @@ void PhotonMapDB::InsertSurface(  InstanceNode* instance  )
 {
 	Trace trace( "PhotonMapDB::InsertSurface", false );
 
-	DbTxn* txn = 0;
-	m_dbEnv->txn_begin( NULL, &txn, 0 );
+	//DbTxn* txn = 0;
+	//m_dbEnv->txn_begin( NULL, &txn, 0 );
 
 	//Insert to surfaces database
 	db_recno_t surfaceID = (db_recno_t ) m_surfaceURL_ID.count() + 1;
@@ -395,8 +388,9 @@ void PhotonMapDB::InsertSurface(  InstanceNode* instance  )
 
 	char* surfaceUrl = ( char* ) surfaceURL.toStdString().c_str();
 	Dbt data( surfaceUrl, strlen( surfaceUrl ) +1 );
-	m_surfacesDB->put( txn, &key, &data, DB_APPEND );
-	txn->commit( 0 );
+	m_surfacesDB->put( NULL, &key, &data, DB_APPEND );
+	//m_surfacesDB->put( txn, &key, &data, DB_APPEND );
+	//txn->commit( 0 );
 
 	m_surfaceURL_ID.insert( instance, m_surfaceURL_ID.count() + 1 );
 }
