@@ -61,8 +61,8 @@ PhotonMapDB::PhotonMapDB()
 
 	u_int32_t env_flags = DB_CREATE |
 			DB_INIT_LOCK |
-			DB_INIT_MPOOL |
-			DB_INIT_TXN;
+			DB_INIT_MPOOL;// |
+			//DB_INIT_TXN;
 	//u_int32_t db_flags = DB_CREATE | DB_AUTO_COMMIT;
 
 	m_dbDirName = QFileDialog::getExistingDirectory( 0, QString( "Save Tonatiuh photonMap" ), "." );
@@ -348,11 +348,8 @@ void PhotonMapDB::Open()
 		QString spmFileName = dbDir.absoluteFilePath( "PhotonMap.sdb ");
 
 		//Open the database: concurrently usable by multiple threads
-		//m_photonMapDB->open( NULL, pmFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE | DB_AUTO_COMMIT, 0 );
 		m_photonMapDB->open( NULL, pmFileName.toStdString().c_str(), NULL, DB_QUEUE, DB_CREATE , 0 );
-		//m_surfacesDB->open( NULL, sFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE | DB_AUTO_COMMIT , 0 );
 		m_surfacesDB->open( NULL, sFileName.toStdString().c_str(), NULL, DB_RECNO, DB_CREATE , 0 );
-		//m_secondaryPMDB->open( NULL, spmFileName.toStdString().c_str(), NULL, DB_BTREE, DB_CREATE | DB_AUTO_COMMIT, 0 );
 		m_secondaryPMDB->open( NULL, spmFileName.toStdString().c_str(), NULL, DB_BTREE, DB_CREATE, 0 );
 		m_photonMapDB->associate( NULL, m_secondaryPMDB, get_photon_surface, 0 );
 
@@ -389,8 +386,6 @@ void PhotonMapDB::InsertSurface(  InstanceNode* instance  )
 	char* surfaceUrl = ( char* ) surfaceURL.toStdString().c_str();
 	Dbt data( surfaceUrl, strlen( surfaceUrl ) +1 );
 	m_surfacesDB->put( NULL, &key, &data, DB_APPEND );
-	//m_surfacesDB->put( txn, &key, &data, DB_APPEND );
-	//txn->commit( 0 );
 
 	m_surfaceURL_ID.insert( instance, m_surfaceURL_ID.count() + 1 );
 }
