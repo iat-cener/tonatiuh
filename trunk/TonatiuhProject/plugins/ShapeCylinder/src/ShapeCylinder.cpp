@@ -243,7 +243,7 @@ Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 	return Point3D (x, y, z);
 }
 
-NormalVector ShapeCylinder::GetNormal (double u, double v) const
+NormalVector ShapeCylinder::GetNormal (double u, double /* v */) const
 {
 	Trace trace( "ShapeCylinder::GetNormal", false );
 
