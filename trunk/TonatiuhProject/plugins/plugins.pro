@@ -12,4 +12,4 @@ SUBDIRS =  MaterialGeneric\
 			ShapeSphere \
 			ShapeSphericalPolygon \
 			ShapeTroughParabola \
-			SunShapePillbox
+			SunshapePillbox
