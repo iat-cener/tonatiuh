@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "DifferentialGeometry.h"
-#include "MaterialGeneric.h"
+#include "MaterialStandardSpecular.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgc.h"
@@ -50,19 +50,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 
 
-SO_NODE_SOURCE(MaterialGeneric);
+SO_NODE_SOURCE(MaterialStandardSpecular);
 
-void MaterialGeneric::initClass()
+void MaterialStandardSpecular::initClass()
 {
-	Trace trace( "MaterialGeneric::MaterialGeneric", false );
-	 SO_NODE_INIT_CLASS( MaterialGeneric, TMaterial, "Material" );
+	Trace trace( "MaterialStandardSpecular::MaterialStandardSpecular", false );
+	 SO_NODE_INIT_CLASS( MaterialStandardSpecular, TMaterial, "Material" );
 }
 
-MaterialGeneric::MaterialGeneric()
+MaterialStandardSpecular::MaterialStandardSpecular()
 {
-	Trace trace( "MaterialGeneric::MaterialGeneric", false );
+	Trace trace( "MaterialStandardSpecular::MaterialStandardSpecular", false );
 
-	SO_NODE_CONSTRUCTOR( MaterialGeneric );
+	SO_NODE_CONSTRUCTOR( MaterialStandardSpecular );
 	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
 	SO_NODE_ADD_FIELD( m_sigmaSlope, (2.0) );
 	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
@@ -95,77 +95,77 @@ MaterialGeneric::MaterialGeneric()
 	m_transparencySensor->attach( &m_transparency );
 }
 
-MaterialGeneric::~MaterialGeneric()
+MaterialStandardSpecular::~MaterialStandardSpecular()
 {
-	Trace trace( "MaterialGeneric::~MaterialGeneric", false );
+	Trace trace( "MaterialStandardSpecular::~MaterialStandardSpecular", false );
 }
 
-QString MaterialGeneric::getIcon()
+QString MaterialStandardSpecular::getIcon()
 {
-	Trace trace( "MaterialGeneric::getIcon", false );
-	return QString(":icons/MaterialGeneric.png");
+	Trace trace( "MaterialStandardSpecular::getIcon", false );
+	return QString(":icons/MaterialStandardSpecular.png");
 }
 
-void MaterialGeneric::updateReflectivity( void* data, SoSensor* )
+void MaterialStandardSpecular::updateReflectivity( void* data, SoSensor* )
 {
-	Trace trace( "MaterialGeneric::updateReflectivity", false );
+	Trace trace( "MaterialStandardSpecular::updateReflectivity", false );
 
-	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
+	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
 	if( material->m_reflectivity.getValue() < 0.0 ) material->m_reflectivity = 0.0;
    	if( material->m_reflectivity.getValue() > 1.0 ) material->m_reflectivity = 1.0;
 }
 
-void MaterialGeneric::updateAmbientColor( void* data, SoSensor* )
+void MaterialStandardSpecular::updateAmbientColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialGeneric::updateAmbientColor", false );
+	Trace trace( "MaterialStandardSpecular::updateAmbientColor", false );
 
-   	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
+   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->ambientColor.setValue( material->m_ambientColor[0] );
 }
 
-void MaterialGeneric::updateDiffuseColor( void* data, SoSensor* )
+void MaterialStandardSpecular::updateDiffuseColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialGeneric::updateDiffuseColor", false );
+	Trace trace( "MaterialStandardSpecular::updateDiffuseColor", false );
 
-   	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
+   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->diffuseColor.setValue( material->m_diffuseColor[0] );
 }
 
-void MaterialGeneric::updateSpecularColor( void* data, SoSensor* )
+void MaterialStandardSpecular::updateSpecularColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialGeneric::updateSpecularColor", false );
+	Trace trace( "MaterialStandardSpecular::updateSpecularColor", false );
 
-   	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
+   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->specularColor.setValue( material->m_specularColor[0] );
 }
 
-void MaterialGeneric::updateEmissiveColor( void* data, SoSensor* )
+void MaterialStandardSpecular::updateEmissiveColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialGeneric::updateEmissiveColor", false );
+	Trace trace( "MaterialStandardSpecular::updateEmissiveColor", false );
 
-   	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
+   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->emissiveColor.setValue( material->m_emissiveColor[0] );
 }
 
-void MaterialGeneric::updateShininess( void* data, SoSensor* )
+void MaterialStandardSpecular::updateShininess( void* data, SoSensor* )
 {
-	Trace trace( "MaterialGeneric::updateShininess", false );
+	Trace trace( "MaterialStandardSpecular::updateShininess", false );
 
-   	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
+   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->shininess.setValue( material->m_shininess[0] );
 }
 
-void MaterialGeneric::updateTransparency( void* data, SoSensor* )
+void MaterialStandardSpecular::updateTransparency( void* data, SoSensor* )
 {
-	Trace trace( "MaterialGeneric::updateTransparency", false );
+	Trace trace( "MaterialStandardSpecular::updateTransparency", false );
 
-   	MaterialGeneric* material = static_cast< MaterialGeneric* >( data );
+   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->transparency.setValue( material->m_transparency[0] );
 }
 
-Ray* MaterialGeneric::GetReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
+Ray* MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
-	Trace trace( "MaterialGeneric::GetReflectedRay", false );
+	Trace trace( "MaterialStandardSpecular::GetReflectedRay", false );
 
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= m_reflectivity.getValue()  ) return 0;

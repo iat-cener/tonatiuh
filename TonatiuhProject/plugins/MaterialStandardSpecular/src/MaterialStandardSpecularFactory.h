@@ -36,14 +36,14 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef MATERIALGENERICFACTORY_H_
-#define MATERIALGENERICFACTORY_H_
+#ifndef MATERIALSTANDARDSPECULARFACTORY_H_
+#define MATERIALSTANDARDSPECULARFACTORY_H_
 
 #include "TMaterialFactory.h"
-#include "MaterialGeneric.h"
+#include "MaterialStandardSpecular.h"
 
 
-class MaterialGenericFactory: public QObject, public TMaterialFactory
+class MaterialStandardSpecularFactory: public QObject, public TMaterialFactory
 {
     Q_OBJECT
     Q_INTERFACES(TMaterialFactory)
@@ -51,7 +51,7 @@ class MaterialGenericFactory: public QObject, public TMaterialFactory
 public:
    	QString TMaterialName() const;
    	QIcon TMaterialIcon() const;
-   	MaterialGeneric* CreateTMaterial( ) const;
+   	MaterialStandardSpecular* CreateTMaterial( ) const;
 };
 
-#endif /*MATERIALGENERICFACTORY_H_*/
+#endif /*MATERIALSTANDARDSPECULARFACTORY_H_*/
