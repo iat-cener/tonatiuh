@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 QString MaterialStandardSpecularFactory::TMaterialName() const
 {
 	Trace trace( "MaterialStandardSpecularFactory::TMaterialName", false );
-	return QString("Generic_Material");
+	return QString("Specular_Standard_Material");
 }
 
 QIcon MaterialStandardSpecularFactory::TMaterialIcon() const
