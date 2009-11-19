@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS =  MaterialStandardSpecular \
+SUBDIRS =  MaterialBasicRefractive \
 			MaterialStandardSpecular \
 			PhotonMapDefault \
 			ShapeCone \
