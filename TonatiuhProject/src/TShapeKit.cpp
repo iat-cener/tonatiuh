@@ -129,7 +129,7 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, RandomDeviate& rand ) const
 				{
 					TMaterial* tmaterial = static_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
 
-					Ray* reflected = tmaterial->GetReflectedRay( objectRay, dg, rand );
+					Ray* reflected = tmaterial->OutputRay( objectRay, dg, rand );
 					if( reflected ) result = new Ray( *reflected );
 					delete reflected;
 				}

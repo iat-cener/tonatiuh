@@ -68,7 +68,7 @@ QString TDefaultMaterial::getIcon()
 }
 
 
-Ray* TDefaultMaterial::GetReflectedRay( const Ray& /*incident*/, DifferentialGeometry* /*dg*/, RandomDeviate& /*rand*/  ) const
+Ray* TDefaultMaterial::OutputRay( const Ray& /*incident*/, DifferentialGeometry* /*dg*/, RandomDeviate& /*rand*/  ) const
 {
 	Trace trace( "TDefaultMaterial::GetReflectedRay", false );
 	return NULL;
