@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS =  MaterialStandardSpecular \
+			MaterialStandardSpecular \
 			PhotonMapDefault \
 			ShapeCone \
 			ShapeCylinder \
