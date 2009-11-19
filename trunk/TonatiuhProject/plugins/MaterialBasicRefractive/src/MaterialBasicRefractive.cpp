@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "DifferentialGeometry.h"
-#include "MaterialStandardSpecular.h"
+#include "MaterialBasicRefractive.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgc.h"
@@ -50,72 +50,74 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 
 
-SO_NODE_SOURCE(MaterialStandardSpecular);
+SO_NODE_SOURCE( MaterialBasicRefractive );
 
 void MaterialBasicRefractive::initClass()
 {
-	Trace trace( "MaterialBasicRefractive::MaterialStandardSpecular", false );
-	 SO_NODE_INIT_CLASS( MaterialStandardSpecular, TMaterial, "Material" );
+	Trace trace( "MaterialBasicRefractive::MaterialBasicRefractive", false );
+	 SO_NODE_INIT_CLASS( MaterialBasicRefractive, TMaterial, "Material" );
 }
 
-MaterialBasicRefractive::MaterialStandardSpecular()
+MaterialBasicRefractive::MaterialBasicRefractive()
 {
-	Trace trace( "MaterialBasicRefractive::MaterialStandardSpecular", false );
+	Trace trace( "MaterialBasicRefractive::MaterialBasicRefractive", false );
 
-	SO_NODE_CONSTRUCTOR( MaterialStandardSpecular );
-	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
-	SO_NODE_ADD_FIELD( m_transmissivity, (0.0) );
-	SO_NODE_ADD_FIELD( m_sigmaSlope, (2.0) );
+	SO_NODE_CONSTRUCTOR( MaterialBasicRefractive );
+	SO_NODE_ADD_FIELD( reflectivity, (0.0) );
+	SO_NODE_ADD_FIELD( transmissivity, (0.0) );
+	SO_NODE_ADD_FIELD(n1, (0.0) );
+	SO_NODE_ADD_FIELD(n2, (0.0) );
+	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
 	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
-	SO_NODE_ADD_FIELD( m_ambientColor, (0.2, 0.2, 0.2) );
-	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8, 0.8, 0.8) );
-	SO_NODE_ADD_FIELD( m_specularColor, (0.0, 0.0, 0.0) );
-	SO_NODE_ADD_FIELD( m_emissiveColor, (0.0, 0.0, 0.0) );
-	SO_NODE_ADD_FIELD( m_shininess, (0.2) );
-	SO_NODE_ADD_FIELD( m_transparency, (0.0) );
+	SO_NODE_ADD_FIELD( ambientColor, (0.2, 0.2, 0.2) );
+	SO_NODE_ADD_FIELD( diffuseColor, (0.8, 0.8, 0.8) );
+	SO_NODE_ADD_FIELD( specularColor, (0.0, 0.0, 0.0) );
+	SO_NODE_ADD_FIELD( emissiveColor, (0.0, 0.0, 0.0) );
+	SO_NODE_ADD_FIELD( shininess, (0.2) );
+	SO_NODE_ADD_FIELD( transparency, (0.0) );
 
 	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
-  	SO_NODE_SET_SF_ENUM_TYPE(m_distribution, Distribution);
-	SO_NODE_ADD_FIELD( m_distribution, (PILLBOX) );
+  	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
+	SO_NODE_ADD_FIELD( distribution, (PILLBOX) );
 
 	SoFieldSensor* m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
-	m_reflectivitySensor->attach( &m_reflectivity );
+	m_reflectivitySensor->attach( &reflectivity );
 	SoFieldSensor* m_transmissivitySensor = new SoFieldSensor( updateTransmissivity, this );
-	m_transmissivitySensor->attach( &m_transmissivity );
+	m_transmissivitySensor->attach( &transmissivity );
 
 	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
-	m_ambientColorSensor->attach( &m_ambientColor );
+	m_ambientColorSensor->attach( &ambientColor );
 	SoFieldSensor* m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
-	m_diffuseColorSensor->attach( &m_diffuseColor );
+	m_diffuseColorSensor->attach( &diffuseColor );
 	SoFieldSensor* m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
-	m_specularColorSensor->attach( &m_specularColor );
+	m_specularColorSensor->attach( &specularColor );
 	SoFieldSensor* m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
-	m_emissiveColorSensor->attach( &m_emissiveColor );
+	m_emissiveColorSensor->attach( &emissiveColor );
 	SoFieldSensor* m_shininessSensor = new SoFieldSensor( updateShininess, this );
-	m_shininessSensor->attach( &m_shininess );
+	m_shininessSensor->attach( &shininess );
 	SoFieldSensor* m_transparencySensor = new SoFieldSensor( updateTransparency, this );
-	m_transparencySensor->attach( &m_transparency );
+	m_transparencySensor->attach( &transparency );
 }
 
-MaterialBasicRefractive::~MaterialStandardSpecular()
+MaterialBasicRefractive::~MaterialBasicRefractive()
 {
-	Trace trace( "MaterialBasicRefractive::~MaterialStandardSpecular", false );
+	Trace trace( "MaterialBasicRefractive::~MaterialBasicRefractive", false );
 }
 
 QString MaterialBasicRefractive::getIcon()
 {
 	Trace trace( "MaterialBasicRefractive::getIcon", false );
-	return QString(":icons/MaterialStandardSpecular.png");
+	return QString(":icons/MaterialBasicRefractive.png");
 }
 
 void MaterialBasicRefractive::updateReflectivity( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateReflectivity", false );
 
-	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
-	if( material->m_reflectivity.getValue() < 0.0 ) material->m_reflectivity = 0.0;
-   	if( material->m_reflectivity.getValue() > 1.0 ) material->m_reflectivity = 1.0;
+	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+	if( material->reflectivity.getValue() < 0.0 ) material->reflectivity = 0.0;
+   	if( material->reflectivity.getValue() > 1.0 ) material->reflectivity = 1.0;
 }
 
 void MaterialBasicRefractive::updateTransmissivity( void* data, SoSensor* )
@@ -123,63 +125,63 @@ void MaterialBasicRefractive::updateTransmissivity( void* data, SoSensor* )
 	Trace trace( "MaterialBasicRefractive::updateTransmissivity", false );
 
 	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
-	if( material->m_transmissivity.getValue() < 0.0 ) material->m_transmissivity = 0.0;
-   	if( material->m_transmissivity.getValue() > 1.0 ) material->m_transmissivity = 1.0;
+	if( material->transmissivity.getValue() < 0.0 ) material->transmissivity = 0.0;
+   	if( material->transmissivity.getValue() > 1.0 ) material->transmissivity = 1.0;
 }
 
 void MaterialBasicRefractive::updateAmbientColor( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateAmbientColor", false );
 
-   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
- 	material->ambientColor.setValue( material->m_ambientColor[0] );
+   	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+ 	material->ambientColor.setValue( material->ambientColor[0] );
 }
 
 void MaterialBasicRefractive::updateDiffuseColor( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateDiffuseColor", false );
 
-   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
- 	material->diffuseColor.setValue( material->m_diffuseColor[0] );
+   	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+ 	material->diffuseColor.setValue( material->diffuseColor[0] );
 }
 
 void MaterialBasicRefractive::updateSpecularColor( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateSpecularColor", false );
 
-   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
- 	material->specularColor.setValue( material->m_specularColor[0] );
+   	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+ 	material->specularColor.setValue( material->specularColor[0] );
 }
 
 void MaterialBasicRefractive::updateEmissiveColor( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateEmissiveColor", false );
 
-   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
- 	material->emissiveColor.setValue( material->m_emissiveColor[0] );
+   	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+ 	material->emissiveColor.setValue( material->emissiveColor[0] );
 }
 
 void MaterialBasicRefractive::updateShininess( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateShininess", false );
 
-   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
- 	material->shininess.setValue( material->m_shininess[0] );
+   	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+ 	material->shininess.setValue( material->shininess[0] );
 }
 
 void MaterialBasicRefractive::updateTransparency( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateTransparency", false );
 
-   	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
- 	material->transparency.setValue( material->m_transparency[0] );
+   	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+ 	material->transparency.setValue( material->transparency[0] );
 }
 Ray* MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const
 {
 	Trace trace( "MaterialBasicRefractive::OutputRay", false );
 	double randomNumber = rand.RandomDouble();
-	if ( randomNumber < m_reflectivity.getValue()  ) return ReflectedRay( incident, dg, rand );
-	else if ( randomNumber < ( m_reflectivity.getValue() + m_transmissivity.getValue() ) ) return RefractedRay( incident, dg, rand );
+	if ( randomNumber < reflectivity.getValue()  ) return ReflectedRay( incident, dg, rand );
+	else if ( randomNumber < ( reflectivity.getValue() + transmissivity.getValue() ) ) return RefractedtRay( incident, dg, rand );
 	else return 0;
 }
 
@@ -192,24 +194,24 @@ Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeo
 	reflected->origin = dg->point;
 
 	NormalVector normalVector;
-	double sigmaSlope = m_sigmaSlope.getValue() / 1000;
-	if( sigmaSlope > 0.0 )
+	double sSlope = sigmaSlope.getValue() / 1000;
+	if( sSlope > 0.0 )
 	{
 		NormalVector errorNormal;
-		if ( m_distribution.getValue() == 0 )
+		if ( distribution.getValue() == 0 )
 		{
 			double phi = tgc::TwoPi * rand.RandomDouble();
-			double theta = sigmaSlope * rand.RandomDouble();
+			double theta = sSlope * rand.RandomDouble();
 
 			errorNormal.x = sin( theta ) * sin( phi ) ;
 			errorNormal.y = cos( theta );
 			errorNormal.z = sin( theta ) * cos( phi );
 		 }
-		 else if (m_distribution.getValue() == 1 )
+		 else if (distribution.getValue() == 1 )
 		 {
-			 errorNormal.x = sigmaSlope * tgf::AlternateBoxMuller( rand );
+			 errorNormal.x = sSlope * tgf::AlternateBoxMuller( rand );
 			 errorNormal.y = 1.0;
-			 errorNormal.z = sigmaSlope * tgf::AlternateBoxMuller( rand );
+			 errorNormal.z = sSlope * tgf::AlternateBoxMuller( rand );
 
 		 }
 		Vector3D r = dg->normal;
@@ -238,5 +240,25 @@ Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGe
 {
 	Trace trace( "MaterialBasicRefractive::RefractedtRay", false );
 
+	//Compute refracted ray (local coordinates )
+	Ray* refracted = new Ray();
+	refracted->origin = dg->point;
 
+
+	NormalVector s = -dg->normal;
+	double disc = ( DotProduct( incident.direction, s ) * DotProduct( incident.direction, s ) )
+					+ ( ( n2.getValue() / n1.getValue() ) * ( n2.getValue() / n1.getValue() ) )
+					- 1;
+
+	double cosTheta = DotProduct( incident.direction, s );
+	if( disc > 0 )
+	{
+		refracted->direction = ( n1.getValue() / n2.getValue() ) * ( incident.direction - ( cosTheta - sqrt( disc ) )* s );
+	}
+	else
+	{
+		refracted->direction = Normalize( incident.direction - 2.0 * cosTheta * s );
+	}
+
+	return refracted;
 }

@@ -63,17 +63,19 @@ public:
     QString getIcon();
 	Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 
-	SoSFDouble m_reflectivity;
-	SoSFDouble m_transmissivity;
-	SoSFDouble m_sigmaSlope;
+	SoSFDouble reflectivity;
+	SoSFDouble transmissivity;
+	SoSFDouble n1;
+	SoSFDouble n2;
+	SoSFDouble sigmaSlope;
 	//SoSFDouble m_sigmaSpecularity; ** yet to implemented
-	SoSFEnum m_distribution;
-	SoMFColor  m_ambientColor;
-	SoMFColor  m_diffuseColor;
-	SoMFColor  m_specularColor;
-	SoMFColor  m_emissiveColor;
-	SoMFFloat m_shininess;
-	SoMFFloat m_transparency ;
+	SoSFEnum distribution;
+	SoMFColor ambientColor;
+	SoMFColor diffuseColor;
+	SoMFColor specularColor;
+	SoMFColor emissiveColor;
+	SoMFFloat shininess;
+	SoMFFloat transparency ;
 
 
 protected:
