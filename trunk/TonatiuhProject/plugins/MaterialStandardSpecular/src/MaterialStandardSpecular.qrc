@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/" >
-        <file>icons/MaterialGeneric.png</file>
+        <file>icons/MaterialStandardSpecular.png</file>
     </qresource>
 </RCC>

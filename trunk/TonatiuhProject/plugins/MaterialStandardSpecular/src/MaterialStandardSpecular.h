@@ -36,35 +36,58 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
+#ifndef MATERIALSTANDARDSPECULAR_H_
+#define MATERIALSTANDARDSPECULAR_H_
 
-#include "MaterialGenericFactory.h"
-#include "Trace.h"
+#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFString.h>
 
-QString MaterialGenericFactory::TMaterialName() const
+#include "TMaterial.h"
+
+class SoSensor;
+
+
+class MaterialStandardSpecular : public TMaterial
 {
-	Trace trace( "MaterialGenericFactory::TMaterialName", false );
-	return QString("Generic_Material");
-}
+	SO_NODE_HEADER(MaterialStandardSpecular);
 
-QIcon MaterialGenericFactory::TMaterialIcon() const
-{
-	Trace trace( "MaterialGenericFactory::TMaterialIcon", false );
-	return QIcon(":/icons/MaterialGeneric.png");
-}
+public:
+	enum Distribution {
+		PILLBOX = 0,
+		NORMAL = 1,
+	   };
+	MaterialStandardSpecular( );
+	static void initClass();
 
-MaterialGeneric* MaterialGenericFactory::CreateTMaterial( ) const
-{
-	Trace trace( "MaterialGenericFactory::CreateTMaterial", false );
+    QString getIcon();
+	Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 
-	static bool firstTime = true;
-	if ( firstTime )
-	{
-	    MaterialGeneric::initClass();
-	    firstTime = false;
-	}
+	SoSFDouble m_reflectivity;
+	SoSFDouble m_sigmaSlope;
+	//SoSFDouble m_sigmaSpecularity; ** yet to implemented
+	SoSFEnum m_distribution;
+	SoMFColor  m_ambientColor;
+	SoMFColor  m_diffuseColor;
+	SoMFColor  m_specularColor;
+	SoMFColor  m_emissiveColor;
+	SoMFFloat m_shininess;
+	SoMFFloat m_transparency ;
 
-	return new MaterialGeneric;
-}
 
-Q_EXPORT_PLUGIN2(MaterialGeneric, MaterialGenericFactory)
+protected:
+   	virtual ~MaterialStandardSpecular();
+
+   	double m_sigmaOpt;
+
+	static void updateReflectivity( void* data, SoSensor* );
+	static void updateAmbientColor( void* data, SoSensor* );
+	static void updateDiffuseColor( void* data, SoSensor* );
+	static void updateSpecularColor( void* data, SoSensor* );
+	static void updateEmissiveColor( void* data, SoSensor* );
+	static void updateShininess( void* data, SoSensor* );
+	static void updateTransparency( void* data, SoSensor* );
+
+};
+
+#endif /*MATERIALSTANDARDSPECULAR_H_*/

@@ -50,13 +50,13 @@ SOURCES = src/*.cpp \
 			$$(TONATIUH_ROOT)/src/TShapeKit.cpp  \
 			$$(TONATIUH_ROOT)/src/Vector3D.cpp  
 
-RESOURCES += src/MaterialGeneric.qrc
+RESOURCES += src/MaterialStandardSpecular.qrc
 
-TARGET        = MaterialGeneric
+TARGET        = MaterialStandardSpecular
 
 contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/MaterialGeneric	
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/MaterialStandardSpecular	
 		unix {
 			TARGET = $$member(TARGET, 0)_debug
 		}
@@ -65,6 +65,6 @@ contains(TEMPLATE,lib) {
 		}
 	}
 	else { 
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/MaterialGeneric
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/MaterialStandardSpecular
 	}
 }
