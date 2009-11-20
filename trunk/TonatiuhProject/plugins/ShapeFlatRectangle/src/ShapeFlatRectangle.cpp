@@ -65,12 +65,8 @@ ShapeFlatRectangle::ShapeFlatRectangle( )
 	Trace trace( "ShapeFlatRectangle::ShapeFlatRectangle", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeFlatRectangle);
-	SO_NODE_ADD_FIELD(width, (1.0) );
-	SO_NODE_ADD_FIELD(height, (1.0) );
-	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, TOP );
-  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, BASE );
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation);
-	SO_NODE_ADD_FIELD( activeSide, (BASE) );
+	SO_NODE_ADD_FIELD( width, (1.0) );
+	SO_NODE_ADD_FIELD( height, (1.0) );
 }
 
 ShapeFlatRectangle::~ShapeFlatRectangle()
@@ -116,26 +112,14 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of the rectangle hit point
-	double u = ( hitPoint.x + width.getValue()/2 ) / ( width.getValue() );
-	double v = ( hitPoint.z + height.getValue()/2 ) / ( height.getValue() );
+	double u = ( hitPoint.x + height.getValue()/2 ) / ( height.getValue() );
+	double v = ( hitPoint.z + width.getValue()/2 ) / ( width.getValue() );
 
 	// Compute rectangle \dpdu and \dpdv
-	Vector3D dpdu ( width.getValue(), 0.0, 0.0 );
-	Vector3D dpdv ( 0.0, 0.0, height.getValue() );
+	Vector3D dpdu ( 0.0, 0.0, height.getValue() );
+	Vector3D dpdv ( width.getValue(), 0.0, 0.0 );
 
-	NormalVector N;
-	if( activeSide.getValue() == 0 )
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) < 0 )
-	{
-		return false;
-	}
+	NormalVector N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 	// Compute \dndu and \dndv from fundamental form coefficients
 	Vector3D dndu ( 0.0, 0.0, 0.0 );
@@ -148,6 +132,7 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
 		                        dndu,
 								dndv,
 		                        u, v, this );
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = t;
@@ -173,30 +158,21 @@ Point3D ShapeFlatRectangle::GetPoint3D (double u, double v) const
 
 	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function ShapeFlatRectangle::GetPoint3D called with invalid parameters" );
 
-	double x = (u * width.getValue()) - (width.getValue()/2);
-	double z = v * height.getValue() - (height.getValue()/2);
+	double x = u * height.getValue() - (height.getValue()/2);
+	double z = (v * width.getValue()) - (width.getValue()/2);
 
-	return Point3D(x,0,z);
+	return Point3D( x, 0, z );
 }
 
 NormalVector ShapeFlatRectangle::GetNormal (double /*u*/,double /*v*/ ) const
 {
 	Trace trace( "ShapeFlatRectangle::GetNormal", false );
 
-	Vector3D dpdu ( width.getValue(), 0.0, 0.0 );
-	Vector3D dpdv ( 0.0, 0.0, height.getValue() );
+	Vector3D dpdu ( 0.0, 0.0, height.getValue() );
+	Vector3D dpdv ( width.getValue(), 0.0, 0.0 );
 
-	NormalVector normal;
-	if( activeSide.getValue() == 1 )
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	return normal;
-	//return NormalVector( 0 , 1, 0);
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+
 }
 
 bool ShapeFlatRectangle::OutOfRange( double u, double v ) const
