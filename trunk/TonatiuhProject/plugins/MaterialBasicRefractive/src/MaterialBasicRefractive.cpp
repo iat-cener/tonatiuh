@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QMessageBox>
 #include <QString>
 
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -63,41 +64,48 @@ MaterialBasicRefractive::MaterialBasicRefractive()
 	Trace trace( "MaterialBasicRefractive::MaterialBasicRefractive", false );
 
 	SO_NODE_CONSTRUCTOR( MaterialBasicRefractive );
-	SO_NODE_ADD_FIELD( reflectivity, (0.0) );
-	SO_NODE_ADD_FIELD( transmissivity, (0.0) );
-	SO_NODE_ADD_FIELD(n1, (0.0) );
-	SO_NODE_ADD_FIELD(n2, (0.0) );
+	SO_NODE_ADD_FIELD( reflectivityFront, (0.0) );
+	SO_NODE_ADD_FIELD( reflectivityBack, (0.0) );
+	SO_NODE_ADD_FIELD( transmissivityFront, (0.0) );
+	SO_NODE_ADD_FIELD( transmissivityBack, (0.0) );
+	SO_NODE_ADD_FIELD( nFront, (0.0) );
+	SO_NODE_ADD_FIELD( nBack, (0.0) );
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
 	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
-	SO_NODE_ADD_FIELD( ambientColor, (0.2, 0.2, 0.2) );
-	SO_NODE_ADD_FIELD( diffuseColor, (0.8, 0.8, 0.8) );
-	SO_NODE_ADD_FIELD( specularColor, (0.0, 0.0, 0.0) );
-	SO_NODE_ADD_FIELD( emissiveColor, (0.0, 0.0, 0.0) );
-	SO_NODE_ADD_FIELD( shininess, (0.2) );
-	SO_NODE_ADD_FIELD( transparency, (0.0) );
+	SO_NODE_ADD_FIELD( m_ambientColor, (0.2, 0.2, 0.2) );
+	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8, 0.8, 0.8) );
+	SO_NODE_ADD_FIELD( m_specularColor, (0.0, 0.0, 0.0) );
+	SO_NODE_ADD_FIELD( m_emissiveColor, (0.0, 0.0, 0.0) );
+	SO_NODE_ADD_FIELD( m_shininess, (0.2) );
+	SO_NODE_ADD_FIELD( m_transparency, (0.0) );
 
 	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
 	SO_NODE_ADD_FIELD( distribution, (PILLBOX) );
 
-	SoFieldSensor* m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
-	m_reflectivitySensor->attach( &reflectivity );
-	SoFieldSensor* m_transmissivitySensor = new SoFieldSensor( updateTransmissivity, this );
-	m_transmissivitySensor->attach( &transmissivity );
+	SoFieldSensor* reflectivityFrontSensor = new SoFieldSensor( updateReflectivityFront, this );
+	reflectivityFrontSensor->attach( &reflectivityFront );
+	SoFieldSensor* transmissivityFrontSensor = new SoFieldSensor( updateTransmissivityFront, this );
+	transmissivityFrontSensor->attach( &transmissivityFront );
+
+	SoFieldSensor* reflectivityBackSensor = new SoFieldSensor( updateReflectivityBack, this );
+	reflectivityBackSensor->attach( &reflectivityBack );
+	SoFieldSensor* transmissivityBackSensor = new SoFieldSensor( updateTransmissivityBack, this );
+	transmissivityBackSensor->attach( &transmissivityBack );
 
 	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
-	m_ambientColorSensor->attach( &ambientColor );
+	m_ambientColorSensor->attach( &m_ambientColor );
 	SoFieldSensor* m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
-	m_diffuseColorSensor->attach( &diffuseColor );
+	m_diffuseColorSensor->attach( &m_diffuseColor );
 	SoFieldSensor* m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
-	m_specularColorSensor->attach( &specularColor );
+	m_specularColorSensor->attach( &m_specularColor );
 	SoFieldSensor* m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
-	m_emissiveColorSensor->attach( &emissiveColor );
+	m_emissiveColorSensor->attach( &m_emissiveColor );
 	SoFieldSensor* m_shininessSensor = new SoFieldSensor( updateShininess, this );
-	m_shininessSensor->attach( &shininess );
+	m_shininessSensor->attach( &m_shininess );
 	SoFieldSensor* m_transparencySensor = new SoFieldSensor( updateTransparency, this );
-	m_transparencySensor->attach( &transparency );
+	m_transparencySensor->attach( &m_transparency );
 }
 
 MaterialBasicRefractive::~MaterialBasicRefractive()
@@ -111,22 +119,62 @@ QString MaterialBasicRefractive::getIcon()
 	return QString(":icons/MaterialBasicRefractive.png");
 }
 
-void MaterialBasicRefractive::updateReflectivity( void* data, SoSensor* )
+void MaterialBasicRefractive::updateReflectivityFront( void* data, SoSensor* )
 {
-	Trace trace( "MaterialBasicRefractive::updateReflectivity", false );
+	Trace trace( "MaterialBasicRefractive::updateReflectivityFront", false );
 
 	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
-	if( material->reflectivity.getValue() < 0.0 ) material->reflectivity = 0.0;
-   	if( material->reflectivity.getValue() > 1.0 ) material->reflectivity = 1.0;
+	if( material->reflectivityFront.getValue() < 0.0 ) material->reflectivityFront = 0.0;
+   	if( material->reflectivityFront.getValue() > 1.0 ) material->reflectivityFront = 1.0;
+   	if( ( material->reflectivityFront.getValue() + material->transmissivityFront.getValue() ) > 1.0 )
+   	{
+   		material->reflectivityFront = 0.0;
+   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityFront") );
+   	}
+
 }
 
-void MaterialBasicRefractive::updateTransmissivity( void* data, SoSensor* )
+void MaterialBasicRefractive::updateTransmissivityFront( void* data, SoSensor* )
+{
+	Trace trace( "MaterialBasicRefractive::updateTransmissivityFront", false );
+
+	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+	if( material->transmissivityFront.getValue() < 0.0 ) material->transmissivityFront = 0.0;
+   	if( material->transmissivityFront.getValue() > 1.0 ) material->transmissivityFront = 1.0;
+   	if( ( material->reflectivityFront.getValue() + material->transmissivityFront.getValue() ) > 1.0 )
+   	{
+   		material->transmissivityFront = 0.0;
+   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityFront") );
+   	}
+}
+
+void MaterialBasicRefractive::updateReflectivityBack( void* data, SoSensor* )
+{
+	Trace trace( "MaterialBasicRefractive::updateReflectivityBack", false );
+
+	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+	if( material->reflectivityBack.getValue() < 0.0 ) material->reflectivityBack = 0.0;
+   	if( material->reflectivityBack.getValue() > 1.0 ) material->reflectivityBack = 1.0;
+   	if( ( material->reflectivityBack.getValue() + material->transmissivityBack.getValue() ) > 1.0 )
+   	{
+   			material->reflectivityBack = 0.0;
+			QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityBack") );
+   	}
+}
+
+void MaterialBasicRefractive::updateTransmissivityBack( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateTransmissivity", false );
 
 	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
-	if( material->transmissivity.getValue() < 0.0 ) material->transmissivity = 0.0;
-   	if( material->transmissivity.getValue() > 1.0 ) material->transmissivity = 1.0;
+	if( material->transmissivityBack.getValue() < 0.0 ) material->transmissivityBack = 0.0;
+   	if( material->transmissivityBack.getValue() > 1.0 ) material->transmissivityBack = 1.0;
+   	if( ( material->reflectivityBack.getValue() + material->transmissivityBack.getValue() ) > 1.0 )
+   	{
+   		material->transmissivityBack = 0.0;
+   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityBack") );
+   	}
+
 }
 
 void MaterialBasicRefractive::updateAmbientColor( void* data, SoSensor* )
@@ -134,7 +182,7 @@ void MaterialBasicRefractive::updateAmbientColor( void* data, SoSensor* )
 	Trace trace( "MaterialBasicRefractive::updateAmbientColor", false );
 
    	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
- 	material->ambientColor.setValue( material->ambientColor[0] );
+ 	material->ambientColor.setValue( material->m_ambientColor[0] );
 }
 
 void MaterialBasicRefractive::updateDiffuseColor( void* data, SoSensor* )
@@ -142,15 +190,15 @@ void MaterialBasicRefractive::updateDiffuseColor( void* data, SoSensor* )
 	Trace trace( "MaterialBasicRefractive::updateDiffuseColor", false );
 
    	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
- 	material->diffuseColor.setValue( material->diffuseColor[0] );
+ 	material->diffuseColor.setValue( material->m_diffuseColor[0] );
 }
 
 void MaterialBasicRefractive::updateSpecularColor( void* data, SoSensor* )
 {
 	Trace trace( "MaterialBasicRefractive::updateSpecularColor", false );
 
-   	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
- 	material->specularColor.setValue( material->specularColor[0] );
+	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
+ 	material->specularColor.setValue( material->m_specularColor[0] );
 }
 
 void MaterialBasicRefractive::updateEmissiveColor( void* data, SoSensor* )
@@ -158,7 +206,7 @@ void MaterialBasicRefractive::updateEmissiveColor( void* data, SoSensor* )
 	Trace trace( "MaterialBasicRefractive::updateEmissiveColor", false );
 
    	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
- 	material->emissiveColor.setValue( material->emissiveColor[0] );
+ 	material->emissiveColor.setValue( material->m_emissiveColor[0] );
 }
 
 void MaterialBasicRefractive::updateShininess( void* data, SoSensor* )
@@ -166,7 +214,7 @@ void MaterialBasicRefractive::updateShininess( void* data, SoSensor* )
 	Trace trace( "MaterialBasicRefractive::updateShininess", false );
 
    	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
- 	material->shininess.setValue( material->shininess[0] );
+ 	material->shininess.setValue( material->m_shininess[0] );
 }
 
 void MaterialBasicRefractive::updateTransparency( void* data, SoSensor* )
@@ -174,21 +222,36 @@ void MaterialBasicRefractive::updateTransparency( void* data, SoSensor* )
 	Trace trace( "MaterialBasicRefractive::updateTransparency", false );
 
    	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
- 	material->transparency.setValue( material->transparency[0] );
+ 	material->transparency.setValue( material->m_transparency[0] );
 }
+
 Ray* MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const
 {
 	Trace trace( "MaterialBasicRefractive::OutputRay", false );
 	double randomNumber = rand.RandomDouble();
-	if ( randomNumber < reflectivity.getValue()  ) return ReflectedRay( incident, dg, rand );
-	else if ( randomNumber < ( reflectivity.getValue() + transmissivity.getValue() ) ) return RefractedtRay( incident, dg, rand );
-	else return 0;
+	if( dg->shapeFrontSide )
+	{
+		if ( randomNumber < reflectivityFront.getValue()  ) return ReflectedRay( incident, dg, rand );
+		else if ( randomNumber < ( reflectivityFront.getValue() + transmissivityFront.getValue() ) ) return RefractedtRay( incident, dg, rand );
+		else return 0;
+	}
+	else
+	{
+		if ( randomNumber < reflectivityBack.getValue()  ) return ReflectedRay( incident, dg, rand );
+		else if ( randomNumber < ( reflectivityBack.getValue() + transmissivityBack.getValue() ) ) return RefractedtRay( incident, dg, rand );
+		else return 0;
+
+	}
 }
 
 Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
 	Trace trace( "MaterialBasicRefractive::ReflectedRay", false );
 
+	NormalVector dgNormal;
+
+	if( dg->shapeFrontSide )	dgNormal = dg->normal;
+	else	dgNormal = - dg->normal;
 	//Compute reflected ray (local coordinates )
 	Ray* reflected = new Ray();
 	reflected->origin = dg->point;
@@ -214,7 +277,7 @@ Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeo
 			 errorNormal.z = sSlope * tgf::AlternateBoxMuller( rand );
 
 		 }
-		Vector3D r = dg->normal;
+		Vector3D r = dgNormal;
 		Vector3D s = Normalize( dg->dpdu );
 		Vector3D t = Normalize( dg->dpdv );
 		Transform trasform( s.x, s.y, s.z, 0.0,
@@ -227,7 +290,7 @@ Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeo
 	}
 	else
 	{
-		normalVector = dg->normal;
+		normalVector = dgNormal;
 	}
 
 	double cosTheta = DotProduct( normalVector, incident.direction );
@@ -240,20 +303,38 @@ Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGe
 {
 	Trace trace( "MaterialBasicRefractive::RefractedtRay", false );
 
+	NormalVector s;
+	double n1;
+	double n2;
+
+	if( dg->shapeFrontSide )
+	{
+		s = dg->normal;
+		n1 = nFront.getValue();
+		n2 = nBack.getValue();
+	}
+	else
+	{
+		s = - dg->normal;
+		n1 = nBack.getValue();
+		n2 = nFront.getValue();
+	}
+
 	//Compute refracted ray (local coordinates )
 	Ray* refracted = new Ray();
 	refracted->origin = dg->point;
 
+	if( DotProduct( incident.direction, dg->normal ) < 0 ) s = - dg->normal;
+	else	s = dg->normal;
 
-	NormalVector s = -dg->normal;
 	double disc = ( DotProduct( incident.direction, s ) * DotProduct( incident.direction, s ) )
-					+ ( ( n2.getValue() / n1.getValue() ) * ( n2.getValue() / n1.getValue() ) )
+					+ ( ( n2 / n1 ) * ( n2 / n1 ) )
 					- 1;
 
 	double cosTheta = DotProduct( incident.direction, s );
 	if( disc > 0 )
 	{
-		refracted->direction = ( n1.getValue() / n2.getValue() ) * ( incident.direction - ( cosTheta - sqrt( disc ) )* s );
+		refracted->direction = ( n1 / n2 ) * ( incident.direction - ( cosTheta - sqrt( disc ) )* s );
 	}
 	else
 	{
