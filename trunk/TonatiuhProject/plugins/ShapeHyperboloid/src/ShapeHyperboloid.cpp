@@ -72,10 +72,6 @@ ShapeHyperboloid::ShapeHyperboloid( )
 	SO_NODE_ADD_FIELD(	focusLegth, (0.1) );
 	SO_NODE_ADD_FIELD( distanceTwoFocus, (10.0) );
 	SO_NODE_ADD_FIELD( reflectorMaxDiameter, (1.0) );
-	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
-  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation );
-	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeHyperboloid::~ShapeHyperboloid()
@@ -187,20 +183,7 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
 
-	Vector3D N;
-	if( activeSide.getValue() == 1 )
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) > 0 )
-	{
-		return false;
-	}
-
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
@@ -220,6 +203,7 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 								dndu,
 								dndv,
 								u, v, this );
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
@@ -278,16 +262,7 @@ NormalVector ShapeHyperboloid::GetNormal (double u, double v) const
 	Vector3D dpdu = Dpdu( u, v );
 	Vector3D dpdv = Dpdv( u, v );
 
-	NormalVector normal;
-	if( activeSide.getValue() == 1 )
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	return normal;
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 }
 
 void ShapeHyperboloid::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
