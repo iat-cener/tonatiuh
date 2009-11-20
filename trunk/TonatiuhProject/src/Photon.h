@@ -53,6 +53,7 @@ struct Photon
 	Photon* prev;
 	Photon* next;
 	InstanceNode* intersectedSurface;
+	double surfaceSide;
 };
 
 #endif /*PHOTON_H_*/

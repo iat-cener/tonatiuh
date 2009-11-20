@@ -62,7 +62,7 @@ public:
     static void initClass();
 
     bool IntersectP( const Ray& ray ) const;
-	Ray* Intersect( const Ray& objectRay, RandomDeviate& rand ) const;
+	Ray* Intersect( const Ray& objectRay, bool* isShapeFront, RandomDeviate& rand ) const;
 
 private:
     virtual ~TShapeKit();

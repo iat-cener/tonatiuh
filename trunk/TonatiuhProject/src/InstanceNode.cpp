@@ -177,7 +177,7 @@ bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
 			(thisNode.GetParent()->GetNode()==otherNode.GetParent()->GetNode()));
 }
 
-Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode )
+Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode, bool* isFront )
 {
 	Trace trace( "InstanceNode::Intersect", false );
 
@@ -218,15 +218,17 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 		for( int index = 0; index < children.size(); index++ )
 		{
 			InstanceNode* intersectedChild = 0;
+			bool isChildFront = false;
 			double previusMaxT = ray.maxt;
 
-			childReflected = children[index]->Intersect( ray, rand, sceneMap, &intersectedChild );
+			childReflected = children[index]->Intersect( ray, rand, sceneMap, &intersectedChild, &isChildFront );
 
 			if( ray.maxt < previusMaxT )
 			{
 				delete reflected;
 				reflected = 0;
 				*modelNode = intersectedChild;
+				*isFront = isChildFront;
 			}
 
 			if( childReflected )
@@ -265,7 +267,8 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 		childCoordinatesRay.maxt = ray.maxt;
 
 		double objectMaxT = childCoordinatesRay.maxt;
-		Ray* reflected = shapeKit->Intersect( childCoordinatesRay, rand );
+		bool isShapeFront = false;
+		Ray* reflected = shapeKit->Intersect( childCoordinatesRay, &isShapeFront, rand );
 
 
 		if( objectMaxT != childCoordinatesRay.maxt )
@@ -279,6 +282,8 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 			}
 			delete reflected;
 			*modelNode = this;
+
+			*isFront = isShapeFront;
 		}
 
 	}

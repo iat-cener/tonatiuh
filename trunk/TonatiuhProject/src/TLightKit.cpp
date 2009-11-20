@@ -84,7 +84,7 @@ TLightKit::TLightKit()
 	SO_KIT_INIT_INSTANCE();
 
 	SoDirectionalLight* light = static_cast<SoDirectionalLight*>( getPart( "light", true ) );
-	light->direction.setValue( SbVec3f( 0, 1, 0 ) );
+	light->direction.setValue( SbVec3f( 0, -1, 0 ) );
 
 	SoTransform* transform = new SoTransform;
 	setPart( "transform", transform );
