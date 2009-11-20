@@ -67,10 +67,6 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_ADD_FIELD( z1, (-0.5) );
 	SO_NODE_ADD_FIELD( z2, (0.5) );
 	SO_NODE_ADD_FIELD( phiMax, ( tgc::TwoPi) );
-	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
-  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation );
-	SO_NODE_ADD_FIELD( activeSide, (INSIDE) );
 
 	double zmin = std::min( z1.getValue(), z2.getValue() );
 	double zmax = std::max( z1.getValue(), z2.getValue() );
@@ -173,51 +169,47 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of ShapeSphere hit
-	double u = phi / phiMax.getValue();
 	double theta = acos( hitPoint.z / radius.getValue() );
-	double v = ( theta - m_thetaMin ) / ( m_thetaMax - m_thetaMin );
+	double u = ( theta - m_thetaMin ) / ( m_thetaMax - m_thetaMin );
+	double v = phi / phiMax.getValue();
 
 	// Compute ShapeSphere \dpdu and \dpdv
-	double zradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.y*hitPoint.y );
-	double invzradius = 1.0 / zradius;
-	double cosphi = hitPoint.x * invzradius;
-	double sinphi = hitPoint.y * invzradius;
+	Vector3D dpdu( radius.getValue() * ( m_thetaMax - m_thetaMin ) * cos( phiMax.getValue() * v )
+						* cos( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
+					radius.getValue() * ( m_thetaMax - m_thetaMin )
+						* cos( m_thetaMin + m_thetaMax * u - m_thetaMin * u ) * sin( phiMax.getValue() * v ),
+					radius.getValue() * ( -m_thetaMax + m_thetaMin )
+						* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ) );
 
-	Vector3D dpdu( -phiMax.getValue() * radius.getValue() *sin( phiMax.getValue() * u )
-							* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
-						phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * u)
-							* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+	Vector3D dpdv( -phiMax.getValue() * radius.getValue() *sin( phiMax.getValue() * v )
+							* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
+						phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * v)
+							* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
 						0.0 );
 
-	Vector3D dpdv( radius.getValue() * ( m_thetaMax - m_thetaMin ) * cos( phiMax.getValue() * u)
-						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
-					radius.getValue() * ( m_thetaMax - m_thetaMin )
-						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) * sin( phiMax.getValue() * u ),
-					radius.getValue() * ( -m_thetaMax + m_thetaMin )
-						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) );
-
 	// Compute ShapeSphere \dndu and \dndv
-	Vector3D d2Pduu = -phiMax.getValue() * phiMax.getValue() * Vector3D( hitPoint.x, hitPoint.y, 0 );
-	Vector3D d2Pduv = ( m_thetaMax - m_thetaMin ) * hitPoint.z * phiMax.getValue() * Vector3D( -sinphi, cosphi, 0. );
-	Vector3D d2Pdvv = -( m_thetaMax - m_thetaMin ) * ( m_thetaMax - m_thetaMin ) * Vector3D( hitPoint.x, hitPoint.y, hitPoint.z );
+	Vector3D d2Pduu( -radius.getValue() * (m_thetaMax - m_thetaMin) * (m_thetaMax - m_thetaMin) * cos( phiMax.getValue() * v )
+							* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
+						-radius.getValue() * (m_thetaMax - m_thetaMin) * (m_thetaMax - m_thetaMin)
+							* sin(m_thetaMin + m_thetaMax * u - m_thetaMin * u ) * sin(phiMax.getValue()* v ),
+						radius.getValue() * (m_thetaMax - m_thetaMin) *(-m_thetaMax + m_thetaMin) * cos(m_thetaMin + m_thetaMax * u - m_thetaMin * u) );
+	Vector3D d2Pduv( -phiMax.getValue() *  radius.getValue() *  (m_thetaMax - m_thetaMin) * cos(m_thetaMax + m_thetaMax * u - m_thetaMin * u )
+							* sin( phiMax.getValue() *  v ),
+						phiMax.getValue() *  radius.getValue() *  (m_thetaMax - m_thetaMin) * cos(m_thetaMin + m_thetaMax * u - m_thetaMin * u )
+						    * cos( phiMax.getValue() *  v),
+						0.0 );
+	Vector3D d2Pdvv( -phiMax.getValue() * phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * v )
+						* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
+					-phiMax.getValue() * phiMax.getValue() * radius.getValue() * sin(m_thetaMin + m_thetaMax * u - m_thetaMin * u )
+						* sin(phiMax.getValue() * v ),
+					0.0 );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N;
-	if( activeSide.getValue() == false )
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) > 0 )
-	{
-		return false;
-	}
+
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
@@ -238,6 +230,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 								dndv,
 		                        u, v, this );
 
+	dg->shapeFrontSide = ( DotProduct( N, ray.direction ) > 0 ) ? false : true;
     // Update _tHit_ for quadric intersection
     *tHit = thit;
 
@@ -295,8 +288,9 @@ Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double phi = u * phiMax.getValue();
-	double theta = v * ( m_thetaMax - m_thetaMin ) + m_thetaMin;
+
+	double theta = u * ( m_thetaMax - m_thetaMin ) + m_thetaMin;
+	double phi = v * phiMax.getValue();
 
 	double cosphi = cos (phi);
 	double sinphi = sin (phi);
@@ -315,28 +309,19 @@ NormalVector ShapeSphere::GetNormal(double u, double v ) const
 {
 	Trace trace( "ShapeSphere::GetNormal", false );
 
-	Vector3D dpdu( -phiMax.getValue() * radius.getValue() *sin( phiMax.getValue() * u )
-						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
-					phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * u)
-						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
-					0.0 );
-
-	Vector3D dpdv( radius.getValue() * ( m_thetaMax - m_thetaMin ) * cos( phiMax.getValue() * u)
-						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ),
+	Vector3D dpdu( radius.getValue() * ( m_thetaMax - m_thetaMin ) * cos( phiMax.getValue() * v )
+						* cos( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
 					radius.getValue() * ( m_thetaMax - m_thetaMin )
-						* cos( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) * sin( phiMax.getValue() * u ),
+						* cos( m_thetaMin + m_thetaMax * u - m_thetaMin * u ) * sin( phiMax.getValue() * v ),
 					radius.getValue() * ( -m_thetaMax + m_thetaMin )
-						* sin( m_thetaMin + m_thetaMax * v - m_thetaMin * v ) );
+						* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ) );
 
-	NormalVector normal;
-	if( activeSide.getValue() == false )
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
+	Vector3D dpdv( -phiMax.getValue() * radius.getValue() *sin( phiMax.getValue() * v )
+							* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
+						phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * v)
+							* sin( m_thetaMin + m_thetaMax * u - m_thetaMin * u ),
+						0.0 );
+	NormalVector normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	return normal;
 }
 

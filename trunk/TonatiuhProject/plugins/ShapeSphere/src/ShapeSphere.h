@@ -62,16 +62,10 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
-	enum reverseOrientation {
-		INSIDE = 0,
-		OUTSIDE = 1,
-	   };
-
 	SoSFDouble radius;
 	SoSFDouble z1;
 	SoSFDouble z2;
 	SoSFDouble phiMax;
-	SoSFEnum activeSide;
 
 protected:
 	static void updateMinMaxTheta(void *data, SoSensor *);
