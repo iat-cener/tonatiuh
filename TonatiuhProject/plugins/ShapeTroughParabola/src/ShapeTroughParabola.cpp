@@ -65,13 +65,9 @@ ShapeTroughParabola::ShapeTroughParabola()
 	Trace trace( "ShapeTroughParabola::ShapeTroughParabola", false );
 
 	SO_NODE_CONSTRUCTOR(ShapeTroughParabola);
-	SO_NODE_ADD_FIELD( focusLength, (0.125));
-	SO_NODE_ADD_FIELD( length, (1.0));
-	SO_NODE_ADD_FIELD( width, (1.0));
-    SO_NODE_DEFINE_ENUM_VALUE( reverseOrientation, INSIDE);
-    SO_NODE_DEFINE_ENUM_VALUE( reverseOrientation, OUTSIDE);
-    SO_NODE_SET_SF_ENUM_TYPE( orientation, reverseOrientation );
-    SO_NODE_ADD_FIELD( orientation, (INSIDE) );
+	SO_NODE_ADD_FIELD( focusLength, (0.125) );
+	SO_NODE_ADD_FIELD( length, (1.0) );
+	SO_NODE_ADD_FIELD( width, (1.0) );
 
 }
 
@@ -173,20 +169,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
 
-	Vector3D N;
-	if( orientation.getValue() == 1 )
-	{
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) > 0 )
-	{
-		return false;
-	}
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
 	double g = DotProduct(N, d2Pdvv);
@@ -200,6 +184,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 	// Initialize _DifferentialGeometry_ from parametric information
 	*dg = DifferentialGeometry(hitPoint, dpdu, dpdv, dndu, dndv, u, v, this);
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
@@ -242,18 +227,7 @@ NormalVector ShapeTroughParabola::GetNormal (double u ,double v) const
 	Vector3D dpdu(1.0, point.x /( 2.0 * focusLength.getValue() ), 0.0);
 	Vector3D dpdv(0.0, 0.0, 1.0);
 
-	NormalVector normal;
-	if( orientation.getValue() == 1 )
-	{
-
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-
-	return normal;
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 }
 
