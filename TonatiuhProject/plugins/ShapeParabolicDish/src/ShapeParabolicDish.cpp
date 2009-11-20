@@ -68,10 +68,6 @@ ShapeParabolicDish::ShapeParabolicDish()
 	SO_NODE_ADD_FIELD( dishMinRadius, (0.1) );
 	SO_NODE_ADD_FIELD( dishMaxRadius, (0.5) );
 	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi) );
-	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
-  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation );
-	SO_NODE_ADD_FIELD( activeSide, (INSIDE) );
 }
 
 ShapeParabolicDish::~ShapeParabolicDish()
@@ -171,19 +167,9 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
-	Vector3D N;
-	if( activeSide.getValue() == false )
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) > 0 )
-	{
-		return false;
-	}
+
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+
 
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
@@ -203,6 +189,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	                           dndu,
 							   dndv,
 	                           u, v, this);
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -271,27 +258,11 @@ NormalVector ShapeParabolicDish::GetNormal (double u, double v) const
 {
 	Trace trace( "ShapeParabolicDish::GetNormal", false );
 
-	/*Vector3D dpdu( -phiMax.getValue()* dishMaxRadius.getValue() * v * sin( phiMax.getValue() * u ),
-								0.0,
-								phiMax.getValue() * dishMaxRadius.getValue() * v * cos( phiMax.getValue() * u ) );
-
-	Vector3D dpdv( dishMaxRadius.getValue() * cos( phiMax.getValue() * u ),
-								( dishMaxRadius.getValue()* dishMaxRadius.getValue() * v)/(2 * focusLength.getValue() ),
-								dishMaxRadius.getValue() * sin( phiMax.getValue() * u) );*/
-
 	Vector3D dpdu = GetDpdu( u, v );
 	Vector3D dpdv = GetDpdv( u, v );
 
-	NormalVector normal;
-	if( activeSide.getValue() == 0 )
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	return normal;
+
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 }
 
 bool ShapeParabolicDish::OutOfRange( double u, double v ) const
