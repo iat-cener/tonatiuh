@@ -64,15 +64,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	enum side{
-		INSIDE = 0,
-		OUTSIDE = 1,
-	};
-
 	SoSFDouble sphereRadius;
 	SoSFDouble radius;
 	SoSFInt32 polygonSides;
-	SoSFEnum activeSide;
 
 private:
    	~ShapeSphericalPolygon();
