@@ -67,10 +67,6 @@ ShapeSphericalPolygon::ShapeSphericalPolygon()
 	SO_NODE_ADD_FIELD( sphereRadius, (0.5) );
 	SO_NODE_ADD_FIELD( radius, (0.5) );
 	SO_NODE_ADD_FIELD( polygonSides, (6) );
-	SO_NODE_DEFINE_ENUM_VALUE(side, INSIDE);
-  	SO_NODE_DEFINE_ENUM_VALUE(side, OUTSIDE);
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, side);
-	SO_NODE_ADD_FIELD( activeSide, (INSIDE) );
 
     m_thetaMax = asin( radius.getValue() / sphereRadius.getValue() );
     m_phiMax = tgc::Pi/polygonSides.getValue();
@@ -182,9 +178,10 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	double invzradius = 1.0 / zradius;
 	double cosphi = hitPoint.x * invzradius;
 	double sinphi = hitPoint.y * invzradius;
-	Vector3D dpdu( -tgc::TwoPi * hitPoint.y, tgc::TwoPi * hitPoint.x, 0.0 );
-	Vector3D dpdv = ( tgc::Pi - m_thetaMax ) *
+	Vector3D dpdu= ( tgc::Pi - m_thetaMax ) *
 	                  Vector3D( hitPoint.z * cosphi, hitPoint.z * sinphi, -sphereRadius.getValue() * sin( theta ) );
+
+	Vector3D dpdv( -tgc::TwoPi * hitPoint.y, tgc::TwoPi * hitPoint.x, 0.0 );
 
 	// Compute sphere \dndu and \dndv
 	Vector3D d2Pduu = -tgc::TwoPi *tgc::TwoPi * Vector3D( hitPoint.x, hitPoint.y, 0 );
@@ -195,19 +192,9 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N;
-	if( activeSide.getValue() == false )
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) > 0 )
-	{
-		return false;
-	}
+
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );
@@ -230,6 +217,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 		                        dndu,
 								dndv,
 		                        u, v, this );
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = thit;
@@ -446,12 +434,8 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 
 		SbVec3f point( x, y ,z );
 		SbVec3f vector( point[0], point[1], point[2] - sphereRadius.getValue() );
-		SbVec3f normal;
-		if( activeSide.getValue() == 0 )
-				normal.setValue( -point[0]/vector.length(), -point[1]/vector.length(), - ( point[2] - sphereRadius.getValue() ) /vector.length() );
+		SbVec3f normal( point[0]/vector.length(), point[1]/vector.length(),  ( point[2] - sphereRadius.getValue() ) /vector.length() );
 
-		else
-			normal.setValue( point[0]/vector.length(), point[1]/vector.length(),  ( point[2] - sphereRadius.getValue() ) /vector.length() );
 		SbVec4f texCoord = useTexFunc ? tce->get(point, normal) : SbVec4f( u, v, 0.0, 1.0 );
 
 	     pv.setPoint(point);
