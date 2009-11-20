@@ -61,14 +61,8 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	enum reverseOrientation {
-		TOP = 0,
-		BASE = 1,
-	   };
-
 	SoSFDouble width;
 	SoSFDouble height;
-	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;
