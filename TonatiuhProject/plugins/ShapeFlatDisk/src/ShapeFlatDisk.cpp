@@ -64,10 +64,6 @@ ShapeFlatDisk::ShapeFlatDisk( )
 	Trace trace( "ShapeFlatDisk::ShapeFlatDisk", false );
 	SO_NODE_CONSTRUCTOR(ShapeFlatDisk);
 	SO_NODE_ADD_FIELD(radius, (0.5) );
-	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, TOP);
-  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, BASE);
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation);
-	SO_NODE_ADD_FIELD( activeSide, (BASE) );
 }
 
 ShapeFlatDisk::~ShapeFlatDisk()
@@ -124,20 +120,7 @@ bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGe
 	Vector3D dpdu ( -v * radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
 	Vector3D dpdv ( radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  radius.getValue() * sin( u * tgc::TwoPi ) );
 
-	NormalVector N;
-	if( activeSide.getValue() == 1 )
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) < 0 )
-	{
-		return false;
-	}
-
+	NormalVector N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 	// Compute \dndu and \dndv from fundamental form coefficients
 	Vector3D dndu ( 0.0, 0.0, 0.0 );
@@ -150,6 +133,8 @@ bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGe
 		                        dndu,
 								dndv,
 		                        u, v, this );
+
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = t;
@@ -175,10 +160,7 @@ Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
 
 	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
 
-	double theta = u * tgc::TwoPi;
-	double rad = v * radius.getValue();
-
-	return Point3D(rad*cos(theta),0,rad*sin(theta));
+	return Point3D( v * radius.getValue() * cos( u * tgc::TwoPi ), 0, v * radius.getValue() * sin( u * tgc::TwoPi ) );
 }
 
 NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
@@ -191,15 +173,7 @@ NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
 	Vector3D dpdu ( -v * radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
 	Vector3D dpdv ( radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  radius.getValue() * sin( u * tgc::TwoPi ) );
 
-	NormalVector normal;
-	if( activeSide.getValue() == 0 )
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
+	NormalVector normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	return normal;
 }
 

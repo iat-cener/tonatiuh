@@ -57,13 +57,7 @@ public:
 	bool IntersectP( const Ray &ray ) const;
 	Point3D Sample( double u, double v ) const;
 
-	enum reverseOrientation {
-		TOP = 0,
-		BASE = 1,
-	   };
-
 	SoSFDouble radius;
-	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D (double u, double v) const;
