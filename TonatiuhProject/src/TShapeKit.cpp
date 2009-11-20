@@ -102,7 +102,7 @@ bool TShapeKit::IntersectP( const Ray& ) const
  *
  *Return the reflected ray. If the returned value is null, there is not reflected ray.
  */
-Ray* TShapeKit::Intersect( const Ray& objectRay, RandomDeviate& rand ) const
+Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDeviate& rand ) const
 {
 	Trace trace( "TShapeKit::Intersect", false );
 
@@ -118,6 +118,7 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, RandomDeviate& rand ) const
 		double thit = 0.0;
 		DifferentialGeometry* dg = new DifferentialGeometry;
 		bool intersect = tshape->Intersect( objectRay, &thit, dg );
+		*isShapeFront = dg->shapeFrontSide;
 		if( intersect )
 		{
 			objectRay.maxt = thit;

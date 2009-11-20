@@ -146,13 +146,15 @@ void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 	int rayLength = 0;
 
 	InstanceNode* intersectedSurface = 0;
+	bool isFront = false;
 
 	//Trace the ray
 	bool intersection = true;
 	while ( intersection )
 	{
 		intersectedSurface = 0;
-		reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface );
+		isFront = 0;
+		reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface, &isFront );
 
 		if( reflectedRay )
 		{
@@ -160,6 +162,7 @@ void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 
 			next = new Photon( point, node );
 			next->intersectedSurface = intersectedSurface;
+			next->surfaceSide = ( isFront ) ? 1.0 : 0.0;
 			node->next = next;
 			node = next;
 			rayLength++;
@@ -178,6 +181,7 @@ void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 		Point3D endOfRay = ray( ray.maxt );
 		Photon* lastNode = new Photon( endOfRay, node );
 		lastNode->intersectedSurface = intersectedSurface;
+		lastNode->surfaceSide = ( isFront ) ? 1.0 : 0.0;
 		node->next = lastNode;
 
 	}

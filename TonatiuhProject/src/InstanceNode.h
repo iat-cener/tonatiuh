@@ -79,7 +79,7 @@ public:
     friend QDataStream & operator>> ( QDataStream & s, const InstanceNode & node );
     friend bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode);
 
-    Ray* Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode );
+    Ray* Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode, bool* isFront );
 
 private:
     SoNode* m_coinNode;

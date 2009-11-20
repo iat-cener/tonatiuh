@@ -68,6 +68,7 @@ struct DifferentialGeometry
     Vector3D dpdv;
     Vector3D dndu;
     Vector3D dndv;
+    bool shapeFrontSide;
 };
 
 #endif
