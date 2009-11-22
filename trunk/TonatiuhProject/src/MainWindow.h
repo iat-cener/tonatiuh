@@ -175,8 +175,11 @@ protected:
 
 
 private:
+    void SetupRandomNumberGenerator();
     void SetupActions();
     void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
+    QMenu* CreateMaterialsMenu( );
+    QToolBar* CreateMaterialsTooBar( QMenu* pMaterialsMenu );
     void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
     void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
     void SetupMenus();
@@ -185,13 +188,23 @@ private:
     void SetupViews();
     void SetupCommandView();
     void SetupGraphicView();
+    void SetupVRMLBackground();
    	void SetupTreeView();
+   	QSplitter* GetHorizontalSplitterPointer();
+   	SceneModelView* GetSceneModelViewPointer();
+   	ParametersView* GetParamtersViewPointer();
    	void SetupParametersView();
-   	void SetupSunposView();
-	void LoadPlugins( );
+	void LoadAvailablePlugins( );
+	void LoadTonatiuhPlugin( const QString& fileName );
+	void LoadShapePlugin( QObject* plugin );
+	void LoadSunshapePlugin( QObject* plugin );
+	void LoadMaterialPlugin( QObject* plugin );
+	void LoadPhotonMapPlugin( QObject* plugin );
+	void LoadTrackerPlugin( QObject* plugin );
+	void BuildFileList( QDir directory, QStringList& filesList );
+	void AddFilesToList( QDir directory, QStringList& filesList );
+	bool ValidDirectoryName( QString& directoryName  );
     void ReadSettings();
-    void BuildFileList( QDir parentDirectory, QStringList& fileList );
-
     bool OkToContinue();
     bool StartOver( const QString& fileName );
     bool Save();
@@ -206,7 +219,6 @@ private:
     QString StrippedName( const QString& fullFileName );
     void UpdateRecentFileActions();
     void WriteSettings();
-    void message();
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
 	void ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
 	SoSeparator* createGrid( int size );
@@ -236,7 +248,7 @@ private:
 
     SoSeparator* m_pRays;
     SoSeparator* m_pGrid;
-    RandomDeviate* m_pRand;
+    RandomDeviate* m_rand;
     SoNode* m_coinNode_Buffer;
     QStringList* m_manipulators_Buffer;
     unsigned long m_tracedRays;
