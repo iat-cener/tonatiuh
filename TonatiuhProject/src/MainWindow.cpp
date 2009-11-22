@@ -118,65 +118,83 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 void startManipulator(void *data, SoDragger* dragger)
 {
-	Trace trace( "MainWindow::startManipulator", false );
 	MainWindow* mainwindow = static_cast< MainWindow* >( data );
 	mainwindow->StartManipulation( dragger );
-
 }
 
 void finishManipulator(void *data, SoDragger* /*dragger*/ )
 {
-	Trace trace( "MainWindow::manipulatorChanged", false );
 	MainWindow* mainwindow = static_cast< MainWindow* >( data );
 	mainwindow->FinishManipulation( );
-
 }
 
 MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
-:QMainWindow( parent, flags ), m_currentFile( 0 ), m_recentFiles( 0 ),
-m_recentFileActions( 0 ), m_document( 0 ), m_commandStack( 0 ),
-m_commandView( 0 ), m_materialsToolBar( 0 ), m_shapeToolBar( 0 ),m_trackersToolBar( 0 ),
-m_TPhotonMapFactoryList( 0 ), m_TFlatShapeFactoryList( 0 ), m_TSunshapeFactoryList( 0 ),m_sceneModel( 0 ),
-m_selectionModel( 0 ), m_photonMap( 0 ), m_selectedPhotonMap( -1 ), m_increasePhotonMap( false ),
-m_pRays( 0 ), m_pGrid( 0 ), m_pRand( 0 ), m_coinNode_Buffer( 0 ),m_manipulators_Buffer( 0 ),
-m_tracedRays( 0 ), m_raysPerIteration( 1000 ), m_fraction( 10 ),
-m_drawPhotons( false ), m_graphicView( 0 ), m_treeView( 0 ), m_focusView( 0 )
+:QMainWindow( parent, flags ),
+m_currentFile( 0 ),
+m_recentFiles( 0 ),
+m_recentFileActions( 0 ),
+m_document( 0 ),
+m_commandStack( 0 ),
+m_commandView( 0 ),
+m_materialsToolBar( 0 ),
+m_photonMapToolBar(0),
+m_shapeToolBar( 0 ),
+m_trackersToolBar( 0 ),
+m_TPhotonMapFactoryList( 0 ),
+m_TFlatShapeFactoryList( 0 ),
+m_TSunshapeFactoryList( 0 ),
+m_sceneModel( 0 ),
+m_selectionModel( 0 ),
+m_photonMap( 0 ),
+m_selectedPhotonMap( -1 ),
+m_increasePhotonMap( false ),
+m_pRays( 0 ),
+m_pGrid( 0 ),
+m_rand( 0 ),
+m_coinNode_Buffer( 0 ),
+m_manipulators_Buffer( 0 ),
+m_tracedRays( 0 ),
+m_raysPerIteration( 1000 ),
+m_fraction( 10 ),
+m_drawPhotons( false ),
+m_graphicView( 0 ),
+m_treeView( 0 ),
+m_focusView( 0 )
 {
-
-
-	Trace trace( "MainWindow::MainWindow", false );
-
-    unsigned long seed = QTime::currentTime().msec();
-    m_pRand = new MersenneTwister( seed );
 	setupUi( this );
+    SetupRandomNumberGenerator();
     SetupActions();
     SetupMenus();
     SetupDocument();
     SetupModels();
 	SetupViews();
-    LoadPlugins();
-
+    LoadAvailablePlugins();
     ReadSettings();
-
-
 }
 
 MainWindow::~MainWindow()
 {
-	Trace trace( "MainWindow::~MainWindow", false );
+	delete m_document;
+	delete m_rand;
 	delete[] m_recentFileActions;
 	delete m_photonMap;
 }
 
+void MainWindow::SetupRandomNumberGenerator()
+{
+    unsigned long seed = QTime::currentTime().msec();
+    m_rand = new MersenneTwister( seed );
+}
+
 void MainWindow::SetupActions()
 {
-    Trace trace( "MainWindow::SetupActions", false );
     m_recentFileActions = new QAction*[m_maxRecentFiles];
     for ( int i = 0; i < m_maxRecentFiles; i++ )
     {
     	m_recentFileActions[i] = new QAction( this );
     	m_recentFileActions[i]->setVisible( false );
-    	connect( m_recentFileActions[i], SIGNAL( triggered() ), this, SLOT( OpenRecentFile() ) );
+    	connect( m_recentFileActions[i], SIGNAL( triggered() ),
+    			                   this, SLOT( OpenRecentFile() ) );
     }
 }
 
@@ -185,77 +203,59 @@ void MainWindow::SetupActions()
  **/
 void MainWindow::SetupMenus()
 {
-    Trace trace( "MainWindow::SetupMenus", false );
     for ( int i = 0; i < m_maxRecentFiles; i++ )
           menuRecent->addAction( m_recentFileActions[i] );
 }
 
-
 void MainWindow::SetupDocument()
 {
-    Trace trace( "MainWindow::SetupDocument", false );
     m_document = new Document();
     if ( m_document )
-    {
-        connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ), this, SLOT(selectionFinish( SoSelection* ) ) );
-    }
+    	connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
+    			       this, SLOT(selectionFinish( SoSelection* ) ) );
     else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
 }
 
 void MainWindow::SetupModels()
 {
-    Trace trace( "MainWindow::SetupModels", false );
     m_sceneModel = new SceneModel();
     m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
     m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
     m_selectionModel = new QItemSelectionModel( m_sceneModel );
 
-    connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ), this, SLOT( SetEnabled_SunPositionCalculator( int ) ) );
+    connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ),
+    		         this, SLOT( SetEnabled_SunPositionCalculator( int ) ) );
 }
 
 void MainWindow::SetupViews()
 {
-	Trace trace( "MainWindow::SetupViews", false );
     SetupCommandView();
     SetupGraphicView();
    	SetupTreeView();
    	SetupParametersView();
-   	SetupSunposView();
 }
 
 void MainWindow::SetupCommandView()
 {
-    Trace trace( "MainWindow::SetupCommandView", false );
-
     m_commandStack = new QUndoStack(this);
 	m_commandView = new QUndoView( m_commandStack );
 	m_commandView->setWindowTitle( tr( "Command List" ) );
 	m_commandView->setAttribute( Qt::WA_QuitOnClose, false );
-    connect( m_commandStack, SIGNAL( canRedoChanged( bool ) ), actionRedo, SLOT( setEnabled( bool ) ) );
-    connect( m_commandStack, SIGNAL( canUndoChanged( bool ) ), actionUndo, SLOT( setEnabled( bool ) ) );
+    connect( m_commandStack, SIGNAL( canRedoChanged( bool ) ),
+    		     actionRedo, SLOT( setEnabled( bool ) ) );
+    connect( m_commandStack, SIGNAL( canUndoChanged( bool ) ),
+    		     actionUndo, SLOT( setEnabled( bool ) ) );
 }
 
 void MainWindow::SetupGraphicView()
 {
-    Trace trace( "MainWindow::SetupGraphicView", false );
 
-    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
-    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
-    float gangle= 1.570f;
-    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
-    vrmlBackground->groundAngle.setValue( gangle );
-    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
-    float sangle= 1.570f;
-    vrmlBackground->skyColor.setValues( 0,6,scolor );
-    vrmlBackground->skyAngle.setValue( sangle );
-
-	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
-
-	QSplitter *pSplitter = findChild<QSplitter *>( "horizontalSplitter" );
+    SetupVRMLBackground();
+	QSplitter* pSplitter = findChild<QSplitter *>( "horizontalSplitter" );
 
 	QSplitter* graphicHorizontalSplitter = new QSplitter();
-	graphicHorizontalSplitter->setObjectName(QString::fromUtf8("graphicHorizontalSplitter"));
-    graphicHorizontalSplitter->setOrientation(Qt::Vertical);
+	graphicHorizontalSplitter->setObjectName( QString::fromUtf8("graphicHorizontalSplitter") );
+    graphicHorizontalSplitter->setOrientation( Qt::Vertical );
     pSplitter->insertWidget( 0, graphicHorizontalSplitter );
 
 	QList<int> sizes;
@@ -265,7 +265,7 @@ void MainWindow::SetupGraphicView()
 
     QSplitter *graphicVerticalSplitter1 = new QSplitter();
     graphicVerticalSplitter1->setObjectName( QString::fromUtf8( "graphicVerticalSplitter1" ) );
-    graphicVerticalSplitter1->setOrientation(Qt::Horizontal);
+    graphicVerticalSplitter1->setOrientation( Qt::Horizontal );
     graphicHorizontalSplitter->insertWidget( 0, graphicVerticalSplitter1 );
 
     QSplitter *graphicVerticalSplitter2 = new QSplitter();
@@ -354,187 +354,216 @@ void MainWindow::SetupGraphicView()
 	m_focusView = 0;
 }
 
+void MainWindow::SetupVRMLBackground()
+{
+    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
+    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
+    float gangle= 1.570f;
+    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
+    vrmlBackground->groundAngle.setValue( gangle );
+    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
+    float sangle= 1.570f;
+    vrmlBackground->skyColor.setValues( 0,6,scolor );
+    vrmlBackground->skyAngle.setValue( sangle );
+	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
+}
+
 void MainWindow::SetupTreeView()
 {
-    Trace trace( "MainWindow::SetupTreeView", false );
-    QSplitter *pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
-    if( pSplitter )
-    {
-        m_treeView = pSplitter->findChild< SceneModelView* >( "treeView" );
+	NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
+	m_treeView = GetSceneModelViewPointer();
+	m_treeView->setItemDelegate( delegate );
+	m_treeView->setModel( m_sceneModel );
+	m_treeView->setSelectionModel( m_selectionModel );
+	m_treeView->setDragEnabled(true);
+	m_treeView->setAcceptDrops(true);
+	m_treeView->setDropIndicatorShown(true);
+	m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
+	m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
+	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	m_treeView->setRootIsDecorated(true);
 
-    	if ( m_treeView )
-    	{
+	connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
+	connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
+	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
+				 this, SLOT ( showMenu( const QModelIndex& ) ) );
+}
 
-    		NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
-   			m_treeView->setItemDelegate( delegate );
+QSplitter* MainWindow::GetHorizontalSplitterPointer()
+{
+    QSplitter* pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
+    if( !pSplitter ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: splitter not found" );
+    return pSplitter;
+}
 
-			m_treeView->setModel( m_sceneModel );
-			m_treeView->setSelectionModel( m_selectionModel );
-			m_treeView->setDragEnabled(true);
-        	m_treeView->setAcceptDrops(true);
-			m_treeView->setDropIndicatorShown(true);
-			m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
-			m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
-        	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-        	m_treeView->setRootIsDecorated(true);
+SceneModelView* MainWindow::GetSceneModelViewPointer()
+{
+    QSplitter* pSplitter = GetHorizontalSplitterPointer();
+    SceneModelView* pTreeView = pSplitter->findChild< SceneModelView* >( "treeView" );
+    if ( !pTreeView ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: treeView not found" );
+    return pTreeView;
+}
 
-			connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
-			         this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
-			connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
-			         this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
-			connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
-			         this, SLOT ( showMenu( const QModelIndex& ) ) );
-
-    	}
-    	else tgf::SevereError( "MainWindow::Create3DView: treeView not found" );
-    }
-    else tgf::SevereError( "MainWindow::Create3DView: horizontalSplitter not found" );
+ParametersView* MainWindow::GetParamtersViewPointer()
+{
+    QSplitter* pSplitter = GetHorizontalSplitterPointer();
+    ParametersView* pParametersView = pSplitter->findChild< ParametersView* >( "parametersView" );
+    if ( !pParametersView ) tgf::SevereError( "MainWindow::GetParamtersViewPointer: parametersView not found" );
+    return pParametersView;
 }
 
 void MainWindow::SetupParametersView()
 {
-    Trace trace( "MainWindow::SetupParametersView", false );
-    QSplitter *pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
-    if( pSplitter )
-    {
-    	ParametersView* parametersView = pSplitter->findChild< ParametersView* >( "parametersView" );
-    	if ( parametersView )
-    	{
-    		 connect ( parametersView, SIGNAL(valueModificated( const QStringList&, SoBaseKit*, QString  ) ),
-			                            this, SLOT( parameterModified( const QStringList&, SoBaseKit*, QString  ) ) );
-			connect( m_selectionModel, SIGNAL( currentChanged ( const QModelIndex& , const QModelIndex& ) ), this, SLOT( selectionChanged( const QModelIndex& , const QModelIndex& ) ) );
-    	}
-    	else tgf::SevereError( "MainWindow::SetupParametersView: parametersView not found" );
-    }
-    else tgf::SevereError( "MainWindow::SetupParametersView: horizontalSplitter not found" );
+    ParametersView* petParamtersViewPointer();
+    connect ( parametersView, SIGNAL(valueModificated( const QStringList&, SoBaseKit*, QString  ) ),
+		                this, SLOT( parameterModified( const QStringList&, SoBaseKit*, QString  ) ) );
+	connect( m_selectionModel, SIGNAL( currentChanged ( const QModelIndex& , const QModelIndex& ) ),
+			             this, SLOT( selectionChanged( const QModelIndex& , const QModelIndex& ) ) );
 }
 
-void MainWindow::SetupSunposView()
+void MainWindow::LoadAvailablePlugins( )
 {
-
+	QStringList filesList;
+	BuildFileList( PluginDirectory(), filesList );
+    foreach( QString fileName, filesList ) LoadTonatiuhPlugin( fileName );
 }
 
-void MainWindow::LoadPlugins( )
+void MainWindow::LoadTonatiuhPlugin( const QString& fileName )
 {
-    Trace trace( "MainWindow::LoadPlugins", false );
-	// Build the list of files to process
-	QStringList fileList;
-	BuildFileList( PluginDirectory(), fileList );
-
-	//Iterate over pluginsList using "foreach" and load the plugin using QPluginLoader
-    foreach( QString fileName, fileList )
+ 	QPluginLoader loader( fileName );
+    QObject* plugin = loader.instance();
+    if ( plugin != 0)
     {
-     	QPluginLoader loader( fileName );
-        QObject* plugin = loader.instance();
-        if ( plugin != 0)
-        {
-
-        	TShapeFactory* pTShapeFactory = qobject_cast<TShapeFactory* >( plugin );
-        	if ( pTShapeFactory != 0 )
-        	{
-        		SetupActionInsertShape( pTShapeFactory );
-        		if( pTShapeFactory->IsFlat() )	m_TFlatShapeFactoryList.push_back( pTShapeFactory );
-
-
-      			pTShapeFactory->CreateTShape();
-        	}
-        	if( plugin->inherits("TSunShapeFactory") )
-        	{
-        	    TSunShapeFactory* pTSunShapeFactory = qobject_cast<TSunShapeFactory* >( plugin );
-        	    if( !pTSunShapeFactory ) tgf::SevereError( "MainWindow::LoadPlugins: SunShape Plugin not recognized" );     	    	;
-        	   	pTSunShapeFactory->CreateTSunShape( );
-				m_TSunshapeFactoryList.push_back( pTSunShapeFactory );
-        	}
-        	if( plugin->inherits("TMaterialFactory") )
-        	{
-        		TMaterialFactory* pTMaterialFactory = qobject_cast<TMaterialFactory* >( plugin );
-        		if( !pTMaterialFactory )  tgf::SevereError( "MainWindow::LoadPlugins: Material Plugin not recognized" );
-        		SetupActionInsertMaterial( pTMaterialFactory );
-      			pTMaterialFactory->CreateTMaterial();
-        	}
-        	if( plugin->inherits("TPhotonMapFactory") )
-        	{
-        		TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
-        		if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap Plugin not recognized" );
-        		//pTPhotonMapFactory->CreateTPhotonMap();
-				m_TPhotonMapFactoryList.push_back( pTPhotonMapFactory );
-        	}
-        	if( plugin->inherits("TTrackerFactory") )
-        	{
-        	    TTrackerFactory* pTTrackerFactory = qobject_cast< TTrackerFactory* >( plugin );
-        	    if( !pTTrackerFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Tracker Plugin not recognized" );
-        	    SetupActionInsertTracker( pTTrackerFactory );
-        	   	pTTrackerFactory->CreateTTracker( );
-        	}
-    	}
-    }
+    	if( plugin->inherits( "TShapeFactory"    ) ) LoadShapePlugin( plugin );
+    	if( plugin->inherits( "TSunShapeFactory" ) ) LoadSunshapePlugin( plugin );
+    	if( plugin->inherits( "TMaterialFactory" ) ) LoadMaterialPlugin( plugin );
+    	if( plugin->inherits( "TPhotonMapFactory") ) LoadPhotonMapPlugin( plugin );
+    	if( plugin->inherits( "TTrackerFactory"  ) ) LoadTrackerPlugin( plugin );
+	}
 }
 
-void MainWindow::BuildFileList( QDir parentDirectory, QStringList& fileList )
+void MainWindow::LoadShapePlugin( QObject* plugin )
 {
-	Trace trace( "MainWindow::BuildFileList", false );
+	TShapeFactory* pTShapeFactory = qobject_cast<TShapeFactory* >( plugin );
+	if ( !pTShapeFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Shape plug-in not recognized" );
+	SetupActionInsertShape( pTShapeFactory );
+	if( pTShapeFactory->IsFlat() )	m_TFlatShapeFactoryList.push_back( pTShapeFactory );
+	pTShapeFactory->CreateTShape();
+}
 
-    QString parentDirectoryPath( parentDirectory.absolutePath().append( "/" ) );
+void MainWindow::LoadSunshapePlugin( QObject* plugin )
+{
+    TSunShapeFactory* pTSunShapeFactory = qobject_cast<TSunShapeFactory* >( plugin );
+    if( !pTSunShapeFactory ) tgf::SevereError( "MainWindow::LoadPlugins: SunShape plug-in not recognized" );     	    	;
+   	pTSunShapeFactory->CreateTSunShape( );
+	m_TSunshapeFactoryList.push_back( pTSunShapeFactory );
+}
 
-    QStringList fileNameList = parentDirectory.entryList( QDir::Files, QDir::Unsorted );
-    for( int file = 0; file < fileNameList.size(); file++ )
-    {
-    	fileList << (parentDirectoryPath + fileNameList[file]);
-    }
+void MainWindow::LoadMaterialPlugin( QObject* plugin )
+{
+	TMaterialFactory* pTMaterialFactory = qobject_cast<TMaterialFactory* >( plugin );
+	if( !pTMaterialFactory )  tgf::SevereError( "MainWindow::LoadPlugins: Material plug-in not recognized" );
+	SetupActionInsertMaterial( pTMaterialFactory );
+	pTMaterialFactory->CreateTMaterial();
+}
 
-    QStringList subDirList = parentDirectory.entryList( QDir::Dirs, QDir::Unsorted );
-    for( int dir = 0; dir < subDirList.size(); dir++ )
-   {
-   		if( ( subDirList[dir] != "." ) && ( subDirList[dir]!= ".." ) )
-   		{
-   			QDir subdirectory( parentDirectoryPath + subDirList[dir] );
-   			BuildFileList( subdirectory, fileList );
-   		}
-   	}
+void MainWindow::LoadPhotonMapPlugin( QObject* plugin )
+{
+	TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
+	if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap plug-in not recognized" );
+	//pTPhotonMapFactory->CreateTPhotonMap();
+	m_TPhotonMapFactoryList.push_back( pTPhotonMapFactory );
+}
+
+void MainWindow::LoadTrackerPlugin( QObject* plugin )
+{
+    TTrackerFactory* pTTrackerFactory = qobject_cast< TTrackerFactory* >( plugin );
+    if( !pTTrackerFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Tracker plug-in not recognized" );
+    SetupActionInsertTracker( pTTrackerFactory );
+   	pTTrackerFactory->CreateTTracker( );
 }
 
 QDir MainWindow::PluginDirectory()
 {
-	// This function returns the path to the top level (i.e., root) plugin directory.
+	// Returns the path to the top level plug-in directory.
 	// It is assumed that this is a subdirectory named "plugins" of the directory in
 	// which the running version of Tonatiuh is located.
 
-	Trace trace( "MainWindow::PluginDirectory", false );
     QDir directory( qApp->applicationDirPath() );
-  	directory.cd("plugins");
+  	directory.cd( "plugins" );
 	return directory;
+}
+
+void MainWindow::BuildFileList( QDir directory, QStringList& filesList )
+{
+	AddFilesToList( directory, filesList );
+
+	QString directoryPath( directory.absolutePath().append( "/" ) );
+    QStringList subdirectoriesList = directory.entryList( QDir::Dirs, QDir::Unsorted );
+
+   for( int i = 0; i< subdirectoriesList.size(); i++ )
+   {
+    	QString subdirectoryName = subdirectoriesList[i];
+   		if( ValidDirectoryName( subdirectoryName ) )
+   			BuildFileList( QDir( directoryPath + subdirectoryName ), filesList );
+   	}
+}
+
+void MainWindow::AddFilesToList( QDir directory, QStringList& filesList )
+{
+	QString directoryPath( directory.absolutePath().append( "/" ) );
+
+    QStringList filenamesList = directory.entryList( QDir::Files, QDir::Unsorted );
+    for( int i = 0; i < filenamesList.size(); i++ )
+    	filesList << ( directoryPath + filenamesList[i] );
+}
+
+bool MainWindow::ValidDirectoryName( QString& directoryName  )
+{
+	return ( directoryName != "." ) && ( directoryName != ".." );
 }
 
 void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory )
 {
-	Trace trace( "MainWindow::SetupActionInsertMaterial", false );
 	ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
     actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
-    QMenu* menuMaterial = menuInsert->findChild< QMenu* >( "menuMaterial" );
-    if( !menuMaterial )
+    QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
+    if( !pMaterialsMenu )
     {
-    	menuMaterial = new QMenu( "Material", menuInsert );
-    	menuMaterial->setObjectName( "menuMaterial" );
-    	menuInsert->addMenu( menuMaterial );
-
-    	//Create a new toolbar for materials
-		m_materialsToolBar = new QToolBar( menuMaterial );
-
-		if( m_materialsToolBar )
-		{
-   	   		m_materialsToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
-   	    	m_materialsToolBar->setOrientation( Qt::Horizontal );
-	    	addToolBar( m_materialsToolBar );
-		}
-		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_materialsToolBar" );
+    	pMaterialsMenu = CreateMaterialsMenu();
+    	m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
     }
-
-	menuMaterial->addAction( actionInsertMaterial );
+    pMaterialsMenu->addAction( actionInsertMaterial );
 	m_materialsToolBar->addAction( actionInsertMaterial );
 	m_materialsToolBar->addSeparator();
-    connect( actionInsertMaterial, SIGNAL( triggered() ), actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
-	connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ), this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
+    connect( actionInsertMaterial, SIGNAL( triggered() ),
+    		 actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
+	connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ),
+			                 this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
 }
+
+QMenu* MainWindow::CreateMaterialsMenu( )
+{
+	QMenu* pMaterialsMenu = new QMenu( "Materials", menuInsert );
+	if ( !pMaterialsMenu ) tgf::SevereError( "MainWindow::CreateMaterialsMenu: NULL pMaterialsMenu" );
+	pMaterialsMenu->setObjectName( "menuMaterial" );
+	menuInsert->addMenu( pMaterialsMenu );
+	return pMaterialsMenu;
+}
+
+QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
+{
+	QToolBar* pMaterialsToolBar = new QToolBar( pMaterialsMenu );
+	if (! pMaterialsToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pMaterialsToolBar" );
+	pMaterialsToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
+	pMaterialsToolBar->setOrientation( Qt::Horizontal );
+	addToolBar( pMaterialsToolBar );
+	return pMaterialsToolBar;
+}
+
+
 /**
  * Creates an action for the /a pTShapeFactory and adds to shape insert menu and toolbar.
  */
@@ -598,15 +627,6 @@ void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 	connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
 }
 
-
-
-void MainWindow::message()
-{
-    Trace trace( "MainWindow::message", false );
-	QMessageBox::information( this, "Tonatiuh Action",
-	                          "This action is yet to be implemented", 1);
-}
-
 void MainWindow::on_actionNew_triggered()
 {
     Trace trace( "MainWindow::on_actionNew_triggered", false );
@@ -647,8 +667,7 @@ void MainWindow::on_actionSaveComponent_triggered()
 
 void MainWindow::on_actionPrint_triggered()
 {
-    Trace trace( "MainWindow::on_actionPrint_triggered", false );
-	message();
+	//Action yet to be implemented
 }
 
 void MainWindow::on_actionClose_triggered()
@@ -1043,14 +1062,14 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		Ray ray;
 
 		//Generate ray origin and direction in the Light coordinate system
-		ray.origin = raycastingShape->Sample( m_pRand->RandomDouble( ), m_pRand->RandomDouble( ) );
-		sunShape->generateRayDirection( ray.direction, *m_pRand );
+		ray.origin = raycastingShape->Sample( m_rand->RandomDouble( ), m_rand->RandomDouble( ) );
+		sunShape->generateRayDirection( ray.direction, *m_rand );
 
 		//Transform ray to World coordinate system and trace the scene
 		ray = lightToWorld( ray );
 
 		//Perform Ray Trace
-		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_pRand );
+		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_rand );
 		progress.Update();
  	}
 	m_tracedRays += m_raysPerIteration;
