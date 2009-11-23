@@ -60,15 +60,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	enum reverseOrientation {
-		INSIDE = 0,
-		OUTSIDE = 1,
-	   };
-
 	SoSFDouble radius;
 	SoSFDouble length;
 	SoSFDouble phiMax;
-	SoSFEnum activeSide;
 
 protected:
 	bool OutOfRange( double u, double v ) const;
