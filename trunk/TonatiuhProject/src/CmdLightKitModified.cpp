@@ -117,7 +117,7 @@ void CmdLightKitModified::undo()
 
 void CmdLightKitModified::redo( )
 {
-	Trace trace( "CmdLightKitModified::redo", true );
+	Trace trace( "CmdLightKitModified::redo", false );
 
    if( !m_previousLightKit )
    	{

@@ -70,6 +70,7 @@ void GraphicView::SetSceneGraph( SoSelection* sceneGraphRoot )
     m_sceneGraphRoot = 	sceneGraphRoot;
     m_myRenderArea = new SoQtExaminerViewer( this );
     m_myRenderArea->setGLRenderAction( new SoBoxHighlightRenderAction() );
+    m_myRenderArea->setTransparencyType( SoGLRenderAction::SORTED_OBJECT_BLEND );
     m_myRenderArea->setSceneGraph( m_sceneGraphRoot );
 
     ViewCoordinateSystem( true );
