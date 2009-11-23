@@ -69,10 +69,6 @@ ShapeCylinder::ShapeCylinder( )
 	SO_NODE_ADD_FIELD( radius, (0.5) );
 	SO_NODE_ADD_FIELD( length, (1.0) );
 	SO_NODE_ADD_FIELD( phiMax, (TwoPi) );
-	SO_NODE_DEFINE_ENUM_VALUE( reverseOrientation, INSIDE );
-  	SO_NODE_DEFINE_ENUM_VALUE( reverseOrientation, OUTSIDE );
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation );
-	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeCylinder::~ShapeCylinder()
@@ -96,7 +92,7 @@ QString ShapeCylinder::getIcon()
 
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	Trace trace( "ShapeCylinder::Intersect", false );
+	Trace trace( "ShapeCylinder::Intersect", true );
 
 	// Compute quadratic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
@@ -120,13 +116,12 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 
 	//Evaluate Tolerance
 	double tol = 0.00001;
-	if( (thit - objectRay.mint) < tol ) return false;
-
 	double zmin = 0.0;
 	double zmax = length.getValue();
 
+
 	// Test intersection against clipping parameters
-	if( hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() )
+	if( (thit - objectRay.mint) < tol  || hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
@@ -134,7 +129,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 
 		hitPoint = objectRay( thit );
 		phi = atan2( hitPoint.y, hitPoint.x );
-		if ( hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() ) return false;
+		if ( (thit - objectRay.mint) < tol  || hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() ) return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -143,8 +138,9 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 
 	// Compute definitive cylinder hit position and $\phi$
     hitPoint = objectRay( thit );
+
 	phi = atan2( hitPoint.y, hitPoint.x );
-	//if ( phi < 0. ) phi += TwoPi;
+	if ( phi < 0. ) phi += TwoPi;
 
 	// Find parametric representation of Cylinder hit
 	double u = phi / phiMax.getValue();
@@ -172,14 +168,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	double E = DotProduct( dpdu, dpdu );
 	double F = DotProduct( dpdu, dpdv );
 	double G = DotProduct( dpdv, dpdv );
-	Vector3D N;
-
-	if( activeSide.getValue() == 0 )
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	else
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-
-	if( DotProduct(N, -objectRay.direction) < 0 )	return false;
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
@@ -199,6 +188,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 		                        dndu,
 								dndv,
 		                        u, v, this );
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = thit;
@@ -253,13 +243,7 @@ NormalVector ShapeCylinder::GetNormal (double u, double /* v */) const
 					0.0 );
 	Vector3D dpdv( 0.0, 0.0, length.getValue() );
 
-	NormalVector normal;
-	if( activeSide.getValue() == 0 )
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	else
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-
-	return normal;
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 }
 
