@@ -116,11 +116,10 @@ QString ShapeSphere::getIcon()
 	return QString( ":/icons/ShapeSphere.png" );
 }
 
-bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry* dg ) const
+bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 	Trace trace( "ShapeSphere::Intersect", false );
 
-	Ray objectRay = ray ;
 
 	// Compute quadratic ShapeSphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
@@ -139,7 +138,6 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 
     //Evaluate Tolerance
 	double tol = 0.00001;
-	if( (thit - objectRay.mint) < tol ) return false;
 
 	// Compute ShapeSphere hit position and $\phi$
     Point3D hitPoint = objectRay( thit );
@@ -150,7 +148,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 	double zmax = std::max( z1.getValue(), z2.getValue() );
 
 	// Test intersection against clipping parameters
-	if( hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() )
+	if( (thit - objectRay.mint) < tol || hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
@@ -161,7 +159,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 		phi = atan2( hitPoint.y, hitPoint.x );
 	    if ( phi < 0. ) phi += tgc::TwoPi;
 
-		if ( hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() ) return false;
+		if ( (thit - objectRay.mint) < tol || hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() ) return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -230,7 +228,7 @@ bool ShapeSphere::Intersect( const Ray& ray, double* tHit, DifferentialGeometry*
 								dndv,
 		                        u, v, this );
 
-	dg->shapeFrontSide = ( DotProduct( N, ray.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
     // Update _tHit_ for quadric intersection
     *tHit = thit;
 
