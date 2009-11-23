@@ -92,7 +92,7 @@ QString ShapeCylinder::getIcon()
 
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	Trace trace( "ShapeCylinder::Intersect", true );
+	Trace trace( "ShapeCylinder::Intersect", false );
 
 	// Compute quadratic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
