@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <vector>
+
 #include <QString>
 
 #include <Inventor/SoPrimitiveVertex.h>
@@ -66,11 +68,6 @@ ShapeParabolicRectangle::ShapeParabolicRectangle()
 	SO_NODE_ADD_FIELD( xlength, (1.0) );
 	SO_NODE_ADD_FIELD( zlength, (1.0) );
 	SO_NODE_ADD_FIELD( depth, (1.0) );
-
-	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, INSIDE);
-  	SO_NODE_DEFINE_ENUM_VALUE(reverseOrientation, OUTSIDE);
-  	SO_NODE_SET_SF_ENUM_TYPE( activeSide, reverseOrientation);
-	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeParabolicRectangle::~ShapeParabolicRectangle()
@@ -94,69 +91,75 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 {
 	Trace trace( "ShapeParabolicRectangle::Intersect", false );
 
-	// Compute quadratic coefficients for the 1st parabola XZ
+	std::vector< double > tVector;
+
+	// Compute quadratic coefficients for the 1st parabola XY
 	double xmin = -xlength.getValue()/2;
 	double xmax = xlength.getValue()/2;
 	double xFocus = ( xmax * xmax ) / ( 4 * depth.getValue() );
 
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A1 = objectRay.direction.x*objectRay.direction.x;
-	double B1 = 2.0 * ( objectRay.direction.x* objectRay.origin.x - 2 * xFocus * objectRay.direction.y );
+	double A1 = objectRay.direction.x * objectRay.direction.x;
+	double B1 = 2.0 * ( objectRay.direction.x * objectRay.origin.x - 2 * xFocus * objectRay.direction.y );
 	double C1 = objectRay.origin.x * objectRay.origin.x - 4 * xFocus* objectRay.origin.y;
+
+	double t10 = objectRay.mint -1.0, t11 = objectRay.mint -1.0;
+	bool firstIntersected = tgf::Quadratic( A1, B1, C1, &t10, &t11 );
+	tVector.push_back( t10 );
+	tVector.push_back( t11 );
 
 	// Compute quadratic coefficients for the 2nd parabola YZ
 	double zmin = -zlength.getValue()/2;
 	double zmax = zlength.getValue()/2;
 	double zFocus = ( zmax * zmax ) / ( 4 * depth.getValue() );
 
-
 	double A2 = objectRay.direction.z * objectRay.direction.z;
 	double B2 = 2.0 * ( objectRay.direction.z* objectRay.origin.z - 2 * zFocus * objectRay.direction.y);
 	double C2 = objectRay.origin.z * objectRay.origin.z - 4 * zFocus * objectRay.origin.y;
 
-	double t10 = objectRay.mint -1.0, t11 = objectRay.mint -1.0;
 	double t20 = objectRay.mint -1.0, t21 = objectRay.mint -1.0;
-	bool firstIntersected = tgf::Quadratic( A1, B1, C1, &t10, &t11 );
 	bool secondIntersected = tgf::Quadratic( A2, B2, C2, &t20, &t21 );
+	tVector.push_back( t20 );
+	tVector.push_back( t21 );
+
 	if( !firstIntersected && !secondIntersected ) return false;
 
-	// Compute intersection distance along ray for the 1st parabolic cylinder XZ
-	double thit = objectRay.mint;
-	bool intersectWithFirst = true;
-	if( t10 > objectRay.maxt || t11 < objectRay.mint )
-	{
-		if ( t20 > objectRay.maxt || t21 < objectRay.mint ) return false;
-		else
-		{
-			intersectWithFirst = false;
-			thit = ( t20 > objectRay.mint )? t20 : t21 ;
-		}
-	}
-	else
-	{
-		double thit1 = ( t10 > objectRay.mint )? t10 : t11 ;
-		if ( t20 > objectRay.maxt || t21 < objectRay.mint )	thit = thit1 ;
-
-		else
-		{
-			double thit2 = ( t20 > objectRay.mint )? t20 : t21 ;
-
-			thit = ( thit1 <= thit2 )? thit1: thit2;
-
-			intersectWithFirst = ( thit1 <= thit2 )? true: false;
-		}
-
-	}
-
-    if( thit > objectRay.maxt ) return false;
 
     //Evaluate Tolerance
     double tol = 0.00001;
+
+	std::sort (tVector.begin(), tVector.end() );
+	double thit = objectRay.mint;
+	std::vector< double >::iterator it;
+	for( it = tVector.begin(); it!=tVector.end(); ++it)
+	{
+		double t = *it;
+		if(  ( t > objectRay.mint && t < objectRay.maxt ) && (t - objectRay.mint) > tol )
+		{
+			Point3D hitPoint = objectRay( t );
+			if( hitPoint.x < xmin || hitPoint.x > xmax || hitPoint.z > zmax || hitPoint.z < zmin ) continue;
+			if( hitPoint.y < 0.0 || hitPoint.y > depth.getValue() ) continue;
+
+			double u =  ( hitPoint.x + ( xlength.getValue()  / 2 ) ) / xlength.getValue();
+			double v =  ( hitPoint.z + ( zlength.getValue()  / 2 ) ) / zlength.getValue();
+
+
+			if( ( GetPoint3D( u, v ).y - hitPoint.y ) < tol )
+			{
+				thit = t;
+				break;
+			}
+
+		}
+	}
+
+
     if( (thit - objectRay.mint) < tol ) return false;
 
 	// Compute possible parabolic cylinder hit position for the 1st parabolic cylinder XZ
     Point3D hitPoint = objectRay( thit );
 
+    std::cout<<"thit: "<<thit<<" "<<hitPoint<<std::endl;
     if( hitPoint.x < xmin || hitPoint.x > xmax || hitPoint.z > zmax || hitPoint.z < zmin ) return false;
     if( hitPoint.y < 0.0 || hitPoint.y > depth.getValue() ) return false;
 
@@ -170,49 +173,40 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	// Compute possible parabola hit position
 
 	// Find parametric representation of paraboloid hit
-	double u = (hitPoint.x-xmin) / (xmax-xmin);
-	double v = (hitPoint.z-zmin) / (zmax-zmin);
+	double u =  ( hitPoint.x + ( xlength.getValue()  / 2 ) ) / xlength.getValue();
+	double v =  ( hitPoint.z + ( zlength.getValue()  / 2 ) ) / zlength.getValue();
 
-	// Compute parabaloid \dpdu and \dpdv
+	//Compute parabaloid \dpdu and \dpdv
 	Vector3D dpdu;
-	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
-		dpdu = Vector3D( xlength.getValue(), 4 * depth.getValue()*  (-1 + 2 * u), 0.0 );
-	else
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) < 0 )
 		dpdu = Vector3D( xlength.getValue(), 0.0, 0.0 );
+	else
+		dpdu = Vector3D( xlength.getValue(), 4 * depth.getValue()*  ( -1 + 2 * u ), 0.0 );
+
 
 	Vector3D dpdv;
-	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
-		dpdv = Vector3D( 0.0, 0.0, zlength.getValue() );
-	else
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) < 0 )
 		dpdv = Vector3D( 0.0, 4 * depth.getValue() * (-1 + 2 * v), zlength.getValue() );
+	else
+		dpdv = Vector3D( 0.0, 0.0, zlength.getValue() );
+
+	 std::cout<<"dpdu: "<<dpdu<<" dpdv: "<<dpdv<<std::endl;
 
 	// Compute parabaloid \dndu and \dndv
-	Vector3D d2Pduu = (intersectWithFirst)?
-					Vector3D( 0.0, 0.0, 1.0 /(2.0 *xFocus ) )
-					: Vector3D( 0.0, 0.0, 0.0 );
+	Vector3D d2Pduu = ( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) < 0 )?
+					Vector3D( 0.0, 0.0, 0.0 )
+					: Vector3D( 0.0,  8 * depth.getValue(), 0.0 );
 	Vector3D d2Pduv ( 0.0, 0.0, 0.0 );
-	Vector3D d2Pdvv = (intersectWithFirst)?
-					Vector3D( 0.0, 0.0, 0.0)
-					: Vector3D( 0.0, 0.0, 1.0/ (2.0 * zFocus ) );
+	Vector3D d2Pdvv = ( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) < 0 )?
+					Vector3D( 0.0,  8 * depth.getValue(), 0.0 )
+					: Vector3D( 0.0, 0.0, 0.0);
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
 	double F = DotProduct(dpdu, dpdv);
 	double G = DotProduct(dpdv, dpdv);
 
-	NormalVector N;
-	if( activeSide.getValue() == 0 )
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
-	else
-	{
-		N = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	if( DotProduct(N, objectRay.direction) < 0 )
-	{
-		return false;
-	}
+	NormalVector N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
@@ -232,6 +226,7 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 							   dndu,
 							   dndv,
 							   u, v, this);
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -265,12 +260,8 @@ Point3D ShapeParabolicRectangle::GetPoint3D( double u, double v ) const
 
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-
-
-
 	double xpos = u * xlength.getValue() -( xlength.getValue() / 2 );
 	double zpos = v * zlength.getValue() - ( zlength.getValue() / 2 );
-
 
 	double xFocus = ( ( xlength.getValue()/2 ) * ( xlength.getValue()/2 ) ) / ( 4 * depth.getValue() );
 	double zFocus = ( ( zlength.getValue()/2 ) * ( zlength.getValue()/2 ) ) / ( 4 * depth.getValue() );
@@ -288,27 +279,20 @@ NormalVector ShapeParabolicRectangle::GetNormal( double u, double v ) const
 	Trace trace( "ShapeParabolicRectangle::GetNormal", false );
 
 	Vector3D dpdu;
-	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
-		dpdu = Vector3D( xlength.getValue(), 4 * depth.getValue()*  (-1 + 2 * u), 0.0 );
-	else
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) < 0 )
 		dpdu = Vector3D( xlength.getValue(), 0.0, 0.0 );
+	else
+		dpdu = Vector3D( xlength.getValue(), 4 * depth.getValue()*  ( -1 + 2 * u ), 0.0 );
+
 
 	Vector3D dpdv;
-	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) >= 0 )
-		dpdv = Vector3D( 0.0, 0.0, zlength.getValue() );
-	else
+	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) < 0 )
 		dpdv = Vector3D( 0.0, 4 * depth.getValue() * (-1 + 2 * v), zlength.getValue() );
-
-	NormalVector normal;
-	if( activeSide.getValue() == 1 )
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	}
 	else
-	{
-		normal = Normalize( NormalVector( CrossProduct( dpdv, dpdu ) ) );
-	}
-	return normal;
+		dpdv = Vector3D( 0.0, 0.0, zlength.getValue() );
+
+
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 }
 void ShapeParabolicRectangle::computeBBox( SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
 {
