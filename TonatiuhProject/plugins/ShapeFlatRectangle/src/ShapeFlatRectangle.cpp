@@ -93,6 +93,7 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction.y == 0 ) ) return false;
 	double t = -objectRay.origin.y/objectRay.direction.y;
+
 	// Compute intersection distance along ray
 	if( t > objectRay.maxt || t < objectRay.mint ) return false;
 
@@ -104,12 +105,13 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
     Point3D hitPoint = objectRay( t );
 
 	// Test intersection against clipping parameters
-	if( hitPoint.z < -height.getValue()/2 || hitPoint.z > height.getValue()/2 || hitPoint.x < -width.getValue()/2 || hitPoint.x > width.getValue()/2 ) return false;
+	if( hitPoint.x < -height.getValue()/2 || hitPoint.x > height.getValue()/2 || hitPoint.z < -width.getValue()/2 || hitPoint.z > width.getValue()/2 ) return false;
 
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
 	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
+
 
 	// Find parametric representation of the rectangle hit point
 	double u = ( hitPoint.x + height.getValue()/2 ) / ( height.getValue() );
@@ -185,8 +187,8 @@ void ShapeFlatRectangle::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 {
 	Trace trace( "ShapeFlatRectangle::computeBBox", false );
 
-	Point3D min = Point3D(-width.getValue()/2,0.0, -height.getValue()/2);
-	Point3D max = Point3D(width.getValue()/2,0.0,height.getValue()/2);
+	Point3D min = Point3D( -height.getValue()/2, 0.0, -width.getValue()/2);
+	Point3D max = Point3D( height.getValue()/2, 0.0, width.getValue()/2);
 	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
 }
 
