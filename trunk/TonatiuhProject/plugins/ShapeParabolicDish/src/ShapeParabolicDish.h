@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TShape.h"
 
+class SoSensor;
 class Vector3D;
 
 class ShapeParabolicDish : public TShape
@@ -66,19 +67,20 @@ public:
 	SoSFDouble phiMax;
 
 protected:
-
-	Vector3D GetDpdu ( double u, double v ) const;
-	Vector3D GetDpdv ( double u, double v ) const;
-
 	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal ( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
-
-
 	virtual void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center);
 	virtual void generatePrimitives(SoAction *action);
 	virtual ~ShapeParabolicDish();
+
+	static void updateMinRadius( void* data, SoSensor* );
+	static void updateMaxRadius( void* data, SoSensor* );
+
+private:
+	double m_lastMaxRadius;
+	double m_lastMinRadius;
 };
 
 #endif /*SHAPEPARABOLICDISH_H_*/
