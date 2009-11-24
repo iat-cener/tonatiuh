@@ -299,7 +299,7 @@ Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeo
 
 }
 
-Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const
+Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& /* rand */  ) const
 {
 	Trace trace( "MaterialBasicRefractive::RefractedtRay", false );
 
