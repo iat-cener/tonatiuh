@@ -13,4 +13,5 @@ SUBDIRS =  MaterialBasicRefractive \
 			ShapeSphere \
 			ShapeSphericalPolygon \
 			ShapeTroughParabola \
-			SunshapePillbox
+			SunshapePillbox \
+			TrackerOneAxis
