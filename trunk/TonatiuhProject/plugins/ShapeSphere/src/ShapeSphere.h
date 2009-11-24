@@ -63,12 +63,13 @@ public:
 	bool IntersectP( const Ray &ray ) const;
 
 	SoSFDouble radius;
-	SoSFDouble z1;
-	SoSFDouble z2;
+	SoSFDouble yMax;
+	SoSFDouble yMin;
 	SoSFDouble phiMax;
 
 protected:
-	static void updateMinMaxTheta(void *data, SoSensor *);
+	static void updateYMin(void *data, SoSensor *);
+	static void updateYMax(void *data, SoSensor *);
 	static void updatePhiMax(void *data, SoSensor *);
 
 	bool OutOfRange( double u, double v ) const;
@@ -80,8 +81,8 @@ protected:
    	virtual ~ShapeSphere();
 
 private:
-	double m_thetaMin;
-	double m_thetaMax;
+	double m_lastValidYMax;
+	double m_lastValidYMin;
 };
 
 #endif /*SHAPESPHERE_H_*/
