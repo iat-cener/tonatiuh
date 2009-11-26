@@ -71,7 +71,6 @@ TrackerOneAxis::TrackerOneAxis()
 	// Define input fields and their default values
 	SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
 	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( rotationAxis, ( 1.0, 0.0, 0.0 ) );
 
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
@@ -122,7 +121,8 @@ void TrackerOneAxis::evaluate()
 	SbVec3f s;
 	worldToObject.multDirMatrix( globalSunVector, s );
 
-	SbVec3f p = rotationAxis.getValue();
+
+	SbVec3f p( 1.0, 0.0, 0.0 );
 
 	SbVec3f n;
 	SbVec3f t;
@@ -139,11 +139,10 @@ void TrackerOneAxis::evaluate()
 
 
 	}
-	SbMatrix transformMatrix( p[0], p[1], p[2], 0.0,
+	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
 								n[0], n[1], n[2], 0.0,
-								t[0], t[1], t[2], 0.0,
+								p[0], p[1], p[2], 0.0,
 								0.0, 0.0, 0.0, 1.0 );
-
 
 	SoTransform* newTransform = new SoTransform();
 	newTransform->setMatrix( transformMatrix );
