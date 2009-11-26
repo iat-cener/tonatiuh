@@ -57,7 +57,6 @@ public:
 	//Constructor
 	TrackerOneAxis();
 
-	SoSFVec3f rotationAxis;
 protected:	
 	virtual ~TrackerOneAxis();
 
