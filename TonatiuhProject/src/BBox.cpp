@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include "Trace.h"
 #include "Vector3D.h"
+#include "Point3D.h"
 
 
 
@@ -119,8 +120,8 @@ void BBox::BoundingSphere( Point3D* center, float* radius ) const
 {
 	Trace trace( "BBox::BoundingSphere", false );
 
-	*center = 0.5 * ( pMin + pMax );
-    *radius = Distance( *center, pMax );
+	*center = Point3D( (pMin.x+pMax.x)*0.5, (pMin.y+pMax.y)*0.5, (pMin.z+pMax.z)*0.5 );
+    *radius = distance( *center, pMax );
 }
 
 bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
