@@ -412,7 +412,7 @@ void ShapeParabolicDish::updateMaxRadius( void* data, SoSensor* )
 {
 	Trace trace( "ShapeParabolicDish::updateMaxRadius", false );
 
-	ShapeParabolicDish* parabolicDish = static_cast< ShapeParabolicDish* >( data );	if( parabolicDish->dishMinRadius.getValue() >= parabolicDish->dishMaxRadius.getValue() )
+	ShapeParabolicDish* parabolicDish = static_cast< ShapeParabolicDish* >( data );
 	if( parabolicDish->dishMinRadius.getValue() >= parabolicDish->dishMaxRadius.getValue() )
 		{
 		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Dish max radius must be bigger than min radius. ") );
