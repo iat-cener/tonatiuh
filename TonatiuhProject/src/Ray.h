@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
@@ -40,17 +40,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define RAY_H
 
 #include <iostream>
+#include "tgc.h"
 #include "Point3D.h"
 #include "Vector3D.h"
-
-struct Point3D;
-struct Vector3D;
 
 struct Ray
 {
     Ray( );
-    Ray( const Point3D& orig, const Vector3D& direc );
-    Ray( const Point3D& orig, const Vector3D& direc, double start, double end );
+    Ray( const Point3D& orig, const Vector3D& direc, double start = tgc::Epsilon, double end = tgc::Infinity );
     ~Ray( );
     Point3D operator()( double t ) const;
         

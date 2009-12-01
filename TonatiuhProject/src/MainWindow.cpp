@@ -111,7 +111,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeFactory.h"
 #include "TShapeKit.h"
 #include "TSunShapeFactory.h"
-#include "Trace.h"
 #include "TTracker.h"
 #include "TTrackerFactory.h"
 
@@ -1023,7 +1022,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
 	{
 		Ray ray;
-
 		//Generate ray origin and direction in the Light coordinate system
 		ray.origin = raycastingShape->Sample( m_rand->RandomDouble( ), m_rand->RandomDouble( ) );
 		sunShape->generateRayDirection( ray.direction, *m_rand );

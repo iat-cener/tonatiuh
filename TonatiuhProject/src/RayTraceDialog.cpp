@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -52,8 +52,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
 :QDialog ( parent, f ), m_numRays( 0 ), m_fraction( 0.0 ), m_drawPhotons( false ), m_selectedPhotonMapFactory( -1 ), m_increasePhotonMap( false )
 {
-	Trace( "RayTraceDialog::RayTraceDialog", false );
-
 	setupUi( this );
 	connect( this, SIGNAL( accepted() ), this, SLOT( saveChanges() ) );
 	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( applyChanges( QAbstractButton* ) ) );
@@ -67,8 +65,6 @@ RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
 RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedPhotonMapFactory, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
 :QDialog ( parent, f ), m_numRays( numRays ), m_fraction( fraction ), m_drawPhotons( drawPhotons ), m_selectedPhotonMapFactory( selectedPhotonMapFactory ), m_increasePhotonMap( increasePhotonMap )
 {
-	Trace( "RayTraceDialog::RayTraceDialog", false );
-
 	setupUi( this );
 	raysSpinBox->setValue( m_numRays );
 	drawSpin->setValue( m_fraction );
@@ -95,7 +91,6 @@ RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, 
  */
 RayTraceDialog::~RayTraceDialog()
 {
-	Trace( "RayTraceDialog::~RayTraceDialog", false );
 }
 
 /**
@@ -103,7 +98,6 @@ RayTraceDialog::~RayTraceDialog()
  */
 int RayTraceDialog::GetNumRays() const
 {
-	Trace( "RayTraceDialog::GetNumRays", false );
 	return m_numRays;
 }
 
@@ -112,7 +106,6 @@ int RayTraceDialog::GetNumRays() const
  */
 double RayTraceDialog::GetRaysFactionToDraw() const
 {
-	Trace( "RayTraceDialog::GetRaysFactionToDraw", false );
 	return m_fraction;
 };
 
@@ -121,7 +114,6 @@ double RayTraceDialog::GetRaysFactionToDraw() const
  */
 bool RayTraceDialog::DrawPhotons() const
 {
-	Trace( "RayTraceDialog::DrawPhotons", false );
 	return m_drawPhotons;
 }
 
@@ -130,8 +122,6 @@ bool RayTraceDialog::DrawPhotons() const
  */
 int RayTraceDialog::GetPhotonMapFactoryIndex() const
 {
-	Trace( "RayTraceDialog::GetPhotonMapFactory", false );
-
 	return m_selectedPhotonMapFactory;
 }
 
@@ -140,7 +130,6 @@ int RayTraceDialog::GetPhotonMapFactoryIndex() const
  */
 bool RayTraceDialog::IncreasePhotonMap() const
 {
-	Trace( "RayTraceDialog::IncreasePhotonMap", false );
 	return m_increasePhotonMap;
 }
 
@@ -149,7 +138,6 @@ bool RayTraceDialog::IncreasePhotonMap() const
  */
 void RayTraceDialog::applyChanges( QAbstractButton* button  )
 {
-	Trace( "RayTraceDialog::applyChanges", false );
 	if( buttonBox->buttonRole( button ) == 8 ) saveChanges();
 }
 
@@ -158,8 +146,6 @@ void RayTraceDialog::applyChanges( QAbstractButton* button  )
  */
 void RayTraceDialog::saveChanges()
 {
-	Trace( "RayTraceDialog::saveChanges", false );
-
 	m_numRays = raysSpinBox->value();
 
 	m_fraction = drawSpin->value();

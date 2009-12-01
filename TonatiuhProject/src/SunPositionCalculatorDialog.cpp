@@ -32,7 +32,7 @@
 
  Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
- Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola, Gilda Jimenez,
+ Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola, Gilda Jimenez,
  Juana Amieva, Azael Mancillas, Cesar Cantu.
  ***************************************************************************/
 
@@ -121,8 +121,6 @@ void SunPositionCalculatorDialog::ChangeSunTimeZone( int /*timeZone*/ )
 
 void SunPositionCalculatorDialog::on_selectButton_clicked()
 {
-	Trace( "SunPositionCalculatorDialog::on_selectButton_clicked" , true );
-
 	MapDialog marbleDialog;
 	marbleDialog.SetCoordinates( longitudeSpin->value()*( tgc::Pi / 180), -latitudeSpin->value()*( tgc::Pi / 180) );
 	if( marbleDialog.exec() )

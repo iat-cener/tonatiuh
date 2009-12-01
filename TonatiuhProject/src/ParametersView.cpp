@@ -49,8 +49,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ParametersView::ParametersView( QWidget* parent , Qt::WindowFlags f )
 : QWidget(parent, f), m_ptabWidget( 0 ), m_actualCoinNode( 0 )
 {
-	Trace trace( "ParametersView::ParametersView", false );
-
 	m_ptabWidget = new QTabWidget;
     m_ptabWidget->addTab( new FieldContainerWidget( 0, "" ), tr("Transform") );
     m_ptabWidget->addTab( new FieldContainerWidget( 0, "" ), tr("Shape") );
@@ -63,14 +61,10 @@ ParametersView::ParametersView( QWidget* parent , Qt::WindowFlags f )
 
 ParametersView::~ParametersView()
 {
-	Trace trace( "ParametersView::~ParametersView", false );
 	delete m_ptabWidget;
-
 }
 void ParametersView::ChangeParameters( SoBaseKit* coinNode )
 {
-	Trace trace( "ParametersView::ChangeParameters", false );
-
 	if ( coinNode )
 	{
 		QString type = coinNode->getTypeId().getName().getString();
@@ -106,8 +100,6 @@ void ParametersView::ChangeParameters( SoBaseKit* coinNode )
 
 void ParametersView::SelectionChanged( SoBaseKit* coinNode, QStringList parts )
 {
-	Trace trace( "ParametersView::SelectionChanged", false );
-
 	m_ptabWidget->clear();
 	m_actualCoinNode = coinNode;
 
@@ -121,25 +113,20 @@ void ParametersView::SelectionChanged( SoBaseKit* coinNode, QStringList parts )
 
 void ParametersView::AddTab( SoNode* coinNode, QString partName )
 {
-	Trace trace( "ParametersView::AddTab", false );
-
 	QString type = coinNode->getTypeId().getName().getString();
 
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( coinNode, partName, this );
 	m_ptabWidget->addTab( nodeContainer, type );
 	connect(nodeContainer, SIGNAL( valueModificated( const QStringList& , QString ) ), this, SLOT( valueModification( const QStringList& , QString ) ) );
-
 }
 
 void ParametersView::valueModification( const QStringList& oldValuesList, QString containerName )
 {
-	Trace trace( "ParametersView::valueModification", false );
 	emit valueModificated( oldValuesList, m_actualCoinNode, containerName );
 }
 
 void ParametersView::Reset()
 {
-	Trace trace( "ParametersView::Reset", false );
 	FieldContainerWidget* containerWidget = static_cast< FieldContainerWidget* >(m_ptabWidget->currentWidget() );
 	if( containerWidget )containerWidget->Reset();
 }
