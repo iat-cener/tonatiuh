@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define VECTOR3D_H
 
 #include <iostream>
-
 struct Point3D;
 struct NormalVector;
 

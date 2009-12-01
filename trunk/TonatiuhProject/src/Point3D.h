@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define POINT3D_H
 
 #include <iostream>
-
 struct Vector3D;
 
 struct Point3D

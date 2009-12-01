@@ -37,71 +37,95 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
+#include <float.h>
 
 #include "NormalVector.h"
-#include "tgc.h"
-#include "Trace.h"
 #include "Vector3D.h"
 
 NormalVector::NormalVector( double dx, double dy, double dz )
 : x(dx), y(dy), z(dz)
 {
-
 }
 
 NormalVector::NormalVector( const Vector3D& vector )
 : x(vector.x), y(vector.y), z(vector.z)
 {
-
 }
 
 NormalVector::~NormalVector( )
 {
-
 }
 
-NormalVector& NormalVector::operator+=( const NormalVector& nRhs )
+NormalVector& NormalVector::operator+=( const NormalVector& nV )
 {
-	x += nRhs.x;
-    y += nRhs.y;
-    z += nRhs.z;
+	x += nV.x;
+    y += nV.y;
+    z += nV.z;
     return *this;
 }
 
-NormalVector& NormalVector::operator-=( const NormalVector& nRhs )
+NormalVector NormalVector::operator+( const NormalVector& nV ) const
 {
-    x -= nRhs.x;
-    y -= nRhs.y;
-    z -= nRhs.z;
+	return NormalVector( x + nV.x, y + nV.y, z + nV.z );
+}
+
+NormalVector& NormalVector::operator-=( const NormalVector& nV )
+{
+    x -= nV.x;
+    y -= nV.y;
+    z -= nV.z;
     return *this;
 }
 
-NormalVector& NormalVector::operator*=( double a )
+NormalVector NormalVector::operator-( const NormalVector& nV ) const
 {
-	x *= a;
-    y *= a;
-    z *= a;
+	return NormalVector( x - nV.x, y - nV.y, z - nV.z );
+}
+
+NormalVector& NormalVector::operator*=( double scalar )
+{
+	x *= scalar;
+    y *= scalar;
+    z *= scalar;
     return *this;
 }
 
-NormalVector& NormalVector::operator/=( double a )
+NormalVector NormalVector::operator*( double scalar ) const
 {
-	double inv = 1.0/a;
+	return NormalVector( x * scalar, y * scalar, z * scalar );
+}
+
+NormalVector& NormalVector::operator/=( double scalar )
+{
+	double inv = 1.0/scalar;
     x *= inv;
     y *= inv;
     z *= inv;
     return *this;
 }
 
-bool NormalVector::operator==( const NormalVector& norm ) const
+NormalVector NormalVector::operator/( double scalar ) const
 {
-	if( this == &norm )
-    	return true;
-    else
-    return(
-    	( fabs(x - norm.x) < tgc::Epsilon ) &&
-    	( fabs(y - norm.y) < tgc::Epsilon ) &&
-    	( fabs(z - norm.z) < tgc::Epsilon ) );
+	double inv = 1.0/scalar;
+    return NormalVector( x * inv, y * inv, z * inv );
+}
+
+NormalVector NormalVector::operator-() const
+{
+	return NormalVector( -x, -y, -z );
+}
+
+bool NormalVector::operator==( const NormalVector& nV ) const
+{
+	if( this == &nV ) return true;
+    else return( ( fabs(x - nV.x) < DBL_EPSILON ) &&
+				 ( fabs(y - nV.y) < DBL_EPSILON ) &&
+				 ( fabs(z - nV.z) < DBL_EPSILON ) );
+}
+
+bool NormalVector::operator!=( const NormalVector& nV ) const
+{
+	return !( *this == nV );
 }
 
 double NormalVector::operator[]( int i ) const
@@ -125,58 +149,33 @@ double NormalVector::lengthSquared( ) const
 
 double NormalVector::length( ) const
 {
-	return sqrt( lengthSquared( ) );
+	return sqrt( x*x + y*y + z*z );
 }
 
-NormalVector operator-( const NormalVector& normal )
+
+NormalVector operator*( double scalar, const NormalVector& nV )
 {
-	return NormalVector( -normal.x, -normal.y, -normal.z );
+	return NormalVector( scalar * nV.x, scalar * nV.y, scalar * nV.z );
 }
 
-NormalVector operator+( const NormalVector& lhs, const NormalVector& rhs )
+std::ostream& operator<<( std::ostream& os, const NormalVector& nV )
 {
-	return NormalVector( lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z );
-}
-
-NormalVector operator-( const NormalVector& lhs, const NormalVector& rhs )
-{
-	return NormalVector( lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z );
-}
-
-NormalVector operator*( const NormalVector& normal, double scalar )
-{
-	return NormalVector( normal.x*scalar, normal.y*scalar, normal.z*scalar );
-}
-
-NormalVector operator*( double scalar, const NormalVector& normal )
-{
-	return NormalVector( normal.x*scalar, normal.y*scalar, normal.z*scalar );
-}
-
-NormalVector operator/( const NormalVector& normal, double scalar )
-{
-	double inv = 1.0/scalar;
-    return NormalVector( normal.x*inv, normal.y*inv, normal.z*inv );
-}
-
-std::ostream& operator<<( std::ostream& os, const NormalVector& normal )
-{
-	os << normal.x << ", " << normal.y << ", " << normal.z;
+	os << nV.x << ", " << nV.y << ", " << nV.z;
     return os;
 }
 
-double dotProduct( const NormalVector& nA, const NormalVector& nB )
+double DotProduct( const NormalVector& nA, const NormalVector& nB )
 {
 	return nA.x*nB.x + nA.y*nB.y + nA.z*nB.z;
 }
 
-double absDotProduct( const NormalVector& nA, const NormalVector& nB )
+double AbsDotProduct( const NormalVector& nA, const NormalVector& nB )
 {
-	return fabs( dotProduct( nA, nB ) );
+	return fabs( DotProduct( nA, nB ) );
 }
 
-NormalVector Normalize(const NormalVector& n)
+NormalVector Normalize( const NormalVector& nV )
 {
-	return n / n.length();
+	return nV / nV.length();
 }
 
