@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -46,8 +46,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdDelete::CmdDelete( const QModelIndex& selectedIndex, SceneModel& model, QUndoCommand* parent )
 : QUndoCommand("Delete", parent),  m_coinNode( 0 ), m_coinParent( 0 ), m_pModel(&model), m_row( -1 )
 {
-	Trace trace( "CmdDelete::CmdDelete", false );
-
 	InstanceNode* instanceNode = m_pModel->NodeFromIndex( selectedIndex );
 	m_coinNode = instanceNode->GetNode();
 	m_coinNode->ref();
@@ -57,22 +55,15 @@ CmdDelete::CmdDelete( const QModelIndex& selectedIndex, SceneModel& model, QUndo
 
 CmdDelete::~CmdDelete()
 {
-	Trace trace( "CmdDelete::~CmdDelete", false );
-
 	m_coinNode->unref();
 }
 
 void CmdDelete::undo()
 {
-	Trace trace( "CmdDelete::undo", false );
-
 	m_pModel->Paste( tgc::Shared, *m_coinParent, *m_coinNode, m_row );
 }
 
 void CmdDelete::redo( )
 {
-	Trace trace( "CmdDelete::redo", false );
-
 	m_pModel->Cut( *m_coinParent, m_row );
-
 }

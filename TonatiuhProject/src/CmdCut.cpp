@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -52,8 +52,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdCut::CmdCut( const QModelIndex& selectedIndex, SoNode*& clipboard, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("Cut", parent), m_pClipboard ( clipboard ), m_previousNode ( 0 ), m_coinNode( 0 ), m_coinParent( 0 ), m_pModel( model ), m_row ( -1 )
 {
-	Trace trace( "CmdCut::CmdCut", false );
-
 	InstanceNode* instanceNode = m_pModel->NodeFromIndex( selectedIndex );
 	m_coinNode = instanceNode->GetNode();
 	m_coinNode->ref();
@@ -69,8 +67,6 @@ CmdCut::CmdCut( const QModelIndex& selectedIndex, SoNode*& clipboard, SceneModel
  */
 CmdCut::~CmdCut()
 {
-	Trace trace( "CmdCut::~CmdCut", false );
-
 	m_coinNode->unref();
 }
 
@@ -80,8 +76,6 @@ CmdCut::~CmdCut()
  */
 void CmdCut::undo()
 {
-	Trace trace( "CmdCut::undo", false );
-
 	m_pClipboard = m_previousNode;
 	m_pModel->Paste( tgc::Shared, *m_coinParent, *m_coinNode, m_row );
 }
@@ -93,8 +87,6 @@ void CmdCut::undo()
  */
 void CmdCut::redo( )
 {
-	Trace trace( "CmdCut::redo", false );
-
 	m_pClipboard = m_coinNode;
 	m_pModel->Cut( *m_coinParent, m_row );
 }

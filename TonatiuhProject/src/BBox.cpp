@@ -50,18 +50,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 BBox::BBox()
 : pMin( tgc::Infinity, tgc::Infinity, tgc::Infinity ), pMax( -tgc::Infinity, -tgc::Infinity, -tgc::Infinity )
 {
-	Trace trace( "BBox::BBox", false );
 }
 
 BBox::BBox( const Point3D& point )
 : pMin(point), pMax(point)
 {
-	Trace trace( "BBox::BBox", false );
 }
 
 BBox::BBox( const Point3D& point1, const Point3D& point2 )
 {
-	Trace trace( "BBox::BBox", false );
 
 	pMin = Point3D( std::min( point1.x, point2.x ),
 				    std::min( point1.y, point2.y ),
@@ -73,8 +70,6 @@ BBox::BBox( const Point3D& point1, const Point3D& point2 )
 
 bool BBox::Overlaps( const BBox& bbox ) const
 {
-	Trace trace( "BBox::Overlaps", false );
-
 	bool xOverlap = ( pMax.x >= bbox.pMin.x ) && ( pMin.x <= bbox.pMax.x );
 	bool yOverlap = ( pMax.y >= bbox.pMin.y ) && ( pMin.y <= bbox.pMax.y);
 	bool zOverlap = ( pMax.z >= bbox.pMin.z ) && ( pMin.z <= bbox.pMax.z);
@@ -83,8 +78,6 @@ bool BBox::Overlaps( const BBox& bbox ) const
 
 bool BBox::Inside( const Point3D& point) const
 {
-	Trace trace( "BBox::Inside", false );
-
 	return ( point.x >= pMin.x && point.x <= pMax.x &&
              point.y >= pMin.y && point.y <= pMax.y &&
              point.z >= pMin.z && point.z <= pMax.z );
@@ -92,24 +85,18 @@ bool BBox::Inside( const Point3D& point) const
 
 void BBox::Expand( double delta )
 {
-	Trace trace( "BBox::Expand", false );
-
 	pMin -= Vector3D( delta, delta, delta );
 	pMax += Vector3D( delta, delta, delta );
 }
 
 double BBox::Volume() const
 {
-	Trace trace( "BBox::Volume", false );
-
 	Vector3D diagonal = pMax - pMin;
 	return diagonal.x * diagonal.y * diagonal.z;
 }
 
 int BBox::MaximumExtent() const
 {
-	Trace trace( "BBox::MaximumExtent", false );
-
 	Vector3D diagonal = pMax - pMin;
 	if( diagonal.x > diagonal.y && diagonal.x > diagonal.z) return 0;
 	else if( diagonal.y > diagonal.z) return 1;
@@ -118,16 +105,12 @@ int BBox::MaximumExtent() const
 
 void BBox::BoundingSphere( Point3D* center, float* radius ) const
 {
-	Trace trace( "BBox::BoundingSphere", false );
-
 	*center = Point3D( (pMin.x+pMax.x)*0.5, (pMin.y+pMax.y)*0.5, (pMin.z+pMax.z)*0.5 );
     *radius = Distance( *center, pMax );
 }
 
 bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
 {
-	Trace trace( "BBox::IntersectP", false );
-
     double t0 = ray.mint;
     double t1 = ray.maxt;
 
@@ -148,8 +131,6 @@ bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
 
 std::ostream& operator<<( std::ostream& os, const BBox& bbox )
 {
-	Trace trace( "BBox operator<<", false );
-
     os << "pMin: " << bbox.pMin << std::endl;
     os << "pMax: " << bbox.pMax << std::endl;
     return os;
@@ -157,7 +138,6 @@ std::ostream& operator<<( std::ostream& os, const BBox& bbox )
 
 BBox Union( const BBox& bbox, const Point3D& point )
 {
-	Trace trace( "BBox Union<<", false );
 	BBox result;
 	result.pMin.x = std::min( bbox.pMin.x, point.x );
 	result.pMin.y = std::min( bbox.pMin.y, point.y );
@@ -170,8 +150,6 @@ BBox Union( const BBox& bbox, const Point3D& point )
 
 BBox Union( const BBox& bbox1, const BBox& bbox2 )
 {
-	Trace trace( "BBox Union<<", false );
-
 	BBox result;
 	result.pMin.x = std::min( bbox1.pMin.x, bbox2.pMin.x);
 	result.pMin.y = std::min( bbox1.pMin.y, bbox2.pMin.y );

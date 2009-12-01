@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -42,16 +42,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ActionInsertTracker::ActionInsertTracker( const QString& text, QObject* parent, TTrackerFactory* pTTrackerFactory )
 : QAction(text,parent), m_pTTrackerFactory(pTTrackerFactory)
 {
-	Trace( "ActionInsertTracker::ActionInsertTracker", false );
 }
 
 ActionInsertTracker::~ActionInsertTracker()
 {
-	Trace( "ActionInsertTracker::~ActionInsertTracker", false );
 }
 
 void ActionInsertTracker::OnActionInsertTrackerTriggered()
 {
-	Trace( "ActionInsertTracker::OnActionInsertTrackerTriggered", false );
 	emit CreateTracker( m_pTTrackerFactory );
 }

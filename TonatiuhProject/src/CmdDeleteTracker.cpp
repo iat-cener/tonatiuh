@@ -54,8 +54,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit* scene, SceneModel& model, QUndoCommand* parent )
 : QUndoCommand("Delete", parent), m_tracker( 0 ),  m_coinParent( 0 ),  m_scene( scene ), m_pModel( &model ), m_row( 0 )
 {
-	Trace trace( "CmdDeleteTracker::CmdDeleteTracker", false );
-
 	//if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdDeleteTracker Null lightKit." );
 
 	if( !selectedIndex.isValid() ) tgf::SevereError( "CmdDeleteTracker called with invalid ModelIndex." );
@@ -78,8 +76,6 @@ CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit
  */
 CmdDeleteTracker::~CmdDeleteTracker()
 {
-	Trace trace( "CmdDeleteTracker::~CmdDeleteTracker", false );
-
 	m_tracker->unref();
 }
 
@@ -89,9 +85,6 @@ CmdDeleteTracker::~CmdDeleteTracker()
  */
 void CmdDeleteTracker::undo()
 {
-	Trace trace( "CmdDeleteTracker::undo", false );
-
-
 	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
 	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null node transform." );
 
@@ -117,8 +110,6 @@ void CmdDeleteTracker::undo()
  */
 void CmdDeleteTracker::redo( )
 {
-	Trace trace( "CmdDeleteTracker::redo", false );
-
 	SoTransform* transform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
 	transform->translation.disconnect();
 	transform->rotation.disconnect();

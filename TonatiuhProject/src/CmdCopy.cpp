@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -52,8 +52,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdCopy::CmdCopy( const QModelIndex& index, SoNode*& clipboard, SceneModel* model, QUndoCommand* parent)
 : QUndoCommand("Copy", parent), m_pClipboard ( clipboard ), m_pNode( 0 ),m_previousNode ( 0 ), m_pModel( model )
 {
-	Trace( "CmdCopy::CmdCopy", false );
-
 	InstanceNode* instanceNode = m_pModel->NodeFromIndex( index );
 	m_pNode = instanceNode->GetNode();
 
@@ -65,7 +63,6 @@ CmdCopy::CmdCopy( const QModelIndex& index, SoNode*& clipboard, SceneModel* mode
  */
 CmdCopy::~CmdCopy()
 {
-	Trace( "CmdCopy::~CmdCopy", false );
 }
 
 /*!
@@ -74,8 +71,6 @@ CmdCopy::~CmdCopy()
  */
 void CmdCopy::undo()
 {
-	Trace( "CmdCopy::undo", false );
-
 	m_pClipboard = m_previousNode;
 }
 
@@ -85,7 +80,5 @@ void CmdCopy::undo()
  */
 void CmdCopy::redo( )
 {
-	Trace( "CmdCopy::redo", false );
-
 	m_pClipboard  = m_pNode;
 }

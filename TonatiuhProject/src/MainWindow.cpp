@@ -569,7 +569,6 @@ QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
  */
 void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
 {
-    Trace trace( "MainWindow::SetupActionInsertShape", false );
     ActionInsertShape* actionInsertShape = new ActionInsertShape( pTShapeFactory->TShapeName(), this, pTShapeFactory );
     actionInsertShape->setIcon( pTShapeFactory->TShapeIcon() );
     QMenu* menuShape = menuInsert->findChild< QMenu* >( "shapeMenu" );
@@ -598,8 +597,6 @@ void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
 
 void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 {
-	Trace trace( "MainWindow::SetupActionInsertTracker", false );
-
 	ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
     actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
     QMenu* menuTracker = menuInsert->findChild< QMenu* >( "trackerMenu" );
@@ -629,14 +626,12 @@ void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 
 void MainWindow::on_actionNew_triggered()
 {
-    Trace trace( "MainWindow::on_actionNew_triggered", false );
     if ( OkToContinue() ) StartOver( "" );
 }
 
 
 void MainWindow::on_actionOpen_triggered()
 {
-    Trace trace( "MainWindow::on_actionOpen_triggered", false );
     if ( OkToContinue() )
     {
         QString fileName = QFileDialog::getOpenFileName( this,
@@ -648,20 +643,17 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    Trace trace( "MainWindow::on_actionSave_triggered", false );
     Save();
 }
 
 void MainWindow::on_actionSaveAs_triggered()
 {
-    Trace trace( "MainWindow::on_actionSaveAs_triggered", false );
     SaveAs();
 }
 
 
 void MainWindow::on_actionSaveComponent_triggered()
 {
-    Trace trace( "MainWindow::on_actionSaveComponent_triggered", false );
     SaveComponent();
 }
 
@@ -672,13 +664,11 @@ void MainWindow::on_actionPrint_triggered()
 
 void MainWindow::on_actionClose_triggered()
 {
-    Trace trace( "MainWindow::on_actionClose_triggered", false );
 	close();
 }
 
 void MainWindow::OpenRecentFile()
 {
-    Trace trace( "MainWindow::OpenRecentFile", false );
     if ( OkToContinue() )
     {
         QAction* action = qobject_cast<QAction *>( sender() );
@@ -694,60 +684,47 @@ void MainWindow::OpenRecentFile()
 // Edit menu actions
 void MainWindow::on_actionUndo_triggered()
 {
-    Trace trace( "MainWindow::on_actionUndo_triggered", false );
     m_commandStack->undo();
 }
 
 void MainWindow::on_actionRedo_triggered()
 {
-    Trace trace( "MainWindow::on_actionRedo_triggered", false );
     m_commandStack->redo();
 }
 
 void MainWindow:: on_actionUndoView_triggered()
 {
-    Trace trace( "MainWindow:: on_actionUndoView_triggered", false );
     m_commandView->show();
 }
 
 void MainWindow::on_actionCut_triggered()
 {
-    Trace trace( "MainWindow::on_actionCut_triggered", false );
 	Cut();
 }
 
 void MainWindow::on_actionCopy_triggered()
 {
-    Trace trace( "MainWindow::on_actionCopy_triggered", false );
-	Copy();
+ 	Copy();
 }
 
 void MainWindow::on_actionPaste_Copy_triggered()
 {
-    Trace trace( "MainWindow::on_actionPasteCopy_triggered", false );
-
 	Paste( tgc::Copied );
 }
 
 void MainWindow::on_actionPaste_Link_triggered()
 {
-	Trace trace( "MainWindow::on_actionPasteLink_triggered", false );
-
 	Paste( tgc::Shared );
 }
 
 void MainWindow::on_actionDelete_triggered()
 {
-	Trace trace( "MainWindow::on_actionDelete_triggered", false );
 	Delete ();
-
 }
 
 // Insert menu actions
 void MainWindow::on_actionNode_triggered()
 {
-    Trace trace( "MainWindow::on_actionNode_triggered", false );
-
 	QModelIndex parentIndex;
     if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
     	parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
@@ -785,8 +762,6 @@ void MainWindow::on_actionNode_triggered()
 
 void MainWindow::on_actionShapeKit_triggered()
 {
-	Trace trace( "MainWindow::on_actionShapeKit_triggered", false );
-
 	QModelIndex parentIndex;
     if (( ! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex()))
     	parentIndex = m_sceneModel->index (0,0, m_treeView->rootIndex());
@@ -820,8 +795,6 @@ void MainWindow::on_actionShapeKit_triggered()
 
 void MainWindow::on_actionUserComponent_triggered()
 {
-	Trace trace( "MainWindow::on_actionUserComponent_triggered", false );
-
 	QModelIndex parentIndex;
     if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
     	parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
@@ -870,8 +843,6 @@ void MainWindow::on_actionUserComponent_triggered()
 //Sun Light menu actions
 void MainWindow::on_actionDefine_SunLight_triggered()
 {
-	Trace trace( "MainWindow::on_actionDefine_SunLight_triggered", false );
-
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
 
@@ -916,8 +887,6 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 
 void MainWindow::on_actionCalculateSunPosition_triggered()
 {
-	Trace trace( "MainWindow::on_actionCalculateSunPosition_triggered", false );
-
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene->getPart("lightList[0]", false) ) return;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
@@ -943,8 +912,6 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
  */
 bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
 {
-
-	Trace trace( "MainWindow::ReadyForRaytracing", false );
 	//Check if there is a scene
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if ( !coinScene )  return false;
@@ -996,8 +963,6 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
  */
 void MainWindow::ShowRaysIn3DView()
 {
-    Trace trace( "MainWindow::ShowRaysIn3DView", false );
-
 	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
 	{
 		m_document->GetRoot()->removeChild( m_pRays );
@@ -1032,8 +997,6 @@ void MainWindow::ShowRaysIn3DView()
 //Ray trace menu actions
 void MainWindow::on_actionRayTraceRun_triggered()
 {
-	Trace trace( "MainWindow::on_actionRayTraceRun_triggered", false );
-
 	QDateTime date1 = QDateTime::currentDateTime();
 
     // Verify that propram options are the scene are properly configured for ray tracing
@@ -1084,7 +1047,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 void MainWindow::on_actionDisplay_rays_toggled()
 {
-	Trace trace( "MainWindow::on_actionDisplay_rays_toggled", false );
 	if ( actionDisplay_rays->isChecked() && (m_pRays ) )
 	{
 	  	m_document->GetRoot()->addChild(m_pRays);
@@ -1100,8 +1062,6 @@ void MainWindow::on_actionDisplay_rays_toggled()
  */
 void MainWindow::on_actionExport_PhotonMap_triggered()
 {
-	Trace trace( "MainWindow::on_actionExport_PhotonMap_triggered", false );
-
 	if ( m_photonMap == NULL )
 	{
 		QMessageBox::information( this, "Tonatiuh Action",
@@ -1228,7 +1188,6 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
  */
 void MainWindow::on_actionRayTraceOptions_triggered()
 {
-	Trace trace( "MainWindow::on_actionRayTraceOptions_triggered", false );
 	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedPhotonMap, m_increasePhotonMap, this );
 	options->exec();
 
@@ -1244,8 +1203,6 @@ void MainWindow::on_actionRayTraceOptions_triggered()
 //View menu actions
 void MainWindow::on_actionAxis_toggled()
 {
-	Trace trace( "MainWindow::on_actionAxis_toggled", false );
-
 	m_graphicView[0]->ViewCoordinateSystem( actionAxis->isChecked() );
 	m_graphicView[1]->ViewCoordinateSystem( actionAxis->isChecked() );
 	m_graphicView[2]->ViewCoordinateSystem( actionAxis->isChecked() );
@@ -1254,8 +1211,6 @@ void MainWindow::on_actionAxis_toggled()
 
 void MainWindow::on_actionGrid_toggled()
 {
-	Trace trace( "MainWindow::on_actionGrid_toggled", false );
-
 	if( actionGrid->isChecked() )
 	{
 		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
@@ -1293,8 +1248,6 @@ void MainWindow::on_actionGrid_toggled()
 
 void MainWindow::on_actionBackground_toggled()
 {
-	Trace trace( "MainWindow::on_actionBackground_toggled", false );
-
 	SoVRMLBackground* vrmlBackground = static_cast< SoVRMLBackground* > ( m_document->GetRoot()->getChild( 0 ) );
 
 	if( actionBackground->isChecked() )
@@ -1322,8 +1275,6 @@ void MainWindow::on_actionBackground_toggled()
 
 void MainWindow::on_actionEdit_Mode_toggled()
 {
-	Trace trace( "MainWindow::on_actionEdit_Mode_toggled", false );
-
 	if ( !actionEdit_Mode->isChecked() )
 	{
 		m_graphicView[1]->hide();
@@ -1341,8 +1292,6 @@ void MainWindow::on_actionEdit_Mode_toggled()
 
 void MainWindow::on_action_X_Y_Plane_triggered()
 {
-	Trace trace( "MainWindow::on_action_X_Y_Plane_triggered", false );
-
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 0, 1 ) );
@@ -1352,8 +1301,6 @@ void MainWindow::on_action_X_Y_Plane_triggered()
 
 void MainWindow::on_action_X_Z_Plane_triggered()
 {
-	Trace trace( "MainWindow::on_action_X_Z_Plane_triggered", false );
-
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 1, 0 ) );
@@ -1363,8 +1310,6 @@ void MainWindow::on_action_X_Z_Plane_triggered()
 
 void MainWindow::on_action_Y_Z_Plane_triggered()
 {
-	Trace trace( "MainWindow::on_action_Y_Z_Plane_triggered", false );
-
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( -1, 0, 0 ) );
@@ -1375,8 +1320,6 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 //Create actions
 void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
 {
-	Trace trace( "MainWindow::CreateMaterial", false );
-
 	QModelIndex parentIndex = ( (! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex() ) ) ?
 								m_sceneModel->index( 0, 0, m_treeView->rootIndex( )):
 								m_treeView->currentIndex();
@@ -1409,8 +1352,6 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
 
 void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
-    Trace trace( "MainWindow::CreateShape", false );
-
     QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
 								m_sceneModel->index (0,0,m_treeView->rootIndex()) : m_treeView->currentIndex();
 
@@ -1441,8 +1382,6 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
-	Trace trace( "MainWindow::CreateTracker", false );
-
 	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
 									m_sceneModel->index (0,0,m_treeView->rootIndex()):
 									m_treeView->currentIndex();
@@ -1488,8 +1427,6 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 //Manipulators actions
 void MainWindow::SoTransform_to_SoCenterballManip()
 {
-	Trace trace( "MainWindow::SoTransform_to_SoCenterballManip", false );
-
 	//Transform to a SoCenterballManip manipulator
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1516,8 +1453,6 @@ void MainWindow::SoTransform_to_SoCenterballManip()
 
 void MainWindow::SoTransform_to_SoJackManip()
 {
-	Trace trace( "MainWindow::SoTransform_to_SoJackManip", false );
-
 	//Transform to a SoJackManip manipulator
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1544,8 +1479,6 @@ void MainWindow::SoTransform_to_SoJackManip()
 
 void MainWindow::SoTransform_to_SoHandleBoxManip()
 {
-	Trace trace( "MainWindow::SoTransform_to_SoHandleBoxManip", false );
-
 	//Transform to a SoHandleBoxManip manipulator
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1572,8 +1505,6 @@ void MainWindow::SoTransform_to_SoHandleBoxManip()
 
 void MainWindow::SoTransform_to_SoTabBoxManip()
 {
-	Trace trace( "MainWindow::SoTransform_to_SoTabBoxManip", false );
-
 	//Transform to a SoTabBoxManip manipulator
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1600,8 +1531,6 @@ void MainWindow::SoTransform_to_SoTabBoxManip()
 
 void MainWindow::SoTransform_to_SoTrackballManip()
 {
-	Trace trace( "MainWindow::SoTransform_to_SoTrackballManip", false );
-
 	//Transform to a SoTrackballManip manipulator
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1628,8 +1557,6 @@ void MainWindow::SoTransform_to_SoTrackballManip()
 
 void MainWindow::SoTransform_to_SoTransformBoxManip()
 {
-	Trace trace( "MainWindow::SoTransform_to_SoTransformBoxManip", false );
-
 	//Transform to a SoTransformBoxManip manipulator
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1657,8 +1584,6 @@ void MainWindow::SoTransform_to_SoTransformBoxManip()
 
 void MainWindow::SoTransform_to_SoTransformerManip()
 {
-	Trace trace( "MainWindow::SoTransform_to_SoTransformerManip", false );
-
 	//Transform to a SoTransformerManip manipulator
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1687,8 +1612,6 @@ void MainWindow::SoTransform_to_SoTransformerManip()
 
 void MainWindow::SoManip_to_SoTransform()
 {
-	Trace trace( "MainWindow::SoManip_to_SoTransform", false );
-
 	//Transform manipulator to a SoTransform
 	QModelIndex currentIndex = m_treeView->currentIndex();
 
@@ -1713,9 +1636,6 @@ void MainWindow::SoManip_to_SoTransform()
 //for graphicview signals
 void MainWindow::selectionFinish( SoSelection* selection )
 {
-    Trace trace( "MainWindow::selectionFinish", false );
-
-
     if(selection->getNumSelected() == 0 ) return;
 
     SoPath* selectionPath = selection->getPath( 0 );
@@ -1734,8 +1654,6 @@ void MainWindow::selectionFinish( SoSelection* selection )
 
 void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex& /*previous*/ )
 {
-    Trace trace( "MainWindow::selectionChanged", false );
-
     InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
     SoNode* selectedCoinNode = instanceSelected->GetNode();
 
@@ -1761,7 +1679,6 @@ void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex
 //for treeview signals
 void MainWindow::mousePressEvent( QMouseEvent * e )
 {
-	Trace trace( "MainWindow::mousePressEvent", false );
 	QPoint pos = e->pos();
 	int x = pos.x();
 	int y = pos.y()-64;
@@ -1796,8 +1713,6 @@ void MainWindow::mousePressEvent( QMouseEvent * e )
 
 void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelIndex& node)
 {
-	Trace trace( "MainWindow::itemDragAndDrop", false );
-
 	if( node == m_treeView->rootIndex() ) return;
 
 	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
@@ -1817,8 +1732,6 @@ void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelInd
 
 void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node)
 {
-	Trace trace( "MainWindow::itemDragAndDropCopy", false );
-
 	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
 	SoNode* coinNode = nodeInstnace->GetNode();
 	//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
@@ -1834,7 +1747,6 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 
 void MainWindow::showMenu( const QModelIndex& index)
 {
-	Trace trace( "MainWindow::showMenu", false );
 	if( !index.isValid() ) return;
 	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
 
@@ -1879,8 +1791,6 @@ void MainWindow::showMenu( const QModelIndex& index)
 //for sunposdialog signals
 void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double latitude )
 {
-	Trace trace( "MainWindow::ChangeSunPosition", false);
-
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
 	if ( !lightKit )
@@ -1902,16 +1812,11 @@ void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double la
  */
 void MainWindow::SetEnabled_SunPositionCalculator( int enabled )
 {
-	Trace trace( "MainWindow::SetEnabled_SunPositionCalculator", false );
-
 	actionCalculateSunPosition->setEnabled( enabled );
-
 }
 
 void MainWindow::closeEvent( QCloseEvent* event )
 {
-    Trace trace( "MainWindow::closeEvent", false);
-
     if ( OkToContinue() )
     {
     	WriteSettings();
@@ -1926,8 +1831,6 @@ void MainWindow::closeEvent( QCloseEvent* event )
  */
 bool MainWindow::OkToContinue()
 {
-    Trace trace( "MainWindow::OkToContinue", false );
-
 	if ( m_document->IsModified() )
 	{
 		int answer = QMessageBox::warning( this, tr( "Tonatiuh" ),
@@ -1949,8 +1852,6 @@ bool MainWindow::OkToContinue()
  */
 bool MainWindow::StartOver( const QString& fileName )
 {
-    Trace trace( "MainWindow::StartOver", false );
-
 	actionDisplay_rays->setEnabled( false );
 	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
 	{
@@ -1990,17 +1891,13 @@ bool MainWindow::StartOver( const QString& fileName )
 
 bool MainWindow::Save()
 {
-    Trace trace( "MainWindow::Save", false );
-
 	if ( m_currentFile.isEmpty() ) return SaveAs();
 	else return SaveFile( m_currentFile );
 }
 
 bool MainWindow::SaveFile( const QString& fileName )
 {
-    Trace trace( "MainWindow::SaveFile", false );
-
-	if( !m_document->WriteFile( fileName ) )
+ 	if( !m_document->WriteFile( fileName ) )
 	{
 		statusBar()->showMessage( tr( "Saving canceled" ), 2000 );
 		return false;
@@ -2013,8 +1910,6 @@ bool MainWindow::SaveFile( const QString& fileName )
 
 bool MainWindow::SaveAs()
 {
-    Trace trace( "MainWindow::SaveAs", false );
-
 	QString fileName = QFileDialog::getSaveFileName( this,
 	                       tr( "Save Tonatiuh document" ), ".",
 	                       tr( "Tonatiuh files (*.tnh)" ) );
@@ -2026,8 +1921,6 @@ bool MainWindow::SaveAs()
 
 bool MainWindow::SaveComponent()
 {
-    Trace trace( "MainWindow::SaveComponent", false );
-
     if( !m_selectionModel->hasSelection() ) return false;
     if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
 
@@ -2070,8 +1963,6 @@ bool MainWindow::SaveComponent()
 
 bool MainWindow::Copy( )
 {
-	Trace trace( "MainWindow::Copy", false );
-
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
 	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
@@ -2092,8 +1983,6 @@ bool MainWindow::Copy( )
  */
 bool MainWindow::Paste( tgc::PasteType type )
 {
-	Trace trace( "MainWindow::Paste", false );
-
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( !m_coinNode_Buffer ) return false;
 
@@ -2137,8 +2026,6 @@ bool MainWindow::Paste( tgc::PasteType type )
  */
 bool MainWindow::Delete( )
 {
-	Trace trace( "MainWindow::Delete", false );
-
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( !m_selectionModel->currentIndex().isValid()) return false;
 	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
@@ -2168,8 +2055,6 @@ bool MainWindow::Delete( )
 
 bool MainWindow::Cut()
 {
-	Trace trace( "MainWindow::Cut", false );
-
 	if( !m_selectionModel->hasSelection() ) return false;
 	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
 	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
@@ -2183,8 +2068,6 @@ bool MainWindow::Cut()
 
 void MainWindow::SetCurrentFile( const QString& fileName )
 {
-    Trace trace( "MainWindow::SetCurrentFile", false );
-
 	m_currentFile = fileName;
 	m_document->SetDocumentModified( false );
 
@@ -2202,15 +2085,11 @@ void MainWindow::SetCurrentFile( const QString& fileName )
 
 QString MainWindow::StrippedName( const QString& fullFileName )
 {
-    Trace trace( "MainWindow::StrippedName", false );
-
 	return QFileInfo( fullFileName ).fileName();
 }
 
 void MainWindow::UpdateRecentFileActions()
 {
-    Trace trace( "MainWindow::UpdateRecentFileActions", false );
-
 	QMutableStringListIterator iterator( m_recentFiles );
 	while ( iterator.hasNext() )
 	{
@@ -2237,8 +2116,6 @@ void MainWindow::UpdateRecentFileActions()
  **/
 void MainWindow::WriteSettings()
 {
-    Trace trace( "MainWindow::WriteSettings", false );
-
 	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
 	settings.setValue( "geometry", geometry() );
 
@@ -2262,8 +2139,6 @@ void MainWindow::WriteSettings()
  **/
 void MainWindow::ReadSettings()
 {
-    Trace trace( "MainWindow::ReadSettings", false );
-
     QSettings settings( "NREL UTB CENER", "Tonatiuh" );
     QRect rect = settings.value( "geometry", QRect(200, 200, 400, 400 ) ).toRect();
     move( rect.topLeft() );
@@ -2286,8 +2161,6 @@ void MainWindow::ReadSettings()
  **/
 void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart )
 {
-    Trace trace( "MainWindow::parameterModified", false );
-
    	CmdParameterModified* parameterModified = new CmdParameterModified( oldValueList, coinNode, coinPart );
 	if ( m_commandStack ) m_commandStack->push( parameterModified );
 
@@ -2301,8 +2174,6 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
  **/
 void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap )
 {
-	Trace trace( "MainWindow::ComputeSceneTreeMap", false );
-
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( *nodeIndex );
 	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
 
@@ -2387,8 +2258,6 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 
 void MainWindow::StartManipulation( SoDragger* dragger )
 {
-	Trace trace( "MainWindow::StartManipulation", false );
-
 	SoSearchAction* coinSearch = new SoSearchAction();
 	coinSearch->setNode( dragger );
 	coinSearch->setInterest( SoSearchAction::FIRST);
@@ -2434,8 +2303,6 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 
 void MainWindow::FinishManipulation( )
 {
-	Trace trace( "MainWindow::FinishManipulation", false );
-
 	QModelIndex currentIndex = m_treeView->currentIndex();
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( m_sceneModel->NodeFromIndex(currentIndex)->GetNode() );
 
