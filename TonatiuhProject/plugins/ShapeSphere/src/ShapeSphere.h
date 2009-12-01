@@ -68,6 +68,7 @@ public:
 	SoSFDouble phiMax;
 
 protected:
+	static void updateRadius(void *data, SoSensor *);
 	static void updateYMin(void *data, SoSensor *);
 	static void updateYMax(void *data, SoSensor *);
 	static void updatePhiMax(void *data, SoSensor *);
