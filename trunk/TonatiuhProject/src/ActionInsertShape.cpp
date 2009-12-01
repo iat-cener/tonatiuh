@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -44,16 +44,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ActionInsertShape::ActionInsertShape ( const QString& text, QObject* parent, TShapeFactory* pTShapeFactory )
 : QAction(text,parent), m_pTShapeFactory(pTShapeFactory)
 {
-	Trace( "ActionInsertShape::ActionInsertShape", false );
 }
 
 ActionInsertShape::~ActionInsertShape()
 {
-	Trace( "ActionInsertShape::~ActionInsertShape", false );
 }
 
 void ActionInsertShape::OnActionInsertShapeTriggered()
 {
-	Trace( "ActionInsertShape::OnActionInsertShapeTriggered", false );
 	emit CreateShape( m_pTShapeFactory );
 }

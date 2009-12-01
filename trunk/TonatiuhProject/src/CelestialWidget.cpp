@@ -32,7 +32,7 @@
 
  Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
- Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola, Gilda Jimenez,
+ Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola, Gilda Jimenez,
  Juana Amieva, Azael Mancillas, Cesar Cantu.
  ***************************************************************************/
 
@@ -65,8 +65,6 @@
 CelestialWidget::CelestialWidget( QWidget* parent )
 :QWidget( parent ), sphereRadio( 120.0 ), m_declination( 0 ), m_rightAscension( 0 )
 {
-	Trace( "CelestialWidget::CelestialWidget", false );
-
 	QVBoxLayout* mainLayout = new QVBoxLayout;
 	setLayout( mainLayout );
 
@@ -115,13 +113,10 @@ CelestialWidget::CelestialWidget( QWidget* parent )
 
 CelestialWidget::~CelestialWidget()
 {
-	Trace( "CelestialWidget::~CelestialWidget", false );
 }
 
 void CelestialWidget::CoordinatesChanged( cSunCoordinates coordinates )
 {
-	Trace( "CelestialWidget::CoordinatesChanged", false );
-
 	m_rightAscension = coordinates.dRightAscension;
 	m_rightValue->setText( QString::number( m_rightAscension ) );
 	m_declination = coordinates.dDeclination;
@@ -142,8 +137,6 @@ void CelestialWidget::CoordinatesChanged( cSunCoordinates coordinates )
 
 SoSeparator* CelestialWidget::CelestialEquator() const
 {
-	Trace( "CelestialWidget::CelestialEquator", false );
-
 	SoSeparator* ecuador = new SoSeparator;
 
 	SoMaterial *myMaterial = new SoMaterial;
@@ -177,8 +170,6 @@ SoSeparator* CelestialWidget::CelestialEquator() const
 
 SoSeparator* CelestialWidget::Declination()
 {
-	Trace( "CelestialWidget::Declination", false );
-
 	//Decliantion
 	SoSeparator* declination = new SoSeparator;
 
@@ -261,8 +252,6 @@ SoSeparator* CelestialWidget::Declination()
 
 SoSeparator* CelestialWidget::Ecliptic() const
 {
-	Trace( "CelestialWidget::Ecliptic", false );
-
 	SoSeparator* ecliptic = new SoSeparator;
 
 	SoMaterial *myMaterial = new SoMaterial;
@@ -295,8 +284,6 @@ SoSeparator* CelestialWidget::Ecliptic() const
 
 SoSeparator* CelestialWidget::Ejes() const
 {
-	Trace( "CelestialWidget::Ejes", false );
-
 	 SoSeparator* polos = new SoSeparator;
 
 	SoSeparator* eje = new SoSeparator;
@@ -360,8 +347,6 @@ SoSeparator* CelestialWidget::Ejes() const
 
 SoSeparator* CelestialWidget::Points() const
 {
-	Trace( "CelestialWidget::Points", false );
-
 	SoSeparator* points = new SoSeparator;
 
 	//Earth
@@ -452,8 +437,6 @@ SoSeparator* CelestialWidget::Points() const
 
 SoSeparator* CelestialWidget::RightAscension()
 {
-	Trace( "CelestialWidget::RightAscension", false );
-
 	//Right Ascension
 	SoSeparator* ascension = new SoSeparator;
 
@@ -536,8 +519,6 @@ SoSeparator* CelestialWidget::RightAscension()
 
 SoSeparator* CelestialWidget::Sphere() const
 {
-	Trace( "CelestialWidget::Sphere", false );
-
 	SoSeparator* sph = new SoSeparator;
 
 	SoMaterial *myMaterial = new SoMaterial;
@@ -558,8 +539,6 @@ SoSeparator* CelestialWidget::Sphere() const
 
 SoSeparator* CelestialWidget::Star()
 {
-	Trace( "CelestialWidget::Star", false );
-
 	//Star definition
 	SoSeparator* star = new SoSeparator;
 
