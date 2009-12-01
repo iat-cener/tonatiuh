@@ -51,8 +51,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertMaterial::CmdInsertMaterial( TShapeKit* shapeKit, TMaterial* material, SceneModel* model, QUndoCommand * parent )
 : QUndoCommand("InsertMaterial", parent), m_shapeKit( shapeKit ),m_material( material ), m_pModel( model ), m_row( -1 )
 {
-	Trace trace( "CmdInsertMaterial::CmdInsertMaterial", false );
-
 	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertMaterial called with NULL TShapeKit" );
 	if( m_material == 0 ) tgf::SevereError( "CmdInsertMaterial called with NULL TMaterial" );
 	m_material->ref();
@@ -64,8 +62,7 @@ CmdInsertMaterial::CmdInsertMaterial( TShapeKit* shapeKit, TMaterial* material, 
  */
 CmdInsertMaterial::~CmdInsertMaterial()
 {
-	Trace trace( "CmdInsertMaterial::~CmdInsertMaterial", false );
-    m_material->unref();
+	m_material->unref();
 }
 
 /*!
@@ -74,8 +71,6 @@ CmdInsertMaterial::~CmdInsertMaterial()
  */
 void CmdInsertMaterial::undo()
 {
-	Trace trace( "CmdInsertMaterial::undo", false );
-
     m_shapeKit->setPart( "material", NULL );
 	m_pModel->RemoveCoinNode( m_row, *m_shapeKit );
 }
@@ -86,8 +81,6 @@ void CmdInsertMaterial::undo()
  */
 void CmdInsertMaterial::redo( )
 {
-	Trace trace( "CmdInsertMaterial::redo", false );
-
-    m_shapeKit->setPart( "material", m_material );
+	m_shapeKit->setPart( "material", m_material );
     m_row = m_pModel->InsertCoinNode( *m_material, *m_shapeKit );
 }

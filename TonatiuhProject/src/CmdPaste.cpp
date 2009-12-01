@@ -47,8 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  SoNode*& coinClipboard, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Paste", parent), m_pasteType( type ), m_parentInstance( 0 ), m_coinChild( coinClipboard ), m_sceneModel( &sceneModel ), m_oldNodeName( 0 ),  m_row( -1 )
 {
-	Trace trace( "CmdPaste::CmdPaste", false);
-
 	if( !parentModelIndex.isValid() ) tgf::SevereError( "CmdPaste called with invalid ModelIndex." );
 
 	//InstanceNode* instanceParent = m_sceneModel->NodeFromIndex( parentModelIndex );
@@ -62,13 +60,11 @@ CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  S
 
 CmdPaste::~CmdPaste()
 {
-	Trace trace( "CmdPaste::~CmdPaste", false );
+
 }
 
 void CmdPaste::undo()
 {
-	Trace trace( "CmdPaste::undo", false );
-
 	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
 	m_sceneModel->Cut( *coinParent, m_row );
 	m_sceneModel->SetNodeName( m_coinChild, m_oldNodeName );
@@ -76,8 +72,6 @@ void CmdPaste::undo()
 
 void CmdPaste::redo( )
 {
-	Trace trace( "CmdPaste::redo", false );
-
 	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
 	if( !m_sceneModel->Paste( m_pasteType, *coinParent, *m_coinChild, m_row ) ) return;
 

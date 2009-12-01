@@ -48,7 +48,6 @@ ExportDialog::ExportDialog( SceneModel& sceneModel, QWidget* parent )
 :QDialog( parent ),m_exportSceneModel( &sceneModel ),  m_exportSelectionModel( 0 )
 
 {
-	Trace trace( "ExportDialog::ExportDialog", false );
 	setupUi( this );
 
 	m_exportSelectionModel = new QItemSelectionModel( m_exportSceneModel );
@@ -62,7 +61,6 @@ ExportDialog::ExportDialog( SceneModel& sceneModel, QWidget* parent )
 
 ExportDialog::~ExportDialog()
 {
-	Trace trace( "ExportDialog::~ExportDialog", false );
 	delete m_exportSelectionModel;
 }
 
@@ -73,8 +71,6 @@ ExportDialog::~ExportDialog()
  */
 int ExportDialog::GetCoordinateSystem() const
 {
-	Trace trace( "ExportDialog::GetCoordinateSystem", false );
-
 	if( globalCoordinatesRadio->isChecked() ) return 0;
 	else return 1;
 }
@@ -88,16 +84,12 @@ int ExportDialog::GetCoordinateSystem() const
  */
 QString ExportDialog::GetExportFileName() const
 {
-	Trace trace( "ExportDialog::GetCoordinateSystem", false );
-
 	return fileNameEdit->text();
 }
 
 
 int ExportDialog::GetSelectedPhotons() const
 {
-	Trace trace( "ExportDialog::GetSelectedPhotons", false );
-
 	if( allMapRadio->isChecked() ) return 0;
 	else return 1;
 }
@@ -109,8 +101,6 @@ int ExportDialog::GetSelectedPhotons() const
  */
 SoNodeKitPath* ExportDialog::GetSelectedSurface() const
 {
-	Trace trace( "ExportDialog::GetSelectedSurface", false );
-
 	if( !surfaceMapRadio->isChecked () ) return 0;
 	if( !m_exportSelectionModel->hasSelection() ) return 0;
 
@@ -123,8 +113,6 @@ SoNodeKitPath* ExportDialog::GetSelectedSurface() const
 
 void ExportDialog::accept()
 {
-	Trace trace( "ExportDialog::accept", false );
-
 	if( fileNameEdit->text().isEmpty() )
 	{
 		QMessageBox::information( this, "Tonatiuh Action",
@@ -152,8 +140,6 @@ void ExportDialog::accept()
 
 void ExportDialog::on_openButton_clicked()
 {
-	Trace trace( "ExportDialog::on_openButton_clicked", false );
-
 	QString fileName = QFileDialog::getSaveFileName( this, tr("Export PhotonMap"),
 				tr( "." ),
 	            tr( "Binary data files (*.dat)" ) );

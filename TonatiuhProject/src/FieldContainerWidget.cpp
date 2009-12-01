@@ -57,8 +57,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent )
 :QWidget( parent ), m_ptreeView( 0 ), m_pFieldContainer( fieldContainer ), m_delegate( 0 ), m_pModel ( 0 ), m_containerName( containerName )
 {
-	Trace trace( "FieldContainerWidget::FieldContainerWidget", false );
-
 	m_ptreeView = new QTreeView;
 	m_ptreeView->setAlternatingRowColors( true );
 	connect (m_ptreeView, SIGNAL(doubleClicked ( const QModelIndex& ) ), this, SLOT( EditorOpened( const QModelIndex& ) ) );
@@ -83,8 +81,7 @@ FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QS
 
 FieldContainerWidget::~FieldContainerWidget()
 {
-	Trace trace( "FieldContainerWidget::~FieldContainerWidget", false );
- 	delete m_ptreeView;
+	delete m_ptreeView;
  	delete m_delegate;
  	delete m_pModel;
 
@@ -92,8 +89,6 @@ FieldContainerWidget::~FieldContainerWidget()
 
 void FieldContainerWidget::ReadFields( )
 {
-	Trace trace( "FieldContainerWidget::ReadFields", false );
-
 	SoFieldList fieldList;
 	int totalFields = m_pFieldContainer->getFields( fieldList );
 
@@ -119,21 +114,16 @@ void FieldContainerWidget::ReadFields( )
 
 void FieldContainerWidget::SetEditable( bool editable )
 {
-	Trace trace( "FieldContainerWidget::SetEditable", false );
-
 	m_pModel->SetEditable( editable );
 }
 
 void FieldContainerWidget::EditorOpened( const QModelIndex& index )
 {
-	Trace trace( "FieldContainerWidget::EditorOpened", false );
 	m_lastEditingIndex = index;
 }
 
 void FieldContainerWidget::EditorClosed( QWidget* editor )
 {
-	Trace trace( "FieldContainerWidget::EditorClosed", false );
-
 	QString newValue;
 	SoField* field = m_pModel->ModelItem( m_lastEditingIndex )->GetField();
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
@@ -166,7 +156,6 @@ void FieldContainerWidget::EditorClosed( QWidget* editor )
 
 void FieldContainerWidget::Reset()
 {
-	Trace trace( "FieldContainerWidget::Reset", false );
 	m_ptreeView->reset();
 }
 

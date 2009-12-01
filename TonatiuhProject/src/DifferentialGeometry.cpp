@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 DifferentialGeometry::DifferentialGeometry()
 : u(0.0), v(0.0), pShape(0)
 {
-	Trace trace( "DifferentialGeometry::DifferentialGeometry", false );
+
 }
 
 DifferentialGeometry::DifferentialGeometry( const Point3D& P, const Vector3D& DPDU,
@@ -53,14 +53,10 @@ DifferentialGeometry::DifferentialGeometry( const Point3D& P, const Vector3D& DP
 : point(P), u(uu), v(vv), pShape(sh),
   dpdu(DPDU), dpdv(DPDV), dndu(DNDU), dndv(DNDV)
 {
-	Trace trace( "DifferentialGeometry::DifferentialGeometry", false );
-
-    normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-
+	normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 }
 
 DifferentialGeometry::~DifferentialGeometry()
 {
-	Trace trace( "DifferentialGeometry::~DifferentialGeometry", false );
 
 }

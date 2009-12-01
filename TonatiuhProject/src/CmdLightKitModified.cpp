@@ -55,8 +55,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Modify LightKit", parent),m_previousLightKit( false ), m_previousAzimuth( 0 ), m_previousZenith( 0 ), m_previousDistance( 0 ),  m_pPreviousShape( 0 ), m_pPreviousSunShape( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
 {
-    Trace trace( "CmdLightKitModified::CmdLightKitModified", false );
-
     if( newLightKit == 0 ) tgf::SevereError( "CmdLightKitModified called with NULL TLightKit*" );
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
     m_pNewLightKit->ref();
@@ -83,7 +81,6 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
  */
 CmdLightKitModified::~CmdLightKitModified()
 {
-	Trace trace( "CmdLightKitModified::~CmdLightKitModified", false );
 	m_pNewLightKit->unref();
 	if( m_previousLightKit )
 	{
@@ -98,9 +95,7 @@ CmdLightKitModified::~CmdLightKitModified()
  */
 void CmdLightKitModified::undo()
 {
-	Trace trace( "CmdLightKitModified::undo", false );
-
-    if( m_previousLightKit )
+	if( m_previousLightKit )
     {
     	TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
     	lightKit->setPart( "icon", m_pPreviousShape );
@@ -117,9 +112,7 @@ void CmdLightKitModified::undo()
 
 void CmdLightKitModified::redo( )
 {
-	Trace trace( "CmdLightKitModified::redo", false );
-
-   if( !m_previousLightKit )
+	if( !m_previousLightKit )
    	{
    		 m_pModel->InsertLightNode( *m_pNewLightKit );
    	}

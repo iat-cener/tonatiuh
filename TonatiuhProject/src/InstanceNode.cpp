@@ -53,13 +53,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 InstanceNode::InstanceNode( SoNode* node )
 : m_coinNode( node ), m_parent( 0 )
 {
-	Trace trace( "InstanceNode::InstanceNode", false );
+
 }
 
 InstanceNode::InstanceNode( const InstanceNode* node )
 {
-	Trace trace( "InstanceNode::InstanceNode", false );
-
 	m_coinNode = node->m_coinNode;
 	node->m_coinNode->ref();
 	m_parent = node->m_parent;
@@ -74,25 +72,21 @@ InstanceNode::InstanceNode( const InstanceNode* node )
 
 InstanceNode::~InstanceNode()
 {
-	Trace trace( "InstanceNode::~InstanceNode", false );
 	qDeleteAll( children );
 }
 
 void InstanceNode::SetParent( InstanceNode* parent )
 {
-	Trace trace( "InstanceNode::SetParent", false );
 	m_parent = parent;
 }
 
 void InstanceNode::SetNode( SoNode* node )
 {
-	Trace trace( "InstanceNode::SetNode", false );
 	m_coinNode = node;
 }
 
 SoNode* InstanceNode::GetNode() const
 {
-	Trace trace( "InstanceNode::GetNode", false );
 	return m_coinNode;
 }
 
@@ -101,7 +95,6 @@ SoNode* InstanceNode::GetNode() const
  */
 InstanceNode* InstanceNode::GetParent() const
 {
-	Trace trace( "InstanceNode::GetParent", false );
 	return m_parent;
 }
 
@@ -110,7 +103,6 @@ InstanceNode* InstanceNode::GetParent() const
  */
 QString InstanceNode::GetNodeURL() const
 {
-	Trace trace( "InstanceNode::GetNodeURL", false );
 	QString url;
 	if( GetParent() ) url = GetParent()->GetNodeURL();
 
@@ -120,8 +112,6 @@ QString InstanceNode::GetNodeURL() const
 
 void InstanceNode::Print( int level ) const
 {
-	Trace trace( "InstanceNode::Print", false );
-
 	for( int i = 0; i < level; i++ ) std::cout << " ";
     std::cout << m_coinNode->getTypeId().getName().getString() << " has " << children.size() << " children "<<std::endl;
     for( int index = 0; index < children.count(); index++ )
@@ -135,8 +125,6 @@ void InstanceNode::Print( int level ) const
 **/
 void InstanceNode::AddChild( InstanceNode* child )
 {
-	Trace trace( "InstanceNode::AddChild", false );
-
     children.append( child );
     child->SetParent( this );
 }
@@ -146,8 +134,6 @@ void InstanceNode::AddChild( InstanceNode* child )
 **/
 void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
 {
-	Trace trace( "InstanceNode::InsertChild", false );
-
 	if( row > children.size() ) row = children.size();
  	children.insert( row, instanceChild);
  	instanceChild->SetParent(this);
@@ -155,32 +141,24 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
 
 QDataStream& operator<< ( QDataStream & s, const InstanceNode & node )
 {
-	Trace trace( "InstanceNode operator<<", false );
-
 	s << node.m_coinNode;
 	return s;
 }
 
 QDataStream& operator>> ( QDataStream & s, const InstanceNode & node )
 {
-	Trace trace( "InstanceNode operator>>", false );
-
 	s >> node;
 	return s;
 }
 
 bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
 {
-	Trace trace( "InstanceNode operator==", false );
-
 	return ( (thisNode.GetNode() == otherNode.GetNode()) &&
 			(thisNode.GetParent()->GetNode()==otherNode.GetParent()->GetNode()));
 }
 
 Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode, bool* isFront )
 {
-	Trace trace( "InstanceNode::Intersect", false );
-
 	QPair< SbBox3f, Transform* > instanceData =  sceneMap->value( this );
 
 	//Transform ray to InstaceNode coordinates
