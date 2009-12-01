@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define NORMALVECTOR_H
 
 #include <iostream>
-
 struct Vector3D;
 
 struct NormalVector
@@ -48,13 +47,23 @@ struct NormalVector
     NormalVector( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
     explicit NormalVector( const Vector3D& vector );
     ~NormalVector( );
-    NormalVector& operator+=( const NormalVector& nRhs );
-    NormalVector& operator-=( const NormalVector& nRhs );
-    NormalVector& operator*=( double a );
-    NormalVector& operator/=( double a );
-    bool operator==( const NormalVector& norm ) const;
+    NormalVector& operator+=( const NormalVector& nV);
+    NormalVector operator+( const NormalVector& nV ) const;
+    NormalVector& operator-=( const NormalVector& nV );
+    NormalVector operator-( const NormalVector& nV ) const;
+
+    NormalVector& operator*=( double scalar );
+    NormalVector operator*( double scalar ) const;
+    NormalVector& operator/=( double scalar );
+    NormalVector operator/( double scalar ) const;
+
+    NormalVector operator-() const;
+
+    bool operator==( const NormalVector& nV ) const;
+    bool operator!=( const NormalVector& nV ) const;
     double operator[]( int i ) const;
     double& operator[]( int i );
+
     double lengthSquared( ) const;
     double length( ) const;
 
@@ -63,15 +72,10 @@ struct NormalVector
     double z;
 };
 
-NormalVector operator-( const NormalVector& NormalVector );
-NormalVector operator+( const NormalVector& lhs, const NormalVector& rhs );
-NormalVector operator-( const NormalVector& lhs, const NormalVector& rhs );
-NormalVector operator*( const NormalVector& NormalVector, double scalar );
-NormalVector operator*( double scalar, const NormalVector& NormalVector );
-NormalVector operator/( const NormalVector& NormalVector, double scalar );
-std::ostream& operator<<( std::ostream& os, const NormalVector& NormalVector );
+NormalVector operator*( double scalar, const NormalVector& nV );
+std::ostream& operator<<( std::ostream& os, const NormalVector& nV );
 double DotProduct( const NormalVector& nA, const NormalVector& nB );
 double AbsDotProduct( const NormalVector& nA, const NormalVector& nB );
-NormalVector Normalize( const NormalVector& n );
+NormalVector Normalize( const NormalVector& nV );
 
 #endif
