@@ -241,7 +241,6 @@ void ShapeSphere::updateYMin( void *data, SoSensor * )
 
 void ShapeSphere::updateRadius( void *data, SoSensor* )
 {
-	Trace trace( "ShapeSphere::updateRadius", false );
 
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( shapeSphere->radius.getValue() < std::fabs( shapeSphere->yMin.getValue() ) )
