@@ -127,9 +127,9 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 
 	// Compute quadratic ShapeSphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A = objectRay.direction.LengthSquared();
+	double A = objectRay.direction.lengthSquared();
     double B = 2.0 * DotProduct( vObjectRayOrigin, objectRay.direction );
-	double C = vObjectRayOrigin.LengthSquared() - radius.getValue() * radius.getValue();
+	double C = vObjectRayOrigin.lengthSquared() - radius.getValue() * radius.getValue();
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;

@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -121,9 +121,9 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 
 	// Compute quadratic sphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( originBottomRay.origin );
-	double A = originBottomRay.direction.LengthSquared();
+	double A = originBottomRay.direction.lengthSquared();
     double B = 2.0 * DotProduct( vObjectRayOrigin, originBottomRay.direction );
-	double C = vObjectRayOrigin.LengthSquared() - sphereRadius.getValue() * sphereRadius.getValue();
+	double C = vObjectRayOrigin.lengthSquared() - sphereRadius.getValue() * sphereRadius.getValue();
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -263,7 +263,7 @@ NormalVector ShapeSphericalPolygon::GetNormal(  double u, double v  ) const
 
 	Point3D point = GetPoint3D( u, v );
 	Vector3D vector( point.x, point.y, point.z - sphereRadius.getValue());
-	return NormalVector( -point.x/ vector.Length(), -point.y/vector.Length(), -( point.z - sphereRadius.getValue() )/vector.Length() );
+	return NormalVector( -point.x/ vector.length(), -point.y/vector.length(), -( point.z - sphereRadius.getValue() )/vector.length() );
 }
 
 bool ShapeSphericalPolygon::IsInside( double u, double v ) const
