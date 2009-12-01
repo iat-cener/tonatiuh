@@ -53,8 +53,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SoSceneKit* scene, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_scene( scene ), m_pModel( model ), m_row( 0 )
 {
-	Trace trace( "CmdInsertTracker::CmdInsertTracker", false );
-
 	if( !m_tracker ) tgf::SevereError( "CmdInsertTracker Null tracker." );
 	m_tracker->ref();
 
@@ -68,14 +66,11 @@ CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& paren
 
 CmdInsertTracker::~CmdInsertTracker()
 {
-	Trace trace( "CmdInsertTracker::~CmdInsertTracker", false );
 	m_tracker->unref();
 }
 
 void CmdInsertTracker::undo()
 {
-	Trace trace( "CmdInsertTracker::undo", false );
-
 	m_tracker->Disconnect();
 	m_pModel->RemoveCoinNode( m_row, *m_coinParent );
 }
@@ -85,8 +80,6 @@ void CmdInsertTracker::undo()
  */
 void CmdInsertTracker::redo()
 {
-	Trace trace( "CmdInsertTracker::redo", false );
-
 	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
 	if( lightKit )
 	{

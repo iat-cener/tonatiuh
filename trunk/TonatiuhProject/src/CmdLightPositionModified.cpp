@@ -44,8 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdLightPositionModified::CmdLightPositionModified( TLightKit* light, QDateTime time, double longitude, double latitude, QUndoCommand* parent )
 :QUndoCommand( "Sun position changed", parent ), lightKit( light ), newTime( time ), newLongitude( longitude ), newLatitude( latitude )
 {
-	Trace trace( "CmdLightPositionModified::CmdLightPositionModified", false );
-
 	if( light == 0 ) tgf::SevereError( "CmdLinghtPositionModified called with NULL TLightKit" );
 
 	light->GetPositionData( &oldTime, &oldLongitude, &oldLatitude );
@@ -53,18 +51,14 @@ CmdLightPositionModified::CmdLightPositionModified( TLightKit* light, QDateTime 
 
 CmdLightPositionModified::~CmdLightPositionModified()
 {
-	Trace trace( "CmdLightKitModified::~CmdLightKitModified", false );
 }
+
 void CmdLightPositionModified::undo()
 {
-	Trace trace( "CmdLightKitModified::undo", false );
-
 	lightKit->ChangePosition( oldTime, oldLongitude, oldLatitude );
 }
 
 void CmdLightPositionModified::redo()
 {
-	Trace trace( "CmdLightKitModified::redo", false );
-
 	lightKit->ChangePosition( newTime, newLongitude, newLatitude );
 }

@@ -51,7 +51,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertShape::CmdInsertShape( TShapeKit* shapeKit, TShape* shape, SceneModel* model, QUndoCommand * parent )
 : QUndoCommand("InsertShape", parent), m_shapeKit(shapeKit), m_shape(shape), m_pModel( model ), m_row( -1 )
 {
-	Trace trace( "CmdInsertShape::CmdInsertShape", false );
 	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertShape called with NULL TShapeKit*" );
 	if( m_shape == 0 ) tgf::SevereError( "CmdInsertShape called with NULL TShape*" );
 	m_shape->ref();
@@ -62,8 +61,7 @@ CmdInsertShape::CmdInsertShape( TShapeKit* shapeKit, TShape* shape, SceneModel* 
  */
 CmdInsertShape::~CmdInsertShape()
 {
-	Trace trace( "CmdInsertShape::~CmdInsertShape", false );
-    m_shape->unref();
+	m_shape->unref();
 }
 
 /*!
@@ -72,9 +70,7 @@ CmdInsertShape::~CmdInsertShape()
  */
 void CmdInsertShape::undo()
 {
-	Trace trace( "CmdInsertShape::undo", false );
-
-    m_shapeKit->setPart( "shape", NULL );
+	m_shapeKit->setPart( "shape", NULL );
 	m_pModel->RemoveCoinNode( m_row, *m_shapeKit );
 }
 
@@ -84,7 +80,6 @@ void CmdInsertShape::undo()
  */
 void CmdInsertShape::redo( )
 {
-	Trace trace( "CmdInsertShape::redo", false );
-    m_shapeKit->setPart( "shape", m_shape );
+	m_shapeKit->setPart( "shape", m_shape );
     m_row = m_pModel->InsertCoinNode( *m_shape, *m_shapeKit );
 }

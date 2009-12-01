@@ -54,18 +54,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 GraphicView::GraphicView( QWidget* parent )
 :QAbstractItemView( parent ), m_sceneGraphRoot( 0 ), m_myRenderArea( 0 )
 {
-    Trace trace( "GraphicView::GraphicView", false );
+
 }
 
 GraphicView::~GraphicView()
 {
-    Trace trace( "GraphicView::~GraphicView", false );
     delete m_myRenderArea;
 }
 
 void GraphicView::SetSceneGraph( SoSelection* sceneGraphRoot )
 {
-    Trace trace( "GraphicView::SetSceneGraph", false );
 
     m_sceneGraphRoot = 	sceneGraphRoot;
     m_myRenderArea = new SoQtExaminerViewer( this );
@@ -78,101 +76,85 @@ void GraphicView::SetSceneGraph( SoSelection* sceneGraphRoot )
 
 SbViewportRegion GraphicView::GetViewportRegion() const
 {
-	Trace trace( "GraphicView::GetViewportRegion", false );
 	return m_myRenderArea->getViewportRegion();
 }
 
 SoCamera* GraphicView::GetCamera() const
 {
-	Trace trace( "GraphicView::GetCamera", false );
 	return m_myRenderArea->getCamera();
 }
 
 QModelIndex GraphicView::indexAt( const QPoint& /*point*/ ) const
 {
-    Trace trace( "GraphicView::indexAt", false );
     return QModelIndex();
 }
 
 void  GraphicView::scrollTo( const QModelIndex& /*index*/, ScrollHint /*hint*/ )
 {
-    Trace trace( "GraphicView::scrollTo", false );
 }
 
 QRect GraphicView::visualRect ( const QModelIndex& /*index*/ ) const
 {
-    Trace trace( "GraphicView::GraphicView", false );
-
     return QRect();
 }
 
 void GraphicView::ViewCoordinateSystem( bool view )
 {
-	Trace trace( "GraphicView::ViewCoordinateSystem", false );
-
 	m_myRenderArea->setFeedbackVisibility( view );
 }
 
 void GraphicView::ViewDecoration( bool view )
 {
-	Trace trace( "GraphicView::ViewDecorations", false );
 	m_myRenderArea->setDecoration( view );
 }
 
 void GraphicView::dataChanged( const QModelIndex&  /*topLeft*/, const QModelIndex&  /*bottomRight*/ )
 {
-    Trace trace( "GraphicView::dataChanged", false );
+
 }
 
 void GraphicView::rowsInserted( const QModelIndex& /*parent*/, int  /*start*/, int  /*end*/ )
 {
-    Trace trace( "GraphicView::rowsInserted", false );
+
 }
 
 void GraphicView::rowsAboutToBeRemoved( const QModelIndex& /*parent*/, int  /*start*/, int  /*end*/ )
 {
-    Trace trace( "GraphicView::rowsAboutToBeRemoved", false );
+
 }
 
 void GraphicView::setSelection( const QRect&  /*rect*/, QItemSelectionModel::SelectionFlags  /*flags*/ )
 {
-    Trace trace( "GraphicView::setSelection", false );
+
 }
 
 int GraphicView::horizontalOffset() const
 {
-    Trace trace( "GraphicView::horizontalOffset", false );
 	return 0;
 }
 
 int GraphicView::verticalOffset() const
 {
-    Trace trace( "GraphicView::verticalOffset", false );
 	return 0;
 }
 
 bool GraphicView::isIndexHidden( const QModelIndex& /*index*/ ) const
 {
-    Trace trace( "GraphicView::isIndexHidden", false );
     return false;
 }
 
 QModelIndex GraphicView::moveCursor( CursorAction /*cursorAction*/, Qt::KeyboardModifiers /*modifiers*/ )
 {
-    Trace trace( "GraphicView::moveCursor",false );
 	return QModelIndex();
 }
 
 QRegion GraphicView::visualRegionForSelection( const QItemSelection& /*selection*/ ) const
 {
-    Trace trace( "GraphicView::visualRegionForSelection", false );
 	return QRegion();
 }
 
 void GraphicView::currentChanged( const QModelIndex & current, const QModelIndex& /*previous*/ )
 {
-	Trace trace( "GraphicView::currentChanged", false );
-
     m_sceneGraphRoot->deselectAll();
     SoFullPath* path;
     QVariant variant = current.data(Qt::UserRole);

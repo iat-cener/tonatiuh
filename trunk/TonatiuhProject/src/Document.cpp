@@ -55,8 +55,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 void selectionFinishCallback( void * userData, SoSelection* selection )
 {
-	Trace trace( "selectionFinishCallback", false );
-    Document* document = static_cast< Document* >( userData  );
+	Document* document = static_cast< Document* >( userData  );
     if ( document ) document->selectionFinishCBAux( selection );
 }
 
@@ -66,8 +65,7 @@ void selectionFinishCallback( void * userData, SoSelection* selection )
 Document::Document()
 : m_root(0), m_scene(0), m_isModified( false )
 {
-    Trace trace( "Document::Document", false );
-	m_root = new SoSelection;
+    m_root = new SoSelection;
 	m_root->ref();
 
     m_root->policy = SoSelection::SINGLE;
@@ -81,7 +79,6 @@ Document::Document()
  */
 Document::~Document()
 {
-	Trace trace( "Document::~Document", false );
 	if ( m_root ) m_root->unref();
 }
 
@@ -90,7 +87,6 @@ Document::~Document()
  */
 void Document::SetDocumentModified( bool status )
 {
-    Trace trace( "Document::SetDocumentModified", false );
     m_isModified = status;
 }
 
@@ -99,8 +95,7 @@ void Document::SetDocumentModified( bool status )
  */
 void Document::InitializeScene()
 {
-    Trace trace( "Document::InitializeScene", false );
-	if ( m_scene ) ClearScene();
+    if ( m_scene ) ClearScene();
 
 	m_scene = new SoSceneKit;
 	m_scene->ref();
@@ -111,8 +106,7 @@ void Document::InitializeScene()
 
 void Document::New()
 {
-    Trace trace( "Document::New", false );
-	InitializeScene();
+    InitializeScene();
 	m_isModified = false;
 }
 
@@ -121,7 +115,6 @@ void Document::New()
  */
 void Document::ClearScene()
 {
-    Trace trace( "Document::ClearScene", false );
     if( m_root )
     {
     	if ( m_scene )
@@ -136,8 +129,7 @@ void Document::ClearScene()
 
 bool Document::ReadFile( const QString& fileName )
 {
-    Trace trace( "Document::ReadFile", false );
-	if( SoSceneKit* inputScene = GetSceneKitFromFile( fileName ) )
+    if( SoSceneKit* inputScene = GetSceneKitFromFile( fileName ) )
 	{
         if ( m_scene ) ClearScene();
 	    m_scene = inputScene;
@@ -156,7 +148,6 @@ bool Document::ReadFile( const QString& fileName )
  */
 bool Document::WriteFile( const QString& fileName )
 {
-    Trace trace( "Document::WriteFile", false );
     SoWriteAction SceneOuput;
     if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
 	{
@@ -180,7 +171,6 @@ bool Document::WriteFile( const QString& fileName )
  */
 bool Document::IsModified( )
 {
-    Trace trace( "Document::IsModified", false );
     return m_isModified;
 }
 
@@ -189,8 +179,7 @@ bool Document::IsModified( )
  */
 SoSelection* Document::GetRoot() const
 {
-    Trace trace( "Document::GetRoot", false );
-	return m_root;
+   return m_root;
 }
 
 /*!
@@ -198,10 +187,8 @@ SoSelection* Document::GetRoot() const
  */
 SoSceneKit* Document::GetSceneKit() const
 {
-    Trace trace( "Document::GetSceneKit", false );
     return m_scene;
 }
-
 
 /*!
  * Reads the scene saved on the file with given \a filename and return a pointer to the scene.
@@ -210,8 +197,7 @@ SoSceneKit* Document::GetSceneKit() const
  */
 SoSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
 {
-    Trace trace( "Document::GetSceneKitFromFile", false );
-	SoInput sceneInput;
+    SoInput sceneInput;
 	if ( !sceneInput.openFile( fileName.toLatin1().constData() ) )
 	{
         QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
@@ -236,6 +222,5 @@ SoSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
 
 void Document::selectionFinishCBAux( SoSelection* selection )
 {
-    Trace trace( "Document::selectionFinishCBAux", false );
-	emit selectionFinish( selection );
+    emit selectionFinish( selection );
 }

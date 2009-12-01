@@ -44,8 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdParameterModified::CmdParameterModified( const QStringList& oldValueList, SoBaseKit* coinNode , const QString& coinPart, QUndoCommand* parent )
 :QUndoCommand( "ModifyParameter" ,parent ), m_oldValueList( oldValueList ), m_newValueList( 0 ),  m_coinNode( coinNode ), m_nodePart( coinPart )
 {
-	Trace trace( "CmdParameterModified::CmdParameterModified", false);
-
 	SoNode* node = coinNode->getPart( coinPart.toStdString().c_str(), true );
 
 	SoFieldList fieldList;
@@ -64,12 +62,11 @@ CmdParameterModified::CmdParameterModified( const QStringList& oldValueList, SoB
 
 CmdParameterModified::~CmdParameterModified()
 {
-	Trace trace( "CmdParameterModified::~CmdParameterModified", false );
+
 }
 
 void CmdParameterModified::undo()
 {
-	Trace trace( "CmdParameterModified::undo", false );
 	SoNode* partNode = m_coinNode->getPart( m_nodePart.toStdString().c_str(), true );
 
 	SoFieldList fieldList;
@@ -90,8 +87,6 @@ void CmdParameterModified::undo()
 
 void CmdParameterModified::redo()
 {
-	Trace trace( "CmdParameterModified::redo", false );
-
 	SoNode* partNode = m_coinNode->getPart( m_nodePart.toStdString().c_str(), true );
 
 	SoFieldList fieldList;

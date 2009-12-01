@@ -198,7 +198,6 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
  */
 void MapDialog::GetCoordinates( double* lon, double* lat ) const
 {
-	Trace trace( "MapDialog::GetCoordinates", false );
 	*lon = m_longitude;
 	*lat = m_latitude;
 }
@@ -208,7 +207,6 @@ void MapDialog::GetCoordinates( double* lon, double* lat ) const
  */
 void MapDialog::SetCoordinates(  double lon, double lat )
 {
-	Trace trace( "MapDialog::SetCoordinates", false );
 	m_longitude = lon;
 	m_latitude = -lat;
 
@@ -221,7 +219,6 @@ void MapDialog::SetCoordinates(  double lon, double lat )
  */
 bool MapDialog::sideBarShown() const
 {
-	Trace trace( "MapDialog::sideBarShown", false );
 	return m_control->isVisible();
 }
 
@@ -230,8 +227,6 @@ bool MapDialog::sideBarShown() const
  */
 void MapDialog::UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates::Unit )
 {
-	Trace trace( "MapDialog::changeGpsPosition", false );
-
 	// Gps Position Coordinates are positive for south and east
 	if( lon < 0 ) m_lonComboBox->setCurrentIndex( 1 );
 	else m_lonComboBox->setCurrentIndex( 0 );
@@ -252,8 +247,6 @@ void MapDialog::UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates:
  */
 void MapDialog::ChangeGPSPosition()
 {
-	Trace trace( "MapDialog::ChangeGPSPosition", false );
-
 	m_longitude = m_lonSpinBox->value() * tgc::Degree;
 	if( m_lonComboBox->currentIndex() == 1 ) m_longitude *= -1;
 

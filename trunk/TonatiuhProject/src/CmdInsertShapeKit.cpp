@@ -54,8 +54,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertShapeKit::CmdInsertShapeKit( const QModelIndex& parentIndex, TShapeKit* shapeKit, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("InsertShapeKit", parent), m_coinParent( 0 ), m_shapeKit(shapeKit), m_pModel(model), m_row( -1 )
 {
-    Trace trace( "CmdInsertShapeKit::CmdInsertShapeKit" );
-	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertShapeKit called with NULL TShapeKit*" );
+    if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertShapeKit called with NULL TShapeKit*" );
 	m_shapeKit->ref();
 
 	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertShapeKit called with invalid ModelIndex." );
@@ -70,8 +69,7 @@ CmdInsertShapeKit::CmdInsertShapeKit( const QModelIndex& parentIndex, TShapeKit*
  */
 CmdInsertShapeKit::~CmdInsertShapeKit()
 {
-    Trace trace( "CmdInsertShapeKit::~CmdInsertShapeKit" );
-	m_shapeKit->unref();
+    m_shapeKit->unref();
 }
 
 /*!
@@ -80,8 +78,7 @@ CmdInsertShapeKit::~CmdInsertShapeKit()
  */
 void CmdInsertShapeKit::undo()
 {
-    Trace trace( "CmdInsertShapeKit::undo" );
-	m_pModel->RemoveCoinNode( m_row, *m_coinParent );
+    m_pModel->RemoveCoinNode( m_row, *m_coinParent );
 }
 
 /*!
@@ -90,7 +87,5 @@ void CmdInsertShapeKit::undo()
  */
 void CmdInsertShapeKit::redo( )
 {
-    Trace trace( "CmdInsertShapeKit::redo" );
-
-	m_row = m_pModel->InsertCoinNode( *m_shapeKit, *m_coinParent );
+    m_row = m_pModel->InsertCoinNode( *m_shapeKit, *m_coinParent );
 }

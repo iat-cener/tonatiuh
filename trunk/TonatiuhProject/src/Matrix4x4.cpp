@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 Matrix4x4::Matrix4x4( )
 {
-	Trace trace( "Matrix4x4::Matrix4x4", false );
 	for( int i = 0; i < 4; ++i )
 	{
 		for( int j = 0; j < 4; ++j )
@@ -59,7 +58,6 @@ Matrix4x4::Matrix4x4( )
 
 Matrix4x4::Matrix4x4( double mat[4][4] )
 {
-	Trace trace( "Matrix4x4::Matrix4x4", false );
 	memcpy( m, mat, 16*sizeof( double ) );
 }
 
@@ -68,8 +66,6 @@ Matrix4x4::Matrix4x4( double t00, double t01, double t02, double t03,
 	                  double t20, double t21, double t22, double t23,
 	                  double t30, double t31, double t32, double t33)
 {
-	Trace trace( "Matrix4x4::Matrix4x4", false );
-
 	m[0][0] = t00; m[0][1] = t01; m[0][2] = t02; m[0][3] = t03;
 	m[1][0] = t10; m[1][1] = t11; m[1][2] = t12; m[1][3] = t13;
 	m[2][0] = t20; m[2][1] = t21; m[2][2] = t22; m[2][3] = t23;
@@ -79,15 +75,13 @@ Matrix4x4::Matrix4x4( double t00, double t01, double t02, double t03,
 Matrix4x4::Matrix4x4( const Matrix4x4& rhs )
 : RefCount()
 {
-	Trace trace( "Matrix4x4::Matrix4x4", false );
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j) m[i][j] = rhs.m[i][j];
 }
 
 bool Matrix4x4::operator==( const Matrix4x4& mat ) const
 {
-	Trace trace( "Matrix4x4::operator==", false );
-    if( this == &mat )
+	if( this == &mat )
     	return true;
     else
     return(
@@ -111,7 +105,6 @@ bool Matrix4x4::operator==( const Matrix4x4& mat ) const
 
 std::ostream& operator<<( std::ostream& os, const Matrix4x4& mat )
 {
-	Trace trace( "Matrix4x4 operator<<", false );
 	for (int i = 0; i < 4; ++i)
 	{
 		os << "[ ";
@@ -131,8 +124,6 @@ std::ostream& operator<<( std::ostream& os, const Matrix4x4& mat )
 
 Ptr<Matrix4x4> Matrix4x4::Transpose( ) const
 {
-	Trace trace( "Matrix4x4::Transpose", false );
-
 	return new Matrix4x4( m[0][0], m[1][0], m[2][0], m[3][0],
 	                      m[0][1], m[1][1], m[2][1], m[3][1],
 	                      m[0][2], m[1][2], m[2][2], m[3][2],
@@ -141,8 +132,6 @@ Ptr<Matrix4x4> Matrix4x4::Transpose( ) const
 
 Ptr<Matrix4x4> Matrix4x4::Inverse() const
 {
-	Trace trace( "Matrix4x4::Inverse", false );
-
 	int indxc[4], indxr[4];
 	int ipiv[4] = { 0, 0, 0, 0 };
 	double minv[4][4];
@@ -212,7 +201,6 @@ Ptr<Matrix4x4> Matrix4x4::Inverse() const
 
 Ptr<Matrix4x4> Mul( const Ptr<Matrix4x4>& m1, const Ptr<Matrix4x4>& m2 )
 {
-	Trace trace( "Matrix4x4 Mul", false );
 	double r[4][4];
 	for( int i = 0; i < 4; ++i )
 		for( int j = 0; j < 4; ++j )

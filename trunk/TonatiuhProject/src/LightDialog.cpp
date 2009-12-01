@@ -56,8 +56,6 @@ LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TShapeFactory* >
 :QDialog( parent ), m_currentLightKit( currentLightKit ), m_currentSunShapeIndex( -1 ), m_currentShapeIndex( -1 ),
 m_newShape( 0 ), m_newSunShape( 0 )
 {
-	Trace trace( "LightDialog::LightDialog", false );
-
 	setupUi( this );
 
 	for( int shape = 0; shape < (int) shapeFactoryList.size(); shape++ )
@@ -95,8 +93,6 @@ LightDialog::~LightDialog()
  */
 TLightKit* LightDialog::GetTLightKit()
 {
-	Trace trace( "LightDialog::GetTLightKit", false );
-
 	TLightKit* lightKit = new TLightKit;
 	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
 	if( m_newShape ) lightKit->setPart( "icon", m_newShape );
@@ -111,8 +107,6 @@ TLightKit* LightDialog::GetTLightKit()
  */
 void LightDialog::changeSunshape( int index )
 {
-	Trace trace( "LightDialog::changeSunshape", false );
-
 	QLayout* frameLayout = sunshapeParametersFrame->layout();
 	if( !frameLayout ) return;
 	int children = frameLayout->count();
@@ -140,8 +134,6 @@ void LightDialog::changeSunshape( int index )
 
 void LightDialog::changeShape( int index )
 {
-	Trace trace( "LightDialog::changeShape", false );
-
 	QLayout* frameLayout = shapeParametersFrame->layout();
 	if( !frameLayout && frameLayout != 0 ) return;
 	int children = frameLayout->count();
@@ -168,8 +160,6 @@ void LightDialog::changeShape( int index )
  */
 void LightDialog::SunPositionTab()
 {
-	Trace trace( "LightDialog::SunshapeTab", false );
-
 	if( m_currentLightKit )
 	{
 		azimuthSpin->setValue( m_currentLightKit->azimuth.getValue() / tgc::Degree );
@@ -184,16 +174,12 @@ void LightDialog::SunPositionTab()
  */
 void LightDialog::SunshapeTab()
 {
-	Trace trace( "LightDialog::SunshapeTab", false );
-
 	SunshapeBox();
 	ShapeBox();
 }
 
 void LightDialog::ShapeBox( )
 {
-	Trace trace( "LightDialog::ShapeBox", false );
-
 	connect( shapeCombo, SIGNAL( activated( int ) ), this, SLOT( changeShape( int ) ) );
 
 	//Add elements to sunshape combo
@@ -228,8 +214,6 @@ void LightDialog::ShapeBox( )
 
 void LightDialog::SunshapeBox()
 {
-	Trace trace( "LightDialog::SunshapeBox", false );
-
 	connect( sunshapeCombo, SIGNAL( activated( int ) ), this, SLOT( changeSunshape( int ) ) );
 
 	//Add elements to sunshape combo

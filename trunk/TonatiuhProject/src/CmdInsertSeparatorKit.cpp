@@ -47,8 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertSeparatorKit::CmdInsertSeparatorKit( TSeparatorKit* separatorKit,  const QModelIndex& parentIndex, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("InsertSeparatorKit", parent), m_separatorKit ( separatorKit ), m_coinParent( 0 ), m_pModel( model ), m_row( -1 )
 {
-	Trace trace( "CmdInsertSeparatorKit::CmdInsertSeparatorKit", false );
-
 	if( !m_separatorKit ) tgf::SevereError( "CmdInsertSeparatorKit Null separatorKit." );
 	m_separatorKit->ref();
 
@@ -59,20 +57,16 @@ CmdInsertSeparatorKit::CmdInsertSeparatorKit( TSeparatorKit* separatorKit,  cons
 
 CmdInsertSeparatorKit::~CmdInsertSeparatorKit()
 {
-	Trace trace( "CmdInsertSeparatorKit::~CmdInsertSeparatorKit",false );
 	m_separatorKit->unref();
 }
 
 void CmdInsertSeparatorKit::undo()
 {
-	Trace trace( "CmdInsertSeparatorKit::undo", false );
 	m_pModel->RemoveCoinNode( m_row, *m_coinParent );
 }
 
 void CmdInsertSeparatorKit::redo()
 {
-	Trace trace( "CmdInsertSeparatorKit::redo", false );
-
 	m_row = m_pModel->InsertCoinNode( *m_separatorKit, *m_coinParent );
 
 }
