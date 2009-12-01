@@ -56,14 +56,11 @@ SO_NODE_SOURCE(ShapeFlatRectangle);
 
 void ShapeFlatRectangle::initClass()
 {
-	Trace trace( "ShapeFlatRectangle::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeFlatRectangle, TShape, "TShape");
 }
 
 ShapeFlatRectangle::ShapeFlatRectangle( )
 {
-	Trace trace( "ShapeFlatRectangle::ShapeFlatRectangle", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeFlatRectangle);
 	SO_NODE_ADD_FIELD( width, (1.0) );
 	SO_NODE_ADD_FIELD( height, (1.0) );
@@ -71,25 +68,20 @@ ShapeFlatRectangle::ShapeFlatRectangle( )
 
 ShapeFlatRectangle::~ShapeFlatRectangle()
 {
-	Trace trace( "ShapeFlatRectangle::~ShapeFlatRectangle", false );
 }
 
 double ShapeFlatRectangle::GetArea() const
 {
-	Trace trace( "ShapeFlatRectangle::GetArea", false );
 	return ( width.getValue() * height.getValue() );
 }
 
 QString ShapeFlatRectangle::getIcon()
 {
-	Trace trace( "ShapeFlatRectangle::getIcon", false );
 	return ":/icons/ShapeFlatRectangle.png";
 }
 
 bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
-	Trace trace( "ShapeFlatRectangle::Intersect", false );
-
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction.y == 0 ) ) return false;
 	double t = -objectRay.origin.y/objectRay.direction.y;
@@ -144,20 +136,16 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
 
 bool ShapeFlatRectangle::IntersectP( const Ray& objectRay ) const
 {
-	Trace trace( "ShapeFlatRectangle::IntersectP", false );
 	return Intersect( objectRay, 0, 0 );
 }
 
 Point3D ShapeFlatRectangle::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeFlatRectangle::Sample", false );
 	return GetPoint3D( u, v );
 }
 
 Point3D ShapeFlatRectangle::GetPoint3D (double u, double v) const
 {
-	Trace trace( "ShapeFlatRectangle::GetPoint3D", false );
-
 	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function ShapeFlatRectangle::GetPoint3D called with invalid parameters" );
 
 	double x = u * height.getValue() - (height.getValue()/2);
@@ -168,8 +156,6 @@ Point3D ShapeFlatRectangle::GetPoint3D (double u, double v) const
 
 NormalVector ShapeFlatRectangle::GetNormal (double /*u*/,double /*v*/ ) const
 {
-	Trace trace( "ShapeFlatRectangle::GetNormal", false );
-
 	Vector3D dpdu ( 0.0, 0.0, height.getValue() );
 	Vector3D dpdv ( width.getValue(), 0.0, 0.0 );
 
@@ -179,14 +165,11 @@ NormalVector ShapeFlatRectangle::GetNormal (double /*u*/,double /*v*/ ) const
 
 bool ShapeFlatRectangle::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeFlatRectangle::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 void ShapeFlatRectangle::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	Trace trace( "ShapeFlatRectangle::computeBBox", false );
-
 	Point3D min = Point3D( -height.getValue()/2, 0.0, -width.getValue()/2);
 	Point3D max = Point3D( height.getValue()/2, 0.0, width.getValue()/2);
 	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
@@ -194,8 +177,6 @@ void ShapeFlatRectangle::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 
 void ShapeFlatRectangle::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeFlatRectangle::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
 
     SoState  *state = action->getState();

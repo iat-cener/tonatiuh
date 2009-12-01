@@ -57,14 +57,11 @@ SO_NODE_SOURCE(ShapeParabolicRectangle);
 
 void ShapeParabolicRectangle::initClass()
 {
-	Trace trace( "ShapeParabolicRectangle::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeParabolicRectangle, TShape, "TShape");
 }
 
 ShapeParabolicRectangle::ShapeParabolicRectangle()
 {
-	Trace trace( "ShapeParabolicRectangle::ShapeParabolicRectangle", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeParabolicRectangle);
 	SO_NODE_ADD_FIELD( xlength, (1.0) );
 	SO_NODE_ADD_FIELD( zlength, (1.0) );
@@ -73,25 +70,20 @@ ShapeParabolicRectangle::ShapeParabolicRectangle()
 
 ShapeParabolicRectangle::~ShapeParabolicRectangle()
 {
-	Trace trace( "ShapeParabolicRectangle::~ShapeParabolicRectangle", false );
 }
 
 double ShapeParabolicRectangle::GetArea() const
 {
-	Trace trace( "ShapeParabolicRectangle::GetArea", false );
 	return -1;
 }
 
 QString ShapeParabolicRectangle::getIcon()
 {
-	Trace trace( "ShapeParabolicRectangle::getIcon", false );
 	return ":/icons/ShapeParabolicRectangle.png";
 }
 
 bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
-	Trace trace( "ShapeParabolicRectangle::Intersect", false );
-
 	std::vector< double > tVector;
 
 	// Compute quadratic coefficients for the 1st parabola XY
@@ -239,26 +231,21 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 
 bool ShapeParabolicRectangle::IntersectP( const Ray& objectRay ) const
 {
-	Trace trace( "ShapeParabolicRectangle::IntersectP", false );
 	return Intersect( objectRay, 0, 0 );
 }
 
 Point3D ShapeParabolicRectangle::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeParabolicRectangle::Sample", false );
 	return GetPoint3D( u, v );
 }
 
 bool ShapeParabolicRectangle::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeParabolicRectangle::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 Point3D ShapeParabolicRectangle::GetPoint3D( double u, double v ) const
 {
-	Trace trace( "ShapeParabolicRectangle::GetPoint3D", false );
-
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double xpos = u * xlength.getValue() -( xlength.getValue() / 2 );
@@ -277,8 +264,6 @@ Point3D ShapeParabolicRectangle::GetPoint3D( double u, double v ) const
 
 NormalVector ShapeParabolicRectangle::GetNormal( double u, double v ) const
 {
-	Trace trace( "ShapeParabolicRectangle::GetNormal", false );
-
 	Vector3D dpdu;
 	if( ( -depth.getValue() * u + depth.getValue() *  u * u + depth.getValue() * v - depth.getValue() * v * v ) < 0 )
 		dpdu = Vector3D( xlength.getValue(), 0.0, 0.0 );
@@ -297,8 +282,6 @@ NormalVector ShapeParabolicRectangle::GetNormal( double u, double v ) const
 }
 void ShapeParabolicRectangle::computeBBox( SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
 {
-	Trace trace( "ShapeParabolicRectangle::computeBBox", false );
-
 	double xmin = -xlength.getValue()/2;
 	double xmax = xlength.getValue()/2;
 
@@ -313,8 +296,6 @@ void ShapeParabolicRectangle::computeBBox( SoAction*, SbBox3f& box, SbVec3f& /*c
 
 void ShapeParabolicRectangle::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeParabolicRectangle::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
     SoState  *state = action->getState();
 

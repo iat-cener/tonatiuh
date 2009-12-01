@@ -55,14 +55,11 @@ SO_NODE_SOURCE(ShapeCone);
 
 void ShapeCone::initClass()
 {
-	Trace trace( "ShapeConeFactory::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeCone, TShape, "TShape");
 }
 
 ShapeCone::ShapeCone(  )
 {
-	Trace trace( "ShapeConeFactory::ShapeCone", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeCone);
 	SO_NODE_ADD_FIELD( baseRadius, (0.5) );
 	SO_NODE_ADD_FIELD( topRadius, (0.0));
@@ -72,26 +69,21 @@ ShapeCone::ShapeCone(  )
 
 ShapeCone::~ShapeCone()
 {
-	Trace trace( "ShapeConeFactory::~ShapeCone", false );
 }
 
 
 double ShapeCone::GetArea() const
 {
-	Trace trace( "ShapeConeFactory::GetArea", false );
 	return -1;
 }
 
 QString ShapeCone::getIcon()
 {
-	Trace trace( "ShapeConeFactory::getIcon", false );
 	return ":/icons/ShapeCone.png";
 }
 
 bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	Trace trace( "ShapeConeFactory::Intersect", false );
-
 	// Compute quadratic ShapeCone coefficients
 	double theta = atan2( height.getValue(), ( baseRadius.getValue() - topRadius.getValue() ) );
 	double invTan = 1 / tan(theta);
@@ -213,19 +205,16 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 
 bool ShapeCone::IntersectP( const Ray& worldRay ) const
 {
-	Trace trace( "ShapeConeFactory::IntersectP", false );
 	return Intersect( worldRay, 0, 0 );
 }
 
 Point3D ShapeCone::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeConeFactory::Sample", false );
 	return GetPoint3D( u, v );
 }
 
 Point3D ShapeCone::GetPoint3D (double u, double v) const
 {
-	Trace trace( "ShapeConeFactory::OutOfRange", false );
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeCone::GetPoint3D called with invalid parameters" );
 
 	double phi = u * phiMax.getValue();
@@ -238,8 +227,6 @@ Point3D ShapeCone::GetPoint3D (double u, double v) const
 
 NormalVector ShapeCone::GetNormal( double u ,double v ) const
 {
-	Trace trace( "ShapeConeFactory::GetNormal", false );
-
 	Vector3D dpdu( phiMax.getValue() * ( baseRadius.getValue() - baseRadius.getValue()* v + topRadius.getValue()* v )
 						* cos( phiMax.getValue() * u ),
 					0.0,
@@ -258,14 +245,11 @@ NormalVector ShapeCone::GetNormal( double u ,double v ) const
 
 bool ShapeCone::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeConeFactory::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 void ShapeCone::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 {
-	Trace trace( "ShapeConeFactory::computeBBox", false );
-
 	double cosPhiMax = cos( phiMax.getValue() );
 	double sinPhiMax = sin( phiMax.getValue() );
 	double minradius = std::min( baseRadius.getValue(), topRadius.getValue());
@@ -287,8 +271,6 @@ void ShapeCone::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 
 void ShapeCone::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeConeFactory::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.

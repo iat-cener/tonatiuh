@@ -57,14 +57,11 @@ SO_NODE_SOURCE(ShapeCylinder);
 
 void ShapeCylinder::initClass()
 {
-	Trace trace( "ShapeCylinder::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeCylinder, TShape, "TShape");
 }
 
 ShapeCylinder::ShapeCylinder( )
 {
-	Trace trace( "ShapeCylinder::ShapeCylinder", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeCylinder);
 	SO_NODE_ADD_FIELD( radius, (0.5) );
 	SO_NODE_ADD_FIELD( length, (1.0) );
@@ -73,27 +70,20 @@ ShapeCylinder::ShapeCylinder( )
 
 ShapeCylinder::~ShapeCylinder()
 {
-	Trace trace( "ShapeCylinder::~ShapeCylinder", false );
 }
 
 double ShapeCylinder::GetArea() const
 {
-	Trace trace( "ShapeCylinder::getIcon", false );
-
 	return (2 * tgc::Pi * radius.getValue() * length.getValue() );
-
 }
 
 QString ShapeCylinder::getIcon()
 {
-	Trace trace( "ShapeCylinder::getIcon", false );
 	return ":/icons/ShapeCylinder.png";
 }
 
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	Trace trace( "ShapeCylinder::Intersect", false );
-
 	// Compute quadratic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.x*objectRay.direction.x + objectRay.direction.y*objectRay.direction.y;
@@ -198,29 +188,21 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 
 bool ShapeCylinder::IntersectP( const Ray& worldRay ) const
 {
-	Trace trace( "ShapeCylinder::IntersectP", false );
-
 	return Intersect( worldRay, 0, 0 );
 }
 
 Point3D ShapeCylinder::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeCylinder::Sample", false );
-
 	return GetPoint3D( u, v );
 }
 
 bool ShapeCylinder::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeCylinder::OutOfRange", false );
-
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 {
-	Trace trace( "ShapeCylinder::GetPoint3D", false );
-
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double phi = u * phiMax.getValue();
@@ -235,9 +217,6 @@ Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 
 NormalVector ShapeCylinder::GetNormal (double u, double /* v */) const
 {
-	Trace trace( "ShapeCylinder::GetNormal", false );
-
-
 	Vector3D dpdu( -phiMax.getValue() * radius.getValue() * sin ( phiMax.getValue() * u ),
 					phiMax.getValue() * radius.getValue() * cos( phiMax.getValue() * u ),
 					0.0 );
@@ -249,8 +228,6 @@ NormalVector ShapeCylinder::GetNormal (double u, double /* v */) const
 
 void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 {
-	Trace trace( "ShapeCylinder::computeBBox", false );
-
 	double cosPhiMax = cos( phiMax.getValue() );
 	double sinPhiMax = sin( phiMax.getValue() );
 
@@ -267,8 +244,6 @@ void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 
 void ShapeCylinder::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeCylinder::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.

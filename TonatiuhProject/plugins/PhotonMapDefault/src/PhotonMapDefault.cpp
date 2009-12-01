@@ -49,7 +49,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 */
 PhotonMapDefault::PhotonMapDefault()
 {
-	Trace trace( "PhotonMapDefault::PhotonMapDefault", false );
     m_storedPhotons = 0;
 	m_maxPhotons = tgc::Max_Photon;
 
@@ -68,21 +67,16 @@ PhotonMapDefault :: PhotonMapDefault( long unsigned maxPhotons )
  */
 PhotonMapDefault :: ~PhotonMapDefault()
 {
-	Trace trace( "PhotonMapDefault::~PhotonMapDefault", false );
 	m_photons.clear();
 }
 
 QString PhotonMapDefault::GetIcon()
 {
-	Trace trace( "PhotonMapDefault::getIcon", false );
-
 	return QString(":icons/eclipse32.png");
 }
 
 Photon* PhotonMapDefault::GetPhoton( double photonID ) const
 {
-	Trace trace( "PhotonMapDefault::GetPhoton", false );
-
 	if( !m_photons.contains( photonID ) ) return 0;
 	return m_photons[photonID];
 }
@@ -90,15 +84,12 @@ Photon* PhotonMapDefault::GetPhoton( double photonID ) const
 
 QList< Photon* > PhotonMapDefault::GetAllPhotons() const
 {
-	Trace trace( "PhotonMapDefault::GetAllPhotons", false );
 	return m_photons.values();
 
 }
 
 QList< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) const
 {
-	Trace trace( "PhotonMapDefault::GetSurfacePhotons", false );
-
 	QList< Photon* > surfacePhotonsList;
 
 	QList< Photon* > mapPhotons = m_photons.values();
@@ -113,8 +104,6 @@ QList< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) c
 
 void PhotonMapDefault::StoreRay( Photon* rayFirstPhoton )
 {
-	Trace trace( "PhotonMapDefault::StoreRay", false );
-
 	rayFirstPhoton->id = m_storedPhotons+1;
 
 	Photon* currentNode = rayFirstPhoton->next;

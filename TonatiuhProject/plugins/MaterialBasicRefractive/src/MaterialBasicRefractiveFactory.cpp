@@ -43,20 +43,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString MaterialBasicRefractiveFactory::TMaterialName() const
 {
-	Trace trace( "MaterialBasicRefractiveFactory::TMaterialName", false );
 	return QString("Basic_Refractive_Material");
 }
 
 QIcon MaterialBasicRefractiveFactory::TMaterialIcon() const
 {
-	Trace trace( "MaterialBasicRefractiveFactory::TMaterialIcon", false );
 	return QIcon(":/icons/MaterialBasicRefractive.png");
 }
 
 MaterialBasicRefractive* MaterialBasicRefractiveFactory::CreateTMaterial( ) const
 {
-	Trace trace( "MaterialBasicRefractiveFactory::CreateTMaterial", false );
-
 	static bool firstTime = true;
 	if ( firstTime )
 	{
