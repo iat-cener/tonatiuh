@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 // Timer Method Definitions
 Timer::Timer()
 {
-	Trace trace( "Timer::Timer", false );
 	#if defined( WIN32 )
         // Windows Timer Initialization
         QueryPerformanceFrequency( &m_performance_frequency );
@@ -55,7 +54,7 @@ Timer::Timer()
 
 double Timer::GetTime()
 {
-	Trace trace( "Timer::GetTime", false );
+
 #if defined( WIN32 )
         // Windows GetTime
         QueryPerformanceCounter( &m_performance_counter );
@@ -69,34 +68,30 @@ double Timer::GetTime()
 
 Timer::~Timer()
 {
-	Trace trace( "Timer::~Timer", false );
+
 }
 
 void Timer::Start()
 {
-	Trace trace( "Timer::Start", false );
 	m_running = 1;
     m_time0 = GetTime();
 }
 
 void Timer::Stop()
 {
-	Trace trace( "Timer::Stop", false );
 	m_running = 0;
 	m_elapsed += GetTime() - m_time0;
 }
 
 void Timer::Reset()
 {
-	Trace trace( "Timer::Reset", false );
-    m_running = 0;
+	m_running = 0;
     m_elapsed = 0;
 }
 
 double Timer::Time()
 {
-	Trace trace( "Timer::Time", false );
-    if (m_running)
+	if (m_running)
     {
     	Stop();
         Start();
