@@ -42,40 +42,36 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 RefCount::RefCount()
 :m_refCount(0)
 {
-	Trace trace( "RefCount::RefCoun", false );
+
 }
 
 RefCount::RefCount( const RefCount& )
 :m_refCount(0)
 {
-	Trace trace( "RefCount::RefCoun", false );
+
 }
 
 RefCount& RefCount::operator=( const RefCount& )
 {
-	Trace trace( "RefCount::operator=", false );
 	return *this;
 }
 
 RefCount::~RefCount()
 {
-	Trace trace( "RefCount::~RefCoun", false );
+
 }
 
 void RefCount::Upcount()
 {
-	Trace trace( "RefCount::Upcount", false );
 	++m_refCount;
 }
 
 void RefCount::Downcount()
 {
-	Trace trace( "RefCount::Downcount", false );
-    if( --m_refCount == 0 ) delete this;
+	if( --m_refCount == 0 ) delete this;
 }
 
 unsigned int RefCount::GetCount() const
 {
-	Trace trace( "RefCount::GetCount", false );
 	return m_refCount;
 }

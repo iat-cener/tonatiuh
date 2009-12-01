@@ -54,7 +54,6 @@ SO_NODEENGINE_SOURCE( TDefaultTracker );
  */
 void TDefaultTracker::initClass()
 {
-	Trace trace( "TDefaultTracker::initClass", false );
 	SO_NODEENGINE_INIT_CLASS( TDefaultTracker, TTracker, "TTracker" );
 }
 
@@ -63,8 +62,6 @@ void TDefaultTracker::initClass()
  */
 TDefaultTracker::TDefaultTracker()
 {
-	Trace trace( "TDefaultTracker::TDefaultTracker", false );
-
 	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
 
 	// Define input fields and their default values
@@ -80,7 +77,7 @@ TDefaultTracker::TDefaultTracker()
  */
 TDefaultTracker::~TDefaultTracker()
 {
-	Trace trace( "TDefaultTracker::~TDefaultTracker", false );
+
 }
 
 /**
@@ -88,7 +85,6 @@ TDefaultTracker::~TDefaultTracker()
  */
 QString TDefaultTracker::getIcon()
 {
-	Trace trace( "TDefaultTracker::getIcon", false );
 	return QString(":/icons/HorizontalTracker.png");
 }
 
@@ -97,8 +93,6 @@ QString TDefaultTracker::getIcon()
  */
 void TDefaultTracker::evaluate()
 {
-	Trace trace( "TDefaultTracker::evaluate", false );
-
 	if( !m_azimuth.isConnected() ) return;
 	if( !m_zenith.isConnected() ) return;
 

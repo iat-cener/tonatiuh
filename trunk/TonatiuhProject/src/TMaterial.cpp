@@ -44,7 +44,6 @@ SO_NODE_ABSTRACT_SOURCE(TMaterial);
 
 void TMaterial::initClass()
 {
-	Trace trace( "TMaterial::initClass", false );
 	SO_NODE_INIT_ABSTRACT_CLASS(TMaterial, SoMaterial, "Material");
 
 }

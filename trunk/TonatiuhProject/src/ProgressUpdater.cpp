@@ -45,7 +45,6 @@ using namespace std;
 ProgressUpdater::ProgressUpdater( int totalWork, const QString &title, int bar_length, QWidget *creator )
 : m_totalBars( bar_length )
 {
-	Trace trace( "ProgressUpdater::ProgressUpdater", false );
 	m_progressDialog = new QProgressDialog ( title , "Cancel",  0, bar_length, creator );
 	m_progressDialog->setModal( true );
 	m_progressDialog->setCancelButton( NULL);
@@ -60,15 +59,13 @@ ProgressUpdater::ProgressUpdater( int totalWork, const QString &title, int bar_l
 
 ProgressUpdater::~ProgressUpdater()
 {
-	Trace trace( "ProgressUpdater::~ProgressUpdater", false );
 	delete m_timer;
 	delete m_progressDialog;
 }
 
 void ProgressUpdater::Update(int num) const
 {
-	Trace trace( "ProgressUpdater::Update", false );
-    m_count -= num;
+	m_count -= num;
     bool updatedAny = false;
     while (m_count <= 0)
     {
@@ -93,7 +90,6 @@ void ProgressUpdater::Update(int num) const
 
 void ProgressUpdater::Done() const
 {
-	Trace trace( "ProgressUpdater::Done", false );
 	// cout << "Total Time: " << m_timer->Time();
 }
 

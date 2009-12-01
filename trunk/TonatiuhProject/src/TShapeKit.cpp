@@ -83,7 +83,7 @@ TShapeKit::TShapeKit()
  */
 TShapeKit::~TShapeKit()
 {
-	Trace trace("TShapeKit::~TShapeKit", false );
+
 }
 
 /**
@@ -92,7 +92,6 @@ TShapeKit::~TShapeKit()
  */
 bool TShapeKit::IntersectP( const Ray& ) const
 {
-	Trace trace( "TShapeKit::IntersectP", false );
 	return false;
 }
 
@@ -104,8 +103,6 @@ bool TShapeKit::IntersectP( const Ray& ) const
  */
 Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDeviate& rand ) const
 {
-	Trace trace( "TShapeKit::Intersect", false );
-
 	//The ray intersects with the BoundingBox
 	//Transform the ray to call children intersect
 

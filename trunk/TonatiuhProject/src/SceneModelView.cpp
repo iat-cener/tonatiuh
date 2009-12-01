@@ -85,8 +85,7 @@ void SceneModelView::mousePressEvent(QMouseEvent *event)
  */
 void SceneModelView::mouseMoveEvent(QMouseEvent *event)
 {
-	Trace trace( "SceneModelView::mouseMoveEvent", false );
-    if (event->buttons() & Qt::LeftButton) {
+	if (event->buttons() & Qt::LeftButton) {
         int distance = (event->pos() - startPos).manhattanLength();
         if (distance >= QApplication::startDragDistance())
             startDrag(event);
@@ -99,7 +98,6 @@ void SceneModelView::mouseMoveEvent(QMouseEvent *event)
  */
 void SceneModelView::dragEnterEvent(QDragEnterEvent *event)
 {
-	Trace trace( "SceneModelView::dragEnterEvent", false );
 	event->setDropAction(Qt::MoveAction);
 	event->accept();
 }
@@ -109,7 +107,6 @@ void SceneModelView::dragEnterEvent(QDragEnterEvent *event)
  */
 void SceneModelView::dragMoveEvent(QDragMoveEvent *event)
 {
-	Trace trace( "SceneModelView::dragMoveEvent", false );
 	event->setDropAction(Qt::MoveAction);
 	event->accept();
 }
@@ -119,8 +116,6 @@ void SceneModelView::dragMoveEvent(QDragMoveEvent *event)
  */
 void SceneModelView::dropEvent(QDropEvent *event)
 {
-	Trace trace( "SceneModelView::dropEvent", false );
-	
 	QModelIndex newParent= indexAt(event->pos());
     if ( newParent.isValid() )
     {
@@ -185,7 +180,6 @@ void SceneModelView::dropEvent(QDropEvent *event)
  */
 void SceneModelView::resizeViewToContents( const QModelIndex& index )
 {
-	Trace trace( "SceneModelView::resizeViewToContents", false );
 	resizeColumnToContents( index.column() );
 }
 
@@ -194,8 +188,6 @@ void SceneModelView::resizeViewToContents( const QModelIndex& index )
  */
 void SceneModelView::startDrag(QMouseEvent *event)
 {
-	Trace trace( "SceneModelView::startDrag", false );
-	
 	QPoint position = event->pos();
 	QModelIndex index = indexAt(position);
 	

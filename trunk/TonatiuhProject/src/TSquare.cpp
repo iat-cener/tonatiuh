@@ -54,33 +54,27 @@ SO_NODE_SOURCE(TSquare);
 
 void TSquare::initClass()
 {
-	Trace trace( "TSquare::initClass", false );
 	SO_NODE_INIT_CLASS(TSquare, TShape, "TShape");
 }
 
 TSquare::TSquare( )
 {
-	Trace trace( "TSquare::TSquare", false );
-
 	SO_NODE_CONSTRUCTOR(TSquare);
 	SO_NODE_ADD_FIELD(m_sideLength, (10.0));
 }
 
 TSquare::~TSquare()
 {
-	Trace trace( "TSquare::~TSquare", false );
 
 }
 
 double TSquare::GetArea() const
 {
-	Trace trace( "TSquare::GetArea", false );
 	return ( m_sideLength.getValue() * m_sideLength.getValue() );
 }
 
 QString TSquare::getIcon()
 {
-	Trace trace( "TSquare::getIcon", false );
 	return ":/icons/icons/node.png";
 }
 

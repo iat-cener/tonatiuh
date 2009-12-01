@@ -50,8 +50,6 @@ void TDefaultMaterial::initClass()
 
 TDefaultMaterial::TDefaultMaterial()
 {
-	Trace trace( "TDefaultMaterial::TDefaultMaterial()", false );
-
 	SO_NODE_CONSTRUCTOR( TDefaultMaterial );
 }
 
@@ -62,15 +60,12 @@ TDefaultMaterial::~TDefaultMaterial()
 
 QString TDefaultMaterial::getIcon()
 {
-	Trace trace( "TDefaultMaterial::getIcon", false );
-
 	return QString(":icons/TMaterial.png");
 }
 
 
 Ray* TDefaultMaterial::OutputRay( const Ray& /*incident*/, DifferentialGeometry* /*dg*/, RandomDeviate& /*rand*/  ) const
 {
-	Trace trace( "TDefaultMaterial::GetReflectedRay", false );
 	return NULL;
 }
 

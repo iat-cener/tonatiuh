@@ -48,13 +48,11 @@ SO_NODEENGINE_ABSTRACT_SOURCE( TTracker );
 
 void TTracker::initClass()
 {
-	Trace trace( "TrackerTwoAxis::initClass", false );
 	SO_NODEENGINE_INIT_ABSTRACT_CLASS( TTracker, SoNodeEngine, "NodeEngine" );
 }
 
 TTracker::TTracker()
 {
-	Trace trace( "TTracker::TTracker", false );
 
 }
 
@@ -65,27 +63,21 @@ TTracker::~TTracker()
 
 void TTracker::Disconnect()
 {
-	Trace trace( "TTracker::Disconnect", false );
-
 	m_azimuth.disconnect();
 	m_zenith.disconnect();
 }
 
 void TTracker::SetAzimuthAngle( SoSFDouble* azimuthField )
 {
-	Trace trace( "TTracker::SetAzimuthAngle", false );
 	m_azimuth.connectFrom( azimuthField );
-
 }
 
 void TTracker::SetZenithAngle( SoSFDouble* zenithField )
 {
-	Trace trace( "TTracker::SetZenithAngle", false );
 	m_zenith.connectFrom( zenithField );
 }
 
 void TTracker::SetSceneKit( SoSceneKit* scene )
 {
-	Trace trace( "TTracker::SetSceneKit", false );
 	m_scene = scene;
 }

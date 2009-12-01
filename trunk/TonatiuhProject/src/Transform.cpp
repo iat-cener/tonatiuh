@@ -42,19 +42,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "BBox.h"
 #include "NormalVector.h"
 #include "Ray.h"
-#include "Trace.h"
 #include "Transform.h"
 
 Transform::Transform()
 {
-	Trace trace( "Transform::Transform", false );
 	m_mdir = m_minv = new Matrix4x4;
 }
 
 Transform::Transform( double mat[4][4] )
 {
-	Trace trace( "Transform::Transform", false );
-
 	m_mdir = new Matrix4x4( mat[0][0],mat[0][1],mat[0][2],mat[0][3],
 	               	        mat[1][0],mat[1][1],mat[1][2],mat[1][3],
 	               	        mat[2][0],mat[2][1],mat[2][2],mat[2][3],
@@ -65,14 +61,13 @@ Transform::Transform( double mat[4][4] )
 Transform::Transform( const Ptr<Matrix4x4>& mdir )
 : m_mdir(mdir)
 {
-	Trace trace( "Transform::Transform", false );
 	m_minv = m_mdir->Inverse();
 }
 
 Transform::Transform( const Ptr<Matrix4x4>& mdir, const Ptr<Matrix4x4>& minv )
 : m_mdir(mdir), m_minv(minv)
 {
-	Trace trace( "Transform::Transform", false );
+
 }
 
 Transform::Transform( double t00, double t01, double t02, double t03,
@@ -80,8 +75,6 @@ Transform::Transform( double t00, double t01, double t02, double t03,
 	                  double t20, double t21, double t22, double t23,
 	                  double t30, double t31, double t32, double t33 )
 {
-	Trace trace( "Transform::Transform", false );
-
 	m_mdir = new Matrix4x4( t00, t01, t02, t03,
 	                        t10, t11, t12, t13,
 	                        t20, t21, t22, t23,
@@ -93,25 +86,21 @@ Transform::Transform( double t00, double t01, double t02, double t03,
 Transform::Transform( const Transform& rhs )
 : m_mdir(rhs.m_mdir), m_minv(rhs.m_minv)
 {
-	Trace trace( "Transform::Transform", false );
+
 }
 
 Transform Transform::GetInverse() const
 {
-	Trace trace( "Transform::GetInverse", false );
 	return Transform( m_minv, m_mdir );
 }
 
 Transform Transform::Transpose() const
 {
-	Trace trace( "Transform::Transpose", false );
 	return Transform( m_mdir->Transpose(), m_mdir->Transpose()->Inverse() );
 }
 
 Point3D Transform::operator()( const Point3D& point ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	double x = point.x, y = point.y, z = point.z;
 	double xp = m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z + m_mdir->m[0][3];
 	double yp = m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z + m_mdir->m[1][3];
@@ -125,8 +114,6 @@ Point3D Transform::operator()( const Point3D& point ) const
 
 void Transform::operator()( const Point3D& point, Point3D* transformedPoint ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	double x = point.x, y = point.y, z = point.z;
 	transformedPoint->x = m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z + m_mdir->m[0][3];
 	transformedPoint->y = m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z + m_mdir->m[1][3];
@@ -137,8 +124,6 @@ void Transform::operator()( const Point3D& point, Point3D* transformedPoint ) co
 
 Vector3D Transform::operator()( const Vector3D& vector ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	double x = vector.x, y = vector.y, z = vector.z;
 	return Vector3D( m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z,
 			         m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z,
@@ -147,8 +132,6 @@ Vector3D Transform::operator()( const Vector3D& vector ) const
 
 void Transform::operator()( const Vector3D& vector, Vector3D* transformedVector ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	double x = vector.x, y = vector.y, z = vector.z;
 	transformedVector->x = m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z;
 	transformedVector->y = m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z;
@@ -157,8 +140,6 @@ void Transform::operator()( const Vector3D& vector, Vector3D* transformedVector 
 
 NormalVector Transform::operator()( const NormalVector& normal ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	double x = normal.x, y = normal.y, z = normal.z;
 	return NormalVector( m_minv->m[0][0]*x + m_minv->m[1][0]*y + m_minv->m[2][0]*z,
                    m_minv->m[0][1]*x + m_minv->m[1][1]*y + m_minv->m[2][1]*z,
@@ -167,8 +148,6 @@ NormalVector Transform::operator()( const NormalVector& normal ) const
 
 void Transform::operator()( const NormalVector& normal, NormalVector* transformedNormal ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	double x = normal.x, y = normal.y, z = normal.z;
 	transformedNormal->x = m_minv->m[0][0]*x + m_minv->m[1][0]*y + m_minv->m[2][0]*z;
 	transformedNormal->y = m_minv->m[0][1]*x + m_minv->m[1][1]*y + m_minv->m[2][1]*z;
@@ -177,8 +156,6 @@ void Transform::operator()( const NormalVector& normal, NormalVector* transforme
 
 Ray Transform::operator()( const Ray& ray ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	Ray transformedRay;
 	( *this )( ray.origin, &transformedRay.origin );
 	( *this )( ray.direction, &transformedRay.direction );
@@ -189,8 +166,6 @@ Ray Transform::operator()( const Ray& ray ) const
 
 void Transform::operator()( const Ray& ray, Ray* transformedRay ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	( *this )( ray.origin, &transformedRay->origin );
 	( *this )( ray.direction, &transformedRay->direction );
 	transformedRay->mint = ray.mint;
@@ -199,8 +174,6 @@ void Transform::operator()( const Ray& ray, Ray* transformedRay ) const
 
 BBox Transform::operator()( const BBox& bbox  ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	const Transform& M = *this;
 	BBox ret(  M( Point3D( bbox.pMin.x, bbox.pMin.y, bbox.pMin.z ) ) );
 	ret = Union( ret, M( Point3D( bbox.pMax.x, bbox.pMin.y, bbox.pMin.z ) ) );
@@ -215,8 +188,6 @@ BBox Transform::operator()( const BBox& bbox  ) const
 
 void Transform::operator()( const BBox& bbox, BBox* transformedBbox  ) const
 {
-	Trace trace( "Transform::operator()", false );
-
 	const Transform &M = *this;
 	transformedBbox = new BBox(          M( Point3D( bbox.pMin.x, bbox.pMin.y, bbox.pMin.z ) ) );
 	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMax.x, bbox.pMin.y, bbox.pMin.z ) ) );
@@ -231,8 +202,6 @@ void Transform::operator()( const BBox& bbox, BBox* transformedBbox  ) const
 
 Transform Transform::operator*( const Transform& rhs ) const
 {
-	Trace trace( "Transform::operator*", false );
-
 	Ptr<Matrix4x4> mdir = Mul( m_mdir, rhs.m_mdir );
 	Ptr<Matrix4x4> minv = Mul( rhs.m_minv, m_minv );
 	return Transform( mdir, minv );
@@ -240,8 +209,6 @@ Transform Transform::operator*( const Transform& rhs ) const
 
 bool Transform::SwapsHandedness( ) const
 {
-	Trace trace( "Transform::SwapsHandedness", false );
-
 	double det = ( ( m_mdir->m[0][0] *
 	                   ( m_mdir->m[1][1] * m_mdir->m[2][2] -
 	                     m_mdir->m[1][2] * m_mdir->m[2][1] ) ) -
@@ -256,8 +223,7 @@ bool Transform::SwapsHandedness( ) const
 
 bool Transform::operator==( const Transform& tran ) const
 {
-	Trace trace( "Transform::operator==", false );
-    if( this == &tran )
+	if( this == &tran )
     	return true;
     else
     return(
@@ -281,8 +247,6 @@ bool Transform::operator==( const Transform& tran ) const
 
 Transform Translate( const Vector3D& delta )
 {
-	Trace trace( "Transform Translate", false );
-
 	Ptr<Matrix4x4> mdir = new Matrix4x4(   1.0,   0.0,   0.0,  delta.x,
                                            0.0,   1.0,   0.0,  delta.y,
                                            0.0,   0.0,   1.0,  delta.z,
@@ -298,8 +262,6 @@ Transform Translate( const Vector3D& delta )
 
 Transform Translate( double x, double y, double z)
 {
-	Trace trace( "Transform Translate", false );
-
 	Ptr<Matrix4x4> mdir = new Matrix4x4(   1.0,   0.0,   0.0,   x,
                                            0.0,   1.0,   0.0,   y,
                                            0.0,   0.0,   1.0,   z,
@@ -315,8 +277,6 @@ Transform Translate( double x, double y, double z)
 
 Transform Scale( double sx, double sy, double sz )
 {
-	Trace trace( "Transform Scale", false );
-
 	Ptr<Matrix4x4> mdir = new Matrix4x4(    sx,     0.0,    0.0,  0.0,
                                            0.0,      sy,    0.0,  0.0,
                                            0.0,     0.0,     sz,  0.0,
@@ -332,8 +292,6 @@ Transform Scale( double sx, double sy, double sz )
 
 Transform RotateX( double angle )
 {
-	Trace trace( "Transform RotateX", false );
-
 	// angle is assumed to be in radians.
 	double sinAngle = sin( angle );
 	double cosAngle = cos( angle );
@@ -348,8 +306,6 @@ Transform RotateX( double angle )
 
 Transform RotateY(double angle)
 {
-	Trace trace( "Transform RotateY", false );
-
 	// angle is assumed to be in radians.
 	double sinAngle = sin( angle );
 	double cosAngle = cos( angle );
@@ -365,8 +321,6 @@ Transform RotateY(double angle)
 
 Transform RotateZ( double angle )
 {
-	Trace trace( "Transform RotateZ", false );
-
 	// angle is assumed to be in radians.
 	double sinAngle = sin( angle );
 	double cosAngle = cos( angle );
@@ -381,8 +335,6 @@ Transform RotateZ( double angle )
 
 Transform Rotate( double angle, const Vector3D& axis )
 {
-	Trace trace( "Transform Rotate", false );
-
 	// angle is assumed to be in radians.
 	Vector3D a = Normalize( axis );
 	double s = sin( angle );
@@ -415,9 +367,7 @@ Transform Rotate( double angle, const Vector3D& axis )
 
 Transform LookAt( const Point3D& pos, const Point3D& look, const Vector3D& up )
 {
-	Trace trace( "Transform LookAt", false );
-
-	double m[4][4];
+	 double m[4][4];
 	m[0][3] = pos.x;
 	m[1][3] = pos.y;
 	m[2][3] = pos.z;
@@ -448,8 +398,6 @@ Transform LookAt( const Point3D& pos, const Point3D& look, const Vector3D& up )
 
 std::ostream& operator<<( std::ostream& os, const Transform& tran )
 {
-	Trace trace( "Transform operator<<", false );
-
 	os << (*tran.GetMatrix());
 	return os;
 }

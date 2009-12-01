@@ -70,8 +70,6 @@ WorldMap::~WorldMap()
 
 void WorldMap::mouseMoveEvent( QMouseEvent* e)
 {
-	Trace trace( "WorldMap::mouseMoveEvent", false );
-
 	int x=e->x();
 	int y=e->y();
 
@@ -84,22 +82,16 @@ void WorldMap::mouseMoveEvent( QMouseEvent* e)
 
 void WorldMap::LocalLatitudeChanged( double latitude )
 {
-	Trace trace( "WorldMap::LocalLatitudeChanged", false );
 	m_latitude = latitude;
-
-
 }
 
 void WorldMap::LocalLongitudeChanged( double longitude )
 {
-	Trace trace( "WorldMap::LocalLongitudeChanged", false );
 	m_longitude = longitude;
 }
 
 void WorldMap::SunChanged( cSunCoordinates coordinates )
 {
-	Trace trace( "WorldMap::SunChanged", false );
-
 	int width = m_map.width();
 	int height = m_map.height();
 

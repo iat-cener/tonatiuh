@@ -61,7 +61,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 SceneModel::SceneModel( QObject* parent)
 :QAbstractItemModel( parent ), m_coinRoot( 0 ), m_coinScene(0), m_instanceRoot( 0 )
 {
-	Trace trace( "SceneModel::SceneModel", false );
+
 }
 
 /*!
@@ -69,7 +69,7 @@ SceneModel::SceneModel( QObject* parent)
  */
 SceneModel::~SceneModel()
 {
-	Trace trace( "SceneModel::~SceneModel", false  );
+
 }
 
 /*!
@@ -77,7 +77,6 @@ SceneModel::~SceneModel()
  */
 void SceneModel::SetCoinRoot( SoSelection& coinRoot )
 {
-	Trace trace( "SceneModel::SetCoinRoot", false );
 	m_coinRoot = &coinRoot;
 	m_mapCoinQt.clear();
 }
@@ -89,8 +88,6 @@ void SceneModel::SetCoinRoot( SoSelection& coinRoot )
  */
 void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 {
-	Trace trace( "SceneModel::SetCoinScene", false );
-
 	m_mapCoinQt.clear();
     m_coinScene = &coinScene;
     delete m_instanceRoot;
@@ -144,8 +141,6 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 
 void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 {
-	Trace trace( "SceneModel::GenerateInstanceTree", false );
-
 	SoNode* parentNode = instanceParent.GetNode();
 
 	if (parentNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
@@ -217,8 +212,6 @@ void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 
 QModelIndex SceneModel::index( int row, int column, const QModelIndex& parentModelIndex ) const
 {
-	Trace trace( "SceneModel::index", false );
-
 	if ( !m_instanceRoot ) return QModelIndex();
 	InstanceNode* instanceParent = NodeFromIndex( parentModelIndex );
     return createIndex( row, column, instanceParent->children[ row ] );
@@ -226,32 +219,24 @@ QModelIndex SceneModel::index( int row, int column, const QModelIndex& parentMod
 
 InstanceNode* SceneModel::NodeFromIndex( const QModelIndex& modelIndex ) const
 {
-	Trace trace( "SceneModel::NodeFromIndex", false );
-
 	if ( modelIndex.isValid() ) return static_cast< InstanceNode* >( modelIndex.internalPointer() );
     else return m_instanceRoot;
 }
 
 int SceneModel::rowCount( const QModelIndex& parentModelIndex ) const
 {
-	Trace trace( "SceneModel::rowCount", false );
-
 	InstanceNode* instanceParent = NodeFromIndex( parentModelIndex );
     return ( instanceParent ) ? ( instanceParent->children.count() ) : 0;
 }
 
 int SceneModel::columnCount( const QModelIndex& ) const
 {
-	Trace trace( "SceneModel::columnCount", false );
-
 	return 1;
 }
 
 QModelIndex SceneModel::parent( const QModelIndex& childModelIndex ) const
 {
-	Trace trace( "SceneModel::parent", false);
-
-    InstanceNode* instanceChild = NodeFromIndex( childModelIndex );
+	InstanceNode* instanceChild = NodeFromIndex( childModelIndex );
     if ( !instanceChild ) return QModelIndex();
 
     InstanceNode* instanceParent = instanceChild->GetParent();
@@ -266,8 +251,6 @@ QModelIndex SceneModel::parent( const QModelIndex& childModelIndex ) const
 
 QVariant SceneModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
-	Trace trace( "SceneModel::headerData", false );
-
 	if ( orientation == Qt::Horizontal && role == Qt::DisplayRole)
 	{
 		if ( section == 0 ) return tr( "Node" );
@@ -277,9 +260,7 @@ QVariant SceneModel::headerData( int section, Qt::Orientation orientation, int r
 
 QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 {
-    Trace trace( "SceneModel::data", false );
-
-	if ( role != Qt::DisplayRole && role != Qt::UserRole && role != Qt::DecorationRole ) return QVariant();
+    if ( role != Qt::DisplayRole && role != Qt::UserRole && role != Qt::DecorationRole ) return QVariant();
 
     InstanceNode* instanceNode = NodeFromIndex( modelIndex );
     if ( !instanceNode ) return QVariant();
@@ -371,8 +352,6 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 
 int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
 {
-	Trace trace( "SceneModel::InsertCoinNode", false );
-
 	int row = -1;
 	if (coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
@@ -433,8 +412,6 @@ int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
  */
 void SceneModel::InsertLightNode( TLightKit& coinLight )
 {
-	Trace trace( "SceneModel::InsertLightNode", false );
-
 	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* > ( m_coinScene->getPart("lightList", true ) ) ;
 	if ( lightList->getNumChildren() > 0 )	m_instanceRoot->children.removeAt( 0 );
 
@@ -465,8 +442,6 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 
 void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 {
-	Trace trace( "SceneModel::RemoveCoinNode", false );
-
 	if (coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		if( ( row == 0 ) && coinParent.getPart( "tracker", false ) )
@@ -502,8 +477,6 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 
 void SceneModel::RemoveLightNode( TLightKit& coinLight )
 {
-	Trace trace( "SceneModel::RemoveLightNode", false );
-
 	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "lightList", true ) );
     if ( lightList ) lightList->removeChild( &coinLight );
     m_instanceRoot->children.removeAt( 0 );
@@ -528,8 +501,6 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 
 Qt::ItemFlags SceneModel::flags( const QModelIndex& modelIndex ) const
 {
-	Trace trace( "SceneModel::flags", false );
-
 	Qt::ItemFlags defaultFlags = QAbstractItemModel::flags( modelIndex );
 
 	if ( modelIndex.isValid() )
@@ -542,15 +513,11 @@ Qt::ItemFlags SceneModel::flags( const QModelIndex& modelIndex ) const
 
 Qt::DropActions SceneModel::supportedDropActions() const
 {
-	Trace trace( "SceneModel::supportedDropActions", false );
-
 	return  Qt::CopyAction | Qt::MoveAction;
 }
 
 Qt::DropActions SceneModel::supportedDragActions() const
 {
-	Trace trace( "SceneModel::supportedDragActions", false );
-
 	return Qt::CopyAction | Qt::MoveAction;
 }
 
@@ -561,9 +528,6 @@ Qt::DropActions SceneModel::supportedDragActions() const
 **/
 bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 {
-	Trace trace( "SceneModel::Cut", false );
-
-
 	if( row < 0 ) return false;
 
 	QList<InstanceNode*> instanceListParent = m_mapCoinQt[ &coinParent ];
@@ -640,8 +604,6 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 **/
 bool SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinNode, int row )
 {
-	Trace trace( "SceneModel::Paste", false );
-
 	SoNode* coinChild = 0;
 	SoNode* pCoinParent = 0;
 	pCoinParent = &coinParent;
@@ -731,8 +693,6 @@ bool SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 
 bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 {
-	Trace trace( "SceneModel::SetNodeName", false );
-
 	QList< InstanceNode* > nodeInstances = m_mapCoinQt[ coinChild ];
 	if( nodeInstances.size() == 0 ) return false;
 
@@ -760,8 +720,6 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 
 void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 {
-	Trace trace( "SceneModel::DeleteInstanceTree", false );
-
 	for ( int index = 0; index < instanceNode.children.count(); index++)
 	{
 		DeleteInstanceTree( *instanceNode.children[index] );
@@ -778,8 +736,6 @@ void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 
 SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 {
-	Trace trace( "SceneModel::PathFromIndex", false );
-
 	SoNode* coinNode = NodeFromIndex( modelIndex )->GetNode();
 
 	if (!coinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
@@ -823,8 +779,6 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 
 QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
 {
-	Trace trace( "SceneModel::IndexFromPath", false );
-
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( coinNodePath.getTail() );
 	if( !coinNode ) tgf::SevereError( "IndexFromPath Null coinNode." );
 
