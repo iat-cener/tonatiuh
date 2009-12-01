@@ -57,9 +57,7 @@ void TSeparatorKit::initClass()
  */
 TSeparatorKit::TSeparatorKit()
 {
-    Trace trace("TSeparatorKit::setPart", false );
-
-	SO_KIT_CONSTRUCTOR(TSeparatorKit);
+    SO_KIT_CONSTRUCTOR(TSeparatorKit);
 
 	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tracker, SoNode, TDefaultTracker, TRUE, this, "", TRUE);
 	SO_KIT_INIT_INSTANCE();
@@ -74,7 +72,7 @@ TSeparatorKit::TSeparatorKit()
  */
 TSeparatorKit::~TSeparatorKit()
 {
-    Trace trace("TSeparatorKit exiting destructor", false);
+
 }
 
 /**
@@ -82,8 +80,6 @@ TSeparatorKit::~TSeparatorKit()
  */
 SbBool  TSeparatorKit::setPart(const SbName& partname, SoNode* from )
 {
-    Trace trace("TSeparatorKit::setPart", false );
-
     if( partname == "tracker" )
     {
     	SoTransform* parentTransform = static_cast< SoTransform* > ( getPart("transform", true ) );
@@ -116,8 +112,6 @@ SbBool  TSeparatorKit::setPart(const SbName& partname, SoNode* from )
  */
 QString TSeparatorKit::getIcon()
 {
-    Trace trace("TSeparatorKit::getIcon", false );
-
     return QString(":/icons/separatorKit.png");
 
 }

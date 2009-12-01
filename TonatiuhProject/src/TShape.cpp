@@ -43,16 +43,15 @@ SO_NODE_ABSTRACT_SOURCE(TShape);
 
 void TShape::initClass()
 {
-	Trace trace( "TShape::initClass", false );
 	SO_NODE_INIT_ABSTRACT_CLASS(TShape, SoShape, "Shape");
 }
 
 TShape::TShape()
 {
-	Trace trace( "TShape::TShape", false );
+
 }
 
 TShape::~TShape()
 {
-	Trace trace( "TShape::~TShape", false );
+
 }

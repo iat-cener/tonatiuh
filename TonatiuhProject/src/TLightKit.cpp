@@ -63,13 +63,11 @@ void TLightKit::initClass()
 	SO_KIT_INIT_CLASS(TLightKit, SoLightKit, "LightKit");
 }
 
-
 /**
  * Creates a new TLightKit.
  */
 TLightKit::TLightKit()
 {
-	Trace trace( "TLightKit::TLightKit()", false );
 	SO_KIT_CONSTRUCTOR(TLightKit);
 
 	//SO_KIT_ADD_CATALOG_ENTRY(sunshapelabel, SoLabel, TRUE, this, "", TRUE);
@@ -105,7 +103,6 @@ TLightKit::~TLightKit()
  */
 void TLightKit::ChangePosition( QDateTime newTime, double longitude, double latitude )
 {
-	Trace trace( "TLightKit::ChangePosition" , false );
 	m_time = newTime;
 	m_longitude = longitude;
 	m_latitude = latitude;
@@ -140,8 +137,6 @@ void TLightKit::ChangePosition( QDateTime newTime, double longitude, double lati
  */
 void TLightKit::ChangePosition( double newAzimuth, double newZenith, double newDistance )
 {
-	Trace trace( "TLightKit::ChangePosition", false );
-
 	azimuth = newAzimuth;
 	zenith = newZenith;
 	distance = newDistance;
@@ -157,7 +152,6 @@ void TLightKit::ChangePosition( double newAzimuth, double newZenith, double newD
  */
 void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* latitude )
 {
-	Trace trace( "TLightKit::GetPositionData" , false );
 	*time = m_time;
 	*longitude = m_longitude.getValue();
 	*latitude = m_latitude.getValue();
@@ -166,8 +160,6 @@ void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* lat
 
 void TLightKit::UpdateSunPosition()
 {
-	Trace trace( "TLightKit::UpdateSunPosition", false );
-
 	Vector3D direction = Vector3D( sin( zenith.getValue() ) * sin( azimuth.getValue() ), cos( zenith.getValue() ), -sin( zenith.getValue() )*cos( azimuth.getValue() ) );
 
 	Vector3D center = direction * distance.getValue();

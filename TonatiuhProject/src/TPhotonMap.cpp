@@ -46,7 +46,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 TPhotonMap::TPhotonMap()
 {
-	Trace trace( "TPhotonMap::TPhotonMap", false );
 
 }
 
@@ -56,5 +55,5 @@ TPhotonMap::TPhotonMap()
  */
 TPhotonMap::~TPhotonMap()
 {
-	Trace trace( "TPhotonMap::~TPhotonMap", false );
+
 }

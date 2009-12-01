@@ -60,14 +60,11 @@ SO_NODE_SOURCE(TCube);
 
 void TCube::initClass()
 {
-	Trace trace("TCube::initClass", false );
 	SO_NODE_INIT_CLASS(TCube, TShape, "TShape");
 }
 
 TCube::TCube()
 {
-	Trace trace("TCube::TCube", false );
-
 	SO_NODE_CONSTRUCTOR(TCube);
 	SO_NODE_ADD_FIELD(m_width, (2.0));
 	SO_NODE_ADD_FIELD(m_height, (2.0));
@@ -94,8 +91,6 @@ TCube::~TCube()
 
 double TCube::GetArea() const
 {
-	Trace trace( "TCube::GetArea", false );
-
 	double frontArea = m_width.getValue() * m_height.getValue();
 	double leftArea = m_height.getValue() * m_depth.getValue();
 	double baseArea = m_depth.getValue() * m_depth.getValue();
@@ -106,22 +101,17 @@ double TCube::GetArea() const
 
 QString TCube::getIcon()
 {
-	Trace trace("TCube::getIcon", false );
 	return ":/icons/tcube.png";
 }
 
 bool TCube::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGeometry* /*dg*/) const
 {
-	Trace trace( "TCube::IntersectP", false );
-
 	//Yet to be implemented
 	return false;
 }
 
 bool TCube::IntersectP( const Ray& /*objectRay*/ ) const
 {
-	Trace trace( "TCube::IntersectP", false );
-
 	//Yet to be implemented
 	return false;
 }
@@ -129,9 +119,7 @@ bool TCube::IntersectP( const Ray& /*objectRay*/ ) const
 
 void TCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
 {
-	Trace trace( "TCube::computeBBox", false );
-
-    // These points define the min and max extents of the box.
+	// These points define the min and max extents of the box.
     SbVec3f min, max;
 
      // Compute the half-width, half-height, and half-depth of
@@ -156,9 +144,7 @@ void TCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
 
 void TCube::generatePrimitives(SoAction *action)
 {
-	Trace trace( "TCube::generatePrimitives", false );
-
-    // The TCube will generate 6 quads: 1 for each side
+	// The TCube will generate 6 quads: 1 for each side
     // This variable is used to store each vertex.
     SoPrimitiveVertex pv;
 
@@ -253,23 +239,18 @@ void TCube::generatePrimitives(SoAction *action)
 
 Point3D TCube::Sample( double /*u1*/, double /*u2*/ ) const
 {
-	Trace trace( "TCube::Sample", false );
-
 	//Yet to be implemented
 	return Point3D( 0, 0, 0 );
 }
 
 Point3D TCube::GetPoint3D( double /*u1*/, double /*u2*/ ) const
 {
-	Trace trace( "TCube::GetPoint3D", false );
-
 	//Yet to be implemented
 	return Point3D( 0, 0, 0 );
 }
 
 NormalVector TCube::GetNormal(double /*u*/, double /*v*/ ) const
 {
-	Trace trace( "TCube::GetNormal", false );
 	return NormalVector( 0, 1, 0 );
 }
 

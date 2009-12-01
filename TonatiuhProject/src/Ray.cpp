@@ -43,36 +43,33 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 Ray::Ray( )
 : mint( tgc::Epsilon ), maxt( tgc::Infinity )
 {
-	Trace trace( "Ray::Ray" ,false );
+
 }
 
 Ray::Ray( const Point3D& orig, const Vector3D& direc )
 : origin( orig ), direction( direc ), mint( tgc::Epsilon ), maxt( tgc::Infinity )
 {
-	Trace trace( "Ray::Ray" ,false );
+
 }
 
 Ray::Ray( const Point3D& orig, const Vector3D& direc, double start, double end )
 : origin( orig ), direction( direc ), mint( start ), maxt( end )
 {
-	Trace trace( "Ray::Ray" ,false );
+
 }
 
 Ray::~Ray( )
 {
-	Trace trace( "Ray::~Ray" ,false );
+
 }
 
 Point3D Ray::operator()( double t ) const
 {
-	Trace trace( "Ray::operator()" ,false );
     return origin + direction * t;
 }
 
 std::ostream& operator<<( std::ostream& os, const Ray& ray )
 {
-	Trace trace( "Ray operator<<" ,false );
-
     os << "org: " << ray.origin << "\ndir: " << ray.direction << "\nrange [" <<
     ray.mint << "," << ray.maxt << "]";
     return os;

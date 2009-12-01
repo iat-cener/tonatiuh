@@ -56,7 +56,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 NodeNameDelegate::NodeNameDelegate( SceneModel* sceneModel,  QObject* parent)
  : QItemDelegate(parent), m_pModel( sceneModel )
 {
-	Trace trace( "NodeNameDelegate::NodeNameDelegate", false );
+
 }
 
 /**
@@ -64,7 +64,6 @@ NodeNameDelegate::NodeNameDelegate( SceneModel* sceneModel,  QObject* parent)
  */
 NodeNameDelegate::~NodeNameDelegate()
 {
-	Trace trace( "NodeNameDelegate::~NodeNameDelegate", false );
 
 }
 
@@ -74,8 +73,6 @@ NodeNameDelegate::~NodeNameDelegate()
  */
 QWidget* NodeNameDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const
 {
-	Trace trace( "NodeNameDelegate::createEditor", false );
-
 	QLineEdit * editor = new QLineEdit (parent);
 	QRegExp rx("[a-zA-Z]\\S*");
 	QValidator* validator = new QRegExpValidator( rx, 0 );
@@ -91,7 +88,6 @@ QWidget* NodeNameDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 void NodeNameDelegate::setEditorData(QWidget *editor,
                                      const QModelIndex &index) const
 {
-	Trace trace( "NodeNameDelegate::setEditorData", false );
 	QString value = index.model()->data(index, Qt::DisplayRole).toString();
 
 	QLineEdit  *textEdit = static_cast<QLineEdit *>(editor);
@@ -113,8 +109,6 @@ void NodeNameDelegate::setEditorData(QWidget *editor,
  */
 void NodeNameDelegate::setModelData(QWidget* editor, QAbstractItemModel* /*model*/, const QModelIndex& index ) const
 {
-	Trace trace( "NodeNameDelegate::setModelData", false );
-
 	QLineEdit* textEdit = static_cast<QLineEdit *>( editor );
 
 	SoNode* coinNode =m_pModel->NodeFromIndex( index )->GetNode();

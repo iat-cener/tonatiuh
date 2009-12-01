@@ -61,8 +61,6 @@ ParametersDelegate::~ParametersDelegate()
 
 QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem& /*option*/, const QModelIndex &index) const
 {
-	Trace trace( "ParametersDelegate::createEditor", false );
-	
 	const ParametersModel* model = static_cast< const ParametersModel* >( index.model() );
 	SoField* field = model->ModelItem( index )->GetField();
 	

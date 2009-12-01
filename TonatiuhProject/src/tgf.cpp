@@ -93,8 +93,6 @@ bool tgf::Quadratic( double A, double B, double C, double *t0, double *t1)
 
 double tgf::AlternateBoxMuller( RandomDeviate& rand )
 {
-	Trace trace( "tgf::AlternateBoxMuller", false );
-
 	static bool firsttime = true;
 	static double x1;
 	static double x2;
@@ -136,8 +134,6 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
 void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode* instanceNode, InstanceNode* lightNode,
 					TPhotonMap& photonMap, RandomDeviate& rand )
 {
-	Trace trace( "tgf::TraceRay", false );
-
 	Ray* reflectedRay = 0;
 	Photon* next = 0;
 	Photon* first = new Photon( ray.origin );
@@ -191,8 +187,6 @@ void tgf::TraceRay( Ray& ray, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >
 
 SoSeparator* tgf::DrawPhotonMapPoints( const TPhotonMap& map )
 {
-	Trace trace( "tgf::DrawPhotonMapPoints", false );
-
 	SoSeparator* drawpoints=new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
@@ -221,8 +215,6 @@ SoSeparator* tgf::DrawPhotonMapPoints( const TPhotonMap& map )
 
 SoSeparator* tgf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction )
 {
-	Trace trace( "tgf::DrawPhotonMapRays", false );
-
 	SoSeparator* drawrays = new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
@@ -282,8 +274,6 @@ SoSeparator* tgf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 
 SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 {
-	Trace trace( "tgf::AlternateBoxMuller", false );
-
 	Ptr<Matrix4x4> transformMatrix = transform.GetMatrix()->Transpose();
 	return SbMatrix( transformMatrix->m[0][0], transformMatrix->m[0][1], transformMatrix->m[0][2], transformMatrix->m[0][3],
 											transformMatrix->m[1][0], transformMatrix->m[1][1], transformMatrix->m[1][2], transformMatrix->m[1][3],

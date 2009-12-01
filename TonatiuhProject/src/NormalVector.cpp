@@ -46,24 +46,23 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 NormalVector::NormalVector( double dx, double dy, double dz )
 : x(dx), y(dy), z(dz)
 {
-	Trace trace( "NormalVector::NormalVector", false );
+
 }
 
 NormalVector::NormalVector( const Vector3D& vector )
 : x(vector.x), y(vector.y), z(vector.z)
 {
-	Trace trace( "NormalVector::NormalVector", false );
+
 }
 
 NormalVector::~NormalVector( )
 {
-	Trace trace( "NormalVector::~NormalVector", false );
+
 }
 
 NormalVector& NormalVector::operator+=( const NormalVector& nRhs )
 {
-	Trace trace( "NormalVector::operator+=", false );
-    x += nRhs.x;
+	x += nRhs.x;
     y += nRhs.y;
     z += nRhs.z;
     return *this;
@@ -71,7 +70,6 @@ NormalVector& NormalVector::operator+=( const NormalVector& nRhs )
 
 NormalVector& NormalVector::operator-=( const NormalVector& nRhs )
 {
-	Trace trace( "NormalVector::operator-=", false );
     x -= nRhs.x;
     y -= nRhs.y;
     z -= nRhs.z;
@@ -80,8 +78,7 @@ NormalVector& NormalVector::operator-=( const NormalVector& nRhs )
 
 NormalVector& NormalVector::operator*=( double a )
 {
-	Trace trace( "NormalVector::operator*=", false );
-    x *= a;
+	x *= a;
     y *= a;
     z *= a;
     return *this;
@@ -89,8 +86,6 @@ NormalVector& NormalVector::operator*=( double a )
 
 NormalVector& NormalVector::operator/=( double a )
 {
-	Trace trace( "NormalVector::operator/=", false );
-
 	double inv = 1.0/a;
     x *= inv;
     y *= inv;
@@ -100,9 +95,7 @@ NormalVector& NormalVector::operator/=( double a )
 
 bool NormalVector::operator==( const NormalVector& norm ) const
 {
-	Trace trace( "NormalVector::operator==", false );
-
-    if( this == &norm )
+	if( this == &norm )
     	return true;
     else
     return(
@@ -113,8 +106,6 @@ bool NormalVector::operator==( const NormalVector& norm ) const
 
 double NormalVector::operator[]( int i ) const
 {
-	Trace trace( "NormalVector::operator[]", false );
-
 	if( i == 0 ) return x;
     else if( i == 1 ) return y;
     return z;
@@ -122,8 +113,6 @@ double NormalVector::operator[]( int i ) const
 
 double& NormalVector::operator[]( int i )
 {
-	Trace trace( "NormalVector::operator[]", false );
-
 	if( i == 0 ) return x;
     else if( i == 1 ) return y;
     return z;
@@ -131,76 +120,63 @@ double& NormalVector::operator[]( int i )
 
 double NormalVector::lengthSquared( ) const
 {
-	Trace trace( "NormalVector::LengthSquared", false );
 	return( x*x + y*y + z*z );
 }
 
 double NormalVector::length( ) const
 {
-	Trace trace( "NormalVector::Length", false );
 	return sqrt( lengthSquared( ) );
 }
 
 NormalVector operator-( const NormalVector& normal )
 {
-	Trace trace( "NormalVector operator-", false );
 	return NormalVector( -normal.x, -normal.y, -normal.z );
 }
 
 NormalVector operator+( const NormalVector& lhs, const NormalVector& rhs )
 {
-	Trace trace( "NormalVector operator+", false );
 	return NormalVector( lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z );
 }
 
 NormalVector operator-( const NormalVector& lhs, const NormalVector& rhs )
 {
-	Trace trace( "NormalVector operator-", false );
 	return NormalVector( lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z );
 }
 
 NormalVector operator*( const NormalVector& normal, double scalar )
 {
-	Trace trace( "NormalVector operator*", false );
 	return NormalVector( normal.x*scalar, normal.y*scalar, normal.z*scalar );
 }
 
 NormalVector operator*( double scalar, const NormalVector& normal )
 {
-	Trace trace( "NormalVector operator*", false );
 	return NormalVector( normal.x*scalar, normal.y*scalar, normal.z*scalar );
 }
 
 NormalVector operator/( const NormalVector& normal, double scalar )
 {
-	Trace trace( "NormalVector operator/", false );
 	double inv = 1.0/scalar;
     return NormalVector( normal.x*inv, normal.y*inv, normal.z*inv );
 }
 
 std::ostream& operator<<( std::ostream& os, const NormalVector& normal )
 {
-	Trace trace( "NormalVector operator<<", false );
-
 	os << normal.x << ", " << normal.y << ", " << normal.z;
     return os;
 }
 
 double dotProduct( const NormalVector& nA, const NormalVector& nB )
 {
-	Trace trace( "NormalVector DotProduct", false );
 	return nA.x*nB.x + nA.y*nB.y + nA.z*nB.z;
 }
 
 double absDotProduct( const NormalVector& nA, const NormalVector& nB )
 {
-	Trace trace( "NormalVector AbsDotProduct", false );
 	return fabs( dotProduct( nA, nB ) );
 }
 
 NormalVector Normalize(const NormalVector& n)
 {
-	Trace trace( "NormalVector Normalize", false );
 	return n / n.length();
 }
 
