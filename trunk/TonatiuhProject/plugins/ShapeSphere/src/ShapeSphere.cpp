@@ -55,14 +55,11 @@ SO_NODE_SOURCE(ShapeSphere);
 
 void ShapeSphere::initClass()
 {
-	Trace trace( "ShapeSphere::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeSphere, TShape, "TShape");
 }
 
 ShapeSphere::ShapeSphere( )
 {
-	Trace trace( "ShapeSphere::ShapeSphere", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeSphere);
 	SO_NODE_ADD_FIELD( radius, (0.5) );
 	SO_NODE_ADD_FIELD( yMin, (-0.5) );
@@ -84,13 +81,10 @@ ShapeSphere::ShapeSphere( )
 
 ShapeSphere::~ShapeSphere()
 {
-	Trace trace( "ShapeSphere::~ShapeSphere", false );
 }
 
 SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 {
-	Trace trace( "ShapeSphere::copy", false );
-
 	// Use the standard version of the copy method to create
 	// a copy of this instance, including its field data
 	ShapeSphere* newShapeSphere = dynamic_cast< ShapeSphere* >( SoNode::copy( copyConnections ) );
@@ -104,27 +98,21 @@ SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 
 double ShapeSphere::GetArea() const
 {
-	Trace trace( "ShapeSphere::GetArea", false );
 	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() );
 }
 
 QString ShapeSphere::getIcon()
 {
-	Trace trace( "ShapeSphere::getIcon", false );
 	return QString( ":/icons/ShapeSphere.png" );
 }
 
 Point3D ShapeSphere::Sample( double u1, double u2 ) const
 {
-	Trace trace( "ShapeSphere::Sample", false );
 	return GetPoint3D( u1, u2 );
 }
 
 bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	Trace trace( "ShapeSphere::Intersect", false );
-
-
 	// Compute quadratic ShapeSphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.lengthSquared();
@@ -231,15 +219,12 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 
 bool ShapeSphere::IntersectP( const Ray& ray ) const
 {
-	Trace trace( "ShapeSphere::IntersectP", false );
 	return Intersect( ray, 0, 0 );
 }
 
 
 void ShapeSphere::updateYMin( void *data, SoSensor * )
 {
-	Trace trace( "ShapeSphere::updateMinMaxTheta", false );
-
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( shapeSphere->yMin.getValue() >= shapeSphere->yMax.getValue() )
 	{
@@ -257,8 +242,6 @@ void ShapeSphere::updateYMin( void *data, SoSensor * )
 
 void ShapeSphere::updateYMax( void *data, SoSensor* )
 {
-	Trace trace( "ShapeSphere::updatePhiMax", false );
-
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( shapeSphere->yMax.getValue() < shapeSphere->yMin.getValue() )
 	{
@@ -277,8 +260,6 @@ void ShapeSphere::updateYMax( void *data, SoSensor* )
 
 void ShapeSphere::updatePhiMax( void *data, SoSensor* )
 {
-	Trace trace( "ShapeSphere::updatePhiMax", false );
-
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( shapeSphere->phiMax.getValue() > tgc::TwoPi )	shapeSphere->phiMax.setValue( tgc::TwoPi );
 	else if ( shapeSphere->phiMax.getValue() < 0.0 )	shapeSphere->phiMax.setValue( 0.0 );
@@ -287,8 +268,6 @@ void ShapeSphere::updatePhiMax( void *data, SoSensor* )
 
 Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 {
-	Trace trace( "ShapeSphere::GetPoint3D", false );
-
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 
@@ -307,8 +286,6 @@ Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 
 NormalVector ShapeSphere::GetNormal(double u, double v ) const
 {
-	Trace trace( "ShapeSphere::GetNormal", false );
-
 	double thetaMin = acos( yMax.getValue() / radius.getValue() );
 	double thetaMax = acos( yMin.getValue()/radius.getValue() );
 
@@ -325,14 +302,11 @@ NormalVector ShapeSphere::GetNormal(double u, double v ) const
 
 bool ShapeSphere::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeSphere::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 void ShapeSphere::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	Trace trace( "ShapeSphere::computeBBox", false );
-
    	double cosPhiMax = cos( phiMax.getValue() );
    	double sinPhiMax = sin( phiMax.getValue() );
 
@@ -358,8 +332,6 @@ void ShapeSphere::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 
 void ShapeSphere::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeSphere::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.

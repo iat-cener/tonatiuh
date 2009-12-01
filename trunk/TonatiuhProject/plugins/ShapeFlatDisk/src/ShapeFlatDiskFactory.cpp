@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -43,20 +43,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString ShapeFlatDiskFactory::TShapeName() const
 {
-	Trace trace( "ShapeFlatDiskFactory::TShapeName", false );
 	return QString("Flat_disk");
 }
 
 QIcon ShapeFlatDiskFactory::TShapeIcon() const
 {
-	Trace trace( "ShapeFlatDiskFactory::TShapeIcon", false );
 	return QIcon( ":/icons/ShapeFlatDisk.png" );
 }
 
 ShapeFlatDisk* ShapeFlatDiskFactory::CreateTShape( ) const
 {
-	Trace trace( "ShapeFlatDiskFactory::CreateTShape", false );
-
 	static bool firstTime = true;
 	if ( firstTime )
 	{

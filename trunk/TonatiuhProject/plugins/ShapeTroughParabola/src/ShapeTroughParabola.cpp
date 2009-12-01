@@ -55,15 +55,11 @@ SO_NODE_SOURCE(ShapeTroughParabola);
 
 void ShapeTroughParabola::initClass()
 {
-	Trace trace( "ShapeTroughParabola::initClass", false );
-
 	SO_NODE_INIT_CLASS(ShapeTroughParabola, TShape, "TShape");
 }
 
 ShapeTroughParabola::ShapeTroughParabola()
 {
-	Trace trace( "ShapeTroughParabola::ShapeTroughParabola", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeTroughParabola);
 	SO_NODE_ADD_FIELD( focusLength, (0.125) );
 	SO_NODE_ADD_FIELD( length, (1.0) );
@@ -73,26 +69,21 @@ ShapeTroughParabola::ShapeTroughParabola()
 
 ShapeTroughParabola::~ShapeTroughParabola()
 {
-	Trace trace( "ShapeTroughParabola::~ShapeTroughParabola", false );
 }
 
 
 double ShapeTroughParabola::GetArea() const
 {
-	Trace trace( "ShapeTroughParabola::GetArea", false );
 	return -1;
 }
 
 QString ShapeTroughParabola::getIcon()
 {
-	Trace trace( "ShapeTroughParabola::getIcon", false );
 	return ":/icons/ShapeTroughParabola.png";
 }
 
 bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
-	Trace trace( "ShapeTroughParabola::Intersect", false );
-
 	// Compute quadratic parabolic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.x*objectRay.direction.x;
@@ -193,22 +184,16 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 bool ShapeTroughParabola::IntersectP( const Ray& objectRay ) const
 {
-	Trace trace( "ShapeTroughParabola::IntersectP", false );
-
 	return Intersect( objectRay, 0, 0 );
 }
 
 Point3D ShapeTroughParabola::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeTroughParabola::Sample", false );
-
 	return GetPoint3D( u, v );
 }
 
 Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 {
-	Trace trace( "ShapeTroughParabola::GetPoint3D", false );
-
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 		double x = u * width.getValue() - width.getValue() / 2;
@@ -221,8 +206,6 @@ Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 
 NormalVector ShapeTroughParabola::GetNormal (double u ,double v) const
 {
-	Trace trace( "ShapeTroughParabola::GetNormal", false );
-
 	Point3D point = GetPoint3D( u, v );
 	Vector3D dpdu(1.0, point.x /( 2.0 * focusLength.getValue() ), 0.0);
 	Vector3D dpdv(0.0, 0.0, 1.0);
@@ -233,14 +216,11 @@ NormalVector ShapeTroughParabola::GetNormal (double u ,double v) const
 
 bool ShapeTroughParabola::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeTroughParabola::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	Trace trace( "ShapeTroughParabola::computeBBox", false );
-
 	double xmin = -width.getValue() / 2;
 	double xmax = width.getValue() / 2;
 
@@ -254,8 +234,6 @@ void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center
 
 void ShapeTroughParabola::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeTroughParabola::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
     SoState  *state = action->getState();
 

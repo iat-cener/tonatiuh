@@ -56,16 +56,12 @@ SO_NODEENGINE_SOURCE( TrackerOneAxis );
 
 void TrackerOneAxis::initClass()
 {
-	Trace trace( "TrackerOneAxis::initClass", false );
-
 	SO_NODEENGINE_INIT_CLASS( TrackerOneAxis, TTracker, "TTracker" );
 
 }
 
 TrackerOneAxis::TrackerOneAxis()
 {
-	Trace trace( "TrackerOneAxis::TrackerOneAxis", false );
-
 	SO_NODEENGINE_CONSTRUCTOR( TrackerOneAxis );
 
 	// Define input fields and their default values
@@ -82,20 +78,15 @@ TrackerOneAxis::TrackerOneAxis()
 
 TrackerOneAxis::~TrackerOneAxis()
 {
-	Trace trace( "TrackerOneAxis::~TrackerOneAxis", false );
 }
 
 QString TrackerOneAxis::getIcon()
 {
-	Trace trace( "TrackerOneAxis::getIcon", false );
-
 	return QString(":/icons/TrackerOneAxis.png");
 }
 
 void TrackerOneAxis::evaluate()
 {
-	Trace trace( "TrackerOneAxis::evaluate", false );
-
 	if( !m_azimuth.isConnected() ) return;
 	if( !m_zenith.isConnected() ) return;
 

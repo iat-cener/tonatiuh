@@ -54,14 +54,11 @@ SO_NODE_SOURCE(MaterialStandardSpecular);
 
 void MaterialStandardSpecular::initClass()
 {
-	Trace trace( "MaterialStandardSpecular::MaterialStandardSpecular", false );
 	 SO_NODE_INIT_CLASS( MaterialStandardSpecular, TMaterial, "Material" );
 }
 
 MaterialStandardSpecular::MaterialStandardSpecular()
 {
-	Trace trace( "MaterialStandardSpecular::MaterialStandardSpecular", false );
-
 	SO_NODE_CONSTRUCTOR( MaterialStandardSpecular );
 	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
 	SO_NODE_ADD_FIELD( m_sigmaSlope, (2.0) );
@@ -97,19 +94,15 @@ MaterialStandardSpecular::MaterialStandardSpecular()
 
 MaterialStandardSpecular::~MaterialStandardSpecular()
 {
-	Trace trace( "MaterialStandardSpecular::~MaterialStandardSpecular", false );
 }
 
 QString MaterialStandardSpecular::getIcon()
 {
-	Trace trace( "MaterialStandardSpecular::getIcon", false );
 	return QString(":icons/MaterialStandardSpecular.png");
 }
 
 void MaterialStandardSpecular::updateReflectivity( void* data, SoSensor* )
 {
-	Trace trace( "MaterialStandardSpecular::updateReflectivity", false );
-
 	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
 	if( material->m_reflectivity.getValue() < 0.0 ) material->m_reflectivity = 0.0;
    	if( material->m_reflectivity.getValue() > 1.0 ) material->m_reflectivity = 1.0;
@@ -117,56 +110,42 @@ void MaterialStandardSpecular::updateReflectivity( void* data, SoSensor* )
 
 void MaterialStandardSpecular::updateAmbientColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialStandardSpecular::updateAmbientColor", false );
-
    	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->ambientColor.setValue( material->m_ambientColor[0] );
 }
 
 void MaterialStandardSpecular::updateDiffuseColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialStandardSpecular::updateDiffuseColor", false );
-
    	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->diffuseColor.setValue( material->m_diffuseColor[0] );
 }
 
 void MaterialStandardSpecular::updateSpecularColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialStandardSpecular::updateSpecularColor", false );
-
    	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->specularColor.setValue( material->m_specularColor[0] );
 }
 
 void MaterialStandardSpecular::updateEmissiveColor( void* data, SoSensor* )
 {
-	Trace trace( "MaterialStandardSpecular::updateEmissiveColor", false );
-
    	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->emissiveColor.setValue( material->m_emissiveColor[0] );
 }
 
 void MaterialStandardSpecular::updateShininess( void* data, SoSensor* )
 {
-	Trace trace( "MaterialStandardSpecular::updateShininess", false );
-
    	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->shininess.setValue( material->m_shininess[0] );
 }
 
 void MaterialStandardSpecular::updateTransparency( void* data, SoSensor* )
 {
-	Trace trace( "MaterialStandardSpecular::updateTransparency", false );
-
    	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
  	material->transparency.setValue( material->m_transparency[0] );
 }
 
 Ray* MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
-	Trace trace( "MaterialStandardSpecular::GetReflectedRay", false );
-
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= m_reflectivity.getValue()  ) return 0;
 

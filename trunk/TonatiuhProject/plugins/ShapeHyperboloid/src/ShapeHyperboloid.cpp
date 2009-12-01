@@ -60,14 +60,11 @@ SO_NODE_SOURCE(ShapeHyperboloid);
 
 void ShapeHyperboloid::initClass()
 {
-	Trace trace( "ShapeHyperboloid::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeHyperboloid, TShape, "TShape");
 }
 
 ShapeHyperboloid::ShapeHyperboloid( )
 {
-	Trace trace( "ShapeHyperboloid::ShapeHyperboloid", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeHyperboloid);
 	SO_NODE_ADD_FIELD(	focusLegth, (0.1) );
 	SO_NODE_ADD_FIELD( distanceTwoFocus, (10.0) );
@@ -76,26 +73,20 @@ ShapeHyperboloid::ShapeHyperboloid( )
 
 ShapeHyperboloid::~ShapeHyperboloid()
 {
-	Trace trace( "ShapeHyperboloid::~ShapeHyperboloid", false );
 }
 
 double ShapeHyperboloid::GetArea() const
 {
-	Trace trace( "ShapeHyperboloid::getIcon", false );
 	return -1.0;
-
 }
 
 QString ShapeHyperboloid::getIcon()
 {
-	Trace trace( "ShapeHyperboloid::getIcon", false );
 	return ":/icons/shapehyperboloid.png";
 }
 
 bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	Trace trace( "ShapeHyperboloid::Intersect", false );
-
 	double xo= objectRay.origin.x;
 	double yo= objectRay.origin.y;
 	double zo= objectRay.origin.z;
@@ -214,29 +205,21 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 
 bool ShapeHyperboloid::IntersectP( const Ray& worldRay ) const
 {
-	Trace trace( "ShapeHyperboloid::IntersectP", false );
-
 	return Intersect( worldRay, 0, 0 );
 }
 
 Point3D ShapeHyperboloid::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeHyperboloid::Sample", false );
-
 	return GetPoint3D( u, v );
 }
 
 bool ShapeHyperboloid::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeHyperboloid::OutOfRange", false );
-
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 Point3D ShapeHyperboloid::GetPoint3D (double u, double v) const
 {
-	Trace trace( "ShapeHyperboloid::GetPoint3D", false );
-
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double cConic = fabs( distanceTwoFocus.getValue() /2 );
@@ -257,8 +240,6 @@ Point3D ShapeHyperboloid::GetPoint3D (double u, double v) const
 
 NormalVector ShapeHyperboloid::GetNormal (double u, double v) const
 {
-	Trace trace( "ShapeHyperboloid::GetNormal", false );
-
 	Vector3D dpdu = Dpdu( u, v );
 	Vector3D dpdv = Dpdv( u, v );
 
@@ -267,8 +248,6 @@ NormalVector ShapeHyperboloid::GetNormal (double u, double v) const
 
 void ShapeHyperboloid::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 {
-	Trace trace( "ShapeHyperboloid::computeBBox", false );
-
 	double cConic = fabs( distanceTwoFocus.getValue() /2 );
 	double aConic = cConic - focusLegth.getValue();
 	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
@@ -291,8 +270,6 @@ void ShapeHyperboloid::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/
 
 void ShapeHyperboloid::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeHyperboloid::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.
@@ -392,7 +369,6 @@ void ShapeHyperboloid::generatePrimitives(SoAction *action)
 
 Vector3D ShapeHyperboloid::Dpdu( double u, double v ) const
 {
-	Trace trace( "ShapeHyperboloid::Dpdu", false );
 	double cConic = fabs( distanceTwoFocus.getValue() /2 );
 	double aConic = cConic - focusLegth.getValue();
 	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
@@ -407,7 +383,6 @@ Vector3D ShapeHyperboloid::Dpdu( double u, double v ) const
 
 Vector3D ShapeHyperboloid::Dpdv( double u, double v ) const
 {
-	Trace trace( "ShapeHyperboloid::Dpdv", false );
 	Vector3D dpdv = Vector3D( - reflectorMaxDiameter.getValue() * Pi * u * sin( tgc::TwoPi * v ),
 			0.0,
 			reflectorMaxDiameter.getValue() * Pi * u * cos( tgc::TwoPi * v ) );

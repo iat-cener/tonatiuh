@@ -55,38 +55,31 @@ SO_NODE_SOURCE(ShapeFlatDisk);
 
 void ShapeFlatDisk::initClass()
 {
-	Trace trace( "ShapeFlatDisk::initClass", false );
 	SO_NODE_INIT_CLASS(ShapeFlatDisk, TShape, "TShape");
 }
 
 ShapeFlatDisk::ShapeFlatDisk( )
 {
-	Trace trace( "ShapeFlatDisk::ShapeFlatDisk", false );
 	SO_NODE_CONSTRUCTOR(ShapeFlatDisk);
 	SO_NODE_ADD_FIELD(radius, (0.5) );
 }
 
 ShapeFlatDisk::~ShapeFlatDisk()
 {
-	Trace trace( "ShapeFlatDisk::~ShapeFlatDisk", false );
 }
 
 double ShapeFlatDisk::GetArea() const
 {
-	Trace trace( "ShapeFlatDisk::GetArea", false );
 	return ( tgc::Pi * radius.getValue() * radius.getValue() );
 }
 
 QString ShapeFlatDisk::getIcon()
 {
-	Trace trace( "ShapeFlatDisk::getIcon", false );
 	return ":/icons/ShapeFlatDisk.png";
 }
 
 bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
-	Trace trace( "ShapeFlatDisk::Intersect", false );
-
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction.y == 0 ) ) return false;
 	double t = -objectRay.origin.y/objectRay.direction.y;
@@ -144,20 +137,16 @@ bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGe
 
 bool ShapeFlatDisk::IntersectP( const Ray& objectRay ) const
 {
-	Trace trace( "ShapeFlatDisk::TShapeName", false );
 	return Intersect( objectRay, 0, 0 );
 }
 
 Point3D ShapeFlatDisk::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeFlatDisk::Sample", false );
 	return GetPoint3D( u, v );
 }
 
 Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
 {
-	Trace trace( "ShapeFlatDisk::GetPoint3D", false );
-
 	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
 
 	return Point3D( v * radius.getValue() * cos( u * tgc::TwoPi ), 0, v * radius.getValue() * sin( u * tgc::TwoPi ) );
@@ -165,8 +154,6 @@ Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
 
 NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
 {
-	Trace trace( "ShapeFlatDisk::GetNormal", false );
-
 	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
 	//return NormalVector( 0, 1, 0 );
 
@@ -179,14 +166,11 @@ NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
 
 bool ShapeFlatDisk::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeFlatDisk::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 {
-	Trace trace( "ShapeFlatDisk::computeBBox", false );
-
 	Point3D min = Point3D(-radius.getValue(), 0.0, -radius.getValue());
 	Point3D max = Point3D(radius.getValue(), 0.0, radius.getValue());
 	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
@@ -194,7 +178,6 @@ void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 
 void ShapeFlatDisk::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeFlatDisk::generatePrimitives", false );
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.

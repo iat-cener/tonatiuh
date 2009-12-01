@@ -44,14 +44,11 @@ SO_NODE_SOURCE(SunshapePillbox);
 
 void SunshapePillbox::initClass()
 {
-	Trace trace( "SunshapePillbox::initClass", false );
 	SO_NODE_INIT_CLASS(SunshapePillbox, TSunShape, "TSunShape");
 }
 
 SunshapePillbox::SunshapePillbox( )
 {
-	Trace trace( "SunshapePillbox::SunshapePillbox", false );
-
 	SO_NODE_CONSTRUCTOR(SunshapePillbox);
 	SO_NODE_ADD_FIELD(m_irradiance, (1000.0));
 	SO_NODE_ADD_FIELD(m_thetaMax, (0.00465));
@@ -60,14 +57,11 @@ SunshapePillbox::SunshapePillbox( )
 
 SunshapePillbox::~SunshapePillbox()
 {
-	Trace trace( "SunshapePillbox::~SunshapePillbox", false );
 }
 
 //Light Interface
 void SunshapePillbox::generateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-	Trace trace( "SunshapePillbox::generateRayDirection", false );
-
     double phi = tgc::TwoPi * rand.RandomDouble();
     double theta = asin( sin( m_thetaMax.getValue() )*sqrt( rand.RandomDouble() ) );
     double sinTheta = sin( theta );
@@ -87,8 +81,6 @@ double SunshapePillbox::irradiance( void ) const
 
 SoNode* SunshapePillbox::copy( SbBool copyConnections ) const
 {
-	Trace trace( "SunshapePillbox::copy", false );
-
 	// Use the standard version of the copy method to create
 	// a copy of this instance, including its field data
 	SunshapePillbox* newSunShape = dynamic_cast< SunshapePillbox* >( SoNode::copy( copyConnections ) );

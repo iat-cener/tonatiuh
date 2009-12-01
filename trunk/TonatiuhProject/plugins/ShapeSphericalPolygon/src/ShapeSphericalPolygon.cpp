@@ -55,14 +55,11 @@ SO_NODE_SOURCE(ShapeSphericalPolygon);
 
 void ShapeSphericalPolygon::initClass()
 {
-	Trace trace( "ShapeSphericalPolygon::initClass", false );
 	SO_NODE_INIT_CLASS( ShapeSphericalPolygon, TShape, "TShape" );
 }
 
 ShapeSphericalPolygon::ShapeSphericalPolygon()
 {
-	Trace trace( "ShapeSphericalPolygon::ShapeSphericalPolygon", false );
-
 	SO_NODE_CONSTRUCTOR( ShapeSphericalPolygon );
 	SO_NODE_ADD_FIELD( sphereRadius, (0.5) );
 	SO_NODE_ADD_FIELD( radius, (0.5) );
@@ -84,13 +81,10 @@ ShapeSphericalPolygon::ShapeSphericalPolygon()
 
 ShapeSphericalPolygon::~ShapeSphericalPolygon()
 {
-	Trace trace( "ShapeSphericalPolygon::~ShapeSphericalPolygon", false );
 }
 
 SoNode* ShapeSphericalPolygon::copy( SbBool copyConnections ) const
 {
-	Trace trace( "ShapeSphericalPolygon::copy", false );
-
 	// Use the standard version of the copy method to create
 	// a copy of this instance, including its field data
 	ShapeSphericalPolygon* newShapeSphericalPolygon = dynamic_cast< ShapeSphericalPolygon* >( SoNode::copy( copyConnections ) );
@@ -101,20 +95,16 @@ SoNode* ShapeSphericalPolygon::copy( SbBool copyConnections ) const
 
 double ShapeSphericalPolygon::GetArea() const
 {
-	Trace trace( "ShapeSphericalPolygon::GetArea", false );
 	return -1;
 }
 
 QString ShapeSphericalPolygon::getIcon()
 {
-	Trace trace( "ShapeSphericalPolygon::getIcon", false );
 	return ":/icons/ShapeSphericalPolygon.png";
 }
 
 bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	Trace trace( "ShapeSphericalPolygon::Intersect", false );
-
 	// Traslation of the coordinate system from the local coordinates with origin in the bottom of the sphere to the sphere center.
 	Ray originBottomRay = objectRay;
 	originBottomRay.origin.z -= sphereRadius.getValue();
@@ -227,20 +217,16 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 
 bool ShapeSphericalPolygon::IntersectP( const Ray& worldRay ) const
 {
-	Trace trace( "ShapeSphericalPolygon::IntersectP", false );
 	return Intersect( worldRay, 0, 0 );
 }
 
 Point3D ShapeSphericalPolygon::Sample( double u, double v) const
 {
-	Trace trace( "ShapeSphericalPolygon::Sample", false );
 	return GetPoint3D( u , v );
 }
 
 Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 {
-	Trace trace( "ShapeSphericalPolygon::GetPoint3D", false );
-
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeSphericalPolygon::GetPoint3D called with invalid parameters" );
 	if( !IsInside( u, v ) ) tgf::SevereError( "Function ShapeSphericalPolygon::GetPoint3D called with parameters outside the polygon" );
 
@@ -259,8 +245,6 @@ Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 
 NormalVector ShapeSphericalPolygon::GetNormal(  double u, double v  ) const
 {
-	Trace trace( "ShapeSphericalPolygon::GetNormal", false );
-
 	Point3D point = GetPoint3D( u, v );
 	Vector3D vector( point.x, point.y, point.z - sphereRadius.getValue());
 	return NormalVector( -point.x/ vector.length(), -point.y/vector.length(), -( point.z - sphereRadius.getValue() )/vector.length() );
@@ -268,8 +252,6 @@ NormalVector ShapeSphericalPolygon::GetNormal(  double u, double v  ) const
 
 bool ShapeSphericalPolygon::IsInside( double u, double v ) const
 {
-	Trace trace( "ShapeSphericalPolygon::IsInside", false );
-
 	double phi = u * tgc::TwoPi;
 	double theta = v * m_thetaMax;
 
@@ -285,14 +267,11 @@ bool ShapeSphericalPolygon::IsInside( double u, double v ) const
 
 bool ShapeSphericalPolygon::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeSphericalPolygon::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1 ) );
 }
 
 std::vector<double> ShapeSphericalPolygon::Distribution( const double num ) const
 {
-	Trace trace( "ShapeSphericalPolygon::Distribution", false );
-
 	std::vector<double> distribution;
 	for (int i = 0 ; i < num ; i++)
 	{
@@ -306,8 +285,6 @@ std::vector<double> ShapeSphericalPolygon::Distribution( const double num ) cons
 
 std::vector< std::pair<double,double> > ShapeSphericalPolygon::MeshTriangle( const std::vector<double>& distribution ) const
 {
-	Trace trace( "ShapeSphericalPolygon::MeshTriangle", false );
-
 	double num = distribution.size();
 	std::vector< std::pair<double,double> > points;
 	double xmax = radius.getValue() * cos( m_phiMax );
@@ -332,8 +309,6 @@ std::vector< std::pair<double,double> > ShapeSphericalPolygon::MeshTriangle( con
 
 void ShapeSphericalPolygon::RadiusChanged( void* data, SoSensor* )
 {
-	Trace trace( "ShapeSphericalPolygon::RadiusChanged", false );
-
 	ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
 	//if( polygon->radius.getValue() > polygon->sphereRadius.getValue() )
 	polygon->m_thetaMax = asin(  polygon->radius.getValue() /  polygon->sphereRadius.getValue() );
@@ -342,8 +317,6 @@ void ShapeSphericalPolygon::RadiusChanged( void* data, SoSensor* )
 
 void ShapeSphericalPolygon::SidesChanged( void* data, SoSensor* )
 {
-	Trace trace( "ShapeSphericalPolygon::SidesChanged", false );
-
     ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
     polygon->m_phiMax = tgc::Pi/ polygon->polygonSides.getValue();
     polygon->m_xMax =  polygon->radius.getValue() * cos(  polygon->m_phiMax );
@@ -351,16 +324,12 @@ void ShapeSphericalPolygon::SidesChanged( void* data, SoSensor* )
 
 void ShapeSphericalPolygon::SphereRadiusChanged( void* data, SoSensor* )
 {
-	Trace trace( "ShapeSphericalPolygon::SphereRadiusChanged", false );
-
 	ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
 	polygon->m_thetaMax = asin(  polygon->radius.getValue() /  polygon->sphereRadius.getValue() );
 }
 
 void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeSphericalPolygon::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
     SoState  *state = action->getState();
 
@@ -450,8 +419,6 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 
 void ShapeSphericalPolygon::computeBBox(SoAction *, SbBox3f& box, SbVec3f& center)
 {
-	Trace trace( "ShapeSphericalPolygon::computeBBox", false );
-
 	double xmax = radius.getValue();
 	double ymax = radius.getValue();
 	double zmax = sphereRadius.getValue() * ( 1 - cos( m_thetaMax ) );

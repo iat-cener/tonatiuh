@@ -57,15 +57,11 @@ SO_NODE_SOURCE(ShapeParabolicDish);
 
 void ShapeParabolicDish::initClass()
 {
-	Trace trace( "ShapeParabolicDish::initClass", false );
-
 	SO_NODE_INIT_CLASS(ShapeParabolicDish, TShape, "TShape");
 }
 
 ShapeParabolicDish::ShapeParabolicDish()
 {
-	Trace trace( "ShapeParabolicDish::ShapeParabolicDish", false );
-
 	SO_NODE_CONSTRUCTOR(ShapeParabolicDish);
 	SO_NODE_ADD_FIELD( focusLength, (0.125));
 	SO_NODE_ADD_FIELD( dishMinRadius, (0.1) );
@@ -82,27 +78,21 @@ ShapeParabolicDish::ShapeParabolicDish()
 
 ShapeParabolicDish::~ShapeParabolicDish()
 {
-	Trace trace( "ShapeParabolicDish::~ShapeParabolicDish", false );
 }
 
 
 double ShapeParabolicDish::GetArea() const
 {
-	Trace trace( "ShapeParabolicDish::GetArea", false );
-
 	return -1;
 }
 
 QString ShapeParabolicDish::getIcon()
 {
-	Trace trace( "ShapeParabolicDish::getIcon", false );
 	return ":/icons/ShapeParabolicDish.png";
 }
 
 bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
-	Trace trace( "ShapeParabolicDish::Intersect", false);
-
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction.x*objectRay.direction.x + objectRay.direction.z*objectRay.direction.z;
     double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x + objectRay.direction.z * objectRay.origin.z - 2 * focusLength.getValue() * objectRay.direction.y );
@@ -215,19 +205,16 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 
 bool ShapeParabolicDish::IntersectP( const Ray& worldRay ) const
 {
-	Trace trace( "ShapeParabolicDish::IntersectP", false );
 	return Intersect( worldRay, 0, 0 );
 }
 
 Point3D ShapeParabolicDish::Sample( double u, double v ) const
 {
-	Trace trace( "ShapeParabolicDish::Sample", false );
 	return GetPoint3D( u, v );
 }
 
 Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 {
-	Trace trace( "ShapeParabolicDish::GetPoint3D", false );
 
 	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
 
@@ -243,8 +230,6 @@ Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 
 NormalVector ShapeParabolicDish::GetNormal (double u, double v) const
 {
-	Trace trace( "ShapeParabolicDish::GetNormal", false );
-
 	double r = v * ( dishMaxRadius.getValue() - dishMinRadius.getValue() ) + dishMinRadius.getValue();
 
 	Vector3D dpdu( phiMax.getValue() * r * cos( phiMax.getValue() * u ),
@@ -261,14 +246,11 @@ NormalVector ShapeParabolicDish::GetNormal (double u, double v) const
 
 bool ShapeParabolicDish::OutOfRange( double u, double v ) const
 {
-	Trace trace( "ShapeParabolicDish::OutOfRange", false );
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 void ShapeParabolicDish::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	Trace trace( "ShapeParabolicDish::computeBBox", false );
-
 	double cosPhiMax = cos( phiMax.getValue() );
 	double sinPhiMax = sin( phiMax.getValue() );
 
@@ -290,8 +272,6 @@ void ShapeParabolicDish::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 
 void ShapeParabolicDish::generatePrimitives(SoAction *action)
 {
-	Trace trace( "ShapeParabolicDish::generatePrimitives", false );
-
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.
@@ -395,8 +375,6 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
 
 void ShapeParabolicDish::updateMinRadius( void* data, SoSensor* )
 {
-	Trace trace( "ShapeParabolicDish::updateMinRadius", false );
-
 	ShapeParabolicDish* parabolicDish = static_cast< ShapeParabolicDish* >( data );
 	if( parabolicDish->dishMinRadius.getValue() >= parabolicDish->dishMaxRadius.getValue() )
 	{
@@ -410,8 +388,6 @@ void ShapeParabolicDish::updateMinRadius( void* data, SoSensor* )
 
 void ShapeParabolicDish::updateMaxRadius( void* data, SoSensor* )
 {
-	Trace trace( "ShapeParabolicDish::updateMaxRadius", false );
-
 	ShapeParabolicDish* parabolicDish = static_cast< ShapeParabolicDish* >( data );
 	if( parabolicDish->dishMinRadius.getValue() >= parabolicDish->dishMaxRadius.getValue() )
 		{

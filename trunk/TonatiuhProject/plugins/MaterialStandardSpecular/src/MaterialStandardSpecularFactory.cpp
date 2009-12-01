@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -43,20 +43,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString MaterialStandardSpecularFactory::TMaterialName() const
 {
-	Trace trace( "MaterialStandardSpecularFactory::TMaterialName", false );
 	return QString("Specular_Standard_Material");
 }
 
 QIcon MaterialStandardSpecularFactory::TMaterialIcon() const
 {
-	Trace trace( "MaterialStandardSpecularFactory::TMaterialIcon", false );
 	return QIcon(":/icons/MaterialStandardSpecular.png");
 }
 
 MaterialStandardSpecular* MaterialStandardSpecularFactory::CreateTMaterial( ) const
 {
-	Trace trace( "MaterialStandardSpecularFactory::CreateTMaterial", false );
-
 	static bool firstTime = true;
 	if ( firstTime )
 	{
