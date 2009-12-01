@@ -53,24 +53,13 @@ Vector3D::Vector3D( const NormalVector& norm )
 {
 }
 
-Vector3D::Vector3D( Point3D point )
+Vector3D::Vector3D( const Point3D& point )
 : x(point.x), y(point.y), z(point.z)
 {
 }
 
 Vector3D::~Vector3D( )
 {
-}
-
-Vector3D& Vector3D::operator=( const Vector3D& vector )
-{
-    if( this != &vector )
-    {
-        x = vector.x;
-        y = vector.y;
-        z = vector.z;
-    }
-    return *this;
 }
 
 Vector3D& Vector3D::operator+=( const Vector3D& vector )
@@ -81,6 +70,11 @@ Vector3D& Vector3D::operator+=( const Vector3D& vector )
     return *this;
 }
 
+Vector3D Vector3D::operator+( const Vector3D& vector ) const
+{
+    return Vector3D( x + vector.x, y + vector.y, z + vector.z );
+}
+
 Vector3D& Vector3D::operator-=( const Vector3D& vector )
 {
     x -= vector.x;
@@ -89,12 +83,23 @@ Vector3D& Vector3D::operator-=( const Vector3D& vector )
     return *this;
 }
 
+
+Vector3D Vector3D::operator-( const Vector3D& vector ) const
+{
+    return Vector3D( x - vector.x, y - vector.y, z - vector.z );
+}
+
 Vector3D& Vector3D::operator*=( double scalar )
 {
     x *= scalar;
     y *= scalar;
     z *= scalar;
     return *this;
+}
+
+Vector3D Vector3D::operator*( double scalar ) const
+{
+    return Vector3D( x * scalar, y * scalar, z * scalar );
 }
 
 Vector3D& Vector3D::operator/=( double scalar )
@@ -106,28 +111,28 @@ Vector3D& Vector3D::operator/=( double scalar )
     return *this;
 }
 
-void Vector3D::zero()
+Vector3D Vector3D::operator/( double scalar ) const
 {
-    x = 0.0;
-    y = 0.0;
-    z = 0.0;
+    double inv = 1.0/scalar;
+    return Vector3D( x * inv, y * inv, z * inv );
+}
+
+Vector3D Vector3D::operator-() const
+{
+    return Vector3D( -x, -y, -z );
 }
 
 bool Vector3D::operator==( const Vector3D& vector ) const
 {
-	if( this == &vector )
-    	return true;
-    else
-    return(
-    	( fabs(x - vector.x) < DBL_EPSILON ) &&
-    	( fabs(y - vector.y) < DBL_EPSILON ) &&
-    	( fabs(z - vector.z) < DBL_EPSILON ) );
+	if( this == &vector ) return true;
+    else return( ( fabs(x - vector.x) < DBL_EPSILON ) &&
+				 ( fabs(y - vector.y) < DBL_EPSILON ) &&
+				 ( fabs(z - vector.z) < DBL_EPSILON ) );
 }
 
 bool Vector3D::operator!=( const Vector3D& vector ) const
 {
-	if( this == &vector ) return false;
-    else return ( x != vector.x ) || ( y != vector.y ) || ( z != vector.z );
+	return !( *this == vector );
 }
 
 double Vector3D::operator[]( int i ) const
@@ -142,45 +147,27 @@ double& Vector3D::operator[]( int i )
     else return (i == 1) ? y : z;
 }
 
-double Vector3D::LengthSquared( ) const
+void Vector3D::zero()
+{
+    x = 0.0;
+    y = 0.0;
+    z = 0.0;
+}
+
+double Vector3D::lengthSquared( ) const
 {
     return( x*x + y*y + z*z );
 }
 
-double Vector3D::Length( ) const
+double Vector3D::length( ) const
 {
-    return std::sqrt( LengthSquared( ) );
+    return std::sqrt( x*x + y*y + z*z );
 }
 
-Vector3D operator-( const Vector3D& vector )
-{
-    return Vector3D( -vector.x, -vector.y, -vector.z );
-}
-
-Vector3D operator+( const Vector3D& lhs, const Vector3D& rhs )
-{
-    return Vector3D( lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z );
-}
-
-Vector3D operator-( const Vector3D& lhs, const Vector3D& rhs )
-{
-    return Vector3D( lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z );
-}
-
-Vector3D operator*( const Vector3D& vector, double scalar )
-{
-    return Vector3D( vector.x*scalar, vector.y*scalar, vector.z*scalar );
-}
 
 Vector3D operator*( double scalar, const Vector3D& vector )
 {
-    return Vector3D( vector.x*scalar, vector.y*scalar, vector.z*scalar );
-}
-
-Vector3D operator/( const Vector3D& vector, double scalar )
-{
-    double inv = 1.0/scalar;
-    return Vector3D( vector.x*inv, vector.y*inv, vector.z*inv );
+    return Vector3D( scalar * vector.x, scalar * vector.y, scalar * vector.z );
 }
 
 std::ostream& operator<<( std::ostream& os, const Vector3D& vector )
@@ -242,7 +229,7 @@ Vector3D CrossProduct( const NormalVector& nA, const Vector3D& vB )
 
 Vector3D Normalize( const Vector3D& vA )
 {
-    return vA / vA.Length();
+    return vA / vA.length();
 }
 
 bool SameHemisphere( const Vector3D& vA, const Vector3D& vB )

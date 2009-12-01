@@ -129,16 +129,16 @@ double& NormalVector::operator[]( int i )
     return z;
 }
 
-double NormalVector::LengthSquared( ) const
+double NormalVector::lengthSquared( ) const
 {
 	Trace trace( "NormalVector::LengthSquared", false );
 	return( x*x + y*y + z*z );
 }
 
-double NormalVector::Length( ) const
+double NormalVector::length( ) const
 {
 	Trace trace( "NormalVector::Length", false );
-	return sqrt( LengthSquared( ) );
+	return sqrt( lengthSquared( ) );
 }
 
 NormalVector operator-( const NormalVector& normal )
@@ -186,21 +186,21 @@ std::ostream& operator<<( std::ostream& os, const NormalVector& normal )
     return os;
 }
 
-double DotProduct( const NormalVector& nA, const NormalVector& nB )
+double dotProduct( const NormalVector& nA, const NormalVector& nB )
 {
 	Trace trace( "NormalVector DotProduct", false );
 	return nA.x*nB.x + nA.y*nB.y + nA.z*nB.z;
 }
 
-double AbsDotProduct( const NormalVector& nA, const NormalVector& nB )
+double absDotProduct( const NormalVector& nA, const NormalVector& nB )
 {
 	Trace trace( "NormalVector AbsDotProduct", false );
-	return fabs( DotProduct( nA, nB ) );
+	return fabs( dotProduct( nA, nB ) );
 }
 
 NormalVector Normalize(const NormalVector& n)
 {
 	Trace trace( "NormalVector Normalize", false );
-	return n / n.Length();
+	return n / n.length();
 }
 

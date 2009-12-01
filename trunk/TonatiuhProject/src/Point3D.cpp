@@ -37,6 +37,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <cmath>
+#include <float.h>
 #include "Point3D.h"
 #include "Vector3D.h"
 
@@ -90,7 +92,7 @@ Point3D& Point3D::operator*=( double scalar )
 
 Point3D Point3D::operator*( double scalar ) const
 {
-	return Point3D( scalar * x, scalar * y, scalar * z );
+	return Point3D( x * scalar, y * scalar, z * scalar );
 }
 
 Point3D& Point3D::operator/=( double scalar )
@@ -117,7 +119,9 @@ Vector3D Point3D::operator-( const Point3D& point ) const
 bool Point3D::operator==( const Point3D& point ) const
 {
 	if( this == &point ) return true;
-    else return( ( x == point.x ) && ( y == point.y ) && ( z == point.z ) );
+    else return ( ( fabs(x - point.x) < DBL_EPSILON ) &&
+				  ( fabs(y - point.y) < DBL_EPSILON ) &&
+				  ( fabs(z - point.z) < DBL_EPSILON ) );
 }
 
 bool Point3D::operator!=( const Point3D& point ) const
@@ -144,13 +148,13 @@ std::ostream &operator<<( std::ostream &os, const Point3D& pA )
     return os;
 }
 
-double distance( const Point3D& pointA, const Point3D& pointB )
+double Distance( const Point3D& pointA, const Point3D& pointB )
 {
-    return ( pointA - pointB ).Length();
+    return ( pointA - pointB ).length();
 }
 
-double distanceSquared( const Point3D& pointA, const Point3D& pointB )
+double DistanceSquared( const Point3D& pointA, const Point3D& pointB )
 {
-    return ( pointA - pointB ).LengthSquared();
+    return ( pointA - pointB ).lengthSquared();
 }
 
