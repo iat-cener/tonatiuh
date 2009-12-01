@@ -68,8 +68,6 @@ MapDialog::MapDialog( QWidget *parent )
 m_splitter( 0 ), m_latSpinBox( 0 ), m_latComboBox( 0 ), m_lonSpinBox( 0 ),
 m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 {
-	Trace( "MapDialog::MapDialog", false );
-
 	setMouseTracking( true );
 
 	QDir plugisDirectory( qApp->applicationDirPath() );

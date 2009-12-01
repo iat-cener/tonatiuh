@@ -32,35 +32,24 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "Ray.h"
-#include "tgc.h"
-#include "Trace.h"
 
 Ray::Ray( )
 : mint( tgc::Epsilon ), maxt( tgc::Infinity )
 {
-
-}
-
-Ray::Ray( const Point3D& orig, const Vector3D& direc )
-: origin( orig ), direction( direc ), mint( tgc::Epsilon ), maxt( tgc::Infinity )
-{
-
 }
 
 Ray::Ray( const Point3D& orig, const Vector3D& direc, double start, double end )
 : origin( orig ), direction( direc ), mint( start ), maxt( end )
 {
-
 }
 
 Ray::~Ray( )
 {
-
 }
 
 Point3D Ray::operator()( double t ) const
