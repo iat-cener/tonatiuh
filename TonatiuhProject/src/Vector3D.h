@@ -19,20 +19,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
-then Chair of the Department of Engineering of the University of Texas at
-Brownsville. From May 2004 to July 2008, it was supported by the Department
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
-During 2007, NREL also contributed to the validation of Tonatiuh under the
-framework of the Memorandum of Understanding signed with the Spanish
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the
-direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
+The development of Tonatiuh was started on 2004 by Dr. Manuel Blanco,
+at the time Chair of the Department of Engineering of the University of Texas
+at Brownsville. From May 2004 to August 2008 Tonatiuh's development was
+supported by the Department of Energy (DOE) and the National Renewable
+Energy Laboratory (NREL) under the Minority Research Associate (MURA)
+Program Subcontract ACQ-4-33623-06. During 2007, NREL also contributed to
+the validation of Tonatiuh under the framework of the Memorandum of
+Understanding signed with the Spanish National Renewable Energy Centre (CENER)
+on February, 20, 2007 (MOU#NREL-07-117). Since June 2006, the development of
+Tonatiuh is being led by CENER, under the direction of Dr. Blanco, now
+Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -48,32 +49,35 @@ struct Vector3D
 {
     Vector3D( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
     Vector3D( const NormalVector& norm );
-    explicit Vector3D( Point3D point );
+    explicit Vector3D( const Point3D& point );
     ~Vector3D( );
-    Vector3D& operator=( const Vector3D& vector );
     Vector3D& operator+=( const Vector3D& vector );
+    Vector3D operator+( const Vector3D& vector ) const;
     Vector3D& operator-=( const Vector3D& vector );
+    Vector3D operator-( const Vector3D& vector ) const;
+
     Vector3D& operator*=( double scalar );
+    Vector3D operator*( double scalar ) const;
     Vector3D& operator/=( double scalar );
-    void zero();
+    Vector3D operator/( double scalar ) const;
+
+    Vector3D operator-() const;
+
     bool operator==( const Vector3D& vector ) const;
     bool operator!=( const Vector3D& vector ) const;
     double operator[]( int i ) const;
     double& operator[]( int i );
-    double LengthSquared( ) const;
-    double Length( ) const;
+
+    void zero();
+    double lengthSquared( ) const;
+    double length( ) const;
 
     double x;
     double y;
     double z;
 };
 
-Vector3D operator-( const Vector3D& vector );
-Vector3D operator+( const Vector3D& lhs, const Vector3D& rhs );
-Vector3D operator-( const Vector3D& lhs, const Vector3D& rhs );
-Vector3D operator*( const Vector3D& vector, double scalar );
 Vector3D operator*( double scalar, const Vector3D& vector );
-Vector3D operator/( const Vector3D& vector, double scalar );
 std::ostream& operator<<( std::ostream& os, const Vector3D& vector );
 double DotProduct( const Vector3D& vA, const Vector3D& vB );
 double DotProduct( const Vector3D& vA, const NormalVector& nB );

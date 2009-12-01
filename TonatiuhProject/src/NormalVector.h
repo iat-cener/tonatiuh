@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -55,8 +55,8 @@ struct NormalVector
     bool operator==( const NormalVector& norm ) const;
     double operator[]( int i ) const;
     double& operator[]( int i );
-    double LengthSquared( ) const;
-    double Length( ) const;
+    double lengthSquared( ) const;
+    double length( ) const;
 
     double x;
     double y;

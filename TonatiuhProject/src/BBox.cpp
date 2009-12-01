@@ -121,7 +121,7 @@ void BBox::BoundingSphere( Point3D* center, float* radius ) const
 	Trace trace( "BBox::BoundingSphere", false );
 
 	*center = Point3D( (pMin.x+pMax.x)*0.5, (pMin.y+pMax.y)*0.5, (pMin.z+pMax.z)*0.5 );
-    *radius = distance( *center, pMax );
+    *radius = Distance( *center, pMax );
 }
 
 bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const

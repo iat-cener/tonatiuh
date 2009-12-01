@@ -33,7 +33,7 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
@@ -74,7 +74,7 @@ struct Point3D
 
 Point3D operator*( double scalar, const Point3D& point );
 std::ostream &operator<<( std::ostream& os, const Point3D& point );
-double distance( const Point3D& pointA, const Point3D& pointB );
-double distanceSquared( const Point3D& pointA, const Point3D& pointB );
+double Distance( const Point3D& pointA, const Point3D& pointB );
+double DistanceSquared( const Point3D& pointA, const Point3D& pointB );
 
 #endif
