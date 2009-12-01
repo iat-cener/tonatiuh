@@ -68,9 +68,8 @@ ShapeSphere::ShapeSphere( )
 	m_lastValidYMax = 0.5;
 	m_lastValidYMin = -0.5;
 
-	//m_thetaMin = acos( zmax/radius.getValue() );
-	//m_thetaMax = acos( zmin/radius.getValue() );
-
+	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
+	m_radiusSensor->attach( &radius );
 	SoFieldSensor* m_yMinSensor = new SoFieldSensor(updateYMin, this);
 	m_yMinSensor->attach( &yMin );
 	SoFieldSensor* m_yMaxSensor = new SoFieldSensor(updateYMax, this);
@@ -240,12 +239,34 @@ void ShapeSphere::updateYMin( void *data, SoSensor * )
 		shapeSphere->m_lastValidYMin = shapeSphere->yMin.getValue();
 }
 
+void ShapeSphere::updateRadius( void *data, SoSensor* )
+{
+	Trace trace( "ShapeSphere::updateRadius", false );
+
+	ShapeSphere* shapeSphere = (ShapeSphere *) data;
+	if( shapeSphere->radius.getValue() < std::fabs( shapeSphere->yMin.getValue() ) )
+	{
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y min value must take values on the [-radius, yMax) range. ") );
+		shapeSphere->yMin.setValue( -shapeSphere->radius.getValue() );
+		shapeSphere->m_lastValidYMin = -shapeSphere->radius.getValue();
+	}
+	if( fabs( shapeSphere->yMax.getValue() ) > shapeSphere->radius.getValue() )
+	{
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y max value must take values on the ( yMin, radius] range. ") );
+
+		shapeSphere->yMax.setValue( shapeSphere->radius.getValue() );
+		shapeSphere->m_lastValidYMax = shapeSphere->radius.getValue();
+	}
+
+}
+
+
 void ShapeSphere::updateYMax( void *data, SoSensor* )
 {
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( shapeSphere->yMax.getValue() < shapeSphere->yMin.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y max must be bigger than y min value. ") );
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y max must be larger than y min value. ") );
 		shapeSphere->yMax.setValue( shapeSphere->m_lastValidYMax );
 	}
 	else if( shapeSphere->yMax.getValue() > shapeSphere->radius.getValue() )
