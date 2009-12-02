@@ -67,6 +67,10 @@ PhotonMapDefault :: PhotonMapDefault( long unsigned maxPhotons )
  */
 PhotonMapDefault :: ~PhotonMapDefault()
 {
+	for( int index = 0; index < m_photons.size(); index++ )
+	{
+		delete m_photons[index];
+	}
 	m_photons.clear();
 }
 
