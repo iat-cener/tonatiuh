@@ -37,8 +37,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <cmath>
-#include <float.h>
+#include "tgc.h"
 #include "Point3D.h"
 #include "Vector3D.h"
 
@@ -119,15 +118,17 @@ Vector3D Point3D::operator-( const Point3D& point ) const
 bool Point3D::operator==( const Point3D& point ) const
 {
 	if( this == &point ) return true;
-    else return ( ( fabs(x - point.x) < DBL_EPSILON ) &&
-				  ( fabs(y - point.y) < DBL_EPSILON ) &&
-				  ( fabs(z - point.z) < DBL_EPSILON ) );
+    else return ( !( fabs(x - point.x) > tgc::Epsilon ) &&
+				  !( fabs(y - point.y) > tgc::Epsilon ) &&
+				  !( fabs(z - point.z) > tgc::Epsilon ) );
 }
 
 bool Point3D::operator!=( const Point3D& point ) const
 {
 	if( this == &point ) return false;
-    else return ( x != point.x ) || ( y != point.y ) || ( z != point.z );
+    else return ( ( fabs(x - point.x) > tgc::Epsilon ) ||
+				  ( fabs(y - point.y) > tgc::Epsilon ) ||
+				  ( fabs(z - point.z) > tgc::Epsilon ) );
 }
 
 double Point3D::operator[]( int i ) const
