@@ -53,13 +53,12 @@ struct Point3D
     Point3D operator+( const Vector3D& vector ) const;
     Point3D& operator-=( const Vector3D& vector );
     Point3D operator-( const Vector3D& vector ) const;
+    Vector3D operator-( const Point3D& point ) const;
 
     Point3D& operator*=( double scalar );
     Point3D operator*( double scalar ) const;
     Point3D& operator/=( double scalar );
     Point3D operator/( double scalar ) const;
-
-    Vector3D operator-( const Point3D& point ) const;
 
     bool operator==( const Point3D& point ) const;    
     bool operator!=( const Point3D& point ) const;
