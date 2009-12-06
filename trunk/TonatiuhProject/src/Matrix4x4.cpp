@@ -19,52 +19,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
-then Chair of the Department of Engineering of the University of Texas at
-Brownsville. From May 2004 to July 2008, it was supported by the Department
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
-During 2007, NREL also contributed to the validation of Tonatiuh under the
-framework of the Memorandum of Understanding signed with the Spanish
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the
-direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
+The development of Tonatiuh was started on 2004 by Dr. Manuel Blanco,
+at the time Chair of the Department of Engineering of the University of Texas
+at Brownsville. From May 2004 to August 2008 Tonatiuh's development was
+supported by the Department of Energy (DOE) and the National Renewable
+Energy Laboratory (NREL) under the Minority Research Associate (MURA)
+Program Subcontract ACQ-4-33623-06. During 2007, NREL also contributed to
+the validation of Tonatiuh under the framework of the Memorandum of
+Understanding signed with the Spanish National Renewable Energy Centre (CENER)
+on February, 20, 2007 (MOU#NREL-07-117). Since June 2006, the development of
+Tonatiuh is being led by CENER, under the direction of Dr. Blanco, now
+Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cstring>
-
-#include "Matrix4x4.h"
 #include "tgc.h"
-#include "Trace.h"
+#include "Matrix4x4.h"
 
 Matrix4x4::Matrix4x4( )
+: RefCount()
 {
-	for( int i = 0; i < 4; ++i )
-	{
-		for( int j = 0; j < 4; ++j )
+	for( int i = 0; i < 4; i++ )
+		for( int j = 0; j < 4; j++ )
 		{
-			if( i == j )
-				m[i][j] = 1.0;
-			else
-				m[i][j] = 0.0;
+			if( i == j ) m[i][j] = 1.0;
+			else m[i][j] = 0.0;
 		}
-	}
 }
 
-Matrix4x4::Matrix4x4( double mat[4][4] )
+Matrix4x4::Matrix4x4( double array[4][4] )
+: RefCount()
 {
-	memcpy( m, mat, 16*sizeof( double ) );
+	memcpy( m, array, 16*sizeof( double ) );
 }
 
 Matrix4x4::Matrix4x4( double t00, double t01, double t02, double t03,
 	                  double t10, double t11, double t12, double t13,
 	                  double t20, double t21, double t22, double t23,
-	                  double t30, double t31, double t32, double t33)
+	                  double t30, double t31, double t32, double t33 )
+: RefCount()
 {
 	m[0][0] = t00; m[0][1] = t01; m[0][2] = t02; m[0][3] = t03;
 	m[1][0] = t10; m[1][1] = t11; m[1][2] = t12; m[1][3] = t13;
@@ -75,47 +73,43 @@ Matrix4x4::Matrix4x4( double t00, double t01, double t02, double t03,
 Matrix4x4::Matrix4x4( const Matrix4x4& rhs )
 : RefCount()
 {
-	for (int i = 0; i < 4; ++i)
-		for (int j = 0; j < 4; ++j) m[i][j] = rhs.m[i][j];
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++) m[i][j] = rhs.m[i][j];
 }
 
-bool Matrix4x4::operator==( const Matrix4x4& mat ) const
+bool Matrix4x4::operator==( const Matrix4x4& matrix ) const
 {
-	if( this == &mat )
-    	return true;
+	if( this == &matrix ) return true;
     else
     return(
-    	( fabs(m[0][0] - mat.m[0][0]) < tgc::Epsilon ) &&
-    	( fabs(m[0][1] - mat.m[0][1]) < tgc::Epsilon ) &&
-    	( fabs(m[0][2] - mat.m[0][2]) < tgc::Epsilon ) &&
-    	( fabs(m[0][3] - mat.m[0][3]) < tgc::Epsilon ) &&
-    	( fabs(m[1][0] - mat.m[1][0]) < tgc::Epsilon ) &&
-    	( fabs(m[1][1] - mat.m[1][1]) < tgc::Epsilon ) &&
-    	( fabs(m[1][2] - mat.m[1][2]) < tgc::Epsilon ) &&
-    	( fabs(m[1][3] - mat.m[1][3]) < tgc::Epsilon ) &&
-    	( fabs(m[2][0] - mat.m[2][0]) < tgc::Epsilon ) &&
-    	( fabs(m[2][1] - mat.m[2][1]) < tgc::Epsilon ) &&
-    	( fabs(m[2][2] - mat.m[2][2]) < tgc::Epsilon ) &&
-    	( fabs(m[2][3] - mat.m[2][3]) < tgc::Epsilon ) &&
-    	( fabs(m[3][0] - mat.m[3][0]) < tgc::Epsilon ) &&
-    	( fabs(m[3][1] - mat.m[3][1]) < tgc::Epsilon ) &&
-    	( fabs(m[3][2] - mat.m[3][2]) < tgc::Epsilon ) &&
-    	( fabs(m[3][3] - mat.m[3][3]) < tgc::Epsilon ) );
+    	( fabs( m[0][0] - matrix.m[0][0]) < tgc::Epsilon ) &&
+    	( fabs( m[0][1] - matrix.m[0][1]) < tgc::Epsilon ) &&
+    	( fabs( m[0][2] - matrix.m[0][2]) < tgc::Epsilon ) &&
+    	( fabs( m[0][3] - matrix.m[0][3]) < tgc::Epsilon ) &&
+    	( fabs( m[1][0] - matrix.m[1][0]) < tgc::Epsilon ) &&
+    	( fabs( m[1][1] - matrix.m[1][1]) < tgc::Epsilon ) &&
+    	( fabs( m[1][2] - matrix.m[1][2]) < tgc::Epsilon ) &&
+    	( fabs( m[1][3] - matrix.m[1][3]) < tgc::Epsilon ) &&
+    	( fabs( m[2][0] - matrix.m[2][0]) < tgc::Epsilon ) &&
+    	( fabs( m[2][1] - matrix.m[2][1]) < tgc::Epsilon ) &&
+    	( fabs( m[2][2] - matrix.m[2][2]) < tgc::Epsilon ) &&
+    	( fabs( m[2][3] - matrix.m[2][3]) < tgc::Epsilon ) &&
+    	( fabs( m[3][0] - matrix.m[3][0]) < tgc::Epsilon ) &&
+    	( fabs( m[3][1] - matrix.m[3][1]) < tgc::Epsilon ) &&
+    	( fabs( m[3][2] - matrix.m[3][2]) < tgc::Epsilon ) &&
+    	( fabs( m[3][3] - matrix.m[3][3]) < tgc::Epsilon ) );
 }
 
-std::ostream& operator<<( std::ostream& os, const Matrix4x4& mat )
+std::ostream& operator<<( std::ostream& os, const Matrix4x4& matrix )
 {
 	for (int i = 0; i < 4; ++i)
 	{
 		os << "[ ";
 		for (int j = 0; j < 4; ++j)
 		{
-			if( mat.m[i][j] < tgc::Epsilon && mat.m[i][j] > -tgc::Epsilon )
-				os << "0";
-			else
-				os << mat.m[i][j];
-			if (j != 3)
-				os << ", ";
+			if( fabs( matrix.m[i][j] ) < tgc::Epsilon ) os << "0";
+			else os << matrix.m[i][j];
+			if (j != 3) os << ", ";
 		}
 		os << " ] " << std::endl;
 	}
@@ -136,18 +130,21 @@ Ptr<Matrix4x4> Matrix4x4::Inverse() const
 	int ipiv[4] = { 0, 0, 0, 0 };
 	double minv[4][4];
 	memcpy( minv, m, 16*sizeof( double ) );
-	for (int i = 0; i < 4; i++)
+
+	for ( int i = 0; i < 4; i++ )
 	{
-		int irow = -1, icol = -1;
+		int irow = -1;
+		int icol = -1;
 		double big = 0.;
+
 		// Choose pivot
-		for (int j = 0; j < 4; j++)
+		for ( int j = 0; j < 4; j++)
 		{
 			if (ipiv[j] != 1)
 			{
-				for (int k = 0; k < 4; k++)
+				for ( int k = 0; k < 4; k++)
 				{
-					if (ipiv[k] == 0)
+					if ( ipiv[k] == 0)
 					{
 						if ( fabs( minv[j][k] ) >= big )
 						{
