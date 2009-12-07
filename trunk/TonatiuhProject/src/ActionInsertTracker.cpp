@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "ActionInsertTracker.h"
-#include "Trace.h"
 
 ActionInsertTracker::ActionInsertTracker( const QString& text, QObject* parent, TTrackerFactory* pTTrackerFactory )
 : QAction(text,parent), m_pTTrackerFactory(pTTrackerFactory)

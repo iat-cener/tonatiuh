@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "ActionInsertShape.h"
-#include "Trace.h"
 #include "TShapeFactory.h"
 
 

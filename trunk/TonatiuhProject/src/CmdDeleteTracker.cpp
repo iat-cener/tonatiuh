@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SceneModel.h"
 #include "tgf.h"
 #include "TLightKit.h"
-#include "Trace.h"
 #include "TSeparatorKit.h"
 #include "TTracker.h"
 

@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "ActionInsertMaterial.h"
-#include "Trace.h"
 
 ActionInsertMaterial::ActionInsertMaterial( const QString& text, QObject* parent, TMaterialFactory* pTMaterialFactory )
 : QAction(text,parent), m_pTMaterialFactory( pTMaterialFactory )

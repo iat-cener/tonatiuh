@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdCopy.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "Trace.h"
 
 /**
  * Creates a new copy command that represents the copy of the node located with \a index in the \a model to the \a clipborad.

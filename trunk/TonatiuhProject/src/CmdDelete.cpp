@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdDelete.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "Trace.h"
 
 CmdDelete::CmdDelete( const QModelIndex& selectedIndex, SceneModel& model, QUndoCommand* parent )
 : QUndoCommand("Delete", parent),  m_coinNode( 0 ), m_coinParent( 0 ), m_pModel(&model), m_row( -1 )

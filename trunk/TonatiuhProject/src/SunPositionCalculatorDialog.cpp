@@ -39,7 +39,6 @@
 #include "MapDialog.h"
 #include "SunPositionCalculatorDialog.h"
 #include "tgc.h"
-#include "Trace.h"
 
 SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 : QDialog( parent )

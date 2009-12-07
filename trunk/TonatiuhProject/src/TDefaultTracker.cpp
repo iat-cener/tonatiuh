@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QString>
 
 #include "TDefaultTracker.h"
-#include "Trace.h"
 
 SO_NODEENGINE_SOURCE( TDefaultTracker );
 

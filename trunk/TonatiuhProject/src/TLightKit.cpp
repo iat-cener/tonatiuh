@@ -48,7 +48,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include "tgf.h"
 #include "TLightKit.h"
-#include "Trace.h"
 #include "Transform.h"
 #include "TShapeKit.h"
 #include "TSquare.h"

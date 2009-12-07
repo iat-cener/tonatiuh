@@ -58,7 +58,6 @@
 #include "Point3D.h"
 #include "Ray.h"
 #include "tgc.h"
-#include "Trace.h"
 #include "Vector3D.h"
 
 

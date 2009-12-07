@@ -45,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "ParametersItem.h"
-#include "Trace.h"
 
 void updateItem(void *data, SoSensor* )
 {

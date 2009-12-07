@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "DifferentialGeometry.h"
-#include "Trace.h"
 #include "TShape.h"
 
 DifferentialGeometry::DifferentialGeometry()

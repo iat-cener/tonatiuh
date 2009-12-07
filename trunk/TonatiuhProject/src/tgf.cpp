@@ -54,7 +54,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
-#include "Trace.h"
 #include "Transform.h"
 #include "TSeparatorKit.h"
 

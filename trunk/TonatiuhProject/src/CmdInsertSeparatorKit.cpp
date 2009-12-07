@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdInsertSeparatorKit.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "Trace.h"
 #include "tgf.h"
 #include "TSeparatorKit.h"
 

@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdInsertShapeKit.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "Trace.h"
 #include "TShapeKit.h"
 #include "tgf.h"
 

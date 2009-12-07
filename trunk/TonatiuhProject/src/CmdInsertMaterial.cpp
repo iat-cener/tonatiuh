@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SceneModel.h"
 #include "tgf.h"
 #include "TMaterial.h"
-#include "Trace.h"
 #include "TShapeKit.h"
 
 /**

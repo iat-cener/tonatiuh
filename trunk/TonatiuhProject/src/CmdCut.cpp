@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "CmdCut.h"
 #include "SceneModel.h"
-#include "Trace.h"
 
 /**
  * Creates a new cut command that represents the cut the node located with \a index from the \a model.
