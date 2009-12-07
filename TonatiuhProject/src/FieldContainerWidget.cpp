@@ -52,7 +52,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParametersDelegate.h"
 #include "ParametersItem.h"
 #include "ParametersModel.h"
-#include "Trace.h"
 
 FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent )
 :QWidget( parent ), m_ptreeView( 0 ), m_pFieldContainer( fieldContainer ), m_delegate( 0 ), m_pModel ( 0 ), m_containerName( containerName )

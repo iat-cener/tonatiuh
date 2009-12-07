@@ -45,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "TCube.h"
 #include "TMaterial.h"
-#include "Trace.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 

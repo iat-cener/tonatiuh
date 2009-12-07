@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "TShapeKit.h"
 #include "tgf.h"
-#include "Trace.h"
 
 /**
  * Creates a new shape insert command that adds a \a shape to \a shapekit node in the \a model.

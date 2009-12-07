@@ -56,7 +56,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "MapDialog.h"
 #include "tgc.h"
-#include "Trace.h"
 
 #include <iostream>
 

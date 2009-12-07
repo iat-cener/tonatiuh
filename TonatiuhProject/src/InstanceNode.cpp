@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "InstanceNode.h"
 #include "Ray.h"
-#include "Trace.h"
 #include "Transform.h"
 #include "TShape.h"
 #include "TShapeKit.h"

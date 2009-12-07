@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "BBox.h"
 #include "Ray.h"
 #include "tgc.h"
-#include "Trace.h"
 #include "Vector3D.h"
 #include "Point3D.h"
 

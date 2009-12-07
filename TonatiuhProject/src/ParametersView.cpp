@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "FieldContainerWidget.h"
 #include "ParametersView.h"
-#include "Trace.h"
 
 ParametersView::ParametersView( QWidget* parent , Qt::WindowFlags f )
 : QWidget(parent, f), m_ptabWidget( 0 ), m_actualCoinNode( 0 )

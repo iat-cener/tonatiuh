@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "ActionInsertPhotonMap.h"
-#include "Trace.h"
 
 ActionInsertPhotonMap::ActionInsertPhotonMap( const QString& text, QObject* parent, TPhotonMapFactory* pTPhotonMapFactory )
 : QAction(text,parent), m_pTPhotonMapFactory( pTPhotonMapFactory )

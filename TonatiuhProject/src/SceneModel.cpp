@@ -50,7 +50,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
-#include "Trace.h"
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
 #include "TTracker.h"

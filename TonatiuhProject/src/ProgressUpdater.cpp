@@ -38,7 +38,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "ProgressUpdater.h"
 #include <QString>
-#include "Trace.h"
 
 using namespace std;
 

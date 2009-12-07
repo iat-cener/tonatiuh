@@ -45,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdInsertTracker.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "Trace.h"
 #include "tgf.h"
 #include "TLightKit.h"
 #include "TTracker.h"

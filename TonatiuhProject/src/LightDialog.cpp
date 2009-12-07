@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "LightDialog.h"
 #include "tgc.h"
 #include "TLightKit.h"
-#include "Trace.h"
 #include "TShape.h"
 #include "TShapeFactory.h"
 #include "TSunShapeFactory.h"

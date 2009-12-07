@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "RayTraceDialog.h"
 #include "TPhotonMapFactory.h"
-#include "Trace.h"
 
 /**
  * Creates a dialog to ray tracer options with the given \a parent and \a f flags.
