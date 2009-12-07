@@ -49,7 +49,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "ShapeParabolicRectangle.h"
 #include "tgf.h"
-#include "Trace.h"
 #include "Vector3D.h"
 
 

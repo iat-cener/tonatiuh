@@ -40,8 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "PhotonMapDefault.h"
 #include "tgc.h"
-//#include "tgf.h"
-#include "Trace.h"
 
 /** This is the constructor for the photon map.
  * To create the photon map it is necessary to specify the

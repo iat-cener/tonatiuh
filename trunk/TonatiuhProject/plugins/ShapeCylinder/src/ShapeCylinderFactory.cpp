@@ -37,11 +37,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
-
 #include "ShapeCylinder.h"
 #include "ShapeCylinderFactory.h"
-#include "Trace.h"
 
 
 QString ShapeCylinderFactory::TShapeName() const

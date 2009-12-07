@@ -49,7 +49,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ShapeSphere.h"
 #include "tgc.h"
 #include "tgf.h"
-#include "Trace.h"
 
 SO_NODE_SOURCE(ShapeSphere);
 

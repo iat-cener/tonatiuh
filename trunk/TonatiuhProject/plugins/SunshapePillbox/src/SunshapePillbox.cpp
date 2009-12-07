@@ -38,7 +38,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "SunshapePillbox.h"
 #include "tgc.h"
-#include "Trace.h"
 
 SO_NODE_SOURCE(SunshapePillbox);
 

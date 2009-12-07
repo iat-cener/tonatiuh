@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMessageBox>
 
 #include "ShapeConeFactory.h"
-#include "Trace.h"
 
 
 

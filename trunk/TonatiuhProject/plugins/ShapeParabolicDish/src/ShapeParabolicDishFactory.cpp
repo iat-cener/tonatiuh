@@ -37,10 +37,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeParabolicDishFactory.h"
 #include "ShapeParabolicDish.h"
-#include "Trace.h"
 
 
 QString ShapeParabolicDishFactory::TShapeName() const

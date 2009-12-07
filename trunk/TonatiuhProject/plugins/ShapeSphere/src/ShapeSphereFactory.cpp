@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeSphereFactory.h"
-#include "Trace.h"
 
 QString ShapeSphereFactory::TShapeName() const
 {

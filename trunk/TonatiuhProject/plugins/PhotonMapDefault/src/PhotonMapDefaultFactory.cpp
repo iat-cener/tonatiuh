@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QIcon>
 
 #include "PhotonMapDefaultFactory.h"
-#include "Trace.h"
 
 QString PhotonMapDefaultFactory::TPhotonMapName() const
 {

@@ -47,8 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFMatrix.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
-
-#include "Trace.h"
 #include "tgc.h"
 #include "TrackerOneAxis.h"
 
