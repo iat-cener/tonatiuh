@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "tgc.h"
+#include "tgf.h"
 #include "Matrix2x2.h"
 
 Matrix2x2::Matrix2x2( )
@@ -100,14 +101,12 @@ Ptr<Matrix2x2> Matrix2x2::Transpose( ) const
 
 Ptr<Matrix2x2> Matrix2x2::Inverse() const
 {
-	long double minv[2][2];
-	long double alpha = 1.0L/Determinant();
-	minv[0][0]= m[1][1]*alpha;
-	minv[0][1]= - m[0][1]*alpha;
-	minv[1][0]= - m[1][0]*alpha;
-	minv[1][1]= m[0][0]*alpha;
+	long double det = Determinant();
+	if ( det <= tgc::Epsilon ) tgf::SevereError( "Singular matrix in Matrix2x2::Inverse()" );
 
-	return new Matrix2x2( minv );
+	long double alpha = 1.0L/det;
+	return new Matrix2x2(   m[1][1]*alpha, - m[0][1]*alpha,
+			              - m[1][0]*alpha,   m[0][0]*alpha );
 }
 
 Ptr<Matrix2x2> Mul( const Ptr<Matrix2x2>& m1, const Ptr<Matrix2x2>& m2 )
