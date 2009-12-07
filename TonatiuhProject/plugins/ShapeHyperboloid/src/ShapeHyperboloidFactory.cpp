@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeHyperboloidFactory.h"
-#include "Trace.h"
 
 
 QString ShapeHyperboloidFactory::TShapeName() const

@@ -48,7 +48,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ShapeCone.h"
 #include "tgf.h"
 #include "tgc.h"
-#include "Trace.h"
 
 
 SO_NODE_SOURCE(ShapeCone);

@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeTroughParabolaFactory.h"
-#include "Trace.h"
 
 
 QString ShapeTroughParabolaFactory::TShapeName() const

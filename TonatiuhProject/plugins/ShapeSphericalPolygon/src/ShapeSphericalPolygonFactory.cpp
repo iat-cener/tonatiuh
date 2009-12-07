@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeSphericalPolygonFactory.h"
-#include "Trace.h"
 
 
 QString ShapeSphericalPolygonFactory::TShapeName() const

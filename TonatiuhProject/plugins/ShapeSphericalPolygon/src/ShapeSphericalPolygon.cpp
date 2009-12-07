@@ -47,7 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ShapeSphericalPolygon.h"
 #include "tgf.h"
 #include "tgc.h"
-#include "Trace.h"
 #include "Vector3D.h"
 
 

@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeFlatDiskFactory.h"
-#include "Trace.h"
 
 QString ShapeFlatDiskFactory::TShapeName() const
 {

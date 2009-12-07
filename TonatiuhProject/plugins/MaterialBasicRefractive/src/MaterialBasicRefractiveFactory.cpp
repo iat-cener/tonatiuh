@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QIcon>
 
 #include "MaterialBasicRefractiveFactory.h"
-#include "Trace.h"
 
 QString MaterialBasicRefractiveFactory::TMaterialName() const
 {

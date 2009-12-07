@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "SunshapePillboxFactory.h"
-#include "Trace.h"
 
 
 QString SunshapePillboxFactory::TSunShapeName() const

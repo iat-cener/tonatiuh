@@ -37,8 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
-#include "Trace.h"
 #include "TrackerOneAxisFactory.h"
 #include "TrackerOneAxis.h"
 

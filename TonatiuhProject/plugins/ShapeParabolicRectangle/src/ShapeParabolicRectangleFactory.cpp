@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeParabolicRectangleFactory.h"
-#include "Trace.h"
 
 
 QString ShapeParabolicRectangleFactory::TShapeName() const

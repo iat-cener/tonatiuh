@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QIcon>
 
 #include "MaterialStandardSpecularFactory.h"
-#include "Trace.h"
 
 QString MaterialStandardSpecularFactory::TMaterialName() const
 {

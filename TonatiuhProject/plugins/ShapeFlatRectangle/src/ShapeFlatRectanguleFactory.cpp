@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-
 #include "ShapeFlatRectangleFactory.h"
-#include "Trace.h"
 
 
 QString ShapeFlatRectangleFactory::TShapeName() const

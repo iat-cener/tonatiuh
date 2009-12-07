@@ -47,7 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "tgc.h"
 #include "tgf.h"
-#include "Trace.h"
 #include "Transform.h"
 
 
