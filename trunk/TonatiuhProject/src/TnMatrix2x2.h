@@ -41,28 +41,41 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define MATRIX2X2_H_
 
 #include <iostream>
-#include "Ptr.h"
-#include "RefCount.h"
 
-struct Matrix2x2 : public RefCount
+class TnMatrix2x2
 {
-	Matrix2x2( );
-	Matrix2x2( long double array[2][2] );
-	Matrix2x2( long double t00, long double t01,
-	           long double t10, long double t11 );
-    Matrix2x2( const Matrix2x2& rhs );
+public:
+	TnMatrix2x2( );
+	TnMatrix2x2( double array[2][2] );
+	TnMatrix2x2( double t00, double t01,
+			     double t10, double t11 );
+	TnMatrix2x2( const TnMatrix2x2& rhs );
+	~TnMatrix2x2( );
 
-	bool operator==( const Matrix2x2& matrix ) const;
-	bool operator!=( const Matrix2x2& matrix ) const;
+	TnMatrix2x2& operator+=( const TnMatrix2x2& matrix );
+	TnMatrix2x2 operator+( const TnMatrix2x2& matrix ) const;
+	TnMatrix2x2& operator-=( const TnMatrix2x2& matrix );
+	TnMatrix2x2 operator-( const TnMatrix2x2& matrix ) const;
 
-    long double Determinant() const;
-	Ptr<Matrix2x2> Transpose( ) const;
-	Ptr<Matrix2x2> Inverse( ) const;
+	TnMatrix2x2& operator*=( const TnMatrix2x2& matrix );
+	TnMatrix2x2 operator*( const TnMatrix2x2& matrix ) const;
+	TnMatrix2x2& operator*=( double scalar );
+	TnMatrix2x2 operator*( double scalar ) const;
+	TnMatrix2x2& operator/=( double scalar );
+	TnMatrix2x2 operator/( double scalar ) const;
 
-	long double m[2][2];
+	TnMatrix2x2 operator-() const;
+	bool operator==( const TnMatrix2x2& matrix ) const;
+	bool operator!=( const TnMatrix2x2& matrix ) const;
+
+	double Determinant() const;
+	TnMatrix2x2 Transpose( ) const;
+	TnMatrix2x2 Inverse( ) const;
+
+	double m[2][2];
 };
 
-Ptr<Matrix2x2> Mul( const Ptr<Matrix2x2>& m1, const Ptr<Matrix2x2>& m2 );
-std::ostream& operator<<( std::ostream& os, const Matrix2x2& matrix );
+TnMatrix2x2 operator*( double scalar, const TnMatrix2x2& matrix );
+std::ostream& operator<<( std::ostream& os, const TnMatrix2x2& matrix );
 
-#endif /* MATRIX2X2_H_ */
+#endif /* TnMatrix2x2_H_ */

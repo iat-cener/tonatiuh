@@ -41,11 +41,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define MATRIX4X4_H_
 
 #include <iostream>
-#include "Ptr.h"
 #include "RefCount.h"
+#include "Ptr.h"
+#include "TnMatrix2x2.h"
 
-struct Matrix4x4 : public RefCount
+class Matrix4x4 : public RefCount
 {
+public:
 	Matrix4x4( );
 	Matrix4x4( double array[4][4] );
 	Matrix4x4( double t00, double t01, double t02, double t03,
@@ -53,12 +55,21 @@ struct Matrix4x4 : public RefCount
 	           double t20, double t21, double t22, double t23,
 	           double t30, double t31, double t32, double t33 );
     Matrix4x4( const Matrix4x4& rhs );
+    Matrix4x4( const TnMatrix2x2& P, const TnMatrix2x2& Q,
+    		   const TnMatrix2x2& R, const TnMatrix2x2& S );
+	~Matrix4x4( );
 	Ptr<Matrix4x4> Transpose( ) const;
 	Ptr<Matrix4x4> Inverse( ) const;
 
 	bool operator==( const Matrix4x4& matrix ) const;
 
 	double m[4][4];
+
+private:
+	void PartitionInto4TnMatrix2x2(  TnMatrix2x2& P, TnMatrix2x2& Q,
+			                         TnMatrix2x2& R, TnMatrix2x2& S ) const;
+	Ptr<Matrix4x4> InverseByGaussElimination() const;
+
 };
 
 Ptr<Matrix4x4> Mul( const Ptr<Matrix4x4>& m1, const Ptr<Matrix4x4>& m2 );
@@ -66,4 +77,6 @@ std::ostream& operator<<( std::ostream& os, const Matrix4x4& matrix );
 
 
 #endif /*MATRIX4X4_H_*/
+
+
 
