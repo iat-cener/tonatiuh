@@ -181,7 +181,7 @@ Matrix2x2 Matrix2x2::Transpose( ) const
 Matrix2x2 Matrix2x2::Inverse() const
 {
 	double det = Determinant();
-	if ( det <= tgc::Epsilon ) tgf::SevereError( "Singular matrix in Matrix2x2::Inverse()" );
+	if ( fabs( det ) <= tgc::Epsilon ) tgf::SevereError( "Singular matrix in Matrix2x2::Inverse()" );
 
 	double alpha = 1.0/det;
 	return Matrix2x2(   m[1][1]*alpha, - m[0][1]*alpha,
