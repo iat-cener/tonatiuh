@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <cstring>
 #include "tgc.h"
 #include "tgf.h"
-#include "TnMatrix2x2.h"
+#include "Matrix2x2.h"
 
 #include "Matrix4x4.h"
 
@@ -80,8 +80,8 @@ Matrix4x4::Matrix4x4( const Matrix4x4& rhs )
 		for (int j = 0; j < 4; j++) m[i][j] = rhs.m[i][j];
 }
 
-Matrix4x4::Matrix4x4( const TnMatrix2x2& P, const TnMatrix2x2& Q,
-		              const TnMatrix2x2& R, const TnMatrix2x2& S )
+Matrix4x4::Matrix4x4( const Matrix2x2& P, const Matrix2x2& Q,
+		              const Matrix2x2& R, const Matrix2x2& S )
 : RefCount()
 {
 	m[0][0] = P.m[0][0]; m[0][1] = P.m[0][1];   m[0][2] = Q.m[0][0]; m[0][3] = Q.m[0][1];
@@ -128,35 +128,36 @@ Ptr<Matrix4x4> Matrix4x4::Transpose( ) const
 
 Ptr<Matrix4x4> Matrix4x4::Inverse( ) const
 {
-/*	TnMatrix2x2 mP;
-	TnMatrix2x2 mQ;
-	TnMatrix2x2 mR;
-	TnMatrix2x2 mS;
+	Matrix2x2 mP;
+/*
+	Matrix2x2 mQ;
+	Matrix2x2 mR;
+	Matrix2x2 mS;
 
-	PartitionInto4TnMatrix2x2( P, Q, R, S );
+	PartitionInto4Matrix2x2( P, Q, R, S );
 
 	if ( P.Determinant() > tgc::Epsilon )
 	{
-		TnMatrix2x2 InverseP = P.Inverse();
-		TnMatrix2x2 RxInverseP = R * InverseP;
-		TnMatrix2x2 InversePxQ = InverseP * Q;
-		TnMatrix2x2 RxInversePxQ = RxInverseP * Q;
-		TnMatrix2x2 SMinusRxInversePxQ = S - RxInversePxQ;
+		Matrix2x2 InverseP = P.Inverse();
+		Matrix2x2 RxInverseP = R * InverseP;
+		Matrix2x2 InversePxQ = InverseP * Q;
+		Matrix2x2 RxInversePxQ = RxInverseP * Q;
+		Matrix2x2 SMinusRxInversePxQ = S - RxInversePxQ;
 		if ( SMinusRxInversePxQ.Determinant() <= tgc::Epsilon )
 			tgf::SevereError( "Singular matrix in Matrix4x4::Inverse()" );
 
-		TnMatrix2x2 SHat = SMinusRxInversePxQ.Inverse();
-		TnMatrix2x2 RHat = -SHat * RxInverseP;
-		TnMatrix2x2 QHat = -InversePxQ * SHat;
-		TnMatrix2x2 PHat = InverseP - InversePxQ * RHat;
+		Matrix2x2 SHat = SMinusRxInversePxQ.Inverse();
+		Matrix2x2 RHat = -SHat * RxInverseP;
+		Matrix2x2 QHat = -InversePxQ * SHat;
+		Matrix2x2 PHat = InverseP - InversePxQ * RHat;
 
 		return new Matrix4x4( PHat, QHat, RHat, SHat );
 	}
 	else */ return InverseByGaussElimination();
 }
 
-void Matrix4x4::PartitionInto4TnMatrix2x2(   TnMatrix2x2& P, TnMatrix2x2& Q,
-                                             TnMatrix2x2& R, TnMatrix2x2& S ) const
+void Matrix4x4::PartitionInto4Matrix2x2(   Matrix2x2& P, Matrix2x2& Q,
+                                             Matrix2x2& R, Matrix2x2& S ) const
 {
 	P.m[0][0] = m[0][0]; P.m[0][1] = m[0][1];   Q.m[0][0] = m[0][2]; Q.m[0][1] = m[0][3];
 	P.m[1][0] = m[1][0]; P.m[1][1] = m[1][1];   Q.m[1][0] = m[1][2]; Q.m[1][1] = m[1][3];

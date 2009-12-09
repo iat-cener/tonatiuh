@@ -42,40 +42,40 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <iostream>
 
-class TnMatrix2x2
+class Matrix2x2
 {
 public:
-	TnMatrix2x2( );
-	TnMatrix2x2( double array[2][2] );
-	TnMatrix2x2( double t00, double t01,
+	Matrix2x2( );
+	Matrix2x2( double array[2][2] );
+	Matrix2x2( double t00, double t01,
 			     double t10, double t11 );
-	TnMatrix2x2( const TnMatrix2x2& rhs );
-	~TnMatrix2x2( );
+	Matrix2x2( const Matrix2x2& rhs );
+	~Matrix2x2( );
 
-	TnMatrix2x2& operator+=( const TnMatrix2x2& matrix );
-	TnMatrix2x2 operator+( const TnMatrix2x2& matrix ) const;
-	TnMatrix2x2& operator-=( const TnMatrix2x2& matrix );
-	TnMatrix2x2 operator-( const TnMatrix2x2& matrix ) const;
+	Matrix2x2& operator+=( const Matrix2x2& matrix );
+	Matrix2x2 operator+( const Matrix2x2& matrix ) const;
+	Matrix2x2& operator-=( const Matrix2x2& matrix );
+	Matrix2x2 operator-( const Matrix2x2& matrix ) const;
 
-	TnMatrix2x2& operator*=( const TnMatrix2x2& matrix );
-	TnMatrix2x2 operator*( const TnMatrix2x2& matrix ) const;
-	TnMatrix2x2& operator*=( double scalar );
-	TnMatrix2x2 operator*( double scalar ) const;
-	TnMatrix2x2& operator/=( double scalar );
-	TnMatrix2x2 operator/( double scalar ) const;
+	Matrix2x2& operator*=( const Matrix2x2& matrix );
+	Matrix2x2 operator*( const Matrix2x2& matrix ) const;
+	Matrix2x2& operator*=( double scalar );
+	Matrix2x2 operator*( double scalar ) const;
+	Matrix2x2& operator/=( double scalar );
+	Matrix2x2 operator/( double scalar ) const;
 
-	TnMatrix2x2 operator-() const;
-	bool operator==( const TnMatrix2x2& matrix ) const;
-	bool operator!=( const TnMatrix2x2& matrix ) const;
+	Matrix2x2 operator-() const;
+	bool operator==( const Matrix2x2& matrix ) const;
+	bool operator!=( const Matrix2x2& matrix ) const;
 
 	double Determinant() const;
-	TnMatrix2x2 Transpose( ) const;
-	TnMatrix2x2 Inverse( ) const;
+	Matrix2x2 Transpose( ) const;
+	Matrix2x2 Inverse( ) const;
 
 	double m[2][2];
 };
 
-TnMatrix2x2 operator*( double scalar, const TnMatrix2x2& matrix );
-std::ostream& operator<<( std::ostream& os, const TnMatrix2x2& matrix );
+Matrix2x2 operator*( double scalar, const Matrix2x2& matrix );
+std::ostream& operator<<( std::ostream& os, const Matrix2x2& matrix );
 
-#endif /* TnMatrix2x2_H_ */
+#endif /* MATRIX2X2_H_ */

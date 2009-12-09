@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 #include "RefCount.h"
 #include "Ptr.h"
-#include "TnMatrix2x2.h"
+#include "Matrix2x2.h"
 
 class Matrix4x4 : public RefCount
 {
@@ -55,8 +55,8 @@ public:
 	           double t20, double t21, double t22, double t23,
 	           double t30, double t31, double t32, double t33 );
     Matrix4x4( const Matrix4x4& rhs );
-    Matrix4x4( const TnMatrix2x2& P, const TnMatrix2x2& Q,
-    		   const TnMatrix2x2& R, const TnMatrix2x2& S );
+    Matrix4x4( const Matrix2x2& P, const Matrix2x2& Q,
+    		   const Matrix2x2& R, const Matrix2x2& S );
 	~Matrix4x4( );
 	Ptr<Matrix4x4> Transpose( ) const;
 	Ptr<Matrix4x4> Inverse( ) const;
@@ -66,8 +66,8 @@ public:
 	double m[4][4];
 
 private:
-	void PartitionInto4TnMatrix2x2(  TnMatrix2x2& P, TnMatrix2x2& Q,
-			                         TnMatrix2x2& R, TnMatrix2x2& S ) const;
+	void PartitionInto4Matrix2x2(  Matrix2x2& P, Matrix2x2& Q,
+			                         Matrix2x2& R, Matrix2x2& S ) const;
 	Ptr<Matrix4x4> InverseByGaussElimination() const;
 
 };

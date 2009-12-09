@@ -17,6 +17,7 @@ HEADERS = src/*.h \
 			$$(TONATIUH_ROOT)/src/DifferentialGeometry.h \ 
 			$$(TONATIUH_ROOT)/src/InstanceNode.h \
 			$$(TONATIUH_ROOT)/src/NormalVector.h \
+			$$(TONATIUH_ROOT)/src/Matrix2x2.h \
 			$$(TONATIUH_ROOT)/src/Matrix4x4.h \
 			$$(TONATIUH_ROOT)/src/Photon.h \
 			$$(TONATIUH_ROOT)/src/Point3D.h \
@@ -36,6 +37,7 @@ SOURCES = src/*.cpp \
 			$$(TONATIUH_ROOT)/src/DifferentialGeometry.cpp \ 
 			$$(TONATIUH_ROOT)/src/InstanceNode.cpp \
 			$$(TONATIUH_ROOT)/src/NormalVector.cpp \
+			$$(TONATIUH_ROOT)/src/Matrix2x2.cpp \
 			$$(TONATIUH_ROOT)/src/Matrix4x4.cpp \
 			$$(TONATIUH_ROOT)/src/Photon.cpp \
 			$$(TONATIUH_ROOT)/src/Point3D.cpp \

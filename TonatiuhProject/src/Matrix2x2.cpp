@@ -39,70 +39,70 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "tgc.h"
 #include "tgf.h"
-#include "TnMatrix2x2.h"
+#include "Matrix2x2.h"
 
-TnMatrix2x2::TnMatrix2x2( )
+Matrix2x2::Matrix2x2( )
 {
 	m[0][0] = 1.0; m[0][1] = 0.0;
 	m[1][0] = 0.0; m[1][1] = 1.0;
 }
 
-TnMatrix2x2::TnMatrix2x2( double array[2][2] )
+Matrix2x2::Matrix2x2( double array[2][2] )
 {
 	m[0][0] = array[0][0]; m[0][1] = array[0][1];
 	m[1][0] = array[1][0]; m[1][1] = array[1][1];
 }
 
-TnMatrix2x2::TnMatrix2x2( double t00, double t01,
+Matrix2x2::Matrix2x2( double t00, double t01,
 	                  double t10, double t11 )
 {
 	m[0][0] = t00; m[0][1] = t01;
 	m[1][0] = t10; m[1][1] = t11;
 }
 
-TnMatrix2x2::TnMatrix2x2( const TnMatrix2x2& rhs )
+Matrix2x2::Matrix2x2( const Matrix2x2& rhs )
 {
 	m[0][0] = rhs.m[0][0]; m[0][1] = rhs.m[0][1];
 	m[1][0] = rhs.m[1][0]; m[1][1] = rhs.m[1][1];
 }
 
-TnMatrix2x2::~TnMatrix2x2( )
+Matrix2x2::~Matrix2x2( )
 {
 }
 
-TnMatrix2x2& TnMatrix2x2::operator+=( const TnMatrix2x2& matrix )
+Matrix2x2& Matrix2x2::operator+=( const Matrix2x2& matrix )
 {
     m[0][0] += matrix.m[0][0];  m[0][1] += matrix.m[0][1];
     m[1][0] += matrix.m[1][0];  m[1][1] += matrix.m[1][1];
 	return *this;
 }
 
-TnMatrix2x2 TnMatrix2x2::operator+( const TnMatrix2x2& matrix ) const
+Matrix2x2 Matrix2x2::operator+( const Matrix2x2& matrix ) const
 {
-	return TnMatrix2x2( m[0][0]+matrix.m[0][0], m[0][1]+matrix.m[0][1],
+	return Matrix2x2( m[0][0]+matrix.m[0][0], m[0][1]+matrix.m[0][1],
 	                  m[1][0]+matrix.m[1][0], m[1][1]+matrix.m[1][1]  );
 }
 
-TnMatrix2x2& TnMatrix2x2::operator-=( const TnMatrix2x2& matrix )
+Matrix2x2& Matrix2x2::operator-=( const Matrix2x2& matrix )
 {
     m[0][0] -= matrix.m[0][0];  m[0][1] -= matrix.m[0][1];
     m[1][0] -= matrix.m[1][0];  m[1][1] -= matrix.m[1][1];
 	return *this;
 }
 
-TnMatrix2x2 TnMatrix2x2::operator-( const TnMatrix2x2& matrix ) const
+Matrix2x2 Matrix2x2::operator-( const Matrix2x2& matrix ) const
 {
-	return TnMatrix2x2( m[0][0]-matrix.m[0][0], m[0][1]-matrix.m[0][1],
+	return Matrix2x2( m[0][0]-matrix.m[0][0], m[0][1]-matrix.m[0][1],
 	                  m[1][0]-matrix.m[1][0], m[1][1]-matrix.m[1][1]  );
 }
 
-TnMatrix2x2& TnMatrix2x2::operator*=( const TnMatrix2x2& matrix )
+Matrix2x2& Matrix2x2::operator*=( const Matrix2x2& matrix )
 {
 	*this = (*this) * matrix;
 	return *this;
 }
 
-TnMatrix2x2 TnMatrix2x2::operator*( const TnMatrix2x2& matrix ) const
+Matrix2x2 Matrix2x2::operator*( const Matrix2x2& matrix ) const
 {
 	double array[2][2] = { { 0.0, 0.0 },
 			               { 0.0, 0.0 } };
@@ -110,46 +110,46 @@ TnMatrix2x2 TnMatrix2x2::operator*( const TnMatrix2x2& matrix ) const
 		for ( int j = 0; j < 2; ++j )
 			array[i][j] = m[i][0] * matrix.m[0][j] +
 			              m[i][1] * matrix.m[1][j];
-	return TnMatrix2x2( array );
+	return Matrix2x2( array );
 }
 
-TnMatrix2x2& TnMatrix2x2::operator*=( double scalar )
+Matrix2x2& Matrix2x2::operator*=( double scalar )
 {
     m[0][0] *= scalar;  m[0][1] *= scalar;
     m[1][0] *= scalar;  m[1][1] *= scalar;
 	return *this;
 }
 
-TnMatrix2x2 TnMatrix2x2::operator*( double scalar ) const
+Matrix2x2 Matrix2x2::operator*( double scalar ) const
 {
-	return TnMatrix2x2( m[0][0]*scalar, m[0][1]*scalar,
+	return Matrix2x2( m[0][0]*scalar, m[0][1]*scalar,
 	                  m[1][0]*scalar, m[1][1]*scalar  );
 }
 
-TnMatrix2x2& TnMatrix2x2::operator/=( double scalar )
+Matrix2x2& Matrix2x2::operator/=( double scalar )
 {
-	if( scalar <= tgc::Epsilon ) tgf::SevereError( "Division by zero in TnMatrix2x2::operator/=" );
+	if( scalar <= tgc::Epsilon ) tgf::SevereError( "Division by zero in Matrix2x2::operator/=" );
 	long double inverseScalar = 1.0 / scalar;
     m[0][0] *= inverseScalar;  m[0][1] *= inverseScalar;
     m[1][0] *= inverseScalar;  m[1][1] *= inverseScalar;
 	return *this;
 }
 
-TnMatrix2x2 TnMatrix2x2::operator/( double scalar ) const
+Matrix2x2 Matrix2x2::operator/( double scalar ) const
 {
-	if( scalar <= tgc::Epsilon ) tgf::SevereError( "Division by zero in TnMatrix2x2::operator/" );
+	if( scalar <= tgc::Epsilon ) tgf::SevereError( "Division by zero in Matrix2x2::operator/" );
 	long double inverseScalar = 1.0 / scalar;
-	return TnMatrix2x2( m[0][0]*inverseScalar, m[0][1]*inverseScalar,
+	return Matrix2x2( m[0][0]*inverseScalar, m[0][1]*inverseScalar,
 	                  m[1][0]*inverseScalar, m[1][1]*inverseScalar  );
 }
 
-TnMatrix2x2 TnMatrix2x2::operator-() const
+Matrix2x2 Matrix2x2::operator-() const
 {
-	return TnMatrix2x2( -m[0][0], -m[0][1],
+	return Matrix2x2( -m[0][0], -m[0][1],
 	                  -m[1][0], -m[1][1]  );
 }
 
-bool TnMatrix2x2::operator==( const TnMatrix2x2& matrix ) const
+bool Matrix2x2::operator==( const Matrix2x2& matrix ) const
 {
 	if( this == &matrix ) return true;
     else return( !( fabs( m[0][0] - matrix.m[0][0]) > tgc::Epsilon ) &&
@@ -158,7 +158,7 @@ bool TnMatrix2x2::operator==( const TnMatrix2x2& matrix ) const
 				 !( fabs( m[1][1] - matrix.m[1][1]) > tgc::Epsilon ) );
 }
 
-bool TnMatrix2x2::operator!=( const TnMatrix2x2& matrix ) const
+bool Matrix2x2::operator!=( const Matrix2x2& matrix ) const
 {
 	if( this == &matrix ) return false;
     else return( ( fabs( m[0][0] - matrix.m[0][0]) > tgc::Epsilon ) ||
@@ -167,34 +167,34 @@ bool TnMatrix2x2::operator!=( const TnMatrix2x2& matrix ) const
 				 ( fabs( m[1][1] - matrix.m[1][1]) > tgc::Epsilon ) );
 }
 
-double TnMatrix2x2::Determinant() const
+double Matrix2x2::Determinant() const
 {
 	return  m[0][0]*m[1][1] - m[0][1]*m[1][0];
 }
 
-TnMatrix2x2 TnMatrix2x2::Transpose( ) const
+Matrix2x2 Matrix2x2::Transpose( ) const
 {
-	return TnMatrix2x2( m[0][0], m[1][0],
+	return Matrix2x2( m[0][0], m[1][0],
 	                  m[0][1], m[1][1]  );
 }
 
-TnMatrix2x2 TnMatrix2x2::Inverse() const
+Matrix2x2 Matrix2x2::Inverse() const
 {
 	double det = Determinant();
-	if ( det <= tgc::Epsilon ) tgf::SevereError( "Singular matrix in TnMatrix2x2::Inverse()" );
+	if ( det <= tgc::Epsilon ) tgf::SevereError( "Singular matrix in Matrix2x2::Inverse()" );
 
 	double alpha = 1.0/det;
-	return TnMatrix2x2(   m[1][1]*alpha, - m[0][1]*alpha,
+	return Matrix2x2(   m[1][1]*alpha, - m[0][1]*alpha,
 			          - m[1][0]*alpha,   m[0][0]*alpha );
 }
 
-TnMatrix2x2 operator*( double scalar, const TnMatrix2x2& matrix )
+Matrix2x2 operator*( double scalar, const Matrix2x2& matrix )
 {
-	return TnMatrix2x2(   scalar*matrix.m[0][0], scalar*matrix.m[0][1],
+	return Matrix2x2(   scalar*matrix.m[0][0], scalar*matrix.m[0][1],
 			            scalar*matrix.m[1][0], scalar*matrix.m[0][0] );
 }
 
-std::ostream& operator<<( std::ostream& os, const TnMatrix2x2& matrix )
+std::ostream& operator<<( std::ostream& os, const Matrix2x2& matrix )
 {
 	for (int i = 0; i < 2; ++i)
 	{
