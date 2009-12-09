@@ -203,11 +203,11 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
     double ui = 0;
 	double vj = 0;
 
-    for (int i = 0; i <rows; i++)
+    for (int i = 0; i <rows; ++i )
     {
     	ui =( 1.0 /(double)(rows-1) ) * i;
 
-    	for ( int j = 0 ; j <columns ; j++ )
+    	for ( int j = 0 ; j <columns ; ++j )
     	{
 
     		vj = ( 1.0 /(double)(columns-1) ) * ( (double) j );
@@ -233,8 +233,8 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
 	const int totalIndices  = (rows-1)*(columns-1)*4;
     int32_t* indices = new int32_t[totalIndices];
     int k = 0;
-    for(int irow = 0; irow < (rows-1); irow++)
-           for(int icolumn = 0; icolumn < (columns-1); icolumn++)
+    for( int irow = 0; irow < (rows-1); ++irow )
+           for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
            {
            	indices[k] = irow*columns + icolumn;
         	indices[k+1] = indices[k] + 1;
@@ -245,7 +245,7 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
            }
 
     float finalvertex[totalIndices][6];
-    for(int ivert = 0; ivert<totalIndices;ivert++)
+    for( int ivert = 0; ivert<totalIndices; ++ivert )
     {
     	finalvertex[ivert][0] = vertex[indices[ivert]][0];
     	finalvertex[ivert][1] = vertex[indices[ivert]][1];
@@ -260,7 +260,7 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
     float v = 1;
 
 	beginShape(action, QUADS );
-    for( int i = 0; i < totalIndices; i++ )
+    for( int i = 0; i < totalIndices; ++i )
     {
     	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
     	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );

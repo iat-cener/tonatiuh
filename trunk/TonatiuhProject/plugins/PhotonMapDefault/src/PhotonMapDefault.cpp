@@ -65,10 +65,9 @@ PhotonMapDefault :: PhotonMapDefault( long unsigned maxPhotons )
  */
 PhotonMapDefault :: ~PhotonMapDefault()
 {
-	for( int index = 0; index < m_photons.size(); index++ )
-	{
+	for( int index = 0; index < m_photons.size(); ++index )
 		delete m_photons[index];
-	}
+
 	m_photons.clear();
 }
 
@@ -95,7 +94,7 @@ QList< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) c
 	QList< Photon* > surfacePhotonsList;
 
 	QList< Photon* > mapPhotons = m_photons.values();
-	for( int index = 0; index < mapPhotons.size(); index++ )
+	for( int index = 0; index < mapPhotons.size(); ++index )
 	{
 		if( mapPhotons[index]->intersectedSurface == instance )
 			surfacePhotonsList.push_back( mapPhotons[index] );

@@ -272,7 +272,7 @@ bool ShapeSphericalPolygon::OutOfRange( double u, double v ) const
 std::vector<double> ShapeSphericalPolygon::Distribution( const double num ) const
 {
 	std::vector<double> distribution;
-	for (int i = 0 ; i < num ; i++)
+	for ( int i = 0 ; i < num ; ++i )
 	{
 		double value = ( 1 / ( num - 1 ) ) * (i);
 		if ( value > 1 ) value = 1.0;
@@ -289,7 +289,7 @@ std::vector< std::pair<double,double> > ShapeSphericalPolygon::MeshTriangle( con
 	double xmax = radius.getValue() * cos( m_phiMax );
 	double ymax = radius.getValue() * sin( m_phiMax );
 
-	for (int i = 0 ; i < num ; i++)
+	for ( int i = 0 ; i < num ; ++i )
 		{
 		double x = xmax * distribution[i];
 		for (int j = 0 ; j <= i ; j++)
@@ -346,17 +346,17 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
     std::vector< std::pair<double,double> > triangleVertex = MeshTriangle( distribution );
 
 	int triangleQuads = 0;
-    for ( int i = 1; i <= num; i++) triangleQuads += (i-1);
+    for ( int i = 1; i <= num; ++ i) triangleQuads += (i-1);
     int triangleIndex = triangleQuads * 4;
     int index[triangleIndex];
     int k = 0;
 
-	for(int irow = 0; irow < (num-1); irow++)
+	for( int irow = 0; irow < (num-1); ++irow )
 		{
 			int c = 0;
-			for (int i = 0; i < irow; i++ ) c += ( i + 1 );
+			for (int i = 0; i < irow; ++i ) c += ( i + 1 );
 			//Crear los "cuadrados" de la columna
-			for(int icolumn = 0; icolumn < irow; icolumn++)
+			for( int icolumn = 0; icolumn < irow; ++icolumn )
 				{
 					index[k] = c + icolumn;
 					index[k+1] = index[k] + ( irow + 1 );
@@ -379,9 +379,9 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 
 	double twoPhiMax = 2*m_phiMax;
 
-	for (int i = 0 ; i < polygonSides.getValue() ; i++)
+	for ( int i = 0 ; i < polygonSides.getValue() ; ++i )
 	{
-		for ( int j = 0 ; j < triangleIndex ; j++ )
+		for ( int j = 0 ; j < triangleIndex ; ++j )
 		{
 			finalVertex[ j + 2 * i * triangleIndex ][0] = triangleVertex[ index[j] ].first + i * twoPhiMax;
    			finalVertex[ j + 2 * i * triangleIndex ][1] = triangleVertex[ index[j] ].second;
@@ -394,7 +394,7 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
     float v = 1;
 
     beginShape(action, QUADS );
-	for ( int i = 0; i < totalIndex; i++ )
+	for ( int i = 0; i < totalIndex; ++i )
 	{
 		double x = sphereRadius.getValue() * sin(  finalVertex[i][1] ) * cos( finalVertex[i][0] );
 		double y = sphereRadius.getValue() * sin(  finalVertex[i][1] ) * sin( finalVertex[i][0] );
