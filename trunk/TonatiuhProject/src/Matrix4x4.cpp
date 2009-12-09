@@ -128,22 +128,20 @@ Ptr<Matrix4x4> Matrix4x4::Transpose( ) const
 
 Ptr<Matrix4x4> Matrix4x4::Inverse( ) const
 {
-	Matrix2x2 mP;
-/*
-	Matrix2x2 mQ;
-	Matrix2x2 mR;
-	Matrix2x2 mS;
+	Matrix2x2 P;
+	Matrix2x2 Q;
+	Matrix2x2 R;
+	Matrix2x2 S;
 
 	PartitionInto4Matrix2x2( P, Q, R, S );
-
-	if ( P.Determinant() > tgc::Epsilon )
+	if ( fabs( P.Determinant() ) > tgc::Epsilon )
 	{
 		Matrix2x2 InverseP = P.Inverse();
 		Matrix2x2 RxInverseP = R * InverseP;
 		Matrix2x2 InversePxQ = InverseP * Q;
 		Matrix2x2 RxInversePxQ = RxInverseP * Q;
 		Matrix2x2 SMinusRxInversePxQ = S - RxInversePxQ;
-		if ( SMinusRxInversePxQ.Determinant() <= tgc::Epsilon )
+		if ( fabs( SMinusRxInversePxQ.Determinant() )<= tgc::Epsilon )
 			tgf::SevereError( "Singular matrix in Matrix4x4::Inverse()" );
 
 		Matrix2x2 SHat = SMinusRxInversePxQ.Inverse();
@@ -153,7 +151,7 @@ Ptr<Matrix4x4> Matrix4x4::Inverse( ) const
 
 		return new Matrix4x4( PHat, QHat, RHat, SHat );
 	}
-	else */ return InverseByGaussElimination();
+	else return InverseByGaussElimination();
 }
 
 void Matrix4x4::PartitionInto4Matrix2x2(   Matrix2x2& P, Matrix2x2& Q,
