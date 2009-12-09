@@ -49,7 +49,7 @@ CmdParameterModified::CmdParameterModified( const QStringList& oldValueList, SoB
 	int numFields = node->getFields( fieldList );
 
 	m_newValueList = new QStringList;
-	for(int index = 0; index < numFields; index++)
+	for( int index = 0; index < numFields; ++index )
 	{
 		SbString indexValue;
 		fieldList[index]->get( indexValue );
@@ -71,7 +71,7 @@ void CmdParameterModified::undo()
 	SoFieldList fieldList;
 	int numFields = partNode->getFields(fieldList);
 
-	 for( int index = 0; index < numFields; index ++)
+	 for( int index = 0; index < numFields; ++index )
 	 {
 	 	if(	m_oldValueList[index] != (*m_newValueList)[index] ){
 
@@ -91,7 +91,7 @@ void CmdParameterModified::redo()
 	SoFieldList fieldList;
 	int numFields = partNode->getFields(fieldList);
 
-	 for( int index = 0; index < numFields; index++ )
+	 for( int index = 0; index < numFields; ++index )
 	 {
 
 	 	if(	m_oldValueList[index] != (*m_newValueList)[index] ){

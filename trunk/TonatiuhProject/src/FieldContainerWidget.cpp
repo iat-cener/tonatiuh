@@ -95,7 +95,7 @@ void FieldContainerWidget::ReadFields( )
 	SbName fieldName;
 	SbString fieldValue = "null";
 
-	for( int index = 0; index < totalFields; index++ )
+	for( int index = 0; index < totalFields; ++index )
 	{
 		pField = fieldList.get( index );
 		if( pField )
@@ -141,7 +141,7 @@ void FieldContainerWidget::EditorClosed( QWidget* editor )
 
 	QStringList* oldValuesList = new QStringList;
 
-	for(int num = 0; num < numFields; num++ )
+	for( int num = 0; num < numFields; ++num )
 	{
 		SbString indexValue;
 		fieldList[num]->get( indexValue );

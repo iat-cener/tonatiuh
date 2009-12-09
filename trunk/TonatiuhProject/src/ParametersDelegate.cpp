@@ -67,7 +67,7 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 	{
 		QComboBox* editor = new QComboBox( parent );
 		SoSFEnum* enumField = static_cast< SoSFEnum* >( field );
-		for( int i = 0; i < enumField->getNumEnums() ; i++ )
+		for( int i = 0; i < enumField->getNumEnums() ; ++i )
 		{
 			SbName enumName;
 			enumField->getEnum( i , enumName );

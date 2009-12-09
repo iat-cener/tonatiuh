@@ -188,7 +188,7 @@ void MainWindow::SetupRandomNumberGenerator()
 void MainWindow::SetupActions()
 {
     m_recentFileActions = new QAction*[m_maxRecentFiles];
-    for ( int i = 0; i < m_maxRecentFiles; i++ )
+    for ( int i = 0; i < m_maxRecentFiles; ++i )
     {
     	m_recentFileActions[i] = new QAction( this );
     	m_recentFileActions[i]->setVisible( false );
@@ -202,7 +202,7 @@ void MainWindow::SetupActions()
  **/
 void MainWindow::SetupMenus()
 {
-    for ( int i = 0; i < m_maxRecentFiles; i++ )
+    for ( int i = 0; i < m_maxRecentFiles; ++i )
           menuRecent->addAction( m_recentFileActions[i] );
 }
 
@@ -502,7 +502,7 @@ void MainWindow::BuildFileList( QDir directory, QStringList& filesList )
 	QString directoryPath( directory.absolutePath().append( "/" ) );
     QStringList subdirectoriesList = directory.entryList( QDir::Dirs, QDir::Unsorted );
 
-   for( int i = 0; i< subdirectoriesList.size(); i++ )
+   for( int i = 0; i< subdirectoriesList.size(); ++i )
    {
     	QString subdirectoryName = subdirectoriesList[i];
    		if( ValidDirectoryName( subdirectoryName ) )
@@ -515,7 +515,7 @@ void MainWindow::AddFilesToList( QDir directory, QStringList& filesList )
 	QString directoryPath( directory.absolutePath().append( "/" ) );
 
     QStringList filenamesList = directory.entryList( QDir::Files, QDir::Unsorted );
-    for( int i = 0; i < filenamesList.size(); i++ )
+    for( int i = 0; i < filenamesList.size(); ++i )
     	filesList << ( directoryPath + filenamesList[i] );
 }
 
@@ -1019,7 +1019,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	//Random Ray generator
 	ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), 100, this);
 
-	for ( long unsigned i = 0; i < m_raysPerIteration; i++ )
+	for ( long unsigned i = 0; i < m_raysPerIteration; ++i )
 	{
 		Ray ray;
 		//Generate ray origin and direction in the Light coordinate system
@@ -1166,7 +1166,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 			worldToObject = objectToWorld.GetInverse();
 		}
 
-		for( int i = 0; i< nodePhotonsList.size(); i++ )
+		for( int i = 0; i< nodePhotonsList.size(); ++i )
 		{
 
 			Photon* node = nodePhotonsList[i];
@@ -2198,7 +2198,7 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 	SbXfBox3f box= bbAction->getXfBoundingBox();
 	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		for( int index = 0; index < instanceNode->children.count() ; index++ )
+		for( int index = 0; index < instanceNode->children.count() ; ++index )
 		{
 			QPersistentModelIndex childIndex = nodeIndex->child( index, nodeIndex->column() );
 			ComputeSceneTreeMap( &childIndex, region, sceneMap );
@@ -2286,7 +2286,7 @@ void MainWindow::StartManipulation( SoDragger* dragger )
     SbString fieldValue = "null";
 
 
-	for( int index = 0; index < totalFields; index++ )
+	for( int index = 0; index < totalFields; ++index )
 	{
 		pField = fieldList.get( index );
 		if( pField )

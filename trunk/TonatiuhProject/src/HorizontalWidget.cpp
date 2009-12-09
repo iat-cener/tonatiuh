@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -154,7 +154,7 @@ SoSeparator* HorizontalWidget::AzimuthLine()
 
 
 	float azimuthPoints[360][3];
-	for( int fi = 0; fi < 360; fi++ )
+	for( int fi = 0; fi < 360; ++fi )
 	{
 		double grad = ( m_azimuth / 360 ) * fi;
 		azimuthPoints[fi][0] = sin( grad * (tgc::Pi / 180) )* sphereRadio ;
@@ -185,7 +185,7 @@ SoSeparator* HorizontalWidget::AzimuthLine()
 
 	int numPoints = 0;
 	int indexes[360];
-  	for( int index = 1; index <= 90; index ++ )
+  	for( int index = 1; index <= 90; ++index )
   	{
   		curvePoints[numPoints][0]= center.x;
 		curvePoints[numPoints][1]= center.y;
@@ -254,7 +254,7 @@ SoSeparator* HorizontalWidget::Ejes() const
 SoSeparator* HorizontalWidget::Horizon() const
 {
 	float p[360][3];
-	for( int fi = 0; fi<360; fi++ )
+	for( int fi = 0; fi<360; ++fi )
 	{
 		p[fi][0] = -sin( fi * (tgc::Pi / 180) ) * sphereRadio ;
     	p[fi][1] =  0.0;
@@ -399,7 +399,7 @@ SoSeparator* HorizontalWidget::ZenithLine()
 	float zenithPoints[360][3];
 
 	double fi = m_azimuth;
-	for( int theta = 0; theta< 360; theta++ )
+	for( int theta = 0; theta< 360; ++theta )
 	{
 		double grad = ( m_zenith / 360 ) * theta;
 		zenithPoints[theta][0] = sin( grad * (tgc::Pi / 180) ) * sin( fi * (tgc::Pi / 180) )* sphereRadio;
@@ -426,7 +426,7 @@ SoSeparator* HorizontalWidget::ZenithLine()
 
 	int numPoints = 0;
 	int indexes[360];
-  	for( int index = 1; index <= 90; index ++ )
+  	for( int index = 1; index <= 90; ++index )
   	{
   		curvePoints[numPoints][0]= center.x;
 		curvePoints[numPoints][1]= center.y;

@@ -147,7 +147,7 @@ SoSeparator* CelestialWidget::CelestialEquator() const
 	ecuador->addChild( drawstyle );
 
 	float p[360][3];
-	for( int fi = 0; fi<360; fi++ )
+	for( int fi = 0; fi<360; ++fi )
 	{
 		p[fi][0] = -sin( fi * (tgc::Pi / 180) ) * sphereRadio ;
 		p[fi][1] = 0.0;
@@ -182,7 +182,7 @@ SoSeparator* CelestialWidget::Declination()
 
 	float declinationPoints[360][3];
 
-	for( int theta = 0; theta< 360; theta++ )
+	for( int theta = 0; theta< 360; ++theta )
 	{
 		double grad = ( m_declination / 360 ) * theta;
 		declinationPoints[theta][0] = sin( m_rightAscension ) * cos( grad )* sphereRadio;
@@ -212,7 +212,7 @@ SoSeparator* CelestialWidget::Declination()
 
 	int numPoints = 0;
 	int indexes[360];
-	for( int index = 1; index <= 90; index ++ )
+	for( int index = 1; index <= 90; ++index )
 	{
 		curvePoints[numPoints][0]= center.x;
 		curvePoints[numPoints][1]= center.y;
@@ -262,7 +262,7 @@ SoSeparator* CelestialWidget::Ecliptic() const
 	ecliptic->addChild( drawstyle );
 
 	float p[360][3];
-	for( int fi = 0; fi<360; fi++ )
+	for( int fi = 0; fi<360; ++fi )
 	{
 		p[fi][0] = cos( tgc::Ecliptic ) * sin( fi * (tgc::Pi / 180) ) * sphereRadio;
 		p[fi][1] = sin( tgc::Ecliptic ) * sin( fi * (tgc::Pi / 180) ) * sphereRadio;
@@ -451,7 +451,7 @@ SoSeparator* CelestialWidget::RightAscension()
 	right->addChild( drawstyle );
 
 	float ascensionPoints[360][3];
-	for( int fi = 0; fi < 360; fi++ )
+	for( int fi = 0; fi < 360; ++fi )
 	{
 		double grad = ( m_rightAscension / 360 ) * fi;
 		ascensionPoints[fi][0] = sin( grad )* sphereRadio ;
@@ -479,7 +479,7 @@ SoSeparator* CelestialWidget::RightAscension()
 
 	int numPoints = 0;
 	int indexes[360];
-	for( int index = 1; index <= 90; index ++ )
+	for( int index = 1; index <= 90; ++index )
 	{
 		curvePoints[numPoints][0]= center.x;
 		curvePoints[numPoints][1]= center.y;

@@ -102,7 +102,7 @@ void ParametersView::SelectionChanged( SoBaseKit* coinNode, QStringList parts )
 	m_ptabWidget->clear();
 	m_actualCoinNode = coinNode;
 
-	for( int i = 0; i< parts.size(); i++ )
+	for( int i = 0; i< parts.size(); ++i )
 	{
 		QString partName = parts[i];
 		SoNode* coinPart = coinNode->getPart(partName.toStdString().c_str(), false );

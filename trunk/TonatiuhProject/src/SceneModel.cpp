@@ -193,7 +193,7 @@ void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( parentKit->getPart( "childList", false ) );
    			if ( !coinPartList ) return;
 
-   			for( int index = 0; index < coinPartList->getNumChildren(); index++ )
+   			for( int index = 0; index < coinPartList->getNumChildren(); ++index )
     		{
 	            SoBaseKit* coinChild = static_cast< SoBaseKit* >( coinPartList->getChild( index ) );
 	            InstanceNode* instanceChild = new InstanceNode( coinChild );
@@ -422,7 +422,7 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 	tracersSearch->apply( m_coinRoot );
 	SoPathList& trackersPath = tracersSearch->getPaths();
 
-	for( int index = 0; index <trackersPath.getLength(); index++ )
+	for( int index = 0; index <trackersPath.getLength(); ++index )
 	{
 		SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
 		TTracker* tracker = dynamic_cast< TTracker* >( trackerPath->getTail() );
@@ -462,7 +462,7 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 
     QList<InstanceNode*> instanceListParent = m_mapCoinQt[ &coinParent ];
 
-	for( int index = 0; index< instanceListParent.size(); index++ )
+	for( int index = 0; index< instanceListParent.size(); ++index )
 	{
 	    InstanceNode* instanceParent = instanceListParent[index];
 	    InstanceNode* instanceNode = instanceParent->children[row];
@@ -486,7 +486,7 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 	tracersSearch->apply( m_coinRoot );
 	SoPathList& trackersPath = tracersSearch->getPaths();
 
-	for( int index = 0; index <trackersPath.getLength(); index++ )
+	for( int index = 0; index <trackersPath.getLength(); ++index )
 	{
 		SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
 		TTracker* tracker = dynamic_cast< TTracker* >( trackerPath->getTail() );
@@ -583,7 +583,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 		}
 		else
 		{
-			for( int index = 0; index< instanceListParent.size(); index++ )
+			for( int index = 0; index< instanceListParent.size(); ++index )
 			{
 			    InstanceNode* instanceParent = instanceListParent[index];
 			    InstanceNode* instanceNode = instanceParent->children[row];
@@ -672,7 +672,7 @@ bool SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	}
 
 	QList<InstanceNode*>& instanceListParent = m_mapCoinQt[ &coinParent ];
-	for ( int index = 0; index < instanceListParent.count(); index++ )
+	for ( int index = 0; index < instanceListParent.count(); ++index )
 	{
 	    InstanceNode* instanceParent = instanceListParent[index];
 		InstanceNode* instanceChild = new InstanceNode( coinChild );
@@ -696,13 +696,13 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 	if( nodeInstances.size() == 0 ) return false;
 
 	QList< InstanceNode* > instancesParent;
-	for( int index = 0; index < nodeInstances.size(); index++ )
+	for( int index = 0; index < nodeInstances.size(); ++index )
 	{
 
 		InstanceNode* instance = nodeInstances[index];
 		QList< InstanceNode* > parentChildren = instance->GetParent()->children;
 		int childIndex = parentChildren.indexOf( instance );
-		for( int child = 0; child < parentChildren.size(); child++ )
+		for( int child = 0; child < parentChildren.size(); ++child )
 		{
 
 			SbName idChildName = parentChildren[child]->GetNode()->getName();
@@ -719,7 +719,7 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 
 void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 {
-	for ( int index = 0; index < instanceNode.children.count(); index++)
+	for ( int index = 0; index < instanceNode.children.count(); ++index)
 	{
 		DeleteInstanceTree( *instanceNode.children[index] );
 	}
@@ -767,7 +767,7 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 			instanceNode = instanceNode->GetParent();
 		}
 
-		for( int i = nodeList.getLength(); i > 0; i--){
+		for( int i = nodeList.getLength(); i > 0; --i ){
 			SoBaseKit* coinNode = static_cast< SoBaseKit* >( nodeList[i-1] );
 			if ( coinNode )
 				nodePath->append( coinNode );

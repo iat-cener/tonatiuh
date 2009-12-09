@@ -113,7 +113,7 @@ void WorldMap::SunChanged( cSunCoordinates coordinates )
 
 	m_points.clear();
 
-	for( int x = 0; x < width; x++ )
+	for( int x = 0; x < width; ++x )
 	{
 		double lon = ( ( x * tgc::TwoPi ) / width ) - tgc::Pi;
 		double lat = atan( - ( sx * cos( lon ) + sy * sin( lon )  ) / sz );
@@ -137,9 +137,9 @@ void WorldMap::paintEvent(QPaintEvent* /*event*/ )
 	 	QImage alpha( m_map.width(), m_map.height(), QImage::Format_RGB32 );
 
 	 	QImage copy( m_map.width(), m_map.height(), QImage::Format_RGB32 );
-	 	for( int x = 0; x< m_map.width(); x++ )
+	 	for( int x = 0; x< m_map.width(); ++x )
 	 	{
-	 		for( int y1 = 0; y1 < m_points[x].y(); y1++ )
+	 		for( int y1 = 0; y1 < m_points[x].y(); ++y1 )
 	 		{
 	 			QColor color = QColor::fromRgb ( m_map.pixel( x, y1 ) );
 	 			QColor pixelColor;
@@ -162,7 +162,7 @@ void WorldMap::paintEvent(QPaintEvent* /*event*/ )
 
 		QVector< QPoint > points;
 		points.append( m_points[0] );
-		for( int index = 0; index < m_points.size()-1; index++ )
+		for( int index = 0; index < m_points.size()-1; ++index )
 		{
 			points.append( m_points[index] );
 			//points.append( m_points[index] );

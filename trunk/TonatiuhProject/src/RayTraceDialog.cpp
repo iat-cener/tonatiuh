@@ -70,7 +70,7 @@ RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, 
 	photonsCheck->setChecked( m_drawPhotons );
 
 	photonmapTypeCombo->addItem( "------------" );
-	for( int index = 0; index < photonMapFactoryList.size(); index++ )
+	for( int index = 0; index < photonMapFactoryList.size(); ++index )
 	{
 		photonmapTypeCombo->addItem( photonMapFactoryList[index]->TPhotonMapIcon(), photonMapFactoryList[index]->TPhotonMapName() );
 	}

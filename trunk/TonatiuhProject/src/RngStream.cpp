@@ -162,7 +162,7 @@ namespace
 	            B[i][j] = A[i][j];
 	   }
 	   /* Compute B = A^(2^e) mod m */
-	   for (i = 0; i < e; i++)
+	   for (i = 0; i < e; ++i)
 	      MatMatModM (B, B, B, m);
 	}
 	
