@@ -61,7 +61,7 @@ InstanceNode::InstanceNode( const InstanceNode* node )
 	node->m_coinNode->ref();
 	m_parent = node->m_parent;
 
-	for( int index = 0; index < node->children.count(); index++ )
+	for( int index = 0; index < node->children.count(); ++index )
     {
     	InstanceNode* child = new InstanceNode(*(node->children[index]));
 
@@ -111,9 +111,9 @@ QString InstanceNode::GetNodeURL() const
 
 void InstanceNode::Print( int level ) const
 {
-	for( int i = 0; i < level; i++ ) std::cout << " ";
+	for( int i = 0; i < level; ++i ) std::cout << " ";
     std::cout << m_coinNode->getTypeId().getName().getString() << " has " << children.size() << " children "<<std::endl;
-    for( int index = 0; index < children.count(); index++ )
+    for( int index = 0; index < children.count(); ++index )
     {
     	children[index]->Print( level++ );
     }
@@ -192,7 +192,7 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 		Ray* childReflected = 0;
 
 		//Check if the ray intersects with the BoundingBox
-		for( int index = 0; index < children.size(); index++ )
+		for( int index = 0; index < children.size(); ++index )
 		{
 			InstanceNode* intersectedChild = 0;
 			bool isChildFront = false;

@@ -47,8 +47,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 Matrix4x4::Matrix4x4( )
 : RefCount()
 {
-	for( int i = 0; i < 4; i++ )
-		for( int j = 0; j < 4; j++ )
+	for( int i = 0; i < 4; ++i )
+		for( int j = 0; j < 4; ++j )
 		{
 			if( i == j ) m[i][j] = 1.0;
 			else m[i][j] = 0.0;
@@ -76,8 +76,8 @@ Matrix4x4::Matrix4x4( double t00, double t01, double t02, double t03,
 Matrix4x4::Matrix4x4( const Matrix4x4& rhs )
 : RefCount()
 {
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++) m[i][j] = rhs.m[i][j];
+	for ( int i = 0; i < 4; ++i )
+		for ( int j = 0; j < 4; ++j) m[i][j] = rhs.m[i][j];
 }
 
 Matrix4x4::Matrix4x4( const Matrix2x2& P, const Matrix2x2& Q,
@@ -155,7 +155,7 @@ Ptr<Matrix4x4> Matrix4x4::Inverse( ) const
 }
 
 void Matrix4x4::PartitionInto4Matrix2x2(   Matrix2x2& P, Matrix2x2& Q,
-                                             Matrix2x2& R, Matrix2x2& S ) const
+                                           Matrix2x2& R, Matrix2x2& S ) const
 {
 	P.m[0][0] = m[0][0]; P.m[0][1] = m[0][1];   Q.m[0][0] = m[0][2]; Q.m[0][1] = m[0][3];
 	P.m[1][0] = m[1][0]; P.m[1][1] = m[1][1];   Q.m[1][0] = m[1][2]; Q.m[1][1] = m[1][3];
@@ -171,7 +171,7 @@ Ptr<Matrix4x4> Matrix4x4::InverseByGaussElimination() const
 	double minv[4][4];
 	memcpy( minv, m, 16*sizeof( double ) );
 
-	for ( int i = 0; i < 4; i++ )
+	for ( int i = 0; i < 4; ++i )
 	{
 		int irow = -1;
 		int icol = -1;
@@ -182,7 +182,7 @@ Ptr<Matrix4x4> Matrix4x4::InverseByGaussElimination() const
 		{
 			if (ipiv[j] != 1)
 			{
-				for ( int k = 0; k < 4; k++)
+				for ( int k = 0; k < 4; ++k )
 				{
 					if ( ipiv[k] == 0)
 					{
@@ -219,7 +219,7 @@ Ptr<Matrix4x4> Matrix4x4::InverseByGaussElimination() const
 			{
 				double save = minv[j][icol];
 				minv[j][icol] = 0;
-				for (int k = 0; k < 4; k++)
+				for ( int k = 0; k < 4; ++k )
 					minv[j][k] -= minv[icol][k]*save;
 			}
 		}
@@ -229,7 +229,7 @@ Ptr<Matrix4x4> Matrix4x4::InverseByGaussElimination() const
 	{
 		if (indxr[j] != indxc[j])
 		{
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < 4; ++k )
 				std::swap(minv[k][indxr[j]], minv[k][indxc[j]]);
 		}
 	}

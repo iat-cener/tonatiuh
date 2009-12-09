@@ -57,13 +57,13 @@ m_newShape( 0 ), m_newSunShape( 0 )
 {
 	setupUi( this );
 
-	for( int shape = 0; shape < (int) shapeFactoryList.size(); shape++ )
+	for( int shape = 0; shape < (int) shapeFactoryList.size(); ++shape )
 	{
 		QString shapeTypeName( shapeFactoryList[shape]->CreateTShape()->getTypeId().getName().getString() );
 		m_shapeList.insert( shapeTypeName, shapeFactoryList[shape] );
 	}
 
-	for( int sunShape = 0; sunShape < (int) sunshapeFactoryList.size(); sunShape++ )
+	for( int sunShape = 0; sunShape < (int) sunshapeFactoryList.size(); ++sunShape )
 	{
 		QString sunShapeTypeName( sunshapeFactoryList[sunShape]->CreateTSunShape()->getTypeId().getName().getString() );
 		m_sunshapeList.insert( sunShapeTypeName, sunshapeFactoryList[sunShape] );
@@ -109,7 +109,7 @@ void LightDialog::changeSunshape( int index )
 	QLayout* frameLayout = sunshapeParametersFrame->layout();
 	if( !frameLayout ) return;
 	int children = frameLayout->count();
-	for( int i = 0; i< children; i++ )
+	for( int i = 0; i< children; ++i )
 		frameLayout->removeItem ( frameLayout->itemAt( i ) );
 
 	while( (m_newSunShape!=0) && m_newSunShape->getRefCount() > 0 )	m_newSunShape->unref();
@@ -136,7 +136,7 @@ void LightDialog::changeShape( int index )
 	QLayout* frameLayout = shapeParametersFrame->layout();
 	if( !frameLayout && frameLayout != 0 ) return;
 	int children = frameLayout->count();
-	for( int i = 0; i< children; i++ )
+	for( int i = 0; i< children; ++i )
 		frameLayout->removeItem ( frameLayout->itemAt( i ) );
 
 	while( ( m_newShape != 0) && ( m_newShape->getRefCount() > 0 ) )	m_newShape->unref();
@@ -184,7 +184,7 @@ void LightDialog::ShapeBox( )
 	//Add elements to sunshape combo
 	QList< TShapeFactory* > shapeFactoryList = m_shapeList.values();
 	shapeCombo->addItem ( "---" );
-	for( int j = 0; j <(int) shapeFactoryList.size(); j++ )
+	for( int j = 0; j <(int) shapeFactoryList.size(); ++j )
 		shapeCombo->addItem( shapeFactoryList[j]->TShapeIcon(), shapeFactoryList[j]->TShapeName(), m_shapeList.key( shapeFactoryList[j] ) );
 
 	//Select current LightKit Shape
@@ -218,7 +218,7 @@ void LightDialog::SunshapeBox()
 	//Add elements to sunshape combo
 	QList< TSunShapeFactory* > sunShapeFactoryList = m_sunshapeList.values();
 	sunshapeCombo->addItem ( "---" );
-	for( int i = 0; i < sunShapeFactoryList.size(); i++ )
+	for( int i = 0; i < sunShapeFactoryList.size(); ++i )
 		sunshapeCombo->addItem( sunShapeFactoryList[i]->TSunShapeIcon(), sunShapeFactoryList[i]->TSunShapeName(),m_sunshapeList.key( sunShapeFactoryList[i] ) );
 
 	//Select current LightKit Sunshape
