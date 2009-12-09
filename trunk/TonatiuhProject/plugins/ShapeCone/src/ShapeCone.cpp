@@ -54,6 +54,7 @@ SO_NODE_SOURCE(ShapeCone);
 
 void ShapeCone::initClass()
 {
+
 	SO_NODE_INIT_CLASS(ShapeCone, TShape, "TShape");
 }
 
@@ -68,6 +69,7 @@ ShapeCone::ShapeCone(  )
 
 ShapeCone::~ShapeCone()
 {
+
 }
 
 
