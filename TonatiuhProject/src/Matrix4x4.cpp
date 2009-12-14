@@ -128,112 +128,47 @@ Ptr<Matrix4x4> Matrix4x4::Transpose( ) const
 
 Ptr<Matrix4x4> Matrix4x4::Inverse( ) const
 {
-	Matrix2x2 P;
-	Matrix2x2 Q;
-	Matrix2x2 R;
-	Matrix2x2 S;
+	double det  = m[0][1] * m[1][3] * m[2][2] * m[3][0]
+				- m[0][1] * m[1][2] * m[2][3] * m[3][0]
+				- m[0][0] * m[1][3] * m[2][2] * m[3][1]
+				+ m[0][0] * m[1][2] * m[2][3] * m[3][1]
+				- m[0][1] * m[1][3] * m[2][0] * m[3][2]
+				+ m[0][0] * m[1][3] * m[2][1] * m[3][2]
+				+ m[0][1] * m[1][0] * m[2][3] * m[3][2]
+				- m[0][0] * m[1][1] * m[2][3] * m[3][2]
+				+ m[0][3] * ( m[1][2] * m[2][1] * m[3][0] - m[1][1] * m[2][2] * m[3][0] - m[1][2] * m[2][0] * m[3][1] + m[1][0] * m[2][2] * m[3][1] + m[1][1] * m[2][0] * m[3][2] - m[1][0] * m[2][1] * m[3][2] )
+				+ m[3][3] * ( m[0][1] * m[1][2] * m[2][0] - m[0][0] * m[1][2] * m[2][1] - m[0][1] * m[1][0] * m[2][2] + m[0][0] * m[1][1] * m[2][2] )
+				+ m[0][2] * ( -m[1][3] * m[2][1] * m[3][0] + m[1][1] * m[2][3] * m[3][0] + m[1][3] * m[2][0] * m[3][1] - m[1][0] * m[2][3] * m[3][1] - m[1][1] * m[2][0] * m[3][3] + m[1][0] * m[2][1] * m[3][3]);
 
-	PartitionInto4Matrix2x2( P, Q, R, S );
-	if ( fabs( P.Determinant() ) > tgc::Epsilon )
-	{
-		Matrix2x2 InverseP = P.Inverse();
-		Matrix2x2 RxInverseP = R * InverseP;
-		Matrix2x2 InversePxQ = InverseP * Q;
-		Matrix2x2 RxInversePxQ = RxInverseP * Q;
-		Matrix2x2 SMinusRxInversePxQ = S - RxInversePxQ;
-		if ( fabs( SMinusRxInversePxQ.Determinant() )<= tgc::Epsilon )
-			tgf::SevereError( "Singular matrix in Matrix4x4::Inverse()" );
+	if ( fabs( det ) < tgc::Epsilon )	tgf::SevereError( "Singular matrix in Matrix4x4::Inverse()" );
+	double alpha = 1.0/det;
 
-		Matrix2x2 SHat = SMinusRxInversePxQ.Inverse();
-		Matrix2x2 RHat = -SHat * RxInverseP;
-		Matrix2x2 QHat = -InversePxQ * SHat;
-		Matrix2x2 PHat = InverseP - InversePxQ * RHat;
+	double inv00 = ( - m[1][3] * m[2][2] * m[3][1] + m[1][2] * m[2][3] * m[3][1] + m[1][3] * m[2][1] * m[3][2] - m[1][1] * m[2][3] * m[3][2] - m[1][2] * m[2][1] * m[3][3] + m[1][1] * m[2][2] * m[3][3] ) * alpha;
+	double inv01 = ( m[0][3] * m[2][2] * m[3][1] - m[0][2] * m[2][3] * m[3][1] - m[0][3] * m[2][1] * m[3][2] + m[0][1] * m[2][3] * m[3][2] + m[0][2] * m[2][1] * m[3][3] - m[0][1] * m[2][2] * m[3][3] ) * alpha;
+	double inv02 = ( -m[0][3] * m[1][2] * m[3][1] + m[0][2] * m[1][3] * m[3][1] + m[0][3] * m[1][1] * m[3][2] - m[0][1] * m[1][3] * m[3][2] - m[0][2] * m[1][1] * m[3][3] + m[0][1] * m[1][2] * m[3][3] ) * alpha;
+	double inv03 = ( m[0][3] * m[1][2] * m[2][1] - m[0][2] * m[1][3] * m[2][1] - m[0][3] * m[1][1] * m[2][2] + m[0][1] * m[1][3] * m[2][2] + m[0][2] * m[1][1] * m[2][3] - m[0][1] * m[1][2] * m[2][3] ) * alpha;
 
-		return new Matrix4x4( PHat, QHat, RHat, SHat );
-	}
-	else return InverseByGaussElimination();
-}
+	double inv10 = ( m[1][3] * m[2][2] * m[3][0] - m[1][2] * m[2][3] * m[3][0] - m[1][3] * m[2][0] * m[3][2] + m[1][0] * m[2][3] * m[3][2] + m[1][2] * m[2][0] * m[3][3] - m[1][0] * m[2][2] * m[3][3] ) * alpha;
+	double inv11 = ( -m[0][3] * m[2][2] * m[3][0] + m[0][2] * m[2][3] * m[3][0] + m[0][3] * m[2][0] * m[3][2] - m[0][0] * m[2][3] * m[3][2] - m[0][2] * m[2][0] * m[3][3] + m[0][0] * m[2][2] * m[3][3] ) * alpha;
+	double inv12 = ( m[0][3] * m[1][2] * m[3][0] - m[0][2] * m[1][3] * m[3][0] - m[0][3] * m[1][0] * m[3][2] + m[0][0] * m[1][3] * m[3][2] + m[0][2] * m[1][0] * m[3][3] - m[0][0] * m[1][2] * m[3][3] ) * alpha;
+	double inv13 = ( -m[0][3] * m[1][2] * m[2][0] + m[0][2] * m[1][3] * m[2][0] + m[0][3] * m[1][0] * m[2][2] - m[0][0] * m[1][3] * m[2][2] - m[0][2] * m[1][0] * m[2][3] + m[0][0] * m[1][2] * m[2][3] ) * alpha;
 
-void Matrix4x4::PartitionInto4Matrix2x2(   Matrix2x2& P, Matrix2x2& Q,
-                                           Matrix2x2& R, Matrix2x2& S ) const
-{
-	P.m[0][0] = m[0][0]; P.m[0][1] = m[0][1];   Q.m[0][0] = m[0][2]; Q.m[0][1] = m[0][3];
-	P.m[1][0] = m[1][0]; P.m[1][1] = m[1][1];   Q.m[1][0] = m[1][2]; Q.m[1][1] = m[1][3];
 
-	R.m[0][0] = m[2][0]; R.m[0][1] = m[2][1];   S.m[0][0] = m[2][2]; S.m[0][1] = m[2][3];
-	R.m[1][0] = m[3][0]; R.m[1][1] = m[3][1];   S.m[1][0] = m[3][2]; S.m[1][1] = m[3][3];
-}
+	double inv20 = ( -m[1][3] * m[2][1] * m[3][0] + m[1][1] * m[2][3] * m[3][0] + m[1][3] * m[2][0] * m[3][1] - m[1][0] * m[2][3] * m[3][1] - m[1][1] * m[2][0] * m[3][3] + m[1][0] * m[2][1] * m[3][3] ) * alpha;
+	double inv21 = ( m[0][3] *m[2][1] * m[3][0] - m[0][1] * m[2][3] * m[3][0] - m[0][3] * m[2][0] * m[3][1] + m[0][0] * m[2][3] * m[3][1] + m[0][1] * m[2][0] * m[3][3] - m[0][0] * m[2][1] * m[3][3] ) * alpha;
+	double inv22 = ( -m[0][3] * m[1][1] * m[3][0] + m[0][1] * m[1][3] * m[3][0] + m[0][3] * m[1][0] * m[3][1] - m[0][0] * m[1][3] * m[3][1] - m[0][1] * m[1][0] * m[3][3] + m[0][0] * m[1][1] * m[3][3]) * alpha;
+	double inv23 = ( m[0][3] * m[1][1] * m[2][0] - m[0][1] * m[1][3] * m[2][0] - m[0][3] * m[1][0] * m[2][1] + m[0][0] * m[1][3] * m[2][1] + m[0][1] * m[1][0] * m[2][3] - m[0][0] * m[1][1] * m[2][3] ) * alpha;
 
-Ptr<Matrix4x4> Matrix4x4::InverseByGaussElimination() const
-{
-	int indxc[4], indxr[4];
-	int ipiv[4] = { 0, 0, 0, 0 };
-	double minv[4][4];
-	memcpy( minv, m, 16*sizeof( double ) );
+	double inv30 = ( m[1][2] * m[2][1] * m[3][0] - m[1][1] * m[2][2] * m[3][0] - m[1][2] * m[2][0] * m[3][1] + m[1][0] * m[2][2] * m[3][1] + m[1][1] * m[2][0] * m[3][2] - m[1][0] * m[2][1] * m[3][2] ) * alpha;
+	double inv31 = ( -m[0][2] * m[2][1] * m[3][0] + m[0][1] * m[2][2] * m[3][0] + m[0][2] * m[2][0] * m[3][1] - m[0][0] * m[2][2] * m[3][1] - m[0][1] * m[2][0] * m[3][2] + m[0][0] * m[2][1] * m[3][2] ) * alpha;
+	double inv32 = ( m[0][2] * m[1][1] * m[3][0] - m[0][1] * m[1][2] * m[3][0] - m[0][2] * m[1][0] * m[3][1] + m[0][0] * m[1][2] * m[3][1] + m[0][1] * m[1][0] * m[3][2] - m[0][0] * m[1][1] * m[3][2] ) * alpha;
+	double inv33 = ( -m[0][2] * m[1][1] * m[2][0] + m[0][1] * m[1][2] * m[2][0] + m[0][2] * m[1][0] * m[2][1] - m[0][0] * m[1][2] * m[2][1] - m[0][1] * m[1][0] * m[2][2] + m[0][0] * m[1][1] * m[2][2] ) * alpha;
 
-	for ( int i = 0; i < 4; ++i )
-	{
-		int irow = -1;
-		int icol = -1;
-		double big = 0.;
 
-		// Choose pivot
-		for ( int j = 0; j < 4; j++)
-		{
-			if (ipiv[j] != 1)
-			{
-				for ( int k = 0; k < 4; ++k )
-				{
-					if ( ipiv[k] == 0)
-					{
-						if ( fabs( minv[j][k] ) >= big )
-						{
-							big = double( fabs( minv[j][k] ) );
-							irow = j;
-							icol = k;
-						}
-					}
-					//else if ( ipiv[k] > 1 ) tgf::SevereError( "Singular matrix in Matrix4x4::Inverse()" );
-				}
-			}
-		}
-		++ipiv[icol];
-		// Swap rows _irow_ and _icol_ for pivot
-		if (irow != icol)
-		{
-			for (int k = 0; k < 4; ++k)
-				std::swap(minv[irow][k], minv[icol][k]);
-		}
-		indxr[i] = irow;
-		indxc[i] = icol;
-		//if ( minv[icol][icol] == 0.0 ) tgf::SevereError( "Singular matrix in Matrix4x4::Inverse()" );
-		// Set $m[icol][icol]$ to one by scaling row _icol_ appropriately
-		double pivinv = 1.f / minv[icol][icol];
-		minv[icol][icol] = 1.f;
-		for (int j = 0; j < 4; j++)
-			minv[icol][j] *= pivinv;
-		// Subtract this row from others to zero out their columns
-		for (int j = 0; j < 4; j++)
-		{
-			if ( j != icol )
-			{
-				double save = minv[j][icol];
-				minv[j][icol] = 0;
-				for ( int k = 0; k < 4; ++k )
-					minv[j][k] -= minv[icol][k]*save;
-			}
-		}
-	}
-	// Swap columns to reflect permutation
-	for (int j = 3; j >= 0; j--)
-	{
-		if (indxr[j] != indxc[j])
-		{
-			for (int k = 0; k < 4; ++k )
-				std::swap(minv[k][indxr[j]], minv[k][indxc[j]]);
-		}
-	}
-	return new Matrix4x4(minv);
+	return new Matrix4x4( inv00, inv01, inv02, inv03,
+							inv10, inv11, inv12, inv13,
+							inv20, inv21, inv22, inv23,
+							inv30, inv31, inv32, inv33 );
 }
 
 Ptr<Matrix4x4> Mul( const Ptr<Matrix4x4>& m1, const Ptr<Matrix4x4>& m2 )

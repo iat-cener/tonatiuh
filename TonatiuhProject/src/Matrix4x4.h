@@ -65,11 +65,6 @@ public:
 
 	double m[4][4];
 
-private:
-	void PartitionInto4Matrix2x2(  Matrix2x2& P, Matrix2x2& Q,
-			                         Matrix2x2& R, Matrix2x2& S ) const;
-	Ptr<Matrix4x4> InverseByGaussElimination() const;
-
 };
 
 Ptr<Matrix4x4> Mul( const Ptr<Matrix4x4>& m1, const Ptr<Matrix4x4>& m2 );
