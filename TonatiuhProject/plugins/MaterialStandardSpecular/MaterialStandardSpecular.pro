@@ -16,7 +16,6 @@ INCLUDEPATH += . \
 HEADERS = src/*.h \
 			$$(TONATIUH_ROOT)/src/BBox.h \
 			$$(TONATIUH_ROOT)/src/DifferentialGeometry.h \
-			$$(TONATIUH_ROOT)/src/Matrix2x2.h \
 			$$(TONATIUH_ROOT)/src/Matrix4x4.h \
 			$$(TONATIUH_ROOT)/src/InstanceNode.h \
 			$$(TONATIUH_ROOT)/src/NormalVector.h \
@@ -27,7 +26,6 @@ HEADERS = src/*.h \
 			$$(TONATIUH_ROOT)/src/RefCount.h \
 			$$(TONATIUH_ROOT)/src/tgf.h \
 			$$(TONATIUH_ROOT)/src/TMaterial.h \
-			$$(TONATIUH_ROOT)/src/TnMatrix2x2.h \
 			$$(TONATIUH_ROOT)/src/Trace.h  \
 			$$(TONATIUH_ROOT)/src/Transform.h  \
 			$$(TONATIUH_ROOT)/src/TShape.h  \
@@ -37,7 +35,6 @@ HEADERS = src/*.h \
 SOURCES = src/*.cpp \
 			$$(TONATIUH_ROOT)/src/BBox.cpp \
 			$$(TONATIUH_ROOT)/src/DifferentialGeometry.cpp \
-			$$(TONATIUH_ROOT)/src/Matrix2x2.cpp \
 			$$(TONATIUH_ROOT)/src/Matrix4x4.cpp \
 			$$(TONATIUH_ROOT)/src/InstanceNode.cpp \
 			$$(TONATIUH_ROOT)/src/NormalVector.cpp \
