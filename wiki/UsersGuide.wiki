@@ -1,0 +1,21 @@
+#summary Home page for the user guide wiki
+#labels Phase-Deploy,Featured
+
+= User's Guide =
+
+This guide provides instructions for install Tonatiuh binaries
+
+
+== Requirements==
+
+The installation binaries are created with a Java. To install Tonatiuh you need the Java runtime. If you need to install Java RunTime, download it form [http://java.sun.com/javase/downloads/index.jsp Sun Microsystems Downloads] web site.
+
+==Installation==
+
+To install Tonatiuh with application installer download the installaer for your OS from [http://code.google.com/p/tonatiuh/downloads/list Downlaods].
+
+ * Double-click to launch the OpenOffice.org installation program.
+ * Follow the wizard and  will be installed on your system.
+ * Tonatiuh is ready to use.
+
+[http://code.google.com/p/tonatiuh/w/list Wiki Home]
