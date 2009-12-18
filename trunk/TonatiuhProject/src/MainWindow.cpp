@@ -962,18 +962,22 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
  */
 void MainWindow::ShowRaysIn3DView()
 {
-	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
+	actionDisplay_rays->setEnabled( false );
+	actionDisplay_rays->setChecked( false );
+	if( m_pRays )
 	{
-		m_document->GetRoot()->removeChild( m_pRays );
-		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
+		if ( actionDisplay_rays->isChecked() )	m_document->GetRoot()->removeChild( 0 );
+		m_pRays->removeAllChildren();
+		while ( m_pRays->getRefCount( ) > 0 ) m_pRays->unref();
 		m_pRays = 0;
 	}
 
+	while( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  )	m_document->GetRoot()->removeChild( 0 );
 	if( m_fraction > 0.0 || m_drawPhotons )
 	{
 		m_pRays = new SoSeparator;
 		m_pRays->ref();
-		m_pRays->setName("Rays");
+		m_pRays->setName( "Rays" );
 
 
 		if( m_drawPhotons )
@@ -989,7 +993,6 @@ void MainWindow::ShowRaysIn3DView()
 			actionDisplay_rays->setEnabled( true );
 			actionDisplay_rays->setChecked( true );
 		}
-		m_document->GetRoot()->addChild( m_pRays );
 	}
 }
 
@@ -1047,11 +1050,11 @@ void MainWindow::on_actionDisplay_rays_toggled()
 {
 	if ( actionDisplay_rays->isChecked() && (m_pRays ) )
 	{
-	  	m_document->GetRoot()->addChild(m_pRays);
+	  	m_document->GetRoot()->insertChild( m_pRays, 0 );
 	}
-	else if( (!actionDisplay_rays->isChecked()) && (m_pRays ) )
+	else if( !actionDisplay_rays->isChecked() )
 	{
-		if ( m_pRays ) m_document->GetRoot()->removeChild(m_pRays);
+		if ( m_pRays->getRefCount( ) > 0 )	m_document->GetRoot()->removeChild( 0 );
 	}
 }
 
@@ -1850,14 +1853,17 @@ bool MainWindow::OkToContinue()
  */
 bool MainWindow::StartOver( const QString& fileName )
 {
+
 	actionDisplay_rays->setEnabled( false );
-	if( m_pRays && ( m_document->GetRoot()->findChild( m_pRays )!= -1 ) )
+	actionDisplay_rays->setChecked( false );
+
+	if( m_pRays )
 	{
-		m_document->GetRoot()->removeChild(m_pRays);
-		while ( m_pRays->getRefCount( ) > 1 ) m_pRays->unref();
+		while ( m_pRays->getRefCount( ) > 0 ) m_pRays->unref();
 		m_pRays = 0;
 
 	}
+
 	m_commandStack->clear();
 	SetEnabled_SunPositionCalculator( 0 );
 
@@ -2216,41 +2222,9 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 		}
 
 	}
-	/*else
-	{
-		SoTransform* nodeTransform = static_cast< SoTransform* > ( coinNode->getPart( "transform", true ) );
-		if ( nodeTransform )
-		{
-			SbMatrix nodeMatrix;
-			nodeMatrix.setTransform( nodeTransform->translation.getValue(),
-					nodeTransform->rotation.getValue(),
-					nodeTransform->scaleFactor.getValue(),
-					nodeTransform->scaleOrientation.getValue(),
-					nodeTransform->center.getValue() );
-			pathTransformation = pathTransformation.multLeft( nodeMatrix );
 
-			Transform shapeObjectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
-								pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
-								pathTransformation[0][2], pathTransformation[1][2], pathTransformation[2][2], pathTransformation[3][2],
-								pathTransformation[0][3], pathTransformation[1][3], pathTransformation[2][3], pathTransformation[3][3] );
-
-			Transform* shapeWorldToObject = new Transform( shapeObjectToWorld.GetInverse() );
-
-			if(  instanceNode->children.count() > 0 )
-			{
-
-				if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-					sceneMap->insert( instanceNode->children[0] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
-				else if(  instanceNode->children.count() > 1 ) sceneMap->insert( instanceNode->children[1] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), shapeWorldToObject ) );
-
-			}
-
-		}
-
-	}*/
-
-	//delete bbAction;
-	//delete getmatrixAction;
+	delete bbAction;
+	delete getmatrixAction;
 
 }
 
