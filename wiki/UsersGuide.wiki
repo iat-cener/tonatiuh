@@ -8,7 +8,7 @@ This guide provides instructions for install Tonatiuh binaries
 
 == Requirements==
 
-The installation binaries are created with a Java. To install Tonatiuh you need the Java runtime. If you need to install Java RunTime, download it form [http://java.sun.com/javase/downloads/index.jsp Sun Microsystems Downloads] web site.
+The installation binaries are created with a Java. To install Tonatiuh you need the Java runtime. If you need to install Java runtime, download it form [http://java.sun.com/javase/downloads/index.jsp Sun Microsystems Downloads] web site.
 
 ==Installation==
 
