@@ -50,8 +50,8 @@ cp src/lib/libmarblewidget.so* /usr/local/lib
 
 Copy mable plugins to the folder "/usr/local/bin/marble".
 {{{
-mkdir /usr/local/lib/marble
-mkdir /usr/local/lib/marble/plugins
+mkdir /usr/local/bin/marble
+mkdir /usr/local/bin/marble/plugins
 cp src/plugins/network/qnam/libQNamNetworkPlugin.so  /usr/local/bin/marble/plugins
 cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble/plugins
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.so /usr/local/bin/marble
