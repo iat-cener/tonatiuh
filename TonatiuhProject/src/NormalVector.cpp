@@ -64,22 +64,12 @@ NormalVector& NormalVector::operator+=( const NormalVector& nV )
     return *this;
 }
 
-NormalVector NormalVector::operator+( const NormalVector& nV ) const
-{
-	return NormalVector( x + nV.x, y + nV.y, z + nV.z );
-}
-
 NormalVector& NormalVector::operator-=( const NormalVector& nV )
 {
     x -= nV.x;
     y -= nV.y;
     z -= nV.z;
     return *this;
-}
-
-NormalVector NormalVector::operator-( const NormalVector& nV ) const
-{
-	return NormalVector( x - nV.x, y - nV.y, z - nV.z );
 }
 
 NormalVector& NormalVector::operator*=( double scalar )
@@ -152,6 +142,17 @@ double NormalVector::length( ) const
 	return sqrt( x*x + y*y + z*z );
 }
 
+NormalVector operator+( NormalVector lhs, const NormalVector& rhs )
+{
+	// Note that lhs is taken by value
+	return lhs += rhs;
+}
+
+NormalVector operator-( NormalVector lhs, const NormalVector& rhs )
+{
+	// Note that lhs is taken by value
+	return lhs -= rhs;
+}
 
 NormalVector operator*( double scalar, const NormalVector& nV )
 {
@@ -178,4 +179,3 @@ NormalVector Normalize( const NormalVector& nV )
 {
 	return nV / nV.length();
 }
-
