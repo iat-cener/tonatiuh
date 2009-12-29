@@ -51,9 +51,7 @@ struct Vector3D
     explicit Vector3D( const Point3D& point );
     ~Vector3D( );
     Vector3D& operator+=( const Vector3D& vector );
-    Vector3D operator+( const Vector3D& vector ) const;
     Vector3D& operator-=( const Vector3D& vector );
-    Vector3D operator-( const Vector3D& vector ) const;
 
     Vector3D& operator*=( double scalar );
     Vector3D operator*( double scalar ) const;
@@ -76,6 +74,8 @@ struct Vector3D
     double z;
 };
 
+Vector3D operator+( Vector3D lhs, const Vector3D& rhs );
+Vector3D operator-( Vector3D lhs, const Vector3D& rhs );
 Vector3D operator*( double scalar, const Vector3D& vector );
 std::ostream& operator<<( std::ostream& os, const Vector3D& vector );
 double DotProduct( const Vector3D& vA, const Vector3D& vB );
