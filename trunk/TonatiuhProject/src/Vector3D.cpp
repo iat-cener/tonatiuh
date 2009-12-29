@@ -70,23 +70,12 @@ Vector3D& Vector3D::operator+=( const Vector3D& vector )
     return *this;
 }
 
-Vector3D Vector3D::operator+( const Vector3D& vector ) const
-{
-    return Vector3D( x + vector.x, y + vector.y, z + vector.z );
-}
-
 Vector3D& Vector3D::operator-=( const Vector3D& vector )
 {
     x -= vector.x;
     y -= vector.y;
     z -= vector.z;
     return *this;
-}
-
-
-Vector3D Vector3D::operator-( const Vector3D& vector ) const
-{
-    return Vector3D( x - vector.x, y - vector.y, z - vector.z );
 }
 
 Vector3D& Vector3D::operator*=( double scalar )
@@ -164,6 +153,17 @@ double Vector3D::length( ) const
     return std::sqrt( x*x + y*y + z*z );
 }
 
+Vector3D operator+( Vector3D lhs, const Vector3D& rhs )
+{
+	//lhs take by value to let the compile to make the copy
+	return lhs += rhs;
+}
+
+Vector3D operator-( Vector3D lhs, const Vector3D& rhs )
+{
+	//lhs take by value to let the compile to make the copy
+	return lhs -= rhs;
+}
 
 Vector3D operator*( double scalar, const Vector3D& vector )
 {
