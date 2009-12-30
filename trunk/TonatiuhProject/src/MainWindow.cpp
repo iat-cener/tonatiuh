@@ -1020,26 +1020,34 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 
 	//Random Ray generator
-	ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), 100, this);
+	const int maximumValueProgressScale = 25;
+	unsigned long raysPerInnerLoop = m_raysPerIteration / maximumValueProgressScale;
 
-	for ( long unsigned i = 0; i < m_raysPerIteration; ++i )
+	ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), maximumValueProgressScale, this);
+
+	Ray ray;
+	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 	{
-		Ray ray;
-		//Generate ray origin and direction in the Light coordinate system
-		ray.origin = raycastingShape->Sample( m_rand->RandomDouble( ), m_rand->RandomDouble( ) );
-		sunShape->generateRayDirection( ray.direction, *m_rand );
+		for ( long unsigned i = 0; i < raysPerInnerLoop; ++i )
+		{
+			ray.mint = tgc::Epsilon;
+			ray.maxt = tgc::Infinity;
 
-		//Transform ray to World coordinate system and trace the scene
-		ray = lightToWorld( ray );
+			//Generate ray origin and direction in the Light coordinate system
+			ray.origin = raycastingShape->Sample( m_rand->RandomDouble( ), m_rand->RandomDouble( ) );
+			sunShape->generateRayDirection( ray.direction, *m_rand );
 
-		//Perform Ray Trace
-		tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_rand );
-		progress.Update();
- 	}
+			//Transform ray to World coordinate system and trace the scene
+			ray = lightToWorld( ray );
+
+			//Perform Ray Trace
+			tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_rand );
+		}
+		progress.Update( progressCount*raysPerInnerLoop );
+	}
 	m_tracedRays += m_raysPerIteration;
 
 	ShowRaysIn3DView();
-	progress.Done();
 
 	QDateTime date2 = QDateTime::currentDateTime();
 	std::cout<<"Finish time: "<<date2.toString().toStdString()<<std::endl;

@@ -49,46 +49,17 @@ ProgressUpdater::ProgressUpdater( int totalWork, const QString &title, int bar_l
 	m_progressDialog->setCancelButton( NULL);
 	m_progressDialog->setVisible( true );
 
-	m_barsPrinted = 0;
-	m_frequency = (float)totalWork / (float)m_totalBars;
-	m_count = m_frequency;
-	m_timer = new Timer();
-	m_timer->Start();
+	m_totalWork = totalWork;
+	m_barsPerUnitWork = m_totalBars/m_totalWork;
 }
 
 ProgressUpdater::~ProgressUpdater()
 {
-	delete m_timer;
 	delete m_progressDialog;
 }
 
-void ProgressUpdater::Update(int num) const
+void ProgressUpdater::Update( int work )
 {
-	m_count -= num;
-    bool updatedAny = false;
-    while (m_count <= 0)
-    {
-			m_count += m_frequency;
-			if (m_barsPrinted++ < m_totalBars)
-				m_progressDialog->setValue(m_barsPrinted);
-			updatedAny = true;
-	}
-/*
-
-	if (updatedAny)
-	{
-			// Update elapsed time and estimated time to completion
-			float percentDone = (float)m_barsPrinted / (float)m_totalBars;
-			float seconds = (float) m_timer->Time();
-			// float estRemaining = seconds / percentDone - seconds;
-			// cout << "(" << seconds << "s|" << estRemaining <<"s)" << endl;
-	}
-*/
-}
-
-
-void ProgressUpdater::Done() const
-{
-	// cout << "Total Time: " << m_timer->Time();
+	m_progressDialog->setValue( work * m_barsPerUnitWork );
 }
 
