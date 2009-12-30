@@ -40,11 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define PROGRESSUPDATER_H_
 
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 #include <QProgressDialog>
-
-#include "Timer.h"
 
 class ProgressUpdater
 {
@@ -52,17 +50,13 @@ public:
 	ProgressUpdater(int totalWork, const QString &title, int barLength, QWidget* creator);
 	~ProgressUpdater();
 
-	void Update(int num = 1) const;
-	void Done() const;
+	void Update( int num = 1 );
 
 private:
 	QProgressDialog* m_progressDialog;
     const int m_totalBars;
-    float m_frequency;
-    mutable float m_count;
-    mutable int m_barsPrinted;
-    mutable Timer *m_timer;
-    mutable char *m_curSpace;
+    double m_totalWork;
+    double m_barsPerUnitWork;
 };
 
 #endif /* PROGRESSUPDATER_H_ */
