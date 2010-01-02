@@ -114,7 +114,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 #include "TTrackerFactory.h"
 
-
 void startManipulator(void *data, SoDragger* dragger)
 {
 	MainWindow* mainwindow = static_cast< MainWindow* >( data );
@@ -854,6 +853,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 
 		TLightKit* lightKit = dialog.GetTLightKit();
 		if( !lightKit ) return;
+
 		lightKit->setName( "Light" );
 
  		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );

@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 #include "TLightKit.h"
 
-
 /**
  * Creates a new lightKit modification command that represents a new light defined as \a newLightKit to the \a scene.
  *
@@ -62,16 +61,18 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
     {
     	m_previousLightKit = true;
     	TLightKit* lightKit = dynamic_cast< TLightKit* >( m_scene->getPart("lightList[0]", false ) );
+    	if( lightKit )
+    	{
+			m_previousAzimuth = lightKit->azimuth.getValue();
+			m_previousZenith = lightKit->zenith.getValue();
+			m_previousDistance = lightKit->distance.getValue();
 
-    	m_previousAzimuth = lightKit->azimuth.getValue();
-    	m_previousZenith = lightKit->zenith.getValue();
-    	m_previousDistance = lightKit->distance.getValue();
+			m_pPreviousShape = dynamic_cast< TShape* >( lightKit->getPart( "icon", false )->copy( true ) );
+			if ( m_pPreviousShape ) m_pPreviousShape->ref();
 
-    	m_pPreviousShape = dynamic_cast< TShape* >( lightKit->getPart( "icon", false )->copy( true ) );
-    	m_pPreviousShape->ref();
-
-    	m_pPreviousSunShape = dynamic_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
-    	m_pPreviousSunShape->ref();
+			m_pPreviousSunShape = dynamic_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
+			if( m_pPreviousSunShape ) m_pPreviousSunShape->ref();
+    	}
     }
 }
 

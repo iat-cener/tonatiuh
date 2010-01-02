@@ -98,7 +98,6 @@ TLightKit* LightDialog::GetTLightKit()
 
 	lightKit->ChangePosition( azimuthSpin->value()* tgc::Degree, ( 90 - elevationSpin->value() ) * tgc::Degree, distanceSpin->value() );
 	return lightKit;
-
 }
 
 /*!
@@ -186,14 +185,6 @@ void LightDialog::ShapeBox( )
 	shapeCombo->addItem ( "---" );
 	for( int j = 0; j <(int) shapeFactoryList.size(); ++j )
 		shapeCombo->addItem( shapeFactoryList[j]->TShapeIcon(), shapeFactoryList[j]->TShapeName(), m_shapeList.key( shapeFactoryList[j] ) );
-
-	//Select current LightKit Shape
-	m_currentShapeIndex = 0;
-	if( m_newShape )
-	{
-		QString name( m_newShape->getTypeId().getName() );
-		m_currentShapeIndex = shapeCombo->findData( name );
-	}
 
 	//Select current LightKit Shape
 	m_currentShapeIndex = 0;
