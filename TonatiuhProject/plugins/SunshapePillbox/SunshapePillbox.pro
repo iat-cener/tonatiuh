@@ -10,13 +10,11 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS = src/*.h \
-           	$$(TONATIUH_ROOT)/src/Trace.h \
-           	$$(TONATIUH_ROOT)/src/TSunShape.h 
+           	$$(TONATIUH_ROOT)/src/source/raytracing/TSunShape.h 
 
 
 SOURCES = src/*.cpp \
-           	$$(TONATIUH_ROOT)/src/Trace.cpp \
-           	$$(TONATIUH_ROOT)/src/TSunShape.cpp
+           	$$(TONATIUH_ROOT)/src/source/raytracing/TSunShape.cpp
 
 RESOURCES += src/SunshapePillbox.qrc	
 TARGET        = SunshapePillbox

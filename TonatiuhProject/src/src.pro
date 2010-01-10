@@ -10,7 +10,17 @@ include( ../config.pri )
 TARGET = Tonatiuh   
 
 DEPENDPATH += . \
-              src 
+              src \
+              src/source \
+              src/source/application \
+              src/source/aux \
+              src/source/geometry \
+              src/source/gui \
+              src/source/raytracing \
+              src/source/statistics
+              
+ 
+              
 QT += xml opengl svg
 
 
@@ -24,9 +34,19 @@ mac:{
 }
 
 # Input
-HEADERS += *.h
-FORMS += *.ui
-SOURCES += *.cpp
+HEADERS += source/application/*.h \
+           source/aux/*.h \
+           source/geometry/*.h \
+           source/gui/*.h \
+           source/raytracing/*.h \
+           source/statistics/*.h 
+FORMS += source/gui/*.ui
+SOURCES += source/application/*.cpp \
+           source/aux/*.cpp \
+           source/geometry/*.cpp \
+           source/gui/*.cpp \
+           source/raytracing/*.cpp \
+           source/statistics/*.cpp 
 RESOURCES += tonatiuh.qrc
  
 
