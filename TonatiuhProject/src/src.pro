@@ -13,7 +13,7 @@ DEPENDPATH += . \
               src \
               src/source \
               src/source/application \
-              src/source/aux \
+              src/source/auxiliary \
               src/source/geometry \
               src/source/gui \
               src/source/raytracing \
@@ -35,14 +35,14 @@ mac:{
 
 # Input
 HEADERS += source/application/*.h \
-           source/aux/*.h \
+           source/auxiliary/*.h \
            source/geometry/*.h \
            source/gui/*.h \
            source/raytracing/*.h \
            source/statistics/*.h 
 FORMS += source/gui/*.ui
 SOURCES += source/application/*.cpp \
-           source/aux/*.cpp \
+           source/auxiliary/*.cpp \
            source/geometry/*.cpp \
            source/gui/*.cpp \
            source/raytracing/*.cpp \
