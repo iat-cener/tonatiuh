@@ -52,6 +52,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TLightKit.h"
 #include "TShapeKit.h"
 
+
 void selectionFinishCallback( void * userData, SoSelection* selection )
 {
 	Document* document = static_cast< Document* >( userData  );
@@ -102,7 +103,9 @@ void Document::InitializeScene()
     m_scene->setSearchingChildren( true );
 }
 
-
+/*!
+ * Initializes the document with a empty scene.
+ */
 void Document::New()
 {
     InitializeScene();
@@ -126,6 +129,9 @@ void Document::ClearScene()
     m_scene = 0;
 }
 
+/*!
+ * Sets the scene form \a fileName to the document.
+ */
 bool Document::ReadFile( const QString& fileName )
 {
     if( SoSceneKit* inputScene = GetSceneKitFromFile( fileName ) )
@@ -219,6 +225,9 @@ SoSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
    return static_cast< SoSceneKit* >( graphSeparator->getChild(0) );
 }
 
+/*!
+ * Emits a signal to indicate that a document scene nodes selection changes has been finished.
+ */
 void Document::selectionFinishCBAux( SoSelection* selection )
 {
     emit selectionFinish( selection );

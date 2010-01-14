@@ -41,6 +41,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QObject>
 
+//!  Document class stores the application scene.
+/*!
+
+*/
+
 class QString;
 class SoSelection;
 class SoSeparator;
