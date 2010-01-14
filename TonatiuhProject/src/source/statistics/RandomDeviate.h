@@ -39,6 +39,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RANDOMDEVIATE_H_
 #define RANDOMDEVIATE_H_
 
+//!  RandomDeviate is the base class for random generators.
+/*!
+  A random generator class can be written based on this class.
+*/
+
 class RandomDeviate
 {
 public:

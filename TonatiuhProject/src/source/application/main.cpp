@@ -51,6 +51,20 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeKit.h"
 #include "TSquare.h"
 
+/*!
+  \mainpage
+The Tonatiuh project aims to create an open source, cutting-edge, accurate, and easy to use Monte Carlo ray tracer for the optical simulation of solar concentrating systems. It intends to advance the state-of-the-art of the simulation tools available for the design and analysis of solar concentrating systems, and to make those tools freely available to anyone interested in using and improving them. Some of the most relevant design goals of Tonatiuh are:
+<ol>
+  <li>To develop a robust theoretical foundation that will facilitate the optical simulation of almost any type of solar concentrating systems.</li>
+  <li>To exhibit a clean and flexible software architecture, that will allow the user to adapt, expand, increase, and modify its functionalities with ease.</li>
+  <li>To achieve operating system independence at source level, and run on all major platforms with none, or minor, modifications to its source code.</li>
+  <li>To provide the users with an advanced and easy-of-use Graphic User Interface (GUI).</li>
+  </ol>
+
+ <b>IMPORTANT NOTE: the online documentation for the Tonatiuh is still a work-in-progress.</b>
+*/
+
+
 //!  Application entry point.
 /*!
   Tonatiuh's main() function. It starts SoQt and Coin3D. It also initializes the

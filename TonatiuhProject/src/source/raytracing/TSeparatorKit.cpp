@@ -46,6 +46,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 SO_KIT_SOURCE(TSeparatorKit);
 
+/**
+ * Does initialization common for all objects of the TSeparatorKit class.
+ * This includes setting up the type system, among other things.
+ */
 void TSeparatorKit::initClass()
 {
 	SO_KIT_INIT_CLASS(TSeparatorKit, SoSeparatorKit, "SeparatorKit");
