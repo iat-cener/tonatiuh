@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML><HEAD></HEAD><BODY>
+<OBJECT type="text/site properties">
+<param name="FrameName" value="right">
+</OBJECT>
+<UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#201dbc32e4bde1f36a053b00ca33a6c1"><param name="Name" value="AddChild"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#32832a17b2dbe45c4e32d8b3466078e3"><param name="Name" value="applyChanges"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#3d54a49543d03e021ed7dafa86ce17a4"><param name="Name" value="ChangeGPSPosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555"><param name="Name" value="ChangePosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html"><param name="Name" value="CmdCopy"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#436118a14fec3a30e03227fc9fe3638d"><param name="Name" value="CmdCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#9382bb594dc2b7a2d0c6a8a7fdaae885"><param name="Name" value="~CmdCopy"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html"><param name="Name" value="CmdCut"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#70f3400e838170331347fa4179c4b001"><param name="Name" value="CmdCut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#5eab68232b3d774797ba7ac5b16c82b8"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#6a6d40c7a475df168868bef3751bf7e9"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#62652c31d754786353f69b476aa9c1f3"><param name="Name" value="~CmdCut"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html"><param name="Name" value="CmdDelete"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#82e4e18339540c2b81ce4a17e2d7a69a"><param name="Name" value="CmdDelete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#babbc03830ad1fe82cef935fc0fd7e5e"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#447f65329ba6705f7d4b731f7094e548"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#eccf7317ad66e2a425012b076da5e9b5"><param name="Name" value="~CmdDelete"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html"><param name="Name" value="CmdInsertShape"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#539f1ad18ef831c85b9aca1b7b2f5f8d"><param name="Name" value="CmdInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#b7a5ba8c795362e2280bf91e6dc68b43"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#f7432da6f9c79464fb1b9dd0a0866574"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#569949ce3620ac15e73f47b0b2f7bcfd"><param name="Name" value="~CmdInsertShape"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html"><param name="Name" value="CmdLightKitModified"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#9d1e7ab8e456d00e6ad4d6be36f71d0b"><param name="Name" value="CmdLightKitModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#1a619f08d037316bbe57bb54cefc9716"><param name="Name" value="~CmdLightKitModified"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a146cb97cb53a5406ee7778b95c03948"><param name="Name" value="createEditor"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#9595789ae3f3397b0ff4431c9009f4f6"><param name="Name" value="DrawPhotons"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#20556f504d31352331d1e87cd5ce04fa"><param name="Name" value="GetCoordinates"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#192241e1dd66255a683f640227f42c00"><param name="Name" value="getIcon"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#64677cb50f6b3311c1a59f5cc100439e"><param name="Name" value="GetNodeURL"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54"><param name="Name" value="GetNumRays"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35"><param name="Name" value="GetParent"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#2a4c513eead5e8a494f506d31b32163a"><param name="Name" value="GetPhotonMapFactoryIndex"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#fc04a1db903b7f6885355daab7995a14"><param name="Name" value="GetPositionData"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371"><param name="Name" value="GetRaysFactionToDraw"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_graphic_view.html"><param name="Name" value="GraphicView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1"><param name="Name" value="IncreasePhotonMap"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e"><param name="Name" value="initClass"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e"><param name="Name" value="TLightKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#39fe90220b298997f64bed54bd61d6a4"><param name="Name" value="TSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#db688b468a8dcaf49a8fd7544e0a677f"><param name="Name" value="TShapeKit"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#307c27c42cfda3954609b058e3863725"><param name="Name" value="InsertChild"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html"><param name="Name" value="InstanceNode"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#201dbc32e4bde1f36a053b00ca33a6c1"><param name="Name" value="AddChild"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#64677cb50f6b3311c1a59f5cc100439e"><param name="Name" value="GetNodeURL"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35"><param name="Name" value="GetParent"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#307c27c42cfda3954609b058e3863725"><param name="Name" value="InsertChild"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#4d2a0d187b1d0ab329a9a5f478aa9119"><param name="Name" value="Intersect"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#20732854ca4a7493e1282584f2904668"><param name="Name" value="IntersectP"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html"><param name="Name" value="MainWindow"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#743e7c76c6f71cbc94e6d5047ac0a0ba"><param name="Name" value="on_actionExport_PhotonMap_triggered"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768"><param name="Name" value="on_actionRayTraceOptions_triggered"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#008c49cc8b137a002a34ad008f121ed6"><param name="Name" value="parameterModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#6017d43535c81c10e65a20163b7dac8a"><param name="Name" value="ReadyForRaytracing"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#273eaf8e1fd63c33a11ab7e5b41f1ac0"><param name="Name" value="SetEnabled_SunPositionCalculator"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#68dea9a15289cb06b948aa018e191f7f"><param name="Name" value="ShowRaysIn3DView"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html"><param name="Name" value="MapDialog"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#3d54a49543d03e021ed7dafa86ce17a4"><param name="Name" value="ChangeGPSPosition"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#20556f504d31352331d1e87cd5ce04fa"><param name="Name" value="GetCoordinates"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#9c9d373d5a111c5b8a652327148c6e6c"><param name="Name" value="SetCoordinates"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#d2fd5cbf058013431a325414473b5b93"><param name="Name" value="sideBarShown"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#0b40ad9c2c3687221c8f315c767c81bb"><param name="Name" value="UpdateCurrentPosition"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html"><param name="Name" value="NodeNameDelegate"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a146cb97cb53a5406ee7778b95c03948"><param name="Name" value="createEditor"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#3ce11b0659c7beff9cfe0237493eebff"><param name="Name" value="NodeNameDelegate"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#70a3a3f1378e8d29cb4a7e9c3247413f"><param name="Name" value="setEditorData"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#e45a5a1461409a0f51dd8cee615580b8"><param name="Name" value="setModelData"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#671c08ae9a2573dab5e931ab621549e3"><param name="Name" value="~NodeNameDelegate"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#743e7c76c6f71cbc94e6d5047ac0a0ba"><param name="Name" value="on_actionExport_PhotonMap_triggered"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768"><param name="Name" value="on_actionRayTraceOptions_triggered"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#008c49cc8b137a002a34ad008f121ed6"><param name="Name" value="parameterModified"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html"><param name="Name" value="RayTraceDialog"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#32832a17b2dbe45c4e32d8b3466078e3"><param name="Name" value="applyChanges"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#9595789ae3f3397b0ff4431c9009f4f6"><param name="Name" value="DrawPhotons"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54"><param name="Name" value="GetNumRays"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#2a4c513eead5e8a494f506d31b32163a"><param name="Name" value="GetPhotonMapFactoryIndex"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371"><param name="Name" value="GetRaysFactionToDraw"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1"><param name="Name" value="IncreasePhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13"><param name="Name" value="RayTraceDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ef25abfd82e88f1e04b2830915a1763b"><param name="Name" value="saveChanges"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae"><param name="Name" value="~RayTraceDialog"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#6017d43535c81c10e65a20163b7dac8a"><param name="Name" value="ReadyForRaytracing"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="redo"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="CmdCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#5eab68232b3d774797ba7ac5b16c82b8"><param name="Name" value="CmdCut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#babbc03830ad1fe82cef935fc0fd7e5e"><param name="Name" value="CmdDelete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#b7a5ba8c795362e2280bf91e6dc68b43"><param name="Name" value="CmdInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e"><param name="Name" value="CmdLightKitModified"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ef25abfd82e88f1e04b2830915a1763b"><param name="Name" value="saveChanges"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#9c9d373d5a111c5b8a652327148c6e6c"><param name="Name" value="SetCoordinates"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#70a3a3f1378e8d29cb4a7e9c3247413f"><param name="Name" value="setEditorData"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#273eaf8e1fd63c33a11ab7e5b41f1ac0"><param name="Name" value="SetEnabled_SunPositionCalculator"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#e45a5a1461409a0f51dd8cee615580b8"><param name="Name" value="setModelData"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#3474b6ec94c234b2859c8cba3e19518f"><param name="Name" value="setPart"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#68dea9a15289cb06b948aa018e191f7f"><param name="Name" value="ShowRaysIn3DView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#d2fd5cbf058013431a325414473b5b93"><param name="Name" value="sideBarShown"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html"><param name="Name" value="TLightKit"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555"><param name="Name" value="ChangePosition"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#fc04a1db903b7f6885355daab7995a14"><param name="Name" value="GetPositionData"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e"><param name="Name" value="initClass"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#37e21153bc35291a8f8a711fbda8cad4"><param name="Name" value="TLightKit"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html"><param name="Name" value="TPhotonMap"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#754f423508929cfdc18f7ad03dfc9d55"><param name="Name" value="TPhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#e37e4a66264cdba6b33e737619658426"><param name="Name" value="~TPhotonMap"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html"><param name="Name" value="TSeparatorKit"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#192241e1dd66255a683f640227f42c00"><param name="Name" value="getIcon"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#39fe90220b298997f64bed54bd61d6a4"><param name="Name" value="initClass"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#3474b6ec94c234b2859c8cba3e19518f"><param name="Name" value="setPart"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#4d654da635a04924911078d68bd3ebfd"><param name="Name" value="TSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#0c542ea90c7cc56b864275f759ff3a42"><param name="Name" value="~TSeparatorKit"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html"><param name="Name" value="TShapeKit"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#db688b468a8dcaf49a8fd7544e0a677f"><param name="Name" value="initClass"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#4d2a0d187b1d0ab329a9a5f478aa9119"><param name="Name" value="Intersect"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#20732854ca4a7493e1282584f2904668"><param name="Name" value="IntersectP"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#247b092baea68dd7ab22076a819142de"><param name="Name" value="TShapeKit"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="undo"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="CmdCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#6a6d40c7a475df168868bef3751bf7e9"><param name="Name" value="CmdCut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#447f65329ba6705f7d4b731f7094e548"><param name="Name" value="CmdDelete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#f7432da6f9c79464fb1b9dd0a0866574"><param name="Name" value="CmdInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675"><param name="Name" value="CmdLightKitModified"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#0b40ad9c2c3687221c8f315c767c81bb"><param name="Name" value="UpdateCurrentPosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#9382bb594dc2b7a2d0c6a8a7fdaae885"><param name="Name" value="~CmdCopy"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#62652c31d754786353f69b476aa9c1f3"><param name="Name" value="~CmdCut"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#eccf7317ad66e2a425012b076da5e9b5"><param name="Name" value="~CmdDelete"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#569949ce3620ac15e73f47b0b2f7bcfd"><param name="Name" value="~CmdInsertShape"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#1a619f08d037316bbe57bb54cefc9716"><param name="Name" value="~CmdLightKitModified"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#671c08ae9a2573dab5e931ab621549e3"><param name="Name" value="~NodeNameDelegate"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae"><param name="Name" value="~RayTraceDialog"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#e37e4a66264cdba6b33e737619658426"><param name="Name" value="~TPhotonMap"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#0c542ea90c7cc56b864275f759ff3a42"><param name="Name" value="~TSeparatorKit"></OBJECT>
+</UL>
+</BODY>
+</HTML>
