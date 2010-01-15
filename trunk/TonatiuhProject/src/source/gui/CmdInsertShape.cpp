@@ -64,7 +64,7 @@ CmdInsertShape::~CmdInsertShape()
 }
 
 /*!
- * Reverts model state. After undo() is called, the shapekit node will not contain a shape type node.
+ * Reverts model state. After undo() is called, the \a shapekit node will not contain a shape type node.
  * \sa redo().
  */
 void CmdInsertShape::undo()
@@ -74,7 +74,7 @@ void CmdInsertShape::undo()
 }
 
 /*!
- * Applies a change to the model. After redo() the model will contain new shape node located as shapekit type node child.
+ * Applies a change to the model. After redo() the model will contain new shape node located as \a shapekit type node child.
  * \sa undo().
  */
 void CmdInsertShape::redo( )

@@ -45,6 +45,11 @@ class QModelIndex;
 class TShapeKit;
 class SceneModel;
 
+//!  CmdInsertShapeKit class is the insert command for tshapekit nodes  stored in the command stack.
+/*!
+  CmdInsertShapeKit represents a single tshapekit insertion action on a scene, insert a new tshapekit node to the scene.
+*/
+
 class CmdInsertShapeKit : public QUndoCommand
 {
 public:

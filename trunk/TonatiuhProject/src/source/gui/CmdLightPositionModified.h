@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TLightKit;
 
-
 class CmdLightPositionModified : public QUndoCommand
 {
 

@@ -41,16 +41,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QObject>
 
-//!  Document class stores the application scene.
-/*!
-
-*/
-
 class QString;
 class SoSelection;
 class SoSeparator;
 class SoSceneKit;
 class TShapeKit;
+
+//!  Document class stores the application scene.
+/*!
+ * This class is not yet documented.
+*/
 
 class Document : public QObject
 {
