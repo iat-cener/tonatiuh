@@ -49,6 +49,7 @@ class TShape;
 /*!
   CmdInsertShape represents a single shape insertion action on a scene, insert a new shape node to the scene.
 */
+
 class CmdInsertShape : public QUndoCommand
 {
 public:

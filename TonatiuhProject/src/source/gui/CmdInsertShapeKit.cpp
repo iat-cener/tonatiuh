@@ -72,7 +72,7 @@ CmdInsertShapeKit::~CmdInsertShapeKit()
 }
 
 /*!
- * Reverts model state. After undo() is called, the shapekit node will be removed from the parent node.
+ * Reverts model state. After undo() is called, the \a shapekit node will be removed from the parent node.
  * \sa redo().
  */
 void CmdInsertShapeKit::undo()
@@ -81,7 +81,7 @@ void CmdInsertShapeKit::undo()
 }
 
 /*!
- * Applies a change to the model. After redo() the model will contain new shapekit node.
+ * Applies a change to the model. After redo() the model will contain new \a shapekit node.
  * \sa undo().
  */
 void CmdInsertShapeKit::redo( )

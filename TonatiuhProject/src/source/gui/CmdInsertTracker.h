@@ -47,6 +47,11 @@ class TTracker;
 class SceneModel;
 class SoSceneKit;
 
+//!  CmdInsertTracker class is the insert command for trackers stored in the command stack.
+/*!
+  CmdInsertTracker represents a single shape insertion action on a scene, insert a new trackers node to the scene.
+*/
+
 class CmdInsertTracker : public QUndoCommand
 {
 public:

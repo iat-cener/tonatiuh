@@ -49,13 +49,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TLightKit.h"
 #include "TTracker.h"
 
+/**
+ * Creates a new tracker insert command that adds a \a tracker to a parent node with \a parentIndex in the \a model.
+ *
+ * If \a parent is not null, this command is appended to parent's child list and then owns this command.
+ */
 CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SoSceneKit* scene, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_scene( scene ), m_pModel( model ), m_row( 0 )
 {
 	if( !m_tracker ) tgf::SevereError( "CmdInsertTracker Null tracker." );
 	m_tracker->ref();
-
-	//if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdInsertTracker Null lightKit." );
 
 	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertTracker called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
@@ -63,11 +66,18 @@ CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& paren
 	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
 }
 
+/*!
+ * Destroys the CmdInsertTracker object.
+ */
 CmdInsertTracker::~CmdInsertTracker()
 {
 	m_tracker->unref();
 }
 
+/*!
+ * Reverts model state. After undo() is called, the parentIndex node will not contain a tracker type node.
+ * \sa redo().
+ */
 void CmdInsertTracker::undo()
 {
 	m_tracker->Disconnect();
@@ -75,7 +85,7 @@ void CmdInsertTracker::undo()
 }
 
 /**
- *Inserts the tracker in the scene model.
+ *Inserts the tracker in the scene model as a \a parentIndex child.
  */
 void CmdInsertTracker::redo()
 {
