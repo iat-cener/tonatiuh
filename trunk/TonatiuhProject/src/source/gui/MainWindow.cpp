@@ -69,7 +69,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
 
 #include "ActionInsertMaterial.h"
-#include "ActionInsertPhotonMap.h"
 #include "ActionInsertShape.h"
 #include "ActionInsertTracker.h"
 #include "CmdCopy.h"
@@ -470,8 +469,7 @@ void MainWindow::LoadMaterialPlugin( QObject* plugin )
 void MainWindow::LoadPhotonMapPlugin( QObject* plugin )
 {
 	TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
-	if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap plug-in not recognized" );
-	//pTPhotonMapFactory->CreateTPhotonMap();
+	if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap plug-in not recognized" );;
 	m_TPhotonMapFactoryList.push_back( pTPhotonMapFactory );
 }
 

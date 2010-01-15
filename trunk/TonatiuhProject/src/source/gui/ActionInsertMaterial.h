@@ -45,7 +45,7 @@ class TMaterialFactory;
 
 //!  ActionInsertMaterial class is the action to insert material in the scene.
 /*!
-  ActionInsertMaterial is the action added to menu and toolbar for each material plugin. The ac
+  ActionInsertMaterial is the action added to menu and toolbar for each material plugin.
 */
 
 class ActionInsertMaterial : public QAction
