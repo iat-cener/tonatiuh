@@ -43,6 +43,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TTrackerFactory;
 
+//! ActionInsertTracker class is the action to insert a tracker in the scene.
+/*!
+  ActionInsertTracker is the action added to menu and toolbar for each tracker plugin.
+*/
+
 class ActionInsertTracker : public QAction
 {
 	Q_OBJECT

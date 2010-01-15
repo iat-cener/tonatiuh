@@ -47,6 +47,12 @@ class SceneModel;
 class TSeparatorKit;
 class TTracker;
 
+//!  CmdDeleteTracker class is the delete command for trackers nodes stored in the command stack.
+/*!
+  CmdDeleteTracker represents a single tracker node delete action on a scene. Deletes a node from the scene.
+   \sa CmdDelete, CmdCopy, CmdCut, CmdPaste
+*/
+
 class CmdDeleteTracker : public QUndoCommand
 {
 public:

@@ -47,7 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSeparatorKit.h"
 #include "TTracker.h"
 
-/**
+/*!
  * Contructor.
  */
 CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit* scene, SceneModel& model, QUndoCommand* parent )
@@ -70,7 +70,7 @@ CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit
 
 }
 
-/**
+/*!
  * Destructor.
  */
 CmdDeleteTracker::~CmdDeleteTracker()
@@ -78,7 +78,7 @@ CmdDeleteTracker::~CmdDeleteTracker()
 	m_tracker->unref();
 }
 
-/**
+/*!
  * Restores the tracker to the state before deletion.
  * \sa redo
  */

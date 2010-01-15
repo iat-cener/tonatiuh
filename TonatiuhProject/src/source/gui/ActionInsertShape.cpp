@@ -39,16 +39,24 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ActionInsertShape.h"
 #include "TShapeFactory.h"
 
-
+/**
+ * Constructor.
+ */
 ActionInsertShape::ActionInsertShape ( const QString& text, QObject* parent, TShapeFactory* pTShapeFactory )
 : QAction(text,parent), m_pTShapeFactory(pTShapeFactory)
 {
 }
 
+/**
+ * Destructor.
+ */
 ActionInsertShape::~ActionInsertShape()
 {
 }
 
+/**
+ * Emits a create shape signal.
+ */
 void ActionInsertShape::OnActionInsertShapeTriggered()
 {
 	emit CreateShape( m_pTShapeFactory );
