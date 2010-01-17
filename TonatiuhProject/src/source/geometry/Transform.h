@@ -62,28 +62,25 @@ public:
                double t10, double t11, double t12, double t13,
 	           double t20, double t21, double t22, double t23,
 	           double t30, double t31, double t32, double t33 );
-	Transform( const Transform& rhs );
 
-	Transform Transpose() const;
-	Transform GetInverse() const ;
 	Point3D operator()( const Point3D& point ) const;
-	void operator()( const Point3D& point, Point3D* transformedPoint ) const;
+	void operator()( const Point3D& point, Point3D& transformedPoint ) const;
 	Vector3D operator()( const Vector3D& vector ) const;
-	void operator()( const Vector3D& vector, Vector3D* transformedVector ) const;
+	void operator()( const Vector3D& vector, Vector3D& transformedVector ) const;
 	NormalVector operator()( const NormalVector& normal ) const;
-	void operator()( const NormalVector& normal, NormalVector* transformedNormal ) const;
+	void operator()( const NormalVector& normal, NormalVector& transformedNormal ) const;
 	Ray operator()( const Ray& ray ) const;
-	void operator()( const Ray& ray, Ray* transformedRay ) const;
+	void operator()( const Ray& ray, Ray& transformedRay ) const;
 	BBox operator()( const BBox& bbox  ) const;
-	void operator()( const BBox& bbox, BBox* transformedBbox  ) const;
+	void operator()( const BBox& bbox, BBox& transformedBbox  ) const;
 	Transform operator*( const Transform& rhs ) const;
-	bool SwapsHandedness( ) const;
 
 	bool operator==( const Transform& mat ) const;
 
 	Ptr<Matrix4x4> GetMatrix() const {return m_mdir;}
-
-	friend std::ostream& operator<<( std::ostream& os, const Transform& tran );
+	Transform Transpose() const;
+	Transform GetInverse() const ;
+	bool SwapsHandedness( ) const;
 
 private:
 	Ptr<Matrix4x4> m_mdir;
@@ -99,7 +96,7 @@ Transform RotateZ( double angle );
 Transform Rotate( double angle, const Vector3D& axis );
 Transform LookAt( const Point3D& pos, const Point3D& look, const Vector3D& up );
 
-//std::ostream& operator<<( std::ostream& os, const Transform& tran );
+std::ostream& operator<<( std::ostream& os, const Transform& tran );
 
 #endif /*TRANSFORMATION_H_*/
 
