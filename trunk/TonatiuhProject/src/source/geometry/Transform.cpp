@@ -36,8 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <cmath>
-#include <cfloat>
+#include "tgc.h"
 
 #include "BBox.h"
 #include "NormalVector.h"
@@ -45,8 +44,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 
 Transform::Transform()
+: m_mdir(0), m_minv(0)
 {
-	m_mdir = m_minv = new Matrix4x4;
+
 }
 
 Transform::Transform( double mat[4][4] )
@@ -83,93 +83,72 @@ Transform::Transform( double t00, double t01, double t02, double t03,
 
 }
 
-Transform::Transform( const Transform& rhs )
-: m_mdir(rhs.m_mdir), m_minv(rhs.m_minv)
-{
-
-}
-
-Transform Transform::GetInverse() const
-{
-	return Transform( m_minv, m_mdir );
-}
-
-Transform Transform::Transpose() const
-{
-	return Transform( m_mdir->Transpose(), m_mdir->Transpose()->Inverse() );
-}
-
 Point3D Transform::operator()( const Point3D& point ) const
 {
-	double x = point.x, y = point.y, z = point.z;
-	double xp = m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z + m_mdir->m[0][3];
-	double yp = m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z + m_mdir->m[1][3];
-	double zp = m_mdir->m[2][0]*x + m_mdir->m[2][1]*y + m_mdir->m[2][2]*z + m_mdir->m[2][3];
-	double wp = m_mdir->m[3][0]*x + m_mdir->m[3][1]*y + m_mdir->m[3][2]*z + m_mdir->m[3][3];
+	double xp = m_mdir->m[0][0]*point.x + m_mdir->m[0][1]*point.y + m_mdir->m[0][2]*point.z + m_mdir->m[0][3];
+	double yp = m_mdir->m[1][0]*point.x + m_mdir->m[1][1]*point.y + m_mdir->m[1][2]*point.z + m_mdir->m[1][3];
+	double zp = m_mdir->m[2][0]*point.x + m_mdir->m[2][1]*point.y + m_mdir->m[2][2]*point.z + m_mdir->m[2][3];
+	double wp = m_mdir->m[3][0]*point.x + m_mdir->m[3][1]*point.y + m_mdir->m[3][2]*point.z + m_mdir->m[3][3];
 
 	if( wp == 1.0 ) return Point3D( xp, yp, zp );
 	else return Point3D( xp, yp, zp )/wp;
 
 }
 
-void Transform::operator()( const Point3D& point, Point3D* transformedPoint ) const
+void Transform::operator()( const Point3D& point, Point3D& transformedPoint ) const
 {
-	double x = point.x, y = point.y, z = point.z;
-	transformedPoint->x = m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z + m_mdir->m[0][3];
-	transformedPoint->y = m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z + m_mdir->m[1][3];
-	transformedPoint->z = m_mdir->m[2][0]*x + m_mdir->m[2][1]*y + m_mdir->m[2][2]*z + m_mdir->m[2][3];
-	double transformedW = m_mdir->m[3][0]*x + m_mdir->m[3][1]*y + m_mdir->m[3][2]*z + m_mdir->m[3][3];
-	if( transformedW != 1.0 ) *transformedPoint /= transformedW;
+	transformedPoint.x = m_mdir->m[0][0]*point.x + m_mdir->m[0][1]*point.y + m_mdir->m[0][2]*point.z + m_mdir->m[0][3];
+	transformedPoint.y = m_mdir->m[1][0]*point.x + m_mdir->m[1][1]*point.y + m_mdir->m[1][2]*point.z + m_mdir->m[1][3];
+	transformedPoint.z = m_mdir->m[2][0]*point.x + m_mdir->m[2][1]*point.y + m_mdir->m[2][2]*point.z + m_mdir->m[2][3];
+	double transformedW = m_mdir->m[3][0]*point.x + m_mdir->m[3][1]*point.y + m_mdir->m[3][2]*point.z + m_mdir->m[3][3];
+
+	if( transformedW != 1.0 ) transformedPoint /= transformedW;
 }
 
 Vector3D Transform::operator()( const Vector3D& vector ) const
 {
-	double x = vector.x, y = vector.y, z = vector.z;
-	return Vector3D( m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z,
-			         m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z,
-			         m_mdir->m[2][0]*x + m_mdir->m[2][1]*y + m_mdir->m[2][2]*z );
+	return Vector3D( m_mdir->m[0][0]*vector.x + m_mdir->m[0][1]*vector.y + m_mdir->m[0][2]*vector.z,
+			         m_mdir->m[1][0]*vector.x + m_mdir->m[1][1]*vector.y + m_mdir->m[1][2]*vector.z,
+			         m_mdir->m[2][0]*vector.x + m_mdir->m[2][1]*vector.y + m_mdir->m[2][2]*vector.z );
 }
 
-void Transform::operator()( const Vector3D& vector, Vector3D* transformedVector ) const
+void Transform::operator()( const Vector3D& vector, Vector3D& transformedVector ) const
 {
-	double x = vector.x, y = vector.y, z = vector.z;
-	transformedVector->x = m_mdir->m[0][0]*x + m_mdir->m[0][1]*y + m_mdir->m[0][2]*z;
-	transformedVector->y = m_mdir->m[1][0]*x + m_mdir->m[1][1]*y + m_mdir->m[1][2]*z;
-	transformedVector->z = m_mdir->m[2][0]*x + m_mdir->m[2][1]*y + m_mdir->m[2][2]*z;
+	transformedVector.x = m_mdir->m[0][0]*vector.x + m_mdir->m[0][1]*vector.y + m_mdir->m[0][2]*vector.z;
+	transformedVector.y = m_mdir->m[1][0]*vector.x + m_mdir->m[1][1]*vector.y + m_mdir->m[1][2]*vector.z;
+	transformedVector.z = m_mdir->m[2][0]*vector.x + m_mdir->m[2][1]*vector.y + m_mdir->m[2][2]*vector.z;
 }
 
 NormalVector Transform::operator()( const NormalVector& normal ) const
 {
-	double x = normal.x, y = normal.y, z = normal.z;
-	return NormalVector( m_minv->m[0][0]*x + m_minv->m[1][0]*y + m_minv->m[2][0]*z,
-                   m_minv->m[0][1]*x + m_minv->m[1][1]*y + m_minv->m[2][1]*z,
-                   m_minv->m[0][2]*x + m_minv->m[1][2]*y + m_minv->m[2][2]*z );
+	return NormalVector( m_minv->m[0][0]*normal.x + m_minv->m[1][0]*normal.y + m_minv->m[2][0]*normal.z,
+                         m_minv->m[0][1]*normal.x + m_minv->m[1][1]*normal.y + m_minv->m[2][1]*normal.z,
+                         m_minv->m[0][2]*normal.x + m_minv->m[1][2]*normal.y + m_minv->m[2][2]*normal.z );
 }
 
-void Transform::operator()( const NormalVector& normal, NormalVector* transformedNormal ) const
+void Transform::operator()( const NormalVector& normal, NormalVector& transformedNormal ) const
 {
-	double x = normal.x, y = normal.y, z = normal.z;
-	transformedNormal->x = m_minv->m[0][0]*x + m_minv->m[1][0]*y + m_minv->m[2][0]*z;
-	transformedNormal->y = m_minv->m[0][1]*x + m_minv->m[1][1]*y + m_minv->m[2][1]*z;
-	transformedNormal->z = m_minv->m[0][2]*x + m_minv->m[1][2]*y + m_minv->m[2][2]*z;
+	transformedNormal.x = m_minv->m[0][0]*normal.x + m_minv->m[1][0]*normal.y + m_minv->m[2][0]*normal.z;
+	transformedNormal.y = m_minv->m[0][1]*normal.x + m_minv->m[1][1]*normal.y + m_minv->m[2][1]*normal.z;
+	transformedNormal.z = m_minv->m[0][2]*normal.x + m_minv->m[1][2]*normal.y + m_minv->m[2][2]*normal.z;
 }
 
 Ray Transform::operator()( const Ray& ray ) const
 {
 	Ray transformedRay;
-	( *this )( ray.origin, &transformedRay.origin );
-	( *this )( ray.direction, &transformedRay.direction );
+	( *this )( ray.origin, transformedRay.origin );
+	( *this )( ray.direction, transformedRay.direction );
 	transformedRay.mint = ray.mint;
 	transformedRay.maxt = ray.maxt;
 	return transformedRay;
 }
 
-void Transform::operator()( const Ray& ray, Ray* transformedRay ) const
+void Transform::operator()( const Ray& ray, Ray& transformedRay ) const
 {
-	( *this )( ray.origin, &transformedRay->origin );
-	( *this )( ray.direction, &transformedRay->direction );
-	transformedRay->mint = ray.mint;
-	transformedRay->maxt = ray.maxt;
+	( *this )( ray.origin, transformedRay.origin );
+	( *this )( ray.direction, transformedRay.direction );
+	transformedRay.mint = ray.mint;
+	transformedRay.maxt = ray.maxt;
 }
 
 BBox Transform::operator()( const BBox& bbox  ) const
@@ -186,19 +165,18 @@ BBox Transform::operator()( const BBox& bbox  ) const
 	return ret;
 }
 
-void Transform::operator()( const BBox& bbox, BBox* transformedBbox  ) const
+void Transform::operator()( const BBox& bbox, BBox& transformedBbox  ) const
 {
-	const Transform &M = *this;
-	transformedBbox = new BBox(          M( Point3D( bbox.pMin.x, bbox.pMin.y, bbox.pMin.z ) ) );
-	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMax.x, bbox.pMin.y, bbox.pMin.z ) ) );
-	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMin.x, bbox.pMax.y, bbox.pMin.z ) ) );
-	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMin.x, bbox.pMin.y, bbox.pMax.z ) ) );
-	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMin.x, bbox.pMax.y, bbox.pMax.z ) ) );
-	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMax.x, bbox.pMax.y, bbox.pMin.z ) ) );
-	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMax.x, bbox.pMin.y, bbox.pMax.z ) ) );
-	*transformedBbox = Union( *transformedBbox, M( Point3D( bbox.pMax.x, bbox.pMax.y, bbox.pMax.z ) ) );
+	const Transform& transform = *this;
+	transformedBbox = BBox( transform( Point3D( bbox.pMin.x, bbox.pMin.y, bbox.pMin.z ) ) );
+	transformedBbox = Union( transformedBbox, transform( Point3D( bbox.pMax.x, bbox.pMin.y, bbox.pMin.z ) ) );
+	transformedBbox = Union( transformedBbox, transform( Point3D( bbox.pMin.x, bbox.pMax.y, bbox.pMin.z ) ) );
+	transformedBbox = Union( transformedBbox, transform( Point3D( bbox.pMin.x, bbox.pMin.y, bbox.pMax.z ) ) );
+	transformedBbox = Union( transformedBbox, transform( Point3D( bbox.pMin.x, bbox.pMax.y, bbox.pMax.z ) ) );
+	transformedBbox = Union( transformedBbox, transform( Point3D( bbox.pMax.x, bbox.pMax.y, bbox.pMin.z ) ) );
+	transformedBbox = Union( transformedBbox, transform( Point3D( bbox.pMax.x, bbox.pMin.y, bbox.pMax.z ) ) );
+	transformedBbox = Union( transformedBbox, transform( Point3D( bbox.pMax.x, bbox.pMax.y, bbox.pMax.z ) ) );
 }
-
 
 Transform Transform::operator*( const Transform& rhs ) const
 {
@@ -206,6 +184,38 @@ Transform Transform::operator*( const Transform& rhs ) const
 	Ptr<Matrix4x4> minv = Mul( rhs.m_minv, m_minv );
 	return Transform( mdir, minv );
 }
+
+bool Transform::operator==( const Transform& tran ) const
+{
+	if( this == &tran ) return true;
+    else return( ( fabs(m_mdir->m[0][0] - tran.m_mdir->m[0][0]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[0][1] - tran.m_mdir->m[0][1]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[0][2] - tran.m_mdir->m[0][2]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[0][3] - tran.m_mdir->m[0][3]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][0] - tran.m_mdir->m[1][0]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][1] - tran.m_mdir->m[1][1]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][2] - tran.m_mdir->m[1][2]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][3] - tran.m_mdir->m[1][3]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[2][0] - tran.m_mdir->m[2][0]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[2][1] - tran.m_mdir->m[2][1]) < tgc::Epsilon ) &&
+			     ( fabs(m_mdir->m[2][2] - tran.m_mdir->m[2][2]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[2][3] - tran.m_mdir->m[2][3]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][0] - tran.m_mdir->m[3][0]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][1] - tran.m_mdir->m[3][1]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][2] - tran.m_mdir->m[3][2]) < tgc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][3] - tran.m_mdir->m[3][3]) < tgc::Epsilon ) );
+}
+
+Transform Transform::GetInverse() const
+{
+	return Transform( m_minv, m_mdir );
+}
+
+Transform Transform::Transpose() const
+{
+	return Transform( m_mdir->Transpose(), m_mdir->Transpose()->Inverse() );
+}
+
 
 bool Transform::SwapsHandedness( ) const
 {
@@ -221,29 +231,6 @@ bool Transform::SwapsHandedness( ) const
 	return det < 0.0;
 }
 
-bool Transform::operator==( const Transform& tran ) const
-{
-	if( this == &tran )
-    	return true;
-    else
-    return(
-    	( fabs(m_mdir->m[0][0] - tran.m_mdir->m[0][0]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[0][1] - tran.m_mdir->m[0][1]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[0][2] - tran.m_mdir->m[0][2]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[0][3] - tran.m_mdir->m[0][3]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[1][0] - tran.m_mdir->m[1][0]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[1][1] - tran.m_mdir->m[1][1]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[1][2] - tran.m_mdir->m[1][2]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[1][3] - tran.m_mdir->m[1][3]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[2][0] - tran.m_mdir->m[2][0]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[2][1] - tran.m_mdir->m[2][1]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[2][2] - tran.m_mdir->m[2][2]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[2][3] - tran.m_mdir->m[2][3]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[3][0] - tran.m_mdir->m[3][0]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[3][1] - tran.m_mdir->m[3][1]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[3][2] - tran.m_mdir->m[3][2]) < DBL_EPSILON ) &&
-    	( fabs(m_mdir->m[3][3] - tran.m_mdir->m[3][3]) < DBL_EPSILON ) );
-}
 
 Transform Translate( const Vector3D& delta )
 {
@@ -367,7 +354,7 @@ Transform Rotate( double angle, const Vector3D& axis )
 
 Transform LookAt( const Point3D& pos, const Point3D& look, const Vector3D& up )
 {
-	 double m[4][4];
+	double m[4][4];
 	m[0][3] = pos.x;
 	m[1][3] = pos.y;
 	m[2][3] = pos.z;
