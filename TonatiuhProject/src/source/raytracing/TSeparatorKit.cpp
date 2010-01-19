@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <QString>
 
 #include <Inventor/nodes/SoSeparator.h>
@@ -85,6 +86,7 @@ SbBool  TSeparatorKit::setPart(const SbName& partname, SoNode* from )
 {
     if( partname == "tracker" )
     {
+
     	SoTransform* parentTransform = static_cast< SoTransform* > ( getPart("transform", true ) );
     	if( !parentTransform ) return false;
 
@@ -98,7 +100,7 @@ SbBool  TSeparatorKit::setPart(const SbName& partname, SoNode* from )
     	}
     	else
     	{
-        	TTracker* trackerNode = dynamic_cast< TTracker* >( from );
+        	TTracker* trackerNode = static_cast< TTracker* >( from );
         	parentTransform->translation.connectFrom( &trackerNode->outputTranslation );
         	parentTransform->rotation.connectFrom( &trackerNode->outputRotation );
         	parentTransform->scaleFactor.connectFrom( &trackerNode->outputScaleFactor );

@@ -104,6 +104,7 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 
     SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
 
+
     if ( coinPartList && coinPartList->getNumChildren() == 0 )
     {
     	TSeparatorKit* separatorKit = new TSeparatorKit();
@@ -179,7 +180,7 @@ void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 			SoNode* tracker = parentKit->getPart( "tracker", false );
 			if( tracker )
 			{
-				TTracker* trackerNode = dynamic_cast< TTracker* >( tracker );
+				TTracker* trackerNode = static_cast< TTracker* >( tracker );
 				trackerNode->SetSceneKit( m_coinScene );
 
 				InstanceNode* trackerChild = new InstanceNode( tracker );
@@ -425,7 +426,7 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 	for( int index = 0; index <trackersPath.getLength(); ++index )
 	{
 		SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
-		TTracker* tracker = dynamic_cast< TTracker* >( trackerPath->getTail() );
+		TTracker* tracker = static_cast< TTracker* >( trackerPath->getTail() );
 		tracker->SetAzimuthAngle( &coinLight.azimuth );
 		tracker->SetZenithAngle( &coinLight.zenith );
 	}
