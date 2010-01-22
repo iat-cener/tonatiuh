@@ -12,9 +12,9 @@ The installation binaries are created with a Java. To install Tonatiuh you need 
 
 ==Installation==
 
-To install Tonatiuh with application installer download the installaer for your OS from [http://code.google.com/p/tonatiuh/downloads/list Downlaods].
+To install Tonatiuh with application installer download the installer for your OS from [http://code.google.com/p/tonatiuh/downloads/list Downlaods].
 
- * Double-click to launch the OpenOffice.org installation program.
+ * Double-click to launch the Tonatiuh installation program.
  * Follow the wizard and  will be installed on your system.
  * Tonatiuh is ready to use.
 
