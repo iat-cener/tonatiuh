@@ -37,10 +37,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
+#include <QMessageBox>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "DifferentialGeometry.h"
 #include "Ray.h"
@@ -61,8 +63,16 @@ ShapeTroughParabola::ShapeTroughParabola()
 {
 	SO_NODE_CONSTRUCTOR(ShapeTroughParabola);
 	SO_NODE_ADD_FIELD( focusLength, (0.125) );
+	SO_NODE_ADD_FIELD( x1, (-0.5) );
+	SO_NODE_ADD_FIELD( x2, (0.5) );
 	SO_NODE_ADD_FIELD( length, (1.0) );
-	SO_NODE_ADD_FIELD( width, (1.0) );
+	//SO_NODE_ADD_FIELD( width, (1.0) );
+
+
+	SoFieldSensor* m_x1Sensor = new SoFieldSensor(updateX1Values, this);
+	m_x1Sensor->attach( &x1 );
+	SoFieldSensor* m_x2Sensor = new SoFieldSensor(updateX2Values, this);
+	m_x2Sensor->attach( &x2 );
 
 }
 
@@ -106,11 +116,16 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
     Point3D hitPoint = objectRay( thit );
 
 	// Test intersection against clipping parameters
-	double xmin = -width.getValue() / 2;
-	double xmax = width.getValue() / 2;
+	double xmin = x1.getValue();
+	double xmax = x2.getValue();
+	//double width = xmax - xmin;
+
+	double y1 = ( x1.getValue() * x1.getValue() ) / ( 4 * focusLength.getValue() );
+	double y2 = ( x2.getValue() * x2.getValue() ) / ( 4 * focusLength.getValue() );
 
 	double ymin = 0.0;
-	double ymax = ( (width.getValue() / 2) * (width.getValue() / 2) ) / ( 4 * focusLength.getValue() );
+	if( ( xmin * xmax ) > 0 ) ymin = std::min( y1, y2 );
+	double ymax = std::max( y1, y2 );
 
 	if( hitPoint.z < 0.0 ||
 		hitPoint.z > length.getValue() ||
@@ -191,11 +206,34 @@ Point3D ShapeTroughParabola::Sample( double u, double v ) const
 	return GetPoint3D( u, v );
 }
 
+void ShapeTroughParabola::updateX1Values( void *data, SoSensor *)
+{
+	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
+	if( shapeTroughParabola->x2.getValue() < shapeTroughParabola->x1.getValue() )
+	{
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "x1 must be smaller than x2. ") );
+		shapeTroughParabola->x1.setValue( shapeTroughParabola->x2.getValue() );
+	}
+}
+
+void ShapeTroughParabola::updateX2Values( void *data, SoSensor *)
+{
+	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
+	if( shapeTroughParabola->x2.getValue() < shapeTroughParabola->x1.getValue() )
+	{
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "x2 must be larger than x1. ") );
+		shapeTroughParabola->x2.setValue( shapeTroughParabola->x1.getValue()  );
+	}
+}
+
 Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 {
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-		double x = u * width.getValue() - width.getValue() / 2;
+	double xmin = x1.getValue();
+	double xmax = x2.getValue();
+
+	double x = ( xmax - xmin ) *  u + xmin;
 	double y = ( x * x ) /( 4 * focusLength.getValue() );
 	double z = v * length.getValue();
 
@@ -220,15 +258,16 @@ bool ShapeTroughParabola::OutOfRange( double u, double v ) const
 
 void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double xmin = -width.getValue() / 2;
-	double xmax = width.getValue() / 2;
+	double y1 = ( x1.getValue() * x1.getValue() ) / ( 4 * focusLength.getValue() );
+	double y2 = ( x2.getValue() * x2.getValue() ) / ( 4 * focusLength.getValue() );
 
 	double ymin = 0.0;
-	double ymax = ( (width.getValue() / 2) * (width.getValue() / 2) ) / ( 4 * focusLength.getValue() );
+	if( ( x1.getValue() * x2.getValue() ) > 0 ) ymin = std::min( y1, y2 );
+	double ymax = std::max( y1, y2 );
 
 	double zmin = 0.0;
 	double zmax = length.getValue();
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
+	box.setBounds(SbVec3f( x1.getValue(), ymin, zmin ), SbVec3f( x2.getValue(), ymax, zmax ) );
 }
 
 void ShapeTroughParabola::generatePrimitives(SoAction *action)
