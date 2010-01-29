@@ -3,6 +3,8 @@ TEMPLATE = subdirs
 SUBDIRS =  MaterialBasicRefractive \
 			MaterialStandardSpecular \
 			PhotonMapDefault \
+			RandomMersenneTwister \
+			RandomRngStream \
 			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \

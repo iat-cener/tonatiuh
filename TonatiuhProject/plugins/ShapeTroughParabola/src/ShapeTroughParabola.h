@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TShape.h"
 
+class SoSensor;
 
 class ShapeTroughParabola : public TShape
 {
@@ -61,10 +62,15 @@ public:
 	Point3D Sample( double u, double v) const;
 
 	SoSFDouble focusLength;
+	SoSFDouble x1;
+	SoSFDouble x2;
 	SoSFDouble length;
-	SoSFDouble width;
+	//SoSFDouble width;
  
 protected:
+	static void updateX1Values( void *data, SoSensor *);
+	static void updateX2Values( void *data, SoSensor *);
+
 	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
