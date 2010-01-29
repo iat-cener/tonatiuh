@@ -45,7 +45,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QString>
 #include <QVector>
 
+class RandomDeviateFactory;
 class TPhotonMapFactory;
+
 //!  RayTraceDialog class is the dialog to set ray trace options.
 /*!
   RayTraceDialog allow to the user modify ray tracer default options.
@@ -59,10 +61,14 @@ class RayTraceDialog: public QDialog, private Ui::RayTraceDialog
 
 public:
 	RayTraceDialog( QWidget * parent = 0, Qt::WindowFlags f = 0 );
-	RayTraceDialog( int numRays, double fraction, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedPhotonMapFactory = 0, bool increasePhotonMap = false, QWidget * parent = 0, Qt::WindowFlags f = 0 );
+	RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > randomFactoryList,
+				double fraction, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList,
+				int selectedRandomFactory = 0, int selectedPhotonMapFactory = 0, bool increasePhotonMap = false,
+				QWidget * parent = 0, Qt::WindowFlags f = 0 );
     ~RayTraceDialog();
 
     int GetNumRays() const;
+    int GetRandomDeviateFactoryIndex() const;
 
     double GetRaysFactionToDraw() const;
     bool DrawPhotons() const;
@@ -76,6 +82,7 @@ public slots:
 
 private:
 	int m_numRays; /*!< Number of rays to trace. */
+	int m_selectedRandomFactory; /*!< The index of factory selected from TPhotonMapFactory list. */
 
 	double m_fraction; /*!< Faction of traced rays to draw. */
 	bool m_drawPhotons;  /*!<This property holds whether photons are going to be drawn. */
