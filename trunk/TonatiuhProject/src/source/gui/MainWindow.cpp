@@ -89,10 +89,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "GraphicView.h"
 #include "InstanceNode.h"
 #include "MainWindow.h"
-#include "MersenneTwister.h"
 #include "NodeNameDelegate.h"
 #include "ProgressUpdater.h"
 #include "RandomDeviate.h"
+#include "RandomDeviateFactory.h"
 #include "Ray.h"
 #include "RayTraceDialog.h"
 #include "SceneModel.h"
@@ -137,17 +137,19 @@ m_materialsToolBar( 0 ),
 m_photonMapToolBar(0),
 m_shapeToolBar( 0 ),
 m_trackersToolBar( 0 ),
+m_RandomDeviateFactoryList( 0 ),
 m_TPhotonMapFactoryList( 0 ),
 m_TFlatShapeFactoryList( 0 ),
 m_TSunshapeFactoryList( 0 ),
 m_sceneModel( 0 ),
 m_selectionModel( 0 ),
+m_rand( 0 ),
+m_selectedRandomDeviate( -1 ),
 m_photonMap( 0 ),
 m_selectedPhotonMap( -1 ),
 m_increasePhotonMap( false ),
 m_pRays( 0 ),
 m_pGrid( 0 ),
-m_rand( 0 ),
 m_coinNode_Buffer( 0 ),
 m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ),
@@ -159,7 +161,6 @@ m_treeView( 0 ),
 m_focusView( 0 )
 {
 	setupUi( this );
-    SetupRandomNumberGenerator();
     SetupActions();
     SetupMenus();
     SetupDocument();
@@ -175,12 +176,6 @@ MainWindow::~MainWindow()
 	delete m_rand;
 	delete[] m_recentFileActions;
 	delete m_photonMap;
-}
-
-void MainWindow::SetupRandomNumberGenerator()
-{
-    unsigned long seed = QTime::currentTime().msec();
-    m_rand = new MersenneTwister( seed );
 }
 
 void MainWindow::SetupActions()
@@ -433,12 +428,20 @@ void MainWindow::LoadTonatiuhPlugin( const QString& fileName )
     QObject* plugin = loader.instance();
     if ( plugin != 0)
     {
+    	if( plugin->inherits( "RandomDeviateFactory") ) LoadRandomDeviatePlugin( plugin );
     	if( plugin->inherits( "TShapeFactory"    ) ) LoadShapePlugin( plugin );
     	if( plugin->inherits( "TSunShapeFactory" ) ) LoadSunshapePlugin( plugin );
     	if( plugin->inherits( "TMaterialFactory" ) ) LoadMaterialPlugin( plugin );
     	if( plugin->inherits( "TPhotonMapFactory") ) LoadPhotonMapPlugin( plugin );
     	if( plugin->inherits( "TTrackerFactory"  ) ) LoadTrackerPlugin( plugin );
 	}
+}
+
+void MainWindow::LoadRandomDeviatePlugin( QObject* plugin )
+{
+	RandomDeviateFactory* pRamdomDeviateFactory = qobject_cast<RandomDeviateFactory* >( plugin );
+	if ( !pRamdomDeviateFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Random Deviate plug-in not recognized" );
+	m_RandomDeviateFactoryList.push_back( pRamdomDeviateFactory );
 }
 
 void MainWindow::LoadShapePlugin( QObject* plugin )
@@ -936,6 +939,12 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
 
 
+	//Check if there is a random generator selected;
+	if( m_selectedRandomDeviate == -1 ) return false;
+
+	//Create the random generator
+	if( !m_rand )	m_rand =  m_RandomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
+
 	//Check if there is a photon map type selected;
 	if( m_selectedPhotonMap == -1 ) return false;
 
@@ -1195,10 +1204,17 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
  */
 void MainWindow::on_actionRayTraceOptions_triggered()
 {
-	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedPhotonMap, m_increasePhotonMap, this );
+	double oldSelectedRandomDeviate = m_selectedRandomDeviate;
+	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_RandomDeviateFactoryList, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
 	options->exec();
 
 	m_raysPerIteration = options->GetNumRays();
+	m_selectedRandomDeviate = options->GetRandomDeviateFactoryIndex();
+	if( oldSelectedRandomDeviate != m_selectedRandomDeviate )
+	{
+		delete m_rand;
+		m_rand = 0;
+	}
 
     m_fraction = options->GetRaysFactionToDraw();
     m_drawPhotons = options->DrawPhotons();

@@ -49,6 +49,7 @@ class QDir;
 class QUndoStack;
 class QUndoView;
 class RandomDeviate;
+class RandomDeviateFactory;
 class SbBox3f;
 class SbViewportRegion;
 class SceneModel;
@@ -175,7 +176,6 @@ protected:
 
 
 private:
-    void SetupRandomNumberGenerator();
     void SetupActions();
     void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
     QMenu* CreateMaterialsMenu( );
@@ -196,6 +196,7 @@ private:
    	void SetupParametersView();
 	void LoadAvailablePlugins( );
 	void LoadTonatiuhPlugin( const QString& fileName );
+	void LoadRandomDeviatePlugin( QObject* plugin );
 	void LoadShapePlugin( QObject* plugin );
 	void LoadSunshapePlugin( QObject* plugin );
 	void LoadMaterialPlugin( QObject* plugin );
@@ -235,6 +236,7 @@ private:
     QToolBar* m_shapeToolBar;
     QToolBar* m_trackersToolBar;
 
+	QVector< RandomDeviateFactory* > m_RandomDeviateFactoryList;
 	QVector< TPhotonMapFactory* > m_TPhotonMapFactoryList;
     QVector< TShapeFactory* > m_TFlatShapeFactoryList;
 	QVector< TSunShapeFactory* > m_TSunshapeFactoryList;
@@ -242,13 +244,15 @@ private:
     SceneModel* m_sceneModel;
     QItemSelectionModel* m_selectionModel;
 
+    RandomDeviate* m_rand;
+    int m_selectedRandomDeviate;
+
     TPhotonMap* m_photonMap;
     int m_selectedPhotonMap;
     bool m_increasePhotonMap;
 
     SoSeparator* m_pRays;
     SoSeparator* m_pGrid;
-    RandomDeviate* m_rand;
     SoNode* m_coinNode_Buffer;
     QStringList* m_manipulators_Buffer;
     unsigned long m_tracedRays;

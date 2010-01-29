@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QFileDialog>
 #include <QDir>
 
+#include "RandomDeviateFactory.h"
 #include "RayTraceDialog.h"
 #include "TPhotonMapFactory.h"
 
@@ -49,7 +50,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * The variables take the default values.
  */
 RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ), m_numRays( 0 ), m_fraction( 0.0 ), m_drawPhotons( false ), m_selectedPhotonMapFactory( -1 ), m_increasePhotonMap( false )
+:QDialog ( parent, f ), m_numRays( 0 ), m_selectedRandomFactory( -1 ), m_fraction( 0.0 ), m_drawPhotons( false ), m_selectedPhotonMapFactory( -1 ), m_increasePhotonMap( false )
 {
 	setupUi( this );
 	connect( this, SIGNAL( accepted() ), this, SLOT( saveChanges() ) );
@@ -61,20 +62,28 @@ RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
  *
  * The variables take the values specified by \a numRats, \a faction, \a drawPhotons and \a increasePhotonMap.
  */
-RayTraceDialog::RayTraceDialog( int numRays, double fraction, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedPhotonMapFactory, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ), m_numRays( numRays ), m_fraction( fraction ), m_drawPhotons( drawPhotons ), m_selectedPhotonMapFactory( selectedPhotonMapFactory ), m_increasePhotonMap( increasePhotonMap )
+RayTraceDialog::RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > randomFactoryList, double fraction, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedRandomFactory, int selectedPhotonMapFactory, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
+:QDialog ( parent, f ), m_numRays( numRays ), m_selectedRandomFactory(selectedRandomFactory), m_fraction( fraction ), m_drawPhotons( drawPhotons ), m_selectedPhotonMapFactory( selectedPhotonMapFactory ), m_increasePhotonMap( increasePhotonMap )
 {
 	setupUi( this );
 	raysSpinBox->setValue( m_numRays );
+	for( int index = 0; index < randomFactoryList.size(); ++index )
+	{
+		randomCombo->addItem( randomFactoryList[index]->RandomDeviateIcon(), randomFactoryList[index]->RandomDeviateName() );
+	}
+	if( m_selectedRandomFactory < 0 && randomFactoryList.size() > 0 )
+		m_selectedRandomFactory =0;
+	randomCombo->setCurrentIndex( m_selectedRandomFactory );
+
 	drawSpin->setValue( m_fraction );
 	photonsCheck->setChecked( m_drawPhotons );
 
-	photonmapTypeCombo->addItem( "------------" );
 	for( int index = 0; index < photonMapFactoryList.size(); ++index )
 	{
 		photonmapTypeCombo->addItem( photonMapFactoryList[index]->TPhotonMapIcon(), photonMapFactoryList[index]->TPhotonMapName() );
 	}
-	photonmapTypeCombo->setCurrentIndex( m_selectedPhotonMapFactory + 1 );
+	if( ( m_selectedPhotonMapFactory < 0  ) & ( photonMapFactoryList.size() > 0 ) ) m_selectedPhotonMapFactory = 0;
+	photonmapTypeCombo->setCurrentIndex( m_selectedPhotonMapFactory );
 
 	if ( m_increasePhotonMap )
 		increaseMapRadio->setChecked( true );
@@ -107,6 +116,15 @@ double RayTraceDialog::GetRaysFactionToDraw() const
 {
 	return m_fraction;
 };
+
+/**
+ * Returns the factory to create a new random generator.
+ */
+int RayTraceDialog::GetRandomDeviateFactoryIndex() const
+{
+	return m_selectedRandomFactory;
+}
+
 
 /**
  * Returns if the photons are going to be represented.
@@ -146,11 +164,12 @@ void RayTraceDialog::applyChanges( QAbstractButton* button  )
 void RayTraceDialog::saveChanges()
 {
 	m_numRays = raysSpinBox->value();
+	m_selectedRandomFactory = randomCombo->currentIndex();
 
 	m_fraction = drawSpin->value();
 	m_drawPhotons = photonsCheck->isChecked();
 
-	m_selectedPhotonMapFactory = photonmapTypeCombo->currentIndex() - 1;
+	m_selectedPhotonMapFactory = photonmapTypeCombo->currentIndex();
 	if( newMapRadio->isChecked() )
 		m_increasePhotonMap = false;
 	else
