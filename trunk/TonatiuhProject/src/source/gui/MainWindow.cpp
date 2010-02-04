@@ -940,13 +940,21 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 
 
 	//Check if there is a random generator selected;
-	if( m_selectedRandomDeviate == -1 ) return false;
+	if( m_selectedRandomDeviate == -1 )
+	{
+		if( m_RandomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
+		else	return false;
+	}
 
 	//Create the random generator
 	if( !m_rand )	m_rand =  m_RandomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
 
 	//Check if there is a photon map type selected;
-	if( m_selectedPhotonMap == -1 ) return false;
+	if( m_selectedPhotonMap == -1 )
+	{
+		if( m_TPhotonMapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
+		else	return false;
+	}
 
 	//Create the photon map where photons are going to be stored
 	if( !m_increasePhotonMap )
