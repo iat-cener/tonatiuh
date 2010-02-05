@@ -11,20 +11,15 @@ Download the latest release of !SoQt, currently !SoQt 1.4.1, from the Coin3D web
 {{{
 tar -zxvf SoQt-1.4.1.tar.gz
 }}}
-This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the MSYS shell navigate to the just created !SoQt-1.4.1. directory and type:
+This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the shell navigate to the just created !SoQt-1.4.1. directory and type:
 {{{
 export COINDIR="/usr/local"
 export INCLUDE="/usr/local/include:/usr/local/Trolltech/Qt-4.5.2/include"
 }}}
 
-The configure command is different if you want to build libraries in debug or release mode. For the debug mode type:
+Type configure command for release build:
 {{{
-env CPPFLAGS=-DCOIN_DLL ./configure --enable-qt-debug --with-suffix=_debug --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.2
-}}}
-
-For release type:
-{{{
-env CPPFLAGS=-DCOIN_DLL ./configure --enable-debug=no --enable-symbols=no --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.2
+./configure --enable-debug=no --enable-symbols=no --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.5.2
 }}}
 
 This will start the configuration process. This process should finish succesfully with the following message:
