@@ -15,11 +15,6 @@ tar -zxvf simage-1.6.1.tar.gz
 
 This will create a directory called _simage-1.6.1_ in your download directory. Using the shell, navigate to the just created simage-1.6.1 directory.
 
-Type the following command to build the debug version of the simage library:
-{{{
-./configure --with-qt=/usr/local/Trolltech/Qt-4.5.2 --with-suffix=_debug
-}}}
-
 Type the following command to build the release version of the simage library:
 {{{
 ./configure --with-qt=/usr/local/Trolltech/Qt-4.5.2 --enable-debug=no --enable-symbols=no
