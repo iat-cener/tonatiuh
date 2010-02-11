@@ -979,22 +979,22 @@ void MainWindow::ShowRaysIn3DView()
 {
 	actionDisplay_rays->setEnabled( false );
 	actionDisplay_rays->setChecked( false );
+
+	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
+
 	if( m_pRays )
 	{
-		if ( actionDisplay_rays->isChecked() )	m_document->GetRoot()->removeChild( 0 );
 		m_pRays->removeAllChildren();
-		int32_t numberOfReferences = m_pRays->getRefCount();
-		for( int i = 0; i < numberOfReferences; ++i ) m_pRays->unref();
+		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
+		m_pRays->unref();
 		m_pRays = 0;
 	}
 
-	while( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  )	m_document->GetRoot()->removeChild( 0 );
 	if( m_fraction > 0.0 || m_drawPhotons )
 	{
 		m_pRays = new SoSeparator;
 		m_pRays->ref();
 		m_pRays->setName( "Rays" );
-
 
 		if( m_drawPhotons )
 		{
@@ -1888,11 +1888,14 @@ bool MainWindow::StartOver( const QString& fileName )
 	actionDisplay_rays->setEnabled( false );
 	actionDisplay_rays->setChecked( false );
 
+	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
+
 	if( m_pRays )
 	{
-		while ( m_pRays->getRefCount( ) > 0 ) m_pRays->unref();
+		m_pRays->removeAllChildren();
+		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
+		m_pRays->unref();
 		m_pRays = 0;
-
 	}
 
 	m_commandStack->clear();
