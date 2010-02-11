@@ -983,7 +983,8 @@ void MainWindow::ShowRaysIn3DView()
 	{
 		if ( actionDisplay_rays->isChecked() )	m_document->GetRoot()->removeChild( 0 );
 		m_pRays->removeAllChildren();
-		while ( m_pRays->getRefCount( ) > 0 ) m_pRays->unref();
+		int32_t numberOfReferences = m_pRays->getRefCount();
+		for( int i = 0; i < numberOfReferences; ++i ) m_pRays->unref();
 		m_pRays = 0;
 	}
 
