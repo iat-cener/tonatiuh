@@ -121,7 +121,7 @@ void LightDialog::changeSunshape( int index )
 
 	}
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( m_newSunShape, QString() );
-	nodeContainer->setFixedSize( QSize( 170, 100 ) );
+	//nodeContainer->setFixedSize( QSize( 170, 100 ) );
 	frameLayout->addWidget( nodeContainer );
 }
 
@@ -149,7 +149,7 @@ void LightDialog::changeShape( int index )
 	}
 
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( m_newShape, QString() );
-	nodeContainer->setFixedSize( QSize( 170, 100 ) );
+	//nodeContainer->setFixedSize( QSize( 170, 100 ) );
 	frameLayout->addWidget( nodeContainer );
 }
 
@@ -196,7 +196,7 @@ void LightDialog::ShapeBox( )
 
 	QVBoxLayout* parametersShapeLayout = new QVBoxLayout;
 	parametersShapeLayout->setContentsMargins ( 0, 0, 0, 0 );
-	parametersShapeLayout->setSizeConstraint( QLayout::SetFixedSize );
+	//parametersShapeLayout->setSizeConstraint( QLayout::SetFixedSize );
 	shapeParametersFrame->setLayout( parametersShapeLayout );
     changeShape( m_currentShapeIndex );
     shapeCombo->setCurrentIndex( m_currentShapeIndex );
@@ -222,7 +222,7 @@ void LightDialog::SunshapeBox()
 
 	QVBoxLayout* parametersSunShapeLayout = new QVBoxLayout;
 	parametersSunShapeLayout->setContentsMargins ( 0, 0, 0, 0 );
-	parametersSunShapeLayout->setSizeConstraint( QLayout::SetFixedSize );
+	//parametersSunShapeLayout->setSizeConstraint( QLayout::SetFixedSize );
 	sunshapeParametersFrame->setLayout( parametersSunShapeLayout );
     changeSunshape( m_currentSunShapeIndex );
     sunshapeCombo->setCurrentIndex( m_currentSunShapeIndex );
