@@ -306,9 +306,9 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
     		vertex[h][2] = point.z;
-    		vertex[h][3] = normal.x;
-    		vertex[h][4] = normal.y;
-    		vertex[h][5] = normal.z;
+    		vertex[h][3] = -normal.x;
+    		vertex[h][4] = -normal.y;
+    		vertex[h][5] = -normal.z;
 
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
     		h++; //Increase h to the next point.
