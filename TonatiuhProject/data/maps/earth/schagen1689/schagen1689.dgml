@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgml xmlns="http://edu.kde.org/marble/dgml/2.0">
+    <document>
+        <head>
+            <name>Historical Map 1689</name>
+            <target>earth</target>
+            <theme>schagen1689</theme>
+            <icon pixmap="schagen1689-preview.png"/>
+    
+            <!-- describes whether the map theme item will be hidden (e.g.
+                for a clouds layer): -->
+            <visible> true </visible>
+        
+            <!-- The description allows for rich text of course: -->
+	    <description><![CDATA[<i>Historical world map</i> from the year 1689 created by G. van Schagen in Amsterdam.]]></description>
+    
+            <zoom>
+                <minimum>  1000  </minimum>
+                <maximum>  1500  </maximum>
+    
+                <!-- describes whether you can zoom trough the levels
+                    continuously -->
+                <discrete> false </discrete> 
+            </zoom>
+        </head>
+        
+            <!-- Now we create the layer structure that gets handled by the
+    layer management class -->
+        
+        <map bgcolor="#000000" labelColor="#ffffff">
+            <canvas/>
+            <!-- In this place one could e.g. insert a sky plugin -->
+            <target/>
+        
+            <!-- This layer creates the elevation model -->
+            <layer name="schagen1689" backend="texture">
+                <texture name="schagen1689_data"><!-- type="texture"-->
+                    <sourcedir format="JPG"> earth/schagen1689 </sourcedir>
+                    <installmap> schagen1689.jpg </installmap>
+                </texture>
+            </layer>
+
+            <layer name="mwdbii" backend="vector" role="polyline">
+                <vector name="pcoast" feature="coast">
+                    <sourcefile format="PNT"> earth/mwdbii/PCOAST.PNT </sourcefile>
+                    <pen color="#ffff00" />
+                </vector>
+                <vector name="international dateline" feature="border">
+                    <sourcefile format="PNT"> earth/mwdbii/DATELINE.PNT </sourcefile>
+                    <pen color="#ffffff" />
+                </vector>
+                <vector name="rivers" feature="river" connect="waterbodies">
+                    <sourcefile format="PNT"> earth/mwdbii/RIVER.PNT </sourcefile>
+                    <pen color="#ffffff" />
+                </vector>
+            </layer>
+                            
+            <layer name="standardplaces" backend="geodata">
+                <geodata name="cityplacemarks">
+                    <sourcefile format="KML">cityplacemarks.kml</sourcefile>
+                    <pick>placemark</pick> <!-- picks certain features from a
+                                            file -->
+                </geodata>
+                <geodata name="baseplacemarks">
+                    <sourcefile format="KML">baseplacemarks.kml</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+                <geodata name="elevplacemarks">
+                    <sourcefile format="KML">elevplacemarks.kml</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+                <geodata name="otherplacemarks">
+                    <sourcefile
+                    format="KML">otherplacemarks.kml</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+                <geodata name="boundaryplacemarks">
+                    <sourcefile format="KML">boundaryplacemarks</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+            </layer>
+        </map>
+
+        <settings>
+-            <group name="Places">
+                <property name="places">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="cities">
+                    <value>false</value>
+                    <available>true</available>
+                </property>
+                <property name="terrain">
+                    <value>false</value>
+                    <available>true</available>
+                </property>
+                <property name="otherplaces">
+                    <value>false</value>
+                    <available>true</available>
+                </property>
+            </group>
+
+-            <group name="Boundaries">
+                <property name="borders">
+                    <value>false</value>
+                    <available>false</available>
+                </property>
+                <property name="international-boundaries">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+                <property name="state-boundaries">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+            </group>
+
+            <group name="Water Bodies">
+                <property name="coastlines">
+                    <available>true</available>
+                    <value>false</value>
+                </property>
+                <property name="waterbodies">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+                <property name="lakes">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+                <property name="rivers">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+            </group>
+
+            <property name="coordinate-grid">
+                <value>false</value>
+                <available>true</available>
+            </property>
+            <property name="overviewmap">
+                <value>true</value>
+                <available>true</available>
+            </property>
+            <property name="compass">
+                <value>true</value>
+                <available>true</available>
+            </property>
+            <property name="scalebar">
+                <value>true</value>
+                <available>true</available>
+            </property>
+        </settings>
+        
+        <!-- At last we define some legend properties -->
+        
+        <legend>
+            <section name="populatedplaces" checkable="false" spacing="12">
+                <heading>Populated Places</heading>
+
+                <item name="town">
+                    <icon pixmap="maps/earth/schagen1689/legend/town.png"/>
+                    <text>Town</text>
+                </item>
+            </section>
+
+            <section name="terrain" checkable="false" spacing="12">
+                <heading>Terrain</heading>
+
+                <item name="mountain">
+                    <icon pixmap="maps/earth/schagen1689/legend/mountain.png"/>
+                    <text>Mountain</text>
+                </item>
+            </section>
+
+            <section name="surface" checkable="false" spacing="12">
+                <heading>Surface</heading>
+
+                <item name="river">
+                    <icon pixmap="maps/earth/schagen1689/legend/river.png"/>
+                    <text>River</text>
+                </item>
+                <item name="lake">
+                    <icon pixmap="maps/earth/schagen1689/legend/lake.png"/>
+                    <text>Lake</text>
+                </item>
+            </section>
+
+            <section name="otherplaces" checkable="true" connect="otherplaces" spacing="12">
+                <heading>Places of Interest</heading>
+
+                <item name="geographic-pole">
+                    <icon pixmap="bitmaps/pole_1.png"/>
+                    <text>Geographic Pole</text>
+                </item>
+            </section>
+
+            <section name="coastlines" checkable="true" connect="coastlines" spacing="12">
+                <heading>Accurate Coastline</heading>
+            </section>
+
+            <section name="coordinate-grid" checkable="true" connect="coordinate-grid" spacing="12">
+                <heading>Coordinate Grid</heading>
+            </section>
+        </legend>
+    </document>
+</dgml>
