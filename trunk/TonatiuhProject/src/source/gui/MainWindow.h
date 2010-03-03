@@ -53,6 +53,7 @@ class RandomDeviateFactory;
 class SbBox3f;
 class SbViewportRegion;
 class SceneModel;
+class SoNodeKitPath;
 class SoTransform;
 class SoDragger;
 class SoSelection;
@@ -132,6 +133,7 @@ public slots:
 	void on_actionGrid_toggled();
 	void on_actionBackground_toggled();
 	void on_actionEdit_Mode_toggled();
+	void on_actionSunPlane_triggered();
 	void on_action_X_Y_Plane_triggered();
 	void on_action_X_Z_Plane_triggered();
 	void on_action_Y_Z_Plane_triggered();
@@ -222,6 +224,7 @@ private:
     void WriteSettings();
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
 	void ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, SoNodeKitPath* nodePath, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
 	SoSeparator* createGrid( int size );
 
     enum { m_maxRecentFiles = 7 };
