@@ -111,22 +111,21 @@ void TrackerOneAxis::evaluate()
 	worldToObject.multDirMatrix( globalSunVector, s );
 
 
-	SbVec3f p( 1.0, 0.0, 0.0 );
+	SbVec3f p( 1.0f, 0.0f, 0.0f);
 
 	SbVec3f n;
 	SbVec3f t;
-	if( s.dot( p ) < 1.0 )
+	if( fabs( s.dot( p ) ) < 1.0 )
 	{
 		n = ( s - ( s.dot( p )*  p ) ) / ( sqrt( 1 - s.dot( p ) * s.dot( p ) ) );
+
 		n.normalize();
 		t = p.cross( n );
 	}
 	else
 	{
-		t = SbVec3f( -p[0], 0.0f, p[2] );
-		n = t.cross( n );
-
-
+		t = SbVec3f( 0.0f, 0.0f, 1.0f );
+		n = t.cross( p );
 	}
 	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
 								n[0], n[1], n[2], 0.0,
