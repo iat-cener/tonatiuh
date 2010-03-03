@@ -63,16 +63,16 @@ ShapeTroughParabola::ShapeTroughParabola()
 {
 	SO_NODE_CONSTRUCTOR(ShapeTroughParabola);
 	SO_NODE_ADD_FIELD( focusLength, (0.125) );
-	SO_NODE_ADD_FIELD( x1, (-0.5) );
-	SO_NODE_ADD_FIELD( x2, (0.5) );
-	SO_NODE_ADD_FIELD( length, (1.0) );
-	//SO_NODE_ADD_FIELD( width, (1.0) );
+	SO_NODE_ADD_FIELD( xMin, (-0.5) );
+	SO_NODE_ADD_FIELD( xMax, (0.5) );
+	SO_NODE_ADD_FIELD( lengthXMin, (1.0) );
+	SO_NODE_ADD_FIELD( lengthXMax, (1.0) );
 
 
-	SoFieldSensor* m_x1Sensor = new SoFieldSensor(updateX1Values, this);
-	m_x1Sensor->attach( &x1 );
-	SoFieldSensor* m_x2Sensor = new SoFieldSensor(updateX2Values, this);
-	m_x2Sensor->attach( &x2 );
+	SoFieldSensor* m_xMinSensor = new SoFieldSensor(updateXMinValues, this);
+	m_xMinSensor->attach( &xMin );
+	SoFieldSensor* m_xMaxSensor = new SoFieldSensor(updateXMaxValues, this);
+	m_xMaxSensor->attach( &xMax );
 
 }
 
@@ -116,19 +116,22 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
     Point3D hitPoint = objectRay( thit );
 
 	// Test intersection against clipping parameters
-	double xmin = x1.getValue();
-	double xmax = x2.getValue();
-	//double width = xmax - xmin;
+	double xmin = xMin.getValue();
+	double xmax = xMax.getValue();
 
-	double y1 = ( x1.getValue() * x1.getValue() ) / ( 4 * focusLength.getValue() );
-	double y2 = ( x2.getValue() * x2.getValue() ) / ( 4 * focusLength.getValue() );
+	double zmax = std::max( lengthXMin.getValue(), lengthXMax.getValue() );
+	double z1 = ( ( zmax - lengthXMin.getValue() ) / 2 ) + ( (lengthXMin.getValue() - lengthXMax.getValue() ) / ( 2 * ( xmax - xmin ) ) ) * ( hitPoint.x - xmin );
+	double z2 = ( ( zmax + lengthXMin.getValue() ) / 2 )  + ( ( (lengthXMax.getValue() - lengthXMin.getValue() ) / ( 2 * ( xmax - xmin ) ) )  * ( hitPoint.x - xmin ) );
+
+	double y1 = ( xmin * xmin ) / ( 4 * focusLength.getValue() );
+	double y2 = ( xmax * xmax ) / ( 4 * focusLength.getValue() );
 
 	double ymin = 0.0;
 	if( ( xmin * xmax ) > 0 ) ymin = std::min( y1, y2 );
 	double ymax = std::max( y1, y2 );
 
-	if( hitPoint.z < 0.0 ||
-		hitPoint.z > length.getValue() ||
+	if( hitPoint.z < z1 ||
+		hitPoint.z > z2 ||
 		hitPoint.y > ymax || hitPoint.y < ymin ||
 		hitPoint.x > xmax || hitPoint.x < xmin )
 	{
@@ -139,8 +142,11 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 		// Compute parabolic cylinder hit position
 		hitPoint = objectRay( thit );
 
-		if( hitPoint.z < 0.0 ||
-			hitPoint.z > length.getValue() ||
+		z1 = ( ( zmax - lengthXMin.getValue() ) / 2 ) + ( (lengthXMin.getValue() - lengthXMax.getValue() ) / ( 2 * ( xmax - xmin ) ) ) * ( hitPoint.x - xmin );
+		z2 = ( ( zmax + lengthXMin.getValue() ) / 2 )  + ( ( (lengthXMax.getValue() - lengthXMin.getValue() ) / ( 2 * ( xmax - xmin ) ) )  * ( hitPoint.x - xmin ) );
+
+		if( hitPoint.z < z1 ||
+			hitPoint.z > z2 ||
 			hitPoint.y > ymax || hitPoint.y < ymin ||
 			hitPoint.x > xmax || hitPoint.x < xmin)
 			return false;
@@ -153,15 +159,18 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 	// Compute definitive parabolic cylinder hit position
 	hitPoint = objectRay( thit );
-	double x = hitPoint.x;
 	double y = hitPoint.y;
 
 	// Find parametric representation of paraboloid hit
-	double u =  x  / focusLength.getValue();
-	double v = y / length.getValue();
+	double u =  hitPoint.x  / focusLength.getValue();
+
+	z1 = ( ( zmax - lengthXMin.getValue() ) / 2 ) + ( (lengthXMin.getValue() - lengthXMax.getValue() ) / ( 2 * ( xmax - xmin ) ) ) * ( hitPoint.x - xmin );
+	z2 = ( ( zmax + lengthXMin.getValue() ) / 2 )  + ( ( (lengthXMax.getValue() - lengthXMin.getValue() ) / ( 2 * ( xmax - xmin ) ) )  * ( hitPoint.x - xmin ) );
+
+	double v = ( hitPoint.z - z1 ) / (z2 - z1);
 
 	// Compute parabaloid \dpdu and \dpdv
-	Vector3D dpdu(1.0, x /( 2.0 * focusLength.getValue() ), 0.0);
+	Vector3D dpdu(1.0, hitPoint.x /( 2.0 * focusLength.getValue() ), 0.0);
 	Vector3D dpdv(0.0, 0.0, 1.0);
 
 	// Compute parabaloid \dndu and \dndv
@@ -206,23 +215,23 @@ Point3D ShapeTroughParabola::Sample( double u, double v ) const
 	return GetPoint3D( u, v );
 }
 
-void ShapeTroughParabola::updateX1Values( void *data, SoSensor *)
+void ShapeTroughParabola::updateXMinValues( void *data, SoSensor *)
 {
 	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
-	if( shapeTroughParabola->x2.getValue() < shapeTroughParabola->x1.getValue() )
+	if( shapeTroughParabola->xMax.getValue() < shapeTroughParabola->xMin.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "x1 must be smaller than x2. ") );
-		shapeTroughParabola->x1.setValue( shapeTroughParabola->x2.getValue() );
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "xMin must be smaller than xMax. ") );
+		shapeTroughParabola->xMin.setValue( shapeTroughParabola->xMax.getValue() );
 	}
 }
 
-void ShapeTroughParabola::updateX2Values( void *data, SoSensor *)
+void ShapeTroughParabola::updateXMaxValues( void *data, SoSensor *)
 {
 	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
-	if( shapeTroughParabola->x2.getValue() < shapeTroughParabola->x1.getValue() )
+	if( shapeTroughParabola->xMax.getValue() < shapeTroughParabola->xMin.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "x2 must be larger than x1. ") );
-		shapeTroughParabola->x2.setValue( shapeTroughParabola->x1.getValue()  );
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "xMax must be larger than xMin. ") );
+		shapeTroughParabola->xMax.setValue( shapeTroughParabola->xMin.getValue()  );
 	}
 }
 
@@ -230,12 +239,16 @@ Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 {
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double xmin = x1.getValue();
-	double xmax = x2.getValue();
+	double xmin = xMin.getValue();
+	double xmax = xMax.getValue();
 
 	double x = ( xmax - xmin ) *  u + xmin;
 	double y = ( x * x ) /( 4 * focusLength.getValue() );
-	double z = v * length.getValue();
+
+	double zmax = std::max( lengthXMin.getValue(), lengthXMax.getValue() );
+	double z1 = ( ( zmax - lengthXMin.getValue() ) / 2 ) + ( (lengthXMin.getValue() - lengthXMax.getValue() ) / ( 2 * ( xmax - xmin ) ) ) * ( x - xmin );
+	double z2 = ( ( zmax + lengthXMin.getValue() ) / 2 )  + ( ( (lengthXMax.getValue() - lengthXMin.getValue() ) / ( 2 * ( xmax - xmin ) ) )  * ( x - xmin ) );
+	double z = ( z2 - z1 ) * v +z1;
 
 	return Point3D (x, y, z);
 
@@ -258,16 +271,16 @@ bool ShapeTroughParabola::OutOfRange( double u, double v ) const
 
 void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double y1 = ( x1.getValue() * x1.getValue() ) / ( 4 * focusLength.getValue() );
-	double y2 = ( x2.getValue() * x2.getValue() ) / ( 4 * focusLength.getValue() );
+	double y1 = ( xMin.getValue() * xMin.getValue() ) / ( 4 * focusLength.getValue() );
+	double y2 = ( xMax.getValue() * xMax.getValue() ) / ( 4 * focusLength.getValue() );
 
 	double ymin = 0.0;
-	if( ( x1.getValue() * x2.getValue() ) > 0 ) ymin = std::min( y1, y2 );
+	if( ( xMin.getValue() * xMax.getValue() ) > 0 ) ymin = std::min( y1, y2 );
 	double ymax = std::max( y1, y2 );
 
 	double zmin = 0.0;
-	double zmax = length.getValue();
-	box.setBounds(SbVec3f( x1.getValue(), ymin, zmin ), SbVec3f( x2.getValue(), ymax, zmax ) );
+	double zmax = std::max( lengthXMin.getValue(), lengthXMax.getValue() );
+	box.setBounds(SbVec3f( xMin.getValue(), ymin, zmin ), SbVec3f( xMax.getValue(), ymax, zmax ) );
 }
 
 void ShapeTroughParabola::generatePrimitives(SoAction *action)
@@ -348,7 +361,7 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     for( int i = 0; i < totalIndices; ++i )
     {
     	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
-    	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
+    	SbVec3f normal(-finalvertex[i][3],-finalvertex[i][4], -finalvertex[i][5] );
 		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
 
 		pv.setPoint(point);

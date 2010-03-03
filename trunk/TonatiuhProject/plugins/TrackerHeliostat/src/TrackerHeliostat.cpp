@@ -141,38 +141,4 @@ void TrackerHeliostat::evaluate()
 	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
 	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
 
-	/*Transform objectToWorld( objectToWorldMatrix[0][0], objectToWorldMatrix[1][0], objectToWorldMatrix[2][0], objectToWorldMatrix[3][0],
-							 objectToWorldMatrix[0][1], objectToWorldMatrix[1][1], objectToWorldMatrix[2][1], objectToWorldMatrix[3][1],
-							 objectToWorldMatrix[0][2], objectToWorldMatrix[1][2], objectToWorldMatrix[2][2], objectToWorldMatrix[3][2],
-							 objectToWorldMatrix[0][3], objectToWorldMatrix[1][3], objectToWorldMatrix[2][3], objectToWorldMatrix[3][3] );
-	Transform worldToObject = objectToWorld.GetInverse();
-
-	Vector3D globalSunVector( sin( m_zenith.getValue() ) * sin( m_azimuth.getValue() ),
-						cos( m_zenith.getValue() ),
-						-sin( m_zenith.getValue() )*cos( m_azimuth.getValue() ) );
-	Vector3D i = worldToObject( globalSunVector );
-
-
-	SbVec3f focus = aimingPoint.getValue();
-	Point3D rDir = worldToObject( Point3D( ( focus[0], focus[1], focus[2] ) ) );
-	Vector3D r = Normalize( Vector3D( rDir ) );
-
-	Vector3D nVector = ( i + r ) / fabs(  DotProduct( r, i ) );
-	NormalVector n = Normalize( NormalVector( nVector ) );
-
-	double theta = acos( n.y );
-	SbRotation xRotation( SbVec3f( 1.0, 0.0, 0.0 ), theta );
-
-	double phi = atan2( n.x, n.z );
-	SbRotation yRotation( SbVec3f( 0.0, 1.0, 0.0 ), phi );
-
-	SbRotation rotation = xRotation;
-	rotation *= yRotation;
-
-	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
-	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rotation ) );
-	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( 1.0, 1.0, 1.0 ) );
-	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );*/
-
 }

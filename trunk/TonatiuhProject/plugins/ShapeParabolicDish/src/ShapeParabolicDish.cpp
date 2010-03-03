@@ -361,7 +361,7 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
     for( int i = 0; i < totalIndices; ++i )
     {
     	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
-    	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
+    	SbVec3f normal(-finalvertex[i][3], -finalvertex[i][4], -finalvertex[i][5] );
 		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
 
 		pv.setPoint(point);
