@@ -9,8 +9,8 @@
   <property name="geometry">
    <rect>
     <x>0</x>
-    <y>147</y>
-    <width>735</width>
+    <y>0</y>
+    <width>857</width>
     <height>289</height>
    </rect>
   </property>
@@ -92,7 +92,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>735</width>
+     <width>857</width>
      <height>21</height>
     </rect>
    </property>
@@ -239,6 +239,7 @@
    <addaction name="action_X_Y_Plane"/>
    <addaction name="action_Y_Z_Plane"/>
    <addaction name="action_X_Z_Plane"/>
+   <addaction name="actionSunPlane"/>
   </widget>
   <widget class="QToolBar" name="insertTollBar">
    <property name="windowTitle">
@@ -255,7 +256,7 @@
   </widget>
   <action name="actionNew">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/new.png</normaloff>:/icons/new.png</iconset>
    </property>
    <property name="text">
@@ -264,7 +265,7 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
    </property>
    <property name="text">
@@ -273,7 +274,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
    </property>
    <property name="text">
@@ -282,7 +283,7 @@
   </action>
   <action name="actionSaveAs">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/saveas.png</normaloff>:/icons/saveas.png</iconset>
    </property>
    <property name="text">
@@ -294,7 +295,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
    </property>
    <property name="text">
@@ -303,7 +304,7 @@
   </action>
   <action name="actionClose">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
    </property>
    <property name="text">
@@ -315,7 +316,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
    </property>
    <property name="text">
@@ -327,7 +328,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
    </property>
    <property name="text">
@@ -336,7 +337,7 @@
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
    </property>
    <property name="text">
@@ -348,7 +349,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
    </property>
    <property name="text">
@@ -360,7 +361,7 @@
   </action>
   <action name="actionPaste_Copy">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
    </property>
    <property name="text">
@@ -372,7 +373,7 @@
   </action>
   <action name="actionRayTraceRun">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/raytrace.png</normaloff>:/icons/raytrace.png</iconset>
    </property>
    <property name="text">
@@ -398,7 +399,7 @@
   </action>
   <action name="actionUndoView">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/undoView.png</normaloff>:/icons/undoView.png</iconset>
    </property>
    <property name="text">
@@ -407,7 +408,7 @@
   </action>
   <action name="actionNode">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/separatorKit.png</normaloff>:/icons/separatorKit.png</iconset>
    </property>
    <property name="text">
@@ -430,7 +431,7 @@
   </action>
   <action name="actionPaste_Link">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/paste_link.png</normaloff>:/icons/paste_link.png</iconset>
    </property>
    <property name="text">
@@ -439,7 +440,7 @@
   </action>
   <action name="actionDelete">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
    </property>
    <property name="text">
@@ -456,7 +457,7 @@
   </action>
   <action name="actionShapeKit">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/shapeKit.png</normaloff>:/icons/shapeKit.png</iconset>
    </property>
    <property name="text">
@@ -465,7 +466,7 @@
   </action>
   <action name="action_X_Y_Plane">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/viewer_viewXY.png</normaloff>:/icons/viewer_viewXY.png</iconset>
    </property>
    <property name="text">
@@ -474,7 +475,7 @@
   </action>
   <action name="action_X_Z_Plane">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/viewer_viewXZ.png</normaloff>:/icons/viewer_viewXZ.png</iconset>
    </property>
    <property name="text">
@@ -483,7 +484,7 @@
   </action>
   <action name="action_Y_Z_Plane">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/viewer_viewYZ.png</normaloff>:/icons/viewer_viewYZ.png</iconset>
    </property>
    <property name="text">
@@ -495,7 +496,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/lightKit.png</normaloff>:/icons/lightKit.png</iconset>
    </property>
    <property name="text">
@@ -548,7 +549,7 @@
   </action>
   <action name="actionExport_PhotonMap">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
+    <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
    </property>
    <property name="text">
@@ -565,13 +566,13 @@
     <string>Save Component</string>
    </property>
   </action>
-  <action name="actionDeleteTracker">
+  <action name="actionSunPlane">
    <property name="icon">
-    <iconset resource="tonatiuh.qrc">
-     <normaloff>:/icons/deleteTracker.png</normaloff>:/icons/deleteTracker.png</iconset>
+    <iconset resource="../../tonatiuh.qrc">
+     <normaloff>:/icons/viewer_viewSun.png</normaloff>:/icons/viewer_viewSun.png</iconset>
    </property>
    <property name="text">
-    <string>Delete Tracker</string>
+    <string>SunPlane</string>
    </property>
   </action>
  </widget>
@@ -590,7 +591,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="tonatiuh.qrc"/>
+  <include location="../../tonatiuh.qrc"/>
  </resources>
  <connections/>
 </ui>

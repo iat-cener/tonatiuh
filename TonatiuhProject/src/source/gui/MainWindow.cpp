@@ -1029,10 +1029,20 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
     //Compute objects bounding boxes iteratively
 	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
-	QModelIndex rootIndex = m_treeView->rootIndex();
+	//QModelIndex rootIndex = m_treeView->rootIndex();
 	QPersistentModelIndex rootSeparatorIndex = m_sceneModel->index ( 1, 0 );
+	SoNodeKitPath* rootPath = m_sceneModel->PathFromIndex( rootSeparatorIndex );
+	rootPath->ref();
 	QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< SbBox3f, Transform* > >();
-	ComputeSceneTreeMap( &rootSeparatorIndex, region, sceneMap );
+
+	QDateTime date11 = QDateTime::currentDateTime();
+	//ComputeSceneTreeMap( &rootSeparatorIndex, region, sceneMap );
+
+	ComputeSceneTreeMap( rootSeparatorInstance, rootPath, region, sceneMap );
+	rootPath->unref();
+
+	QDateTime date12 = QDateTime::currentDateTime();
+
 
 
 	//Random Ray generator
@@ -1320,6 +1330,27 @@ void MainWindow::on_actionEdit_Mode_toggled()
 		m_graphicView[2]->show();
 		m_graphicView[3]->show();
 	}
+}
+
+void MainWindow::on_actionSunPlane_triggered()
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if ( !coinScene )  return;
+
+	//Check if there is a light and is properly configured
+	if ( !coinScene->getPart( "lightList[0]", false ) )	return;
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	if ( !lightKit ) return;
+
+	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart( "transform", true ) );
+	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
+	Point3D camPosition = lightToWorld( Point3D( 0.0, 0.0, 0.0 ) );
+
+	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
+	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
+	cam->position.setValue( SbVec3f( camPosition.x, camPosition.y, camPosition.z ) );
+	cam->pointAt( SbVec3f( 0, 0, 0 ) );
+	cam->viewAll( m_document->GetRoot(), vpr );
 }
 
 void MainWindow::on_action_X_Y_Plane_triggered()
@@ -2221,6 +2252,7 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 	getmatrixAction->apply(pathFromRoot);
 
 	SbMatrix pathTransformation = getmatrixAction->getMatrix();
+	delete getmatrixAction;
 
 	Transform objectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
 					pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
@@ -2236,6 +2268,8 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 
 
 	SbXfBox3f box= bbAction->getXfBoundingBox();
+	delete bbAction;
+
 	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		for( int index = 0; index < instanceNode->children.count() ; ++index )
@@ -2257,8 +2291,67 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
 
 	}
 
-	delete bbAction;
+}
+/**
+ * Compute a map with the InstanceNodes of sub-tree with top node \a nodeIndex.
+ *
+ *The map stores for each InstanceNode its BBox and its transform in global coordinates.
+ **/
+void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, SoNodeKitPath* nodePath, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap )
+{
+
+	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( nodePath->getTail() );
+
+	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( region );
+	getmatrixAction->apply( nodePath );
+
+	SbMatrix pathTransformation = getmatrixAction->getMatrix();
 	delete getmatrixAction;
+
+	Transform objectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
+					pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
+					pathTransformation[0][2], pathTransformation[1][2], pathTransformation[2][2], pathTransformation[3][2],
+					pathTransformation[0][3], pathTransformation[1][3], pathTransformation[2][3], pathTransformation[3][3] );
+
+	Transform* worldToObject = new Transform( objectToWorld.GetInverse() );
+
+	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
+	coinNode->getBoundingBox( bbAction );
+
+	sceneMap->insert( instanceNode , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), worldToObject ) );
+
+	SbXfBox3f box= bbAction->getXfBoundingBox();
+
+	delete bbAction;
+	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		for( int index = 0; index < instanceNode->children.count() ; ++index )
+		{
+			InstanceNode* childInstance = instanceNode->children[index];
+			SoNodeKitPath* childPath = static_cast< SoNodeKitPath* > ( nodePath->copy() );
+			if( childPath )
+			{
+				childPath->ref();
+				SoBaseKit* childNode = static_cast< SoBaseKit* > ( childInstance->GetNode() );
+				childPath->append( childNode );
+				ComputeSceneTreeMap(childInstance, childPath, region, sceneMap );
+				childPath->unref();
+			}
+
+		}
+	}
+	else
+	{
+		if(  instanceNode->children.count() > 0 )
+		{
+
+			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+				sceneMap->insert( instanceNode->children[0] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), worldToObject ) );
+			else if(  instanceNode->children.count() > 1 ) sceneMap->insert( instanceNode->children[1] , QPair< SbBox3f, Transform* > ( bbAction->getXfBoundingBox().project(), worldToObject ) );
+
+		}
+
+	}
 
 }
 
