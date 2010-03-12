@@ -77,6 +77,7 @@ m_newShape( 0 ), m_newSunShape( 0 )
 
 	SunPositionTab();
 	SunshapeTab();
+
 }
 
 /*!

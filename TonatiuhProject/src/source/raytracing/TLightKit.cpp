@@ -36,9 +36,12 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoLabel.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoNodekitCatalog.h>
 
 #include "Matrix4x4.h"
@@ -69,9 +72,8 @@ TLightKit::TLightKit()
 {
 	SO_KIT_CONSTRUCTOR(TLightKit);
 
-	//SO_KIT_ADD_CATALOG_ENTRY(sunshapelabel, SoLabel, TRUE, this, "", TRUE);
+	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(iconMaterial, SoNode, SoMaterial, TRUE, iconSeparator, icon, TRUE);
 	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, TSunShape, TDefaultSunShape, TRUE, transformGroup, "", TRUE);
-	//SO_KIT_CHANGE_ENTRY_TYPE(icon, TShape, TSquare );
 
 
 	SO_NODE_ADD_FIELD( azimuth, (0.0) );
@@ -85,6 +87,11 @@ TLightKit::TLightKit()
 
 	SoTransform* transform = new SoTransform;
 	setPart( "transform", transform );
+
+	SoMaterial* lightMaterial = static_cast<SoMaterial*>( getPart( "iconMaterial", true ) );
+	lightMaterial->diffuseColor.setValue( 0.933, 0.91, 0.666);
+	lightMaterial->transparency = 0.3;
+	setPart( "iconMaterial", lightMaterial );
 }
 
 /**
