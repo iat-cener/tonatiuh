@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -83,8 +83,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class TLightKit : public SoLightKit
 {
     SO_KIT_HEADER(TLightKit);
- 	//SO_KIT_CATALOG_ENTRY_HEADER(sunshapelabel);
+ 	SO_KIT_CATALOG_ENTRY_HEADER(iconMaterial);
  	SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
+
 
 
 public:

@@ -848,6 +848,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 	TLightKit* currentLight = 0;
 	if( coinScene->getPart( "lightList[0]", false ) )	currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
+
 	LightDialog dialog( currentLight, m_TFlatShapeFactoryList, m_TSunshapeFactoryList );
 	if( dialog.exec() )
 	{
