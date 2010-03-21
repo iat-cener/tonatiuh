@@ -36,24 +36,54 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TGF_H_
-#define TGF_H_
+#ifndef TRF_H_
+#define TRF_H_
 
-#include <string>
-class SbMatrix;
+#include <QMap>
+#include <QPair>
+#include <Inventor/SbBox.h>
+#include "TShape.h"
+#include "TSunShape.h"
+#include "Transform.h"
+#include "TSeparatorKit.h"
+
+class InstanceNode;
 class RandomDeviate;
-class SoTransform;
-class Transform;
+class Ray;
+class TPhotonMap;
 
-namespace tgf
+namespace trf
 {
-    void SevereError( std::string errorMessage );
-    void Warning( std::string warningMessage );
-    bool IsOdd( int number );
-    bool Quadratic( double A, double B, double C, double* t0, double* t1);
-	double AlternateBoxMuller( RandomDeviate& rand );
-	SbMatrix MatrixFromTransform( const Transform& transform );
-	Transform TransformFromSoTransform( SoTransform* const & soTransform );
+	void GenerateStartingRay( Ray& ray,
+			                  TShape* const & raycastingSurface,
+                              TSunShape* const & sunShape,
+                              const Transform& lightToWorld,
+                              RandomDeviate& rand );
+	void TraceRay( Ray& ray,
+			       QMap< InstanceNode*, QPair< SbBox3f, Transform* > >* sceneMap,
+			       InstanceNode* instanceNode,
+			       InstanceNode* lightNode,
+			       TPhotonMap& photonMap,
+			       RandomDeviate& rand );
+
+	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map);
+	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
 }
 
-#endif /*TGF_H_*/
+inline void trf::GenerateStartingRay( Ray& ray,
+		                       TShape* const & raycastingSurface,
+		                       TSunShape* const & sunShape,
+		                       const Transform& lightToWorld,
+		                       RandomDeviate& rand )
+{
+	//Generate ray origin and direction in the Light coordinate system
+	ray.origin = raycastingSurface->Sample( rand.RandomDouble( ), rand.RandomDouble( ) );
+	sunShape->generateRayDirection( ray.direction, rand );
+	ray.mint = tgc::Epsilon;
+	ray.maxt = tgc::Infinity;
+
+	//Transform ray to World coordinate system and trace the scene
+	ray = lightToWorld( ray );
+}
+
+#endif /* TRF_H_ */

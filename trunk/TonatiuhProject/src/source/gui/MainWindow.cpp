@@ -100,6 +100,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SunPositionCalculatorDialog.h"
 #include "TDefaultTracker.h"
 #include "tgf.h"
+#include "trf.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
 #include "TMaterialFactory.h"
@@ -909,7 +910,7 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
 }
 
 /*!
- * Checks wheter a ray tracing can be started with the current light and model.
+ * Checks whether a ray tracing can be started with the current light and model.
  */
 bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
 {
@@ -999,12 +1000,12 @@ void MainWindow::ShowRaysIn3DView()
 
 		if( m_drawPhotons )
 		{
-			SoSeparator* points = tgf::DrawPhotonMapPoints(*m_photonMap);
+			SoSeparator* points = trf::DrawPhotonMapPoints(*m_photonMap);
 			m_pRays->addChild(points);
 		}
 		if( m_fraction > 0.0 )
 		{
-			SoSeparator* currentRays = tgf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
+			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
 			m_pRays->addChild(currentRays);
 
 			actionDisplay_rays->setEnabled( true );
@@ -1016,69 +1017,49 @@ void MainWindow::ShowRaysIn3DView()
 //Ray trace menu actions
 void MainWindow::on_actionRayTraceRun_triggered()
 {
-	QDateTime date1 = QDateTime::currentDateTime();
+	QDateTime startTime = QDateTime::currentDateTime();
 
-    // Verify that propram options are the scene are properly configured for ray tracing
+    // Initialize variables
 	InstanceNode* rootSeparatorInstance = 0;
 	InstanceNode* lightInstance = 0;
 	SoTransform* lightTransform = 0;
 	TSunShape* sunShape = 0;
-	TShape* raycastingShape = 0;
-	if( !ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingShape ) ) return;
+	TShape* raycastingSurface = 0;
 
-	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
-
-    //Compute objects bounding boxes iteratively
-	SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
-	//QModelIndex rootIndex = m_treeView->rootIndex();
-	QPersistentModelIndex rootSeparatorIndex = m_sceneModel->index ( 1, 0 );
-	SoNodeKitPath* rootPath = m_sceneModel->PathFromIndex( rootSeparatorIndex );
-	rootPath->ref();
-	QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< SbBox3f, Transform* > >();
-
-	QDateTime date11 = QDateTime::currentDateTime();
-	//ComputeSceneTreeMap( &rootSeparatorIndex, region, sceneMap );
-
-	ComputeSceneTreeMap( rootSeparatorInstance, rootPath, region, sceneMap );
-	rootPath->unref();
-
-	QDateTime date12 = QDateTime::currentDateTime();
-
-
-
-	//Random Ray generator
-	const int maximumValueProgressScale = 25;
-	unsigned long raysPerInnerLoop = m_raysPerIteration / maximumValueProgressScale;
-
-	ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), maximumValueProgressScale, this);
-
-	Ray ray;
-	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
+	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
 	{
-		for ( long unsigned i = 0; i < raysPerInnerLoop; ++i )
+		//Compute bounding boxes and world to object transforms
+		SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
+		QPersistentModelIndex rootSeparatorIndex = m_sceneModel->index ( 1, 0 );
+		SoNodeKitPath* rootPath = m_sceneModel->PathFromIndex( rootSeparatorIndex );
+		rootPath->ref();
+		QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< SbBox3f, Transform* > >();
+
+		ComputeSceneTreeMap( rootSeparatorInstance, rootPath, region, sceneMap );
+		rootPath->unref();
+
+		//Set up the progress updater
+		const int maximumValueProgressScale = 25;
+		unsigned long raysPerInnerLoop = m_raysPerIteration / maximumValueProgressScale;
+		ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), maximumValueProgressScale, this);
+
+		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
+		Ray ray;
+		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 		{
-			ray.mint = tgc::Epsilon;
-			ray.maxt = tgc::Infinity;
-
-			//Generate ray origin and direction in the Light coordinate system
-			ray.origin = raycastingShape->Sample( m_rand->RandomDouble( ), m_rand->RandomDouble( ) );
-			sunShape->generateRayDirection( ray.direction, *m_rand );
-
-			//Transform ray to World coordinate system and trace the scene
-			ray = lightToWorld( ray );
-
-			//Perform Ray Trace
-			tgf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_rand );
+			for ( long unsigned i = 0; i < raysPerInnerLoop; ++i )
+			{
+				trf::GenerateStartingRay( ray, raycastingSurface, sunShape, lightToWorld, *m_rand );
+				trf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_rand );
+			}
+			progress.Update( progressCount*raysPerInnerLoop );
 		}
-		progress.Update( progressCount*raysPerInnerLoop );
+		m_tracedRays += m_raysPerIteration;
+		ShowRaysIn3DView();
 	}
-	m_tracedRays += m_raysPerIteration;
 
-	ShowRaysIn3DView();
-
-	QDateTime date2 = QDateTime::currentDateTime();
-	std::cout<<"Finish time: "<<date2.toString().toStdString()<<std::endl;
-	std::cout<<"time: "<<date1.secsTo( date2 )<<std::endl;
+	QDateTime endTime = QDateTime::currentDateTime();
+	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
 
 void MainWindow::on_actionDisplay_rays_toggled()
@@ -2298,7 +2279,10 @@ void MainWindow::ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewpo
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, SoNodeKitPath* nodePath, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap )
+void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode,
+		                              SoNodeKitPath* nodePath,
+		                              SbViewportRegion region,
+		                              QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap )
 {
 
 	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( nodePath->getTail() );
