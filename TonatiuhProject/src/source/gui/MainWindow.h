@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include <ui_mainwindow.h>
 
+
 class Document;
 class GraphicView;
 class InstanceNode;
@@ -50,6 +51,7 @@ class QUndoStack;
 class QUndoView;
 class RandomDeviate;
 class RandomDeviateFactory;
+class Ray;
 class SbBox3f;
 class SbViewportRegion;
 class SceneModel;
@@ -121,7 +123,11 @@ public slots:
 	void on_actionCalculateSunPosition_triggered();
 
 	//Ray trace menu actions
-	bool ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& shape );
+	bool ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
+			                 InstanceNode*& lightInstance,
+			                 SoTransform*& lightTransform,
+			                 TSunShape*& sunShape,
+			                 TShape*& shape );
 	void ShowRaysIn3DView();
 	void on_actionRayTraceRun_triggered();
 	void on_actionDisplay_rays_toggled();

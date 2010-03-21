@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -40,9 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define INSTANCENODE_H_
 
 #include <QList>
-
 #include <QPair>
-
 #include <Inventor/SbBox.h>
 
 class RandomDeviate;
@@ -64,27 +62,53 @@ public:
     ~InstanceNode();
 
     void SetNode( SoNode* node );
-    SoNode* GetNode() const;
-    InstanceNode* GetParent() const;
     void SetParent( InstanceNode* parent );
-
     void AddChild( InstanceNode* child );
     void InsertChild( int row, InstanceNode* instanceChild);
 
+    SoNode* GetNode() const;
+    InstanceNode* GetParent() const;
     QString GetNodeURL() const;
     void Print( int level ) const;
 
-    QList< InstanceNode* > children;
-    friend QDataStream & operator<< ( QDataStream & s, const InstanceNode & node );
-    friend QDataStream & operator>> ( QDataStream & s, const InstanceNode & node );
-    friend bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode);
+    Ray* Intersect( const Ray& ray,
+    		        RandomDeviate& rand,
+    		        QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap,
+    		        InstanceNode** modelNode,
+    		        bool* isFront );
 
-    Ray* Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode, bool* isFront );
+    QList< InstanceNode* > children;
 
 private:
     SoNode* m_coinNode;
     InstanceNode* m_parent;
-
 };
+
+QDataStream & operator<< ( QDataStream & s, const InstanceNode& node );
+QDataStream & operator>> ( QDataStream & s, const InstanceNode& node );
+bool operator==( const InstanceNode& thisNode,const InstanceNode& otherNode );
+
+inline void InstanceNode::SetParent( InstanceNode* parent )
+{
+	m_parent = parent;
+}
+
+inline void InstanceNode::SetNode( SoNode* node )
+{
+	m_coinNode = node;
+}
+
+inline SoNode* InstanceNode::GetNode() const
+{
+	return m_coinNode;
+}
+
+/**
+ * Returns parent instance.
+ */
+inline InstanceNode* InstanceNode::GetParent() const
+{
+	return m_parent;
+}
 
 #endif /*INSTANCENODE_H_*/

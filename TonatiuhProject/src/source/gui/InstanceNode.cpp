@@ -37,9 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <iostream>
-
 #include <QMap>
-
 #include <Inventor/nodes/SoNode.h>
 
 #include "InstanceNode.h"
@@ -52,7 +50,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 InstanceNode::InstanceNode( SoNode* node )
 : m_coinNode( node ), m_parent( 0 )
 {
-
 }
 
 InstanceNode::InstanceNode( const InstanceNode* node )
@@ -63,8 +60,7 @@ InstanceNode::InstanceNode( const InstanceNode* node )
 
 	for( int index = 0; index < node->children.count(); ++index )
     {
-    	InstanceNode* child = new InstanceNode(*(node->children[index]));
-
+    	InstanceNode* child = new InstanceNode( *(node->children[index]) );
     	children.append(child);
     }
 }
@@ -74,29 +70,6 @@ InstanceNode::~InstanceNode()
 	qDeleteAll( children );
 }
 
-void InstanceNode::SetParent( InstanceNode* parent )
-{
-	m_parent = parent;
-}
-
-void InstanceNode::SetNode( SoNode* node )
-{
-	m_coinNode = node;
-}
-
-SoNode* InstanceNode::GetNode() const
-{
-	return m_coinNode;
-}
-
-/**
- * Returns parent instance.
- */
-InstanceNode* InstanceNode::GetParent() const
-{
-	return m_parent;
-}
-
 /**
  * Returns node URL.
  */
@@ -104,7 +77,6 @@ QString InstanceNode::GetNodeURL() const
 {
 	QString url;
 	if( GetParent() ) url = GetParent()->GetNodeURL();
-
 	url.append( "/" + QString( m_coinNode->getName().getString() ) );
 	return url;
 }
@@ -112,11 +84,11 @@ QString InstanceNode::GetNodeURL() const
 void InstanceNode::Print( int level ) const
 {
 	for( int i = 0; i < level; ++i ) std::cout << " ";
-    std::cout << m_coinNode->getTypeId().getName().getString() << " has " << children.size() << " children "<<std::endl;
+    std::cout << m_coinNode->getTypeId().getName().getString()
+    		  << " has " << children.size()
+    		  << " children "<< std::endl;
     for( int index = 0; index < children.count(); ++index )
-    {
     	children[index]->Print( level++ );
-    }
 }
 
 /**
@@ -138,25 +110,11 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
  	instanceChild->SetParent(this);
 }
 
-QDataStream& operator<< ( QDataStream & s, const InstanceNode & node )
-{
-	s << node.m_coinNode;
-	return s;
-}
-
-QDataStream& operator>> ( QDataStream & s, const InstanceNode & node )
-{
-	s >> node;
-	return s;
-}
-
-bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
-{
-	return ( (thisNode.GetNode() == otherNode.GetNode()) &&
-			(thisNode.GetParent()->GetNode()==otherNode.GetParent()->GetNode()));
-}
-
-Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap, InstanceNode** modelNode, bool* isFront )
+Ray* InstanceNode::Intersect( const Ray& ray,
+		                      RandomDeviate& rand,
+		                      QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap,
+		                      InstanceNode** modelNode,
+		                      bool* isFront )
 {
 	QPair< SbBox3f, Transform* > instanceData =  sceneMap->value( this );
 
@@ -164,10 +122,10 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 	Transform* worldToObject =  instanceData.second;
 
 	Ray objectRay( (*worldToObject)( ray ) );
-	objectRay.maxt = ray.maxt;
 
 	//Check if the ray intersects with the BoundingBox
 	SbBox3f box = instanceData.first;
+
 
 	double t0 = objectRay.mint;
 	double t1 = objectRay.maxt;
@@ -266,4 +224,22 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, QMap< Instanc
 	}
 
 	return result;
+}
+
+QDataStream& operator<< ( QDataStream & s, const InstanceNode& node )
+{
+	s << node.GetNode();
+	return s;
+}
+
+QDataStream& operator>> ( QDataStream & s, const InstanceNode& node )
+{
+	s >> node;
+	return s;
+}
+
+bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
+{
+	return ( (thisNode.GetNode() == otherNode.GetNode()) &&
+			 (thisNode.GetParent()->GetNode() == otherNode.GetParent()->GetNode()) );
 }
