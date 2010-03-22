@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define ShapeHyperboloid_H_
 
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -52,6 +52,12 @@ class ShapeHyperboloid : public TShape
 	SO_NODE_HEADER(ShapeHyperboloid);
 
 public:
+
+	enum Side{
+		INSIDE = 0,
+		OUTSIDE   = 1,
+	};
+
 	ShapeHyperboloid( );
 	static void initClass();
 	double GetArea() const;
@@ -62,9 +68,12 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble focusLegth;
-	SoSFDouble distanceTwoFocus;
-	SoSFDouble reflectorMaxDiameter;
+	SoSFFloat focusLegth;
+	SoSFFloat distanceTwoFocus;
+	SoSFFloat reflectorMaxDiameter;
+	SoSFEnum activeSide;
+
+
 
 protected:
 	bool OutOfRange( double u, double v ) const;
