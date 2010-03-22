@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPEPARABOLICDISH_H_
 
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -50,7 +50,13 @@ class Vector3D;
 class ShapeParabolicDish : public TShape
 {
 	SO_NODE_HEADER(ShapeParabolicDish);
+
 public:
+	enum Side{
+		INSIDE = 0,
+		OUTSIDE   = 1,
+	};
+
 	ShapeParabolicDish();
 	static void initClass();
 	double GetArea() const;
@@ -61,10 +67,11 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble focusLength;
-	SoSFDouble dishMinRadius;
-	SoSFDouble dishMaxRadius;
-	SoSFDouble phiMax;
+	SoSFFloat focusLength;
+	SoSFFloat dishMinRadius;
+	SoSFFloat dishMaxRadius;
+	SoSFFloat phiMax;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;

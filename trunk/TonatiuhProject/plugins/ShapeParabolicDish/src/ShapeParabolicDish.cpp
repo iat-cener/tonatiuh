@@ -69,6 +69,11 @@ ShapeParabolicDish::ShapeParabolicDish()
 	m_lastMaxRadius = 0.5;
 	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi) );
 
+	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
+	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
+	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
+
 	SoFieldSensor* dishMinRadiusSensor = new SoFieldSensor( updateMinRadius, this );
 	dishMinRadiusSensor->attach( &dishMinRadius );
 	SoFieldSensor* dishMaxRadiusSensor = new SoFieldSensor( updateMaxRadius, this );
@@ -313,7 +318,9 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
     		Point3D point = GetPoint3D(ui, vj);
-    		NormalVector normal = GetNormal(ui, vj);
+    		NormalVector normal;
+    		if( activeSide.getValue() == 0 )	normal = GetNormal(ui, vj);
+    		else	normal = -GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
