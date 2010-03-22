@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -60,9 +60,16 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble radius;
-	SoSFDouble length;
-	SoSFDouble phiMax;
+
+	enum Side{
+		INSIDE = 0,
+		OUTSIDE   = 1,
+	};
+
+	SoSFFloat radius;
+	SoSFFloat length;
+	SoSFFloat phiMax;
+	SoSFEnum activeSide;
 
 protected:
 	bool OutOfRange( double u, double v ) const;
