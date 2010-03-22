@@ -65,9 +65,13 @@ void ShapeHyperboloid::initClass()
 ShapeHyperboloid::ShapeHyperboloid( )
 {
 	SO_NODE_CONSTRUCTOR(ShapeHyperboloid);
-	SO_NODE_ADD_FIELD(	focusLegth, (0.1) );
-	SO_NODE_ADD_FIELD( distanceTwoFocus, (10.0) );
-	SO_NODE_ADD_FIELD( reflectorMaxDiameter, (1.0) );
+	SO_NODE_ADD_FIELD( focusLegth, (0.1L) );
+	SO_NODE_ADD_FIELD( distanceTwoFocus, (10.0L) );
+	SO_NODE_ADD_FIELD( reflectorMaxDiameter, (1.0L) );
+	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
+	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
+	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeHyperboloid::~ShapeHyperboloid()
@@ -307,14 +311,16 @@ void ShapeHyperboloid::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
     		Point3D point = GetPoint3D(ui, vj);
-    		NormalVector normal = GetNormal(ui, vj);
+    		NormalVector normal;
+    		if( activeSide.getValue() == 0 )	normal = GetNormal(ui, vj);
+    		else	normal = -GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
     		vertex[h][2] = point.z;
-    		vertex[h][3] = normal.x;
-    		vertex[h][4] = normal.y;
-    		vertex[h][5] = normal.z;
+    		vertex[h][3] = -normal.x;
+    		vertex[h][4] = -normal.y;
+    		vertex[h][5] = -normal.z;
 
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
     		h++; //Increase h to the next point.
