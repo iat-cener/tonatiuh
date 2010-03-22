@@ -65,6 +65,11 @@ ShapeCylinder::ShapeCylinder( )
 	SO_NODE_ADD_FIELD( radius, (0.5) );
 	SO_NODE_ADD_FIELD( length, (1.0) );
 	SO_NODE_ADD_FIELD( phiMax, (TwoPi) );
+
+	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
+	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
+	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 }
 
 ShapeCylinder::~ShapeCylinder()
@@ -281,7 +286,9 @@ void ShapeCylinder::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
     		Point3D point = GetPoint3D(ui, vj);
-    		NormalVector normal = GetNormal(ui, vj);
+    		NormalVector normal;
+    		if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
+    		else	normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
