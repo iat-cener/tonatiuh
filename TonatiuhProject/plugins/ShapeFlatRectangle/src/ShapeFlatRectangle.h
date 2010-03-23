@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -61,8 +61,14 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble width;
-	SoSFDouble height;
+	enum Side{
+		FRONT = 0,
+		BACK   = 1,
+	};
+
+	SoSFFloat width;
+	SoSFFloat height;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;
