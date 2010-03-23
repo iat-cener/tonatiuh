@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPESPHERE_H_
 
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -51,6 +51,11 @@ class ShapeSphere : public TShape
 	SO_NODE_HEADER(ShapeSphere);
 
 public:
+	enum Side{
+		INSIDE = 0,
+		OUTSIDE   = 1,
+	};
+
 	ShapeSphere( );
 	static void initClass();
     SoNode* copy( SbBool copyConnections ) const;
@@ -62,10 +67,11 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
-	SoSFDouble radius;
-	SoSFDouble yMax;
-	SoSFDouble yMin;
-	SoSFDouble phiMax;
+	SoSFFloat radius;
+	SoSFFloat yMax;
+	SoSFFloat yMin;
+	SoSFFloat phiMax;
+	SoSFEnum activeSide;
 
 protected:
 	static void updateRadius(void *data, SoSensor *);
