@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPEPARABOLICRECTANGLE_H_
 
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -50,6 +50,11 @@ class ShapeParabolicRectangle : public TShape
 	SO_NODE_HEADER(ShapeParabolicRectangle);
 
 public:
+	enum Side{
+		INSIDE = 0,
+		OUTSIDE   = 1,
+	};
+
 	ShapeParabolicRectangle();
 	static void initClass();
 	double GetArea() const;
@@ -60,10 +65,10 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-
-	SoSFDouble xlength;
-	SoSFDouble zlength;
-	SoSFDouble depth;
+	SoSFFloat focusLength;
+	SoSFFloat widthX;
+	SoSFFloat widthZ;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D ( double u, double v ) const;
