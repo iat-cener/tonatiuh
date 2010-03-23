@@ -90,7 +90,7 @@ TLightKit::TLightKit()
 
 	SoMaterial* lightMaterial = static_cast<SoMaterial*>( getPart( "iconMaterial", true ) );
 	lightMaterial->diffuseColor.setValue( 0.933, 0.91, 0.666);
-	lightMaterial->transparency = 0.3;
+	lightMaterial->transparency = 0.5;
 	setPart( "iconMaterial", lightMaterial );
 }
 
