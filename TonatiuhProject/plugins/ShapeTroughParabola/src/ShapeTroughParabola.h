@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPETROUGHPARABOLA_H_
 
 #include <Inventor/fields/SoSFEnum.h> 
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -61,11 +61,17 @@ public:
 
 	Point3D Sample( double u, double v) const;
 
-	SoSFDouble focusLength;
-	SoSFDouble xMin;
-	SoSFDouble xMax;
-	SoSFDouble lengthXMin;
-	SoSFDouble lengthXMax;
+	enum Side{
+		INSIDE = 0,
+		OUTSIDE   = 1,
+	};
+
+	SoSFFloat focusLength;
+	SoSFFloat xMin;
+	SoSFFloat xMax;
+	SoSFFloat lengthXMin;
+	SoSFFloat lengthXMax;
+	SoSFEnum activeSide;
 
  
 protected:

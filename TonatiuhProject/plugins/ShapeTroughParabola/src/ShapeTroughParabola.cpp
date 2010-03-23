@@ -68,6 +68,11 @@ ShapeTroughParabola::ShapeTroughParabola()
 	SO_NODE_ADD_FIELD( lengthXMin, (1.0) );
 	SO_NODE_ADD_FIELD( lengthXMax, (1.0) );
 
+	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
+	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
+	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
+
 
 	SoFieldSensor* m_xMinSensor = new SoFieldSensor(updateXMinValues, this);
 	m_xMinSensor->attach( &xMin );
@@ -159,7 +164,6 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 	// Compute definitive parabolic cylinder hit position
 	hitPoint = objectRay( thit );
-	double y = hitPoint.y;
 
 	// Find parametric representation of paraboloid hit
 	double u =  hitPoint.x  / focusLength.getValue();
@@ -245,6 +249,12 @@ Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 	double x = ( xmax - xmin ) *  u + xmin;
 	double y = ( x * x ) /( 4 * focusLength.getValue() );
 
+	/*double n = 6;
+	double lM = tan( tgc::Pi / n )* xmax;
+	double a = ( ( xmax * xmax ) /( 4 * focusLength.getValue() ) / lM);
+
+	double zmax = y / a;
+	double z = zmax * ( 2 * v - 1 );*/
 	double zmax = std::max( lengthXMin.getValue(), lengthXMax.getValue() );
 	double z1 = ( ( zmax - lengthXMin.getValue() ) / 2 ) + ( (lengthXMin.getValue() - lengthXMax.getValue() ) / ( 2 * ( xmax - xmin ) ) ) * ( x - xmin );
 	double z2 = ( ( zmax + lengthXMin.getValue() ) / 2 )  + ( ( (lengthXMax.getValue() - lengthXMin.getValue() ) / ( 2 * ( xmax - xmin ) ) )  * ( x - xmin ) );
@@ -271,6 +281,15 @@ bool ShapeTroughParabola::OutOfRange( double u, double v ) const
 
 void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
+	double xmin = xMin.getValue();
+	double xmax = xMax.getValue();
+
+	/*double ymin = ( xmin * xmin ) / ( 4 * focusLength.getValue() );
+	double ymax = ( xmax * xmax ) / ( 4 * focusLength.getValue() );
+
+	double n = 6;
+	double zmin = - xmax * tan( tgc::Pi / n );
+	double zmax = xmax * tan( tgc::Pi / n );*/
 	double y1 = ( xMin.getValue() * xMin.getValue() ) / ( 4 * focusLength.getValue() );
 	double y2 = ( xMax.getValue() * xMax.getValue() ) / ( 4 * focusLength.getValue() );
 
@@ -280,7 +299,7 @@ void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center
 
 	double zmin = 0.0;
 	double zmax = std::max( lengthXMin.getValue(), lengthXMax.getValue() );
-	box.setBounds(SbVec3f( xMin.getValue(), ymin, zmin ), SbVec3f( xMax.getValue(), ymax, zmax ) );
+	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
 }
 
 void ShapeTroughParabola::generatePrimitives(SoAction *action)
@@ -314,7 +333,9 @@ void ShapeTroughParabola::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
     		Point3D point = GetPoint3D(ui, vj);
-    		NormalVector normal = GetNormal(ui, vj);
+    		NormalVector normal;
+    		if( activeSide.getValue() == 0 )	normal = GetNormal(ui, vj);
+    		else	normal = -GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
