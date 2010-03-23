@@ -40,7 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPEFLATDISK_H_
 
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 
@@ -57,7 +57,13 @@ public:
 	bool IntersectP( const Ray &ray ) const;
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble radius;
+	enum Side{
+		FRONT = 0,
+		BACK   = 1,
+	};
+
+	SoSFFloat radius;
+	SoSFEnum activeSide;
 
 protected:
 	Point3D GetPoint3D (double u, double v) const;
