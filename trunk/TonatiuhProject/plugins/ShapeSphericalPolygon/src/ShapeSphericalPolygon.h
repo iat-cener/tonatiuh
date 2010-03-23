@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 
 #include "TShape.h"
@@ -64,9 +64,15 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFDouble sphereRadius;
-	SoSFDouble radius;
+	enum Side{
+		INSIDE = 0,
+		OUTSIDE   = 1,
+	};
+
+	SoSFFloat sphereRadius;
+	SoSFFloat radius;
 	SoSFInt32 polygonSides;
+	SoSFEnum activeSide;
 
 private:
    	~ShapeSphericalPolygon();
