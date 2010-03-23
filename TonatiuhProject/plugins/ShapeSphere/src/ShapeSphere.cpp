@@ -67,6 +67,11 @@ ShapeSphere::ShapeSphere( )
 	m_lastValidYMax = 0.5;
 	m_lastValidYMin = -0.5;
 
+	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
+	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
+	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
+	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
+
 	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
 	m_radiusSensor->attach( &radius );
 	SoFieldSensor* m_yMinSensor = new SoFieldSensor(updateYMin, this);
@@ -387,7 +392,9 @@ void ShapeSphere::generatePrimitives(SoAction *action)
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
     		Point3D point = GetPoint3D(ui, vj);
-    		NormalVector normal = GetNormal(ui, vj);
+    		NormalVector normal;
+    		if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
+    		else	normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
