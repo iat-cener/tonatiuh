@@ -1156,7 +1156,6 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 			return;
 		}
 
-		Transform worldToObject;
 		if( exportDialog.GetCoordinateSystem() == 1 )
 		{
 			SoBaseKit* nodeKit =static_cast< SoBaseKit* > ( selectedNode->GetNode() );
@@ -1182,19 +1181,33 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 								pathTransformation[0][2], pathTransformation[1][2], pathTransformation[2][2], pathTransformation[3][2],
 								pathTransformation[0][3], pathTransformation[1][3], pathTransformation[2][3], pathTransformation[3][3] );
 
-			worldToObject = objectToWorld.GetInverse();
-		}
+			Transform worldToObject = objectToWorld.GetInverse();
+			for( int i = 0; i< nodePhotonsList.size(); ++i )
+			{
 
-		for( int i = 0; i< nodePhotonsList.size(); ++i )
+				Photon* node = nodePhotonsList[i];
+				Point3D photon = worldToObject( node->pos );
+				double id = node->id;
+				double prev_id = ( node->prev ) ? node->prev->id : 0;
+				double next_id = ( node->next ) ? node->next->id : 0;
+				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+			}
+
+		}else
 		{
+			for( int i = 0; i< nodePhotonsList.size(); ++i )
+			{
 
-			Photon* node = nodePhotonsList[i];
-			Point3D photon = worldToObject( node->pos );
-			double id = node->id;
-			double prev_id = ( node->prev ) ? node->prev->id : 0;
-			double next_id = ( node->next ) ? node->next->id : 0;
-			out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+				Photon* node = nodePhotonsList[i];
+				Point3D photon = node->pos;
+				double id = node->id;
+				double prev_id = ( node->prev ) ? node->prev->id : 0;
+				double next_id = ( node->next ) ? node->next->id : 0;
+				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+			}
 		}
+
+
 
 	}
 	exportFile.close();
