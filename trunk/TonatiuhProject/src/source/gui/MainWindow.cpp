@@ -1381,11 +1381,17 @@ void MainWindow::on_actionSunPlane_triggered()
 	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart( "transform", true ) );
 	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 	Point3D camPosition = lightToWorld( Point3D( 0.0, 0.0, 0.0 ) );
+	Vector3D camOrientation= lightToWorld( Vector3D( 0.0, -1.0, 0.0 ) );
+
+	double t = 1.0;
+	if( camPosition.y != 0.0 && camOrientation.y != 0.0 ) t = -camPosition.y / camOrientation.y;
+	Point3D targetPoint = camPosition + camOrientation * t;
+
 
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( camPosition.x, camPosition.y, camPosition.z ) );
-	cam->pointAt( SbVec3f( 0, 0, 0 ) );
+	cam->pointAt( SbVec3f( targetPoint.x, targetPoint.y, targetPoint.z ) );
 	cam->viewAll( m_document->GetRoot(), vpr );
 }
 
