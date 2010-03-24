@@ -136,9 +136,10 @@ public slots:
 
 	//View menu actions
 	void on_actionAxis_toggled();
-	void on_actionGrid_toggled();
 	void on_actionBackground_toggled();
 	void on_actionEdit_Mode_toggled();
+	void on_actionGrid_toggled();
+	void on_actionGridSettings_triggered();
 	void on_actionSunPlane_triggered();
 	void on_action_X_Y_Plane_triggered();
 	void on_action_X_Z_Plane_triggered();
@@ -231,7 +232,7 @@ private:
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
 	void ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
 	void ComputeSceneTreeMap( InstanceNode* instanceNode, SoNodeKitPath* nodePath, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
-	SoSeparator* createGrid( int size );
+	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
 
     enum { m_maxRecentFiles = 7 };
     QString m_currentFile;
@@ -268,6 +269,10 @@ private:
     unsigned long m_raysPerIteration;
     double m_fraction;
     bool m_drawPhotons;
+    int m_gridXElements;
+    int m_gridZElements;
+    double m_gridXSpacing;
+    double m_gridZSpacing;
     std::vector<GraphicView*> m_graphicView;
     SceneModelView* m_treeView;
     int m_focusView;
