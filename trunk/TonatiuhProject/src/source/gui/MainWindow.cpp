@@ -1250,7 +1250,9 @@ void MainWindow::on_actionAxis_toggled()
 	m_graphicView[2]->ViewCoordinateSystem( actionAxis->isChecked() );
 	m_graphicView[3]->ViewCoordinateSystem( actionAxis->isChecked() );
 }
-
+/**
+ * Action slot to show/hide a grid with the scene dimensions.
+ */
 void MainWindow::on_actionGrid_toggled()
 {
 	if( actionGrid->isChecked() )
@@ -1280,7 +1282,7 @@ void MainWindow::on_actionGrid_toggled()
 			box.getBounds(min, max);
 
 			m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
-			m_gridZSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5 ) / m_gridXElements;
+			m_gridZSpacing = ( 2 *  std::max( fabs( max[1] ), fabs( min[1] ) ) + 5 ) / m_gridXElements;
 
 		}
 
@@ -1301,7 +1303,9 @@ void MainWindow::on_actionGrid_toggled()
 
 }
 
-
+/**
+ * Action slot to open grid settings dialog.
+ */
 void MainWindow::on_actionGridSettings_triggered()
 {
 	GridSettingsDialog* gridDialog = new GridSettingsDialog( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing );
