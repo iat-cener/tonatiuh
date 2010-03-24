@@ -61,7 +61,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
@@ -87,6 +87,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Document.h"
 #include "ExportDialog.h"
 #include "GraphicView.h"
+#include "GridSettingsDialog.h"
 #include "InstanceNode.h"
 #include "MainWindow.h"
 #include "NodeNameDelegate.h"
@@ -157,6 +158,10 @@ m_tracedRays( 0 ),
 m_raysPerIteration( 1000 ),
 m_fraction( 10 ),
 m_drawPhotons( false ),
+m_gridXElements( 0 ),
+m_gridZElements( 0 ),
+m_gridXSpacing( 0 ),
+m_gridZSpacing( 0 ),
 m_graphicView( 0 ),
 m_treeView( 0 ),
 m_focusView( 0 )
@@ -1261,26 +1266,62 @@ void MainWindow::on_actionGrid_toggled()
 		if(nodePath)	bbAction->apply(nodePath);
 
 		SbXfBox3f box= bbAction->getXfBoundingBox();
-
-		SbVec3f min, max;
-		box.getBounds(min, max);
-
-
-		int sizex = (int)(max[0]-(int)min[0]+.5);
-		int sizez = (int)(max[2]-(int)min[2]+.5);
-		int size = std::max(sizex,sizez);
-
-		if(size <= 0)
-			m_pGrid = createGrid(10);
-		else
-			m_pGrid = createGrid(size);
-
-		m_document->GetRoot()->addChild(m_pGrid);
 		delete bbAction;
 		nodePath->unref();
+
+		m_gridXElements = 10;
+	    m_gridZElements = 10;
+	    m_gridXSpacing = 10;
+	    m_gridZSpacing = 10;
+
+		if( !box.isEmpty() )
+		{
+			SbVec3f min, max;
+			box.getBounds(min, max);
+
+			m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
+			m_gridZSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5 ) / m_gridXElements;
+
+		}
+
+		m_pGrid = new SoSeparator;
+		m_pGrid->ref();
+		m_pGrid->addChild( CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing ) );
+		m_document->GetRoot()->addChild(m_pGrid);
 	}
 	else
+	{
+		m_document->GetRoot()->removeChild( m_pGrid );
+		m_pGrid->removeAllChildren();
+		if ( m_pGrid->getRefCount() > 1 ) tgf::SevereError("on_actionGridSettings_triggered: m_pGrid referenced in excess ");
+		m_pGrid->unref();
+		m_pGrid = 0;
+
+	}
+
+}
+
+
+void MainWindow::on_actionGridSettings_triggered()
+{
+	GridSettingsDialog* gridDialog = new GridSettingsDialog( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing );
+	if( gridDialog->exec() )
+	{
 		m_document->GetRoot()->removeChild(m_pGrid);
+		m_pGrid->removeAllChildren();
+		if ( m_pGrid->getRefCount() > 1 ) tgf::SevereError("on_actionGridSettings_triggered: m_pGrid referenced in excess ");
+		m_pGrid->unref();
+		m_pGrid = 0;
+
+		m_gridXElements = gridDialog->GetXDimension();
+		m_gridZElements = gridDialog->GetZDimension();
+		m_gridXSpacing = gridDialog->GetXSpacing();
+		m_gridZSpacing = gridDialog->GetZSpacing();
+		m_pGrid = CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing );
+		m_pGrid->ref();
+		m_document->GetRoot()->addChild(m_pGrid);
+	}
+	delete gridDialog;
 }
 
 void MainWindow::on_actionBackground_toggled()
@@ -2411,66 +2452,63 @@ void MainWindow::FinishManipulation( )
 
 }
 
-SoSeparator* MainWindow::createGrid( int tsize )
+SoSeparator* MainWindow::CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing )
 {
-	const int size = tsize;
-    const int vsum = (size + size + 1) * 4;
-    const int isum = (vsum/2) * 3;
-    const int msum = (size + size + 1) * 2;
 
-    static float colors[2][3] = { {0.4f, 0.4f, 0.4f}, {0.6f, 0.6f, 0.6f} };
+	double xWidth = xDimension * xSpacing;
+	double zWidth = zDimension * zSpacing;
 
-    float step, i, s;
-    int vnum, inum, mnum, m;
+	int nVertex = xDimension * zDimension + 4;
+    SbVec3f* vertex = new SbVec3f[nVertex];
 
-    SbVec3f* vertices = new SbVec3f[vsum];
-    int* cindex = new int[isum];
-    int* mindex = new int[msum];
+    int nLines = xDimension + zDimension + 2;
+    int* lines = new int[nLines];
 
-    vnum = inum = mnum = m = 0;
-    step = 1.0;
-    s = (float)size;
-    for( i = -s; i <= s; i += step)
-    {
-            if( i == 0.0) m = 1;
 
-            vertices[vnum].setValue( i, 0.0, s );
-            cindex[inum++] = vnum++;
-            vertices[vnum].setValue( i, 0.0, -s );
-            cindex[inum++] = vnum++;
-            cindex[inum++] = -1;
-            mindex[mnum++] = m;
+    int vNum = 0;
+    int lNum = 0;
+    for( int xIndex = 0; xIndex <= xDimension; ++xIndex )
+	{
+		double xValue = -( xWidth / 2  ) + xIndex * xSpacing;
+		vertex[vNum++].setValue( xValue, 0.0, zWidth/ 2 );
+		vertex[vNum++].setValue( xValue, 0.0, -zWidth/ 2 );
+		lines[lNum++] = 2;
+	}
 
-            vertices[vnum].setValue( s, 0.0, i );
-            cindex[inum++] = vnum++;
-            vertices[vnum].setValue( -s, 0.0, i );
-            cindex[inum++] = vnum++;
-            cindex[inum++] = -1;
-            mindex[mnum++] = m;
+	vertex[vNum++].setValue( -xWidth / 2, 0.0, zWidth/ 2 );
+	vertex[vNum++].setValue( xWidth / 2, 0.0, zWidth/ 2 );
+    lines[lNum++] = 2;
+	vertex[vNum++].setValue( -xWidth / 2, 0.0, -zWidth/ 2 );
+	vertex[vNum++].setValue( xWidth / 2, 0.0, -zWidth/ 2 );
+    lines[lNum++] = 2;
 
-            if( i == 0.0) m = 0;
-    }
+    for( int zIndex = 1; zIndex < zDimension; ++zIndex )
+	{
+		double zValue = -( zWidth / 2  ) + zIndex * zSpacing;
+		vertex[vNum++].setValue( xWidth / 2 , 0.0, zValue );
+		vertex[vNum++].setValue( -xWidth / 2 , 0.0, zValue );
+	    lines[lNum++] = 2;
+	}
 
-    SoSeparator * grid = new SoSeparator;
-    grid->ref();
 
-    SoMaterial * mat = new SoMaterial;
-    mat->diffuseColor.setValues(0, 2, colors);
-    grid->addChild(mat);
+	SoSeparator * grid = new SoSeparator;
 
-    SoCoordinate3 * line_coords = new SoCoordinate3;
-    line_coords->point.setValues(0, vsum, vertices);
-    grid->addChild(line_coords);
+	SoMaterial * mat = new SoMaterial;
+	static float colors[2][3] = { {0.4f, 0.4f, 0.4f}, {0.6f, 0.6f, 0.6f} };
+	mat->diffuseColor.setValues(0, 2, colors);
+	grid->addChild(mat);
 
-    SoIndexedLineSet * lineset = new SoIndexedLineSet;
-    lineset->coordIndex.setValues(0, isum, cindex);
-    lineset->materialIndex.setValues(0, msum, mindex);
-    grid->addChild(lineset);
+	SoCoordinate3 * line_coords = new SoCoordinate3;
+	line_coords->point.setValues(0, nVertex, vertex);
+	grid->addChild(line_coords);
 
-    grid->unrefNoDelete();
+	SoLineSet* lineset=new SoLineSet;
+	lineset->numVertices.setValues(0,lNum,lines);
+	grid->addChild(lineset);
 
-    delete vertices;
-    delete[] cindex;
-    delete[] mindex;
-    return grid;
+
+    delete[] vertex;
+    delete[] lines;
+	return grid;
+
 }
