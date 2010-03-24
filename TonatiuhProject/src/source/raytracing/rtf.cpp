@@ -63,145 +63,146 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * The \a sceneMap saves the scene elements BBox and Transform in global coordinates.
  */
 void trf::TraceRay( Ray& ray,
-		            QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap,
-		            InstanceNode* instanceNode,
-		            InstanceNode* lightNode,
-					TPhotonMap& photonMap, RandomDeviate& rand )
+                            QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap,
+                            InstanceNode* instanceNode,
+                            InstanceNode* lightNode,
+                                        TPhotonMap& photonMap, RandomDeviate& rand )
 {
-	Ray* reflectedRay = 0;
-	Photon* next = 0;
-	Photon* first = new Photon( ray.origin );
-	Photon* node = first;
-	node->intersectedSurface = lightNode;
-	int rayLength = 0;
+        Ray* reflectedRay = 0;
+        Photon* next = 0;
+        Photon* first = new Photon( ray.origin );
+        Photon* node = first;
+        node->intersectedSurface = lightNode;
+        int rayLength = 0;
 
-	InstanceNode* intersectedSurface = 0;
-	bool isFront = false;
+        InstanceNode* intersectedSurface = 0;
+        bool isFront = false;
 
-	//Trace the ray
-	bool intersection = true;
-	while ( intersection )
-	{
-		intersectedSurface = 0;
-		isFront = 0;
-		reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface, &isFront );
+        //Trace the ray
+        bool intersection = true;
+        while ( intersection )
+        {
+                intersectedSurface = 0;
+                isFront = 0;
+                reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface, &isFront );
 
-		if( reflectedRay )
-		{
-			Point3D point = ray( ray.maxt );
+                if( reflectedRay )
+                {
+                        Point3D point = ray( ray.maxt );
 
-			next = new Photon( point, node );
-			next->intersectedSurface = intersectedSurface;
-			next->surfaceSide = ( isFront ) ? 1.0 : 0.0;
-			node->next = next;
-			node = next;
-			rayLength++;
+                        next = new Photon( point, node );
+                        next->intersectedSurface = intersectedSurface;
+                        next->surfaceSide = ( isFront ) ? 1.0 : 0.0;
+                        node->next = next;
+                        node = next;
+                        rayLength++;
 
-			//Prepare node and ray for next iteration
-			ray = *reflectedRay;
-			delete reflectedRay;
-		}
-		else intersection = false;
-	}
+                        //Prepare node and ray for next iteration
+                        ray = *reflectedRay;
+                        delete reflectedRay;
+                }
+                else intersection = false;
+        }
 
-	if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
-	{
-		if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
+        if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+        {
+                if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
 
-		Point3D endOfRay = ray( ray.maxt );
-		Photon* lastNode = new Photon( endOfRay, node );
-		lastNode->intersectedSurface = intersectedSurface;
-		lastNode->surfaceSide = ( isFront ) ? 1.0 : 0.0;
-		node->next = lastNode;
+                Point3D endOfRay = ray( ray.maxt );
+                Photon* lastNode = new Photon( endOfRay, node );
+                lastNode->intersectedSurface = intersectedSurface;
+                lastNode->surfaceSide = ( isFront ) ? 1.0 : 0.0;
+                node->next = lastNode;
 
-	}
+        }
 
-	photonMap.StoreRay( first );
+        photonMap.StoreRay( first );
 }
 
 SoSeparator* trf::DrawPhotonMapPoints( const TPhotonMap& map )
 {
-	SoSeparator* drawpoints=new SoSeparator;
-	SoCoordinate3* points = new SoCoordinate3;
+        SoSeparator* drawpoints=new SoSeparator;
+        SoCoordinate3* points = new SoCoordinate3;
 
-	QList< Photon* > photonsList = map.GetAllPhotons();
+        QList< Photon* > photonsList = map.GetAllPhotons();
 
-	for (int i = 0; i < photonsList.size(); ++i)
-	{
-		Point3D photon = photonsList[i]->pos;
-		points->point.set1Value( i, photon.x, photon.y, photon.z );
-	}
+        for (int i = 0; i < photonsList.size(); ++i)
+        {
+                Point3D photon = photonsList[i]->pos;
+                points->point.set1Value( i, photon.x, photon.y, photon.z );
+        }
 
-	SoMaterial* myMaterial = new SoMaterial;
-  	myMaterial->diffuseColor.setValue(1.0, 1.0, 0.0);
-  	drawpoints->addChild(myMaterial);
-	drawpoints->addChild(points);
+        SoMaterial* myMaterial = new SoMaterial;
+        myMaterial->diffuseColor.setValue(1.0, 1.0, 0.0);
+        drawpoints->addChild(myMaterial);
+        drawpoints->addChild(points);
 
-  	SoDrawStyle* drawstyle = new SoDrawStyle;
-  	drawstyle->pointSize = 3;
-  	drawpoints->addChild(drawstyle);
+        SoDrawStyle* drawstyle = new SoDrawStyle;
+        drawstyle->pointSize = 3;
+        drawpoints->addChild(drawstyle);
 
-	SoPointSet* pointset = new SoPointSet;
-  	drawpoints->addChild(pointset);
+        SoPointSet* pointset = new SoPointSet;
+        drawpoints->addChild(pointset);
 
-  	return drawpoints;
+        return drawpoints;
 }
 
 SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction )
 {
-	SoSeparator* drawrays = new SoSeparator;
-	SoCoordinate3* points = new SoCoordinate3;
+        SoSeparator* drawrays = new SoSeparator;
+        SoCoordinate3* points = new SoCoordinate3;
 
-	int drawRays = (int) ( numberOfRays * ( fraction / 100 ) );
-	if( drawRays == 0 ) drawRays = 1;
-	unsigned long ray = 0;
-	int* lines = new int[drawRays];
+        int drawRays = (int) ( numberOfRays * ( fraction / 100 ) );
+        if( drawRays == 0 ) drawRays = 1;
+        unsigned long ray = 0;
+        int* lines = new int[drawRays];
 
-	unsigned long rayLength = 0;
-	unsigned long drawnRay = 0;
+        unsigned long rayLength = 0;
+        unsigned long drawnRay = 0;
 
-	unsigned long numberOfPhoton = 0;
+        unsigned long numberOfPhoton = 0;
 
-	QList< Photon* > photonsList = map.GetAllPhotons();
+        QList< Photon* > photonsList = map.GetAllPhotons();
 
-	for (int i = 0; i < photonsList.size(); ++i)
-	{
-		if ( photonsList[i]->prev == 0 )
-		{
-			if ( ray % ( numberOfRays/drawRays ) == 0 )
-			{
-				Photon* node = photonsList[i];
-				rayLength = 0;
+        for (int i = 0; i < photonsList.size(); ++i)
+        {
+                if ( photonsList[i]->prev == 0 )
+                {
+                        if ( ray % ( numberOfRays/drawRays ) == 0 )
+                        {
+                                Photon* node = photonsList[i];
+                                rayLength = 0;
 
-				while ( node != 0 )
-				{
-					Point3D photon = node->pos;
-					points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
+                                while ( node != 0 )
+                                {
+                                        Point3D photon = node->pos;
+                                        points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
 
-					if( node->next != 0 )	node = map.GetPhoton( node->next->id );
-					else	node = 0;
+                                        if( node->next != 0 )   node = map.GetPhoton( node->next->id );
+                                        else    node = 0;
 
-					rayLength++;
-					numberOfPhoton++;
-				}
+                                        rayLength++;
+                                        numberOfPhoton++;
+                                }
 
-				lines[drawnRay]= rayLength;
-				drawnRay++;
+                                lines[drawnRay]= rayLength;
+                                drawnRay++;
 
-			}
-			ray++;
-		}
-	}
+                        }
+                        ray++;
+                }
+        }
 
-	SoMaterial* myMaterial = new SoMaterial;
-  	myMaterial->diffuseColor.setValue(1.0, 1.0, 0.8);
-  	drawrays->addChild( myMaterial );
+        SoMaterial* myMaterial = new SoMaterial;
+        myMaterial->diffuseColor.setValue(1.0, 1.0, 0.8);
+        drawrays->addChild( myMaterial );
     drawrays->addChild( points );
 
-	SoLineSet* lineset = new SoLineSet;
-  	lineset->numVertices.setValues( 0, drawnRay, lines );
-  	drawrays->addChild( lineset );
+        SoLineSet* lineset = new SoLineSet;
+        lineset->numVertices.setValues( 0, drawnRay, lines );
+        drawrays->addChild( lineset );
 
-  	delete lines;
-  	return drawrays;
+
+        delete lines;
+        return drawrays;
 }
