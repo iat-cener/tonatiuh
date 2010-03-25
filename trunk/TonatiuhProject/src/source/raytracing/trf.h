@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QMap>
 #include <QPair>
-#include <Inventor/SbBox.h>
 #include "TShape.h"
 #include "TSunShape.h"
 #include "Transform.h"
@@ -60,7 +59,7 @@ namespace trf
                               const Transform& lightToWorld,
                               RandomDeviate& rand );
 	void TraceRay( Ray& ray,
-			       QMap< InstanceNode*, QPair< SbBox3f, Transform* > >* sceneMap,
+			       QMap< InstanceNode*, QPair< BBox, Transform* > >* sceneMap,
 			       InstanceNode* instanceNode,
 			       InstanceNode* lightNode,
 			       TPhotonMap& photonMap,

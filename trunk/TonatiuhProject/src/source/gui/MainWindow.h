@@ -42,7 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include <ui_mainwindow.h>
 
-
+class BBox;
 class Document;
 class GraphicView;
 class InstanceNode;
@@ -52,7 +52,7 @@ class QUndoView;
 class RandomDeviate;
 class RandomDeviateFactory;
 class Ray;
-class SbBox3f;
+class BBox;
 class SbViewportRegion;
 class SceneModel;
 class SoNodeKitPath;
@@ -230,8 +230,7 @@ private:
     void UpdateRecentFileActions();
     void WriteSettings();
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
-	void ComputeSceneTreeMap( QPersistentModelIndex* nodeIndex, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
-	void ComputeSceneTreeMap( InstanceNode* instanceNode, SoNodeKitPath* nodePath, SbViewportRegion region, QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap );
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap );
 	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
 
     enum { m_maxRecentFiles = 7 };

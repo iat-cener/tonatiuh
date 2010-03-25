@@ -112,35 +112,28 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
 
 Ray* InstanceNode::Intersect( const Ray& ray,
 		                      RandomDeviate& rand,
-		                      QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap,
+		                      QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
 		                      InstanceNode** modelNode,
 		                      bool* isFront )
 {
-	QPair< SbBox3f, Transform* > instanceData =  sceneMap->value( this );
-
-	//Transform ray to InstaceNode coordinates
-	Transform* worldToObject =  instanceData.second;
-
-	Ray objectRay( (*worldToObject)( ray ) );
+	QPair< BBox, Transform* > instanceData =  sceneMap->value( this );
 
 	//Check if the ray intersects with the BoundingBox
-	SbBox3f box = instanceData.first;
+	BBox box = instanceData.first;
 
-
-	double t0 = objectRay.mint;
-	double t1 = objectRay.maxt;
+	double t0 = ray.mint;
+	double t1 = ray.maxt;
 
 	for( int i = 0; i < 3; ++i )
 	{
-		double invRayDir = 1.0 / objectRay.direction[i];
-		double tNear = ( box.getMin()[i] - objectRay.origin[i] ) * invRayDir;
-		double tFar = ( box.getMax()[i] - objectRay.origin[i] ) * invRayDir;
+		double invRayDir = 1.0 / ray.direction[i];
+		double tNear = ( box.pMin[i] - ray.origin[i] ) * invRayDir;
+		double tFar = ( box.pMax[i] - ray.origin[i] ) * invRayDir;
 		if( tNear > tFar ) std::swap( tNear, tFar );
 		t0 = tNear > t0 ? tNear : t0;
 		t1 = tFar < t1 ? tFar : t1;
 		if( t0 > t1 ) return 0;
 	}
-
 
 	Ray* result = 0;
 
@@ -186,7 +179,7 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 	{
 		TShapeKit* shapeKit  = static_cast< TShapeKit* > ( GetNode() );
 
-		QPair< SbBox3f, Transform* > childData;
+		QPair< BBox, Transform* > childData;
 		if( children.count() == 0 ) return result;
 
 		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )

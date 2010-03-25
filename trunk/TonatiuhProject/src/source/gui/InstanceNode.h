@@ -41,8 +41,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QList>
 #include <QPair>
-#include <Inventor/SbBox.h>
 
+class BBox;
 class RandomDeviate;
 class Ray;
 class SoNode;
@@ -73,7 +73,7 @@ public:
 
     Ray* Intersect( const Ray& ray,
     		        RandomDeviate& rand,
-    		        QMap< InstanceNode*,QPair< SbBox3f, Transform* > >* sceneMap,
+    		        QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
     		        InstanceNode** modelNode,
     		        bool* isFront );
 
