@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>411</width>
-    <height>327</height>
+    <height>376</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -126,23 +126,7 @@
       <property name="spacing">
        <number>10</number>
       </property>
-      <item row="0" column="0" colspan="2">
-       <widget class="QRadioButton" name="userDefinedRadio">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>User Defined Size</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
+      <item row="3" column="2">
        <widget class="QDoubleSpinBox" name="xSpacingSpin">
         <property name="minimumSize">
          <size>
@@ -158,14 +142,14 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QLabel" name="xSpacionLabel">
         <property name="text">
          <string>X Spacing:</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QLabel" name="zSpacingLabel">
         <property name="minimumSize">
          <size>
@@ -178,7 +162,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
+      <item row="4" column="2">
        <widget class="QDoubleSpinBox" name="zSpacingSpin">
         <property name="minimumSize">
          <size>
@@ -191,6 +175,32 @@
         </property>
         <property name="value">
          <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="scebeRadio">
+        <property name="text">
+         <string>Scene Size</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="userDefinedRadio">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>User Defined Size</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -213,7 +223,6 @@
   <tabstop>buttonBox</tabstop>
   <tabstop>xDimensionSpin</tabstop>
   <tabstop>zDimensionSpin</tabstop>
-  <tabstop>userDefinedRadio</tabstop>
   <tabstop>xSpacingSpin</tabstop>
   <tabstop>zSpacingSpin</tabstop>
  </tabstops>

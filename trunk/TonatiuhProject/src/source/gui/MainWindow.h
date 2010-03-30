@@ -145,6 +145,9 @@ public slots:
 	void on_action_X_Z_Plane_triggered();
 	void on_action_Y_Z_Plane_triggered();
 
+	//Help menu actions
+	void on_actionAbout_triggered();
+
 	//Create actions
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
