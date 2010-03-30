@@ -73,3 +73,9 @@ double GridSettingsDialog::GetZSpacing()
 {
 	return zSpacingSpin->value();
 }
+
+
+bool GridSettingsDialog::IsSizeDefined()
+{
+	return userDefinedRadio->isChecked();
+}

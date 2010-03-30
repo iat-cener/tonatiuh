@@ -59,6 +59,7 @@ public:
 	double GetXSpacing();
 	double GetZSpacing();
 
+	bool IsSizeDefined();
 };
 
 #endif /* GRIDSETTINGSDIALOG_H_ */

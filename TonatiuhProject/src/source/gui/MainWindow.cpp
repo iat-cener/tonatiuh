@@ -1278,7 +1278,7 @@ void MainWindow::on_actionGrid_toggled()
 			box.getBounds(min, max);
 
 			m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
-			m_gridZSpacing = ( 2 *  std::max( fabs( max[1] ), fabs( min[1] ) ) + 5 ) / m_gridXElements;
+			m_gridZSpacing = ( 2 *  std::max( fabs( max[2] ), fabs( min[2] ) ) + 5 ) / m_gridZElements;
 
 		}
 
@@ -1315,8 +1315,42 @@ void MainWindow::on_actionGridSettings_triggered()
 
 		m_gridXElements = gridDialog->GetXDimension();
 		m_gridZElements = gridDialog->GetZDimension();
-		m_gridXSpacing = gridDialog->GetXSpacing();
-		m_gridZSpacing = gridDialog->GetZSpacing();
+
+		if( gridDialog->IsSizeDefined() )
+		{
+			m_gridXSpacing = gridDialog->GetXSpacing();
+			m_gridZSpacing = gridDialog->GetZSpacing();
+		}
+		else
+		{
+			InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
+			if ( !sceneInstance )  return;
+			SoNode* rootNode = sceneInstance->GetNode();
+			SoPath* nodePath = new SoPath( rootNode );
+			nodePath->ref();
+
+			SbViewportRegion region = m_graphicView[m_focusView]->GetViewportRegion();
+			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
+			if(nodePath)	bbAction->apply(nodePath);
+
+			SbXfBox3f box= bbAction->getXfBoundingBox();
+			delete bbAction;
+			nodePath->unref();
+
+		    m_gridXSpacing = 10;
+		    m_gridZSpacing = 10;
+
+			if( !box.isEmpty() )
+			{
+				SbVec3f min, max;
+				box.getBounds(min, max);
+
+				m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
+				m_gridZSpacing = ( 2 *  std::max( fabs( max[2] ), fabs( min[2] ) ) + 5 ) / m_gridZElements;
+
+			}
+
+		}
 		m_pGrid = CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing );
 		m_pGrid->ref();
 		m_document->GetRoot()->addChild(m_pGrid);
@@ -1420,6 +1454,18 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 	cam->position.setValue( SbVec3f( -1, 0, 0 ) );
 	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 1, 0 )  );
 	cam->viewAll( m_document->GetRoot(), vpr );
+}
+
+
+void MainWindow::on_actionAbout_triggered()
+{
+	//QMessageBox::aboutQt( this );
+
+	QString aboutMessage("Tonatiuh\n"
+			"Version: 0.9.5\n"
+			"\nPlease see http://www.gnu.org/licenses/gpl.html for an overview of GPLv3 licensing.\n"
+			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
+	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
 }
 
 //Create actions

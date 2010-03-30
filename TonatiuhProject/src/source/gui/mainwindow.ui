@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>857</width>
-    <height>289</height>
+    <height>364</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,9 +27,8 @@
    <string>Tonatiuh</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff/>
-   </iconset>
+   <iconset resource="../../tonatiuh.qrc">
+    <normaloff>:/icons/LogoTonatiuh.png</normaloff>:/icons/LogoTonatiuh.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
@@ -138,6 +137,11 @@
     <addaction name="actionBackground"/>
     <addaction name="actionEdit_Mode"/>
     <addaction name="separator"/>
+    <addaction name="action_X_Y_Plane"/>
+    <addaction name="action_X_Z_Plane"/>
+    <addaction name="action_Y_Z_Plane"/>
+    <addaction name="actionSunPlane"/>
+    <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="actionGridSettings"/>
    </widget>
@@ -167,12 +171,19 @@
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuInsert"/>
    <addaction name="menuSun_Light"/>
    <addaction name="menu_Raytrace"/>
    <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="fileToolBar">
@@ -241,6 +252,8 @@
    <addaction name="action_Y_Z_Plane"/>
    <addaction name="action_X_Z_Plane"/>
    <addaction name="actionSunPlane"/>
+   <addaction name="separator"/>
+   <addaction name="actionGridSettings"/>
   </widget>
   <widget class="QToolBar" name="insertTollBar">
    <property name="windowTitle">
@@ -580,8 +593,17 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../../tonatiuh.qrc">
+     <normaloff>:/icons/grid.png</normaloff>:/icons/grid.png</iconset>
+   </property>
    <property name="text">
     <string>Grid Settings ...</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About...</string>
    </property>
   </action>
  </widget>
