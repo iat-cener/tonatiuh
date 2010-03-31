@@ -39,25 +39,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QIcon>
 
 #include "PhotonMapDBFactory.h"
-#include "Trace.h"
 
 QString PhotonMapDBFactory::TPhotonMapName() const
 {
-	Trace trace( "PhotonMapFactory::TPhotonMapName", false );
-
 	return QString( "PhotonMapDB" );
 }
 
 QIcon PhotonMapDBFactory::TPhotonMapIcon() const
 {
-	Trace trace( "PhotonMapFactory::TPhotonMapIcon", false );
-
 	return QIcon( ":/icons/photonMapDB.png" );
 }
 
 PhotonMapDB* PhotonMapDBFactory::CreateTPhotonMap( ) const
 {
-	Trace trace( "PhotonMapDBFactory::CreateTPhotonMap", false );
 	return new PhotonMapDB;
 }
 
