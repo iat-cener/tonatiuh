@@ -47,7 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "PhotonMapDB.h"
 #include "tgc.h"
 #include "tgf.h"
-#include "Trace.h"
 
 /* This is the constructor for the photon map.
  * To create the photon map it is necessary to specify the
@@ -57,8 +56,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 PhotonMapDB::PhotonMapDB()
 :m_dbDirName( 0 ), m_dbEnv( 0 ), m_photonMapDB( 0 ), m_isSecondary( false ), m_storedPhotons( 0 )
 {
-	Trace trace( "PhotonMapDB::PhotonMapDB", false );
-
 	u_int32_t env_flags = DB_CREATE |
 			DB_INIT_LOCK |
 			DB_INIT_MPOOL;// |
@@ -93,7 +90,6 @@ PhotonMapDB::PhotonMapDB()
  **/
 PhotonMapDB :: ~PhotonMapDB()
 {
-	Trace trace( "PhotonMapDB::~PhotonMapDB", false );
 	Close();
 }
 
@@ -102,7 +98,6 @@ PhotonMapDB :: ~PhotonMapDB()
  **/
 QString PhotonMapDB::GetIcon()
 {
-	Trace trace( "PhotonMapDB::getIcon", false );
 
 	return QString(":icons/photonMapDB.png");
 }
@@ -113,7 +108,6 @@ QString PhotonMapDB::GetIcon()
  */
 QList< Photon* > PhotonMapDB::GetAllPhotons() const
 {
-	Trace trace( "PhotonMapDB::GetAllPhotons", false );
 	QList< Photon* > photonsList;
 
 	//Get a cursor to the photon map db
@@ -146,8 +140,6 @@ QList< Photon* > PhotonMapDB::GetAllPhotons() const
  */
 Photon* PhotonMapDB::GetPhoton( double photonID ) const
 {
-	Trace trace( "PhotonMapDB::GetPhoton", false );
-
 	Dbc* cursor;
 	m_photonMapDB->cursor( NULL, &cursor, 0 );
 
@@ -178,7 +170,6 @@ Photon* PhotonMapDB::GetPhoton( double photonID ) const
  */
 QList< Photon* > PhotonMapDB::GetSurfacePhotons( InstanceNode* instance ) const
 {
-	Trace trace( "PhotonMapDB::GetSurfacePhotons", false );
 
 	QList< Photon* > surfacePhotonsList;
 
@@ -218,8 +209,6 @@ QList< Photon* > PhotonMapDB::GetSurfacePhotons( InstanceNode* instance ) const
  **/
 void PhotonMapDB::StoreRay( Photon* rayFirstPhoton )
 {
-	Trace trace( "PhotonMapDB::StoreRay", false );
-
 	double nodeID = m_storedPhotons + 1;
 	rayFirstPhoton->id =nodeID;
 	Photon* currentNode = rayFirstPhoton->next;
@@ -293,7 +282,6 @@ void PhotonMapDB::StoreRay( Photon* rayFirstPhoton )
  */
 unsigned long PhotonMapDB::StoredPhotons() const
 {
-	Trace trace( "PhotonMapDB::StoredPhotons", false );
 	return m_storedPhotons;
 }
 
@@ -302,8 +290,6 @@ unsigned long PhotonMapDB::StoredPhotons() const
  */
 void PhotonMapDB::Close()
 {
-	Trace trace( "PhotonMapDB::Close", false );
-
     // Close the db
     try
     {
@@ -332,7 +318,6 @@ void PhotonMapDB::Close()
  */
 void PhotonMapDB::Open()
 {
-	Trace trace( "PhotonMapDB::Open", false );
 
 	try
 	{
@@ -372,8 +357,6 @@ void PhotonMapDB::Open()
 
 void PhotonMapDB::InsertSurface(  InstanceNode* instance  )
 {
-	Trace trace( "PhotonMapDB::InsertSurface", false );
-
 	//DbTxn* txn = 0;
 	//m_dbEnv->txn_begin( NULL, &txn, 0 );
 
@@ -392,8 +375,6 @@ void PhotonMapDB::InsertSurface(  InstanceNode* instance  )
 
 int PhotonMapDB::get_photon_surface( Db* secondaryDB, const Dbt* pKey, const Dbt* pData, Dbt* sKey )
 {
-
-	Trace trace( "PhotonMapDB::get_photon_surface", false );
 	PHOTON* photon;
 
 	//Extract the photon contained in the PhotonMap.db
