@@ -3,14 +3,14 @@
 #include <gtest/gtest.h>
 
 // Tests the Set method.
-TEST(Point3DTest, ConstructorDefault) {
+TEST(Point3DTests, ConstructorDefault) {
   Point3D point;
   EXPECT_TRUE(point.x == 0.0);
   EXPECT_TRUE(point.y == 0.0);
   EXPECT_TRUE(point.z == 0.0); 
 }
 
-TEST(Point3DTest, ConstructorFromVector) {
+TEST(Point3DTests, ConstructorFromVector) {
 
   Vector3D vector( 6789.0,893,0.56273);
   Point3D point( vector );
@@ -19,7 +19,7 @@ TEST(Point3DTest, ConstructorFromVector) {
   EXPECT_DOUBLE_EQ( vector.z, point.z );
 }
 
-TEST(Point3DTest, OperatorPlusEqVector) {
+TEST(Point3DTests, OperatorPlusEqVector) {
   double x0 = 23.4;
   double y0 = 78.9;
   double z0 = 254.76;
@@ -31,7 +31,7 @@ TEST(Point3DTest, OperatorPlusEqVector) {
   EXPECT_DOUBLE_EQ( (z0+vector.z), point.z );
 }
 
-TEST(Point3DTest, OperatorPlusVector) {
+TEST(Point3DTests, OperatorPlusVector) {
   Point3D point( 130.43, 728.29, 54.716 );
   Vector3D vector( 89.12, 76.24, 1.243 );
   Point3D result;
@@ -41,7 +41,7 @@ TEST(Point3DTest, OperatorPlusVector) {
   EXPECT_DOUBLE_EQ( ( point.z + vector.z ), result.z );
 }
 
-TEST(Point3DTest, OperatorMinusEqVector) {
+TEST(Point3DTests, OperatorMinusEqVector) {
   double x0 = 43.3;
   double y0 = 172.9;
   double z0 = 828.6;
@@ -53,7 +53,7 @@ TEST(Point3DTest, OperatorMinusEqVector) {
   EXPECT_DOUBLE_EQ( (z0-vector.z), point.z );
 }
 
-TEST(Point3DTest, OperatorMinusVector) {
+TEST(Point3DTests, OperatorMinusVector) {
   Point3D point( 589.37, 28.229, 147.16 );
   Vector3D vector( 1.243, 19.12, 67.24 );
   Point3D result;
@@ -63,7 +63,7 @@ TEST(Point3DTest, OperatorMinusVector) {
   EXPECT_DOUBLE_EQ( ( point.z - vector.z ), result.z );
 }
 
-TEST(Point3DTest, OperatorTimesEqScalar) {
+TEST(Point3DTests, OperatorTimesEqScalar) {
   double x0 = 43.3;
   double y0 = 172.9;
   double z0 = 828.6;
@@ -75,7 +75,7 @@ TEST(Point3DTest, OperatorTimesEqScalar) {
   EXPECT_DOUBLE_EQ( (z0 * scalar), point.z );
 }
 
-TEST(Point3DTest, OperatorTimesScalar) {
+TEST(Point3DTests, OperatorTimesScalar) {
   Point3D point( 589.37, 28.229, 147.16 );
   double scalar = 145.89;
   Point3D result;
@@ -85,7 +85,7 @@ TEST(Point3DTest, OperatorTimesScalar) {
   EXPECT_DOUBLE_EQ( ( point.z * scalar ), result.z );
 }
 
-TEST(Point3DTest, OperatorDivideEqScalar) {
+TEST(Point3DTests, OperatorDivideEqScalar) {
   double x0 = 438.9;
   double y0 = 12.2;
   double z0 = 628.46;
@@ -97,7 +97,7 @@ TEST(Point3DTest, OperatorDivideEqScalar) {
   EXPECT_DOUBLE_EQ( (z0 / scalar), point.z );
 }
 
-TEST(Point3DTest, OperatorDivideScalar) {
+TEST(Point3DTests, OperatorDivideScalar) {
   Point3D point( 593.75, 82.292, 714.16 );
   double scalar = 145.89;
   Point3D result;
@@ -107,7 +107,7 @@ TEST(Point3DTest, OperatorDivideScalar) {
   EXPECT_DOUBLE_EQ( ( point.z / scalar ), result.z );
 }
 
-TEST(Point3DTest, OperatorMinusPoint) {
+TEST(Point3DTests, OperatorMinusPoint) {
   Point3D pointA( 0.37, 228.229, -47.16 );
   Point3D pointB( 3.46, 26.4, 87.2 );
   Vector3D vector = pointA - pointB;
@@ -116,7 +116,7 @@ TEST(Point3DTest, OperatorMinusPoint) {
   EXPECT_DOUBLE_EQ( ( pointA.z - pointB.z ), vector.z );
 }
 
-TEST(Point3DTest, EqualityOperators) {
+TEST(Point3DTests, EqualityOperators) {
   Point3D pointA( 0.37, 228.229, -47.16 );
   Point3D pointB( 0.37, 228.229, -47.16 );
   Point3D pointC( 67.24, -23.56, 0.008 );
@@ -141,7 +141,7 @@ TEST(Point3DTest, EqualityOperators) {
 		       ( ( pointB != pointC ) && ( pointC != pointB ) ) );
 }
 
-TEST(Point3DTest, IndexingOperatorsRhs) {
+TEST(Point3DTests, IndexingOperatorsRhs) {
   double coordinate[] = { 3456.78, -348.89, -28.223 };
   double value = 0.0;
   Point3D point( coordinate[0], coordinate[1], coordinate[2] );
@@ -153,7 +153,7 @@ TEST(Point3DTest, IndexingOperatorsRhs) {
   }
 }
 
-TEST(Point3DTest, IndexingOperatorsLhs) {
+TEST(Point3DTests, IndexingOperatorsLhs) {
   double coordinate[] = { 3456.78, -348.89, -28.223 };
   Point3D point( 0, 0, 0 );
   for( int i = 0; i<3; i++ )

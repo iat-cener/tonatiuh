@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 
 // Tests the Set method.
-TEST(NormalVectorTest, ConstructorDefault)
+TEST(NormalVectorTests, ConstructorDefault)
 {
   NormalVector normalVector;
   EXPECT_TRUE(normalVector.x == 0.0);
@@ -12,7 +12,7 @@ TEST(NormalVectorTest, ConstructorDefault)
   EXPECT_TRUE(normalVector.z == 0.0);
 }
 
-TEST(NormalVectorTest, ConstructorFromVector)
+TEST(NormalVectorTests, ConstructorFromVector)
 {
   Vector3D vector( 6789.0,893,0.56273);
   NormalVector normalVector( vector );
@@ -21,7 +21,7 @@ TEST(NormalVectorTest, ConstructorFromVector)
   EXPECT_DOUBLE_EQ( vector.z, normalVector.z );
 }
 
-TEST(NormalVectorTest, OperatorPlusEqual)
+TEST(NormalVectorTests, OperatorPlusEqual)
 {
   double x0 = 23.4;
   double y0 = 78.9;
@@ -34,7 +34,7 @@ TEST(NormalVectorTest, OperatorPlusEqual)
   EXPECT_DOUBLE_EQ( (z0+nv2.z), nv1.z );
 }
 
-TEST(NormalVectorTest, OperatorMinusEqual)
+TEST(NormalVectorTests, OperatorMinusEqual)
 {
   double x0 = 43.3;
   double y0 = 172.9;
@@ -47,7 +47,7 @@ TEST(NormalVectorTest, OperatorMinusEqual)
   EXPECT_DOUBLE_EQ( (z0-nv2.z), nv1.z );
 }
 
-TEST(NormalVectorTest, OperatorTimesEqualScalar)
+TEST(NormalVectorTests, OperatorTimesEqualScalar)
 {
   double x0 = 43.3;
   double y0 = 172.9;
@@ -60,7 +60,7 @@ TEST(NormalVectorTest, OperatorTimesEqualScalar)
   EXPECT_DOUBLE_EQ( (z0 * scalar), normalVector.z );
 }
 
-TEST(NormalVectorTest, OperatorTimesScalar)
+TEST(NormalVectorTests, OperatorTimesScalar)
 {
   NormalVector normalVector( 589.37, 28.229, 147.16 );
   double scalar = 145.89;
@@ -71,7 +71,7 @@ TEST(NormalVectorTest, OperatorTimesScalar)
   EXPECT_DOUBLE_EQ( ( normalVector.z * scalar ), result.z );
 }
 
-TEST(NormalVectorTest, OperatorDivideEqualScalar)
+TEST(NormalVectorTests, OperatorDivideEqualScalar)
 {
   double x0 = 438.9;
   double y0 = 12.2;
@@ -84,7 +84,7 @@ TEST(NormalVectorTest, OperatorDivideEqualScalar)
   EXPECT_DOUBLE_EQ( (z0 / scalar), normalVector.z );
 }
 
-TEST(NormalVectorTest, OperatorDivideScalar)
+TEST(NormalVectorTests, OperatorDivideScalar)
 {
   NormalVector normalVector( 593.75, 82.292, 714.16 );
   double scalar = 145.89;
@@ -95,7 +95,7 @@ TEST(NormalVectorTest, OperatorDivideScalar)
   EXPECT_DOUBLE_EQ( ( normalVector.z / scalar ), result.z );
 }
 
-TEST(NormalVectorTest, UnaryOperatorMinus)
+TEST(NormalVectorTests, UnaryOperatorMinus)
 {
   double x0 = 438.9;
   double y0 = 12.2;
@@ -107,7 +107,7 @@ TEST(NormalVectorTest, UnaryOperatorMinus)
   EXPECT_DOUBLE_EQ( -z0, result.z );
 }
 
-TEST(NormalVectorTest, EqualityOperators)
+TEST(NormalVectorTests, EqualityOperators)
 {
   NormalVector nvA( 0.37, 228.229, -47.16 );
   NormalVector nvB( 0.37, 228.229, -47.16 );
@@ -133,7 +133,7 @@ TEST(NormalVectorTest, EqualityOperators)
 		       ( ( nvB != nvC ) && ( nvC != nvB ) ) );
 }
 
-TEST(NormalVectorTest, IndexingOperatorsRhs)
+TEST(NormalVectorTests, IndexingOperatorsRhs)
 {
   double coordinate[] = { 3456.78, -348.89, -28.223 };
   double value = 0.0;
@@ -146,7 +146,7 @@ TEST(NormalVectorTest, IndexingOperatorsRhs)
   }
 }
 
-TEST(NormalVectorTest, IndexingOperatorsLhs)
+TEST(NormalVectorTests, IndexingOperatorsLhs)
 {
   double coordinate[] = { 3456.78, -348.89, -28.223 };
   NormalVector normalVector( 0, 0, 0 );
@@ -157,7 +157,7 @@ TEST(NormalVectorTest, IndexingOperatorsLhs)
   }
 }
 
-TEST(NormalVectorTest, lengthSquared )
+TEST(NormalVectorTests, lengthSquared )
 {
 	  double x0 = 438.9;
 	  double y0 = 12.2;
@@ -167,7 +167,7 @@ TEST(NormalVectorTest, lengthSquared )
 	  EXPECT_DOUBLE_EQ( result, normalVector.lengthSquared() );
 }
 
-TEST(NormalVectorTest, length )
+TEST(NormalVectorTests, length )
 {
 	  double x0 = 438.9;
 	  double y0 = 12.2;
@@ -177,7 +177,7 @@ TEST(NormalVectorTest, length )
 	  EXPECT_DOUBLE_EQ( result, normalVector.length() );
 }
 
-TEST(NormalVectorTest, NonMemberFunctionOperatorPlus)
+TEST(NormalVectorTests, NonMemberFunctionOperatorPlus)
 {
   NormalVector lhs( 130.43, 728.29, 54.716 );
   NormalVector rhs( 89.12, 76.24, 1.243 );
@@ -187,7 +187,7 @@ TEST(NormalVectorTest, NonMemberFunctionOperatorPlus)
   EXPECT_DOUBLE_EQ( ( lhs.z + rhs.z ), result.z );
 }
 
-TEST(NormalVectorTest, NonMemberFunctionOperatorMinus)
+TEST(NormalVectorTests, NonMemberFunctionOperatorMinus)
 {
   NormalVector lhs( 130.43, 728.29, 54.716 );
   NormalVector rhs( 89.12, 76.24, 1.243 );
@@ -197,7 +197,7 @@ TEST(NormalVectorTest, NonMemberFunctionOperatorMinus)
   EXPECT_DOUBLE_EQ( ( lhs.z - rhs.z ), result.z );
 }
 
-TEST(NormalVectorTest, NonMemberFunctionOperatorPlusScalar)
+TEST(NormalVectorTests, NonMemberFunctionOperatorPlusScalar)
 {
   NormalVector normalVector( 130.43, 728.29, 54.716 );
   double scalar = 345.0;
@@ -207,33 +207,3 @@ TEST(NormalVectorTest, NonMemberFunctionOperatorPlusScalar)
   EXPECT_DOUBLE_EQ( ( scalar*normalVector.y ), result.y );
   EXPECT_DOUBLE_EQ( ( scalar*normalVector.z ), result.z );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
