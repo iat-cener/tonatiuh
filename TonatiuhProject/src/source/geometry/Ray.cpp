@@ -60,7 +60,8 @@ Point3D Ray::operator()( double t ) const
 
 std::ostream& operator<<( std::ostream& os, const Ray& ray )
 {
-    os << "org: " << ray.origin << "\ndir: " << ray.direction << "\nrange [" <<
-    ray.mint << "," << ray.maxt << "]";
+    os << "Org( " << ray.origin << " ) "
+       << "Dir( " << ray.direction << " ) "
+       << "range [" << ray.mint << "," << ray.maxt << "]\n";
     return os;
 }
