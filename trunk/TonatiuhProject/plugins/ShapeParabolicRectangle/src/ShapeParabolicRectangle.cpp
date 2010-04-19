@@ -238,8 +238,8 @@ void ShapeParabolicRectangle::generatePrimitives(SoAction *action)
 
 
     SbVec3f  point;
- 	const int rows = 100; // Number of points per row
-    const int columns = 100; // Number of points per column
+ 	const int rows = 10; // Number of points per row
+    const int columns = 10; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
     float vertex[totalPoints][6];
