@@ -90,58 +90,69 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 	m_mapCoinQt.clear();
     m_coinScene = &coinScene;
     delete m_instanceRoot;
+
+    SetRoot();
+    SetLight();
+    SetConcentrator();
+    reset();
+}
+
+void SceneModel::SetRoot()
+{
     m_instanceRoot = new InstanceNode( m_coinScene );
-
     QList< InstanceNode* > instanceRootNodeList;
-    m_mapCoinQt.insert( std::make_pair( &coinScene, instanceRootNodeList ) );
-    m_mapCoinQt[&coinScene].append( m_instanceRoot );
+    m_mapCoinQt.insert( std::make_pair( m_coinScene, instanceRootNodeList ) );
+    m_mapCoinQt[m_coinScene].append( m_instanceRoot );
+}
 
+void SceneModel::SetLight()
+{
     if ( m_coinScene->getPart("lightList[0]", false ) )
     {
-    	TLightKit* coinLight = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", false ) );
-    	InsertLightNode( *coinLight );
+    	TLightKit* tlightKit = static_cast< TLightKit* >( m_coinScene->getPart("lightList[0]", false ) );
+    	InsertLightNode( *tlightKit );
     }
+}
 
-    SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
+void SceneModel::SetConcentrator()
+{
+	SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
 
-
-    if ( coinPartList && coinPartList->getNumChildren() == 0 )
-    {
-    	TSeparatorKit* separatorKit = new TSeparatorKit();
+	TSeparatorKit* separatorKit;
+	if ( coinPartList && coinPartList->getNumChildren() == 0 )
+	{
+		separatorKit = new TSeparatorKit();
 		separatorKit->ref();
-
 		coinPartList->addChild( separatorKit );
-    	separatorKit->setSearchingChildren( true );
+		separatorKit->setSearchingChildren( true );
 
-    	InstanceNode* instanceSeparator = new InstanceNode( separatorKit );
-    	m_instanceRoot->AddChild( instanceSeparator );
+		InstanceNode* instanceNode = new InstanceNode( separatorKit );
+		SetInstanceNode( separatorKit, instanceNode );
 
-    	QList< InstanceNode* > instanceNodeList;
-    	m_mapCoinQt.insert( std::make_pair( separatorKit, instanceNodeList ) );
-    	m_mapCoinQt[separatorKit].append( instanceSeparator );
+	}
+	else
+	{
+		separatorKit = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
+		if ( !separatorKit ) return;
 
-    }
-    else
-    {
-		//Is TSeparatorKit node
-		TSeparatorKit* coinChild = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
-		if ( !coinChild ) return;
+		InstanceNode* instanceNode = new InstanceNode( separatorKit );
+		SetInstanceNode( separatorKit, instanceNode );
+		GenerateInstanceTree( *instanceNode );
+	}
+}
 
-        InstanceNode* instanceChild = new InstanceNode( coinChild );
-	    m_instanceRoot->AddChild( instanceChild );
-
-	    QList< InstanceNode* > instanceNodeList;
-	    m_mapCoinQt.insert( std::make_pair( coinChild, instanceNodeList ) );
-	    m_mapCoinQt[coinChild].append( instanceChild );
-
-	    GenerateInstanceTree( *instanceChild );
-    }
-    reset();
+void SceneModel::SetInstanceNode( TSeparatorKit* separatorKit, InstanceNode* instanceNode )
+{
+	m_instanceRoot->AddChild( instanceNode );
+	QList< InstanceNode* > instanceNodeList;
+	m_mapCoinQt.insert( std::make_pair( separatorKit, instanceNodeList ) );
+	m_mapCoinQt[separatorKit].append( instanceNode );
 }
 
 void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
 {
 	SoNode* parentNode = instanceParent.GetNode();
+
 
 	if (parentNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
