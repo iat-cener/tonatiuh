@@ -92,12 +92,14 @@ signals:
 	void LightNodeStateChanged( int newState );
 
 private:
-	void GenerateInstanceTree( InstanceNode& instanceParent );
 	void DeleteInstanceTree( InstanceNode& instanceNode );
 	void SetRoot();
 	void SetLight();
 	void SetConcentrator();
-	void SetInstanceNode( TSeparatorKit* separatorKit, InstanceNode* instanceNode );
+	InstanceNode* AddInstanceNode( InstanceNode& instanceNodeParent, SoNode* separatorKit );
+	void GenerateInstanceTree( InstanceNode& instanceParent );
+	void GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
+	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
 
 private:
 	SoSelection* m_coinRoot;

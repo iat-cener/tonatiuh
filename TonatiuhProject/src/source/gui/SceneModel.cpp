@@ -126,98 +126,87 @@ void SceneModel::SetConcentrator()
 		coinPartList->addChild( separatorKit );
 		separatorKit->setSearchingChildren( true );
 
-		InstanceNode* instanceNode = new InstanceNode( separatorKit );
-		SetInstanceNode( separatorKit, instanceNode );
-
+		AddInstanceNode( *m_instanceRoot, separatorKit );
 	}
 	else
 	{
 		separatorKit = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
 		if ( !separatorKit ) return;
 
-		InstanceNode* instanceNode = new InstanceNode( separatorKit );
-		SetInstanceNode( separatorKit, instanceNode );
+		InstanceNode* instanceNode = AddInstanceNode( *m_instanceRoot, separatorKit );
 		GenerateInstanceTree( *instanceNode );
 	}
 }
 
-void SceneModel::SetInstanceNode( TSeparatorKit* separatorKit, InstanceNode* instanceNode )
+InstanceNode* SceneModel::AddInstanceNode( InstanceNode& instanceNodeParent, SoNode* soNode )
 {
-	m_instanceRoot->AddChild( instanceNode );
-	QList< InstanceNode* > instanceNodeList;
-	m_mapCoinQt.insert( std::make_pair( separatorKit, instanceNodeList ) );
-	m_mapCoinQt[separatorKit].append( instanceNode );
+	InstanceNode* instanceNode = new InstanceNode( soNode );
+	if( instanceNode )
+	{
+		instanceNodeParent.AddChild( instanceNode );
+		QList< InstanceNode* > instanceNodeList;
+		m_mapCoinQt.insert( std::make_pair( soNode, instanceNodeList ) );
+		m_mapCoinQt[soNode].append( instanceNode );
+	}
+	return instanceNode;
 }
 
-void SceneModel::GenerateInstanceTree( InstanceNode& instanceParent )
+void SceneModel::GenerateInstanceTree( InstanceNode& instanceNodeParent )
 {
-	SoNode* parentNode = instanceParent.GetNode();
+	SoNode* parentNode = instanceNodeParent.GetNode();
 
-
-	if (parentNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+	if( parentNode )
 	{
-		SoBaseKit* parentKit = static_cast< SoBaseKit* >( parentNode );
-		if (parentNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
+		if( parentNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 		{
-			//Is TShapeKit node
-			TShapeKit* parentKit = static_cast< TShapeKit* >( parentNode );
-
-			SoNode* shape = parentKit->getPart("shape", false);
-			if( shape )
+			if( parentNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 			{
-				InstanceNode* shapeChild = new InstanceNode( shape );
-			   	instanceParent.AddChild( shapeChild );
-
-			    QList< InstanceNode* > shapeNodeList;
-				m_mapCoinQt.insert( std::make_pair( shape, shapeNodeList ) );
-				m_mapCoinQt[shape].append( shapeChild );
+				GenerateTShapeKitSubTree( instanceNodeParent, parentNode  );
 			}
-
-			SoNode* material = parentKit->getPart("appearance.material", false);
-			if( material )
+			else
 			{
-				InstanceNode* materialChild = new InstanceNode( material );
-			   	instanceParent.AddChild( materialChild );
-
-			    QList< InstanceNode* > instanceNodeList;
-				m_mapCoinQt.insert( std::make_pair( material, instanceNodeList ) );
-				m_mapCoinQt[material].append( materialChild );
+				GenerateTSeparatorKitSubTree( instanceNodeParent, parentNode  );
 			}
 		}
-		else
+	}
+}
+
+void SceneModel::GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode )
+{
+	TShapeKit* parentKit = static_cast< TShapeKit* >( parentNode );
+	if( parentKit )
+	{
+		SoNode* shape = parentKit->getPart("shape", false);
+		if( shape )	AddInstanceNode( instanceNodeParent, shape );
+		SoNode* material = parentKit->getPart("appearance.material", false);
+		if( material ) AddInstanceNode( instanceNodeParent, material );
+	}
+}
+
+void SceneModel::GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode )
+{
+	//Is TSeparatorKit node
+	SoBaseKit* parentKit = static_cast< SoBaseKit* >( parentNode );
+	if( parentKit )
+	{
+		SoNode* tracker = parentKit->getPart( "tracker", false );
+		if( tracker )
 		{
+			TTracker* trackerNode = static_cast< TTracker* >( tracker );
+			trackerNode->SetSceneKit( m_coinScene );
+			AddInstanceNode( instanceNodeParent, tracker );
+		}
 
-			//Is TSeparatorKit node
-			SoNode* tracker = parentKit->getPart( "tracker", false );
-			if( tracker )
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( parentKit->getPart( "childList", false ) );
+		if ( coinPartList )
+		{
+			for( int index = 0; index < coinPartList->getNumChildren(); ++index )
 			{
-				TTracker* trackerNode = static_cast< TTracker* >( tracker );
-				trackerNode->SetSceneKit( m_coinScene );
-
-				InstanceNode* trackerChild = new InstanceNode( tracker );
-				instanceParent.AddChild( trackerChild );
-
-				QList< InstanceNode* > trackerNodeList;
-				m_mapCoinQt.insert( std::make_pair( tracker, trackerNodeList ) );
-				m_mapCoinQt[tracker].append( trackerChild );
+				SoBaseKit* coinChild = static_cast< SoBaseKit* >( coinPartList->getChild( index ) );
+				InstanceNode* instanceChild = AddInstanceNode( instanceNodeParent, coinChild );
+				if( instanceChild) GenerateInstanceTree( *instanceChild );
 			}
-
-			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( parentKit->getPart( "childList", false ) );
-   			if ( !coinPartList ) return;
-
-   			for( int index = 0; index < coinPartList->getNumChildren(); ++index )
-    		{
-	            SoBaseKit* coinChild = static_cast< SoBaseKit* >( coinPartList->getChild( index ) );
-	            InstanceNode* instanceChild = new InstanceNode( coinChild );
-	    	    instanceParent.AddChild( instanceChild );
-
-	    	    QList< InstanceNode* > instanceNodeList;
-	    	    m_mapCoinQt.insert( std::make_pair( coinChild, instanceNodeList ) );
-	    	    m_mapCoinQt[coinChild].append( instanceChild );
-
-	    	    GenerateInstanceTree( *instanceChild );
-	    	}
-	    }
+		}
 	}
 }
 
