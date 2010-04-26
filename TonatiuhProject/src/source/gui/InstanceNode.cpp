@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMap>
 #include <Inventor/nodes/SoNode.h>
 
+#include "BBox.h"
 #include "InstanceNode.h"
 #include "Ray.h"
 #include "Transform.h"
