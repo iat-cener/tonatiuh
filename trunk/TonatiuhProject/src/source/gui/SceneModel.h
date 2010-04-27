@@ -96,10 +96,11 @@ private:
 	void SetRoot();
 	void SetLight();
 	void SetConcentrator();
-	InstanceNode* AddInstanceNode( InstanceNode& instanceNodeParent, SoNode* separatorKit );
+	InstanceNode* AddInstanceNode( InstanceNode& instanceNodeParent, SoNode& soNode );
+	void InsertIntoMap( InstanceNode& instanceNode, SoNode& soNode );
 	void GenerateInstanceTree( InstanceNode& instanceParent );
-	void GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
-	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
+	void GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode& parentNode );
+	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode& parentNode );
 
 private:
 	SoSelection* m_coinRoot;
