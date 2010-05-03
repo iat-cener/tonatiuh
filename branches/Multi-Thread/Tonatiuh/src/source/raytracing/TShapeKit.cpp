@@ -105,7 +105,6 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDevia
 	//The ray intersects with the BoundingBox
 	//Transform the ray to call children intersect
 
-
 	Ray* result = 0;
 
 	if( shape.getValue() )
@@ -113,7 +112,7 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDevia
 		TShape* tshape = static_cast< TShape* >( shape.getValue() );
 
 		double thit = 0.0;
-		DifferentialGeometry* dg = new DifferentialGeometry;
+		DifferentialGeometry* dg= new DifferentialGeometry;
 		bool intersect = tshape->Intersect( objectRay, &thit, dg );
 		*isShapeFront = dg->shapeFrontSide;
 		if( intersect )
@@ -128,7 +127,7 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDevia
 					TMaterial* tmaterial = static_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
 
 					Ray* reflected = tmaterial->OutputRay( objectRay, dg, rand );
-					if( reflected ) result = new Ray( *reflected );
+					if( reflected )	return reflected;// result = new Ray( *reflected );
 					delete reflected;
 				}
 			}

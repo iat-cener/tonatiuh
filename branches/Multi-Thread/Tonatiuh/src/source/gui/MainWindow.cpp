@@ -127,34 +127,13 @@ void unirVectores( std::vector< Photon* >& photonMap, std::vector< Photon* > pho
 	std::vector<Photon*>::iterator it;
 	it = photonMap.end();
 
-
 	std::vector<Photon*>::iterator it2;
 	it2 = photons.begin();
 
-
-
 	photonMap.insert( it, it2, it2+( photons.end()-photons.begin() ) );
-
 	photons.clear();
 
-	std::cout<<"createPhotonMap "<<photonMap.size()<<" "<<photonMap.capacity()<<" "<<photonMap.max_size()<<std::endl;
-
-}
-
-void createPhotonMap( TPhotonMap*& photonMap, std::vector< Photon* > photons  )
-{
-
-	//if( !photonMap )  photonMap = m_photonMap;
-	std::vector<Photon*>::iterator it;
-
-	for( it=photons.begin(); it<photons.end() ; it++)
-	{
-		Photon* p = *it;
-		//std::cout<<p->pos<<std::endl;
-		photonMap->StoreRay( p );
-	}
-
-	photons.clear();
+	//std::cout<<"createPhotonMap "<<photonMap.size()<<" "<<photonMap.capacity()<<" "<<photonMap.max_size()<<std::endl;
 
 }
 
@@ -1078,37 +1057,21 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
 	{
 		//Compute bounding boxes and world to object transforms
-		//QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< BBox, Transform* > >();
-		QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap = new  QMap< InstanceNode*,QPair< BBox, Transform* > >();
+		//QMap< InstanceNode*, QPair< BBox, Transform > >* sceneMap = new  QMap< InstanceNode*,QPair< BBox, Transform > >();
+		QVector< InstanceNode* >* sceneMap = new  QVector< InstanceNode*>();
 
-		ComputeSceneTreeMap( rootSeparatorInstance, 0,  sceneMap );
+		ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
 
-		//ComputeSceneTreeMap( rootSeparatorInstance, sceneMap );
-
-		//Set up the progress updater
-		/*const int maximumValueProgressScale = 25;
-		unsigned long raysPerInnerLoop = m_raysPerIteration / maximumValueProgressScale;
-		ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), maximumValueProgressScale, this);
-
-		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
-		Ray ray;
-		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-		{
-			for ( long unsigned i = 0; i < raysPerInnerLoop; ++i )
-			{
-				trf::GenerateStartingRay( ray, raycastingSurface, sunShape, lightToWorld, *m_rand );
-				trf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_rand );
-			}
-			progress.Update( progressCount*raysPerInnerLoop );
-		}*/
-
-		QVector< QPair< double, QMap< InstanceNode*,QPair< BBox, Transform* > >*  > >raysPerThread;
+		//QVector< QPair< double, QMap< InstanceNode*,QPair< BBox, Transform > >  > >raysPerThread;
+		QVector< QPair< double, QVector< InstanceNode* >  > >raysPerThread;
 		const int maximumValueProgressScale = 25;
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-			raysPerThread<<QPair< double, QMap< InstanceNode*,QPair< BBox, Transform* > >*  >( t1, sceneMap ) ;
+			//raysPerThread<<QPair< double, QMap< InstanceNode*,QPair< BBox, Transform > >  >( t1, *sceneMap ) ;
+			raysPerThread<<QPair< double, QVector< InstanceNode* >  >( t1, *sceneMap ) ;
 
-		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )raysPerThread<<QPair< double, QMap< InstanceNode*,QPair< BBox, Transform* > >*  >( m_raysPerIteration-( t1* maximumValueProgressScale), sceneMap ) ;
+		//if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )raysPerThread<<QPair< double, QMap< InstanceNode*, QPair< BBox, Transform > >  >( m_raysPerIteration-( t1* maximumValueProgressScale), *sceneMap ) ;
+		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )raysPerThread<<QPair< double, QVector< InstanceNode* > >( m_raysPerIteration-( t1* maximumValueProgressScale), *sceneMap ) ;
 
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 
@@ -1129,13 +1092,16 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		//QFuture< std::vector< Photon* > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer( rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_RandomDeviateFactoryList[m_selectedRandomDeviate] ) );
-		QFuture< std::vector< Photon* > > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer( rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_RandomDeviateFactoryList[m_selectedRandomDeviate] ), unirVectores );
+		QFuture< std::vector< Photon* > > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_RandomDeviateFactoryList[m_selectedRandomDeviate] ), unirVectores );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.
 		dialog.exec();
 		futureWatcher.waitForFinished();
 
+
+		QDateTime time2 = QDateTime::currentDateTime();
+		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
 		for( int i = 0; i < photonMap.results().size(); i++ )
 			createPhotonMap( m_photonMap, photonMap.results()[i] );
@@ -1150,7 +1116,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
 
-/*void MainWindow::createPhotonMap( TPhotonMap*& photonMap, std::vector< Photon* > photons )
+void MainWindow::createPhotonMap( TPhotonMap*& photonMap, std::vector< Photon* > photons )
 {
 
 	if( !photonMap )  photonMap = m_photonMap;
@@ -1165,7 +1131,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 	photons.clear();
 
-}*/
+}
 
 void MainWindow::on_actionDisplay_rays_toggled()
 {
@@ -2433,8 +2399,9 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform* parentWTO,
-		                              QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap )
+/*void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,
+		                              QMap< InstanceNode*, QPair< BBox, Transform > >* sceneMap )*/
+void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
 {
 
 	if( !instanceNode ) return;
@@ -2447,35 +2414,25 @@ void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform* par
 		Transform objectToWorld = tgf::TransformFromSoTransform( nodeTransform );
 		Transform worldToObject = objectToWorld.GetInverse();
 
-		if( !parentWTO ) parentWTO = new Transform( new Matrix4x4() );
-
-		Transform* nodeWTO = new Transform ( worldToObject * ( *parentWTO ) );
-		//sceneMap->insert( instanceNode , QPair< BBox, Transform* > ( BBox(), nodeWTO ) );
-
-
-
-		//BBox nodeBB;
+		BBox nodeBB;
+		Transform nodeWTO(worldToObject * parentWTO );
+		instanceNode->SetIntersectionTransform( nodeWTO );
 
 		for( int index = 0; index < instanceNode->children.count() ; ++index )
 		{
 			InstanceNode* childInstance = instanceNode->children[index];
-			ComputeSceneTreeMap(childInstance, nodeWTO, sceneMap );
+			ComputeSceneTreeMap(childInstance, nodeWTO );
 
-			//QPair< BBox, Transform* > childData =  sceneMap->value( childInstance );
-			//nodeBB = Union( nodeBB, childData.first);
-
+			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
 		}
-		//sceneMap->remove( instanceNode );
-		//sceneMap->insert( instanceNode , QPair< BBox, Transform* > ( nodeBB, nodeWTO ) );
+
+		instanceNode->SetIntersectionBBox( nodeBB );
 
 	}
 	else
 	{
-
-		//QPair< BBox, Transform* > parentData =  sceneMap->value( instanceNode->GetParent() );
-
-		Transform* shapeTransform = parentWTO;
-		Transform shapeToWorld = shapeTransform->GetInverse();
+		Transform shapeTransform = parentWTO;
+		Transform shapeToWorld = shapeTransform.GetInverse();
 		BBox shapeBB;
 
 		if(  instanceNode->children.count() > 0 )
@@ -2494,13 +2451,10 @@ void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform* par
 			SbVec3f pMin = box.getMin();
 			SbVec3f pMax = box.getMax();
 			shapeBB = shapeToWorld( BBox( Point3D( pMin[0],pMin[1],pMin[2]), Point3D( pMax[0],pMax[1],pMax[2]) ) );
-
-			//sceneMap->insert( shapeInstance , QPair< BBox, Transform* > ( shapeBB, shapeTransform ) );
-
 		}
+		instanceNode->SetIntersectionTransform( shapeTransform );
 
-		sceneMap->insert( instanceNode , QPair< BBox, Transform* > ( shapeBB, shapeTransform) );
-
+		instanceNode->SetIntersectionBBox( shapeBB );
 	}
 
 }
@@ -2510,7 +2464,7 @@ void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform* par
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode,
+/*void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode,
 		                              QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap )
 {
 
@@ -2585,7 +2539,7 @@ void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode,
 
 	}
 
-}
+}*/
 
 void MainWindow::StartManipulation( SoDragger* dragger )
 {

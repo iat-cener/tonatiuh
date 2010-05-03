@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <QString>
 #include <Inventor/SbBox.h>
-#include "TPhotonMap.h"
 
 class RandomDeviate;
 class Ray;

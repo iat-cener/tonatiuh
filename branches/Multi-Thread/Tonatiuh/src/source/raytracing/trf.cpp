@@ -63,10 +63,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * The \a sceneMap saves the scene elements BBox and Transform in global coordinates.
  */
 void trf::TraceRay( Ray& ray,
-                            QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
-                            InstanceNode* instanceNode,
-                            InstanceNode* lightNode,
-                                        TPhotonMap& photonMap, RandomDeviate& rand )
+                    QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
+                    InstanceNode* instanceNode,
+                    InstanceNode* lightNode,
+                    TPhotonMap& photonMap, RandomDeviate& rand )
 {
         Ray* reflectedRay = 0;
         Photon* next = 0;

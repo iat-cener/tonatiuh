@@ -6,6 +6,7 @@
  */
 
 #include <QTime>
+#include <QVector>
 
 #include "BBox.h"
 #include "DifferentialGeometry.h"
@@ -33,15 +34,15 @@ m_pRand( randFactory.CreateRandomDeviate() )
 
 }
 
-std::vector< Photon* > RayTracer::operator()( QPair< double, QMap< InstanceNode*,QPair< BBox, Transform* > >*  >  data )
+std::vector< Photon* > RayTracer::operator()( QPair< double, QVector< InstanceNode*> > data )
 {
 	double numberOfPhotons = data.first;
-	QMap< InstanceNode*, QPair< BBox, Transform* > >* sceneMap = data.second;
+	QVector< InstanceNode* > sceneMap = data.second;
 	std::vector< Photon* > photonsVector;
 
 	Ray ray;
-	double i = 0;
-	while ( i < numberOfPhotons )
+	double nRay = 0;
+	while ( nRay < numberOfPhotons )
 	{
 		ray.origin = m_lightShape->Sample( m_pRand->RandomDouble(), m_pRand->RandomDouble() );
 		m_lightSunShape->generateRayDirection( ray.direction, *m_pRand );
@@ -66,36 +67,8 @@ std::vector< Photon* > RayTracer::operator()( QPair< double, QMap< InstanceNode*
 			intersectedSurface = 0;
 			isFront = 0;
 
-			QMap< InstanceNode*, QPair< BBox, Transform* > >::const_iterator i = sceneMap->constBegin();
 
-
-			while (i != sceneMap->constEnd() )
-			{
-
-				InstanceNode* shapeKitNode = i.key();
-				QPair< BBox, Transform* > nodeData = i.value();
-
-				Ray* childReflected = 0;
-				double previusMaxT = ray.maxt;
-				bool isChildFront = false;
-
-				childReflected = shapeKitNode->Intersect( ray, *m_pRand, nodeData, &isChildFront );
-
-
-				if( ray.maxt < previusMaxT )
-				{
-					delete reflectedRay;
-					reflectedRay = 0;
-					intersectedSurface = shapeKitNode;
-					isFront = isChildFront;
-				}
-				if( childReflected )	reflectedRay = new Ray( *childReflected );
-
-				delete childReflected;
-				childReflected = 0;
-				++i;
-
-			 }
+			reflectedRay = m_rootNode->Intersect( ray, *m_pRand, &intersectedSurface, &isFront );
 
 			if( reflectedRay )
 			{
@@ -129,7 +102,7 @@ std::vector< Photon* > RayTracer::operator()( QPair< double, QMap< InstanceNode*
 		}
 
 		photonsVector.push_back( first );
-		i++;
+		nRay++;
 	}
 
 	return photonsVector;

@@ -33,7 +33,7 @@ public:
 
 	typedef std::vector< Photon* > result_type;
 
-	std::vector< Photon* > operator()( QPair< double, QMap< InstanceNode*,QPair< BBox, Transform* > >*  > data );
+	std::vector< Photon* > operator()( QPair< double, QVector< InstanceNode* > > data );
 
 
 

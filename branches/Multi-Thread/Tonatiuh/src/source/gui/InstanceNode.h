@@ -42,6 +42,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QList>
 #include <QPair>
 
+#include "BBox.h"
+#include "Transform.h"
+
 class BBox;
 class RandomDeviate;
 class Ray;
@@ -78,14 +81,22 @@ public:
     		        bool* isFront );
     Ray* Intersect( const Ray& ray,
         		        RandomDeviate& rand,
-        		        QPair< BBox, Transform* > nodeData,
+						InstanceNode** modelNode,
         		        bool* isFront );
+
+    BBox GetIntersectionBBox();
+    Transform SetIntersectionTransform();
+    void SetIntersectionBBox( BBox nodeBBox );
+    void SetIntersectionTransform( Transform nodeTransform );
 
     QList< InstanceNode* > children;
 
 private:
     SoNode* m_coinNode;
     InstanceNode* m_parent;
+    BBox m_bbox;
+    Transform m_transformWTO;
+    Transform m_transformOTW;
 };
 
 QDataStream & operator<< ( QDataStream & s, const InstanceNode& node );

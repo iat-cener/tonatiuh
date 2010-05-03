@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMap>
 #include <Inventor/nodes/SoNode.h>
 
+#include "BBox.h"
 #include "InstanceNode.h"
 #include "Ray.h"
 #include "Transform.h"
@@ -241,13 +242,11 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 
 Ray* InstanceNode::Intersect( const Ray& ray,
 		                      RandomDeviate& rand,
-		                      QPair< BBox, Transform* > nodeData,
+		                      InstanceNode** modelNode,
 		                      bool* isFront )
 {
 
 	//Check if the ray intersects with the BoundingBox
-	BBox box = nodeData.first;
-
 
 	double t0 = ray.mint;
 	double t1 = ray.maxt;
@@ -255,8 +254,8 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 	for( int i = 0; i < 3; ++i )
 	{
 		double invRayDir = 1.0 / ray.direction[i];
-		double tNear = ( box.pMin[i] - ray.origin[i] ) * invRayDir;
-		double tFar = ( box.pMax[i] - ray.origin[i] ) * invRayDir;
+		double tNear = ( m_bbox.pMin[i] - ray.origin[i] ) * invRayDir;
+		double tFar = ( m_bbox.pMax[i] - ray.origin[i] ) * invRayDir;
 		if( tNear > tFar ) std::swap( tNear, tFar );
 		t0 = tNear > t0 ? tNear : t0;
 		t1 = tFar < t1 ? tFar : t1;
@@ -265,37 +264,96 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 
 	Ray* result = 0;
 
-
-
-	TShapeKit* shapeKit  = static_cast< TShapeKit* > ( GetNode() );
-
-	Transform* shapeWorldToObject =  nodeData.second;
-
-	Ray childCoordinatesRay( (*shapeWorldToObject)( ray ) );
-	childCoordinatesRay.maxt = ray.maxt;
-
-	double objectMaxT = childCoordinatesRay.maxt;
-	bool isShapeFront = false;
-
-	Ray* reflected = shapeKit->Intersect( childCoordinatesRay, &isShapeFront, rand );
-
-
-	if( objectMaxT != childCoordinatesRay.maxt )
+	if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 	{
-		ray.maxt = childCoordinatesRay.maxt;
-		if( reflected )
+		Ray* reflected = 0;
+		Ray* childReflected = 0;
+
+		//Check if the ray intersects with the BoundingBox
+		for( int index = 0; index < children.size(); ++index )
 		{
+			InstanceNode* intersectedChild = 0;
+			bool isChildFront = false;
+			double previusMaxT = ray.maxt;
 
-			Transform shapeObjectToWorld = shapeWorldToObject->GetInverse();
-			result = new Ray( shapeObjectToWorld( *reflected ) );
+			childReflected = children[index]->Intersect( ray, rand, &intersectedChild, &isChildFront );
+
+			if( ray.maxt < previusMaxT )
+			{
+				delete reflected;
+				reflected = 0;
+				*modelNode = intersectedChild;
+				*isFront = isChildFront;
+			}
+
+			if( childReflected )
+			{
+				/*reflected = new Ray( *childReflected );
+				delete childReflected;
+				childReflected = 0;*/
+				reflected = childReflected;
+				childReflected = 0;
+			}
+
 		}
-		delete reflected;
+		if( reflected )	return reflected;
+		/*{
+			result = new Ray( *reflected );
+			reflected = 0;
+			delete reflected;
+		}*/
 
-		*isFront = isShapeFront;
+	}
+	else
+	{
+		TShapeKit* shapeKit  = static_cast< TShapeKit* > ( GetNode() );
+
+		Ray childCoordinatesRay( m_transformWTO( ray ) );
+		childCoordinatesRay.maxt = ray.maxt;
+
+
+		double objectMaxT = childCoordinatesRay.maxt;
+		bool isShapeFront = false;
+
+		Ray* reflected = shapeKit->Intersect( childCoordinatesRay, &isShapeFront, rand );
+
+
+		if( objectMaxT != childCoordinatesRay.maxt )
+		{
+			ray.maxt = childCoordinatesRay.maxt;
+			if( reflected )	result = new Ray( m_transformOTW( *reflected ) );
+
+			delete reflected;
+			*modelNode = this;
+
+			*isFront = isShapeFront;
+		}
+
 	}
 
-
 	return result;
+}
+
+BBox InstanceNode::GetIntersectionBBox()
+{
+	return m_bbox;
+}
+
+Transform InstanceNode::SetIntersectionTransform()
+{
+	return m_transformWTO;
+}
+
+void InstanceNode::SetIntersectionBBox( BBox nodeBBox )
+{
+	m_bbox = nodeBBox;
+}
+
+void InstanceNode::SetIntersectionTransform( Transform nodeTransform )
+{
+
+	m_transformWTO = nodeTransform;
+	m_transformOTW = m_transformWTO.GetInverse();
 }
 
 QDataStream& operator<< ( QDataStream & s, const InstanceNode& node )
