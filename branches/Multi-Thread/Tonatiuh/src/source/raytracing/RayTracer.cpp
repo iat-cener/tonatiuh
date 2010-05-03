@@ -24,25 +24,24 @@ RayTracer::RayTracer( InstanceNode* rootNode,
 	       TShape* lightShape,
 	       TSunShape* const lightSunShape,
 	       Transform lightToWorld,
-	       RandomDeviateFactory& randFactory)
+	       RandomDeviateFactory& randFactory, TPhotonMap* photonMap )
 :m_rootNode( rootNode ),
 m_lightShape( static_cast< TShape*> ( lightShape->copy() )),
 m_lightSunShape( static_cast< TSunShape* > ( lightSunShape->copy() ) ),
 m_lightToWorld( lightToWorld ),
-m_pRand( randFactory.CreateRandomDeviate() )
+m_pRand( randFactory.CreateRandomDeviate() ),
+m_photonMap( photonMap )
 {
 
 }
 
-std::vector< Photon* > RayTracer::operator()( QPair< double, QVector< InstanceNode*> > data )
+QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numberOfRays )
 {
-	double numberOfPhotons = data.first;
-	QVector< InstanceNode* > sceneMap = data.second;
 	std::vector< Photon* > photonsVector;
 
 	Ray ray;
 	double nRay = 0;
-	while ( nRay < numberOfPhotons )
+	while ( nRay < numberOfRays )
 	{
 		ray.origin = m_lightShape->Sample( m_pRand->RandomDouble(), m_pRand->RandomDouble() );
 		m_lightSunShape->generateRayDirection( ray.direction, *m_pRand );
@@ -105,5 +104,5 @@ std::vector< Photon* > RayTracer::operator()( QPair< double, QVector< InstanceNo
 		nRay++;
 	}
 
-	return photonsVector;
+	return QPair< TPhotonMap*, std::vector< Photon* > >( m_photonMap, photonsVector );
 }

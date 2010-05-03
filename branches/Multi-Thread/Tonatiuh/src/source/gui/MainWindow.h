@@ -90,7 +90,7 @@ public:
     void FinishManipulation( );
     void StartManipulation( SoDragger* dragger );
 
-   void createPhotonMap( TPhotonMap*& photonMap, std::vector< Photon* > photons );
+ //  void createPhotonMap( TPhotonMap*& photonMap, std::vector< Photon* > photons );
 
 public slots:
 

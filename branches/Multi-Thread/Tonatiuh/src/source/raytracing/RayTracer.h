@@ -18,6 +18,7 @@
 class InstanceNode;
 class Photon;
 class RandomDeviateFactory;
+class TPhotonMap;
 class TShape;
 class TSunShape;
 
@@ -29,11 +30,12 @@ public:
 		       TShape* lightShape,
 		       TSunShape* const lightSunShape,
 		       Transform lightToWorld,
-		       RandomDeviateFactory& randFactory);
+		       RandomDeviateFactory& randFactory,
+		       TPhotonMap* photonMap );
 
-	typedef std::vector< Photon* > result_type;
+	typedef QPair< TPhotonMap*, std::vector< Photon* > > result_type;
 
-	std::vector< Photon* > operator()( QPair< double, QVector< InstanceNode* > > data );
+	QPair< TPhotonMap*, std::vector< Photon* > > operator()(  double numberOfRays );
 
 
 
@@ -43,6 +45,7 @@ private:
 	const TSunShape* m_lightSunShape;
 	Transform m_lightToWorld;
 	RandomDeviate* m_pRand;
+	TPhotonMap* m_photonMap;
 };
 
 
