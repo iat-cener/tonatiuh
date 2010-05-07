@@ -36,33 +36,30 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
+#include <QMutexLocker>
 
-#include "TrackerHeliostatFactory.h"
-#include "TrackerHeliostat.h"
+#include "RandomDeviate.h"
+#include "ParallelRandomDeviate.h"
 
-QString TrackerHeliostatFactory::TTrackerName() const
+#include "Trace.h"
+
+ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand, unsigned long arraySize )
+:RandomDeviate( arraySize ),
+m_pRand( rand )
 {
-	return QString("Heliostat_tracker");
+
 }
-
-QIcon TrackerHeliostatFactory::TTrackerIcon() const
+ParallelRandomDeviate::~ParallelRandomDeviate( )
 {
-	return QIcon(":/icons/TrackerHeliostat.png");
-}
-
-TrackerHeliostat* TrackerHeliostatFactory::CreateTTracker( ) const
-{
-
-	static bool firstTime = true;
-	if ( firstTime )
-	{
-	    // Initialize the new node classes
-	    TrackerHeliostat::initClass();
-	    firstTime = false;
-	}
-	return new TrackerHeliostat;
 
 }
 
-Q_EXPORT_PLUGIN2(TrackerHeliostat, TrackerHeliostatFactory)
+
+void ParallelRandomDeviate::FillArray( double* array, const unsigned long arraySize )
+{
+	Trace trace( "ParallelRandomDeviate::FillArray", false );
+    m_mutex.lock();
+	for( unsigned int i = 0; i < arraySize; i++ ) array[i] = m_pRand->RandomDouble( );
+    m_mutex.unlock();
+}
+

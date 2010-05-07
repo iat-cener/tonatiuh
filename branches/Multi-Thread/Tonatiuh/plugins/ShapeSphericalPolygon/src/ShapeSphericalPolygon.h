@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFInt32.h>
 
 #include "TShape.h"
@@ -69,8 +69,8 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	SoSFFloat sphereRadius;
-	SoSFFloat radius;
+	SoSFDouble sphereRadius;
+	SoSFDouble radius;
 	SoSFInt32 polygonSides;
 	SoSFEnum activeSide;
 

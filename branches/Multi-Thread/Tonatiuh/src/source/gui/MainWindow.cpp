@@ -94,7 +94,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "MainWindow.h"
 #include "NodeNameDelegate.h"
+//#include "ParallelRandomDeviate.h"
 #include "ProgressUpdater.h"
+#include "RandomDeviate.h"
 #include "RandomDeviate.h"
 #include "RandomDeviateFactory.h"
 #include "Ray.h"
@@ -121,6 +123,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Trace.h"
 
+
 void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon* > > photons )
 {
 	if( !photonMap )  photonMap = photons.first;
@@ -131,29 +134,11 @@ void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< 
 		for( it = photonsVector.begin(); it<photonsVector.end() ; it++)
 		{
 			Photon* p = *it;
-			//std::cout<<p->pos<<std::endl;
 			photonMap->StoreRay( p );
 		}
 
 		photonsVector.clear();
 }
-
-void unirVectores( std::vector< Photon* >& photonMap, std::vector< Photon* > photons )
-{
-
-	std::vector<Photon*>::iterator it;
-	it = photonMap.end();
-
-	std::vector<Photon*>::iterator it2;
-	it2 = photons.begin();
-
-	photonMap.insert( it, it2, it2+( photons.end()-photons.begin() ) );
-	photons.clear();
-
-	//std::cout<<"createPhotonMap "<<photonMap.size()<<" "<<photonMap.capacity()<<" "<<photonMap.max_size()<<std::endl;
-
-}
-
 
 void startManipulator(void *data, SoDragger* dragger)
 {
@@ -1076,15 +1061,12 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		//Compute bounding boxes and world to object transforms
 		ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
 
-		//QVector< QPair< double, QVector< InstanceNode* >  > >raysPerThread;
 		QVector< double > raysPerThread;
-		const int maximumValueProgressScale = 25;
+		const int maximumValueProgressScale = 4;
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-			//raysPerThread<<QPair< double, QVector< InstanceNode* >  >( t1, *sceneMap ) ;
 			raysPerThread<< t1;
 
-		//if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )raysPerThread<<QPair< double, QVector< InstanceNode* > >( m_raysPerIteration-( t1* maximumValueProgressScale), *sceneMap ) ;
 		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )	raysPerThread<< ( m_raysPerIteration-( t1* maximumValueProgressScale) );
 
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
@@ -1093,19 +1075,15 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		QProgressDialog dialog;
 		dialog.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
 
+		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 		// Create a QFutureWatcher and conncect signals and slots.
-		//QFutureWatcher< std::vector< Photon* >  > futureWatcher;
-		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
 		QFutureWatcher< TPhotonMap* > futureWatcher;
 		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
 		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
 		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
-		//QFuture< std::vector< Photon* > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer( rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_RandomDeviateFactoryList[m_selectedRandomDeviate] ) );
-		//QFuture< std::vector< Photon* > > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_RandomDeviateFactoryList[m_selectedRandomDeviate] ), unirVectores );
-		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_RandomDeviateFactoryList[m_selectedRandomDeviate], m_photonMap ) );
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_RandomDeviateFactoryList[m_selectedRandomDeviate], m_photonMap ), createPhotonMap );
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, m_photonMap ), createPhotonMap );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.
@@ -1116,9 +1094,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		QDateTime time2 = QDateTime::currentDateTime();
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
-		//for( int i = 0; i < photonMap.results().size(); i++ )
-			//createPhotonMap( m_photonMap, photonMap.results()[i] );
-
 		m_tracedRays += m_raysPerIteration;
 		ShowRaysIn3DView();
 
@@ -1127,23 +1102,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
-
-/*void MainWindow::createPhotonMap( TPhotonMap*& photonMap, std::vector< Photon* > photons )
-{
-
-	if( !photonMap )  photonMap = m_photonMap;
-	std::vector<Photon*>::iterator it;
-
-	for( it=photons.begin(); it<photons.end() ; it++)
-	{
-		Photon* p = *it;
-		//std::cout<<p->pos<<std::endl;
-		photonMap->StoreRay( p );
-	}
-
-	photons.clear();
-
-}*/
 
 void MainWindow::on_actionDisplay_rays_toggled()
 {
