@@ -90,8 +90,6 @@ public:
     void FinishManipulation( );
     void StartManipulation( SoDragger* dragger );
 
- //  void createPhotonMap( TPhotonMap*& photonMap, std::vector< Photon* > photons );
-
 public slots:
 
 	//File menu actions

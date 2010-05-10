@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -41,22 +41,26 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define PARALLELRANDOMDEVIATE_H_
 
 #include <QMutex>
+#include <QObject>
+#include <QThread>
 
 #include "RandomDeviate.h"
 
 
-class ParallelRandomDeviate : public RandomDeviate
+class ParallelRandomDeviate :  public QThread, public RandomDeviate
 {
+	Q_OBJECT
+
 public:
-	ParallelRandomDeviate( RandomDeviate* rand, unsigned long arraySize = 1000000 );
-    ~ParallelRandomDeviate( );
+	ParallelRandomDeviate( RandomDeviate* rand, unsigned long arraySize = 1000000, QObject* parent = 0 );
+	virtual ~ParallelRandomDeviate( );
     void FillArray( double* array, const unsigned long arraySize );
 
+    void run();
 
 private:
     RandomDeviate* m_pRand;
-
- 	QMutex m_mutex;
+    QMutex m_mutex;
 
 };
 

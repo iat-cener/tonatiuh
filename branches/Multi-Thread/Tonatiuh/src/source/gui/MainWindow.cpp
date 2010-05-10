@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QProgressDialog>
 #include <QSettings>
 #include <QtConcurrentMap>
+#include <QtConcurrentRun>
 #include <QTime>
 #include <QUndoStack>
 #include <QUndoView>
@@ -94,9 +95,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "MainWindow.h"
 #include "NodeNameDelegate.h"
-//#include "ParallelRandomDeviate.h"
+#include "ParallelRandomDeviate.h"
 #include "ProgressUpdater.h"
-#include "RandomDeviate.h"
 #include "RandomDeviate.h"
 #include "RandomDeviateFactory.h"
 #include "Ray.h"
@@ -1062,7 +1062,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
 
 		QVector< double > raysPerThread;
-		const int maximumValueProgressScale = 4;
+		const int maximumValueProgressScale = 25;
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 			raysPerThread<< t1;
@@ -1078,12 +1078,15 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 		// Create a QFutureWatcher and conncect signals and slots.
 		QFutureWatcher< TPhotonMap* > futureWatcher;
+		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
+		//QFutureWatcher< std::vector< Photon* > > futureWatcher;
 		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
 		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
 		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, m_photonMap ), createPhotonMap );
+		ParallelRandomDeviate* rand = new ParallelRandomDeviate( m_rand );
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *rand, m_photonMap ), createPhotonMap, QtConcurrent::UnorderedReduce );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.

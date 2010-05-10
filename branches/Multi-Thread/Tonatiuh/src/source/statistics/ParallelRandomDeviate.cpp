@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -41,10 +41,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "ParallelRandomDeviate.h"
 
-#include "Trace.h"
 
-ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand, unsigned long arraySize )
-:RandomDeviate( arraySize ),
+ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand, unsigned long arraySize, QObject* parent )
+:QThread( parent ), RandomDeviate( arraySize ),
 m_pRand( rand )
 {
 
@@ -57,9 +56,11 @@ ParallelRandomDeviate::~ParallelRandomDeviate( )
 
 void ParallelRandomDeviate::FillArray( double* array, const unsigned long arraySize )
 {
-	Trace trace( "ParallelRandomDeviate::FillArray", false );
-    m_mutex.lock();
-	for( unsigned int i = 0; i < arraySize; i++ ) array[i] = m_pRand->RandomDouble( );
-    m_mutex.unlock();
+	QMutexLocker locker( &m_mutex );
+	m_pRand->FillArray( array, arraySize );
 }
 
+void ParallelRandomDeviate::run()
+{
+
+}
