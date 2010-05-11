@@ -17,7 +17,8 @@
 
 class InstanceNode;
 class Photon;
-class ParallelRandomDeviate;
+class RandomDeviate;
+class QMutex;
 class TPhotonMap;
 class TShape;
 class TSunShape;
@@ -31,6 +32,7 @@ public:
 		       TSunShape* const lightSunShape,
 		       Transform lightToWorld,
 		       RandomDeviate& rand,
+		       QMutex* mutex,
 		       TPhotonMap* photonMap );
 
 	typedef QPair< TPhotonMap*, std::vector< Photon* > > result_type;
@@ -45,6 +47,7 @@ private:
 	const TSunShape* m_lightSunShape;
 	Transform m_lightToWorld;
 	RandomDeviate* m_pRand;
+    QMutex* m_mutex;
 	TPhotonMap* m_photonMap;
 };
 

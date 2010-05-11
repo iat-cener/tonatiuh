@@ -32,19 +32,22 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <QMutexLocker>
 
 #include "RandomDeviate.h"
 #include "ParallelRandomDeviate.h"
 
+#include "Trace.h"
 
-ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand, unsigned long arraySize, QObject* parent )
-:QThread( parent ), RandomDeviate( arraySize ),
-m_pRand( rand )
+ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand,  QMutex* mutex, unsigned long arraySize, QObject* parent )
+:QObject( parent ),RandomDeviate( arraySize ),
+m_pRand( rand ),
+m_mutex( mutex )
 {
 
 }
@@ -56,11 +59,12 @@ ParallelRandomDeviate::~ParallelRandomDeviate( )
 
 void ParallelRandomDeviate::FillArray( double* array, const unsigned long arraySize )
 {
-	QMutexLocker locker( &m_mutex );
-	m_pRand->FillArray( array, arraySize );
-}
-
-void ParallelRandomDeviate::run()
-{
-
+	//Trace trace( "ParallelRandomDeviate::FillArray", true );
+	QMutexLocker locker( m_mutex );
+  //  m_mutex->lock();
+    //std::cout<<"m_mutex.lock()"<<std::endl;
+    m_pRand->FillArray( array, arraySize );
+	//for( unsigned int i = 0; i < arraySize; i++ ) array[i] = m_pRand->RandomDouble( );
+    //std::cout<<"m_mutex.unlock()"<<std::endl;
+    //m_mutex->unlock();
 }

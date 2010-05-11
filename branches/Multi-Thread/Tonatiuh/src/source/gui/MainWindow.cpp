@@ -42,11 +42,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QMessageBox>
+#include <QMutex>
 #include <QPluginLoader>
 #include <QProgressDialog>
 #include <QSettings>
 #include <QtConcurrentMap>
-#include <QtConcurrentRun>
 #include <QTime>
 #include <QUndoStack>
 #include <QUndoView>
@@ -95,7 +95,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "MainWindow.h"
 #include "NodeNameDelegate.h"
-#include "ParallelRandomDeviate.h"
 #include "ProgressUpdater.h"
 #include "RandomDeviate.h"
 #include "RandomDeviateFactory.h"
@@ -131,13 +130,13 @@ void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< 
 	std::vector<Photon*> photonsVector = photons.second;
 	std::vector<Photon*>::iterator it;
 
-		for( it = photonsVector.begin(); it<photonsVector.end() ; it++)
-		{
-			Photon* p = *it;
-			photonMap->StoreRay( p );
-		}
+	for( it = photonsVector.begin(); it<photonsVector.end() ; it++)
+	{
+		Photon* p = *it;
+		photonMap->StoreRay( p );
+	}
 
-		photonsVector.clear();
+	photonsVector.clear();
 }
 
 void startManipulator(void *data, SoDragger* dragger)
@@ -1085,8 +1084,8 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
-		ParallelRandomDeviate* rand = new ParallelRandomDeviate( m_rand );
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *rand, m_photonMap ), createPhotonMap, QtConcurrent::UnorderedReduce );
+		QMutex mutex;
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), createPhotonMap, QtConcurrent::UnorderedReduce );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.

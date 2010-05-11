@@ -27,12 +27,14 @@ RayTracer::RayTracer( InstanceNode* rootNode,
 	       TSunShape* const lightSunShape,
 	       Transform lightToWorld,
 	       RandomDeviate& rand,
+	       QMutex* mutex,
 	       TPhotonMap* photonMap )
 :m_rootNode( rootNode ),
 m_lightShape( lightShape ),
 m_lightSunShape( lightSunShape ),
 m_lightToWorld( lightToWorld ),
 m_pRand( &rand ),
+m_mutex( mutex ),
 m_photonMap( photonMap )
 {
 
@@ -43,9 +45,7 @@ QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numbe
 	std::vector< Photon* > photonsVector;
 
 
-	ParallelRandomDeviate* rand = new ParallelRandomDeviate( m_pRand );
-	//TShape* lightShape = static_cast< TShape*> ( m_lightShape->copy() );
-	//TSunShape* lightSunShape = static_cast< TSunShape* >( m_lightSunShape->copy() );
+	ParallelRandomDeviate* rand = new ParallelRandomDeviate( m_pRand, m_mutex );
 	Transform lightToWorld = m_lightToWorld;
 	Ray ray;
 	double nRay = 0;
@@ -111,7 +111,7 @@ QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numbe
 		photonsVector.push_back( first );
 		nRay++;
 	}
-;
+
 	delete rand;
 
 	return QPair< TPhotonMap*, std::vector< Photon* > >( m_photonMap, photonsVector );
