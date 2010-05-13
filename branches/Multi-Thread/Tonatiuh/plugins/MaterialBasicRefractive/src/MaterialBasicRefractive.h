@@ -40,13 +40,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define MaterialBasicRefractive_H_
 
 #include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
+#include "tpt.h"
 
 class SoSensor;
-
 
 class MaterialBasicRefractive : public TMaterial
 {
@@ -63,14 +64,14 @@ public:
     QString getIcon();
 	Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 
-	SoSFDouble reflectivityFront;
-	SoSFDouble reflectivityBack;
-	SoSFDouble transmissivityFront;
-	SoSFDouble transmissivityBack;
-	SoSFDouble nFront;
-	SoSFDouble nBack;
-	SoSFDouble sigmaSlope;
-	//SoSFDouble m_sigmaSpecularity; ** yet to implemented
+	tpt::TONATIUH_REAL reflectivityFront;
+	tpt::TONATIUH_REAL reflectivityBack;
+	tpt::TONATIUH_REAL transmissivityFront;
+	tpt::TONATIUH_REAL transmissivityBack;
+	tpt::TONATIUH_REAL nFront;
+	tpt::TONATIUH_REAL nBack;
+	tpt::TONATIUH_REAL sigmaSlope;
+	//tpt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
 	SoSFEnum distribution;
 	SoMFColor m_ambientColor;
 	SoMFColor m_diffuseColor;

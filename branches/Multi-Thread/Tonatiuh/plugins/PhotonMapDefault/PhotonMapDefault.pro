@@ -9,7 +9,7 @@ include( $$(TONATIUH_ROOT)/config.pri)
 
 INCLUDEPATH += . \
 			src \
-			$$(TONATIUH_ROOT)/src
+                $$(TONATIUH_ROOT)/src 
 
 # Input
 HEADERS = src/*.h \

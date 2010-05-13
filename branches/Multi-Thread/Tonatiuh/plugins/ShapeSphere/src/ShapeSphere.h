@@ -39,10 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPESPHERE_H_
 #define SHAPESPHERE_H_
 
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
+#include "tpt.h"
 
 class SoSensor;
 
@@ -67,10 +69,10 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
-	SoSFFloat radius;
-	SoSFFloat yMax;
-	SoSFFloat yMin;
-	SoSFFloat phiMax;
+	tpt::TONATIUH_REAL radius;
+	tpt::TONATIUH_REAL yMax;
+	tpt::TONATIUH_REAL yMin;
+	tpt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:

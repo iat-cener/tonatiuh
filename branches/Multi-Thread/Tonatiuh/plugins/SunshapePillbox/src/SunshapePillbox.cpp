@@ -48,9 +48,9 @@ void SunshapePillbox::initClass()
 
 SunshapePillbox::SunshapePillbox( )
 {
-	SO_NODE_CONSTRUCTOR(SunshapePillbox);
-	SO_NODE_ADD_FIELD(m_irradiance, (1000.0));
-	SO_NODE_ADD_FIELD(m_thetaMax, (0.00465));
+	SO_NODE_CONSTRUCTOR( SunshapePillbox );
+	SO_NODE_ADD_FIELD( irradiance, ( 1000.0 ) );
+	SO_NODE_ADD_FIELD( thetaMax, (0.00465));
 
 }
 
@@ -59,10 +59,10 @@ SunshapePillbox::~SunshapePillbox()
 }
 
 //Light Interface
-void SunshapePillbox::generateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
+void SunshapePillbox::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-    double phi = tgc::TwoPi * rand.RandomDouble();
-    double theta = asin( sin( m_thetaMax.getValue() )*sqrt( rand.RandomDouble() ) );
+	double phi = tgc::TwoPi * rand.RandomDouble();
+    double theta = asin( sin( thetaMax.getValue() )*sqrt( rand.RandomDouble() ) );
     double sinTheta = sin( theta );
     double cosTheta = cos( theta );
     double cosPhi = cos( phi );
@@ -73,9 +73,9 @@ void SunshapePillbox::generateRayDirection( Vector3D& direction, RandomDeviate& 
     direction.z = sinTheta*cosPhi;
 }
 
-double SunshapePillbox::irradiance( void ) const
+double SunshapePillbox::GetIrradiance( void ) const
 {
-	return m_irradiance.getValue();
+	return irradiance.getValue();
 }
 
 SoNode* SunshapePillbox::copy( SbBool copyConnections ) const
@@ -85,8 +85,8 @@ SoNode* SunshapePillbox::copy( SbBool copyConnections ) const
 	SunshapePillbox* newSunShape = dynamic_cast< SunshapePillbox* >( SoNode::copy( copyConnections ) );
 
 	// Copy the m_thetaMin, m_thetaMax private members explicitly
-	newSunShape->m_irradiance = m_irradiance;
-	newSunShape->m_thetaMax = m_thetaMax;
+	newSunShape->irradiance = irradiance;
+	newSunShape->thetaMax = thetaMax;
 
 	return newSunShape;
 }

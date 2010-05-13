@@ -41,9 +41,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
+#include "tpt.h"
 
 class SoSensor;
 
@@ -63,9 +65,9 @@ public:
     QString getIcon();
 	Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 
-	SoSFDouble m_reflectivity;
-	SoSFDouble m_sigmaSlope;
-	//SoSFDouble m_sigmaSpecularity; ** yet to implemented
+	tpt::TONATIUH_REAL m_reflectivity;
+	tpt::TONATIUH_REAL m_sigmaSlope;
+	//tpt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
 	SoSFEnum m_distribution;
 	SoMFColor  m_ambientColor;
 	SoMFColor  m_diffuseColor;

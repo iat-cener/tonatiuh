@@ -39,10 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEPARABOLICRECTANGLE_H_
 #define SHAPEPARABOLICRECTANGLE_H_
 
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
+#include "tpt.h"
 
 
 class ShapeParabolicRectangle : public TShape
@@ -65,9 +67,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFFloat focusLength;
-	SoSFFloat widthX;
-	SoSFFloat widthZ;
+	tpt::TONATIUH_REAL focusLength;
+	tpt::TONATIUH_REAL widthX;
+	tpt::TONATIUH_REAL widthZ;
 	SoSFEnum activeSide;
 
 protected:

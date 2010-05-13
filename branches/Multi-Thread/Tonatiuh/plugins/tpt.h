@@ -32,63 +32,25 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#ifndef TPT_H_
+#define TPT_H_
 
-#ifndef ShapeHyperboloid_H_
-#define ShapeHyperboloid_H_
-
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
-
-#include "TShape.h"
-#include "tpt.h"
-
-class Vector3D;
-
-class ShapeHyperboloid : public TShape
+#include <QtGlobal>
+namespace tpt
 {
-	SO_NODE_HEADER(ShapeHyperboloid);
+	#if( defined(Q_WS_X11) || defined(Q_WS_MAC) )
+		typedef SoSFDouble TONATIUH_REAL;
 
-public:
+	#else
+		typedef SoSFFloat TONATIUH_REAL;
+	#endif
 
-	enum Side{
-		INSIDE = 0,
-		OUTSIDE   = 1,
-	};
-
-	ShapeHyperboloid( );
-	static void initClass();
-	double GetArea() const;
-	QString getIcon();
-
-	bool Intersect( const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
-	bool IntersectP( const Ray &ray ) const;
-
-	Point3D Sample( double u, double v ) const;
-
-	tpt::TONATIUH_REAL focusLegth;
-	tpt::TONATIUH_REAL distanceTwoFocus;
-	tpt::TONATIUH_REAL reflectorMaxDiameter;
-	SoSFEnum activeSide;
-
-
-
-protected:
-	bool OutOfRange( double u, double v ) const;
-	Point3D GetPoint3D ( double u, double v ) const;
-	NormalVector GetNormal( double u, double v ) const;
-
-	virtual void generatePrimitives(SoAction *action);
-	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-	virtual ~ShapeHyperboloid();
-
-private:
-	Vector3D Dpdu( double u, double v ) const;
-	Vector3D Dpdv( double u, double v ) const;
+	//typedef SoSFFloat TONATIUH_REAL;
 };
 
-#endif /* ShapeHyperboloid_H_ */
+
+#endif /* TPT_H_ */

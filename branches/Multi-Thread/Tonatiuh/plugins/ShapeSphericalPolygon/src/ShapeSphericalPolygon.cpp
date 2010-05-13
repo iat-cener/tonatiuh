@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "DifferentialGeometry.h"
 #include "Ray.h"
@@ -73,14 +74,14 @@ ShapeSphericalPolygon::ShapeSphericalPolygon()
     m_phiMax = tgc::Pi/polygonSides.getValue();
     m_xMax = radius.getValue() * cos( m_phiMax );
 
-	m_sphereRadiusSensor = new SoFieldSensor( SphereRadiusChanged, this );
-	m_sphereRadiusSensor->attach( &sphereRadius );
+	SoFieldSensor* sphereRadiusSensor = new SoFieldSensor( SphereRadiusChanged, this );
+	sphereRadiusSensor->attach( &sphereRadius );
 
-	m_radiusSensor = new SoFieldSensor( RadiusChanged, this );
-	m_radiusSensor->attach( &radius );
+	SoFieldSensor* radiusSensor = new SoFieldSensor( RadiusChanged, this );
+	radiusSensor->attach( &radius );
 
-	m_sidesSensor = new SoFieldSensor( SidesChanged, this );
-	m_sidesSensor->attach( &polygonSides );
+	SoFieldSensor* sidesSensor = new SoFieldSensor( SidesChanged, this );
+	sidesSensor->attach( &polygonSides );
 }
 
 ShapeSphericalPolygon::~ShapeSphericalPolygon()

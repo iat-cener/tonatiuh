@@ -39,11 +39,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPECONE_H_
 #define SHAPECONE_H_
 
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/nodes/SoShape.h>
 
 #include "TShape.h"
+#include "tpt.h"
 
 class Transform;
 
@@ -67,10 +69,10 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	SoSFFloat baseRadius;
-	SoSFFloat topRadius;
-	SoSFFloat height;
-	SoSFFloat phiMax;
+	tpt::TONATIUH_REAL baseRadius;
+	tpt::TONATIUH_REAL topRadius;
+	tpt::TONATIUH_REAL height;
+	tpt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:

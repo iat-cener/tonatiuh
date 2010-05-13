@@ -39,10 +39,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEFLATDISK_H_
 #define SHAPEFLATDISK_H_
 
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
+#include "tpt.h"
+
+class SoSensor;
 
 class ShapeFlatDisk : public TShape
 {
@@ -62,7 +66,7 @@ public:
 		BACK   = 1,
 	};
 
-	SoSFFloat radius;
+	tpt::TONATIUH_REAL radius;
 	SoSFEnum activeSide;
 
 protected:

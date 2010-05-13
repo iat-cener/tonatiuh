@@ -39,10 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPETROUGHPARABOLA_H_
 #define SHAPETROUGHPARABOLA_H_
 
-#include <Inventor/fields/SoSFEnum.h> 
+#include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
+#include "tpt.h"
 
 class SoSensor;
 
@@ -66,11 +68,11 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	SoSFFloat focusLength;
-	SoSFFloat xMin;
-	SoSFFloat xMax;
-	SoSFFloat lengthXMin;
-	SoSFFloat lengthXMax;
+	tpt::TONATIUH_REAL focusLength;
+	tpt::TONATIUH_REAL xMin;
+	tpt::TONATIUH_REAL xMax;
+	tpt::TONATIUH_REAL lengthXMin;
+	tpt::TONATIUH_REAL lengthXMax;
 	SoSFEnum activeSide;
 
  

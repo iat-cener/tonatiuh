@@ -6,10 +6,12 @@ include( $$(TONATIUH_ROOT)/config.pri)
 
 INCLUDEPATH += . \
 			src \
+            $$(TONATIUH_ROOT)/plugins \
 			$$(TONATIUH_ROOT)/src
 
 # Input
 HEADERS = src/*.h \
+            $$(TONATIUH_ROOT)/plugins/tpt.h \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TSunShape.h 
 
 

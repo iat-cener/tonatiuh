@@ -6,10 +6,12 @@ include( $$(TONATIUH_ROOT)/config.pri)
 
 INCLUDEPATH += . \
 			src \
-			$$(TONATIUH_ROOT)/src
-			
+                $$(TONATIUH_ROOT)/plugins \
+                $$(TONATIUH_ROOT)/src 
+
 # Input
-HEADERS = src/*.h \ 
+HEADERS = src/*.h \
+            $$(TONATIUH_ROOT)/plugins/tpt.h \
 			$$(TONATIUH_ROOT)/src/source/geometry/BBox.h \
            	$$(TONATIUH_ROOT)/src/source/geometry/Matrix4x4.h \
            	$$(TONATIUH_ROOT)/src/source/geometry/NormalVector.h \			

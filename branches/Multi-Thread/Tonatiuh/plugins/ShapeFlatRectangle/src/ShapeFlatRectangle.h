@@ -39,12 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEFLARRECTANGULE_H_
 #define SHAPEFLARRECTANGULE_H_
 
-#include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-
+#include "tpt.h"
 
 class ShapeFlatRectangle : public TShape
 {
@@ -66,8 +66,8 @@ public:
 		BACK   = 1,
 	};
 
-	SoSFFloat width;
-	SoSFFloat height;
+	tpt::TONATIUH_REAL width;
+	tpt::TONATIUH_REAL height;
 	SoSFEnum activeSide;
 
 protected:
