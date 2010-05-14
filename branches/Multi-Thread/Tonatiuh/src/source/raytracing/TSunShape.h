@@ -39,24 +39,24 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TSUNSHAPE_H_
 #define TSUNSHAPE_H_
 
-#include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/nodes/SoMaterial.h>
 
 #include "Vector3D.h"
 #include "RandomDeviate.h"
 
 class TSunShape : public SoNode
 {
+	  typedef SoNode inherited;
 
 	SO_NODE_ABSTRACT_HEADER(TSunShape);
 
 public:
     static void initClass();
 
-	virtual void generateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;
-	virtual double irradiance() const = 0;
+	virtual void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;
+	virtual double GetIrradiance() const = 0;
 
 protected:
     TSunShape();

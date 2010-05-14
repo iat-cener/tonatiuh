@@ -83,7 +83,7 @@ void trf::TraceRay( Ray& ray,
         {
                 intersectedSurface = 0;
                 isFront = 0;
-                reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface, &isFront );
+                //reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface, &isFront );
 
                 if( reflectedRay )
                 {

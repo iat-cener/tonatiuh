@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-#include <QMap>
 #include <Inventor/nodes/SoNode.h>
 
 #include "BBox.h"
@@ -112,136 +110,6 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
 
 Ray* InstanceNode::Intersect( const Ray& ray,
 		                      RandomDeviate& rand,
-		                      QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
-		                      InstanceNode** modelNode,
-		                      bool* isFront )
-{
-
-
-	std::cout<<"InstanceNode::Intersect 0" <<std::endl;
-
-	QPair< BBox, Transform* > instanceData =  sceneMap->value( this );
-	std::cout<<"InstanceNode::Intersect 1"<<std::endl;
-
-	//Check if the ray intersects with the BoundingBox
-	BBox box = instanceData.first;
-
-	double t0 = ray.mint;
-	double t1 = ray.maxt;
-
-	for( int i = 0; i < 3; ++i )
-	{
-		double invRayDir = 1.0 / ray.direction[i];
-		double tNear = ( box.pMin[i] - ray.origin[i] ) * invRayDir;
-		double tFar = ( box.pMax[i] - ray.origin[i] ) * invRayDir;
-		if( tNear > tFar ) std::swap( tNear, tFar );
-		t0 = tNear > t0 ? tNear : t0;
-		t1 = tFar < t1 ? tFar : t1;
-		if( t0 > t1 ) return 0;
-	}
-
-	Ray* result = 0;
-
-
-	std::cout<<"InstanceNode::Intersect 2"<<std::endl;
-
-	if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
-	{
-		Ray* reflected = 0;
-		Ray* childReflected = 0;
-
-		//Check if the ray intersects with the BoundingBox
-		for( int index = 0; index < children.size(); ++index )
-		{
-			InstanceNode* intersectedChild = 0;
-			bool isChildFront = false;
-			double previusMaxT = ray.maxt;
-
-			childReflected = children[index]->Intersect( ray, rand, sceneMap, &intersectedChild, &isChildFront );
-
-			if( ray.maxt < previusMaxT )
-			{
-				delete reflected;
-				reflected = 0;
-				*modelNode = intersectedChild;
-				*isFront = isChildFront;
-			}
-
-			if( childReflected )
-			{
-				reflected = new Ray( *childReflected );
-				delete childReflected;
-				childReflected = 0;
-			}
-
-		}
-		if( reflected )
-		{
-			result = new Ray( *reflected );
-			delete reflected;
-			reflected = 0;
-		}
-
-	}
-	else
-	{
-		std::cout<<"InstanceNode::Intersect 3"<<std::endl;
-
-		TShapeKit* shapeKit  = static_cast< TShapeKit* > ( GetNode() );
-
-		QPair< BBox, Transform* > childData;
-		if( children.count() == 0 ) return result;
-
-		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-			childData = sceneMap->value( children[0] );
-		else if( ( children.count() > 1 ) && ( children[1]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) ) )
-					childData = sceneMap->value( children[1] );
-		else return result;
-
-
-
-		std::cout<<"InstanceNode::Intersect 4"<<std::endl;
-
-		Transform* shapeWorldToObject =  childData.second;
-
-		if( !shapeWorldToObject )	std::cout<<"InstanceNode::Intersect 5 not shapeWorldToObject"<<std::endl;
-		std::cout<<"InstanceNode::Intersect 5 "<<*shapeWorldToObject<<std::endl;
-		Ray childCoordinatesRay( (*shapeWorldToObject)( ray ) );
-		childCoordinatesRay.maxt = ray.maxt;
-
-
-		std::cout<<"InstanceNode::Intersect 6"<<std::endl;
-
-		double objectMaxT = childCoordinatesRay.maxt;
-		bool isShapeFront = false;
-
-		std::cout<<"InstanceNode::Intersect 7"<<std::endl;
-
-		Ray* reflected = shapeKit->Intersect( childCoordinatesRay, &isShapeFront, rand );
-
-
-		if( objectMaxT != childCoordinatesRay.maxt )
-		{
-			ray.maxt = childCoordinatesRay.maxt;
-			if( reflected )
-			{
-
-				Transform shapeObjectToWorld = shapeWorldToObject->GetInverse();
-				result = new Ray( shapeObjectToWorld( *reflected ) );
-			}
-			delete reflected;
-			*modelNode = this;
-
-			*isFront = isShapeFront;
-		}
-
-	}
-
-	return result;
-}
-
-Ray* InstanceNode::Intersect( const Ray& ray,
-		                      RandomDeviate& rand,
 		                      InstanceNode** modelNode,
 		                      bool* isFront )
 {
@@ -267,7 +135,6 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 	if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 	{
 		Ray* reflected = 0;
-		Ray* childReflected = 0;
 
 		//Check if the ray intersects with the BoundingBox
 		for( int index = 0; index < children.size(); ++index )
@@ -276,7 +143,7 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 			bool isChildFront = false;
 			double previusMaxT = ray.maxt;
 
-			childReflected = children[index]->Intersect( ray, rand, &intersectedChild, &isChildFront );
+			Ray* childReflected = children[index]->Intersect( ray, rand, &intersectedChild, &isChildFront );
 
 			if( ray.maxt < previusMaxT )
 			{
@@ -284,24 +151,18 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 				reflected = 0;
 				*modelNode = intersectedChild;
 				*isFront = isChildFront;
+
+
+				if( childReflected )
+				{
+					reflected = childReflected;
+					childReflected = 0;
+				}
 			}
 
-			if( childReflected )
-			{
-				/*reflected = new Ray( *childReflected );
-				delete childReflected;
-				childReflected = 0;*/
-				reflected = childReflected;
-				childReflected = 0;
-			}
 
 		}
 		if( reflected )	return reflected;
-		/*{
-			result = new Ray( *reflected );
-			reflected = 0;
-			delete reflected;
-		}*/
 
 	}
 	else
@@ -317,7 +178,6 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 
 		Ray* reflected = shapeKit->Intersect( childCoordinatesRay, &isShapeFront, rand );
 
-
 		if( objectMaxT != childCoordinatesRay.maxt )
 		{
 			ray.maxt = childCoordinatesRay.maxt;
@@ -330,7 +190,6 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 		}
 
 	}
-
 	return result;
 }
 

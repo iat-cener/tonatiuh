@@ -122,7 +122,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Trace.h"
 
-
 void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon* > > photons )
 {
 	if( !photonMap )  photonMap = photons.first;
@@ -136,7 +135,7 @@ void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< 
 		photonMap->StoreRay( p );
 	}
 
-	photonsVector.clear();
+	//photonsVector.clear();
 }
 
 void startManipulator(void *data, SoDragger* dragger)
@@ -1077,8 +1076,6 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 		// Create a QFutureWatcher and conncect signals and slots.
 		QFutureWatcher< TPhotonMap* > futureWatcher;
-		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
-		//QFutureWatcher< std::vector< Photon* > > futureWatcher;
 		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
 		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
 		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
@@ -1159,7 +1156,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->irradiance();
+	double irradiance = sunShape->GetIrradiance();
 
 	if( !lightKit->getPart( "icon", false ) ) return;
 	TShape* raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );

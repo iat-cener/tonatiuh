@@ -47,8 +47,8 @@ class RandomMersenneTwister : public RandomDeviate
 {
 	
 public:
-    RandomMersenneTwister( unsigned long seedValue = 5489UL, long int randomNumberArraySize = 1000000 );
-    RandomMersenneTwister( const unsigned long* seedArray, int seedArraySize, long int randomNumberArraySize = 1000000 );
+    RandomMersenneTwister( unsigned long seedValue = 5489UL, long int randomNumberArraySize = 10000000 );
+    RandomMersenneTwister( const unsigned long* seedArray, int seedArraySize, long int randomNumberArraySize = 10000000 );
     virtual ~RandomMersenneTwister( );
     void FillArray( double* array, const unsigned long arraySize );
     unsigned long RandomUInt();

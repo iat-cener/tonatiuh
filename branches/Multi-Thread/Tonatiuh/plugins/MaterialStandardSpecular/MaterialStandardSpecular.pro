@@ -24,8 +24,7 @@ HEADERS = src/*.h \
 			$$(TONATIUH_ROOT)/src/source/geometry/tgf.h \			
 			$$(TONATIUH_ROOT)/src/source/geometry/Point3D.h \
 			$$(TONATIUH_ROOT)/src/source/geometry/Transform.h  \
-			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \
-			$$(TONATIUH_ROOT)/src/source/gui/InstanceNode.h \																		
+			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \																	
 			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \
 			$$(TONATIUH_ROOT)/src/source/raytracing/Photon.cpp \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h \
@@ -42,8 +41,7 @@ SOURCES = src/*.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/tgf.cpp \			
 			$$(TONATIUH_ROOT)/src/source/geometry/Point3D.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/Transform.cpp  \
-			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \
-			$$(TONATIUH_ROOT)/src/source/gui/InstanceNode.cpp \																		
+			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \																
 			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
 			$$(TONATIUH_ROOT)/src/source/raytracing/Photon.cpp \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.cpp \

@@ -77,7 +77,7 @@ inline void trf::GenerateStartingRay( Ray& ray,
 {
 	//Generate ray origin and direction in the Light coordinate system
 	ray.origin = raycastingSurface->Sample( rand.RandomDouble( ), rand.RandomDouble( ) );
-	sunShape->generateRayDirection( ray.direction, rand );
+	sunShape->GenerateRayDirection( ray.direction, rand );
 	ray.mint = tgc::Epsilon;
 	ray.maxt = tgc::Infinity;
 

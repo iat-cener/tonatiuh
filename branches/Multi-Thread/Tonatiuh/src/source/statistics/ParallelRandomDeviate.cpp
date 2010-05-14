@@ -36,13 +36,10 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
 #include <QMutexLocker>
 
 #include "RandomDeviate.h"
 #include "ParallelRandomDeviate.h"
-
-#include "Trace.h"
 
 ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand,  QMutex* mutex, unsigned long arraySize, QObject* parent )
 :QObject( parent ),RandomDeviate( arraySize ),
@@ -59,12 +56,8 @@ ParallelRandomDeviate::~ParallelRandomDeviate( )
 
 void ParallelRandomDeviate::FillArray( double* array, const unsigned long arraySize )
 {
-	//Trace trace( "ParallelRandomDeviate::FillArray", true );
-	QMutexLocker locker( m_mutex );
-  //  m_mutex->lock();
-    //std::cout<<"m_mutex.lock()"<<std::endl;
-    m_pRand->FillArray( array, arraySize );
-	//for( unsigned int i = 0; i < arraySize; i++ ) array[i] = m_pRand->RandomDouble( );
-    //std::cout<<"m_mutex.unlock()"<<std::endl;
-    //m_mutex->unlock();
+	//QMutexLocker locker( m_mutex );
+	m_mutex->lock();
+	m_pRand->FillArray( array, arraySize );
+	m_mutex->unlock();
 }

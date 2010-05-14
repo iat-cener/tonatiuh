@@ -46,16 +46,17 @@ QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numbe
 
 
 	ParallelRandomDeviate* rand = new ParallelRandomDeviate( m_pRand, m_mutex );
-	Transform lightToWorld = m_lightToWorld;
-	Ray ray;
+
+
 	double nRay = 0;
 	while ( nRay < numberOfRays )
 	{
+		Ray ray;
 		ray.origin = m_lightShape->Sample( rand->RandomDouble(), rand->RandomDouble() );
-		m_lightSunShape->generateRayDirection( ray.direction, *rand );
+		m_lightSunShape->GenerateRayDirection( ray.direction, *rand );
 		ray.mint = tgc::Epsilon;
 		ray.maxt = tgc::Infinity;
-		ray = lightToWorld( ray );
+		ray = m_lightToWorld( ray );
 
 		Ray* reflectedRay = 0;
 		Photon* next = 0;
@@ -73,7 +74,6 @@ QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numbe
 		{
 			intersectedSurface = 0;
 			isFront = 0;
-
 
 			reflectedRay = m_rootNode->Intersect( ray, *rand, &intersectedSurface, &isFront );
 

@@ -75,11 +75,6 @@ public:
     void Print( int level ) const;
 
     Ray* Intersect( const Ray& ray,
-    		        RandomDeviate& rand,
-    		        QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
-    		        InstanceNode** modelNode,
-    		        bool* isFront );
-    Ray* Intersect( const Ray& ray,
         		        RandomDeviate& rand,
 						InstanceNode** modelNode,
         		        bool* isFront );
