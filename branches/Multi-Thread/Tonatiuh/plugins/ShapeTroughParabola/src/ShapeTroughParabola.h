@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class SoSensor;
 
@@ -68,11 +68,11 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	tpt::TONATIUH_REAL focusLength;
-	tpt::TONATIUH_REAL xMin;
-	tpt::TONATIUH_REAL xMax;
-	tpt::TONATIUH_REAL lengthXMin;
-	tpt::TONATIUH_REAL lengthXMax;
+	trt::TONATIUH_REAL focusLength;
+	trt::TONATIUH_REAL xMin;
+	trt::TONATIUH_REAL xMax;
+	trt::TONATIUH_REAL lengthXMin;
+	trt::TONATIUH_REAL lengthXMax;
 	SoSFEnum activeSide;
 
  

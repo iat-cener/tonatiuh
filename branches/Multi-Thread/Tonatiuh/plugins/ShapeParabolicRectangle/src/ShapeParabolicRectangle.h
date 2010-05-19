@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 
 class ShapeParabolicRectangle : public TShape
@@ -67,9 +67,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	tpt::TONATIUH_REAL focusLength;
-	tpt::TONATIUH_REAL widthX;
-	tpt::TONATIUH_REAL widthZ;
+	trt::TONATIUH_REAL focusLength;
+	trt::TONATIUH_REAL widthX;
+	trt::TONATIUH_REAL widthZ;
 	SoSFEnum activeSide;
 
 protected:

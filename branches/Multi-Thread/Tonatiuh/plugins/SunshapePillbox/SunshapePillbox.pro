@@ -11,7 +11,7 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS = src/*.h \
-            $$(TONATIUH_ROOT)/plugins/tpt.h \
+            $$(TONATIUH_ROOT)/source/raytracing/trt.h \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TSunShape.h 
 
 

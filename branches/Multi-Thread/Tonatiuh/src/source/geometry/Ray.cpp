@@ -58,6 +58,16 @@ Point3D Ray::operator()( double t ) const
     return origin + direction * t;
 }
 
+
+bool  Ray::operator==( const Ray& ray ) const
+{
+	if( this == &ray ) return true;
+	else return ( ( origin == ray.origin ) &&
+					( direction == ray.direction ) &&
+					  !( fabs(mint - ray.mint) > tgc::Epsilon ) &&
+					  !( fabs(maxt - ray.maxt) > tgc::Epsilon ) );
+}
+
 std::ostream& operator<<( std::ostream& os, const Ray& ray )
 {
     os << "Org( " << ray.origin << " ) "

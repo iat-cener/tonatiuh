@@ -105,7 +105,7 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDevia
 	//The ray intersects with the BoundingBox
 	//Transform the ray to call children intersect
 
-	if( shape.getValue() )
+	/*if( shape.getValue() )
 	{
 		TShape* tshape = static_cast< TShape* >( shape.getValue() );
 
@@ -130,6 +130,6 @@ Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDevia
 				}
 			}
 		}
-	}
+	}*/
 	return 0;
 }

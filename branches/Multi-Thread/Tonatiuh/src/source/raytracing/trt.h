@@ -36,11 +36,15 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TPT_H_
-#define TPT_H_
+#ifndef TRT_H_
+#define TRT_H_
 
-#include <QtGlobal>
-namespace tpt
+
+#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
+
+
+namespace trt
 {
 	#if( defined(Q_WS_X11) || defined(Q_WS_MAC) )
 		typedef SoSFDouble TONATIUH_REAL;
@@ -49,8 +53,7 @@ namespace tpt
 		typedef SoSFFloat TONATIUH_REAL;
 	#endif
 
-	//typedef SoSFFloat TONATIUH_REAL;
 };
 
 
-#endif /* TPT_H_ */
+#endif /* trt_H_ */

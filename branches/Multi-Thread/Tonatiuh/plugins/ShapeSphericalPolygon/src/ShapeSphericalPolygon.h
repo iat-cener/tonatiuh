@@ -47,7 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFInt32.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class SoSensor;
 
@@ -72,8 +72,8 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	tpt::TONATIUH_REAL sphereRadius;
-	tpt::TONATIUH_REAL radius;
+	trt::TONATIUH_REAL sphereRadius;
+	trt::TONATIUH_REAL radius;
 	SoSFInt32 polygonSides;
 	SoSFEnum activeSide;
 

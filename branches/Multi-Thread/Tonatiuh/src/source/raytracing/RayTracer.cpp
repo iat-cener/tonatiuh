@@ -40,29 +40,30 @@ m_photonMap( photonMap )
 
 }
 
-QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numberOfRays )
+QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double numberOfRays )
 {
-	std::vector< Photon* > photonsVector;
+	std::vector< Photon > photonsVector;
+	ParallelRandomDeviate rand( m_pRand, m_mutex );
 
-
-	ParallelRandomDeviate* rand = new ParallelRandomDeviate( m_pRand, m_mutex );
-
-
-	double nRay = 0;
-	while ( nRay < numberOfRays )
+	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
 		Ray ray;
-		ray.origin = m_lightShape->Sample( rand->RandomDouble(), rand->RandomDouble() );
-		m_lightSunShape->GenerateRayDirection( ray.direction, *rand );
+		ray.origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
+		m_lightSunShape->GenerateRayDirection( ray.direction, rand );
 		ray.mint = tgc::Epsilon;
 		ray.maxt = tgc::Infinity;
 		ray = m_lightToWorld( ray );
 
-		Ray* reflectedRay = 0;
-		Photon* next = 0;
-		Photon* first = new Photon( ray.origin );
-		Photon* node = first;
-		node->intersectedSurface = 0;
+	/*	Photon first( ray.origin );
+		//Photon* node = &first;
+
+		Photon* node = new Photon( first);
+		node->intersectedSurface = 0;*/
+
+		Photon first( ray.origin );
+		first.id = 0;
+		first.intersectedSurface = 0;
+		photonsVector.push_back( first );
 		int rayLength = 0;
 
 		InstanceNode* intersectedSurface = 0;
@@ -74,24 +75,24 @@ QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numbe
 		{
 			intersectedSurface = 0;
 			isFront = 0;
+			Ray reflectedRay;
 
-			reflectedRay = m_rootNode->Intersect( ray, *rand, &intersectedSurface, &isFront );
+			double tHit = ray.maxt;
+			bool isOutputRay = m_rootNode->Intersect( ray, rand, &tHit, &intersectedSurface, &isFront, &reflectedRay );
 
-			if( reflectedRay )
+			ray.maxt = tHit;
+
+			if( isOutputRay )
 			{
-					Point3D point = ray( ray.maxt );
+				Photon next( ray( ray.maxt ) );
+				next.id = ++rayLength;
+				next.intersectedSurface = intersectedSurface;
+				next.surfaceSide = ( isFront ) ? 1.0 : 0.0;
+				photonsVector.push_back( next );
 
-					next = new Photon( point, node );
-					next->intersectedSurface = intersectedSurface;
-					next->surfaceSide = ( isFront ) ? 1.0 : 0.0;
-					node->next = next;
-					node = next;
-					rayLength++;
 
-					//Prepare node and ray for next iteration
-					ray = *reflectedRay;
-					delete reflectedRay;
-					reflectedRay = 0;
+				//Prepare node and ray for next iteration
+				ray = reflectedRay;
 			}
 			else intersection = false;
 		}
@@ -101,18 +102,15 @@ QPair< TPhotonMap*, std::vector< Photon* > > RayTracer::operator()( double numbe
 				if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
 
 				Point3D endOfRay = ray( ray.maxt );
-				Photon* lastNode = new Photon( endOfRay, node );
-				lastNode->intersectedSurface = intersectedSurface;
-				lastNode->surfaceSide = ( isFront ) ? 1.0 : 0.0;
-				node->next = lastNode;
-
+				Photon lastNode( endOfRay );
+				lastNode.id = ++rayLength;
+				lastNode.intersectedSurface = intersectedSurface;
+				lastNode.surfaceSide = ( isFront ) ? 1.0 : 0.0;
+				photonsVector.push_back( lastNode );
 		}
 
-		photonsVector.push_back( first );
-		nRay++;
+
 	}
 
-	delete rand;
-
-	return QPair< TPhotonMap*, std::vector< Photon* > >( m_photonMap, photonsVector );
+	return QPair< TPhotonMap*, std::vector< Photon > >( m_photonMap, photonsVector );
 }

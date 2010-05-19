@@ -35,9 +35,9 @@ public:
 		       QMutex* mutex,
 		       TPhotonMap* photonMap );
 
-	typedef QPair< TPhotonMap*, std::vector< Photon* > > result_type;
+	typedef QPair< TPhotonMap*, std::vector< Photon > > result_type;
 
-	QPair< TPhotonMap*, std::vector< Photon* > > operator()( double numberOfRays );
+	QPair< TPhotonMap*, std::vector< Photon > > operator()( double numberOfRays );
 
 
 

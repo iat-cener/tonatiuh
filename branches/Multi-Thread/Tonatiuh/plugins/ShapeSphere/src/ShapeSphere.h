@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class SoSensor;
 
@@ -69,10 +69,10 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
-	tpt::TONATIUH_REAL radius;
-	tpt::TONATIUH_REAL yMax;
-	tpt::TONATIUH_REAL yMin;
-	tpt::TONATIUH_REAL phiMax;
+	trt::TONATIUH_REAL radius;
+	trt::TONATIUH_REAL yMax;
+	trt::TONATIUH_REAL yMin;
+	trt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:

@@ -413,7 +413,8 @@ int SceneModel::InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent )
 void SceneModel::InsertLightNode( TLightKit& coinLight )
 {
 	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* > ( m_coinScene->getPart("lightList", true ) ) ;
-	if ( lightList->getNumChildren() > 0 )	m_instanceRoot->children.removeAt( 0 );
+	if ( lightList->getNumChildren() > 0 )
+		if( m_instanceRoot->children.size() > 0 ) m_instanceRoot->children.remove( 0 );
 
 	m_coinScene->setPart( "lightList[0]", &coinLight );
 
@@ -467,7 +468,7 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 	{
 	    InstanceNode* instanceParent = instanceListParent[index];
 	    InstanceNode* instanceNode = instanceParent->children[row];
-	    instanceParent->children.removeAt(row);
+	    instanceParent->children.remove(row);
 
 	    QList<InstanceNode*>& instanceList = m_mapCoinQt[ instanceNode->GetNode()];
 		instanceList.removeAt( instanceList.indexOf( instanceNode ) );
@@ -479,7 +480,7 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 {
 	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "lightList", true ) );
     if ( lightList ) lightList->removeChild( &coinLight );
-    m_instanceRoot->children.removeAt( 0 );
+    m_instanceRoot->children.remove( 0 );
 
 	SoSearchAction* tracersSearch = new SoSearchAction();
 	tracersSearch->setType( TTracker::getClassTypeId() );
@@ -701,7 +702,7 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 	{
 
 		InstanceNode* instance = nodeInstances[index];
-		QList< InstanceNode* > parentChildren = instance->GetParent()->children;
+		QVector< InstanceNode* > parentChildren = instance->GetParent()->children;
 		int childIndex = parentChildren.indexOf( instance );
 		for( int child = 0; child < parentChildren.size(); ++child )
 		{
@@ -731,7 +732,7 @@ void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 	InstanceNode* instanceParent = instanceNode.GetParent();
 	int row = instanceParent->children.indexOf( &instanceNode );
 
-	instanceParent->children.removeAt( row );
+	instanceParent->children.remove( row );
 }
 
 SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const

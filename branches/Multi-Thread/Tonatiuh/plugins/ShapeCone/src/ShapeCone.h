@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoShape.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class Transform;
 
@@ -69,10 +69,10 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	tpt::TONATIUH_REAL baseRadius;
-	tpt::TONATIUH_REAL topRadius;
-	tpt::TONATIUH_REAL height;
-	tpt::TONATIUH_REAL phiMax;
+	trt::TONATIUH_REAL baseRadius;
+	trt::TONATIUH_REAL topRadius;
+	trt::TONATIUH_REAL height;
+	trt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:

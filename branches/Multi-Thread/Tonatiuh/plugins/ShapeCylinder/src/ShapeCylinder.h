@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoShape.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class ShapeCylinder : public TShape
 {
@@ -68,9 +68,9 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	tpt::TONATIUH_REAL radius;
-	tpt::TONATIUH_REAL length;
-	tpt::TONATIUH_REAL phiMax;
+	trt::TONATIUH_REAL radius;
+	trt::TONATIUH_REAL length;
+	trt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:

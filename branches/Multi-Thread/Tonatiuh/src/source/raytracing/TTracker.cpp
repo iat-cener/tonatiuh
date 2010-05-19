@@ -66,12 +66,12 @@ void TTracker::Disconnect()
 	m_zenith.disconnect();
 }
 
-void TTracker::SetAzimuthAngle( SoSFDouble* azimuthField )
+void TTracker::SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField )
 {
 	m_azimuth.connectFrom( azimuthField );
 }
 
-void TTracker::SetZenithAngle( SoSFDouble* zenithField )
+void TTracker::SetZenithAngle( trt::TONATIUH_REAL* zenithField )
 {
 	m_zenith.connectFrom( zenithField );
 }

@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QMutexLocker>
-
 #include "RandomDeviate.h"
 #include "ParallelRandomDeviate.h"
 
@@ -56,7 +54,6 @@ ParallelRandomDeviate::~ParallelRandomDeviate( )
 
 void ParallelRandomDeviate::FillArray( double* array, const unsigned long arraySize )
 {
-	//QMutexLocker locker( m_mutex );
 	m_mutex->lock();
 	m_pRand->FillArray( array, arraySize );
 	m_mutex->unlock();

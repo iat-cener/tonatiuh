@@ -51,6 +51,7 @@ struct Ray
     Ray( const Point3D& orig, const Vector3D& direc, double start = tgc::Epsilon, double end = tgc::Infinity );
     ~Ray( );
     Point3D operator()( double t ) const;
+    bool operator==( const Ray& ray ) const;
         
     Point3D origin;
     Vector3D direction;

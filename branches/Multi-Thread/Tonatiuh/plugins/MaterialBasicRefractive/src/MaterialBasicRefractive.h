@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
-#include "tpt.h"
+#include "trt.h"
 
 class SoSensor;
 
@@ -62,16 +62,17 @@ public:
 	static void initClass();
 
     QString getIcon();
-	Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
+	//Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
+    bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
 
-	tpt::TONATIUH_REAL reflectivityFront;
-	tpt::TONATIUH_REAL reflectivityBack;
-	tpt::TONATIUH_REAL transmissivityFront;
-	tpt::TONATIUH_REAL transmissivityBack;
-	tpt::TONATIUH_REAL nFront;
-	tpt::TONATIUH_REAL nBack;
-	tpt::TONATIUH_REAL sigmaSlope;
-	//tpt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
+	trt::TONATIUH_REAL reflectivityFront;
+	trt::TONATIUH_REAL reflectivityBack;
+	trt::TONATIUH_REAL transmissivityFront;
+	trt::TONATIUH_REAL transmissivityBack;
+	trt::TONATIUH_REAL nFront;
+	trt::TONATIUH_REAL nBack;
+	trt::TONATIUH_REAL sigmaSlope;
+	//trt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
 	SoSFEnum distribution;
 	SoMFColor m_ambientColor;
 	SoMFColor m_diffuseColor;

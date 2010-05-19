@@ -47,7 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 */
 PhotonMapDefault::PhotonMapDefault()
 {
-    m_storedPhotons = 0;
+	 m_storedPhotons = 0;
 	m_maxPhotons = tgc::Max_Photon;
 
 }
@@ -78,14 +78,14 @@ QString PhotonMapDefault::GetIcon()
 
 Photon* PhotonMapDefault::GetPhoton( double photonID ) const
 {
-	if( !m_photons.contains( photonID ) ) return 0;
-	return m_photons[photonID];
+	//if( !m_photons.contains( photonID ) ) return 0;
+	return m_photons[photonID-1];
 }
 
 
 QList< Photon* > PhotonMapDefault::GetAllPhotons() const
 {
-	return m_photons.values();
+	return QList<Photon*>::fromVector( m_photons );
 
 }
 
@@ -93,11 +93,12 @@ QList< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) c
 {
 	QList< Photon* > surfacePhotonsList;
 
-	QList< Photon* > mapPhotons = m_photons.values();
-	for( int index = 0; index < mapPhotons.size(); ++index )
+	//QList< Photon* > mapPhotons = m_photons.values();
+
+	for( int index = 0; index < m_photons.size(); ++index )
 	{
-		if( mapPhotons[index]->intersectedSurface == instance )
-			surfacePhotonsList.push_back( mapPhotons[index] );
+		if( m_photons[index]->intersectedSurface == instance )
+			surfacePhotonsList.push_back( m_photons[index] );
 	}
 	return surfacePhotonsList;
 }
@@ -115,17 +116,18 @@ void PhotonMapDefault::StoreRay( Photon* rayFirstPhoton )
 	}
 
 	if ( m_storedPhotons >= m_maxPhotons ) return;
-	m_photons.insert( rayFirstPhoton->id, rayFirstPhoton );
-	m_storedPhotons += 1;
+	m_photons.push_back( rayFirstPhoton );
+	++m_storedPhotons;
   	currentNode = rayFirstPhoton->next;
 
   	while( currentNode )
   	{
 		if ( m_storedPhotons >= m_maxPhotons ) return;
   		m_storedPhotons += 1;
-  	  	m_photons.insert( currentNode->id, currentNode );
+  	  	m_photons.push_back( currentNode );
 
   	  	currentNode = currentNode->next;
   	}
 
+	//std::cout<<"PhotonMapDefault::StoreRay"<<m_storedPhotons<<std::endl;
 }

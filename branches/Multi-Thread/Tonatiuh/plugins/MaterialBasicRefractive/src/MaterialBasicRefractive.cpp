@@ -201,9 +201,10 @@ void MaterialBasicRefractive::updateTransparency( void* data, SoSensor* )
  	material->transparency.setValue( material->m_transparency[0] );
 }
 
-Ray* MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const
+bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
+//Ray* MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const
 {
-	double randomNumber = rand.RandomDouble();
+	/*double randomNumber = rand.RandomDouble();
 	if( dg->shapeFrontSide )
 	{
 		if ( randomNumber < reflectivityFront.getValue()  ) return ReflectedRay( incident, dg, rand );
@@ -215,6 +216,36 @@ Ray* MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeomet
 		if ( randomNumber < reflectivityBack.getValue()  ) return ReflectedRay( incident, dg, rand );
 		else if ( randomNumber < ( reflectivityBack.getValue() + transmissivityBack.getValue() ) ) return RefractedtRay( incident, dg, rand );
 		else return 0;
+
+	}*/
+	double randomNumber = rand.RandomDouble();
+	if( dg->shapeFrontSide )
+	{
+		if ( randomNumber < reflectivityFront.getValue()  )
+		{
+			*outputRay = *ReflectedRay( incident, dg, rand );
+			return true;
+		}
+		else if ( randomNumber < ( reflectivityFront.getValue() + transmissivityFront.getValue() ) )
+		{
+			*outputRay = *RefractedtRay( incident, dg, rand );
+			return true;
+		}
+		else return false;
+	}
+	else
+	{
+		if ( randomNumber < reflectivityBack.getValue()  )
+		{
+			*outputRay = *ReflectedRay( incident, dg, rand );
+			return true;
+		}
+		else if ( randomNumber < ( reflectivityBack.getValue() + transmissivityBack.getValue() ) )
+		{
+			*outputRay = *RefractedtRay( incident, dg, rand );
+			return true;
+		}
+		else return false;
 
 	}
 }

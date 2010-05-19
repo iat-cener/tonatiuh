@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class ShapeFlatRectangle : public TShape
 {
@@ -66,8 +66,8 @@ public:
 		BACK   = 1,
 	};
 
-	tpt::TONATIUH_REAL width;
-	tpt::TONATIUH_REAL height;
+	trt::TONATIUH_REAL width;
+	trt::TONATIUH_REAL height;
 	SoSFEnum activeSide;
 
 protected:

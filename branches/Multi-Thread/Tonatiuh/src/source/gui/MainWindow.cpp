@@ -122,9 +122,36 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Trace.h"
 
-void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon* > > photons )
+void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons )
 {
 	if( !photonMap )  photonMap = photons.first;
+
+	std::vector<Photon> photonsVector = photons.second;
+	std::vector<Photon>::iterator it;
+	it = photonsVector.begin();
+
+	while( it<photonsVector.end() )
+	{
+		Photon* first = new Photon( *it );
+		//std::cout<<first->pos<<std::endl;
+		it++;
+		Photon* nextPhoton = first;
+
+		while( it<photonsVector.end() && ( (*it).id > 0 ) )
+		{
+			Photon* photon = new Photon( *it );
+
+			nextPhoton->next = photon;
+			photon->prev = nextPhoton;
+			nextPhoton = photon;
+			it++;
+		}
+		photonMap->StoreRay( first );
+	}
+
+	photonsVector.clear();
+
+	/*if( !photonMap )  photonMap = photons.first;
 
 	std::vector<Photon*> photonsVector = photons.second;
 	std::vector<Photon*>::iterator it;
@@ -135,7 +162,7 @@ void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< 
 		photonMap->StoreRay( p );
 	}
 
-	//photonsVector.clear();
+	//photonsVector.clear();*/
 }
 
 void startManipulator(void *data, SoDragger* dragger)
@@ -1076,6 +1103,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 		// Create a QFutureWatcher and conncect signals and slots.
 		QFutureWatcher< TPhotonMap* > futureWatcher;
+		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
 		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
 		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
 		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
@@ -1083,6 +1111,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 
 		QMutex mutex;
 		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), createPhotonMap, QtConcurrent::UnorderedReduce );
+		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.

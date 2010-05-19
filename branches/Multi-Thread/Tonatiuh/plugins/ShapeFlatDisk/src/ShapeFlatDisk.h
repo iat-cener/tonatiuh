@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class SoSensor;
 
@@ -66,7 +66,7 @@ public:
 		BACK   = 1,
 	};
 
-	tpt::TONATIUH_REAL radius;
+	trt::TONATIUH_REAL radius;
 	SoSFEnum activeSide;
 
 protected:

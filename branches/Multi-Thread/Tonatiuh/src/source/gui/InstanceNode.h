@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef INSTANCENODE_H_
 #define INSTANCENODE_H_
 
-#include <QList>
+#include <QVector>
 #include <QPair>
 
 #include "BBox.h"
@@ -74,17 +74,23 @@ public:
     QString GetNodeURL() const;
     void Print( int level ) const;
 
-    Ray* Intersect( const Ray& ray,
+    /*Ray* Intersect( const Ray& ray,
         		        RandomDeviate& rand,
 						InstanceNode** modelNode,
-        		        bool* isFront );
+        		        bool* isFront );*/
+    bool Intersect( const Ray& ray,
+            		        RandomDeviate& rand,
+            		        double* tHit,
+    						InstanceNode** modelNode,
+            		        bool* isFront,
+            		        Ray* outRay);
 
     BBox GetIntersectionBBox();
     Transform SetIntersectionTransform();
     void SetIntersectionBBox( BBox nodeBBox );
     void SetIntersectionTransform( Transform nodeTransform );
 
-    QList< InstanceNode* > children;
+    QVector< InstanceNode* > children;
 
 private:
     SoNode* m_coinNode;

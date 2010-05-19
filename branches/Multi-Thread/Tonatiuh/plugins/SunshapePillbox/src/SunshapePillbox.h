@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TSunShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 
 class SunshapePillbox : public TSunShape
@@ -59,8 +59,8 @@ public:
     void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand) const;
 	double GetIrradiance() const;
 
-	tpt::TONATIUH_REAL irradiance;
-	tpt::TONATIUH_REAL thetaMax;
+	trt::TONATIUH_REAL irradiance;
+	trt::TONATIUH_REAL thetaMax;
 
 protected:
 	 ~SunshapePillbox();

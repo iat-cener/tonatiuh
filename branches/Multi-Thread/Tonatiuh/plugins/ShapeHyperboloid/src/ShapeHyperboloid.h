@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class Vector3D;
 
@@ -70,9 +70,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	tpt::TONATIUH_REAL focusLegth;
-	tpt::TONATIUH_REAL distanceTwoFocus;
-	tpt::TONATIUH_REAL reflectorMaxDiameter;
+	trt::TONATIUH_REAL focusLegth;
+	trt::TONATIUH_REAL distanceTwoFocus;
+	trt::TONATIUH_REAL reflectorMaxDiameter;
 	SoSFEnum activeSide;
 
 

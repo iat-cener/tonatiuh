@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
-#include "tpt.h"
+#include "trt.h"
 
 class SoSensor;
 
@@ -69,10 +69,10 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	tpt::TONATIUH_REAL focusLength;
-	tpt::TONATIUH_REAL dishMinRadius;
-	tpt::TONATIUH_REAL dishMaxRadius;
-	tpt::TONATIUH_REAL phiMax;
+	trt::TONATIUH_REAL focusLength;
+	trt::TONATIUH_REAL dishMinRadius;
+	trt::TONATIUH_REAL dishMaxRadius;
+	trt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:
