@@ -63,9 +63,11 @@ QString TDefaultMaterial::getIcon()
 }
 
 
-Ray* TDefaultMaterial::OutputRay( const Ray& /*incident*/, DifferentialGeometry* /*dg*/, RandomDeviate& /*rand*/  ) const
+//Ray* TDefaultMaterial::OutputRay( const Ray& /*incident*/, DifferentialGeometry* /*dg*/, RandomDeviate& /*rand*/  ) const
+bool TDefaultMaterial::OutputRay( const Ray& /*incident*/, DifferentialGeometry* /*dg*/, RandomDeviate& /*rand*/, Ray* outputRay  ) const
 {
-	return NULL;
+	//return NULL;
+	return false;
 }
 
 

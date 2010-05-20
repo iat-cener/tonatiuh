@@ -39,11 +39,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPECYLINDER_H_
 #define SHAPECYLINDER_H_
 
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/nodes/SoShape.h>
 
 #include "TShape.h"
+#include "trt.h"
 
 class ShapeCylinder : public TShape
 {
@@ -66,9 +68,9 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	SoSFFloat radius;
-	SoSFFloat length;
-	SoSFFloat phiMax;
+	trt::TONATIUH_REAL radius;
+	trt::TONATIUH_REAL length;
+	trt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:

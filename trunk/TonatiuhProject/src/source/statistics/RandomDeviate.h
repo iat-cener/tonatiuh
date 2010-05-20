@@ -47,7 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class RandomDeviate
 {
 public:
-	explicit RandomDeviate( const unsigned long arraySize = 1000000 );
+	explicit RandomDeviate( const unsigned long arraySize = 100000 );
     virtual ~RandomDeviate( );
     virtual void FillArray( double* array, const unsigned long arraySize )=0;
     unsigned long NumbersGenerated( ) const;

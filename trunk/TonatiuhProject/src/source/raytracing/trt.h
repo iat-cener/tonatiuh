@@ -32,37 +32,28 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
+#ifndef TRT_H_
+#define TRT_H_
 
-#include "TrackerHeliostatFactory.h"
-#include "TrackerHeliostat.h"
 
-QString TrackerHeliostatFactory::TTrackerName() const
+#include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
+
+
+namespace trt
 {
-	return QString("Heliostat_tracker");
-}
+	#if( defined(Q_WS_X11) || defined(Q_WS_MAC) )
+		typedef SoSFDouble TONATIUH_REAL;
 
-QIcon TrackerHeliostatFactory::TTrackerIcon() const
-{
-	return QIcon(":/icons/TrackerHeliostat.png");
-}
+	#else
+		typedef SoSFFloat TONATIUH_REAL;
+	#endif
 
-TrackerHeliostat* TrackerHeliostatFactory::CreateTTracker( ) const
-{
+};
 
-	static bool firstTime = true;
-	if ( firstTime )
-	{
-	    // Initialize the new node classes
-	    TrackerHeliostat::initClass();
-	    firstTime = false;
-	}
-	return new TrackerHeliostat;
 
-}
-
-Q_EXPORT_PLUGIN2(TrackerHeliostat, TrackerHeliostatFactory)
+#endif /* trt_H_ */

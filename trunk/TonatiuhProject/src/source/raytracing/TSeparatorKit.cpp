@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
 #include <QString>
 
 #include <Inventor/nodes/SoSeparator.h>

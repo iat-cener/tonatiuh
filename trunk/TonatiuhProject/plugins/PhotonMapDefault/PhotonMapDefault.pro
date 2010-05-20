@@ -9,7 +9,7 @@ include( $$(TONATIUH_ROOT)/config.pri)
 
 INCLUDEPATH += . \
 			src \
-			$$(TONATIUH_ROOT)/src
+                $$(TONATIUH_ROOT)/src 
 
 # Input
 HEADERS = src/*.h \
@@ -21,8 +21,7 @@ HEADERS = src/*.h \
 			$$(TONATIUH_ROOT)/src/source/geometry/RefCount.h \
 			$$(TONATIUH_ROOT)/src/source/geometry/Transform.h \
 			$$(TONATIUH_ROOT)/src/source/geometry/tgf.h \
-			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \
-			$$(TONATIUH_ROOT)/src/source/gui/InstanceNode.h \															
+			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \														
 			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \ 
 			$$(TONATIUH_ROOT)/src/source/raytracing/Photon.h \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h \
@@ -39,8 +38,7 @@ SOURCES = src/*.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/RefCount.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/Transform.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/tgf.cpp \
-			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \
-			$$(TONATIUH_ROOT)/src/source/gui/InstanceNode.cpp \															
+			$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \													
 			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \ 
 			$$(TONATIUH_ROOT)/src/source/raytracing/Photon.cpp \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.cpp \

@@ -36,13 +36,13 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-#include <QMap>
 #include <Inventor/nodes/SoNode.h>
 
 #include "BBox.h"
+#include "DifferentialGeometry.h"
 #include "InstanceNode.h"
 #include "Ray.h"
+#include "TMaterial.h"
 #include "Transform.h"
 #include "TShape.h"
 #include "TShapeKit.h"
@@ -97,10 +97,9 @@ void InstanceNode::Print( int level ) const
 **/
 void InstanceNode::AddChild( InstanceNode* child )
 {
-    children.append( child );
+    children.push_back( child );
     child->SetParent( this );
 }
-
 /**
  * Inserts the \a instanceChild node as child number \a row.
 **/
@@ -111,68 +110,66 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
  	instanceChild->SetParent(this);
 }
 
-Ray* InstanceNode::Intersect( const Ray& ray,
-		                      RandomDeviate& rand,
-		                      QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
-		                      InstanceNode** modelNode,
-		                      bool* isFront )
+bool InstanceNode::Intersect( const Ray& ray,
+            		        RandomDeviate& rand,
+            		        double* tHit,
+    						InstanceNode** modelNode,
+            		        bool* isFront,
+            		        Ray* outRay )
 {
-	QPair< BBox, Transform* > instanceData =  sceneMap->value( this );
+
 
 	//Check if the ray intersects with the BoundingBox
-	BBox box = instanceData.first;
-
 	double t0 = ray.mint;
 	double t1 = ray.maxt;
 
 	for( int i = 0; i < 3; ++i )
 	{
 		double invRayDir = 1.0 / ray.direction[i];
-		double tNear = ( box.pMin[i] - ray.origin[i] ) * invRayDir;
-		double tFar = ( box.pMax[i] - ray.origin[i] ) * invRayDir;
+		double tNear = ( m_bbox.pMin[i] - ray.origin[i] ) * invRayDir;
+		double tFar = ( m_bbox.pMax[i] - ray.origin[i] ) * invRayDir;
 		if( tNear > tFar ) std::swap( tNear, tFar );
 		t0 = tNear > t0 ? tNear : t0;
 		t1 = tFar < t1 ? tFar : t1;
-		if( t0 > t1 ) return 0;
+		if( t0 > t1 ) return false;
 	}
-
-	Ray* result = 0;
 
 	if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 	{
-		Ray* reflected = 0;
-		Ray* childReflected = 0;
+		Ray reflected;
+		bool isOutputRay = false;
 
-		//Check if the ray intersects with the BoundingBox
+		///Check if the ray intersects with the BoundingBox
 		for( int index = 0; index < children.size(); ++index )
 		{
 			InstanceNode* intersectedChild = 0;
 			bool isChildFront = false;
-			double previusMaxT = ray.maxt;
+			Ray childOutputRay;
+			double childHit = *tHit;
 
-			childReflected = children[index]->Intersect( ray, rand, sceneMap, &intersectedChild, &isChildFront );
+			bool isChildOutputRay = children[index]->Intersect( ray, rand, &childHit, &intersectedChild, &isChildFront, &childOutputRay );
 
-			if( ray.maxt < previusMaxT )
+			if( childHit < *tHit )
 			{
-				delete reflected;
-				reflected = 0;
+				isOutputRay = false;
+				*tHit = childHit;
 				*modelNode = intersectedChild;
 				*isFront = isChildFront;
+
+				if( isChildOutputRay )
+				{
+					reflected = childOutputRay;
+					isOutputRay = true;
+				}
+				else	reflected = Ray();
 			}
 
-			if( childReflected )
-			{
-				reflected = new Ray( *childReflected );
-				delete childReflected;
-				childReflected = 0;
-			}
 
 		}
-		if( reflected )
+		if( isOutputRay )
 		{
-			result = new Ray( *reflected );
-			delete reflected;
-			reflected = 0;
+			*outRay = reflected;
+			return true;
 		}
 
 	}
@@ -180,44 +177,77 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 	{
 		TShapeKit* shapeKit  = static_cast< TShapeKit* > ( GetNode() );
 
-		QPair< BBox, Transform* > childData;
-		if( children.count() == 0 ) return result;
-
-		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-			childData = sceneMap->value( children[0] );
-		else if( ( children.count() > 1 ) && ( children[1]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) ) )
-					childData = sceneMap->value( children[1] );
-		else return result;
-
-
-		Transform* shapeWorldToObject =  childData.second;
-
-		Ray childCoordinatesRay( (*shapeWorldToObject)( ray ) );
+		Ray childCoordinatesRay( m_transformWTO( ray ) );
 		childCoordinatesRay.maxt = ray.maxt;
 
-		double objectMaxT = childCoordinatesRay.maxt;
 		bool isShapeFront = false;
-		Ray* reflected = shapeKit->Intersect( childCoordinatesRay, &isShapeFront, rand );
 
+		InstanceNode* shapeInstance = 0;
+		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+			shapeInstance =  children[0];
+		else if(  children.count() > 1 )	shapeInstance =  children[1];
 
-		if( objectMaxT != childCoordinatesRay.maxt )
+		if( shapeInstance != 0 )
 		{
-			ray.maxt = childCoordinatesRay.maxt;
-			if( reflected )
+			TShape* tshape = static_cast< TShape* >( shapeInstance->GetNode() );
+
+			double thit = 0.0;
+			DifferentialGeometry dg;
+			bool intersect = tshape->Intersect( childCoordinatesRay, &thit, &dg );
+			isShapeFront = dg.shapeFrontSide;
+			if( intersect )
 			{
+				childCoordinatesRay.maxt = thit;
+				*tHit = childCoordinatesRay.maxt;
 
-				Transform shapeObjectToWorld = shapeWorldToObject->GetInverse();
-				result = new Ray( shapeObjectToWorld( *reflected ) );
+				InstanceNode* materialInstance = 0;
+				if( children[0]->GetNode()->getTypeId().isDerivedFrom( TMaterial::getClassTypeId() ) )
+					materialInstance =  children[0];
+				else if(  children.count() > 1 )	materialInstance =  children[1];
+
+				if( materialInstance )
+				{
+					TMaterial* tmaterial = static_cast< TMaterial* > ( materialInstance->GetNode() );
+
+					Ray surfaceOutputRay;
+					bool isOutputRay = tmaterial->OutputRay( childCoordinatesRay, &dg, rand, &surfaceOutputRay );
+
+					*modelNode = this;
+					*isFront = isShapeFront;
+					if( isOutputRay )
+					{
+						*outRay = m_transformOTW( surfaceOutputRay );
+						return true;
+					}
+
+				}
 			}
-			delete reflected;
-			*modelNode = this;
-
-			*isFront = isShapeFront;
 		}
 
 	}
+	return false;
+}
 
-	return result;
+BBox InstanceNode::GetIntersectionBBox()
+{
+	return m_bbox;
+}
+
+Transform InstanceNode::SetIntersectionTransform()
+{
+	return m_transformWTO;
+}
+
+void InstanceNode::SetIntersectionBBox( BBox nodeBBox )
+{
+	m_bbox = nodeBBox;
+}
+
+void InstanceNode::SetIntersectionTransform( Transform nodeTransform )
+{
+
+	m_transformWTO = nodeTransform;
+	m_transformOTW = m_transformWTO.GetInverse();
 }
 
 QDataStream& operator<< ( QDataStream & s, const InstanceNode& node )

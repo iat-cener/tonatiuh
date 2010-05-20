@@ -41,12 +41,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <vector>
 
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 
 #include "TShape.h"
+#include "trt.h"
+
+class SoSensor;
 
 class ShapeSphericalPolygon : public TShape
 {
@@ -69,8 +72,8 @@ public:
 		OUTSIDE   = 1,
 	};
 
-	SoSFFloat sphereRadius;
-	SoSFFloat radius;
+	trt::TONATIUH_REAL sphereRadius;
+	trt::TONATIUH_REAL radius;
 	SoSFInt32 polygonSides;
 	SoSFEnum activeSide;
 
@@ -89,10 +92,6 @@ private:
 
 	virtual void generatePrimitives( SoAction* action );
 	virtual void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center );
-
-	SoFieldSensor* m_sphereRadiusSensor;
-	SoFieldSensor* m_radiusSensor;
-	SoFieldSensor* m_sidesSensor;
 
 	double m_thetaMax;
 	double m_phiMax;

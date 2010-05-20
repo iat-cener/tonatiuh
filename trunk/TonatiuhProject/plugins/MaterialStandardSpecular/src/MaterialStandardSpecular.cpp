@@ -143,14 +143,16 @@ void MaterialStandardSpecular::updateTransparency( void* data, SoSensor* )
  	material->transparency.setValue( material->m_transparency[0] );
 }
 
-Ray* MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
+//Ray* MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
+bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay ) const
 {
 	double randomNumber = rand.RandomDouble();
-	if ( randomNumber >= m_reflectivity.getValue()  ) return 0;
+	if ( randomNumber >= m_reflectivity.getValue()  ) return false;//return 0;
 
 	//Compute reflected ray (local coordinates )
-	Ray* reflected = new Ray();
-	reflected->origin = dg->point;
+	//Ray* reflected = new Ray();
+	//reflected.origin = dg->point;
+	outputRay->origin = dg->point;
 
 	NormalVector normalVector;
 	double sigmaSlope = m_sigmaSlope.getValue() / 1000;
@@ -190,7 +192,9 @@ Ray* MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 	}
 
 	double cosTheta = DotProduct( normalVector, incident.direction );
-	reflected->direction = Normalize( incident.direction - 2.0 * normalVector * cosTheta );
-	return reflected;
+	//reflected->direction = Normalize( incident.direction - 2.0 * normalVector * cosTheta );
+	//return reflected
+	outputRay->direction = Normalize( incident.direction - 2.0 * normalVector * cosTheta );
+	return true;
 
 }

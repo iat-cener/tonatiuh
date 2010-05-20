@@ -39,29 +39,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PHOTONMAPDEFAULT_H_
 #define PHOTONMAPDEFAULT_H_
 
-#include <QList>
 #include <QMap>
+#include <QVector>
 
-#include "InstanceNode.h"
+//#include "InstanceNode.h"
 #include "Point3D.h"
 #include "Vector3D.h"
 #include "BBox.h"
 #include "NormalVector.h"
 #include "Photon.h"
 #include "TPhotonMap.h"
-#include <vector>
 
-
-typedef struct NearestPhotons
-{
-	long unsigned m_max;
-	long unsigned m_found;
-	long unsigned m_gotHeap;
-	Point3D m_pos;
-	double* m_dist2;
-	Photon** m_index;
-
-}NearestPhotons;
 
 
 class PhotonMapDefault : public TPhotonMap
@@ -83,7 +71,8 @@ public:
 private:
 
 
-	QMap< double, Photon*> m_photons;
+	//QMap< double, Photon*> m_photons;
+	QVector< Photon* > m_photons;
 	unsigned long  m_storedPhotons;
 	long unsigned m_maxPhotons;
 

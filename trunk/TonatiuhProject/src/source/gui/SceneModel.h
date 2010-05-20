@@ -64,6 +64,8 @@ public:
 	void SetCoinRoot( SoSelection& coinRoot );
 	void SetCoinScene( SoSceneKit& coinScene );
 
+	void Clear();
+
 	QModelIndex index( int row, int column, const QModelIndex& parentModelIndex = QModelIndex()) const;
 	int rowCount( const QModelIndex& parentModelIndex ) const;
 	int columnCount ( const QModelIndex& ) const;
@@ -96,11 +98,10 @@ private:
 	void SetRoot();
 	void SetLight();
 	void SetConcentrator();
-	InstanceNode* AddInstanceNode( InstanceNode& instanceNodeParent, SoNode& soNode );
-	void InsertIntoMap( InstanceNode& instanceNode, SoNode& soNode );
+	InstanceNode* AddInstanceNode( InstanceNode& instanceNodeParent, SoNode* separatorKit );
 	void GenerateInstanceTree( InstanceNode& instanceParent );
-	void GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode& parentNode );
-	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode& parentNode );
+	void GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
+	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
 
 private:
 	SoSelection* m_coinRoot;

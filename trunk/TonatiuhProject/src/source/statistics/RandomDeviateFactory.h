@@ -37,41 +37,28 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "Ray.h"
+#ifndef RANDOMDEVIATEFACTORY_H_
+#define RANDOMDEVIATEFACTORY_H_
 
-Ray::Ray( )
-: mint( tgc::Epsilon ), maxt( tgc::Infinity )
+#include <QtPlugin>
+
+class QString;
+class QIcon;
+class RandomDeviate;
+
+//!  RandomDeviateFactory is the interface for random generators plugins.
+/*!
+  A random generator plugin must implement the following interface to load as a valid plugin for Toantiuh.
+*/
+
+class RandomDeviateFactory
 {
-}
+public:
+    virtual QString RandomDeviateName() const  = 0;
+    virtual QIcon RandomDeviateIcon() const = 0;
+    virtual RandomDeviate* CreateRandomDeviate( ) const = 0;
+};
 
-Ray::Ray( const Point3D& orig, const Vector3D& direc, double start, double end )
-: origin( orig ), direction( direc ), mint( start ), maxt( end )
-{
-}
+Q_DECLARE_INTERFACE( RandomDeviateFactory, "tonatiuh.RandomDeviateFactory")
 
-Ray::~Ray( )
-{
-}
-
-Point3D Ray::operator()( double t ) const
-{
-    return origin + direction * t;
-}
-
-
-bool  Ray::operator==( const Ray& ray ) const
-{
-	if( this == &ray ) return true;
-	else return ( ( origin == ray.origin ) &&
-					( direction == ray.direction ) &&
-					  !( fabs(mint - ray.mint) > tgc::Epsilon ) &&
-					  !( fabs(maxt - ray.maxt) > tgc::Epsilon ) );
-}
-
-std::ostream& operator<<( std::ostream& os, const Ray& ray )
-{
-    os << "Org( " << ray.origin << " ) "
-       << "Dir( " << ray.direction << " ) "
-       << "range [" << ray.mint << "," << ray.maxt << "]\n";
-    return os;
-}
+#endif /* RANDOMDEVIATEFACTORY_H_ */
