@@ -39,13 +39,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEPARABOLICDISH_H_
 #define SHAPEPARABOLICDISH_H_
 
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
+#include "trt.h"
 
 class SoSensor;
-class Vector3D;
+
 
 class ShapeParabolicDish : public TShape
 {
@@ -67,10 +69,10 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFFloat focusLength;
-	SoSFFloat dishMinRadius;
-	SoSFFloat dishMaxRadius;
-	SoSFFloat phiMax;
+	trt::TONATIUH_REAL focusLength;
+	trt::TONATIUH_REAL dishMinRadius;
+	trt::TONATIUH_REAL dishMaxRadius;
+	trt::TONATIUH_REAL phiMax;
 	SoSFEnum activeSide;
 
 protected:

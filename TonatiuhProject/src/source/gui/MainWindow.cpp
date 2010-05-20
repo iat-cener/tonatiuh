@@ -39,10 +39,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
+#include <QFuture>
+#include <QFutureWatcher>
 #include <QMessageBox>
+#include <QMutex>
 #include <QPluginLoader>
 #include <QProgressDialog>
 #include <QSettings>
+#include <QtConcurrentMap>
 #include <QTime>
 #include <QUndoStack>
 #include <QUndoView>
@@ -96,6 +100,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviateFactory.h"
 #include "Ray.h"
 #include "RayTraceDialog.h"
+#include "RayTracer.h"
 #include "SceneModel.h"
 #include "LightDialog.h"
 #include "SunPositionCalculatorDialog.h"
@@ -115,7 +120,48 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 #include "TTrackerFactory.h"
 
-#include "Trace.h"
+void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons )
+{
+	if( !photonMap )  photonMap = photons.first;
+
+	std::vector<Photon> photonsVector = photons.second;
+	std::vector<Photon>::iterator it;
+	it = photonsVector.begin();
+
+	while( it<photonsVector.end() )
+	{
+		Photon* first = new Photon( *it );
+		//std::cout<<first->pos<<std::endl;
+		it++;
+		Photon* nextPhoton = first;
+
+		while( it<photonsVector.end() && ( (*it).id > 0 ) )
+		{
+			Photon* photon = new Photon( *it );
+
+			nextPhoton->next = photon;
+			photon->prev = nextPhoton;
+			nextPhoton = photon;
+			it++;
+		}
+		photonMap->StoreRay( first );
+	}
+
+	photonsVector.clear();
+
+	/*if( !photonMap )  photonMap = photons.first;
+
+	std::vector<Photon*> photonsVector = photons.second;
+	std::vector<Photon*>::iterator it;
+
+	for( it = photonsVector.begin(); it<photonsVector.end() ; it++)
+	{
+		Photon* p = *it;
+		photonMap->StoreRay( p );
+	}
+
+	//photonsVector.clear();*/
+}
 
 void startManipulator(void *data, SoDragger* dragger)
 {
@@ -1036,27 +1082,47 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
 	{
 		//Compute bounding boxes and world to object transforms
-		QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap = new QMap< InstanceNode*,QPair< BBox, Transform* > >();
-		ComputeSceneTreeMap( rootSeparatorInstance, sceneMap );
+		ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
 
-		//Set up the progress updater
+		QVector< double > raysPerThread;
 		const int maximumValueProgressScale = 25;
-		unsigned long raysPerInnerLoop = m_raysPerIteration / maximumValueProgressScale;
-		ProgressUpdater progress(m_raysPerIteration, QString("Tracing Rays"), maximumValueProgressScale, this);
+		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
+		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
+			raysPerThread<< t1;
+
+		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )	raysPerThread<< ( m_raysPerIteration-( t1* maximumValueProgressScale) );
 
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
-		Ray ray;
-		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-		{
-			for ( long unsigned i = 0; i < raysPerInnerLoop; ++i )
-			{
-				trf::GenerateStartingRay( ray, raycastingSurface, sunShape, lightToWorld, *m_rand );
-				trf::TraceRay( ray, sceneMap, rootSeparatorInstance, lightInstance, *m_photonMap, *m_rand );
-			}
-			progress.Update( progressCount*raysPerInnerLoop );
-		}
+
+		// Create a progress dialog.
+		QProgressDialog dialog;
+		dialog.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
+
+		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
+		// Create a QFutureWatcher and conncect signals and slots.
+		QFutureWatcher< TPhotonMap* > futureWatcher;
+		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
+		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
+		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
+		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
+		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
+
+		QMutex mutex;
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), createPhotonMap, QtConcurrent::UnorderedReduce );
+		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
+		futureWatcher.setFuture( photonMap );
+
+		// Display the dialog and start the event loop.
+		dialog.exec();
+		futureWatcher.waitForFinished();
+
+
+		QDateTime time2 = QDateTime::currentDateTime();
+		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
+
 		m_tracedRays += m_raysPerIteration;
 		ShowRaysIn3DView();
+
 	}
 
 	QDateTime endTime = QDateTime::currentDateTime();
@@ -1117,7 +1183,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->irradiance();
+	double irradiance = sunShape->GetIrradiance();
 
 	if( !lightKit->getPart( "icon", false ) ) return;
 	TShape* raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
@@ -1549,22 +1615,6 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	}
 
 	SoSceneKit* scene = m_document->GetSceneKit();
-	/*TLightKit* lightKit = static_cast< TLightKit* > ( scene->getPart("lightList[0]", false ) );
-	if( !lightKit )
-	{
-		QMessageBox::information( this, "Tonatiuh Action",
-							  "Define a sun light before insert a tracker", 1);
-		return;
-	}
-
-	TSeparatorKit* parentNodeKit = dynamic_cast< TSeparatorKit* > ( parentNode );
-	SoTransform* parentTransform = static_cast< SoTransform* > ( parentNodeKit->getPart("transform", true ) );
-	if( parentTransform->rotation.isConnected() )
-	{
-		QMessageBox::information( this, "Tonatiuh Action",
-										  "Delete previous tracker before define a new one", 1);
-				return;
-	}*/
 
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
 	tracker->SetSceneKit( scene );
@@ -1805,7 +1855,7 @@ void MainWindow::selectionFinish( SoSelection* selection )
 
 void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex& /*previous*/ )
 {
-    InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
+	InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
     SoNode* selectedCoinNode = instanceSelected->GetNode();
 
  	if (! selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
@@ -2018,6 +2068,8 @@ bool MainWindow::StartOver( const QString& fileName )
 	}
 
 	m_commandStack->clear();
+	m_sceneModel->Clear();
+
 	SetEnabled_SunPositionCalculator( 0 );
 
 	QStatusBar* statusbar = new QStatusBar;
@@ -2027,7 +2079,6 @@ bool MainWindow::StartOver( const QString& fileName )
     {
     	m_document->New();
     	statusbar->showMessage( tr( "New file" ), 2000 );
-    	//statusBar()->showMessage( tr( "New file" ), 2000 );
     }
     else
     {
@@ -2036,8 +2087,7 @@ bool MainWindow::StartOver( const QString& fileName )
 			statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
 			return false;
 		}
-        //statusBar()->showMessage( tr( "File loaded" ), 2000 );
-    	statusbar->showMessage( tr( "File loaded" ), 2000 );
+       statusbar->showMessage( tr( "File loaded" ), 2000 );
     }
 
     SetCurrentFile( fileName );
@@ -2329,7 +2379,72 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode,
+/*void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,
+		                              QMap< InstanceNode*, QPair< BBox, Transform > >* sceneMap )*/
+void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
+{
+
+	if( !instanceNode ) return;
+	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
+	if( !coinNode ) return;
+
+	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		SoTransform* nodeTransform = static_cast< SoTransform* >(coinNode->getPart( "transform", true ) );
+		Transform objectToWorld = tgf::TransformFromSoTransform( nodeTransform );
+		Transform worldToObject = objectToWorld.GetInverse();
+
+		BBox nodeBB;
+		Transform nodeWTO(worldToObject * parentWTO );
+		instanceNode->SetIntersectionTransform( nodeWTO );
+
+		for( int index = 0; index < instanceNode->children.count() ; ++index )
+		{
+			InstanceNode* childInstance = instanceNode->children[index];
+			ComputeSceneTreeMap(childInstance, nodeWTO );
+
+			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
+		}
+
+		instanceNode->SetIntersectionBBox( nodeBB );
+
+	}
+	else
+	{
+		Transform shapeTransform = parentWTO;
+		Transform shapeToWorld = shapeTransform.GetInverse();
+		BBox shapeBB;
+
+		if(  instanceNode->children.count() > 0 )
+		{
+			InstanceNode* shapeInstance = 0;
+			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+				shapeInstance =  instanceNode->children[0];
+			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
+
+			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+			coinNode->getBoundingBox( bbAction );
+
+			SbBox3f box = bbAction->getXfBoundingBox().project();
+			delete bbAction;
+
+			SbVec3f pMin = box.getMin();
+			SbVec3f pMax = box.getMax();
+			shapeBB = shapeToWorld( BBox( Point3D( pMin[0],pMin[1],pMin[2]), Point3D( pMax[0],pMax[1],pMax[2]) ) );
+		}
+		instanceNode->SetIntersectionTransform( shapeTransform );
+
+		instanceNode->SetIntersectionBBox( shapeBB );
+	}
+
+}
+
+/**
+ * Compute a map with the InstanceNodes of sub-tree with top node \a instanceNode.
+ *
+ *The map stores for each InstanceNode its BBox and its transform in global coordinates.
+ **/
+/*void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode,
 		                              QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap )
 {
 
@@ -2404,7 +2519,7 @@ void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode,
 
 	}
 
-}
+}*/
 
 void MainWindow::StartManipulation( SoDragger* dragger )
 {

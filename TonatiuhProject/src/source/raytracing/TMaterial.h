@@ -54,7 +54,8 @@ public:
     static void initClass();
 
 	virtual QString getIcon() = 0;
-	virtual Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const = 0;
+	//virtual Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const = 0;
+	virtual bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const = 0;
 
 protected:
 	TMaterial();

@@ -49,6 +49,7 @@ class InstanceNode;
 class QDir;
 class QUndoStack;
 class QUndoView;
+class Photon;
 class RandomDeviate;
 class RandomDeviateFactory;
 class Ray;
@@ -233,7 +234,9 @@ private:
     void UpdateRecentFileActions();
     void WriteSettings();
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
-	void ComputeSceneTreeMap( InstanceNode* instanceNode, QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap );
+	//void ComputeSceneTreeMap( InstanceNode* instanceNode, QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap );
+	//void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO, QMap< InstanceNode*, QPair< BBox, Transform > >* sceneMap );
+    void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
 
     enum { m_maxRecentFiles = 7 };

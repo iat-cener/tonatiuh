@@ -39,8 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TDEFAULTSUNSHAPE_H_
 #define TDEFAULTSUNSHAPE_H_
 
-#include <Inventor/fields/SoSFDouble.h>
-
 #include "TSunShape.h"
 
 class TDefaultSunShape : public TSunShape
@@ -53,11 +51,8 @@ public:
 	SoNode* copy( SbBool copyConnections ) const;
 
     //Sunshape Interface
-    virtual void generateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
-	virtual double irradiance() const;
-
-	SoSFDouble m_irradiance;
-	SoSFDouble m_thetaMax;
+    void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
+	double GetIrradiance() const;
 
 protected:
 	 ~TDefaultSunShape();

@@ -1,5 +1,5 @@
 
-VERSION = 0.9.2
+VERSION = 1.0.0
 
 COINDIR = $$(TDE_ROOT)/local
 MARBLEDIR = $$(TDE_ROOT)/local
@@ -36,7 +36,10 @@ win32 {
 
 LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
 
+
 contains( CONFIG, plugin ){  
+	
+	INCLUDEPATH += $$(TONATIUH_ROOT)/plugin
 
 	CONFIG(debug, debug|release) {	
 		unix {

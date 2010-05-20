@@ -40,8 +40,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SUNSHAPEPILLBOX_H_
 
 #include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 #include "TSunShape.h"
+#include "trt.h"
 
 
 class SunshapePillbox : public TSunShape
@@ -54,14 +56,15 @@ public:
 	SoNode* copy( SbBool copyConnections ) const;
 
     //Sunshape Interface
-    virtual void generateRayDirection( Vector3D& direction, RandomDeviate& rand) const;
-	virtual double irradiance() const;
+    void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand) const;
+	double GetIrradiance() const;
 
-    SoSFDouble m_irradiance;
-	SoSFDouble m_thetaMax;
+	trt::TONATIUH_REAL irradiance;
+	trt::TONATIUH_REAL thetaMax;
 
 protected:
 	 ~SunshapePillbox();
 };
+
 #endif /*SUNSHAPEPILLBOX_H_*/
 

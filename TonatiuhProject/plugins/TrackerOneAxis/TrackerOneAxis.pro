@@ -9,6 +9,7 @@ INCLUDEPATH += 	. \
 
 # Input
 HEADERS = src/*.h \
+            $$(TONATIUH_ROOT)/source/raytracing/trt.h \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TTracker.h \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TTrackerFactory.h
 

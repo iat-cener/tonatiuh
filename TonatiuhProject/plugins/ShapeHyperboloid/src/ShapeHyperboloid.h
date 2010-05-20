@@ -40,10 +40,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef ShapeHyperboloid_H_
 #define ShapeHyperboloid_H_
 
+#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
+#include "trt.h"
 
 class Vector3D;
 
@@ -68,9 +70,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	SoSFFloat focusLegth;
-	SoSFFloat distanceTwoFocus;
-	SoSFFloat reflectorMaxDiameter;
+	trt::TONATIUH_REAL focusLegth;
+	trt::TONATIUH_REAL distanceTwoFocus;
+	trt::TONATIUH_REAL reflectorMaxDiameter;
 	SoSFEnum activeSide;
 
 

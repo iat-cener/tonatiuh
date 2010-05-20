@@ -155,13 +155,15 @@ QRegion GraphicView::visualRegionForSelection( const QItemSelection& /*selection
 void GraphicView::currentChanged( const QModelIndex & current, const QModelIndex& /*previous*/ )
 {
     m_sceneGraphRoot->deselectAll();
-    SoFullPath* path;
-    QVariant variant = current.data(Qt::UserRole);
-    if ( variant.canConvert<PathWrapper>() )
+
+	SoFullPath* path;
+	QVariant variant = current.data(Qt::UserRole);
+
+	if ( variant.canConvert<PathWrapper>() )
     {
     	path = static_cast< SoFullPath*>( variant.value< PathWrapper >().GetPath() );
-	    m_sceneGraphRoot->select( path );
-
+    	m_sceneGraphRoot->select( path );
     }
+
     m_sceneGraphRoot->touch();
 }

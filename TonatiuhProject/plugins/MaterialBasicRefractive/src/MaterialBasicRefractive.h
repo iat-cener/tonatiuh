@@ -40,13 +40,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define MaterialBasicRefractive_H_
 
 #include <Inventor/fields/SoSFDouble.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
+#include "trt.h"
 
 class SoSensor;
-
 
 class MaterialBasicRefractive : public TMaterial
 {
@@ -61,16 +62,17 @@ public:
 	static void initClass();
 
     QString getIcon();
-	Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
+	//Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
+    bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
 
-	SoSFDouble reflectivityFront;
-	SoSFDouble reflectivityBack;
-	SoSFDouble transmissivityFront;
-	SoSFDouble transmissivityBack;
-	SoSFDouble nFront;
-	SoSFDouble nBack;
-	SoSFDouble sigmaSlope;
-	//SoSFDouble m_sigmaSpecularity; ** yet to implemented
+	trt::TONATIUH_REAL reflectivityFront;
+	trt::TONATIUH_REAL reflectivityBack;
+	trt::TONATIUH_REAL transmissivityFront;
+	trt::TONATIUH_REAL transmissivityBack;
+	trt::TONATIUH_REAL nFront;
+	trt::TONATIUH_REAL nBack;
+	trt::TONATIUH_REAL sigmaSlope;
+	//trt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
 	SoSFEnum distribution;
 	SoMFColor m_ambientColor;
 	SoMFColor m_diffuseColor;

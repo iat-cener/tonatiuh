@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 #include <cmath>
-#include <iostream>
 
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -84,7 +83,7 @@ void trf::TraceRay( Ray& ray,
         {
                 intersectedSurface = 0;
                 isFront = 0;
-                reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface, &isFront );
+                //reflectedRay = instanceNode->Intersect( ray, rand, sceneMap, &intersectedSurface, &isFront );
 
                 if( reflectedRay )
                 {

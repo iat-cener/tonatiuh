@@ -41,7 +41,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/fields/SoSFDouble.h>
+
+#include "trt.h"
 
 class QString; 
 class SoSceneKit;
@@ -55,8 +56,8 @@ public:
 	virtual QString getIcon() = 0;
 		
 	void Disconnect();
-	void SetAzimuthAngle( SoSFDouble* azimuthField );
-	void SetZenithAngle( SoSFDouble* zenithField );
+	void SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField );
+	void SetZenithAngle( trt::TONATIUH_REAL* zenithField );
 	void SetSceneKit( SoSceneKit* scene );
 
 	SoEngineOutput  outputTranslation;
@@ -71,8 +72,8 @@ protected:
 	TTracker();
 	virtual ~TTracker(); 
 
-	SoSFDouble m_azimuth;
-	SoSFDouble m_zenith;
+	trt::TONATIUH_REAL m_azimuth;
+	trt::TONATIUH_REAL m_zenith;
 	SoSceneKit* m_scene;
 
 private:

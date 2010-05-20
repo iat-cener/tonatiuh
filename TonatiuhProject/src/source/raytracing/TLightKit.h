@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodekits/SoLightKit.h>
 
+#include "trt.h"
 #include "TShape.h"
 #include "TSunShape.h"
 
@@ -96,9 +97,9 @@ public:
     void ChangePosition( double newAzimuth, double newZenith, double newDistance );
     void GetPositionData( QDateTime* time, double* longitude, double* latitude );
 
-    SoSFDouble azimuth;
-    SoSFDouble zenith;
-    SoSFDouble distance;
+    trt::TONATIUH_REAL azimuth;
+    trt::TONATIUH_REAL zenith;
+    trt::TONATIUH_REAL distance;
 
 private:
     virtual ~TLightKit();

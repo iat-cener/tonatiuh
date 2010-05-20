@@ -39,8 +39,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef INSTANCENODE_H_
 #define INSTANCENODE_H_
 
-#include <QList>
+#include <QVector>
 #include <QPair>
+
+#include "BBox.h"
+#include "Transform.h"
 
 class BBox;
 class RandomDeviate;
@@ -71,17 +74,30 @@ public:
     QString GetNodeURL() const;
     void Print( int level ) const;
 
-    Ray* Intersect( const Ray& ray,
-    		        RandomDeviate& rand,
-    		        QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap,
-    		        InstanceNode** modelNode,
-    		        bool* isFront );
+    /*Ray* Intersect( const Ray& ray,
+        		        RandomDeviate& rand,
+						InstanceNode** modelNode,
+        		        bool* isFront );*/
+    bool Intersect( const Ray& ray,
+            		        RandomDeviate& rand,
+            		        double* tHit,
+    						InstanceNode** modelNode,
+            		        bool* isFront,
+            		        Ray* outRay);
 
-    QList< InstanceNode* > children;
+    BBox GetIntersectionBBox();
+    Transform SetIntersectionTransform();
+    void SetIntersectionBBox( BBox nodeBBox );
+    void SetIntersectionTransform( Transform nodeTransform );
+
+    QVector< InstanceNode* > children;
 
 private:
     SoNode* m_coinNode;
     InstanceNode* m_parent;
+    BBox m_bbox;
+    Transform m_transformWTO;
+    Transform m_transformOTW;
 };
 
 QDataStream & operator<< ( QDataStream & s, const InstanceNode& node );

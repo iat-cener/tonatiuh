@@ -45,7 +45,8 @@ SOURCES += source/application/*.cpp \
            source/auxiliary/*.cpp \
            source/geometry/*.cpp \
            source/gui/*.cpp \
-           source/raytracing/*.cpp 
+           source/raytracing/*.cpp  \
+           source/statistics/*.cpp 
 RESOURCES += tonatiuh.qrc
  
 
