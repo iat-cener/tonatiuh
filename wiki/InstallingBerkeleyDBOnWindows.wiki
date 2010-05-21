@@ -10,17 +10,17 @@ Oracle Berkeley DB is the industry-leading open source, embeddable database engi
 Download the latest stable version of the Berkeley DB from the [http://www.oracle.com/technology/software/products/berkeley-db/index.html link] to your home directory. Open a Msys shell and extract downloaded files typing:
 
 {{{
-tar -xzvf db-4.8.24.tar.gz
+tar -xzvf db-5.0.21.tar.gz
 }}}
 
 Change to the build directory with:
 {{{
-cd db-4.8.24/build_unix
+cd db-5.0.21/build_unix
 }}}
 
 To configure the Berkeley DB type the following command:
 {{{
-../dist/configure --enable-mingw --enable-cxx --prefix=/usr/local
+../dist/configure --disable-replication --enable-mingw --enable-cxx --prefix=/usr/local LDFLAGS="-Wl,--enable-runtime-pseudo-reloc-v2"
 }}}
 
 To build and install the library use the commands:
