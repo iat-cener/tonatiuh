@@ -149,10 +149,38 @@
     <property name="title">
      <string>&amp;Insert</string>
     </property>
+    <widget class="QMenu" name="menuShape">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Shape</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menuMaterial">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Material</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menuTracker">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Tracker</string>
+     </property>
+    </widget>
     <addaction name="actionNode"/>
     <addaction name="actionShapeKit"/>
-    <addaction name="actionUserComponent"/>
     <addaction name="separator"/>
+    <addaction name="menuShape"/>
+    <addaction name="menuMaterial"/>
+    <addaction name="menuTracker"/>
+    <addaction name="separator"/>
+    <addaction name="actionUserComponent"/>
    </widget>
    <widget class="QMenu" name="menuSun_Light">
     <property name="title">

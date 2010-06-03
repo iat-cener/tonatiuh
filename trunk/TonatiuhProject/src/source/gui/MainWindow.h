@@ -191,10 +191,10 @@ protected:
 private:
     void SetupActions();
     void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
-    QMenu* CreateMaterialsMenu( );
     QToolBar* CreateMaterialsTooBar( QMenu* pMaterialsMenu );
     void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
     void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
+    QToolBar* CreateTrackerTooBar( QMenu* pMaterialsMenu );
     void SetupMenus();
     void SetupDocument();
     void SetupModels();
