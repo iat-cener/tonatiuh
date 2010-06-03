@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define INSTANCENODE_H_
 
 #include <QVector>
-#include <QPair>
 
 #include "BBox.h"
 #include "Transform.h"
@@ -74,10 +73,6 @@ public:
     QString GetNodeURL() const;
     void Print( int level ) const;
 
-    /*Ray* Intersect( const Ray& ray,
-        		        RandomDeviate& rand,
-						InstanceNode** modelNode,
-        		        bool* isFront );*/
     bool Intersect( const Ray& ray,
             		        RandomDeviate& rand,
             		        double* tHit,

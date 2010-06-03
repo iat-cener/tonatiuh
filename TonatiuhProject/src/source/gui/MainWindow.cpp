@@ -583,9 +583,13 @@ void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory 
 	ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
     actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
     QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
-    if( !pMaterialsMenu )
-    {
-    	pMaterialsMenu = CreateMaterialsMenu();
+
+    if( !pMaterialsMenu ) return;
+	if( pMaterialsMenu->isEmpty() )
+	{
+       	//Enable material menu
+		pMaterialsMenu->setEnabled( true );
+
     	m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
     }
     pMaterialsMenu->addAction( actionInsertMaterial );
@@ -595,15 +599,6 @@ void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory 
     		 actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
 	connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ),
 			                 this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
-}
-
-QMenu* MainWindow::CreateMaterialsMenu( )
-{
-	QMenu* pMaterialsMenu = new QMenu( "Materials", menuInsert );
-	if ( !pMaterialsMenu ) tgf::SevereError( "MainWindow::CreateMaterialsMenu: NULL pMaterialsMenu" );
-	pMaterialsMenu->setObjectName( "menuMaterial" );
-	menuInsert->addMenu( pMaterialsMenu );
-	return pMaterialsMenu;
 }
 
 QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
@@ -624,12 +619,13 @@ void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
 {
     ActionInsertShape* actionInsertShape = new ActionInsertShape( pTShapeFactory->TShapeName(), this, pTShapeFactory );
     actionInsertShape->setIcon( pTShapeFactory->TShapeIcon() );
-    QMenu* menuShape = menuInsert->findChild< QMenu* >( "shapeMenu" );
-   	if( !menuShape )
+
+    QMenu* menuShape = menuInsert->findChild< QMenu* >( "menuShape" );
+    if( !menuShape ) return;
+   	if( menuShape->isEmpty() )
     {
-    	menuShape = new QMenu( "Shape", menuInsert );
-    	menuShape->setObjectName( "shapeMenu" );
-    	menuInsert->addMenu( menuShape );
+   	  	//Enable Shape menu
+   		menuShape->setEnabled( true );
 
     	//Create a new toolbar for trackers
     	m_shapeToolBar = new QToolBar( menuShape );
@@ -641,7 +637,7 @@ void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
 		}
 		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
     }
-	menuShape->addAction( actionInsertShape );
+   	menuShape->addAction( actionInsertShape );
 	m_shapeToolBar->addAction( actionInsertShape );
 	m_shapeToolBar->addSeparator();
     connect( actionInsertShape, SIGNAL( triggered() ), actionInsertShape, SLOT( OnActionInsertShapeTriggered() ) );
@@ -652,29 +648,33 @@ void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
 {
 	ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
     actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
-    QMenu* menuTracker = menuInsert->findChild< QMenu* >( "trackerMenu" );
-   	if( !menuTracker )
-    {
-    	menuTracker = new QMenu( "Tracker", menuInsert );
-    	menuTracker->setObjectName( "trackerMenu" );
-    	menuInsert->addMenu( menuTracker );
+    QMenu* pTrackerMenu = menuInsert->findChild< QMenu* >( "menuTracker" );
+
+    if( !pTrackerMenu ) return;
+	if( pTrackerMenu->isEmpty() )
+	{
+       	//Enable material menu
+		pTrackerMenu->setEnabled( true );
 
     	//Create a new toolbar for trackers
-    	m_trackersToolBar = new QToolBar( menuTracker );
-		if( m_trackersToolBar )
-		{
-			m_trackersToolBar->setObjectName( QString::fromUtf8("trackersToolBar" ) );
-			m_trackersToolBar->setOrientation( Qt::Horizontal );
-	    	addToolBar( m_trackersToolBar );
-		}
-		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
-
+    	m_trackersToolBar = CreateTrackerTooBar( pTrackerMenu );
     }
-	menuTracker->addAction( actionInsertTracker );
+	pTrackerMenu->addAction( actionInsertTracker );
 	m_trackersToolBar->addAction( actionInsertTracker );
 	m_trackersToolBar->addSeparator();
     connect( actionInsertTracker, SIGNAL( triggered() ), actionInsertTracker, SLOT( OnActionInsertTrackerTriggered() ) );
 	connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
+}
+
+
+QToolBar* MainWindow::CreateTrackerTooBar( QMenu* pTrackersMenu )
+{
+	QToolBar* pTrackersToolBar = new QToolBar( pTrackersMenu );
+	if (! pTrackersToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pTrackersToolBar" );
+	pTrackersToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
+	pTrackersToolBar->setOrientation( Qt::Horizontal );
+	addToolBar( pTrackersToolBar );
+	return pTrackersToolBar;
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -1085,7 +1085,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
 
 		QVector< double > raysPerThread;
-		const int maximumValueProgressScale = 25;
+		const int maximumValueProgressScale = 100;
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 			raysPerThread<< t1;
@@ -1528,7 +1528,7 @@ void MainWindow::on_actionAbout_triggered()
 	//QMessageBox::aboutQt( this );
 
 	QString aboutMessage("Tonatiuh\n"
-			"Version: 1.0.0\n"
+			"Version: 1.0.1\n"
 			"\nPlease see http://www.gnu.org/licenses/gpl.html for an overview of GPLv3 licensing.\n"
 			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
