@@ -6,14 +6,14 @@ http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
 = Details =
 
-To install de Coin3D library in your computer download the latest release of the installer file, _Coin-3.1.0.tar.gz_, from the [http://www.coin3d.org/ Coin3D] website by clicking [http://ftp.coin3d.org/coin/src/all/Coin-3.1.0.tar.gz here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
+To install de Coin3D library in your computer download the latest release of the installer file, _Coin-3.1.3.tar.gz_, from the [http://www.coin3d.org/ Coin3D] website by clicking [http://ftp.coin3d.org/coin/src/all/Coin-3.1.3.tar.gz here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
 
 Open a shell console, navigate to your download directory, and extract the content of the installer file by typing:
 {{{
-tar -zxvf Coin-3.1.0.tar.gz
+tar -zxvf Coin-3.1.3.tar.gz
 }}}
 
-This will create a directory called _Coin-3.1.0_ in your download directory. Using the shell, navigate to just created Coin3.1.0 directory.
+This will create a directory called _Coin-3.1.3_ in your download directory. Using the shell, navigate to just created Coin3.1.3 directory.
 
 Type the following command to build the release version of the Coin3D library:
 {{{
