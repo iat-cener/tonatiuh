@@ -31,7 +31,7 @@ SoQt configuration settings:
 
 Now, run 'make install' to build and install SoQt.
 }}} 
-Before start building !SoQt edit src/Inventor/Qt/!SoQtComponent.cpp file. Go to line 103 and replace 'unsigned long key' with '!SbDict::Key key'.
+
 Then, to install the !SoQt libraries type:
 {{{
 make
