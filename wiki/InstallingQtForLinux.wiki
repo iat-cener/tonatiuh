@@ -5,14 +5,14 @@
 Qt is cross-platform application framework for GUI development. 
 
 = Details =
-To install the Qt libraries library in your computer download the latest release of the installer file, _qt-x11-opensource-src-4.5.1.tar.gz_ , from the [http://www.qtsoftware.com/ Qt] website by clicking [http://www.qtsoftware.com/downloads/linux-x11-cpp here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
+To install the Qt libraries library in your computer download the latest release of the installer file, _qt-x11-opensource-src-4.6.3.tar.gz_ , from the [http://www.qtsoftware.com/ Qt] website by clicking [http://www.qtsoftware.com/downloads/linux-x11-cpp here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
 
 Open a shell console, navigate to the downloads directory and extract the donwloaded file by typing:
 {{{
-tar -xvzf qt-x11-opensource-src-4.5.2.tar.gz
+tar -xvzf qt-x11-opensource-src-4.6.3.tar.gz
 }}}
 
-This will create the new directory "qt-x11-opensource-src-4.5.2" under your downloads directory. Navigate within the command shell to the directory and type:
+This will create the new directory "qt-everywhere-opensource-src-4.6.3" under your downloads directory. Navigate within the command shell to the directory and type:
 {{{
 ./configure
 }}}
@@ -32,7 +32,7 @@ In some systems, to run "make install" you will need to start a super user sessi
 
 After the Qt libraries are installed, you must add the appropriate information to your $PATH. To do that, edit the .bashrc file with your favorite editor to include the following at the end of the file:
 {{{
-QTDIR=/usr/local/Trolltech/Qt-4.5.2
+QTDIR=/usr/local/Trolltech/Qt-4.6.3
 export QTDIR
 
 PATH=$QTDIR/bin:$PATH
