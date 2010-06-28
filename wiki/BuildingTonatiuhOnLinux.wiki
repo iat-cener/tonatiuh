@@ -19,15 +19,12 @@ First, build Tonatiuh.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/qmakeTargetMac.png]
  * Define the first Make Target as:
   ** Target Name: qmake
-  ** Make Target: src/Tonatiuh.pro
+  ** Make Target: TonatiuhProject.pro
   ** Build command: /usr/local/Trolltech/Qt-4.5.1/bin/qmake -spec macx_g++
  * Add new Make Target as:
   ** Target Name: all
   ** Make Target: all
   ** Build command: make
  * To generate Makefile run "qmake". When the qmake command finishes run "all".
-
-==Building Plugins==
-To building repository plugins follow the same steps used to build Toantiuh application,
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
