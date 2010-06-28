@@ -1,0 +1,31 @@
+#summary Building Tonatiuh and Tonatiuh plugins under Eclipse on Linux.
+
+= Building Tonatiuh =
+
+To start builing Tonatiuh under Eclipse, you need to download the source code from the repository. Follow the [Installing_Subversive  Subversive installation instruccions] to install SVN integration for Eclipse. Then, read Anonymous_Download to anonymous download of Tonatiuh code or read Upload_to_Repository to download code and upload changes.
+
+==Tonatiuh Application==
+First, build Tonatiuh. 
+ * In the Project Explorer tab, right click on the Tonatiuh project.
+ * Select properties.
+ * Expand C/C++ Build and select Environment properties.
+[http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/tonatiuhPropertiesMac.png]
+ * Add new variable: Name: TDE_ROOT, Value: /usr.
+ * On Settings select Mach-O Parser.
+ * Apply changes. Ok to finish with properties.
+ * On the Make Target tab, right click Tonatiuh and select Add Make Target.
+[http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/qmakeTargetMac.png]
+ * Define the first Make Target as:
+  ** Target Name: qmake
+  ** Make Target: src/Tonatiuh.pro
+  ** Build command: /usr/local/Trolltech/Qt-4.5.1/bin/qmake -spec macx_g++
+ * Add new Make Target as:
+  ** Target Name: all
+  ** Make Target: all
+  ** Build command: make
+ * To generate Makefile run "qmake". When the qmake command finishes run "all".
+
+==Building Plugins==
+To building repository plugins follow the same steps used to build Toantiuh application,
+
+[InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
