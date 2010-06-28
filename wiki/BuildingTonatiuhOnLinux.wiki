@@ -10,8 +10,10 @@ First, build Tonatiuh.
  * Select properties.
  * Expand C/C++ Build and select Environment properties.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/tonatiuhPropertiesMac.png]
- * Add new variable: Name: TDE_ROOT, Value: /usr.
- * On Settings select Mach-O Parser.
+ * Add new variables:
+  ** Name: TDE_ROOT, Value: /usr.
+  ** Name: TONATIUH_ROOT, Value: /home/username/workspace/TonatiuhProject
+ * On Settings select GNU Elf Parser.
  * Apply changes. Ok to finish with properties.
  * On the Make Target tab, right click Tonatiuh and select Add Make Target.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/qmakeTargetMac.png]
