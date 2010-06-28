@@ -12,14 +12,14 @@ First, build Tonatiuh.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/tonatiuhPropertiesMac.png]
  * Add new variables:
   ** Name: TDE_ROOT, Value: /usr.
-  ** Name: TONATIUH_ROOT, Value: /home/username/workspace/TonatiuhProject
+  ** Name: TONATIUH_ROOT, Value: /home/username/workspace/!TonatiuhProject
  * On Settings select GNU Elf Parser.
  * Apply changes. Ok to finish with properties.
  * On the Make Target tab, right click Tonatiuh and select Add Make Target.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/qmakeTargetMac.png]
  * Define the first Make Target as:
   ** Target Name: qmake
-  ** Make Target: TonatiuhProject.pro
+  ** Make Target: !TonatiuhProject.pro
   ** Build command: /usr/local/Trolltech/Qt-4.5.1/bin/qmake -spec macx_g++
  * Add new Make Target as:
   ** Target Name: all
