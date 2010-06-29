@@ -70,6 +70,7 @@ public:
 	trt::TONATIUH_REAL m_sigmaSlope;
 	//trt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
 	SoSFEnum m_distribution;
+
 	SoMFColor  m_ambientColor;
 	SoMFColor  m_diffuseColor;
 	SoMFColor  m_specularColor;

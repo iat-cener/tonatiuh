@@ -68,17 +68,18 @@ MaterialBasicRefractive::MaterialBasicRefractive()
 	SO_NODE_ADD_FIELD( nBack, (0.0) );
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
 	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
+
+	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
+  	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
+  	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
+	SO_NODE_ADD_FIELD( distribution, (PILLBOX) );
+
 	SO_NODE_ADD_FIELD( m_ambientColor, (0.2, 0.2, 0.2) );
 	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8, 0.8, 0.8) );
 	SO_NODE_ADD_FIELD( m_specularColor, (0.0, 0.0, 0.0) );
 	SO_NODE_ADD_FIELD( m_emissiveColor, (0.0, 0.0, 0.0) );
 	SO_NODE_ADD_FIELD( m_shininess, (0.2) );
 	SO_NODE_ADD_FIELD( m_transparency, (0.0) );
-
-	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
-  	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
-  	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
-	SO_NODE_ADD_FIELD( distribution, (PILLBOX) );
 
 	SoFieldSensor* reflectivityFrontSensor = new SoFieldSensor( updateReflectivityFront, this );
 	reflectivityFrontSensor->attach( &reflectivityFront );
