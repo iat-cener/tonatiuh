@@ -6,34 +6,21 @@ Simage is a multiplatform library capable of loading, manipulating and saving im
 
 = Details =
 
-Download the latest realese of simage, currently [http://www.coin3d.org/lib/simage/releases/1.6.1 simage-1.6.1], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+Download the latest realese of simage, currently [http://www.coin3d.org/lib/simage/releases/1.7.0 simage-1.7.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
-tar -xvf simage-1.6.1.tar.gz
+tar -xvf simage-1.7.0.tar.gz
 }}}
 
-This will create a directory called _simage-1.6.1_ in your user directory. Using the shell navigate to just created simage-1.6.1 directory. Create release libraries by typing:
+This will create a directory called _simage-1.7.0_ in your user directory. Using the shell navigate to just created simage-1.7.0 directory. Create release libraries by typing:
 {{{
-./configure --enable-debug=no --with-qt=/usr/local/Trolltech/Qt-4.5.1
+./configure --enable-debug=no --with-qt=/usr/local/Trolltech/Qt-4.5.2
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
 {{{
 make 
-make install
-}}}
-
-Now, before start creating debug library clean all. Type:
-{{{
-make clean
-}}}
-
-And then generate library:
-{{{
-./configure --enable-debug --enable-symbols --with-suffix=_debug --enable-qt-debug --with-qt=/usr/local/Trolltech/Qt-4.5.1
-
-make
 make install
 }}}
 
