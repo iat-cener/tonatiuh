@@ -22,7 +22,7 @@ HEADERS = src/*.h \
            	$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \  			
            	$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h \
-            $$(TONATIUH_ROOT)/source/raytracing/trt.h \
+            $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.h \ 
            	$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.h
 
