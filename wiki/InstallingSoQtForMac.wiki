@@ -17,7 +17,7 @@ Open a shell console and navigate to desktop and extract the archive by typing:
 tar -xvf SoQt-1.5.0.tar.gz
 }}}
 
-This will create a directory called _!SoQt-1.4.1_ in your user directory. Using the shell navigate to just created !SoQt-1.4.1 directory. First create release libraries by typing:
+This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the shell navigate to just created !SoQt-1.5.0 directory. First create release libraries by typing:
 {{{
 CPPFLAGS="-I/usr/local/Trolltech/Qt-4.5.2/include/Qt -I/usr/local/Trolltech/Qt-4.5.2/include/QtGui/ 
 -I/usr/local/Trolltech/Qt-4.5.2/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.5.2/include/QtCore/" 
@@ -28,23 +28,6 @@ CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.5.
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
 {{{
 make 
-make install
-}}}
-
-Now, before start creating debug library clean all. Type:
-{{{
-make clean
-}}}
-
-And then generate debug library:
-{{{
-CPPFLAGS="-I/usr/local/Trolltech/Qt-4.5.2/include/Qt -I/usr/local/Trolltech/Qt-4.5.2/include/QtGui/ 
--I/usr/local/Trolltech/Qt-4.5.2/include/Qt3Support/ -I/usr/local/Trolltech/Qt-4.5.2/include/QtCore/" 
-CONFIG_QTLIBS="-lQt3Support -lQtGui -lQtCore" QTDIR=/usr/local/Trolltech/qt-4.5.2 ./configure 
---enable-qt-debug --enable-symbols --with-suffix=_debug --with-qt=/usr/local/Trolltech/Qt-4.5.2
---with-coin=/usr/local --without-framework
-
-make
 make install
 }}}
 
