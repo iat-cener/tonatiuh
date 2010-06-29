@@ -146,7 +146,10 @@ bool ShapeFlatDisk::IntersectP( const Ray& objectRay ) const
 
 Point3D ShapeFlatDisk::Sample( double u, double v ) const
 {
-	return GetPoint3D( u, v );
+	double x = sqrt( u ) * cos( tgc::TwoPi * v ) * radius.getValue();
+	double z = sqrt( u ) * sin( tgc::TwoPi * v ) * radius.getValue();
+	return Point3D( x, 0.0, z );
+	//return GetPoint3D( u, v );
 }
 
 Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
