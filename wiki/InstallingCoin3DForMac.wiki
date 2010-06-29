@@ -6,14 +6,14 @@ Coin 3D is a high-level 3D graphics toolkit for developing cross-platform real-t
 
 = Details =
 
-Download the latest realese of Coin3D, currently [http://www.coin3d.org/lib/coin/releases/3.1.0 Coin3D-3.1.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
+Download the latest realese of Coin3D, currently [http://www.coin3d.org/lib/coin/releases/3.1.3 Coin3D-3.1.3], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the desktop. 
 
 Open a shell console and navigate to desktop and extract the archive by typing:
 {{{
-tar xvf Coin-3.1.0.tar
+tar xvf Coin-3.1.3.tar
 }}}
 
-This will create a directory called _Coin-3.1.0_ in your user directory. Using the shell navigate to just created directory. First create release libraries by typing:
+This will create a directory called _Coin-3.1.3_ in your user directory. Using the shell navigate to just created directory. First create release libraries by typing:
 {{{
 ./configure --enable-debug=no --without-framework
 }}}
@@ -21,18 +21,6 @@ This will create a directory called _Coin-3.1.0_ in your user directory. Using t
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
 {{{
 make 
-make install
-}}}
-
-Now, before start creating debug library clean all. Type:
-{{{
-make clean
-}}}
-
-And then generate library:
-{{{
-./configure --enable-qt-debug --with-suffix=_debug --without-framework
-make
 make install
 }}}
 
