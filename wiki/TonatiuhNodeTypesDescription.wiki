@@ -7,6 +7,8 @@ A scene consists of one or more nodes hierarchically oredered.  To create scenes
 
 = Type of Nodes =
 
+A node is each of the elements of the scene containing the data and methods to define the geometries, properties, ... of the scene.
+
 == TSeparatorKit node ==
 
 == TShapeKit node ==
