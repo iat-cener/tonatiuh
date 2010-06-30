@@ -1,4 +1,4 @@
-#Tonatiuh Binaries Installation guide
+#summary Tonatiuh Binaries Installation guide
 
 =Tonatiuh Installation=
 This guide provides instructions for install Tonatiuh binaries
