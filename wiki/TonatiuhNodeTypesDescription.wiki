@@ -10,7 +10,7 @@ A scene consists of one or more nodes hierarchically oredered.  To create scenes
 A node is each of the elements of the scene containing the data and methods to define the geometries, properties, ... of the scene.
 
 == TSeparatorKit node ==
-Is a node that groups other nodes of the scene. This type of node can group nodes of the same type or TShapeKit node types. 
+Is a node that groups other nodes of the scene. This type of node can group nodes of the same type or TShapeKit type nodes. 
 
 The user can define the following paramenters to this group node:
 
