@@ -1,0 +1,20 @@
+#summary One-sentence summary of this page.
+
+=Tonatiuh Scene=
+
+A scene consists of one or more nodes hierarchically oredered.  To create scenes, the nodes are added as children of grouping nodes.
+
+
+= Type of Nodes =
+
+== TSeparatorKit node ==
+
+== TShapeKit node ==
+
+== Shape node ==
+
+== Material node ==
+
+== Tracker node ==
+
+[UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
