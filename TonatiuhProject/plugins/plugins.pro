@@ -14,6 +14,7 @@ SUBDIRS =  MaterialBasicRefractive \
 			ShapeParabolicRectangle \
 			ShapeSphere \
 			ShapeSphericalPolygon \
+            ShapeSphericalRectangle \
 			ShapeTroughParabola \
 			SunshapePillbox \
 			TrackerHeliostat \
