@@ -7,16 +7,16 @@ Qt is cross-platform application framework for GUI development.
 
 = Details =
 
-To install the Qt libraries in your computer download the source files from the Trolltech website at http://get.qt.nokia.com/qt/source/qt-mac-opensource-src-4.5.2.tar.gz .
+To install the Qt libraries in your computer download the source files from the Trolltech website at http://get.qt.nokia.com/qt/source/qt-mac-opensource-src-4.6.2.tar.gz .
 
 Once the download ha finished, open a shell and go to download directory and extract files:
 {{{
-tar -xvf qt-mac-opensource-src-4.5.2.tar
+tar -xvf qt-mac-opensource-src-4.6.2.tar
 }}}
 
-After extraction, a new directory, qt-mac-opensource-src-4.5.2, will be created. Go to the directory and type: 
+After extraction, a new directory, qt-mac-opensource-src-4.6.2, will be created. Go to the directory and type: 
 {{{
-./configure -opensource -debug-and-release -no-framework 
+./configure -opensource -debug-and-release -universal -no-framework 
 }}}
 You will be asked to accept the license agreement. Accept it typing yes. 
 
@@ -34,9 +34,9 @@ $ vi ~/.profile
 
 Type "e" to be able to write in the file. We should add the following text: 
 {{{
-PATH=/usr/local/Trolltech/Qt-4.5.2/bin:$PATH 
+PATH=/usr/local/Trolltech/Qt-4.6.2/bin:$PATH 
 export PATH 
-QTDIR=/usr/local/Trolltech/Qt-4.5.2 
+QTDIR=/usr/local/Trolltech/Qt-4.6.2 
 export QTDIR 
 }}}
 
