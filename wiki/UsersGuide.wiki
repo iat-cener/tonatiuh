@@ -21,7 +21,7 @@ The installations is guided by an installation wizard.
 
 === Linux===
 To distribute Tonatiuh binaries for Linux, a tar.gz compressed file has been used.
-Decompress file into intallation path. Now, you can run Tonatiuh by double-click into Tonatiuh.sh file.
+Decompress file into installation path. Now, you can run Tonatiuh by double-click into Tonatiuh.sh file.
 
 === Mac X OS ===
 
