@@ -3,6 +3,11 @@
 
 = User's Guide =
 
+This guide provide instructions for getting started with Tonatiuh.
+
+ * [TonatiuhBinariesInstallation Installation]
+ * [TonatiuhNodeTypesDescription Type of Nodes]
+
 This guide provides instructions for install Tonatiuh binaries
 
 
