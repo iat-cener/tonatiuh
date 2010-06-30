@@ -50,13 +50,15 @@
 <a href="class_instance_node-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_instance_node.html">InstanceNode</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35">GetParent</a> () const </td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_node.html#201dbc32e4bde1f36a053b00ca33a6c1">AddChild</a> (<a class="el" href="class_instance_node.html">InstanceNode</a> *child)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_node.html#307c27c42cfda3954609b058e3863725">InsertChild</a> (int row, <a class="el" href="class_instance_node.html">InstanceNode</a> *instanceChild)</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_instance_node.html">InstanceNode</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35">GetParent</a> () const </td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QString&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_node.html#64677cb50f6b3311c1a59f5cc100439e">GetNodeURL</a> () const </td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_node.html#9eb297d1aece061eff00ff013019051c">Intersect</a> (const Ray &amp;ray, <a class="el" href="class_random_deviate.html">RandomDeviate</a> &amp;rand, double *tHit, <a class="el" href="class_instance_node.html">InstanceNode</a> **modelNode, bool *isFront, Ray *outRay)</td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -111,7 +113,7 @@ Returns node URL.
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -150,10 +152,65 @@ Returns parent instance.
 Inserts the <em>instanceChild</em> node as child number <em>row</em>. 
 </div>
 </div><p>
+<a class="anchor" name="9eb297d1aece061eff00ff013019051c"></a><!-- doxytag: member="InstanceNode::Intersect" ref="9eb297d1aece061eff00ff013019051c" args="(const Ray &amp;ray, RandomDeviate &amp;rand, double *tHit, InstanceNode **modelNode, bool *isFront, Ray *outRay)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool InstanceNode::Intersect           </td>
+          <td>(</td>
+          <td class="paramtype">const Ray &amp;&nbsp;</td>
+          <td class="paramname"> <em>ray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_random_deviate.html">RandomDeviate</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>rand</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&nbsp;</td>
+          <td class="paramname"> <em>tHit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_instance_node.html">InstanceNode</a> **&nbsp;</td>
+          <td class="paramname"> <em>modelNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool *&nbsp;</td>
+          <td class="paramname"> <em>isFront</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Ray *&nbsp;</td>
+          <td class="paramname"> <em>outRay</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+Check if the ray intersects with the BoundingBox 
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_instance_node_8h-source.html">InstanceNode.h</a><li>InstanceNode.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:46 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

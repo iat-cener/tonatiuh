@@ -85,41 +85,48 @@
 <a name="l00045"></a>00045 <span class="preprocessor">#include &lt;QString&gt;</span>
 <a name="l00046"></a>00046 <span class="preprocessor">#include &lt;QVector&gt;</span>
 <a name="l00047"></a>00047 
-<a name="l00048"></a>00048 <span class="keyword">class </span>TPhotonMapFactory;
+<a name="l00048"></a>00048 <span class="keyword">class </span><a class="code" href="class_random_deviate_factory.html" title="RandomDeviateFactory is the interface for random generators plugins.">RandomDeviateFactory</a>;
+<a name="l00049"></a>00049 <span class="keyword">class </span>TPhotonMapFactory;
 <a name="l00050"></a>00050 
-<a name="l00055"></a><a class="code" href="class_ray_trace_dialog.html">00055</a> <span class="keyword">class </span><a class="code" href="class_ray_trace_dialog.html" title="RayTraceDialog class is the dialog to set ray trace options.">RayTraceDialog</a>: <span class="keyword">public</span> QDialog, <span class="keyword">private</span> Ui::<a class="code" href="class_ray_trace_dialog.html" title="RayTraceDialog class is the dialog to set ray trace options.">RayTraceDialog</a>
-<a name="l00056"></a>00056 {
-<a name="l00057"></a>00057     Q_OBJECT
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="keyword">public</span>:
-<a name="l00061"></a>00061         <a class="code" href="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13">RayTraceDialog</a>( QWidget * parent = 0, Qt::WindowFlags f = 0 );
-<a name="l00062"></a>00062         <a class="code" href="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13">RayTraceDialog</a>( <span class="keywordtype">int</span> numRays, <span class="keywordtype">double</span> fraction, <span class="keywordtype">bool</span> drawPhotons, QVector&lt; TPhotonMapFactory* &gt; photonMapFactoryList, <span class="keywordtype">int</span> selectedPhotonMapFactory = 0, <span class="keywordtype">bool</span> increasePhotonMap = <span class="keyword">false</span>, QWidget * parent = 0, Qt::WindowFlags f = 0 );
-<a name="l00063"></a>00063     <a class="code" href="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae">~RayTraceDialog</a>();
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065     <span class="keywordtype">int</span> <a class="code" href="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54">GetNumRays</a>() <span class="keyword">const</span>;
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067     <span class="keywordtype">double</span> <a class="code" href="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371">GetRaysFactionToDraw</a>() <span class="keyword">const</span>;
-<a name="l00068"></a>00068     <span class="keywordtype">bool</span> <a class="code" href="class_ray_trace_dialog.html#9595789ae3f3397b0ff4431c9009f4f6">DrawPhotons</a>() <span class="keyword">const</span>;
+<a name="l00052"></a>00052 
+<a name="l00057"></a><a class="code" href="class_ray_trace_dialog.html">00057</a> <span class="keyword">class </span><a class="code" href="class_ray_trace_dialog.html" title="RayTraceDialog class is the dialog to set ray trace options.">RayTraceDialog</a>: <span class="keyword">public</span> QDialog, <span class="keyword">private</span> Ui::<a class="code" href="class_ray_trace_dialog.html" title="RayTraceDialog class is the dialog to set ray trace options.">RayTraceDialog</a>
+<a name="l00058"></a>00058 {
+<a name="l00059"></a>00059     Q_OBJECT
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062 <span class="keyword">public</span>:
+<a name="l00063"></a>00063         <a class="code" href="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13">RayTraceDialog</a>( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+<a name="l00064"></a>00064         <a class="code" href="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13">RayTraceDialog</a>( <span class="keywordtype">int</span> numRays, QVector&lt; RandomDeviateFactory* &gt; randomFactoryList,
+<a name="l00065"></a>00065                                 <span class="keywordtype">double</span> fraction, <span class="keywordtype">bool</span> drawPhotons, QVector&lt; TPhotonMapFactory* &gt; photonMapFactoryList,
+<a name="l00066"></a>00066                                 <span class="keywordtype">int</span> selectedRandomFactory = 0, <span class="keywordtype">int</span> selectedPhotonMapFactory = 0, <span class="keywordtype">bool</span> increasePhotonMap = <span class="keyword">false</span>,
+<a name="l00067"></a>00067                                 QWidget * parent = 0, Qt::WindowFlags f = 0 );
+<a name="l00068"></a>00068     <a class="code" href="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae">~RayTraceDialog</a>();
 <a name="l00069"></a>00069 
-<a name="l00070"></a>00070     <span class="keywordtype">int</span> <a class="code" href="class_ray_trace_dialog.html#2a4c513eead5e8a494f506d31b32163a">GetPhotonMapFactoryIndex</a>() <span class="keyword">const</span>;
-<a name="l00071"></a>00071     <span class="keywordtype">bool</span> <a class="code" href="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1">IncreasePhotonMap</a>() <span class="keyword">const</span>;;
+<a name="l00070"></a>00070     <span class="keywordtype">int</span> <a class="code" href="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54">GetNumRays</a>() <span class="keyword">const</span>;
+<a name="l00071"></a>00071     <span class="keywordtype">int</span> <a class="code" href="class_ray_trace_dialog.html#387761f435375e3f0e8ba96a5d5526f2">GetRandomDeviateFactoryIndex</a>() <span class="keyword">const</span>;
 <a name="l00072"></a>00072 
-<a name="l00073"></a>00073 <span class="keyword">public</span> slots:
-<a name="l00074"></a>00074         <span class="keywordtype">void</span> <a class="code" href="class_ray_trace_dialog.html#32832a17b2dbe45c4e32d8b3466078e3">applyChanges</a>( QAbstractButton* button );
-<a name="l00075"></a>00075         <span class="keywordtype">void</span> <a class="code" href="class_ray_trace_dialog.html#ef25abfd82e88f1e04b2830915a1763b">saveChanges</a>();
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077 <span class="keyword">private</span>:
-<a name="l00078"></a>00078         <span class="keywordtype">int</span> m_numRays; 
-<a name="l00080"></a>00080         <span class="keywordtype">double</span> m_fraction; 
-<a name="l00081"></a>00081         <span class="keywordtype">bool</span> m_drawPhotons;  
-<a name="l00083"></a>00083         <span class="keywordtype">int</span> m_selectedPhotonMapFactory; 
-<a name="l00084"></a>00084         <span class="keywordtype">bool</span> m_increasePhotonMap; 
-<a name="l00086"></a>00086 };
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088 <span class="preprocessor">#endif </span><span class="comment">/*RAYTRACEDIALOG_H_*/</span>
+<a name="l00073"></a>00073     <span class="keywordtype">double</span> <a class="code" href="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371">GetRaysFactionToDraw</a>() <span class="keyword">const</span>;
+<a name="l00074"></a>00074     <span class="keywordtype">bool</span> <a class="code" href="class_ray_trace_dialog.html#9595789ae3f3397b0ff4431c9009f4f6">DrawPhotons</a>() <span class="keyword">const</span>;
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076     <span class="keywordtype">int</span> <a class="code" href="class_ray_trace_dialog.html#2a4c513eead5e8a494f506d31b32163a">GetPhotonMapFactoryIndex</a>() <span class="keyword">const</span>;
+<a name="l00077"></a>00077     <span class="keywordtype">bool</span> <a class="code" href="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1">IncreasePhotonMap</a>() <span class="keyword">const</span>;;
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 <span class="keyword">public</span> slots:
+<a name="l00080"></a>00080         <span class="keywordtype">void</span> <a class="code" href="class_ray_trace_dialog.html#32832a17b2dbe45c4e32d8b3466078e3">applyChanges</a>( QAbstractButton* button );
+<a name="l00081"></a>00081         <span class="keywordtype">void</span> <a class="code" href="class_ray_trace_dialog.html#ef25abfd82e88f1e04b2830915a1763b">saveChanges</a>();
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083 <span class="keyword">private</span>:
+<a name="l00084"></a>00084         <span class="keywordtype">int</span> m_numRays; 
+<a name="l00085"></a>00085         <span class="keywordtype">int</span> m_selectedRandomFactory; 
+<a name="l00087"></a>00087         <span class="keywordtype">double</span> m_fraction; 
+<a name="l00088"></a>00088         <span class="keywordtype">bool</span> m_drawPhotons;  
+<a name="l00090"></a>00090         <span class="keywordtype">int</span> m_selectedPhotonMapFactory; 
+<a name="l00091"></a>00091         <span class="keywordtype">bool</span> m_increasePhotonMap; 
+<a name="l00093"></a>00093 };
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 <span class="preprocessor">#endif </span><span class="comment">/*RAYTRACEDIALOG_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:45 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

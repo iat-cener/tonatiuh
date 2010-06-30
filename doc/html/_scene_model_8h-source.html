@@ -72,7 +72,7 @@
 <a name="l00032"></a>00032 <span class="comment"></span>
 <a name="l00033"></a>00033 <span class="comment">Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.</span>
 <a name="l00034"></a>00034 <span class="comment"></span>
-<a name="l00035"></a>00035 <span class="comment">Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,</span>
+<a name="l00035"></a>00035 <span class="comment">Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,</span>
 <a name="l00036"></a>00036 <span class="comment">Juana Amieva, Azael Mancillas, Cesar Cantu.</span>
 <a name="l00037"></a>00037 <span class="comment">***************************************************************************/</span>
 <a name="l00038"></a>00038 
@@ -91,59 +91,68 @@
 <a name="l00051"></a>00051 <span class="keyword">class </span>SoSceneKit;
 <a name="l00052"></a>00052 <span class="keyword">class </span>SoSelection;
 <a name="l00053"></a>00053 <span class="keyword">class </span><a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>;
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 <span class="keyword">class </span>SceneModel : <span class="keyword">public</span> QAbstractItemModel
-<a name="l00056"></a>00056 {
-<a name="l00057"></a>00057         Q_OBJECT
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="keyword">public</span>:
-<a name="l00060"></a>00060         SceneModel( QObject* parent = 0);
-<a name="l00061"></a>00061         ~SceneModel();
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063         <span class="keywordtype">void</span> SetCoinRoot( SoSelection&amp; coinRoot );
-<a name="l00064"></a>00064         <span class="keywordtype">void</span> SetCoinScene( SoSceneKit&amp; coinScene );
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066         QModelIndex index( <span class="keywordtype">int</span> row, <span class="keywordtype">int</span> column, <span class="keyword">const</span> QModelIndex&amp; parentModelIndex = QModelIndex()) <span class="keyword">const</span>;
-<a name="l00067"></a>00067         <span class="keywordtype">int</span> rowCount( <span class="keyword">const</span> QModelIndex&amp; parentModelIndex ) <span class="keyword">const</span>;
-<a name="l00068"></a>00068         <span class="keywordtype">int</span> columnCount ( <span class="keyword">const</span> QModelIndex&amp; ) <span class="keyword">const</span>;
-<a name="l00069"></a>00069         QModelIndex parent ( <span class="keyword">const</span> QModelIndex&amp; childModelIndex ) <span class="keyword">const</span>;
-<a name="l00070"></a>00070         QVariant headerData ( <span class="keywordtype">int</span> section, Qt::Orientation orientation, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
-<a name="l00071"></a>00071         QVariant data ( <span class="keyword">const</span> QModelIndex&amp; modelIndex, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
-<a name="l00072"></a>00072         Qt::ItemFlags flags(<span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const</span>;
-<a name="l00073"></a>00073     Qt::DropActions supportedDropActions() <span class="keyword">const</span>;
-<a name="l00074"></a>00074         Qt::DropActions supportedDragActions() <span class="keyword">const</span>;
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076     <span class="keywordtype">int</span> InsertCoinNode( SoNode&amp; coinChild, SoBaseKit&amp; coinParent );
-<a name="l00077"></a>00077         <span class="keywordtype">void</span> InsertLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
-<a name="l00078"></a>00078         <span class="keywordtype">void</span> RemoveCoinNode( <span class="keywordtype">int</span> row, SoBaseKit&amp; coinParent );
-<a name="l00079"></a>00079         <span class="keywordtype">void</span> RemoveLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081     <span class="keywordtype">bool</span> Cut( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
-<a name="l00082"></a>00082         <span class="keywordtype">bool</span> Paste( tgc::PasteType type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
+<a name="l00054"></a>00054 <span class="keyword">class </span><a class="code" href="class_t_separator_kit.html" title="The TSeparatorKit class provides a set of others TSeparatorKit and TShapeKit nodes...">TSeparatorKit</a>;
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056 <span class="keyword">class </span>SceneModel : <span class="keyword">public</span> QAbstractItemModel
+<a name="l00057"></a>00057 {
+<a name="l00058"></a>00058         Q_OBJECT
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="keyword">public</span>:
+<a name="l00061"></a>00061         SceneModel( QObject* parent = 0);
+<a name="l00062"></a>00062         ~SceneModel();
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064         <span class="keywordtype">void</span> SetCoinRoot( SoSelection&amp; coinRoot );
+<a name="l00065"></a>00065         <span class="keywordtype">void</span> SetCoinScene( SoSceneKit&amp; coinScene );
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067         <span class="keywordtype">void</span> Clear();
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069         QModelIndex index( <span class="keywordtype">int</span> row, <span class="keywordtype">int</span> column, <span class="keyword">const</span> QModelIndex&amp; parentModelIndex = QModelIndex()) <span class="keyword">const</span>;
+<a name="l00070"></a>00070         <span class="keywordtype">int</span> rowCount( <span class="keyword">const</span> QModelIndex&amp; parentModelIndex ) <span class="keyword">const</span>;
+<a name="l00071"></a>00071         <span class="keywordtype">int</span> columnCount ( <span class="keyword">const</span> QModelIndex&amp; ) <span class="keyword">const</span>;
+<a name="l00072"></a>00072         QModelIndex parent ( <span class="keyword">const</span> QModelIndex&amp; childModelIndex ) <span class="keyword">const</span>;
+<a name="l00073"></a>00073         QVariant headerData ( <span class="keywordtype">int</span> section, Qt::Orientation orientation, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
+<a name="l00074"></a>00074         QVariant data ( <span class="keyword">const</span> QModelIndex&amp; modelIndex, <span class="keywordtype">int</span> role = Qt::DisplayRole ) <span class="keyword">const</span>;
+<a name="l00075"></a>00075         Qt::ItemFlags flags(<span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const</span>;
+<a name="l00076"></a>00076     Qt::DropActions supportedDropActions() <span class="keyword">const</span>;
+<a name="l00077"></a>00077         Qt::DropActions supportedDragActions() <span class="keyword">const</span>;
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079     <span class="keywordtype">int</span> InsertCoinNode( SoNode&amp; coinChild, SoBaseKit&amp; coinParent );
+<a name="l00080"></a>00080         <span class="keywordtype">void</span> InsertLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
+<a name="l00081"></a>00081         <span class="keywordtype">void</span> RemoveCoinNode( <span class="keywordtype">int</span> row, SoBaseKit&amp; coinParent );
+<a name="l00082"></a>00082         <span class="keywordtype">void</span> RemoveLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084         <span class="keywordtype">bool</span> SetNodeName( SoNode* coinChild, QString newName );
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* NodeFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00087"></a>00087         QModelIndex IndexFromPath( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
-<a name="l00088"></a>00088         SoNodeKitPath* PathFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090 signals:
-<a name="l00091"></a>00091         <span class="keywordtype">void</span> LightNodeStateChanged( <span class="keywordtype">int</span> newState );
+<a name="l00084"></a>00084     <span class="keywordtype">bool</span> Cut( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
+<a name="l00085"></a>00085         <span class="keywordtype">bool</span> Paste( tgc::PasteType type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087         <span class="keywordtype">bool</span> SetNodeName( SoNode* coinChild, QString newName );
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* NodeFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
+<a name="l00090"></a>00090         QModelIndex IndexFromPath( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
+<a name="l00091"></a>00091         SoNodeKitPath* PathFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
 <a name="l00092"></a>00092 
-<a name="l00093"></a>00093 <span class="keyword">private</span>:
-<a name="l00094"></a>00094         <span class="keywordtype">void</span> GenerateInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceParent );
-<a name="l00095"></a>00095         <span class="keywordtype">void</span> DeleteInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNode );
-<a name="l00096"></a>00096 
-<a name="l00097"></a>00097 <span class="keyword">private</span>:
-<a name="l00098"></a>00098         SoSelection* m_coinRoot;
-<a name="l00099"></a>00099     SoSceneKit* m_coinScene;
-<a name="l00100"></a>00100         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_instanceRoot;
-<a name="l00101"></a>00101         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; m_mapCoinQt;
-<a name="l00102"></a>00102 };
-<a name="l00103"></a>00103 
-<a name="l00104"></a>00104 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
+<a name="l00093"></a>00093 signals:
+<a name="l00094"></a>00094         <span class="keywordtype">void</span> LightNodeStateChanged( <span class="keywordtype">int</span> newState );
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096 <span class="keyword">private</span>:
+<a name="l00097"></a>00097         <span class="keywordtype">void</span> DeleteInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNode );
+<a name="l00098"></a>00098         <span class="keywordtype">void</span> SetRoot();
+<a name="l00099"></a>00099         <span class="keywordtype">void</span> SetLight();
+<a name="l00100"></a>00100         <span class="keywordtype">void</span> SetConcentrator();
+<a name="l00101"></a>00101         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* AddInstanceNode( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* separatorKit );
+<a name="l00102"></a>00102         <span class="keywordtype">void</span> GenerateInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceParent );
+<a name="l00103"></a>00103         <span class="keywordtype">void</span> GenerateTShapeKitSubTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* parentNode );
+<a name="l00104"></a>00104         <span class="keywordtype">void</span> GenerateTSeparatorKitSubTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* parentNode );
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="keyword">private</span>:
+<a name="l00107"></a>00107         SoSelection* m_coinRoot;
+<a name="l00108"></a>00108     SoSceneKit* m_coinScene;
+<a name="l00109"></a>00109         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_instanceRoot;
+<a name="l00110"></a>00110         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; m_mapCoinQt;
+<a name="l00111"></a>00111 };
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:45 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

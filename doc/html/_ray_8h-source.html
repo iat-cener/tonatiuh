@@ -91,18 +91,19 @@
 <a name="l00051"></a>00051     Ray( <span class="keyword">const</span> Point3D&amp; orig, <span class="keyword">const</span> Vector3D&amp; direc, <span class="keywordtype">double</span> start = tgc::Epsilon, <span class="keywordtype">double</span> end = tgc::Infinity );
 <a name="l00052"></a>00052     ~Ray( );
 <a name="l00053"></a>00053     Point3D operator()( <span class="keywordtype">double</span> t ) <span class="keyword">const</span>;
-<a name="l00054"></a>00054         
-<a name="l00055"></a>00055     Point3D origin;
-<a name="l00056"></a>00056     Vector3D direction;
-<a name="l00057"></a>00057     <span class="keyword">mutable</span> <span class="keywordtype">double</span> mint;
-<a name="l00058"></a>00058     <span class="keyword">mutable</span> <span class="keywordtype">double</span> maxt;
-<a name="l00059"></a>00059 };
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 std::ostream&amp; operator&lt;&lt;( std::ostream&amp; os, <span class="keyword">const</span> Ray&amp; ray );
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063 <span class="preprocessor">#endif</span>
+<a name="l00054"></a>00054     <span class="keywordtype">bool</span> operator==( <span class="keyword">const</span> Ray&amp; ray ) <span class="keyword">const</span>;
+<a name="l00055"></a>00055         
+<a name="l00056"></a>00056     Point3D origin;
+<a name="l00057"></a>00057     Vector3D direction;
+<a name="l00058"></a>00058     <span class="keyword">mutable</span> <span class="keywordtype">double</span> mint;
+<a name="l00059"></a>00059     <span class="keyword">mutable</span> <span class="keywordtype">double</span> maxt;
+<a name="l00060"></a>00060 };
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062 std::ostream&amp; operator&lt;&lt;( std::ostream&amp; os, <span class="keyword">const</span> Ray&amp; ray );
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:45 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

@@ -72,7 +72,7 @@
 <a name="l00032"></a>00032 <span class="comment"></span>
 <a name="l00033"></a>00033 <span class="comment">Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.</span>
 <a name="l00034"></a>00034 <span class="comment"></span>
-<a name="l00035"></a>00035 <span class="comment">Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,</span>
+<a name="l00035"></a>00035 <span class="comment">Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,</span>
 <a name="l00036"></a>00036 <span class="comment">Juana Amieva, Azael Mancillas, Cesar Cantu.</span>
 <a name="l00037"></a>00037 <span class="comment">***************************************************************************/</span>
 <a name="l00038"></a>00038 
@@ -83,43 +83,45 @@
 <a name="l00043"></a>00043 
 <a name="l00044"></a>00044 <span class="preprocessor">#include &lt;Inventor/nodekits/SoLightKit.h&gt;</span>
 <a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="preprocessor">#include "TShape.h"</span>
-<a name="l00047"></a>00047 <span class="preprocessor">#include "TSunShape.h"</span>
-<a name="l00048"></a>00048 
+<a name="l00046"></a>00046 <span class="preprocessor">#include "trt.h"</span>
+<a name="l00047"></a>00047 <span class="preprocessor">#include "TShape.h"</span>
+<a name="l00048"></a>00048 <span class="preprocessor">#include "TSunShape.h"</span>
 <a name="l00049"></a>00049 
-<a name="l00083"></a><a class="code" href="class_t_light_kit.html">00083</a> <span class="keyword">class </span><a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a> : <span class="keyword">public</span> SoLightKit
-<a name="l00084"></a>00084 {
-<a name="l00085"></a>00085     SO_KIT_HEADER(<a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>);
-<a name="l00086"></a>00086         <span class="comment">//SO_KIT_CATALOG_ENTRY_HEADER(sunshapelabel);</span>
-<a name="l00087"></a>00087         SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
-<a name="l00088"></a>00088 
+<a name="l00050"></a>00050 
+<a name="l00084"></a><a class="code" href="class_t_light_kit.html">00084</a> <span class="keyword">class </span><a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a> : <span class="keyword">public</span> SoLightKit
+<a name="l00085"></a>00085 {
+<a name="l00086"></a>00086     SO_KIT_HEADER(<a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>);
+<a name="l00087"></a>00087         SO_KIT_CATALOG_ENTRY_HEADER(iconMaterial);
+<a name="l00088"></a>00088         SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
 <a name="l00089"></a>00089 
-<a name="l00090"></a>00090 <span class="keyword">public</span>:
-<a name="l00091"></a>00091     <a class="code" href="class_t_light_kit.html#37e21153bc35291a8f8a711fbda8cad4">TLightKit</a>();
-<a name="l00092"></a>00092     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e">initClass</a>();
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555">ChangePosition</a>( QDateTime newTime, <span class="keywordtype">double</span> longitude, <span class="keywordtype">double</span> latitude );
-<a name="l00095"></a>00095     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555">ChangePosition</a>( <span class="keywordtype">double</span> newAzimuth, <span class="keywordtype">double</span> newZenith, <span class="keywordtype">double</span> newDistance );
-<a name="l00096"></a>00096     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#fc04a1db903b7f6885355daab7995a14">GetPositionData</a>( QDateTime* time, <span class="keywordtype">double</span>* longitude, <span class="keywordtype">double</span>* latitude );
-<a name="l00097"></a>00097 
-<a name="l00098"></a>00098     SoSFDouble azimuth;
-<a name="l00099"></a>00099     SoSFDouble zenith;
-<a name="l00100"></a>00100     SoSFDouble distance;
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 <span class="keyword">private</span>:
-<a name="l00103"></a>00103     <span class="keyword">virtual</span> ~<a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>();
-<a name="l00104"></a>00104     <span class="keywordtype">void</span> UpdateSunPosition();
-<a name="l00105"></a>00105 
-<a name="l00106"></a>00106     QDateTime m_time;
-<a name="l00107"></a>00107     SoSFDouble m_longitude;
-<a name="l00108"></a>00108     SoSFDouble m_latitude;
-<a name="l00109"></a>00109 
-<a name="l00110"></a>00110 
-<a name="l00111"></a>00111 };
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092 <span class="keyword">public</span>:
+<a name="l00093"></a>00093     <a class="code" href="class_t_light_kit.html#37e21153bc35291a8f8a711fbda8cad4">TLightKit</a>();
+<a name="l00094"></a>00094     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e">initClass</a>();
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555">ChangePosition</a>( QDateTime newTime, <span class="keywordtype">double</span> longitude, <span class="keywordtype">double</span> latitude );
+<a name="l00097"></a>00097     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555">ChangePosition</a>( <span class="keywordtype">double</span> newAzimuth, <span class="keywordtype">double</span> newZenith, <span class="keywordtype">double</span> newDistance );
+<a name="l00098"></a>00098     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#fc04a1db903b7f6885355daab7995a14">GetPositionData</a>( QDateTime* time, <span class="keywordtype">double</span>* longitude, <span class="keywordtype">double</span>* latitude );
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100     trt::TONATIUH_REAL azimuth;
+<a name="l00101"></a>00101     trt::TONATIUH_REAL zenith;
+<a name="l00102"></a>00102     trt::TONATIUH_REAL distance;
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104 <span class="keyword">private</span>:
+<a name="l00105"></a>00105     <span class="keyword">virtual</span> ~<a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>();
+<a name="l00106"></a>00106     <span class="keywordtype">void</span> UpdateSunPosition();
+<a name="l00107"></a>00107 
+<a name="l00108"></a>00108     QDateTime m_time;
+<a name="l00109"></a>00109     SoSFDouble m_longitude;
+<a name="l00110"></a>00110     SoSFDouble m_latitude;
+<a name="l00111"></a>00111 
 <a name="l00112"></a>00112 
-<a name="l00113"></a>00113 <span class="preprocessor">#endif </span><span class="comment">/*TLIGHTKIT_H_*/</span>
+<a name="l00113"></a>00113 };
+<a name="l00114"></a>00114 
+<a name="l00115"></a>00115 <span class="preprocessor">#endif </span><span class="comment">/*TLIGHTKIT_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:45 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

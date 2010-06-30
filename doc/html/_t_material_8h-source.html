@@ -94,16 +94,17 @@
 <a name="l00054"></a>00054     <span class="keyword">static</span> <span class="keywordtype">void</span> initClass();
 <a name="l00055"></a>00055 
 <a name="l00056"></a>00056         <span class="keyword">virtual</span> QString getIcon() = 0;
-<a name="l00057"></a>00057         <span class="keyword">virtual</span> Ray* OutputRay( <span class="keyword">const</span> Ray&amp; incident, DifferentialGeometry* dg, <a class="code" href="class_random_deviate.html" title="RandomDeviate is the base class for random generators.">RandomDeviate</a>&amp; rand  ) <span class="keyword">const</span> = 0;
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="keyword">protected</span>:
-<a name="l00060"></a>00060         TMaterial();
-<a name="l00061"></a>00061     <span class="keyword">virtual</span> ~TMaterial();
-<a name="l00062"></a>00062 };
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064 <span class="preprocessor">#endif </span><span class="comment">/*TMATERIAL_H_*/</span>
+<a name="l00057"></a>00057         <span class="comment">//virtual Ray* OutputRay( const Ray&amp; incident, DifferentialGeometry* dg, RandomDeviate&amp; rand  ) const = 0;</span>
+<a name="l00058"></a>00058         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OutputRay( <span class="keyword">const</span> Ray&amp; incident, DifferentialGeometry* dg, <a class="code" href="class_random_deviate.html" title="RandomDeviate is the base class for random generators.">RandomDeviate</a>&amp; rand, Ray* outputRay  ) <span class="keyword">const</span> = 0;
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="keyword">protected</span>:
+<a name="l00061"></a>00061         TMaterial();
+<a name="l00062"></a>00062     <span class="keyword">virtual</span> ~TMaterial();
+<a name="l00063"></a>00063 };
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065 <span class="preprocessor">#endif </span><span class="comment">/*TMATERIAL_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:45 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

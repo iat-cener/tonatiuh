@@ -59,11 +59,13 @@ Inherits Ui::RayTraceDialog.
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13">RayTraceDialog</a> (QWidget *parent=0, Qt::WindowFlags f=0)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#2d2489572b326ad1de59634790e82a87">RayTraceDialog</a> (int numRays, double fraction, bool drawPhotons, QVector&lt; TPhotonMapFactory * &gt; photonMapFactoryList, int selectedPhotonMapFactory=0, bool increasePhotonMap=false, QWidget *parent=0, Qt::WindowFlags f=0)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#1674bd064149956736ed8ce7d5e70d11">RayTraceDialog</a> (int numRays, QVector&lt; <a class="el" href="class_random_deviate_factory.html">RandomDeviateFactory</a> * &gt; randomFactoryList, double fraction, bool drawPhotons, QVector&lt; TPhotonMapFactory * &gt; photonMapFactoryList, int selectedRandomFactory=0, int selectedPhotonMapFactory=0, bool increasePhotonMap=false, QWidget *parent=0, Qt::WindowFlags f=0)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae">~RayTraceDialog</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54">GetNumRays</a> () const </td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#387761f435375e3f0e8ba96a5d5526f2">GetRandomDeviateFactoryIndex</a> () const </td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371">GetRaysFactionToDraw</a> () const </td></tr>
 
@@ -108,7 +110,7 @@ Creates a dialog to ray tracer options with the given <em>parent</em> and <em>f<
 The variables take the default values. 
 </div>
 </div><p>
-<a class="anchor" name="2d2489572b326ad1de59634790e82a87"></a><!-- doxytag: member="RayTraceDialog::RayTraceDialog" ref="2d2489572b326ad1de59634790e82a87" args="(int numRays, double fraction, bool drawPhotons, QVector&lt; TPhotonMapFactory * &gt; photonMapFactoryList, int selectedPhotonMapFactory=0, bool increasePhotonMap=false, QWidget *parent=0, Qt::WindowFlags f=0)" -->
+<a class="anchor" name="1674bd064149956736ed8ce7d5e70d11"></a><!-- doxytag: member="RayTraceDialog::RayTraceDialog" ref="1674bd064149956736ed8ce7d5e70d11" args="(int numRays, QVector&lt; RandomDeviateFactory * &gt; randomFactoryList, double fraction, bool drawPhotons, QVector&lt; TPhotonMapFactory * &gt; photonMapFactoryList, int selectedRandomFactory=0, int selectedPhotonMapFactory=0, bool increasePhotonMap=false, QWidget *parent=0, Qt::WindowFlags f=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -117,6 +119,12 @@ The variables take the default values.
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>numRays</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; <a class="el" href="class_random_deviate_factory.html">RandomDeviateFactory</a> * &gt;&nbsp;</td>
+          <td class="paramname"> <em>randomFactoryList</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -135,6 +143,12 @@ The variables take the default values.
           <td></td>
           <td class="paramtype">QVector&lt; TPhotonMapFactory * &gt;&nbsp;</td>
           <td class="paramname"> <em>photonMapFactoryList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>selectedRandomFactory</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -271,6 +285,25 @@ Returns the number of rays to trace.
 Returns the factory to create a new photon map. 
 </div>
 </div><p>
+<a class="anchor" name="387761f435375e3f0e8ba96a5d5526f2"></a><!-- doxytag: member="RayTraceDialog::GetRandomDeviateFactoryIndex" ref="387761f435375e3f0e8ba96a5d5526f2" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RayTraceDialog::GetRandomDeviateFactoryIndex           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns the factory to create a new random generator. 
+</div>
+</div><p>
 <a class="anchor" name="45231f660f995dc7d6a9e0ff2c522371"></a><!-- doxytag: member="RayTraceDialog::GetRaysFactionToDraw" ref="45231f660f995dc7d6a9e0ff2c522371" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -331,7 +364,7 @@ Saves the values of the dialog.
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_ray_trace_dialog_8h-source.html">RayTraceDialog.h</a><li>RayTraceDialog.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:46 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

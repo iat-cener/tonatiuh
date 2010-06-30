@@ -60,9 +60,16 @@ Inherits Ui::MainWindow.
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768">on_actionRayTraceOptions_triggered</a> ()</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#5103ef907a6072410493a53242787dc6">on_actionGrid_toggled</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#8f3934a874d6b1ffeea08f9e191f8c1e">on_actionGridSettings_triggered</a> ()</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#008c49cc8b137a002a34ad008f121ed6">parameterModified</a> (const QStringList &amp;oldValueList, SoBaseKit *coinNode, QString coinPart)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#273eaf8e1fd63c33a11ab7e5b41f1ac0">SetEnabled_SunPositionCalculator</a> (int enabled)</td></tr>
+
+<tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#56bd608397f177cc024da9c644388771">StartManipulation</a> (SoDragger *dragger)</td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -86,6 +93,44 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 
 <p>
 Writes the photons stored at the photon map at user defined file. 
+</div>
+</div><p>
+<a class="anchor" name="5103ef907a6072410493a53242787dc6"></a><!-- doxytag: member="MainWindow::on_actionGrid_toggled" ref="5103ef907a6072410493a53242787dc6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::on_actionGrid_toggled           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Action slot to show/hide a grid with the scene dimensions. 
+</div>
+</div><p>
+<a class="anchor" name="8f3934a874d6b1ffeea08f9e191f8c1e"></a><!-- doxytag: member="MainWindow::on_actionGridSettings_triggered" ref="8f3934a874d6b1ffeea08f9e191f8c1e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::on_actionGridSettings_triggered           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Action slot to open grid settings dialog. 
 </div>
 </div><p>
 <a class="anchor" name="f4a7915e6b3cd765d0a5071c8abca768"></a><!-- doxytag: member="MainWindow::on_actionRayTraceOptions_triggered" ref="f4a7915e6b3cd765d0a5071c8abca768" args="()" -->
@@ -187,7 +232,7 @@ The command is stored at the stack.
 <div class="memdoc">
 
 <p>
-Checks wheter a ray tracing can be started with the current light and model. 
+Checks whether a ray tracing can be started with the current light and model. 
 </div>
 </div><p>
 <a class="anchor" name="273eaf8e1fd63c33a11ab7e5b41f1ac0"></a><!-- doxytag: member="MainWindow::SetEnabled_SunPositionCalculator" ref="273eaf8e1fd63c33a11ab7e5b41f1ac0" args="(int enabled)" -->
@@ -229,10 +274,31 @@ This property holds whether the SunPositionCalculator action is enabled. If the 
 Shows the rays and photons stored at the photon map in the 3D view. 
 </div>
 </div><p>
+<a class="anchor" name="56bd608397f177cc024da9c644388771"></a><!-- doxytag: member="MainWindow::StartManipulation" ref="56bd608397f177cc024da9c644388771" args="(SoDragger *dragger)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::StartManipulation           </td>
+          <td>(</td>
+          <td class="paramtype">SoDragger *&nbsp;</td>
+          <td class="paramname"> <em>dragger</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Compute a map with the InstanceNodes of sub-tree with top node <em>instanceNode</em>.<p>
+The map stores for each <a class="el" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a> its BBox and its transform in global coordinates. 
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_main_window_8h-source.html">MainWindow.h</a><li>MainWindow.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:46 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

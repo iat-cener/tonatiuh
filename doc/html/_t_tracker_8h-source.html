@@ -81,48 +81,49 @@
 <a name="l00041"></a>00041 <span class="preprocessor"></span>
 <a name="l00042"></a>00042 <span class="preprocessor">#include &lt;Inventor/engines/SoNodeEngine.h&gt;</span>
 <a name="l00043"></a>00043 <span class="preprocessor">#include &lt;Inventor/engines/SoSubNodeEngine.h&gt;</span>
-<a name="l00044"></a>00044 <span class="preprocessor">#include &lt;Inventor/fields/SoSFDouble.h&gt;</span>
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="keyword">class </span>QString; 
-<a name="l00047"></a>00047 <span class="keyword">class </span>SoSceneKit;
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049 <span class="keyword">class </span>TTracker : <span class="keyword">public</span> SoNodeEngine
-<a name="l00050"></a>00050 {
-<a name="l00051"></a>00051         SO_NODEENGINE_ABSTRACT_HEADER( TTracker );
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="keyword">public</span>:
-<a name="l00054"></a>00054     <span class="keyword">static</span> <span class="keywordtype">void</span> initClass();
-<a name="l00055"></a>00055         <span class="keyword">virtual</span> QString getIcon() = 0;
-<a name="l00056"></a>00056                 
-<a name="l00057"></a>00057         <span class="keywordtype">void</span> Disconnect();
-<a name="l00058"></a>00058         <span class="keywordtype">void</span> SetAzimuthAngle( SoSFDouble* azimuthField );
-<a name="l00059"></a>00059         <span class="keywordtype">void</span> SetZenithAngle( SoSFDouble* zenithField );
-<a name="l00060"></a>00060         <span class="keywordtype">void</span> SetSceneKit( SoSceneKit* scene );
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062         SoEngineOutput  outputTranslation;
-<a name="l00063"></a>00063         SoEngineOutput  outputRotation;
-<a name="l00064"></a>00064         SoEngineOutput  outputScaleFactor;
-<a name="l00065"></a>00065         SoEngineOutput  outputScaleOrientation ;
-<a name="l00066"></a>00066         SoEngineOutput  outputCenter;
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068          
-<a name="l00069"></a>00069 <span class="keyword">protected</span>:
-<a name="l00070"></a>00070         <span class="comment">//Constructor</span>
-<a name="l00071"></a>00071         TTracker();
-<a name="l00072"></a>00072         <span class="keyword">virtual</span> ~TTracker(); 
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074         SoSFDouble m_azimuth;
-<a name="l00075"></a>00075         SoSFDouble m_zenith;
-<a name="l00076"></a>00076         SoSceneKit* m_scene;
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078 <span class="keyword">private</span>:
-<a name="l00079"></a>00079         <span class="keyword">virtual</span> <span class="keywordtype">void</span> evaluate() = 0;
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081 };
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 <span class="preprocessor">#endif </span><span class="comment">/*TTRACKER_H_*/</span>
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045 <span class="preprocessor">#include "trt.h"</span>
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047 <span class="keyword">class </span>QString; 
+<a name="l00048"></a>00048 <span class="keyword">class </span>SoSceneKit;
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="keyword">class </span>TTracker : <span class="keyword">public</span> SoNodeEngine
+<a name="l00051"></a>00051 {
+<a name="l00052"></a>00052         SO_NODEENGINE_ABSTRACT_HEADER( TTracker );
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054 <span class="keyword">public</span>:
+<a name="l00055"></a>00055     <span class="keyword">static</span> <span class="keywordtype">void</span> initClass();
+<a name="l00056"></a>00056         <span class="keyword">virtual</span> QString getIcon() = 0;
+<a name="l00057"></a>00057                 
+<a name="l00058"></a>00058         <span class="keywordtype">void</span> Disconnect();
+<a name="l00059"></a>00059         <span class="keywordtype">void</span> SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField );
+<a name="l00060"></a>00060         <span class="keywordtype">void</span> SetZenithAngle( trt::TONATIUH_REAL* zenithField );
+<a name="l00061"></a>00061         <span class="keywordtype">void</span> SetSceneKit( SoSceneKit* scene );
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063         SoEngineOutput  outputTranslation;
+<a name="l00064"></a>00064         SoEngineOutput  outputRotation;
+<a name="l00065"></a>00065         SoEngineOutput  outputScaleFactor;
+<a name="l00066"></a>00066         SoEngineOutput  outputScaleOrientation ;
+<a name="l00067"></a>00067         SoEngineOutput  outputCenter;
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069          
+<a name="l00070"></a>00070 <span class="keyword">protected</span>:
+<a name="l00071"></a>00071         <span class="comment">//Constructor</span>
+<a name="l00072"></a>00072         TTracker();
+<a name="l00073"></a>00073         <span class="keyword">virtual</span> ~TTracker(); 
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075         trt::TONATIUH_REAL m_azimuth;
+<a name="l00076"></a>00076         trt::TONATIUH_REAL m_zenith;
+<a name="l00077"></a>00077         SoSceneKit* m_scene;
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 <span class="keyword">private</span>:
+<a name="l00080"></a>00080         <span class="keyword">virtual</span> <span class="keywordtype">void</span> evaluate() = 0;
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 };
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084 <span class="preprocessor">#endif </span><span class="comment">/*TTRACKER_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Jan 22 10:24:45 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
