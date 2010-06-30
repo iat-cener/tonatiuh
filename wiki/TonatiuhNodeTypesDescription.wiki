@@ -10,6 +10,17 @@ A scene consists of one or more nodes hierarchically oredered.  To create scenes
 A node is each of the elements of the scene containing the data and methods to define the geometries, properties, ... of the scene.
 
 == TSeparatorKit node ==
+Is a node that groups other nodes of the scene. This type of node can group nodes of the same type or TShapeKit node types. 
+
+The user can define the following paramenters to this group node:
+
+ * translation: the translation in x, y, and z. The default value is [0.0 0.0 0.0].
+ * rotation: the rotation in terms of an axis and an angle. The default value is [0.0 0.0 1.0], 0.0.
+ * scaleFactor: the scaling factor in x, y, and z. The default value is [1.0 1.0 1.0].
+ * scaleOrientation: the rotation to apply before the scale is applied. The default value is [0.0 0.0 1.0], 0.0.
+ * center: the center point for rotation and scaling. The default value is [0.0 0.0 0.0].
+ 
+The parameters are applied so that the the center parameter affects first,followed by the scale orientation, the scaling factor, the rotation, and the translation.
 
 == TShapeKit node ==
 
