@@ -42,8 +42,8 @@ Material nodes always are leaf nodes in the scene.
 == Tracker node ==
 Tracker nodes are TSeparatorKit nodes children. In a TSeparatorKit node only can be one tracker node child.
 
-These nodes change the parent node parameters automatically when a scene light position changes. 
+These nodes change the parent node parameters automatically when a scene light position changes. If you define a TSeparatorKit node parameter value manually and this node has a tracker child, when the light position changes this value will be removed.
 
-== Light ==
+== Light [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/lightKit.png]==
 
 [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
