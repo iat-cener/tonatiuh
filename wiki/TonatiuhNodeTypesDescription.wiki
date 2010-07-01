@@ -25,8 +25,13 @@ The user can define the following paramenters to this group node:
 The parameters are applied so that the the center parameter affects first,followed by the scale orientation, the scaling factor, the rotation, and the translation.
 
 == TShapeKit node [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/shapeKit.png]==
+Is also a group node. It croups the nodes that define a surface properties. TShapeKit can contain a shape node and a material node.
+
 
 == Shape node ==
+Is a property node that defines a surface geometry. Node parameters depend on the selected shape node type.
+
+
 
 == Material node ==
 
