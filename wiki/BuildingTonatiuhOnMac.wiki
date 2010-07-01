@@ -10,7 +10,9 @@ First, build Tonatiuh.
  * Select properties.
  * Expand C/C++ Build and select Environment properties.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/tonatiuhPropertiesMac.png]
- * Add new variable: Name: TDE_ROOT, Value: /usr.
+ * Add new variable: 
+   ** Name: TDE_ROOT, Value: /usr.
+   ** Name: TONATIUH_ROOT, Value: /Applications/eclipse/workspace/TonatiuhProject.
  * On Settings select Mach-O Parser.
  * Apply changes. Ok to finish with properties.
  * On the Make Target tab, right click Tonatiuh and select Add Make Target.
@@ -18,7 +20,7 @@ First, build Tonatiuh.
  * Define the first Make Target as:
   ** Target Name: qmake
   ** Make Target: src/Tonatiuh.pro
-  ** Build command: /usr/local/Trolltech/Qt-4.5.1/bin/qmake -spec macx_g++
+  ** Build command: /usr/local/Trolltech/Qt-4.6.2/bin/qmake -spec macx_g++
  * Add new Make Target as:
   ** Target Name: all
   ** Make Target: all
