@@ -1,13 +1,6 @@
 #summary A guide to install and configurate development environment on Mac.
 #labels Phase-Implementation
 
-
-
-
-
-Developer's Guide | Wiki Home 
-
-
 = Mac Configuration =
 
 Configuration of the standard Tonatiuh development environment in a Mac workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
