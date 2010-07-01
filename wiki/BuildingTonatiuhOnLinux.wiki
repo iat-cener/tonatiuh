@@ -20,7 +20,7 @@ First, build Tonatiuh.
  * Define the first Make Target as:
   ** Target Name: qmake
   ** Make Target: !TonatiuhProject.pro
-  ** Build command: /usr/local/Trolltech/Qt-4.5.1/bin/qmake -spec macx_g++
+  ** Build command: /usr/local/Trolltech/Qt-4.6.2/bin/qmake
  * Add new Make Target as:
   ** Target Name: all
   ** Make Target: all
