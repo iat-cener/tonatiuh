@@ -27,13 +27,6 @@ make
 make install
 }}}
 
-To install marble in debug mode type:
-{{{
-cmake -G"Unix Makefiles" -Wno-dev -DCMAKE_BUILD_TYPE:String=debug -DCMAKE_DEBUG_POSTFIX=_debug -DQTONLY=ON ../marble
-make
-make install
-}}}
-
 
 Copy marble include files to the folder "/local/include/marble".
 {{{
