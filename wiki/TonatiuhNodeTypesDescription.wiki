@@ -46,4 +46,11 @@ These nodes change the parent node parameters automatically when a scene light p
 
 == Light [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/lightKit.png]==
 
+Light node groups the information about the sun light. Light is defined as:
+ * Sunshape
+ * Shape
+ * Position
+
+This information will be the ray tracer input.
+
 [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
