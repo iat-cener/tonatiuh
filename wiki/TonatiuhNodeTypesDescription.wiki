@@ -29,12 +29,21 @@ Is also a group node. It croups the nodes that define a surface properties. TSha
 
 
 == Shape node ==
-Is a property node that defines a surface geometry. Node parameters depend on the selected shape node type.
+Is a node that defines a surface geometry. Node parameters depend on the selected shape node type. 
 
-
+Shape nodes always are leaf nodes in the scene.
 
 == Material node ==
 
+Material nodes defines surfaces propersties and appearance characteristics as ambient color, diffuse color, specular color, emissive color, shininess, and transparency.
+
+Material nodes always are leaf nodes in the scene.
+
 == Tracker node ==
+Tracker nodes are TSeparatorKit nodes children. In a TSeparatorKit node only can be one tracker node child.
+
+These nodes change the parent node parameters automatically when a scene light position changes. 
+
+== Light ==
 
 [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
