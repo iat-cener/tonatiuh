@@ -4,12 +4,14 @@
 
 A scene consists of one or more nodes hierarchically oredered.  To create scenes, the nodes are added as children of grouping nodes.
 
+[http://tonatiuh.googlecode.com/svn/wiki/images/userguide/TonatiuhScene.png]
+
 
 = Type of Nodes =
 
 A node is each of the elements of the scene containing the data and methods to define the geometries, properties, ... of the scene.
 
-== TSeparatorKit node ==
+== TSeparatorKit node [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/separatorKit.png]==
 Is a node that groups other nodes of the scene. This type of node can group nodes of the same type or TShapeKit type nodes. 
 
 The user can define the following paramenters to this group node:
@@ -22,7 +24,7 @@ The user can define the following paramenters to this group node:
  
 The parameters are applied so that the the center parameter affects first,followed by the scale orientation, the scaling factor, the rotation, and the translation.
 
-== TShapeKit node ==
+== TShapeKit node [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/shapeKit.png]==
 
 == Shape node ==
 
