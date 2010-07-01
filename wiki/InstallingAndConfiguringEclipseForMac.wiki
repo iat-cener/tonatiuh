@@ -13,8 +13,8 @@
 
 == Configuring Eclipse for Tonatiuh ==
  * You can edit the general project options in Eclipse by navigating Window->Preferences->General->Editors. Under File Associations add the new types:
-  # .ui  /usr/local/Trolltech/Qt-4.5.1/bin/designer
-  # .ts  /usr/local/Trolltech/Qt-4.5.1/bin/linguist 
+  # .ui  /usr/local/Trolltech/Qt-4.6.2/bin/designer
+  # .ts  /usr/local/Trolltech/Qt-4.6.2/bin/linguist 
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
 
 To install svn to download and update Tonatiuh follow the corresponding installation procedures [Installing_Subversive].
