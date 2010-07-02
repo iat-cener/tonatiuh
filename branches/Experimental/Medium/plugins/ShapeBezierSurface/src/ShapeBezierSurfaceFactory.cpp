@@ -118,7 +118,7 @@ bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, QVector< Po
 
 	QTextStream in( &inputfile);
 
-	int uCurves = 0;
+	int vCurves = 0;
 	while( !in.atEnd() )
 	{
 		QString dataLine = in.readLine();
@@ -126,8 +126,8 @@ bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, QVector< Po
 		if( curveData.size() % 3 != 0 )	 return false;
 		int nPoints = curveData.size() / 3;
 
-		if( uCurves > 0 && uCurves != nPoints ) return false;
-		else if( uCurves == 0 )	uCurves = nPoints;
+		if( vCurves > 0 && vCurves != nPoints ) return false;
+		else if( vCurves == 0 )	vCurves = nPoints;
 
 		for( int j = 0; j < nPoints; j++)
 			surfaceData<<Point3D( curveData[ 3 * j].toDouble(),curveData[ 3* j +1  ].toDouble(),curveData[ 3* j + 2 ].toDouble() );
@@ -135,8 +135,8 @@ bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, QVector< Po
 
 	 inputfile.close();
 
-	 *nUCurves = uCurves;
-	 *nVCurves = surfaceData.size() / *nUCurves;
+	 *nVCurves = vCurves;
+	 *nUCurves = surfaceData.size() / *nVCurves;
 
 	 *inputData = surfaceData;
 	 return true;
