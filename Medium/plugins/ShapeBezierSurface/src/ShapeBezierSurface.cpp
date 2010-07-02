@@ -94,13 +94,14 @@ double ShapeBezierSurface::GetArea() const
 void ShapeBezierSurface::DefineSurfacePatches( QVector< Point3D > inputData, int nUCurves, int nVCurves )
 {
 	int k = 4;
-	int nPointsPerUCurve = nVCurves;
-	int nPointsPerVCurve = nUCurves;
+
+	double nPointsPerUCurve = nVCurves;
+	double nPointsPerVCurve = nUCurves;
 
 	CurveNetwork* curveNetwork = new CurveNetwork();
 
 	QVector< double > uKnotsVector;
-	int nU = nVCurves +1;
+	int nU = nPointsPerUCurve +1;
 	for( int i = 0; i <= ( nU+ k ) ; i++ )
 	{
 		 if( i < k ) uKnotsVector<< 0.0;
@@ -109,8 +110,7 @@ void ShapeBezierSurface::DefineSurfacePatches( QVector< Point3D > inputData, int
 	 }
 
 	for( int i = 0; i < nUCurves; i++ )
-	//for( int i = 0; i < 1; i++ )
-	 {
+	{
 		 QVector< Point3D > data;
 		 for( int j = 0; j < nPointsPerUCurve; j++)
 		 {
@@ -136,8 +136,9 @@ void ShapeBezierSurface::DefineSurfacePatches( QVector< Point3D > inputData, int
 		 QVector< Point3D > data;
 		 for( int j = 0; j < nPointsPerVCurve; j++)
 		 {
-			 data << inputData[nPointsPerVCurve * j + i ];
+			 data << inputData[i + nPointsPerUCurve * j ];
 		 }
+
 		 Curve* vCurve = new Curve( data, vKnotsVector );
 		 curveNetwork->AddVCurve( vCurve );
 	 }
@@ -287,7 +288,7 @@ bool ShapeBezierSurface::ReadInputDataFile( QString fileName, QVector< Point3D >
 
 	QTextStream in( &inputfile);
 
-	int uCurves = 0;
+	int vCurves = 0;
 	while( !in.atEnd() )
 	{
 		QString dataLine = in.readLine();
@@ -295,8 +296,8 @@ bool ShapeBezierSurface::ReadInputDataFile( QString fileName, QVector< Point3D >
 		if( curveData.size() % 3 != 0 )	 return false;
 		int nPoints = curveData.size() / 3;
 
-		if( uCurves > 0 && uCurves != nPoints ) return false;
-		else if( uCurves == 0 )	uCurves = nPoints;
+		if( vCurves > 0 && vCurves != nPoints ) return false;
+		else if( vCurves == 0 )	vCurves = nPoints;
 
 		for( int j = 0; j < nPoints; j++)
 			surfaceData<<Point3D( curveData[ 3 * j].toDouble(),curveData[ 3* j +1  ].toDouble(),curveData[ 3* j + 2 ].toDouble() );
@@ -304,8 +305,8 @@ bool ShapeBezierSurface::ReadInputDataFile( QString fileName, QVector< Point3D >
 
 	 inputfile.close();
 
-	 *nUCurves = uCurves;
-	 *nVCurves = surfaceData.size() / *nUCurves;
+	 *nUCurves = surfaceData.size() / vCurves;
+	 *nVCurves = vCurves;
 
 	 *inputData = surfaceData;
 	 return true;

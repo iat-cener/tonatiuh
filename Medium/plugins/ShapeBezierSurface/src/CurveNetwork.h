@@ -28,12 +28,8 @@ public:
 
 	QVector< BezierPatch* > GetSurface();
 	QPair< QVector<Point3D>, QVector< double> >  KnotInsertion( QVector< double> knots, QVector< Point3D> curveControlPoints );
-	//QVector<Point3D>  Interpolate_BSpline( QVector< double > knots );
-
 
 private:
-	//QVector<Point3D> TriDiag( double* a, double* b, double* c );
-	//QPair< QVector<Point3D>, QVector< double> >  KnotInsertion( QVector< double> knots, QVector< Point3D> curveControlPoints );
 	QVector<Point3D> InsertKnot( int j, int k, QVector< double> knots, QVector< Point3D> curve );
 
 	int m_order;

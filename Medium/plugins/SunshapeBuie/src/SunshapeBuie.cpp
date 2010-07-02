@@ -124,7 +124,7 @@ double SunshapeBuie::Theta( RandomDeviate& rand ) const
 	double a = 0.0;
 	double b = 43.6;
 
-	double m = 0.0004;
+	double m = 0.4;
 	double w =- tgc::Infinity;
 
 
@@ -147,13 +147,15 @@ double SunshapeBuie::ThetaProbiblityFunction( double theta ) const
 {
 
 	double phi;
-	if( theta < 4.65 )
-		phi = cos( 0.326 * theta )/ cos( 0.308 * theta);
-	else
+	if( theta > 4.65 )
 	{
 		phi =  exp( k ) * pow( theta, y );
 	}
+	else
+	{
+		phi = cos( 0.326 * theta )/ cos( 0.308 * theta);
+	}
 
-	return ( phi * sin( theta/1000 ) * cte );
+	return ( phi * sin( theta/1000 ) * ( 1./cte ) * 1000 );
 
 }
