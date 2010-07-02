@@ -5,6 +5,7 @@ SUBDIRS =  MaterialBasicRefractive \
 			PhotonMapDefault \
 			RandomMersenneTwister \
 			RandomRngStream \
+            ShapeBezierSurface \
 			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \
@@ -16,6 +17,7 @@ SUBDIRS =  MaterialBasicRefractive \
 			ShapeSphericalPolygon \
             ShapeSphericalRectangle \
 			ShapeTroughParabola \
+            SunshapeBuie \
 			SunshapePillbox \
 			TrackerHeliostat \
 			TrackerOneAxis
