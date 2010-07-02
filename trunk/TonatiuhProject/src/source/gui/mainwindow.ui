@@ -92,7 +92,7 @@
      <x>0</x>
      <y>0</y>
      <width>857</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEdit">
@@ -454,7 +454,7 @@
      <normaloff>:/icons/separatorKit.png</normaloff>:/icons/separatorKit.png</iconset>
    </property>
    <property name="text">
-    <string>Node</string>
+    <string>SeparatorKit</string>
    </property>
   </action>
   <action name="actionDisplay_rays">
