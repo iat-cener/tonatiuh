@@ -41,6 +41,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "sunpos.h"
 #include "tgc.h"
 
+using namespace std;
+
 void sunpos(cTime udtTime,cLocation udtLocation, cSunCoordinates *udtSunCoordinates)
 {
    	// Main variables
