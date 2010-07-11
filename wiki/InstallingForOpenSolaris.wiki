@@ -1,6 +1,6 @@
 #summary A guide to install and configure Tonatiuh's development environment on OpenSolaris.
 
-= Tonatiuh's development set up for OpenSolaris =
+= Tonatiuh's development set up for !OpenSolaris =
 
 Instructions on how to install in a PC running OpenSolaris the libraries and programs needed to build Tonatiuh from source files.
 
