@@ -28,7 +28,7 @@ Copy all the files contained in that folder and paste them into the folder _"qt-
 ./parchearArchivos.sh
 }}}
 
-The _"patch"_ command that the file _"parchearArchivos.sh"_ is supposed to execute is the GNU patch command. If the _"patch"_ command that executes by default in your !OpenSolaris implementation is not the GNU patch command, you may get error or warning messages while executing _"parchearArchivos.sh"_. Should that be the case, you can either change your OpenSolaris implementation to ensure that the default _"patch"_ command is the GNU patch, or you can edit _"parchearArchivos.sh"_ to replace the invocations to _"patch"_ with invocations to _"gpatch"_
+The _"patch"_ command that the file _"parchearArchivos.sh"_ is supposed to execute is the GNU patch command. If the _"patch"_ command that executes by default in your !OpenSolaris implementation is not the GNU patch command, you may get error or warning messages while executing _"parchearArchivos.sh"_. Should that be the case, you can either change your !OpenSolaris implementation to ensure that the default _"patch"_ command is the GNU patch, or you can edit _"parchearArchivos.sh"_ to replace the invocations to _"patch"_ with invocations to _"gpatch"_
 
 Once the patches are successfully applied, you may configure, make, and install by by typing the following shell commands:
 
