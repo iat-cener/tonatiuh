@@ -6,7 +6,7 @@ Qt is cross-platform application framework for GUI development.
 
 = Requirements =
 
-  * SunStudio installed and updated. 
+  * !SunStudio installed and updated. 
   * X11 development packages installed.
   * The cc and CC compiler in the PATH.
 
@@ -16,6 +16,6 @@ Download the Qt source code for Qt version 4.6.2 from the following link:
 
 [ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz]
 
-*It is important to ensure that the Qt source file downloaded is for Qt version 4.6.2, which is not the most recent version of Qt available, but the previous one, since this instructions do not work for Qt version 4.6.3.
+* Note: It is important to ensure that the Qt source file downloaded is for Qt version 4.6.2, which is not the most recent version of Qt available, but the previous one, since this instructions do not work for Qt version 4.6.3.
 
 UNDER WORK----
