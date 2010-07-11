@@ -42,7 +42,7 @@ pfexec crle -u -v -l /usr/local/lib
 
 Some of the previous commands (_"configure"_, and _"make"_) may take quite a long time to execute depending on the characteristics of the computing you are using.
 
-At the end of the installation process, the Qt libraries will be installed at _"/usr/local/!TrollTech/Qt-4.6.2/lib"_. Now, you can proceed to the installation of [InstallingCoin3DForOpenSolaris Coin3D].
+At the end of the installation process, the Qt libraries will be installed at _"/usr/local/!TrollTech/Qt-4.6.2/lib"_. Now, you can proceed to the installation of [InstallingSimageForOpenSolaris Simage].
 
 
 [InstallingForOpenSolaris OpenSolaris Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
