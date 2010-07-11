@@ -6,9 +6,9 @@ Qt is cross-platform application framework for GUI development.
 
 = Requirements =
 
-  SunStudio installed and updated. 
-  X11 development packages installed.
-  The cc and CC compiler in the PATH.
+  * SunStudio installed and updated. 
+  * X11 development packages installed.
+  * The cc and CC compiler in the PATH.
 
 = Details =
 
