@@ -10,3 +10,5 @@
 From the following link [http://ftp.coin3d.org/coin/src/all/simage-1.7.0.tar.gz http://ftp.coin3d.org/coin/src/all/simage-1.7.0.tar.gz], download _"simage-1.7.0.tar.gz"_.
 
 Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"simage-1.7.0"_.
+
+UNDER CONSTRUCTION
