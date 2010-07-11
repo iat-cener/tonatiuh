@@ -1,0 +1,18 @@
+#summary A guide to install and configure Tonatiuh's development environment on OpenSolaris.
+
+= Tonatiuh's development set up for OpenSolaris =
+
+Instructions on how to install in a PC running OpenSolaris the libraries and programs needed to build Tonatiuh from source files.
+
+= Details =
+
+Follow the links in the order listed and they will guide you through the different phases of the process:
+  * [InstallingQtForOpenSolaris Installing Qt]
+  * [InstallingSimageForOpenSolaris Installing Simage]
+  * [InstallingCoin3DForOpenSolaris Installing Coin3D]
+  * [InstallingSoQtForOpenSolaris Installing SoQt]
+  * [InstallingMarbleForOpenSolaris Installing Marble]
+  * [InstallingBerkeleyDBForOpenSolaris Installing Berkeley DB]
+  * [BuildingTonatiuhOnOpenSolaris Building Tonatiuh and plugins]
+
+[http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
