@@ -3,7 +3,7 @@
 = Requirements =
 
   * !SunStudio installed and updated. 
-  * !Qt + !QtWebkit compiled and installed.
+  * Qt + !QtWebkit compiled and installed.
 
 = Details =
 
