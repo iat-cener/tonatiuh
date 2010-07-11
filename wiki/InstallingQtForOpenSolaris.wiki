@@ -12,13 +12,11 @@ Qt is cross-platform application framework for GUI development.
 
 = Details =
 
-From the following link, download the Qt sources for Qt version 4.6.2:
-
-[ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz]
+From the following link [ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz] download the Qt sources for Qt version 4.6.2:
 
 * Note: It is important to ensure that the Qt source file downloaded is for Qt version 4.6.2. The outlined procedure has only been tested and is only guaranteed to work for that version.
 
-Extract the content of the downloaded tar.gz file into your Downloads folder. This will create a new folder under "Downloads" entitled: qt-everywhere-opensource-src-4.6.2
+Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under "Downloads" entitled: _"qt-everywhere-opensource-src-4.6.2"_.
 
 From the following link, download the file containing the parches that need to be applied to the Qt source files, in order to compile the QtWebKit library for OpenSolaris:
 
