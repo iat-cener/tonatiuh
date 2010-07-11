@@ -24,4 +24,25 @@ Extract the content of the downloaded tar.bz file into your _"Downloads"_ folder
 
 Copy all the files contained in that folder and paste them into the folder _"qt-everywhere-opensource-src-4.6.2"_. Then, open a command shell as super user, move to the _"qt-everywhere-opensource-src-4.6.2"_ folder, and execute the .sh file entitled _"parchearArchivos.sh"_ by entering:
 	
-{./parchearArchivos.sh}
+{{{
+./parchearArchivos.sh
+}}}
+
+The "patch" command that the file _"parchearArchivos.sh" is supposed to execute is the GNU patch command, if the "patch" command that executes by default in your OpenSolaris implementation is not the GNU patch command, you may get error or warning messages while executing _"parchearArchivos.sh"_. If that is the case, you can either change your OpenSolaris implementation to ensure that the default "patch" command is the GNU patch, or you can edit _"parchearArchivos.sh"_ to replace the invocations to _"patch"_ with invocations to _"gpatch"_
+
+Once the patches are successfully applied, you are ready configure, make, and install by by typing the following in the shell commands:
+
+{{{
+./configure -platform solaris-cc-stlport -webkit -nomake demos -nomake examples
+make
+pfexec make install
+pfexec crle -u -v -l /usr/local/Trolltech/Qt-4.6.2/lib
+pfexec crle -u -v -l /usr/local/lib
+}}}
+
+Some of the previous commands (_"configure"_, and _"make"_) may take quite a long time to execute depending on the characteristics of the computing you are using.
+
+At the end of the installation process, the Qt libraries will be installed at _"/usr/local/TrollTech/Qt-4.6.2/lib"_. Now, you can proceed to the installation of [InstallingCoin3DForOpenSolaris Coin3D].
+
+
+[InstallingForOpenSolaris OpenSolaris Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
