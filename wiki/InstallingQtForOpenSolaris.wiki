@@ -12,10 +12,24 @@ Qt is cross-platform application framework for GUI development.
 
 = Details =
 
-Download the Qt source code for Qt version 4.6.2 from the following link:
+From the following link, download the Qt sources for Qt version 4.6.2:
 
 [ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz]
 
-* Note: It is important to ensure that the Qt source file downloaded is for Qt version 4.6.2, which is not the most recent version of Qt available, but the previous one, since this instructions do not work for Qt version 4.6.3.
+* Note: It is important to ensure that the Qt source file downloaded is for Qt version 4.6.2. The outlined procedure has only been tested and is only guaranteed to work for that version.
 
-UNDER WORK----
+Extract the content of the downloaded tar.gz file into your Downloads folder. This will create a new folder under "Downloads" entitled: qt-everywhere-opensource-src-4.6.2
+
+From the following link, download the file containing the parches that need to be applied to the Qt source files, in order to compile the QtWebKit library for OpenSolaris:
+
+[http://tonatiuh.googlecode.com/files/opensolaris-parches-qt-webkit.tar.bz http://tonatiuh.googlecode.com/files/opensolaris-parches-qt-webkit.tar.bz]
+
+Extract the content of the downloaded tar.bz file into your Downloads folder. This will create a new folder under "Downloads" entitled: opensolaris-parches-qt-webkit.
+
+Copy all the files contained in that folder, and paste them into the folder qt-everywhere-opensource-src-4.6.2, created in the previous step.
+
+Open a command shell as super user, move to the qt-everywhere-opensource-src-4.6.2 folder, and execute the .sh file entitled "parchearArchivos.sh" by typing:
+	
+{./parchearArchivos.sh}
+
+and pressing <Enter>.
