@@ -18,12 +18,10 @@ From the following link [ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensour
 
 Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"qt-everywhere-opensource-src-4.6.2"_.
 
-From the following link [http://tonatiuh.googlecode.com/files/opensolaris-parches-qt-webkit.tar.bz http://tonatiuh.googlecode.com/files/opensolaris-parches-qt-webkit.tar.bz] download the file containing the parches that need to be applied to the Qt source files, in order to compile the QtWebKit library for OpenSolaris.
+From the following link [http://tonatiuh.googlecode.com/files/opensolaris-parches-qt-webkit.tar.bz http://tonatiuh.googlecode.com/files/opensolaris-parches-qt-webkit.tar.bz] download the file containing the parches that need to be applied to the Qt source files, in order to compile the !QtWebKit library for !OpenSolaris.
 
 Extract the content of the downloaded tar.bz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"opensolaris-parches-qt-webkit"_.
 
-Copy all the files contained in that folder and paste them into the folder _"qt-everywhere-opensource-src-4.6.2"_ created in the previous step.
-
-Open a command shell as super user, move to the _"qt-everywhere-opensource-src-4.6.2"_ folder, and execute the .sh file entitled _"parchearArchivos.sh"_ by entering:
+Copy all the files contained in that folder and paste them into the folder _"qt-everywhere-opensource-src-4.6.2"_. Then, open a command shell as super user, move to the _"qt-everywhere-opensource-src-4.6.2"_ folder, and execute the .sh file entitled _"parchearArchivos.sh"_ by entering:
 	
 {./parchearArchivos.sh}
