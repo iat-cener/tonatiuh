@@ -73,14 +73,6 @@ cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
 cp src/plugins/render/wikipedia/libWikipedia.so /usr/local/bin/marble
 }}}
 
-configure, make and install the simage library by executing the following commands in the shell as super user:
-
-{{{
-./configure --with-qt=/usr/local/Trolltech/Qt-4.6.2 --enable-qimage --enable-debug=no --enable-symbols=no CXXFLAGS='-library=stlport4'
-make
-pfexec make install
-}}}
-
 At the end of the installation process, the Marble libraries will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingBerkeleyDBForOpenSolaris Berkeley DB].
 
 
