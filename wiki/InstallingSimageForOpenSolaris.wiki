@@ -11,4 +11,4 @@ From the following link [http://ftp.coin3d.org/coin/src/all/simage-1.7.0.tar.gz 
 
 Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"simage-1.7.0"_.
 
-UNDER CONSTRUCTION
+Now, download the patch file _"opensolaris_simage-patch-configure.diff"_ from the following link [http://tonatiuh.googlecode.com/files/opensolaris_simage-patch-configure.diff opensolaris_simage-patch-configure.diff] and copy it to the just created _"simage-1.7.0"_ folder.
