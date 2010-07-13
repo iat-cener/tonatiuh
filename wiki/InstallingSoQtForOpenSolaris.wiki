@@ -10,19 +10,28 @@
 
 = Details =
 
-From the following link [http://ftp.coin3d.org/coin/src/all/SoQt-1.5.0.tar.gz http://ftp.coin3d.org/coin/src/all/SoQt-1.5.0.tar.gz], download _"SoQt-1.5.0.tar.gz"_.
+From the following link [http://ftp.coin3d.org/coin/src/all/SoQt-1.5.0.tar.gz http://ftp.coin3d.org/coin/src/all/SoQt-1.5.0.tar.gz], download _"!SoQt-1.5.0.tar.gz"_.
 
 Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"SoQt-1.5.0"_.
 
-Now, you may configure, make, and install by by typing the following shell commands as super user:
+Open a shell command as super user. Navigate to the recently created _"SoQt-1.5.0"_ command and type the following shell commands as super user:
 
 {{{
-./configure CXXFLAGS='-library=stlport4' LIBS='-lCrun -lm'
+export COINDIR="/usr/local"
+export INCLUDE="/usr/local/include:/usr/local/Trolltech/Qt-4.6.2/include"
+export CXXFLAGS='-library=stlport4'
+export LIBS='-lCrun -lm'
+}}} 
+
+Once this is done, you are ready to configure, make, and install the SoQt library by typing the following shell commands as super user:
+
+{{{
+./configure --enable-debug=no --enable-symbols=no --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.6.2 
 make
 pfexec make install
 }}}
 
-At the end of the installation process, the Coin3D libraries will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingSoQtForOpenSolaris SoQt].
+At the end of the installation process, the SoQt library will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingMarbleForOpenSolaris Marble].
 
 
 [InstallingForOpenSolaris OpenSolaris Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
