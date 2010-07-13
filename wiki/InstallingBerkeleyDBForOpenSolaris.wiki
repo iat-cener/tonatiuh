@@ -1,4 +1,4 @@
-#summary Procedure to install Berkeley DB for !OpenSolaris.
+#summary Procedure to install Berkeley DB for OpenSolaris.
 
 = Requirements =
 
