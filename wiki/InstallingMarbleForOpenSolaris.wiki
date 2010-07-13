@@ -40,7 +40,7 @@ cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
 
 After the cmake command ends -which may take some time- you can make and install the Marble libraries by executing the following shell commands as super user:
 
-{{
+{{{
 make
 mkdir /usr/local/include/marble
 	
@@ -81,7 +81,7 @@ make
 pfexec make install
 }}}
 
-At the end of the installation process, the Simage library will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingCoin3DForOpenSolaris Coin3D].
+At the end of the installation process, the Marble libraries will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingBerkeleyDBForOpenSolaris Berkeley DB].
 
 
 [InstallingForOpenSolaris OpenSolaris Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
