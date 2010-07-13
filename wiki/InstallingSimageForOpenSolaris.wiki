@@ -11,4 +11,12 @@ From the following link [http://ftp.coin3d.org/coin/src/all/simage-1.7.0.tar.gz 
 
 Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"simage-1.7.0"_.
 
-Now, download the patch file _"opensolaris_simage-patch-configure.diff"_ from the following link [http://tonatiuh.googlecode.com/files/opensolaris_simage-patch-configure.diff opensolaris_simage-patch-configure.diff] and copy it to the just created _"simage-1.7.0"_ folder.
+After that, download the patch file _"opensolaris_simage-patch-configure.diff"_ from the following link [http://tonatiuh.googlecode.com/files/opensolaris_simage-patch-configure.diff opensolaris_simage-patch-configure.diff] and copy it to the just created _"simage-1.7.0"_ folder.
+
+Once this is done, open a shell command with super user rights, navigate to the _"simage-1.7.0"_ folder and apply the patch by executing the following command:
+
+{{{
+patch -p0 < patch-configure.diff
+}}}
+
+*Note: the patch command that should be executed is the GNU patch, if in your system implementation that is not the default patch command, you should either make it the default, or replace the "patch" command for the correct command to invoke the GNU patch command in your system. In our case, that command was _"gpatch".*
