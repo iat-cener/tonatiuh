@@ -28,7 +28,7 @@ After the patch has been successfully applied, execute the following shell comma
 export PATH=/usr/local/Trolltech/Qt-4.6.2/bin:$PATH
 }}}
 
-Now, invoke CMake to generate the appropriate make file by executing the following sheell command as super user:
+Now, invoke CMake to generate the appropriate make file by executing the following shell command as super user:
 
 {{{
 cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
