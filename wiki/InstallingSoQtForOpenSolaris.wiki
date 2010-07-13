@@ -31,7 +31,7 @@ make
 pfexec make install
 }}}
 
-At the end of the installation process, the SoQt library will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingMarbleForOpenSolaris Marble].
+At the end of the installation process, the !SoQt library will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingMarbleForOpenSolaris Marble].
 
 
 [InstallingForOpenSolaris OpenSolaris Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
