@@ -4,7 +4,7 @@
 
   * !SunStudio installed and updated. 
   * Qt + !QtWebkit compiled and installed.
-  * CMake installed (can be done using OpenSolaris' Package Manager)
+  * CMake installed (can be done using !OpenSolaris' Package Manager)
 
 = Details =
 
