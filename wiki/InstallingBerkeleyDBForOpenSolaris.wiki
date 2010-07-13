@@ -3,7 +3,7 @@
 = Requirements =
 
   * !SunStudio installed and updated. 
-  * * The address of the cc and CC compiler commands in the PATH.
+  * The address of the cc and CC compiler commands in the PATH.
 
 = Details =
 
