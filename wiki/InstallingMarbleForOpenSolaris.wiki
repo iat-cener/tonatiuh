@@ -1,4 +1,4 @@
-#summary Procedure to install Marble for !OpenSolaris.
+#summary Procedure to install Marble for OpenSolaris.
 
 = Requirements =
 
