@@ -14,19 +14,66 @@
 
 From the following link [http://developer.kde.org/~tackat/marble/marble-0.8.0_rev1005857.tar.gz http://developer.kde.org/~tackat/marble/marble-0.8.0_rev1005857.tar.gz], download _"marble-0.8.0_rev1005857.tar.gz"_.
 
-Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"simage-1.7.0"_.
+Extract the content of the downloaded tar.gz file into your _"Downloads"_ folder. This will create a new folder under _"Downloads"_ entitled: _"marble"_.
 
-After that, download the patch file _"opensolaris_simage-patch-configure.diff"_ from the following link [http://tonatiuh.googlecode.com/files/opensolaris_simage-patch-configure.diff opensolaris_simage-patch-configure.diff] and copy it to the just created _"simage-1.7.0"_ folder.
+After that, download the patch file _"opensolaris-marble-geopolygon.diff"_ from the following link [http://tonatiuh.googlecode.com/files/opensolaris-marble-geopolygon.diff opensolaris-marble-geopolygon.diff] and copy it to the just created _"marble"_ folder.
 
-Once this is done, open a shell command with super user rights, navigate to the _"simage-1.7.0"_ folder and apply the patch by executing the following command:
+Once this is done, open a shell command with super user rights, navigate to the _"marble"_ folder and apply the patch by executing the following command:
 
 {{{
-patch -p0 < patch-configure.diff
+patch -p0 < opensolaris-marble-geopolygon.diff 
 }}}
 
 *Note: the patch command that should be executed is the GNU patch, if in your system implementation that is not the default patch command, you should either make it the default, or replace the "patch" command for the correct command to invoke the GNU patch command in your system. In our case, that command was _"gpatch".*
 
-After the patch has been successfully applied, configure, make and install the simage library by executing the following commands in the shell as super user:
+After the patch has been successfully applied, execute the following shell command as super user:
+
+{{{
+export PATH=/usr/local/Trolltech/Qt-4.6.2/bin:$PATH
+}}}
+
+Now, invoke CMake to generate the appropriate make file by executing the following sheell command as super user:
+
+{{{
+cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
+}}}
+
+After the cmake command ends -which may take some time- you can make and install the Marble libraries by executing the following shell commands as super user:
+
+{{
+make
+mkdir /usr/local/include/marble
+	
+cp src/lib/*.h /usr/local/include/marble
+cp src/lib/AbstractLayer/*.h /usr/local/include/marble
+cp src/lib/geodata/*.h /usr/local/include/marble
+cp src/lib/geodata/data/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble
+cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble
+cp src/lib/geodata/parser/*.h /usr/local/include/marble
+cp src/lib/geodata/scene/*.h /usr/local/include/marble
+cp src/lib/gps/*.h /usr/local/include/marble
+cp src/lib/Projections/*.h /usr/local/include/marble
+
+cp src/lib/libmarblewidget.so* /usr/local/lib
+
+mkdir -p /usr/local/bin/marble/plugins
+	
+cp src/plugins/network/qnam/libQNamNetworkPlugin.so  /usr/local/bin/marble/plugins
+cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble/plugins
+cp src/plugins/render/crosshairs/libCrosshairsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/geodata/libGeoRendererPlugin.so /usr/local/bin/marble
+cp src/plugins/render/graticule/libGraticulePlugin.so /usr/local/bin/marble
+cp src/plugins/render/mapscale/libMapScaleFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/navigation/libNavigationFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libOverviewMap.so /usr/local/bin/marble
+cp src/plugins/render/photo/libPhoto.so /usr/local/bin/marble
+cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/wikipedia/libWikipedia.so /usr/local/bin/marble
+}}}
+
+configure, make and install the simage library by executing the following commands in the shell as super user:
 
 {{{
 ./configure --with-qt=/usr/local/Trolltech/Qt-4.6.2 --enable-qimage --enable-debug=no --enable-symbols=no CXXFLAGS='-library=stlport4'
