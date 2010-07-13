@@ -5,7 +5,7 @@
   * !SunStudio installed and updated. 
   * Qt + !QtWebkit compiled and installed.
   * Simage compiled and installed.
-  * cc and CC compilers in the PATH.
+  * The address of the cc and CC compiler commands in the PATH.
 
 = Details =
 
