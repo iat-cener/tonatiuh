@@ -21,10 +21,15 @@ patch -p0 < patch-configure.diff
 
 *Note: the patch command that should be executed is the GNU patch, if in your system implementation that is not the default patch command, you should either make it the default, or replace the "patch" command for the correct command to invoke the GNU patch command in your system. In our case, that command was _"gpatch".*
 
-After the patch has been successfully applied, configure, make and install by executing the following commands in the shell:
+After the patch has been successfully applied, configure, make and install the simage library by executing the following commands in the shell:
 
 {{{
 ./configure --with-qt=/usr/local/Trolltech/Qt-4.6.2 --enable-qimage --enable-debug=no --enable-symbols=no CXXFLAGS='-library=stlport4'
 make
 pfexec make install
 }}}
+
+At the end of the installation process, the Simage library will be installed at _"/usr/local/lib"_. Now, you can proceed to the installation of [InstallingCoin3DForOpenSolaris Coin3D].
+
+
+[InstallingForOpenSolaris OpenSolaris Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
