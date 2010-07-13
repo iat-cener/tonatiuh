@@ -8,7 +8,7 @@ Qt is cross-platform application framework for GUI development.
 
   * !SunStudio installed and updated. 
   * X11 development packages installed.
-  * The cc and CC compiler in the PATH.
+  * The address of the cc and CC compiler commands in the PATH.
 
 = Details =
 
