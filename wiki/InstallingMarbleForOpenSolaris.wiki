@@ -6,10 +6,6 @@
   * Qt + !QtWebkit compiled and installed.
   * CMake installed (can be done using OpenSolaris' Package Manager)
 
-
-  * Directorio con los binarios de Qt en el PATH:
-	export PATH=/usr/local/Trolltech/Qt-4.6.2/bin:$PATH
-
 = Details =
 
 From the following link [http://developer.kde.org/~tackat/marble/marble-0.8.0_rev1005857.tar.gz http://developer.kde.org/~tackat/marble/marble-0.8.0_rev1005857.tar.gz], download _"marble-0.8.0_rev1005857.tar.gz"_.
