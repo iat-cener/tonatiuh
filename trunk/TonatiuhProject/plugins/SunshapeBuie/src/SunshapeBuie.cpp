@@ -53,7 +53,7 @@ SunshapeBuie::SunshapeBuie( )
 	SO_NODE_CONSTRUCTOR( SunshapeBuie );
 
 	SO_NODE_ADD_FIELD( irradiance, (1000));
-	SO_NODE_ADD_FIELD( crs, ( 0.01 ) );
+	SO_NODE_ADD_FIELD( crs, ( 0.05 ) );
 
 	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCRS, this );
 	irradianceSensor->attach( &irradiance );
@@ -65,7 +65,8 @@ SunshapeBuie::SunshapeBuie( )
 	y = 2.2 * log( 0.52 * crs.getValue() ) * pow( crs.getValue(), 0.43 )  - 0.1;
 
 	// Integrate[ Cos[0.326 *theta]/Cos[0.308 *theta]*Sin[theta/1000], {theta, 0, 4.65}] = 9.22474
-	cte = 9.22474 + ( exp( k )/( 2 + y ) ) * ( pow ( 43.6, y+2 ) - pow( 4.65, y +2 ) );
+	//cte = 9.22474 + ( exp( k )/( 2 + y ) ) * ( pow ( 43.6, y+2 ) - pow( 4.65, y +2 ) );
+	cte = 9.22472e-9 + ( exp( k )/(2 + y ) ) * ( pow ( 43.6, y+2 ) - pow( 4.65, y +2 ) ) *1e-9;
 
 }
 
@@ -111,20 +112,25 @@ void SunshapeBuie::updateCRS(void *data, SoSensor *)
 	SunshapeBuie* sunshape = ( SunshapeBuie* ) data;
 	double crs0 = sunshape->crs.getValue();
 
-	sunshape->k = 0.9 * log( 13.5 * crs0 ) * pow( crs0, -0.3 );
-	sunshape->y = 2.2 * log( 0.52 * crs0 ) * pow( crs0, 0.43 )  - 0.1;
-	// Integrate[ Cos[0.326 *theta]/Cos[0.308 *theta]*Sin[theta/1000], {theta, 0, 4.65}] = 9.22474
+	//Integrate[ Phi2[theta*1000, \[CapitalChi]0]*10^-3*Sin[theta], {theta, 0.00465, 0.0436}] = 9.22474e-9
+	sunshape->cte = 9.22472e-9;
 
-	sunshape->cte = 9.22474 + ( exp( sunshape->k )/(2 + sunshape->y ) ) * ( pow ( 43.6, sunshape->y+2 ) - pow( 4.65, sunshape->y +2 ) );
+	if( crs0 > 0.0 )
+	{
+		sunshape->k = 0.9 * log( 13.5 * crs0 ) * pow( crs0, -0.3 );
+		sunshape->y = 2.2 * log( 0.52 * crs0 ) * pow( crs0, 0.43 )  - 0.1;
+
+		sunshape->cte += ( ( exp( sunshape->k )/(2 + sunshape->y ) ) * ( pow ( 43.6, sunshape->y+2 ) - pow( 4.65, sunshape->y +2 ) ) *1e-9 );
+	}
 
 }
 
 double SunshapeBuie::Theta( RandomDeviate& rand ) const
 {
 	double a = 0.0;
-	double b = 43.6;
+	double b = 0.0436;
 
-	double m = 0.4;
+	double m = 400;
 	double w =- tgc::Infinity;
 
 
@@ -134,13 +140,13 @@ double SunshapeBuie::Theta( RandomDeviate& rand ) const
 		double theta = ( ( b - a ) * rand.RandomDouble() ) + a;
 		double f = m * rand.RandomDouble();
 
-		if( f <= ThetaProbiblityFunction( theta ) )
+		if( f <= ThetaProbiblityFunction( theta * 1000 ) )
 		{
 			w = theta;
 			cont  = false;
 		}
 	}
-	return w/1000;
+	return w;
 }
 
 double SunshapeBuie::ThetaProbiblityFunction( double theta ) const
@@ -149,13 +155,14 @@ double SunshapeBuie::ThetaProbiblityFunction( double theta ) const
 	double phi;
 	if( theta > 4.65 )
 	{
-		phi =  exp( k ) * pow( theta, y );
+		if( crs.getValue() > 0.0 )	phi =  exp( k ) * pow( theta, y );
+		else return 0.0;
 	}
 	else
 	{
 		phi = cos( 0.326 * theta )/ cos( 0.308 * theta);
 	}
 
-	return ( phi * sin( theta/1000 ) * ( 1./cte ) * 1000 );
+	return ( phi * 1e-3 * sin( theta/1000 ) * ( 1./cte ) );
 
 }
