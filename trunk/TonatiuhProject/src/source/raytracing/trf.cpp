@@ -151,54 +151,53 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
         SoSeparator* drawrays = new SoSeparator;
         SoCoordinate3* points = new SoCoordinate3;
 
-        int drawRays = (int) ( numberOfRays * ( fraction / 100 ) );
+        int drawRays =  (int) (numberOfRays * ( fraction / 100 ) );
         if( drawRays == 0 ) drawRays = 1;
-        unsigned long ray = 0;
+
         int* lines = new int[drawRays];
 
         unsigned long rayLength = 0;
-        unsigned long drawnRay = 0;
 
         unsigned long numberOfPhoton = 0;
 
         QList< Photon* > photonsList = map.GetAllPhotons();
 
-        for (int i = 0; i < photonsList.size(); ++i)
+        int indexPhotonList = 0;
+        for (int drawnRay = 0; drawnRay < drawRays; ++drawnRay)
         {
-                if ( photonsList[i]->prev == 0 )
-                {
-                        if ( ray % ( numberOfRays/drawRays ) == 0 )
-                        {
-                                Photon* node = photonsList[i];
-                                rayLength = 0;
+        	 while( ( indexPhotonList < photonsList.size() ) && ( photonsList[indexPhotonList]->prev != 0 ) )	indexPhotonList++;
 
-                                while ( node != 0 )
-                                {
-                                        Point3D photon = node->pos;
-                                        points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
+        	 if ( photonsList[indexPhotonList]->prev == 0 )
+        	 {
+        		 Photon* node = photonsList[indexPhotonList];
+        		 rayLength = 0;
 
-                                        if( node->next != 0 )   node = map.GetPhoton( node->next->id );
-                                        else    node = 0;
+        		 while ( node != 0 )
+        		 {
+        			 Point3D photon = node->pos;
+        			 points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
 
-                                        rayLength++;
-                                        numberOfPhoton++;
-                                }
+        			 if( node->next != 0 )   node = map.GetPhoton( node->next->id );
+        			 else    node = 0;
 
-                                lines[drawnRay]= rayLength;
-                                drawnRay++;
+        			 rayLength++;
+        			 numberOfPhoton++;
+				 }
 
-                        }
-                        ray++;
-                }
+        		 lines[drawnRay]= rayLength;
+        		 indexPhotonList++;
+        	 }
+
         }
+
 
         SoMaterial* myMaterial = new SoMaterial;
         myMaterial->diffuseColor.setValue(1.0, 1.0, 0.8);
         drawrays->addChild( myMaterial );
-    drawrays->addChild( points );
+        drawrays->addChild( points );
 
         SoLineSet* lineset = new SoLineSet;
-        lineset->numVertices.setValues( 0, drawnRay, lines );
+        lineset->numVertices.setValues( 0, drawRays, lines );
         drawrays->addChild( lineset );
 
 
