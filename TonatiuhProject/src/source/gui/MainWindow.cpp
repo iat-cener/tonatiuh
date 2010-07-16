@@ -1059,10 +1059,14 @@ void MainWindow::ShowRaysIn3DView()
 		if( m_fraction > 0.0 )
 		{
 			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
-			m_pRays->addChild(currentRays);
+			if( currentRays )
+			{
+				m_pRays->addChild(currentRays);
 
-			actionDisplay_rays->setEnabled( true );
-			actionDisplay_rays->setChecked( true );
+				actionDisplay_rays->setEnabled( true );
+				actionDisplay_rays->setChecked( true );
+			}
+
 		}
 	}
 }
