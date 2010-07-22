@@ -41,6 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QMap>
 #include <QPair>
+
+#include "Photon.h"
+#include "TPhotonMap.h"
+#include "Ray.h"
 #include "TShape.h"
 #include "TSunShape.h"
 #include "Transform.h"
@@ -48,11 +52,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class InstanceNode;
 class RandomDeviate;
-class Ray;
 class TPhotonMap;
 
 namespace trf
 {
+	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons );
+
+	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
+	int ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
+	int ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
+
 	void GenerateStartingRay( Ray& ray,
 			                  TShape* const & raycastingSurface,
                               TSunShape* const & sunShape,
@@ -83,6 +92,36 @@ inline void trf::GenerateStartingRay( Ray& ray,
 
 	//Transform ray to World coordinate system and trace the scene
 	ray = lightToWorld( ray );
+}
+
+inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons )
+{
+	if( !photonMap )  photonMap = photons.first;
+
+	std::vector<Photon> photonsVector = photons.second;
+	std::vector<Photon>::iterator it;
+	it = photonsVector.begin();
+
+	while( it<photonsVector.end() )
+	{
+		Photon* first = new Photon( *it );
+		//std::cout<<first->pos<<std::endl;
+		it++;
+		Photon* nextPhoton = first;
+
+		while( it<photonsVector.end() && ( (*it).id > 0 ) )
+		{
+			Photon* photon = new Photon( *it );
+
+			nextPhoton->next = photon;
+			photon->prev = nextPhoton;
+			nextPhoton = photon;
+			it++;
+		}
+		photonMap->StoreRay( first );
+	}
+
+	photonsVector.clear();
 }
 
 #endif /* TRF_H_ */

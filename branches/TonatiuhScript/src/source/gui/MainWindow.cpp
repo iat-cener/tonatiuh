@@ -121,48 +121,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 #include "TTrackerFactory.h"
 
-void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons )
-{
-	if( !photonMap )  photonMap = photons.first;
 
-	std::vector<Photon> photonsVector = photons.second;
-	std::vector<Photon>::iterator it;
-	it = photonsVector.begin();
-
-	while( it<photonsVector.end() )
-	{
-		Photon* first = new Photon( *it );
-		//std::cout<<first->pos<<std::endl;
-		it++;
-		Photon* nextPhoton = first;
-
-		while( it<photonsVector.end() && ( (*it).id > 0 ) )
-		{
-			Photon* photon = new Photon( *it );
-
-			nextPhoton->next = photon;
-			photon->prev = nextPhoton;
-			nextPhoton = photon;
-			it++;
-		}
-		photonMap->StoreRay( first );
-	}
-
-	photonsVector.clear();
-
-	/*if( !photonMap )  photonMap = photons.first;
-
-	std::vector<Photon*> photonsVector = photons.second;
-	std::vector<Photon*>::iterator it;
-
-	for( it = photonsVector.begin(); it<photonsVector.end() ; it++)
-	{
-		Photon* p = *it;
-		photonMap->StoreRay( p );
-	}
-
-	//photonsVector.clear();*/
-}
 
 void startManipulator(void *data, SoDragger* dragger)
 {
@@ -1114,7 +1073,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), createPhotonMap, QtConcurrent::UnorderedReduce );
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
 		futureWatcher.setFuture( photonMap );
 
@@ -1215,7 +1174,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 	}
 	else
 	{
-		SoNodeKitPath* nodeKitPath = exportDialog.GetSelectedSurface();
+		/*SoNodeKitPath* nodeKitPath = exportDialog.GetSelectedSurface();
 		QModelIndex nodeKitIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
 		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( nodeKitIndex );
 		if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return;
@@ -1231,30 +1190,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 		if( exportDialog.GetCoordinateSystem() == 1 )
 		{
-			SoBaseKit* nodeKit =static_cast< SoBaseKit* > ( selectedNode->GetNode() );
-			SoTransform* nodeTransform = static_cast< SoTransform* > ( nodeKit->getPart( "transform", true ) );
-
-			SbMatrix nodeMatrix;
-			nodeMatrix.setTransform( nodeTransform->translation.getValue(),
-					nodeTransform->rotation.getValue(),
-					nodeTransform->scaleFactor.getValue(),
-					nodeTransform->scaleOrientation.getValue(),
-					nodeTransform->center.getValue() );
-
-			SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
-			SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( region );
-			getmatrixAction->apply( nodeKitPath );
-
-			SbMatrix pathTransformation = getmatrixAction->getMatrix();
-			pathTransformation = pathTransformation.multLeft( nodeMatrix );
-
-
-			Transform objectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
-								pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
-								pathTransformation[0][2], pathTransformation[1][2], pathTransformation[2][2], pathTransformation[3][2],
-								pathTransformation[0][3], pathTransformation[1][3], pathTransformation[2][3], pathTransformation[3][3] );
-
-			Transform worldToObject = objectToWorld.GetInverse();
+			Transform worldToObject = selectedNode->GetIntersectionTransform();
 			for( int i = 0; i< nodePhotonsList.size(); ++i )
 			{
 
@@ -1270,7 +1206,6 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 		{
 			for( int i = 0; i< nodePhotonsList.size(); ++i )
 			{
-
 				Photon* node = nodePhotonsList[i];
 				Point3D photon = node->pos;
 				double id = node->id;
@@ -1278,7 +1213,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 				double next_id = ( node->next ) ? node->next->id : 0;
 				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
 			}
-		}
+		}*/
 
 
 
@@ -1530,7 +1465,7 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 
 void MainWindow::on_actionOpenScriptEditor_triggered()
 {
-	ScriptEditorDialog editor( m_scriptDirectory );
+	ScriptEditorDialog editor( m_TPhotonMapFactoryList, m_RandomDeviateFactoryList, m_scriptDirectory, this );
 	editor.exec();
 
 	m_scriptDirectory = editor.GetCurrentDirectory();
@@ -1548,38 +1483,6 @@ void MainWindow::on_actionAbout_triggered()
 }
 
 //Create actions
-void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
-{
-	QModelIndex parentIndex = ( (! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex() ) ) ?
-								m_sceneModel->index( 0, 0, m_treeView->rootIndex( )):
-								m_treeView->currentIndex();
-
-	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	SoNode* parentNode = parentInstance->GetNode();
-	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
-
-	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
-	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
-
-    if ( material )
-    {
-    	QMessageBox::information( this, "Tonatiuh Action",
-	                          "This TShapeKit already contains a material node", 1);
-	    return;
-    }
-
-	material = pTMaterialFactory->CreateTMaterial();
-    QString typeName = pTMaterialFactory->TMaterialName();
-    material->setName( typeName.toStdString().c_str() );
-
-    CmdInsertMaterial* createMaterial = new CmdInsertMaterial( shapeKit, material, m_sceneModel );
-    QString commandText = QString( "Create Material: %1").arg( pTMaterialFactory->TMaterialName().toLatin1().constData() );
-    createMaterial->setText(commandText);
-    m_commandStack->push( createMaterial );
-
-    m_document->SetDocumentModified( true );
-}
-
 void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
     QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
@@ -2273,6 +2176,38 @@ bool MainWindow::Delete( )
 	return true;
 }
 
+void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
+{
+	QModelIndex parentIndex = ( (! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex() ) ) ?
+								m_sceneModel->index( 0, 0, m_treeView->rootIndex( )):
+								m_treeView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
+
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
+
+    if ( material )
+    {
+    	QMessageBox::information( this, "Tonatiuh Action",
+	                          "This TShapeKit already contains a material node", 1);
+	    return;
+    }
+
+	material = pTMaterialFactory->CreateTMaterial();
+    QString typeName = pTMaterialFactory->TMaterialName();
+    material->setName( typeName.toStdString().c_str() );
+
+    CmdInsertMaterial* createMaterial = new CmdInsertMaterial( shapeKit, material, m_sceneModel );
+    QString commandText = QString( "Create Material: %1").arg( pTMaterialFactory->TMaterialName().toLatin1().constData() );
+    createMaterial->setText(commandText);
+    m_commandStack->push( createMaterial );
+
+    m_document->SetDocumentModified( true );
+}
+
 bool MainWindow::Cut()
 {
 	if( !m_selectionModel->hasSelection() ) return false;
@@ -2392,8 +2327,6 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-/*void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,
-		                              QMap< InstanceNode*, QPair< BBox, Transform > >* sceneMap )*/
 void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
 {
 

@@ -44,14 +44,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ui_scripteditordialog.h"
 
 class QLineEdit;
+class QScriptEngine;
+class TPhotonMapFactory;
+class RandomDeviateFactory;
 
 class ScriptEditorDialog : public QDialog, private Ui::ScriptEditorDialog
 {
-
 	Q_OBJECT
 
 public:
-	ScriptEditorDialog( QString dirName = 0, QWidget* parent = 0 );
+	ScriptEditorDialog( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QString dirName = 0, QWidget* parent = 0 );
 	~ScriptEditorDialog();
 
 	QString GetCurrentDirectory();
@@ -81,6 +83,7 @@ private slots:
 private:
 	QLineEdit* m_dirLineEdit;
 	QString m_currentScritFileName;
+	QScriptEngine* m_interpreter;
 };
 
 #endif /* SCRIPTEDITORDIALOG_H_ */

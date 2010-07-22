@@ -46,7 +46,7 @@ class QScriptEngine;
 
 namespace tonatiuh_script
 {
-	void init( QScriptEngine* engine );
+	int init( QScriptEngine* engine );
 
 	QScriptValue tonatiuh_exportAll(QScriptContext* context, QScriptEngine* engine );
 	QScriptValue tonatiuh_export(QScriptContext* context, QScriptEngine* engine );

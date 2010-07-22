@@ -233,7 +233,7 @@ BBox InstanceNode::GetIntersectionBBox()
 	return m_bbox;
 }
 
-Transform InstanceNode::SetIntersectionTransform()
+Transform InstanceNode::GetIntersectionTransform()
 {
 	return m_transformWTO;
 }

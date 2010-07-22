@@ -81,7 +81,7 @@ public:
             		        Ray* outRay);
 
     BBox GetIntersectionBBox();
-    Transform SetIntersectionTransform();
+    Transform GetIntersectionTransform();
     void SetIntersectionBBox( BBox nodeBBox );
     void SetIntersectionTransform( Transform nodeTransform );
 

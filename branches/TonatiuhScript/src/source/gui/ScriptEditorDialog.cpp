@@ -51,12 +51,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTextStream>
 
 #include "ScriptEditorDialog.h"
+#include "ScriptRayTracer.h"
 #include "tonatiuh_script.h"
 
-ScriptEditorDialog::ScriptEditorDialog( QString dirName, QWidget* parent )
+ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QString dirName, QWidget* parent )
 :QDialog( parent ),
  m_dirLineEdit( 0 ),
- m_currentScritFileName( 0 )
+ m_currentScritFileName( 0 ),
+ m_interpreter( 0 )
 {
 	setupUi( this );
 
@@ -72,6 +74,14 @@ ScriptEditorDialog::ScriptEditorDialog( QString dirName, QWidget* parent )
 	AddFilesExplorerWidgetToolbar( dirName );
 
 	connect( filesList, SIGNAL( itemDoubleClicked ( QListWidgetItem*  ) ), this, SLOT( OpenScriptFile( QListWidgetItem*  ) ) );
+
+	//Init QtScript environment
+	m_interpreter = new QScriptEngine;
+
+	QObject* rayTracer = new ScriptRayTracer( listTPhotonMapFactory, listRandomDeviateFactory );
+	QScriptValue rayTracerValue = m_interpreter->newQObject( rayTracer );
+	m_interpreter->globalObject().setProperty( "rayTracer", rayTracerValue );
+
 
 }
 
@@ -382,29 +392,17 @@ bool ScriptEditorDialog::SaveAsScriptFile()
 
 void  ScriptEditorDialog::RunScript()
 {
-	/*QTextDocument* document = codeEditor->document();
 
-	QScriptEngine myEngine;
-	QScriptValue fun = myEngine.evaluate(document->toPlainText());
-	QScriptValueList args;
-	args << 1 << 2;
-	 QScriptValue threeAgain = fun.call(QScriptValue(), args);
-
-	QString resultString = QString( " El resultado es: %1").arg( QString::number(threeAgain.toNumber() ) );
-	QMessageBox::warning( this, tr( "Tonatiuh warning" ),
-			resultString );*/
-
-	QScriptEngine* interpreter = new QScriptEngine;
-
-
-	tonatiuh_script::init( interpreter );
-
-	/*QScriptValue fun = myEngine.newFunction(tonatiuh_script::myAdd);
-	myEngine.globalObject().setProperty("myAdd", fun);*/
-
+	int initialized = tonatiuh_script::init( m_interpreter );
+	if( !initialized )
+	{
+		QMessageBox::warning( this, tr( "Tonatiuh warning" ),
+				tr( "Script Execution Error." ) );
+		return;
+	}
 
 	QTextDocument* document = codeEditor->document();
-	QScriptValue result = interpreter->evaluate(document->toPlainText());
+	QScriptValue result = m_interpreter->evaluate(document->toPlainText());
 
 
 	/*QString resultString = QString( " El resultado es: %1").arg( QString::number(result.toNumber() ) );

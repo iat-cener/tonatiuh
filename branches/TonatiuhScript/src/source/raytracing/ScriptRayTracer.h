@@ -44,24 +44,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QString>
 #include <QVector>
 
+class InstanceNode;
 class RandomDeviate;
 class RandomDeviateFactory;
 class TPhotonMap;
 class TPhotonMapFactory;
-/*class TShape;
-class TShapeFactory;
-class TSunShape;
-class TSunShapeFactory;*/
+class Transform;
 
 class ScriptRayTracer : public QObject
 {
 	Q_OBJECT
 
 public:
-	ScriptRayTracer();
+	ScriptRayTracer( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory  );
+	~ScriptRayTracer();
 
+	void Clear();
 	void SetExportFileName( QString filename );
 	void SetExportSurfaceName( QString surfaceName );
+	void SetExportSurfaceCoordinates( bool globalCoordinates );
 	void SetTonatiuhModelFile ( QString filename );
 
 	void SetNumberOfRays( double nrays );
@@ -74,12 +75,14 @@ public:
 	void SetSunElevation( double elevation );
 	void SetSunDistance( double distance );
 
-	void Trace();
+	int Trace();
 
 private:
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 
 	QString m_exportFileName;
 	QString m_exportSurfaceName;
+	bool m_exportSurfaceInGlobalCoordinates;
 	QString m_modelFileName;
 	unsigned long m_numberOfRays;
 
@@ -93,8 +96,6 @@ private:
 	double m_sunAzimuth;
 	double m_sunElevation;
 	double m_sunDistance;
-	//QVector< TShapeFactory* > m_TFlatShapeFactoryList;
-	//QVector< TSunShapeFactory* > m_TSunshapeFactoryList;
 
 };
 #endif /* SCRIPTRAYTRACER_H_ */

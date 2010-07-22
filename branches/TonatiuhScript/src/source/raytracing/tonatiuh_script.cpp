@@ -44,11 +44,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tonatiuh_script.h"
 
 
-void tonatiuh_script::init( QScriptEngine* engine )
+int tonatiuh_script::init( QScriptEngine* engine )
 {
-	QObject* rayTracer = new ScriptRayTracer;
-	QScriptValue rayTracerValue = engine->newQObject( rayTracer );
-	engine->globalObject().setProperty( "rayTracer", rayTracerValue );
+	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
+	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
+	if( !rayTracer ) return 0;
+
+	rayTracer->Clear();
 
 	QScriptValue fun_tonatiuh_exportAll = engine->newFunction( tonatiuh_script::tonatiuh_exportAll );
 	engine->globalObject().setProperty("tonatiuh_exportAll", fun_tonatiuh_exportAll );
@@ -73,6 +75,8 @@ void tonatiuh_script::init( QScriptEngine* engine )
 
 	QScriptValue fun_tonatiuh_trace = engine->newFunction( tonatiuh_script::tonatiuh_trace );
 	engine->globalObject().setProperty("tonatiuh_trace", fun_tonatiuh_trace );
+
+	return 1;
 }
 
 QScriptValue tonatiuh_script::tonatiuh_exportAll(QScriptContext* context, QScriptEngine* engine )
@@ -91,9 +95,11 @@ QScriptValue tonatiuh_script::tonatiuh_exportAll(QScriptContext* context, QScrip
 
 QScriptValue tonatiuh_script::tonatiuh_export(QScriptContext* context, QScriptEngine* engine )
 {
-	if( context->argumentCount() != 2 ) return 0; //throw Error( "tonatiuh_filename() takes exactly two argument." ); )
-	if( !context->argument( 0 ).isString() ) return 0; //throw Error( "tonatiuh_filename() argument 1 is not a string." ); )
-	if( !context->argument( 1 ).isString() ) return 0; //throw Error( "tonatiuh_filename() argument 2 is not a string." ); )
+	if( context->argumentCount() < 2 ) return 0; //throw Error( "tonatiuh_export() takes at least two argument." ); )
+	if( context->argumentCount() > 3 ) return 0; //throw Error( "tonatiuh_export() takes at most three argument." ); )
+	if( !context->argument( 0 ).isString() ) return 0; //throw Error( "tonatiuh_export() argument 1 is not a string." ); )
+	if( !context->argument( 1 ).isString() ) return 0; //throw Error( "tonatiuh_export() argument 2 is not a string." ); )
+	if( (context->argumentCount() == 3) && !context->argument( 2 ).isBool() ) return 0; //throw Error( "tonatiuh_export() argument 3 is not a boolean." ); )
 
 	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
@@ -101,9 +107,14 @@ QScriptValue tonatiuh_script::tonatiuh_export(QScriptContext* context, QScriptEn
 	QString fileName = context->argument(0).toString();
 	rayTracer->SetExportFileName( fileName );
 
-
 	QString surfaceName = context->argument(1).toString();
 	rayTracer->SetExportSurfaceName( surfaceName );
+
+	if( context->argumentCount() == 3)
+	{
+		bool coordinates= context->argument(2).toBool();
+		rayTracer->SetExportSurfaceCoordinates( coordinates );
+	}
 
 	return 1;
 }
@@ -161,7 +172,7 @@ QScriptValue tonatiuh_script::tonatiuh_random_generator(QScriptContext* context,
 	if( !rayTracer ) return 0;
 
 	QString randomDeviateType = context->argument(0).toString();
-	rayTracer->SetPhotonMapType( randomDeviateType );
+	rayTracer->SetRandomDeviateType( randomDeviateType );
 
 	return 1;
 }
@@ -199,6 +210,8 @@ QScriptValue tonatiuh_script::tonatiuh_trace(QScriptContext* context, QScriptEng
 	if( context->argumentCount() != 0 ) return 0; //throw Error( "tonatiuh_trace() no takes argumets." ); )
 
 
-	rayTracer->Trace();
+	int result = rayTracer->Trace();
+	if( result == 0 ) return 0; //throw Error( "tonatiuh_trace() error." ); )
+
 	return 1;
 }
