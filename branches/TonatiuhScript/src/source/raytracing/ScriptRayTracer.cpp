@@ -64,8 +64,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 ScriptRayTracer::ScriptRayTracer( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory )
-:m_exportFileName( 0 ),
-m_exportSurfaceName( 0 ),
+://m_exportData( 0 ),
 m_exportSurfaceInGlobalCoordinates( true ),
 m_modelFileName( 0 ),
 m_numberOfRays( 0 ),
@@ -88,8 +87,7 @@ ScriptRayTracer::~ScriptRayTracer()
 
 void ScriptRayTracer::Clear()
 {
-	m_exportFileName.clear();
-	m_exportSurfaceName.clear();
+	m_exportData.clear();
 	m_exportSurfaceInGlobalCoordinates = true;
 	m_modelFileName.clear();
 	m_numberOfRays = 0;
@@ -102,21 +100,20 @@ void ScriptRayTracer::Clear()
 	m_sunDistance = 0;
 }
 
-void ScriptRayTracer::SetExportFileName( QString filename )
+void ScriptRayTracer::SetExportAll( QString filename )
 {
-	m_exportFileName = filename;
+	QPair< QString, bool > exportSurface;
+	exportSurface.first = "";
+
+	m_exportData.insert( filename,exportSurface );
 }
 
-
-void ScriptRayTracer::SetExportSurfaceName( QString surfaceName )
+void ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates )
 {
-	m_exportSurfaceName = surfaceName;
-}
-
-
-void ScriptRayTracer::SetExportSurfaceCoordinates( bool globalCoordinates )
-{
-	m_exportSurfaceInGlobalCoordinates = globalCoordinates;
+	QPair< QString, bool > exportSurface;
+	exportSurface.first = surfaceName;
+	exportSurface.second = globalCoordinates;
+	m_exportData.insert( filename, exportSurface );
 }
 
 void ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
@@ -183,20 +180,9 @@ void ScriptRayTracer::SetSunDistance( double distance )
 
 int ScriptRayTracer::Trace()
 {
-	std::cout<<"m_exportFileName: "<<m_exportFileName.toStdString()<<std::endl;
-	std::cout<<"m_exportSurfaceName: "<<m_exportSurfaceName.toStdString()<<std::endl;
-	std::cout<<"m_numberOfRays: "<<m_numberOfRays<<std::endl;
-	std::cout<<"m_sunAzimuth: "<<m_sunAzimuth<<std::endl;
-	std::cout<<"m_sunElevation: "<<m_sunElevation<<std::endl;
-	std::cout<<"m_sunDistance: "<<m_sunDistance<<std::endl;
-
 	if( m_modelFileName.isEmpty() ) return 0;
-	std::cout<<"m_modelFileName: "<<m_modelFileName.toStdString()<<std::endl;
-
 	if( !m_photonMap ) return 0;
-	std::cout<<"m_photonMap "<<std::endl;
 	if( !m_randomDeviate ) return 0;
-	std::cout<<"m_randomDeviate "<<std::endl;
 
 	Document document;
 	if( !document.ReadFile( m_modelFileName ) )	return 0;
@@ -210,7 +196,6 @@ int ScriptRayTracer::Trace()
 	QModelIndex sceneIndex;
 	InstanceNode* sceneInstance = sceneModel.NodeFromIndex( sceneIndex );
 	if ( !sceneInstance )  return 0;
-	std::cout<<"rootNode: "<<sceneInstance->GetNode()->getTypeId().getName().getString()<<std::endl;
 
 	InstanceNode* rootSeparatorInstance = sceneInstance->children[1];
 	if( !rootSeparatorInstance ) return 0;
@@ -259,30 +244,33 @@ int ScriptRayTracer::Trace()
 
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;
-	if( m_exportFileName.isEmpty() )	return 1;
-
+	if( m_exportData.isEmpty() )	return 1;
 
 	double wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
 
-	if( m_exportSurfaceName.isEmpty() )	return trf::ExportAll( m_exportFileName, wPhoton, m_photonMap );
-	else
+	QMap< QString, QPair< QString, bool> >::const_iterator i = m_exportData.constBegin();
+	while( i != m_exportData.constEnd() )
 	{
-		SoSearchAction* coinSearch = new SoSearchAction();
-		coinSearch->setName( m_exportSurfaceName.toStdString().c_str() );
-		coinSearch->setInterest( SoSearchAction::FIRST);
-		coinSearch->apply( document.GetSceneKit() );
+		QString exportFileName = i.key();
+		if( !exportFileName.isEmpty()  )
+		{
+			QPair< QString, bool>  surfaceData = i.value();
+			QString surfaceName = surfaceData.first;
+			if( surfaceName.isEmpty() )	trf::ExportAll( exportFileName, wPhoton, m_photonMap );
+			else
+			{
+				QModelIndex nodeIndex = sceneModel.IndexFromNodeUrl( surfaceName );
+				InstanceNode* selectedSurface = sceneModel.NodeFromIndex( nodeIndex );
 
-		SoPath* nodePath = coinSearch->getPath( );
-		if( !nodePath ) return 0;
-		SoNodeKitPath* selectedNodePath = static_cast< SoNodeKitPath* > ( nodePath );
-		if( !selectedNodePath ) return 0;
+				bool inGlobalCoordinates = surfaceData.second;
+				if( inGlobalCoordinates )	trf::ExportSurfaceGlobalCoordinates( exportFileName, selectedSurface, wPhoton, m_photonMap );
+				else	trf::ExportSurfaceLocalCoordinates( exportFileName, selectedSurface, wPhoton, m_photonMap );
+			}
 
-		QModelIndex nodeIndex = sceneModel.IndexFromPath( *selectedNodePath );
-		InstanceNode* selectedSurface = sceneModel.NodeFromIndex( nodeIndex );
+		}
 
-		if( m_exportSurfaceInGlobalCoordinates )	return trf::ExportSurfaceGlobalCoordinates( m_exportFileName, selectedSurface, wPhoton, m_photonMap );
-		else	return trf::ExportSurfaceLocalCoordinates( m_exportFileName, selectedSurface, wPhoton, m_photonMap );
-	}
+	     ++i;
+	 }
 
 	return 1;
 }

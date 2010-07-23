@@ -88,7 +88,7 @@ QScriptValue tonatiuh_script::tonatiuh_exportAll(QScriptContext* context, QScrip
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
 
 	QString fileName = context->argument(0).toString();
-	rayTracer->SetExportFileName( fileName );
+	rayTracer->SetExportAll( fileName );
 
 	return 1;
 }
@@ -105,17 +105,11 @@ QScriptValue tonatiuh_script::tonatiuh_export(QScriptContext* context, QScriptEn
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
 
 	QString fileName = context->argument(0).toString();
-	rayTracer->SetExportFileName( fileName );
-
 	QString surfaceName = context->argument(1).toString();
-	rayTracer->SetExportSurfaceName( surfaceName );
 
-	if( context->argumentCount() == 3)
-	{
-		bool coordinates= context->argument(2).toBool();
-		rayTracer->SetExportSurfaceCoordinates( coordinates );
-	}
-
+	bool coordinates = true;
+	if( context->argumentCount() == 3)	coordinates= context->argument(2).toBool();
+	rayTracer->SetExportSurface( fileName, surfaceName, coordinates );
 	return 1;
 }
 

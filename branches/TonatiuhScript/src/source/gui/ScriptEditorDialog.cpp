@@ -87,7 +87,7 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
 
 ScriptEditorDialog::~ScriptEditorDialog()
 {
-
+	delete m_interpreter;
 }
 
 QString ScriptEditorDialog::GetCurrentDirectory()
@@ -404,12 +404,4 @@ void  ScriptEditorDialog::RunScript()
 	QTextDocument* document = codeEditor->document();
 	QScriptValue result = m_interpreter->evaluate(document->toPlainText());
 
-
-	/*QString resultString = QString( " El resultado es: %1").arg( QString::number(result.toNumber() ) );
-	QMessageBox::warning( this, tr( "Tonatiuh warning" ),
-	 			resultString );*/
-
-	//delete interpreter;
-	QMessageBox::warning( this, tr( "Tonatiuh warning" ),
-										  tr( "This action is not yet implemented." ) );
 }

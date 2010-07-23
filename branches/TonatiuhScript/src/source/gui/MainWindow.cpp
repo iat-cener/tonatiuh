@@ -1174,10 +1174,10 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 	}
 	else
 	{
-		/*SoNodeKitPath* nodeKitPath = exportDialog.GetSelectedSurface();
-		QModelIndex nodeKitIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
-		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( nodeKitIndex );
-		if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return;
+		QString nodeURL = exportDialog.GetSelectedSurface();
+
+		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
+		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( selectedNodeIndex );
 
 		QList< Photon* > nodePhotonsList = m_photonMap->GetSurfacePhotons( selectedNode );
 
@@ -1213,7 +1213,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 				double next_id = ( node->next ) ? node->next->id : 0;
 				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
 			}
-		}*/
+		}
 
 
 

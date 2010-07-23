@@ -76,19 +76,25 @@ public:
     Qt::DropActions supportedDropActions() const;
 	Qt::DropActions supportedDragActions() const;
 
+    bool Cut( SoBaseKit& coinParent, int row );
+
+
+	QModelIndex IndexFromNodeUrl( QString nodeUrl ) const;
+	QModelIndex IndexFromPath( const SoNodeKitPath& coinNodePath ) const;
+
     int InsertCoinNode( SoNode& coinChild, SoBaseKit& coinParent );
 	void InsertLightNode( TLightKit& coinLight );
+
+	InstanceNode* NodeFromIndex( const QModelIndex& modelIndex ) const;
+
+	SoNodeKitPath* PathFromIndex( const QModelIndex& modelIndex ) const;
+
+	bool Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinChild, int row );
+
 	void RemoveCoinNode( int row, SoBaseKit& coinParent );
 	void RemoveLightNode( TLightKit& coinLight );
 
-    bool Cut( SoBaseKit& coinParent, int row );
-	bool Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coinChild, int row );
-
 	bool SetNodeName( SoNode* coinChild, QString newName );
-
-	InstanceNode* NodeFromIndex( const QModelIndex& modelIndex ) const;
-	QModelIndex IndexFromPath( const SoNodeKitPath& coinNodePath ) const;
-	SoNodeKitPath* PathFromIndex( const QModelIndex& modelIndex ) const;
 
 signals:
 	void LightNodeStateChanged( int newState );

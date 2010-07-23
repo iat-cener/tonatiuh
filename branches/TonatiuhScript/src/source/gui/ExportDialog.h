@@ -56,7 +56,7 @@ public:
 	int GetCoordinateSystem() const;
 	QString GetExportFileName() const;
 	int GetSelectedPhotons() const;
-	SoNodeKitPath* GetSelectedSurface() const;
+	QString GetSelectedSurface() const;
 
 
 public slots:

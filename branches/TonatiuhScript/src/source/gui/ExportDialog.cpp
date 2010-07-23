@@ -94,11 +94,11 @@ int ExportDialog::GetSelectedPhotons() const
 }
 
 /*!
- * Return selected surface node instance.
+ * Return selected surface node url.
  *
- * Returns \a NULL if there is not selection or selected node is not surface node.
+ * Returns an empty string if there is not selection or selected node is not surface node.
  */
-SoNodeKitPath* ExportDialog::GetSelectedSurface() const
+QString ExportDialog::GetSelectedSurface() const
 {
 	if( !surfaceMapRadio->isChecked () ) return 0;
 	if( !m_exportSelectionModel->hasSelection() ) return 0;
@@ -106,8 +106,8 @@ SoNodeKitPath* ExportDialog::GetSelectedSurface() const
 	InstanceNode* selectedNode = m_exportSceneModel->NodeFromIndex( m_exportSelectionModel->currentIndex() );
 	if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return 0;
 
-	//return selectedNode;
-	return m_exportSceneModel->PathFromIndex( m_exportSelectionModel->currentIndex() );
+	//return m_exportSceneModel->PathFromIndex( m_exportSelectionModel->currentIndex() );
+	return selectedNode->GetNodeURL();
 }
 
 void ExportDialog::accept()

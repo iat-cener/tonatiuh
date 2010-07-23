@@ -40,7 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SCRIPTRAYTRACER_H_
 #define SCRIPTRAYTRACER_H_
 
+#include <QMap>
 #include <QObject>
+#include <QPair>
 #include <QString>
 #include <QVector>
 
@@ -60,9 +62,9 @@ public:
 	~ScriptRayTracer();
 
 	void Clear();
-	void SetExportFileName( QString filename );
-	void SetExportSurfaceName( QString surfaceName );
-	void SetExportSurfaceCoordinates( bool globalCoordinates );
+	void SetExportAll( QString filename );
+	void SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates );
+
 	void SetTonatiuhModelFile ( QString filename );
 
 	void SetNumberOfRays( double nrays );
@@ -80,8 +82,8 @@ public:
 private:
 	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 
-	QString m_exportFileName;
-	QString m_exportSurfaceName;
+	QMap< QString, QPair< QString, bool> > m_exportData;
+
 	bool m_exportSurfaceInGlobalCoordinates;
 	QString m_modelFileName;
 	unsigned long m_numberOfRays;
