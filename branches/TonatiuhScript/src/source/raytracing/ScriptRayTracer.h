@@ -46,9 +46,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QString>
 #include <QVector>
 
+class Document;
 class InstanceNode;
 class RandomDeviate;
 class RandomDeviateFactory;
+class SceneModel;
 class TPhotonMap;
 class TPhotonMapFactory;
 class Transform;
@@ -62,10 +64,10 @@ public:
 	~ScriptRayTracer();
 
 	void Clear();
-	void SetExportAll( QString filename );
-	void SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates );
+	int SetExportAll( QString filename );
+	int SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates );
 
-	void SetTonatiuhModelFile ( QString filename );
+	void SetIrradiance( double irradiance );
 
 	void SetNumberOfRays( double nrays );
 
@@ -77,27 +79,34 @@ public:
 	void SetSunElevation( double elevation );
 	void SetSunDistance( double distance );
 
+	int SetTonatiuhModelFile ( QString filename );
+
 	int Trace();
 
 private:
 	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 
-	QMap< QString, QPair< QString, bool> > m_exportData;
 
-	bool m_exportSurfaceInGlobalCoordinates;
-	QString m_modelFileName;
+	Document* m_document;
+
+	double m_irradiance;
+
 	unsigned long m_numberOfRays;
 
-
 	QVector< TPhotonMapFactory* > m_TPhotonMapFactoryList;
+	int m_selectedPhotonMap;
 	TPhotonMap* m_photonMap;
 
 	QVector< RandomDeviateFactory* > m_RandomDeviateFactoryList;
 	RandomDeviate* m_randomDeviate;
 
+	SceneModel* m_sceneModel;
+
 	double m_sunAzimuth;
 	double m_sunElevation;
 	double m_sunDistance;
+
+	double m_wPhoton;
 
 };
 #endif /* SCRIPTRAYTRACER_H_ */

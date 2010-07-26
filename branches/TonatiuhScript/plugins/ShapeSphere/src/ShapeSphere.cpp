@@ -72,14 +72,21 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
-	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
-	m_radiusSensor->attach( &radius );
-	SoFieldSensor* m_yMinSensor = new SoFieldSensor(updateYMin, this);
-	m_yMinSensor->attach( &yMin );
-	SoFieldSensor* m_yMaxSensor = new SoFieldSensor(updateYMax, this);
-	m_yMaxSensor->attach( &yMax );
-	SoFieldSensor* m_phiMaxSensor = new SoFieldSensor(updatePhiMax, this);
-	m_phiMaxSensor->attach( &phiMax );
+	SoFieldSensor* radiusSensor = new SoFieldSensor(updateRadius, this);
+	radiusSensor->setPriority( 0 );
+	radiusSensor->attach( &radius );
+
+	SoFieldSensor* yMinSensor = new SoFieldSensor(updateYMin, this);
+	yMinSensor->setPriority( 0 );
+	yMinSensor->attach( &yMin );
+
+	SoFieldSensor* yMaxSensor = new SoFieldSensor(updateYMax, this);
+	yMaxSensor->setPriority( 0 );
+	yMaxSensor->attach( &yMax );
+
+	SoFieldSensor* phiMaxSensor = new SoFieldSensor(updatePhiMax, this);
+	phiMaxSensor->setPriority( 0 );
+	phiMaxSensor->attach( &phiMax );
 }
 
 ShapeSphere::~ShapeSphere()

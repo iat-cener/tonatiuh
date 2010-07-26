@@ -135,7 +135,7 @@ void finishManipulator(void *data, SoDragger* /*dragger*/ )
 	mainwindow->FinishManipulation( );
 }
 
-MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
+MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags flags )
 :QMainWindow( parent, flags ),
 m_currentFile( 0 ),
 m_recentFiles( 0 ),
@@ -183,6 +183,8 @@ m_focusView( 0 )
 	SetupViews();
     LoadAvailablePlugins();
     ReadSettings();
+
+    if( !tonatiuhFile.isEmpty() )	StartOver( tonatiuhFile );
 }
 
 MainWindow::~MainWindow()
@@ -1073,7 +1075,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
 		futureWatcher.setFuture( photonMap );
 

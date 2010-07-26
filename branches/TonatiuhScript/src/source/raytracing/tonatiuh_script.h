@@ -53,6 +53,8 @@ namespace tonatiuh_script
 
 	QScriptValue tonatiuh_filename(QScriptContext* context, QScriptEngine* engine );
 
+	QScriptValue tonatiuh_irradiance(QScriptContext* context, QScriptEngine* engine );
+
 	QScriptValue tonatiuh_numrays(QScriptContext* context, QScriptEngine* engine );
 
 	QScriptValue tonatiuh_photon_map(QScriptContext* context, QScriptEngine* engine );

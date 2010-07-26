@@ -61,6 +61,7 @@ class RayTracer
 
 public:
 	RayTracer( InstanceNode* rootNode,
+		       InstanceNode* lightNode,
 		       TShape* lightShape,
 		       TSunShape* const lightSunShape,
 		       Transform lightToWorld,
@@ -76,6 +77,7 @@ public:
 
 private:
 	InstanceNode* m_rootNode;
+	InstanceNode* m_lightNode;
 	TShape* m_lightShape;
 	const TSunShape* m_lightSunShape;
 	Transform m_lightToWorld;

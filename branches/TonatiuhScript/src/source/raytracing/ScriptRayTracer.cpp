@@ -64,64 +64,77 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 ScriptRayTracer::ScriptRayTracer( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory )
-://m_exportData( 0 ),
-m_exportSurfaceInGlobalCoordinates( true ),
-m_modelFileName( 0 ),
+:
+m_document( 0 ),
+m_irradiance( -1 ),
 m_numberOfRays( 0 ),
 m_TPhotonMapFactoryList( listTPhotonMapFactory ),
+m_selectedPhotonMap( -1 ),
 m_photonMap( 0 ),
 m_RandomDeviateFactoryList( listRandomDeviateFactory ),
 m_randomDeviate( 0 ),
+m_sceneModel ( 0 ),
 m_sunAzimuth( 0 ),
 m_sunElevation( 0 ),
-m_sunDistance( 0 )
+m_sunDistance( 0 ),
+m_wPhoton( 0 )
 {
 
 }
 
 ScriptRayTracer::~ScriptRayTracer()
 {
+	delete m_document;
 	delete m_photonMap;
 	delete m_randomDeviate;
+	delete m_sceneModel;
 }
 
 void ScriptRayTracer::Clear()
 {
-	m_exportData.clear();
-	m_exportSurfaceInGlobalCoordinates = true;
-	m_modelFileName.clear();
+	delete m_document;
+	m_document = 0;
+	m_irradiance = -1;
 	m_numberOfRays = 0;
+	m_selectedPhotonMap = -1;
 	delete m_photonMap;
 	m_photonMap = 0;
 	delete m_randomDeviate;
 	m_randomDeviate = 0;
+	delete m_sceneModel;
+	m_sceneModel = 0;
 	m_sunAzimuth = 0;
 	m_sunElevation = 0;
 	m_sunDistance = 0;
+	m_wPhoton = 0;
 }
 
-void ScriptRayTracer::SetExportAll( QString filename )
+int ScriptRayTracer::SetExportAll( QString filename )
 {
-	QPair< QString, bool > exportSurface;
-	exportSurface.first = "";
-
-	m_exportData.insert( filename,exportSurface );
+	if( !filename.isEmpty()  )	return trf::ExportAll( filename, m_wPhoton, m_photonMap );
+	return 0;
 }
 
-void ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates )
+int ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates )
 {
-	QPair< QString, bool > exportSurface;
-	exportSurface.first = surfaceName;
-	exportSurface.second = globalCoordinates;
-	m_exportData.insert( filename, exportSurface );
+	if( filename.isEmpty() || surfaceName.isEmpty() )	return 0;
+
+	QModelIndex surfaceIndex = m_sceneModel->IndexFromNodeUrl( surfaceName );
+	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( surfaceIndex );
+	if( !selectedSurface )
+	{
+		std::cerr<<surfaceName.toStdString()<<" is not a valid surface to export"<<std::endl;
+		return 0;
+	}
+
+	if( globalCoordinates )	return trf::ExportSurfaceGlobalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap );
+	else	return trf::ExportSurfaceLocalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap );
 }
 
-void ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
+void ScriptRayTracer::SetIrradiance( double irradiance )
 {
-	m_modelFileName = filename;
+
 }
-
-
 
 void ScriptRayTracer::SetNumberOfRays( double nrays )
 {
@@ -136,9 +149,7 @@ void ScriptRayTracer::SetPhotonMapType( QString typeName )
 	for( int i = 0; i < m_TPhotonMapFactoryList.size(); i++ )
 		photonMapNames<< m_TPhotonMapFactoryList[i]->TPhotonMapName();
 
-	int selectedPhotonMap = photonMapNames.indexOf( typeName );
-	if( selectedPhotonMap > -1 )	m_photonMap = m_TPhotonMapFactoryList[selectedPhotonMap]->CreateTPhotonMap();
-	else m_photonMap = 0;
+	m_selectedPhotonMap = photonMapNames.indexOf( typeName );
 }
 
 void ScriptRayTracer::SetRandomDeviateType( QString typeName )
@@ -178,31 +189,70 @@ void ScriptRayTracer::SetSunDistance( double distance )
 	m_sunDistance = distance;
 }
 
+int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
+{
+	delete m_document;
+	m_document = 0;
+
+	m_document = new Document;
+	if( !m_document->ReadFile( filename ) )	return 0;
+
+	delete m_sceneModel;
+	m_sceneModel = 0;
+	m_sceneModel = new SceneModel;
+	m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
+	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
+
+	return 1;
+}
+
 int ScriptRayTracer::Trace()
 {
-	if( m_modelFileName.isEmpty() ) return 0;
-	if( !m_photonMap ) return 0;
-	if( !m_randomDeviate ) return 0;
+	delete m_photonMap;
+	m_photonMap = 0;
 
-	Document document;
-	if( !document.ReadFile( m_modelFileName ) )	return 0;
+	if( m_selectedPhotonMap > -1 )	m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
+	if( !m_photonMap )
+	{
+		std::cerr<<"ScriptRayTracer::Trace() no photonMap defined"<<std::endl;
+		return 0;
+	}
+	if( !m_randomDeviate )
+	{
+		std::cerr<<"ScriptRayTracer::Trace() no random generator defined"<<std::endl;
+		return 0;
+	}
 
-	SceneModel sceneModel( 0 );
-	sceneModel.SetCoinRoot( *document.GetRoot() );
-
-	SoSceneKit* coinScene = document.GetSceneKit();
-	sceneModel.SetCoinScene( *coinScene );
+	if( !m_sceneModel )
+	{
+		std::cerr<<"ScriptRayTracer::Trace() no model defined"<<std::endl;
+		return 0;
+	}
 
 	QModelIndex sceneIndex;
-	InstanceNode* sceneInstance = sceneModel.NodeFromIndex( sceneIndex );
-	if ( !sceneInstance )  return 0;
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneIndex );
+	if ( !sceneInstance )
+	{
+		std::cerr<<"ScriptRayTracer::Trace() no scene defined"<<std::endl;
+		return 0;
+	}
 
 	InstanceNode* rootSeparatorInstance = sceneInstance->children[1];
-	if( !rootSeparatorInstance ) return 0;
+	if( !rootSeparatorInstance )
+	{
+		std::cerr<<"ScriptRayTracer::Trace() no scene root defined"<<std::endl;
+		return 0;
+	}
 
 	InstanceNode* lightInstance = sceneInstance->children[0];
-	if ( !lightInstance ) return 0;
+	if ( !lightInstance )
+	{
+		std::cerr<<"ScriptRayTracer::Trace() no light defined"<<std::endl;
+		return 0;
+	}
 
+
+	SoSceneKit* coinScene =  static_cast< SoSceneKit* >( sceneInstance->GetNode() );
 
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
@@ -210,7 +260,8 @@ int ScriptRayTracer::Trace()
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->GetIrradiance();
+	double irradiance  = m_irradiance;
+	if( irradiance < 0 ) irradiance = sunShape->GetIrradiance();
 
 	if( !lightKit->getPart( "icon", false ) ) return 0;
 	TShape* raycastingSurface = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
@@ -218,7 +269,8 @@ int ScriptRayTracer::Trace()
 
 	if( !lightKit->getPart( "transform" ,true ) ) return 0;
 	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,true ) );
-
+	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
+	lightInstance->SetIntersectionTransform( lightToWorld. GetInverse() );
 
 	ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
 
@@ -230,47 +282,20 @@ int ScriptRayTracer::Trace()
 
 	if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )	raysPerThread<< ( m_numberOfRays-( t1* maximumValueProgressScale) );
 
-	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
-
 	//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 	// Create a QFutureWatcher and conncect signals and slots.
 	QFutureWatcher< TPhotonMap* > futureWatcher;
 
 	QMutex mutex;
-	QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+	QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 	futureWatcher.setFuture( photonMap );
 
 	futureWatcher.waitForFinished();
 
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;
-	if( m_exportData.isEmpty() )	return 1;
 
-	double wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
-
-	QMap< QString, QPair< QString, bool> >::const_iterator i = m_exportData.constBegin();
-	while( i != m_exportData.constEnd() )
-	{
-		QString exportFileName = i.key();
-		if( !exportFileName.isEmpty()  )
-		{
-			QPair< QString, bool>  surfaceData = i.value();
-			QString surfaceName = surfaceData.first;
-			if( surfaceName.isEmpty() )	trf::ExportAll( exportFileName, wPhoton, m_photonMap );
-			else
-			{
-				QModelIndex nodeIndex = sceneModel.IndexFromNodeUrl( surfaceName );
-				InstanceNode* selectedSurface = sceneModel.NodeFromIndex( nodeIndex );
-
-				bool inGlobalCoordinates = surfaceData.second;
-				if( inGlobalCoordinates )	trf::ExportSurfaceGlobalCoordinates( exportFileName, selectedSurface, wPhoton, m_photonMap );
-				else	trf::ExportSurfaceLocalCoordinates( exportFileName, selectedSurface, wPhoton, m_photonMap );
-			}
-
-		}
-
-	     ++i;
-	 }
+	m_wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
 
 	return 1;
 }

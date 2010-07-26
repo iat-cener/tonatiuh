@@ -56,9 +56,11 @@ SunshapeBuie::SunshapeBuie( )
 	SO_NODE_ADD_FIELD( crs, ( 0.05 ) );
 
 	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCRS, this );
+	irradianceSensor->setPriority( 0 );
 	irradianceSensor->attach( &irradiance );
 
 	SoFieldSensor* crsSensor = new SoFieldSensor( updateCRS, this );
+	crsSensor->setPriority( 0 );
 	crsSensor->attach( &crs );
 
 	//Integrate[ Phi2[theta*1000, \[CapitalChi]0]*10^-3*Sin[theta], {theta, 0.00465, 0.0436}] = 9.22474e-9

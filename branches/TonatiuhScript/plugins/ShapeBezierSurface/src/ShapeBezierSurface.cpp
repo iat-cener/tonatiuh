@@ -68,6 +68,7 @@ ShapeBezierSurface::ShapeBezierSurface( )
 
 
 	SoFieldSensor* fileSensor = new SoFieldSensor( updateInputDataFile, this );
+	fileSensor->setPriority( 0 );
 	fileSensor->attach( &inputDataFile );
 
 }

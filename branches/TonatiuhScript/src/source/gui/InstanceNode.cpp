@@ -242,7 +242,9 @@ void InstanceNode::SetIntersectionBBox( BBox nodeBBox )
 {
 	m_bbox = nodeBBox;
 }
-
+/**
+ * Set node world to object transform to \a nodeTransform .
+ */
 void InstanceNode::SetIntersectionTransform( Transform nodeTransform )
 {
 

@@ -77,14 +77,17 @@ ShapeSphericalRectangle::ShapeSphericalRectangle()
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
 
-	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
-	m_radiusSensor->attach( &radius );
+	SoFieldSensor* radiusSensor = new SoFieldSensor(updateRadius, this);
+	radiusSensor->setPriority( 0 );
+	radiusSensor->attach( &radius );
 
-	SoFieldSensor* m_widthXSensor = new SoFieldSensor(updateWidthX, this);
-	m_widthXSensor->attach( &widthX );
+	SoFieldSensor* widthXSensor = new SoFieldSensor(updateWidthX, this);
+	widthXSensor->setPriority( 0 );
+	widthXSensor->attach( &widthX );
 
-	SoFieldSensor* m_widthZSensor = new SoFieldSensor(updateWidthZ, this);
-	m_widthZSensor->attach( &widthZ );
+	SoFieldSensor* widthZSensor = new SoFieldSensor(updateWidthZ, this);
+	widthZSensor->setPriority( 0 );
+	widthZSensor->attach( &widthZ );
 }
 
 ShapeSphericalRectangle::~ShapeSphericalRectangle()

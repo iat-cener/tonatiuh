@@ -74,10 +74,13 @@ ShapeTroughParabola::ShapeTroughParabola()
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
 
-	SoFieldSensor* m_xMinSensor = new SoFieldSensor(updateXMinValues, this);
-	m_xMinSensor->attach( &xMin );
-	SoFieldSensor* m_xMaxSensor = new SoFieldSensor(updateXMaxValues, this);
-	m_xMaxSensor->attach( &xMax );
+	SoFieldSensor* xMinSensor = new SoFieldSensor(updateXMinValues, this);
+	xMinSensor->setPriority( 0 );
+	xMinSensor->attach( &xMin );
+
+	SoFieldSensor* xMaxSensor = new SoFieldSensor(updateXMaxValues, this);
+	xMaxSensor->setPriority( 0 );
+	xMaxSensor->attach( &xMax );
 
 }
 

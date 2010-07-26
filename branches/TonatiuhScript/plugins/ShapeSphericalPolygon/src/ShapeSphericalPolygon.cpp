@@ -75,12 +75,15 @@ ShapeSphericalPolygon::ShapeSphericalPolygon()
     m_xMax = radius.getValue() * cos( m_phiMax );
 
 	SoFieldSensor* sphereRadiusSensor = new SoFieldSensor( SphereRadiusChanged, this );
+	sphereRadiusSensor->setPriority( 0 );
 	sphereRadiusSensor->attach( &sphereRadius );
 
 	SoFieldSensor* radiusSensor = new SoFieldSensor( RadiusChanged, this );
+	radiusSensor->setPriority( 0 );
 	radiusSensor->attach( &radius );
 
 	SoFieldSensor* sidesSensor = new SoFieldSensor( SidesChanged, this );
+	sidesSensor->setPriority( 0 );
 	sidesSensor->attach( &polygonSides );
 }
 

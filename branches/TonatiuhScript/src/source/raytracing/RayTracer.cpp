@@ -55,6 +55,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Trace.h"
 
 RayTracer::RayTracer( InstanceNode* rootNode,
+	       InstanceNode* lightNode,
 	       TShape* lightShape,
 	       TSunShape* const lightSunShape,
 	       Transform lightToWorld,
@@ -62,6 +63,7 @@ RayTracer::RayTracer( InstanceNode* rootNode,
 	       QMutex* mutex,
 	       TPhotonMap* photonMap )
 :m_rootNode( rootNode ),
+m_lightNode( lightNode ),
 m_lightShape( lightShape ),
 m_lightSunShape( lightSunShape ),
 m_lightToWorld( lightToWorld ),
@@ -86,15 +88,9 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 		ray.maxt = tgc::Infinity;
 		ray = m_lightToWorld( ray );
 
-	/*	Photon first( ray.origin );
-		//Photon* node = &first;
-
-		Photon* node = new Photon( first);
-		node->intersectedSurface = 0;*/
-
 		Photon first( ray.origin );
 		first.id = 0;
-		first.intersectedSurface = 0;
+		first.intersectedSurface = m_lightNode;
 		photonsVector.push_back( first );
 		int rayLength = 0;
 

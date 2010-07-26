@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <cmath>
 
 #include <QFile>
+#include <QTextStream>
 
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -54,6 +55,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
+#include "TLightKit.h"
 #include "trf.h"
 #include "TShapeKit.h"
 
@@ -68,7 +70,8 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
 	QFile exportFile( fileName );
 	if(!exportFile.open( QIODevice::WriteOnly ) )	return 0;
 
-	QDataStream out( &exportFile );
+	//QDataStream out( &exportFile );
+	QTextStream out( &exportFile );
 	out<< wPhoton;
 
 	QList< Photon* > photonsList = photonMap->GetAllPhotons();
@@ -79,7 +82,9 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
 		double id = node->id;
 		double prev_id = ( node->prev ) ? node->prev->id : 0;
 		double next_id = ( node->next ) ? node->next->id : 0;
-		out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+		QString nodeUrl = "-";
+		if( node->intersectedSurface != 0 )	nodeUrl = node->intersectedSurface->GetNodeURL();
+		out<<id <<"\t" <<photon.x <<"\t" << photon.y << "\t" << photon.z << "\t" <<prev_id<<"\t"<<next_id<<"\t"<<nodeUrl<<"\n";
 	}
 	exportFile.close();
 
@@ -93,7 +98,9 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
  */
 int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap )
 {
-	if( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return 0;
+	if( ( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
+		( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) ) )
+		return 0;
 
 	QFile exportFile( fileName );
 	if(!exportFile.open( QIODevice::WriteOnly ) )	return 0;
@@ -130,7 +137,9 @@ int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selecte
  */
 int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap )
 {
-	if( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return 0;
+	if( ( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
+		( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) ) )
+			return 0;
 
 	QFile exportFile( fileName );
 	if(!exportFile.open( QIODevice::WriteOnly ) )	return 0;
@@ -144,7 +153,6 @@ int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selected
 		exportFile.close();
 		return 1;
 	}
-
 	Transform worldToObject = selectedSurface->GetIntersectionTransform();
 	for( int i = 0; i< nodePhotonsList.size(); ++i )
 	{
