@@ -50,6 +50,7 @@ class Document;
 class InstanceNode;
 class RandomDeviate;
 class RandomDeviateFactory;
+class QScriptContext;
 class SceneModel;
 class TPhotonMap;
 class TPhotonMapFactory;
@@ -64,18 +65,22 @@ public:
 	~ScriptRayTracer();
 
 	void Clear();
+	bool IsValidPhotonMapType( QString type );
+	bool IsValidRandomGeneratorType( QString type );
+	bool IsValidSurface( QString surfaceName );
+
 	int SetExportAll( QString filename );
 	int SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates );
 
-	void SetIrradiance( double irradiance );
+	int SetIrradiance( double irradiance );
 
-	void SetNumberOfRays( double nrays );
+	int SetNumberOfRays( double nrays );
 
-	void SetPhotonMapType( QString typeName );
+	int SetPhotonMapType( QString typeName );
 
-	void SetRandomDeviateType( QString typeName );
+	int SetRandomDeviateType( QString typeName );
 
-	void SetSunAzimtuh( double azimuth );
+	void SetSunAzimtuh( double azimuth);
 	void SetSunElevation( double elevation );
 	void SetSunDistance( double distance );
 

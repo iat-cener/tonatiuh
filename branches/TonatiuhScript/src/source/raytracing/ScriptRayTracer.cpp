@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QFutureWatcher>
 #include <QMutex>
+#include <QScriptContext>
 #include <QtConcurrentMap>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -109,10 +110,51 @@ void ScriptRayTracer::Clear()
 	m_wPhoton = 0;
 }
 
+
+bool ScriptRayTracer::IsValidPhotonMapType( QString type )
+{
+	if( m_TPhotonMapFactoryList.size() == 0 )	 return 0;
+
+	QVector< QString > photonMapNames;
+	for( int i = 0; i < m_TPhotonMapFactoryList.size(); i++ )
+			photonMapNames<< m_TPhotonMapFactoryList[i]->TPhotonMapName();
+
+	int selectedPhotonMap = photonMapNames.indexOf( type );
+	if( selectedPhotonMap < 0 )	return 0;
+
+	return 1;
+}
+
+
+bool ScriptRayTracer::IsValidRandomGeneratorType( QString type )
+{
+	if( m_RandomDeviateFactoryList.size() == 0 )	 return 0;
+
+	QVector< QString > randomGeneratorsNames;
+	for( int i = 0; i < m_RandomDeviateFactoryList.size(); i++ )
+		randomGeneratorsNames<< m_RandomDeviateFactoryList[i]->RandomDeviateName();
+
+	int selectedRandom = randomGeneratorsNames.indexOf( type );
+
+	if( selectedRandom < 0 )	return 0;
+
+	return 1;
+}
+
+bool ScriptRayTracer::IsValidSurface( QString surfaceName )
+{
+	if( !m_sceneModel )	return false;
+
+	QModelIndex surfaceIndex = m_sceneModel->IndexFromNodeUrl( surfaceName );
+	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( surfaceIndex );
+	if( !selectedSurface )	return false;
+
+	return true;
+}
+
 int ScriptRayTracer::SetExportAll( QString filename )
 {
-	if( !filename.isEmpty()  )	return trf::ExportAll( filename, m_wPhoton, m_photonMap );
-	return 0;
+	return trf::ExportAll( filename, m_wPhoton, m_photonMap );
 }
 
 int ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates )
@@ -121,28 +163,26 @@ int ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bo
 
 	QModelIndex surfaceIndex = m_sceneModel->IndexFromNodeUrl( surfaceName );
 	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( surfaceIndex );
-	if( !selectedSurface )
-	{
-		std::cerr<<surfaceName.toStdString()<<" is not a valid surface to export"<<std::endl;
-		return 0;
-	}
+	if( !selectedSurface )	return 0;
 
 	if( globalCoordinates )	return trf::ExportSurfaceGlobalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap );
 	else	return trf::ExportSurfaceLocalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap );
 }
 
-void ScriptRayTracer::SetIrradiance( double irradiance )
+int ScriptRayTracer::SetIrradiance( double irradiance )
 {
-
+	m_irradiance = irradiance;
+	return 1;
 }
 
-void ScriptRayTracer::SetNumberOfRays( double nrays )
+int ScriptRayTracer::SetNumberOfRays( double nrays )
 {
 	m_numberOfRays = nrays;
+	return 1;
 }
 
 
-void ScriptRayTracer::SetPhotonMapType( QString typeName )
+int ScriptRayTracer::SetPhotonMapType( QString typeName )
 {
 	QVector< QString > photonMapNames;
 
@@ -150,19 +190,26 @@ void ScriptRayTracer::SetPhotonMapType( QString typeName )
 		photonMapNames<< m_TPhotonMapFactoryList[i]->TPhotonMapName();
 
 	m_selectedPhotonMap = photonMapNames.indexOf( typeName );
+	if( m_selectedPhotonMap < 0 )	return 0;
+
+	return 1;
 }
 
-void ScriptRayTracer::SetRandomDeviateType( QString typeName )
+int ScriptRayTracer::SetRandomDeviateType( QString typeName )
 {
 	QVector< QString > randomGeneratorsNames;
-
 	for( int i = 0; i < m_RandomDeviateFactoryList.size(); i++ )
 		randomGeneratorsNames<< m_RandomDeviateFactoryList[i]->RandomDeviateName();
 
 	int selectedRandom = randomGeneratorsNames.indexOf( typeName );
+	if(  selectedRandom < 0 )
+	{
+		m_randomDeviate = 0;
+		return 0;
+	}
 
-	if( selectedRandom > -1 )	m_randomDeviate = m_RandomDeviateFactoryList[selectedRandom]->CreateRandomDeviate();
-	else m_randomDeviate = 0;
+	m_randomDeviate = m_RandomDeviateFactoryList[selectedRandom]->CreateRandomDeviate();
+	return 1;
 }
 
 /*!

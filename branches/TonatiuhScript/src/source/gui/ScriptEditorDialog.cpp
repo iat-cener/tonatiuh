@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QListWidget>
 #include <QMessageBox>
 #include <QScriptEngine>
+#include <QScriptSyntaxCheckResult>
 #include <QScriptValueList>
 #include <QString>
 #include <QToolBar>
@@ -61,7 +62,6 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
  m_interpreter( 0 )
 {
 	setupUi( this );
-
 	setWindowFlags( windowFlags() | Qt::WindowMinMaxButtonsHint );
 
 	QSplitter* pSplitter = findChild<QSplitter *>( "mainSplitter" );
@@ -93,6 +93,15 @@ ScriptEditorDialog::~ScriptEditorDialog()
 QString ScriptEditorDialog::GetCurrentDirectory()
 {
 	return m_dirLineEdit->text();
+}
+
+void ScriptEditorDialog::closeEvent( QCloseEvent* event )
+{
+    if ( OkToContinue() )
+    {
+    	event->accept();
+    }
+    else event->ignore();
 }
 
 void ScriptEditorDialog::AddCodeEditorWidgetToolbar()
@@ -326,7 +335,7 @@ void ScriptEditorDialog::RefreshDirList()
 		if( !fileList[file].isHidden() )
 		{
 			if( fileList[file].isDir() )	filesList->addItem( new QListWidgetItem( folderIcon, fileList[file].fileName () ) );
-			else if( fileList[file].completeSuffix() == "ts" )	filesList->addItem( new QListWidgetItem( fileIcon, fileList[file].fileName () ) );
+			else if( fileList[file].completeSuffix() == "tnhs" )	filesList->addItem( new QListWidgetItem( fileIcon, fileList[file].fileName () ) );
 		}
 	}
 }
@@ -364,7 +373,7 @@ void ScriptEditorDialog::OpenScriptFile()
 
 	QString fileName = QFileDialog::getOpenFileName( this,
 	                               tr( "Open File" ),  m_dirLineEdit->text(),
-	                               tr( "Tonatiuh script file (*.ts)" ) );
+	                               tr( "Tonatiuh script file (*.tnhs)" ) );
 
 	if ( fileName.isEmpty() )	return;
 
@@ -383,7 +392,7 @@ bool ScriptEditorDialog::SaveAsScriptFile()
 {
 	QString fileName = QFileDialog::getSaveFileName( this,
 	                       tr( "Save File" ), m_dirLineEdit->text(),
-	                       tr( "Tonatiuh script file (*.ts)" ) );
+	                       tr( "Tonatiuh script file (*.tnhs)" ) );
 	if( fileName.isEmpty() ) return false;
 
 	return SaveFile( fileName );
@@ -396,12 +405,30 @@ void  ScriptEditorDialog::RunScript()
 	int initialized = tonatiuh_script::init( m_interpreter );
 	if( !initialized )
 	{
-		QMessageBox::warning( this, tr( "Tonatiuh warning" ),
-				tr( "Script Execution Error." ) );
+		QMessageBox::warning( this, tr( "Tonatiuh" ), tr( "Script Execution Error." ) );
 		return;
 	}
 
 	QTextDocument* document = codeEditor->document();
-	QScriptValue result = m_interpreter->evaluate(document->toPlainText());
 
+	QString program = document->toPlainText();
+	QScriptSyntaxCheckResult checkResult = m_interpreter->checkSyntax( program );
+	if( checkResult.state() != QScriptSyntaxCheckResult::Valid )
+	{
+		QMessageBox::warning( this, tr( "Tonatiuh" ),
+				QString( "Script Execution Error.\n"
+						"Line: %1. %2" ).arg( QString::number( checkResult.errorLineNumber() ), checkResult.errorMessage () ) );
+		return;
+	}
+
+	QScriptValue result = m_interpreter->evaluate(document->toPlainText());
+	if( result.isError () )
+	{
+
+		QScriptValue lineNumber = result.property( "lineNumber");
+		QMessageBox::warning( this, tr( "Tonatiuh" ),
+			QString( "Script Execution Error.\nLine%1. %2" ).arg( QString::number( lineNumber.toNumber() ), result.toString() ) );
+	}
+	else
+		QMessageBox::information ( this, tr( "Tonatiuh" ), tr( "The script execution is successfully finished" ) );
 }

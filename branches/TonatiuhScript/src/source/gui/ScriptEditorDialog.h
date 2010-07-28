@@ -58,6 +58,9 @@ public:
 
 	QString GetCurrentDirectory();
 
+protected:
+    void closeEvent( QCloseEvent* event );
+
 private:
 	void AddCodeEditorWidgetToolbar();
 	void AddFilesExplorerWidgetToolbar( QString dirName );
