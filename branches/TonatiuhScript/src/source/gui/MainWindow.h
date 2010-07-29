@@ -269,6 +269,10 @@ private:
     int m_selectedPhotonMap;
     bool m_increasePhotonMap;
 
+    QString m_lastExportFileName;
+    QString m_lastExportSurfaceUrl;
+    bool m_lastExportInGlobal;
+
     QString m_scriptDirectory;
 
     SoSeparator* m_pRays;

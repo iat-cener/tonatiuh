@@ -45,17 +45,21 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SceneModel.h"
 #include "ui_exportdialog.h"
 
+//!  ExportDialog class is the dialog to define the photon map export mode.
+/*!
+  ExportDialog sets the photons to export, the coordinates system and the file to save selected information.
+*/
 class ExportDialog : public QDialog, private Ui::ExportDialog
 {
 	Q_OBJECT
 
 public:
-	ExportDialog( SceneModel& sceneModel, QWidget* parent = 0 );
+	ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl = 0, bool previusInGlobal = true, QString previousFile = 0, QWidget* parent = 0 );
 	~ExportDialog();
 
-	int GetCoordinateSystem() const;
+	bool ExportAllPhotonMap() const;
+	bool ExportPhotonsInGlobal() const;
 	QString GetExportFileName() const;
-	int GetSelectedPhotons() const;
 	QString GetSelectedSurface() const;
 
 
@@ -63,7 +67,9 @@ public slots:
 	void accept();
 
 private slots:
-	void on_openButton_clicked();
+	void SetExportAllPhotons( bool allPhotos );
+	void SetExportSurfacePhotons( bool surfacePhotos );
+	void SelectFile();
 
 private:
 	SceneModel* m_exportSceneModel;

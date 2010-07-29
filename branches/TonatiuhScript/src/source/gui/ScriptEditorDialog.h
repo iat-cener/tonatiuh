@@ -48,6 +48,11 @@ class QScriptEngine;
 class TPhotonMapFactory;
 class RandomDeviateFactory;
 
+//!  ScriptEditorDialog class is the dialog to edit and run scripts with Tonatiuh.
+/*!
+  ScriptEditorDialog allow to the user open, edit, run and save scripts to automate the ray tracing.
+*/
+
 class ScriptEditorDialog : public QDialog, private Ui::ScriptEditorDialog
 {
 	Q_OBJECT
@@ -64,24 +69,21 @@ protected:
 private:
 	void AddCodeEditorWidgetToolbar();
 	void AddFilesExplorerWidgetToolbar( QString dirName );
-
 	bool OkToContinue();
-	bool SaveFile( const QString& fileName );
+	bool SaveScriptFile( const QString& fileName );
 	void SetCurrentFile( const QString& fileName );
 	void StartDocument( QString fileName );
 
 private slots:
+	void CdUpDir();
+	void NewScriptFile();
 	void OpenDirectory();
 	void OpenScriptFile( QListWidgetItem* item );
-	void RefreshDirList();
-	void CdUpDir();
-
-	void NewScriptFile();
 	void OpenScriptFile();
-	bool SaveScriptFile();
-	bool SaveAsScriptFile();
-
+	void RefreshDirList();
 	void RunScript();
+	bool SaveAsScriptFile();
+	bool SaveScript();
 
 private:
 	QLineEdit* m_dirLineEdit;

@@ -158,6 +158,9 @@ m_selectedRandomDeviate( -1 ),
 m_photonMap( 0 ),
 m_selectedPhotonMap( -1 ),
 m_increasePhotonMap( false ),
+m_lastExportFileName( 0 ),
+m_lastExportSurfaceUrl( 0 ),
+m_lastExportInGlobal( true ),
 m_scriptDirectory("." ),
 m_pRays( 0 ),
 m_pGrid( 0 ),
@@ -1095,7 +1098,9 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
-
+/**
+ * If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden.
+ */
 void MainWindow::on_actionDisplay_rays_toggled()
 {
 	if ( actionDisplay_rays->isChecked() && (m_pRays ) )
@@ -1109,29 +1114,28 @@ void MainWindow::on_actionDisplay_rays_toggled()
 }
 
 /*!
- * Writes the photons stored at the photon map at user defined file.
+ * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
  */
 void MainWindow::on_actionExport_PhotonMap_triggered()
 {
 	if ( m_photonMap == NULL )
 	{
-		QMessageBox::information( this, "Tonatiuh Action",
-	                          "No Photon Map stored", 1);
+		QMessageBox::information( this, "Tonatiuh", "No Photon Map stored", 1 );
 	    return;
 	}
 
-	ExportDialog exportDialog( *m_sceneModel );
+	ExportDialog exportDialog( *m_sceneModel, m_lastExportSurfaceUrl, m_lastExportInGlobal, m_lastExportFileName, this );
 	if( !exportDialog.exec() ) return;
 
 	QString fileName = exportDialog.GetExportFileName();
 	if( fileName.isEmpty() )
 	{
-		QMessageBox::information( this, "Tonatiuh Action",
-											  "No file defined to save Photon Map", 1);
+		QMessageBox::information( this, "Tonatiuh", "No file defined to save Photon Map", 1 );
 		return;
 	}
+	m_lastExportFileName = fileName;
 
-	QFile exportFile( fileName );
+	QFile exportFile( m_lastExportFileName );
 
 	 if(!exportFile.open( QIODevice::WriteOnly ) )
 	 {
@@ -1160,8 +1164,11 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 	out<< wPhoton;
 
-	if( exportDialog.GetSelectedPhotons() == 0 )
+	if( exportDialog.ExportAllPhotonMap() )
 	{
+		m_lastExportSurfaceUrl.clear();
+		m_lastExportInGlobal = true;
+
 		QList< Photon* > photonsList = m_photonMap->GetAllPhotons();
 		for (int i = 0; i < photonsList.size(); ++i)
 		{
@@ -1177,6 +1184,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 	else
 	{
 		QString nodeURL = exportDialog.GetSelectedSurface();
+		if( !nodeURL.isEmpty() )	m_lastExportSurfaceUrl = nodeURL;
 
 		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
 		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( selectedNodeIndex );
@@ -1190,8 +1198,9 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 			return;
 		}
 
-		if( exportDialog.GetCoordinateSystem() == 1 )
+		if( !exportDialog.ExportPhotonsInGlobal() )
 		{
+			m_lastExportInGlobal = false;
 			Transform worldToObject = selectedNode->GetIntersectionTransform();
 			for( int i = 0; i< nodePhotonsList.size(); ++i )
 			{
@@ -1206,6 +1215,8 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 		}else
 		{
+			m_lastExportInGlobal = true;
+
 			for( int i = 0; i< nodePhotonsList.size(); ++i )
 			{
 				Photon* node = nodePhotonsList[i];
@@ -1216,9 +1227,6 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
 			}
 		}
-
-
-
 	}
 	exportFile.close();
 }
@@ -2014,12 +2022,24 @@ bool MainWindow::StartOver( const QString& fileName )
     return true;
 }
 
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
+ *
+ * If a current file is not defined, it calls to SaveAs funtios.
+ *
+ * \sa SaveAs, SaveFile.
+ */
 bool MainWindow::Save()
 {
 	if ( m_currentFile.isEmpty() ) return SaveAs();
 	else return SaveFile( m_currentFile );
 }
 
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved into the the given \a fileName. Otherwise, returns \a false.
+ *
+ * \sa Save, SaveAs.
+ */
 bool MainWindow::SaveFile( const QString& fileName )
 {
  	if( !m_document->WriteFile( fileName ) )
@@ -2033,6 +2053,11 @@ bool MainWindow::SaveFile( const QString& fileName )
 	return true;
 }
 
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
+ *
+ * \sa Save, SaveFile.
+ */
 bool MainWindow::SaveAs()
 {
 	QString fileName = QFileDialog::getSaveFileName( this,
