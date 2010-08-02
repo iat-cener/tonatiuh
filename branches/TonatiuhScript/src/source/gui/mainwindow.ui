@@ -73,13 +73,15 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="ParametersView" name="parametersView" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="ParametersView" name="parametersView">
+        <property name="currentIndex">
+         <number>0</number>
         </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Tab 1</string>
+         </attribute>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -650,15 +652,15 @@
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
-   <class>ParametersView</class>
-   <extends>QWidget</extends>
-   <header location="global">ParametersView.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>SceneModelView</class>
    <extends>QTreeView</extends>
    <header location="global">SceneModelView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ParametersView</class>
+   <extends>QTabWidget</extends>
+   <header location="global">ParametersView.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -45,7 +45,6 @@
 #include "CodeEditor.h"
 #include "LineNumberWidget.h"
 
-
 CodeEditor::CodeEditor( QWidget *parent )
 :QPlainTextEdit( parent ), m_LineNumberWidget( 0 )
 {

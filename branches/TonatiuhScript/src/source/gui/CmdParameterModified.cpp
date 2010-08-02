@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, In½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -40,6 +40,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "CmdParameterModified.h"
 
+/**
+ * CmdParameterModified creates a new command that represents a scene node parameters modification. This object saves the \a coinNode node parameters previous values \a oldValueList and the new ones to apply and restore them.
+ *
+ * If the \a coinNode is a container node the modification are for parameters in the \a coinPart catalog part.
+ *
+ * The \a parent is command object parent.
+ */
 CmdParameterModified::CmdParameterModified( const QStringList& oldValueList, SoBaseKit* coinNode , const QString& coinPart, QUndoCommand* parent )
 :QUndoCommand( "ModifyParameter" ,parent ), m_oldValueList( oldValueList ), m_newValueList( 0 ),  m_coinNode( coinNode ), m_nodePart( coinPart )
 {
@@ -59,10 +66,19 @@ CmdParameterModified::CmdParameterModified( const QStringList& oldValueList, SoB
 
 }
 
+/**
+ * Destroys the CmdParameterModified object.
+ */
 CmdParameterModified::~CmdParameterModified()
 {
 
 }
+
+/**
+ * Reverts to the previous parameters values. After undo() is called, node parameters values will be the same as before redo() was called.
+ *
+ * \sa redo().
+ */
 
 void CmdParameterModified::undo()
 {
@@ -84,6 +100,10 @@ void CmdParameterModified::undo()
 
 }
 
+/**
+ * Applies a change to the scene. After redo() the node parameters values will be changed to \a m_newValueList defined in the constructor.
+ * \sa undo().
+ */
 void CmdParameterModified::redo()
 {
 	SoNode* partNode = m_coinNode->getPart( m_nodePart.toStdString().c_str(), true );

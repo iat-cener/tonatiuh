@@ -881,6 +881,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
  		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
 		m_commandStack->push( command );
 
+
 		//Select lightKit
 	    TLightKit* newLightKit = static_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 
@@ -889,14 +890,12 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 		coinSearch->setInterest( SoSearchAction::FIRST);
 		coinSearch->apply( m_document->GetRoot() );
 
-
 		SoPath* coinScenePath = coinSearch->getPath( );
 		if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
 		SoNodeKitPath* lightPath = static_cast< SoNodeKitPath* > ( coinScenePath );
 		if( !lightPath ) tgf::SevereError( "PathFromIndex Null nodePath." );
 
 		QModelIndex lightIndex = m_sceneModel->IndexFromPath( *lightPath );
-		m_selectionModel->clear();
 		m_selectionModel->setCurrentIndex( lightIndex, QItemSelectionModel::ClearAndSelect );
 
 		delete coinSearch;
@@ -1784,7 +1783,7 @@ void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex
 	InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
     SoNode* selectedCoinNode = instanceSelected->GetNode();
 
- 	if (! selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+    if (! selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
 		SoBaseKit* parentNode = static_cast< SoBaseKit* >( instanceSelected->GetParent()->GetNode() );
 		SbString partName = parentNode->getPartString( selectedCoinNode );
@@ -1799,7 +1798,10 @@ void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex
 	else
 	{
 		SoBaseKit* selectedCoinNodeKit = static_cast< SoBaseKit* >( selectedCoinNode );
-		parametersView->ChangeParameters( selectedCoinNodeKit );
+		SoNode* coinPart = selectedCoinNodeKit->getPart( "transform", false );
+
+		QStringList parts;
+		parametersView->SelectionChanged( selectedCoinNodeKit, parts );
 	}
 }
 
@@ -1980,6 +1982,7 @@ bool MainWindow::OkToContinue()
 bool MainWindow::StartOver( const QString& fileName )
 {
 
+	//m_selectionModel->setCurrentIndex( m_treeView->rootIndex(), QItemSelectionModel::ClearAndSelect );
 	actionDisplay_rays->setEnabled( false );
 	actionDisplay_rays->setChecked( false );
 
@@ -2018,6 +2021,8 @@ bool MainWindow::StartOver( const QString& fileName )
 
     SetCurrentFile( fileName );
 	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
+	m_selectionModel->setCurrentIndex( m_treeView->rootIndex(), QItemSelectionModel::ClearAndSelect );
+
 
     return true;
 }

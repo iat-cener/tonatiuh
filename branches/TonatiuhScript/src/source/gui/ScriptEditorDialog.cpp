@@ -108,10 +108,7 @@ QString ScriptEditorDialog::GetCurrentDirectory()
  */
 void ScriptEditorDialog::closeEvent( QCloseEvent* event )
 {
-    if ( OkToContinue() )
-    {
-    	event->accept();
-    }
+    if ( OkToContinue() )	event->accept();
     else event->ignore();
 }
 
@@ -138,7 +135,7 @@ void ScriptEditorDialog::AddCodeEditorWidgetToolbar()
 	QAction* actionSave = new QAction( QIcon( ":/icons/save.png" ), tr("Save" ), this );
 	actionSave->setObjectName( QString::fromUtf8("actionSave") );
 	codeToolBar->addAction( actionSave );
-	connect(actionSave, SIGNAL( triggered() ), this, SLOT( SaveScriptFile() ) );
+	connect(actionSave, SIGNAL( triggered() ), this, SLOT( SaveScript() ) );
 
 	QAction* actionSaveAs = new QAction( QIcon( ":/icons/saveas.png" ), tr("SaveAs" ), this );
 	actionSaveAs->setObjectName( QString::fromUtf8("actionSaveAs") );

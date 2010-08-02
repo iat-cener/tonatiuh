@@ -91,7 +91,6 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 	m_mapCoinQt.clear();
 	m_coinScene = 0;
     m_coinScene = &coinScene;
-    delete m_instanceRoot;
 
     SetRoot();
     SetLight();
@@ -107,6 +106,10 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 void SceneModel::Clear()
 {
 	DeleteInstanceTree( *m_instanceRoot );
+
+	delete m_instanceRoot;
+	m_instanceRoot = 0;
+
 }
 
 /*!
@@ -591,6 +594,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	{
 	    InstanceNode* instanceNode = instanceList[0];
 		DeleteInstanceTree( *instanceNode );
+		delete instanceNode;
 	}
 	else
 	{
@@ -600,6 +604,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 		    InstanceNode* instanceParent = instanceListParent[0];
 		    InstanceNode* instanceNode = instanceParent->children[row];
 		    DeleteInstanceTree( *instanceNode );
+			delete instanceNode;
 		}
 		else
 		{
@@ -608,6 +613,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 			    InstanceNode* instanceParent = instanceListParent[index];
 			    InstanceNode* instanceNode = instanceParent->children[row];
 			    DeleteInstanceTree( *instanceNode );
+				delete instanceNode;
 			}
 		}
 	}
@@ -849,7 +855,9 @@ void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 
 	for ( int index = 0; index < instanceNode.children.count(); ++index)
 	{
-		DeleteInstanceTree( *instanceNode.children[index] );
+		InstanceNode* childInstance = instanceNode.children[index];
+		DeleteInstanceTree( *childInstance );
+		delete childInstance;
 	}
 
 	QList<InstanceNode*>& instanceList = m_mapCoinQt[ instanceNode.GetNode()];

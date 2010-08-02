@@ -77,6 +77,13 @@ TSeparatorKit::~TSeparatorKit()
 {
 
 }
+/**
+ * Returns a pointer to the node part with \a partname.
+ */
+SoNode* TSeparatorKit::getPart( const SbName &partname, SbBool makeifneeded )
+{
+	 return SoSeparatorKit::getPart( partname, makeifneeded );
+}
 
 /**
  * Set \a from node as \a partname node.
