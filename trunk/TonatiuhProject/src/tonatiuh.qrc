@@ -23,8 +23,9 @@
         <file>icons/paste_link.png</file>
         <file>icons/position.png</file>
         <file>icons/print.png</file>
-        <file>icons/raytrace.png</file>
         <file>icons/redo.png</file>
+        <file>icons/refresh.png</file>
+        <file>icons/run.png</file>
         <file>icons/save.png</file>
         <file>icons/saveas.png</file>
         <file>icons/separatorKit.png</file>
@@ -32,6 +33,7 @@
         <file>icons/Tonatiuh.icns</file>
         <file>icons/undo.png</file>
         <file>icons/undoView.png</file>
+        <file>icons/up.png</file>
         <file>icons/shapeKit.png</file>
         <file>icons/sunIcon.png</file>
         <file>icons/viewer_viewSun.png</file>
