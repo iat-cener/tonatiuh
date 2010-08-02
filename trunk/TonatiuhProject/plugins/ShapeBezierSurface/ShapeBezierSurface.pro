@@ -24,22 +24,12 @@ SOURCES = src/*.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/TShape.cpp
 
-RESOURCES += src/ShapeBezierSurface.qrc
-		
+RESOURCES += src/ShapeBezierSurface.qrc		
 TARGET        = ShapeBezierSurface
 
-CONFIG(debug, debug|release) {  
-        unix {
-            TARGET = $$member(TARGET, 0)_debug
-        }
-        else {
-            TARGET = $$member(TARGET, 0)d
-        }
-    }
-    
-CONFIG(debug, debug|release)
-{
+CONFIG(debug, debug|release) {
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeBezierSurface	
+	
 }
 else { 
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeBezierSurface

@@ -42,7 +42,7 @@ SOURCES = src/*.cpp  \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.cpp
            	
 RESOURCES += src/ShapeFlatRectangle.qrc			
-TARGET        = ShapeFlatRectangle.qrc
+TARGET        = ShapeFlatRectangle
 
 CONFIG(debug, debug|release) {
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeFlatRectangle	
