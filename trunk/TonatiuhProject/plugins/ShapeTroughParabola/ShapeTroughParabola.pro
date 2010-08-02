@@ -46,8 +46,8 @@ TARGET        = ShapeTroughParabola
 
  
 CONFIG(debug, debug|release) {
-	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeSphericalPolygon	
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeTroughParabola
 }
 else { 
-	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeSphericalPolygon
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeTroughParabola
 }

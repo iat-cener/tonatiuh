@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -43,11 +43,22 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "TShapeKit.h"
 
-ExportDialog::ExportDialog( SceneModel& sceneModel, QWidget* parent )
-:QDialog( parent ),m_exportSceneModel( &sceneModel ),  m_exportSelectionModel( 0 )
-
+/**
+ * Creates a dialog to define export parameters.
+ * The dialog need \a sceneModel to allow user to select a surface to export.
+ * Sets export mode to export all photos if \a previousSurfaceUrl is empty. Otherwise, sets to surface export mode.
+ * Sets global coordinate system if \a previusInGlobal is \a true. Otherwise, sets to local coordinate system.
+ * The current export file value takes the \a previousFile name. The file \a previousFile is the last file uses to export a photon map.
+ */
+ExportDialog::ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl, bool previusInGlobal, QString previousFile, QWidget* parent )
+:QDialog( parent ),
+ m_exportSceneModel( &sceneModel ),
+ m_exportSelectionModel( 0 )
 {
 	setupUi( this );
+	connect( allMapRadio, SIGNAL( toggled( bool ) ), this, SLOT( SetExportAllPhotons( bool ) ) );
+	connect( surfaceMapRadio, SIGNAL( toggled( bool ) ), this, SLOT( SetExportSurfacePhotons( bool ) ) );
+	connect( selectFile, SIGNAL( clicked() ), this, SLOT( SelectFile() ) );
 
 	m_exportSelectionModel = new QItemSelectionModel( m_exportSceneModel );
 
@@ -56,22 +67,51 @@ ExportDialog::ExportDialog( SceneModel& sceneModel, QWidget* parent )
 	modelView->setSelectionMode(QAbstractItemView::SingleSelection);
 	modelView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	modelView->setRootIsDecorated(true);
+
+	if( !previousSurfaceUrl.isEmpty() )
+	{
+		SetExportSurfacePhotons( true );
+		QModelIndex selectedNodeIndex = m_exportSceneModel->IndexFromNodeUrl( previousSurfaceUrl );
+		m_exportSelectionModel->select( selectedNodeIndex, QItemSelectionModel::ClearAndSelect );
+
+		QModelIndex parentIndex = selectedNodeIndex.parent();
+		while( parentIndex != QModelIndex() )
+		{
+			modelView->expand( parentIndex );
+			parentIndex = parentIndex.parent();
+		}
+	}
+
+	if( previusInGlobal )	globalCoordinatesRadio->setChecked( true );
+	else	localCoordinates->setChecked( true );
+
+	if( !previousFile.isEmpty() )	fileNameEdit->setText( previousFile );
 }
 
+/*!
+ * Destroys the file dialog.
+ */
 ExportDialog::~ExportDialog()
 {
 	delete m_exportSelectionModel;
 }
 
 /*!
- * Return selected coordinate system id.
- *
- * If global coordinate system is selected, returns \a 0. To local coordinate system returns \a 1.
+ * Returns \a true if the option export all photon map option is selected. Otherwise, returns \a false.
  */
-int ExportDialog::GetCoordinateSystem() const
+bool ExportDialog::ExportAllPhotonMap() const
 {
-	if( globalCoordinatesRadio->isChecked() ) return 0;
-	else return 1;
+	if( allMapRadio->isChecked() ) return true;
+	else return false;
+}
+
+/*!
+ * Return \a true if the global coordinates system is selected. Otherwise, returns \a  false.
+ */
+bool ExportDialog::ExportPhotonsInGlobal() const
+{
+	if( globalCoordinatesRadio->isChecked() ) return true;
+	else return false;
 }
 
 /*!
@@ -86,19 +126,12 @@ QString ExportDialog::GetExportFileName() const
 	return fileNameEdit->text();
 }
 
-
-int ExportDialog::GetSelectedPhotons() const
-{
-	if( allMapRadio->isChecked() ) return 0;
-	else return 1;
-}
-
 /*!
- * Return selected surface node instance.
+ * Return selected surface node url.
  *
- * Returns \a NULL if there is not selection or selected node is not surface node.
+ * Returns an empty string if there is not selection or selected node is not surface node.
  */
-SoNodeKitPath* ExportDialog::GetSelectedSurface() const
+QString ExportDialog::GetSelectedSurface() const
 {
 	if( !surfaceMapRadio->isChecked () ) return 0;
 	if( !m_exportSelectionModel->hasSelection() ) return 0;
@@ -106,16 +139,18 @@ SoNodeKitPath* ExportDialog::GetSelectedSurface() const
 	InstanceNode* selectedNode = m_exportSceneModel->NodeFromIndex( m_exportSelectionModel->currentIndex() );
 	if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return 0;
 
-	//return selectedNode;
-	return m_exportSceneModel->PathFromIndex( m_exportSelectionModel->currentIndex() );
+	//return m_exportSceneModel->PathFromIndex( m_exportSelectionModel->currentIndex() );
+	return selectedNode->GetNodeURL();
 }
 
+/*!
+ * Hides the modal dialog and sets the result code to Accepted.
+ */
 void ExportDialog::accept()
 {
 	if( fileNameEdit->text().isEmpty() )
 	{
-		QMessageBox::information( this, "Tonatiuh Action",
-			                          "No file defined to save Photon Map", 1);
+		QMessageBox::information( this, "Tonatiuh ",  "No file defined to save photon map", 1);
 			    return;
 	}
 
@@ -126,8 +161,7 @@ void ExportDialog::accept()
 			InstanceNode* selectedNode = m_exportSceneModel->NodeFromIndex( m_exportSelectionModel->currentIndex() );
 			if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 			{
-				QMessageBox::information( this, "Tonatiuh Action",
-					                          "Selected node is not surface node", 1);
+				QMessageBox::information( this, "Tonatiuh",	"Selected node is not surface node", 1);
 				return;
 			}
 
@@ -137,10 +171,44 @@ void ExportDialog::accept()
 
 }
 
-void ExportDialog::on_openButton_clicked()
+/*!
+ * If \a allPhotos is true set export mode to export all photon map.
+ * Otherwise \a sets to export all photons if surface photons is not checked.
+ */
+void ExportDialog::SetExportAllPhotons( bool allPhotos )
 {
+	if( allPhotos )	allMapRadio->setChecked( true );
+	else if( ( !allPhotos ) && ( !surfaceMapRadio->isChecked() ) )
+		allMapRadio->setChecked( true );
+}
+
+/*!
+ * If \a allPhotos is true set export mode to export surface photons.
+ * Otherwise \a sets to export surface photons if all photons is not checked.
+ */
+void ExportDialog::SetExportSurfacePhotons( bool surfacePhotos )
+{
+	if( surfacePhotos )	surfaceMapRadio->setChecked( true );
+	else if( ( !surfacePhotos ) && ( !allMapRadio->isChecked() ) )
+		surfaceMapRadio->setChecked( true );
+}
+
+/*!
+ * Opens a dialog to select a file as the the file to save the export information.
+ *
+ * \a fileNameEdit line will show the selected file path.
+ */
+void ExportDialog::SelectFile()
+{
+	QString currentDir = ".";
+
+	QFileInfo currentFile( fileNameEdit->text() );
+	QDir fileDir = currentFile.absoluteDir();
+	if( fileDir.exists() ) currentDir = fileDir.absolutePath();
+
+
 	QString fileName = QFileDialog::getSaveFileName( this, tr("Export PhotonMap"),
-				tr( "." ),
+				currentDir,
 	            tr( "Binary data files (*.dat)" ) );
 
 	if( !fileName.isEmpty() )	fileNameEdit->setText( fileName );

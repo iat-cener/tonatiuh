@@ -32,48 +32,64 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef EXPORTDIALOG_H_
-#define EXPORTDIALOG_H_
+
+#ifndef SCRIPTEDITORDIALOG_H_
+#define SCRIPTEDITORDIALOG_H_
 
 #include <QDialog>
-#include <QItemSelectionModel>
+#include "ui_scripteditordialog.h"
 
-#include "SceneModel.h"
-#include "ui_exportdialog.h"
+class QLineEdit;
+class QScriptEngine;
+class TPhotonMapFactory;
+class RandomDeviateFactory;
 
-//!  ExportDialog class is the dialog to define the photon map export mode.
+//!  ScriptEditorDialog class is the dialog to edit and run scripts with Tonatiuh.
 /*!
-  ExportDialog sets the photons to export, the coordinates system and the file to save selected information.
+  ScriptEditorDialog allow to the user open, edit, run and save scripts to automate the ray tracing.
 */
-class ExportDialog : public QDialog, private Ui::ExportDialog
+
+class ScriptEditorDialog : public QDialog, private Ui::ScriptEditorDialog
 {
 	Q_OBJECT
 
 public:
-	ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl = 0, bool previusInGlobal = true, QString previousFile = 0, QWidget* parent = 0 );
-	~ExportDialog();
+	ScriptEditorDialog( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QString dirName = 0, QWidget* parent = 0 );
+	~ScriptEditorDialog();
 
-	bool ExportAllPhotonMap() const;
-	bool ExportPhotonsInGlobal() const;
-	QString GetExportFileName() const;
-	QString GetSelectedSurface() const;
+	QString GetCurrentDirectory();
 
-
-public slots:
-	void accept();
-
-private slots:
-	void SetExportAllPhotons( bool allPhotos );
-	void SetExportSurfacePhotons( bool surfacePhotos );
-	void SelectFile();
+protected:
+    void closeEvent( QCloseEvent* event );
 
 private:
-	SceneModel* m_exportSceneModel;
-	QItemSelectionModel*  m_exportSelectionModel;
+	void AddCodeEditorWidgetToolbar();
+	void AddFilesExplorerWidgetToolbar( QString dirName );
+	bool OkToContinue();
+	bool SaveScriptFile( const QString& fileName );
+	void SetCurrentFile( const QString& fileName );
+	void StartDocument( QString fileName );
+
+private slots:
+	void CdUpDir();
+	void Close( QAbstractButton* button );
+	void NewScriptFile();
+	void OpenDirectory();
+	void OpenScriptFile( QListWidgetItem* item );
+	void OpenScriptFile();
+	void RefreshDirList();
+	void RunScript();
+	bool SaveAsScriptFile();
+	bool SaveScript();
+
+private:
+	QLineEdit* m_dirLineEdit;
+	QString m_currentScritFileName;
+	QScriptEngine* m_interpreter;
 };
 
-#endif /* EXPORTDIALOG_H_ */
+#endif /* SCRIPTEDITORDIALOG_H_ */

@@ -55,6 +55,10 @@ class TShapeFactory;
 class TSunShape;
 class TSunShapeFactory;
 
+//!  LightDialog class is the dialog to define the light parameters.
+/*!
+  LightDialog sets light parameters. The parameters that user can define are light suunshape, light input aperture shape and light position.
+*/
 class LightDialog : public QDialog, private Ui::LightDialog
 {
 	Q_OBJECT

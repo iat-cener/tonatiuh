@@ -36,44 +36,82 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef EXPORTDIALOG_H_
-#define EXPORTDIALOG_H_
 
-#include <QDialog>
-#include <QItemSelectionModel>
+#ifndef SCRIPTRAYTRACER_H_
+#define SCRIPTRAYTRACER_H_
 
-#include "SceneModel.h"
-#include "ui_exportdialog.h"
+#include <QMap>
+#include <QObject>
+#include <QPair>
+#include <QString>
+#include <QVector>
 
-//!  ExportDialog class is the dialog to define the photon map export mode.
-/*!
-  ExportDialog sets the photons to export, the coordinates system and the file to save selected information.
-*/
-class ExportDialog : public QDialog, private Ui::ExportDialog
+class Document;
+class InstanceNode;
+class RandomDeviate;
+class RandomDeviateFactory;
+class QScriptContext;
+class SceneModel;
+class TPhotonMap;
+class TPhotonMapFactory;
+class Transform;
+
+class ScriptRayTracer : public QObject
 {
 	Q_OBJECT
 
 public:
-	ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl = 0, bool previusInGlobal = true, QString previousFile = 0, QWidget* parent = 0 );
-	~ExportDialog();
+	ScriptRayTracer( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory  );
+	~ScriptRayTracer();
 
-	bool ExportAllPhotonMap() const;
-	bool ExportPhotonsInGlobal() const;
-	QString GetExportFileName() const;
-	QString GetSelectedSurface() const;
+	void Clear();
+	bool IsValidPhotonMapType( QString type );
+	bool IsValidRandomGeneratorType( QString type );
+	bool IsValidSurface( QString surfaceName );
 
+	int SetExportAll( QString filename );
+	int SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates );
 
-public slots:
-	void accept();
+	int SetIrradiance( double irradiance );
 
-private slots:
-	void SetExportAllPhotons( bool allPhotos );
-	void SetExportSurfacePhotons( bool surfacePhotos );
-	void SelectFile();
+	int SetNumberOfRays( double nrays );
+
+	int SetPhotonMapType( QString typeName );
+
+	int SetRandomDeviateType( QString typeName );
+
+	void SetSunAzimtuh( double azimuth);
+	void SetSunElevation( double elevation );
+	void SetSunDistance( double distance );
+
+	int SetTonatiuhModelFile ( QString filename );
+
+	int Trace();
 
 private:
-	SceneModel* m_exportSceneModel;
-	QItemSelectionModel*  m_exportSelectionModel;
-};
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 
-#endif /* EXPORTDIALOG_H_ */
+
+	Document* m_document;
+
+	double m_irradiance;
+
+	unsigned long m_numberOfRays;
+
+	QVector< TPhotonMapFactory* > m_TPhotonMapFactoryList;
+	int m_selectedPhotonMap;
+	TPhotonMap* m_photonMap;
+
+	QVector< RandomDeviateFactory* > m_RandomDeviateFactoryList;
+	RandomDeviate* m_randomDeviate;
+
+	SceneModel* m_sceneModel;
+
+	double m_sunAzimuth;
+	double m_sunElevation;
+	double m_sunDistance;
+
+	double m_wPhoton;
+
+};
+#endif /* SCRIPTRAYTRACER_H_ */

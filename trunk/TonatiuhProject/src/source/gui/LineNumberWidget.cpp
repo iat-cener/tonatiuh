@@ -32,48 +32,82 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef EXPORTDIALOG_H_
-#define EXPORTDIALOG_H_
+#include <QPainter>
+#include <QTextBlock>
 
-#include <QDialog>
-#include <QItemSelectionModel>
+#include "CodeEditor.h"
+#include "LineNumberWidget.h"
 
-#include "SceneModel.h"
-#include "ui_exportdialog.h"
-
-//!  ExportDialog class is the dialog to define the photon map export mode.
-/*!
-  ExportDialog sets the photons to export, the coordinates system and the file to save selected information.
-*/
-class ExportDialog : public QDialog, private Ui::ExportDialog
+LineNumberWidget::LineNumberWidget( CodeEditor* parent, Qt::WindowFlags f )
+:QWidget( parent, f ), m_codeEditor( parent )
 {
-	Q_OBJECT
 
-public:
-	ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl = 0, bool previusInGlobal = true, QString previousFile = 0, QWidget* parent = 0 );
-	~ExportDialog();
+}
 
-	bool ExportAllPhotonMap() const;
-	bool ExportPhotonsInGlobal() const;
-	QString GetExportFileName() const;
-	QString GetSelectedSurface() const;
+LineNumberWidget::~LineNumberWidget()
+{
 
+}
 
-public slots:
-	void accept();
+void LineNumberWidget::SetCodeEditor( CodeEditor* editor )
+{
+	m_codeEditor = editor;
+}
 
-private slots:
-	void SetExportAllPhotons( bool allPhotos );
-	void SetExportSurfacePhotons( bool surfacePhotos );
-	void SelectFile();
+QSize LineNumberWidget::sizeHint() const
+{
+	return QSize( LineNumberAreaWidth(), 0 );
+}
 
-private:
-	SceneModel* m_exportSceneModel;
-	QItemSelectionModel*  m_exportSelectionModel;
-};
+int LineNumberWidget::LineNumberAreaWidth() const
+{
+	int digits = 1;
+	int max = qMax(1, m_codeEditor->blockCount());
+	while (max >= 10)
+	{
+		max /= 10;
+		++digits;
+	}
 
-#endif /* EXPORTDIALOG_H_ */
+	int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+
+	return space;
+}
+
+void LineNumberWidget::UpdateLineNumberArea( const QRect& rect, int dy )
+{
+	if( dy )	scroll( 0, dy );
+	else	update( 0, rect.y(), width(), rect.height() );
+
+	m_codeEditor->UpdateCodeEditorWidth( 0 );
+}
+
+void  LineNumberWidget::paintEvent( QPaintEvent *event )
+{
+	QPainter painter( this );
+	painter.fillRect(event->rect(), Qt::lightGray);
+
+	QTextBlock block = m_codeEditor->document()->begin();
+	int blockNumber = block.blockNumber();
+	int top = m_codeEditor->BlockTop(block);
+	int bottom = top + m_codeEditor->BlockHeight(block);
+
+	while( block.isValid() && top <= ( event->rect().bottom() ) )
+	{
+		if( block.isVisible() && ( bottom >= event->rect().top() ) )
+		{
+			QString number = QString::number( blockNumber + 1 );
+			painter.setPen(Qt::black);
+			painter.drawText( 0, top,width(), fontMetrics().height(), Qt::AlignRight, number);
+		}
+
+		block = block.next();
+		top = bottom;
+		bottom = top + m_codeEditor->BlockHeight(block);
+		++blockNumber;
+	}
+}

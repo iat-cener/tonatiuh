@@ -44,6 +44,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class SoBaseKit;
 
+//!  CmdParameterModified class is the parameter modification command stored in the command stack.
+/*!
+  CmdParameterModified represents a modification of the scene element parameter. The modification could be for any element of the scene concentrator parameters.
+  This class saves the new value of the paramenters and old ones to restore the previous state.
+   \sa CmdLightPositionModified
+*/
+
 class CmdParameterModified : public QUndoCommand
 {
 

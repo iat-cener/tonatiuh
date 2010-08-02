@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>510</width>
+    <width>513</width>
     <height>540</height>
    </rect>
   </property>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="selectPhotonsgroup">
      <property name="title">
       <string>Select photons</string>
      </property>
@@ -136,7 +136,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QPushButton" name="openButton">
+       <widget class="QPushButton" name="selectFile">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -147,7 +147,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="tonatiuh.qrc">
+         <iconset resource="../../tonatiuh.qrc">
           <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
         </property>
        </widget>
@@ -168,7 +168,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="tonatiuh.qrc"/>
+  <include location="../../tonatiuh.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -211,11 +211,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>254</x>
-     <y>76</y>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel">
      <x>254</x>
-     <y>267</y>
+     <y>268</y>
     </hint>
    </hints>
   </connection>

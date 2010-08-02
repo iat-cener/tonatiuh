@@ -60,7 +60,6 @@ class FieldContainerWidget : public QWidget
 public:
     FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent = 0 );
     ~FieldContainerWidget();
-    void ReadFields( );
    	void Reset();
 
     void SetEditable( bool editable );
@@ -73,6 +72,8 @@ signals:
 	void valueModificated( const QStringList& oldValuesList, QString containerName );
 
 private:
+    void ReadFields( );
+
     QTreeView* m_ptreeView;
     SoFieldContainer* m_pFieldContainer;
     ParametersDelegate* m_delegate;

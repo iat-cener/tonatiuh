@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -53,6 +53,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParametersItem.h"
 #include "ParametersModel.h"
 
+/**
+ * Creates a new FieldContainerWidget for the parameters in the \a fieldContainer with parent \a parent.
+ *
+ * The container name is \a containerName.
+ */
 FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent )
 :QWidget( parent ), m_ptreeView( 0 ), m_pFieldContainer( fieldContainer ), m_delegate( 0 ), m_pModel ( 0 ), m_containerName( containerName )
 {
@@ -78,6 +83,9 @@ FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QS
 	m_ptreeView->resizeColumnToContents ( 1 );
 }
 
+/**
+ * Destroys the FieldContainerWidget object.
+ */
 FieldContainerWidget::~FieldContainerWidget()
 {
 	delete m_ptreeView;
@@ -86,41 +94,27 @@ FieldContainerWidget::~FieldContainerWidget()
 
 }
 
-void FieldContainerWidget::ReadFields( )
-{
-	SoFieldList fieldList;
-	int totalFields = m_pFieldContainer->getFields( fieldList );
-
-	SoField* pField = 0;
-	SbName fieldName;
-	SbString fieldValue = "null";
-
-	for( int index = 0; index < totalFields; ++index )
-	{
-		pField = fieldList.get( index );
-		if( pField )
-		{
-			pField->get( fieldValue );
-			if( m_pFieldContainer->getFieldName( pField, fieldName ) )
-			{
-				m_pModel->setItem( index, false, new ParametersItem ( QString(fieldName.getString()), false, pField ));
-				ParametersItem* valueItem = new ParametersItem ( QString(fieldValue.getString()), true, pField );
-				m_pModel->setItem( index, true, valueItem );
-			}
-		}
-	}
-}
-
+/**
+ * Sets if the parameters values can be modified.
+ */
 void FieldContainerWidget::SetEditable( bool editable )
 {
 	m_pModel->SetEditable( editable );
 }
 
+/**
+ * Sets \a index as the last parameter index that has been starting to modify.
+ */
 void FieldContainerWidget::EditorOpened( const QModelIndex& index )
 {
 	m_lastEditingIndex = index;
 }
 
+/**
+ * Sets to the last parameter that has begun to change the \a editor value.
+ *
+ * Emits a valueModificated signal width the widget current container name and the container parameters old values;
+ */
 void FieldContainerWidget::EditorClosed( QWidget* editor )
 {
 	QString newValue;
@@ -158,3 +152,30 @@ void FieldContainerWidget::Reset()
 	m_ptreeView->reset();
 }
 
+/**
+ * Reads container parameters and for each parameters adds its name and value to de widget.
+ */
+void FieldContainerWidget::ReadFields( )
+{
+	SoFieldList fieldList;
+	int totalFields = m_pFieldContainer->getFields( fieldList );
+
+	SoField* pField = 0;
+	SbName fieldName;
+	SbString fieldValue = "null";
+
+	for( int index = 0; index < totalFields; ++index )
+	{
+		pField = fieldList.get( index );
+		if( pField )
+		{
+			pField->get( fieldValue );
+			if( m_pFieldContainer->getFieldName( pField, fieldName ) )
+			{
+				m_pModel->setItem( index, false, new ParametersItem ( QString(fieldName.getString()), false, pField ));
+				ParametersItem* valueItem = new ParametersItem ( QString(fieldValue.getString()), true, pField );
+				m_pModel->setItem( index, true, valueItem );
+			}
+		}
+	}
+}

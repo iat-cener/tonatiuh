@@ -32,48 +32,39 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef EXPORTDIALOG_H_
-#define EXPORTDIALOG_H_
 
-#include <QDialog>
-#include <QItemSelectionModel>
+#ifndef LINENUMBERWIDGET_H_
+#define LINENUMBERWIDGET_H_
 
-#include "SceneModel.h"
-#include "ui_exportdialog.h"
+#include <QWidget>
 
-//!  ExportDialog class is the dialog to define the photon map export mode.
-/*!
-  ExportDialog sets the photons to export, the coordinates system and the file to save selected information.
-*/
-class ExportDialog : public QDialog, private Ui::ExportDialog
+class CodeEditor;
+
+class LineNumberWidget: public QWidget
 {
 	Q_OBJECT
 
 public:
-	ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl = 0, bool previusInGlobal = true, QString previousFile = 0, QWidget* parent = 0 );
-	~ExportDialog();
+	LineNumberWidget( CodeEditor* parent = 0, Qt::WindowFlags f = 0 );
+	~LineNumberWidget();
 
-	bool ExportAllPhotonMap() const;
-	bool ExportPhotonsInGlobal() const;
-	QString GetExportFileName() const;
-	QString GetSelectedSurface() const;
+	void SetCodeEditor( CodeEditor* editor );
+	QSize sizeHint() const;
 
+	int LineNumberAreaWidth() const;
 
 public slots:
-	void accept();
+	void UpdateLineNumberArea( const QRect& rect, int dy );
 
-private slots:
-	void SetExportAllPhotons( bool allPhotos );
-	void SetExportSurfacePhotons( bool surfacePhotos );
-	void SelectFile();
+protected:
+	void paintEvent( QPaintEvent *event );
 
 private:
-	SceneModel* m_exportSceneModel;
-	QItemSelectionModel*  m_exportSelectionModel;
-};
+	CodeEditor* m_codeEditor;
 
-#endif /* EXPORTDIALOG_H_ */
+};
+#endif /* LINENUMBERWIDGET_H_ */

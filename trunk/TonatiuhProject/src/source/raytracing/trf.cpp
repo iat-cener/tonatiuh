@@ -37,6 +37,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 #include <cmath>
 
+#include <QFile>
+#include <QTextStream>
+
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
@@ -52,8 +55,118 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
-
+#include "TLightKit.h"
 #include "trf.h"
+#include "TShapeKit.h"
+
+
+/**
+ * Saves to \a filename file the \a photonMap all information.
+ *
+ * The file first data is the \a wPhoton. The power per photon in W/m2.
+ */
+int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
+{
+	QFile exportFile( fileName );
+	if(!exportFile.open( QIODevice::WriteOnly ) )	return 0;
+
+	//QDataStream out( &exportFile );
+	QTextStream out( &exportFile );
+	out<< wPhoton;
+
+	QList< Photon* > photonsList = photonMap->GetAllPhotons();
+	for (int i = 0; i < photonsList.size(); ++i)
+	{
+		Photon* node = photonsList[i];
+		Point3D photon = node->pos;
+		double id = node->id;
+		double prev_id = ( node->prev ) ? node->prev->id : 0;
+		double next_id = ( node->next ) ? node->next->id : 0;
+		QString nodeUrl = "-";
+		if( node->intersectedSurface != 0 )	nodeUrl = node->intersectedSurface->GetNodeURL();
+		out<<id <<"\t" <<photon.x <<"\t" << photon.y << "\t" << photon.z << "\t" <<prev_id<<"\t"<<next_id<<"\t"<<nodeUrl<<"\n";
+	}
+	exportFile.close();
+
+	return 1;
+}
+
+/**
+ * Saves to \a filename file the \a selectedSurface photons in scene global coordinates.
+ *
+ * The file first data is the \a wPhoton. The power per photon in W/m2.
+ */
+int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap )
+{
+	if( ( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
+		( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) ) )
+		return 0;
+
+	QFile exportFile( fileName );
+	if(!exportFile.open( QIODevice::WriteOnly ) )	return 0;
+
+	QDataStream out( &exportFile );
+	out<< wPhoton;
+
+	QList< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
+	if( nodePhotonsList.size() == 0 )
+	{
+		exportFile.close();
+		return 1;
+	}
+
+	for( int i = 0; i< nodePhotonsList.size(); ++i )
+	{
+		Photon* node = nodePhotonsList[i];
+		Point3D photon = node->pos;
+		double id = node->id;
+		double prev_id = ( node->prev ) ? node->prev->id : 0;
+		double next_id = ( node->next ) ? node->next->id : 0;
+		out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+	}
+
+	exportFile.close();
+
+	return 1;
+}
+
+/**
+ * Saves to \a filename file the \a selectedSurface photons in scene surface node local coordinates.
+ *
+ * The file first data is the \a wPhoton. The power per photon in W/m2.
+ */
+int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap )
+{
+	if( ( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
+		( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) ) )
+			return 0;
+
+	QFile exportFile( fileName );
+	if(!exportFile.open( QIODevice::WriteOnly ) )	return 0;
+
+	QDataStream out( &exportFile );
+	out<< wPhoton;
+
+	QList< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
+	if( nodePhotonsList.size() == 0 )
+	{
+		exportFile.close();
+		return 1;
+	}
+	Transform worldToObject = selectedSurface->GetIntersectionTransform();
+	for( int i = 0; i< nodePhotonsList.size(); ++i )
+	{
+		Photon* node = nodePhotonsList[i];
+		Point3D photon =  worldToObject( node->pos );
+		double id = node->id;
+		double prev_id = ( node->prev ) ? node->prev->id : 0;
+		double next_id = ( node->next ) ? node->next->id : 0;
+		out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+	}
+
+	exportFile.close();
+	return 1;
+}
 
 /**
  * Traces the given \a ray with the scene with top instance \a instanceNode and saved the intersections

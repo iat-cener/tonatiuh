@@ -64,10 +64,10 @@ SunshapeBuie::SunshapeBuie( )
 	//Integrate[ Phi2[theta*1000, \[CapitalChi]0]*10^-3*Sin[theta], {theta, 0.00465, 0.0436}] = 9.22474e-9
 	cte = 9.22472e-9;
 
-	if( crs0 > 0.0 )
+	if( crs.getValue() > 0.0 )
 	{
-		sunshape->k = 0.9 * log( 13.5 * crs0 ) * pow( crs0, -0.3 );
-		sunshape->y = 2.2 * log( 0.52 * crs0 ) * pow( crs0, 0.43 )  - 0.1;
+		k = 0.9 * log( 13.5 * crs.getValue() ) * pow( crs.getValue(), -0.3 );
+		y = 2.2 * log( 0.52 * crs.getValue() ) * pow( crs.getValue(), 0.43 )  - 0.1;
 
 		cte += ( exp( k )/(2 + y ) ) * ( pow ( 43.6, y+2 ) - pow( 4.65, y +2 ) ) *1e-9;
 	}

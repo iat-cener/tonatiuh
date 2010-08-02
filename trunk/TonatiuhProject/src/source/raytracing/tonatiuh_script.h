@@ -36,44 +36,35 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef EXPORTDIALOG_H_
-#define EXPORTDIALOG_H_
 
-#include <QDialog>
-#include <QItemSelectionModel>
+#ifndef TONATIUH_SCRIPT_H_
+#define TONATIUH_SCRIPT_H_
 
-#include "SceneModel.h"
-#include "ui_exportdialog.h"
 
-//!  ExportDialog class is the dialog to define the photon map export mode.
-/*!
-  ExportDialog sets the photons to export, the coordinates system and the file to save selected information.
-*/
-class ExportDialog : public QDialog, private Ui::ExportDialog
+class QScriptContext;
+class QScriptEngine;
+
+namespace tonatiuh_script
 {
-	Q_OBJECT
+	int init( QScriptEngine* engine );
 
-public:
-	ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl = 0, bool previusInGlobal = true, QString previousFile = 0, QWidget* parent = 0 );
-	~ExportDialog();
+	QScriptValue tonatiuh_exportAll(QScriptContext* context, QScriptEngine* engine );
+	QScriptValue tonatiuh_export(QScriptContext* context, QScriptEngine* engine );
 
-	bool ExportAllPhotonMap() const;
-	bool ExportPhotonsInGlobal() const;
-	QString GetExportFileName() const;
-	QString GetSelectedSurface() const;
+	QScriptValue tonatiuh_filename(QScriptContext* context, QScriptEngine* engine );
 
+	QScriptValue tonatiuh_irradiance(QScriptContext* context, QScriptEngine* engine );
 
-public slots:
-	void accept();
+	QScriptValue tonatiuh_numrays(QScriptContext* context, QScriptEngine* engine );
 
-private slots:
-	void SetExportAllPhotons( bool allPhotos );
-	void SetExportSurfacePhotons( bool surfacePhotos );
-	void SelectFile();
+	QScriptValue tonatiuh_photon_map(QScriptContext* context, QScriptEngine* engine );
 
-private:
-	SceneModel* m_exportSceneModel;
-	QItemSelectionModel*  m_exportSelectionModel;
+	QScriptValue tonatiuh_random_generator(QScriptContext* context, QScriptEngine* engine );
+
+	QScriptValue  tonatiuh_sunposition(QScriptContext* context, QScriptEngine* engine );
+
+	QScriptValue tonatiuh_trace(QScriptContext* context, QScriptEngine* engine );
+
 };
 
-#endif /* EXPORTDIALOG_H_ */
+#endif /* TONATIUH_SCRIPT_H_ */

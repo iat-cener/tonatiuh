@@ -39,32 +39,48 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PARAMETERSVIEW_H_
 #define PARAMETERSVIEW_H_
 
-#include <QWidget>
+#include <QTabWidget>
 
 class SoBaseKit;
 class SoNode;
-class QTabWidget;
 
-class ParametersView : public QWidget
+//! The ParametersView class provides a tabbed view for nodes parameters.
+/*!
+ * ParametersView provides a page for each of the parts of a node. The tab bar shows the node part name and the tab area shows the part parameters list.
+ *
+ * The tab area containes a FieldContainerWidget.
+ *
+ * \sa FieldContainerWidget
+ *
+*/
+
+class ParametersView : public QTabWidget
 {
 	Q_OBJECT
 
 public:
-	ParametersView( QWidget* parent = 0, Qt::WindowFlags f = 0  );
+	ParametersView( QWidget* parent = 0 );
 	~ParametersView();
-	void ChangeParameters( SoBaseKit* coinNode );
+
 	void SelectionChanged( SoBaseKit* coinNode, QStringList parts );
-	void AddTab( SoNode* coinNode, QString partName );
-	void Reset();
 
 signals:
+	/*!
+	 * Emmits a signal when a parameters of the view is modified.
+	 *
+	 * The modified paramenters is a \a coinNode \a containerName part name paramenter.
+	 *
+	 * The part parameters previous values are saved in \a oldValuesList.
+	 * */
 	 void valueModificated( const QStringList& oldValuesList, SoBaseKit* coinNode, QString containerName );
 
 public slots:
-	void valueModification( const QStringList& oldValuesList, QString containerName );
+	void ValueModification( const QStringList& oldValuesList, QString containerName );
 
 private:
-	QTabWidget* m_ptabWidget;
+	void AddTab( SoNode* coinNode, QString partName );
+	QStringList ContainerNodeParts( SoBaseKit* coinNode );
+
 	SoBaseKit* m_actualCoinNode;
 
 };
