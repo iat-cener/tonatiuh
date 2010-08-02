@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -252,11 +252,11 @@ QScriptValue  tonatiuh_script::tonatiuh_sunposition(QScriptContext* context, QSc
 	if( !rayTracer ) return 0;
 
 	double azimuth = context->argument(0).toNumber();
-	if( ( azimuth > 0. ) && ( azimuth < 360. ) )	context->throwError( "tonatiuh_sunposition: azimuth value must be between 0 and 360 degrees." );
+	if( ! ( ( azimuth > 0. ) && ( azimuth < 360. ) ) )	context->throwError( "tonatiuh_sunposition: azimuth value must be between 0 and 360 degrees." );
 	rayTracer->SetSunAzimtuh( azimuth );
 
 	double elevation = context->argument(1).toNumber();
-	if( ( elevation > 0. ) && ( elevation < 90. ) )	context->throwError( "tonatiuh_sunposition: elevation value must be between 0 and 90 degrees." );
+	if( ! ( ( elevation > 0. ) && ( elevation < 90. ) ) )	context->throwError( "tonatiuh_sunposition: elevation value must be between 0 and 90 degrees." );
 	rayTracer->SetSunElevation( elevation );
 
 	double distance = context->argument(2).toNumber();
