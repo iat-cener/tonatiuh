@@ -66,6 +66,7 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
 	setupUi( this );
 	setWindowFlags( windowFlags() | Qt::WindowMinMaxButtonsHint );
 
+	connect( buttonBox, SIGNAL( clicked( QAbstractButton*  ) ), this, SLOT( Close( QAbstractButton* ) ) );
 	QSplitter* pSplitter = findChild<QSplitter *>( "mainSplitter" );
 
 	QList<int> sizes;
@@ -316,6 +317,7 @@ void ScriptEditorDialog::StartDocument( QString fileName )
 	document->setModified( false );
 }
 
+
 /*!
  * Changes file explorer directory by moving one directory up.
  */
@@ -329,6 +331,14 @@ void ScriptEditorDialog::CdUpDir()
 		m_dirLineEdit->setText( dir.absolutePath() );
 		RefreshDirList();
 	}
+}
+
+/*!
+ * Closes the dialog.
+ */
+void ScriptEditorDialog::Close( QAbstractButton* button )
+{
+	close();
 }
 
 /*!

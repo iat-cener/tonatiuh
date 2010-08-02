@@ -76,6 +76,7 @@ private:
 
 private slots:
 	void CdUpDir();
+	void Close( QAbstractButton* button );
 	void NewScriptFile();
 	void OpenDirectory();
 	void OpenScriptFile( QListWidgetItem* item );
