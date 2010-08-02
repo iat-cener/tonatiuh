@@ -43,6 +43,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "tgf.h"
 
+/**
+ * Creates a new paste command that represents a \a type paste of the \a coinClipboard node as a node located with \a parentModelIndex child in the \a model.
+ *
+ * If \a parent is not null, this command is appended to parent's child list and then owns this command.
+ */
 CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  SoNode*& coinClipboard, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Paste", parent), m_pasteType( type ), m_parentInstance( 0 ), m_coinChild( coinClipboard ), m_sceneModel( &sceneModel ), m_oldNodeName( 0 ),  m_row( -1 )
 {
@@ -57,11 +62,18 @@ CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  S
 	m_oldNodeName = QString( coinClipboard->getName().getString() );
 }
 
+/*!
+ * Destroys the CmdPaste object.
+ */
 CmdPaste::~CmdPaste()
 {
 
 }
 
+/*!
+ * Reverts scene state. After undo() is called, the node will remove from the scene.
+ * \sa redo().
+ */
 void CmdPaste::undo()
 {
 	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
@@ -69,6 +81,10 @@ void CmdPaste::undo()
 	m_sceneModel->SetNodeName( m_coinChild, m_oldNodeName );
 }
 
+/*!
+ * Applies a change to the scene. After redo() parentIndex contains a new child.
+ * \sa undo().
+ */
 void CmdPaste::redo( )
 {
 	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );

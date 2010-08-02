@@ -73,13 +73,15 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="ParametersView" name="parametersView" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="ParametersView" name="parametersView">
+        <property name="currentIndex">
+         <number>0</number>
         </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Tab 1</string>
+         </attribute>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -205,12 +207,19 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuAutomation">
+    <property name="title">
+     <string>Automation</string>
+    </property>
+    <addaction name="actionOpenScriptEditor"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuInsert"/>
    <addaction name="menuSun_Light"/>
    <addaction name="menu_Raytrace"/>
    <addaction name="menuView"/>
+   <addaction name="menuAutomation"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -416,7 +425,7 @@
   <action name="actionRayTraceRun">
    <property name="icon">
     <iconset resource="../../tonatiuh.qrc">
-     <normaloff>:/icons/raytrace.png</normaloff>:/icons/raytrace.png</iconset>
+     <normaloff>:/icons/run.png</normaloff>:/icons/run.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Run</string>
@@ -634,19 +643,24 @@
     <string>About...</string>
    </property>
   </action>
+  <action name="actionOpenScriptEditor">
+   <property name="text">
+    <string>Script Editor</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
-   <class>ParametersView</class>
-   <extends>QWidget</extends>
-   <header location="global">ParametersView.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>SceneModelView</class>
    <extends>QTreeView</extends>
    <header location="global">SceneModelView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ParametersView</class>
+   <extends>QTabWidget</extends>
+   <header location="global">ParametersView.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -83,7 +83,7 @@ class MainWindow: public QMainWindow, private Ui::MainWindow
     Q_OBJECT
 
 public:
-	MainWindow( QWidget* parent = 0, Qt::WindowFlags flags = 0 );
+	MainWindow( QString tonatiuhFile = 0, QWidget* parent = 0, Qt::WindowFlags flags = 0 );
     ~MainWindow();
 
     QDir PluginDirectory();
@@ -145,6 +145,9 @@ public slots:
 	void on_action_X_Y_Plane_triggered();
 	void on_action_X_Z_Plane_triggered();
 	void on_action_Y_Z_Plane_triggered();
+
+	//Automation menu actions
+	void on_actionOpenScriptEditor_triggered();
 
 	//Help menu actions
 	void on_actionAbout_triggered();
@@ -265,6 +268,12 @@ private:
     TPhotonMap* m_photonMap;
     int m_selectedPhotonMap;
     bool m_increasePhotonMap;
+
+    QString m_lastExportFileName;
+    QString m_lastExportSurfaceUrl;
+    bool m_lastExportInGlobal;
+
+    QString m_scriptDirectory;
 
     SoSeparator* m_pRays;
     SoSeparator* m_pGrid;

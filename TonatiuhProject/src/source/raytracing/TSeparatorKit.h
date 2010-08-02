@@ -92,7 +92,8 @@ public:
     TSeparatorKit();
     static void initClass();
 
-    virtual SbBool  setPart (const SbName& partname, SoNode* from );
+    virtual SbBool  setPart( const SbName& partname, SoNode* from );
+    virtual SoNode* getPart( const SbName &partname, SbBool makeifneeded );
 
     QString getIcon();
 

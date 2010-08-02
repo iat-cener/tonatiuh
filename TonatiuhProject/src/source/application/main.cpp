@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QApplication>
 #include <QDir>
+#include <QMessageBox>
 
 #include <Inventor/Qt/SoQt.h>
 
@@ -77,7 +78,6 @@ int main( int argc, char ** argv )
 
     QApplication a( argc, argv );
 
-
 	QApplication::addLibraryPath( QApplication::applicationDirPath()
 	        + QDir::separator() + "marble" );
 
@@ -98,8 +98,16 @@ int main( int argc, char ** argv )
 	TDefaultTracker::initClass();
 
 
-   	MainWindow mw;
-    mw.show();
+	MainWindow* mw;
+   	if( argc > 1 )
+   	{
+   		QString tonatiuhFile = argv[1];
+   	   	mw = new MainWindow( tonatiuhFile );
+   	}
+   	else
+   		mw = new MainWindow;
+
+	mw->show();
 
 	return a.exec();
 }

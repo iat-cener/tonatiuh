@@ -47,7 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  *
  * If \a parent is not null, this command is appended to parent's child list and then owns this command.
  */
-
 CmdCopy::CmdCopy( const QModelIndex& index, SoNode*& clipboard, SceneModel* model, QUndoCommand* parent)
 : QUndoCommand("Copy", parent), m_pClipboard ( clipboard ), m_pNode( 0 ),m_previousNode ( 0 ), m_pModel( model )
 {

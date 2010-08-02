@@ -91,7 +91,6 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 	m_mapCoinQt.clear();
 	m_coinScene = 0;
     m_coinScene = &coinScene;
-    delete m_instanceRoot;
 
     SetRoot();
     SetLight();
@@ -107,6 +106,10 @@ void SceneModel::SetCoinScene( SoSceneKit& coinScene )
 void SceneModel::Clear()
 {
 	DeleteInstanceTree( *m_instanceRoot );
+
+	delete m_instanceRoot;
+	m_instanceRoot = 0;
+
 }
 
 /*!
@@ -139,6 +142,7 @@ void SceneModel::SetConcentrator()
 	if ( coinPartList && coinPartList->getNumChildren() == 0 )
 	{
 		separatorKit = new TSeparatorKit();
+		separatorKit->setName( "RootNode" );
 		coinPartList->addChild( separatorKit );
 		separatorKit->setSearchingChildren( true );
 
@@ -539,7 +543,6 @@ Qt::DropActions SceneModel::supportedDragActions() const
 {
 	return Qt::CopyAction | Qt::MoveAction;
 }
-
 /**
  * Cuts the \a row child from \a coinParent node.
  *
@@ -591,6 +594,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	{
 	    InstanceNode* instanceNode = instanceList[0];
 		DeleteInstanceTree( *instanceNode );
+		delete instanceNode;
 	}
 	else
 	{
@@ -600,6 +604,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 		    InstanceNode* instanceParent = instanceListParent[0];
 		    InstanceNode* instanceNode = instanceParent->children[row];
 		    DeleteInstanceTree( *instanceNode );
+			delete instanceNode;
 		}
 		else
 		{
@@ -608,6 +613,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 			    InstanceNode* instanceParent = instanceListParent[index];
 			    InstanceNode* instanceNode = instanceParent->children[row];
 			    DeleteInstanceTree( *instanceNode );
+				delete instanceNode;
 			}
 		}
 	}
@@ -615,6 +621,103 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 
 	emit layoutChanged();
 	return true;
+}
+
+/**
+ * Returns the index of item with the \a nodeUrl.
+ *
+ * If \a nodeUrl is not a valid node url, the function returns root node index.
+ *
+ *
+ * \sa IndexFromNodeUrl, NodeFromIndex, PathFromIndex.
+**/
+QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
+{
+	QStringList nodeList = nodeUrl.split( "/", QString::SkipEmptyParts );
+
+	if( ( nodeList.size() == 1 ) && ( nodeList[0] == "Light" ) )	return index( 0, 0 );
+
+	if( nodeList.size() > 0 )
+	{
+		QString nodeName = nodeList.last();
+		nodeList.removeLast();
+
+		QString parentNodeURL = QString( "//" ) + nodeList.join( "/" );
+		QModelIndex parentIndex = IndexFromNodeUrl( parentNodeURL );
+		InstanceNode* parentNode = NodeFromIndex( parentIndex );
+
+		int child = 0;
+		int row = -1;
+		while( child < parentNode->children.count() )
+		{
+			if ( parentNode->children[child]->GetNode()->getName()  == nodeName )
+			{
+				row = child;
+				break;
+			}
+			child++;
+		}
+		if( row < 0 )	return QModelIndex();
+		return index(row, 0, parentIndex );
+	}
+	else
+		return QModelIndex();
+
+}
+
+/**
+ * Returns the index of item with the \a coinNodePath.
+ *
+ * If \a coinNodePath is not a valid node path, the function returns root node index.
+ *
+ *
+ * \sa IndexFromNodeUrl, NodeFromIndex, PathFromIndex.
+**/
+QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
+{
+	SoBaseKit* coinNode = static_cast< SoBaseKit* >( coinNodePath.getTail() );
+	if( !coinNode ) tgf::SevereError( "IndexFromPath Null coinNode." );
+
+	if( coinNode->getTypeId().getName().getString() == SbName("TLightKit") ) return index( 0, 0 );
+
+	if ( coinNodePath.getLength() > 1 )
+	{
+		SoBaseKit* coinParent = static_cast< SoBaseKit* >( coinNodePath.getNodeFromTail(1) );
+		if( !coinParent ) tgf::SevereError( "IndexFromPath Null coinParent." );
+
+		if( coinParent->getTypeId().getName() == SbName( "TLightKit") ) return index( 0, 0 );
+
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent->getPart( "childList", true ) );
+    	if( !coinPartList ) tgf::SevereError( "IndexFromPath Null coinPartList." );
+
+    	int row = coinPartList->findChild(coinNode);
+    	if( coinParent->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+		{
+
+    		//TSeparatorKit* parentSeparator = dynamic_cast< TSeparatorKit* >( coinParent );
+    		if( coinParent->getPart( "tracker", false ) ) row++;
+		}
+		if(coinNodePath.getNodeFromTail(1) == m_coinScene )
+		{
+			int child = 0;
+			while( child < m_instanceRoot->children.count() )
+			{
+				if ( m_instanceRoot->children[child]->GetNode() == coinNode )
+					break;
+				child++;
+			}
+			return index(child, 0 );
+		}else{
+			SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* > ( coinNodePath.copy( 0, 0 ) );
+			parentPath->truncate(parentPath->getLength()-1 );
+			QModelIndex parentIndex = IndexFromPath( *parentPath );
+
+			return index (row, 0, parentIndex );
+		}
+	}
+	else
+		return QModelIndex();
+
 }
 
 /**
@@ -752,7 +855,9 @@ void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 
 	for ( int index = 0; index < instanceNode.children.count(); ++index)
 	{
-		DeleteInstanceTree( *instanceNode.children[index] );
+		InstanceNode* childInstance = instanceNode.children[index];
+		DeleteInstanceTree( *childInstance );
+		delete childInstance;
 	}
 
 	QList<InstanceNode*>& instanceList = m_mapCoinQt[ instanceNode.GetNode()];
@@ -810,51 +915,4 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 		}
 		return nodePath;
 	}
-}
-
-QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
-{
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( coinNodePath.getTail() );
-	if( !coinNode ) tgf::SevereError( "IndexFromPath Null coinNode." );
-
-	if( coinNode->getTypeId().getName().getString() == SbName("TLightKit") ) return index( 0, 0 );
-
-	if ( coinNodePath.getLength() > 1 )
-	{
-		SoBaseKit* coinParent = static_cast< SoBaseKit* >( coinNodePath.getNodeFromTail(1) );
-		if( !coinParent ) tgf::SevereError( "IndexFromPath Null coinParent." );
-
-		if( coinParent->getTypeId().getName() == SbName( "TLightKit") ) return index( 0, 0 );
-
-		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent->getPart( "childList", true ) );
-    	if( !coinPartList ) tgf::SevereError( "IndexFromPath Null coinPartList." );
-
-    	int row = coinPartList->findChild(coinNode);
-    	if( coinParent->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-		{
-
-    		//TSeparatorKit* parentSeparator = dynamic_cast< TSeparatorKit* >( coinParent );
-    		if( coinParent->getPart( "tracker", false ) ) row++;
-		}
-		if(coinNodePath.getNodeFromTail(1) == m_coinScene )
-		{
-			int child = 0;
-			while( child < m_instanceRoot->children.count() )
-			{
-				if ( m_instanceRoot->children[child]->GetNode() == coinNode )
-					break;
-				child++;
-			}
-			return index(child, 0 );
-		}else{
-			SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* > ( coinNodePath.copy( 0, 0 ) );
-			parentPath->truncate(parentPath->getLength()-1 );
-			QModelIndex parentIndex = IndexFromPath( *parentPath );
-
-			return index (row, 0, parentIndex );
-		}
-	}
-	else
-		return QModelIndex();
-
 }

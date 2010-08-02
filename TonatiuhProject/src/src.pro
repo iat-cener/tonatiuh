@@ -3,7 +3,7 @@
 ######################################################################
  
 TEMPLATE = app
-CONFIG       += qt warn_on thread debug_and_release 
+CONFIG       += qt warn_on thread debug_and_release
 
 include( ../config.pri )
 
@@ -21,7 +21,7 @@ DEPENDPATH += . \
               
  
               
-QT += xml opengl svg
+QT += xml opengl svg  script
 
 
  

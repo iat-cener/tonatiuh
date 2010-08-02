@@ -103,6 +103,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RayTracer.h"
 #include "SceneModel.h"
 #include "LightDialog.h"
+#include "ScriptEditorDialog.h"
 #include "SunPositionCalculatorDialog.h"
 #include "TDefaultTracker.h"
 #include "tgf.h"
@@ -120,48 +121,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 #include "TTrackerFactory.h"
 
-void createPhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons )
-{
-	if( !photonMap )  photonMap = photons.first;
 
-	std::vector<Photon> photonsVector = photons.second;
-	std::vector<Photon>::iterator it;
-	it = photonsVector.begin();
-
-	while( it<photonsVector.end() )
-	{
-		Photon* first = new Photon( *it );
-		//std::cout<<first->pos<<std::endl;
-		it++;
-		Photon* nextPhoton = first;
-
-		while( it<photonsVector.end() && ( (*it).id > 0 ) )
-		{
-			Photon* photon = new Photon( *it );
-
-			nextPhoton->next = photon;
-			photon->prev = nextPhoton;
-			nextPhoton = photon;
-			it++;
-		}
-		photonMap->StoreRay( first );
-	}
-
-	photonsVector.clear();
-
-	/*if( !photonMap )  photonMap = photons.first;
-
-	std::vector<Photon*> photonsVector = photons.second;
-	std::vector<Photon*>::iterator it;
-
-	for( it = photonsVector.begin(); it<photonsVector.end() ; it++)
-	{
-		Photon* p = *it;
-		photonMap->StoreRay( p );
-	}
-
-	//photonsVector.clear();*/
-}
 
 void startManipulator(void *data, SoDragger* dragger)
 {
@@ -175,7 +135,7 @@ void finishManipulator(void *data, SoDragger* /*dragger*/ )
 	mainwindow->FinishManipulation( );
 }
 
-MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
+MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags flags )
 :QMainWindow( parent, flags ),
 m_currentFile( 0 ),
 m_recentFiles( 0 ),
@@ -198,6 +158,10 @@ m_selectedRandomDeviate( -1 ),
 m_photonMap( 0 ),
 m_selectedPhotonMap( -1 ),
 m_increasePhotonMap( false ),
+m_lastExportFileName( 0 ),
+m_lastExportSurfaceUrl( 0 ),
+m_lastExportInGlobal( true ),
+m_scriptDirectory("." ),
 m_pRays( 0 ),
 m_pGrid( 0 ),
 m_coinNode_Buffer( 0 ),
@@ -222,6 +186,8 @@ m_focusView( 0 )
 	SetupViews();
     LoadAvailablePlugins();
     ReadSettings();
+
+    if( !tonatiuhFile.isEmpty() )	StartOver( tonatiuhFile );
 }
 
 MainWindow::~MainWindow()
@@ -915,6 +881,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
  		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
 		m_commandStack->push( command );
 
+
 		//Select lightKit
 	    TLightKit* newLightKit = static_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
 
@@ -923,14 +890,12 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 		coinSearch->setInterest( SoSearchAction::FIRST);
 		coinSearch->apply( m_document->GetRoot() );
 
-
 		SoPath* coinScenePath = coinSearch->getPath( );
 		if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
 		SoNodeKitPath* lightPath = static_cast< SoNodeKitPath* > ( coinScenePath );
 		if( !lightPath ) tgf::SevereError( "PathFromIndex Null nodePath." );
 
 		QModelIndex lightIndex = m_sceneModel->IndexFromPath( *lightPath );
-		m_selectionModel->clear();
 		m_selectionModel->setCurrentIndex( lightIndex, QItemSelectionModel::ClearAndSelect );
 
 		delete coinSearch;
@@ -1112,7 +1077,7 @@ void MainWindow::on_actionRayTraceRun_triggered()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), createPhotonMap, QtConcurrent::UnorderedReduce );
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
 		futureWatcher.setFuture( photonMap );
 
@@ -1132,7 +1097,9 @@ void MainWindow::on_actionRayTraceRun_triggered()
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
-
+/**
+ * If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden.
+ */
 void MainWindow::on_actionDisplay_rays_toggled()
 {
 	if ( actionDisplay_rays->isChecked() && (m_pRays ) )
@@ -1146,29 +1113,28 @@ void MainWindow::on_actionDisplay_rays_toggled()
 }
 
 /*!
- * Writes the photons stored at the photon map at user defined file.
+ * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
  */
 void MainWindow::on_actionExport_PhotonMap_triggered()
 {
 	if ( m_photonMap == NULL )
 	{
-		QMessageBox::information( this, "Tonatiuh Action",
-	                          "No Photon Map stored", 1);
+		QMessageBox::information( this, "Tonatiuh", "No Photon Map stored", 1 );
 	    return;
 	}
 
-	ExportDialog exportDialog( *m_sceneModel );
+	ExportDialog exportDialog( *m_sceneModel, m_lastExportSurfaceUrl, m_lastExportInGlobal, m_lastExportFileName, this );
 	if( !exportDialog.exec() ) return;
 
 	QString fileName = exportDialog.GetExportFileName();
 	if( fileName.isEmpty() )
 	{
-		QMessageBox::information( this, "Tonatiuh Action",
-											  "No file defined to save Photon Map", 1);
+		QMessageBox::information( this, "Tonatiuh", "No file defined to save Photon Map", 1 );
 		return;
 	}
+	m_lastExportFileName = fileName;
 
-	QFile exportFile( fileName );
+	QFile exportFile( m_lastExportFileName );
 
 	 if(!exportFile.open( QIODevice::WriteOnly ) )
 	 {
@@ -1197,8 +1163,11 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 	out<< wPhoton;
 
-	if( exportDialog.GetSelectedPhotons() == 0 )
+	if( exportDialog.ExportAllPhotonMap() )
 	{
+		m_lastExportSurfaceUrl.clear();
+		m_lastExportInGlobal = true;
+
 		QList< Photon* > photonsList = m_photonMap->GetAllPhotons();
 		for (int i = 0; i < photonsList.size(); ++i)
 		{
@@ -1213,10 +1182,11 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 	}
 	else
 	{
-		SoNodeKitPath* nodeKitPath = exportDialog.GetSelectedSurface();
-		QModelIndex nodeKitIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
-		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( nodeKitIndex );
-		if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) return;
+		QString nodeURL = exportDialog.GetSelectedSurface();
+		if( !nodeURL.isEmpty() )	m_lastExportSurfaceUrl = nodeURL;
+
+		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
+		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( selectedNodeIndex );
 
 		QList< Photon* > nodePhotonsList = m_photonMap->GetSurfacePhotons( selectedNode );
 
@@ -1227,32 +1197,10 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 			return;
 		}
 
-		if( exportDialog.GetCoordinateSystem() == 1 )
+		if( !exportDialog.ExportPhotonsInGlobal() )
 		{
-			SoBaseKit* nodeKit =static_cast< SoBaseKit* > ( selectedNode->GetNode() );
-			SoTransform* nodeTransform = static_cast< SoTransform* > ( nodeKit->getPart( "transform", true ) );
-
-			SbMatrix nodeMatrix;
-			nodeMatrix.setTransform( nodeTransform->translation.getValue(),
-					nodeTransform->rotation.getValue(),
-					nodeTransform->scaleFactor.getValue(),
-					nodeTransform->scaleOrientation.getValue(),
-					nodeTransform->center.getValue() );
-
-			SbViewportRegion region = m_graphicView[0]->GetViewportRegion();
-			SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( region );
-			getmatrixAction->apply( nodeKitPath );
-
-			SbMatrix pathTransformation = getmatrixAction->getMatrix();
-			pathTransformation = pathTransformation.multLeft( nodeMatrix );
-
-
-			Transform objectToWorld( pathTransformation[0][0], pathTransformation[1][0], pathTransformation[2][0], pathTransformation[3][0],
-								pathTransformation[0][1], pathTransformation[1][1], pathTransformation[2][1], pathTransformation[3][1],
-								pathTransformation[0][2], pathTransformation[1][2], pathTransformation[2][2], pathTransformation[3][2],
-								pathTransformation[0][3], pathTransformation[1][3], pathTransformation[2][3], pathTransformation[3][3] );
-
-			Transform worldToObject = objectToWorld.GetInverse();
+			m_lastExportInGlobal = false;
+			Transform worldToObject = selectedNode->GetIntersectionTransform();
 			for( int i = 0; i< nodePhotonsList.size(); ++i )
 			{
 
@@ -1266,9 +1214,10 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 		}else
 		{
+			m_lastExportInGlobal = true;
+
 			for( int i = 0; i< nodePhotonsList.size(); ++i )
 			{
-
 				Photon* node = nodePhotonsList[i];
 				Point3D photon = node->pos;
 				double id = node->id;
@@ -1277,9 +1226,6 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
 			}
 		}
-
-
-
 	}
 	exportFile.close();
 }
@@ -1526,6 +1472,13 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 	cam->viewAll( m_document->GetRoot(), vpr );
 }
 
+void MainWindow::on_actionOpenScriptEditor_triggered()
+{
+	ScriptEditorDialog editor( m_TPhotonMapFactoryList, m_RandomDeviateFactoryList, m_scriptDirectory, this );
+	editor.exec();
+
+	m_scriptDirectory = editor.GetCurrentDirectory();
+}
 
 void MainWindow::on_actionAbout_triggered()
 {
@@ -1539,38 +1492,6 @@ void MainWindow::on_actionAbout_triggered()
 }
 
 //Create actions
-void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
-{
-	QModelIndex parentIndex = ( (! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex() ) ) ?
-								m_sceneModel->index( 0, 0, m_treeView->rootIndex( )):
-								m_treeView->currentIndex();
-
-	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	SoNode* parentNode = parentInstance->GetNode();
-	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
-
-	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
-	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
-
-    if ( material )
-    {
-    	QMessageBox::information( this, "Tonatiuh Action",
-	                          "This TShapeKit already contains a material node", 1);
-	    return;
-    }
-
-	material = pTMaterialFactory->CreateTMaterial();
-    QString typeName = pTMaterialFactory->TMaterialName();
-    material->setName( typeName.toStdString().c_str() );
-
-    CmdInsertMaterial* createMaterial = new CmdInsertMaterial( shapeKit, material, m_sceneModel );
-    QString commandText = QString( "Create Material: %1").arg( pTMaterialFactory->TMaterialName().toLatin1().constData() );
-    createMaterial->setText(commandText);
-    m_commandStack->push( createMaterial );
-
-    m_document->SetDocumentModified( true );
-}
-
 void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
     QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
@@ -1862,7 +1783,7 @@ void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex
 	InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
     SoNode* selectedCoinNode = instanceSelected->GetNode();
 
- 	if (! selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+    if (! selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
 		SoBaseKit* parentNode = static_cast< SoBaseKit* >( instanceSelected->GetParent()->GetNode() );
 		SbString partName = parentNode->getPartString( selectedCoinNode );
@@ -1877,7 +1798,10 @@ void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex
 	else
 	{
 		SoBaseKit* selectedCoinNodeKit = static_cast< SoBaseKit* >( selectedCoinNode );
-		parametersView->ChangeParameters( selectedCoinNodeKit );
+		SoNode* coinPart = selectedCoinNodeKit->getPart( "transform", false );
+
+		QStringList parts;
+		parametersView->SelectionChanged( selectedCoinNodeKit, parts );
 	}
 }
 
@@ -2058,6 +1982,7 @@ bool MainWindow::OkToContinue()
 bool MainWindow::StartOver( const QString& fileName )
 {
 
+	//m_selectionModel->setCurrentIndex( m_treeView->rootIndex(), QItemSelectionModel::ClearAndSelect );
 	actionDisplay_rays->setEnabled( false );
 	actionDisplay_rays->setChecked( false );
 
@@ -2096,16 +2021,30 @@ bool MainWindow::StartOver( const QString& fileName )
 
     SetCurrentFile( fileName );
 	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
+	m_selectionModel->setCurrentIndex( m_treeView->rootIndex(), QItemSelectionModel::ClearAndSelect );
+
 
     return true;
 }
 
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
+ *
+ * If a current file is not defined, it calls to SaveAs funtios.
+ *
+ * \sa SaveAs, SaveFile.
+ */
 bool MainWindow::Save()
 {
 	if ( m_currentFile.isEmpty() ) return SaveAs();
 	else return SaveFile( m_currentFile );
 }
 
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved into the the given \a fileName. Otherwise, returns \a false.
+ *
+ * \sa Save, SaveAs.
+ */
 bool MainWindow::SaveFile( const QString& fileName )
 {
  	if( !m_document->WriteFile( fileName ) )
@@ -2119,6 +2058,11 @@ bool MainWindow::SaveFile( const QString& fileName )
 	return true;
 }
 
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
+ *
+ * \sa Save, SaveFile.
+ */
 bool MainWindow::SaveAs()
 {
 	QString fileName = QFileDialog::getSaveFileName( this,
@@ -2264,6 +2208,38 @@ bool MainWindow::Delete( )
 	return true;
 }
 
+void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
+{
+	QModelIndex parentIndex = ( (! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex() ) ) ?
+								m_sceneModel->index( 0, 0, m_treeView->rootIndex( )):
+								m_treeView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
+
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
+
+    if ( material )
+    {
+    	QMessageBox::information( this, "Tonatiuh Action",
+	                          "This TShapeKit already contains a material node", 1);
+	    return;
+    }
+
+	material = pTMaterialFactory->CreateTMaterial();
+    QString typeName = pTMaterialFactory->TMaterialName();
+    material->setName( typeName.toStdString().c_str() );
+
+    CmdInsertMaterial* createMaterial = new CmdInsertMaterial( shapeKit, material, m_sceneModel );
+    QString commandText = QString( "Create Material: %1").arg( pTMaterialFactory->TMaterialName().toLatin1().constData() );
+    createMaterial->setText(commandText);
+    m_commandStack->push( createMaterial );
+
+    m_document->SetDocumentModified( true );
+}
+
 bool MainWindow::Cut()
 {
 	if( !m_selectionModel->hasSelection() ) return false;
@@ -2383,8 +2359,6 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-/*void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,
-		                              QMap< InstanceNode*, QPair< BBox, Transform > >* sceneMap )*/
 void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
 {
 

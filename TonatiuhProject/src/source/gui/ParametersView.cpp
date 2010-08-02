@@ -32,100 +32,94 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <QString>
-#include <QTabWidget>
-#include <QVBoxLayout>
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
 #include "FieldContainerWidget.h"
 #include "ParametersView.h"
 
-ParametersView::ParametersView( QWidget* parent , Qt::WindowFlags f )
-: QWidget(parent, f), m_ptabWidget( 0 ), m_actualCoinNode( 0 )
+/**
+ * Creates a new ParametersView with parent \a parent.
+ */
+ParametersView::ParametersView( QWidget* parent )
+: QTabWidget( parent ),
+  m_actualCoinNode( 0 )
 {
-	m_ptabWidget = new QTabWidget;
-    m_ptabWidget->addTab( new FieldContainerWidget( 0, "" ), tr("Transform") );
-    m_ptabWidget->addTab( new FieldContainerWidget( 0, "" ), tr("Shape") );
-
-    QVBoxLayout* layout = new QVBoxLayout;
-    layout->addWidget( m_ptabWidget );
-    setLayout( layout );
+	addTab( new FieldContainerWidget( 0, "" ), tr("Transform") );
+	addTab( new FieldContainerWidget( 0, "" ), tr("Shape") );
 
 }
-
+/*!
+ * Destroys the parameters view widget.
+ */
 ParametersView::~ParametersView()
 {
-	delete m_ptabWidget;
-}
-void ParametersView::ChangeParameters( SoBaseKit* coinNode )
-{
-	if ( coinNode )
-	{
-		QString type = coinNode->getTypeId().getName().getString();
 
-		SoBaseKit* nodeKit = static_cast< SoBaseKit* >( coinNode );
-		if ( type == "TLightKit" )
-		{
-			QStringList parts;
-			parts<<QString( "transform" )<<QString( "icon" )<<QString( "tsunshape" );
-
-			SelectionChanged( nodeKit, parts );
-		}
-		else
-		{
-			QStringList parts;
-			//parts<<QString( "transform" );
-			SelectionChanged( nodeKit, parts );
-
-			if( type == "TShapeKit" )
-			{
-				parts<<QString( "shape" )<<QString( "appearance.material" );
-			}
-			else
-				parts<<QString( "transform" );
-			SelectionChanged( nodeKit, parts );
-		}
-	}
-	else
-	{
-		m_ptabWidget->addTab( new FieldContainerWidget( 0, ""  ), tr("Transform") );
-	}
 }
 
+/*!
+ * Changes the parameters view to show \a coinNode \a parts parameters.
+ */
 void ParametersView::SelectionChanged( SoBaseKit* coinNode, QStringList parts )
 {
-	m_ptabWidget->clear();
-	m_actualCoinNode = coinNode;
+	int previusTabs = count();
 
+	clear();
+
+	if( parts.size() == 0 )	parts = ContainerNodeParts( coinNode );
+
+	m_actualCoinNode = coinNode;
 	for( int i = 0; i< parts.size(); ++i )
 	{
 		QString partName = parts[i];
 		SoNode* coinPart = coinNode->getPart(partName.toStdString().c_str(), false );
-		if( coinPart ) AddTab( coinPart, partName );
+		if( coinPart != 0 ) AddTab( coinPart, partName );
 	}
+
 }
 
+/*!
+ * Emits a valueModificated signal with \a oldValuesList, the actual node and \a containerName.
+ */
+void ParametersView::ValueModification( const QStringList& oldValuesList, QString containerName )
+{
+	emit valueModificated( oldValuesList, m_actualCoinNode, containerName );
+}
+
+/*!
+ * Adds a new tab to the view with \a coinNode \a partName parameters.
+ */
 void ParametersView::AddTab( SoNode* coinNode, QString partName )
 {
 	QString type = coinNode->getTypeId().getName().getString();
 
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( coinNode, partName, this );
-	m_ptabWidget->addTab( nodeContainer, type );
-	connect(nodeContainer, SIGNAL( valueModificated( const QStringList& , QString ) ), this, SLOT( valueModification( const QStringList& , QString ) ) );
+	addTab( nodeContainer, type );
+	//connect(nodeContainer, SIGNAL( valueModificated( const QStringList& , QString ) ), this, SLOT( ValueModification( const QStringList& , QString ) ) );
 }
 
-void ParametersView::valueModification( const QStringList& oldValuesList, QString containerName )
+/*!
+ * Returns the names of the parts of the \a coinNode that the view shows.
+ *
+ * If the \a coinNode is not a container node, return a empty list.
+ */
+QStringList ParametersView::ContainerNodeParts( SoBaseKit* coinNode )
 {
-	emit valueModificated( oldValuesList, m_actualCoinNode, containerName );
-}
+	QStringList parts;
+	if( !coinNode && ! coinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )	return parts;
 
-void ParametersView::Reset()
-{
-	FieldContainerWidget* containerWidget = static_cast< FieldContainerWidget* >(m_ptabWidget->currentWidget() );
-	if( containerWidget )containerWidget->Reset();
+	SoBaseKit* nodeKit = static_cast< SoBaseKit* >( coinNode );
+	QString type = nodeKit->getTypeId().getName().getString();
+
+	if ( type == "TLightKit" )	parts<<QString( "transform" )<<QString( "icon" )<<QString( "tsunshape" );
+	else if( type == "TShapeKit" )	parts<<QString( "shape" )<<QString( "appearance.material" );
+	else	parts<<QString( "transform" );
+
+	return parts;
 }

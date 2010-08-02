@@ -40,6 +40,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 #include "TLightKit.h"
 
+/**
+ * Creates a new lightKit position command that represents a \a light move with \a parent parent.
+ *
+ * The new position is defined by \a time, \a longitude and \a latitude.
+ */
 CmdLightPositionModified::CmdLightPositionModified( TLightKit* light, QDateTime time, double longitude, double latitude, QUndoCommand* parent )
 :QUndoCommand( "Sun position changed", parent ), lightKit( light ), newTime( time ), newLongitude( longitude ), newLatitude( latitude )
 {
@@ -48,15 +53,27 @@ CmdLightPositionModified::CmdLightPositionModified( TLightKit* light, QDateTime 
 	light->GetPositionData( &oldTime, &oldLongitude, &oldLatitude );
 }
 
+/*!
+ * Destroys the CmdLightPositionModified object.
+ */
 CmdLightPositionModified::~CmdLightPositionModified()
 {
 }
 
+/*!
+ * Reverts to the previous light positions. After undo() is called, the light position will be the same as before redo() was called.
+ *
+ * \sa redo().
+ */
 void CmdLightPositionModified::undo()
 {
 	lightKit->ChangePosition( oldTime, oldLongitude, oldLatitude );
 }
 
+/*!
+ * Applies a change to the scene. After redo() the light position will be the position defined by the constructor parameters.
+ * \sa undo().
+ */
 void CmdLightPositionModified::redo()
 {
 	lightKit->ChangePosition( newTime, newLongitude, newLatitude );
