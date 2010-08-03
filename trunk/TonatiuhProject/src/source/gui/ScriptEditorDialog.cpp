@@ -510,6 +510,10 @@ void  ScriptEditorDialog::RunScript()
 		QMessageBox::warning( this, tr( "Tonatiuh" ), tr( "Script Execution Error." ) );
 		return;
 	}
+	QScriptValue rayTracerValue = m_interpreter->globalObject().property("rayTracer");
+	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
+	QFileInfo currentFile( m_currentScritFileName );
+	rayTracer->SetDir( currentFile.absoluteDir().absolutePath()  );
 
 	QTextDocument* document = codeEditor->document();
 
