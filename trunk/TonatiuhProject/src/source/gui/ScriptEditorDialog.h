@@ -76,17 +76,20 @@ private:
 
 private slots:
 	void CdUpDir();
-	void Close( QAbstractButton* button );
+	void Close( bool checked  );
 	void NewScriptFile();
 	void OpenDirectory();
 	void OpenScriptFile( QListWidgetItem* item );
 	void OpenScriptFile();
 	void RefreshDirList();
-	void RunScript();
+	void Run();
+	void Run( bool checked );
 	bool SaveAsScriptFile();
 	bool SaveScript();
 
 private:
+	void RunScript();
+
 	QLineEdit* m_dirLineEdit;
 	QString m_currentScritFileName;
 	QScriptEngine* m_interpreter;
