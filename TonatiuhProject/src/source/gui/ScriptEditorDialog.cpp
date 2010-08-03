@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <QAction>
 #include <QFileDialog>
 #include <QIcon>
@@ -65,8 +66,9 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
 {
 	setupUi( this );
 	setWindowFlags( windowFlags() | Qt::WindowMinMaxButtonsHint );
+	connect( runButton, SIGNAL( clicked( bool ) ), this, SLOT( Run( bool ) ) );
+	connect( closeButton, SIGNAL( clicked( bool ) ), this, SLOT( Close( bool ) ) );
 
-	connect( buttonBox, SIGNAL( clicked( QAbstractButton*  ) ), this, SLOT( Close( QAbstractButton* ) ) );
 	QSplitter* pSplitter = findChild<QSplitter *>( "mainSplitter" );
 
 	QList<int> sizes;
@@ -150,7 +152,7 @@ void ScriptEditorDialog::AddCodeEditorWidgetToolbar()
 	codeToolBar->addAction( actionUndo );
 	connect(actionUndo, SIGNAL( triggered() ), codeEditor, SLOT( undo() ) );
 
-	QAction* actionRedo= new QAction( QIcon( ":/icons/redo.png" ), tr("Undo" ), this );
+	QAction* actionRedo= new QAction( QIcon( ":/icons/redo.png" ), tr("Redo" ), this );
 	actionRedo->setObjectName( QString::fromUtf8("actionRedo") );
 	codeToolBar->addAction( actionRedo );
 	connect(actionRedo, SIGNAL( triggered() ), codeEditor, SLOT( redo() ) );
@@ -174,10 +176,10 @@ void ScriptEditorDialog::AddCodeEditorWidgetToolbar()
 
 	codeToolBar->addSeparator();
 
-	QAction* actionRun= new QAction( QIcon( ":/icons/run.png" ), tr("Undo" ), this );
+	QAction* actionRun= new QAction( QIcon( ":/icons/run.png" ), tr("Run" ), this );
 	actionRun->setObjectName( QString::fromUtf8("actionRun") );
 	codeToolBar->addAction( actionRun );
-	connect(actionRun, SIGNAL( triggered() ), this, SLOT( RunScript() ) );
+	connect(actionRun, SIGNAL( triggered() ), this, SLOT( Run() ) );
 
 }
 
@@ -336,7 +338,7 @@ void ScriptEditorDialog::CdUpDir()
 /*!
  * Closes the dialog.
  */
-void ScriptEditorDialog::Close( QAbstractButton* button )
+void ScriptEditorDialog::Close( bool checked  )
 {
 	close();
 }
@@ -361,7 +363,7 @@ void ScriptEditorDialog::NewScriptFile()
 /*!
  * A dialog is created to select a existing directory. File explorer shows selected directory contents.
  */
-void ScriptEditorDialog::OpenDirectory()
+void ScriptEditorDialog::OpenDirectory( )
 {
 	QString oldDirName = m_dirLineEdit->text();
 
@@ -384,13 +386,21 @@ void ScriptEditorDialog::OpenDirectory()
  */
 void ScriptEditorDialog::OpenScriptFile( QListWidgetItem* item )
 {
-	if( !OkToContinue() ) return;
-
 	QString dirName = m_dirLineEdit->text();
 	QString fileName = item->text();
-	QFileInfo fileInfo( dirName, fileName );
 
-	StartDocument( fileInfo.absoluteFilePath() );
+	QDir currentDir( dirName );
+	if( currentDir.cd( fileName ) )
+	{
+		m_dirLineEdit->setText( currentDir.absolutePath() );
+		RefreshDirList();
+	}
+	else
+	{
+		if( !OkToContinue() ) return;
+		StartDocument( currentDir.absoluteFilePath( fileName ) );
+	}
+
 }
 
 /*!
@@ -448,6 +458,49 @@ void ScriptEditorDialog::RefreshDirList()
 /**
  * Executes the code editor script.
  */
+void ScriptEditorDialog::Run()
+{
+	RunScript();
+}
+
+/**
+ * Executes the code editor script.
+ */
+void ScriptEditorDialog::Run( bool /*checked*/ )
+{
+	RunScript();
+}
+
+/*!
+ * Returns \a true if script is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
+ *
+ * \sa SaveScriptFile, SaveFile.
+ */
+bool ScriptEditorDialog::SaveAsScriptFile()
+{
+	QString fileName = QFileDialog::getSaveFileName( this,
+	                       tr( "Save File" ), m_dirLineEdit->text(),
+	                       tr( "Tonatiuh script file (*.tnhs)" ) );
+	if( fileName.isEmpty() ) return false;
+
+	return SaveScriptFile( fileName );
+
+}
+
+/*!
+ * Saves the editor code in the file defined as current. If a current file is not defined, it calls to \a SaveAsScriptFile to define a current file.
+ *
+ * \sa SaveScriptFile, SaveAsScriptFile.
+ */
+bool ScriptEditorDialog::SaveScript()
+{
+	if ( m_currentScritFileName.isEmpty() ) return SaveAsScriptFile();
+	else return SaveScriptFile( m_currentScritFileName );
+}
+
+/**
+ * Executes the code editor script.
+ */
 void  ScriptEditorDialog::RunScript()
 {
 
@@ -480,31 +533,4 @@ void  ScriptEditorDialog::RunScript()
 	}
 	else
 		QMessageBox::information ( this, tr( "Tonatiuh" ), tr( "The script execution is successfully finished" ) );
-}
-
-/*!
- * Returns \a true if script is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
- *
- * \sa SaveScriptFile, SaveFile.
- */
-bool ScriptEditorDialog::SaveAsScriptFile()
-{
-	QString fileName = QFileDialog::getSaveFileName( this,
-	                       tr( "Save File" ), m_dirLineEdit->text(),
-	                       tr( "Tonatiuh script file (*.tnhs)" ) );
-	if( fileName.isEmpty() ) return false;
-
-	return SaveScriptFile( fileName );
-
-}
-
-/*!
- * Saves the editor code in the file defined as current. If a current file is not defined, it calls to \a SaveAsScriptFile to define a current file.
- *
- * \sa SaveScriptFile, SaveAsScriptFile.
- */
-bool ScriptEditorDialog::SaveScript()
-{
-	if ( m_currentScritFileName.isEmpty() ) return SaveAsScriptFile();
-	else return SaveScriptFile( m_currentScritFileName );
 }
