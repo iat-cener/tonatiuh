@@ -78,7 +78,8 @@ m_sceneModel ( 0 ),
 m_sunAzimuth( 0 ),
 m_sunElevation( 0 ),
 m_sunDistance( 0 ),
-m_wPhoton( 0 )
+m_wPhoton( 0 ),
+m_dirName( 0 )
 {
 
 }
@@ -108,8 +109,13 @@ void ScriptRayTracer::Clear()
 	m_sunElevation = 0;
 	m_sunDistance = 0;
 	m_wPhoton = 0;
+	m_dirName.clear();
 }
 
+QString ScriptRayTracer::GetDir()
+{
+	return m_dirName;
+}
 
 bool ScriptRayTracer::IsValidPhotonMapType( QString type )
 {
@@ -150,6 +156,12 @@ bool ScriptRayTracer::IsValidSurface( QString surfaceName )
 	if( !selectedSurface )	return false;
 
 	return true;
+}
+
+int ScriptRayTracer::SetDir( QString dir )
+{
+	m_dirName = dir;
+	return 1;
 }
 
 int ScriptRayTracer::SetExportAll( QString filename )

@@ -65,9 +65,14 @@ public:
 	~ScriptRayTracer();
 
 	void Clear();
+
+	QString GetDir();
+
 	bool IsValidPhotonMapType( QString type );
 	bool IsValidRandomGeneratorType( QString type );
 	bool IsValidSurface( QString surfaceName );
+
+	int SetDir( QString dir );
 
 	int SetExportAll( QString filename );
 	int SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates );
@@ -112,6 +117,8 @@ private:
 	double m_sunDistance;
 
 	double m_wPhoton;
+
+	QString m_dirName;
 
 };
 #endif /* SCRIPTRAYTRACER_H_ */

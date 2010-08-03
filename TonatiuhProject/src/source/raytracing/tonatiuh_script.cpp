@@ -36,9 +36,9 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QScriptContext>
 #include <QScriptEngine>
 
@@ -96,6 +96,16 @@ QScriptValue tonatiuh_script::tonatiuh_exportAll(QScriptContext* context, QScrip
 	QString fileName = context->argument(0).toString();
 	if( fileName.isEmpty()  )	context->throwError( "tonatiuh_exportAll: the export fileName is empty." );
 
+	QFileInfo file(  fileName );
+	if( !file.isAbsolute() )
+	{
+		QString dirName = rayTracer->GetDir();
+		QDir currentDir( dirName );
+		QFileInfo absolutefile( currentDir, fileName );
+		fileName = absolutefile.absoluteFilePath();
+	}
+
+
 	QFile exportFile( fileName ) ;
 	QString message = QString( "tonatiuh_exportAll: The %1 file can not be opened." ).arg( fileName );
 	if(!exportFile.open( QIODevice::WriteOnly ) ) context->throwError( message );
@@ -121,8 +131,17 @@ QScriptValue tonatiuh_script::tonatiuh_export(QScriptContext* context, QScriptEn
 
 	QString fileName = context->argument(0).toString();
 	if( fileName.isEmpty()  )	context->throwError( "tonatiuh_export: the export fileName is empty." );
-	QFile exportFile( fileName ) ;
 
+	QFileInfo file(  fileName );
+	if( !file.isAbsolute() )
+	{
+		QString dirName = rayTracer->GetDir();
+		QDir currentDir( dirName );
+		QFileInfo absolutefile( currentDir, fileName );
+		fileName = absolutefile.absoluteFilePath();
+	}
+
+	QFile exportFile( fileName ) ;
 	QString message = QString( "tonatiuh_export: The %1 file can not be opened." ).arg( fileName );
 	if(!exportFile.open( QIODevice::WriteOnly ) ) context->throwError( message );
 	exportFile.close();
@@ -154,6 +173,15 @@ QScriptValue tonatiuh_script::tonatiuh_filename(QScriptContext* context, QScript
 
 	QString fileName = context->argument(0).toString();
 	if( fileName.isEmpty()  )	context->throwError( "tonatiuh_filename: the model file is not correct." );
+
+	QFileInfo file(  fileName );
+	if( !file.isAbsolute() )
+	{
+		QString dirName = rayTracer->GetDir();
+		QDir currentDir( dirName );
+		QFileInfo absolutefile( currentDir, fileName );
+		fileName = absolutefile.absoluteFilePath();
+	}
 
 	QFile modelFile( fileName ) ;
 	if(!modelFile.open( QIODevice::ReadOnly ) )
