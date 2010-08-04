@@ -58,6 +58,15 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9">redo</a> ()</td></tr>
 
+<tr><td colspan="2"><br><h2>Private Attributes</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">SoNode *&amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f">m_pClipboard</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">SoNode *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0">m_pNode</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">SoNode *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f">m_previousNode</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">SceneModel *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_copy.html#762d06b10d548855ded73d545827acc7">m_pModel</a></td></tr>
+
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 <a class="el" href="class_cmd_copy.html" title="CmdCopy class is the copy command stored in the command stack.">CmdCopy</a> class is the copy command stored in the command stack. 
@@ -166,10 +175,71 @@ Reverts clipboard contain. After <a class="el" href="class_cmd_copy.html#7ee658f
 
 </div>
 </div><p>
+<hr><h2>Member Data Documentation</h2>
+<a class="anchor" name="112c5fedd734af26054e3891261b0c7f"></a><!-- doxytag: member="CmdCopy::m_pClipboard" ref="112c5fedd734af26054e3891261b0c7f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoNode*&amp; <a class="el" href="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f">CmdCopy::m_pClipboard</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+The Clipboard 
+</div>
+</div><p>
+<a class="anchor" name="762d06b10d548855ded73d545827acc7"></a><!-- doxytag: member="CmdCopy::m_pModel" ref="762d06b10d548855ded73d545827acc7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SceneModel* <a class="el" href="class_cmd_copy.html#762d06b10d548855ded73d545827acc7">CmdCopy::m_pModel</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+The scene 
+</div>
+</div><p>
+<a class="anchor" name="1011d55874bc325c7e19e759a1d111d0"></a><!-- doxytag: member="CmdCopy::m_pNode" ref="1011d55874bc325c7e19e759a1d111d0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoNode* <a class="el" href="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0">CmdCopy::m_pNode</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Copied node to the clipboard 
+</div>
+</div><p>
+<a class="anchor" name="de0efbbbb8f6e85a906a7a658eeec54f"></a><!-- doxytag: member="CmdCopy::m_previousNode" ref="de0efbbbb8f6e85a906a7a658eeec54f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoNode* <a class="el" href="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f">CmdCopy::m_previousNode</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+The node saved on the clipboard befor apply copy 
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_cmd_copy_8h-source.html">CmdCopy.h</a><li>CmdCopy.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:34:03 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

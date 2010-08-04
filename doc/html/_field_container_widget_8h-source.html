@@ -100,31 +100,32 @@
 <a name="l00060"></a>00060 <span class="keyword">public</span>:
 <a name="l00061"></a>00061     FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent = 0 );
 <a name="l00062"></a>00062     ~FieldContainerWidget();
-<a name="l00063"></a>00063     <span class="keywordtype">void</span> ReadFields( );
-<a name="l00064"></a>00064         <span class="keywordtype">void</span> Reset();
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066     <span class="keywordtype">void</span> SetEditable( <span class="keywordtype">bool</span> editable );
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="keyword">private</span> slots:
-<a name="l00069"></a>00069         <span class="keywordtype">void</span> EditorOpened( <span class="keyword">const</span> QModelIndex&amp; index );
-<a name="l00070"></a>00070         <span class="keywordtype">void</span> EditorClosed(  QWidget* editor );
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072 signals:
-<a name="l00073"></a>00073         <span class="keywordtype">void</span> valueModificated( <span class="keyword">const</span> QStringList&amp; oldValuesList, QString containerName );
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 <span class="keyword">private</span>:
-<a name="l00076"></a>00076     QTreeView* m_ptreeView;
-<a name="l00077"></a>00077     SoFieldContainer* m_pFieldContainer;
-<a name="l00078"></a>00078     ParametersDelegate* m_delegate;
-<a name="l00079"></a>00079         ParametersModel* m_pModel;
-<a name="l00080"></a>00080         QString m_containerName;
-<a name="l00081"></a>00081         QModelIndex m_lastEditingIndex;
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 };
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="preprocessor">#endif </span><span class="comment">/*SOFIELDCONTAINERWIDGET_H_*/</span>
+<a name="l00063"></a>00063         <span class="keywordtype">void</span> Reset();
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065     <span class="keywordtype">void</span> SetEditable( <span class="keywordtype">bool</span> editable );
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 <span class="keyword">private</span> slots:
+<a name="l00068"></a>00068         <span class="keywordtype">void</span> EditorOpened( <span class="keyword">const</span> QModelIndex&amp; index );
+<a name="l00069"></a>00069         <span class="keywordtype">void</span> EditorClosed(  QWidget* editor );
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071 signals:
+<a name="l00072"></a>00072         <span class="keywordtype">void</span> valueModificated( <span class="keyword">const</span> QStringList&amp; oldValuesList, QString containerName );
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 <span class="keyword">private</span>:
+<a name="l00075"></a>00075     <span class="keywordtype">void</span> ReadFields( );
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077     QTreeView* m_ptreeView;
+<a name="l00078"></a>00078     SoFieldContainer* m_pFieldContainer;
+<a name="l00079"></a>00079     ParametersDelegate* m_delegate;
+<a name="l00080"></a>00080         ParametersModel* m_pModel;
+<a name="l00081"></a>00081         QString m_containerName;
+<a name="l00082"></a>00082         QModelIndex m_lastEditingIndex;
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084 };
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086 <span class="preprocessor">#endif </span><span class="comment">/*SOFIELDCONTAINERWIDGET_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:33:57 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

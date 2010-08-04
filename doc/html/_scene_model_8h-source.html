@@ -116,43 +116,49 @@
 <a name="l00076"></a>00076     Qt::DropActions supportedDropActions() <span class="keyword">const</span>;
 <a name="l00077"></a>00077         Qt::DropActions supportedDragActions() <span class="keyword">const</span>;
 <a name="l00078"></a>00078 
-<a name="l00079"></a>00079     <span class="keywordtype">int</span> InsertCoinNode( SoNode&amp; coinChild, SoBaseKit&amp; coinParent );
-<a name="l00080"></a>00080         <span class="keywordtype">void</span> InsertLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
-<a name="l00081"></a>00081         <span class="keywordtype">void</span> RemoveCoinNode( <span class="keywordtype">int</span> row, SoBaseKit&amp; coinParent );
-<a name="l00082"></a>00082         <span class="keywordtype">void</span> RemoveLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084     <span class="keywordtype">bool</span> Cut( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
-<a name="l00085"></a>00085         <span class="keywordtype">bool</span> Paste( tgc::PasteType type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087         <span class="keywordtype">bool</span> SetNodeName( SoNode* coinChild, QString newName );
-<a name="l00088"></a>00088 
-<a name="l00089"></a>00089         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* NodeFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00090"></a>00090         QModelIndex IndexFromPath( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
-<a name="l00091"></a>00091         SoNodeKitPath* PathFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093 signals:
-<a name="l00094"></a>00094         <span class="keywordtype">void</span> LightNodeStateChanged( <span class="keywordtype">int</span> newState );
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096 <span class="keyword">private</span>:
-<a name="l00097"></a>00097         <span class="keywordtype">void</span> DeleteInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNode );
-<a name="l00098"></a>00098         <span class="keywordtype">void</span> SetRoot();
-<a name="l00099"></a>00099         <span class="keywordtype">void</span> SetLight();
-<a name="l00100"></a>00100         <span class="keywordtype">void</span> SetConcentrator();
-<a name="l00101"></a>00101         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* AddInstanceNode( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* separatorKit );
-<a name="l00102"></a>00102         <span class="keywordtype">void</span> GenerateInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceParent );
-<a name="l00103"></a>00103         <span class="keywordtype">void</span> GenerateTShapeKitSubTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* parentNode );
-<a name="l00104"></a>00104         <span class="keywordtype">void</span> GenerateTSeparatorKitSubTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* parentNode );
-<a name="l00105"></a>00105 
-<a name="l00106"></a>00106 <span class="keyword">private</span>:
-<a name="l00107"></a>00107         SoSelection* m_coinRoot;
-<a name="l00108"></a>00108     SoSceneKit* m_coinScene;
-<a name="l00109"></a>00109         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_instanceRoot;
-<a name="l00110"></a>00110         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; m_mapCoinQt;
-<a name="l00111"></a>00111 };
-<a name="l00112"></a>00112 
-<a name="l00113"></a>00113 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
+<a name="l00079"></a>00079     <span class="keywordtype">bool</span> Cut( SoBaseKit&amp; coinParent, <span class="keywordtype">int</span> row );
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082         QModelIndex IndexFromNodeUrl( QString nodeUrl ) <span class="keyword">const</span>;
+<a name="l00083"></a>00083         QModelIndex IndexFromPath( <span class="keyword">const</span> SoNodeKitPath&amp; coinNodePath ) <span class="keyword">const</span>;
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085     <span class="keywordtype">int</span> InsertCoinNode( SoNode&amp; coinChild, SoBaseKit&amp; coinParent );
+<a name="l00086"></a>00086         <span class="keywordtype">void</span> InsertLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* NodeFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090         SoNodeKitPath* PathFromIndex( <span class="keyword">const</span> QModelIndex&amp; modelIndex ) <span class="keyword">const</span>;
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092         <span class="keywordtype">bool</span> Paste( tgc::PasteType type, SoBaseKit&amp; coinParent, SoNode&amp; coinChild, <span class="keywordtype">int</span> row );
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094         <span class="keywordtype">void</span> RemoveCoinNode( <span class="keywordtype">int</span> row, SoBaseKit&amp; coinParent );
+<a name="l00095"></a>00095         <span class="keywordtype">void</span> RemoveLightNode( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>&amp; coinLight );
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097         <span class="keywordtype">bool</span> SetNodeName( SoNode* coinChild, QString newName );
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099 signals:
+<a name="l00100"></a>00100         <span class="keywordtype">void</span> LightNodeStateChanged( <span class="keywordtype">int</span> newState );
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102 <span class="keyword">private</span>:
+<a name="l00103"></a>00103         <span class="keywordtype">void</span> DeleteInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNode );
+<a name="l00104"></a>00104         <span class="keywordtype">void</span> SetRoot();
+<a name="l00105"></a>00105         <span class="keywordtype">void</span> SetLight();
+<a name="l00106"></a>00106         <span class="keywordtype">void</span> SetConcentrator();
+<a name="l00107"></a>00107         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* AddInstanceNode( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* separatorKit );
+<a name="l00108"></a>00108         <span class="keywordtype">void</span> GenerateInstanceTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceParent );
+<a name="l00109"></a>00109         <span class="keywordtype">void</span> GenerateTShapeKitSubTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* parentNode );
+<a name="l00110"></a>00110         <span class="keywordtype">void</span> GenerateTSeparatorKitSubTree( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>&amp; instanceNodeParent, SoNode* parentNode );
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112 <span class="keyword">private</span>:
+<a name="l00113"></a>00113         SoSelection* m_coinRoot;
+<a name="l00114"></a>00114     SoSceneKit* m_coinScene;
+<a name="l00115"></a>00115         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_instanceRoot;
+<a name="l00116"></a>00116         std::map&lt; SoNode*, QList&lt;InstanceNode*&gt; &gt; m_mapCoinQt;
+<a name="l00117"></a>00117 };
+<a name="l00118"></a>00118 
+<a name="l00119"></a>00119 <span class="preprocessor">#endif </span><span class="comment">/*SCENEMODEL_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:33:59 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

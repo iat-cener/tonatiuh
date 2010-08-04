@@ -49,15 +49,133 @@
 <p>
 <a href="class_cmd_paste-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#d85bed8ed753b25d7a773e246380fe43">CmdPaste</a> (tgc::PasteType type, const QModelIndex &amp;parentModelIndex, SoNode *&amp;coinClipboard, SceneModel &amp;sceneModel, QUndoCommand *parent=0)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#41def34ffaa08c48321997ea78972dc4">~CmdPaste</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#19b47031fcd58523427b0a1f25074fa6">undo</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cmd_paste.html#eb4bceaf409fa91857763e14984ba609">redo</a> ()</td></tr>
+
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 <a class="el" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a> class is the paste command stored in the command stack. 
 <p>
 <a class="el" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a> represents a single paste action on a scene, paste the node on the clipboard to selected node in the scene. If the tgc::Shared parameter defined to the command, the node at the clipboard is shared between the previous parents and the new parent. tgc::Copy to create a new node before the paste. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_copy.html" title="CmdCopy class is the copy command stored in the command stack.">CmdCopy</a>, <a class="el" href="class_cmd_cut.html" title="CmdCut class is the cut command stored in the command stack.">CmdCut</a>, <a class="el" href="class_cmd_delete.html" title="CmdDelete class is the delete command stored in the command stack.">CmdDelete</a> </dd></dl>
+<hr><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" name="d85bed8ed753b25d7a773e246380fe43"></a><!-- doxytag: member="CmdPaste::CmdPaste" ref="d85bed8ed753b25d7a773e246380fe43" args="(tgc::PasteType type, const QModelIndex &amp;parentModelIndex, SoNode *&amp;coinClipboard, SceneModel &amp;sceneModel, QUndoCommand *parent=0)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CmdPaste::CmdPaste           </td>
+          <td>(</td>
+          <td class="paramtype">tgc::PasteType&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QModelIndex &amp;&nbsp;</td>
+          <td class="paramname"> <em>parentModelIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoNode *&amp;&nbsp;</td>
+          <td class="paramname"> <em>coinClipboard</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SceneModel &amp;&nbsp;</td>
+          <td class="paramname"> <em>sceneModel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QUndoCommand *&nbsp;</td>
+          <td class="paramname"> <em>parent</em> = <code>0</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Creates a new paste command that represents a <em>type</em> paste of the <em>coinClipboard</em> node as a node located with <em>parentModelIndex</em> child in the <em>model</em>.<p>
+If <em>parent</em> is not null, this command is appended to parent's child list and then owns this command. 
+</div>
+</div><p>
+<a class="anchor" name="41def34ffaa08c48321997ea78972dc4"></a><!-- doxytag: member="CmdPaste::~CmdPaste" ref="41def34ffaa08c48321997ea78972dc4" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CmdPaste::~CmdPaste           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Destroys the <a class="el" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a> object. 
+</div>
+</div><p>
+<hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="eb4bceaf409fa91857763e14984ba609"></a><!-- doxytag: member="CmdPaste::redo" ref="eb4bceaf409fa91857763e14984ba609" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CmdPaste::redo           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Applies a change to the scene. After <a class="el" href="class_cmd_paste.html#eb4bceaf409fa91857763e14984ba609">redo()</a> parentIndex contains a new child. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_paste.html#19b47031fcd58523427b0a1f25074fa6">undo()</a>. </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="19b47031fcd58523427b0a1f25074fa6"></a><!-- doxytag: member="CmdPaste::undo" ref="19b47031fcd58523427b0a1f25074fa6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CmdPaste::undo           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Reverts scene state. After <a class="el" href="class_cmd_paste.html#19b47031fcd58523427b0a1f25074fa6">undo()</a> is called, the node will remove from the scene. <dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_cmd_paste.html#eb4bceaf409fa91857763e14984ba609">redo()</a>. </dd></dl>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_cmd_paste_8h-source.html">CmdPaste.h</a><li>CmdPaste.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:34:05 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

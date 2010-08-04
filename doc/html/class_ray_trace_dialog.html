@@ -75,6 +75,19 @@ Inherits Ui::RayTraceDialog.
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1">IncreasePhotonMap</a> () const </td></tr>
 
+<tr><td colspan="2"><br><h2>Private Attributes</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#54a4c337a4cc95ba174561ba5d93bbdb">m_numRays</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#c7d990bb28886a573a26741d02d017d0">m_selectedRandomFactory</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#6c086a820c89a6a224ee4afdcb120867">m_fraction</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#fe8ecef1c7fcdbe141d9dffa151d1bf9">m_drawPhotons</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#85df880ba69bdbde03407b7bf0717dbf">m_selectedPhotonMapFactory</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ray_trace_dialog.html#93931024fd0b55f2810dd7c06c7b40bb">m_increasePhotonMap</a></td></tr>
+
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 <a class="el" href="class_ray_trace_dialog.html" title="RayTraceDialog class is the dialog to set ray trace options.">RayTraceDialog</a> class is the dialog to set ray trace options. 
@@ -361,10 +374,101 @@ Returns if the the tracer use the same photon map used in the previous tracer pr
 Saves the values of the dialog. 
 </div>
 </div><p>
+<hr><h2>Member Data Documentation</h2>
+<a class="anchor" name="fe8ecef1c7fcdbe141d9dffa151d1bf9"></a><!-- doxytag: member="RayTraceDialog::m_drawPhotons" ref="fe8ecef1c7fcdbe141d9dffa151d1bf9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_ray_trace_dialog.html#fe8ecef1c7fcdbe141d9dffa151d1bf9">RayTraceDialog::m_drawPhotons</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+This property holds whether photons are going to be drawn. 
+</div>
+</div><p>
+<a class="anchor" name="6c086a820c89a6a224ee4afdcb120867"></a><!-- doxytag: member="RayTraceDialog::m_fraction" ref="6c086a820c89a6a224ee4afdcb120867" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_ray_trace_dialog.html#6c086a820c89a6a224ee4afdcb120867">RayTraceDialog::m_fraction</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Faction of traced rays to draw. 
+</div>
+</div><p>
+<a class="anchor" name="93931024fd0b55f2810dd7c06c7b40bb"></a><!-- doxytag: member="RayTraceDialog::m_increasePhotonMap" ref="93931024fd0b55f2810dd7c06c7b40bb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_ray_trace_dialog.html#93931024fd0b55f2810dd7c06c7b40bb">RayTraceDialog::m_increasePhotonMap</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+This property holds whether traced phtons are going to added to the old photon map. 
+</div>
+</div><p>
+<a class="anchor" name="54a4c337a4cc95ba174561ba5d93bbdb"></a><!-- doxytag: member="RayTraceDialog::m_numRays" ref="54a4c337a4cc95ba174561ba5d93bbdb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_ray_trace_dialog.html#54a4c337a4cc95ba174561ba5d93bbdb">RayTraceDialog::m_numRays</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Number of rays to trace. 
+</div>
+</div><p>
+<a class="anchor" name="85df880ba69bdbde03407b7bf0717dbf"></a><!-- doxytag: member="RayTraceDialog::m_selectedPhotonMapFactory" ref="85df880ba69bdbde03407b7bf0717dbf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_ray_trace_dialog.html#85df880ba69bdbde03407b7bf0717dbf">RayTraceDialog::m_selectedPhotonMapFactory</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+The index of factory selected from TPhotonMapFactory list. 
+</div>
+</div><p>
+<a class="anchor" name="c7d990bb28886a573a26741d02d017d0"></a><!-- doxytag: member="RayTraceDialog::m_selectedRandomFactory" ref="c7d990bb28886a573a26741d02d017d0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_ray_trace_dialog.html#c7d990bb28886a573a26741d02d017d0">RayTraceDialog::m_selectedRandomFactory</a><code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+The index of factory selected from TPhotonMapFactory list. 
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_ray_trace_dialog_8h-source.html">RayTraceDialog.h</a><li>RayTraceDialog.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:34:06 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

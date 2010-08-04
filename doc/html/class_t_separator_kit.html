@@ -54,6 +54,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual SbBool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_separator_kit.html#3474b6ec94c234b2859c8cba3e19518f">setPart</a> (const SbName &amp;partname, SoNode *from)</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual SoNode *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_separator_kit.html#786bdf0a9cef9441fcd9ee8cbc6207ba">getPart</a> (const SbName &amp;partname, SbBool makeifneeded)</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">QString&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_separator_kit.html#192241e1dd66255a683f640227f42c00">getIcon</a> ()</td></tr>
 
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
@@ -150,6 +152,35 @@ Creates a new <a class="el" href="class_t_separator_kit.html" title="The TSepara
 Returns the icon that represents <a class="el" href="class_t_separator_kit.html" title="The TSeparatorKit class provides a set of others TSeparatorKit and TShapeKit nodes...">TSeparatorKit</a> nodes. 
 </div>
 </div><p>
+<a class="anchor" name="786bdf0a9cef9441fcd9ee8cbc6207ba"></a><!-- doxytag: member="TSeparatorKit::getPart" ref="786bdf0a9cef9441fcd9ee8cbc6207ba" args="(const SbName &amp;partname, SbBool makeifneeded)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoNode * TSeparatorKit::getPart           </td>
+          <td>(</td>
+          <td class="paramtype">const SbName &amp;&nbsp;</td>
+          <td class="paramname"> <em>partname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&nbsp;</td>
+          <td class="paramname"> <em>makeifneeded</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns a pointer to the node part with <em>partname</em>. 
+</div>
+</div><p>
 <a class="anchor" name="39fe90220b298997f64bed54bd61d6a4"></a><!-- doxytag: member="TSeparatorKit::initClass" ref="39fe90220b298997f64bed54bd61d6a4" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +232,7 @@ Set <em>from</em> node as <em>partname</em> node.
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_t_separator_kit_8h-source.html">TSeparatorKit.h</a><li>TSeparatorKit.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:34:07 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

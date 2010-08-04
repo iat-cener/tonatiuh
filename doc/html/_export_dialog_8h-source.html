@@ -85,34 +85,37 @@
 <a name="l00045"></a>00045 <span class="preprocessor">#include "SceneModel.h"</span>
 <a name="l00046"></a>00046 <span class="preprocessor">#include "ui_exportdialog.h"</span>
 <a name="l00047"></a>00047 
-<a name="l00048"></a>00048 <span class="keyword">class </span>ExportDialog : <span class="keyword">public</span> QDialog, <span class="keyword">private</span> Ui::ExportDialog
-<a name="l00049"></a>00049 {
-<a name="l00050"></a>00050         Q_OBJECT
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052 <span class="keyword">public</span>:
-<a name="l00053"></a>00053         ExportDialog( SceneModel&amp; sceneModel, QWidget* parent = 0 );
-<a name="l00054"></a>00054         ~ExportDialog();
+<a name="l00049"></a>00049 
+<a name="l00052"></a><a class="code" href="class_export_dialog.html">00052</a> <span class="keyword">class </span><a class="code" href="class_export_dialog.html" title="ExportDialog class is the dialog to define the photon map export mode.">ExportDialog</a> : <span class="keyword">public</span> QDialog, <span class="keyword">private</span> Ui::<a class="code" href="class_export_dialog.html" title="ExportDialog class is the dialog to define the photon map export mode.">ExportDialog</a>
+<a name="l00053"></a>00053 {
+<a name="l00054"></a>00054         Q_OBJECT
 <a name="l00055"></a>00055 
-<a name="l00056"></a>00056         <span class="keywordtype">int</span> GetCoordinateSystem() <span class="keyword">const</span>;
-<a name="l00057"></a>00057         QString GetExportFileName() <span class="keyword">const</span>;
-<a name="l00058"></a>00058         <span class="keywordtype">int</span> GetSelectedPhotons() <span class="keyword">const</span>;
-<a name="l00059"></a>00059         SoNodeKitPath* GetSelectedSurface() <span class="keyword">const</span>;
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 <span class="keyword">public</span> slots:
-<a name="l00063"></a>00063         <span class="keywordtype">void</span> accept();
+<a name="l00056"></a>00056 <span class="keyword">public</span>:
+<a name="l00057"></a>00057         <a class="code" href="class_export_dialog.html#8199cfa739737ce248613af4f349d846">ExportDialog</a>( SceneModel&amp; sceneModel, QString previousSurfaceUrl = 0, <span class="keywordtype">bool</span> previusInGlobal = <span class="keyword">true</span>, QString previousFile = 0, QWidget* parent = 0 );
+<a name="l00058"></a>00058         <a class="code" href="class_export_dialog.html#ff6cf4e48e6dcde206c3d8eb3bc9fac8">~ExportDialog</a>();
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060         <span class="keywordtype">bool</span> <a class="code" href="class_export_dialog.html#1bea69a737609dc585368769aa11be06">ExportAllPhotonMap</a>() <span class="keyword">const</span>;
+<a name="l00061"></a>00061         <span class="keywordtype">bool</span> <a class="code" href="class_export_dialog.html#0e5dbfee04c239594619ad4d9433e678">ExportPhotonsInGlobal</a>() <span class="keyword">const</span>;
+<a name="l00062"></a>00062         QString <a class="code" href="class_export_dialog.html#113e3a9cdb241f1dda94bf457626c493">GetExportFileName</a>() <span class="keyword">const</span>;
+<a name="l00063"></a>00063         QString <a class="code" href="class_export_dialog.html#dcf5e9d2a9b73175bf7b78c6b74be720">GetSelectedSurface</a>() <span class="keyword">const</span>;
 <a name="l00064"></a>00064 
-<a name="l00065"></a>00065 <span class="keyword">private</span> slots:
-<a name="l00066"></a>00066         <span class="keywordtype">void</span> on_openButton_clicked();
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="keyword">private</span>:
-<a name="l00069"></a>00069         SceneModel* m_exportSceneModel;
-<a name="l00070"></a>00070         QItemSelectionModel*  m_exportSelectionModel;
-<a name="l00071"></a>00071 };
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073 <span class="preprocessor">#endif </span><span class="comment">/* EXPORTDIALOG_H_ */</span>
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066 <span class="keyword">public</span> slots:
+<a name="l00067"></a>00067         <span class="keywordtype">void</span> <a class="code" href="class_export_dialog.html#2512130c3d68081d214233cd765960c2">accept</a>();
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069 <span class="keyword">private</span> slots:
+<a name="l00070"></a>00070         <span class="keywordtype">void</span> <a class="code" href="class_export_dialog.html#a16df6b72cf40057a9e59ea922b8ca03">SetExportAllPhotons</a>( <span class="keywordtype">bool</span> allPhotos );
+<a name="l00071"></a>00071         <span class="keywordtype">void</span> <a class="code" href="class_export_dialog.html#e03e1f7a7698d122837ffd090cbf0c4c">SetExportSurfacePhotons</a>( <span class="keywordtype">bool</span> surfacePhotos );
+<a name="l00072"></a>00072         <span class="keywordtype">void</span> <a class="code" href="class_export_dialog.html#ae6b0553870924fffbaf06c944744bdf">SelectFile</a>();
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 <span class="keyword">private</span>:
+<a name="l00075"></a>00075         SceneModel* m_exportSceneModel;
+<a name="l00076"></a>00076         QItemSelectionModel*  m_exportSelectionModel;
+<a name="l00077"></a>00077 };
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 <span class="preprocessor">#endif </span><span class="comment">/* EXPORTDIALOG_H_ */</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:33:57 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

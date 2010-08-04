@@ -56,6 +56,8 @@ Inherits Ui::MainWindow.
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#68dea9a15289cb06b948aa018e191f7f">ShowRaysIn3DView</a> ()</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#b40e98eb702f8e85dcec079f50afa32e">on_actionDisplay_rays_toggled</a> ()</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#743e7c76c6f71cbc94e6d5047ac0a0ba">on_actionExport_PhotonMap_triggered</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768">on_actionRayTraceOptions_triggered</a> ()</td></tr>
@@ -71,11 +73,124 @@ Inherits Ui::MainWindow.
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#56bd608397f177cc024da9c644388771">StartManipulation</a> (SoDragger *dragger)</td></tr>
 
+<tr><td colspan="2"><br><h2>Private Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#f3443b509edc90998b023816800e9e03">SetupActionInsertShape</a> (TShapeFactory *pTShapeFactory)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#b1004b5fadcd42c7909818f73240d817">SetupMenus</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#4abba2c52f756524c0f388d0d3e6d6ec">ReadSettings</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#0130dcbfd54d8f640db7ba43d1267ac7">OkToContinue</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#1f87ccf62d872d2e3667970097bd4a87">StartOver</a> (const QString &amp;fileName)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#29aa2dc30d643263ac5df01ef9caefea">Save</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#c16113ab28437528855f827c26c3f1eb">SaveFile</a> (const QString &amp;fileName)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb">SaveAs</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#be736da971623f32da4172e9bef8af51">Paste</a> (tgc::PasteType type)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#230457e230b7b901d8af4c13d3f3489c">Delete</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#56a5e4d5e0a022e8c1ecf350d2916ade">WriteSettings</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#b481932133997cb3535d83703939f318">ComputeSceneTreeMap</a> (<a class="el" href="class_instance_node.html">InstanceNode</a> *instanceNode, Transform parentWTO)</td></tr>
+
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 Main window class. 
 <p>
 Tonatiuh's main window class. It includes the menu bars and all the actions, signals and slots to provide user interaction with the program. <hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="b481932133997cb3535d83703939f318"></a><!-- doxytag: member="MainWindow::ComputeSceneTreeMap" ref="b481932133997cb3535d83703939f318" args="(InstanceNode *instanceNode, Transform parentWTO)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::ComputeSceneTreeMap           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_instance_node.html">InstanceNode</a> *&nbsp;</td>
+          <td class="paramname"> <em>instanceNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Transform&nbsp;</td>
+          <td class="paramname"> <em>parentWTO</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Compute a map with the InstanceNodes of sub-tree with top node <em>instanceNode</em>.<p>
+The map stores for each <a class="el" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a> its BBox and its transform in global coordinates. 
+</div>
+</div><p>
+<a class="anchor" name="230457e230b7b901d8af4c13d3f3489c"></a><!-- doxytag: member="MainWindow::Delete" ref="230457e230b7b901d8af4c13d3f3489c" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::Delete           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Creates a new delete command, where the selected node was deleted. child.<p>
+Returns <em>true</em> if the node was successfully deleted, otherwise returns <em>false</em>. 
+</div>
+</div><p>
+<a class="anchor" name="0130dcbfd54d8f640db7ba43d1267ac7"></a><!-- doxytag: member="MainWindow::OkToContinue" ref="0130dcbfd54d8f640db7ba43d1267ac7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::OkToContinue           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns <em>true</em> if the application is ready to start with other model. Otherwise, returns <em>false</em>. 
+</div>
+</div><p>
+<a class="anchor" name="b40e98eb702f8e85dcec079f50afa32e"></a><!-- doxytag: member="MainWindow::on_actionDisplay_rays_toggled" ref="b40e98eb702f8e85dcec079f50afa32e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::on_actionDisplay_rays_toggled           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden. 
+</div>
+</div><p>
 <a class="anchor" name="743e7c76c6f71cbc94e6d5047ac0a0ba"></a><!-- doxytag: member="MainWindow::on_actionExport_PhotonMap_triggered" ref="743e7c76c6f71cbc94e6d5047ac0a0ba" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -92,7 +207,7 @@ Tonatiuh's main window class. It includes the menu bars and all the actions, sig
 <div class="memdoc">
 
 <p>
-Writes the photons stored at the photon map at user defined file. 
+Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters. 
 </div>
 </div><p>
 <a class="anchor" name="5103ef907a6072410493a53242787dc6"></a><!-- doxytag: member="MainWindow::on_actionGrid_toggled" ref="5103ef907a6072410493a53242787dc6" args="()" -->
@@ -188,6 +303,46 @@ Creates a command for the modification of a node parameter.<p>
 The command is stored at the stack. 
 </div>
 </div><p>
+<a class="anchor" name="be736da971623f32da4172e9bef8af51"></a><!-- doxytag: member="MainWindow::Paste" ref="be736da971623f32da4172e9bef8af51" args="(tgc::PasteType type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::Paste           </td>
+          <td>(</td>
+          <td class="paramtype">tgc::PasteType&nbsp;</td>
+          <td class="paramname"> <em>type</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Creates a new <em>type</em> paste command. The clipboard node was inerted as selected node child.<p>
+Returns <em>true</em> if the node was successfully pasted, otherwise returns <em>false</em>. 
+</div>
+</div><p>
+<a class="anchor" name="4abba2c52f756524c0f388d0d3e6d6ec"></a><!-- doxytag: member="MainWindow::ReadSettings" ref="4abba2c52f756524c0f388d0d3e6d6ec" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::ReadSettings           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Restores application settings. 
+</div>
+</div><p>
 <a class="anchor" name="6017d43535c81c10e65a20163b7dac8a"></a><!-- doxytag: member="MainWindow::ReadyForRaytracing" ref="6017d43535c81c10e65a20163b7dac8a" args="(InstanceNode *&amp;rootSeparatorInstance, InstanceNode *&amp;lightInstance, SoTransform *&amp;lightTransform, TSunShape *&amp;sunShape, TShape *&amp;shape)" -->
 <div class="memitem">
 <div class="memproto">
@@ -235,6 +390,71 @@ The command is stored at the stack.
 Checks whether a ray tracing can be started with the current light and model. 
 </div>
 </div><p>
+<a class="anchor" name="29aa2dc30d643263ac5df01ef9caefea"></a><!-- doxytag: member="MainWindow::Save" ref="29aa2dc30d643263ac5df01ef9caefea" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::Save           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns <em>true</em> if the tonatiuh model is correctly saved in the current file. Otherwise, returns <em>false</em>.<p>
+If a current file is not defined, it calls to SaveAs funtios.<p>
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb">SaveAs</a>, <a class="el" href="class_main_window.html#c16113ab28437528855f827c26c3f1eb">SaveFile</a>. </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="5fb546357ba30a5ec4a95a432ee101bb"></a><!-- doxytag: member="MainWindow::SaveAs" ref="5fb546357ba30a5ec4a95a432ee101bb" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::SaveAs           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns <em>true</em> if the tonatiuh model is correctly saved. Otherwise, returns <em>false</em>. A file dialog is created to select a file.<p>
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_main_window.html#29aa2dc30d643263ac5df01ef9caefea">Save</a>, <a class="el" href="class_main_window.html#c16113ab28437528855f827c26c3f1eb">SaveFile</a>. </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="c16113ab28437528855f827c26c3f1eb"></a><!-- doxytag: member="MainWindow::SaveFile" ref="c16113ab28437528855f827c26c3f1eb" args="(const QString &amp;fileName)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::SaveFile           </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&nbsp;</td>
+          <td class="paramname"> <em>fileName</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns <em>true</em> if the tonatiuh model is correctly saved into the the given <em>fileName</em>. Otherwise, returns <em>false</em>.<p>
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="class_main_window.html#29aa2dc30d643263ac5df01ef9caefea">Save</a>, <a class="el" href="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb">SaveAs</a>. </dd></dl>
+
+</div>
+</div><p>
 <a class="anchor" name="273eaf8e1fd63c33a11ab7e5b41f1ac0"></a><!-- doxytag: member="MainWindow::SetEnabled_SunPositionCalculator" ref="273eaf8e1fd63c33a11ab7e5b41f1ac0" args="(int enabled)" -->
 <div class="memitem">
 <div class="memproto">
@@ -253,6 +473,45 @@ Checks whether a ray tracing can be started with the current light and model.
 
 <p>
 This property holds whether the SunPositionCalculator action is enabled. If the action is disabled, it does not disappear from menu, but it is displayed in a way which indicates that they are unavailable. 
+</div>
+</div><p>
+<a class="anchor" name="f3443b509edc90998b023816800e9e03"></a><!-- doxytag: member="MainWindow::SetupActionInsertShape" ref="f3443b509edc90998b023816800e9e03" args="(TShapeFactory *pTShapeFactory)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::SetupActionInsertShape           </td>
+          <td>(</td>
+          <td class="paramtype">TShapeFactory *&nbsp;</td>
+          <td class="paramname"> <em>pTShapeFactory</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Creates an action for the /a pTShapeFactory and adds to shape insert menu and toolbar. 
+</div>
+</div><p>
+<a class="anchor" name="b1004b5fadcd42c7909818f73240d817"></a><!-- doxytag: member="MainWindow::SetupMenus" ref="b1004b5fadcd42c7909818f73240d817" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::SetupMenus           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Creates a menu for last used files 
 </div>
 </div><p>
 <a class="anchor" name="68dea9a15289cb06b948aa018e191f7f"></a><!-- doxytag: member="MainWindow::ShowRaysIn3DView" ref="68dea9a15289cb06b948aa018e191f7f" args="()" -->
@@ -295,10 +554,49 @@ Compute a map with the InstanceNodes of sub-tree with top node <em>instanceNode<
 The map stores for each <a class="el" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a> its BBox and its transform in global coordinates. 
 </div>
 </div><p>
+<a class="anchor" name="1f87ccf62d872d2e3667970097bd4a87"></a><!-- doxytag: member="MainWindow::StartOver" ref="1f87ccf62d872d2e3667970097bd4a87" args="(const QString &amp;fileName)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MainWindow::StartOver           </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&nbsp;</td>
+          <td class="paramname"> <em>fileName</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Returns to the start origin state and starts with a new model defined in <em>fileName</em>. If the file name is not defined, it starts with an empty scene. 
+</div>
+</div><p>
+<a class="anchor" name="56a5e4d5e0a022e8c1ecf350d2916ade"></a><!-- doxytag: member="MainWindow::WriteSettings" ref="56a5e4d5e0a022e8c1ecf350d2916ade" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::WriteSettings           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Saves application settings. 
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_main_window_8h-source.html">MainWindow.h</a><li>MainWindow.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:34:06 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

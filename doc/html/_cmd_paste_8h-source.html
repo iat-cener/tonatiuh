@@ -92,11 +92,11 @@
 <a name="l00058"></a><a class="code" href="class_cmd_paste.html">00058</a> <span class="keyword">class </span><a class="code" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a> : <span class="keyword">public</span> QUndoCommand
 <a name="l00059"></a>00059 {
 <a name="l00060"></a>00060 <span class="keyword">public</span>:
-<a name="l00061"></a>00061     <a class="code" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a>( tgc::PasteType type, <span class="keyword">const</span> QModelIndex&amp; parentModelIndex,  SoNode*&amp; coinClipboard, SceneModel&amp; sceneModel, QUndoCommand* parent = 0 );
-<a name="l00062"></a>00062     ~<a class="code" href="class_cmd_paste.html" title="CmdPaste class is the paste command stored in the command stack.">CmdPaste</a>();
+<a name="l00061"></a>00061     <a class="code" href="class_cmd_paste.html#d85bed8ed753b25d7a773e246380fe43">CmdPaste</a>( tgc::PasteType type, <span class="keyword">const</span> QModelIndex&amp; parentModelIndex,  SoNode*&amp; coinClipboard, SceneModel&amp; sceneModel, QUndoCommand* parent = 0 );
+<a name="l00062"></a>00062     <a class="code" href="class_cmd_paste.html#41def34ffaa08c48321997ea78972dc4">~CmdPaste</a>();
 <a name="l00063"></a>00063 
-<a name="l00064"></a>00064      <span class="keyword">virtual</span> <span class="keywordtype">void</span> undo();
-<a name="l00065"></a>00065      <span class="keyword">virtual</span> <span class="keywordtype">void</span> redo();
+<a name="l00064"></a>00064      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_paste.html#19b47031fcd58523427b0a1f25074fa6">undo</a>();
+<a name="l00065"></a>00065      <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_cmd_paste.html#eb4bceaf409fa91857763e14984ba609">redo</a>();
 <a name="l00066"></a>00066 
 <a name="l00067"></a>00067 <span class="keyword">private</span>:
 <a name="l00068"></a>00068     tgc::PasteType m_pasteType;
@@ -109,7 +109,7 @@
 <a name="l00075"></a>00075 
 <a name="l00076"></a>00076 <span class="preprocessor">#endif </span><span class="comment">/*CMDPASTE_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:33:57 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>

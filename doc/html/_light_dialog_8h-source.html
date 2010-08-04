@@ -95,42 +95,43 @@
 <a name="l00055"></a>00055 <span class="keyword">class </span>TSunShape;
 <a name="l00056"></a>00056 <span class="keyword">class </span>TSunShapeFactory;
 <a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keyword">class </span>LightDialog : <span class="keyword">public</span> QDialog, <span class="keyword">private</span> Ui::LightDialog
-<a name="l00059"></a>00059 {
-<a name="l00060"></a>00060         Q_OBJECT
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 <span class="keyword">public</span>:
-<a name="l00063"></a>00063         LightDialog(  <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>* currentLightKit, QVector&lt; TShapeFactory* &gt; shapeFactoryList, QVector&lt; TSunShapeFactory* &gt; sunshapeFactoryList, QWidget* parent = 0 );
-<a name="l00064"></a>00064         ~LightDialog();
+<a name="l00059"></a>00059 
+<a name="l00062"></a><a class="code" href="class_light_dialog.html">00062</a> <span class="keyword">class </span><a class="code" href="class_light_dialog.html" title="LightDialog class is the dialog to define the light parameters.">LightDialog</a> : <span class="keyword">public</span> QDialog, <span class="keyword">private</span> Ui::<a class="code" href="class_light_dialog.html" title="LightDialog class is the dialog to define the light parameters.">LightDialog</a>
+<a name="l00063"></a>00063 {
+<a name="l00064"></a>00064         Q_OBJECT
 <a name="l00065"></a>00065 
-<a name="l00066"></a>00066         <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>* GetTLightKit();
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="keyword">protected</span> slots:
-<a name="l00069"></a>00069         <span class="keywordtype">void</span> changeShape( <span class="keywordtype">int</span> index );
-<a name="l00070"></a>00070         <span class="keywordtype">void</span> changeSunshape( <span class="keywordtype">int</span> index );
+<a name="l00066"></a>00066 <span class="keyword">public</span>:
+<a name="l00067"></a>00067         <a class="code" href="class_light_dialog.html#f88b3ecac92d89a1c488891214acd0ad">LightDialog</a>(  <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>* currentLightKit, QVector&lt; TShapeFactory* &gt; shapeFactoryList, QVector&lt; TSunShapeFactory* &gt; sunshapeFactoryList, QWidget* parent = 0 );
+<a name="l00068"></a>00068         <a class="code" href="class_light_dialog.html#48e93e3fc9a2d85a3cec78291802cab4">~LightDialog</a>();
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070         <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>* <a class="code" href="class_light_dialog.html#7530e9ad5cc036300603a551ca77dedb">GetTLightKit</a>();
 <a name="l00071"></a>00071 
-<a name="l00072"></a>00072 <span class="keyword">private</span>:
-<a name="l00073"></a>00073         <span class="keywordtype">void</span> SunPositionTab();
-<a name="l00074"></a>00074         <span class="keywordtype">void</span> SunshapeTab();
-<a name="l00075"></a>00075         <span class="keywordtype">void</span> ShapeBox();
-<a name="l00076"></a>00076         <span class="keywordtype">void</span> SunshapeBox();
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079     <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>* m_currentLightKit;
-<a name="l00080"></a>00080         <span class="keywordtype">int</span> m_currentSunShapeIndex;
-<a name="l00081"></a>00081         <span class="keywordtype">int</span> m_currentShapeIndex;
+<a name="l00072"></a>00072 <span class="keyword">protected</span> slots:
+<a name="l00073"></a>00073         <span class="keywordtype">void</span> <a class="code" href="class_light_dialog.html#06a25d0d9b420b7836c44dc7c9a1e29b">changeShape</a>( <span class="keywordtype">int</span> index );
+<a name="l00074"></a>00074         <span class="keywordtype">void</span> <a class="code" href="class_light_dialog.html#02c44bf3704f7f4ca8318cda5ec7a20e">changeSunshape</a>( <span class="keywordtype">int</span> index );
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076 <span class="keyword">private</span>:
+<a name="l00077"></a>00077         <span class="keywordtype">void</span> <a class="code" href="class_light_dialog.html#d80d1f9cc57cf11efcd9312c585ac205">SunPositionTab</a>();
+<a name="l00078"></a>00078         <span class="keywordtype">void</span> <a class="code" href="class_light_dialog.html#3a60b6e67898772cb078b365009c6198">SunshapeTab</a>();
+<a name="l00079"></a>00079         <span class="keywordtype">void</span> ShapeBox();
+<a name="l00080"></a>00080         <span class="keywordtype">void</span> SunshapeBox();
+<a name="l00081"></a>00081 
 <a name="l00082"></a>00082 
-<a name="l00083"></a>00083     TShape* m_newShape;
-<a name="l00084"></a>00084     TSunShape* m_newSunShape;
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086     QMap&lt; QString, TShapeFactory* &gt; m_shapeList;
-<a name="l00087"></a>00087         QMap&lt; QString, TSunShapeFactory* &gt; m_sunshapeList;
-<a name="l00088"></a>00088 
-<a name="l00089"></a>00089 };
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 <span class="preprocessor">#endif </span><span class="comment">/*LIGHTDIALOG_H_*/</span>
+<a name="l00083"></a>00083     <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape...">TLightKit</a>* m_currentLightKit;
+<a name="l00084"></a>00084         <span class="keywordtype">int</span> m_currentSunShapeIndex;
+<a name="l00085"></a>00085         <span class="keywordtype">int</span> m_currentShapeIndex;
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087     TShape* m_newShape;
+<a name="l00088"></a>00088     TSunShape* m_newSunShape;
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090     QMap&lt; QString, TShapeFactory* &gt; m_shapeList;
+<a name="l00091"></a>00091         QMap&lt; QString, TSunShapeFactory* &gt; m_sunshapeList;
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 };
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 <span class="preprocessor">#endif </span><span class="comment">/*LIGHTDIALOG_H_*/</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Wed Jun 30 10:42:21 2010 for Tonatiuh by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Wed Aug 4 09:33:57 2010 for Tonatiuh by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.8 </small></address>
 </body>
