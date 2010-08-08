@@ -18,9 +18,9 @@ tar -zxvf Coin-3.1.3.tar.gz
 
 This will create a directory called _Coin-3.1.3_ in your user directory. Using the MSYS shell navigate to just created Coin-3.1.0 directory and type:
 {{{
-export QTDIR="/usr/qt"_
+export QTDIR="/c:/sde/qt"_
 export COINDIR="/usr/local"_
-export INCLUDE="/usr/local/include:/usr/qt/include"
+export INCLUDE="/usr/local/include:/c:/sde/qt/mingw/include"
 }}}
 
 Type the following command to build on release mode: 
