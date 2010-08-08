@@ -7,27 +7,23 @@ http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
 = Details =
 
-Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.1.0.tar.gz Coin 3.1.0], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder.  This will typically be _c:\sde\msys\usr\home\username_.
+Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.1.3.tar.gz Coin 3.1.3], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder.  This will typically be _c:\sde\msys\usr\home\username_.
 
 *(Note: If you are using Windows XP, be sure the operating system does not change the extension of the file from ".tar.gz" to ".tar.tar" while it is dowloading it. If it does, after downloading the file change its extension back to ".tar.gz")*
 
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
-tar -zxvf Coin-3.1.0.tar.gz
+tar -zxvf Coin-3.1.3.tar.gz
 }}}
 
-This will create a directory called _Coin-3.1.0_ in your user directory. Using the MSYS shell navigate to just created Coin-3.1.0 directory and type:
+This will create a directory called _Coin-3.1.3_ in your user directory. Using the MSYS shell navigate to just created Coin-3.1.0 directory and type:
 {{{
 export QTDIR="/usr/qt"_
 export COINDIR="/usr/local"_
 export INCLUDE="/usr/local/include:/usr/qt/include"
 }}}
 
-Type the following command to build on debug mode: 
-{{{
-./configure --disable-msvc --enable-qt-debug --with-suffix=d
-}}}
-Or type to release mode:
+Type the following command to build on release mode: 
 {{{
 ./configure --disable-msvc --enable-debug=no --enable-symbols=no
 }}}
