@@ -13,8 +13,8 @@
 
 == Configuring Eclipse for Tonatiuh ==
  * You can edit the general project options in Eclipse by navigating Window->Preferences->General->Editors. Under File Associations add the new types:
-  # .ui  C:\sde\msys\usr\qt\bin\designer
-  # .ts  C:\sde\msys\usr\qt\bin\linguist 
+  # .ui  C:\sde\qt\qt\bin\designer
+  # .ts  C:\sde\qt\qt\bin\linguist 
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
 
  * In C\C++->New CDT project wizard-> Makefile project:
