@@ -7,7 +7,7 @@
 
 == Installing eclipse Ganymede ==
  * Download _"Eclipse IDE for C/C++ Developers"_ from the eclipse website at http://www.eclipse.org/downloads/.
- * Extract the files from the archive into C:\.
+ * Extract the files from the archive into C:\sde\.
  * Run the Eclipse executable from the folder and when asked for a workspace set it to C:\eclipse\workspace.
 
 
