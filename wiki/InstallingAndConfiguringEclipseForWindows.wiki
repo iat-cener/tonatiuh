@@ -18,7 +18,7 @@
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
 
  * In C\C++->New CDT project wizard-> Makefile project:
-  # Under the Builder Settings tab set the build command to C:\sde\MinGW\bin\mingw32-make.exe
+  # Under the Builder Settings tab set the build command to C:\sde\qt\mingw\bin\mingw32-make.exe
   # Under Binary Parser select only PE Windows Parser
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/makefileProject.png]
 
