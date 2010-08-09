@@ -17,16 +17,11 @@ tar -zxvf marble-0.8.0_rev1005857.tar.gz
 
 This will create a directory called _marble-version_ in your user directory. Using the MSYS shell navigate to just created marble-version directory and type:
 {{{
-export QTDIR="/usr/qt"_
-export PATH=$PATH:/c/sde/CMake/bin:/usr/qt/bin
+export QTDIR=/c/sde/qt/qt_
+export PATH=$QTDIR/bin:$PATH:/c/sde/cmake/bin
 }}}
 
-The command to create Makefiles on debug mode type:
-{{{
-cmake -G"MSYS Makefiles" -Wno-dev -DCMAKE_BUILD_TYPE=debug -DQTONLY=ON ../marble
-}}}
-
-or type the following to release mode:
+The command to create Makefiles on release mode is:
 {{{
 cmake -G"MSYS Makefiles" -Wno-dev -DQTONLY=ON ../marble
 }}}
