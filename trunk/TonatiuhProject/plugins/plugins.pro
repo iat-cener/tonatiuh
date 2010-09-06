@@ -10,6 +10,7 @@ SUBDIRS =  MaterialBasicRefractive \
 			ShapeCylinder \
 			ShapeFlatDisk \
 			ShapeFlatRectangle \
+            ShapeFlatTriangle \
 			ShapeHyperboloid \
 			ShapeParabolicDish \
 			ShapeParabolicRectangle \

@@ -101,7 +101,7 @@ void ParametersView::AddTab( SoNode* coinNode, QString partName )
 
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( coinNode, partName, this );
 	addTab( nodeContainer, type );
-	//connect(nodeContainer, SIGNAL( valueModificated( const QStringList& , QString ) ), this, SLOT( ValueModification( const QStringList& , QString ) ) );
+	connect(nodeContainer, SIGNAL( valueModificated( const QStringList& , QString ) ), this, SLOT( ValueModification( const QStringList& , QString ) ) );
 }
 
 /*!
