@@ -51,28 +51,34 @@ void SunshapeBuie::initClass()
 SunshapeBuie::SunshapeBuie( )
 {
 	SO_NODE_CONSTRUCTOR( SunshapeBuie );
-
 	SO_NODE_ADD_FIELD( irradiance, (1000));
-	SO_NODE_ADD_FIELD( crs, ( 0.05 ) );
+	SO_NODE_ADD_FIELD( csr, ( 0.02 ) );
 
-	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCRS, this );
+	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCSR, this );
 	irradianceSensor->attach( &irradiance );
 
-	SoFieldSensor* crsSensor = new SoFieldSensor( updateCRS, this );
-	crsSensor->attach( &crs );
+	SoFieldSensor* csrSensor = new SoFieldSensor( updateCSR, this );
+	csrSensor->attach( &csr );
 
-	//Integrate[ Phi2[theta*1000, \[CapitalChi]0]*10^-3*Sin[theta], {theta, 0.00465, 0.0436}] = 9.22474e-9
-	cte = 9.22472e-9;
+	double csrValue = csr.getValue();
+	if( csrValue > 0.01 && csrValue < 0.8 ) updateState( csrValue );
+}
 
-	if( crs.getValue() > 0.0 )
-	{
-		k = 0.9 * log( 13.5 * crs.getValue() ) * pow( crs.getValue(), -0.3 );
-		y = 2.2 * log( 0.52 * crs.getValue() ) * pow( crs.getValue(), 0.43 )  - 0.1;
-
-		cte += ( exp( k )/(2 + y ) ) * ( pow ( 43.6, y+2 ) - pow( 4.65, y +2 ) ) *1e-9;
-	}
-
-
+void SunshapeBuie::updateState( double csrValue )
+{
+    m_thetaSD = 0.00465;
+    m_thetaCS = 0.0436;
+    m_deltaThetaCSSD = m_thetaCS - m_thetaSD;
+    m_integralA = 9.224724736098827/1000000.0;
+	m_chi = chiValue( csrValue );
+	m_k = kValue( m_chi );
+	m_gamma = gammaValue( m_chi );
+	m_etokTimes1000toGamma = exp( m_k ) * pow( 1000, m_gamma );
+    m_integralB = intregralB( m_k, m_gamma, m_thetaCS, m_thetaSD );
+    m_alpha = 1.0/( m_integralA + m_integralB );
+    m_heightRectangle1 = 1.001 * pdfTheta( 0.0038915695846209047 );
+    m_heightRectangle2 = pdfTheta( m_thetaSD );
+    m_probabilityRectangle1 = probabilityRectangle1(  m_thetaSD, m_heightRectangle1, (m_thetaCS - m_thetaSD), m_heightRectangle2 );
 }
 
 SunshapeBuie::~SunshapeBuie()
@@ -83,7 +89,7 @@ SunshapeBuie::~SunshapeBuie()
 void SunshapeBuie::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
 	double phi = tgc::TwoPi * rand.RandomDouble();
-    double theta = Theta( rand );
+    double theta = zenithAngle( rand );
     double sinTheta = sin( theta );
     double cosTheta = cos( theta );
     double cosPhi = cos( phi );
@@ -106,68 +112,105 @@ SoNode* SunshapeBuie::copy( SbBool copyConnections ) const
 	SunshapeBuie* newSunShape = dynamic_cast< SunshapeBuie* >( SoNode::copy( copyConnections ) );
 
 	newSunShape->irradiance = irradiance;
-	newSunShape->crs = crs;
+	newSunShape->csr = csr;
+
+	newSunShape->m_chi = m_chi;
+	newSunShape->m_k = m_k;
+	newSunShape->m_gamma = m_gamma;
+	newSunShape->m_etokTimes1000toGamma = m_etokTimes1000toGamma;
+	newSunShape->m_thetaSD = m_thetaSD;
+	newSunShape->m_thetaCS = m_thetaCS;
+	newSunShape->m_deltaThetaCSSD = m_deltaThetaCSSD;
+	newSunShape->m_integralA = m_integralA;
+	newSunShape->m_integralB = m_integralB;
+	newSunShape->m_alpha = m_alpha;
+	newSunShape->m_heightRectangle1 = m_heightRectangle1;
+	newSunShape->m_heightRectangle2 = m_heightRectangle2;
+	newSunShape->m_probabilityRectangle1 = m_probabilityRectangle1;
 
 	return newSunShape;
 }
 
-
-void SunshapeBuie::updateCRS(void *data, SoSensor *)
+void SunshapeBuie::updateCSR(void *data, SoSensor *)
 {
 	SunshapeBuie* sunshape = ( SunshapeBuie* ) data;
-	double crs0 = sunshape->crs.getValue();
-
-	//Integrate[ Phi2[theta*1000, \[CapitalChi]0]*10^-3*Sin[theta], {theta, 0.00465, 0.0436}] = 9.22474e-9
-	sunshape->cte = 9.22472e-9;
-
-	if( crs0 > 0.0 )
-	{
-		sunshape->k = 0.9 * log( 13.5 * crs0 ) * pow( crs0, -0.3 );
-		sunshape->y = 2.2 * log( 0.52 * crs0 ) * pow( crs0, 0.43 )  - 0.1;
-
-		sunshape->cte += ( ( exp( sunshape->k )/(2 + sunshape->y ) ) * ( pow ( 43.6, sunshape->y+2 ) - pow( 4.65, sunshape->y +2 ) ) *1e-9 );
-	}
-
+	double csrValue = sunshape->csr.getValue();
+	if( csrValue >= 0.1 && csrValue <= 0.8 ) sunshape->updateState( csrValue );
 }
 
-double SunshapeBuie::Theta( RandomDeviate& rand ) const
+double SunshapeBuie::zenithAngle( RandomDeviate& rand ) const
 {
-	double a = 0.0;
-	double b = 0.0436;
+	double theta;
+	double value;
 
-	double m = 400;
-	double w =- tgc::Infinity;
-
-
-	bool cont = true;
-	while (cont)
+	do
 	{
-		double theta = ( ( b - a ) * rand.RandomDouble() ) + a;
-		double f = m * rand.RandomDouble();
-
-		if( f <= ThetaProbiblityFunction( theta * 1000 ) )
+		if ( rand.RandomDouble() < m_probabilityRectangle1 )
 		{
-			w = theta;
-			cont  = false;
+			theta = rand.RandomDouble() * m_thetaSD;
+			value = rand.RandomDouble() * m_heightRectangle1;
 		}
-	}
-	return w;
+		else
+		{
+			theta = m_thetaSD + rand.RandomDouble() * m_deltaThetaCSSD;
+			value = rand.RandomDouble() * m_heightRectangle2;
+		}
+	} while ( value > pdfTheta( theta ) );
+
+	return theta;
 }
 
-double SunshapeBuie::ThetaProbiblityFunction( double theta ) const
+double SunshapeBuie::chiValue( double csr ) const
 {
+	return  -5.1258837621059135 * ( -1.3794158706050812 + csr ) *
+		    ( 0.7644388341460964 + ( -1.2818846532638755 + csr ) * csr ) *
+			( 0.0030310118324067756 + ( 0.10886488599064247 + csr ) * csr );
+}
 
-	double phi;
-	if( theta > 4.65 )
-	{
-		if( crs.getValue() > 0.0 )	phi =  exp( k ) * pow( theta, y );
-		else return 0.0;
-	}
-	else
-	{
-		phi = cos( 0.326 * theta )/ cos( 0.308 * theta);
-	}
+double SunshapeBuie::phiSolarDisk( double theta ) const
+{
+	// The parameter theta is the zenith angle in radians
+	return cos( 326 * theta ) / cos( 308 * theta );
+}
 
-	return ( phi * 1e-3 * sin( theta/1000 ) * ( 1./cte ) );
+double SunshapeBuie::phiCircumSolarRegion( double theta ) const
+{
+	// The parameter theta is the zenith angle in radians
+	return m_etokTimes1000toGamma * pow( theta, m_gamma );
+}
 
+double SunshapeBuie::phi( double theta ) const
+{
+	// The parameter theta is the zenith angle in radians
+	if ( theta < m_thetaSD ) return phiSolarDisk( theta );
+	else return phiCircumSolarRegion( theta );
+}
+
+double SunshapeBuie::pdfTheta( double theta ) const
+{
+	// The parameter theta is the zenith angle in radians
+	return m_alpha * phi( theta ) * sin( theta );
+}
+
+double SunshapeBuie::kValue( double chi ) const
+{
+	return 0.9 * log( 13.5 * chi ) * pow( chi, -0.3 );
+}
+
+double SunshapeBuie::gammaValue( double chi ) const
+{
+	return 2.2 * log( 0.52 * chi ) * pow( chi, 0.43 ) - 0.1;
+}
+
+double SunshapeBuie::intregralB( double k, double gamma, double thetaCS, double thetaSD ) const
+{
+	double gammaPlusTwo = gamma + 2.0;
+	return ( exp( k ) * pow( 1000, gamma ) / gammaPlusTwo ) * ( pow( thetaCS, gammaPlusTwo ) - pow( thetaSD, gammaPlusTwo ) );
+}
+
+double SunshapeBuie::probabilityRectangle1( double widthR1, double heightR1, double widthR2, double heightR2 ) const
+{
+	double areaR1 = widthR1 * heightR1;
+	double areaR2 = widthR2 * heightR2;
+	return areaR1 / ( areaR1 + areaR2 );
 }

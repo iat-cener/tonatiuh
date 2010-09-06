@@ -59,18 +59,37 @@ public:
 	double GetIrradiance() const;
 
 	trt::TONATIUH_REAL irradiance;
-	trt::TONATIUH_REAL crs;
+	trt::TONATIUH_REAL csr;
 
 protected:
-	static void updateCRS(void *data, SoSensor *);
+	static void updateCSR(void *data, SoSensor *);
 	 ~SunshapeBuie();
 private:
-	 double Theta( RandomDeviate& rand ) const;
-	 double ThetaProbiblityFunction( double theta  ) const;
+	 double chiValue( double csr ) const;
+	 double phiSolarDisk( double theta ) const;
+	 double phiCircumSolarRegion( double theta ) const;
+	 double phi( double theta ) const;
+	 double pdfTheta( double theta ) const;
+	 double zenithAngle( RandomDeviate& rand ) const;
+	 double kValue( double chi ) const;
+	 double gammaValue( double chi ) const;
+	 double intregralB( double k, double gamma, double thetaCS, double thetaSD ) const;
+	 double probabilityRectangle1( double widthR1, double heightR1, double widthR2, double heightR2 ) const;
+	 void updateState( double csrValue );
 
-	 double k;
-	 double y;
-	 double cte;
+	 double m_chi;
+	 double m_k;
+	 double m_gamma;
+	 double m_etokTimes1000toGamma;
+	 double m_thetaSD;
+	 double m_thetaCS;
+	 double m_deltaThetaCSSD;
+	 double m_integralA;
+	 double m_integralB;
+	 double m_alpha;
+	 double m_heightRectangle1;
+	 double m_heightRectangle2;
+	 double m_probabilityRectangle1;
 };
 
 #endif /* SUNSHAPEBUIE_H_ */
