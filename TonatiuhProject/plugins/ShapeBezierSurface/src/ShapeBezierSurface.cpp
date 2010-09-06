@@ -68,16 +68,13 @@ ShapeBezierSurface::ShapeBezierSurface( )
 
 
 	SoFieldSensor* fileSensor = new SoFieldSensor( updateInputDataFile, this );
+	fileSensor->setPriority( 0 );
 	fileSensor->attach( &inputDataFile );
 
 }
 
 ShapeBezierSurface::~ShapeBezierSurface()
 {
-	/*for( int surface = 0; surface < m_surfacesVector.size(); ++surface )
-	{
-		delete m_surfacesVector[surface];
-	}*/
 	m_surfacesVector.clear();
 }
 

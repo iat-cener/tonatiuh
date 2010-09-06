@@ -70,8 +70,7 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
 	QFile exportFile( fileName );
 	if(!exportFile.open( QIODevice::WriteOnly ) )	return 0;
 
-	//QDataStream out( &exportFile );
-	QTextStream out( &exportFile );
+	QDataStream out( &exportFile );
 	out<< wPhoton;
 
 	QList< Photon* > photonsList = photonMap->GetAllPhotons();
@@ -82,9 +81,7 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
 		double id = node->id;
 		double prev_id = ( node->prev ) ? node->prev->id : 0;
 		double next_id = ( node->next ) ? node->next->id : 0;
-		QString nodeUrl = "-";
-		if( node->intersectedSurface != 0 )	nodeUrl = node->intersectedSurface->GetNodeURL();
-		out<<id <<"\t" <<photon.x <<"\t" << photon.y << "\t" << photon.z << "\t" <<prev_id<<"\t"<<next_id<<"\t"<<nodeUrl<<"\n";
+		out<<id <<photon.x << photon.y << photon.z <<prev_id << next_id;
 	}
 	exportFile.close();
 

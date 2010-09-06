@@ -2199,12 +2199,9 @@ bool MainWindow::Delete( )
 		CmdDelete* commandDelete = new CmdDelete( m_selectionModel->currentIndex(), *m_sceneModel );
 		m_commandStack->push( commandDelete );
 	}
-
-
-
 	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
-
 	m_document->SetDocumentModified( true );
+
 	return true;
 }
 
