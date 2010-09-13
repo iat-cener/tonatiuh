@@ -567,6 +567,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	{
 		if( coinParent.getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 		{
+
 			SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", false ) );
 			if( !coinPartList ) return false;
 
@@ -592,8 +593,8 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	// Test if the node is shared
 	if( instanceList.size() == 1 )
 	{
-	    InstanceNode* instanceNode = instanceList[0];
-		DeleteInstanceTree( *instanceNode );
+		InstanceNode* instanceNode = instanceList[0];
+	    DeleteInstanceTree( *instanceNode );
 	}
 	else
 	{
@@ -614,7 +615,6 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 			}
 		}
 	}
-
 
 	emit layoutChanged();
 
