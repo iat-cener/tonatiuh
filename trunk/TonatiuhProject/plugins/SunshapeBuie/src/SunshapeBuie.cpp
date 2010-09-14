@@ -61,7 +61,7 @@ SunshapeBuie::SunshapeBuie( )
 	csrSensor->attach( &csr );
 
 	double csrValue = csr.getValue();
-	if( csrValue > 0.01 && csrValue < 0.8 ) updateState( csrValue );
+	if( csrValue >= m_minCRSValue && csrValue <= m_maxCRSValue ) updateState( csrValue );
 }
 
 void SunshapeBuie::updateState( double csrValue )
@@ -135,7 +135,7 @@ void SunshapeBuie::updateCSR(void *data, SoSensor *)
 {
 	SunshapeBuie* sunshape = ( SunshapeBuie* ) data;
 	double csrValue = sunshape->csr.getValue();
-	if( csrValue >= 0.1 && csrValue <= 0.8 ) sunshape->updateState( csrValue );
+	if( csrValue >= m_minCRSValue && csrValue <= m_maxCRSValue ) sunshape->updateState( csrValue );
 }
 
 double SunshapeBuie::zenithAngle( RandomDeviate& rand ) const
@@ -162,9 +162,9 @@ double SunshapeBuie::zenithAngle( RandomDeviate& rand ) const
 
 double SunshapeBuie::chiValue( double csr ) const
 {
-	return  -5.1258837621059135 * ( -1.3794158706050812 + csr ) *
-		    ( 0.7644388341460964 + ( -1.2818846532638755 + csr ) * csr ) *
-			( 0.0030310118324067756 + ( 0.10886488599064247 + csr ) * csr );
+
+	return -4.7172422329669 * (-1.4070438092190156 + csr) * (0.0313462488977661 + csr) * (0.08846465256738223 + csr) *
+			( 0.7843687910540035 + (-1.2947513603654814 + csr ) * csr );
 }
 
 double SunshapeBuie::phiSolarDisk( double theta ) const
