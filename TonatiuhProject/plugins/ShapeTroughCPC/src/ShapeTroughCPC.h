@@ -65,7 +65,6 @@ public:
 
 	trt::TONATIUH_REAL a;
 	trt::TONATIUH_REAL cMax;
-	trt::TONATIUH_REAL n;
 	trt::TONATIUH_REAL lengthXMin;
 	trt::TONATIUH_REAL lengthXMax;
 	trt::TONATIUH_REAL height;
