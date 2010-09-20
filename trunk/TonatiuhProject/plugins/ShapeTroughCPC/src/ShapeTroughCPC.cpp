@@ -84,7 +84,6 @@ ShapeTroughCPC::ShapeTroughCPC()
 	SO_NODE_CONSTRUCTOR(ShapeTroughCPC);
 	SO_NODE_ADD_FIELD( a, (0.5) );
 	SO_NODE_ADD_FIELD( cMax, (2.0) );
-	SO_NODE_ADD_FIELD( n, (6.0) );
 	SO_NODE_ADD_FIELD(lengthXMin, (1.0 ) );
 	SO_NODE_ADD_FIELD(lengthXMax, (1.0 ) );
 	SO_NODE_ADD_FIELD( height, (1.0) );
@@ -214,8 +213,6 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	// Find parametric representation of CPC concentrator hit
 	double u = ( theta - 2 * m_thetaI ) / ( tgc::Pi / 2 - m_thetaI );
 
-	//double lengthxMax = xmax * tan( tgc::Pi / n.getValue() );
-	//double lengthxMin = xmin * tan( tgc::Pi / n.getValue() );
 	double m =  (  ( lengthXMax.getValue()- lengthXMin.getValue() ) / 2 ) /  ( xmax - xmin );
 	double zmax = (lengthXMin.getValue() / 2 ) + m* ( hitPoint.x - xmin );
 	double v = ( ( hitPoint.z / zmax ) + 1 )/ 2;
@@ -370,13 +367,8 @@ Point3D ShapeTroughCPC::GetPoint3D( double u, double v ) const
 {
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	//u = 0;
-	//v = 1;
 
-	//std::cout<<"m_thetaI "<<m_thetaI<<std::endl;
 	double xMin = a.getValue();
-	//double xMax = -a.getValue() + ( ( 2 * a.getValue() * sin( m_thetaI ) * (1 + sin( m_thetaI ) ) )
-	//								/( 1 - cos( 2* m_thetaI ) ) );
 	double xMax = ( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(m_thetaMin-m_thetaI) )
 			 / ( 1 - cos(m_thetaMin) ) )- a.getValue();
 
@@ -386,13 +378,9 @@ Point3D ShapeTroughCPC::GetPoint3D( double u, double v ) const
 	double y = ( 2 * a.getValue() * (1 + sin(m_thetaI) ) *cos(theta- m_thetaI) )
 				/( 1 - cos(theta) );
 
-	//double lengthxMax = xMax * tan( tgc::Pi / n.getValue() );
-	//double lengthxMin = xMin * tan( tgc::Pi / n.getValue() );
 	double m =  ( ( lengthXMax.getValue()/ 2 )- ( lengthXMin.getValue()/ 2 ) ) / ( xMax - xMin );
 	double zMax = ( lengthXMin.getValue()/ 2 ) + m* ( x - xMin );
 
-	//std::cout<<"x: "<<x<<" xMax: "<<xMax<<std::endl;
-///std::cout<<"zMax: "<<zMax<<std::endl;
 	double z = zMax * ( 2 * v -1 );
 
 
@@ -429,8 +417,6 @@ void ShapeTroughCPC::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 	double yMin = 0.0;
 	double yMax = ( 2 * a.getValue() * cos(m_thetaMin-m_thetaI)* (1 + sin(m_thetaI ) ) )/(1 - cos( m_thetaMin ) );
 
-
-	//double lengthxMax = xMax * tan( tgc::Pi / n.getValue() );
 	double zMin = - lengthXMax.getValue() /2;
 	double zMax = lengthXMax.getValue() /2;
 	box.setBounds(SbVec3f( xMin, yMin, zMin ), SbVec3f( xMax, yMax, zMax ) );
