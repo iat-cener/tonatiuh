@@ -82,7 +82,7 @@ double ShapeHyperboloid::GetArea() const
 	return -1.0;
 }
 
-QString ShapeHyperboloid::getIcon()
+QString ShapeHyperboloid::GetIcon() const
 {
 	return ":/icons/shapehyperboloid.png";
 }

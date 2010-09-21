@@ -81,7 +81,7 @@ double ShapeCylinder::GetArea() const
 	return (2 * tgc::Pi * radius.getValue() * length.getValue() );
 }
 
-QString ShapeCylinder::getIcon()
+QString ShapeCylinder::GetIcon() const
 {
 	return ":/icons/ShapeCylinder.png";
 }

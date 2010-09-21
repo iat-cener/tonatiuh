@@ -79,7 +79,7 @@ double ShapeFlatRectangle::GetArea() const
 	return ( width.getValue() * height.getValue() );
 }
 
-QString ShapeFlatRectangle::getIcon()
+QString ShapeFlatRectangle::GetIcon() const
 {
 	return ":/icons/ShapeFlatRectangle.png";
 }

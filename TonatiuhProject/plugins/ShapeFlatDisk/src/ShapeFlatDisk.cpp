@@ -77,7 +77,7 @@ double ShapeFlatDisk::GetArea() const
 	return ( tgc::Pi * radius.getValue() * radius.getValue() );
 }
 
-QString ShapeFlatDisk::getIcon()
+QString ShapeFlatDisk::GetIcon() const
 {
 	return ":/icons/ShapeFlatDisk.png";
 }

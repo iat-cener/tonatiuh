@@ -63,7 +63,7 @@ public:
 	ShapeHyperboloid( );
 	static void initClass();
 	double GetArea() const;
-	QString getIcon();
+	QString GetIcon() const;
 
 	bool Intersect( const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
@@ -82,8 +82,8 @@ protected:
 	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 
-	virtual void generatePrimitives(SoAction *action);
-	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
+	void generatePrimitives(SoAction *action);
+	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	virtual ~ShapeHyperboloid();
 
 private:

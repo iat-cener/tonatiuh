@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QApplication>
 #include <QDir>
 #include <QMessageBox>
+#include <QSplashScreen>
 
 #include <Inventor/Qt/SoQt.h>
 
@@ -78,7 +79,16 @@ int main( int argc, char ** argv )
 
     QApplication a( argc, argv );
 
-	QApplication::addLibraryPath( QApplication::applicationDirPath()
+    QSplashScreen* splash = new QSplashScreen;
+    splash->setPixmap( QPixmap(":/icons/tonatiuhsplash.png") );
+    splash->show();
+
+    Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
+
+    splash->showMessage(QObject::tr("Loading libraries..."), topRight, Qt::black);
+
+
+    QApplication::addLibraryPath( QApplication::applicationDirPath()
 	        + QDir::separator() + "marble" );
 
 	SoQt::init( (QWidget *) NULL );
@@ -99,6 +109,8 @@ int main( int argc, char ** argv )
 
 
 	MainWindow* mw;
+	splash->showMessage( QObject::tr("Setting up the main window..."), topRight, Qt::black );
+
    	if( argc > 1 )
    	{
    		QString tonatiuhFile = argv[1];
@@ -108,6 +120,9 @@ int main( int argc, char ** argv )
    		mw = new MainWindow;
 
 	mw->show();
+    splash->finish( mw );
+    delete splash;
+
 
 	return a.exec();
 }

@@ -78,7 +78,7 @@ ShapeBezierSurface::~ShapeBezierSurface()
 	m_surfacesVector.clear();
 }
 
-QString ShapeBezierSurface::getIcon()
+QString ShapeBezierSurface::GetIcon() const
 {
 	return ":/icons/ShapeBezierSurface.png";
 }

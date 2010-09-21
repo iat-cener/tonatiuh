@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QMessageBox>
 #include <QString>
 
 #include <Inventor/SoPrimitiveVertex.h>
@@ -103,7 +104,7 @@ double ShapeSphericalPolygon::GetArea() const
 	return -1;
 }
 
-QString ShapeSphericalPolygon::getIcon()
+QString ShapeSphericalPolygon::GetIcon() const
 {
 	return ":/icons/ShapeSphericalPolygon.png";
 }
@@ -230,6 +231,7 @@ Point3D ShapeSphericalPolygon::Sample( double u, double v) const
 	return GetPoint3D( u , v );
 }
 
+
 Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 {
 	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeSphericalPolygon::GetPoint3D called with invalid parameters" );
@@ -315,7 +317,7 @@ std::vector< std::pair<double,double> > ShapeSphericalPolygon::MeshTriangle( con
 void ShapeSphericalPolygon::RadiusChanged( void* data, SoSensor* )
 {
 	ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
-	//if( polygon->radius.getValue() > polygon->sphereRadius.getValue() )
+
 	polygon->m_thetaMax = asin(  polygon->radius.getValue() /  polygon->sphereRadius.getValue() );
 	polygon->m_xMax = polygon->radius.getValue() * cos( polygon->m_phiMax );
 }
@@ -323,6 +325,13 @@ void ShapeSphericalPolygon::RadiusChanged( void* data, SoSensor* )
 void ShapeSphericalPolygon::SidesChanged( void* data, SoSensor* )
 {
     ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
+	if( polygon->polygonSides.getValue() < 3 )
+	{
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The polygon sides value must be at least 3." ) );
+		polygon->polygonSides.setValue( 3 );
+
+	}
+
     polygon->m_phiMax = tgc::Pi/ polygon->polygonSides.getValue();
     polygon->m_xMax =  polygon->radius.getValue() * cos(  polygon->m_phiMax );
 }

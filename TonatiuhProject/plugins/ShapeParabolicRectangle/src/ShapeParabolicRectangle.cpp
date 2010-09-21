@@ -81,7 +81,7 @@ double ShapeParabolicRectangle::GetArea() const
 	return -1;
 }
 
-QString ShapeParabolicRectangle::getIcon()
+QString ShapeParabolicRectangle::GetIcon() const
 {
 	return ":/icons/ShapeParabolicRectangle.png";
 }

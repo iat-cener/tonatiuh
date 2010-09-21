@@ -98,7 +98,7 @@ double TCube::GetArea() const
 
 }
 
-QString TCube::getIcon()
+QString TCube::GetIcon() const
 {
 	return ":/icons/tcube.png";
 }

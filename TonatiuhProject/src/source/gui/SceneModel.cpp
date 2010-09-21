@@ -349,13 +349,13 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 			{
 				SoBaseKit* nodeKit = static_cast< SoBaseKit* >( coinNode );
 				TShape* kit = static_cast<TShape*>( nodeKit->getPart( "shape", false ) );
-				if( kit ) return QIcon( kit->getIcon() );
+				if( kit ) return QIcon( kit->GetIcon() );
 				return QIcon( ":/icons/shapeKit.png" );
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(SoShape::getClassTypeId() ) )
 			{
 				TShape* shape = static_cast<TShape*>( coinNode );
-				return QIcon(shape->getIcon());
+				return QIcon( shape->GetIcon() );
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TMaterial::getClassTypeId() ) )
 			{

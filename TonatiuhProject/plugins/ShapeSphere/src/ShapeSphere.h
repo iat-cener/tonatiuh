@@ -62,7 +62,7 @@ public:
 	static void initClass();
     SoNode* copy( SbBool copyConnections ) const;
 	double GetArea() const;
-    QString getIcon();
+    QString GetIcon() const;
 
     Point3D Sample( double u1, double u2 ) const;
 
@@ -85,8 +85,8 @@ protected:
 	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 
-	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-	virtual void generatePrimitives(SoAction *action);
+	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
+	void generatePrimitives(SoAction *action);
    	virtual ~ShapeSphere();
 
 private:
