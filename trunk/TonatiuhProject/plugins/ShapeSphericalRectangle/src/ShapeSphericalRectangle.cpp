@@ -96,7 +96,7 @@ double ShapeSphericalRectangle::GetArea() const
 	return -1;
 }
 
-QString ShapeSphericalRectangle::getIcon()
+QString ShapeSphericalRectangle::GetIcon() const
 {
 	return ":/icons/ShapeSphericalRectangle.png";
 }

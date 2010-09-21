@@ -84,7 +84,7 @@ double ShapeCone::GetArea() const
 	return -1;
 }
 
-QString ShapeCone::getIcon()
+QString ShapeCone::GetIcon() const
 {
 	return ":/icons/ShapeCone.png";
 }

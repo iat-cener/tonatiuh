@@ -60,7 +60,7 @@ public:
 	static void initClass();
     SoNode* copy( SbBool copyConnections ) const;
 	double GetArea() const;
-    QString getIcon();
+    QString GetIcon() const;
 
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
 	bool IntersectP( const Ray& objectRay ) const;
@@ -77,6 +77,9 @@ public:
 	SoSFInt32 polygonSides;
 	SoSFEnum activeSide;
 
+protected:
+	static void updatePolygonSides(void *data, SoSensor *);
+
 private:
    	~ShapeSphericalPolygon();
 	Point3D GetPoint3D( double u, double v ) const;
@@ -90,8 +93,8 @@ private:
 	static void SidesChanged( void* data, SoSensor* );
 	static void SphereRadiusChanged( void* data, SoSensor* );
 
-	virtual void generatePrimitives( SoAction* action );
-	virtual void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center );
+	void generatePrimitives( SoAction* action );
+	void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center );
 
 	double m_thetaMax;
 	double m_phiMax;

@@ -104,7 +104,7 @@ double ShapeSphere::GetArea() const
 	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() );
 }
 
-QString ShapeSphere::getIcon()
+QString ShapeSphere::GetIcon() const
 {
 	return QString( ":/icons/ShapeSphere.png" );
 }

@@ -90,7 +90,7 @@ double ShapeParabolicDish::GetArea() const
 	return -1;
 }
 
-QString ShapeParabolicDish::getIcon()
+QString ShapeParabolicDish::GetIcon() const
 {
 	return ":/icons/ShapeParabolicDish.png";
 }

@@ -91,7 +91,7 @@ double ShapeTroughParabola::GetArea() const
 	return -1;
 }
 
-QString ShapeTroughParabola::getIcon()
+QString ShapeTroughParabola::GetIcon() const
 {
 	return ":/icons/ShapeTroughParabola.png";
 }

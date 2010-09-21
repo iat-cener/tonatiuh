@@ -57,18 +57,19 @@ class ShapeBezierSurface : public TShape
 	SO_NODE_HEADER(ShapeBezierSurface);
 
 public:
-    static void initClass();
-
     ShapeBezierSurface();
 
-	QString getIcon();
-	Point3D Sample( double u, double v ) const;
-	double GetArea() const;
+    static void initClass();
 
-    void DefineSurfacePatches( QVector< Point3D > inputData, int nUCurves, int nVCurves );
+	double GetArea() const;
+	QString GetIcon() const;
 
 	bool IntersectP( const Ray& objectRay ) const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
+
+	Point3D Sample( double u, double v ) const;
+
+	void DefineSurfacePatches( QVector< Point3D > inputData, int nUCurves, int nVCurves );
 
 	void GLRender(SoGLRenderAction *action);
 

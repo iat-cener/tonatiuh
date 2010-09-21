@@ -112,7 +112,7 @@ double ShapeFlatTriangle::GetArea() const
 	return area;
 }
 
-QString ShapeFlatTriangle::getIcon()
+QString ShapeFlatTriangle::GetIcon() const
 {
 	return ":/icons/ShapeFlatTriangle.png";
 }

@@ -111,7 +111,7 @@ double ShapeTroughCPC::GetArea() const
 	return -1;
 }
 
-QString ShapeTroughCPC::getIcon()
+QString ShapeTroughCPC::GetIcon() const
 {
 	return ":/icons/ShapeTroughCPC.png";
 }

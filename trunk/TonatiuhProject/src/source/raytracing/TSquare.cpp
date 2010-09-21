@@ -72,7 +72,7 @@ double TSquare::GetArea() const
 	return ( m_sideLength.getValue() * m_sideLength.getValue() );
 }
 
-QString TSquare::getIcon()
+QString TSquare::GetIcon() const
 {
 	return ":/icons/icons/node.png";
 }
