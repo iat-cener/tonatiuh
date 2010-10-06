@@ -38,7 +38,7 @@ This will start the configuration process. This process should finish succesfull
 Now, run 'make install'to build and install SoQt"
 }}} 
 
-Type "make" to build SoQt and then "make install" to install it.
+Type "make" to build !SoQt and then "make install" to install it.
 
 Once the !SoQt library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: InstallingMarbleForWindows
 
