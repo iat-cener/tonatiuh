@@ -38,16 +38,7 @@ This will start the configuration process. This process should finish succesfull
 Now, run 'make install'to build and install SoQt"
 }}} 
 
-Before start building !SoQt edit the file src/Inventor/Qt/!SoComponent.cpp to replace in line 103 'unsigned long key' with '!SbDict::Key key', so that the function delete_dict_value is written as:
-
-{{{
-static void delete_dict_value(SbDict::Key key, void * value)
-{
-  delete (QCursor *)value;
-}
-}}} 
-
-Now, run 'make install'. The !SoQt library will be intalled to /usr/local directory.
+Type "make" to build SoQt and then "make install" to install it.
 
 Once the !SoQt library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: InstallingMarbleForWindows
 
