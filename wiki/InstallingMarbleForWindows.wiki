@@ -23,7 +23,7 @@ export PATH=$QTDIR/bin:$PATH:/c/sde/cmake/bin
 
 The command to create Makefiles on release mode is:
 {{{
-cmake -G"MSYS Makefiles" -Wno-dev -DQTONLY=ON ../marble
+cmake -G"MSYS Makefiles" -Wno-dev -DQTONLY=ON -DCMAKE_BUILD_TYPE=Release ../marble
 }}}
 
 Then,
