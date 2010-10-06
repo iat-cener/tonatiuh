@@ -17,9 +17,9 @@ tar -zxvf SoQt-1.5.0.tar.gz
 }}}
 This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the MSYS shell navigate to the just created SoQt-1.5.0. directory and type:
 {{{
-export QTDIR=/c/sde/qt/qt
+export QTDIR=/c/sde/Qt/2010.05/qt
 export COINDIR=/usr/local
-export INCLUDE=/usr/local/include:/c/sde/qt/mingw/include
+export INCLUDE=/usr/local/include:/c/sde/MinGW/include
 export PATH=$QTDIR/bin:$PATH
 export QMAKESPEC=$QTDIR/mkspecs/win32-g++
 }}}
