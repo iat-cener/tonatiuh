@@ -117,7 +117,7 @@ int main( int argc, char ** argv )
    	   	mw = new MainWindow( tonatiuhFile );
    	}
    	else
-   		mw = new MainWindow;
+   		mw = new MainWindow("");
 
 	mw->show();
     splash->finish( mw );

@@ -79,7 +79,7 @@ m_sunAzimuth( 0 ),
 m_sunElevation( 0 ),
 m_sunDistance( 0 ),
 m_wPhoton( 0 ),
-m_dirName( 0 )
+m_dirName( "" )
 {
 
 }

@@ -177,7 +177,7 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
 	m_splitter->addWidget( m_marbleWidget );
 
 	m_mapThemeManager = new Marble::MapThemeManager;
-	m_control->setMapThemeModel(  m_mapThemeManager->mapThemeModel() );
+//	m_control->setMapThemeModel(  m_mapThemeManager->mapThemeModel() );
     m_marbleWidget->setProjection( (Marble::Projection) 0 );
 
 
@@ -208,7 +208,10 @@ void MapDialog::SetCoordinates(  double lon, double lat )
 	m_latitude = -lat;
 
 	UpdateCurrentPosition( m_longitude, m_latitude, GeoDataCoordinates::Radian );
-	m_control->receiveGpsCoordinates( GeoDataCoordinates( m_longitude, m_latitude, 0, Marble::GeoDataCoordinates::Radian ), 0 );
+//	m_control->receiveGpsCoordinates( GeoDataCoordinates( m_longitude, m_latitude, 0, Marble::GeoDataCoordinates::Radian ), 0 );
+
+
+
 }
 
 /*!
