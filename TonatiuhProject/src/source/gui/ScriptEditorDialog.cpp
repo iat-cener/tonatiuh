@@ -61,7 +61,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QString dirName, QWidget* parent )
 :QDialog( parent ),
  m_dirLineEdit( 0 ),
- m_currentScritFileName( 0 ),
+ m_currentScritFileName( "" ),
  m_interpreter( 0 )
 {
 	setupUi( this );
