@@ -13,12 +13,12 @@
 
 == Configuring Eclipse for Tonatiuh ==
  * You can edit the general project options in Eclipse by navigating Window->Preferences->General->Editors. Under File Associations add the new types:
-  # .ui  C:\sde\qt\qt\bin\designer
-  # .ts  C:\sde\qt\qt\bin\linguist 
+  # .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
+  # .ts  C:\sde\Qt\2010.05\qt\bin\linguist.exe 
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
 
  * In C\C++->New CDT project wizard-> Makefile project:
-  # Under the Builder Settings tab set the build command to C:\sde\qt\mingw\bin\mingw32-make.exe
+  # Under the Builder Settings tab set the build command to C:\sde\MinGW\bin\mingw32-make.exe
   # Under Binary Parser select only PE Windows Parser
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/makefileProject.png]
 
