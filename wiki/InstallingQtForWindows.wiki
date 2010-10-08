@@ -10,7 +10,13 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 = Details =
 
-To install the Qt libraries in your PC download the latest installer of the Qt SDK for Windows from the [http://qt.nokia.com/downloads Qt website downloads page]. After saving the installer in your computer, execute it by left-clicking twice on it. 
+Download the latest installer of the Qt SDK for Windows. To do it, click on the following [http://qt.nokia.com/downloads link] to go to the "Downloads" webpage of the Qt website. Once you reach the webpage, click on the link titled _"Qt SDK for Windows* (322 MB)"_ (see Figure 1). This will start the downloading of the Qt SDK for Windows installer. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer. 
+
+||http://lh3.ggpht.com/_tmEVMS15i5Y/TK-C2LVDHXI/AAAAAAAAAmA/UOQaafXODcg/s400/Qt_SDK_Installer.png||
+|| *Figure 1.* View of the "Downloads" webpage of the Qt website. The link for downloading the Qt SDK for Windows is highlighted with a red ellipse around it.||
+
+
+After saving the installer in your computer, execute it by left-clicking twice on it. 
 
 Once the installer is running, you will be asked to accept the license agreement. Accept it and click "Next>". Then, you will be asked to enter the destination folder. Enter _C:\sde\msys\usr\qt\_, and click "Next>". When you will asked for the MinGW installation folder enter _C:\sde\MinGW_ and click "Install".
 
