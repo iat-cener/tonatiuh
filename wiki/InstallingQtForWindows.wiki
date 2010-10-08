@@ -15,7 +15,6 @@ Download the latest installer of the Qt SDK for Windows. To do it, click on the 
 ||http://lh3.ggpht.com/_tmEVMS15i5Y/TK-C2LVDHXI/AAAAAAAAAmA/UOQaafXODcg/s400/Qt_SDK_Installer.png||
 || *Figure 1.* View of the Qt "Downloads" webpage.||
 
-
 Once the Qt SDK for Windows installer is in your PC, left-click twice upon it to execute it.
 
 During the execution of the installer do the following:
