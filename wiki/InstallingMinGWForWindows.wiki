@@ -16,42 +16,15 @@ Download the latest version of the MinGW installer. To do it, click on the follo
 Once the MinGW installer is in your PC, left-click twice upon it to execute it. 
 
 During the execution of the installer:
-  * Select "Use pre-packaged repository catalogues". 
-  * Check the "I accept the agreement" and click the "Next" button.
-  * Enter "C:\sde\MinGW" as the destination location.
+  * Select _"Use pre-packaged repository catalogues"_. 
+  * Check the _"I accept the agreement"_ and click the _"Next"_ button.
+  * Enter _"C:\sde\MinGW"_ as the destination location.
   * Select the following components to install: 
-    * "C++ Compiler", 
-    * "MSYS Basic System" and 
-    * MinGW Developer ToolKit.
+    * _"C++ Compiler"_, 
+    * _"MSYS Basic System"_ and 
+    * _"MinGW Developer ToolKit"_.
 
-Then, finish the installation by entering the path of the destination folder where you want to install the program. Our suggestion is to build the complete Tonatiuh development environment under the same root folder. This way you can create your environment in one computer, and then replicate it to other computers, by just copying the root folder of the Tonatiuh development environment with all its subfolders and content.
-
-We have decided to use the folder C:\sde as the Tonatiuh's development environment root folder. Thus, the destination folder for MinGW should be:
-
-{{{
-C:\sde\MinGW
-}}}
-
-This is the folder path and name you should enter into the Choose Install Location dialog of the MinGW installer. After that click on the "Next" button, and then on the "Install" button.
-
-Once MinGW base system is intalled, install the current official release version of the gcc to MinGW.
-
-Execute the installer again:
-  * Select "Current" packages of MinGW,
-  * Select "Custom" as the type of install, and 
-  * Select "g++ compiler", "Java compiler", and "MinGW make" as the components to install and deselect "MinGW base tools" (see Figure 3).
-
-|| http://lh5.ggpht.com/_tmEVMS15i5Y/SplH1K-3qhI/AAAAAAAAAVQ/qdTIMhxHHGI/s800/MinGW_Installer_components_dialog.jpg ||
-|| *Figure 3. Dialog of the MinGW installer to choose the components to install.* ||
-
-Enter the same destination folder path to the program in the Install Location dialog. After that click on the "Next" button, and then on the "Install" button.
-
-Now, to install debugger for Mingw:
-  * Click on the following [http://sourceforge.net/projects/mingw/files link], and go to the "All Files". 
-  * Download the current release of the "GNU Source-Level Debugger".
-  * Execute downloaded setup,
-  * Accept the terms of the license agreement, and
-  * Set MinGW instalation path as installation folder path.
+By instructing the MSYS and MinGW installer to create the directory _"C:\sde\MinGW"_ and use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying in these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
 
 Once MinGW is installed, the next step is to install the MSYS environment. To do it, follow the instruction in the following wike page: [Installing_MSYS_for_Windows]. 
 
