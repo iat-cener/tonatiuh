@@ -10,7 +10,7 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 = Details =
 
-To install the Qt libraries for Open Source C++ development on Windows in your computer download the installer file [http://www.qtsoftware.com/downloads/windows-cpp qt-win-opensource-4.5.2-mingw.exe] from the [http://www.qtsoftware.com/ Qt] website and execute it.
+To install the Qt libraries in your PC download the latest installer of the Qt SDK for Windows from the [http://qt.nokia.com/downloads Qt website downloads page]. After saving the installer in your computer, execute it by left-clicking twice on it. 
 
 Once the installer is running, you will be asked to accept the license agreement. Accept it and click "Next>". Then, you will be asked to enter the destination folder. Enter _C:\sde\msys\usr\qt\_, and click "Next>". When you will asked for the MinGW installation folder enter _C:\sde\MinGW_ and click "Install".
 
