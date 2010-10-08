@@ -8,23 +8,21 @@ Here you will find instructions to carry out this first and important step towar
 
 = Details =
 
-Download the latest version of the MinGW installer. To do it, click on the following [http://sourceforge.net/projects/mingw/files/ link] to go to the "Files" webpage of the MinGW project website at !SourceForge. Once you reach the webpage, click on the large green button labeled "Download Now" (see Figure 1). This will start the downloading of the MinGW installer. When prompted if to open or to store the file in your computer, select the store file option. 
+Download the latest version of the MinGW installer. To do it, click on the following [http://sourceforge.net/projects/mingw/files/ link] to go to the "Files" webpage of the MinGW project website at !SourceForge. Once you reach the webpage, click on the large green button labeled "Download Now" (see Figure 1). This will start the downloading of the MinGW installer. When prompted if to open or to store the file in your computer, select the appropriate option to store file on your computer. 
 
 ||http://lh6.ggpht.com/_tmEVMS15i5Y/TK9deqowXHI/AAAAAAAAAl8/73yAlG78Kn4/s400/MinGW_installer.png||
 || *Figure 1.* View of the "Files" webpage of the MinGW website in !SourceForge.||
 
-Once you are there, do a vertical scroll until you find the link to the executable file: 'MinGW-5.1.4.exe' as shown in Figure 2, and click on it.
-
-|| http://lh3.ggpht.com/_tmEVMS15i5Y/SmsnrD7ncbI/AAAAAAAAAQU/grPuoNCyqhc/s800/MinGW_SourceForge_02.jpg ||
-|| *Figure 2. Link to download the MinGW installer as located in the MinGW website in !SourceForge.* ||
-
-A window will popup asking you if you want to excute the file or store it in your computer. Store it in your PC and, after that, execute it.
+Once the MinGW installer is in your PC, left-click twice upon it to execute it. 
 
 During the execution of the installer:
-  * Select "Download and install", 
-  * Click the "I gree" button to accept the terms of the license agreement,
-  * Select "Previous" to install MinGW base tools,
-  * Select "Minimal" as type of intall.
+  * Select "Use pre-packaged repository catalogues". 
+  * Check the "I accept the agreement" and click the "Next" button.
+  * Enter "C:\sde\MinGW" as the destination location.
+  * Select the following components to install: 
+  * * "C++ Compiler", 
+  * * "MSYS Basic System" and 
+  * *MinGW Developer ToolKit.
 
 Then, finish the installation by entering the path of the destination folder where you want to install the program. Our suggestion is to build the complete Tonatiuh development environment under the same root folder. This way you can create your environment in one computer, and then replicate it to other computers, by just copying the root folder of the Tonatiuh development environment with all its subfolders and content.
 
