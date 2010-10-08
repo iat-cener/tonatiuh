@@ -4,7 +4,7 @@
 
 To be able to develop Tonatiuh under Windows XP, Windows Vista or Windows 7, you need to install he MSYS shell environment, the MinGW C++ compiler, and a series of libraries. The installation of the MSYS shell environment and the MinGW C++ compiler is the first step in this process.
 
-Here you will find instructions to carry out this first and important step towards the setting up of a programming environment that will allow you to contribute to the development of the Tonatiuh code and to create your own plug-ins for Tonatiuh.
+Here you will find instructions to carry out this first and important step towards setting up of a programming environment that will allow you to contribute to the development of Tonatiuh and / or to create your own plug-ins for Tonatiuh.
 
 = Details =
 
