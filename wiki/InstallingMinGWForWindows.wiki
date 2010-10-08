@@ -1,19 +1,18 @@
-#summary Install the MinGW compiler for Windows
+#summary Instructions to tnstall the MinGW compiler and the MSYS environment for Windows
 
 = Introduction =
 
-To be able to further develop Tonatiuh under Windows XP or Windows Vista, you need to install a series of libraries, and the MSYS shell environment. The installation of the MinGW compiler is the first step in this process.
+To be able to develop Tonatiuh under Windows XP, Windows Vista or Windows 7, you need to install he MSYS shell environment, the MinGW C++ compiler, and a series of libraries. The installation of the MSYS shell environment and the MinGW C++ compiler is the first step in this process.
 
+Here you will find instructions to carry out this first and important step towards the setting up of a programming environment that will allow you to contribute to the development of the Tonatiuh code and to create your own plug-ins for Tonatiuh.
 
 = Details =
-
-*Note: If you want use the the compiler without install, you can download a replication of the compiler from Downloads Site and unpack to destination folder.*
 
 Download the latest stable version of the MinGW installer. To do it, click on the following [http://sourceforge.net/projects/mingw/files link] to go to the "Files" section of the MinGW project website at !SourceForge (see Figure 1).
 
 *Warning: If you are using Microsoft Internet Explorer 6 or lower, the sourceforge.net webpage may not display properly. It may not show you the part of the webpage you have to access. To solve the problem you will either have to upgrade to Microsoft Internet Explorer 8, or use a different internet browser, such as Firefox.*
 
-||http://lh3.ggpht.com/_tmEVMS15i5Y/Smsd1ThGKMI/AAAAAAAAANU/4OVmgnQZpEs/s800/MinGW_SourceForge_01.jpg]||
+||http://lh6.ggpht.com/_tmEVMS15i5Y/TK9deqowXHI/AAAAAAAAAl8/73yAlG78Kn4/s288/MinGW_installer.png||
 || *Figure 1. View of the "Files" section of the MinGW website in !SourceForge.* ||
 
 Once you are there, do a vertical scroll until you find the link to the executable file: 'MinGW-5.1.4.exe' as shown in Figure 2, and click on it.
