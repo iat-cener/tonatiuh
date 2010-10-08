@@ -10,8 +10,8 @@ Here you will find instructions to carry out this first and important step towar
 
 Download the latest version of the MinGW installer. To do it, click on the following [http://sourceforge.net/projects/mingw/files/ link] to go to the "Files" webpage of the MinGW project website at !SourceForge. Once you reach the webpage, click on the large green button labeled "Download Now" (see Figure 1). This will start the downloading of the MinGW installer. When prompted if to open or to store the file in your computer, select the store file option. 
 
-||http://lh6.ggpht.com/_tmEVMS15i5Y/TK9deqowXHI/AAAAAAAAAl8/73yAlG78Kn4/s400/MinGW_installer.png||
-|| *Figure 1. View of the "Files" section of the MinGW website in !SourceForge.* ||
+||||http://lh6.ggpht.com/_tmEVMS15i5Y/TK9deqowXHI/AAAAAAAAAl8/73yAlG78Kn4/s400/MinGW_installer.png||
+|| *Figure 1. View of the "Files" section of the MinGW website in !SourceForge.* ||||
 
 Once you are there, do a vertical scroll until you find the link to the executable file: 'MinGW-5.1.4.exe' as shown in Figure 2, and click on it.
 
