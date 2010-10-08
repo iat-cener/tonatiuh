@@ -23,7 +23,7 @@ During the execution of the installer do the following:
   * Select the following components to install:
     * _"Qt"_
     * _"Create DEsktop Shortcut"_
-  * Verify that the selec components option _"MinGW"_ is not selected. If it is unselect it.
+  * Verify that the selec components option _"MinGW"_ is not selected. If it is selected, be sure to unselect it.
   * Enter _"C:\sde\Qt\2010.05"_ as the destination folder.
 
 By instructing the Qt SDK for Windows installer to create the directory _"C:\sde\Qt\2010.05"_ and to use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying into these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
