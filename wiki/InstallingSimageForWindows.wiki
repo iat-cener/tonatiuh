@@ -1,22 +1,29 @@
-#summary Install the simage library for Windows
+#summary Instructions to install the simage needed to develop Tonatiuh uder Windows XP, Windows Vista or Windows 7.
 
 = Introduction =
 
-Simage is a library capable of loading, manipulating and saving images, creating and saving movies (AVI and mpeg), and loading audio. The simage library relies heavily on 3rd party libraries to perform these tasks.
+Simage is a library capable of loading, manipulating and saving images, creating and saving movies (AVI and mpeg), and loading audio. The simage library relies heavily on third party libraries to perform these tasks. The simage library is used within Tonatiuh to complement the Coin 3D library, since Coin uses simage to read textures.
 
-Coin uses simage just to read textures, but the programmer is of course free to use the other features of the simage library directly.
+Here you will find the instructions to install the simage library in your computer and make the library available for the development of Tonatiuh.
 
 
 = Details =
 
-Download the latest realese of Simage, currently [http://ftp.coin3d.org/coin/src/all/simage-1.7.0.tar.gz simage-1.7.0], from the [http://www.coin3d.org/ Coin3D] website at [http://www.coin3d.org/lib/plonesoftwarecenter_view Open Source Downloads]. Place it into the user directory under your MSYS folder.  This will typically be _c:\sde\msys\usr\home\username_.
+Since the simage library binary installers for Windows, which are available at the Coin 3D website, are only valid for Visual C++ and we need to use the MinGW C++ compiler in order to be able to use the open source version of the Qt libraries, we need to build the simage library from the source code.
+
+Download the latest realese of the Simage source package, currently [http://ftp.coin3d.org/coin/src/all/simage-1.7.0.tar.gz simage-1.7.0]. To do it, click on the following [http://www.coin3d.org/lib/plonesoftwarecenter_view link] to go to the "simage 1.7.0" webpage of the Coin website. Once you reach the webpage, click on the link titled _"Get simage 1.7.0 for all platforms"_ (see Figure 1). This will start the downloading of the simage source code. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer.
+
+||http://lh3.ggpht.com/_tmEVMS15i5Y/TK-kOAPXjZI/AAAAAAAAAmQ/YfNdlO1VcvM/s400/Simage_sourcecode.png||
+|| *Figure 1.* View of the "simage 1.7.0" webpage.||
+
+Once the simage source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _C:\sde\MinGW\msys\usr\home\username_.
  
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
 tar -zxvf simage-1.7.0.tar.gz
 }}}
 
-This will create a directory called _simage-1.7.0_ in your user directory. Using the MSYS shell navigate to just created directory.
+This will create a directory called _simage-1.7.0_ in your user directory. Using the MSYS shell navigate to the just created directory.
 
 To build the library in release mode type:
 {{{
@@ -29,7 +36,7 @@ make
 make install
 }}}
 
-The installation process may take several minutes. At the end of the installation process, the libraries has been installed at /usr/local directory.
+The installation process may take several minutes. At the end of the installation process, the simage dynamic library _"libsimage-20.dll"_ will be installed at _"C:\sde\MinGW\msys\1.0\local\bin"_ and the simage library file _"libsimage.dll.a"_ will be installed at _"C:\sde\MinGW\msys\1.0\local\lib"_.
 
 Once the Simage library is installed the next step is to install the Coin3D library. To do it, follow the instructions in the following wiki page: [InstallingCoin3DForWindows Coin3D]
 
