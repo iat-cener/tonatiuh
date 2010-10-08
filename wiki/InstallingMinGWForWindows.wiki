@@ -1,4 +1,4 @@
-#summary Instructions to install the MinGW compiler and the MSYS Linux-like shell environment for Windows
+#summary Instructions to install the MinGW compiler and the MSYS Linux-like shell environment for Windows.
 
 = Introduction =
 
