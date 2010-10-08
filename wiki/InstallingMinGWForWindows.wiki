@@ -15,7 +15,7 @@ Download the latest version of the MinGW installer. To do it, click on the follo
 
 Once the MinGW installer is in your PC, left-click twice upon it to execute it. 
 
-During the execution of the installer:
+During the execution of the installer do the following:
   * Select _"Use pre-packaged repository catalogues"_. 
   * Check the _"I accept the agreement"_ and click the _"Next"_ button.
   * Enter _"C:\sde\MinGW"_ as the destination location.
