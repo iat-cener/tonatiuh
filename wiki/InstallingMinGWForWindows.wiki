@@ -20,9 +20,9 @@ During the execution of the installer:
   * Check the "I accept the agreement" and click the "Next" button.
   * Enter "C:\sde\MinGW" as the destination location.
   * Select the following components to install: 
-  * * "C++ Compiler", 
-  * * "MSYS Basic System" and 
-  * *MinGW Developer ToolKit.
+    * "C++ Compiler", 
+    * "MSYS Basic System" and 
+    * MinGW Developer ToolKit.
 
 Then, finish the installation by entering the path of the destination folder where you want to install the program. Our suggestion is to build the complete Tonatiuh development environment under the same root folder. This way you can create your environment in one computer, and then replicate it to other computers, by just copying the root folder of the Tonatiuh development environment with all its subfolders and content.
 
