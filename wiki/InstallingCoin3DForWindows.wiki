@@ -16,7 +16,7 @@ Download the latest realese of the Coin source package, currently Coin 3.1.3. To
 ||http://lh6.ggpht.com/_tmEVMS15i5Y/TLAk0sBPMjI/AAAAAAAAAm0/yYLsUjdZ8Ag/s400/Coin_sourcecode.png||
 || *Figure 1.* View of the "Coin 1.3.1" webpage.||
 
-Once the simage source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _C:\sde\MinGW\msys\usr\home\username_.
+Once the simage source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _C:\sde\MinGW\msys\1.0\home\username_.
 
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
