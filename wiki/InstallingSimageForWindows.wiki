@@ -1,4 +1,4 @@
-#summary Instructions to install the simage library needed to develop Tonatiuh uder Windows XP, Windows Vista or Windows 7.
+#summary Instructions to install the simage library needed to develop Tonatiuh under Windows XP, Windows Vista or Windows 7.
 
 = Introduction =
 
