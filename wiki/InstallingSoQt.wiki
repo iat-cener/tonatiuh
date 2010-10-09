@@ -5,11 +5,11 @@
 
 !SoQt is a library that provides the glue between the Coin 3D libraries and the Qt 2D GUI and application framework libraries. The !SoQt library is used within Tonatiuh mainly to implement different types of Coin 3D scene viewers inside traditional 2D Qt-generated windows.
 
-Here you will find instructions to install the SoQt library in your computer and make this library available for the development of Tonatiuh.
+Here you will find instructions to install the !SoQt library in your computer and make this library available for the development of Tonatiuh.
 
 = Details =
 
-Before installing !SoQt, please, verify that the Qt and Coin 3D libraries are already properly installed in your computer. If they are not, install them firs by following the corresponding installation procedures [InstallingQtForWindows] and [InstallingCoin3DForWindows].
+Before installing !SoQt, please, verify that the Qt and Coin 3D libraries are already properly installed in your computer. If they are not, install them first by following the corresponding installation procedures [InstallingQtForWindows] and [InstallingCoin3DForWindows].
 
 Download the latest release of !SoQt, currently !SoQt 1.5.0, from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view. The file you have to download is !SoQt-1.5.0.tar.gz. 
 
