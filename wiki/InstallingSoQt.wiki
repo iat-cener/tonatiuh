@@ -3,7 +3,7 @@
 
 = Introduction =
 
-SoQt is a library that provides the glue between the Coin 3D libraries and the Qt 2D GUI and application framework libraries. The SoQt library is used within Tonatiuh mainly to implement different types of Coin 3D scene viewers inside traditional 2D Qt-generated windows.
+!SoQt is a library that provides the glue between the Coin 3D libraries and the Qt 2D GUI and application framework libraries. The SoQt library is used within Tonatiuh mainly to implement different types of Coin 3D scene viewers inside traditional 2D Qt-generated windows.
 
 Here you will find instructions to install the SoQt library in your computer and make this library available for the development of Tonatiuh.
 
