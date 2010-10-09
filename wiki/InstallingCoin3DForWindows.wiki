@@ -39,8 +39,8 @@ make
 make install
 }}}
 
-The installation process may take some time. 
+The installation process may take some time. At the end of the installation process, the Coin dynamic library _"libCoin-60.dll"_ and the file _"coin-config"_ will be installed at at _"C:\sde\MinGW\msys\1.0\local\bin"_ and the Coin library files "libCoin.dll.a" and "libCoin.la" will be installed at "C:\sde\MinGW\msys\1.0\local\lib". 
 
-Once the Coin3D library is installed the next step is to install the !SoQt library. To do it, follow the instructions in the following wiki page: [InstallingSoQt InstallingSoQt]
+Once the Coin library is installed, the next step in setting up the Tonatiuh development environment is to install the !SoQt library. To do it, follow the instructions in the following wiki page: [InstallingSoQt Installing SoQt]
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
