@@ -8,8 +8,7 @@ Here you will find instructions to install the Marble library in your computer a
 
 = Details =
 
-
-To compile marble you need CMake, a cross-platform make. You can obtain it from http://www.cmake.org/cmake/resources/software.html. Download the last version of cmake for windows, you need a version newer than 2.4. Install CMake at _C:\sde\CMake.
+To compile marble you need CMake -a cross-platform make. To obtain it follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake website. Download the last version of cmake for windows, you need a version newer than 2.4. Install CMake at _C:\sde\CMake.
 
 Now, download the source files from http://edu.kde.org/marble/download.php clicking on _Source download_ link. Place it into the user directory under your MSYS folder. This will typically be \usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
 
