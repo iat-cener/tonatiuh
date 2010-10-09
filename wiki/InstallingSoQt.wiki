@@ -24,7 +24,7 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 {{{
 tar -zxvf SoQt-1.5.0.tar.gz
 }}}
-This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the MSYS shell navigate to the just created SoQt-1.5.0. directory.
+This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the MSYS shell navigate to the just created !SoQt-1.5.0. directory.
 
 To build the library in release mode type:
 {{{
