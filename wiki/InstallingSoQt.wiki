@@ -1,12 +1,16 @@
-#summary Procedure to install SoQt under Windows Vista or XP.
+#summary Instructions to install the SoQt library needed to develop Tonatiuh under Windows XP, Windows Vista or Windows 7.
 #labels Phase-Implementation
 
 = Introduction =
-[http://doc.coin3d.org/SoQt/ SoQt] is a library that provides the glue between Systems in Motion's Coin high-level 3D visualization library and Trolltech's Qt 2D user interface library. This pages provides instruction regarding how to install SoQt in your computer under a Windows XP or Windows Vista OS.
 
-Before installing !SoQt, please, verify that Qt and Coin 3D are already installed and functioning on your PC. If they are not, install them firs by following the corresponding installation procedures InstallingQtForWindows and [InstallingCoin3DForWindows].
+SoQt is a library that provides the glue between the Coin 3D libraries and the Qt 2D GUI and application framework libraries. The SoQt library is used within Tonatiuh mainly to implement different types of Coin 3D scene viewers inside traditional 2D Qt-generated windows.
+
+Here you will find instructions to install the SoQt library in your computer and make this library available for the development of Tonatiuh.
 
 = Details =
+
+Before installing !SoQt, please, verify that the Qt and Coin 3D libraries are already properly installed in your computer. If they are not, install them firs by following the corresponding installation procedures [InstallingQtForWindows] and [InstallingCoin3DForWindows].
+
 Download the latest release of !SoQt, currently !SoQt 1.5.0, from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view. The file you have to download is !SoQt-1.5.0.tar.gz. 
 
 *(Note: If you are using Windows XP, be sure the operating system does not change the extension of the file from ".tar.gz" to ".tar.tar" while it is dowloading it. If it does, after downloading the file change its extension back to ".tar.gz")*
