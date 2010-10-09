@@ -36,7 +36,7 @@ make
 make install
 }}}
 
-The installation process may take several minutes. At the end of the installation process, the simage dynamic library _"libsimage-20.dll"_ and the file _"simage-config"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_ and the simage library files _"libsimage.dll.a"_ and _"libsimage.la"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the file _"simage.pc"_ fill be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib\pkgconfig"_ and the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\include"_. 
+The installation process may take several minutes. At the end of the installation process, the simage dynamic library _"libsimage-20.dll"_ and the file _"simage-config"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_ and the simage library files _"libsimage.dll.a"_ and _"libsimage.la"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the file _"simage.pc"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib\pkgconfig"_ and the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\include"_. 
 
 Once the simage library is installed the next step is to install the Coin library. To do it, follow the instructions in the following wiki page: [InstallingCoin3DForWindows Coin3D]
 
