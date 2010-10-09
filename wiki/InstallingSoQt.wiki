@@ -9,7 +9,7 @@ Here you will find instructions to install the !SoQt library in your computer an
 
 = Details =
 
-Before installing !SoQt, please, verify that the Qt and Coin 3D libraries are already properly installed in your computer. If they are not, install them first by following the corresponding installation procedures [InstallingQtForWindows installing Qt for Windows] and [InstallingCoin3DForWindows installing Coin for Windows].
+Before installing !SoQt, please, verify that the Qt and Coin 3D libraries are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingQtForWindows installing Qt] and [InstallingCoin3DForWindows installing Coin].
 
 Download the latest release of !SoQt, currently !SoQt 1.5.0, from the Coin3D website at http://www.coin3d.org/lib/plonesoftwarecenter_view. The file you have to download is !SoQt-1.5.0.tar.gz. 
 
