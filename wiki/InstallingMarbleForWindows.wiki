@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Marble is a Virtual Globe and World Atlas. As a library, it is used within Tonatiuh to provide geographical positioning functionalities, which are needed, among other things, to facilitate the user the task of specifying the location on Earh of the solar concentrating systems she or he wants to analyze.
+Marble is a Virtual Globe and World Atlas. As a library, it is used within Tonatiuh to provide the geographical positioning functionalities needed, among other things, to facilitate the user the task of specifying the location on Earh of the solar concentrating systems she or he wants to analyze.
 
 Here you will find instructions to install the Marble library in your computer and make this library available for the development of Tonatiuh.
 
