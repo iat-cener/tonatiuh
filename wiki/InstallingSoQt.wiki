@@ -11,7 +11,7 @@ Here you will find instructions to install the !SoQt library in your computer an
 
 Before installing !SoQt, please, verify that the Qt and Coin 3D libraries are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingQtForWindows installing Qt] and [InstallingCoin3DForWindows installing Coin].
 
-Since the !SoQt library binary installers for Windows, available at the Coin 3D website, are only valid for Visual C++ and we need to use the MinGW C++ compiler in order to be able to use the open source version of the Qt libraries, we need to build the !SoQt library from the source code. 
+Since the !SoQt library binary installers for Windows, available at the Coin 3D website, are only valid for Visual C++ and the open source version of the Qt libraries can only be compiled under Windows with the MinGW C++ compiler, the !SoQt library have to be built from the source code. 
 
 Download the latest release of the !SoQt, currently !SoQt 1.5.0. To do it, click on the following [http://www.coin3d.org/lib/soqt/releases/1.5.0 link] to go to the _"!SoQt 1.5.0"_ webpage of the Coin website. Once you reach the webpage, click on the link titled _"Get !SoQt 1.5.0 for all platforms"_ (see Figure 1). This will start the downloading of the !SoQt source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer.
 
