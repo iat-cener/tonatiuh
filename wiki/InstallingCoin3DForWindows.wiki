@@ -1,30 +1,35 @@
-#summary Procedure to install Coin3d for Windows Vista or XP
+#summary Instructions to install the Coin 3D library needed to develop Tonatiuh under Windows XP, Windows Vista or Windows 7.
 #labels Phase-Implementation
 
 http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
-[http://www.coin3d.org/ Coin3D] is a high-level 3D graphics toolkit for developing cross-platform real-time 3D visualization and visual simulation software. Install [InstallingQtForWindows Qt] before start with the installation.
+Coin is a high-level 3D graphics toolkit for developing cross-platform real-time 3D visualization and visual simulation software. This toolkit is implemented as a library. The Coin library is used within Tonatiuh to implement the programs 3D views of the concentrating system being simulated and to provide the architecture for the underlying 3D scene graph.
+
+Here you will find instructions to install the Coin library in your computer and make this library available for the development of Tonatiuh.
 
 = Details =
 
-Download the latest realese of Coin, currently [http://ftp.coin3d.org/coin/src/all/Coin-3.1.3.tar.gz Coin 3.1.3], from the [http://www.coin3d.org/ Coin3D] website at http://www.coin3d.org/lib/plonesoftwarecenter_view. Place it into the user directory under your MSYS folder.  This will typically be _c:\sde\msys\usr\home\username_.
+Since the Coin library binary installers for Windows, available at the Coin 3D website, are only valid for Visual C++ and we need to use the MinGW C++ compiler in order to be able to use the open source version of the Qt libraries, we need to build the Coin library from the source code.
 
-*(Note: If you are using Windows XP, be sure the operating system does not change the extension of the file from ".tar.gz" to ".tar.tar" while it is dowloading it. If it does, after downloading the file change its extension back to ".tar.gz")*
+Download the latest realese of the Coin source package, currently Coin 3.1.3. To do it, click on the following [http://www.coin3d.org/lib/coin/releases/3.1.3 link] to go to the _"Coin 3.1.3"_ webpage of the Coin website. Once you reach the webpage, click on the link titled _"Get Coin 3.1.3 for all platforms"_ (see Figure 1). This will start the downloading of the Coin source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer.
+
+||http://lh6.ggpht.com/_tmEVMS15i5Y/TLAk0sBPMjI/AAAAAAAAAm0/yYLsUjdZ8Ag/s400/Coin_sourcecode.png||
+|| *Figure 1.* View of the "Coin 1.3.1" webpage.||
+
+Once the simage source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _C:\sde\MinGW\msys\usr\home\username_.
 
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
 tar -zxvf Coin-3.1.3.tar.gz
 }}}
 
-This will create a directory called _Coin-3.1.3_ in your user directory. Using the MSYS shell navigate to just created Coin-3.1.0 directory and type:
+This will create a directory called _Coin-3.1.3_ in your user directory. Using the MSYS shell navigate to just created Coin-3.1.0 directory.
+
+To build the library in release mode type:
 {{{
 export QTDIR="/c:/sde/Qt/2010.05/qt"
 export COINDIR="/usr/local"
 export INCLUDE="/usr/local/include:/c:/sde/MinGW/include"
-}}}
-
-Type the following command to build on release mode: 
-{{{
 ./configure --disable-msvc --enable-debug=no --enable-symbols=no
 }}}
 
@@ -34,7 +39,7 @@ make
 make install
 }}}
 
-The installation process may take several hours . During it you may get errors, that may trigger warnings in the MSYS shell console complemented with instructions on how to solve them. If that is the case, follow the instructions that appear on the screen to fix the errors. In those cases in which you may get an error, but no instruction on how to solvw it, re-launch the make or the install process by typing "make" or "make install" as appropriate.
+The installation process may take some time. 
 
 Once the Coin3D library is installed the next step is to install the !SoQt library. To do it, follow the instructions in the following wiki page: [InstallingSoQt InstallingSoQt]
 
