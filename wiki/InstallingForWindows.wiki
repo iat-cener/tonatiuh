@@ -14,11 +14,11 @@ The following links will guide the developer through all the process:
   * [InstallingCoin3DForWindows Installing Coin3D]
   * [InstallingSoQt Installing SoQt]
   * [InstallingMarbleForWindows Installing Marble ]
+  * [InstallingBerkeleyDBOnWindows Installing Berkeley DB]
   * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
   * [BuildingTonatiuhOnWindiows Building Tonatiuh and plugins]
   * [DebuggingTonatiuhOnWindiows Debugging Tonatiuh with Eclipse]
-  * [InstallingBerkeleyDBOnWindows Installing Berkeley DB]
 
 = Unit testing =
 
