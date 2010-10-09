@@ -3,6 +3,8 @@
 
 http://tonatiuh.googlecode.com/svn/wiki/images/coin3d/coin3dLogo.png
 
+= Introduction =
+
 Coin is a high-level 3D graphics toolkit for developing cross-platform real-time 3D visualization and visual simulation software. This toolkit is implemented as a library. The Coin library is used within Tonatiuh to implement the programs 3D views of the concentrating system being simulated and to provide the architecture for the underlying 3D scene graph.
 
 Here you will find instructions to install the Coin library in your computer and make this library available for the development of Tonatiuh.
