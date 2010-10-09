@@ -40,7 +40,7 @@ This will start the configuration process. Depending on your computer, this proc
 ||http://lh3.ggpht.com/_tmEVMS15i5Y/TLB670Ev2zI/AAAAAAAAAnE/J0_F_CRcPiw/s400/Coin_config_final_screen.png||
 || *Figure 2.* MSYS shell messages shown when the configuration process ends.||
 
-Now, you can install the Coin3D libraries by typing:
+Now, you can install the Coin3D library by typing:
 {{{
 make 
 make install
