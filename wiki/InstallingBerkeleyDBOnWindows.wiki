@@ -34,6 +34,9 @@ make
 make install
 }}}
 
+At the end of the process, the Berkeley DB dynamic library _"libdb-5.1.dll"_ and the programs _"db_archive.exe"_, _"db_checkpoint.exe"_, _"db_deadlock.exe"_, _"db_dump.exe"_, _"db_hotbackup.exe"_, _"db_load.exe"_, _"db_log_verify.exe"_, _"db_printlog.exe"_, _"db_recover.exe"_, _"db_replicate.exe"_, _"db_stat.exe"_, _"db_upgrade.exe"_, and_"db_verify.exe"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_.  The Berkeley DB library files _"libdb-5.1.dll.a"_, _"libdb-5.1.a"_, and _"libdb-5.1.la"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\include"_.
+
+
 == Building an application==
 To build an application with Berkeley DB library add the library headers path to include
 variable as: 
@@ -46,5 +49,7 @@ Also, add the library to LIBS variable:
 {{{
 LIBS += -L$$(TDE_ROOT)/local/lib -ldb_cxx
 }}}
+
+Once the Marble library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InstallingBerkeleyDBOnWindows Installing Berkeley DB for Windows]
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
