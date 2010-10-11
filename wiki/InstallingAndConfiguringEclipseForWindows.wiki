@@ -14,7 +14,7 @@ Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the 
 ||<a href="http://picasaweb.google.com/lh/photo/PRd6_FB1u9WjjvkCA--cCg?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLN5Lgx7neI/AAAAAAAAAqs/GI1teO5QlUk/s400/Eclipse_package.png" height="286" width="400" /></a>||
 || *Figure 1.* View of the Eclipse "Downloads" webpage.||
 
-Once the Eclipse IDE for C/C++ Developers compressed package file is in your computer, right-click to extract its content. This may create a top level folder titled _"eclipse-cpp-helios-SR1-win32" that will contain just one folder titled _"eclipse"_. Move or copy the _"eclipse"_ folder into the folder _"C:\sde\"
+Once the Eclipse IDE for C/C++ Developers compressed package file is in your computer, right-click upon it to extract its content. This may create a top level folder titled _"eclipse-cpp-helios-SR1-win32" that will contain just one folder titled _"eclipse"_. Move or copy the _"eclipse"_ folder into the folder _"C:\sde\"
 
 Now, go to the folder _"C:\sde\eclipse" and run the program _"eclipse.exe"_. When asked for a workspace set it to _"C:\sde\workspace"_.
 
