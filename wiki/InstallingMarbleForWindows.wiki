@@ -8,7 +8,7 @@ Here you will find instructions to install the Marble library in your computer a
 
 = Details =
 
-To compile marble you need CMake -a cross-platform make. To obtain it follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.2-win32-x86.exe"_, which is the CMake binary installer for Windows (see Figure 1). This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
+To compile Marble you need CMake -a cross-platform make. To obtain it follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.2-win32-x86.exe"_, which is the CMake binary installer for Windows (see Figure 1). This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
 
 ||http://lh5.ggpht.com/_tmEVMS15i5Y/TLDLa3oJp1I/AAAAAAAAAn4/mZPF8osxLas/s400/CMake_installer.png||
 || *Figure 1.* View of the "CMake" webpage.||
@@ -83,6 +83,9 @@ cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble
 cp src/plugins/render/geodata/libGeoRendererPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.dll /usr/local/bin/marble
 }}}
+At the end of the process, the Marble dynamic library _"libmarblewidget.dll"_ and the programs _"marble.exe"_ and _"tilecreator.exe"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_. The plugins _"ibCompassFloatItem.dll"_, _"libCrosshairsPlugin.dll"_, _"libGeoRendererPlugin.dll"_, _"libMapScaleFloatItem.dll"_, _"libNavigationFloatItem.dll"_, _"libOverviewMap.dll"_, and _"libStarsPlugin.dll"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin\marble"_ and the Marble library file "libmarblewidget.dll.a" will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\include\marble"_.
+
+Once the Marble library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InstallingBerkeleyDBOnWindows Installing Berkeley DB for Windows]
 
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
