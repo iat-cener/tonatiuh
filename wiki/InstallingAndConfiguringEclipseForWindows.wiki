@@ -9,10 +9,13 @@ Here you will find instructions to install the Eclipse Integrated Development En
 
 == Details ==
 
-Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the eclipse website. To do it, click on the following [http://www.eclipse.org/downloads/ link] to go to the "Downloads" webpage of the Eclipse website. Once you reach the webpage, click on the appropriate version (Windows 32 Bit or Windows 64 Bit) of the link titled _"Eclipse IDE for C/C++ Developers" (see Figure 1). This will start the downloading of the Eclipse IDE installer. When prompted, select the appropriate option to store the file in your computer.
+Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the Eclipse website. To do it, click on the following [http://www.eclipse.org/downloads/ link] to go to the "Downloads" webpage of the Eclipse website. Once you reach the webpage, click on the appropriate version (Windows 32 Bit or Windows 64 Bit) of the link titled _"Eclipse IDE for C/C++ Developers" (see Figure 1). This will start the downloading of the Eclipse IDE installer. When prompted, select the appropriate option to store the file in your computer.
 
 ||<a href="http://picasaweb.google.com/lh/photo/PRd6_FB1u9WjjvkCA--cCg?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLN5Lgx7neI/AAAAAAAAAqs/GI1teO5QlUk/s400/Eclipse_package.png" height="286" width="400" /></a>||
 || *Figure 1.* View of the Eclipse "Downloads" webpage.||
+
+Once the Eclipse IDE for C/C++ Developers installer is in your computer, left-click twice upon it to execute it.
+
 
  * Extract the files from the archive into C:\sde\.
  * Run the Eclipse executable from the folder and when asked for a workspace set it to C:\sde\workspace.
