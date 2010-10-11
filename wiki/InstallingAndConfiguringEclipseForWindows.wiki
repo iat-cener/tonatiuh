@@ -20,7 +20,7 @@ Once the IDE for C/C++ Developers compressed package file is in your computer, r
 
 Now, go to the folder _"C:\sde\eclipse"_ and run the program _"eclipse.exe"_. When asked for a workspace, set it to _"C:\sde\workspace"_.
 
-== Configuring the Eclipse IDE for Tonatiuh ==
+== Configuring the Eclipse IDE for C/C++ Developers for developing Qt applications ==
 
 On the Eclipse main menu select _"Window"_ and within it _"Preferences"_. This will triger a pop-up dialog titled _Preferences"_, which can be used to adjust different Eclipse options. In the left tree-like view of the preferences dialog select "General\EditorsªFile Associations" (see Figure 1). In the dialog's _"File Associations"_ right view, within the _"File types"_ window, add the new types:
   * .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
@@ -31,12 +31,17 @@ And within the _"Associated editors"_ window, associate this file types with the
   * C:\sde\Qt\2010.05\qt\bin\linguist.exe
 
 ||<a href="http://picasaweb.google.com/lh/photo/qsb4_Ia8dQQ4MpdeF904fA?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TLONfbgLfYI/AAAAAAAAAq4/1Yxl6FBiHU8/s400/Eclipse_file_associations.png" height="299" width="400" /></a>||
-|| *Figure 1.* View of the Eclipse IDE and the _"Preferences/File Associations"_ dialog.||
+|| *Figure 1.* View of the Eclipse IDE and the _"Preferences\File Associations"_ dialog.||
 
- * In C\C++->New CDT project wizard-> Makefile project:
-  # Under the Builder Settings tab set the build command to C:\sde\MinGW\bin\mingw32-make.exe
-  # Under Binary Parser select only PE Windows Parser
-[http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/makefileProject.png]
+== Configuring the Eclipse IDE for C/C++ Developers for using the MinGW compiler ==
+
+On the Eclipse main menu select _"Window"_ and within it _"Preferences"_ to display the pop-up dialog _Preferences"_. In the left tree-like view of the preferences dialog select "C/C++\New CDT Project Wizar\Makefile Project" (see Figure 2). In the dialog's _"Makefile Project"_ right view, do the following:
+
+  * Under the _"Binary Parsers"_ tab, select only _"PE Windows Parser"_
+  * Under the _"Builder Settings"_ tab, uncheck the _"Use default build command"_ and set the build command to _"C:\sde\MinGW\bin\mingw32-make.exe"_
+
+||<a href="http://picasaweb.google.com/lh/photo/qcP4koY_v8m1recaTgl1eQ?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TLOVL9VbXOI/AAAAAAAAArE/fXot1OOJ3M4/s400/Eclipse_makefile_project.png" height="300" width="400" /></a>||
+|| *Figure 2.* View of the Eclipse IDE and the _"Preferences\Makefile Project"_ dialog.||
 
 To install svn to download and update Tonatiuh follow the corresponding installation procedures [Installing_Subversive].
 
