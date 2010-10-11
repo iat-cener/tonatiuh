@@ -13,7 +13,19 @@ To compile marble you need CMake -a cross-platform make. To obtain it follow thi
 ||http://lh5.ggpht.com/_tmEVMS15i5Y/TLDLa3oJp1I/AAAAAAAAAn4/mZPF8osxLas/s400/CMake_installer.png||
 || *Figure 1.* View of the "CMake" webpage.||
 
-Now, download the source files from http://edu.kde.org/marble/download.php clicking on _Source download_ link. Place it into the user directory under your MSYS folder. This will typically be \usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
+Now, you need to download the latest stable version of the Marble source code. To do it, you need to use a subversion or svn client to access the appropriate Marble's svn repository and check out the appropriate marble folder, with all of its content, including all files and subdirectories.
+
+If you have installed in your computer a command-line svn client, the command you should execute in your MSDOS-like shell or in your MSYS Linux-like shell to get the marble folder with all its content is:
+
+{{{
+svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
+}}}
+
+If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address [svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
+ _"svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble"_]. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application.
+
+
+download the source files from http://edu.kde.org/marble/download.php clicking on _Source download_ link. Place it into the user directory under your MSYS folder. This will typically be \usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
 
 {{{
 tar -zxvf marble-0.8.0_rev1005857.tar.gz
