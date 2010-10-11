@@ -46,7 +46,7 @@ Then,
 make
 }}}
 
-Copy marble include files to the folder "/local/include/marble".
+Copy Marble include files to the folder "/local/include/marble".
 {{{
 mkdir /usr/local/include/marble
 cp src/lib/*.h /usr/local/include/marble
@@ -72,7 +72,7 @@ Copy main library files to the appropriate "/usr/local" folders.
 cp src/lib/libmarblewidget.dll /usr/local/bin
 cp src/lib/libmarblewidget.dll.a /usr/local/lib
 }}}
-Copy mable plugins to the folder "/usr/local/bin/marble".
+Copy Marble plugins to the folder "/usr/local/bin/marble".
 {{{
 mkdir /usr/local/bin/marble
 cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
