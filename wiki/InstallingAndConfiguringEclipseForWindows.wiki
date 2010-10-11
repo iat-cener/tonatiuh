@@ -16,7 +16,7 @@ Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the 
 
 Once the Eclipse IDE for C/C++ Developers compressed package file is in your computer, right-click upon it to extract its content. This will create a top level folder titled _"eclipse-cpp-helios-SR1-win32"_ that will contain just one folder titled _"eclipse"_. Move or copy the _"eclipse"_ folder into the folder _"C:\sde\"
 
-Now, go to the folder _"C:\sde\eclipse" and run the program _"eclipse.exe"_. When asked for a workspace set it to _"C:\sde\workspace"_.
+Now, go to the folder _"C:\sde\eclipse"_ and run the program _"eclipse.exe"_. When asked for a workspace, set it to _"C:\sde\workspace"_.
 
 
 == Configuring Eclipse for Tonatiuh ==
