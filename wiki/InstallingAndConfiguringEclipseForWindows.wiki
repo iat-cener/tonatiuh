@@ -16,15 +16,21 @@ Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the 
 ||<a href="http://picasaweb.google.com/lh/photo/PRd6_FB1u9WjjvkCA--cCg?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLN5Lgx7neI/AAAAAAAAAqs/GI1teO5QlUk/s400/Eclipse_package.png" height="286" width="400" /></a>||
 || *Figure 1.* View of the Eclipse "Downloads" webpage.||
 
-Once the Eclipse IDE for C/C++ Developers compressed package file is in your computer, right-click upon it to extract its content. This will create a top level folder titled _"eclipse-cpp-helios-SR1-win32"_ that will contain just one folder titled _"eclipse"_. Move or copy the _"eclipse"_ folder into the folder _"C:\sde\"
+Once the IDE for C/C++ Developers compressed package file is in your computer, right-click upon it to extract its content. This will create a top level folder titled _"eclipse-cpp-helios-SR1-win32"_ that will contain just one folder titled _"eclipse"_. Move or copy the _"eclipse"_ folder into the folder _"C:\sde\"
 
 Now, go to the folder _"C:\sde\eclipse"_ and run the program _"eclipse.exe"_. When asked for a workspace, set it to _"C:\sde\workspace"_.
 
 == Configuring the Eclipse IDE for Tonatiuh ==
 
- * You can edit the general project options in Eclipse by navigating Window->Preferences->General->Editors. Under File Associations add the new types:
+On the Eclipse main menu select _"Window"_ and within it _"Preferences"_. This will triger a pop-up dialog titled _Preferences"_, which can be used to adjust different Eclipse options. In the left tree-like view of the preferences dialog select "General\EditorsªFile Associations". In the dialog's _"File Associations"_ right view, within the _"File types"_ window, add the new types:
   # .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
   # .ts  C:\sde\Qt\2010.05\qt\bin\linguist.exe 
+
+And within the _"Associated editors"_ window, associate this file types with the following programs, respectively:
+  # C:\sde\Qt\2010.05\qt\bin\designer.exe
+  # C:\sde\Qt\2010.05\qt\bin\linguist.exe
+
+ 
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
 
  * In C\C++->New CDT project wizard-> Makefile project:
