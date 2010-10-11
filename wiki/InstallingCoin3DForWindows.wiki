@@ -37,7 +37,7 @@ export INCLUDE=/usr/local/include:/c:/sde/MinGW/include
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the Coin configuration settings will be displayed at MSYS shell (see Figure 2).
 
-||http://lh3.ggpht.com/_tmEVMS15i5Y/TLB670Ev2zI/AAAAAAAAAnE/J0_F_CRcPiw/s400/Coin_config_final_screen.png||
+||<a href="http://picasaweb.google.com/lh/photo/WYeLOhf48chNSykrpIxVWMkjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLB670Ev2zI/AAAAAAAAAnE/J0_F_CRcPiw/s400/Coin_config_final_screen.png" height="323" width="400" /></a>||
 || *Figure 2.* MSYS shell messages shown when the configuration process ends.||
 
 Now, you can install the Coin3D library by typing:
