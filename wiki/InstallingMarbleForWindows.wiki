@@ -21,11 +21,12 @@ If you have installed in your computer a command-line svn client, the command yo
 svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
 }}}
 
-If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address _"svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble"_. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application to open the link with. If you have TortoiseSVN installed in your computer, this option should be already highlighted in the pop-up dialog. If it is, just click on the Ok button. It if is not, select it, and then click on the Ok button. As a result of clicking the Ok button on the pop-up dialog, the dialog will close and a new window will pop-up showing you a view of the svn directory with the marble folder opened (see Figure 1).
+If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address _"svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble"_. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application to open the link with. If you have TortoiseSVN installed in your computer, this option should already be highlighted in the pop-up dialog. If it is highlighted, just click on the dialog's Ok button. It if is not highlighted, select it to make it highlighted, and then click on the dialog's Ok button.
 
+As a result of clicking the Ok button on the pop-up dialog, the dialog will close and a new window will pop-up showing you a view of the svn directory with the marble folder opened (see Figure 2).
 
-
-
+||http://lh4.ggpht.com/_tmEVMS15i5Y/TLM3fXez6zI/AAAAAAAAAoI/7rpFhg-F2yk/s400/Marble_svn_view.png||
+|| *Figure 2.* View of the svn directory showing the _"marble"_ folder.||
 
 Right-click on the marble folder and select the TortoiseSVN check out option. Then select as the check out destination directory the user directory under your MSYS folder. This will typically be \usr\home\username.
 
