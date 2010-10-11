@@ -21,8 +21,8 @@ If you have installed in your computer a command-line svn client, the command yo
 svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
 }}}
 
-If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address _"[svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
- svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble]"_. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application.
+If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address [svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
+ svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble]. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application.
 
 
 download the source files from http://edu.kde.org/marble/download.php clicking on _Source download_ link. Place it into the user directory under your MSYS folder. This will typically be \usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
