@@ -69,7 +69,7 @@ cp src/lib/geodatatest.exe /usr/local/bin
 }}}
 Copy main library files to the appropriate "/usr/local" folders.
 {{{
-cp src/lib/libmarblewidget.dll /usr/local/lib
+cp src/lib/libmarblewidget.dll /usr/local/bin
 cp src/lib/libmarblewidget.dll.a /usr/local/lib
 }}}
 Copy mable plugins to the folder "/usr/local/bin/marble".
