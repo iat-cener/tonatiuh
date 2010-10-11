@@ -23,12 +23,12 @@ Now, go to the folder _"C:\sde\eclipse"_ and run the program _"eclipse.exe"_. Wh
 == Configuring the Eclipse IDE for Tonatiuh ==
 
 On the Eclipse main menu select _"Window"_ and within it _"Preferences"_. This will triger a pop-up dialog titled _Preferences"_, which can be used to adjust different Eclipse options. In the left tree-like view of the preferences dialog select "General\EditorsªFile Associations". In the dialog's _"File Associations"_ right view, within the _"File types"_ window, add the new types:
-  # .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
-  # .ts  C:\sde\Qt\2010.05\qt\bin\linguist.exe 
+  * .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
+  * .ts  C:\sde\Qt\2010.05\qt\bin\linguist.exe 
 
 And within the _"Associated editors"_ window, associate this file types with the following programs, respectively:
-  # C:\sde\Qt\2010.05\qt\bin\designer.exe
-  # C:\sde\Qt\2010.05\qt\bin\linguist.exe
+  * C:\sde\Qt\2010.05\qt\bin\designer.exe
+  * C:\sde\Qt\2010.05\qt\bin\linguist.exe
 
  
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
