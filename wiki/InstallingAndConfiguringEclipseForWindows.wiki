@@ -1,12 +1,19 @@
-#summary How to install the Eclipse Ganymede devolpment platform
+#summary Instructions to install the Eclipse IDE for C/C++ Developers under Windows XP, Windows Vista or Windows 7.
 
-= Eclipse = 
+= Introduction= 
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/eclipseIcon.png]
 
-[http://www.eclipse.org/ Eclipse] is an open source community whose projects are focus on building an extensible development platform, runtimes and application frameworks for building, deploying and managing software across the entire software lifecycle.
+Eclipse is an open source community whose projects are focus on building an extensible development platform, runtimes and application frameworks for building, deploying and managing software across the entire software lifecycle.
 
-== Installing eclipse Ganymede ==
- * Download _"Eclipse IDE for C/C++ Developers"_ from the eclipse website at http://www.eclipse.org/downloads/.
+Here you will find instructions to install the Eclipse Integrated Development Environment for C/C++ Developers and to configure it for the development of Tonatiuh.
+
+== Details ==
+
+Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the eclipse website. To do it, click on the following [http://www.eclipse.org/downloads/ link] to go to the "Downloads" webpage of the Eclipse website. Once you reach the webpage, click on the appropriate version (Windows 32 Bit or Windows 64 Bit) of the link titled _"Eclipse IDE for C/C++ Developers" (see Figure 1). This will start the downloading of the Eclipse IDE installer. When prompted, select the appropriate option to store the file in your computer.
+
+||<a href="http://picasaweb.google.com/lh/photo/PRd6_FB1u9WjjvkCA--cCg?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLN5Lgx7neI/AAAAAAAAAqs/GI1teO5QlUk/s400/Eclipse_package.png" height="286" width="400" /></a>||
+|| *Figure 1.* View of the Eclipse "Downloads" webpage.||
+
  * Extract the files from the archive into C:\sde\.
  * Run the Eclipse executable from the folder and when asked for a workspace set it to C:\sde\workspace.
 
