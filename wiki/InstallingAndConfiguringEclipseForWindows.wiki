@@ -7,7 +7,9 @@ Eclipse is an open source community whose projects are focus on building an exte
 
 Here you will find instructions to install the Eclipse Integrated Development Environment for C/C++ Developers and to configure it for the development of Tonatiuh.
 
-== Details ==
+= Details =
+
+== Installing the Eclipse IDE for C/C++ Developers == 
 
 Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the Eclipse website. To do it, click on the following [http://www.eclipse.org/downloads/ link] to go to the "Downloads" webpage of the Eclipse website. Once you reach the webpage, click on the appropriate version (Windows 32 Bit or Windows 64 Bit) of the link titled _"Eclipse IDE for C/C++ Developers" (see Figure 1). Then follow the instructions to select a mirror site from where to download the compressed package file. When prompted, select the appropriate option to store the file in your computer. Currently, the latest version of the compressed package file is titled _"eclipse-cpp-helios-SR1-win32.zip"_.
 
@@ -18,8 +20,8 @@ Once the Eclipse IDE for C/C++ Developers compressed package file is in your com
 
 Now, go to the folder _"C:\sde\eclipse"_ and run the program _"eclipse.exe"_. When asked for a workspace, set it to _"C:\sde\workspace"_.
 
+== Configuring the Eclipse IDE for Tonatiuh ==
 
-== Configuring Eclipse for Tonatiuh ==
  * You can edit the general project options in Eclipse by navigating Window->Preferences->General->Editors. Under File Associations add the new types:
   # .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
   # .ts  C:\sde\Qt\2010.05\qt\bin\linguist.exe 
