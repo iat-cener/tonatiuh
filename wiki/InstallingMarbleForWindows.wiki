@@ -21,16 +21,15 @@ If you have installed in your computer a command-line svn client, the command yo
 svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
 }}}
 
-If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address _"svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble"_. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application.
+If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address _"svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble"_. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application to open the link with. If you have TortoiseSVN installed in your computer, this option should be already highlighted in the pop-up dialog. If it is, just click on the Ok button. It if is not, select it, and then click on the Ok button. As a result of clicking the Ok button on the pop-up dialog, the dialog will close and a new window will pop-up showing you a view of the svn directory with the marble folder opened (see Figure 1).
 
 
-download the source files from http://edu.kde.org/marble/download.php clicking on _Source download_ link. Place it into the user directory under your MSYS folder. This will typically be \usr\home\username. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing: 
 
-{{{
-tar -zxvf marble-0.8.0_rev1005857.tar.gz
-}}}
 
-This will create a directory called _marble-version_ in your user directory. Using the MSYS shell navigate to just created marble-version directory and type:
+
+Right-click on the marble folder and select the TortoiseSVN check out option. Then select as the check out destination directory the user directory under your MSYS folder. This will typically be \usr\home\username.
+
+After checking out the marble directory from the svn site, using the MSYS shell navigate to the marble directory just created in your computer and type:
 {{{
 export QTDIR=/c/sde/qt/qt_
 export PATH=$QTDIR/bin:$PATH:/c/sde/cmake/bin
