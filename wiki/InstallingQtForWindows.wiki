@@ -12,7 +12,7 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 Download the latest installer of the Qt SDK for Windows. To do it, click on the following [http://qt.nokia.com/downloads link] to go to the "Downloads" webpage of the Qt website. Once you reach the webpage, click on the link titled _"Qt SDK for Windows (322 MB)"_ (see Figure 1). This will start the downloading of the Qt SDK for Windows installer. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer. 
 
-||http://lh3.ggpht.com/_tmEVMS15i5Y/TK-C2LVDHXI/AAAAAAAAAmA/UOQaafXODcg/s400/Qt_SDK_Installer.png||
+||<a href="http://picasaweb.google.com/lh/photo/TttG9K37HQkjd1zXLpnpdskjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TK-C2LVDHXI/AAAAAAAAAmA/UOQaafXODcg/s400/Qt_SDK_Installer.png" height="271" width="400" /></a>||
 || *Figure 1.* View of the Qt "Downloads" webpage.||
 
 Once the Qt SDK for Windows installer is in your PC, left-click twice upon it to execute it.
