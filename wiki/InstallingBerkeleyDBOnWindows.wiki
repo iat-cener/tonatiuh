@@ -20,7 +20,7 @@ tar -xzvf db-5.1.19.tar.gz
 
 Change to the build directory with:
 {{{
-cd db-5.0.26/build_unix
+cd db-5.1.19/build_unix
 }}}
 
 To configure the Berkeley DB type the following command:
