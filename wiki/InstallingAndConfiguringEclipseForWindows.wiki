@@ -22,7 +22,7 @@ Now, go to the folder _"C:\sde\eclipse"_ and run the program _"eclipse.exe"_. Wh
 
 == Configuring the Eclipse IDE for Tonatiuh ==
 
-On the Eclipse main menu select _"Window"_ and within it _"Preferences"_. This will triger a pop-up dialog titled _Preferences"_, which can be used to adjust different Eclipse options. In the left tree-like view of the preferences dialog select "General\EditorsªFile Associations". In the dialog's _"File Associations"_ right view, within the _"File types"_ window, add the new types:
+On the Eclipse main menu select _"Window"_ and within it _"Preferences"_. This will triger a pop-up dialog titled _Preferences"_, which can be used to adjust different Eclipse options. In the left tree-like view of the preferences dialog select "General\EditorsªFile Associations" (see Figure 1). In the dialog's _"File Associations"_ right view, within the _"File types"_ window, add the new types:
   * .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
   * .ts  C:\sde\Qt\2010.05\qt\bin\linguist.exe 
 
@@ -30,8 +30,8 @@ And within the _"Associated editors"_ window, associate this file types with the
   * C:\sde\Qt\2010.05\qt\bin\designer.exe
   * C:\sde\Qt\2010.05\qt\bin\linguist.exe
 
- 
-[http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/fileAssociations.png]
+||<a href="http://picasaweb.google.com/lh/photo/qsb4_Ia8dQQ4MpdeF904fA?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TLONfbgLfYI/AAAAAAAAAq4/1Yxl6FBiHU8/s400/Eclipse_file_associations.png" height="299" width="400" /></a>||
+|| *Figure 1.* View of the Eclipse IDE and the _"Preferences/File Associations"_ dialog.||
 
  * In C\C++->New CDT project wizard-> Makefile project:
   # Under the Builder Settings tab set the build command to C:\sde\MinGW\bin\mingw32-make.exe
