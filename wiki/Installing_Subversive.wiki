@@ -4,9 +4,18 @@
 
 == Installing Subversion ==
 
- * Open Eclipse
- * Go to Help->Install New Software...
- * Click _"Available Software Sites".
+Open Eclipse. In the main menu select _"Help"_ and then _"Install New Software"_. This will display a pop-up menu titled "Install". In the field _"Work with"_ select "--All Available Sites--"_. This selection will triger a search that will take some time to finish. Please, wait until the search ends.
+
+At the end of the search, the dialog's tree view will be populated with many lists and items. Expand the _"Collaboration"_ list, select only the item _"Subversive SVN Team Provider (Incubation)"_, and click on the "Next" button (see Figure 1).
+
+||<a href="http://picasaweb.google.com/lh/photo/3BLcQH5sqlrFjj2bty17Zg?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLOfrNXrcCI/AAAAAAAAArQ/WIPx5Cs68c8/s400/Eclipse_available_software.png" height="299" width="400" /></a>||
+|| *Figure 1.* View of the Eclipse IDE and the _"Install\Available Software"_ dialog.||
+
+In the next Install dialog's screen titled "Install Details" click again on the "Next" button. Then, in the screen titled "Review Licenses" check the option "I accept the terms of the license agreement" and click on the "Finish" button.
+
+Once the software installation process ends, you will be prompted to restart Eclipse. Click on the "Restart Now" button, to do it.
+
+Click _"Available Software Sites".
    [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/installDialog.png]
  * Find _http://download.eclipse.org/technology/subversive/0.7/update-site/_ site and enable it.
  * Click on "Add ..."_ button and write the update site for SVN Connectors. The URL is _http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/_ .
