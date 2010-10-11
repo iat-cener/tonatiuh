@@ -11,7 +11,7 @@ Here you will find instructions to install the Berkeley DB library in your compu
 Use this [http://www.oracle.com/technology/software/products/berkeley-db/index.html link] to go to the Berkeley DB webpage of the Orable website. Once you reach the webpage, select the link to download the latest stable source code version of the Berkeley DB in your computer. Currently, this version is 5.1.19 (see Figure 1).
 
 ||http://lh3.ggpht.com/_tmEVMS15i5Y/TLNOITA2LkI/AAAAAAAAAoY/b-lQwR5Dl3M/s400/BerkeleyDB_download.png||
-|| *Figure 1.* View of the "Berkeley DB" webpage.||
+|| *Figure 1.* View of the _"Berkeley DB"_ webpage.||
 
 Copy the downloaded file to your MSYS home directory. Open a MSYS shell, navigate to your home directory and extract the content of the downloaded files by typing:
 {{{
