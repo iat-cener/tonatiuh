@@ -104,9 +104,6 @@ QString ShapeSphericalRectangle::GetIcon() const
 bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
 	// Compute quadratic ShapeSphere coefficients
-	/*double A = objectRay.direction.lengthSquared();
-	double B = 2.0 * DotProduct( vObjectRayOrigin, objectRay.direction );
-	double C = vObjectRayOrigin.lengthSquared() - radius.getValue() * radius.getValue();*/
 	double A = objectRay.direction.x * objectRay.direction.x
 			+ objectRay.direction.y * objectRay.direction.y
 			+ objectRay.direction.z * objectRay.direction.z;
@@ -116,7 +113,8 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 				- objectRay.direction.y * radius.getValue() );
 	double C = objectRay.origin.x * objectRay.origin.x
 			+ objectRay.origin.y * objectRay.origin.y
-			+ objectRay.origin.z * objectRay.origin.z - 2 * objectRay.origin.y * radius.getValue();
+			+ objectRay.origin.z * objectRay.origin.z
+			- 2 * objectRay.origin.y * radius.getValue();
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -166,13 +164,8 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	double aux = radius.getValue() * radius.getValue()
 			- (-0.5 + u) * (-0.5 + u) * widthX.getValue() *widthX.getValue()
 			- (-0.5 + v) * (-0.5 + v) * widthZ.getValue() *widthZ.getValue();
-	Vector3D dpdu( widthX.getValue(),
-				( (-0.5 + u) * widthX.getValue() *  widthX.getValue() )/ sqrt(aux ),
-				0 );
-
-	Vector3D dpdv( 0.0,
-			( (-0.5 + u) * widthX.getValue() *  widthX.getValue() )/ sqrt( aux ),
-			widthZ.getValue() );
+	Vector3D dpdu = GetDPDU( u, v );
+	Vector3D dpdv = GetDPDV( u, v );
 
 	// Compute parabaloid \dndu and \dndv
 
@@ -257,19 +250,32 @@ Point3D ShapeSphericalRectangle::GetPoint3D( double u, double v ) const
 
 NormalVector ShapeSphericalRectangle::GetNormal( double u, double v ) const
 {
-	Vector3D dpdu( widthX.getValue(),
-			( (-0.5 + u) * widthX.getValue() *  widthX.getValue() )/ sqrt( radius.getValue() * radius.getValue()
-					- (-0.5 + u) * (-0.5 + u) * widthX.getValue() *widthX.getValue()
-					- (-0.5 + v) * (-0.5 + v) * widthZ.getValue() *widthZ.getValue() ),
-			0 );
 
+	Vector3D dpdu = GetDPDU( u, v );
+	Vector3D dpdv = GetDPDV( u, v );
+
+	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+}
+
+
+Vector3D ShapeSphericalRectangle::GetDPDU( double u, double v ) const
+{
+	Vector3D dpdu( widthX.getValue(),
+				( (-0.5 + u) * widthX.getValue() *  widthX.getValue() )/ sqrt( radius.getValue() * radius.getValue()
+						- (-0.5 + u) * (-0.5 + u) * widthX.getValue() *widthX.getValue()
+						- (-0.5 + v) * (-0.5 + v) * widthZ.getValue() *widthZ.getValue() ),
+				0 );
+	return dpdu;
+}
+
+Vector3D ShapeSphericalRectangle::GetDPDV( double u, double v ) const
+{
 	Vector3D dpdv( 0.0,
-			( (-0.5 + u) * widthX.getValue() *  widthX.getValue() )/ sqrt( radius.getValue() * radius.getValue()
+			( (-0.5 + v) * widthZ.getValue() *  widthZ.getValue() )/ sqrt( radius.getValue() * radius.getValue()
 					- (-0.5 + u) * (-0.5 + u) * widthX.getValue() *widthX.getValue()
 					- (-0.5 + v) * (-0.5 + v) * widthZ.getValue() *widthZ.getValue() ),
 			widthZ.getValue() );
-
-	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+	return dpdv;
 }
 
 void ShapeSphericalRectangle::updateRadius( void *data, SoSensor* )
