@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 
 class SoSensor;
+class Vector3D;
 
 class ShapeSphericalRectangle : public TShape
 {
@@ -77,6 +78,8 @@ protected:
 	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
+	Vector3D GetDPDU( double u, double v ) const;
+	Vector3D GetDPDV( double u, double v ) const;
 
 	static void updateRadius(void *data, SoSensor *);
 	static void updateWidthX(void *data, SoSensor *);
