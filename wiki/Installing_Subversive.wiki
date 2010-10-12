@@ -15,7 +15,7 @@ In the next Install dialog's screen titled "Install Details" click again on the 
 
 Once the software installation process ends, you will be prompted to restart Eclipse. Click on the "Restart Now" button, to do it. At the restart of Eclipse you will be presented a new "Welcome" view. That view will list a series of options, click on the first one, titled "Subversive Overview" (see Figure 2).
 
-||<a href="http://picasaweb.google.com/lh/photo/3BLcQH5sqlrFjj2bty17Zg?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLOfrNXrcCI/AAAAAAAAArQ/WIPx5Cs68c8/s400/Eclipse_available_software.png" height="299" width="400" /></a>||
+||<a href="http://picasaweb.google.com/lh/photo/J5PDC2iXqVXdFSYrliYJvQ?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLOmYN8b5bI/AAAAAAAAArc/lz2At3ywp38/s400/Eclipse_welcome_overview.png" height="266" width="400" /></a>||
 || *Figure 2.* Eclipse's _"Welcome"_ view after installing the SVN plug-in.||
 
 
