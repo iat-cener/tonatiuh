@@ -13,23 +13,21 @@ At the end of the search, the dialog's tree view will be populated with many lis
 
 In the next Install dialog's screen titled _"Install Details"_ click again on the _"Next"_ button. Then, in the screen titled _"Review Licenses"_ check the option _"I accept the terms of the license agreement"_ and click on the _"Finish"_ button.
 
-Once the software installation process ends, you will be prompted to restart Eclipse. Click on the _"Restart Now"_ button, to do it. At the restart of Eclipse you will be presented a new _"Welcome"_ view. That view will list a series of options, click on the first one, titled _"Subversive Overview"_ (see Figure 2).
+Once the software installation process ends, you will be prompted to restart Eclipse. Click on the _"Restart Now"_ button, to do it. At the restart of Eclipse you will be presented a new _"Welcome"_ (see Figure 2).
 
 ||<a href="http://picasaweb.google.com/lh/photo/J5PDC2iXqVXdFSYrliYJvQ?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLOmYN8b5bI/AAAAAAAAArc/lz2At3ywp38/s400/Eclipse_welcome_overview.png" height="266" width="400" /></a>||
 || *Figure 2.* Eclipse's _"Welcome"_ view after installing the SVN plug-in.||
 
+Now, go to the Windows menu and select _"Open Perspective"_, and then _"SVN Repository Exploring"_. As a result a pop-up dialog will be displayed entitled _"Install Connectors"_. Within the dialog you will be informed that in order for the SVN plug-in and the Eclipse perspective _"SVN Repository Exploring"_ to work, you need to install one of the SVN connector listed on the dialog (see Figure 3).
 
+||<a href="http://picasaweb.google.com/lh/photo/fw2cK0HZ88Y1EQSL_D9zZA?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLOuJyX0CgI/AAAAAAAAArs/LhHIVthMIGo/s400/Marble_svn_connectors.png" height="288" width="400" /></a>||
+|| *Figure 3.* Eclipse's Subversive SVN Connectors selection dialog.||
 
-Click _"Available Software Sites".
-   [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/installDialog.png]
- * Find _http://download.eclipse.org/technology/subversive/0.7/update-site/_ site and enable it.
- * Click on "Add ..."_ button and write the update site for SVN Connectors. The URL is _http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/_ .
-   [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/addSite.png]
- * "Ok" to finish with the update sites.
- * In the install dialog window select _Subversive SVN Team Provider Plugin (Incuvation)_ and _"Suversive SVN Connectors"_.
-   [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/featuresToInstall.png]
- * Push _"Next..."_ and then _"Finish"_ to start with the plugins installation. 
- * Restart eclipse.
+Select the SVN Connector titled _"SVN Kit 1.3.2"_ and follow the instructions of the subsequent dialogs, clicking on their _"Next"_ button and accepting the licence agreements you are presented until the installation process starts.
+
+During the installation of the connector and related software you will get a _"Security Warning"_ from Eclipse, stating that _"you are installing software that contains unsigned content"_ and asking you if you want to continue with the installation. Say yes, by clicking on the security warning dialog's _"OK"_ button.
+
+At the end of the software installation process you will be asked to restart Eclipse, please, do so by clicking on the _"Restart Now"_ button.
 
 == Enabling Subversion Auto-Props ==
 Open your Subversion _config_ file in a text editor. The file locations are as follows: 
@@ -116,7 +114,6 @@ TODO         = svn:mime-type=text/plain
 *.mxml       = svn:eol-style=native; svn:keywords=Id; svn:mime-type=text/plain
 }}}
 Now, any time you commit to a Subversion repository, the mime-types will automatically be set for certain file types. This allows you to view the documentation correctly in a web browser. 
-
 
 To anonymous download of Tonatiuh code read [Anonymous_Download] or read [Upload_to_Repository] to download code and upload changes.
 
