@@ -4,7 +4,7 @@
 
 == Installing Subversion ==
 
-Open Eclipse. In the main menu select _"Help"_ and then _"Install New Software"_. This will display a pop-up menu titled "Install". In the field _"Work with"_ select "--All Available Sites--"_. This selection will triger a search that will take some time to finish. Please, wait until the search ends.
+Open Eclipse. In the main menu select _"Help"_ and then _"Install New Software"_. This will display a pop-up menu titled _"Install"_. In the field _"Work with"_ select _"--All Available Sites--"_. This selection will triger a search that will take some time to finish. Please, wait until the search ends.
 
 At the end of the search, the dialog's tree view will be populated with many lists and items. Expand the _"Collaboration"_ list, select only the item _"Subversive SVN Team Provider (Incubation)"_, and click on the "Next" button (see Figure 1).
 
