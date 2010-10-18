@@ -30,14 +30,14 @@ During the installation of the connector and related software you will get a _"S
 At the end of the software installation process you will be asked to restart Eclipse, please, do so by clicking on the _"Restart Now"_ button.
 
 == Enabling Subversion Auto-Props ==
-Open your Subversion _config_ file in a text editor. The file locations are as follows: 
+Open your Subversion _"config"_ file in a text editor. Depending on your Operating System the location of the subversion configuration file may vary: 
 
- * Windows XP: C:\Documents and Settings\_username_\Application Data\Subversion\config
- * Windows Vista: C:\Users\_username_\AppData\Roaming\Subversion\config
- * Mac OS X:  ~/.subversion/config 
- * Linux: ~/.subversion/config 
+ * For Windows XP the location is: C:\Documents and Settings\_username_\Application Data\Subversion\config
+ * For Windows Vista and Windows 7 the location is: C:\Users\_username_\AppData\Roaming\!Subversion\config
+ * For Mac OS X the location is:  ~/.subversion/config 
+ * For Linux the location is: ~/.subversion/config 
 
-Add the following text at the very end of the file: 
+Add the following text at the very end of the _"config"_ file: 
 {{{
 [miscellany]
 enable-auto-props = yes
@@ -115,7 +115,7 @@ TODO         = svn:mime-type=text/plain
 }}}
 Now, any time you commit to a Subversion repository, the mime-types will automatically be set for certain file types. This allows you to view the documentation correctly in a web browser. 
 
-To anonymous download of Tonatiuh code read [Anonymous_Download] or read [Upload_to_Repository] to download code and upload changes.
+For instructions regarding how to carry out an anonymous download of the Tonatiuh code go to the wikipage [Anonymous_Download]. If you are a member of the Tonatiuh development team, go to the wikipage [Upload_to_Repository] for instructions on how to check out source files, and update your local copy of the Tonatiuh code and commit changes to Tonatiuh0s SVN repository at Googlecode. 
 
 [http://code.google.com/p/tonatiuh/wiki/InstallingForWindows Windows Configuration] | 
 [InstallingForLinux Linux Configuration] | 
