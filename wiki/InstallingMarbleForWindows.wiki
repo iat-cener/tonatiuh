@@ -49,17 +49,24 @@ make
 Copy Marble include files to the folder "/local/include/marble".
 {{{
 mkdir /usr/local/include/marble
-cp src/lib/*.h /usr/local/include/marble
-cp src/lib/AbstractLayer/*.h /usr/local/include/marble
-cp src/lib/geodata/*.h /usr/local/include/marble
-cp src/lib/geodata/data/*.h /usr/local/include/marble
-cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble
-cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble
-cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble
-cp src/lib/geodata/parser/*.h /usr/local/include/marble
+cp src/lib/*.h /usr/local/include/marble 
+cp src/lib/blendings/*.h /usr/local/include/marble 
+cp src/lib/geodata/*.h /usr/local/include/marble 
+cp src/lib/geodata/data/*.h /usr/local/include/marble 
+cp src/lib/geodata/graphicsitem/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/osm-namefinder/*.h /usr/local/include/marble 
+cp src/lib/geodata/parser/*.h /usr/local/include/marble 
 cp src/lib/geodata/scene/*.h /usr/local/include/marble
-cp src/lib/gps/*.h /usr/local/include/marble
+cp src/lib/geodata/writer/*.h /usr/local/include/marble  
+cp src/lib/geodata/writers/kml/*.h /usr/local/include/marble 
+cp src/lib/graphicsview/*.h /usr/local/include/marble
+cp src/lib/graphicsview/screengraphicsitem/*.h /usr/local/include/marble  
 cp src/lib/Projections/*.h /usr/local/include/marble
+cp src/lib/routing/*.h /usr/local/include/marble
+cp src/lib/routing/instructions/*.h /usr/local/include/marble  
 }}}
 Copy executable files to the folder "/local/include/bin".
 {{{
@@ -74,14 +81,22 @@ cp src/lib/libmarblewidget.dll.a /usr/local/lib
 }}}
 Copy Marble plugins to the folder "/usr/local/bin/marble".
 {{{
-mkdir /usr/local/bin/marble
-cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
-cp src/plugins/render/stars/libStarsPlugin.dll /usr/local/bin/marble
-cp src/plugins/render/mapscale/libMapScaleFloatItem.dll /usr/local/bin/marble
-cp src/plugins/render/overviewmap/libOverviewMap.dll /usr/local/bin/marble
-cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble
-cp src/plugins/render/geodata/libGeoRendererPlugin.dll /usr/local/bin/marble
+mkdir /usr/local/bin/marble 
+cp src/plugins/network/qnam/libQNamNetworkPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble 
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/graticule/libGraticulePlugin.dll /usr/local/bin/marble
+cp src/plugins/render/mapscale/libMapScaleFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libOverviewMap.dll /usr/local/bin/marble
+cp src/plugins/render/photo/libPhoto.dll /usr/local/bin/marble
+cp src/plugins/render/positionmarker/libPositionMarker.dll /usr/local/bin/marble
+cp src/plugins/render/progress/libProgressFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/routing/libRoutingPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/positionmarker/libPositionMarker.dll /usr/local/bin/marble
+cp src/plugins/render/stars/libStarsPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/weather/libWeather.dll /usr/local/bin/marble 
+cp src/plugins/render/wikipedia/libWikipedia.dll /usr/local/bin/marble
 }}}
 At the end of the process, the Marble dynamic library _"libmarblewidget.dll"_ and the programs _"marble.exe"_ and _"tilecreator.exe"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_. The plugins _"ibCompassFloatItem.dll"_, _"libCrosshairsPlugin.dll"_, _"libGeoRendererPlugin.dll"_, _"libMapScaleFloatItem.dll"_, _"libNavigationFloatItem.dll"_, _"libOverviewMap.dll"_, and _"libStarsPlugin.dll"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin\marble"_ and the Marble library file "libmarblewidget.dll.a" will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\include\marble"_.
 
