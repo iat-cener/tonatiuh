@@ -12,7 +12,7 @@ Once the "SVN Repository Exploring" is open under Eclipse, right click on the mi
 
 This will display a pop-up dialog, with several tabs. Under the _"General"_ tab, in the dialog's URL field enter _"http://tonatiuh.googlecode.com/svn/trunk"_, then in the _"Label"_ section check either the option _"Use repository URL as label"_ or the option _"Use a custom label"_. If you select the second option, you need to provide the custom label you want to use to designate Tonatiuh's SVN repository at Googlecode.
 
-Finally, in the _"Authetication"_ section of the _"General" tab of the pop-up dialog, if you are a member of the Tonatiuh development team, enter your username and password. If you are not a member of the team, leave this section blank to make an anonimous download of the Tonatiuh code.
+Finally, in the _"Authetication"_ section of the _"General"_ tab of the pop-up dialog, if you are a member of the Tonatiuh development team, enter your username and password. If you are not a member of the team, leave this section blank to make an anonimous download of the Tonatiuh code.
 
 ==Tonatiuh Application==
 First, build Tonatiuh. 
