@@ -23,7 +23,7 @@ This will open an installation wizard.During the execution of the installer do t
 
 After the Qt libraries are installed, you must add the appropriate information to your $PATH. To do that, edit the .bashrc file with your favorite editor to include the following at the end of the file:
 {{{
-QTDIR=/usr/local/Trolltech/Qt-4.7
+QTDIR=/usr/local/Trolltech/Qt-4.7/qt
 export QTDIR
 
 PATH=$QTDIR/bin:$PATH
