@@ -2,37 +2,28 @@
 
 [http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
 
-Qt is cross-platform application framework for GUI development. 
+Qt is cross-platform application framework for GUI development. In the Tonatiuh development, the las Qt version, Qt-4.7, is used. If this version is not available from the SO software management tool, configure it following the these steps.
 
 = Details =
-To install the Qt libraries library in your computer download the latest release of the installer file, _qt-x11-opensource-src-4.6.3.tar.gz_ , from the [http://www.qtsoftware.com/ Qt] website by clicking [http://www.qtsoftware.com/downloads/linux-x11-cpp here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
 
-Open a shell console, navigate to the downloads directory and extract the donwloaded file by typing:
+To install the Qt SDK in your computer download the latest release of the installer file, _qt-sdk-linux-x86-opensource-2010.05.1.bin_ , from the [http://www.qtsoftware.com/ Qt] website by clicking [http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
+
+Open a shell console, navigate to the downloads directory and run it by typing:
 {{{
-tar -xvzf qt-x11-opensource-src-4.6.3.tar.gz
+chmod u+x qt-sdk-linux-x86-opensource-2010.05.1.bin
+sudo ./qt-sdk-linux-x86-opensource-2010.05.1.bin
 }}}
 
-This will create the new directory "qt-everywhere-opensource-src-4.6.3" under your downloads directory. Navigate within the command shell to the directory and type:
-{{{
-./configure
-}}}
-
-You will be asked which edition of Qt do you want to use. Type 'o' to use the Open Source Edition and push `<ENTER>`.
-
-Then, you will be informed that you are licensed to use the software under the terms of the GNU GPL 3, and will be asked to type 'yes' to accept the license agreement. Type 'yes' and push `<ENTER>`.
-
-
-Once the configuration of Qt finishes, make and install the libraries by typing:
-{{{
-make
-make install
-}}}
-
-In some systems, to run "make install" you will need to start a super user session within your command shell.
+This will open an installation wizard.During the execution of the installer do the following:
+  * Check the _"I accept the terms of the License Agreement"_ and click the _"Next_ button.
+  * Enter _"/usr/local/Trolltech/Qt-4.7"_ as the destination folder
+  * Select the following components to install:
+    * _"Qt Creator"_
+    * _"Qt Development Libraries"_
 
 After the Qt libraries are installed, you must add the appropriate information to your $PATH. To do that, edit the .bashrc file with your favorite editor to include the following at the end of the file:
 {{{
-QTDIR=/usr/local/Trolltech/Qt-4.6.3
+QTDIR=/usr/local/Trolltech/Qt-4.7
 export QTDIR
 
 PATH=$QTDIR/bin:$PATH
@@ -40,8 +31,7 @@ export PATH
 
 }}}
 
-Once this is done, save the changes and close the editor.
+Once the Qt libraries and development tools (including Qt creator) are installed, the next step is to install the [InstallingSimageForLinux Simage] library. 
 
-To continue with the intallation of the Tonatiuh development environment install [InstallingSimageForLinux Simage] now.
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
