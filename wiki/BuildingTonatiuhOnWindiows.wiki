@@ -10,11 +10,9 @@ Once the "SVN Repository Exploring" is open under Eclipse, right click on the mi
 ||<a href="http://picasaweb.google.com/lh/photo/H1lCIvbGrnNQHWmCugkozQ?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TL4UHatS9bI/AAAAAAAAAsE/FyG6OV0vHwU/s400/Eclipse_SVN_RepositoryExploring01.png" height="265" width="400" /></a>||
 || *Figure 1.* Eclipse _"SVN Repository Exploring"_ perspective.||
 
-This will display a pop-up dialog, with several tabs. Under the _"General"_ tab of the dialog enter the following information on the appropriate fields:
+This will display a pop-up dialog, with several tabs. Under the _"General"_ tab, in the dialog's URL field enter _"http://tonatiuh.googlecode.com/svn/trunk"_, then in the Label section check either the option _"Use repository URL as label"_ or the option _"Use a custom label"_, in which case you will need to provide the custom label you want to use in Eclipse to designate Tonatiuh's SVN repository on Googlecode.
 
-URL: 
-
-you need to download the source code from the repository. Follow the [Installing_Subversive  Subversive installation instruccions] to install SVN integration for Eclipse. Then, read Anonymous_Download to anonymous download of Tonatiuh code or read Upload_to_Repository to download code and upload changes.
+Finally, in the _"Authetication"_ section of the _"General" tab of the pop-up dialog, if you are a member of the Tonatiuh development team, enter your username and password. If you are not a member of the team, leave this section blank to make an anonimous download of the Tonatiuh code.
 
 ==Tonatiuh Application==
 First, build Tonatiuh. 
