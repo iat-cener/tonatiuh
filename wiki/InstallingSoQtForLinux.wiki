@@ -38,5 +38,6 @@ make
 make install
 }}}
 
+Once the SoQt library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InstallingMarbleForLinux  Installing Marble for Linux].
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
