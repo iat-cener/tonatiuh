@@ -19,7 +19,7 @@ tar -xvf SoQt-1.5.0.tar
 
 This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the shell navigate to just created !SoQt-1.5.0 directory. First create release libraries by typing:
 {{{
-./configure --enable-debug=no  --enable-symbols=no --with-qt=/usr/local/Trolltech/Qt-4.6.2 --with-coin=/usr/local --without-framework
+./configure --enable-debug=no  --enable-symbols=no --with-qt=/usr/local/Trolltech/Qt-4.7.0 --with-coin=/usr/local --without-framework
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
