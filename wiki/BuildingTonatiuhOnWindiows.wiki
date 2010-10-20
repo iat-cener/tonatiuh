@@ -29,6 +29,7 @@ Finally, check the option _"Validate Repository Location on finish"_, and click 
 
 == Configuring Eclipse to build Tonatiuh ==
 
+=== Set up Tonatiuh as a C++ project === 
 Once the process of checking out the Tonatiuh code finishes, please, open the C/C++ Eclipse Perspective. To do it, left-click on the _"Window_ option of the Eclipse main menu bar, select _"Open Perspective"_, then select _"Other..."_ and then select "C/C++ (default)"_ and click on the "OK" button.
 
 Within the C/C++ perspective, locate the _"Project Explorer"_ pane and right-click on the _"!TonatiuhProject"_ folder. In the pop-up menu that will be displayed, click on _"New"_ and then on _"Convert to a C/C++ Project"_. This will display the _"Convert to a C/C++ project"_ dialog (see Figure 3).
