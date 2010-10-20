@@ -51,6 +51,6 @@ ESC
 :wq
 }}}
 
-To continue with the resources intallation to Tonatiuh development, start with [InstallingSimageForMac Simage] intallation.
+To continue with the resources intallation to Tonatiuh development, start with [InstallingSimageForMac Simage] installation.
 
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
