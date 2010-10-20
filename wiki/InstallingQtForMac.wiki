@@ -8,7 +8,7 @@ Qt is cross-platform application framework for Graphics User Interface (GUI) dev
 Here you will find instructions to install the Qt libraries in your computer and make those libraries available for the development of Tonatiuh.
 
 = Details =
-The available Qt binary package for Mac, is not 
+The available Qt binary package for Mac, is not valid for the Tonatiuh development environment. To configure Qt should download and build Qt from sources.
 
 Download the latest Qt libraries sources. To do it, click on the following [http://qt.nokia.com/downloads link] to go to the "Downloads" webpage of the Qt website. Once you reach the webpage, click on the link titled _"Qt libraries 4.7.0 for Mac"_. Click on _"Source code available on this link:
 http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.0.tar.gz
