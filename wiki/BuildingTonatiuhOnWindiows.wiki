@@ -14,7 +14,11 @@ This will display a pop-up dialog, with several tabs. Under the _"General"_ tab,
 
 If you are a member of the Tonatiuh software development team, enter your username and password, in the _"Authetication"_ section of the _"General"_ tab of the pop-up dialog.  If you are not a member of the team, leave this section blank to make an anonimous download of the Tonatiuh code.
 
-Finally, check the option _"Validate Repository Location on finish"_, and click on the "Finish" button.
+Finally, check the option _"Validate Repository Location on finish"_, and click on the "Finish" button. After doing this, you will see the tree of the Tonatiuh Subversion code repository at Google code. To download the Tonatiuh code, including the code of the official Tonatiuh plug-ins, please, expand the _"trunk"_ subtree and right-click on the _"TonatiuhProject"_ folder. By doing this, you will trigger the display of a pop-up menu. On that menu, select the _"Check Out"_ option (see Figure 2). This will start the process of downloading the Tonatiuh code into your computer. 
+
+||<a href="http://picasaweb.google.com/lh/photo/viXYu7KmO8IYr18qgPF8Jw?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TL9UN6uWhII/AAAAAAAAAsY/qFeF_mmGMsY/s400/Eclipse_SVN_CodeCheckout.png" height="264" width="400" /></a>||
+|| *Figure 2.* Using the _"SVN Repository Exploring"_ perspective to check out Tonatiuh.||
+
 
 ==Tonatiuh Application==
 First, build Tonatiuh. 
