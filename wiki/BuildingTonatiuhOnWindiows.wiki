@@ -9,7 +9,7 @@ Here you will find the instructions to configure Eclipse to both access the Tona
 
 = Details = 
 
-== Obtaining a local copy of the Tonatiuh code ==
+== Obtaining a local copy of Tonatiuh ==
 
 To build Tonatiuh using the C++ Eclipse IDE, the first thing you need to do is to download the Tonatiuh source code from the Subversion repository at Googlecode. To do this, execute Eclipse, click on the "Window" option in the menu bar, then click on "Open Perspective" and select "SVN Repository Exploring" as the perspective to open.
 
