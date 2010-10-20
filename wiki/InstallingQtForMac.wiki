@@ -14,8 +14,6 @@ Download the latest Qt libraries sources. To do it, click on the following [http
 http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.0.tar.gz
 "_. This will start the downloading of the Qt source code. Select the appropriate option to store the file in your computer. 
 
-To install the Qt libraries in your computer download the source files from the Trolltech website at http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.0.tar.gz .
-
 Once the download ha finished, open a shell and go to download directory and extract files:
 {{{
 tar -xvf qt-everywhere-opensource-src-4.7.0.tar
