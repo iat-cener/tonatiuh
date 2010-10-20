@@ -1,8 +1,10 @@
 #summary Procedure to install simage for Mac
 
-= Simage =
+= Introduction =
 
-Simage is a multiplatform library capable of loading, manipulating and saving images, creating and saving movies (AVI and mpeg), and loading audio. 
+Simage is a library capable of loading, manipulating and saving images, creating and saving movies (AVI and mpeg), and loading audio. The simage library relies heavily on third party libraries to perform these tasks. The simage library is used within Tonatiuh to complement the Coin 3D library, since Coin uses simage to read textures.
+
+Here you will find the instructions to install the simage library in your computer and make the library available for the development of Tonatiuh.
 
 = Details =
 
