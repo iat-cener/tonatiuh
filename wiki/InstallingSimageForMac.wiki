@@ -17,7 +17,7 @@ tar -xvf simage-1.7.0.tar.gz
 
 This will create a directory called _simage-1.7.0_ in your user directory. Using the shell navigate to just created simage-1.7.0 directory. Create release libraries by typing:
 {{{
-./configure --enable-debug=no --with-qt=/usr/local/Trolltech/Qt-4.6.2
+./configure --enable-debug=no --with-qt=/usr/local/Trolltech/Qt-4.7.0
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the simage libraries by typing:
