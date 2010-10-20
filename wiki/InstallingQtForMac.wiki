@@ -3,9 +3,16 @@
 = Introduction =
 [http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
 
-Qt is cross-platform application framework for GUI development. 
+Qt is cross-platform application framework for Graphics User Interface (GUI) development. This application framework is implemented as a set of related libraries. The Qt libraries are used within Tonatiuh to implement the program's GUI, the plug-in architecture, the parallel processing functionality, and the scripting capabilities, among other things.
+
+Here you will find instructions to install the Qt libraries in your computer and make those libraries available for the development of Tonatiuh.
 
 = Details =
+The available Qt binary package for Mac, is not 
+
+Download the latest Qt libraries sources. To do it, click on the following [http://qt.nokia.com/downloads link] to go to the "Downloads" webpage of the Qt website. Once you reach the webpage, click on the link titled _"Qt libraries 4.7.0 for Mac"_. Click on _"Source code available on this link:
+http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.0.tar.gz
+"_. This will start the downloading of the Qt source code. Select the appropriate option to store the file in your computer. 
 
 To install the Qt libraries in your computer download the source files from the Trolltech website at http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.0.tar.gz .
 
