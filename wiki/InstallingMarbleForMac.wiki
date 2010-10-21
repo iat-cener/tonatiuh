@@ -81,14 +81,22 @@ cp src/lib/libmarblewidget*.dylib /usr/local/lib
 
 Copy mable plugins to the folder "/usr/local/bin/marble".
 {{{
-mkdir /usr/local/bin/marble
-cp src/plugins/render/navigation/libNavigationFloatItem.so /usr/local/bin/marble
-cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
-cp src/plugins/render/mapscale/libMapScaleFloatItem.so /usr/local/bin/marble
-cp src/plugins/render/overviewmap/libOverviewMap.so /usr/local/bin/marble
-cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble
-cp src/plugins/render/geodata/libGeoRendererPlugin.so /usr/local/bin/marble
+mkdir /usr/local/bin/marble 
+cp src/plugins/network/qnam/libQNamNetworkPlugin.so /usr/local/bin/marble
+cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble 
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/graticule/libGraticulePlugin.so /usr/local/bin/marble
+cp src/plugins/render/mapscale/libMapScaleFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/navigation/libNavigationFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libOverviewMap.so /usr/local/bin/marble
+cp src/plugins/render/photo/libPhoto.so /usr/local/bin/marble
+cp src/plugins/render/positionmarker/libPositionMarker.so /usr/local/bin/marble
+cp src/plugins/render/progress/libProgressFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/routing/libRoutingPlugin.so /usr/local/bin/marble
+cp src/plugins/render/positionmarker/libPositionMarker.so /usr/local/bin/marble
+cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/weather/libWeather.so /usr/local/bin/marble 
+cp src/plugins/render/wikipedia/libWikipedia.so /usr/local/bin/marble
 }}}
 
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
