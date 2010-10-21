@@ -22,9 +22,10 @@ tar xvf marble-version.tar.gz
 
 This will create a directory called _marble-version_ in your user directory. Using the shell navigate to just created marble-version directory and type:
 {{{
+export QTDIR=/usr/local/Trolltech/Qt-4.7.0
+export PATH=$PATH:$QTDIR/bin:/usr/local/bin
 cmake -G"Unix Makefiles" -Wno-dev -DQTONLY=ON ../marble
 make
-make install
 }}}
 
 
