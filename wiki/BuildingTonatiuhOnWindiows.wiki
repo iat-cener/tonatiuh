@@ -65,6 +65,9 @@ And click the "OK" button.
 
 At the end of the process the "Properties for !TonatiuhProject" pop-up dialog, should look like Figure 4.
 
+||<a href="http://picasaweb.google.com/lh/photo/0SVavIM49WiZV73jIm_Giw?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TMC9NZ1grUI/AAAAAAAAAs0/piELeKya_78/s400/Eclipse_PropertiesDialog.png" height="220" width="400" /></a>||
+|| *Figure 4.* _Eclipse C/C++ Environment variables pop-up dialog.||
+
  * On Settings select PE Windows Parser.
  * Apply changes. Ok to finish with properties.
  * On the Make Target tab, right click Tonatiuh and select Add Make Target.
