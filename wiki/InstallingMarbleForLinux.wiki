@@ -30,17 +30,24 @@ make
 Copy marble include files to the folder "/local/include/marble".
 {{{
 mkdir /usr/local/include/marble
-cp src/lib/*.h /usr/local/include/marble
-cp src/lib/AbstractLayer/*.h /usr/local/include/marble
-cp src/lib/geodata/*.h /usr/local/include/marble
-cp src/lib/geodata/data/*.h /usr/local/include/marble
-cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble
-cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble
-cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble
-cp src/lib/geodata/parser/*.h /usr/local/include/marble
+cp src/lib/*.h /usr/local/include/marble 
+cp src/lib/blendings/*.h /usr/local/include/marble 
+cp src/lib/geodata/*.h /usr/local/include/marble 
+cp src/lib/geodata/data/*.h /usr/local/include/marble 
+cp src/lib/geodata/graphicsitem/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/osm-namefinder/*.h /usr/local/include/marble 
+cp src/lib/geodata/parser/*.h /usr/local/include/marble 
 cp src/lib/geodata/scene/*.h /usr/local/include/marble
-cp src/lib/gps/*.h /usr/local/include/marble
+cp src/lib/geodata/writer/*.h /usr/local/include/marble  
+cp src/lib/geodata/writers/kml/*.h /usr/local/include/marble 
+cp src/lib/graphicsview/*.h /usr/local/include/marble
+cp src/lib/graphicsview/screengraphicsitem/*.h /usr/local/include/marble  
 cp src/lib/Projections/*.h /usr/local/include/marble
+cp src/lib/routing/*.h /usr/local/include/marble
+cp src/lib/routing/instructions/*.h /usr/local/include/marble 
 }}}
 
 Copy main library files to the appropriate "/usr/local" folders.
