@@ -99,4 +99,6 @@ cp src/plugins/render/weather/libWeather.so /usr/local/bin/marble
 cp src/plugins/render/wikipedia/libWikipedia.so /usr/local/bin/marble
 }}}
 
+Once the Marble library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InstallingBerkeleyDBForMac    Installing Berkeley DB for Mac].
+
 [InstallingForMac Mac Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
