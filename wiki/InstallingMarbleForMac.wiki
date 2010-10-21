@@ -14,6 +14,12 @@ make
 make install
 }}}
 
+Now, you need to download the latest stable version of the Marble source code. To do it, you need to use a subversion or svn client to access the appropriate Marble's svn repository and check out the appropriate marble folder, with all of its content, including all files and subdirectories.
+
+If you have installed in your computer a command-line svn client, the command you should execute in your shell to get the marble folder with all its content is:
+
+svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
+
 Now, download the source files from http://edu.kde.org/marble/download.php link. Place it into downloads under your home folder. This will typically be  /home/username/downloads. Open a shell console and navigate to downloads directory. Extract the archive by typing: 
 
 {{{
@@ -24,7 +30,15 @@ This will create a directory called _marble-version_ in your user directory. Usi
 {{{
 export QTDIR=/usr/local/Trolltech/Qt-4.7.0
 export PATH=$PATH:$QTDIR/bin:/usr/local/bin
+}}}
+
+The command to create Makefiles on release mode is: 
+{{{
 cmake -G"Unix Makefiles" -Wno-dev -DQTONLY=ON ../marble
+}}}
+
+Then,
+{{{
 make
 }}}
 
