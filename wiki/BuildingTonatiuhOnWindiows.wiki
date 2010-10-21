@@ -63,7 +63,7 @@ Value: C:\sde\workspace\TonatiuhProject
 
 And click the "OK" button.
 
-At the end of the process the "Properties for TonatiuhProject" pop-up dialog, should look like Figure 4.
+At the end of the process the "Properties for !TonatiuhProject" pop-up dialog, should look like Figure 4.
 
  * On Settings select PE Windows Parser.
  * Apply changes. Ok to finish with properties.
