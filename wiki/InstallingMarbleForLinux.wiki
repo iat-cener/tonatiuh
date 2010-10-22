@@ -72,6 +72,6 @@ cp src/plugins/render/weather/libWeather.so /usr/local/bin/marble
 cp src/plugins/render/wikipedia/libWikipedia.so /usr/local/bin/marble
 }}}
 
-Once the Marble library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InstallingAndConfiguringEclipseForLinux Installing Berkeley DB for Linux]. 
+Once the Marble library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InstallingBerkeleyDBForLinux Installing Berkeley DB for Linux]. 
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
