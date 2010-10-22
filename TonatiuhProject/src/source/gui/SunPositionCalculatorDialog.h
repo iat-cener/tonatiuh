@@ -32,7 +32,7 @@
 
  Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
- Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola, Gilda Jimenez,
+ Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola, Gilda Jimenez,
  Juana Amieva, Azael Mancillas, Cesar Cantu.
  ***************************************************************************/
 
@@ -59,7 +59,7 @@ public:
 	void SetDateTime( QDateTime time );
 
 private slots:
-	void on_updateButton_clicked();
+	void UpdatePosition( QAbstractButton* button );
 	void ChangeDate();
 	void ChangeLongitude( double longitude );
 	void ChangeLatitude( double latitude );

@@ -45,6 +45,8 @@ SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 {
 	setupUi(this);
 	//setFixedSize( QSize( 840, 460 ) );
+	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( UpdatePosition( QAbstractButton* ) ) );
+
 
 	connect( calendarWidget, SIGNAL( selectionChanged( ) ), this, SLOT( ChangeDate( ) ) );
 
@@ -85,11 +87,14 @@ void SunPositionCalculatorDialog::ChangePosition( QDateTime time, double longitu
 	latitudeSpin->setValue( latitude );
 }
 
-void SunPositionCalculatorDialog::on_updateButton_clicked()
+void SunPositionCalculatorDialog::UpdatePosition( QAbstractButton* button )
 {
 
-	QDateTime* time = GetTime();
-	emit changeSunLight( time, longitudeSpin->value(), latitudeSpin->value() );
+	if( buttonBox->buttonRole( button ) == QDialogButtonBox::ApplyRole )
+	{
+		QDateTime* time = GetTime();
+		emit changeSunLight( time, longitudeSpin->value(), latitudeSpin->value() );
+	}
 
 }
 
