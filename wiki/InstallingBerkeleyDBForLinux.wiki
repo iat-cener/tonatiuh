@@ -13,17 +13,15 @@ Use this [http://www.oracle.com/technology/software/products/berkeley-db/index.h
 ||<table style="width:auto;"><tr><td><a href="http://picasaweb.google.com/manuel.jesus.blanco/TonatiuhWikiFigures?authkey=Gv1sRgCN2umpjNtK24Kg&feat=embedwebsite#5526847072163475010"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLNOITA2LkI/AAAAAAAAAoY/b-lQwR5Dl3M/s400/BerkeleyDB_download.png" /></a></td></tr><tr><td style="font-family:arial,sans-serif; font-size:11px; text-align:right"></td></tr></table>||
 || *Figure 1.* View of the _"Berkeley DB"_ webpage.||
 
-== Installing ==
-
-Download the latest stable version of the Berkeley DB from the [http://www.oracle.com/technology/software/products/berkeley-db/index.html link] to your home directory. Open a shell and extract downloaded files typing:
+Open a shell, navigate to download directory and extract downloaded files typing:
 
 {{{
-tar -xzvf db-4.8.24.tar.gz
+tar -xzvf db-version.tar.gz
 }}}
 
 Change to the build directory with:
 {{{
-cd db-4.8.245/build_unix
+cd db-version/build_unix
 }}}
 
 To configure the Berkeley DB type the following command:
