@@ -44,12 +44,12 @@ SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 : QDialog( parent )
 {
 	setupUi(this);
-	setFixedSize( QSize( 840, 460 ) );
+	//setFixedSize( QSize( 840, 460 ) );
 
 	connect( calendarWidget, SIGNAL( selectionChanged( ) ), this, SLOT( ChangeDate( ) ) );
 
-	connect( uTimeSpin, SIGNAL( timeChanged( QTime ) ), this, SLOT( ChangeSunTime( QTime ) ) );
-	connect( cTimeSpin, SIGNAL( timeChanged( QTime ) ), this, SLOT( ChangeSunTime( QTime ) ) );
+	connect( utTime, SIGNAL( timeChanged( QTime ) ), this, SLOT( ChangeSunTime( QTime ) ) );
+	connect( ctTime, SIGNAL( timeChanged( QTime ) ), this, SLOT( ChangeSunTime( QTime ) ) );
 	connect( zoneSpin, SIGNAL( valueChanged( int ) ), this, SLOT( ChangeSunTimeZone( int ) ) );
 
 	connect( longitudeSpin, SIGNAL( valueChanged(  double ) ), this, SLOT( ChangeLongitude( double ) ) );
@@ -69,8 +69,8 @@ SunPositionCalculatorDialog::~SunPositionCalculatorDialog()
 
 void SunPositionCalculatorDialog::SetDateTime( QDateTime time )
 {
-	uTimeSpin->setTime( time.time() );
-	cTimeSpin->setTime( time.time() );
+	utTime->setTime( time.time() );
+	ctTime->setTime( time.time() );
 	zoneSpin->setValue( 0 );
 	calendarWidget-> setSelectedDate( time.date() );
 }
@@ -78,8 +78,8 @@ void SunPositionCalculatorDialog::SetDateTime( QDateTime time )
 void SunPositionCalculatorDialog::ChangePosition( QDateTime time, double longitude, double latitude )
 {
 	calendarWidget->setSelectedDate( time.date() );
-	UT->setChecked( true);
-	uTimeSpin->setTime( time.time() );
+	utRadio->setChecked( true);
+	utTime->setTime( time.time() );
 
 	longitudeSpin->setValue( longitude );
 	latitudeSpin->setValue( latitude );
@@ -121,15 +121,15 @@ void SunPositionCalculatorDialog::ChangeSunTimeZone( int /*timeZone*/ )
 void SunPositionCalculatorDialog::on_selectButton_clicked()
 {
 	MapDialog marbleDialog;
-	marbleDialog.SetCoordinates( longitudeSpin->value()*( tgc::Pi / 180), -latitudeSpin->value()*( tgc::Pi / 180) );
+	marbleDialog.SetHomePosition( longitudeSpin->value(), latitudeSpin->value() );
 	if( marbleDialog.exec() )
 	{
-		double longitude;
+		/*double longitude;
 		double latitude;
 		marbleDialog.GetCoordinates( &longitude, &latitude );
 
     	longitudeSpin->setValue( longitude * ( 180 / tgc::Pi ) );
-    	latitudeSpin->setValue( latitude * ( 180 / tgc::Pi ) );
+    	latitudeSpin->setValue( latitude * ( 180 / tgc::Pi ) );*/
     }
 }
 void SunPositionCalculatorDialog::CalculateSunPosition()
@@ -161,7 +161,7 @@ void SunPositionCalculatorDialog::CalculateSunPosition()
 
 QDateTime* SunPositionCalculatorDialog::GetTime()
 {
-	QTime time = UT->isChecked() ? uTimeSpin->time() : cTimeSpin->time().addSecs( zoneSpin->value() * 3600 );
+	QTime time = utRadio->isChecked() ? utTime->time() : ctTime->time().addSecs( zoneSpin->value() * 3600 );
 
 	QDateTime* dateTime = new QDateTime( calendarWidget->selectedDate(), time );
 	return dateTime;

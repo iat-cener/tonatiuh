@@ -182,7 +182,7 @@ void WorldMap::paintEvent(QPaintEvent* /*event*/ )
 
 		//Draw Text
 		painter.setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::RoundCap ) );
-		painter.setFont( QFont( "MS Shell Dlg 2", 8 ) );
+		//painter.setFont( QFont( "MS Shell Dlg 2", 8 ) );
 		QString azimuth = QString("Azimuth: %1").arg( QString::number( m_azimuth ) );
 		painter.drawText ( 20, 280, azimuth );
 		QString zenith = QString("Zenith: %1").arg( QString::number( m_zenith ) );
