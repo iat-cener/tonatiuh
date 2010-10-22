@@ -12,9 +12,9 @@ The following links will guide the developer through all the process:
   * [InstallingCoin3DForLinux Installing Coin3D]
   * [InstallingSoQtForLinux Installing SoQt]
   * [InstallingMarbleForLinux Installing Marble]
+  * [InstallingBerkeleyDBForLinux Installing Berkeley DB]
   * [InstallingAndConfiguringEclipseForLinux Installing and Configuring Eclipse]
   * [Installing_Subversive Installing Subversive]
   * [BuildingTonatiuhOnLinux Building Tonatiuh and plugins]
-  * [InstallingBerkeleyDBForLinux Installing Berkeley DB]
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
