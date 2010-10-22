@@ -7,21 +7,18 @@ Marble is a Virtual Globe and World Atlas that you can use to learn more about E
 = Details =
 To compile marble you need CMake -a cross-platform make. It can be download from http://www.cmake.org/cmake/resources/software.html. Download the latest binary version for Linux. You need a version newer than 2.4.
 
-Now, download the source files from http://edu.kde.org/marble/download.php clicking on source download link. Pace it into downloads under your home folder. This will typically be  /home/username/downloads. Open a shell console and navigate to downloads directory. Extract the archive by typing: 
+Now, you need to download the latest stable version of the Marble source code. To do it, you need to use a subversion or svn client to access the appropriate Marble's svn repository and check out the appropriate marble folder, with all of its content, including all files and subdirectories.
 
+If you have installed in your computer a command-line svn client, the command you should execute in your shell to get the marble folder with all its content is:
 {{{
-tar -xvzf marble-version.tar.gz
+svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
 }}}
 
-This will create a directory called _marble-version_ in your user directory. Using the shell navigate to just created marble-version directory and type for debug mode:
-{{{
-cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE:String=debug -DCMAKE_DEBUG_POSTFIX=_debug -DQTONLY=ON ../marble
-}}}
-
-or type for release mode:
+After checking out the marble directory from the svn site, using the shell navigate to the marble directory just created in your computer and type:
 {{{
 cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
 }}}
+
 To build the library type:
 {{{
 make
@@ -57,19 +54,24 @@ cp src/lib/libmarblewidget.so* /usr/local/lib
 
 Copy mable plugins to the folder "/usr/local/bin/marble".
 {{{
-mkdir /usr/local/bin/marble
-mkdir /usr/local/bin/marble/plugins
-cp src/plugins/network/qnam/libQNamNetworkPlugin.so  /usr/local/bin/marble/plugins
-cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble/plugins
+mkdir /usr/local/bin/marble 
+cp src/plugins/network/qnam/libQNamNetworkPlugin.so /usr/local/bin/marble
+cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble 
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.so /usr/local/bin/marble
-cp src/plugins/render/geodata/libGeoRendererPlugin.so /usr/local/bin/marble
 cp src/plugins/render/graticule/libGraticulePlugin.so /usr/local/bin/marble
 cp src/plugins/render/mapscale/libMapScaleFloatItem.so /usr/local/bin/marble
 cp src/plugins/render/navigation/libNavigationFloatItem.so /usr/local/bin/marble
 cp src/plugins/render/overviewmap/libOverviewMap.so /usr/local/bin/marble
 cp src/plugins/render/photo/libPhoto.so /usr/local/bin/marble
+cp src/plugins/render/positionmarker/libPositionMarker.so /usr/local/bin/marble
+cp src/plugins/render/progress/libProgressFloatItem.so /usr/local/bin/marble
+cp src/plugins/render/routing/libRoutingPlugin.so /usr/local/bin/marble
+cp src/plugins/render/positionmarker/libPositionMarker.so /usr/local/bin/marble
 cp src/plugins/render/stars/libStarsPlugin.so /usr/local/bin/marble
+cp src/plugins/render/weather/libWeather.so /usr/local/bin/marble 
 cp src/plugins/render/wikipedia/libWikipedia.so /usr/local/bin/marble
 }}}
+
+Once the Marble library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page:[InstallingAndConfiguringEclipseForLinux Installing Berkeley DB for Linux]. 
 
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
