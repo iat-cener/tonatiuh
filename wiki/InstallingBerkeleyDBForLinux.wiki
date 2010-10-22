@@ -48,4 +48,7 @@ Also, add the library to LIBS variable:
 LIBS += -L$$(TDE_ROOT)/local/lib -ldb_cxx
 }}}
 
+Once the Berkeley DB library is installed the next step is to install the Eclipse Integrated Development Environment (IDE). To do it, follow the instructions in the following wiki page: [InstallingAndConfiguringEclipseForLinux Installing and Configuring Eclipse]
+
+
 [InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
