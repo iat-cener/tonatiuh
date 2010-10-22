@@ -82,19 +82,15 @@
               <property name="text">
                <string>UT</string>
               </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item row="2" column="0">
              <widget class="QRadioButton" name="ctRatio">
               <property name="text">
                <string>CT</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1" colspan="2">
-             <widget class="QTimeEdit" name="utTime">
-              <property name="timeSpec">
-               <enum>Qt::UTC</enum>
               </property>
              </widget>
             </item>
@@ -123,6 +119,9 @@
                <number>12</number>
               </property>
              </widget>
+            </item>
+            <item row="0" column="1" colspan="2">
+             <widget class="QTimeEdit" name="utTime"/>
             </item>
            </layout>
           </widget>
@@ -220,7 +219,6 @@
   <tabstop>viewTab</tabstop>
   <tabstop>calendarWidget</tabstop>
   <tabstop>utRadio</tabstop>
-  <tabstop>utTime</tabstop>
   <tabstop>ctRatio</tabstop>
   <tabstop>ctTime</tabstop>
   <tabstop>zoneSpin</tabstop>
@@ -263,22 +261,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>utRadio</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>utTime</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>502</x>
-     <y>270</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>636</x>
-     <y>269</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ctRatio</sender>
    <signal>toggled(bool)</signal>
    <receiver>ctTime</receiver>
@@ -307,6 +289,22 @@
     <hint type="destinationlabel">
      <x>768</x>
      <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>utRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>utTime</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>510</x>
+     <y>376</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>667</x>
+     <y>376</y>
     </hint>
    </hints>
   </connection>
