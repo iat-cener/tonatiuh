@@ -48,7 +48,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <MapThemeManager.h>
 #include <MarbleWidget.h>
 
-#define DUMP_GEONODE_LEAKS 0
+#include <ui_mapdialog.h>
+
+//#define DUMP_GEONODE_LEAKS 0
 class QComboBox;
 class QDoubleSpinBox;
 class QSplitter;
@@ -61,15 +63,32 @@ using namespace Marble;
 */
 
 
-class MapDialog : public QDialog
+class MapDialog : public QDialog, private Ui::MapDialog
 {
     Q_OBJECT
 
 public:
     MapDialog( QWidget * = 0 );
-    virtual ~MapDialog(){}
+    ~MapDialog();
 
-	void GetCoordinates( double* lon, double* lat ) const;
+public slots:
+	void SetHomeLatitude();
+	void SetHomeLongitude();
+	void SetHomePosition( double lon, double lat );
+    void UpdateHomePosition( double lon, double lat );
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *event);
+
+private:
+    QString DefaultMapThemeId() const;
+
+    Marble::MapThemeManager*	m_mapThemeManager;
+    double 				m_longitude; //positive east
+    double 				m_latitude;	//positive north*/
+
+
+	/*	void GetCoordinates( double* lon, double* lat ) const;
 	void SetCoordinates(  double lon, double lat );
     bool sideBarShown() const;
 
@@ -78,7 +97,7 @@ public slots:
     void ChangeGPSPosition();
 
 private:
-	Marble::MarbleWidget*		m_marbleWidget;
+Marble::MarbleWidget*		m_marbleWidget;
     Marble::MarbleControlBox*	m_control;
     Marble::MapThemeManager*	m_mapThemeManager;
     QSplitter*			m_splitter;
@@ -86,10 +105,8 @@ private:
     QDoubleSpinBox* 	m_latSpinBox;
     QComboBox* 			m_latComboBox;
     QDoubleSpinBox* 	m_lonSpinBox;
-    QComboBox* 			m_lonComboBox;
+    QComboBox* 			m_lonComboBox;*/
 
-    double 				m_longitude; //positive east
-    double 				m_latitude;	//positive north
 };
 
 #endif /*MAPDIALOG_H_*/
