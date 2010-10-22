@@ -1,9 +1,17 @@
 #summary Procedure to install Berekey DB for Linux.
 
-== Berkeley DB ==
+== Introduction ==
 
-Oracle Berkeley DB is the industry-leading open source, embeddable database engine that provides developers with fast, reliable, local persistence with zero administration. Oracle Berkeley DB is a library that links directly into your application.
+Oracle Berkeley DB is the industry-leading open source, embeddable database engine that provides developers with fast, reliable, local persistence with zero administration. This library is used in Tonatiuh to implement photon maps plug-ins which can store an arbitrary number of photons.
 
+Here you will find instructions to install the Berkeley DB library in your computer and make this library available for the development of Tonatiuh.
+
+== Details ==
+
+Use this [http://www.oracle.com/technology/software/products/berkeley-db/index.html link] to go to the Berkeley DB webpage of the Orable website. Once you reach the webpage, select the link to download the latest stable source code version of the Berkeley DB in your computer. Currently, this version is 5.1.19 (see Figure 1).
+
+||<table style="width:auto;"><tr><td><a href="http://picasaweb.google.com/manuel.jesus.blanco/TonatiuhWikiFigures?authkey=Gv1sRgCN2umpjNtK24Kg&feat=embedwebsite#5526847072163475010"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLNOITA2LkI/AAAAAAAAAoY/b-lQwR5Dl3M/s400/BerkeleyDB_download.png" /></a></td></tr><tr><td style="font-family:arial,sans-serif; font-size:11px; text-align:right"></td></tr></table>||
+|| *Figure 1.* View of the _"Berkeley DB"_ webpage.||
 
 == Installing ==
 
