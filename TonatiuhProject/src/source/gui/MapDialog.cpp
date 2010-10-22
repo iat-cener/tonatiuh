@@ -46,210 +46,165 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+
+#include <AbstractFloatItem.h>
+#include <GeoSceneDocument.h>
+#include <GeoSceneHead.h>
 #include <HttpDownloadManager.h>
-#include <MarbleControlBox.h>
+#include <LegendWidget.h>
+#include <MapViewWidget.h>
 #include <MarbleDirs.h>
 #include <MarbleMap.h>
 #include <MarbleModel.h>
-#include <MarbleWidget.h>
-#include <MapThemeManager.h>
+#include <NavigationWidget.h>
 
 #include "MapDialog.h"
 #include "tgc.h"
 
 #include <iostream>
 
+#include <QPainter>
+#include <QTextDocument>
+
 using namespace Marble;
 
 
 MapDialog::MapDialog( QWidget *parent )
-:QDialog( parent ), m_marbleWidget( 0 ), m_control( 0 ), m_mapThemeManager( 0 ),
+:QDialog( parent )/*, m_marbleWidget( 0 ), m_control( 0 ), m_mapThemeManager( 0 ),
 m_splitter( 0 ), m_latSpinBox( 0 ), m_latComboBox( 0 ), m_lonSpinBox( 0 ),
-m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )
+m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )*/
 {
-	setMouseTracking( true );
-
-	QDir plugisDirectory( qApp->applicationDirPath() );
-	plugisDirectory.cd("marble");
-
-	Marble::MarbleDirs::setMarblePluginPath( plugisDirectory.absolutePath() );
 
 	QDir directory( qApp->applicationDirPath() );
-	directory.cd( "../../data" );
+	directory.cd( ".." );
+	directory.cd( ".." );
+	directory.cd( "data" );
+
 
 	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );
 
+	setupUi(this);
+	setMouseTracking( true );
+	QList<int> sizes;
+	sizes<<100<<400;
+	mainSplitter->setSizes ( sizes );
 
+	connect( latitudeSpin, SIGNAL( valueChanged( double ) ), this, SLOT( SetHomeLatitude() ) );
+	connect( latitudeCombo, SIGNAL( currentIndexChanged( QString ) ), this, SLOT( SetHomeLatitude() ) );
+	connect( longitudeSpin, SIGNAL( valueChanged( double ) ), this, SLOT( SetHomeLongitude() ) );
+	connect( longitudeCombo, SIGNAL( currentIndexChanged( QString ) ), this, SLOT( SetHomeLongitude() ) );
 
-
-    setWindowTitle(tr("Marble - Desktop Globe"));
-
-    resize( 680, 500 );
-
-	QVBoxLayout* vlayout = new QVBoxLayout( );
-	vlayout->setMargin( 0 );
-	setLayout( vlayout );
-
-	m_splitter = new QSplitter( this );
-	vlayout->addWidget( m_splitter );
-
-	//ControlWidget
-	QWidget* controlWidget = new QWidget;
-	m_splitter->addWidget( controlWidget );
-
-	QVBoxLayout* tabLayout = new QVBoxLayout( );
-	controlWidget->setLayout(tabLayout );
-
-	QTabWidget* tabWidget = new QTabWidget( this );
-	tabLayout->addWidget( tabWidget );
-
-	//Position Tab
-    QWidget* currentLocationWidget = new QWidget;
-    tabWidget->addTab( currentLocationWidget, "Current Location" );
-
-    QVBoxLayout* locationLayout = new QVBoxLayout;
-    currentLocationWidget->setLayout( locationLayout );
-
-    QLabel* latLabel = new QLabel( "Latitude" );
-    locationLayout->addWidget( latLabel );
-
-    QHBoxLayout* latLayout = new QHBoxLayout;
-    locationLayout->addLayout( latLayout );
-
-    m_latSpinBox = new QDoubleSpinBox;
-    latLayout->addWidget( m_latSpinBox );
-    m_latSpinBox->setMinimumSize(QSize(82, 0));
-    m_latSpinBox->setDecimals(4);
-    m_latSpinBox->setMaximum(90);
-    connect( m_latSpinBox, SIGNAL( valueChanged ( double ) ), this, SLOT( ChangeGPSPosition() ) );
-    m_latComboBox = new QComboBox;
-    m_latComboBox->insertItems(0, QStringList()
-     << "N"
-     << "S" );
-    latLayout->addWidget( m_latComboBox );
-    connect( m_latComboBox, SIGNAL( currentIndexChanged ( int ) ), this, SLOT( ChangeGPSPosition() ) );
-
-    QSpacerItem* spacerItem = new QSpacerItem(0, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    latLayout->addItem( spacerItem );
-
-    QLabel*  lonLabel = new QLabel( "Longitude" );
-    locationLayout->addWidget( lonLabel );
-
-    QHBoxLayout* lonLayout = new QHBoxLayout;
-    locationLayout->addLayout( lonLayout );
-
-    m_lonSpinBox = new QDoubleSpinBox;
-    m_lonSpinBox->setMinimumSize(QSize(82, 0));
-    m_lonSpinBox->setDecimals(4);
-    m_lonSpinBox->setMaximum(180);
-    connect( m_lonSpinBox, SIGNAL( valueChanged ( double ) ), this, SLOT( ChangeGPSPosition() ) );
-    lonLayout->addWidget( m_lonSpinBox );
-
-    m_lonComboBox = new QComboBox;
-    m_lonComboBox->insertItems(0, QStringList()
-     << "E"
-     << "W" );
-    lonLayout->addWidget( m_lonComboBox );
-    connect( m_lonComboBox,SIGNAL( currentIndexChanged ( int ) ), this, SLOT( ChangeGPSPosition() ) );
-
-    QSpacerItem* spacerItem2 = new QSpacerItem(0, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    lonLayout->addItem( spacerItem2 );
-
-	QSpacerItem* verticalSpacer = new QSpacerItem(20, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    locationLayout->addItem( verticalSpacer );
-
-	//Control Tab
-    m_control = new MarbleControlBox( this );
-    m_control->setLegendTabShown( false );
-    tabWidget->addTab( m_control, "Control" );
-
-    //Dialog buttons
-    QDialogButtonBox* buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-	connect( buttons, SIGNAL( accepted() ), this, SLOT( accept() ) );
-	connect( buttons, SIGNAL( rejected() ), this, SLOT( reject() ) );
-    tabLayout->addWidget( buttons );
-
-    //Marble Widget
-   	m_marbleWidget = new MarbleWidget( this );
-    m_marbleWidget->setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
-    m_marbleWidget->map()->model()->downloadManager()->setDownloadEnabled( false );
-    m_control->addMarbleWidget( m_marbleWidget );
-	m_splitter->addWidget( m_marbleWidget );
 
 	m_mapThemeManager = new Marble::MapThemeManager;
-//	m_control->setMapThemeModel(  m_mapThemeManager->mapThemeModel() );
-    m_marbleWidget->setProjection( (Marble::Projection) 0 );
+	marbleWidget->setProjection( (Marble::Projection) 0 );
+
+	marbleWidget->setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
+	marbleWidget->map()->model()->downloadManager()->setDownloadEnabled( false );
+	marbleWidget->setMapThemeId( DefaultMapThemeId() );
+
+	MarbleModel* marbleModel = marbleWidget->model();
+
+	//connect( marbleModel, SIGNAL( modelChanged() ), this, SLOT( ModelChanged() ) );
+
+	navigationWidget->setMarbleWidget( marbleWidget );
 
 
-	m_splitter->setSizes( QList<int>() << 180 << width()-180 );
-	m_splitter->setStretchFactor(m_splitter->indexOf(m_control), 0);
-    m_splitter->setStretchFactor(m_splitter->indexOf(m_marbleWidget), 1);
+	MapViewWidget* mapViewWidget = new MapViewWidget( this );
+	controlTab->addTab( mapViewWidget, mapViewWidget->windowTitle() );
+	mapViewWidget->setMarbleWidget( marbleWidget );
 
-    connect( m_marbleWidget, SIGNAL( mouseClickGeoPosition( qreal, qreal, GeoDataCoordinates::Unit ) ), this, SLOT( UpdateCurrentPosition( qreal, qreal, GeoDataCoordinates::Unit ) ) );
-    connect( m_control, SIGNAL( gpsPositionChanged( qreal, qreal ) ), this, SLOT(UpdateCurrentPosition( qreal, qreal ) ) );
+	LegendWidget* legendWidget = new LegendWidget( this );
+	controlTab->addTab( legendWidget, legendWidget->windowTitle() );
+	legendWidget->setMarbleWidget( marbleWidget );
+
+	marbleWidget->setShowOverviewMap( true );
+	marbleWidget->setShowScaleBar( true );
+
 }
 
-
-/*!
- * Returns current coordinates as a decimal number
- */
-void MapDialog::GetCoordinates( double* lon, double* lat ) const
+MapDialog::~MapDialog( )
 {
-	*lon = m_longitude;
-	*lat = m_latitude;
+	delete m_mapThemeManager;
+}
+
+void MapDialog::mouseReleaseEvent(QMouseEvent *event)
+{
+	double lon;
+	double lat;
+	int zoom;
+
+	marbleWidget->home( lon, lat, zoom );
+	SetHomePosition( -lon, lat );
+}
+/*
+ * Sets home coordinates latitude value to the values of the GUI.
+ */
+void MapDialog::SetHomeLatitude()
+{
+	double latitude = latitudeSpin->value();
+	if( latitudeCombo->currentText() == "S" )	latitude = -latitude;
+
+	UpdateHomePosition( m_longitude, latitude );
+}
+
+/*
+* Sets home coordinates longitude value to the values of the GUI.
+ */
+void MapDialog::SetHomeLongitude()
+{
+	double longitude = longitudeSpin->value();
+	if( longitudeCombo->currentText() == "W" )	longitude = -longitude;
+
+	UpdateHomePosition( longitude, m_latitude );
 }
 
 /*!
- * Set control tab visible.
+ * Update home location to \a lon and \a lat coordinates.
+ * The \a lon and lat variables are in degree. lon is positive to east and lat is positive for north.
  */
-void MapDialog::SetCoordinates(  double lon, double lat )
+void MapDialog::SetHomePosition( double lon, double lat )
+{
+	if( lon < 0 ) longitudeCombo->setCurrentIndex( 1 );
+	else longitudeCombo->setCurrentIndex( 0 );
+	longitudeSpin->setValue( fabs( lon ) );
+
+	if( lat < 0 ) latitudeCombo->setCurrentIndex( 1 );
+	else latitudeCombo->setCurrentIndex( 0 );
+	latitudeSpin->setValue( fabs( lat ) );
+}
+
+/*!
+ * Update home location to \a lon and \a lat coordinates.
+ * The \a lon and lat variables are in degree. lon is positive to east and lat is positive for north.
+ */
+void MapDialog::UpdateHomePosition( double lon, double lat)
 {
 	m_longitude = lon;
-	m_latitude = -lat;
-
-	UpdateCurrentPosition( m_longitude, m_latitude, GeoDataCoordinates::Radian );
-//	m_control->receiveGpsCoordinates( GeoDataCoordinates( m_longitude, m_latitude, 0, Marble::GeoDataCoordinates::Radian ), 0 );
-
-
-
-}
-
-/*!
- * Set control tab visible.
- */
-bool MapDialog::sideBarShown() const
-{
-	return m_control->isVisible();
-}
-
-/*!
- * Update  current location coordinates.
- */
-void MapDialog::UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates::Unit )
-{
-	// Gps Position Coordinates are positive for south and east
-	if( lon < 0 ) m_lonComboBox->setCurrentIndex( 1 );
-	else m_lonComboBox->setCurrentIndex( 0 );
-	m_lonSpinBox->setValue( fabs( lon * ( 180 / tgc::Pi ) ) );
-
 	m_latitude = lat;
-	if( lat < 0 ) m_latComboBox->setCurrentIndex( 1 );
-	else m_latComboBox->setCurrentIndex( 0 );
 
-	m_latSpinBox->setValue( fabs( lat * ( 180 / tgc::Pi ) ) );
-
-	m_longitude = lon;
-	m_latitude = lat;
+	marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
+	marbleWidget->goHome();
 }
 
-/*!
- * Save as a current location the user specified coordinates in the current location tab.
+/*
+ * Defines the default maps for marble.
  */
-void MapDialog::ChangeGPSPosition()
+QString MapDialog::DefaultMapThemeId() const
 {
-	m_longitude = m_lonSpinBox->value() * tgc::Degree;
-	if( m_lonComboBox->currentIndex() == 1 ) m_longitude *= -1;
+    QStringList fallBackThemes;
+    fallBackThemes << "earth/srtm/srtm.dgml";
+    fallBackThemes << "earth/bluemarble/bluemarble.dgml";
+    fallBackThemes << "earth/openstreetmap/openstreetmap.dgml";
 
-	m_latitude = m_latSpinBox->value() * tgc::Degree;
-	if( m_latComboBox->currentIndex() == 1 ) m_latitude *= -1;
+    QStringList installedThemes;
+    QList<GeoSceneDocument const*> themes = m_mapThemeManager->mapThemes();
+    for( int i = 0; i < themes.count(); ++ i)
+        installedThemes << themes[i]->head()->mapThemeId();
+
+    for( int i = 0; i < fallBackThemes.count(); ++ i )
+    	if( installedThemes.contains( fallBackThemes[i] ) )	return fallBackThemes[i];
+
+    if( installedThemes.size() > 0 )	return installedThemes.first();
+
+    return QString();
 }
