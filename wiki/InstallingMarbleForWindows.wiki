@@ -93,7 +93,6 @@ cp src/plugins/render/photo/libPhoto.dll /usr/local/bin/marble
 cp src/plugins/render/positionmarker/libPositionMarker.dll /usr/local/bin/marble
 cp src/plugins/render/progress/libProgressFloatItem.dll /usr/local/bin/marble
 cp src/plugins/render/routing/libRoutingPlugin.dll /usr/local/bin/marble
-cp src/plugins/render/positionmarker/libPositionMarker.dll /usr/local/bin/marble
 cp src/plugins/render/stars/libStarsPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/weather/libWeather.dll /usr/local/bin/marble 
 cp src/plugins/render/wikipedia/libWikipedia.dll /usr/local/bin/marble
