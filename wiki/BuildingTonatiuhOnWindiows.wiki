@@ -109,7 +109,7 @@ and select Add Make Target.
 
 == Building Tonatiuh and its plug-ins ==
 
-To build Tonatiuh and all the official plug-ins you need first to double-click on the _"qmake"_ target you just created in the _"Make Target" tab of the _"C/C++"_ Eclipse perspective. This will trigger the creation by qmake of all the Makefiles needed to build Tonatiuh. If you look at the _"Console"_ tab of the _"C/C++"_ Eclipse perspective you will see the following messages:
+To build Tonatiuh and all the official plug-ins you need first to double-click on the _"qmake"_ target you just created in the _"Make Target"_ tab of the _"C/C++"_ Eclipse perspective. This will trigger the creation by qmake of all the Makefiles needed to build Tonatiuh. If you look at the _"Console"_ tab of the _"C/C++"_ Eclipse perspective you will see the following messages:
 
 {{{
 **** Build of configuration Default for project TonatiuhProject ****
@@ -117,7 +117,7 @@ To build Tonatiuh and all the official plug-ins you need first to double-click o
 qmake TonatiuhProject.pro
 }}}
 
-Once qmake finishes creating the project Makefiles, double-click on the _"all"_ target in the _"Make Target" tab of the _"C/C++"_ Eclipse perspective. This will trigger the building of Tonatiuh and its plug-ins. The process will take a while to execute. If you look at the _"Console"_ of the _"C/C++"_ Eclipse perspective you will see the display of compiler and linking instructions related to compilation and linking of the set of source code files of Tonatiuh and its plug-ins.
+Once qmake finishes creating the project Makefiles, double-click on the _"all"_ target in the _"Make Target"_ tab of the _"C/C++"_ Eclipse perspective. This will trigger the building of Tonatiuh and its plug-ins. The process will take a while to execute. If you look at the _"Console"_ of the _"C/C++"_ Eclipse perspective you will see the display of compiler and linking instructions related to compilation and linking of the set of source code files of Tonatiuh and its plug-ins.
 
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
