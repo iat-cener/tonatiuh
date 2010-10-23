@@ -95,19 +95,29 @@ Build command: C:\sde\MinGW\bin\mingw32-make.exe
 
 To fill the _"Make target"_ field just verify that the _"Same as the target name"_ option is checked. To fill the _"Build command"_ field uncheck the _"Use builder settings"_ option. Before clicking on the _"OK"_ button to close the dialog, please, verify that the _"Stop on first build error"_ and _"Run all project builders"_ options are both checked.
 
-and select Add Make Target.
-[http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/qmakeTargetWindows.png]
- * Define the first Make Target as:
-  ** Target Name: qmake
-  ** Make Target: src/Tonatiuh.pro
-  ** Build command: qmake
- * Add new Make Target as:
-  ** Target Name: all
-  ** Make Target: all
-  ** Build command: mingw32-make
- * To generate Makefile run "qmake". When the qmake command finishes run "all".
+==== distclean ====
+Repeat the previous procedure until the dialog _"Create Make Target"_ is displayed. Then, fill the differend fields as follows:
 
-==Building Plugins==
-To building repository plugins follow the same steps used to build Toantiuh application. On qmake target replace Tonatiuh.pro name with plugin .pro file.
+{{{
+Target name: distclean
+Make target: distclean
+Build command: C:\sde\MinGW\bin\mingw32-make.exe
+}}}
+
+To fill the _"Make target"_ field just verify that the _"Same as the target name"_ option is checked. To fill the _"Build command"_ field uncheck the _"Use builder settings"_ option. Before clicking on the _"OK"_ button to close the dialog, please, verify that the _"Stop on first build error"_ and _"Run all project builders"_ options are both checked.
+and select Add Make Target.
+
+== Building Tonatiuh and its plug-ins ==
+
+To build Tonatiuh and all the official plug-ins you need first to double-click on the _"qmake"_ target you just created in the _"Make Target" tab of the _"C/C++"_ Eclipse perspective. This will trigger the creation by qmake of all the Makefiles needed to build Tonatiuh. If you look at the _"Console"_ tab of the _"C/C++"_ Eclipse perspective you will see the following messages:
+
+{{{
+**** Build of configuration Default for project TonatiuhProject ****
+
+qmake TonatiuhProject.pro
+}}}
+
+Once qmake finishes creating the project Makefiles, double-click on the _"all"_ target in the _"Make Target" tab of the _"C/C++"_ Eclipse perspective. This will trigger the building of Tonatiuh and its plug-ins. The process will take a while to execute. If you look at the _"Console"_ of the _"C/C++"_ Eclipse perspective you will see the display of compiler and linking instructions related to compilation and linking of the set of source code files of Tonatiuh and its plug-ins.
+
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
