@@ -68,6 +68,9 @@ At the end of the process the "Properties for !TonatiuhProject" pop-up dialog, s
 ||<a href="http://picasaweb.google.com/lh/photo/0SVavIM49WiZV73jIm_Giw?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TMC9NZ1grUI/AAAAAAAAAs0/piELeKya_78/s400/Eclipse_PropertiesDialog.png" height="220" width="400" /></a>||
 || *Figure 4.* _Eclipse C/C++ Environment variables pop-up dialog.||
 
+After defining the two environment variables of Tonatiuh needed by qmake, go the tree-like window of the _"Properties for TonatiuhProject"_ dialog and under the _"C/C++ Build"_ item click on the _"Settings" sub-item to display the _"Settings"_ form-like view.
+There, select the _"Binary parser"_ tab, and within the _"Binary parser:"_ section make sure that only the option _"PE Windows Parser"_ is checked. Then, click on the _"OK"_ button to close the _"Properties for TonatiuhProject"_ dialog.
+ 
  * On Settings select PE Windows Parser.
  * Apply changes. Ok to finish with properties.
  * On the Make Target tab, right click Tonatiuh and select Add Make Target.
