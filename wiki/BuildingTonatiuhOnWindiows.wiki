@@ -39,7 +39,7 @@ Within the C/C++ perspective, locate the _"Project Explorer"_ pane and right-cli
 
 In the _"Candidates for conversion"_ section of the dialog, verify that the folder _"!TonatiuhProject"_ is checked. In the _"Convert to C or C++"_ section verify that the _"C++ Project"_ option is selected. In the _"Project options"_ section verify that the _"Specify project type"_ option is cheked, that the selected _"Project type:"_ is _"Makefile project"_, and that the selected _"Toolchains"_ is _"MinGW GCC"_. After all of the above is done, click on the _"Finish"_ button.
 
-=== Defining environment variables ===
+=== Define environment variables ===
 
 Once Tonatiuh is set up as a C++ project within Eclipse, you need to defining several environment variables which are needed by qmake to properly process the many Tonatiuh qt project files (_*.pro_) which are necessary to build Tonatiuh.
 
@@ -69,11 +69,33 @@ At the end of the process the "Properties for !TonatiuhProject" pop-up dialog, s
 || *Figure 4.* _Eclipse C/C++ Environment variables pop-up dialog.||
 
 After defining the two environment variables of Tonatiuh needed by qmake, go the tree-like window of the _"Properties for TonatiuhProject"_ dialog and under the _"C/C++ Build"_ item click on the _"Settings" sub-item to display the _"Settings"_ form-like view.
-There, select the _"Binary parser"_ tab, and within the _"Binary parser:"_ section make sure that only the option _"PE Windows Parser"_ is checked. Then, click on the _"OK"_ button to close the _"Properties for TonatiuhProject"_ dialog.
- 
- * On Settings select PE Windows Parser.
- * Apply changes. Ok to finish with properties.
- * On the Make Target tab, right click Tonatiuh and select Add Make Target.
+There, select the _"Binary parser"_ tab, and within the _"Binary parser:"_ section make sure that only the option _"PE Windows Parser"_ is checked. Then, click on the _"OK"_ button to close the _"Properties for !TonatiuhProject"_ dialog.
+
+=== Create Make Targets ===
+
+==== qmake ====
+On the Make Target tab, right click on the folder titled "TonatiuhProject"_. Then, on the pop-up menu select _"New..."_. Finally, on the pop-up dialog titled _"Create Make Target"_ fill the differend fields as follows:
+
+{{{
+Target name: qmake
+Make target: TonatiuhProject.pro
+Build command: C:\sde\Qt\2010.05\qt\bin\qmake
+}}}
+
+To fill the _"Make target"_ field you need uncheck the _"Same as the target name"_ option. Likewise, to fill the _"Build command"_ field uncheck the _"Use builder settings"_ option. Before clicking on the _"OK"_ button to close the dialog, please, verify that the _"Run all project builders"_ option is checked.
+
+==== all ====
+Repeat the previous procedure until the dialog _"Create Make Target"_ is displayed. Then, fill the differend fields as follows:
+
+{{{
+Target name: all
+Make target: all
+Build command: C:\sde\MinGW\bin\mingw32-make.exe
+}}}
+
+To fill the _"Make target"_ field just verify that the _"Same as the target name"_ option is checked. To fill the _"Build command"_ field uncheck the _"Use builder settings"_ option. Before clicking on the _"OK"_ button to close the dialog, please, verify that the _"Stop on first build error"_ and _"Run all project builders"_ options are both checked.
+
+and select Add Make Target.
 [http://tonatiuh.googlecode.com/svn/wiki/images/eclipse/qmakeTargetWindows.png]
  * Define the first Make Target as:
   ** Target Name: qmake
