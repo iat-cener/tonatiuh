@@ -32,8 +32,8 @@ Right-click on the marble folder and select the TortoiseSVN check out option. Th
 
 After checking out the marble directory from the svn site, using the MSYS shell navigate to the marble directory just created in your computer and type:
 {{{
-export QTDIR=/c/sde/qt/qt_
-export PATH=$QTDIR/bin:$PATH:/c/sde/cmake/bin
+export QTDIR=/c/sde/Qt/2010.05/qt
+export PATH=$QTDIR/bin:$PATH:/c/sde/CMake/bin
 }}}
 
 The command to create Makefiles on release mode is:
