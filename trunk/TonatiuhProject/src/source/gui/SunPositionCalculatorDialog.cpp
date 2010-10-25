@@ -129,12 +129,12 @@ void SunPositionCalculatorDialog::on_selectButton_clicked()
 	marbleDialog.SetHomePosition( longitudeSpin->value(), latitudeSpin->value() );
 	if( marbleDialog.exec() )
 	{
-		/*double longitude;
+		double longitude;
 		double latitude;
-		marbleDialog.GetCoordinates( &longitude, &latitude );
+		marbleDialog.GetHomePosition( longitude, latitude );
 
-    	longitudeSpin->setValue( longitude * ( 180 / tgc::Pi ) );
-    	latitudeSpin->setValue( latitude * ( 180 / tgc::Pi ) );*/
+    	longitudeSpin->setValue( longitude );
+    	latitudeSpin->setValue( latitude );
     }
 }
 void SunPositionCalculatorDialog::CalculateSunPosition()

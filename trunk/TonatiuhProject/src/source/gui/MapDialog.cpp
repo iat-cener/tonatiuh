@@ -46,8 +46,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-
-#include <AbstractFloatItem.h>
 #include <GeoSceneDocument.h>
 #include <GeoSceneHead.h>
 #include <HttpDownloadManager.h>
@@ -59,20 +57,18 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <NavigationWidget.h>
 
 #include "MapDialog.h"
+#include "MapWidgetInputHandler.h"
 #include "tgc.h"
 
 #include <iostream>
 
 #include <QPainter>
-#include <QTextDocument>
 
 using namespace Marble;
 
 
 MapDialog::MapDialog( QWidget *parent )
-:QDialog( parent )/*, m_marbleWidget( 0 ), m_control( 0 ), m_mapThemeManager( 0 ),
-m_splitter( 0 ), m_latSpinBox( 0 ), m_latComboBox( 0 ), m_lonSpinBox( 0 ),
-m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )*/
+:QDialog( parent ), m_longitude( tgc::Infinity ), m_latitude( tgc::Infinity )
 {
 
 	QDir directory( qApp->applicationDirPath() );
@@ -84,7 +80,8 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )*/
 	Marble::MarbleDirs::setMarbleDataPath( directory.absolutePath() );
 
 	setupUi(this);
-	setMouseTracking( true );
+	setMouseTracking( false );
+
 	QList<int> sizes;
 	sizes<<100<<400;
 	mainSplitter->setSizes ( sizes );
@@ -98,27 +95,23 @@ m_lonComboBox( 0 ), m_longitude( 0.0 ), m_latitude( 0.0 )*/
 	m_mapThemeManager = new Marble::MapThemeManager;
 	marbleWidget->setProjection( (Marble::Projection) 0 );
 
-	marbleWidget->setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
+	marbleWidget->setMouseTracking( false );
 	marbleWidget->map()->model()->downloadManager()->setDownloadEnabled( false );
 	marbleWidget->setMapThemeId( DefaultMapThemeId() );
-
-	MarbleModel* marbleModel = marbleWidget->model();
-
-	//connect( marbleModel, SIGNAL( modelChanged() ), this, SLOT( ModelChanged() ) );
-
-	navigationWidget->setMarbleWidget( marbleWidget );
-
-
-	MapViewWidget* mapViewWidget = new MapViewWidget( this );
-	controlTab->addTab( mapViewWidget, mapViewWidget->windowTitle() );
-	mapViewWidget->setMarbleWidget( marbleWidget );
-
-	LegendWidget* legendWidget = new LegendWidget( this );
-	controlTab->addTab( legendWidget, legendWidget->windowTitle() );
-	legendWidget->setMarbleWidget( marbleWidget );
-
 	marbleWidget->setShowOverviewMap( true );
 	marbleWidget->setShowScaleBar( true );
+
+
+	MapWidgetInputHandler* inputHandler = new MapWidgetInputHandler();
+	marbleWidget->setInputHandler( inputHandler );
+	connect( inputHandler, SIGNAL( WidgetModified() ), this, SLOT( UpdateHomePosition() ) );
+
+	navigationWidget->setMarbleWidget( marbleWidget );
+	navigationWidget->setMouseTracking( false );
+	mapViewTab->setMarbleWidget( marbleWidget );
+	mapViewTab->setMouseTracking( false );
+	legendTab->setMarbleWidget( marbleWidget );
+	legendTab->setMouseTracking( false );
 
 }
 
@@ -127,35 +120,30 @@ MapDialog::~MapDialog( )
 	delete m_mapThemeManager;
 }
 
-void MapDialog::mouseReleaseEvent(QMouseEvent *event)
-{
-	double lon;
-	double lat;
-	int zoom;
 
-	marbleWidget->home( lon, lat, zoom );
-	SetHomePosition( -lon, lat );
+void MapDialog::GetHomePosition( double& longitude, double& latitude )
+{
+	longitude = m_longitude;
+	latitude = m_latitude;
 }
-/*
- * Sets home coordinates latitude value to the values of the GUI.
- */
+
+/*   * Sets home coordinates latitude value to the values of the GUI.   */
 void MapDialog::SetHomeLatitude()
 {
-	double latitude = latitudeSpin->value();
-	if( latitudeCombo->currentText() == "S" )	latitude = -latitude;
+	if( latitudeCombo->currentText() == "N" )	m_latitude = latitudeSpin->value();
+	else m_latitude = - latitudeSpin->value();
 
-	UpdateHomePosition( m_longitude, latitude );
+	marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
 }
-
 /*
-* Sets home coordinates longitude value to the values of the GUI.
- */
+ * Sets home coordinates longitude value to the values of the GUI.
+*/
 void MapDialog::SetHomeLongitude()
 {
-	double longitude = longitudeSpin->value();
-	if( longitudeCombo->currentText() == "W" )	longitude = -longitude;
+	if( longitudeCombo->currentText() == "E" )	m_longitude = longitudeSpin->value();
+	else m_longitude = - longitudeSpin->value();
 
-	UpdateHomePosition( longitude, m_latitude );
+	marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
 }
 
 /*!
@@ -164,26 +152,54 @@ void MapDialog::SetHomeLongitude()
  */
 void MapDialog::SetHomePosition( double lon, double lat )
 {
-	if( lon < 0 ) longitudeCombo->setCurrentIndex( 1 );
-	else longitudeCombo->setCurrentIndex( 0 );
-	longitudeSpin->setValue( fabs( lon ) );
+	if( m_longitude != lon || m_latitude != lat )
+	{
+		m_longitude = lon;
+		m_latitude = lat;
 
-	if( lat < 0 ) latitudeCombo->setCurrentIndex( 1 );
-	else latitudeCombo->setCurrentIndex( 0 );
-	latitudeSpin->setValue( fabs( lat ) );
+		/*if( lon < 0 ) longitudeCombo->setCurrentIndex( 1 );
+		else longitudeCombo->setCurrentIndex( 0 );
+		longitudeSpin->setValue( fabs( lon ) );
+
+		if( lat < 0 ) latitudeCombo->setCurrentIndex( 1 );
+		else latitudeCombo->setCurrentIndex( 0 );
+		latitudeSpin->setValue( fabs( lat ) );*/
+
+		marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
+	}
+
 }
 
 /*!
  * Update home location to \a lon and \a lat coordinates.
  * The \a lon and lat variables are in degree. lon is positive to east and lat is positive for north.
  */
-void MapDialog::UpdateHomePosition( double lon, double lat)
+void MapDialog::UpdateHomePosition()
 {
-	m_longitude = lon;
-	m_latitude = lat;
+	double lon;
+	double lat;
+	int zoom;
 
-	marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
-	marbleWidget->goHome();
+	marbleWidget->home( lon, lat, zoom );
+
+	if( m_longitude != lon || m_latitude != lat )
+	{
+
+		m_longitude = lon;
+		m_latitude = lat;
+
+		latitudeSpin->setValue( fabs( lat ) );
+		longitudeSpin->setValue( fabs( lon ) );
+
+
+		if( lat < 0 ) latitudeCombo->setCurrentIndex( 1 );
+		else latitudeCombo->setCurrentIndex( 0 );
+
+		if( lon < 0 ) longitudeCombo->setCurrentIndex( 1 );
+		else longitudeCombo->setCurrentIndex( 0 );
+
+
+	}
 }
 
 /*

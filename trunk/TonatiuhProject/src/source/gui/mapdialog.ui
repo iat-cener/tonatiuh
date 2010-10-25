@@ -29,83 +29,102 @@
          <property name="currentIndex">
           <number>0</number>
          </property>
-         <widget class="QWidget" name="tab">
+         <widget class="QWidget" name="navigationTab">
           <attribute name="title">
            <string>Navigation</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout">
-           <property name="margin">
-            <number>10</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <property name="spacing">
             <number>10</number>
            </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="latitudeLabel">
-             <property name="text">
-              <string>Latitude</string>
+           <property name="margin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="homeGroup">
+             <property name="title">
+              <string>Home Location</string>
              </property>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="0" column="0">
+               <widget class="QLabel" name="latitudeLabel">
+                <property name="text">
+                 <string>Latitude</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QDoubleSpinBox" name="latitudeSpin">
+                <property name="decimals">
+                 <number>4</number>
+                </property>
+                <property name="maximum">
+                 <double>90.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="latitudeCombo">
+                <item>
+                 <property name="text">
+                  <string>N</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>S</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="longitudeLabel">
+                <property name="text">
+                 <string>Longitude</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QDoubleSpinBox" name="longitudeSpin">
+                <property name="decimals">
+                 <number>4</number>
+                </property>
+                <property name="maximum">
+                 <double>180.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QComboBox" name="longitudeCombo">
+                <item>
+                 <property name="text">
+                  <string>E</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>W</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="longitudeLabel">
-             <property name="text">
-              <string>Longitude</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="2">
-            <widget class="QDoubleSpinBox" name="longitudeSpin">
-             <property name="decimals">
-              <number>4</number>
-             </property>
-             <property name="maximum">
-              <double>180.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QComboBox" name="latitudeCombo">
-             <item>
-              <property name="text">
-               <string>N</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>S</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QDoubleSpinBox" name="latitudeSpin">
-             <property name="decimals">
-              <number>4</number>
-             </property>
-             <property name="maximum">
-              <double>90.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QComboBox" name="longitudeCombo">
-             <item>
-              <property name="text">
-               <string>E</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>W</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="3">
+           <item>
             <widget class="Marble::NavigationWidget" name="navigationWidget" native="true"/>
            </item>
           </layout>
+         </widget>
+         <widget class="Marble::MapViewWidget" name="mapViewTab">
+          <attribute name="title">
+           <string>MapView</string>
+          </attribute>
+         </widget>
+         <widget class="Marble::LegendWidget" name="legendTab">
+          <attribute name="title">
+           <string>Legend</string>
+          </attribute>
          </widget>
         </widget>
         <widget class="Marble::MarbleWidget" name="marbleWidget" native="true"/>
@@ -139,14 +158,22 @@
    <header location="global">MarbleWidget.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>Marble::MapViewWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">MapViewWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Marble::LegendWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">LegendWidget.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>buttonBox</tabstop>
   <tabstop>controlTab</tabstop>
-  <tabstop>latitudeSpin</tabstop>
-  <tabstop>latitudeCombo</tabstop>
-  <tabstop>longitudeSpin</tabstop>
-  <tabstop>longitudeCombo</tabstop>
  </tabstops>
  <resources/>
  <connections>

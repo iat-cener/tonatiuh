@@ -71,14 +71,13 @@ public:
     MapDialog( QWidget * = 0 );
     ~MapDialog();
 
+    void GetHomePosition( double& longitude, double& latitude );
+
 public slots:
 	void SetHomeLatitude();
 	void SetHomeLongitude();
 	void SetHomePosition( double lon, double lat );
-    void UpdateHomePosition( double lon, double lat );
-
-protected:
-    void mouseReleaseEvent(QMouseEvent *event);
+    void UpdateHomePosition( );
 
 private:
     QString DefaultMapThemeId() const;
@@ -86,26 +85,6 @@ private:
     Marble::MapThemeManager*	m_mapThemeManager;
     double 				m_longitude; //positive east
     double 				m_latitude;	//positive north*/
-
-
-	/*	void GetCoordinates( double* lon, double* lat ) const;
-	void SetCoordinates(  double lon, double lat );
-    bool sideBarShown() const;
-
-public slots:
-    void UpdateCurrentPosition( qreal lon, qreal lat, GeoDataCoordinates::Unit );
-    void ChangeGPSPosition();
-
-private:
-Marble::MarbleWidget*		m_marbleWidget;
-    Marble::MarbleControlBox*	m_control;
-    Marble::MapThemeManager*	m_mapThemeManager;
-    QSplitter*			m_splitter;
-
-    QDoubleSpinBox* 	m_latSpinBox;
-    QComboBox* 			m_latComboBox;
-    QDoubleSpinBox* 	m_lonSpinBox;
-    QComboBox* 			m_lonComboBox;*/
 
 };
 
