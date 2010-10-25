@@ -1,5 +1,5 @@
 
-VERSION = 1.0.1
+VERSION = 1.1.1
 
 COINDIR = $$(TDE_ROOT)/local
 MARBLEDIR = $$(TDE_ROOT)/local
