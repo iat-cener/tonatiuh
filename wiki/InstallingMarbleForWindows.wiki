@@ -70,7 +70,7 @@ cp src/lib/Projections/*.h /usr/local/include/marble
 cp src/lib/routing/*.h /usr/local/include/marble
 cp src/lib/runners/*.h /usr/local/include/marble  
 }}}
-Copy executable files to the folder "/local/include/bin".
+Copy executable files to the folder "/local/local/bin".
 {{{
 cp src/marble.exe /usr/local/bin
 cp src/tilecreator/tilecreator.exe /usr/local/bin
