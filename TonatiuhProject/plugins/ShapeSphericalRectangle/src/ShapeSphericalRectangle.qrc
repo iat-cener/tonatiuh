@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>icons/ShapeSphericalRectangle.png</file>
+    </qresource>
+</RCC>
