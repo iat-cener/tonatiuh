@@ -8,7 +8,7 @@
             <theme>openstreetmap</theme>
             <icon pixmap="openstreetmap-preview.png"/>
             <visible>true</visible>
-            <description><![CDATA[<p>A <i>global roadmap</i> created by the OpenStreetMap (OSM) project.<p>OSM is an open community which creates free editable maps. The OSM data was rendered using Mapnik.]]></description>
+            <description><![CDATA[<p>A <i>global roadmap</i> created by the OpenStreetMap (OSM) project.</p><p>OSM is an open community which creates free editable maps. The OSM data was rendered using Mapnik.</p>]]></description>
             <zoom>
                 <minimum>   900  </minimum>
                 <maximum>  4000  </maximum>
@@ -24,11 +24,13 @@
                      or 604800 seconds -->
                 <texture name="mapnik_data" expire="604800" >
                     <sourcedir format="PNG"> earth/openstreetmap </sourcedir>
-                    <storageLayout levelZeroColumns="1" levelZeroRows="1" mode="OpenStreetMap" />
+                    <storageLayout levelZeroColumns="1" levelZeroRows="1" maximumTileLevel="18" mode="OpenStreetMap" />
                     <projection name="Mercator" />
                     <downloadUrl protocol="http" host="a.tile.openstreetmap.org" path="/" />
                     <downloadUrl protocol="http" host="b.tile.openstreetmap.org" path="/" />
                     <downloadUrl protocol="http" host="c.tile.openstreetmap.org" path="/" />
+                    <downloadPolicy usage="Browse" maximumConnections="20" />
+                    <downloadPolicy usage="Bulk" maximumConnections="2" />
                 </texture>
             </layer>
             <layer name="standardplaces" backend="geodata">
