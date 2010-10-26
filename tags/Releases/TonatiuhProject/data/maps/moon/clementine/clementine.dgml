@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgml xmlns="http://edu.kde.org/marble/dgml/2.0">
+    <document>
+        <head>
+            <name>Moon</name>
+            <target>moon</target>
+            <theme>clementine</theme>
+            <icon pixmap="clementine-preview.png"/>
+    
+            <!-- describes whether the map theme item will be hidden (e.g.
+                for a clouds layer): -->
+            <visible> true </visible>
+        
+            <!-- The description allows for rich text of course: -->
+            <description><![CDATA[<p>The moon.</p><p>The map is based on data from the Clementine Moon mission (UVVIS Basemap Mosaic). Credits: NASA/SDIO, Courtesy <a href="http://astrogeology.usgs.gov">USGS Astrogeology Research Program</a></p>]]></description>
+    
+            <zoom>
+                <minimum>   900  </minimum>
+                <maximum>  2400  </maximum>
+    
+                <!-- describes whether you can zoom trough the levels
+                    continuously -->
+                <discrete> false </discrete> 
+            </zoom>
+        </head>
+        
+            <!-- Now we create the layer structure that gets handled by the
+    layer management class -->
+        
+        <map bgcolor="#000000" labelColor="#ffffff">
+            <canvas/>
+            <!-- In this place one could e.g. insert a sky plugin -->
+            <target/>
+        
+            <!-- This layer creates the elevation model -->
+            <layer name="clementine" backend="texture">
+                <texture name="clementine_data" expire="604800"><!-- type="texture"-->
+                    <sourcedir format="JPG"> moon/clementine </sourcedir>
+                    <installmap> clementine.jpg </installmap>
+                </texture>
+            </layer>
+                            
+            <layer name="lunarplaces" backend="geodata">
+                <geodata name="moonlandingsites">
+                    <sourcefile format="KML">moonlandingsites.kml</sourcefile>
+                    <pick>placemark</pick> <!-- picks certain features from a
+                                            file -->
+                </geodata>
+                <geodata name="moonterrain">
+                    <sourcefile format="KML">moonterrain.kml</sourcefile>
+                    <pick>placemark</pick> <!-- picks certain features from a
+                                            file -->
+                </geodata>
+            </layer>
+        </map>
+
+        <settings>
+            <group name="Places">
+                <property name="places">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="cities">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="terrain">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="otherplaces">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+            </group>
+            <group name="Surface">
+                <property name="landingsites">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="craters">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="maria">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="terrain">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+            </group>
+
+            <property name="coordinate-grid">
+                <value>true</value>
+                <available>true</available>
+            </property>
+            <property name="compass">
+                <value>true</value>
+                <available>true</available>
+            </property>
+            <property name="scalebar">
+                <value>true</value>
+                <available>true</available>
+            </property>
+        </settings>
+        
+        <!-- At last we define some legend properties -->
+        
+        <legend>
+
+            <section name="landingsites" checkable="true" connect="landingsites" spacing="12">
+                <heading>Landing Sites</heading>
+                <item name="mannedlanding">
+                    <icon pixmap="bitmaps/manned_landing.png"/>
+                    <text>Manned landing site</text>
+                </item>
+                <item name="roboticrover">
+                    <icon pixmap="bitmaps/robotic_rover.png"/>
+                    <text>Robotic rover</text>
+                </item>
+                <item name="unmannedsoftlanding">
+                    <icon pixmap="bitmaps/unmanned_soft_landing.png"/>
+                    <text>Unmanned soft landing</text>
+                </item>
+                <item name="unmannedhardlanding">
+                    <icon pixmap="bitmaps/unmanned_hard_landing.png"/>
+                    <text>Unmanned hard landing</text>
+                </item>
+            </section>
+
+            <section name="craters" checkable="true" connect="craters" spacing="12">
+                <heading>Craters</heading>
+
+                <item name="crater">
+                    <icon pixmap="bitmaps/crater.png"/>
+                    <text>Crater, impact crater</text>
+                </item>
+            </section>
+
+            <section name="maria" checkable="true" connect="maria" spacing="12">
+                <heading>Maria</heading>
+            </section>
+
+            <section name="terrain" checkable="true" connect="terrain" spacing="12">
+                <heading>Other features</heading>
+
+                <item name="mons">
+                    <icon pixmap="bitmaps/mountain_1.png"/>
+                    <text>Mons, mountain</text>
+                </item>
+                <item name="vallis">
+                    <icon pixmap="bitmaps/valley.png"/>
+                    <text>Vallis, valley</text>
+                </item>
+                <item name="other">
+                    <icon pixmap="bitmaps/other.png"/>
+                    <text>Other</text>
+                </item>
+            </section>
+
+
+            <section name="otherplaces" checkable="true" connect="otherplaces" spacing="12">
+                <heading>Places of Interest</heading>
+
+                <item name="geographic-pole">
+                    <icon pixmap="bitmaps/pole_1.png"/>
+                    <text>Selenographic Pole</text>
+                </item>
+            </section>
+
+
+            <section name="coordinate-grid" checkable="true" connect="coordinate-grid" spacing="12">
+                <heading>Coordinate Grid</heading>
+            </section>
+        </legend>
+    </document>
+</dgml>

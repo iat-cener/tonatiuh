@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>icons/TrackerOneAxis.png</file>
+    </qresource>
+</RCC>
