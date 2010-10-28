@@ -515,6 +515,9 @@ QDir MainWindow::PluginDirectory()
 	return directory;
 }
 
+/*!
+ * Creates a list with the files al files in the defined \a directory and its subdirectories.
+ */
 void MainWindow::BuildFileList( QDir directory, QStringList& filesList )
 {
 	AddFilesToList( directory, filesList );
@@ -530,6 +533,10 @@ void MainWindow::BuildFileList( QDir directory, QStringList& filesList )
    	}
 }
 
+
+/*!
+ * Appends to \a fileList directory files.
+ */
 void MainWindow::AddFilesToList( QDir directory, QStringList& filesList )
 {
 	QString directoryPath( directory.absolutePath().append( "/" ) );
@@ -539,6 +546,10 @@ void MainWindow::AddFilesToList( QDir directory, QStringList& filesList )
     	filesList << ( directoryPath + filenamesList[i] );
 }
 
+/*!
+ * Checks if the \a directoryName is a valid directory name.
+ * '.' and '..' are not valid names.
+ */
 bool MainWindow::ValidDirectoryName( QString& directoryName  )
 {
 	return ( directoryName != "." ) && ( directoryName != ".." );
@@ -1484,8 +1495,9 @@ void MainWindow::on_actionAbout_triggered()
 {
 	//QMessageBox::aboutQt( this );
 
+	QString appVersion = qApp->applicationVersion();
 	QString aboutMessage("Tonatiuh\n"
-			"Version: 1.0.1\n"
+			"Version: "+ appVersion + "\n"
 			"\nPlease see http://www.gnu.org/licenses/gpl.html for an overview of GPLv3 licensing.\n"
 			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );

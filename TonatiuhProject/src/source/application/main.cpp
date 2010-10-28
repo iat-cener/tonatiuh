@@ -78,6 +78,7 @@ int main( int argc, char ** argv )
 	QApplication::setColorSpec( QApplication::CustomColor );
 
     QApplication a( argc, argv );
+	a.setApplicationVersion( APP_VERSION );
 
     QSplashScreen* splash = new QSplashScreen;
     splash->setPixmap( QPixmap(":/icons/tonatiuhsplash.png") );
