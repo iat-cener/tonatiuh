@@ -1,6 +1,3 @@
-
-VERSION = 1.1.1
-
 COINDIR = $$(TDE_ROOT)/local
 MARBLEDIR = $$(TDE_ROOT)/local
 BERKELEYDBDIR = $$(TDE_ROOT)/local
