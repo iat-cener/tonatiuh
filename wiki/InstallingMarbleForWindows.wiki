@@ -18,7 +18,7 @@ Now, you need to download the latest stable version of the Marble source code. T
 If you have installed in your computer a command-line svn client, the command you should execute in your MSDOS-like shell or in your MSYS Linux-like shell to get the marble folder with all its content is:
 
 {{{
-svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
+svn co svn://anonsvn.kde.org/home/kde/trunk/KDE/kdeedu/marble
 }}}
 
 If you have a svn windows's explorer shell extension like [http://tortoisesvn.tigris.org/ Tortoise SVN], you can check out the marble folder by typing in your Internet browser the address _"svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble"_. After entering the address in your browser you will get a pop-up dialog asking you to select a svn application to open the link with. If you have TortoiseSVN installed in your computer, this option should already be highlighted in the pop-up dialog. If it is highlighted, just click on the dialog's Ok button. It if is not highlighted, select it to make it highlighted, and then click on the dialog's Ok button.
