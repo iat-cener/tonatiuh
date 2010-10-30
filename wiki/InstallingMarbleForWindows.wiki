@@ -50,7 +50,6 @@ Copy Marble include files to the folder "/local/include/marble".
 {{{
 mkdir /usr/local/include/marble
 cp src/lib/*.h /usr/local/include/marble
-cp src/lib/AbstractLayer/*.h /usr/local/include/marble 
 cp src/lib/blendings/*.h /usr/local/include/marble 
 cp src/lib/geodata/*.h /usr/local/include/marble 
 cp src/lib/geodata/data/*.h /usr/local/include/marble 
@@ -63,12 +62,10 @@ cp src/lib/geodata/parser/*.h /usr/local/include/marble
 cp src/lib/geodata/scene/*.h /usr/local/include/marble
 cp src/lib/geodata/writer/*.h /usr/local/include/marble  
 cp src/lib/geodata/writers/kml/*.h /usr/local/include/marble
-cp src/lib/gps/*.h /usr/local/include/marble 
 cp src/lib/graphicsview/*.h /usr/local/include/marble
 cp src/lib/graphicsview/screengraphicsitem/*.h /usr/local/include/marble  
 cp src/lib/Projections/*.h /usr/local/include/marble
 cp src/lib/routing/*.h /usr/local/include/marble
-cp src/lib/runners/*.h /usr/local/include/marble  
 }}}
 Copy executable files to the folder "/local/local/bin".
 {{{
@@ -85,10 +82,8 @@ Copy Marble plugins to the folder "/usr/local/bin/marble".
 {{{
 mkdir /usr/local/bin/marble
 cp src/plugins/network/qnam/libQNamNetworkPlugin.dll /usr/local/bin/marble
-cp src/plugins/render/aprs/libAprsPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble 
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.dll /usr/local/bin/marble
-cp src/plugins/render/geodata/libGeoRendererPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/graticule/libGraticulePlugin.dll /usr/local/bin/marble
 cp src/plugins/render/mapscale/libMapScaleFloatItem.dll /usr/local/bin/marble
 cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
