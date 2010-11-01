@@ -1,20 +1,27 @@
-#summary A guide to install and configurate development environment on Linux
+#summary A guide to install and configure the development environment of Tonatiuh under Linux
 
-= Linux Configuration=
+= Introduction =
+To be able to develop Tonatiuh under Linux, you need to install the C++ compiler and a series of libraries. You will also need to install and configure an Integrated Development Environment, and the ancillary libraries and software infrastructure needed to automatize the generation of the program's documentation, to do unit testing and continuous integration.
 
-Configuration of the standard Tonatiuh development environment in a Linux workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
+Here you will find and overview of the overall process, together with links to the detailed instructions needed to execute every step of the process.
 
-= Install and configurate development enviroment =
+= Details =
 
-The following links will guide the developer through all the process:
-  * [InstallingQtForLinux Installing Qt]
-  * [InstallingSimageForLinux Installing Simage]
-  * [InstallingCoin3DForLinux Installing Coin3D]
-  * [InstallingSoQtForLinux Installing SoQt]
-  * [InstallingMarbleForLinux Installing Marble]
-  * [InstallingBerkeleyDBForLinux Installing Berkeley DB]
-  * [InstallingAndConfiguringEclipseForLinux Installing and Configuring Eclipse]
-  * [Installing_Subversive Installing Subversive]
-  * [BuildingTonatiuhOnLinux Building Tonatiuh and plugins]
+To be able to develop Tonatiuh under Linux you need to:
+
+  * Install the appropriate compilation and linking environment.
+
+  * Install the third-party libraries needed by the program.
+    * [InstallingQtForLinux Installing Qt]
+    * [InstallingSimageForLinux Installing Simage]
+    * [InstallingCoin3DForLinux Installing Coin3D]
+    * [InstallingSoQtForLinux Installing SoQt]
+    * [InstallingMarbleForLinux Installing Marble]
+    * [InstallingBerkeleyDBForLinux Installing Berkeley DB]
+
+  * Install and configure the Integrated Development Environment.
+    * [InstallingAndConfiguringEclipseForLinux Installing and Configuring Eclipse]
+    * [Installing_Subversive Installing Subversive]
+    * [BuildingTonatiuhOnLinux Building Tonatiuh and plugins]
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
