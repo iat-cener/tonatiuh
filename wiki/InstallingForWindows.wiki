@@ -1,26 +1,36 @@
-#summary A guide to install and configurate development environment on Windows.
+#summary A guide to install and configure the development environment under Windows XP, Windows Vista, and Windows 7.
 #labels Phase-Implementation,Windows
 
-= Windows Configuration=
+= Introduction =
 
-Configuration of the standard Tonatiuh development environment in a Windows workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
+To be able to develop Tonatiuh under Windows XP, Windows Vista or Windows 7, you need to install he MSYS shell environment, the MinGW C++ compiler, and a series of libraries.
 
-= Install and configurate development enviroment =
+Here you will find and overview of the overall process, together with links to the detailed instructions needed to execute every step of the process.  
 
-The following links will guide the developer through all the process:
-  * [InstallingMinGWForWindows Installing MinGW and MSYS]
-  * [InstallingQtForWindows Installing Qt]
-  * [InstallingSimageForWindows Installing Simage]
-  * [InstallingCoin3DForWindows Installing Coin3D]
-  * [InstallingSoQt Installing SoQt]
-  * [InstallingMarbleForWindows Installing Marble ]
-  * [InstallingBerkeleyDBOnWindows Installing Berkeley DB]
-  * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
-  * [Installing_Subversive Installing Subversive]
-  * [BuildingTonatiuhUnderWindows Building Tonatiuh and plugins]
-  * [DebuggingTonatiuhOnWindiows Debugging Tonatiuh with Eclipse]
+= Details =
 
-= Unit testing =
+To be able to develop Tonatiuh under Windows you need to:
+
+  * Install the appropriate compilation and linking environment.
+  ** [InstallingMinGWForWindows Installing MinGW and MSYS]
+
+  * Install the third-party libraries needed by the program.
+  ** [InstallingQtForWindows Installing Qt]
+  ** [InstallingSimageForWindows Installing Simage]
+  ** [InstallingCoin3DForWindows Installing Coin3D]
+  ** [InstallingSoQt Installing SoQt]
+  ** [InstallingMarbleForWindows Installing Marble ]
+  ** [InstallingBerkeleyDBOnWindows Installing Berkeley DB]
+
+  * Install and configure the Integrated Development Environment.
+  ** [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
+  ** [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
+  ** [Installing_Subversive Installing Subversive]
+  ** [BuildingTonatiuhUnderWindows Building Tonatiuh and plugins]
+  ** [DebuggingTonatiuhOnWindiows Debugging Tonatiuh with Eclipse]
+
+  * Install the Unit Testing and Continuous Integration infrastructure.
+
 
 Unit testing is the method selected to test that verifies the individual units of source code are working properly and ensure that the code have been written meets software requirements and behaves. Each test case must be independent from the others.
 
