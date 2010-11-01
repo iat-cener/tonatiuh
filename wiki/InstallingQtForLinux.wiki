@@ -1,10 +1,13 @@
 #summary Procedure to install Qt for Linux
 
 [http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
+Qt is cross-platform application framework for Graphics User Interface (GUI) development. This application framework is implemented as a set of related libraries. The Qt libraries are used within Tonatiuh to implement the program's GUI, the plug-in architecture, the parallel processing functionality, and the scripting capabilities, among other things.
 
-Qt is cross-platform application framework for GUI development. In the Tonatiuh development, the las Qt version, Qt-4.7, is used. If this version is not available from the SO software management tool, configure it following the these steps.
+Here you will find instructions to install the Qt libraries in your computer and make those libraries available for the development of Tonatiuh.
 
 = Details =
+
+In the Tonatiuh development, the las Qt version, Qt-4.7, is used. If this version is not available from the SO software management tool, configure it following the these steps.
 
 To install the Qt SDK in your computer download the latest release of the installer file, _qt-sdk-linux-x86-opensource-2010.05.1.bin_ , from the [http://www.qtsoftware.com/ Qt] website by clicking [http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
 
