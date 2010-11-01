@@ -1,6 +1,7 @@
 #summary Procedure to install Qt for Linux
 
 [http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
+
 Qt is cross-platform application framework for Graphics User Interface (GUI) development. This application framework is implemented as a set of related libraries. The Qt libraries are used within Tonatiuh to implement the program's GUI, the plug-in architecture, the parallel processing functionality, and the scripting capabilities, among other things.
 
 Here you will find instructions to install the Qt libraries in your computer and make those libraries available for the development of Tonatiuh.
