@@ -24,7 +24,6 @@ To be able to develop Tonatiuh under Windows you need to:
 
   * Install and configure the Integrated Development Environment.
     * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
-    * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
     * [Installing_Subversive Installing Subversive]
     * [BuildingTonatiuhUnderWindows Building Tonatiuh and plugins]
     * [DebuggingTonatiuhOnWindiows Debugging Tonatiuh with Eclipse]
