@@ -1,4 +1,4 @@
-#summary A guide to install and configure the development environment under Windows XP, Windows Vista, and Windows 7.
+#summary A guide to install and configure the development environment of Tonatiuh under Windows XP, Windows Vista, and Windows 7.
 #labels Phase-Implementation,Windows
 
 = Introduction =
