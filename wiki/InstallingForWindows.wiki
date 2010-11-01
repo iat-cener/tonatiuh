@@ -12,22 +12,22 @@ Here you will find and overview of the overall process, together with links to t
 To be able to develop Tonatiuh under Windows you need to:
 
   * Install the appropriate compilation and linking environment.
-  ** [InstallingMinGWForWindows Installing MinGW and MSYS]
+    * [InstallingMinGWForWindows Installing MinGW and MSYS]
 
   * Install the third-party libraries needed by the program.
-  ** [InstallingQtForWindows Installing Qt]
-  ** [InstallingSimageForWindows Installing Simage]
-  ** [InstallingCoin3DForWindows Installing Coin3D]
-  ** [InstallingSoQt Installing SoQt]
-  ** [InstallingMarbleForWindows Installing Marble ]
-  ** [InstallingBerkeleyDBOnWindows Installing Berkeley DB]
+    * [InstallingQtForWindows Installing Qt]
+    * [InstallingSimageForWindows Installing Simage]
+    * [InstallingCoin3DForWindows Installing Coin3D]
+    * [InstallingSoQt Installing SoQt]
+    * [InstallingMarbleForWindows Installing Marble ]
+    * [InstallingBerkeleyDBOnWindows Installing Berkeley DB]
 
   * Install and configure the Integrated Development Environment.
-  ** [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
-  ** [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
-  ** [Installing_Subversive Installing Subversive]
-  ** [BuildingTonatiuhUnderWindows Building Tonatiuh and plugins]
-  ** [DebuggingTonatiuhOnWindiows Debugging Tonatiuh with Eclipse]
+    * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
+    * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
+    * [Installing_Subversive Installing Subversive]
+    * [BuildingTonatiuhUnderWindows Building Tonatiuh and plugins]
+    * [DebuggingTonatiuhOnWindiows Debugging Tonatiuh with Eclipse]
 
   * Install the Unit Testing and Continuous Integration infrastructure.
 
