@@ -122,9 +122,10 @@ void TrackerHeliostat::evaluate()
 	worldToObject.multVecMatrix( focus, r );
 	r.normalize();
 
-	SbVec3f n = ( i + r ) / fabs( r.dot( i ) );
+	SbVec3f n = ( i + r );
 	n.normalize();
 
+/*
 	double theta = acos( n[1] );
 	SbRotation xRotation( SbVec3f( 1.0, 0.0, 0.0 ), theta );
 
@@ -139,5 +140,24 @@ void TrackerHeliostat::evaluate()
 	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( 1.0, 1.0, 1.0 ) );
 	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
 	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
+*/
+	SbVec3f t = SbVec3f( n[2], 0.0f, -n[0] );
+	t.normalize();
 
+	SbVec3f p = t.cross(n);
+	p.normalize();
+
+	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
+							  n[0], n[1], n[2], 0.0,
+							  p[0], p[1], p[2], 0.0,
+							  0.0, 0.0, 0.0, 1.0 );
+
+	SoTransform* newTransform = new SoTransform();
+	newTransform->setMatrix( transformMatrix );
+
+	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( newTransform->translation.getValue() ) );
+	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( newTransform->rotation.getValue() ) );
+	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( newTransform->scaleFactor.getValue() ) );
+	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( newTransform->scaleOrientation.getValue() ) );
+	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( newTransform->center.getValue() ) );
 }
