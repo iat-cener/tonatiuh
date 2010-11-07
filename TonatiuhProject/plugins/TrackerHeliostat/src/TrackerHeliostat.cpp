@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
+#include <iostream>
 
 #include <QString>
 
@@ -111,13 +112,13 @@ void TrackerHeliostat::evaluate()
 	SbMatrix objectToWorld = getmatrixAction->getMatrix();
 	SbMatrix worldToObject = objectToWorld.inverse();
 
-	SbVec3f globalSunVector( sin( m_zenith.getValue() ) * sin( m_azimuth.getValue() ),
-							cos( m_zenith.getValue() ),
-							-sin( m_zenith.getValue() )*cos( m_azimuth.getValue() ) );
+	SbVec3f globalSunVector( sin( m_azimuth.getValue() ) * sin( m_zenith.getValue() ),
+							 cos( m_zenith.getValue() ),
+							-cos( m_azimuth.getValue() ) * sin( m_zenith.getValue() ) );
 	SbVec3f i;
 	worldToObject.multDirMatrix ( globalSunVector, i );
 
-	SbVec3f focus = aimingPoint.getValue();
+	SbVec3f focus = aimingPoint.getValue( );
 	SbVec3f r;
 	worldToObject.multVecMatrix( focus, r );
 	r.normalize();
@@ -125,22 +126,6 @@ void TrackerHeliostat::evaluate()
 	SbVec3f n = ( i + r );
 	n.normalize();
 
-/*
-	double theta = acos( n[1] );
-	SbRotation xRotation( SbVec3f( 1.0, 0.0, 0.0 ), theta );
-
-	double phi = atan2( n[0], n[2] );
-	SbRotation yRotation( SbVec3f( 0.0, 1.0, 0.0 ), phi );
-
-	SbRotation rotation = xRotation;
-	rotation *= yRotation;
-
-	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
-	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rotation ) );
-	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( 1.0, 1.0, 1.0 ) );
-	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
-*/
 	SbVec3f t = SbVec3f( n[2], 0.0f, -n[0] );
 	t.normalize();
 
