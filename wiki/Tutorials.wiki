@@ -11,4 +11,4 @@ The links to the available tutorials are listed below. To go to the wiki page of
 
 === List of tutorials ===
 
- * Modeling a tower system with 500 small one-facet heliostats.
+ * [TutorialSmallHeliostatsTower How to model a tower system with 500 small one-facet heliostats.]
