@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Provides the links to Tonatiuh tutorials. These tutorials are intended to ilustrate specific features of the program, as well as possible uses of Tonatiuh to assist in the simulation, analysis and desing of solar concentrating systems.
+This page provides links to Tonatiuh tutorials. These tutorials are intended to ilustrate specific features of the program, as well as possible uses of Tonatiuh to assist in the simulation, analysis and desing of solar concentrating systems.
 
 
 = Details =
