@@ -68,8 +68,6 @@ ParametersView::~ParametersView()
  */
 void ParametersView::SelectionChanged( SoBaseKit* coinNode, QStringList parts )
 {
-	int previusTabs = count();
-
 	clear();
 
 	if( parts.size() == 0 )	parts = ContainerNodeParts( coinNode );
@@ -82,6 +80,14 @@ void ParametersView::SelectionChanged( SoBaseKit* coinNode, QStringList parts )
 		if( coinPart != 0 ) AddTab( coinPart, partName );
 	}
 
+}
+
+/*!
+ * Updates selected node parametes views.
+ */
+void ParametersView::UpdateView()
+{
+	SelectionChanged(  m_actualCoinNode, QStringList() );
 }
 
 /*!
