@@ -880,6 +880,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 	if( coinScene->getPart( "lightList[0]", false ) )	currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
 
+
 	LightDialog dialog( currentLight, m_TFlatShapeFactoryList, m_TSunshapeFactoryList );
 	if( dialog.exec() )
 	{
@@ -892,24 +893,7 @@ void MainWindow::on_actionDefine_SunLight_triggered()
  		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
 		m_commandStack->push( command );
 
-
-		//Select lightKit
-	    TLightKit* newLightKit = static_cast< TLightKit* >( coinScene->getPart("lightList[0]", false) );
-
-	    SoSearchAction* coinSearch = new SoSearchAction();
-		coinSearch->setNode( newLightKit );
-		coinSearch->setInterest( SoSearchAction::FIRST);
-		coinSearch->apply( m_document->GetRoot() );
-
-		SoPath* coinScenePath = coinSearch->getPath( );
-		if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
-		SoNodeKitPath* lightPath = static_cast< SoNodeKitPath* > ( coinScenePath );
-		if( !lightPath ) tgf::SevereError( "PathFromIndex Null nodePath." );
-
-		QModelIndex lightIndex = m_sceneModel->IndexFromPath( *lightPath );
-		m_selectionModel->setCurrentIndex( lightIndex, QItemSelectionModel::ClearAndSelect );
-
-		delete coinSearch;
+		parametersView->UpdateView();
 		m_document->SetDocumentModified( true );
 
 		actionCalculateSunPosition->setEnabled( true );
@@ -1810,7 +1794,6 @@ void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex
 	else
 	{
 		SoBaseKit* selectedCoinNodeKit = static_cast< SoBaseKit* >( selectedCoinNode );
-		SoNode* coinPart = selectedCoinNodeKit->getPart( "transform", false );
 
 		QStringList parts;
 		parametersView->SelectionChanged( selectedCoinNodeKit, parts );

@@ -63,6 +63,7 @@ public:
 	~ParametersView();
 
 	void SelectionChanged( SoBaseKit* coinNode, QStringList parts );
+	void UpdateView();
 
 signals:
 	/*!
