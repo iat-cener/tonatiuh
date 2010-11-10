@@ -10,7 +10,7 @@ This tutorial explains:
  * How to combine Tonatiuh and Mathematica capabilities to generate a optical efficiency matrix to characterize the optical behavior of a tower system.
 
 
-= General goals and assumptions
+= General assumptions =
 
 == Heliostat field solar collection efficiency == 
 For a given position of the sun in the sky and a given value of the direct solar irradiance, what we want to estimate is the heliostat field solar collection efficiency. This efficiency is defined as the ratio between the amount of solar energy that reaches the central receiver input aperture plane and the maximum amount of solar energy that could reach the mirrored surfaces of the heliostat field.
@@ -69,10 +69,5 @@ Once the shape of the heliostat facet has been modeled, it is the time to model 
  # With the heliostat TShapeKit selected, go to the Tonatiuh plug-ins Menu Bar and select the !Specular_Standard_Material icon.
  # After the new material note is created within the heliostat's TShapeKit, select the material node to change the default material's properties.
  # In the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, for the purpose of this tutorial, please, change the value of the parameter “m_reflectivity” from 0 to 1.
-
-
-
-
-
 
 = Basic central receiver input aperture modeling =
