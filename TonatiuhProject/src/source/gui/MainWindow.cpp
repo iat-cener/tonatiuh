@@ -120,6 +120,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunShapeFactory.h"
 #include "TTracker.h"
 #include "TTrackerFactory.h"
+#include "UpdatesManager.h"
 
 
 
@@ -147,6 +148,7 @@ m_materialsToolBar( 0 ),
 m_photonMapToolBar(0),
 m_shapeToolBar( 0 ),
 m_trackersToolBar( 0 ),
+m_updateManager( 0 ),
 m_RandomDeviateFactoryList( 0 ),
 m_TPhotonMapFactoryList( 0 ),
 m_TFlatShapeFactoryList( 0 ),
@@ -184,6 +186,7 @@ m_focusView( 0 )
     SetupDocument();
     SetupModels();
 	SetupViews();
+	SetupUpdateManager();
     LoadAvailablePlugins();
     ReadSettings();
 
@@ -259,6 +262,54 @@ void MainWindow::SetupCommandView()
     		     actionUndo, SLOT( setEnabled( bool ) ) );
 }
 
+void MainWindow::SetupVRMLBackground()
+{
+    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
+    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
+    float gangle= 1.570f;
+    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
+    vrmlBackground->groundAngle.setValue( gangle );
+    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
+    float sangle= 1.570f;
+    vrmlBackground->skyColor.setValues( 0,6,scolor );
+    vrmlBackground->skyAngle.setValue( sangle );
+	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
+}
+
+void MainWindow::SetupTreeView()
+{
+	NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
+	m_treeView = GetSceneModelViewPointer();
+	m_treeView->setItemDelegate( delegate );
+	m_treeView->setModel( m_sceneModel );
+	m_treeView->setSelectionModel( m_selectionModel );
+	m_treeView->setDragEnabled(true);
+	m_treeView->setAcceptDrops(true);
+	m_treeView->setDropIndicatorShown(true);
+	m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
+	m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
+	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	m_treeView->setRootIsDecorated(true);
+
+	connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
+	connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
+	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
+				 this, SLOT ( showMenu( const QModelIndex& ) ) );
+}
+
+/*!
+ * Initializates tonatiuh update manager.
+ */
+void MainWindow::SetupUpdateManager()
+{
+	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
+}
+
+/*!
+ * Initializates tonatiuh graphic view.
+ */
 void MainWindow::SetupGraphicView()
 {
 
@@ -364,43 +415,6 @@ void MainWindow::SetupGraphicView()
 	m_graphicView[2]->hide();
 	m_graphicView[3]->hide();
 	m_focusView = 0;
-}
-
-void MainWindow::SetupVRMLBackground()
-{
-    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
-    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
-    float gangle= 1.570f;
-    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
-    vrmlBackground->groundAngle.setValue( gangle );
-    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
-    float sangle= 1.570f;
-    vrmlBackground->skyColor.setValues( 0,6,scolor );
-    vrmlBackground->skyAngle.setValue( sangle );
-	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
-}
-
-void MainWindow::SetupTreeView()
-{
-	NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
-	m_treeView = GetSceneModelViewPointer();
-	m_treeView->setItemDelegate( delegate );
-	m_treeView->setModel( m_sceneModel );
-	m_treeView->setSelectionModel( m_selectionModel );
-	m_treeView->setDragEnabled(true);
-	m_treeView->setAcceptDrops(true);
-	m_treeView->setDropIndicatorShown(true);
-	m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
-	m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
-	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-	m_treeView->setRootIsDecorated(true);
-
-	connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
-	connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
-	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
-				 this, SLOT ( showMenu( const QModelIndex& ) ) );
 }
 
 QSplitter* MainWindow::GetHorizontalSplitterPointer()
@@ -1473,6 +1487,14 @@ void MainWindow::on_actionOpenScriptEditor_triggered()
 	editor.exec();
 
 	m_scriptDirectory = editor.GetCurrentDirectory();
+}
+
+/*!
+ * Checks for Stephanie's updates and installs them.
+ */
+void MainWindow::on_actionCheckForUpdates_triggered()
+{
+	m_updateManager->CheckForUpdates( );
 }
 
 void MainWindow::on_actionAbout_triggered()
