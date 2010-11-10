@@ -11,9 +11,9 @@ This tutorial explains:
 
 = Heliostat modeling =
 
-The heliostat to model is an small one-facet heliostat. Only the mirror will need to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
+The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
-The heliostat mirror is assumed to be a 5 meters by 5 meters spherical rectangular mirror. Since, for the heliostat field we want to model, the characteristic slant range of a heliostat is 150 m, the radius of the spherical mirror will be 300 m.
+The heliostat mirror is assumed to be a 5 meters by 5 meters spherical rectangular mirror. Since, for the heliostat field that will be modeled, the characteristic slant range of a heliostat is 150 m, the radius of the spherical mirror will be 300 m.
 
 Therefore, to model the shape of the heliostat in Tonatiuh, please, do the following:
 
@@ -25,8 +25,8 @@ Therefore, to model the shape of the heliostat in Tonatiuh, please, do the follo
  # With the newly created “Mirror” TSeparatorKit selected, go to the plug-in Menu Bar and click on the “Spherical_rectangle” icon to insert a new “Spherical_rectangle” shape node under the “Mirror” TShapeKit. This new shape node will be created with the default name “Spherical_rectangle”, keep that name.
  # With the “Spherical_rectangle” shape node selected in the Tree View, go to the “ShapeSphericalRectangle” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
 {{{
-radius 300
-width X 5
-widthZ 5
+radius     300
+width X    5
+widthZ     5
 activeSide INSIDE
 }}}
