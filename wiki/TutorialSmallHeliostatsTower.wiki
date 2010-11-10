@@ -11,7 +11,7 @@ This tutorial explains:
 
 = Heliostat modeling =
 
-The heliostat we want to model is an small one-facet heliostat. Only the mirror will need to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
+The heliostat to model is an small one-facet heliostat. Only the mirror will need to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
 The heliostat mirror is assumed to be a 5 meters by 5 meters spherical rectangular mirror. Since, for the heliostat field we want to model, the characteristic slant range of a heliostat is 150 m, the radius of the spherical mirror will be 300 m.
 
