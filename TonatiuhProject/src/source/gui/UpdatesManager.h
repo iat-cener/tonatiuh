@@ -66,13 +66,11 @@ public:
 	void CheckForUpdates();
 
 public slots:
-	//void Authenticate( QNetworkReply* reply, QAuthenticator* authenticator);
 	void CheckLastUpdate( );
 	void FileDownloadComplete();
 	void Read();
 	void ReadFile();
-   // void SSLErrors( QNetworkReply* reply, const QList< QSslError >& errors);
-	void UpdateDownload( int fileIndex );
+   void UpdateDownload( int fileIndex );
 
 private:
 	void DeleteDirOldFiles( QString dirName );
