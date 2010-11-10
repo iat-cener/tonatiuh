@@ -49,3 +49,9 @@ center            0 0 0
 }}}
 
 == Heliostat mirror material ==
+Once the shape of the heliostat facet has been modeled, it is the time to model the heliostat mirror material. To do this, please, do the following:
+
+ #  Select the heliostat TShapeKit node.
+ # With the heliostat TShapeKit selected, go to the Tonatiuh plug-ins Menu Bar and select the Specular_Standard_Material icon.
+ # After the new material note is created within the heliostat's TShapeKit, select the material node to change the default material's properties.
+ # In the MaterialStandardSpecular preperties dialog that will appear below the Tree View, for the purpose of this tutorial, please, change the value of the parameter “m_reflectivity” from 0 to 1.
