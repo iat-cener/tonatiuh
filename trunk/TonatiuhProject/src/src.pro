@@ -22,7 +22,7 @@ DEPENDPATH += . \
               
  
               
-QT += xml opengl svg  script
+QT += xml opengl svg  script network
 
 
  
