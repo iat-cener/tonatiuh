@@ -205,6 +205,8 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionCheckForUpdates"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuAutomation">
@@ -646,6 +648,11 @@
   <action name="actionOpenScriptEditor">
    <property name="text">
     <string>Script Editor</string>
+   </property>
+  </action>
+  <action name="actionCheckForUpdates">
+   <property name="text">
+    <string>Check for updates</string>
    </property>
   </action>
  </widget>

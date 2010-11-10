@@ -71,6 +71,7 @@ class TShape;
 class TSunShapeFactory;
 class TSunShape;
 class TTrackerFactory;
+class UpdatesManager;
 
 //!  Main window class.
 /*!
@@ -151,6 +152,7 @@ public slots:
 
 	//Help menu actions
 	void on_actionAbout_triggered();
+	void on_actionCheckForUpdates_triggered();
 
 	//Create actions
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
@@ -206,6 +208,7 @@ private:
     void SetupGraphicView();
     void SetupVRMLBackground();
    	void SetupTreeView();
+   	void SetupUpdateManager();
    	QSplitter* GetHorizontalSplitterPointer();
    	SceneModelView* GetSceneModelViewPointer();
    	ParametersView* GetParamtersViewPointer();
@@ -237,9 +240,7 @@ private:
     void UpdateRecentFileActions();
     void WriteSettings();
     void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
-	//void ComputeSceneTreeMap( InstanceNode* instanceNode, QMap< InstanceNode*,QPair< BBox, Transform* > >* sceneMap );
-	//void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO, QMap< InstanceNode*, QPair< BBox, Transform > >* sceneMap );
-    void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
 
     enum { m_maxRecentFiles = 7 };
@@ -253,6 +254,8 @@ private:
     QToolBar* m_photonMapToolBar;
     QToolBar* m_shapeToolBar;
     QToolBar* m_trackersToolBar;
+
+    UpdatesManager* m_updateManager;
 
 	QVector< RandomDeviateFactory* > m_RandomDeviateFactoryList;
 	QVector< TPhotonMapFactory* > m_TPhotonMapFactoryList;
