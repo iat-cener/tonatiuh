@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XML>
+<appname>
+    <version>
+        <version value="1.1.2" />
+    </version>
+    <files>
+        <os value="win">
+            <file value="bin/release/Tonatiuh.exe" />
+        </os>
+        <os value="mac">
+            <file value="Stephanie.app/Contents/MacOS/Tonatiuh" />
+        </os>
+        <os value="linux">
+            <file value="bin/release/Tonatiuh" />
+        </os>
+    </files>
+</appname>
