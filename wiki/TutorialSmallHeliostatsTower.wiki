@@ -36,7 +36,7 @@ Figure 1 shows the GUI of Tonatiuh after finishing the above steps. You can see 
 ||<a href="http://picasaweb.google.com/lh/photo/iLnAZ6EyD3wK2ZEZuA006A?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TNqvQaaCObI/AAAAAAAAAuU/qz51aN7FzHs/s400/HeliostatModeling01.png" height="320" width="400" /></a>||
 || *Figure 1.* State of Tonatiuh's GUI after finishing the steps outlined.||
 
-Obviously the content of the Object Inspector view changes depending on the Tree View item selected. Thus, if instead of having the Spherical-rectangle shape node selected you have the "Heliostat" TSeparatorKit selected you will see the !SeparatorKit Transform dialog, showing the following parameter values.
+Obviously, the content of the Object Inspector view changes depending on the Tree View item selected. Thus, if instead of having the Spherical-rectangle shape node selected you have the "Heliostat" TSeparatorKit selected you will see the !SeparatorKit Transform dialog, showing the following parameter values.
 {{{
 translation       0 0 0
 rotation          0 0 1 0
