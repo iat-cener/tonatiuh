@@ -85,10 +85,6 @@ UpdatesManager::UpdatesManager( QString currentVersion )
 	m_osType = QLatin1String( "linux" );
 #endif
 
-	connect( m_networkAccessManager, SIGNAL( authenticationRequired( QNetworkReply*, QAuthenticator* ) ),
-			this, SLOT( Authenticate( QNetworkReply*, QAuthenticator* ) ) );
-    connect( m_networkAccessManager, SIGNAL( sslErrors( QNetworkReply*, QList< QSslError > ) ),
-            this, SLOT( SSLErrors( QNetworkReply*, QList< QSslError > ) ) );
 
 }
 
