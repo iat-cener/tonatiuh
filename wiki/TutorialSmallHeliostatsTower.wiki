@@ -56,7 +56,7 @@ Once the shape of the heliostat facet has been modeled, it is the time to model 
  # After the new material note is created within the heliostat's TShapeKit, select the material node to change the default material's properties.
  # In the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, for the purpose of this tutorial, please, change the value of the parameter “m_reflectivity” from 0 to 1.
 
-== Basic central receiver input aperture modeling ==
+= Basic central receiver input aperture modeling =
 For a given position of the sun in the sky and a given value of the direct solar irradiance, what we want to estimate is the heliostat field solar collection efficiency. This efficiency is defined as the ratio between the amount of solar energy that reaches the central receiver input aperture plane and the maximum amount of solar energy that could reach the mirrored surfaces of the heliostat field.
 
 From the above definition of the heliostat field solar collection efficiency, it follows that this efficiency is a function of the heliostat reflectivity, the atmospheric transmissivity, the distances from the heliostats to their corresponding aiming points in the central receiver input aperture plane, and the blocking and shadowing among heliostats.
