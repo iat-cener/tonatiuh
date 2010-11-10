@@ -23,7 +23,7 @@ Therefore, to model the shape of the heliostat in Tonatiuh, please, do the follo
  # With the “Heliostat” node selected in the Tree View, go to the plug-in Menu Bar and click on the !ShapeKit icon to insert a new TShapeKit object below the “Heliostat” TSeparatorKit.
  # Expand the “Heliostat” node, if it is not already expanded, to make the newly created TSeparatorKit visible in the Tree View. Once it is visible, double click on to change its name from “TShapeKit1” to “Mirror”.
  # With the newly created “Mirror” TSeparatorKit selected, go to the plug-in Menu Bar and click on the “Spherical_rectangle” icon to insert a new “Spherical_rectangle” shape node under the “Mirror” TShapeKit. This new shape node will be created with the default name “Spherical_rectangle”, keep that name.
- # With the “Spherical_rectangle” shape node selected in the Tree View, go to the “ShapeSphericalRectangle” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
+ # With the “Spherical_rectangle” shape node selected in the Tree View, go to the “!ShapeSphericalRectangle” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
 {{{
 radius     300
 width X    5
