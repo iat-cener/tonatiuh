@@ -70,4 +70,8 @@ Once the shape of the heliostat facet has been modeled, it is the time to model 
  # After the new material note is created within the heliostat's TShapeKit, select the material node to change the default material's properties.
  # In the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, for the purpose of this tutorial, please, change the value of the parameter “m_reflectivity” from 0 to 1.
 
+After following the above steps the Tree View of Tonatiuh should look as in Figure 2.
+
+
+
 = Basic central receiver input aperture modeling =
