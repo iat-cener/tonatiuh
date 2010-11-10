@@ -9,7 +9,7 @@
             <file value="bin/release/Tonatiuh.exe" />
         </os>
         <os value="mac">
-            <file value="Stephanie.app/Contents/MacOS/Tonatiuh" />
+            <file value="Tonatiuh/Contents/MacOS/Tonatiuh" />
         </os>
         <os value="linux">
             <file value="bin/release/Tonatiuh" />
