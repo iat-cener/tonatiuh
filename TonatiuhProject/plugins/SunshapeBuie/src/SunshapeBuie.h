@@ -90,8 +90,8 @@ private:
 	 double m_heightRectangle1;
 	 double m_heightRectangle2;
 	 double m_probabilityRectangle1;
-	 static const double m_minCRSValue = 0.001;
-	 static const double m_maxCRSValue = 0.8;
+	 static const double m_minCRSValue;// = 0.001;
+	 static const double m_maxCRSValue;// = 0.8;
 };
 
 #endif /* SUNSHAPEBUIE_H_ */

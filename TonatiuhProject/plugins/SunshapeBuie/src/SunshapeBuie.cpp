@@ -41,6 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SunshapeBuie.h"
 #include "tgc.h"
 
+const double SunshapeBuie::m_minCRSValue = 0.001;
+const double SunshapeBuie::m_maxCRSValue = 0.8;
+
+
 SO_NODE_SOURCE(SunshapeBuie);
 
 void SunshapeBuie::initClass()
