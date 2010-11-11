@@ -102,7 +102,7 @@ After following the above steps the Tree View of Tonatiuh should look as in Figu
 
 = Basic central receiver input aperture modeling =
 
-To model de target do the following:
+To model the target do the following:
  # In Tonatiuh's Tree View click on the TSeparatorKit "RoodNode".
  # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "RootNode".
  # Double click on the newly created TSeparatorKit node and change its name to "Target".
