@@ -25,9 +25,9 @@ Furthermore, for simplicity, we assume that the atmospheric losses from the heli
 With this simplifying assumptions the heliostat field solar collector efficiency will only depends, at any given instance of the day, on the cosine factor and the shadowing and blocking.
 
 === Goal of the tower system analysis ===
-What we want to illustrate with this Tutorial is how you can use Tonatiuh to generate a look-up table or matrix of heliostat field solar collection efficiency values as a function of the two angles that define the Sun position in the sky (i.e., solar azimuth and zenith angle).
+What we want to illustrate with this Tutorial is how you can use Tonatiuh to generate a look-up table or matrix of heliostat field solar collection efficiency values as a function of the two angles that define the Sun position in the sky (solar azimuth and zenith angle).
 
-This look-up table will allow you to interpolate, for any given sun position, the solar collection efficiency of the tower system under analysis. An information that is relevant for many purposes. For instance, as a metric to drive a heliostat field layout automatic optimization process.
+This look-up table will allow you to interpolate, for any given sun position, the solar collection efficiency of the tower system under analysis. An information that is relevant for many purposes, such as, for instance, to establish a quantitative metric to drive a heliostat field layout automatic optimization process.
 
 = Basic heliostat modeling =
 
