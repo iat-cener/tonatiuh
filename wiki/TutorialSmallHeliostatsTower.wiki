@@ -29,6 +29,22 @@ What we want to illustrate with this Tutorial is how you can use Tonatiuh to gen
 
 This look-up table will allow you to interpolate, for any given sun position, the solar collection efficiency of the tower system under analysis. An information that is relevant for many purposes, such as, for instance, to establish a quantitative metric to drive a heliostat field layout automatic optimization process.
 
+= Characteristics of the tower system to analyze =
+The tower system that we want to model in this tutorial consist of:
+
+ * A dense heliostat field of 500 small 5 m x 5 m one-facet heliostats,
+ * A tower, and
+ * The input aperture of the solar central receiver.
+
+
+
+Figure 1 shows the basic layout the heliostat field and the relative location of the tower. From the dimensions presented in the figure, knowing that the distance between the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters, it is straightforward to compute the relative coordinates of the center of the facet of each heliostat in the field.
+
+||<a href="http://picasaweb.google.com/lh/photo/3H_7Wx8mEbQJgDQdP2tq4g?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TNs4vsgCn5I/AAAAAAAAAu4/f86f4nGSJGY/s400/tutorial_01_plant_layout.png" height="400" width="353" /></a>||
+|| *Figure 1.* Tower system layout.||
+
+We will assume that all of the heliostats will aim to the center of the input aperture, which we will define as a 10 meters by 10 meters target with its center 130 m above the plane defined by the centers of the facets of the heliostats.
+
 = Basic heliostat modeling =
 
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
@@ -54,10 +70,10 @@ widthZ     5
 activeSide INSIDE
 }}}
 
-Figure 1 shows the GUI of Tonatiuh after finishing the above steps. You can see the 5 m x 5 m spherical facet of the small heliostat in Tonatiuh's 3D view, the nodes that compose the Heliostat in Tonatiuh's Tree View, and the values that define the main parameter of the spherical heliostat facet in the Object Inspector view, just below the Tree View.
+Figure 2 shows the GUI of Tonatiuh after finishing the above steps. You can see the 5 m x 5 m spherical facet of the small heliostat in Tonatiuh's 3D view, the nodes that compose the Heliostat in Tonatiuh's Tree View, and the values that define the main parameter of the spherical heliostat facet in the Object Inspector view, just below the Tree View.
 
 ||<a href="http://picasaweb.google.com/lh/photo/iLnAZ6EyD3wK2ZEZuA006A?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TNqvQaaCObI/AAAAAAAAAuU/qz51aN7FzHs/s400/HeliostatModeling01.png" height="320" width="400" /></a>||
-|| *Figure 1.* State of Tonatiuh's GUI after finishing the steps outlined.||
+|| *Figure 2.* State of Tonatiuh's GUI after finishing the steps outlined.||
 
 Obviously, the content of the Object Inspector view changes depending on the Tree View item selected. Thus, if instead of having the Spherical-rectangle shape node selected you have the "Heliostat" TSeparatorKit selected you will see the !SeparatorKit Transform dialog, showing the following parameter values.
 {{{
@@ -76,9 +92,9 @@ Once the shape of the heliostat facet has been modeled, it is the time to model 
  # After the new material note is created within the heliostat's TShapeKit, select the material node to change the default material's properties.
  # In the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, for the purpose of this tutorial, please, change the value of the parameter “m_reflectivity” from 0 to 1.
 
-After following the above steps the Tree View of Tonatiuh should look as in Figure 2.
+After following the above steps the Tree View of Tonatiuh should look as in Figure 3.
 
 ||<a href="http://picasaweb.google.com/lh/photo/BxO7cknLaqRnwLYV5y_9Sw?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TNsw0yX5PaI/AAAAAAAAAus/avaPRGfadkQ/s800/tutorial_01_TreeViewStatus.png" height="275" width="293" /></a>||
-|| *Figure 2.* Tonatiuh's Tree View after adding the material.||
+|| *Figure 3.* Tonatiuh's Tree View after adding the material.||
 
 = Basic central receiver input aperture modeling =
