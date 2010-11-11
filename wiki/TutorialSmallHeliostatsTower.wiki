@@ -36,12 +36,14 @@ The tower system that we want to model in this tutorial consist of:
  * A tower, and
  * The input aperture of the solar central receiver.
 
-Figure 1 shows the basic layout the heliostat field and the relative location of the tower. From the dimensions presented in the figure, knowing that the distance between the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters, it is straightforward to compute the relative coordinates of the center of the facet of each heliostat in the field.
+Figure 1 shows the basic layout the heliostat field and the relative location of the tower. As it can be seen, the heliostats form an array of 25 columns and 20 rows, regularly spaced.
+
+From the dimensions presented in the figure, knowing that the distance between the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters, it is straightforward to compute the relative coordinates of the center of the facet of each heliostat in the field.
 
 ||<a href="http://picasaweb.google.com/lh/photo/3H_7Wx8mEbQJgDQdP2tq4g?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TNs4vsgCn5I/AAAAAAAAAu4/f86f4nGSJGY/s400/tutorial_01_plant_layout.png" height="400" width="353" /></a>||
 || *Figure 1.* Tower system layout.||
 
-We will assume that all of the heliostats will aim to the center of the input aperture, which we will define as a 10 meters by 10 meters target with its center 130 m above the plane defined by the centers of the facets of the heliostats.
+We will assume that all of the heliostats will aim to the center of the input aperture, which is a 10 meters by 10 meters target with its center 130 m above the plane defined by the centers of the facets of the heliostats.
 
 = Basic heliostat modeling =
 
