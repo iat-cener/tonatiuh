@@ -40,6 +40,9 @@ Figure 1 shows the basic layout the heliostat field and the relative location of
 
 From the dimensions presented in the figure, knowing that the distance between the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters, it is straightforward to compute the relative coordinates of the center of the facet of each heliostat in the field.
 
+Obviously, to do that you need to select the position of the origin of coordinates. For convenience, we fix this origin at the center of the heliostat field, with the positive x-axis towards the East, the postive y-axis towards the zeinth, and the positive z-axist towards the North.
+
+
 ||<a href="http://picasaweb.google.com/lh/photo/zSYmj10T-INIlzN09Dl_VQ?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TNu3lklUMBI/AAAAAAAAAvI/S4_xlucHQNA/s400/tutorial_01_plant_layout2.png" height="347" width="400" /></a>||
 || *Figure 1.* Tower system layout.||
 
