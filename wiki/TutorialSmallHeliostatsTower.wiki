@@ -38,9 +38,7 @@ The tower system that we want to model in this tutorial consist of:
 
 Figure 1 shows the basic layout the heliostat field and the relative location of the tower. As it can be seen, the heliostats form an array of 25 columns and 20 rows, regularly spaced.
 
-From the dimensions presented in the figure, knowing that the distance between the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters, it is straightforward to compute the relative coordinates of the center of the facet of each heliostat in the field.
-
-Obviously, to do that you need to select the position of the origin of coordinates. For convenience, we fix this origin at the center of the heliostat field, with the positive x-axis towards the East, the postive y-axis towards the zeinth, and the positive z-axist towards the North.
+From the dimensions presented in the figure, knowing that the distance between the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters, it is straightforward to compute the relative coordinates of the center of the facet of each heliostat in the field. Obviously, to do that you need to select the position of the origin of coordinates. For convenience, we fix this origin at the center of the heliostat field, with the positive x-axis towards the East, the postive y-axis towards the zeinth, and the positive z-axist towards the North.
 
 
 ||<a href="http://picasaweb.google.com/lh/photo/zSYmj10T-INIlzN09Dl_VQ?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TNu3lklUMBI/AAAAAAAAAvI/S4_xlucHQNA/s400/tutorial_01_plant_layout2.png" height="347" width="400" /></a>||
@@ -101,3 +99,11 @@ After following the above steps the Tree View of Tonatiuh should look as in Figu
 || *Figure 3.* Tonatiuh's Tree View after adding the material.||
 
 = Basic central receiver input aperture modeling =
+To model de target do the following:
+ # In Tonatiuh's Tree View click on the TSeparatorKit "RoodNode".
+ # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "RootNode".
+ # Double click on the newly created TSeparatorKit node and change its name to "Target".
+ # With the TSeparatorKit "Target" selected in the Tree View, go to the plug-ins Menu Bar and click on the TShapeKit icon to create a TShapeKit node under the "Target" node.
+ # By default this newly created TShapeKit will be labeled "TShapeKit1", keep the name, but click once upon it to select the node.
+ # With the "TShapeKit1" node selected, go to the plug-ins Menu Bar and click on the "Flat_rectangle" TShapeNode icon, to add a TShapeNode to the "TShapeKit1".
+ # By default this newly created TShapeNode will be labeled "Flat_Rectangle", keep the name.
