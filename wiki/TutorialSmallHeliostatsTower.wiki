@@ -101,7 +101,7 @@ To model the target do the following:
  # Double click on the newly created TSeparatorKit node and change its name to "Target".
  # With the TSeparatorKit "Target" selected in the Tree View, go to the plug-ins Menu Bar and click on the TShapeKit icon to create a TShapeKit node under the "Target" node.
  # By default this newly created TShapeKit will be labeled "TShapeKit1", keep the name, but click once upon it to select the node.
- # With the "TShapeKit1" node selected, go to the plug-ins Menu Bar and click on the "Flat_rectangle" TShapeNode icon, to add a TShapeNode to the "TShapeKit1".
+ # With the "TShapeKit1" node selected, go to the plug-ins Menu Bar and click on the "Flat_rectangle" TShapeNode icon to add a TShapeNode to the "TShapeKit1".
  # By default this newly created TShapeNode will be labeled "!Flat_Rectangle", keep the name.
 
 TO BE CONTINUED...
