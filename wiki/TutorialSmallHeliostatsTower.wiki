@@ -1,7 +1,6 @@
 #summary How to model a tower system with 500 one-facet small heliostats.
 
 = Introduction =
-
 This tutorial explains:
 
  * How to use “!Tracker_Heliostat” plug-ins to embed  solar tracking behavior within the Tonatiuh model of a solar concentrating system.
@@ -47,12 +46,9 @@ From the dimensions presented in the figure, knowing that the distance between t
 We will assume that all of the heliostats will aim to the center of the input aperture, which is a 10 meters by 10 meters target with its center 130 m above the plane defined by the centers of the facets of the heliostats.
 
 = Basic heliostat modeling =
-
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
-
 == Heliostat shape ==
-
 The heliostat mirror is assumed to be a 5 meters by 5 meters spherical rectangular mirror. Since, for the heliostat field that will be modeled, the characteristic slant range of a heliostat is 150 m, the radius of the spherical mirror will be 300 m.
 
 Therefore, to model the shape of the heliostat in Tonatiuh, please, do the following:
@@ -86,7 +82,6 @@ center            0 0 0
 }}}
 
 == Heliostat mirror material ==
-
 Once the shape of the heliostat facet has been modeled, it is the time to model the heliostat mirror material. To do this, please, do the following:
 
  #  Select the heliostat TShapeKit node labeled "Mirror".
@@ -94,14 +89,12 @@ Once the shape of the heliostat facet has been modeled, it is the time to model 
  # After the new material note is created within the heliostat's TShapeKit, select the material node to change the default material's properties.
  # In the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, for the purpose of this tutorial, please, change the value of the parameter “m_reflectivity” from 0 to 1.
 
-After following the above steps the Tree View of Tonatiuh should look as in Figure 3.
-
 ||<a href="http://picasaweb.google.com/lh/photo/BxO7cknLaqRnwLYV5y_9Sw?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TNsw0yX5PaI/AAAAAAAAAus/avaPRGfadkQ/s800/tutorial_01_TreeViewStatus.png" height="275" width="293" /></a>||
 || *Figure 3.* Tonatiuh's Tree View after adding the material.||
 
+After following the above steps the Tree View of Tonatiuh should look as in Figure 3.
 
 = Basic central receiver input aperture modeling =
-
 To model the target do the following:
  # In Tonatiuh's Tree View click on the TSeparatorKit "RoodNode".
  # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "RootNode".
