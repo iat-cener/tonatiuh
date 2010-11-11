@@ -29,14 +29,12 @@ What we want to illustrate with this Tutorial is how you can use Tonatiuh to gen
 
 This look-up table will allow you to interpolate, for any given sun position, the solar collection efficiency of the tower system under analysis. An information that is relevant for many purposes, such as, for instance, to establish a quantitative metric to drive a heliostat field layout automatic optimization process.
 
-= Characteristics of the tower system to analyze =
+= Characteristics of the tower system to simulate =
 The tower system that we want to model in this tutorial consist of:
 
  * A dense heliostat field of 500 small 5 m x 5 m one-facet heliostats,
  * A tower, and
  * The input aperture of the solar central receiver.
-
-
 
 Figure 1 shows the basic layout the heliostat field and the relative location of the tower. From the dimensions presented in the figure, knowing that the distance between the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters, it is straightforward to compute the relative coordinates of the center of the facet of each heliostat in the field.
 
