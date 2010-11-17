@@ -1,3 +1,8 @@
+VERSION = 1.1.2
+
+# Define the preprocessor macro to get the application version in our application.
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
 COINDIR = $$(TDE_ROOT)/local
 MARBLEDIR = $$(TDE_ROOT)/local
 BERKELEYDBDIR = $$(TDE_ROOT)/local
