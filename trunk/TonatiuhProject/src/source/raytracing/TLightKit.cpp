@@ -164,6 +164,16 @@ void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* lat
 }
 
 
+void TLightKit::Update()
+{
+	double oldAzimuth = azimuth.getValue();
+	azimuth.setValue( 0 );
+	azimuth.setValue( oldAzimuth );
+	double oldZenith = zenith.getValue();
+	zenith.setValue( 0 );
+	zenith.setValue( oldZenith );
+}
+
 void TLightKit::UpdateSunPosition()
 {
 	Vector3D direction = Vector3D( sin( zenith.getValue() ) * sin( azimuth.getValue() ), cos( zenith.getValue() ), -sin( zenith.getValue() )*cos( azimuth.getValue() ) );

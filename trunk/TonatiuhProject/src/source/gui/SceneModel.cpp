@@ -837,6 +837,17 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 
 }
 
+
+void SceneModel::UpdateSceneModel()
+{
+	TLightKit* lightList = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
+	if( lightList ) lightList->Update();
+
+
+	emit layoutChanged();
+
+}
+
 void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 {
 	if( instanceNode.GetNode()->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )

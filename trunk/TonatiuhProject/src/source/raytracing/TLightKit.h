@@ -97,6 +97,8 @@ public:
     void ChangePosition( double newAzimuth, double newZenith, double newDistance );
     void GetPositionData( QDateTime* time, double* longitude, double* latitude );
 
+    void Update();
+
     trt::TONATIUH_REAL azimuth;
     trt::TONATIUH_REAL zenith;
     trt::TONATIUH_REAL distance;

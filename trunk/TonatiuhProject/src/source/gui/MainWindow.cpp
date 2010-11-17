@@ -2367,6 +2367,8 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
 	if ( m_commandStack ) m_commandStack->push( parameterModified );
 
 	m_document->SetDocumentModified( true );
+
+	m_sceneModel->UpdateSceneModel();
 }
 
 /**
