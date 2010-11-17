@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QBuffer>
 #include <QObject>
-#include <QVector>
+#include <QMap>
 
 class QAuthenticator;
 class QFile;
@@ -75,6 +75,7 @@ public slots:
 private:
 	void DeleteDirOldFiles( QString dirName );
 	void DeleteOldFiles();
+	void DownloadFile( QString urlPath, QString saveFileName );
 	void RemoveDir( QString dirName );
 
     QNetworkAccessManager* m_networkAccessManager;
@@ -86,7 +87,7 @@ private:
 
     QString m_lastUpdateData;
 	QString m_latestVersion;
-	QVector< QString > m_filelist; // The list of files to be downloaded
+	QMap< QString, QString > m_filelist; // The list of files to be downloaded
 
     QNetworkReply* m_fileReply;
     bool m_fileRequestAborted;

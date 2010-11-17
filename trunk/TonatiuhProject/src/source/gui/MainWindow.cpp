@@ -1547,7 +1547,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 									m_sceneModel->index (0,0,m_treeView->rootIndex()):
 									m_treeView->currentIndex();
 
-	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( parentIndex );
+	/*InstanceNode* ancestor = m_sceneModel->NodeFromIndex( parentIndex );
 	SoNode* parentNode = ancestor->GetNode();
 
 	if( parentNode->getTypeId() != TSeparatorKit::getClassTypeId() ) return;
@@ -1556,7 +1556,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	while( ancestor->GetParent() )
 	{
 		ancestor = ancestor->GetParent();
-	}
+	}*/
 
 	SoSceneKit* scene = m_document->GetSceneKit();
 

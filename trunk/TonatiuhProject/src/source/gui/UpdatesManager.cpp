@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-
 #include <QApplication>
 #include <QAuthenticator>
 #include <QBuffer>
@@ -65,7 +63,7 @@ UpdatesManager::UpdatesManager( QString currentVersion )
  m_osType( QLatin1String( "" ) ),
  m_currentVersion( currentVersion ),
  m_latestVersion( QLatin1String( "" ) ),
- m_filelist( 0 ),
+ m_filelist(),
  m_fileReply( 0 ),
  m_fileRequestAborted( false ),
  m_file( 0 ),
@@ -160,7 +158,11 @@ void UpdatesManager::CheckLastUpdate()
                 		{
                 			QDomElement e = ossubnode.toElement();
                 			if( e.tagName() == QLatin1String( "file" ) )
-									m_filelist.push_back( e.attribute( QLatin1String( "value" ), QLatin1String( "" ) ) );
+                			{
+                				QString type = e.attribute( QLatin1String( "type" ), QLatin1String( "" ) );
+                				QString fileName = e.attribute( QLatin1String( "value" ), QLatin1String( "" ) );
+									m_filelist.insertMulti( type, fileName );
+                			}
 
                 			ossubnode = ossubnode.nextSibling();
                 		}
@@ -193,7 +195,6 @@ void UpdatesManager::CheckLastUpdate()
 		// Update success dialog
 		QMessageBox::information( 0, QLatin1String("Tonatiuh"), tr("You are using the latest version." ) );
 	}
-
 	m_lastUpdateData = QLatin1String( "" );
 }
 
@@ -249,7 +250,6 @@ void UpdatesManager::FileDownloadComplete()
 
 void UpdatesManager::UpdateDownload( int fileIndex )
 {
-
 	QDir currentDir( qApp->applicationDirPath() );
 	currentDir.cdUp();
 	currentDir.cdUp();
@@ -257,53 +257,50 @@ void UpdatesManager::UpdateDownload( int fileIndex )
 	// Create a temporary folder
 	if( !currentDir.exists( QLatin1String( "tmp" ) ) )	currentDir.mkdir( QLatin1String( "tmp" ) );
 	QDir tmpDir( currentDir.absoluteFilePath( QLatin1String( "tmp" ) ) );
+	int nNewFiles = m_filelist.count( QLatin1String( "new" ) );
+	int nReplaceFiles =  m_filelist.count( QLatin1String( "replace" ) );
 
-	if( fileIndex < m_filelist.size() )
+	if( ( fileIndex < nNewFiles ) & ( fileIndex < m_filelist.size() ) )
 	{
-		QString urlPath = QString( QLatin1String( "http://tonatiuh.googlecode.com/svn/updates/release-%1/%2/%3" ) ).arg( m_latestVersion, m_osType, m_filelist[fileIndex] );
-		QUrl url( urlPath );
-		QString fileName = tmpDir.absoluteFilePath( m_filelist[fileIndex] );
-		if( QFile::exists( fileName ) )
-		{
-			if( QMessageBox::question( 0, QLatin1String("Tonatiuh"), tr("There already exists a file called %1 in "
-				"the current directory. Overwrite?").arg(fileName),
-				QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel )
-				== QMessageBox::Cancel )
-				return;
-			QFile::remove(fileName);
-		}
-		else
-		{
-			QFileInfo fileInfo( fileName );
-			if( !fileInfo.dir().exists() )	currentDir.mkpath( fileInfo.dir().path() );
+		QList< QString>  newFiles = m_filelist.values ( QLatin1String( "new" ) );
 
-		}
+		QString urlPath = QString( QLatin1String( "http://tonatiuh.googlecode.com/svn/updates/release-%1/%2/%3" ) ).arg( m_latestVersion, m_osType, newFiles[fileIndex] );
+		QString saveFileName = tmpDir.absoluteFilePath( newFiles[fileIndex] );
 
-		m_file = new QFile( fileName );
-
-		if( !m_file->open( QIODevice::WriteOnly ) )
-		{
-			QMessageBox::information( 0, QLatin1String( "Tonatiuh" ),
-				tr("Unable to save the file %1: %2.").arg(fileName, m_file->errorString() ) );
-			delete m_file;
-			m_file = 0;
-			return;
-		}
-
-		m_fileRequestAborted = false ;
-		m_fileReply = m_networkAccessManager->get( QNetworkRequest( url ) );
-		connect( m_fileReply, SIGNAL( finished() ), this, SLOT( FileDownloadComplete() ) );
-		connect( m_fileReply, SIGNAL( readyRead() ), this, SLOT( ReadFile() ) );
-
+		DownloadFile( urlPath, saveFileName );
 	}
-	else if( m_filedownloaded == m_filelist.size() && m_filedownloaded != 0 )
+	else if( ( fileIndex >= nNewFiles ) && ( fileIndex < ( nReplaceFiles + nNewFiles ) ) && ( fileIndex < m_filelist.size() ) )
 	{
+		int replaceFileIndex = fileIndex - nNewFiles;
+		QList< QString>  replaceFiles = m_filelist.values ( QLatin1String( "replace" ) );
+
+		QString urlPath = QString( QLatin1String( "http://tonatiuh.googlecode.com/svn/updates/release-%1/%2/%3" ) ).arg( m_latestVersion, m_osType, replaceFiles[replaceFileIndex] );
+		QString saveFileName = tmpDir.absoluteFilePath( replaceFiles[replaceFileIndex] );
+
+		DownloadFile( urlPath, saveFileName );
+	}
+	else if( m_filedownloaded == (  nReplaceFiles + nNewFiles  ) )
+	{
+		//New files
+		QList<QString> newFiles = m_filelist.values ( QLatin1String( "new" ) );
+
+		for( int i = 0; i < newFiles.size(); i++ )
+		{
+			QString currentFileName = currentDir.absoluteFilePath( newFiles[i] );
+			QString newFileName = tmpDir.absoluteFilePath( newFiles[i] );
+
+			QFile newFile( newFileName );
+			newFile.rename( currentFileName );
+		}
+
+		//Replace files. Backup old files and rename them
+		QList<QString>  replaceFiles = m_filelist.values ( QLatin1String( "replace" ) );
 
 		// Backup old files and rename them
-		for( int i = 0; i < m_filelist.size(); i++ )
+		for( int i = 0; i < replaceFiles.size(); i++ )
 		{
-			QString currentFileName = currentDir.absoluteFilePath( m_filelist[i] );
-			QString newFileName = tmpDir.absoluteFilePath( m_filelist[i] );
+			QString currentFileName = currentDir.absoluteFilePath( replaceFiles[i] );
+			QString newFileName = tmpDir.absoluteFilePath( replaceFiles[i] );
 			QString oldFileName = currentFileName + QLatin1String( ".old" );
 
 			QFile currentFile( currentFileName );
@@ -313,6 +310,20 @@ void UpdatesManager::UpdateDownload( int fileIndex )
 			newFile.rename( currentFileName );
 
 		}
+
+		//Remove files. Backup old files
+		QList< QString>  removeFiles = m_filelist.values ( QLatin1String( "remove" ) );
+
+		// Backup old files and rename them
+		for( int i = 0; i < removeFiles.size(); i++ )
+		{
+			QString currentFileName = currentDir.absoluteFilePath( removeFiles[i] );
+			QString oldFileName = currentFileName + QLatin1String( ".old" );
+
+			QFile currentFile( currentFileName );
+			currentFile.rename( oldFileName );
+		}
+
 		//Removes tmp dir
 		RemoveDir( tmpDir.absolutePath() );
 
@@ -353,6 +364,53 @@ void UpdatesManager::DeleteOldFiles()
 	appDir.cdUp();
 	appDir.cdUp();
 	DeleteDirOldFiles( appDir.absolutePath() );
+}
+
+/*!
+ * Downloads fileName file from updates server.
+ */
+void UpdatesManager::DownloadFile( QString urlPath, QString saveFileName  )
+{
+	QUrl url( urlPath );
+	if( QFile::exists( saveFileName ) )
+	{
+		if( QMessageBox::question( 0, QLatin1String("Tonatiuh"), tr("There already exists a file called %1 in "
+			"the current directory. Overwrite?").arg( saveFileName ),
+			QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel )
+			== QMessageBox::Cancel )
+			return;
+		QFile::remove( saveFileName );
+	}
+	else
+	{
+		QFileInfo fileInfo( saveFileName );
+		if( !fileInfo.dir().exists() )
+		{
+			QDir currentDir( qApp->applicationDirPath() );
+			currentDir.cdUp();
+			currentDir.cdUp();
+
+			currentDir.mkpath( fileInfo.dir().path() );
+		}
+
+	}
+
+	m_file = new QFile( saveFileName );
+
+	if( !m_file->open( QIODevice::WriteOnly ) )
+	{
+		QMessageBox::information( 0, QLatin1String( "Tonatiuh" ),
+			tr("Unable to save the file %1: %2.").arg( saveFileName, m_file->errorString() ) );
+		delete m_file;
+		m_file = 0;
+		return;
+	}
+
+	m_fileRequestAborted = false ;
+	m_fileReply = m_networkAccessManager->get( QNetworkRequest( url ) );
+	connect( m_fileReply, SIGNAL( finished() ), this, SLOT( FileDownloadComplete() ) );
+	connect( m_fileReply, SIGNAL( readyRead() ), this, SLOT( ReadFile() ) );
+
 }
 
 /*!
