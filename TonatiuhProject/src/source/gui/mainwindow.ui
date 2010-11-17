@@ -226,6 +226,9 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="fileToolBar">
+   <property name="windowTitle">
+    <string>File</string>
+   </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>

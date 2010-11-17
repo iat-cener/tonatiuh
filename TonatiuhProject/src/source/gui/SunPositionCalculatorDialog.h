@@ -46,6 +46,7 @@
 #include "sunpos.h"
 
 class QDateTime;
+class QTime;
 
 class SunPositionCalculatorDialog : public QDialog, private Ui::SunPositionCalculatorDialog
 {

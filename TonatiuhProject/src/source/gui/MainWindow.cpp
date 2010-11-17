@@ -921,19 +921,20 @@ void MainWindow::on_actionCalculateSunPosition_triggered()
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
 
-	SunPositionCalculatorDialog* sunposDialog= new SunPositionCalculatorDialog( );
-
 	QDateTime currentTime;
 	double longitude;
 	double latitude;
 
 	lightKit->GetPositionData( &currentTime, &longitude, &latitude );
-	sunposDialog->ChangePosition( currentTime, longitude, latitude );
 
-	connect( sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( ChangeSunPosition( QDateTime*, double, double ) ) );
-	sunposDialog->exec();
+	SunPositionCalculatorDialog sunposDialog;
+	sunposDialog.ChangePosition( currentTime, longitude, latitude );
 
-	delete sunposDialog;
+	connect( &sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( ChangeSunPosition( QDateTime*, double, double ) ) );
+
+	sunposDialog.exec();
+
+
 }
 
 /*!
