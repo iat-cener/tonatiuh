@@ -6,13 +6,15 @@
     </version>
     <files>
         <os value="win">
-            <file value="bin/release/Tonatiuh.exe" />
+            <file type="new" value="bin/release/b.txt" />
+            <file type="replace" value="bin/release/Tonatiuh.exe" />
+            <file type="remove" value="bin/release/a.txt" />
         </os>
         <os value="mac">
-            <file value="Contents/MacOS/Tonatiuh" />
+            <file type="replace" value="Contents/MacOS/Tonatiuh" />
         </os>
         <os value="linux">
-            <file value="bin/release/Tonatiuh" />
+            <file type="replace" value="bin/release/Tonatiuh" />
         </os>
     </files>
 </appname>
