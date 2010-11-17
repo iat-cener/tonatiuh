@@ -214,7 +214,6 @@ void SceneModel::GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent,
 		{
 			TTracker* trackerNode = static_cast< TTracker* >( tracker );
 			trackerNode->SetSceneKit( m_coinScene );
-			//trackerNode->SetSceneKit( 0 );
 			AddInstanceNode( instanceNodeParent, tracker );
 		}
 
