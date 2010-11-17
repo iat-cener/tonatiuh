@@ -96,6 +96,8 @@ public:
 
 	bool SetNodeName( SoNode* coinChild, QString newName );
 
+	void UpdateSceneModel();
+
 signals:
 	void LightNodeStateChanged( int newState );
 
