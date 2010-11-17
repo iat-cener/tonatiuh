@@ -36,6 +36,9 @@
  Juana Amieva, Azael Mancillas, Cesar Cantu.
  ***************************************************************************/
 
+#include <QDateTime>
+#include <QTime>
+
 #include "MapDialog.h"
 #include "SunPositionCalculatorDialog.h"
 #include "tgc.h"
@@ -44,7 +47,7 @@ SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 : QDialog( parent )
 {
 	setupUi(this);
-	//setFixedSize( QSize( 840, 460 ) );
+
 	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( UpdatePosition( QAbstractButton* ) ) );
 
 
@@ -60,8 +63,8 @@ SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 	connect( latitudeSpin, SIGNAL( valueChanged(  double ) ), worldMap, SLOT( LocalLatitudeChanged( double ) ) );
 
 	connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), worldMap, SLOT( SunChanged( cSunCoordinates ) ) );
-	connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), horizontalWidget, SLOT( CoordinatesChanged( cSunCoordinates ) ) );
-	connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), celestialWidget, SLOT( CoordinatesChanged( cSunCoordinates ) ) );
+	//connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), horizontalWidget, SLOT( CoordinatesChanged( cSunCoordinates ) ) );
+	//connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), celestialWidget, SLOT( CoordinatesChanged( cSunCoordinates ) ) );
 }
 
 SunPositionCalculatorDialog::~SunPositionCalculatorDialog()
@@ -89,7 +92,6 @@ void SunPositionCalculatorDialog::ChangePosition( QDateTime time, double longitu
 
 void SunPositionCalculatorDialog::UpdatePosition( QAbstractButton* button )
 {
-
 	if( buttonBox->buttonRole( button ) == QDialogButtonBox::ApplyRole )
 	{
 		QDateTime* time = GetTime();
@@ -140,7 +142,7 @@ void SunPositionCalculatorDialog::on_selectButton_clicked()
 void SunPositionCalculatorDialog::CalculateSunPosition()
 {
 
-   //Fecha y Hora
+	//Fecha y Hora
 	QDateTime* time = GetTime();
 
 	int year = time->date().year();
@@ -170,4 +172,6 @@ QDateTime* SunPositionCalculatorDialog::GetTime()
 
 	QDateTime* dateTime = new QDateTime( calendarWidget->selectedDate(), time );
 	return dateTime;
+
+	return 0;
 }
