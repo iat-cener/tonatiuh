@@ -78,7 +78,7 @@ To model the tower do the following:
  # In Tonatiuh's Tree View click on the TSeparatorKit "!RootNode".
  # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "!RootNode".
  # Double click on the newly created TSeparatorKit node and change its name to "!Tower_Frame".
- # With the "!Tower_Frame" node selected, go to the "Transform" properties dialog, just below the tree view, and set the transform propoerties as follows:
+ # With the "!Tower_Frame" node selected, go to the "Transform" properties dialog, just below the tree view, and set the transform properties as follows:
 {{{
 translation        0 0 76.35
 rotation           0 0 1 0
