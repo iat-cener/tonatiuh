@@ -99,6 +99,14 @@ To model the target do the following:
  # In Tonatiuh's Tree View click on the TSeparatorKit "!RootNode".
  # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "!RootNode".
  # Double click on the newly created TSeparatorKit node and change its name to "!Target_Frame".
+ # With the "!Target_Frame" node selected, go to the "Transform" properties dialog, just below the tree view, and set the transform propoerties as follows:
+{{{
+translation        0 130 74.25
+rotation           -1 0 0 1.5707964
+scaleFactor        1 1 1
+scaleOrientation   0 0 1 0
+center             0 0 0
+}}}
  # With the TSeparatorKit "!Target_Frame" selected in the Tree View, go to the plug-ins Menu Bar and click on the TShapeKit icon to create a TShapeKit node under the "!Target_Frame" node.
  # By default this newly created TShapeKit will be labeled "TShapeKit1", double click on the name and change it to "!Target_ShapeKit".
  # With the "!Target_ShapeKit" node selected, go to the plug-ins Menu Bar and click on the "!Flat_rectangle" TShapeNode icon to add a TShapeNode to the "!Target_ShapeKit".
