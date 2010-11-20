@@ -120,11 +120,11 @@ As mentioned before, the heliostat field we want to model is composed of 500 sma
 
 Please, to model the heliostat field do the following:
 
- # In Tonatiuh's Tree View, click on the "RootNode" separator node to select it.
- # With the "RootNode" selected go to the Menu Bar and click on the TSeparatorKit icon, this will have the effect of inserting a new TSeparatorKit under the node "RootNode".
- # Change the name of the newly created TSepartorKit from "TSeparatorKit1" to "HeliostatField_Frame".
+ # In Tonatiuh's Tree View, click on the "!RootNode" separator node to select it.
+ # With the "!RootNode" selected go to the Menu Bar and click on the TSeparatorKit icon, this will have the effect of inserting a new TSeparatorKit under the node "!RootNode".
+ # Change the name of the newly created TSepartorKit from "TSeparatorKit1" to "!HeliostatField_Frame".
  # Repeat the following two steps 20 times, replacing "XX" in the name "RowXX_Frame" by the number of the repetition:
-   * Select the node "HeliostatField_Frame" and go to the Menu Bar to insert another TSeparatorKit node below it.
+   * Select the node "!HeliostatField_Frame" and go to the Menu Bar to insert another TSeparatorKit node below it.
    * Change the name of the newly created TSeparatorKit node to "RowXX_Frame".
  # After the 20 TSeparatorKit nodes "RowXX_Frame" are created change their "Transform" so that the values of their "translation" parameters are as follows:
 {{{
