@@ -120,9 +120,9 @@ activeSide FRONT
 
  # Once the shape of the target has been modeled, it is the time to model the material. To do this, please, do the following:
 
-   ## Under the "!Target_Frame" TSeparatorKit click the TShapeKit node labeled "!Target_ShapeKit" to select it.
-   ## With the "!Target_ShapeKit" selected, go to the Tonatiuh plug-ins Menu Bar and select the !Specular_Standard_Material icon.
-   ## After the new material node is created within the "!Target_ShapeKit" node, click on it to select it.
-   ## With the "!Specular_Standard_Material" node selected go to the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, and verify that value of “m_reflectivity” is set to 0.
+     * Under the "!Target_Frame" TSeparatorKit click the TShapeKit node labeled "!Target_ShapeKit" to select it.
+     * With the "!Target_ShapeKit" selected, go to the Tonatiuh plug-ins Menu Bar and select the !Specular_Standard_Material icon.
+     * After the new material node is created within the "!Target_ShapeKit" node, click on it to select it.
+    * With the "!Specular_Standard_Material" node selected go to the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, and verify that value of “m_reflectivity” is set to 0.
 
 TO BE CONTINUED...
