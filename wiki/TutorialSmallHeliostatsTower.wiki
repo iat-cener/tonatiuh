@@ -62,7 +62,7 @@ center             0 0 0
  # By default this newly created TShapeKit will be labeled "TShapeKit1", double click on the name and change it to "!Target_ShapeKit".
  # With the "!Target_ShapeKit" node selected, go to the plug-ins Menu Bar and click on the "!Flat_rectangle" TShapeNode icon to add a TShapeNode to the "!Target_ShapeKit".
  # By default this newly created TShapeNode will be labeled "!Flat_Rectangle", keep the name.
- # Click on the "!Flat_Rectangle" TShapeNode to select it. Go to the “!ShapeFlatRectangle” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
+ # Click on the "!Flat_Rectangle" TShapeNode to select it. Go to the “!ShapeFlatRectangle” dialog that will appear below the Tree View and set the values of the parameters that define this shape node to:
 {{{
 width      10
 height     10
@@ -71,7 +71,18 @@ activeSide FRONT
  # Under the "!Target_Frame" TSeparatorKit click the TShapeKit node labeled "!Target_ShapeKit" to select it.
  # With the "!Target_ShapeKit" selected, go to the Tonatiuh plug-ins Menu Bar and select the !Specular_Standard_Material icon.
  # After the new material node is created within the "!Target_ShapeKit" node, click on it to select it.
- # With the "!Specular_Standard_Material" node selected go to the !MaterialStandardSpecular properties dialog that will appear below the Tree View, and verify that value of “m_reflectivity” is set to 0.
+ # With the "!Specular_Standard_Material" node selected go to the !MaterialStandardSpecular properties dialog that will appear below the Tree View, and set the values of the parameters that define this material node to:
+{{{
+m_reflectivity   0
+m_sigmaSlope     2
+m_distribution   PILLBOX
+m_ambientColor   0 0 0
+m_diffuseColor   0 0 0
+m_specularColor  0 0 0
+m_emissiveColor  0 0 0
+m_shininess      0
+m_transparencey  0
+}}}
 
 = Tower model =
 To model the tower do the following:
