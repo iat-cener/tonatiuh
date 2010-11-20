@@ -115,7 +115,12 @@ activeSide  OUTSIDE
 
 Figure 2 shows the GUI of Tonatiuh after finishing the above steps. In four different 3D views you can see, from differente point of views, the 10 m x 10 m flat rectangle modeling the aperture and the 130 meters tall cone modeling the tower. Furthremore, in the Tree View, you can see the tree-node structure that makes up the current definition of the solar concentrating system, which up this point is only composed of the central receiver input aperture model or target and the tower model.
 
-= Heliostat model =
+= Heliostat field model =
+As mentioned before, the heliostat field we want to model is composed of 500 small 5 m x 5 m one-facet heliostats, distributed in a rectangular array of 20 ro
+
+
+
+
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
 == Heliostat shape ==
@@ -125,11 +130,11 @@ Therefore, to model the shape of the heliostat in Tonatiuh, please, do the follo
 
  # Go to the Tree View of Tonatiuh and click on the !RootNode TSeparatorKit to select it.
  # Once the !RootNode is selected, go to the plug-in Menu Bar and click on  the TSeparatorKit icon to insert a new TSeparatorKit below !RootNode.
- # Double click on the newly inserted TSeparatorKit and change its name from “TSeparatorKit1” to “Heliostat”.
- # With the “Heliostat” node selected in the Tree View, go to the plug-in Menu Bar and click on the !ShapeKit icon to insert a new TShapeKit object below the “Heliostat” TSeparatorKit.
- # Expand the “Heliostat” node, if it is not already expanded, to make the newly created TSeparatorKit visible in the Tree View. Once it is visible, double click on to change its name from “TShapeKit1” to “Mirror”.
- # With the newly created “Mirror” TSeparatorKit selected, go to the plug-in Menu Bar and click on the “Spherical_rectangle” icon to insert a new “Spherical_rectangle” shape node under the “Mirror” TShapeKit. This new shape node will be created with the default name “Spherical_rectangle”, keep that name.
- # With the “Spherical_rectangle” shape node selected in the Tree View, go to the “!ShapeSphericalRectangle” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
+ # Double click on the newly inserted TSeparatorKit and change its name from “TSeparatorKit1” to “Heliostat_Frame”.
+ # With the “Heliostat_Frame” node selected in the Tree View, go to the plug-in Menu Bar and click on the !ShapeKit icon to insert a new TShapeKit object below the “Heliostat_Frame” TSeparatorKit.
+ # Expand the “Heliostat” node, if it is not already expanded, to make the newly created TSeparatorKit visible in the Tree View. Once it is visible, double click on to change its name from “TShapeKit1” to “Heliostat_ShapeKit”.
+ # With the newly created “Heliostat_ShapeKit” TShapeKit selected, go to the plug-in Menu Bar and click on the “Spherical_rectangle” icon to insert a new “Spherical_rectangle” shape node under the “Heliostat_ShapeKit” node. This new shape node will be created with the default name “Spherical_rectangle”, keep that name.
+ # With the “Spherical_rectangle” shape node selected in the Tree View, go to the “!ShapeSphericalRectangle” dialog that will appear below the Tree View and set the values of the parameters that define this shape node to:
 {{{
 radius     300
 width X    5
