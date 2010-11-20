@@ -116,8 +116,41 @@ activeSide  OUTSIDE
 Figure 2 shows the GUI of Tonatiuh after finishing the above steps. In four different 3D views you can see, from differente point of views, the 10 m x 10 m flat rectangle modeling the aperture and the 130 meters tall cone modeling the tower. Furthremore, in the Tree View, you can see the tree-node structure that makes up the current definition of the solar concentrating system, which up this point is only composed of the central receiver input aperture model or target and the tower model.
 
 = Heliostat field model =
-As mentioned before, the heliostat field we want to model is composed of 500 small 5 m x 5 m one-facet heliostats, distributed in a rectangular array of 20 ro
+As mentioned before, the heliostat field we want to model is composed of 500 small 5 m x 5 m one-facet heliostats, distributed in a rectangular array of 20 rows and 25 columns.
 
+Please, to model the heliostat field do the following:
+
+ # In Tonatiuh's Tree View, click on the "RootNode" separator node to select it.
+ # With the "RootNode" selected go to the Menu Bar and click on the TSeparatorKit icon, this will have the effect of inserting a new TSeparatorKit under the node "RootNode".
+ # Change the name of the newly created TSepartorKit from "TSeparatorKit1" to "HeliostatField_Frame".
+ # Repeat the following two steps 20 times, replacing "XX" in the name "RowXX_Frame" by the number of the repetition:
+   * Select the node "HeliostatField_Frame" and go to the Menu Bar to insert another TSeparatorKit node below it.
+   * Change the name of the newly created TSeparatorKit node to "RowXX_Frame".
+ # After the 20 TSeparatorKit nodes "RowXX_Frame" are created change their "Transform" so that the values of their "translation" parameters are as follows:
+{{{
+Row01_Frame: translation 0 0 -52.3
+Row02_Frame: translation 0 0 -46.8
+Row03_Frame: translation 0 0 -41.3
+Row04_Frame: translation 0 0 -35.8
+Row05_Frame: translation 0 0 -30.3
+Row06_Frame: translation 0 0 -24.8
+Row07_Frame: translation 0 0 -19.3
+Row08_Frame: translation 0 0 -13.8
+Row09_Frame: translation 0 0 -8.3
+Row10_Frame: translation 0 0 -2.8
+Row11_Frame: translation 0 0 2.8
+Row12_Frame: translation 0 0 8.3
+Row13_Frame: translation 0 0 13.8
+Row14_Frame: translation 0 0 19.3
+Row15_Frame: translation 0 0 24.8
+Row16_Frame: translation 0 0 30.3
+Row17_Frame: translation 0 0 35.8
+Row18_Frame: translation 0 0 41.3
+Row19_Frame: translation 0 0 46.8
+Row20_Frame: translation 0 0 52.33
+}}}
+
+TO BE CONTINUED...
 
 
 
