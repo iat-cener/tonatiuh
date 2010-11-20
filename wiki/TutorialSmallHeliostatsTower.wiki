@@ -128,30 +128,59 @@ Please, to model the heliostat field do the following:
    * Change the name of the newly created TSeparatorKit node to "RowXX_Frame".
  # After the 20 TSeparatorKit nodes "RowXX_Frame" are created change their "Transform" so that the values of their "translation" parameters are as follows:
 {{{
-Row01_Frame: translation 0 0 -52.3
-Row02_Frame: translation 0 0 -46.8
-Row03_Frame: translation 0 0 -41.3
-Row04_Frame: translation 0 0 -35.8
-Row05_Frame: translation 0 0 -30.3
-Row06_Frame: translation 0 0 -24.8
-Row07_Frame: translation 0 0 -19.3
-Row08_Frame: translation 0 0 -13.8
-Row09_Frame: translation 0 0 -8.3
-Row10_Frame: translation 0 0 -2.8
-Row11_Frame: translation 0 0 2.8
-Row12_Frame: translation 0 0 8.3
-Row13_Frame: translation 0 0 13.8
-Row14_Frame: translation 0 0 19.3
-Row15_Frame: translation 0 0 24.8
-Row16_Frame: translation 0 0 30.3
-Row17_Frame: translation 0 0 35.8
-Row18_Frame: translation 0 0 41.3
-Row19_Frame: translation 0 0 46.8
-Row20_Frame: translation 0 0 52.33
+Row01_Frame: translation   0 0 -52.3
+Row02_Frame: translation   0 0 -46.8
+Row03_Frame: translation   0 0 -41.3
+Row04_Frame: translation   0 0 -35.8
+Row05_Frame: translation   0 0 -30.3
+Row06_Frame: translation   0 0 -24.8
+Row07_Frame: translation   0 0 -19.3
+Row08_Frame: translation   0 0 -13.8
+Row09_Frame: translation   0 0 -8.3
+Row10_Frame: translation   0 0 -2.8
+Row11_Frame: translation   0 0 2.8
+Row12_Frame: translation   0 0 8.3
+Row13_Frame: translation   0 0 13.8
+Row14_Frame: translation   0 0 19.3
+Row15_Frame: translation   0 0 24.8
+Row16_Frame: translation   0 0 30.3
+Row17_Frame: translation   0 0 35.8
+Row18_Frame: translation   0 0 41.3
+Row19_Frame: translation   0 0 46.8
+Row20_Frame: translation   0 0 52.33
 }}}
-
-TO BE CONTINUED...
-
+  # Once the translation parameters of the transforms of the 20 TSeparatorKit nodes are updated, click on the TSeparatorKit "Row01_Frame" to select it.
+  # With the "Row01_Frame" selected in Tonatiuh's Tree View, go to the Menu Bar and click on the TSeparatorKit icon, to insert a new node of that kind under the "Row01_Frame".
+  # Rename the TSeparatorKit just created to "Row".
+  # Select the TSeparatorKit "Row" and create under it 25 TSeparatorKit nodes, named "HeliostatXX_Frame", where "XX" goes from 1 to 25.
+  # After the 25 TSeparatorKit nodes "HeliostatXX_Frame" are created change their "Transform" so that the values of their "translation" parameters are as follows:
+{{{
+Heliostat01_Frame: translation   0 0 0
+Heliostat02_Frame: translation   0 0 0
+Heliostat03_Frame: translation   0 0 0
+Heliostat04_Frame: translation   0 0 0
+Heliostat05_Frame: translation   0 0 0
+Heliostat06_Frame: translation   0 0 0
+Heliostat07_Frame: translation   0 0 0
+Heliostat08_Frame: translation   0 0 0
+Heliostat09_Frame: translation   0 0 0
+Heliostat10_Frame: translation   0 0 0
+Heliostat11_Frame: translation   0 0 0
+Heliostat12_Frame: translation   0 0 0
+Heliostat13_Frame: translation   0 0 0
+Heliostat14_Frame: translation   0 0 0
+Heliostat15_Frame: translation   0 0 0
+Heliostat16_Frame: translation   0 0 0
+Heliostat17_Frame: translation   0 0 0
+Heliostat18_Frame: translation   0 0 0
+Heliostat19_Frame: translation   0 0 0
+Heliostat20_Frame: translation   0 0 0
+Heliostat21_Frame: translation   0 0 0
+Heliostat22_Frame: translation   0 0 0
+Heliostat23_Frame: translation   0 0 0
+Heliostat24_Frame: translation   0 0 0
+Heliostat25_Frame: translation   0 0 0
+}}}
 
 
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
