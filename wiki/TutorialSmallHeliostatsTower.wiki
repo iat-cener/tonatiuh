@@ -89,8 +89,8 @@ center             0 0 0
  # With the TSeparatorKit "!Tower_Frame" selected in the Tree View, go to the plug-ins Menu Bar and click on the TShapeKit icon to create a TShapeKit node under the "!Tower_Frame" node.
  # By default this newly created TShapeKit will be labeled "TShapeKit1", double click on the name and change it to "!Tower_ShapeKit".
  # With the "!Tower_ShapeKit" node selected, go to the plug-ins Menu Bar and click on the "!Cone" TShapeNode icon to add a cone TShapeNode to the "!Tower_ShapeKit".
- # By default this newly created TShapeNode will be labeled "!Cone", keep the name.
- # Click on the "!Cone" TShapeNode to select it. Go to the “!ShapeCone” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
+ # By default this newly created TShapeNode will be labeled "Cone", keep the name.
+ # Click on the "Cone" TShapeNode to select it. Go to the “!ShapeCone” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
 {{{
 baseRadius  3
 topRadius   2
