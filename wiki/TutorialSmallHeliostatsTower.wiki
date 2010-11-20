@@ -155,31 +155,31 @@ Row20_Frame: translation   0 0 52.33
  # Select the TSeparatorKit "Row" and create under it 25 TSeparatorKit nodes, named "HeliostatXX_Frame", where "XX" goes from 1 to 25.
  # After the 25 TSeparatorKit nodes "HeliostatXX_Frame" are created change their "Transform" so that the values of their "translation" parameters are as follows:
 {{{
-Heliostat01_Frame: translation   0 0 0
-Heliostat02_Frame: translation   0 0 0
-Heliostat03_Frame: translation   0 0 0
-Heliostat04_Frame: translation   0 0 0
-Heliostat05_Frame: translation   0 0 0
-Heliostat06_Frame: translation   0 0 0
-Heliostat07_Frame: translation   0 0 0
-Heliostat08_Frame: translation   0 0 0
-Heliostat09_Frame: translation   0 0 0
-Heliostat10_Frame: translation   0 0 0
-Heliostat11_Frame: translation   0 0 0
-Heliostat12_Frame: translation   0 0 0
+Heliostat01_Frame: translation   -66 0 0
+Heliostat02_Frame: translation   -60.5 0 0
+Heliostat03_Frame: translation   -55 0 0
+Heliostat04_Frame: translation   -49.5 0 0
+Heliostat05_Frame: translation   -44 0 0
+Heliostat06_Frame: translation   -38.5 0 0
+Heliostat07_Frame: translation   -33 0 0
+Heliostat08_Frame: translation   -27.5 0 0
+Heliostat09_Frame: translation   -22 0 0
+Heliostat10_Frame: translation   -16.5 0 0
+Heliostat11_Frame: translation   -11 0 0
+Heliostat12_Frame: translation   -5.5 0 0
 Heliostat13_Frame: translation   0 0 0
-Heliostat14_Frame: translation   0 0 0
-Heliostat15_Frame: translation   0 0 0
-Heliostat16_Frame: translation   0 0 0
-Heliostat17_Frame: translation   0 0 0
-Heliostat18_Frame: translation   0 0 0
-Heliostat19_Frame: translation   0 0 0
-Heliostat20_Frame: translation   0 0 0
-Heliostat21_Frame: translation   0 0 0
-Heliostat22_Frame: translation   0 0 0
-Heliostat23_Frame: translation   0 0 0
-Heliostat24_Frame: translation   0 0 0
-Heliostat25_Frame: translation   0 0 0
+Heliostat14_Frame: translation   5.5 0 0
+Heliostat15_Frame: translation   11 0 0
+Heliostat16_Frame: translation   16.5 0 0
+Heliostat17_Frame: translation   22 0 0
+Heliostat18_Frame: translation   27.5 0 0
+Heliostat19_Frame: translation   33 0 0
+Heliostat20_Frame: translation   38.5 0 0
+Heliostat21_Frame: translation   44 0 0
+Heliostat22_Frame: translation   49.5 0 0
+Heliostat23_Frame: translation   55 0 0
+Heliostat24_Frame: translation   60.5 0 0
+Heliostat25_Frame: translation   66 0 0
 }}}
 
 
