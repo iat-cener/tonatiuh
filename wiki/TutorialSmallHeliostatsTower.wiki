@@ -96,12 +96,18 @@ After following the above steps the Tree View of Tonatiuh should look as in Figu
 
 = Basic central receiver input aperture modeling =
 To model the target do the following:
- # In Tonatiuh's Tree View click on the TSeparatorKit "!RoodNode".
+ # In Tonatiuh's Tree View click on the TSeparatorKit "!RootNode".
  # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "!RootNode".
  # Double click on the newly created TSeparatorKit node and change its name to "Target".
  # With the TSeparatorKit "Target" selected in the Tree View, go to the plug-ins Menu Bar and click on the TShapeKit icon to create a TShapeKit node under the "Target" node.
  # By default this newly created TShapeKit will be labeled "TShapeKit1", keep the name, but click once upon it to select the node.
  # With the "TShapeKit1" node selected, go to the plug-ins Menu Bar and click on the "Flat_rectangle" TShapeNode icon to add a TShapeNode to the "TShapeKit1".
  # By default this newly created TShapeNode will be labeled "!Flat_Rectangle", keep the name.
+# Click on the "Flat_Rectangle" TShapeNode to select it. Go to the “!ShapeFlatRectangle” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
+{{{
+width      10
+height     10
+activeSide FRONT
+}}}
 
 TO BE CONTINUED...
