@@ -45,8 +45,8 @@ From the dimensions presented in the figure, knowing that the distance between t
 
 We will assume that all of the heliostats will aim to the center of the input aperture, which is a 10 meters by 10 meters target with its center 130 m above the plane defined by the centers of the facets of the heliostats.
 
-= Basic central receiver input aperture modeling =
-To model the target do the following:
+= Central receiver input aperture model =
+To model the input aperture of the central recevier do the following:
  # In Tonatiuh's Tree View click on the TSeparatorKit "!RootNode".
  # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "!RootNode".
  # Double click on the newly created TSeparatorKit node and change its name to "!Target_Frame".
@@ -73,7 +73,33 @@ activeSide FRONT
  # After the new material node is created within the "!Target_ShapeKit" node, click on it to select it.
  # With the "!Specular_Standard_Material" node selected go to the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, and verify that value of “m_reflectivity” is set to 0.
 
-= Basic heliostat modeling =
+= Tower model =
+To model the tower do the following:
+ # In Tonatiuh's Tree View click on the TSeparatorKit "!RootNode".
+ # Go to the plug-ins Menu Bar and click on the TSeparatorKit icon, to add a new TSeparator as a new children of "!RootNode".
+ # Double click on the newly created TSeparatorKit node and change its name to "!Tower_Frame".
+ # With the "!Tower_Frame" node selected, go to the "Transform" properties dialog, just below the tree view, and set the transform propoerties as follows:
+{{{
+translation        0 0 76.35
+rotation           0 0 1 0
+scaleFactor        1 1 1
+scaleOrientation   0 0 1 0
+center             0 0 0
+}}}
+ # With the TSeparatorKit "!Tower_Frame" selected in the Tree View, go to the plug-ins Menu Bar and click on the TShapeKit icon to create a TShapeKit node under the "!Tower_Frame" node.
+ # By default this newly created TShapeKit will be labeled "TShapeKit1", double click on the name and change it to "!Tower_ShapeKit".
+ # With the "!Tower_ShapeKit" node selected, go to the plug-ins Menu Bar and click on the "!Cone" TShapeNode icon to add a cone TShapeNode to the "!Tower_ShapeKit".
+ # By default this newly created TShapeNode will be labeled "!Cone", keep the name.
+ # Click on the "!Cone" TShapeNode to select it. Go to the “!ShapeCone” dialog that will appear below the Tree View and change the values of of the parameters that define this shape node to:
+{{{
+baseRadius  3
+topRadius   2
+height      130
+phiMax      6.2831855
+activeSide  OUTSIDE
+}}} 
+
+= Heliostat model =
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
 == Heliostat shape ==
