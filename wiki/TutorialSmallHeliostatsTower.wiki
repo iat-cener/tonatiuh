@@ -99,6 +99,11 @@ phiMax      6.2831855
 activeSide  OUTSIDE
 }}} 
 
+||<a href="http://picasaweb.google.com/lh/photo/SPu_v27Kf41jWMoov4aMgg?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TOgx9NxKEWI/AAAAAAAAAwM/Ten7rUSUZT8/s400/tutorial_01_TargetAndTower.png" height="239" width="400" /></a>||
+|| *Figure 2.* View of Tonatiuh's GUI after modeling the target and the tower.||
+
+Figure 2 shows the GUI of Tonatiuh after finishing the above steps. In four different 3D views you can see, from differente point of views, the 10 m x 10 m flat rectangle modeling the aperture and the 130 meters tall cone modeling the tower. Furthremore, in the Tree View, you can see the tree-node structure that makes up the current definition of the solar concentrating system, which up this point is only composed of the central receiver input aperture model or target and the tower model.
+
 = Heliostat model =
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
