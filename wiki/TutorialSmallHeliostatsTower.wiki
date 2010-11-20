@@ -149,11 +149,11 @@ Row18_Frame: translation   0 0 41.3
 Row19_Frame: translation   0 0 46.8
 Row20_Frame: translation   0 0 52.33
 }}}
- # Once the translation parameters of the transforms of the 20 TSeparatorKit nodes are updated, click on the TSeparatorKit "Row01_Frame" to select it.
- # With the "Row01_Frame" selected in Tonatiuh's Tree View, go to the Menu Bar and click on the TSeparatorKit icon, to insert a new node of that kind under the "Row01_Frame".
+ # Once the translation parameters of the transforms of the 20 TSeparatorKit nodes are updated, click on the TSeparatorKit "!Row01_Frame" to select it.
+ # With the "!Row01_Frame" selected in Tonatiuh's Tree View, go to the Menu Bar and click on the TSeparatorKit icon, to insert a new node of that kind under the "!Row01_Frame".
  # Rename the TSeparatorKit just created to "Row".
  # Select the TSeparatorKit "Row" and create under it 25 TSeparatorKit nodes, named "HeliostatXX_Frame", where "XX" goes from 1 to 25.
- # After the 25 TSeparatorKit nodes "HeliostatXX_Frame" are created change their "Transform" so that the values of their "translation" parameters are as follows:
+ # After the 25 TSeparatorKit nodes "!HeliostatXX_Frame" are created change their "Transform" so that the values of their "translation" parameters are as follows:
 {{{
 Heliostat01_Frame: translation   0 0 0
 Heliostat02_Frame: translation   0 0 0
