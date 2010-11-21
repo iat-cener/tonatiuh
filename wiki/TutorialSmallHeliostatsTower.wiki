@@ -182,6 +182,7 @@ Heliostat24_Frame: translation   60.5 0 0
 Heliostat25_Frame: translation   66 0 0
 }}}
 
+TO BE CONTINUED ...
 
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
@@ -231,4 +232,4 @@ Once the shape of the heliostat facet has been modeled, it is the time to model 
 
 After following the above steps the Tree View of Tonatiuh should look as in Figure 3.
 
-TO BE CONTINUED...
+TO BE CONTINUED ...
