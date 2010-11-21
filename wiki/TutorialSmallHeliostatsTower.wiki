@@ -115,7 +115,9 @@ activeSide  OUTSIDE
 
 Figure 2 shows the GUI of Tonatiuh after finishing the above steps. In four different 3D views you can see, from differente point of views, the 10 m x 10 m flat rectangle modeling the aperture and the 130 meters tall cone modeling the tower. Furthremore, in the Tree View, you can see the tree-node structure that makes up the current definition of the solar concentrating system, which up this point is only composed of the central receiver input aperture model or target and the tower model.
 
-= Modeling the heliostat field layout =
+= Modeling the heliostat field =
+
+== Heliostat field layout ==
 As mentioned before, the heliostat field we want to model is composed of 500 small 5 m x 5 m one-facet heliostats, distributed in a rectangular array of 20 rows and 25 columns.
 
 Please, to model the heliostat field layout do the following:
@@ -197,7 +199,7 @@ After executing the steps above, the origins of the local coordinate frames of e
 
 However, those local heliostat frames modeled in Tonatiuh as TSeparatorKits, do not include yet the physical model of the heliostat, which in this tutorial is composed of a TShapeKit node, a TShape node, and a TMaterials node. That is the reason why at this stage in the modeling of the heliostat field, no heliostat is shown in Tonatiuh's 3D view.
 
-= Modeling the heliostat =
+== Heliostat ==
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
 The heliostat mirror is assumed to be a 5 meters by 5 meters spherical rectangular mirror. Since, for the heliostat field the characteristic slant range of a heliostat is 150 m, the radius of the spherical mirror will be 300 m. Therefore, to model the heliostat in Tonatiuh, please, do the following:
