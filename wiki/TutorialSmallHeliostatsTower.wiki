@@ -184,12 +184,14 @@ Heliostat25_Frame: translation   66 0 0
  # Once the translation parameters of the transforms of the 25 TSeparatorKit nodes are updated, click on the TSeparatorKit "!Heliostat01_Frame" to select it.
  # With the "!Heliostat01_Frame" selected in Tonatiuh's Tree View, go to the Menu Bar and click on the TSeparatorKit icon, to insert a new node of that kind under the "!Heliostat01_Frame".
  # Rename the TSeparatorKit just created to "Heliostat", and with it selected go to the Menu Bar and click on the "Heliostat_tracker" icon to insert a node of that type under the "Heliostat" TSeparatorKit node.
- # After creating the Heliostat_tracker node under the "Heliostat" TSeparatorKit node, select the Heliostat_tracker node and in the "TrackerHeliostat" dialog that appears just below the Tree View set the value of the parameter "aimingPoint" as follows:
+ # After creating the Heliostat_tracker node under the "Heliostat" TSeparatorKit node, select the Heliostat_tracker node and in the "!TrackerHeliostat" dialog that appears just below the Tree View set the value of the parameter "aimingPoint" as follows:
 {{{
 aimingPoint 0 130 74.25
 }}}
  # Now, right-click on the "Heliostat" TSeparatorKit node and in the pop-up menu that will be shown as a result select "copy" to copy the "Heliostat" node and its children, which in this case is only the Heliostat_tracker node. Alternatively, click on the "Heliostat" node and with the node selected in the Tree View push "Ctrl + C".
  # After you have copied the "Heliostat" node and its child (the Heliostat_tracker node) to the clip-board, select one by one the remaining 24 "HeliostatXX_Frame" nodes, which are children of the node "Row", and in each one of them do "Ctrl + V" to paste a copy of the "Heliostat" node below each those TSeparatorKit nodes.
+ # After executing the previous step, every "HeliostatXX_Frame" TSeparatorKit node, which is below the "Row" TSeparatorKit node, should have a "Heliostat" node as a child. Once this is achieved, select the "Row" TSeparatorKit and do "Ctrl + C" to copy it to the clip-board.
+ # With the "Row" TSeparatorKit and its 25 "HeliostatXX_Frame" as its children copied to the clip-board, select each one of the 19 remaining "RowXX_Frame" nodes and do "Ctrl + V" to paste a copy of "Row" belowe each one of them.
 
 The heliostat to model is an small one-facet heliostat. Only the mirror needs to be modeled in Tonatiuh, since for a given heliostat the supporting mirror structure and tracking mechanism is not expected to cast relevant shadows on nearby heliostats.
 
