@@ -204,26 +204,26 @@ The heliostat to model is an small one-facet heliostat. Only the mirror needs to
 
 The heliostat mirror is assumed to be a 5 meters by 5 meters spherical rectangular mirror. Since, for the heliostat field the characteristic slant range of a heliostat is 150 m, the radius of the spherical mirror will be 300 m. Therefore, to model the heliostat in Tonatiuh, please, do the following:
 
- # Go to the Tree View of Tonatiuh and expand the "!HeliostatField_Frame" TSeparatorKit node. Then, expand the "Row01_Frame" TSeparatorKit node. Then, expand the "Row" TSeparatorKit node. Then, expand the "Heliostat01_Frame" TSeparatorKit node, and click on the "Heliostat" TSeparatorKit node to select it.
- # Once the "Heliostat" node with the node path "HeliostatField_Frame\Row01_Frame\Row\Heliostat01_Frame\" is selected, go to the plug-in Menu Bar and click on the !ShapeKit icon to insert a new TShapeKit object below the “Heliostat” TSeparatorKit.
- # Expand the “Heliostat” node, if it is not already expanded, to make the newly created TSeparatorKit visible in the Tree View. Once it is visible, double click on to change its name from “TShapeKit1” to “Heliostat_ShapeKit”.
- # With the newly created “Heliostat_ShapeKit” TShapeKit selected, go to the plug-in Menu Bar and click on the “Spherical_rectangle” icon to insert a new “Spherical_rectangle” shape node under the “Heliostat_ShapeKit” node. This new shape node will be created with the default name “Spherical_rectangle”, change it to "Facet_Geometry".
- # With the “Facet_Geometry” shape node selected in the Tree View, go to the “!ShapeSphericalRectangle” dialog that will appear below the Tree View and set the values of the parameters that define this shape node to:
+ # Go to the Tree View of Tonatiuh and expand the "!HeliostatField_Frame" TSeparatorKit node. Then, expand the "!Row01_Frame" TSeparatorKit node. Then, expand the "Row" TSeparatorKit node. Then, expand the "!Heliostat01_Frame" TSeparatorKit node, and click on the "Heliostat" TSeparatorKit node to select it.
+ # Once the "Heliostat" node with the node path "!HeliostatField_Frame\!Row01_Frame\Row\!Heliostat01_Frame\" is selected, go to the plug-in Menu Bar and click on the !ShapeKit icon to insert a new TShapeKit object below the “Heliostat” TSeparatorKit.
+ # Expand the “Heliostat” node, if it is not already expanded, to make the newly created TSeparatorKit visible in the Tree View. Once it is visible, double click on to change its name from “TShapeKit1” to “!Heliostat_ShapeKit”.
+ # With the newly created “!Heliostat_ShapeKit” TShapeKit selected, go to the plug-in Menu Bar and click on the “!Spherical_rectangle” icon to insert a new “Spherical_rectangle” shape node under the “!Heliostat_ShapeKit” node. This new shape node will be created with the default name “Spherical_rectangle”, change it to "!Facet_Geometry".
+ # With the “!Facet_Geometry” shape node selected in the Tree View, go to the “!ShapeSphericalRectangle” dialog that will appear below the Tree View and set the values of the parameters that define this shape node to:
 {{{
 radius     300
 width X    5
 widthZ     5
 activeSide INSIDE
 }}}
- #  Select the "Heliostat_ShapeKit" TShapeKit node and go to the Tonatiuh plug-ins Menu Bar and select the !Specular_Standard_Material icon to insert a standard specular material node as a child of the "Heliostat_ShapeKit" node.
+ #  Select the "!Heliostat_ShapeKit" TShapeKit node and go to the Tonatiuh plug-ins Menu Bar and select the !Specular_Standard_Material icon to insert a standard specular material node as a child of the "!Heliostat_ShapeKit" node.
  # After the new material note is created within the heliostat's TShapeKit, select the material node to change the default material's properties.
  # In the !MaterialStandardSpecular preperties dialog that will appear below the Tree View, for the purpose of this tutorial, please, change the value of the parameter “m_reflectivity” from 0 to 1.
- # Once the first "Heliostat_ShapeKit" node is completed with its two childre nodes: "Facet_Geometry" and "Specular_Standard_Material", this same node has to be "paste-linked" into the 499 remaining "Heliostat" nodes, which are located under the following paths ""HeliostatField_Frame\RowXX_Frame\Row\HeliostatYY_Frame\", where XX is the row number, which goes from 0 to 20, and YY is the heliostat number in a given row, which goes from 0 to 25.
+ # Once the first "Heliostat_ShapeKit" node is completed with its two childre nodes: "!Facet_Geometry" and "!Specular_Standard_Material", this same node has to be "paste-linked" into the 499 remaining "Heliostat" nodes, which are located under the following paths "!HeliostatField_Frame\!RowXX_Frame\Row\!HeliostatYY_Frame\", where XX is the row number, which goes from 0 to 20, and YY is the heliostat number in a given row, which goes from 0 to 25.
  # To "paste link" the "Heliostat_ShapeKit" node, first copy it to the clip-board, by selecting it and doing "Ctrl + c", then right-click on the "Heliostat" node in which you want to do the "paste link" and, with the "Heliostat" node selected, in the menu that will pop-up select the "Paste Link" option, which is located just below the "Paste" option. By doing "Paste Link" instead of "Paste" you are obtaining a substantial amount of memory savings, since instead of copying 500 times the objects that compose the "Heliostat_ShapeKit" you are adding just 500 references (i.e., pointers) to original objects you created. 
 
 
-||<a href="http://picasaweb.google.com/lh/photo/BxO7cknLaqRnwLYV5y_9Sw?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TNsw0yX5PaI/AAAAAAAAAus/avaPRGfadkQ/s800/tutorial_01_TreeViewStatus.png" height="275" width="293" /></a>||
-|| *Figure 3.* Tonatiuh's Tree View after adding the material.||
+||<a href="http://picasaweb.google.com/lh/photo/S5g07Ts9LQMyb0vKsE_GmQ?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TOmkVRPo-QI/AAAAAAAAAxM/7JqCn9-ITSk/s400/tutorial_01_HeliostatFieldConstruction.png" height="239" width="400" /></a>||
+|| *Figure 3.* Modeling the heliostat field in Tonatiuh.||
 
 After following the above steps the Tree View of Tonatiuh should look as in Figure 3.
 
