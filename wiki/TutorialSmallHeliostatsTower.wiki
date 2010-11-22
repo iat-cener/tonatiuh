@@ -226,4 +226,8 @@ activeSide INSIDE
 
 Figure 3 shows Tonatiuh's GUI during the process of "Paste Link" the "!Heliostat_ShapeKit" in each one of the 500 nodes named "Heliostat" that are defined in the different rows of heliostats that form the heliostat field. The figure shows the instant in which the "!Heliostat_ShapeKit" node has been "paste linked" in the all the nodes named "Heliostat" of the first three rows (further away from the tower) and in 20 "Heliostat" nodes of fourth row. This is the reason the number in parenthesis before the "!Heliostat_ShapeKit" name indicates 95, since that number indicates the number of time a given object is referenced within Tonatiuh's physical description model.
 
+||<a href="http://picasaweb.google.com/lh/photo/MjMTOE4vNtrs8bKa7Tnp4g?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TOmyU_63hLI/AAAAAAAAAxY/dsLy1GURYQw/s400/tutorial_01_HeliostatField.png" height="240" width="400" /></a>||
+|| *Figure 4.* The heliostat field of 500 one-facet heliostats.||
+
+
 TO BE CONTINUED ...
