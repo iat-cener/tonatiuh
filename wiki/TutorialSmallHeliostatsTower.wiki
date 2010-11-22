@@ -235,8 +235,8 @@ Figure 4. Shows the Tonatiuh's GUI after the process of "Past Link" the "!Helios
 To define the characteristics of the direct solar radiation incident upon the solar concentrating system, please, do the following:
 
  # Go to the Main Menu and click on "Sun Light". 
- # Then, on the water-fall menu that will be presented, click on the "!Define SunLight..." option, which should be the only option available for selection. 
- # Clicking on the "!Define SunLight" option will result in the presentation of the pop-up menu named "Define Sun Light" to the user. On the "Sun Shape" tab of the dialog set the tab's parameter values as follows:
+ # Then, on the water-fall menu that will be presented, click on the "Define !SunLight..." option, which should be the only option available for selection. 
+ # Clicking on the "Define !SunLight" option will result in the presentation of the pop-up menu named "Define Sun Light" to the user. On the "Sun Shape" tab of the dialog set the tab's parameter values as follows:
 {{{
 Sunshape Type:      Pillbox_Sunshape
 irradiance (W/m2):  920
