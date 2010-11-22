@@ -229,5 +229,8 @@ Figure 3 shows Tonatiuh's GUI during the process of "Paste Link" the "!Heliostat
 ||<a href="http://picasaweb.google.com/lh/photo/MjMTOE4vNtrs8bKa7Tnp4g?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TOmyU_63hLI/AAAAAAAAAxY/dsLy1GURYQw/s400/tutorial_01_HeliostatField.png" height="240" width="400" /></a>||
 || *Figure 4.* The heliostat field of 500 one-facet heliostats.||
 
+Figure 4. Shows the Tonatiuh's GUI after the process of "Past Link" the "!Heliostat_ShapeKit" in each one of the 500 nodes named "Heliostat" has finished. You can see the 20 rows of 25 heliostats each that define the heliostat field. In the figure, all heliostats are aiming upwards, since the position of the sun and the rest of the characteristics that define the direct solar radiation reaching the heliostats has still to be defined.
+
+= Modeling the direct solar radiation =
 
 TO BE CONTINUED ...
