@@ -16,14 +16,14 @@ For a given position of the sun in the sky and a given value of the direct solar
 
 From the above definition of the heliostat field solar collection efficiency, it follows that this efficiency is a function of the heliostat reflectivity, the atmospheric transmissivity, the distances from the heliostats to their corresponding aiming points in the central receiver input aperture plane, the angle of incidence of the direct solar radiation upon the heliostats' mirrors (cosine factor) and the blocking and shadowing among heliostats.
 
-=== Simplifications ===
+== Simplifications ==
 To simplify matters, for the purpose of this tutorial, we will assume that all heliostats in the the heliostat field have the same reflectivity. If this is the case, the average heliostat reflectivity will appear in both the numerator and the denominator of the expression to estimate the solar collection efficiency of the heliostat field, and, thus, it will disappear from the expression. This implies that, in this specific case and for the specific assumptions we are considering, any average reflectivity value greater than zero will suffice for the purpose of calculating the heliostat field collection efficiency. Thus, we set the average heliostat reflectivity to one.
 
 Furthermore, for simplicity, we assume that the atmospheric losses from the heliostats to the central receiver aperture plane, due to atmospheric transmittance, are just one and the same small constant fraction for all heliostats, whatever their position in the field. With this assumption, as in the average heliostat reflectivity case, the atmospheric transmittance will reduce to an average value that will show up both in the numerator and denominator of the heliostat field solar collection efficiency calculation, canceling each other out. Because of this, for this tutorial, we set the atmospheric transmittance to one.
 
 With this simplifying assumptions the heliostat field solar collector efficiency will only depends, at any given instance of the day, on the cosine factor and the shadowing and blocking.
 
-=== Goal of the tower system analysis ===
+== Goal of the tower system analysis ==
 What we want to illustrate with this Tutorial is how you can use Tonatiuh to generate a look-up table or matrix of heliostat field solar collection efficiency values as a function of the two angles that define the Sun position in the sky (solar azimuth and zenith angle).
 
 This look-up table will allow you to interpolate, for any given sun position, the solar collection efficiency of the tower system under analysis. An information that is relevant for many purposes, such as, for instance, to establish a quantitative metric to drive a heliostat field layout automatic optimization process.
