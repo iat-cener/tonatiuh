@@ -232,20 +232,22 @@ Figure 3 shows Tonatiuh's GUI during the process of "Paste Link" the "!Heliostat
 Figure 4. Shows the Tonatiuh's GUI after the process of "Past Link" the "!Heliostat_ShapeKit" in each one of the 500 nodes named "Heliostat" has finished. You can see the 20 rows of 25 heliostats each that define the heliostat field. In the figure, all heliostats are aiming upwards, since the position of the sun and the rest of the characteristics that define the direct solar radiation reaching the heliostats has still to be defined.
 
 = Modeling the direct solar radiation =
-To define the characteristics of the direct solar radiation incident upon the solar concentrating system go to the Main Menu and click on "Sun Light". Then, on the water-fall menu that will be presented, click on the "Define SunLight..." option, which should be the only option available for selection. Clickin on the "Define SunLight" option will result in the presentation of the pop-up menu named "Define Sun Light" to the user.
+To define the characteristics of the direct solar radiation incident upon the solar concentrating system, please, do the following:
 
-On the "Sun Shape" tab of the dialog set the tab's parameter values as follows:
+ # Go to the Main Menu and click on "Sun Light". 
+ # Then, on the water-fall menu that will be presented, click on the "Define SunLight..." option, which should be the only option available for selection. 
+ # Clicking on the "Define SunLight" option will result in the presentation of the pop-up menu named "Define Sun Light" to the user. On the "Sun Shape" tab of the dialog set the tab's parameter values as follows:
 {{{
 Sunshape Type:      Pillbox_Sunshape
 irradiance (W/m2):  920
 thetaMax (rad):     0.00465
 Shape Type:         Flat_Rectangle
-width (m):          150
+width (m):          170
 height (m):         150
 activeSide:         FRONT
 }}}
 
-On the "Sun Position" tab of the dialog set tab's parameter values as follows:
+ # On the "Sun Position" tab of the dialog set tab's parameter values as follows:
 {{{
 Azimuth (Degrees North towards East):        0.0
 Elevation (Degrees from horizontal plane):  90.0
