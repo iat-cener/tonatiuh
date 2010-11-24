@@ -14,5 +14,6 @@ else {
 }
 		
 SUBDIRS = src \
-          plugins
+          plugins \
+          tests
             
