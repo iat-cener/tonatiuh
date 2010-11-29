@@ -50,6 +50,7 @@ class QDir;
 class QUndoStack;
 class QUndoView;
 class Photon;
+class PluginManager;
 class RandomDeviate;
 class RandomDeviateFactory;
 class Ray;
@@ -194,36 +195,26 @@ protected:
 
 
 private:
-    void SetupActions();
-    void SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory );
     QToolBar* CreateMaterialsTooBar( QMenu* pMaterialsMenu );
-    void SetupActionInsertShape( TShapeFactory* pTShapeFactory );
-    void SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory );
     QToolBar* CreateTrackerTooBar( QMenu* pMaterialsMenu );
-    void SetupMenus();
-    void SetupDocument();
-    void SetupModels();
-    void SetupViews();
-    void SetupCommandView();
-    void SetupGraphicView();
-    void SetupVRMLBackground();
-   	void SetupTreeView();
-   	void SetupUpdateManager();
    	QSplitter* GetHorizontalSplitterPointer();
-   	SceneModelView* GetSceneModelViewPointer();
    	ParametersView* GetParamtersViewPointer();
+   	SceneModelView* GetSceneModelViewPointer();
+    void SetupActionsInsertMaterial();
+    void SetupActionsInsertShape();
+    void SetupActionsInsertTracker();
+    void SetupActions();
+    void SetupCommandView();
+    void SetupDocument();
+    void SetupGraphicView();
+    void SetupMenus();
+    void SetupModels();
    	void SetupParametersView();
-	void LoadAvailablePlugins( );
-	void LoadTonatiuhPlugin( const QString& fileName );
-	void LoadRandomDeviatePlugin( QObject* plugin );
-	void LoadShapePlugin( QObject* plugin );
-	void LoadSunshapePlugin( QObject* plugin );
-	void LoadMaterialPlugin( QObject* plugin );
-	void LoadPhotonMapPlugin( QObject* plugin );
-	void LoadTrackerPlugin( QObject* plugin );
-	void BuildFileList( QDir directory, QStringList& filesList );
-	void AddFilesToList( QDir directory, QStringList& filesList );
-	bool ValidDirectoryName( QString& directoryName  );
+    void SetupPluginsManager();
+   	void SetupTreeView();
+    void SetupViews();
+   	void SetupUpdateManager();
+    void SetupVRMLBackground();
     void ReadSettings();
     bool OkToContinue();
     bool StartOver( const QString& fileName );
@@ -255,12 +246,8 @@ private:
     QToolBar* m_shapeToolBar;
     QToolBar* m_trackersToolBar;
 
+    PluginManager* m_pluginManager;
     UpdatesManager* m_updateManager;
-
-	QVector< RandomDeviateFactory* > m_RandomDeviateFactoryList;
-	QVector< TPhotonMapFactory* > m_TPhotonMapFactoryList;
-    QVector< TShapeFactory* > m_TFlatShapeFactoryList;
-	QVector< TSunShapeFactory* > m_TSunshapeFactoryList;
 
     SceneModel* m_sceneModel;
     QItemSelectionModel* m_selectionModel;
