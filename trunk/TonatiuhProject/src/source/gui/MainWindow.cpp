@@ -93,8 +93,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "GraphicView.h"
 #include "GridSettingsDialog.h"
 #include "InstanceNode.h"
+#include "LightDialog.h"
 #include "MainWindow.h"
 #include "NodeNameDelegate.h"
+#include "PluginManager.h"
 #include "ProgressUpdater.h"
 #include "RandomDeviate.h"
 #include "RandomDeviateFactory.h"
@@ -102,7 +104,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RayTraceDialog.h"
 #include "RayTracer.h"
 #include "SceneModel.h"
-#include "LightDialog.h"
 #include "ScriptEditorDialog.h"
 #include "SunPositionCalculatorDialog.h"
 #include "TDefaultTracker.h"
@@ -148,11 +149,8 @@ m_materialsToolBar( 0 ),
 m_photonMapToolBar(0),
 m_shapeToolBar( 0 ),
 m_trackersToolBar( 0 ),
+m_pluginManager( 0 ),
 m_updateManager( 0 ),
-m_RandomDeviateFactoryList( 0 ),
-m_TPhotonMapFactoryList( 0 ),
-m_TFlatShapeFactoryList( 0 ),
-m_TSunshapeFactoryList( 0 ),
 m_sceneModel( 0 ),
 m_selectionModel( 0 ),
 m_rand( 0 ),
@@ -187,7 +185,7 @@ m_focusView( 0 )
     SetupModels();
 	SetupViews();
 	SetupUpdateManager();
-    LoadAvailablePlugins();
+	SetupPluginsManager();
     ReadSettings();
 
     if( !tonatiuhFile.isEmpty() )	StartOver( tonatiuhFile );
@@ -201,65 +199,12 @@ MainWindow::~MainWindow()
 	delete m_photonMap;
 }
 
-void MainWindow::SetupActions()
-{
-    m_recentFileActions = new QAction*[m_maxRecentFiles];
-    for ( int i = 0; i < m_maxRecentFiles; ++i )
-    {
-    	m_recentFileActions[i] = new QAction( this );
-    	m_recentFileActions[i]->setVisible( false );
-    	connect( m_recentFileActions[i], SIGNAL( triggered() ),
-    			                   this, SLOT( OpenRecentFile() ) );
-    }
-}
-
-/**
- * Creates a menu for last used files
- **/
-void MainWindow::SetupMenus()
-{
-    for ( int i = 0; i < m_maxRecentFiles; ++i )
-          menuRecent->addAction( m_recentFileActions[i] );
-}
-
-void MainWindow::SetupDocument()
-{
-    m_document = new Document();
-    if ( m_document )
-    	connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
-    			       this, SLOT(selectionFinish( SoSelection* ) ) );
-    else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
-}
-
-void MainWindow::SetupModels()
-{
-    m_sceneModel = new SceneModel();
-    m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
-    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-    m_selectionModel = new QItemSelectionModel( m_sceneModel );
-
-    connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ),
-    		         this, SLOT( SetEnabled_SunPositionCalculator( int ) ) );
-}
-
 void MainWindow::SetupViews()
 {
     SetupCommandView();
     SetupGraphicView();
    	SetupTreeView();
    	SetupParametersView();
-}
-
-void MainWindow::SetupCommandView()
-{
-    m_commandStack = new QUndoStack(this);
-	m_commandView = new QUndoView( m_commandStack );
-	m_commandView->setWindowTitle( tr( "Command List" ) );
-	m_commandView->setAttribute( Qt::WA_QuitOnClose, false );
-    connect( m_commandStack, SIGNAL( canRedoChanged( bool ) ),
-    		     actionRedo, SLOT( setEnabled( bool ) ) );
-    connect( m_commandStack, SIGNAL( canUndoChanged( bool ) ),
-    		     actionUndo, SLOT( setEnabled( bool ) ) );
 }
 
 void MainWindow::SetupVRMLBackground()
@@ -276,35 +221,211 @@ void MainWindow::SetupVRMLBackground()
 	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
 }
 
-void MainWindow::SetupTreeView()
+QSplitter* MainWindow::GetHorizontalSplitterPointer()
 {
-	NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
-	m_treeView = GetSceneModelViewPointer();
-	m_treeView->setItemDelegate( delegate );
-	m_treeView->setModel( m_sceneModel );
-	m_treeView->setSelectionModel( m_selectionModel );
-	m_treeView->setDragEnabled(true);
-	m_treeView->setAcceptDrops(true);
-	m_treeView->setDropIndicatorShown(true);
-	m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
-	m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
-	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-	m_treeView->setRootIsDecorated(true);
+    QSplitter* pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
+    if( !pSplitter ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: splitter not found" );
+    return pSplitter;
+}
 
-	connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
-	connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
-	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
-				 this, SLOT ( showMenu( const QModelIndex& ) ) );
+SceneModelView* MainWindow::GetSceneModelViewPointer()
+{
+    QSplitter* pSplitter = GetHorizontalSplitterPointer();
+    SceneModelView* pTreeView = pSplitter->findChild< SceneModelView* >( "treeView" );
+    if ( !pTreeView ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: treeView not found" );
+    return pTreeView;
+}
+
+ParametersView* MainWindow::GetParamtersViewPointer()
+{
+    QSplitter* pSplitter = GetHorizontalSplitterPointer();
+    ParametersView* pParametersView = pSplitter->findChild< ParametersView* >( "parametersView" );
+    if ( !pParametersView ) tgf::SevereError( "MainWindow::GetParamtersViewPointer: parametersView not found" );
+    return pParametersView;
+}
+
+QDir MainWindow::PluginDirectory()
+{
+	// Returns the path to the top level plug-in directory.
+	// It is assumed that this is a subdirectory named "plugins" of the directory in
+	// which the running version of Tonatiuh is located.
+
+    QDir directory( qApp->applicationDirPath() );
+  	directory.cd( "plugins" );
+	return directory;
 }
 
 /*!
- * Initializates tonatiuh update manager.
+ * Creates a toolbar for insert material actions.
  */
-void MainWindow::SetupUpdateManager()
+QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
 {
-	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
+	QToolBar* pMaterialsToolBar = new QToolBar( pMaterialsMenu );
+	if (! pMaterialsToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pMaterialsToolBar" );
+	pMaterialsToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
+	pMaterialsToolBar->setOrientation( Qt::Horizontal );
+	pMaterialsToolBar->setWindowTitle( QLatin1String( "Materials" ) );
+	addToolBar( pMaterialsToolBar );
+	return pMaterialsToolBar;
+}
+
+
+/*!
+ * Creates a toolbar for insert trackers actions.
+ */
+QToolBar* MainWindow::CreateTrackerTooBar( QMenu* pTrackersMenu )
+{
+	QToolBar* pTrackersToolBar = new QToolBar( pTrackersMenu );
+	if (! pTrackersToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pTrackersToolBar" );
+	pTrackersToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
+	pTrackersToolBar->setOrientation( Qt::Horizontal );
+	pTrackersToolBar->setWindowTitle( QLatin1String( "Trackers" ) );
+	addToolBar( pTrackersToolBar );
+	return pTrackersToolBar;
+}
+
+void MainWindow::SetupActionsInsertMaterial()
+{
+	QVector< TMaterialFactory* > materialsFactoryList = m_pluginManager->GetMaterialFactories();
+	if( !( materialsFactoryList.size() > 0 ) )	return;
+
+	QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
+	if( !pMaterialsMenu ) return;
+	if( pMaterialsMenu->isEmpty() )
+	{
+		//Enable material menu
+		pMaterialsMenu->setEnabled( true );
+		m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
+	}
+
+	for( int i = 0; i < materialsFactoryList.size(); ++i )
+	{
+		TMaterialFactory* pTMaterialFactory = materialsFactoryList[i];
+
+		ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
+	    actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
+
+	    pMaterialsMenu->addAction( actionInsertMaterial );
+		m_materialsToolBar->addAction( actionInsertMaterial );
+		m_materialsToolBar->addSeparator();
+	    connect( actionInsertMaterial, SIGNAL( triggered() ),
+	    		 actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
+		connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ),
+				                 this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
+
+	}
+
+}
+
+/**
+ * Creates an action for the /a pTShapeFactory and adds to shape insert menu and toolbar.
+ */
+void MainWindow::SetupActionsInsertShape()
+{
+	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+	if( !( shapeFactoryList.size() > 0 ) )	return;
+
+    QMenu* menuShape = menuInsert->findChild< QMenu* >( "menuShape" );
+    if( !menuShape ) return;
+   	if( menuShape->isEmpty() )
+    {
+   	  	//Enable Shape menu
+   		menuShape->setEnabled( true );
+
+    	//Create a new toolbar for trackers
+    	m_shapeToolBar = new QToolBar( menuShape );
+		if( m_shapeToolBar )
+		{
+			m_shapeToolBar->setObjectName( QString::fromUtf8( "shapeToolBar" ) );
+			m_shapeToolBar->setOrientation( Qt::Horizontal );
+	    	addToolBar( m_shapeToolBar );
+		}
+		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
+    }
+   	for( int i = 0; i < shapeFactoryList.size(); ++i )
+   	{
+   		TShapeFactory* pTShapeFactory = shapeFactoryList[i];
+   		ActionInsertShape* actionInsertShape = new ActionInsertShape( pTShapeFactory->TShapeName(), this, pTShapeFactory );
+   		actionInsertShape->setIcon( pTShapeFactory->TShapeIcon() );
+
+   		menuShape->addAction( actionInsertShape );
+   		m_shapeToolBar->addAction( actionInsertShape );
+   		m_shapeToolBar->addSeparator();
+   		connect( actionInsertShape, SIGNAL( triggered() ), actionInsertShape, SLOT( OnActionInsertShapeTriggered() ) );
+   		connect( actionInsertShape, SIGNAL( CreateShape( TShapeFactory* ) ), this, SLOT( CreateShape(TShapeFactory*) ) );
+   	}
+}
+
+void MainWindow::SetupActionsInsertTracker()
+{
+	QVector< TTrackerFactory* > trackerFactoryList = m_pluginManager->GetTrackerFactories();
+	if( !( trackerFactoryList.size() > 0 ) )	return;
+
+	QMenu* pTrackerMenu = menuInsert->findChild< QMenu* >( "menuTracker" );
+	if( !pTrackerMenu ) return;
+	if( pTrackerMenu->isEmpty() )
+	{
+		//Enable material menu
+		pTrackerMenu->setEnabled( true );
+
+		//Create a new toolbar for trackers
+		m_trackersToolBar = CreateTrackerTooBar( pTrackerMenu );
+	}
+
+	for( int i = 0; i < trackerFactoryList.size(); ++i )
+	{
+		TTrackerFactory* pTTrackerFactory = trackerFactoryList[i];
+		ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
+		actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
+
+		pTrackerMenu->addAction( actionInsertTracker );
+		m_trackersToolBar->addAction( actionInsertTracker );
+		m_trackersToolBar->addSeparator();
+		connect( actionInsertTracker, SIGNAL( triggered() ), actionInsertTracker, SLOT( OnActionInsertTrackerTriggered() ) );
+		connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
+	}
+}
+
+/*!
+ * Creates actions form recent files.
+ */
+void MainWindow::SetupActions()
+{
+    m_recentFileActions = new QAction*[m_maxRecentFiles];
+    for ( int i = 0; i < m_maxRecentFiles; ++i )
+    {
+    	m_recentFileActions[i] = new QAction( this );
+    	m_recentFileActions[i]->setVisible( false );
+    	connect( m_recentFileActions[i], SIGNAL( triggered() ),
+    			                   this, SLOT( OpenRecentFile() ) );
+    }
+}
+
+/*!
+ * Creates a view for visualize user done last actions.
+ */
+void MainWindow::SetupCommandView()
+{
+    m_commandStack = new QUndoStack(this);
+	m_commandView = new QUndoView( m_commandStack );
+	m_commandView->setWindowTitle( tr( "Command List" ) );
+	m_commandView->setAttribute( Qt::WA_QuitOnClose, false );
+    connect( m_commandStack, SIGNAL( canRedoChanged( bool ) ),
+    		     actionRedo, SLOT( setEnabled( bool ) ) );
+    connect( m_commandStack, SIGNAL( canUndoChanged( bool ) ),
+    		     actionUndo, SLOT( setEnabled( bool ) ) );
+}
+
+/*!
+ * Initializes tonatiuh document object.
+ */
+void MainWindow::SetupDocument()
+{
+    m_document = new Document();
+    if ( m_document )
+    	connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
+    			       this, SLOT(selectionFinish( SoSelection* ) ) );
+    else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
 }
 
 /*!
@@ -417,27 +538,39 @@ void MainWindow::SetupGraphicView()
 	m_focusView = 0;
 }
 
-QSplitter* MainWindow::GetHorizontalSplitterPointer()
+/*!
+ * Creates a menu for last used files
+ */
+void MainWindow::SetupMenus()
 {
-    QSplitter* pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
-    if( !pSplitter ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: splitter not found" );
-    return pSplitter;
+    for ( int i = 0; i < m_maxRecentFiles; ++i )
+          menuRecent->addAction( m_recentFileActions[i] );
 }
 
-SceneModelView* MainWindow::GetSceneModelViewPointer()
+
+void MainWindow::SetupModels()
 {
-    QSplitter* pSplitter = GetHorizontalSplitterPointer();
-    SceneModelView* pTreeView = pSplitter->findChild< SceneModelView* >( "treeView" );
-    if ( !pTreeView ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: treeView not found" );
-    return pTreeView;
+    m_sceneModel = new SceneModel();
+    m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
+    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
+    m_selectionModel = new QItemSelectionModel( m_sceneModel );
+
+    connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ),
+    		         this, SLOT( SetEnabled_SunPositionCalculator( int ) ) );
 }
 
-ParametersView* MainWindow::GetParamtersViewPointer()
+/*!
+ * Initializes plugin manager and load available plugins.
+ */
+void MainWindow::SetupPluginsManager()
 {
-    QSplitter* pSplitter = GetHorizontalSplitterPointer();
-    ParametersView* pParametersView = pSplitter->findChild< ParametersView* >( "parametersView" );
-    if ( !pParametersView ) tgf::SevereError( "MainWindow::GetParamtersViewPointer: parametersView not found" );
-    return pParametersView;
+	m_pluginManager = new PluginManager;
+	m_pluginManager->LoadAvailablePlugins( PluginDirectory() );
+
+	SetupActionsInsertMaterial( );
+	SetupActionsInsertShape();
+	SetupActionsInsertTracker();
+
 }
 
 void MainWindow::SetupParametersView()
@@ -449,223 +582,35 @@ void MainWindow::SetupParametersView()
 			             this, SLOT( selectionChanged( const QModelIndex& , const QModelIndex& ) ) );
 }
 
-void MainWindow::LoadAvailablePlugins( )
+void MainWindow::SetupTreeView()
 {
-	QStringList filesList;
-	BuildFileList( PluginDirectory(), filesList );
-    foreach( QString fileName, filesList ) LoadTonatiuhPlugin( fileName );
-}
+	NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
+	m_treeView = GetSceneModelViewPointer();
+	m_treeView->setItemDelegate( delegate );
+	m_treeView->setModel( m_sceneModel );
+	m_treeView->setSelectionModel( m_selectionModel );
+	m_treeView->setDragEnabled(true);
+	m_treeView->setAcceptDrops(true);
+	m_treeView->setDropIndicatorShown(true);
+	m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
+	m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
+	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	m_treeView->setRootIsDecorated(true);
 
-void MainWindow::LoadTonatiuhPlugin( const QString& fileName )
-{
- 	QPluginLoader loader( fileName );
-    QObject* plugin = loader.instance();
-    if ( plugin != 0)
-    {
-    	if( plugin->inherits( "RandomDeviateFactory") ) LoadRandomDeviatePlugin( plugin );
-    	if( plugin->inherits( "TShapeFactory"    ) ) LoadShapePlugin( plugin );
-    	if( plugin->inherits( "TSunShapeFactory" ) ) LoadSunshapePlugin( plugin );
-    	if( plugin->inherits( "TMaterialFactory" ) ) LoadMaterialPlugin( plugin );
-    	if( plugin->inherits( "TPhotonMapFactory") ) LoadPhotonMapPlugin( plugin );
-    	if( plugin->inherits( "TTrackerFactory"  ) ) LoadTrackerPlugin( plugin );
-	}
-}
-
-void MainWindow::LoadRandomDeviatePlugin( QObject* plugin )
-{
-	RandomDeviateFactory* pRamdomDeviateFactory = qobject_cast<RandomDeviateFactory* >( plugin );
-	if ( !pRamdomDeviateFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Random Deviate plug-in not recognized" );
-	m_RandomDeviateFactoryList.push_back( pRamdomDeviateFactory );
-}
-
-void MainWindow::LoadShapePlugin( QObject* plugin )
-{
-	TShapeFactory* pTShapeFactory = qobject_cast<TShapeFactory* >( plugin );
-	if ( !pTShapeFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Shape plug-in not recognized" );
-	SetupActionInsertShape( pTShapeFactory );
-	if( pTShapeFactory->IsFlat() )	m_TFlatShapeFactoryList.push_back( pTShapeFactory );
-	pTShapeFactory->CreateTShape();
-}
-
-void MainWindow::LoadSunshapePlugin( QObject* plugin )
-{
-    TSunShapeFactory* pTSunShapeFactory = qobject_cast<TSunShapeFactory* >( plugin );
-    if( !pTSunShapeFactory ) tgf::SevereError( "MainWindow::LoadPlugins: SunShape plug-in not recognized" );     	    	;
-   	pTSunShapeFactory->CreateTSunShape( );
-	m_TSunshapeFactoryList.push_back( pTSunShapeFactory );
-}
-
-void MainWindow::LoadMaterialPlugin( QObject* plugin )
-{
-	TMaterialFactory* pTMaterialFactory = qobject_cast<TMaterialFactory* >( plugin );
-	if( !pTMaterialFactory )  tgf::SevereError( "MainWindow::LoadPlugins: Material plug-in not recognized" );
-	SetupActionInsertMaterial( pTMaterialFactory );
-	pTMaterialFactory->CreateTMaterial();
-}
-
-void MainWindow::LoadPhotonMapPlugin( QObject* plugin )
-{
-	TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
-	if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap plug-in not recognized" );;
-	m_TPhotonMapFactoryList.push_back( pTPhotonMapFactory );
-}
-
-void MainWindow::LoadTrackerPlugin( QObject* plugin )
-{
-    TTrackerFactory* pTTrackerFactory = qobject_cast< TTrackerFactory* >( plugin );
-    if( !pTTrackerFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Tracker plug-in not recognized" );
-    SetupActionInsertTracker( pTTrackerFactory );
-   	pTTrackerFactory->CreateTTracker( );
-}
-
-QDir MainWindow::PluginDirectory()
-{
-	// Returns the path to the top level plug-in directory.
-	// It is assumed that this is a subdirectory named "plugins" of the directory in
-	// which the running version of Tonatiuh is located.
-
-    QDir directory( qApp->applicationDirPath() );
-  	directory.cd( "plugins" );
-	return directory;
+	connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
+	connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
+	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
+				 this, SLOT ( showMenu( const QModelIndex& ) ) );
 }
 
 /*!
- * Creates a list with the files al files in the defined \a directory and its subdirectories.
+ * Initializates tonatiuh update manager.
  */
-void MainWindow::BuildFileList( QDir directory, QStringList& filesList )
+void MainWindow::SetupUpdateManager()
 {
-	AddFilesToList( directory, filesList );
-
-	QString directoryPath( directory.absolutePath().append( "/" ) );
-    QStringList subdirectoriesList = directory.entryList( QDir::Dirs, QDir::Unsorted );
-
-   for( int i = 0; i< subdirectoriesList.size(); ++i )
-   {
-    	QString subdirectoryName = subdirectoriesList[i];
-   		if( ValidDirectoryName( subdirectoryName ) )
-   			BuildFileList( QDir( directoryPath + subdirectoryName ), filesList );
-   	}
-}
-
-
-/*!
- * Appends to \a fileList directory files.
- */
-void MainWindow::AddFilesToList( QDir directory, QStringList& filesList )
-{
-	QString directoryPath( directory.absolutePath().append( "/" ) );
-
-    QStringList filenamesList = directory.entryList( QDir::Files, QDir::Unsorted );
-    for( int i = 0; i < filenamesList.size(); ++i )
-    	filesList << ( directoryPath + filenamesList[i] );
-}
-
-/*!
- * Checks if the \a directoryName is a valid directory name.
- * '.' and '..' are not valid names.
- */
-bool MainWindow::ValidDirectoryName( QString& directoryName  )
-{
-	return ( directoryName != "." ) && ( directoryName != ".." );
-}
-
-void MainWindow::SetupActionInsertMaterial( TMaterialFactory* pTMaterialFactory )
-{
-	ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
-    actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
-    QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
-
-    if( !pMaterialsMenu ) return;
-	if( pMaterialsMenu->isEmpty() )
-	{
-       	//Enable material menu
-		pMaterialsMenu->setEnabled( true );
-
-    	m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
-    }
-    pMaterialsMenu->addAction( actionInsertMaterial );
-	m_materialsToolBar->addAction( actionInsertMaterial );
-	m_materialsToolBar->addSeparator();
-    connect( actionInsertMaterial, SIGNAL( triggered() ),
-    		 actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
-	connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ),
-			                 this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
-}
-
-QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
-{
-	QToolBar* pMaterialsToolBar = new QToolBar( pMaterialsMenu );
-	if (! pMaterialsToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pMaterialsToolBar" );
-	pMaterialsToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
-	pMaterialsToolBar->setOrientation( Qt::Horizontal );
-	addToolBar( pMaterialsToolBar );
-	return pMaterialsToolBar;
-}
-
-
-/**
- * Creates an action for the /a pTShapeFactory and adds to shape insert menu and toolbar.
- */
-void MainWindow::SetupActionInsertShape( TShapeFactory* pTShapeFactory )
-{
-    ActionInsertShape* actionInsertShape = new ActionInsertShape( pTShapeFactory->TShapeName(), this, pTShapeFactory );
-    actionInsertShape->setIcon( pTShapeFactory->TShapeIcon() );
-
-    QMenu* menuShape = menuInsert->findChild< QMenu* >( "menuShape" );
-    if( !menuShape ) return;
-   	if( menuShape->isEmpty() )
-    {
-   	  	//Enable Shape menu
-   		menuShape->setEnabled( true );
-
-    	//Create a new toolbar for trackers
-    	m_shapeToolBar = new QToolBar( menuShape );
-		if( m_shapeToolBar )
-		{
-			m_shapeToolBar->setObjectName( QString::fromUtf8( "shapeToolBar" ) );
-			m_shapeToolBar->setOrientation( Qt::Horizontal );
-	    	addToolBar( m_shapeToolBar );
-		}
-		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
-    }
-   	menuShape->addAction( actionInsertShape );
-	m_shapeToolBar->addAction( actionInsertShape );
-	m_shapeToolBar->addSeparator();
-    connect( actionInsertShape, SIGNAL( triggered() ), actionInsertShape, SLOT( OnActionInsertShapeTriggered() ) );
-	connect( actionInsertShape, SIGNAL( CreateShape( TShapeFactory* ) ), this, SLOT( CreateShape(TShapeFactory*) ) );
-}
-
-void MainWindow::SetupActionInsertTracker( TTrackerFactory* pTTrackerFactory )
-{
-	ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
-    actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
-    QMenu* pTrackerMenu = menuInsert->findChild< QMenu* >( "menuTracker" );
-
-    if( !pTrackerMenu ) return;
-	if( pTrackerMenu->isEmpty() )
-	{
-       	//Enable material menu
-		pTrackerMenu->setEnabled( true );
-
-    	//Create a new toolbar for trackers
-    	m_trackersToolBar = CreateTrackerTooBar( pTrackerMenu );
-    }
-	pTrackerMenu->addAction( actionInsertTracker );
-	m_trackersToolBar->addAction( actionInsertTracker );
-	m_trackersToolBar->addSeparator();
-    connect( actionInsertTracker, SIGNAL( triggered() ), actionInsertTracker, SLOT( OnActionInsertTrackerTriggered() ) );
-	connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
-}
-
-
-QToolBar* MainWindow::CreateTrackerTooBar( QMenu* pTrackersMenu )
-{
-	QToolBar* pTrackersToolBar = new QToolBar( pTrackersMenu );
-	if (! pTrackersToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pTrackersToolBar" );
-	pTrackersToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
-	pTrackersToolBar->setOrientation( Qt::Horizontal );
-	addToolBar( pTrackersToolBar );
-	return pTrackersToolBar;
+	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -895,7 +840,15 @@ void MainWindow::on_actionDefine_SunLight_triggered()
 
 
 
-	LightDialog dialog( currentLight, m_TFlatShapeFactoryList, m_TSunshapeFactoryList );
+    QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+
+    QVector< TShapeFactory* > tFlatShapeFactoryList;
+    for( int i = 0; i < shapeFactoryList.size(); ++i  )
+    	if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
+
+    QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
+
+	LightDialog dialog( currentLight, tFlatShapeFactoryList, tSunShapeFactoryList );
 	if( dialog.exec() )
 	{
 
@@ -969,20 +922,23 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
 
 
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
+	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
 	//Check if there is a random generator selected;
 	if( m_selectedRandomDeviate == -1 )
 	{
-		if( m_RandomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
+		if( randomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
 		else	return false;
 	}
 
 	//Create the random generator
-	if( !m_rand )	m_rand =  m_RandomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
+	if( !m_rand )	m_rand =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
 
 	//Check if there is a photon map type selected;
 	if( m_selectedPhotonMap == -1 )
 	{
-		if( m_TPhotonMapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
+		if( photonmapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
 		else	return false;
 	}
 
@@ -995,7 +951,9 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 
 	if( !m_photonMap )
 	{
-		m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
+		QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+		m_photonMap = photonmapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
 		m_tracedRays = 0;
 	}
 
@@ -1246,7 +1204,10 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 void MainWindow::on_actionRayTraceOptions_triggered()
 {
 	double oldSelectedRandomDeviate = m_selectedRandomDeviate;
-	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, m_RandomDeviateFactoryList, m_fraction, m_drawPhotons, m_TPhotonMapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
+	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, randomDeviateFactoryList, m_fraction, m_drawPhotons, photonmapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
 	options->exec();
 
 	m_raysPerIteration = options->GetNumRays();
@@ -1484,7 +1445,10 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 
 void MainWindow::on_actionOpenScriptEditor_triggered()
 {
-	ScriptEditorDialog editor( m_TPhotonMapFactoryList, m_RandomDeviateFactoryList, m_scriptDirectory, this );
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
+	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+	ScriptEditorDialog editor( photonmapFactoryList, randomDeviateFactoryList, m_scriptDirectory, this );
 	editor.exec();
 
 	m_scriptDirectory = editor.GetCurrentDirectory();
