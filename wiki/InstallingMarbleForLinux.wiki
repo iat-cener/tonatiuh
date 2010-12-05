@@ -11,7 +11,7 @@ Now, you need to download the latest stable version of the Marble source code. T
 
 If you have installed in your computer a command-line svn client, the command you should execute in your shell to get the marble folder with all its content is:
 {{{
-svn co svn://anonsvn.kde.org/home/kde/branches/KDE/4.5/kdeedu/marble
+svn co svn://anonsvn.kde.org/home/kde/trunk/KDE/kdeedu/marble
 }}}
 
 After checking out the marble directory from the svn site, using the shell navigate to the marble directory just created in your computer and type:
