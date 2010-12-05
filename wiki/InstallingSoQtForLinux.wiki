@@ -24,7 +24,7 @@ export INCLUDE="/usr/local/include:/usr/local/Trolltech/Qt-4.7/qt/include"
 
 Type configure command for release build:
 {{{
-./configure --enable-debug=no --enable-symbols=no --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.7
+./configure --enable-debug=no --enable-symbols=no --with-coin=/usr/local --with-qt=/usr/local/Trolltech/Qt-4.7/qt
 }}}
 
 This will start the configuration process. This process should finish succesfully with the following message:
