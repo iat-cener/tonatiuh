@@ -18,7 +18,7 @@ Open a shell console, navigate to your download directory, and extract the conte
 tar -zxvf simage-1.7.0.tar.gz
 }}}
 
-This will create a directory called _simage-1.6.1_ in your download directory. Using the shell, navigate to the just created simage-1.6.1 directory.
+This will create a directory called _simage-1.7.0_ in your download directory. Using the shell, navigate to the just created simage-1.7.0 directory.
 
 Type the following command to build the release version of the simage library:
 {{{
