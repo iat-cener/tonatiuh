@@ -29,7 +29,8 @@ INCLUDEPATH += 	. \
                 $$(TONATIUH_ROOT)/src/source/gui \
                 $$(TONATIUH_ROOT)/src/source/raytracing \
                 $$(TONATIUH_ROOT)/src/source/statistics \
-			    $${COINDIR}/include 
+			    $${COINDIR}/include \
+			    $${MARBLEDIR}/include/marble
 
 win32 {
 	DEFINES+= COIN_DLL SOQT_DLL
