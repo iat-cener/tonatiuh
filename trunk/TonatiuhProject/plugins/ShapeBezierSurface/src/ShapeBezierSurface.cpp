@@ -219,14 +219,14 @@ void ShapeBezierSurface::GLRender( SoGLRenderAction* action )
 
 }
 
-Point3D ShapeBezierSurface::GetPoint3D( double u, double v ) const
+Point3D ShapeBezierSurface::GetPoint3D( double /* u */, double /* v */ ) const
 {
-	return Point3D();
+   return Point3D();
 }
 
-NormalVector ShapeBezierSurface::GetNormal (double u, double v ) const
+NormalVector ShapeBezierSurface::GetNormal (double /* u */, double /* v */ ) const
 {
-	return NormalVector();
+   return NormalVector();
 }
 
 void ShapeBezierSurface::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/ )

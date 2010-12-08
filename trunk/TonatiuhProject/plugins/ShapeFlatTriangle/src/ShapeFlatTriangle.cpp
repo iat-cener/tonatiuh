@@ -327,17 +327,16 @@ Point3D ShapeFlatTriangle::GetPoint3D (double u, double v) const
 	return p;
 }
 
-NormalVector ShapeFlatTriangle::GetNormal( double u ,double v ) const
+NormalVector ShapeFlatTriangle::GetNormal( double /* u */ ,double /* v */ ) const
 {
+   Point3D v0( a.getValue()[0], a.getValue()[1], a.getValue()[2]);
+   Point3D v1( b.getValue()[0], b.getValue()[1], b.getValue()[2] );
+   Point3D v2( c.getValue()[0], c.getValue()[1], c.getValue()[2] );
 
-	Point3D v0( a.getValue()[0], a.getValue()[1], a.getValue()[2]);
-	Point3D v1( b.getValue()[0], b.getValue()[1], b.getValue()[2] );
-	Point3D v2( c.getValue()[0], c.getValue()[1], c.getValue()[2] );
-
-	Vector3D dpdu =  v1 - v0;
-	Vector3D dpdv = v2 - v0;
-	NormalVector vector = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-	return vector;
+   Vector3D dpdu = v1 - v0;
+   Vector3D dpdv = v2 - v0;
+   NormalVector normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+   return normal;
 }
 
 bool ShapeFlatTriangle::OutOfRange( double u, double v ) const

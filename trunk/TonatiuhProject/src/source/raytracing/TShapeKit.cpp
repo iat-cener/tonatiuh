@@ -100,36 +100,7 @@ bool TShapeKit::IntersectP( const Ray& ) const
  *
  *Return the reflected ray. If the returned value is null, there is not reflected ray.
  */
-Ray* TShapeKit::Intersect( const Ray& objectRay, bool* isShapeFront, RandomDeviate& rand ) const
+Ray* TShapeKit::Intersect( const Ray& /* objectRay */, bool* /* isShapeFront */, RandomDeviate& /* rand */ ) const
 {
-	//The ray intersects with the BoundingBox
-	//Transform the ray to call children intersect
-
-	/*if( shape.getValue() )
-	{
-		TShape* tshape = static_cast< TShape* >( shape.getValue() );
-
-		double thit = 0.0;
-		DifferentialGeometry dg;
-		bool intersect = tshape->Intersect( objectRay, &thit, &dg );
-		*isShapeFront = dg.shapeFrontSide;
-		if( intersect )
-		{
-			objectRay.maxt = thit;
-
-			if ( appearance.getValue() )
-			{
-				SoAppearanceKit* soappearance = static_cast< SoAppearanceKit* > ( appearance.getValue() );
-				if( soappearance->getPart( "material", false ) )
-				{
-					TMaterial* tmaterial = static_cast< TMaterial* > ( soappearance->getPart( "material", false ) );
-
-					Ray* reflected = tmaterial->OutputRay( objectRay, &dg, rand );
-					if( reflected )	return reflected;
-					delete reflected;
-				}
-			}
-		}
-	}*/
 	return 0;
 }
