@@ -61,37 +61,8 @@ namespace trf
 	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
 	int ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
 	int ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
-
-	void GenerateStartingRay( Ray& ray,
-			                  TShape* const & raycastingSurface,
-                              TSunShape* const & sunShape,
-                              const Transform& lightToWorld,
-                              RandomDeviate& rand );
-	void TraceRay( Ray& ray,
-			       QMap< InstanceNode*, QPair< BBox, Transform* > >* sceneMap,
-			       InstanceNode* instanceNode,
-			       InstanceNode* lightNode,
-			       TPhotonMap& photonMap,
-			       RandomDeviate& rand );
-
 	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map);
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
-}
-
-inline void trf::GenerateStartingRay( Ray& ray,
-		                       TShape* const & raycastingSurface,
-		                       TSunShape* const & sunShape,
-		                       const Transform& lightToWorld,
-		                       RandomDeviate& rand )
-{
-	//Generate ray origin and direction in the Light coordinate system
-	ray.origin = raycastingSurface->Sample( rand.RandomDouble( ), rand.RandomDouble( ) );
-	sunShape->GenerateRayDirection( ray.direction, rand );
-	ray.mint = tgc::Epsilon;
-	ray.maxt = tgc::Infinity;
-
-	//Transform ray to World coordinate system and trace the scene
-	ray = lightToWorld( ray );
 }
 
 inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons )
