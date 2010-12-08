@@ -338,9 +338,9 @@ void ScriptEditorDialog::CdUpDir()
 /*!
  * Closes the dialog.
  */
-void ScriptEditorDialog::Close( bool checked  )
+void ScriptEditorDialog::Close( bool /* checked */  )
 {
-	close();
+   close();
 }
 
 /*!

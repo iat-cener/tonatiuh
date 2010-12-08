@@ -72,7 +72,7 @@ TDefaultSunShape::~TDefaultSunShape()
 }
 
 //Light Interface
-void TDefaultSunShape::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
+void TDefaultSunShape::GenerateRayDirection( Vector3D& /* direction */, RandomDeviate& /* rand */ ) const
 {
 
 }
