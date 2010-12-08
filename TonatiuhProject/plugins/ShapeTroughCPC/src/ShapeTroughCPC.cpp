@@ -388,7 +388,7 @@ Point3D ShapeTroughCPC::GetPoint3D( double u, double v ) const
 
 }
 
-NormalVector ShapeTroughCPC::GetNormal (double u ,double v) const
+NormalVector ShapeTroughCPC::GetNormal (double u ,double /* v */) const
 {
 	double dpduX = - 0.5 * a.getValue() * (tgc::Pi + 2 * m_thetaI - 2 * m_thetaMin )* pow( (1 / sin( 0.25 * ( u * ( tgc::Pi + 2 * m_thetaI - 2 * m_thetaMin ) + 2 * m_thetaMin ) ) ), 3 )
 						* sin( 0.25 *( - tgc::Pi * u - 2 * ( -2 + u ) * m_thetaI  + 2 * ( -1 + u ) * m_thetaMin ) ) * (1 + sin( m_thetaI ) );

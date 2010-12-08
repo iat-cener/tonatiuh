@@ -418,25 +418,28 @@ Vector3D ShapeTroughCHC::GetDPDU( double u, double v ) const
 }
 
 
-Vector3D ShapeTroughCHC::GetDPDV( double u, double v ) const
+Vector3D ShapeTroughCHC::GetDPDV( double u, double /* v */ ) const
 {
-	double alphaMax = m_theta + 0.5* tgc::Pi;
-	double alphaMin = m_theta + m_phi;
-	double alpha = u * ( alphaMax - alphaMin ) + alphaMin;
+   double alphaMax = m_theta + 0.5 * tgc::Pi;
+   double alphaMin = m_theta + m_phi;
+   double alpha = u * ( alphaMax - alphaMin ) + alphaMin;
 
-	double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* tgc::Pi ) );
+   double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* tgc::Pi ) );
 
-	double x = 0.0;
-	double y = 0.0;
-	double z =  2* ( 0.5 * lengthX1.getValue()
-					+ ( ( ( 0.5 * lengthX2.getValue() - 0.5 * lengthX1.getValue() )
-							*  ( -2 * r1.getValue()
-									+  ( ( r * sin( alpha - m_theta ) ) / ( 1 - m_eccentricity * cos( alpha ) ) ) ) )
-						/( p1.getValue() - r1.getValue() ) ) );
+   double x = 0.0;
+   double y = 0.0;
+   double z =  2* ( 0.5 * lengthX1.getValue()
+                    + (
+                         (
+                              ( 0.5 * lengthX2.getValue() - 0.5 * lengthX1.getValue() )
+                            * ( -2 * r1.getValue() +  ( ( r * sin( alpha - m_theta ) ) / ( 1 - m_eccentricity * cos( alpha ) ) ) )
+                         ) / ( p1.getValue() - r1.getValue() )
+                      )
+                   );
 
-	return Vector3D( x, y, z );
-
+   return Vector3D( x, y, z );
 }
+
 bool ShapeTroughCHC::findRoot( double (*funcion)( double, double, double, double, double, double ), double xCoord, double e, double r1, double theta, double a, double b, double y0, int max, double* alpha )
 {
 
