@@ -45,13 +45,13 @@ SOURCES = src/*.cpp  \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.cpp
 
 
-RESOURCES = src/ShapeTroughHyperbole.qrc	
+RESOURCES = src/ShapeTroughHyperbola.qrc	
 
 LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 		
 contains(TEMPLATE,lib) {  
 	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeTroughHyperbole
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeTroughHyperbola
 		unix { 
 			TARGET = $$member(TARGET, 0)_debug
 		}
@@ -60,6 +60,6 @@ contains(TEMPLATE,lib) {
 		}
 	}
 	else { 
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeTroughHyperbole
+		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeTroughHyperbola
 	}
 }
