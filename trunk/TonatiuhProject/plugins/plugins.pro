@@ -20,6 +20,7 @@ SUBDIRS =  MaterialBasicRefractive \
 			ShapeTroughParabola \
 			ShapeTroughCHC\
             ShapeTroughCPC\
+            ShapeTroughHyperbole\
             SunshapeBuie \
 			SunshapePillbox \
 			TrackerHeliostat \
