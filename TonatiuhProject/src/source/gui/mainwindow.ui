@@ -176,7 +176,7 @@
      </property>
     </widget>
     <addaction name="actionNode"/>
-    <addaction name="actionShapeKit"/>
+    <addaction name="actionSurfaceNode"/>
     <addaction name="separator"/>
     <addaction name="menuShape"/>
     <addaction name="menuMaterial"/>
@@ -311,7 +311,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionNode"/>
-   <addaction name="actionShapeKit"/>
+   <addaction name="actionSurfaceNode"/>
   </widget>
   <action name="actionNew">
    <property name="icon">
@@ -471,7 +471,7 @@
      <normaloff>:/icons/separatorKit.png</normaloff>:/icons/separatorKit.png</iconset>
    </property>
    <property name="text">
-    <string>SeparatorKit</string>
+    <string>Group Node</string>
    </property>
   </action>
   <action name="actionDisplay_rays">
@@ -514,13 +514,13 @@
     <string>Ray Trace Options ...</string>
    </property>
   </action>
-  <action name="actionShapeKit">
+  <action name="actionSurfaceNode">
    <property name="icon">
     <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/shapeKit.png</normaloff>:/icons/shapeKit.png</iconset>
    </property>
    <property name="text">
-    <string>ShapeKit</string>
+    <string>Surface Node</string>
    </property>
   </action>
   <action name="action_X_Y_Plane">

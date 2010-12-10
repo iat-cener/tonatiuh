@@ -83,6 +83,9 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
 	//Init QtScript environment
 	m_interpreter = new QScriptEngine;
 
+	QScriptValue tonatiuh = m_interpreter->newQObject( parent );
+	m_interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
+
 	QObject* rayTracer = new ScriptRayTracer( listTPhotonMapFactory, listRandomDeviateFactory );
 	QScriptValue rayTracerValue = m_interpreter->newQObject( rayTracer );
 	m_interpreter->globalObject().setProperty( "rayTracer", rayTracerValue );

@@ -64,17 +64,17 @@ public:
 	Point3D Sample( double u, double v) const;
 
 	trt::TONATIUH_REAL a0;
-	trt::TONATIUH_REAL asymptoticAngle;
+	trt::TONATIUH_REAL focusHyperbole;
+	trt::TONATIUH_REAL truncationHeight;
+	trt::TONATIUH_REAL hyperboleHeight;
 	trt::TONATIUH_REAL zLengthXMin;
 	trt::TONATIUH_REAL zLengthXMax;
-	trt::TONATIUH_REAL theoreticalHeight;
-	trt::TONATIUH_REAL truncation;
 
 
 
 protected:
-	static void updateAngleValue( void *data, SoSensor *);
 	static void updateApertureValue( void *data, SoSensor *);
+	static void updateFocusValue( void *data, SoSensor *);
 	static void updateLengthValues( void *data, SoSensor *);
 	static void updateHeightValue( void *data, SoSensor *);
 	static void updateTruncationValue( void *data, SoSensor *);
@@ -88,13 +88,16 @@ protected:
 	virtual ~ShapeTroughHyperbole();
 
 private:
+	void SetAsymptoticAngle();
 	Vector3D GetDPDU ( double u, double v ) const;
 	Vector3D GetDPDV ( double u, double v ) const;
 
-	double m_lastA0Value;
-	double m_lastAsymptoticAngleValue;
-	double m_lastHeightValue;
-	double m_lastTruncationValue;
+
+	double m_asymptoticAngle;
+	double m_lastApertureValue;
+	double m_lastFocusHyperbole;
+	double m_lastHyperboleHeightValue;
+	double m_lastTruncationHeightValue;
 	double m_lastZLengthXMinValue;
 	double m_lastZLengthXMaxValue;
 

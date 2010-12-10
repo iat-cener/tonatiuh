@@ -95,8 +95,6 @@ public:
 public slots:
 
 	//File menu actions
-	void on_actionNew_triggered();
-	void on_actionOpen_triggered();
 	void on_actionSave_triggered();
 	void on_actionSaveAs_triggered();
 	void on_actionSaveComponent_triggered();
@@ -117,8 +115,6 @@ public slots:
 	void on_actionDelete_triggered();
 
 	// Insert menu actions
-	void on_actionNode_triggered();
-	void on_actionShapeKit_triggered();
 	void on_actionUserComponent_triggered();
 
 	//Sun Light menu actions
@@ -156,9 +152,14 @@ public slots:
 	void on_actionCheckForUpdates_triggered();
 
 	//Create actions
+	void CreateGroupNode();
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
+	void CreateSurfaceNode();
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
+
+	void New();
+	void Open();
 
     //Manipulators actions
     void SoTransform_to_SoCenterballManip();
@@ -212,6 +213,7 @@ private:
    	void SetupParametersView();
     void SetupPluginsManager();
    	void SetupTreeView();
+   	void SetupTriggers();
     void SetupViews();
    	void SetupUpdateManager();
     void SetupVRMLBackground();
