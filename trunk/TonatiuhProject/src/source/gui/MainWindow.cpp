@@ -186,6 +186,7 @@ m_focusView( 0 )
 	SetupViews();
 	SetupUpdateManager();
 	SetupPluginsManager();
+	SetupTriggers();
     ReadSettings();
 
     if( !tonatiuhFile.isEmpty() )	StartOver( tonatiuhFile );
@@ -606,28 +607,24 @@ void MainWindow::SetupTreeView()
 }
 
 /*!
+ * Defines slots function for main window signals.
+ */
+void MainWindow::SetupTriggers()
+{
+	//File actions
+	connect( actionNew, SIGNAL( triggered() ), this, SLOT ( New() ) );
+	connect( actionOpen, SIGNAL( triggered() ), this, SLOT ( Open() ) );
+
+	//Insert actions
+	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
+	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
+}
+/*!
  * Initializates tonatiuh update manager.
  */
 void MainWindow::SetupUpdateManager()
 {
 	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
-}
-
-void MainWindow::on_actionNew_triggered()
-{
-    if ( OkToContinue() ) StartOver( "" );
-}
-
-
-void MainWindow::on_actionOpen_triggered()
-{
-    if ( OkToContinue() )
-    {
-        QString fileName = QFileDialog::getOpenFileName( this,
-                               tr( "Open Tonatiuh document" ), ".",
-                               tr( "Tonatiuh files (*.tnh)" ) );
-        if ( !fileName.isEmpty() ) StartOver( fileName );
-    }
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -710,77 +707,6 @@ void MainWindow::on_actionDelete_triggered()
 {
 	Delete ();
 }
-
-// Insert menu actions
-void MainWindow::on_actionNode_triggered()
-{
-	QModelIndex parentIndex;
-    if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
-	else
-		parentIndex = m_treeView->currentIndex();
-
-    InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-    if( !parentInstance ) return;
-
-	SoNode* coinNode = parentInstance->GetNode();
-    if( !coinNode ) return;
-
-
-	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		TSeparatorKit* separatorKit = new TSeparatorKit();
-
-		CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( separatorKit, QPersistentModelIndex(parentIndex), m_sceneModel );
-		cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
-		m_commandStack->push( cmdInsertSeparatorKit );
-
-		int count = 1;
-		QString nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
-		while ( !m_sceneModel->SetNodeName( separatorKit, nodeName ) )
-		{
-			count++;
-			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
-		}
-
-		m_document->SetDocumentModified( true );
-
-	}
-
-}
-
-void MainWindow::on_actionShapeKit_triggered()
-{
-	QModelIndex parentIndex;
-    if (( ! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0, m_treeView->rootIndex());
-	else
-		parentIndex = m_treeView->currentIndex();
-
-    InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-    if( !parentInstance ) return;
-
-   	SoNode* selectedCoinNode = parentInstance->GetNode();
-    if( !selectedCoinNode ) return;
-
-	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		TShapeKit* shapeKit = new TShapeKit;
-
-		CmdInsertShapeKit* insertShapeKit = new CmdInsertShapeKit( parentIndex, shapeKit, m_sceneModel );
-	    m_commandStack->push( insertShapeKit );
-
-		int count = 1;
-		QString nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
-		while ( !m_sceneModel->SetNodeName( shapeKit, nodeName ) )
-		{
-			count++;
-			nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
-		}
-	    m_document->SetDocumentModified( true );
-	}
-}
-
 
 void MainWindow::on_actionUserComponent_triggered()
 {
@@ -1505,22 +1431,46 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
     }
 }
 
+/*!
+ * Creates a surface node as selected node child.
+ */
+void MainWindow::CreateSurfaceNode()
+{
+	QModelIndex parentIndex;
+	if (( ! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex()))
+		parentIndex = m_sceneModel->index (0,0, m_treeView->rootIndex());
+	else
+		parentIndex = m_treeView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	if( !parentInstance ) return;
+
+		SoNode* selectedCoinNode = parentInstance->GetNode();
+	if( !selectedCoinNode ) return;
+
+	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		TShapeKit* shapeKit = new TShapeKit;
+
+		CmdInsertShapeKit* insertShapeKit = new CmdInsertShapeKit( parentIndex, shapeKit, m_sceneModel );
+		m_commandStack->push( insertShapeKit );
+
+		int count = 1;
+		QString nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
+		while ( !m_sceneModel->SetNodeName( shapeKit, nodeName ) )
+		{
+			count++;
+			nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
+		}
+		m_document->SetDocumentModified( true );
+	}
+}
+
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
 	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
 									m_sceneModel->index (0,0,m_treeView->rootIndex()):
 									m_treeView->currentIndex();
-
-	/*InstanceNode* ancestor = m_sceneModel->NodeFromIndex( parentIndex );
-	SoNode* parentNode = ancestor->GetNode();
-
-	if( parentNode->getTypeId() != TSeparatorKit::getClassTypeId() ) return;
-
-
-	while( ancestor->GetParent() )
-	{
-		ancestor = ancestor->GetParent();
-	}*/
 
 	SoSceneKit* scene = m_document->GetSceneKit();
 
@@ -1531,6 +1481,29 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	m_commandStack->push( command );
 
 	m_document->SetDocumentModified( true );
+}
+
+/*!
+ * Starts new tonatiuh empty model.
+ */
+
+void MainWindow::New()
+{
+    if ( OkToContinue() ) StartOver( "" );
+}
+
+/*!
+ * Shows a dialog to the user to open a existing tonatiuh file.
+ */
+void MainWindow::Open()
+{
+    if ( OkToContinue() )
+    {
+        QString fileName = QFileDialog::getOpenFileName( this,
+                               tr( "Open Tonatiuh document" ), ".",
+                               tr( "Tonatiuh files (*.tnh)" ) );
+        if ( !fileName.isEmpty() ) StartOver( fileName );
+    }
 }
 
 //Manipulators actions
@@ -2185,6 +2158,46 @@ bool MainWindow::Delete( )
 	m_document->SetDocumentModified( true );
 
 	return true;
+}
+
+/*!
+ * Creates a new group node as a selected node child.
+ */
+
+void MainWindow::CreateGroupNode()
+{
+	QModelIndex parentIndex;
+	if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
+		parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
+	else
+		parentIndex = m_treeView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	if( !parentInstance ) return;
+
+	SoNode* coinNode = parentInstance->GetNode();
+	if( !coinNode ) return;
+
+
+	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		TSeparatorKit* separatorKit = new TSeparatorKit();
+
+		CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( separatorKit, QPersistentModelIndex(parentIndex), m_sceneModel );
+		cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
+		m_commandStack->push( cmdInsertSeparatorKit );
+
+		int count = 1;
+		QString nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
+		while ( !m_sceneModel->SetNodeName( separatorKit, nodeName ) )
+		{
+			count++;
+			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
+		}
+
+		m_document->SetDocumentModified( true );
+
+	}
 }
 
 void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
