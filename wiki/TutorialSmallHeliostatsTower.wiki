@@ -262,4 +262,4 @@ After following the steps indicated above, a special node labeled "Light" will a
 To verify that all heliostats are properly oriented by their "trackers" just hit the "Execute" button in the Menu Bar to cast a few sun rays over the heliostat field and represent them and their reflections on the heliostats in Tonatiuh's 3D View. Figure 5
 shows the results of such a test. As you can see in the figure, the heliostats are apropiately reflecting the direct solar radiation towards the center of the central receiver aperture. With this verification ends the modeling of the small central receiver system considered for this tutorial.
 
-TO BE CONTINUED ....
+= CALCULATING THE SOLAR FLUX AT THE INPUT APERTURE OF THE CENTRAL RECEIVER =
