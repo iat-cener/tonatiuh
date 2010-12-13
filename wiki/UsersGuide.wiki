@@ -1,5 +1,5 @@
 #summary Home page for the user guide wiki
-#labels Phase-Deploy,Featured
+#labels Phase-Deploy
 
 = User's Guide =
 
