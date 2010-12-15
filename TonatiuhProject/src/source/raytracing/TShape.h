@@ -61,9 +61,6 @@ public:
 	virtual Point3D Sample( double u, double v ) const = 0;
 
 protected:
-	virtual Point3D GetPoint3D (double u, double v) const = 0;
-	virtual NormalVector GetNormal( double u, double v ) const = 0;
-
 	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) = 0;
 	virtual void generatePrimitives(SoAction *action) = 0;
 
