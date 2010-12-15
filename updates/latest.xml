@@ -7,7 +7,7 @@
     <files>
         <os value="win">
             <file type="new" value="bin/release/plugins/ShapeTroughHyperbole/ShapeTroughHyperbole1.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTrumpet/ShapeTroughHyperbole1.dll" />
+            <file type="new" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" />
         </os>
         <os value="mac">
