@@ -289,6 +289,11 @@ void UpdatesManager::UpdateDownload( int fileIndex )
 			QString currentFileName = currentDir.absoluteFilePath( newFiles[i] );
 			QString newFileName = tmpDir.absoluteFilePath( newFiles[i] );
 
+
+			QFileInfo currentFileInfo( currentFileName );
+			currentDir.relativeFilePath ( currentFileInfo.absolutePath() );
+			currentDir.mkpath( currentDir.relativeFilePath ( currentFileInfo.absolutePath() ) );
+
 			QFile newFile( newFileName );
 			newFile.rename( currentFileName );
 		}
