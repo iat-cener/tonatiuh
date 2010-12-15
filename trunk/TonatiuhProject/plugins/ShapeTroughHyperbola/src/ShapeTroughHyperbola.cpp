@@ -362,6 +362,10 @@ NormalVector ShapeTroughHyperbola::GetNormal (double u ,double v) const
 
 }
 
+
+/*!
+ * Returns true whether \a u and \a v are valid parameters.
+ */
 bool ShapeTroughHyperbola::OutOfRange( double u, double v ) const
 {
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
@@ -399,7 +403,7 @@ void ShapeTroughHyperbola::generatePrimitives(SoAction *action)
     const SoTextureCoordinateElement* tce = 0;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
-	const int rows = 20; // Number of points per row
+	const int rows = 120; // Number of points per row
     const int columns = 10; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
