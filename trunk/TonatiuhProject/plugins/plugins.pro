@@ -17,7 +17,6 @@ SUBDIRS =  MaterialBasicRefractive \
 			ShapeSphere \
 			ShapeSphericalPolygon \
             ShapeSphericalRectangle \
-			ShapeTroughParabola \
 			ShapeTroughCHC \
             ShapeTroughCPC \
             ShapeTroughHyperbola \
