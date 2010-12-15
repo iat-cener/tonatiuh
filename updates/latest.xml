@@ -2,7 +2,7 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.1.2" />
+        <version value="1.1.4" />
     </version>
     <files>
         <os value="win">
