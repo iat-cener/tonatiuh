@@ -2,19 +2,23 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.1.2" />
+        <version value="1.1.3" />
     </version>
     <files>
         <os value="win">
-            <file type="new" value="bin/release/b.txt" />
+            <file type="new" value="bin/release/plugins/ShapeTroughHyperbole/ShapeTroughHyperbole1.dll" />
+            <file type="new" value="bin/release/plugins/ShapeTrumpet/ShapeTroughHyperbole1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" />
-            <file type="remove" value="bin/release/a.txt" />
         </os>
         <os value="mac">
+            <file type="new" value="Contents/MacOS/plugins/ShapeTroughHyperbole/ShapeTroughHyperbole.dylib" />
+            <file type="new" value="Contents/MacOS/plugins/ShapeTrumpet/ShapeTrumpet.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" />
         </os>
         <os value="linux">
-            <file type="replace" value="bin/release/Tonatiuh" />
+             <file type="new" value="bin/release/plugins/ShapeTroughHyperbole/libShapeTroughHyperbole1.so" />
+             <file type="new" value="bin/release/plugins/ShapeTrumpet/libShapeTroughHyperbole1.so" />
+             <file type="replace" value="bin/release/Tonatiuh" />
         </os>
     </files>
 </appname>
