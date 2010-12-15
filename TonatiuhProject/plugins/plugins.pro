@@ -18,9 +18,11 @@ SUBDIRS =  MaterialBasicRefractive \
 			ShapeSphericalPolygon \
             ShapeSphericalRectangle \
 			ShapeTroughParabola \
-			ShapeTroughCHC\
-            ShapeTroughCPC\
-            ShapeTroughHyperbola\
+			ShapeTroughCHC \
+            ShapeTroughCPC \
+            ShapeTroughHyperbola \
+            ShapeTroughParabola \
+            ShapeTrumpet \
             SunshapeBuie \
 			SunshapePillbox \
 			TrackerHeliostat \
