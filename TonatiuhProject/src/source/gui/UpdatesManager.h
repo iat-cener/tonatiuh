@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QBuffer>
 #include <QObject>
 #include <QMap>
+#include <QVector>
 
 class QAuthenticator;
 class QFile;
@@ -88,6 +89,7 @@ private:
     QString m_lastUpdateData;
 	QString m_latestVersion;
 	QMap< QString, QString > m_filelist; // The list of files to be downloaded
+	QVector< QString > m_executableFilelist; // The list of files to be downloaded
 
     QNetworkReply* m_fileReply;
     bool m_fileRequestAborted;
