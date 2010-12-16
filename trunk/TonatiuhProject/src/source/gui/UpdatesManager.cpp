@@ -99,7 +99,7 @@ UpdatesManager::~UpdatesManager()
  */
 void UpdatesManager::CheckForUpdates()
 {
-	//Esta dirección no es válida, solo para probar
+	//Esta direcciï¿½n no es vï¿½lida, solo para probar
 	QUrl url( QLatin1String( "http://tonatiuh.googlecode.com/svn/updates/latest.xml" ) );
 
     // schedule the request
@@ -135,6 +135,7 @@ void UpdatesManager::CheckLastUpdate()
 	// Loop over main nodes
 	m_latestVersion.clear();
 	m_filelist.clear();
+	m_executableFilelist.clear();
 
 	QDomNode mainnode = root.firstChild();
 	while( !mainnode.isNull() )
@@ -161,7 +162,11 @@ void UpdatesManager::CheckLastUpdate()
                 			{
                 				QString type = e.attribute( QLatin1String( "type" ), QLatin1String( "" ) );
                 				QString fileName = e.attribute( QLatin1String( "value" ), QLatin1String( "" ) );
-									m_filelist.insertMulti( type, fileName );
+                				m_filelist.insertMulti( type, fileName );
+
+
+                				QString executable = e.attribute( QLatin1String( "executable" ), QLatin1String( "false" ) );
+                				if( executable == "true" )	m_executableFilelist.push_back( fileName );
                 			}
 
                 			ossubnode = ossubnode.nextSibling();
@@ -296,6 +301,7 @@ void UpdatesManager::UpdateDownload( int fileIndex )
 
 			QFile newFile( newFileName );
 			newFile.rename( currentFileName );
+			if( m_executableFilelist.contains( newFiles[i] ) )	newFile.setPermissions( QFile::ExeGroup );
 		}
 
 		//Replace files. Backup old files and rename them
@@ -313,6 +319,7 @@ void UpdatesManager::UpdateDownload( int fileIndex )
 
 			QFile newFile( newFileName );
 			newFile.rename( currentFileName );
+			if( m_executableFilelist.contains( replaceFiles[i] ) )	newFile.setPermissions( QFile::ExeGroup );
 
 		}
 
