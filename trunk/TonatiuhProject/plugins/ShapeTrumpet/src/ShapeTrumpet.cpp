@@ -450,8 +450,8 @@ void ShapeTrumpet::generatePrimitives( SoAction *action )
 
     		Point3D point = Sample(ui, vj);
     		NormalVector normal;
-    		if( activeSide.getValue() == 0 )	normal = GetNormal(ui, vj);
-    		else	normal = -GetNormal(ui, vj);
+    		if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
+    		else	normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
