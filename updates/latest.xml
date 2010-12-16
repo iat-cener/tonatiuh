@@ -2,7 +2,7 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.1.2" />
+        <version value="1.1.4" />
     </version>
     <files>
         <os value="win">
@@ -11,11 +11,7 @@
             <file type="replace" value="bin/release/Tonatiuh.exe" />
         </os>
         <os value="mac">
-            <file type="new" value="Contents/MacOS/plugins/libShapeTroughHyperbola.dylib" />
-            <file type="new" value="Contents/MacOS/plugins/libShapeTrumpet.dylib" />
-            <file type="new" value="Contents/MacOS/lib/libmarblewidget.11.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
-            <file type="remove" value="Contents/MacOS/lib/libmarblewidget.8.dylib" />
         </os>
         <os value="linux">
              <file type="new" value="bin/release/plugins/libShapeTroughHyperbola.so" />
