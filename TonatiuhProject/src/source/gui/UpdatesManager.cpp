@@ -301,7 +301,7 @@ void UpdatesManager::UpdateDownload( int fileIndex )
 
 			QFile newFile( newFileName );
 			newFile.rename( currentFileName );
-			if( m_executableFilelist.contains( newFiles[i] ) )	newFile.setPermissions( QFile::ExeGroup );
+			if( m_executableFilelist.contains( newFiles[i] ) )	newFile.setPermissions( QFile::ExeOwner | QFile::ReadOwner	| QFile::WriteOwner );
 		}
 
 		//Replace files. Backup old files and rename them
@@ -319,7 +319,7 @@ void UpdatesManager::UpdateDownload( int fileIndex )
 
 			QFile newFile( newFileName );
 			newFile.rename( currentFileName );
-			if( m_executableFilelist.contains( replaceFiles[i] ) )	newFile.setPermissions( QFile::ExeGroup );
+			if( m_executableFilelist.contains( replaceFiles[i] ) )	newFile.setPermissions( QFile::ExeOwner | QFile::ReadOwner	| QFile::WriteOwner );
 
 		}
 
