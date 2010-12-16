@@ -6,8 +6,8 @@
     </version>
     <files>
         <os value="win">
-            <file type="new" value="bin/release/plugins/ShapeTroughHyperbole1.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTroughHyperbole1.dll" />
+            <file type="new" value="bin/release/plugins/ShapeTroughHyperbola.dll" />
+            <file type="new" value="bin/release/plugins/ShapeTrumpet1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" />
         </os>
         <os value="mac">
