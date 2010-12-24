@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -397,7 +397,7 @@ bool ShapeTrumpet::OutOfRange( double u, double v ) const
 /*!
  * Computes the shape exact sizes. The bounding box is calculated and returned in the local coordinate system.
  */
-void ShapeTrumpet::computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center)
+void ShapeTrumpet::computeBBox( SoAction* /* action */, SbBox3f& box, SbVec3f& /* center */)
 {
 	double xMin= - sqrt( a.getValue()  * a.getValue()  * ( 1 +
 			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )

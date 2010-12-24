@@ -511,7 +511,7 @@ Vector3D ShapeTroughHyperbola::GetDPDU( double u, double v ) const
 
 }
 
-Vector3D ShapeTroughHyperbola::GetDPDV ( double u, double v ) const
+Vector3D ShapeTroughHyperbola::GetDPDV ( double u, double /* v */ ) const
 {
 	return Vector3D( 0.0, 0.0, 2 * ( 0.5 * zLengthXMin.getValue()
 											+ ( -0.5 * zLengthXMin.getValue() + 0.5 * zLengthXMax.getValue() ) *  u ) );
