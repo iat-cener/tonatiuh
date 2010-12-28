@@ -54,7 +54,7 @@ struct BBox
 	void Expand( double delta );
 	double Volume( ) const;
 	int MaximumExtent( ) const;
-	void BoundingSphere( Point3D *center, float *radius ) const;
+	void BoundingSphere( Point3D& center, double& radius ) const;
 	bool IntersectP( const Ray& ray, double* hitt0 = NULL, double* hitt1 = NULL ) const;
 
 	Point3D pMin;

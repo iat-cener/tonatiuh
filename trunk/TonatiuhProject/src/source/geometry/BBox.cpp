@@ -70,9 +70,9 @@ BBox::BBox( const Point3D& point1, const Point3D& point2 )
 
 bool BBox::Overlaps( const BBox& bbox ) const
 {
-	return ( pMax.x >= bbox.pMin.x ) & ( pMin.x <= bbox.pMax.x ) &
-	       ( pMax.y >= bbox.pMin.y ) & ( pMin.y <= bbox.pMax.y ) &
-	       ( pMax.z >= bbox.pMin.z ) & ( pMin.z <= bbox.pMax.z);
+	return ( pMax.x >= bbox.pMin.x ) && ( pMin.x <= bbox.pMax.x ) &&
+	       ( pMax.y >= bbox.pMin.y ) && ( pMin.y <= bbox.pMax.y ) &&
+	       ( pMax.z >= bbox.pMin.z ) && ( pMin.z <= bbox.pMax.z );
 }
 
 bool BBox::Inside( const Point3D& point) const
@@ -96,16 +96,14 @@ double BBox::Volume() const
 
 int BBox::MaximumExtent() const
 {
-	Vector3D diagonal = pMax - pMin;
-	if( diagonal.x > diagonal.y && diagonal.x > diagonal.z) return 0;
-	else if( diagonal.y > diagonal.z) return 1;
-	else return 2;
+	Vector3D delta = pMax - pMin;
+	return ( delta.x >= delta.y ) ? ( ( delta.x >= delta.z ) ? 0 : 2 ) : ( ( delta.y >= delta.z ) ? 1 : 2 );
 }
 
-void BBox::BoundingSphere( Point3D* center, float* radius ) const
+void BBox::BoundingSphere( Point3D& center, double& radius ) const
 {
-	*center = Point3D( (pMin.x+pMax.x)*0.5, (pMin.y+pMax.y)*0.5, (pMin.z+pMax.z)*0.5 );
-    *radius = Distance( *center, pMax );
+	center = Point3D( 0.5*( pMin.x + pMax.x ), 0.5*( pMin.y + pMax.y ), 0.5*( pMin.z + pMax.z ) );
+    radius = Distance( center, pMax );
 }
 
 bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const

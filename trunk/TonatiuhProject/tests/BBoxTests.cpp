@@ -114,18 +114,147 @@ TEST( BBoxTests, Overlaps )
 	  Point3D pointA2( -982.917*rand(), 423.2378*rand(), 68.21*rand() );
 	  BBox boundingBoxA( pointA1, pointA2 );
 
-	  Point3D pointB1( -102.9347*rand(), 304.23909*rand(), 3.568*rand() );
-	  Point3D pointB2( -1000.167*rand(), 473.3738*rand(), 48.17*rand() );
+	  Point3D pointB1(  -102.934*rand(), 304.23909*rand(),  3.568*rand() );
+	  Point3D pointB2(  1000.167*rand(),  473.3738*rand(), 48.172*rand() );
 	  BBox boundingBoxB( pointB1, pointB2 );
 
-	  bool overlap = ( boundingBoxA.pMin.x <= boundingBoxB.pMax.x   ) &
-			         ( boundingBoxA.pMax.x >= boundingBoxB.pMin.x   ) &
-			         ( boundingBoxA.pMin.y <= boundingBoxB.pMax.y   ) &
-			         ( boundingBoxA.pMax.y >= boundingBoxB.pMin.y   ) &
-			         ( boundingBoxA.pMin.z <= boundingBoxB.pMax.z   ) &
+	  bool overlap = ( boundingBoxA.pMin.x <= boundingBoxB.pMax.x   ) &&
+			         ( boundingBoxA.pMax.x >= boundingBoxB.pMin.x   ) &&
+			         ( boundingBoxA.pMin.y <= boundingBoxB.pMax.y   ) &&
+			         ( boundingBoxA.pMax.y >= boundingBoxB.pMin.y   ) &&
+			         ( boundingBoxA.pMin.z <= boundingBoxB.pMax.z   ) &&
 			         ( boundingBoxA.pMax.z >= boundingBoxB.pMin.z   );
 
 	  EXPECT_TRUE( boundingBoxA.Overlaps( boundingBoxB ) == overlap );
 	  EXPECT_TRUE( boundingBoxB.Overlaps( boundingBoxA ) == overlap );
+  }
+}
+
+TEST( BBoxTests, Inside )
+{
+  /* initialize random seed: */
+  srand ( time(NULL) );
+
+  int maxPoints = 200;
+  for( int i = 0; i < maxPoints; i++ )
+  {
+	  Point3D point1( -107.9790*rand(), 299.39490*rand(), 8.628*rand() );
+	  Point3D point2(  1000.167*rand(), 473.3738*rand(), 48.17*rand() );
+	  BBox boundingBox( point1, point2 );
+
+	  Point3D point( 503.47*rand(), 214.95*rand(), 23.568*rand() );
+
+	  bool inside = ( point.x >= boundingBox.pMin.x   ) &&
+			        ( point.x <= boundingBox.pMax.x   ) &&
+			        ( point.y >= boundingBox.pMin.y   ) &&
+			        ( point.y <= boundingBox.pMax.y   ) &&
+			        ( point.z >= boundingBox.pMin.z   ) &&
+			        ( point.z <= boundingBox.pMax.z   );
+
+	  EXPECT_TRUE( boundingBox.Inside( point ) == inside );
+  }
+}
+
+TEST( BBoxTests, Expand )
+{
+  /* initialize random seed: */
+  srand ( time(NULL) );
+
+  int maxPoints = 200;
+  for( int i = 0; i < maxPoints; i++ )
+  {
+	  Point3D point1( -107.9790*rand(), 299.39490*rand(), 8.628*rand() );
+	  Point3D point2(  100.167*rand(), 473.3738*rand(), 48.17*rand() );
+	  BBox boundingBoxA( point1, point2 );
+	  BBox boundingBoxB( point1, point2 );
+
+	  double delta = 0.369 * rand();
+	  boundingBoxB.Expand( delta );
+
+	  EXPECT_DOUBLE_EQ( boundingBoxB.pMin.x + delta, boundingBoxA.pMin.x );
+	  EXPECT_DOUBLE_EQ( boundingBoxB.pMin.y + delta, boundingBoxA.pMin.y );
+	  EXPECT_DOUBLE_EQ( boundingBoxB.pMin.z + delta, boundingBoxA.pMin.z );
+	  EXPECT_DOUBLE_EQ( boundingBoxA.pMax.x + delta, boundingBoxB.pMax.x );
+	  EXPECT_DOUBLE_EQ( boundingBoxA.pMax.y + delta, boundingBoxB.pMax.y );
+	  EXPECT_DOUBLE_EQ( boundingBoxA.pMax.z + delta, boundingBoxB.pMax.z );
+
+
+  }
+}
+
+TEST( BBoxTests, Volume )
+{
+  /* initialize random seed: */
+  srand ( time(NULL) );
+
+  int maxPoints = 200;
+  for( int i = 0; i < maxPoints; i++ )
+  {
+	  Point3D point1( -107.9790*rand(), 299.39490*rand(), 8.628*rand() );
+	  Point3D point2(  100.167*rand(), 473.3738*rand(), 48.17*rand() );
+	  BBox boundingBox( point1, point2 );
+
+	  double xLength = boundingBox.pMax.x - boundingBox.pMin.x;
+	  double yLength = boundingBox.pMax.y - boundingBox.pMin.y;
+	  double zLength = boundingBox.pMax.z - boundingBox.pMin.z;
+	  double volume = xLength * yLength * zLength;
+
+	  EXPECT_DOUBLE_EQ( volume, boundingBox.Volume() );
+  }
+}
+
+TEST( BBoxTests, MaximumExtent )
+{
+  /* initialize random seed: */
+  srand ( time(NULL) );
+
+  int maxPoints = 200;
+  for( int i = 0; i < maxPoints; i++ )
+  {
+	  Point3D point1( -107.9790*rand(), 299.39490*rand(), 8.628*rand() );
+	  Point3D point2(  100.167*rand(), 473.3738*rand(), 48.17*rand() );
+	  BBox boundingBox( point1, point2 );
+
+	  double dx = boundingBox.pMax.x - boundingBox.pMin.x;
+	  double dy = boundingBox.pMax.y - boundingBox.pMin.y;
+	  double dz = boundingBox.pMax.z - boundingBox.pMin.z;
+
+	  int maximumExtent = ( dx >= dy ) ? ( ( dx >= dz ) ? 0 : 2 ) : ( ( dy >= dz ) ? 1 : 2 );
+
+	  EXPECT_DOUBLE_EQ( maximumExtent, boundingBox.MaximumExtent() );
+  }
+}
+
+TEST( BBoxTests, BoundingSphere )
+{
+  /* initialize random seed: */
+  srand ( time(NULL) );
+
+  int maxPoints = 200;
+  for( int i = 0; i < maxPoints; i++ )
+  {
+	  Point3D point1( -1.079790*( rand() % 10000 ), 0.29939490*( rand() % 10000 ), 0.8628*( rand() % 10000 ) );
+	  Point3D point2(  1.00167*( rand() % 10000 ), 0.4733738*( rand() % 10000 ), 0.4817*( rand() % 10000 ) );
+	  BBox boundingBox( point1, point2 );
+
+	  Point3D center;
+	  double radius;
+	  boundingBox.BoundingSphere( center, radius );
+
+	  double xCenter = 0.5 * ( boundingBox.pMax.x + boundingBox.pMin.x );
+	  double yCenter = 0.5 * ( boundingBox.pMax.y + boundingBox.pMin.y );
+	  double zCenter = 0.5 * ( boundingBox.pMax.z + boundingBox.pMin.z );
+	  double xRadius = 0.5 * ( boundingBox.pMax.x - boundingBox.pMin.x );
+	  double yRadius = 0.5 * ( boundingBox.pMax.y - boundingBox.pMin.y );
+	  double zRadius = 0.5 * ( boundingBox.pMax.z - boundingBox.pMin.z );
+
+	  Point3D expectedCenter( xCenter, yCenter, zCenter );
+	  double expectedRadius = Distance( expectedCenter, boundingBox.pMax );
+	  double expectedRadius2 = std::sqrt( xRadius*xRadius + yRadius*yRadius + zRadius+zRadius );
+
+	  EXPECT_DOUBLE_EQ( expectedRadius, radius );
+	  EXPECT_DOUBLE_EQ( xCenter, center.x );
+	  EXPECT_DOUBLE_EQ( yCenter, center.y );
+	  EXPECT_DOUBLE_EQ( zCenter, center.z );
   }
 }
