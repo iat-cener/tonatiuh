@@ -70,10 +70,9 @@ BBox::BBox( const Point3D& point1, const Point3D& point2 )
 
 bool BBox::Overlaps( const BBox& bbox ) const
 {
-	bool xOverlap = ( pMax.x >= bbox.pMin.x ) && ( pMin.x <= bbox.pMax.x );
-	bool yOverlap = ( pMax.y >= bbox.pMin.y ) && ( pMin.y <= bbox.pMax.y);
-	bool zOverlap = ( pMax.z >= bbox.pMin.z ) && ( pMin.z <= bbox.pMax.z);
-	return ( xOverlap && yOverlap && zOverlap );
+	return ( pMax.x >= bbox.pMin.x ) & ( pMin.x <= bbox.pMax.x ) &
+	       ( pMax.y >= bbox.pMin.y ) & ( pMin.y <= bbox.pMax.y ) &
+	       ( pMax.z >= bbox.pMin.z ) & ( pMin.z <= bbox.pMax.z);
 }
 
 bool BBox::Inside( const Point3D& point) const
