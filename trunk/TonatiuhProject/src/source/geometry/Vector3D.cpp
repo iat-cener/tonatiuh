@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <cmath>
 #include <float.h>
+#include <iostream>
 
 #include "NormalVector.h"
 #include "Point3D.h"
@@ -150,7 +151,7 @@ double Vector3D::lengthSquared( ) const
 
 double Vector3D::length( ) const
 {
-    return std::sqrt( x*x + y*y + z*z );
+	return std::sqrt( x*x + y*y + z*z );
 }
 
 Vector3D operator+( Vector3D lhs, const Vector3D& rhs )
