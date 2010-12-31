@@ -39,14 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <gtest/gtest.h>
 #include <stdlib.h>
+#include <algorithm>
 #include <time.h>
 
 #include "tgc.h"
-
-
-
-
 #include "BBox.h"
+#include "Ray.h"
 
 TEST( BBoxTests, ConstructorDefault )
 {
@@ -160,7 +158,7 @@ TEST( BBoxTests, Expand )
   /* initialize random seed: */
   srand ( time(NULL) );
 
-  int maxPoints = 200;
+  int maxPoints = 20000;
   for( int i = 0; i < maxPoints; i++ )
   {
 	  Point3D point1( -107.9790*rand(), 299.39490*rand(), 8.628*rand() );
@@ -169,16 +167,15 @@ TEST( BBoxTests, Expand )
 	  BBox boundingBoxB( point1, point2 );
 
 	  double delta = 0.369 * rand();
+	  double error = delta * ( 0.0000001 );
 	  boundingBoxB.Expand( delta );
 
-	  EXPECT_DOUBLE_EQ( boundingBoxB.pMin.x + delta, boundingBoxA.pMin.x );
-	  EXPECT_DOUBLE_EQ( boundingBoxB.pMin.y + delta, boundingBoxA.pMin.y );
-	  EXPECT_DOUBLE_EQ( boundingBoxB.pMin.z + delta, boundingBoxA.pMin.z );
-	  EXPECT_DOUBLE_EQ( boundingBoxA.pMax.x + delta, boundingBoxB.pMax.x );
-	  EXPECT_DOUBLE_EQ( boundingBoxA.pMax.y + delta, boundingBoxB.pMax.y );
-	  EXPECT_DOUBLE_EQ( boundingBoxA.pMax.z + delta, boundingBoxB.pMax.z );
-
-
+	  EXPECT_NEAR( delta, boundingBoxA.pMin.x - boundingBoxB.pMin.x, error );
+	  EXPECT_NEAR( delta, boundingBoxA.pMin.y - boundingBoxB.pMin.y, error );
+	  EXPECT_NEAR( delta, boundingBoxA.pMin.z - boundingBoxB.pMin.z, error );
+	  EXPECT_NEAR( delta, boundingBoxB.pMax.x - boundingBoxA.pMax.x, error );
+	  EXPECT_NEAR( delta, boundingBoxB.pMax.y - boundingBoxA.pMax.y, error );
+	  EXPECT_NEAR( delta, boundingBoxB.pMax.z - boundingBoxA.pMax.z, error );
   }
 }
 
@@ -247,14 +244,117 @@ TEST( BBoxTests, BoundingSphere )
 	  double xRadius = 0.5 * ( boundingBox.pMax.x - boundingBox.pMin.x );
 	  double yRadius = 0.5 * ( boundingBox.pMax.y - boundingBox.pMin.y );
 	  double zRadius = 0.5 * ( boundingBox.pMax.z - boundingBox.pMin.z );
-
-	  Point3D expectedCenter( xCenter, yCenter, zCenter );
-	  double expectedRadius = Distance( expectedCenter, boundingBox.pMax );
-	  double expectedRadius2 = std::sqrt( xRadius*xRadius + yRadius*yRadius + zRadius+zRadius );
+	  double expectedRadius = std::sqrt( xRadius*xRadius + yRadius*yRadius + zRadius*zRadius );
 
 	  EXPECT_DOUBLE_EQ( expectedRadius, radius );
 	  EXPECT_DOUBLE_EQ( xCenter, center.x );
 	  EXPECT_DOUBLE_EQ( yCenter, center.y );
 	  EXPECT_DOUBLE_EQ( zCenter, center.z );
   }
+}
+
+TEST( BBoxTests, IntersectP )
+{
+   /* initialize random seed: */
+   srand ( time(NULL) );
+
+   int maxPoints = 2000000;
+   for( int i = 0; i < maxPoints; i++ )
+   {
+      Point3D point1( ( rand() % 1000 ), ( rand() % 1000 ), ( rand() % 1000 ) );
+	  Point3D point2( ( rand() % 1000 ), ( rand() % 1000 ), ( rand() % 1000 ) );
+	  BBox boundingBox( point1, point2 );
+
+	  Vector3D delta( ( rand() % 2000 ), ( rand() % 2000 ), ( rand() % 2000 ) );
+	  Point3D rayOrigin = ( 0.5 * point1 ) + delta;
+	  Vector3D rayDirection = Normalize( Vector3D( ( rand() % 10000 ), ( rand() % 10000 ), ( rand() % 10000 ) ) );
+
+      Ray ray( rayOrigin, rayDirection );
+      double tNear = ray.mint;
+      double tFar = ray.maxt;
+      bool intersection = boundingBox.IntersectP( ray, &tNear, &tFar );
+
+      bool expectedIntersection = false;
+
+	  Point3D intersectionPoint;
+	  std::vector<double> tValidIntersection;
+	  double t = ( boundingBox.pMin.x - ray.origin.x ) / ray.direction.x;
+	  if( t >= ray.mint && t <= ray.maxt)
+	  {
+	     intersectionPoint = ray( t );
+	     if ( ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) &&
+		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
+	  }
+	  t = ( boundingBox.pMax.x - ray.origin.x ) / ray.direction.x;
+	  if( t >= ray.mint && t <= ray.maxt)
+	  {
+	     intersectionPoint = ray( t );
+	     if ( ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) &&
+		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
+	  }
+	  t = ( boundingBox.pMin.y - ray.origin.y ) / ray.direction.y;
+	  if( t >= ray.mint && t <= ray.maxt)
+	  {
+	     intersectionPoint = ray( t );
+	     if ( ( intersectionPoint.x > boundingBox.pMin.x ) && ( intersectionPoint.x < boundingBox.pMax.x ) &&
+		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
+	  }
+	  t = ( boundingBox.pMax.y - ray.origin.y ) / ray.direction.y;
+	  if( t >= ray.mint && t <= ray.maxt)
+	  {
+	     intersectionPoint = ray( t );
+	     if ( ( intersectionPoint.x > boundingBox.pMin.x ) && ( intersectionPoint.x < boundingBox.pMax.x ) &&
+		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
+	  }
+	  t = ( boundingBox.pMin.z - ray.origin.z ) / ray.direction.z;
+	  if( t >= ray.mint && t <= ray.maxt)
+	  {
+	     intersectionPoint = ray( t );
+	     if ( ( intersectionPoint.x > boundingBox.pMin.x ) && ( intersectionPoint.x < boundingBox.pMax.x ) &&
+		      ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) ) tValidIntersection.push_back(t);
+	  }
+	  t = ( boundingBox.pMax.z - ray.origin.z ) / ray.direction.z;
+	  if( t >= ray.mint && t <= ray.maxt)
+	  {
+	     intersectionPoint = ray( t );
+	     if ( ( intersectionPoint.x > boundingBox.pMin.x ) && ( intersectionPoint.x < boundingBox.pMax.x ) &&
+		      ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) ) tValidIntersection.push_back(t);
+	  }
+
+	  double expectedtNear = tgc::Infinity;
+	  double expectedtFar = tgc::Infinity;
+      if( tValidIntersection.size() )
+      {
+    	  expectedIntersection = true;
+
+    	  std::sort( tValidIntersection.begin(), tValidIntersection.end() );
+
+    	  if( tValidIntersection.size() > 1 )
+    	  {
+        	  expectedtNear  = tValidIntersection[0];
+    		  expectedtFar = tValidIntersection[1];
+    	  }
+    	  else
+    	  {
+        	  expectedtNear  = ray.mint;
+    		  expectedtFar = tValidIntersection[0];
+    	  }
+      }
+
+	  EXPECT_EQ( expectedIntersection, intersection );
+
+	  if( intersection )
+	  {
+	     EXPECT_DOUBLE_EQ( expectedtNear, tNear );
+	     EXPECT_DOUBLE_EQ( expectedtFar, tFar );
+	     if( expectedtNear != tNear || expectedtFar != tFar )
+	     {
+	    	 std::cout << boundingBox;
+	    	 std::cout << ray;
+	    	 std::cout << "Expected: " << expectedtNear << ", " << expectedtFar << std::endl;
+	    	 std::cout << "Actual  : " << tNear << ", " << tFar << std::endl;
+	     }
+	  }
+
+   }
 }

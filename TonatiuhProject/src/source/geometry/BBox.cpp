@@ -110,20 +110,59 @@ bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
 {
     double t0 = ray.mint;
     double t1 = ray.maxt;
+	double tmin, tmax, tymin, tymax, tzmin, tzmax;
 
-    for( int i = 0; i < 3; ++i )
-    {
-    	double invRayDir = 1.0 / ray.direction[i];
-    	double tNear = ( pMin[i] - ray.origin[i] ) * invRayDir;
-    	double tFar = ( pMax[i] - ray.origin[i] ) * invRayDir;
-    	if( tNear > tFar ) std::swap( tNear, tFar );
-    	t0 = tNear > t0 ? tNear : t0;
-    	t1 = tFar < t1 ? tFar : t1;
-    	if( t0 > t1 ) return false;
-    }
-    if( hitt0 ) *hitt0 = t0;
-    if( hitt1 ) *hitt1 = t1;
-    return true;
+	if( ray.direction.x >= 0.0 )
+	{
+       tmin = ( pMin.x - ray.origin.x ) / ray.direction.x;
+	   tmax = ( pMax.x - ray.origin.x ) / ray.direction.x;
+	}
+	else
+	{
+	   tmin = ( pMax.x - ray.origin.x ) / ray.direction.x;
+	   tmax = ( pMin.x - ray.origin.x ) / ray.direction.x;
+	}
+
+	if ( ray.direction.y >= 0.0 )
+	{
+	   tymin = ( pMin.y - ray.origin.y ) / ray.direction.y;
+	   tymax = ( pMax.y - ray.origin.y ) / ray.direction.y;
+	}
+	else
+	{
+	   tymin = ( pMax.y - ray.origin.y ) / ray.direction.y;
+	   tymax = ( pMin.y - ray.origin.y ) / ray.direction.y;
+	}
+
+	if ( ( tmin > tymax ) || ( tymin > tmax ) ) return false;
+
+	if ( tymin > tmin ) tmin = tymin;
+	if ( tymax < tmax ) tmax = tymax;
+
+	if ( ray.direction.z >= 0 )
+	{
+	   tzmin = ( pMin.z - ray.origin.z ) / ray.direction.z;
+	   tzmax = ( pMax.z - ray.origin.z ) / ray.direction.z;
+	}
+	else
+	{
+	   tzmin = ( pMax.z - ray.origin.z ) / ray.direction.z;
+	   tzmax = ( pMin.z - ray.origin.z ) / ray.direction.z;
+	}
+
+	if ( ( tmin > tzmax ) || ( tzmin > tmax ) ) return false;
+
+	if ( tzmin > tmin ) tmin = tzmin;
+	if ( tzmax < tmax ) tmax = tzmax;
+	if ( ( tmin < t1 ) && ( tmax > t0 ) )
+	{
+	    if( tmin < t0 ) tmin = t0;
+	    if( tmax > t1 ) tmax = t1;
+	    if( hitt0 ) *hitt0 = tmin;
+	    if( hitt1 ) *hitt1 = tmax;
+	    return true;
+	}
+	else return false;
 }
 
 std::ostream& operator<<( std::ostream& os, const BBox& bbox )

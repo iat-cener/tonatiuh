@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include "Point3D.h"
 #include "Vector3D.h"
+#include <iostream>
 
 Point3D::Point3D( double dx, double dy, double dz )
 : x(dx), y(dy), z(dz)
@@ -143,6 +144,11 @@ double& Point3D::operator[]( int i )
     else return (i == 1) ? y : z;
 }
 
+Point3D operator*( double scalar, const Point3D& point )
+{
+	return point * scalar;
+}
+
 std::ostream &operator<<( std::ostream &os, const Point3D& pA )
 {
     os << pA.x << ", " << pA.y << ", " << pA.z;
@@ -151,7 +157,7 @@ std::ostream &operator<<( std::ostream &os, const Point3D& pA )
 
 double Distance( const Point3D& pointA, const Point3D& pointB )
 {
-    return ( pointA - pointB ).length();
+	return (pointA - pointB).length();
 }
 
 double DistanceSquared( const Point3D& pointA, const Point3D& pointB )
