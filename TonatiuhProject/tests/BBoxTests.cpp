@@ -224,7 +224,7 @@ TEST( BBoxTests, MaximumExtent )
 
 TEST( BBoxTests, BoundingSphere )
 {
-  /* initialize random seed: */
+  // initialize random seed:
   srand ( time(NULL) );
 
   int maxPoints = 200;

@@ -128,13 +128,15 @@ bool Vector3D::operator!=( const Vector3D& vector ) const
 double Vector3D::operator[]( int i ) const
 {
     if( i == 0 ) return x;
-    else return (i == 1) ? y : z;
+    if( i == 1 ) return y;
+    if( i == 2 ) return z;
 }
 
 double& Vector3D::operator[]( int i )
 {
     if( i == 0 ) return x;
-    else return (i == 1) ? y : z;
+    if( i == 1 ) return y;
+    if( i == 2 ) return z;
 }
 
 void Vector3D::zero()

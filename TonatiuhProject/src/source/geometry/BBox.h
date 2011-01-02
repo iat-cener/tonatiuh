@@ -61,8 +61,8 @@ struct BBox
 	Point3D pMax;
 };
 
-std::ostream& operator<<( std::ostream& os, const BBox& bbox );
 BBox Union( const BBox& bbox, const Point3D& point );
 BBox Union( const BBox& bbox1, const BBox& bbox2 );
+std::ostream& operator<<( std::ostream& os, const BBox& bbox );
 
 #endif //BBOX_H_
