@@ -35,7 +35,6 @@ SOURCES = src/*.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/BBox.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/Matrix4x4.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/NormalVector.cpp \
-			$$(TONATIUH_ROOT)/src/source/geometry/Ray.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/RefCount.cpp \
 			$$(TONATIUH_ROOT)/src/source/geometry/tgf.cpp \			
 			$$(TONATIUH_ROOT)/src/source/geometry/Point3D.cpp \

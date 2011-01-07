@@ -47,18 +47,37 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 struct Ray
 {
-    Ray( );
-    Ray( const Point3D& orig, const Vector3D& direc, double start = tgc::Epsilon, double end = tgc::Infinity );
-    ~Ray( );
-    Point3D operator()( double t ) const;
-    bool operator==( const Ray& ray ) const;
-        
+    Ray( )
+    : mint( tgc::Epsilon ), maxt( tgc::Infinity )
+    {}
+
+    Ray( const Point3D& orig, const Vector3D& direc, double start = tgc::Epsilon, double end = tgc::Infinity )
+    : origin( orig ), direction( direc ), mint( start ), maxt( end )
+    {
+    }
+
+    ~Ray( )
+    {
+    }
+
+    Point3D operator()( double t ) const
+    {
+        return origin + direction * t;
+    }
+
+
+    bool operator==( const Ray& ray ) const
+    {
+    	if( this == &ray ) return true;
+    	return ( ( origin == ray.origin ) && ( direction == ray.direction ) &&
+    		     !( fabs(mint - ray.mint) > tgc::Epsilon ) && !( fabs(maxt - ray.maxt) > tgc::Epsilon ) );
+    }
+
     Point3D origin;
     Vector3D direction;
     mutable double mint;
     mutable double maxt;
 };
 
-std::ostream& operator<<( std::ostream& os, const Ray& ray );
 
 #endif
