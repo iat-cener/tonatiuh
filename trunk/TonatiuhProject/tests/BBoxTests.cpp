@@ -43,44 +43,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <time.h>
 
 #include "tgc.h"
+#include "TestsAuxiliaryFunctions.h"
 #include "BBox.h"
 #include "Ray.h"
-
-inline double randomNumber( double a, double b )
-{
-	return (b-a)*( rand() / double(RAND_MAX) ) + a;
-}
-
-inline Point3D randomPoint( double a, double b  )
-{
-	double x = randomNumber( a, b );
-	double y = randomNumber( a, b );
-	double z = randomNumber( a, b );
-	return Point3D( x, y, z);
-}
-
-inline BBox randomBox( double a, double b )
-{
-	Point3D point1 = randomPoint( a, b );
-	Point3D point2 = randomPoint( a, b );
-    return BBox( point1, point2 );
-}
-
-inline Vector3D randomDirection( )
-{
-	double azimuth = randomNumber( 0, tgc::TwoPi );
-	double zenithAngle = randomNumber( 0, tgc::Pi );
-	double SinZenithAngle = sin( zenithAngle );
-	double x = SinZenithAngle * cos( azimuth );
-	double y = SinZenithAngle * sin( azimuth );
-	double z = cos( zenithAngle );
-	return Normalize( Vector3D( x, y, z) );
-}
-
-inline Ray randomRay( double a, double b )
-{
-	return Ray( randomPoint(a, b), randomDirection() );
-}
 
 // Extension of the testing space
 const double maximumCoordinate = 5000000.0;
@@ -110,7 +75,7 @@ TEST( BBoxTests, ConstructorOnePoint3D )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
-	  point = randomPoint( a, b );
+	  point = taf::randomPoint( a, b );
 	  BBox boundingBox( point );
 	  EXPECT_TRUE( boundingBox.pMin == point );
 	  EXPECT_TRUE( boundingBox.pMax == point );
@@ -130,8 +95,8 @@ TEST( BBoxTests, ConstructorTwoPoint3D )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
-	  point1 = randomPoint( a, b );
-	  point2 = randomPoint( a, b );
+	  point1 = taf::randomPoint( a, b );
+	  point2 = taf::randomPoint( a, b );
 	  BBox boundingBox( point1, point2 );
 
 	  EXPECT_TRUE( boundingBox.pMin.x <= point1.x );
@@ -163,8 +128,8 @@ TEST( BBoxTests, Overlaps )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
- 	  boundingBoxA = randomBox( a, b );
- 	  boundingBoxB = randomBox( a, b );
+ 	  boundingBoxA = taf::randomBox( a, b );
+ 	  boundingBoxB = taf::randomBox( a, b );
 
 	  bool overlap = ( boundingBoxA.pMin.x <= boundingBoxB.pMax.x   ) &&
 			         ( boundingBoxA.pMax.x >= boundingBoxB.pMin.x   ) &&
@@ -192,8 +157,8 @@ TEST( BBoxTests, Inside )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
- 	  boundingBox = randomBox( a, b );
-      point = randomPoint( a, b );
+ 	  boundingBox = taf::randomBox( a, b );
+      point = taf::randomPoint( a, b );
 
 	  bool inside = ( point.x >= boundingBox.pMin.x   ) &&
 			        ( point.x <= boundingBox.pMax.x   ) &&
@@ -221,9 +186,9 @@ TEST( BBoxTests, Expand )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
- 	  boundingBoxA = randomBox( a, b );
+ 	  boundingBoxA = taf::randomBox( a, b );
  	  boundingBoxB = boundingBoxA;
-	  delta = randomNumber( tgc::Epsilon, b );
+	  delta = taf::randomNumber( tgc::Epsilon, b );
 	  boundingBoxB.Expand( delta );
 
 	  relativeError[0] = std::abs( boundingBoxA.pMin.x - boundingBoxB.pMin.x - delta )/delta;
@@ -255,7 +220,7 @@ TEST( BBoxTests, Volume )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
- 	  boundingBox = randomBox( a, b );
+ 	  boundingBox = taf::randomBox( a, b );
 
 	  double xLength = boundingBox.pMax.x - boundingBox.pMin.x;
 	  double yLength = boundingBox.pMax.y - boundingBox.pMin.y;
@@ -281,7 +246,7 @@ TEST( BBoxTests, MaximumExtent )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
- 	  boundingBox = randomBox( a, b );
+ 	  boundingBox = taf::randomBox( a, b );
 	  dx = boundingBox.pMax.x - boundingBox.pMin.x;
 	  dy = boundingBox.pMax.y - boundingBox.pMin.y;
 	  dz = boundingBox.pMax.z - boundingBox.pMin.z;
@@ -306,7 +271,7 @@ TEST( BBoxTests, BoundingSphere )
 
   for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
   {
- 	  boundingBox = randomBox( a, b );
+ 	  boundingBox = taf::randomBox( a, b );
 	  boundingBox.BoundingSphere( center, radius );
 
 	  double xCenter = 0.5 * ( boundingBox.pMax.x + boundingBox.pMin.x );
@@ -339,8 +304,8 @@ TEST( BBoxTests, IntersectP )
 
    for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
    {
-  	  boundingBox = randomBox( a, b );
-  	  ray = randomRay( a, b );
+  	  boundingBox = taf::randomBox( a, b );
+  	  ray = taf::randomRay( a, b );
 
       double tNear = ray.mint;
       double tFar = ray.maxt;
@@ -438,8 +403,8 @@ TEST( BBoxTests, UnionBBoxPoint3D )
 
    for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
    {
-      point = randomPoint( a, b);
-	  box = randomBox( a, b );
+      point = taf::randomPoint( a, b);
+	  box = taf::randomBox( a, b );
 	  unionBox = Union( box, point );
 
       double xmin = std::min( box.pMin.x, point.x );
@@ -473,8 +438,8 @@ TEST( BBoxTests, UnionBBoxBBox )
 
    for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
    {
-	  box1 = randomBox( a, b );
-	  box2 = randomBox( a, b );
+	  box1 = taf::randomBox( a, b );
+	  box2 = taf::randomBox( a, b );
 	  unionBox = Union( box1, box2 );
 
       double xmin = std::min( box1.pMin.x, box2.pMin.x );
