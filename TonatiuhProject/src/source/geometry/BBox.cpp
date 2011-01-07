@@ -114,26 +114,28 @@ bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
     double t1 = ray.maxt;
 	double tmin, tmax, tymin, tymax, tzmin, tzmax;
 
-	if( ray.direction.x >= 0.0 )
+	double divx = 1.0 / ray.direction.x;
+	if( divx >= 0.0 )
 	{
-       tmin = ( pMin.x - ray.origin.x ) / ray.direction.x;
-	   tmax = ( pMax.x - ray.origin.x ) / ray.direction.x;
+       tmin = ( pMin.x - ray.origin.x ) * divx;
+	   tmax = ( pMax.x - ray.origin.x ) * divx;
 	}
 	else
 	{
-	   tmin = ( pMax.x - ray.origin.x ) / ray.direction.x;
-	   tmax = ( pMin.x - ray.origin.x ) / ray.direction.x;
+	   tmin = ( pMax.x - ray.origin.x ) * divx;
+	   tmax = ( pMin.x - ray.origin.x ) * divx;
 	}
 
-	if ( ray.direction.y >= 0.0 )
+	double divy = 1.0 / ray.direction.y;
+	if ( divy >= 0.0 )
 	{
-	   tymin = ( pMin.y - ray.origin.y ) / ray.direction.y;
-	   tymax = ( pMax.y - ray.origin.y ) / ray.direction.y;
+	   tymin = ( pMin.y - ray.origin.y ) * divy;
+	   tymax = ( pMax.y - ray.origin.y ) * divy;
 	}
 	else
 	{
-	   tymin = ( pMax.y - ray.origin.y ) / ray.direction.y;
-	   tymax = ( pMin.y - ray.origin.y ) / ray.direction.y;
+	   tymin = ( pMax.y - ray.origin.y ) * divy;
+	   tymax = ( pMin.y - ray.origin.y ) * divy;
 	}
 
 	if ( ( tmin > tymax ) || ( tymin > tmax ) ) return false;
@@ -141,15 +143,16 @@ bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
 	if ( tymin > tmin ) tmin = tymin;
 	if ( tymax < tmax ) tmax = tymax;
 
-	if ( ray.direction.z >= 0 )
+	double divz = 1.0 / ray.direction.z;
+	if ( divz >= 0 )
 	{
-	   tzmin = ( pMin.z - ray.origin.z ) / ray.direction.z;
-	   tzmax = ( pMax.z - ray.origin.z ) / ray.direction.z;
+	   tzmin = ( pMin.z - ray.origin.z ) * divz;
+	   tzmax = ( pMax.z - ray.origin.z ) * divz;
 	}
 	else
 	{
-	   tzmin = ( pMax.z - ray.origin.z ) / ray.direction.z;
-	   tzmax = ( pMin.z - ray.origin.z ) / ray.direction.z;
+	   tzmin = ( pMax.z - ray.origin.z ) * divz;
+	   tzmax = ( pMin.z - ray.origin.z ) * divz;
 	}
 
 	if ( ( tmin > tzmax ) || ( tzmin > tmax ) ) return false;
