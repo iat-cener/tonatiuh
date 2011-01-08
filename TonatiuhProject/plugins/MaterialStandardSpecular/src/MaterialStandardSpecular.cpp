@@ -192,10 +192,10 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 		normalVector = dg->normal;
 	}
 
-	double cosTheta = DotProduct( normalVector, incident.direction );
+	double cosTheta = DotProduct( normalVector, incident.direction() );
 	//reflected->direction = Normalize( incident.direction - 2.0 * normalVector * cosTheta );
 	//return reflected
-	outputRay->direction = Normalize( incident.direction - 2.0 * normalVector * cosTheta );
+	outputRay->setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
 	return true;
 
 }

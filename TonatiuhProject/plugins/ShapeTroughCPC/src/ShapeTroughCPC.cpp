@@ -61,9 +61,9 @@ double fPart( double theta, double a, double thetaI, Ray ray )
 
 	//Caso 1a: RIGHT, If= FALSE
 
-	double xrd = ray.direction.x;
+	double xrd = ray.direction().x;
 	double xro = ray.origin.x;
-	double yrd = ray.direction.y;
+	double yrd = ray.direction().y;
 	double yro = ray.origin.y;
 
 	return ( 1 /(-1 + cos( theta ))) * ( (a + xro ) * yrd - xrd * yro + (-xro * yrd + xrd * yro ) * cos(theta)
@@ -515,19 +515,19 @@ double ShapeTroughCPC::findThit( Ray ray, double theta, bool right ) const
 {
 
 	double tHit;
-	if( ray.direction.x > 0 )
+	if( ray.direction().x > 0 )
 	{
 		double x = ((2 * a.getValue() * (1 + sin(m_thetaI) ) * sin( theta-m_thetaI ))
 				/( 1 - cos(theta ))) - a.getValue();
 
 		if( !right )	x *= -1;
-		tHit = ( x - ray.origin.x ) / ray.direction.x;
+		tHit = ( x - ray.origin.x ) * ray.invDirection().x;
 	}
 	else
 	{
 		double y = ( 2 * a.getValue() * (1 + sin(m_thetaI) ) *cos( theta-m_thetaI ) )
 				/( 1 - cos(theta) );
-		tHit = ( y - ray.origin.y ) / ray.direction.y;
+		tHit = ( y - ray.origin.y ) * ray.invDirection().y;
 	}
 
 	return tHit;

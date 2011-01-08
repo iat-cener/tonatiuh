@@ -315,42 +315,42 @@ TEST( BBoxTests, IntersectP )
 
 	  Point3D intersectionPoint;
 	  std::vector<double> tValidIntersection;
-	  double t = ( boundingBox.pMin.x - ray.origin.x ) / ray.direction.x;
+	  double t = ( boundingBox.pMin.x - ray.origin.x ) / ray.direction().x;
 	  if( t >= ray.mint && t <= ray.maxt)
 	  {
 	     intersectionPoint = ray( t );
 	     if ( ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) &&
 		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
 	  }
-	  t = ( boundingBox.pMax.x - ray.origin.x ) / ray.direction.x;
+	  t = ( boundingBox.pMax.x - ray.origin.x ) / ray.direction().x;
 	  if( t >= ray.mint && t <= ray.maxt)
 	  {
 	     intersectionPoint = ray( t );
 	     if ( ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) &&
 		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
 	  }
-	  t = ( boundingBox.pMin.y - ray.origin.y ) / ray.direction.y;
+	  t = ( boundingBox.pMin.y - ray.origin.y ) / ray.direction().y;
 	  if( t >= ray.mint && t <= ray.maxt)
 	  {
 	     intersectionPoint = ray( t );
 	     if ( ( intersectionPoint.x > boundingBox.pMin.x ) && ( intersectionPoint.x < boundingBox.pMax.x ) &&
 		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
 	  }
-	  t = ( boundingBox.pMax.y - ray.origin.y ) / ray.direction.y;
+	  t = ( boundingBox.pMax.y - ray.origin.y ) / ray.direction().y;
 	  if( t >= ray.mint && t <= ray.maxt)
 	  {
 	     intersectionPoint = ray( t );
 	     if ( ( intersectionPoint.x > boundingBox.pMin.x ) && ( intersectionPoint.x < boundingBox.pMax.x ) &&
 		      ( intersectionPoint.z > boundingBox.pMin.z ) && ( intersectionPoint.z < boundingBox.pMax.z ) ) tValidIntersection.push_back(t);
 	  }
-	  t = ( boundingBox.pMin.z - ray.origin.z ) / ray.direction.z;
+	  t = ( boundingBox.pMin.z - ray.origin.z ) / ray.direction().z;
 	  if( t >= ray.mint && t <= ray.maxt)
 	  {
 	     intersectionPoint = ray( t );
 	     if ( ( intersectionPoint.x > boundingBox.pMin.x ) && ( intersectionPoint.x < boundingBox.pMax.x ) &&
 		      ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) ) tValidIntersection.push_back(t);
 	  }
-	  t = ( boundingBox.pMax.z - ray.origin.z ) / ray.direction.z;
+	  t = ( boundingBox.pMax.z - ray.origin.z ) / ray.direction().z;
 	  if( t >= ray.mint && t <= ray.maxt)
 	  {
 	     intersectionPoint = ray( t );

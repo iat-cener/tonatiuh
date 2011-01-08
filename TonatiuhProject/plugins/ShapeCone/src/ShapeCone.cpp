@@ -95,14 +95,16 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 	double theta = atan2( height.getValue(), ( baseRadius.getValue() - topRadius.getValue() ) );
 	double invTan = 1 / tan(theta);
 
-	double A = ( objectRay.direction.x * objectRay.direction.x )
-				+ ( objectRay.direction.z * objectRay.direction.z  )
-				- ( objectRay.direction.y * objectRay.direction.y * invTan * invTan);
-	double B = 2.0 * ( ( objectRay.origin.x * objectRay.direction.x )
-						+ ( objectRay.origin.z * objectRay.direction.z )
-						+ ( baseRadius.getValue() * invTan * objectRay.direction.y )
-						- ( invTan * invTan * objectRay.origin.y * objectRay.direction.y ) );
-	double C = ( objectRay.origin.x * objectRay.origin.x )
+	double A = (     objectRay.direction().x * objectRay.direction().x )
+				 + ( objectRay.direction().z * objectRay.direction().z )
+				 - ( objectRay.direction().y * objectRay.direction().y * invTan * invTan );
+
+	double B = 2.0 * ( (    objectRay.origin.x * objectRay.direction().x )
+						+ ( objectRay.origin.z * objectRay.direction().z )
+						+ ( baseRadius.getValue() * invTan * objectRay.direction().y )
+						- ( invTan * invTan * objectRay.origin.y * objectRay.direction().y ) );
+
+	double C = (    objectRay.origin.x * objectRay.origin.x )
 				+ ( objectRay.origin.z * objectRay.origin.z )
 				- ( baseRadius.getValue() * baseRadius.getValue() )
 				+ ( 2 * baseRadius.getValue() * invTan * objectRay.origin.y )
@@ -202,7 +204,7 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 		                        dndu,
 								dndv,
 		                        u, v, this );
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = thit;

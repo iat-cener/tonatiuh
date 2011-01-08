@@ -45,15 +45,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Point3D.h"
 #include "Vector3D.h"
 
-struct Ray
+class Ray
 {
-    Ray( )
-    : mint( tgc::Epsilon ), maxt( tgc::Infinity )
-    {}
+public:
+    Ray() : mint( tgc::Epsilon ), maxt( tgc::Infinity )
+    {
+    }
 
     Ray( const Point3D& orig, const Vector3D& direc, double start = tgc::Epsilon, double end = tgc::Infinity )
-    : origin( orig ), direction( direc ), mint( start ), maxt( end )
+    : origin( orig ), mint( start ), maxt( end )
     {
+    	setDirection( direc );
     }
 
     ~Ray( )
@@ -62,21 +64,40 @@ struct Ray
 
     Point3D operator()( double t ) const
     {
-        return origin + direction * t;
+       return origin + m_direction * t;
     }
 
+    const Vector3D& direction() const
+    {
+    	return m_direction;
+    }
+
+    const Vector3D& invDirection() const
+    {
+    	return m_invDirection;
+    }
+
+    void setDirection( const Vector3D& direction )
+    {
+    	m_direction = direction;
+    	m_invDirection = Vector3D( 1.0/m_direction.x, 1.0/m_direction.y, 1.0/m_direction.z );
+    }
 
     bool operator==( const Ray& ray ) const
     {
     	if( this == &ray ) return true;
-    	return ( ( origin == ray.origin ) && ( direction == ray.direction ) &&
-    		     !( fabs(mint - ray.mint) > tgc::Epsilon ) && !( fabs(maxt - ray.maxt) > tgc::Epsilon ) );
+    	return ( ( origin == ray.origin ) && ( m_direction == ray.m_direction ) &&
+    		     !( fabs( mint - ray.mint) > tgc::Epsilon ) && !( fabs( maxt - ray.maxt) > tgc::Epsilon ) );
     }
 
     Point3D origin;
-    Vector3D direction;
     mutable double mint;
     mutable double maxt;
+
+private:
+    Vector3D m_direction;
+    Vector3D m_invDirection;
+
 };
 
 

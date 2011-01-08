@@ -93,9 +93,9 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	double yo= objectRay.origin.y;
 	double zo= objectRay.origin.z;
 
-	double xd= objectRay.direction.x;
-	double yd= objectRay.direction.y;
-	double zd= objectRay.direction.z;
+	double xd= objectRay.direction().x;
+	double yd= objectRay.direction().y;
+	double zd= objectRay.direction().z;
 
 	double cConic = fabs( distanceTwoFocus.getValue() /2 );
 	double aConic = cConic - focusLegth.getValue();
@@ -196,7 +196,7 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 								dndu,
 								dndv,
 								u, v, this );
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;

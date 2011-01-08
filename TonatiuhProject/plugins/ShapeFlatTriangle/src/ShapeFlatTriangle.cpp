@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -128,7 +128,7 @@ bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, Different
 	//if( objectRay.direction.z ==0.0 ) return false;
 
 	double thit = (-d - vN.x * objectRay.origin.x - vN.y * objectRay.origin.y - vN.z * objectRay.origin.z )
-			/ (vN.x * objectRay.direction.x  + vN.y * objectRay.direction.y + vN.z * objectRay.direction.z );
+			/ (vN.x * objectRay.direction().x  + vN.y * objectRay.direction().y + vN.z * objectRay.direction().z );
 	//double thit = - objectRay.origin.z / objectRay.direction.z;
 
 	//Evaluate Tolerance
@@ -197,7 +197,7 @@ bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, Different
 								dndv,
 		                        u, v, this );
 
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = thit;

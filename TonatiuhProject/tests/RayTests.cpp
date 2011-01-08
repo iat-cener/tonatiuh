@@ -42,9 +42,9 @@ TEST(RayTests, ConstructorOriginVectorDefaultts) {
 		  EXPECT_TRUE(ray.origin.y == number[index[1]]);
 		  EXPECT_TRUE(ray.origin.z == number[index[2]]);
 
-		  EXPECT_TRUE(ray.direction.x == number[index[3]]);
-		  EXPECT_TRUE(ray.direction.y == number[index[4]]);
-		  EXPECT_TRUE(ray.direction.z == number[index[5]]);
+		  EXPECT_TRUE(ray.direction().x == number[index[3]]);
+		  EXPECT_TRUE(ray.direction().y == number[index[4]]);
+		  EXPECT_TRUE(ray.direction().z == number[index[5]]);
 
 		  EXPECT_TRUE(ray.mint == tgc::Epsilon);
 		  EXPECT_TRUE(ray.maxt == tgc::Infinity);
@@ -78,9 +78,9 @@ TEST(RayTests, ConstructorOriginVectorNoDefaultts) {
 	  	  EXPECT_TRUE(ray.origin.y == -number[index[1]]);
 	  	  EXPECT_TRUE(ray.origin.z == -number[index[2]]);
 
-	  	  EXPECT_TRUE(ray.direction.x == -number[index[3]]);
-	  	  EXPECT_TRUE(ray.direction.y == -number[index[4]]);
-	  	  EXPECT_TRUE(ray.direction.z == -number[index[5]]);
+	  	  EXPECT_TRUE(ray.direction().x == -number[index[3]]);
+	  	  EXPECT_TRUE(ray.direction().y == -number[index[4]]);
+	  	  EXPECT_TRUE(ray.direction().z == -number[index[5]]);
 
 	  	  EXPECT_TRUE(ray.mint == tmin);
 	  	  EXPECT_TRUE(ray.maxt == tmax);
@@ -99,7 +99,7 @@ TEST(RayTests, FunctionOperator) {
 	{
 		Ray& ray = (*it);
 		Point3D& origin = ray.origin;
-		Vector3D& direction = ray.direction;
+		const Vector3D& direction = ray.direction();
 		double t = (ray.mint + ray.maxt)/2.0;
 		Point3D actualResult = ray(t);
 		Point3D expectedResult = origin + direction * t;

@@ -87,8 +87,8 @@ QString ShapeFlatRectangle::GetIcon() const
 bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
 	// Solve equation for _t_ value
-	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction.y == 0 ) ) return false;
-	double t = -objectRay.origin.y/objectRay.direction.y;
+	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction().y == 0 ) ) return false;
+	double t = -objectRay.origin.y * objectRay.invDirection().y;
 
 	// Compute intersection distance along ray
 	if( t > objectRay.maxt || t < objectRay.mint ) return false;
@@ -130,7 +130,7 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
 		                        dndu,
 								dndv,
 		                        u, v, this );
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = t;

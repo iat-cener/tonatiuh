@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -179,19 +179,18 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 		std::cout<<"{"<<m_controlPoints[i][0]<<","<<m_controlPoints[i][1]<<","<<m_controlPoints[i][2]<<"}"<<std::endl;
 	*/
 	Vector3D t;
-	if( fabs(objectRay.direction.x )< fabs(objectRay.direction.y ) )
+	if( fabs(objectRay.direction().x )< fabs(objectRay.direction().y ) )
 	{
-		if( fabs(objectRay.direction.x )< fabs(objectRay.direction.z ) )	t = Vector3D( 1.0, 0.0, 0.0 );
+		if( fabs(objectRay.direction().x )< fabs(objectRay.direction().z ) ) t = Vector3D( 1.0, 0.0, 0.0 );
 		else	t = Vector3D( 0.0, 0.0, 1.0 );
 	}
 	else
 	{
-		if( fabs(objectRay.direction.y )< fabs(objectRay.direction.z )	) t = Vector3D( 0.0, 1.0, 0.0 );
+		if( fabs(objectRay.direction().y )< fabs( objectRay.direction().z )	) t = Vector3D( 0.0, 1.0, 0.0 );
 		else	t = Vector3D( 0.0, 0.0, 1.0 );
 	}
-	Vector3D nu = CrossProduct( t, objectRay.direction );
-	Vector3D nv = CrossProduct( nu, objectRay.direction );
-
+	Vector3D nu = CrossProduct( t, objectRay.direction() );
+	Vector3D nv = CrossProduct( nu, objectRay.direction() );
 
 	double au = nu[0];
 	double av = nv[0];
@@ -314,7 +313,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 								+ iPatch->operator[]( 3 ) +  3 * iPatch->operator[]( 7 )
 								+ 3 * iPatch->operator[]( 11 ) + iPatch->operator[]( 15 ) );
 				Point3D center( vCenter[0], vCenter[1], vCenter[2] );
-				if( DotProduct( Vector3D( center - objectRay.origin ), objectRay.direction ) >= 0 )
+				if( DotProduct( Vector3D( center - objectRay.origin ), objectRay.direction() ) >= 0 )
 				{
 					SoMFVec3d* intersectedPatch = new SoMFVec3d;
 					intersectedPatch->copyFrom( *iPatch );
@@ -381,9 +380,9 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	Point3D intersectionPoint( vCenter[0], vCenter[1], vCenter[2] );
 
 	double thit;
-	if( objectRay.direction.x != 0 ) thit = ( intersectionPoint.x - objectRay.origin.x ) / objectRay.direction.x;
-	else if ( objectRay.direction.y != 0 ) thit = ( intersectionPoint.y - objectRay.origin.y ) / objectRay.direction.y;
-	else	thit = ( intersectionPoint.z - objectRay.origin.z ) / objectRay.direction.z;
+	if( objectRay.direction().x != 0 ) thit = ( intersectionPoint.x - objectRay.origin.x ) * objectRay.invDirection().x;
+	else if ( objectRay.direction().y != 0 ) thit = ( intersectionPoint.y - objectRay.origin.y ) * objectRay.invDirection().y;
+	else	thit = ( intersectionPoint.z - objectRay.origin.z ) * objectRay.invDirection().z;
 
 	if( thit < 0.001 ) return false;
 	if( ( thit > objectRay.maxt ) || ( (thit - objectRay.mint) < tol ) )

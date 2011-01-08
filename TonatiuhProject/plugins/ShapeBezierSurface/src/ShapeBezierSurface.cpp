@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -163,9 +163,8 @@ bool ShapeBezierSurface::Intersect(const Ray& objectRay, double* tHit, Different
 		bool intersectBBox = true;
 		for( int i = 0; i < 3; ++i )
 		{
-			double invRayDir = 1.0 / objectRay.direction[i];
-			double tNear = ( bbox.getMin()[i] - objectRay.origin[i] ) * invRayDir;
-			double tFar = ( bbox.getMax()[i] - objectRay.origin[i] ) * invRayDir;
+			double tNear = ( bbox.getMin()[i] - objectRay.origin[i] ) * objectRay.invDirection()[i];
+			double tFar = ( bbox.getMax()[i] - objectRay.origin[i] ) * objectRay.invDirection()[i];
 			if( tNear > tFar ) std::swap( tNear, tFar );
 			t0 = tNear > t0 ? tNear : t0;
 			t1 = tFar < t1 ? tFar : t1;

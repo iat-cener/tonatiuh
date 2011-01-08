@@ -117,8 +117,8 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 
 	// Compute quadratic sphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( originBottomRay.origin );
-	double A = originBottomRay.direction.lengthSquared();
-    double B = 2.0 * DotProduct( vObjectRayOrigin, originBottomRay.direction );
+	double A = originBottomRay.direction().lengthSquared();
+    double B = 2.0 * DotProduct( vObjectRayOrigin, originBottomRay.direction() );
 	double C = vObjectRayOrigin.lengthSquared() - sphereRadius.getValue() * sphereRadius.getValue();
 
 	// Solve quadratic equation for _t_ values
@@ -213,7 +213,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 		                        dndu,
 								dndv,
 		                        u, v, this );
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = thit;

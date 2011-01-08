@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -81,11 +81,10 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		Ray ray;
-		ray.origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
-		m_lightSunShape->GenerateRayDirection( ray.direction, rand );
-		ray.mint = tgc::Epsilon;
-		ray.maxt = tgc::Infinity;
+		Point3D rayOrigin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
+		Vector3D rayDirection;
+		m_lightSunShape->GenerateRayDirection( rayDirection, rand );
+		Ray ray( rayOrigin, rayDirection, tgc::Epsilon, tgc::Infinity );
 		ray = m_lightToWorld( ray );
 
 		Photon first( ray.origin );
