@@ -80,7 +80,9 @@ public:
     void setDirection( const Vector3D& direction )
     {
     	m_direction = direction;
-    	m_invDirection = Vector3D( 1.0/m_direction.x, 1.0/m_direction.y, 1.0/m_direction.z );
+    	m_invDirection.x = 1.0/m_direction.x;
+    	m_invDirection.y = 1.0/m_direction.y;
+    	m_invDirection.z = 1.0/m_direction.z;
     }
 
     bool operator==( const Ray& ray ) const
