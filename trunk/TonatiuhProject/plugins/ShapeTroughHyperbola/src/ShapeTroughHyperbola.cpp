@@ -120,10 +120,12 @@ bool ShapeTroughHyperbola::Intersect(const Ray& objectRay, double *tHit, Differe
 	double a = a0.getValue();
 	double b = a / tan( m_asymptoticAngle );
 
-	double A = ( ( b * b ) * ( objectRay.direction.x * objectRay.direction.x ) )
-				- ( ( objectRay.direction.y * objectRay.direction.y ) * ( a * a ) );
-	double B = 2.0 * ( ( (  objectRay.origin.x * objectRay.direction.x ) * ( b * b ) )
-						- ( ( objectRay.origin.y * objectRay.direction.y ) * ( a * a ) ) );
+	double A = ( ( b * b ) * ( objectRay.direction().x * objectRay.direction().x ) )
+				- ( ( objectRay.direction().y * objectRay.direction().y ) * ( a * a ) );
+
+	double B = 2.0 * ( ( (    objectRay.origin.x * objectRay.direction().x ) * ( b * b ) )
+						- ( ( objectRay.origin.y * objectRay.direction().y ) * ( a * a ) ) );
+
 	double C = ( ( objectRay.origin.x * objectRay.origin.x ) * ( b * b ) )
 			 - ( ( objectRay.origin.y * objectRay.origin.y ) * ( a * a )  )
 			 - ( ( a * a ) * ( b * b ) );

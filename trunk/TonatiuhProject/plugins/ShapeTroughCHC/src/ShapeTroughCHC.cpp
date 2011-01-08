@@ -123,10 +123,12 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	Transform hTransform = translate * rotation ;
 	Ray transformedRay = hTransform.GetInverse()( objectRay );
 
-	double A = ( transformedRay.direction.x * transformedRay.direction.x ) / ( a * a )
-			- ( transformedRay.direction.y * transformedRay.direction.y ) / ( b * b );
-    double B = 2.0 * ( ( ( transformedRay.origin.x * transformedRay.direction.x ) / ( a * a ) )
-    				- ( ( transformedRay.origin.y * transformedRay.direction.y ) / ( b * b ) ) );
+	double A =   ( transformedRay.direction().x * transformedRay.direction().x ) / ( a * a )
+			   - ( transformedRay.direction().y * transformedRay.direction().y ) / ( b * b );
+
+    double B = 2.0 * ( ( ( transformedRay.origin.x * transformedRay.direction().x ) / ( a * a ) )
+    				- ( ( transformedRay.origin.y * transformedRay.direction().y ) / ( b * b ) ) );
+
 	double C = ( ( transformedRay.origin.x * transformedRay.origin.x ) / ( a * a ) )
 				- ( ( transformedRay.origin.y * transformedRay.origin.y ) / ( b * b ) )
 				- 1;
@@ -231,7 +233,7 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
     // Update _tHit_ for quadric intersection
     *tHit = thit;
 
-    dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+    dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
 	return true;
 

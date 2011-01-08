@@ -104,17 +104,19 @@ QString ShapeSphericalRectangle::GetIcon() const
 bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
 	// Compute quadratic ShapeSphere coefficients
-	double A = objectRay.direction.x * objectRay.direction.x
-			+ objectRay.direction.y * objectRay.direction.y
-			+ objectRay.direction.z * objectRay.direction.z;
-	double B = 2.0 * ( objectRay.origin.x * objectRay.direction.x
-				+ objectRay.origin.y * objectRay.direction.y
-				+ objectRay.origin.z * objectRay.direction.z
-				- objectRay.direction.y * radius.getValue() );
-	double C = objectRay.origin.x * objectRay.origin.x
-			+ objectRay.origin.y * objectRay.origin.y
-			+ objectRay.origin.z * objectRay.origin.z
-			- 2 * objectRay.origin.y * radius.getValue();
+	double A =   objectRay.direction().x * objectRay.direction().x
+			   + objectRay.direction().y * objectRay.direction().y
+			   + objectRay.direction().z * objectRay.direction().z;
+
+	double B = 2.0 * (   objectRay.origin.x * objectRay.direction().x
+				       + objectRay.origin.y * objectRay.direction().y
+				       + objectRay.origin.z * objectRay.direction().z
+				       - objectRay.direction().y * radius.getValue() );
+
+	double C =   objectRay.origin.x * objectRay.origin.x
+			   + objectRay.origin.y * objectRay.origin.y
+			   + objectRay.origin.z * objectRay.origin.z
+			   - 2 * objectRay.origin.y * radius.getValue();
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -208,7 +210,7 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 							   dndu,
 							   dndv,
 							   u, v, this);
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////

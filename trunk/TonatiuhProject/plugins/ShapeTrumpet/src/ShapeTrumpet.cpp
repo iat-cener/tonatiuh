@@ -148,10 +148,12 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	double a0 = a.getValue();
 	double b = m_bHyperbola;
 
-	double A = ( ( b * b ) * ( objectRay.direction.x * objectRay.direction.x + objectRay.direction.z * objectRay.direction.z ) )
-				- ( ( objectRay.direction.y * objectRay.direction.y ) * ( a0 * a0 ) );
-	double B = ( (  2.0 * objectRay.origin.x * objectRay.direction.x +  2.0 *objectRay.origin.z * objectRay.direction.z ) * ( b * b ) )
-						- ( (  2.0 * objectRay.origin.y * objectRay.direction.y ) * ( a0 * a0 ) );
+	double A = ( ( b * b ) * ( objectRay.direction().x * objectRay.direction().x + objectRay.direction().z * objectRay.direction().z ) )
+				- ( ( objectRay.direction().y * objectRay.direction().y ) * ( a0 * a0 ) );
+
+	double B = ( (  2.0 * objectRay.origin.x * objectRay.direction().x +  2.0 *objectRay.origin.z * objectRay.direction().z ) * ( b * b ) )
+						- ( (  2.0 * objectRay.origin.y * objectRay.direction().y ) * ( a0 * a0 ) );
+
 	double C = ( ( objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z ) * ( b * b ) )
 			 - ( ( objectRay.origin.y * objectRay.origin.y ) * ( a0 * a0 )  )
 			 - ( ( a0 * a0 ) * ( b * b ) );

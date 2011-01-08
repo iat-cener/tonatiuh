@@ -89,8 +89,8 @@ QString ShapeParabolicRectangle::GetIcon() const
 bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
 	// Compute quadratic coefficients
-	double A = objectRay.direction.x * objectRay.direction.x + objectRay.direction.z * objectRay.direction.z;
-	double B = 2.0 * ( objectRay.direction.x * objectRay.origin.x + objectRay.direction.z * objectRay.origin.z  - 2 * focusLength.getValue() * objectRay.direction.y );
+	double A = objectRay.direction().x * objectRay.direction().x + objectRay.direction().z * objectRay.direction().z;
+	double B = 2.0 * ( objectRay.direction().x * objectRay.origin.x + objectRay.direction().z * objectRay.origin.z  - 2 * focusLength.getValue() * objectRay.direction().y );
 	double C = objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z - 4 * focusLength.getValue()* objectRay.origin.y;
 
 	// Solve quadratic equation for _t_ values
@@ -168,7 +168,7 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 							   dndu,
 							   dndv,
 							   u, v, this);
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////

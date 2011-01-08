@@ -100,8 +100,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 {
 	// Compute quadratic parabolic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A = objectRay.direction.x*objectRay.direction.x;
-    double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x - 2 * focusLength.getValue() * objectRay.direction.y);
+	double A = objectRay.direction().x*objectRay.direction().x;
+    double B = 2.0 * ( objectRay.direction().x* objectRay.origin.x - 2 * focusLength.getValue() * objectRay.direction().y);
 	double C = objectRay.origin.x * objectRay.origin.x - 4 * focusLength.getValue() * objectRay.origin.y;
 
 	// Solve quadratic equation for _t_ values
@@ -202,7 +202,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 	// Initialize _DifferentialGeometry_ from parametric information
 	*dg = DifferentialGeometry(hitPoint, dpdu, dpdv, dndu, dndv, u, v, this);
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;

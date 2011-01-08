@@ -118,8 +118,8 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 {
 	// Compute quadratic ShapeSphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A = objectRay.direction.lengthSquared();
-    double B = 2.0 * DotProduct( vObjectRayOrigin, objectRay.direction );
+	double A = objectRay.direction().lengthSquared();
+    double B = 2.0 * DotProduct( vObjectRayOrigin, objectRay.direction() );
 	double C = vObjectRayOrigin.lengthSquared() - radius.getValue() * radius.getValue();
 
 	// Solve quadratic equation for _t_ values
@@ -213,7 +213,7 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 								dndv,
 		                        u, v, this );
 
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
     // Update _tHit_ for quadric intersection
     *tHit = thit;
 

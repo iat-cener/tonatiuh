@@ -90,8 +90,8 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 {
 	// Compute quadratic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A = objectRay.direction.x*objectRay.direction.x + objectRay.direction.y*objectRay.direction.y;
-    double B = 2.0 * ( objectRay.direction.x* objectRay.origin.x + objectRay.direction.y * objectRay.origin.y);
+	double A = objectRay.direction().x*objectRay.direction().x + objectRay.direction().y*objectRay.direction().y;
+    double B = 2.0 * ( objectRay.direction().x* objectRay.origin.x + objectRay.direction().y * objectRay.origin.y);
 	double C = objectRay.origin.x * objectRay.origin.x + objectRay.origin.y * objectRay.origin.y - radius.getValue() * radius.getValue();
 
 	// Solve quadratic equation for _t_ values
@@ -182,7 +182,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 		                        dndu,
 								dndv,
 		                        u, v, this );
-	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction ) > 0 ) ? false : true;
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
     // Update _tHit_ for quadric intersection
     *tHit = thit;
