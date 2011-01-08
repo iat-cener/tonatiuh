@@ -79,12 +79,15 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 	std::vector< Photon > photonsVector;
 	ParallelRandomDeviate rand( m_pRand, m_mutex );
 
+	Ray ray;
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		Point3D rayOrigin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
+		ray.origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
 		Vector3D rayDirection;
 		m_lightSunShape->GenerateRayDirection( rayDirection, rand );
-		Ray ray( rayOrigin, rayDirection, tgc::Epsilon, tgc::Infinity );
+		ray.setDirection( rayDirection );
+		ray.mint = tgc::Epsilon;
+		ray.maxt = tgc::Infinity;
 		ray = m_lightToWorld( ray );
 
 		Photon first( ray.origin );

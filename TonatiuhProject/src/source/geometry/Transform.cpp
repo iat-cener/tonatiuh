@@ -135,20 +135,24 @@ void Transform::operator()( const NormalVector& normal, NormalVector& transforme
 
 Ray Transform::operator()( const Ray& ray ) const
 {
-	Point3D transformedRayOrigin;
+	Ray transformedRay;
 	Vector3D transformedRayDirection;
-	( *this )( ray.origin, transformedRayOrigin );
+	( *this )( ray.origin, transformedRay.origin );
 	( *this )( ray.direction(), transformedRayDirection );
-	return Ray( transformedRayOrigin, transformedRayDirection, ray.mint, ray.maxt );
+	transformedRay.setDirection( transformedRayDirection );
+	transformedRay.mint = ray.mint;
+	transformedRay.maxt = ray.maxt;
+	return transformedRay;
 }
 
 void Transform::operator()( const Ray& ray, Ray& transformedRay ) const
 {
-	Point3D transformedRayOrigin;
 	Vector3D transformedRayDirection;
-	( *this )( ray.origin, transformedRayOrigin );
+	( *this )( ray.origin, transformedRay.origin );
 	( *this )( ray.direction(), transformedRayDirection );
-	transformedRay = Ray( transformedRayOrigin, transformedRayDirection, ray.mint, ray.maxt );
+	transformedRay.setDirection( transformedRayDirection );
+	transformedRay.mint = ray.mint;
+	transformedRay.maxt = ray.maxt;
 }
 
 BBox Transform::operator()( const BBox& bbox  ) const
