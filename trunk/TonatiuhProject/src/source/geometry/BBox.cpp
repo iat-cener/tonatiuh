@@ -60,12 +60,14 @@ BBox::BBox( const Point3D& point )
 
 BBox::BBox( const Point3D& point1, const Point3D& point2 )
 {
-   pMin = Point3D( std::min( point1.x, point2.x ),
-                   std::min( point1.y, point2.y ),
-                   std::min( point1.z, point2.z ) );
-   pMax = Point3D( std::max( point1.x, point2.x ),
-                   std::max( point1.y, point2.y ),
-                   std::max( point1.z, point2.z) );
+   pMin.x = point1.x < point2.x ? point1.x : point2.x;
+   pMin.y = point1.y < point2.y ? point1.y : point2.y;
+   pMin.z = point1.z < point2.z ? point1.z : point2.z;
+
+   pMax.x = point1.x > point2.x ? point1.x : point2.x;
+   pMax.y = point1.y > point2.y ? point1.y : point2.y;
+   pMax.z = point1.z > point2.z ? point1.z : point2.z;
+
 }
 
 bool BBox::Overlaps( const BBox& bbox ) const
@@ -84,8 +86,13 @@ bool BBox::Inside( const Point3D& point) const
 
 void BBox::Expand( double delta )
 {
-   pMin -= Vector3D( delta, delta, delta );
-   pMax += Vector3D( delta, delta, delta );
+   pMin.x -= delta;
+   pMin.y -= delta;
+   pMin.z -= delta;
+
+   pMax.x += delta;
+   pMax.y += delta;
+   pMax.z += delta;
 }
 
 double BBox::Volume() const
@@ -99,7 +106,7 @@ int BBox::MaximumExtent() const
    Vector3D diagonal = pMax - pMin;
    if( diagonal.x > diagonal.y && diagonal.x > diagonal.z) return 0;
    else if( diagonal.y > diagonal.z) return 1;
-   else return 2;
+   return 2;
 }
 
 void BBox::BoundingSphere( Point3D& center, double& radius ) const
