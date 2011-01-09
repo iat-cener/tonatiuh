@@ -49,7 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 // Extension of the testing space
 const double maximumCoordinate = 5000000.0;
-const unsigned long int maximumNumberOfTests = 500000;
+const unsigned long int maximumNumberOfTests = 6000000;
 
 TEST( BBoxTests, ConstructorDefault )
 {

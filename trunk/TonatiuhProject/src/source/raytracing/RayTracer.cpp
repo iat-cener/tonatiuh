@@ -120,7 +120,6 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 				next.surfaceSide = ( isFront ) ? 1.0 : 0.0;
 				photonsVector.push_back( next );
 
-
 				//Prepare node and ray for next iteration
 				ray = reflectedRay;
 			}
