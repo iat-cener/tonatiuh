@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RAY_H
 #define RAY_H
 
-#include <iostream>
 #include "tgc.h"
 #include "Point3D.h"
 #include "Vector3D.h"
@@ -99,7 +98,6 @@ public:
 private:
     Vector3D m_direction;
     Vector3D m_invDirection;
-
 };
 
 

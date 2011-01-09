@@ -121,26 +121,28 @@ bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
     double t1 = ray.maxt;
     double tmin, tmax, tymin, tymax, tzmin, tzmax;
 
-	if( ray.invDirection().x >= 0.0 )
+    double invDirection = ray.invDirection().x;
+	if( invDirection >= 0.0 )
 	{
-       tmin = ( pMin.x - ray.origin.x ) * ray.invDirection().x;
-	   tmax = ( pMax.x - ray.origin.x ) * ray.invDirection().x;
+       tmin = ( pMin.x - ray.origin.x ) * invDirection;
+	   tmax = ( pMax.x - ray.origin.x ) * invDirection;
 	}
 	else
 	{
-	   tmin = ( pMax.x - ray.origin.x ) * ray.invDirection().x;
-	   tmax = ( pMin.x - ray.origin.x ) * ray.invDirection().x;
+	   tmin = ( pMax.x - ray.origin.x ) * invDirection;
+	   tmax = ( pMin.x - ray.origin.x ) * invDirection;
 	}
 
-	if( ray.invDirection().y >= 0.0 )
+	invDirection = ray.invDirection().y;
+	if( invDirection >= 0.0 )
 	{
-	   tymin = ( pMin.y - ray.origin.y ) * ray.invDirection().y;
-	   tymax = ( pMax.y - ray.origin.y ) * ray.invDirection().y;
+	   tymin = ( pMin.y - ray.origin.y ) * invDirection;
+	   tymax = ( pMax.y - ray.origin.y ) * invDirection;
 	}
 	else
 	{
-	   tymin = ( pMax.y - ray.origin.y ) * ray.invDirection().y;
-	   tymax = ( pMin.y - ray.origin.y ) * ray.invDirection().y;
+	   tymin = ( pMax.y - ray.origin.y ) * invDirection;
+	   tymax = ( pMin.y - ray.origin.y ) * invDirection;
 	}
 
 	if ( ( tmin > tymax ) || ( tymin > tmax ) ) return false;
@@ -148,15 +150,16 @@ bool BBox::IntersectP( const Ray& ray, double* hitt0, double* hitt1 ) const
 	if ( tymin > tmin ) tmin = tymin;
 	if ( tymax < tmax ) tmax = tymax;
 
-	if( ray.invDirection().z >= 0.0 )
+	invDirection = ray.invDirection().z;
+	if( invDirection >= 0.0 )
 	{
-	   tzmin = ( pMin.z - ray.origin.z ) * ray.invDirection().z;
-	   tzmax = ( pMax.z - ray.origin.z ) * ray.invDirection().z;
+	   tzmin = ( pMin.z - ray.origin.z ) * invDirection;
+	   tzmax = ( pMax.z - ray.origin.z ) * invDirection;
 	}
 	else
 	{
-	   tzmin = ( pMax.z - ray.origin.z ) * ray.invDirection().z;
-	   tzmax = ( pMin.z - ray.origin.z ) * ray.invDirection().z;
+	   tzmin = ( pMax.z - ray.origin.z ) * invDirection;
+	   tzmax = ( pMin.z - ray.origin.z ) * invDirection;
 	}
 
 	if ( ( tmin > tzmax ) || ( tzmin > tmax ) ) return false;
