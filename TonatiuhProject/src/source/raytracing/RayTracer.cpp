@@ -109,11 +109,11 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 			Ray reflectedRay;
 
 			double tHit = ray.maxt;
-			bool isOutputRay = m_rootNode->Intersect( ray, rand, &tHit, &intersectedSurface, &isFront, &reflectedRay );
+			intersection = m_rootNode->Intersect( ray, rand, &tHit, &intersectedSurface, &isFront, &reflectedRay );
 
 			ray.maxt = tHit;
 
-			if( isOutputRay )
+			if( intersection )
 			{
 				Photon next( ray( ray.maxt ) );
 				next.id = ++rayLength;
@@ -124,7 +124,6 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 				//Prepare node and ray for next iteration
 				ray = reflectedRay;
 			}
-			else intersection = false;
 		}
 
 		if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
