@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-
 #include <QFutureWatcher>
 #include <QMutex>
 #include <QScriptContext>
@@ -75,6 +73,7 @@ m_photonMap( 0 ),
 m_RandomDeviateFactoryList( listRandomDeviateFactory ),
 m_randomDeviate( 0 ),
 m_sceneModel ( 0 ),
+m_sunPosistionChnaged( false ),
 m_sunAzimuth( 0 ),
 m_sunElevation( 0 ),
 m_sunDistance( 0 ),
@@ -230,6 +229,7 @@ int ScriptRayTracer::SetRandomDeviateType( QString typeName )
 void ScriptRayTracer::SetSunAzimtuh( double azimuth )
 {
 	m_sunAzimuth = azimuth * tgc::Degree;
+	m_sunPosistionChnaged = true;
 }
 
 /*!
@@ -238,6 +238,7 @@ void ScriptRayTracer::SetSunAzimtuh( double azimuth )
 void ScriptRayTracer::SetSunElevation( double elevation )
 {
 	m_sunElevation = elevation * tgc::Degree;
+	m_sunPosistionChnaged = true;
 }
 
 /*!
@@ -246,6 +247,7 @@ void ScriptRayTracer::SetSunElevation( double elevation )
 void ScriptRayTracer::SetSunDistance( double distance )
 {
 	m_sunDistance = distance;
+	m_sunPosistionChnaged = true;
 }
 
 int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
@@ -315,7 +317,7 @@ int ScriptRayTracer::Trace()
 
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
-	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation, m_sunDistance );
+	if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation, m_sunDistance );
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
@@ -404,8 +406,9 @@ void ScriptRayTracer::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform
 				shapeInstance =  instanceNode->children[0];
 			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
 
+
 			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-			coinNode->getBoundingBox( bbAction );
+			shapeInstance->GetNode()->getBoundingBox( bbAction );
 
 			SbBox3f box = bbAction->getXfBoundingBox().project();
 			delete bbAction;
@@ -417,6 +420,6 @@ void ScriptRayTracer::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform
 		instanceNode->SetIntersectionTransform( shapeTransform );
 
 		instanceNode->SetIntersectionBBox( shapeBB );
-	}
 
+	}
 }
