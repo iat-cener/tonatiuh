@@ -19,7 +19,7 @@ double** binCounts( QVector< Point3D >  photons, int widthDivisions, int heightD
 // Tests the Set method.
 TEST(RayTracerTest, CreateTargetPhotonMap )
 {
-	/*QDir pluginsDirectory( qApp->applicationDirPath() );
+	QDir pluginsDirectory( qApp->applicationDirPath() );
 	pluginsDirectory.cd( "plugins" );
 
 	PluginManager pluginManager;
@@ -78,7 +78,7 @@ TEST(RayTracerTest, CreateTargetPhotonMap )
 		QString errorMessage = QString( "Script Execution Error.\nLine %1. %2" ).arg( QString::number( lineNumber.toNumber() ), result.toString() );
 		FAIL()<<errorMessage.toStdString();
 
-	}*/
+	}
 }
 
 TEST(RayTracerTest, PowerPerPhoton )
