@@ -52,7 +52,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TPhotonMapFactory.h"
 #include "TShape.h"
 #include "TSunShape.h"
-#include "Trace.h"
 
 RayTracer::RayTracer( InstanceNode* rootNode,
 	       InstanceNode* lightNode,
