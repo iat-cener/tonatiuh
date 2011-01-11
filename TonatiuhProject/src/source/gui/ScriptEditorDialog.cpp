@@ -35,8 +35,8 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <iostream>
+
 #include <QAction>
 #include <QFileDialog>
 #include <QIcon>
@@ -107,6 +107,22 @@ ScriptEditorDialog::~ScriptEditorDialog()
 QString ScriptEditorDialog::GetCurrentDirectory()
 {
 	return m_dirLineEdit->text();
+}
+
+/*!
+ *
+ */
+void ScriptEditorDialog::OpenScriptFile( QString fileName )
+{
+	StartDocument( fileName);
+}
+
+/**
+ * Executes the code editor script.
+ */
+void ScriptEditorDialog::Run()
+{
+	RunScript();
 }
 
 /**
@@ -280,24 +296,6 @@ bool ScriptEditorDialog::SaveScriptFile( const QString& fileName )
 }
 
 /*!
- * Sets the editor current script file to \a fileName.
- *
- * Changes the editor dialog title to shows the current file base name.
- */
-void ScriptEditorDialog::SetCurrentFile( const QString& fileName )
-{
-	m_currentScritFileName = fileName;
-
-	QString shownName = "Untitled";
-	if ( !m_currentScritFileName.isEmpty() )
-	{
-		shownName = QFileInfo( fileName ).fileName();
-	}
-
-	setWindowTitle( tr( "%1[*] - %2" ).arg( shownName ).arg( tr( "Tonatiuh" ) ) );
-}
-
-/*!
  * Sets the code editor's contents to \a fileName contents and sets the currents file to \a fileName.
  */
 void ScriptEditorDialog::StartDocument( QString fileName )
@@ -461,14 +459,6 @@ void ScriptEditorDialog::RefreshDirList()
 /**
  * Executes the code editor script.
  */
-void ScriptEditorDialog::Run()
-{
-	RunScript();
-}
-
-/**
- * Executes the code editor script.
- */
 void ScriptEditorDialog::Run( bool /*checked*/ )
 {
 	RunScript();
@@ -499,6 +489,24 @@ bool ScriptEditorDialog::SaveScript()
 {
 	if ( m_currentScritFileName.isEmpty() ) return SaveAsScriptFile();
 	else return SaveScriptFile( m_currentScritFileName );
+}
+
+/*!
+ * Sets the editor current script file to \a fileName.
+ *
+ * Changes the editor dialog title to shows the current file base name.
+ */
+void ScriptEditorDialog::SetCurrentFile( const QString& fileName )
+{
+	m_currentScritFileName = fileName;
+
+	QString shownName = "Untitled";
+	if ( !m_currentScritFileName.isEmpty() )
+	{
+		shownName = QFileInfo( fileName ).fileName();
+	}
+
+	setWindowTitle( tr( "%1[*] - %2" ).arg( shownName ).arg( tr( "Tonatiuh" ) ) );
 }
 
 /**

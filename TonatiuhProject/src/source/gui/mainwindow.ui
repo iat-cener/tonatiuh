@@ -195,7 +195,7 @@
     <property name="title">
      <string>&amp;Ray Trace</string>
     </property>
-    <addaction name="actionRayTraceRun"/>
+    <addaction name="actionRun"/>
     <addaction name="actionDisplay_rays"/>
     <addaction name="actionExport_PhotonMap"/>
     <addaction name="separator"/>
@@ -280,7 +280,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionRayTraceRun"/>
+   <addaction name="actionRun"/>
    <addaction name="actionExport_PhotonMap"/>
   </widget>
   <widget class="QToolBar" name="viewToolBar">
@@ -430,7 +430,7 @@
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actionRayTraceRun">
+  <action name="actionRun">
    <property name="icon">
     <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/run.png</normaloff>:/icons/run.png</iconset>

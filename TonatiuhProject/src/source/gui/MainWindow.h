@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class BBox;
 class Document;
+class FieldComponentFactory;
 class GraphicView;
 class InstanceNode;
 class QDir;
@@ -93,29 +94,12 @@ public:
     void StartManipulation( SoDragger* dragger );
 
 public slots:
-
-	//File menu actions
-	void on_actionSave_triggered();
-	void on_actionSaveAs_triggered();
-	void on_actionSaveComponent_triggered();
-	void on_actionPrint_triggered();
-	void on_actionClose_triggered();
-
-	//File menu submenu
-	void OpenRecentFile();
-
     // Edit menu actions
-    void on_actionUndo_triggered();
-	void on_actionRedo_triggered();
-	void on_actionUndoView_triggered();
 	void on_actionCut_triggered();
 	void on_actionCopy_triggered();
 	void on_actionPaste_Link_triggered();
 	void on_actionPaste_Copy_triggered();
 	void on_actionDelete_triggered();
-
-	// Insert menu actions
-	void on_actionUserComponent_triggered();
 
 	//Sun Light menu actions
 	void on_actionDefine_SunLight_triggered();
@@ -127,8 +111,6 @@ public slots:
 			                 SoTransform*& lightTransform,
 			                 TSunShape*& sunShape,
 			                 TShape*& shape );
-	void ShowRaysIn3DView();
-	void on_actionRayTraceRun_triggered();
 	void on_actionDisplay_rays_toggled();
 	void on_actionExport_PhotonMap_triggered();
 	void on_actionRayTraceOptions_triggered();
@@ -147,10 +129,6 @@ public slots:
 	//Automation menu actions
 	void on_actionOpenScriptEditor_triggered();
 
-	//Help menu actions
-	void on_actionAbout_triggered();
-	void on_actionCheckForUpdates_triggered();
-
 	//Create actions
 	void CreateGroupNode();
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
@@ -158,8 +136,18 @@ public slots:
 	void CreateSurfaceNode();
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 
+	void InsertFileComponent( QString componentFileName = QString( "" ) );
+	void InsertUserDefinedComponent();
 	void New();
 	void Open();
+	void OpenRecentFile();
+	void Run();
+	bool Save();
+    bool SaveAs();
+    bool SaveComponent();
+    int SetPhotonMapType( QString typeName );
+    void SetRaysPerIteration( unsigned long rays );
+
 
     //Manipulators actions
     void SoTransform_to_SoCenterballManip();
@@ -179,7 +167,6 @@ public slots:
     //Slots for treeview signals
 	void itemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
 	void itemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
-    void showMenu( const QModelIndex& index );
 
     //Slots for parameterview signals
     void parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart );
@@ -189,10 +176,18 @@ public slots:
 
     void SetEnabled_SunPositionCalculator( int enabled );
 
-
-
 protected:
     void closeEvent( QCloseEvent* event );
+
+protected slots:
+	void Redo();
+	void ShowCommandView();
+    void ShowMenu( const QModelIndex& index );
+	void Undo();
+
+	//Help menu actions
+	void on_actionAbout_triggered();
+	void on_actionCheckForUpdates_triggered();
 
 
 private:
@@ -201,6 +196,7 @@ private:
    	QSplitter* GetHorizontalSplitterPointer();
    	ParametersView* GetParamtersViewPointer();
    	SceneModelView* GetSceneModelViewPointer();
+   	void SetupActionsInsertFieldComponent();
     void SetupActionsInsertMaterial();
     void SetupActionsInsertShape();
     void SetupActionsInsertTracker();
@@ -217,13 +213,11 @@ private:
     void SetupViews();
    	void SetupUpdateManager();
     void SetupVRMLBackground();
+	void ShowRaysIn3DView();
     void ReadSettings();
     bool OkToContinue();
     bool StartOver( const QString& fileName );
-    bool Save();
     bool SaveFile( const QString& fileName );
-    bool SaveAs();
-    bool SaveComponent();
     bool Copy();
     bool Paste( tgc::PasteType type );
     bool Cut();
@@ -286,4 +280,3 @@ private:
 };
 
 #endif
-
