@@ -62,6 +62,10 @@ public:
 	~ScriptEditorDialog();
 
 	QString GetCurrentDirectory();
+	void OpenScriptFile( QString fileName );
+
+public slots:
+	void Run();
 
 protected:
     void closeEvent( QCloseEvent* event );
@@ -71,7 +75,6 @@ private:
 	void AddFilesExplorerWidgetToolbar( QString dirName );
 	bool OkToContinue();
 	bool SaveScriptFile( const QString& fileName );
-	void SetCurrentFile( const QString& fileName );
 	void StartDocument( QString fileName );
 
 private slots:
@@ -82,10 +85,11 @@ private slots:
 	void OpenScriptFile( QListWidgetItem* item );
 	void OpenScriptFile();
 	void RefreshDirList();
-	void Run();
 	void Run( bool checked );
 	bool SaveAsScriptFile();
 	bool SaveScript();
+	void SetCurrentFile( const QString& fileName );
+
 
 private:
 	void RunScript();

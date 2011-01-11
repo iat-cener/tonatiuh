@@ -222,6 +222,52 @@ void MainWindow::SetupVRMLBackground()
 	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
 }
 
+
+
+/*!
+ * Shows the rays and photons stored at the photon map in the 3D view.
+ */
+void MainWindow::ShowRaysIn3DView()
+{
+	actionDisplay_rays->setEnabled( false );
+	actionDisplay_rays->setChecked( false );
+
+	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
+
+	if( m_pRays )
+	{
+		m_pRays->removeAllChildren();
+		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
+		m_pRays->unref();
+		m_pRays = 0;
+	}
+
+	if( m_fraction > 0.0 || m_drawPhotons )
+	{
+		m_pRays = new SoSeparator;
+		m_pRays->ref();
+		m_pRays->setName( "Rays" );
+
+		if( m_drawPhotons )
+		{
+			SoSeparator* points = trf::DrawPhotonMapPoints(*m_photonMap);
+			m_pRays->addChild(points);
+		}
+		if( m_fraction > 0.0 )
+		{
+			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
+			if( currentRays )
+			{
+				m_pRays->addChild(currentRays);
+
+				actionDisplay_rays->setEnabled( true );
+				actionDisplay_rays->setChecked( true );
+			}
+
+		}
+	}
+}
+
 QSplitter* MainWindow::GetHorizontalSplitterPointer()
 {
     QSplitter* pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
@@ -254,6 +300,78 @@ QDir MainWindow::PluginDirectory()
     QDir directory( qApp->applicationDirPath() );
   	directory.cd( "plugins" );
 	return directory;
+}
+
+/*!
+ * Applies las reverted command action changes to Tonatiuh.
+ */
+void MainWindow::Redo()
+{
+    m_commandStack->redo();
+}
+
+/*!
+ * Shows a windows with the applied commands.
+ * The most recently executed command is always selected.
+ * When a different command is selected the model returns to the state after selected command was applied.
+ */
+void MainWindow:: ShowCommandView()
+{
+    m_commandView->show();
+}
+
+/*!
+ * Shows selected node right menu.
+ */
+void MainWindow::ShowMenu( const QModelIndex& index)
+{
+	if( !index.isValid() ) return;
+	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
+
+	SoNode* coinNode = m_sceneModel->NodeFromIndex(index)->GetNode();
+	SoType type = coinNode->getTypeId();
+
+	QMenu popupmenu(this);
+
+   	popupmenu.addAction(actionCut);
+   	popupmenu.addAction(actionCopy);
+  	popupmenu.addAction(actionPaste_Copy);
+  	popupmenu.addAction(actionPaste_Link);
+  	popupmenu.addAction(actionDelete);
+
+	QMenu transformMenu( "Convert to", &popupmenu );
+
+	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		popupmenu.addAction( transformMenu.menuAction() );
+		transformMenu.addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
+		transformMenu.addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
+		transformMenu.addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
+		transformMenu.addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
+		transformMenu.addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
+		transformMenu.addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
+		transformMenu.addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
+
+		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
+		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
+		SoType transformType = transform->getTypeId();
+
+      	//Manipuladores
+		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu.addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
+
+	}
+
+	//Mostramos el menu contextual
+	popupmenu.exec( QCursor::pos() );
+
+}
+
+/*!
+ * Reverts a change to Tonatiuh model. The model is returne to the previous state before the command is applied.
+ */
+void MainWindow::Undo()
+{
+    m_commandStack->undo();
 }
 
 /*!
@@ -614,10 +732,24 @@ void MainWindow::SetupTriggers()
 	//File actions
 	connect( actionNew, SIGNAL( triggered() ), this, SLOT ( New() ) );
 	connect( actionOpen, SIGNAL( triggered() ), this, SLOT ( Open() ) );
+	connect( actionSave, SIGNAL( triggered() ), this, SLOT ( Save() ) );
+	connect( actionSaveAs, SIGNAL( triggered() ), this, SLOT ( SaveAs() ) );
+	connect( actionSaveComponent, SIGNAL( triggered() ), this, SLOT ( SaveComponent() ) );
+	connect( actionClose, SIGNAL( triggered() ), this, SLOT ( close() ) );
+
+	//Edit actions
+	connect( actionUndo, SIGNAL( triggered() ), this, SLOT ( Undo() ) );
+	connect( actionRedo, SIGNAL( triggered() ), this, SLOT ( Redo() ) );
+	connect( actionUndoView, SIGNAL( triggered() ), this, SLOT ( ShowCommandView() ) );
 
 	//Insert actions
 	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
 	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
+	connect( actionUserComponent, SIGNAL( triggered() ), this, SLOT ( InsertUserDefinedComponent() ) );
+
+
+	//Ray trace menu actions
+	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
 }
 /*!
  * Initializates tonatiuh update manager.
@@ -627,62 +759,7 @@ void MainWindow::SetupUpdateManager()
 	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
 }
 
-void MainWindow::on_actionSave_triggered()
-{
-    Save();
-}
-
-void MainWindow::on_actionSaveAs_triggered()
-{
-    SaveAs();
-}
-
-
-void MainWindow::on_actionSaveComponent_triggered()
-{
-    SaveComponent();
-}
-
-void MainWindow::on_actionPrint_triggered()
-{
-	//Action yet to be implemented
-}
-
-void MainWindow::on_actionClose_triggered()
-{
-	close();
-}
-
-void MainWindow::OpenRecentFile()
-{
-    if ( OkToContinue() )
-    {
-        QAction* action = qobject_cast<QAction *>( sender() );
-
-        if ( action )
-        {
-        	QString fileName = action->data().toString();
-        	StartOver( fileName );
-        }
-    }
-}
-
 // Edit menu actions
-void MainWindow::on_actionUndo_triggered()
-{
-    m_commandStack->undo();
-}
-
-void MainWindow::on_actionRedo_triggered()
-{
-    m_commandStack->redo();
-}
-
-void MainWindow:: on_actionUndoView_triggered()
-{
-    m_commandView->show();
-}
-
 void MainWindow::on_actionCut_triggered()
 {
 	Cut();
@@ -706,53 +783,6 @@ void MainWindow::on_actionPaste_Link_triggered()
 void MainWindow::on_actionDelete_triggered()
 {
 	Delete ();
-}
-
-void MainWindow::on_actionUserComponent_triggered()
-{
-	QModelIndex parentIndex;
-    if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
-    	parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
-	else
-		parentIndex = m_treeView->currentIndex();
-
-	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
-
-	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
-
-	QString fileName = QFileDialog::getOpenFileName( this,
-	                               tr( "Open Tonatiuh document" ), ".",
-	                               tr( "Tonatiuh component (*.tcmp)" ) );
-
-	if ( fileName.isEmpty() ) return;
-
-	SoInput componentInput;
-	if ( !componentInput.openFile( fileName.toLatin1().constData() ) )
-	{
-        QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
-                              tr( "Cannot open file %1:\n%2." ).arg( fileName ) );
-		return;
-	}
-
-	SoSeparator* componentSeparator = SoDB::readAll( &componentInput );
-	componentInput.closeFile();
-
-	if ( !componentSeparator )
-	{
-        QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
-                              tr( "Error reading file %1:\n%2." )
-                             .arg( fileName ) );
-		return;
-	}
-
-   TSeparatorKit* componentRoot = static_cast< TSeparatorKit* >( componentSeparator->getChild(0) );
-
-   CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRoot, QPersistentModelIndex(parentIndex), m_sceneModel );
-	cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
-	m_commandStack->push( cmdInsertSeparatorKit );
-
-	m_document->SetDocumentModified( true );
-
 }
 
 //Sun Light menu actions
@@ -886,111 +916,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 	return true;
 }
 
-/*!
- * Shows the rays and photons stored at the photon map in the 3D view.
- */
-void MainWindow::ShowRaysIn3DView()
-{
-	actionDisplay_rays->setEnabled( false );
-	actionDisplay_rays->setChecked( false );
-
-	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
-
-	if( m_pRays )
-	{
-		m_pRays->removeAllChildren();
-		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
-		m_pRays->unref();
-		m_pRays = 0;
-	}
-
-	if( m_fraction > 0.0 || m_drawPhotons )
-	{
-		m_pRays = new SoSeparator;
-		m_pRays->ref();
-		m_pRays->setName( "Rays" );
-
-		if( m_drawPhotons )
-		{
-			SoSeparator* points = trf::DrawPhotonMapPoints(*m_photonMap);
-			m_pRays->addChild(points);
-		}
-		if( m_fraction > 0.0 )
-		{
-			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
-			if( currentRays )
-			{
-				m_pRays->addChild(currentRays);
-
-				actionDisplay_rays->setEnabled( true );
-				actionDisplay_rays->setChecked( true );
-			}
-
-		}
-	}
-}
-
 //Ray trace menu actions
-void MainWindow::on_actionRayTraceRun_triggered()
-{
-	QDateTime startTime = QDateTime::currentDateTime();
-
-    // Initialize variables
-	InstanceNode* rootSeparatorInstance = 0;
-	InstanceNode* lightInstance = 0;
-	SoTransform* lightTransform = 0;
-	TSunShape* sunShape = 0;
-	TShape* raycastingSurface = 0;
-
-	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
-	{
-		//Compute bounding boxes and world to object transforms
-		ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
-
-		QVector< double > raysPerThread;
-		const int maximumValueProgressScale = 100;
-		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
-		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-			raysPerThread<< t1;
-
-		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )	raysPerThread<< ( m_raysPerIteration-( t1* maximumValueProgressScale) );
-
-		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
-
-		// Create a progress dialog.
-		QProgressDialog dialog;
-		dialog.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
-
-		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
-		// Create a QFutureWatcher and conncect signals and slots.
-		QFutureWatcher< TPhotonMap* > futureWatcher;
-		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
-		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
-		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
-		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
-		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
-
-		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
-		futureWatcher.setFuture( photonMap );
-
-		// Display the dialog and start the event loop.
-		dialog.exec();
-		futureWatcher.waitForFinished();
-
-
-		QDateTime time2 = QDateTime::currentDateTime();
-		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
-
-		m_tracedRays += m_raysPerIteration;
-		ShowRaysIn3DView();
-
-	}
-
-	QDateTime endTime = QDateTime::currentDateTime();
-	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
-}
 /**
  * If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden.
  */
@@ -1484,6 +1410,79 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 }
 
 /*!
+ *
+ * Inserts an existing tonatiuh component into the tonatiuh model as a selected node child.
+ *
+ * The component is saved into \a componentFileName file.
+ */
+void MainWindow::InsertFileComponent( QString componentFileName )
+{
+	QModelIndex parentIndex;
+	if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex() ) )
+			parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
+	else
+		parentIndex = m_treeView->currentIndex();
+
+	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
+	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
+
+	if ( componentFileName.isEmpty() ) return;
+
+	SoInput componentInput;
+	if ( !componentInput.openFile( componentFileName.toLatin1().constData() ) )
+	{
+		QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
+				tr( "Cannot open file:\n%1." ).arg( componentFileName ) );
+		return;
+	}
+
+	SoSeparator* componentSeparator = SoDB::readAll( &componentInput );
+	componentInput.closeFile();
+
+	if ( !componentSeparator )
+	{
+		QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
+				tr( "Error reading file: \n%1." )
+				.arg( componentFileName ) );
+		return;
+	}
+
+	TSeparatorKit* componentRoot = static_cast< TSeparatorKit* >( componentSeparator->getChild(0) );
+	CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRoot, QPersistentModelIndex(parentIndex), m_sceneModel );
+	cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
+	m_commandStack->push( cmdInsertSeparatorKit );
+
+	m_document->SetDocumentModified( true );
+
+}
+
+/*!
+ * Inserts an existing tonatiuh component into the tonatiuh model as a selected node child.
+ *
+ * A open file dialog is opened to select the file where the existing component is saved.
+ */
+void MainWindow::InsertUserDefinedComponent()
+{
+	QModelIndex parentIndex;
+	 if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex() ) )
+		 parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
+	 else
+		 parentIndex = m_treeView->currentIndex();
+
+	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
+
+	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
+
+	QString fileName = QFileDialog::getOpenFileName( this,
+			                               tr( "Open Tonatiuh document" ), ".",
+			                               tr( "Tonatiuh component (*.tcmp)" ) );
+
+	if ( fileName.isEmpty() ) return;
+
+	InsertFileComponent( fileName );
+}
+
+/*!
  * Starts new tonatiuh empty model.
  */
 
@@ -1504,6 +1503,186 @@ void MainWindow::Open()
                                tr( "Tonatiuh files (*.tnh)" ) );
         if ( !fileName.isEmpty() ) StartOver( fileName );
     }
+}
+/*!
+ * Opens selected tonatiuh file from the recent file menu.
+ */
+void MainWindow::OpenRecentFile()
+{
+    if ( OkToContinue() )
+    {
+        QAction* action = qobject_cast<QAction *>( sender() );
+
+        if ( action )
+        {
+        	QString fileName = action->data().toString();
+        	StartOver( fileName );
+        }
+    }
+}
+
+/*!
+ * Runs ray tracer to defined model and paramenters.
+ */
+void MainWindow::Run()
+{
+	QDateTime startTime = QDateTime::currentDateTime();
+
+    // Initialize variables
+	InstanceNode* rootSeparatorInstance = 0;
+	InstanceNode* lightInstance = 0;
+	SoTransform* lightTransform = 0;
+	TSunShape* sunShape = 0;
+	TShape* raycastingSurface = 0;
+
+	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
+	{
+		//Compute bounding boxes and world to object transforms
+		ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
+
+		QVector< double > raysPerThread;
+		const int maximumValueProgressScale = 100;
+		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
+		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
+			raysPerThread<< t1;
+
+		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )	raysPerThread<< ( m_raysPerIteration-( t1* maximumValueProgressScale) );
+
+		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
+
+		// Create a progress dialog.
+		QProgressDialog dialog;
+		dialog.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
+
+		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
+		// Create a QFutureWatcher and conncect signals and slots.
+		QFutureWatcher< TPhotonMap* > futureWatcher;
+		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
+		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
+		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
+		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
+		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
+
+		QMutex mutex;
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
+		futureWatcher.setFuture( photonMap );
+
+		// Display the dialog and start the event loop.
+		dialog.exec();
+		futureWatcher.waitForFinished();
+
+
+		QDateTime time2 = QDateTime::currentDateTime();
+		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
+
+		m_tracedRays += m_raysPerIteration;
+		ShowRaysIn3DView();
+
+	}
+
+	QDateTime endTime = QDateTime::currentDateTime();
+	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
+}
+
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
+ *
+ * If a current file is not defined, it calls to SaveAs funtios.
+ *
+ * \sa SaveAs, SaveFile.
+ */
+bool MainWindow::Save()
+{
+	if ( m_currentFile.isEmpty() ) return SaveAs();
+	else return SaveFile( m_currentFile );
+}
+
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
+ *
+ * \sa Save, SaveFile.
+ */
+bool MainWindow::SaveAs()
+{
+	QString fileName = QFileDialog::getSaveFileName( this,
+	                       tr( "Save Tonatiuh document" ), ".",
+	                       tr( "Tonatiuh files (*.tnh)" ) );
+	if( fileName.isEmpty() ) return false;
+
+	return SaveFile( fileName );
+}
+
+/*!
+ * Saves selected node subtree as a component in a file.
+ * A dialog is opened to select a file name and its location.
+ */
+bool MainWindow::SaveComponent()
+{
+    if( !m_selectionModel->hasSelection() ) return false;
+    if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
+
+    QModelIndex componentIndex = m_treeView->currentIndex();
+
+    SoNode* coinNode = m_sceneModel->NodeFromIndex( componentIndex )->GetNode();
+
+    if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+    {
+    	QMessageBox::warning( 0, tr( "Tonatiuh" ),
+                                  tr( "Selected node in not valid  for component node" ) );
+    	return false;
+    }
+
+    TSeparatorKit* componentRoot = dynamic_cast< TSeparatorKit* > ( coinNode );
+    if( !componentRoot ) return false;
+
+
+	QString fileName = QFileDialog::getSaveFileName( this,
+	                       tr( "Save Tonatiuh component" ), ".",
+	                       tr( "Tonatiuh component (*.tcmp)" ) );
+	if( fileName.isEmpty() ) return false;
+
+    SoWriteAction SceneOuput;
+    if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
+	{
+        QMessageBox::warning( 0, tr( "Tonatiuh" ),
+                              tr( "Cannot open file %1. " )
+                            .arg( fileName ));
+   		return false;
+   	}
+
+    QApplication::setOverrideCursor( Qt::WaitCursor );
+   	SceneOuput.getOutput()->setBinary( false );
+   	SceneOuput.apply( componentRoot );
+   	SceneOuput.getOutput()->closeFile();
+   	QApplication::restoreOverrideCursor();
+	return true;
+}
+
+/*!
+ *Sets the photon map type, \a typeName, for ray tracing.
+ */
+int MainWindow::SetPhotonMapType( QString typeName )
+{
+	QVector< TPhotonMapFactory* > factoryList = m_pluginManager->GetPhotonMapFactories();
+	if( factoryList.size() == 0 )	return 0;
+
+	QVector< QString > photonMapNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		photonMapNames<< factoryList[i]->TPhotonMapName();
+
+	m_selectedPhotonMap = photonMapNames.indexOf( typeName );
+	if( m_selectedPhotonMap < 0 )	return 0;
+
+	return 1;
+}
+
+/*!
+ *	Sets \a rays as the number of rays to trace for each run action.
+ */
+void MainWindow::SetRaysPerIteration( unsigned long rays )
+{
+	m_raysPerIteration = rays;
 }
 
 //Manipulators actions
@@ -1829,49 +2008,6 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 	m_document->SetDocumentModified( true );
 }
 
-void MainWindow::showMenu( const QModelIndex& index)
-{
-	if( !index.isValid() ) return;
-	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
-
-	SoNode* coinNode = m_sceneModel->NodeFromIndex(index)->GetNode();
-	SoType type = coinNode->getTypeId();
-
-	QMenu popupmenu(this);
-
-   	popupmenu.addAction(actionCut);
-   	popupmenu.addAction(actionCopy);
-  	popupmenu.addAction(actionPaste_Copy);
-  	popupmenu.addAction(actionPaste_Link);
-  	popupmenu.addAction(actionDelete);
-  	QMenu transformMenu( "Convert to ", &popupmenu );
-	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		//QMenu transformMenu( &popupmenu );
-		//transformMenu.setTitle( "Convert to ");
-		popupmenu.addAction( transformMenu.menuAction() );
-		transformMenu.addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
-		transformMenu.addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
-		transformMenu.addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
-		transformMenu.addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
-		transformMenu.addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
-		transformMenu.addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
-		transformMenu.addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
-
-		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
-		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
-		SoType transformType = transform->getTypeId();
-
-      	//Manipuladores
-		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu.addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
-
-	}
-
-	//Mostramos el menu contextual
-	popupmenu.exec( QCursor::pos() );
-
-}
-
 //for sunposdialog signals
 void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double latitude )
 {
@@ -1946,7 +2082,7 @@ bool MainWindow::StartOver( const QString& fileName )
 	if( m_pRays )
 	{
 		m_pRays->removeAllChildren();
-		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
+		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("StartOver: m_pRays referenced in excess ");
 		m_pRays->unref();
 		m_pRays = 0;
 	}
@@ -1983,19 +2119,6 @@ bool MainWindow::StartOver( const QString& fileName )
 }
 
 /*!
- * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
- *
- * If a current file is not defined, it calls to SaveAs funtios.
- *
- * \sa SaveAs, SaveFile.
- */
-bool MainWindow::Save()
-{
-	if ( m_currentFile.isEmpty() ) return SaveAs();
-	else return SaveFile( m_currentFile );
-}
-
-/*!
  * Returns \a true if the tonatiuh model is correctly saved into the the given \a fileName. Otherwise, returns \a false.
  *
  * \sa Save, SaveAs.
@@ -2010,64 +2133,6 @@ bool MainWindow::SaveFile( const QString& fileName )
 
 	SetCurrentFile( fileName );
 	statusBar()->showMessage( tr( "File saved" ), 2000 );
-	return true;
-}
-
-/*!
- * Returns \a true if the tonatiuh model is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
- *
- * \sa Save, SaveFile.
- */
-bool MainWindow::SaveAs()
-{
-	QString fileName = QFileDialog::getSaveFileName( this,
-	                       tr( "Save Tonatiuh document" ), ".",
-	                       tr( "Tonatiuh files (*.tnh)" ) );
-	if( fileName.isEmpty() ) return false;
-
-	return SaveFile( fileName );
-}
-
-
-bool MainWindow::SaveComponent()
-{
-    if( !m_selectionModel->hasSelection() ) return false;
-    if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
-
-    QModelIndex componentIndex = m_treeView->currentIndex();
-
-    SoNode* coinNode = m_sceneModel->NodeFromIndex( componentIndex )->GetNode();
-
-    if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-    {
-    	QMessageBox::warning( 0, tr( "Tonatiuh" ),
-                                  tr( "Selected node in not valid  for component node" ) );
-    	return false;
-    }
-
-    TSeparatorKit* componentRoot = dynamic_cast< TSeparatorKit* > ( coinNode );
-    if( !componentRoot ) return false;
-
-
-	QString fileName = QFileDialog::getSaveFileName( this,
-	                       tr( "Save Tonatiuh component" ), ".",
-	                       tr( "Tonatiuh component (*.tcmp)" ) );
-	if( fileName.isEmpty() ) return false;
-
-    SoWriteAction SceneOuput;
-    if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
-	{
-        QMessageBox::warning( 0, tr( "Tonatiuh" ),
-                              tr( "Cannot open file %1:\n%2. " )
-                            .arg( fileName ));
-   		return false;
-   	}
-
-    QApplication::setOverrideCursor( Qt::WaitCursor );
-   	SceneOuput.getOutput()->setBinary( false );
-   	SceneOuput.apply( componentRoot );
-   	SceneOuput.getOutput()->closeFile();
-   	QApplication::restoreOverrideCursor();
 	return true;
 }
 
