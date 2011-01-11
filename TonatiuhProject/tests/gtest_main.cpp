@@ -35,11 +35,44 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <iostream>
+
+#include <QApplication>
+
+#include <Inventor/Qt/SoQt.h>
+
 #include <gtest/gtest.h>
 
-int main(int argc, char **argv) {
-  std::cout << "Running main() from gtest_main.cc\n" <<std::endl;
+#include "TDefaultMaterial.h"
+#include "TDefaultSunShape.h"
+#include "TDefaultTracker.h"
+#include "TCube.h"
+#include "TLightKit.h"
+#include "TSeparatorKit.h"
+#include "TShapeKit.h"
+#include "TSquare.h"
 
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+int main(int argc, char **argv )
+{
+
+    QApplication a( argc, argv );
+    std::cout << "Running main() from gtest_main.cc\n" <<std::endl;
+
+	SoQt::init( (QWidget *) NULL );
+
+	TMaterial::initClass();
+	TDefaultMaterial::initClass();
+	TSeparatorKit::initClass();
+	TShape::initClass();
+	TCube::initClass();
+	TShapeKit::initClass();
+	TSquare::initClass();
+	TLightKit::initClass();
+	TSunShape::initClass();
+	TDefaultSunShape::initClass();
+	TTracker::initClass();
+	TDefaultTracker::initClass();
+
+
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
