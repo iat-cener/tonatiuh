@@ -112,6 +112,7 @@ private:
 
 	SceneModel* m_sceneModel;
 
+	bool m_sunPosistionChnaged;
 	double m_sunAzimuth;
 	double m_sunElevation;
 	double m_sunDistance;
