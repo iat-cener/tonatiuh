@@ -1,0 +1,2493 @@
+#Inventor V2.1 ascii
+
+
+SceneKit {
+  lightList 
+  NodeKitListPart {
+    childTypeNames "LightKit"
+    containerNode 
+    Group {
+
+      DEF Light TLightKit {
+        fields [ SFFloat azimuth, SFFloat zenith, SFFloat distance, SFNode callbackList, SFNode transform, SFNode light, SFNode icon, SFNode iconMaterial, SFNode tsunshape, SFNode transformGroup, SFNode iconSeparator ]
+        azimuth 5.497787
+        zenith 0.79063416
+        distance 20
+        transform 
+        Transform {
+          translation -16.376699 24.136999 10.4806
+          rotation -0.68090087 0.67589074 0.28203848  1.0996161
+          scaleFactor 1 1.0000001 1
+          scaleOrientation -0.27074233 -1.8467711e-006 0.96265185  0.012544193
+
+        }
+        light 
+        DirectionalLight {
+          direction 0 -1 0
+
+        }
+        icon 
+        ShapeFlatRectangle {
+          fields [ SFFloat width, SFFloat height, SFEnum activeSide ]
+          width 8.5
+          height 9.25
+
+        }
+        iconMaterial 
+        Material {
+          diffuseColor 0.93300003 0.91000003 0.66600001
+          transparency 0.5
+
+        }
+        tsunshape 
+        SunshapePillbox {
+          fields [ SFFloat irradiance, SFFloat thetaMax ]
+          irradiance 1000
+          thetaMax 0.00465
+
+        }
+
+      }
+    }
+
+  }
+  childList 
+  NodeKitListPart {
+    childTypeNames [ "ShapeKit",
+        "SeparatorKit" ]
+    containerNode 
+    Group {
+
+      DEF SolarFurnace TSeparatorKit {
+        fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+        transform 
+        Transform {
+          translation 0 0 0
+
+        }
+        childList 
+        NodeKitListPart {
+          containerTypeName "Separator"
+          childTypeNames [ "ShapeKit",
+              "SeparatorKit" ]
+          containerNode 
+          Separator {
+
+            DEF Heliostat TSeparatorKit {
+              fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+              transform 
+              Transform {
+                translation 0.039999999 1.284 27.339001
+                rotation 0 1 0  0.32112369
+
+              }
+              childList 
+              NodeKitListPart {
+                containerTypeName "Separator"
+                childTypeNames [ "ShapeKit",
+                    "SeparatorKit" ]
+                containerNode 
+                Separator {
+
+                  DEF Heliostat TSeparatorKit {
+                    fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                    transform 
+                    Transform {
+                      rotation -1 0 0  1.1784719
+
+                    }
+                    childList 
+                    NodeKitListPart {
+                      containerTypeName "Separator"
+                      childTypeNames [ "ShapeKit",
+                          "SeparatorKit" ]
+                      containerNode 
+                      Separator {
+
+                        DEF Heliostat TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            translation 0 0.51599997 0
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF TShapeKit1 TShapeKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                appearance 
+                                AppearanceKit {
+                                  material 
+                                  DEF HeliostatMaterial MaterialStandardSpecular {
+                                    fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                    m_reflectivity 0.94999999
+                                    m_sigmaSlope 0.95524901
+                                    m_distribution NORMAL
+
+                                  }
+
+                                }
+                                shape 
+                                DEF HeliostatGeometry ShapeFlatRectangle {
+                                  fields [ SFFloat width, SFFloat height, SFEnum activeSide ]
+                                  width 6.1999998
+                                  height 6.8299999
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                      }
+
+                    }
+
+                  }
+                }
+
+              }
+
+            }
+            DEF Concentrator TSeparatorKit {
+              fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+              transform 
+              Transform {
+
+              }
+              childList 
+              NodeKitListPart {
+                containerTypeName "Separator"
+                childTypeNames [ "ShapeKit",
+                    "SeparatorKit" ]
+                containerNode 
+                Separator {
+
+                  DEF A TSeparatorKit {
+                    fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                    transform 
+                    Transform {
+                      translation -1.3214422 0 0.33732268
+
+                    }
+                    childList 
+                    NodeKitListPart {
+                      containerTypeName "Separator"
+                      childTypeNames [ "ShapeKit",
+                          "SeparatorKit" ]
+                      containerNode 
+                      Separator {
+
+                        DEF A1 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.32461169
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF A1 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 1.5748 0
+                                  rotation 1 0 0  0.1422196
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF A1 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF A1 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF A1Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF A1Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.509576
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF A2 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.32925731
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF A2 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 0.78740001 0
+                                  rotation 1 0 0  0.090113707
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF A2 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF A2 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF A2Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF A2Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.515895
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF A3 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.33223283
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF A3 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  rotation 1 0 0  0.035588101
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF A3 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF A3 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF A3Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF A3Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.656309
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF A4 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.33335203
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF A4 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -0.78740001 0
+                                  rotation -1 0 0  0.020285808
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF A4 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF A4 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF A4Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF A4Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.682132
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF A5 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.33254269
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF A5 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -1.5748 0
+                                  rotation -1 0 0  0.076242194
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF A5 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF A5 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF A5Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF A5Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.705883
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                      }
+
+                    }
+
+                  }
+                  DEF B TSeparatorKit {
+                    fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                    transform 
+                    Transform {
+                      translation -0.66072112 0 0.16866134
+
+                    }
+                    childList 
+                    NodeKitListPart {
+                      containerTypeName "Separator"
+                      childTypeNames [ "ShapeKit",
+                          "SeparatorKit" ]
+                      containerNode 
+                      Separator {
+
+                        DEF B1 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            translation 0 0 0
+                            rotation 0 1 0  0.2840355
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF B1 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 1.1811 0
+                                  rotation 0.99999994 0 0  0.1195021
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF B1 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF B1 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF B1Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF B1Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.579385
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF B2 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.28755954
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF B2 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 0.3937 0
+                                  rotation 1 0 0  0.065155044
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF B2 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF B2 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF B2Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF B2Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.682132
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF B3 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.28945854
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF B3 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -0.3937 0
+                                  rotation 1 0 0  0.0087346472
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF B3 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF B3 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF B3Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF B3Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.630578
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF B4 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.28960234
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF B4 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -1.1811 0
+                                  rotation -1 0 0  0.048461717
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF B4 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF B4 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF B4Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF B4Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.692918
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF B5 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.28798106
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF B5 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -1.9685 0
+                                  rotation -1 0 0  0.10507315
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF B5 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF B5 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF B5Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF B5Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.63486
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                      }
+
+                    }
+
+                  }
+                  DEF C TSeparatorKit {
+                    fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                    transform 
+                    Transform {
+
+                    }
+                    childList 
+                    NodeKitListPart {
+                      containerTypeName "Separator"
+                      childTypeNames [ "ShapeKit",
+                          "SeparatorKit" ]
+                      containerNode 
+                      Separator {
+
+                        DEF C1 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.23639306
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF C1 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 1.5748 0
+                                  rotation 1 0 0  0.14800796
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF C1 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF C1 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF C1Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF C1Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.579385
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF C2 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            translation 0 0 0
+                            rotation 0 1 0  0.24011542
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF C2 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 0.78740001 0
+                                  rotation 1 0 0  0.094538838
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF C2 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF C2 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF C2Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF C2Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.656309
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF C3 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.2425122
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF C3 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  rotation 1 0 0  0.038304996
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF C3 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF C3 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF C3Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF C3Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.682132
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF C4 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.2434172
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF C4 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -0.78740001 0
+                                  rotation -1 0 0  0.019482438
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF C4 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF C4 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF C4Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF C4Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.682132
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF C5 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.24276239
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF C5 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -1.5748 0
+                                  rotation -1 0 0  0.077369288
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF C5 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF C5 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF C5Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF C5Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.718869
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                      }
+
+                    }
+
+                  }
+                  DEF D TSeparatorKit {
+                    fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                    transform 
+                    Transform {
+                      translation 0.66072112 0 -0.16866134
+
+                    }
+                    childList 
+                    NodeKitListPart {
+                      containerTypeName "Separator"
+                      childTypeNames [ "ShapeKit",
+                          "SeparatorKit" ]
+                      containerNode 
+                      Separator {
+
+                        DEF D1 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.19081479
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF D1 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 1.1811 0
+                                  rotation 1.0000001 0 0  0.12292276
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF D1 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF D1 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF D1Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF D1Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.656309
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF D2 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.19335079
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF D2 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 0.3937 0
+                                  rotation 1 0 0  0.067619152
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF D2 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF D2 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF D2Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF D2Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.699397
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF D3 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.19472176
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF D3 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -0.3937 0
+                                  rotation 1 0 0  0.010030596
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF D3 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF D3 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF D3Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF D3Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.656309
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF D4 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.19482596
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF D4 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -1.1811 0
+                                  rotation -1 0 0  0.048432186
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF D4 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF D4 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF D4Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF D4Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.751438
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF D5 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            translation 0 0 0
+                            rotation 0 1 0  0.19365561
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF D5 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -1.9685 0
+                                  rotation -1 0 0  0.10624705
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF D5 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF D5 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF D5Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF D5Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.63486
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                      }
+
+                    }
+
+                  }
+                  DEF E TSeparatorKit {
+                    fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                    transform 
+                    Transform {
+                      translation 1.3214422 0 -0.33732268
+
+                    }
+                    childList 
+                    NodeKitListPart {
+                      containerTypeName "Separator"
+                      childTypeNames [ "ShapeKit",
+                          "SeparatorKit" ]
+                      containerNode 
+                      Separator {
+
+                        DEF E1 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.14078286
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF E1 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 1.5748 0
+                                  rotation 1 0 0  0.14953662
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF E1 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF E1 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF E1Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF E1Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.682132
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF E2 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.14307441
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF E2 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 0.78740001 0
+                                  rotation 1 0 0  0.095844239
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF E2 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF E2 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF E2Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF E2Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.682132
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF E3 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.14455612
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF E3 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  rotation 1 0 0  0.039245807
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF E3 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF E3 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF E3Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF E3Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.705882
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF E4 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            translation 0 0 0
+                            rotation 0 1 0  0.14511465
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF E4 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -0.78740001 0
+                                  rotation -1 0 0  0.018974055
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF E4 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF E4 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF E4Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF E4Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.757969
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                        DEF E5 TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            rotation 0 1 0  0.1447112
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF E5 TSeparatorKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                transform 
+                                Transform {
+                                  translation 0 -1.5748 0
+                                  rotation -1 0 0  0.077332288
+
+                                }
+                                childList 
+                                NodeKitListPart {
+                                  containerTypeName "Separator"
+                                  childTypeNames [ "ShapeKit",
+                                      "SeparatorKit" ]
+                                  containerNode 
+                                  Separator {
+
+                                    DEF E5 TSeparatorKit {
+                                      fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                                      transform 
+                                      Transform {
+                                        rotation 0 0 1  1.5707964
+
+                                      }
+                                      childList 
+                                      NodeKitListPart {
+                                        containerTypeName "Separator"
+                                        childTypeNames [ "ShapeKit",
+                                            "SeparatorKit" ]
+                                        containerNode 
+                                        Separator {
+
+                                          DEF E5 TShapeKit {
+                                            fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                            appearance 
+                                            AppearanceKit {
+                                              material 
+                                              DEF E5Material MaterialStandardSpecular {
+                                                fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                                m_reflectivity 0.85000002
+                                                m_sigmaSlope 0.206155
+                                                m_distribution NORMAL
+
+                                              }
+
+                                            }
+                                            shape 
+                                            DEF E5Geometry ShapeSphericalPolygon {
+                                              fields [ SFFloat sphereRadius, SFFloat radius, SFInt32 polygonSides, SFEnum activeSide ]
+                                              sphereRadius 14.771049
+                                              radius 0.4399409
+
+                                            }
+
+                                          }
+                                        }
+
+                                      }
+
+                                    }
+                                  }
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                      }
+
+                    }
+
+                  }
+                }
+
+              }
+
+            }
+            DEF Target TSeparatorKit {
+              fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+              transform 
+              Transform {
+                translation 3.2550001 -0.85000002 6.1750002
+                rotation 0 1 0  0.48511174
+
+              }
+              childList 
+              NodeKitListPart {
+                containerTypeName "Separator"
+                childTypeNames [ "ShapeKit",
+                    "SeparatorKit" ]
+                containerNode 
+                Separator {
+
+                  DEF Target TSeparatorKit {
+                    fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                    transform 
+                    Transform {
+                      rotation -1 0 0  1.449482
+
+                    }
+                    childList 
+                    NodeKitListPart {
+                      containerTypeName "Separator"
+                      childTypeNames [ "ShapeKit",
+                          "SeparatorKit" ]
+                      containerNode 
+                      Separator {
+
+                        DEF TargetSurface TShapeKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                          appearance 
+                          AppearanceKit {
+                            material 
+                            DEF TargetMaterial MaterialStandardSpecular {
+                              fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                              m_sigmaSlope 0
+                              m_distribution NORMAL
+
+                            }
+
+                          }
+                          shape 
+                          DEF TargetGeometry ShapeFlatRectangle {
+                            fields [ SFFloat width, SFFloat height, SFEnum activeSide ]
+                            width 0.80000001
+                            height 0.80000001
+
+                          }
+
+                        }
+                        DEF TargetBack TSeparatorKit {
+                          fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode tracker, SFNode topSeparator ]
+                          transform 
+                          Transform {
+                            translation 0 -0.1 0
+
+                          }
+                          childList 
+                          NodeKitListPart {
+                            containerTypeName "Separator"
+                            childTypeNames [ "ShapeKit",
+                                "SeparatorKit" ]
+                            containerNode 
+                            Separator {
+
+                              DEF TargetSurface TShapeKit {
+                                fields [ SFEnum renderCaching, SFEnum boundingBoxCaching, SFEnum renderCulling, SFEnum pickCulling, SFNode callbackList, SFNode pickStyle, SFNode appearance, SFNode units, SFNode transform, SFNode texture2Transform, SFNode childList, SFNode materialBinding, SFNode normalBinding, SFNode textureCoordinateBinding, SFNode shapeHints, SFNode coordinate3, SFNode coordinate4, SFNode normal, SFNode textureCoordinate2, SFNode textureCoordinateFunction, SFNode profileCoordinate2, SFNode profileCoordinate3, SFNode profileList, SFNode localTransform, SFNode shape, SFNode topSeparator, SFNode shapeSeparator ]
+                                appearance 
+                                AppearanceKit {
+                                  material 
+                                  DEF TargetMaterial MaterialStandardSpecular {
+                                    fields [ SFFloat m_reflectivity, SFFloat m_sigmaSlope, SFEnum m_distribution, MFColor m_ambientColor, MFColor m_diffuseColor, MFColor m_specularColor, MFColor m_emissiveColor, MFFloat m_shininess, MFFloat m_transparency ]
+                                    m_sigmaSlope 0
+                                    m_distribution NORMAL
+
+                                  }
+
+                                }
+                                shape 
+                                DEF TargetGeometry ShapeFlatRectangle {
+                                  fields [ SFFloat width, SFFloat height, SFEnum activeSide ]
+                                  width 1
+                                  height 1
+
+                                }
+
+                              }
+                            }
+
+                          }
+
+                        }
+                      }
+
+                    }
+
+                  }
+                }
+
+              }
+
+            }
+          }
+
+        }
+
+      }
+    }
+
+  }
+
+}
