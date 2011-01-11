@@ -94,9 +94,6 @@ public:
 	int Trace();
 
 private:
-	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
-
-
 	Document* m_document;
 
 	double m_irradiance;

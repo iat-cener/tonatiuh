@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QScriptContext>
 #include <QtConcurrentMap>
 
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
@@ -333,7 +332,7 @@ int ScriptRayTracer::Trace()
 	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 	lightInstance->SetIntersectionTransform( lightToWorld. GetInverse() );
 
-	ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
+	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
 
 	QVector< double > raysPerThread;
 	const int maximumValueProgressScale = 100;
@@ -359,67 +358,4 @@ int ScriptRayTracer::Trace()
 	m_wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
 
 	return 1;
-}
-
-/**
- * Compute a map with the InstanceNodes of sub-tree with top node \a instanceNode.
- *
- *The map stores for each InstanceNode its BBox and its transform in global coordinates.
- **/
-void ScriptRayTracer::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
-{
-	if( !instanceNode ) return;
-	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
-	if( !coinNode ) return;
-
-	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		SoTransform* nodeTransform = static_cast< SoTransform* >(coinNode->getPart( "transform", true ) );
-		Transform objectToWorld = tgf::TransformFromSoTransform( nodeTransform );
-		Transform worldToObject = objectToWorld.GetInverse();
-
-		BBox nodeBB;
-		Transform nodeWTO(worldToObject * parentWTO );
-		instanceNode->SetIntersectionTransform( nodeWTO );
-
-		for( int index = 0; index < instanceNode->children.count() ; ++index )
-		{
-			InstanceNode* childInstance = instanceNode->children[index];
-			ComputeSceneTreeMap(childInstance, nodeWTO );
-
-			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
-		}
-
-		instanceNode->SetIntersectionBBox( nodeBB );
-
-	}
-	else
-	{
-		Transform shapeTransform = parentWTO;
-		Transform shapeToWorld = shapeTransform.GetInverse();
-		BBox shapeBB;
-
-		if(  instanceNode->children.count() > 0 )
-		{
-			InstanceNode* shapeInstance = 0;
-			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-				shapeInstance =  instanceNode->children[0];
-			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
-
-
-			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-			shapeInstance->GetNode()->getBoundingBox( bbAction );
-
-			SbBox3f box = bbAction->getXfBoundingBox().project();
-			delete bbAction;
-
-			SbVec3f pMin = box.getMin();
-			SbVec3f pMax = box.getMax();
-			shapeBB = shapeToWorld( BBox( Point3D( pMin[0],pMin[1],pMin[2]), Point3D( pMax[0],pMax[1],pMax[2]) ) );
-		}
-		instanceNode->SetIntersectionTransform( shapeTransform );
-
-		instanceNode->SetIntersectionBBox( shapeBB );
-
-	}
 }

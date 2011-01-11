@@ -42,6 +42,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMap>
 #include <QPair>
 
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+
 #include "Photon.h"
 #include "TPhotonMap.h"
 #include "Ray.h"
@@ -56,6 +58,7 @@ class TPhotonMap;
 
 namespace trf
 {
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons );
 
 	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
@@ -93,6 +96,69 @@ inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , s
 	}
 
 	photonsVector.clear();
+}
+
+/**
+ * Compute a map with the InstanceNodes of sub-tree with top node \a instanceNode.
+ *
+ *The map stores for each InstanceNode its BBox and its transform in global coordinates.
+ **/
+inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
+{
+	if( !instanceNode ) return;
+	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
+	if( !coinNode ) return;
+
+	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		SoTransform* nodeTransform = static_cast< SoTransform* >(coinNode->getPart( "transform", true ) );
+		Transform objectToWorld = tgf::TransformFromSoTransform( nodeTransform );
+		Transform worldToObject = objectToWorld.GetInverse();
+
+		BBox nodeBB;
+		Transform nodeWTO(worldToObject * parentWTO );
+		instanceNode->SetIntersectionTransform( nodeWTO );
+
+		for( int index = 0; index < instanceNode->children.count() ; ++index )
+		{
+			InstanceNode* childInstance = instanceNode->children[index];
+			ComputeSceneTreeMap(childInstance, nodeWTO );
+
+			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
+		}
+
+		instanceNode->SetIntersectionBBox( nodeBB );
+
+	}
+	else
+	{
+		Transform shapeTransform = parentWTO;
+		Transform shapeToWorld = shapeTransform.GetInverse();
+		BBox shapeBB;
+
+		if(  instanceNode->children.count() > 0 )
+		{
+			InstanceNode* shapeInstance = 0;
+			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+				shapeInstance =  instanceNode->children[0];
+			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
+
+
+			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+			shapeInstance->GetNode()->getBoundingBox( bbAction );
+
+			SbBox3f box = bbAction->getXfBoundingBox().project();
+			delete bbAction;
+
+			SbVec3f pMin = box.getMin();
+			SbVec3f pMax = box.getMax();
+			shapeBB = shapeToWorld( BBox( Point3D( pMin[0],pMin[1],pMin[2]), Point3D( pMax[0],pMax[1],pMax[2]) ) );
+		}
+		instanceNode->SetIntersectionTransform( shapeTransform );
+
+		instanceNode->SetIntersectionBBox( shapeBB );
+
+	}
 }
 
 #endif /* TRF_H_ */
