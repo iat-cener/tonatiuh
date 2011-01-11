@@ -157,7 +157,7 @@ bool Document::WriteFile( const QString& fileName )
     if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
 	{
         QMessageBox::warning( 0, tr( "Tonatiuh" ),
-                              tr( "Cannot open file %1:\n%2. " )
+                              tr( "Cannot open file %1. " )
                             .arg( fileName ));
    		return false;
    	}
@@ -206,7 +206,7 @@ SoSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
 	if ( !sceneInput.openFile( fileName.toLatin1().constData() ) )
 	{
         QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
-                              tr( "Cannot open file %1:\n%2." )
+                              tr( "Cannot open file %1." )
                             .arg( fileName ) );
 		return 0;
 	}
