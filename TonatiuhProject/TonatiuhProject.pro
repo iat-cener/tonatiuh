@@ -1,18 +1,18 @@
 TEMPLATE = subdirs
 
-CONFIG(debug, debug|release) {
-		OBJECTS_DIR = $$(TONATIUH_ROOT)/debug
-		MOC_DIR = $$(TONATIUH_ROOT)/debug
-		OBJMOC = $$(TONATIUH_ROOT)/debug
-		RCC_DIR = $$(TONATIUH_ROOT)/debug
-}
-else { 
-	OBJECTS_DIR = $$(TONATIUH_ROOT)/release
-	MOC_DIR = $$(TONATIUH_ROOT)/release
-	OBJMOC = $$(TONATIUH_ROOT)/release
-	RCC_DIR  = $$(TONATIUH_ROOT)/release
-}
-		
+src.target = src
+src.CONFIG = recursive
+src.recurse = src	
+
+plugins.target = plugins
+plugins.CONFIG = recursive
+plugins.recurse = plugins	
+
+tests.target = tests
+tests.CONFIG = recursive
+tests.recurse = tests
+
+QMAKE_EXTRA_TARGETS += src plugins tests
 SUBDIRS = src \
           plugins \
           tests

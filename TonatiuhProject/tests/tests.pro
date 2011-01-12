@@ -96,3 +96,7 @@ CONFIG(debug, debug|release) {
 else{
     DESTDIR=../bin/release
 }
+
+tests.target= tests
+
+QMAKE_EXTRA_TARGETS += tests

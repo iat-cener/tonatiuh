@@ -7,19 +7,6 @@ COINDIR = $$(TDE_ROOT)/local
 MARBLEDIR = $$(TDE_ROOT)/local
 BERKELEYDBDIR = $$(TDE_ROOT)/local
 
-CONFIG(debug, debug|release) {
-		OBJECTS_DIR = $$(TONATIUH_ROOT)/debug
-		MOC_DIR = $$(TONATIUH_ROOT)/debug
-		OBJMOC = $$(TONATIUH_ROOT)/debug
-		RCC_DIR = $$(TONATIUH_ROOT)/debug
-}
-else { 
-	OBJECTS_DIR = $$(TONATIUH_ROOT)/release
-	MOC_DIR = $$(TONATIUH_ROOT)/release
-	OBJMOC = $$(TONATIUH_ROOT)/release
-	RCC_DIR  = $$(TONATIUH_ROOT)/release
-}
-
 INCLUDEPATH += 	. \
 				$$(TONATIUH_ROOT)/src \
 				$$(TONATIUH_ROOT)/src/source \
@@ -42,6 +29,21 @@ LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
 
 contains( CONFIG, plugin ){  
 	
+	CONFIG(debug, debug|release) {
+		OBJECTS_DIR = $$(TONATIUH_ROOT)/debug/plugins
+		MOC_DIR = $$(TONATIUH_ROOT)/debug/plugins
+		OBJMOC = $$(TONATIUH_ROOT)/debug/plugins
+		RCC_DIR = $$(TONATIUH_ROOT)/debug/plugins
+	}
+	else { 
+		OBJECTS_DIR = $$(TONATIUH_ROOT)/release/plugins
+		MOC_DIR = $$(TONATIUH_ROOT)/release/plugins
+		OBJMOC = $$(TONATIUH_ROOT)/release/plugins
+		RCC_DIR  = $$(TONATIUH_ROOT)/release/plugins
+	}
+
+	QMAKE_CLAGS+= -fPIC
+	QMAKE_CXXLAGS+= -fPIC
 	INCLUDEPATH += $$(TONATIUH_ROOT)/plugin
 
 	CONFIG(debug, debug|release) {	
@@ -54,6 +56,19 @@ contains( CONFIG, plugin ){
 	}
 }
 else{
+	CONFIG(debug, debug|release) {
+			OBJECTS_DIR = $$(TONATIUH_ROOT)/debug
+			MOC_DIR = $$(TONATIUH_ROOT)/debug
+			OBJMOC = $$(TONATIUH_ROOT)/debug
+			RCC_DIR = $$(TONATIUH_ROOT)/debug
+	}
+	else { 
+		OBJECTS_DIR = $$(TONATIUH_ROOT)/release
+		MOC_DIR = $$(TONATIUH_ROOT)/release
+		OBJMOC = $$(TONATIUH_ROOT)/release
+		RCC_DIR  = $$(TONATIUH_ROOT)/release
+	}
+
 	INCLUDEPATH += $${MARBLEDIR}/include/marble
 	LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
 }
