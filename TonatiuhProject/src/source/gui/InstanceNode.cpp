@@ -122,10 +122,9 @@ bool InstanceNode::Intersect( const Ray& ray,
 
    if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
    {
-      Ray reflected;
       bool isOutputRay = false;
+      bool isChildOutputRay;
 
-      ///Check if the ray intersects with the BoundingBox
       for( int index = 0; index < children.size(); ++index )
       {
          InstanceNode* intersectedChild = 0;
@@ -133,29 +132,28 @@ bool InstanceNode::Intersect( const Ray& ray,
          Ray childOutputRay;
          double childHit = *tHit;
 
-         bool isChildOutputRay = children[index]->Intersect( ray, rand, &childHit, &intersectedChild, &isChildFront, &childOutputRay );
+         isChildOutputRay = children[index]->Intersect( ray, rand, &childHit, &intersectedChild, &isChildFront, &childOutputRay );
 
          if( childHit < *tHit )
          {
-            isOutputRay = false;
             *tHit = childHit;
             *modelNode = intersectedChild;
             *isFront = isChildFront;
 
             if( isChildOutputRay )
             {
-               reflected = childOutputRay;
+            	*outRay = childOutputRay;
                isOutputRay = true;
             }
-            //else reflected = Ray();
+            else
+            {
+                isOutputRay = false;
+            	*outRay = Ray();
+            }
          }
       }
 
-      if( isOutputRay )
-      {
-         *outRay = reflected;
-         return true;
-      }
+      if( isOutputRay )	return true;
 
    }
    else
