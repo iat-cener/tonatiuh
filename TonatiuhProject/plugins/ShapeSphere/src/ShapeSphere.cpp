@@ -73,12 +73,16 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
 	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
+	m_radiusSensor->setPriority( 0 );
 	m_radiusSensor->attach( &radius );
 	SoFieldSensor* m_yMinSensor = new SoFieldSensor(updateYMin, this);
+	m_yMinSensor->setPriority( 0 );
 	m_yMinSensor->attach( &yMin );
 	SoFieldSensor* m_yMaxSensor = new SoFieldSensor(updateYMax, this);
+	m_yMaxSensor->setPriority( 0 );
 	m_yMaxSensor->attach( &yMax );
 	SoFieldSensor* m_phiMaxSensor = new SoFieldSensor(updatePhiMax, this);
+	m_phiMaxSensor->setPriority( 0 );
 	m_phiMaxSensor->attach( &phiMax );
 }
 

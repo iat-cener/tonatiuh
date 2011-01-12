@@ -63,31 +63,19 @@ QVector< BezierPatch* > CurveNetwork::GetSurface()
 	{
 		for( int v = 0; v < vPatches; v++ )
 		{
-			QVector< Point3D > boundedPoints;
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u ];
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 1 ];
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 3 ];
-			boundedPoints<< vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 2 ];
-			boundedPoints<< vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 1 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u + 3 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u + 1 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u ];
-			boundedPoints<< vPoints[ u * ( 4 * vPatches ) + 4 * v + 1 ];
-			boundedPoints<< vPoints[ u * ( 4 * vPatches ) + 4 * v + 2 ];
-			/*boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v ];
-			boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v + 1];
-			boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v + 2 ];
-			boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v + 3 ];
-			boundedPoints<< vPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 1 ];
-			boundedPoints<< vPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< uPoints[ ( u + 1 )  * ( 4 * vPatches ) + 4 * v + 3];
-			boundedPoints<< uPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 2];
-			boundedPoints<< uPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 1 ];
-			boundedPoints<< uPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v ];
-			boundedPoints<< vPoints[ v * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< vPoints[ v * ( 4 * uPatches ) + 4 * u + 1 ];*/
+			std::vector< Point3D > boundedPoints;
+			boundedPoints.push_back( uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u ] );
+			boundedPoints.push_back( uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 1 ] );
+			boundedPoints.push_back( uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 2 ] );
+			boundedPoints.push_back( uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 3 ] );
+			boundedPoints.push_back( vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 2 ] );
+			boundedPoints.push_back( vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 1 ] );
+			boundedPoints.push_back( uPoints[ v * ( 4 * uPatches ) + 4 * u + 3 ] );
+			boundedPoints.push_back( uPoints[ v * ( 4 * uPatches ) + 4 * u + 2 ] );
+			boundedPoints.push_back( uPoints[ v * ( 4 * uPatches ) + 4 * u + 1 ] );
+			boundedPoints.push_back( uPoints[ v * ( 4 * uPatches ) + 4 * u ] );
+			boundedPoints.push_back( vPoints[ u * ( 4 * vPatches ) + 4 * v + 1 ] );
+			boundedPoints.push_back( vPoints[ u * ( 4 * vPatches ) + 4 * v + 2 ] );
 
 			BezierPatch* patch = new BezierPatch;
 			patch->SetControlPoints( boundedPoints );

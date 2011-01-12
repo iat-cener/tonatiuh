@@ -51,7 +51,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QUndoStack>
 #include <QUndoView>
 
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -303,6 +302,68 @@ QDir MainWindow::PluginDirectory()
 }
 
 /*!
+ * Shows a dialog to allow define current light position with a position calculator.
+ */
+void MainWindow::CalculateSunPosition()
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene->getPart("lightList[0]", false) ) return;
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+
+
+	QDateTime currentTime;
+	double longitude;
+	double latitude;
+
+	lightKit->GetPositionData( &currentTime, &longitude, &latitude );
+
+	SunPositionCalculatorDialog sunposDialog;
+	sunposDialog.ChangePosition( currentTime, longitude, latitude );
+
+	connect( &sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( ChangeSunPosition( QDateTime*, double, double ) ) );
+
+	sunposDialog.exec();
+}
+
+/*!
+ *Defines Tonatiuh model light paramenters with a dilog window.
+ */
+void MainWindow::DefineSunLight()
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene ) return;
+
+	TLightKit* currentLight = 0;
+	if( coinScene->getPart( "lightList[0]", false ) )	currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+
+	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+
+	QVector< TShapeFactory* > tFlatShapeFactoryList;
+	for( int i = 0; i < shapeFactoryList.size(); ++i  )
+		if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
+
+	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
+
+	LightDialog dialog( currentLight, tFlatShapeFactoryList, tSunShapeFactoryList );
+	if( dialog.exec() )
+	{
+
+		TLightKit* lightKit = dialog.GetTLightKit();
+		if( !lightKit ) return;
+
+		lightKit->setName( "Light" );
+
+		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
+		m_commandStack->push( command );
+
+		parametersView->UpdateView();
+		m_document->SetDocumentModified( true );
+
+		actionCalculateSunPosition->setEnabled( true );
+	}
+}
+
+/*!
  * Applies las reverted command action changes to Tonatiuh.
  */
 void MainWindow::Redo()
@@ -503,6 +564,76 @@ void MainWindow::SetupActionsInsertTracker()
 		connect( actionInsertTracker, SIGNAL( triggered() ), actionInsertTracker, SLOT( OnActionInsertTrackerTriggered() ) );
 		connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
 	}
+}
+
+/*!
+ * Checks whether a ray tracing can be started with the current light and model.
+ */
+bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
+{
+	//Check if there is a scene
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if ( !coinScene )  return false;
+
+	//Check if there is a rootSeparator InstanceNode
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
+	if ( !sceneInstance )  return false;
+	rootSeparatorInstance = sceneInstance->children[1];
+	if( !rootSeparatorInstance ) return false;
+
+	//Check if there is a light and is properly configured
+	if ( !coinScene->getPart( "lightList[0]", false ) )	return false;
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+
+	lightInstance = sceneInstance->children[0];
+	if ( !lightInstance ) return false;
+
+	if( !lightKit->getPart( "tsunshape", false ) ) return false;
+	sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+
+	if( !lightKit->getPart( "icon", false ) ) return false;
+	raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
+
+	if( !lightKit->getPart( "transform" ,true ) ) return false;
+	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
+
+
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
+	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+	//Check if there is a random generator selected;
+	if( m_selectedRandomDeviate == -1 )
+	{
+		if( randomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
+		else	return false;
+	}
+
+	//Create the random generator
+	if( !m_rand )	m_rand =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
+
+	//Check if there is a photon map type selected;
+	if( m_selectedPhotonMap == -1 )
+	{
+		if( photonmapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
+		else	return false;
+	}
+
+	//Create the photon map where photons are going to be stored
+	if( !m_increasePhotonMap )
+	{
+		delete m_photonMap;
+		m_photonMap = 0;
+	}
+
+	if( !m_photonMap )
+	{
+		QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+		m_photonMap = photonmapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
+		m_tracedRays = 0;
+	}
+
+	return true;
 }
 
 /*!
@@ -721,7 +852,7 @@ void MainWindow::SetupTreeView()
 	connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
 			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
 	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
-				 this, SLOT ( showMenu( const QModelIndex& ) ) );
+				 this, SLOT ( ShowMenu( const QModelIndex& ) ) );
 }
 
 /*!
@@ -747,6 +878,9 @@ void MainWindow::SetupTriggers()
 	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
 	connect( actionUserComponent, SIGNAL( triggered() ), this, SLOT ( InsertUserDefinedComponent() ) );
 
+	//Sun Light menu actions
+	connect( actionDefineSunLight, SIGNAL( triggered() ), this, SLOT ( DefineSunLight() ) );
+	connect( actionCalculateSunPosition, SIGNAL( triggered() ), this, SLOT ( CalculateSunPosition() ) );
 
 	//Ray trace menu actions
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
@@ -783,137 +917,6 @@ void MainWindow::on_actionPaste_Link_triggered()
 void MainWindow::on_actionDelete_triggered()
 {
 	Delete ();
-}
-
-//Sun Light menu actions
-void MainWindow::on_actionDefine_SunLight_triggered()
-{
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene ) return;
-
-	TLightKit* currentLight = 0;
-	if( coinScene->getPart( "lightList[0]", false ) )	currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-
-
-
-    QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
-
-    QVector< TShapeFactory* > tFlatShapeFactoryList;
-    for( int i = 0; i < shapeFactoryList.size(); ++i  )
-    	if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
-
-    QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
-
-	LightDialog dialog( currentLight, tFlatShapeFactoryList, tSunShapeFactoryList );
-	if( dialog.exec() )
-	{
-
-		TLightKit* lightKit = dialog.GetTLightKit();
-		if( !lightKit ) return;
-
-		lightKit->setName( "Light" );
-
- 		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
-		m_commandStack->push( command );
-
-		parametersView->UpdateView();
-		m_document->SetDocumentModified( true );
-
-		actionCalculateSunPosition->setEnabled( true );
-	}
-}
-
-void MainWindow::on_actionCalculateSunPosition_triggered()
-{
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene->getPart("lightList[0]", false) ) return;
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-
-
-	QDateTime currentTime;
-	double longitude;
-	double latitude;
-
-	lightKit->GetPositionData( &currentTime, &longitude, &latitude );
-
-	SunPositionCalculatorDialog sunposDialog;
-	sunposDialog.ChangePosition( currentTime, longitude, latitude );
-
-	connect( &sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( ChangeSunPosition( QDateTime*, double, double ) ) );
-
-	sunposDialog.exec();
-
-
-}
-
-/*!
- * Checks whether a ray tracing can be started with the current light and model.
- */
-bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
-{
-	//Check if there is a scene
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if ( !coinScene )  return false;
-
-	//Check if there is a rootSeparator InstanceNode
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
-	if ( !sceneInstance )  return false;
-	rootSeparatorInstance = sceneInstance->children[1];
-	if( !rootSeparatorInstance ) return false;
-
-	//Check if there is a light and is properly configured
-	if ( !coinScene->getPart( "lightList[0]", false ) )	return false;
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
-
-	lightInstance = sceneInstance->children[0];
-	if ( !lightInstance ) return false;
-
-	if( !lightKit->getPart( "tsunshape", false ) ) return false;
-	sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-
-	if( !lightKit->getPart( "icon", false ) ) return false;
-	raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
-
-	if( !lightKit->getPart( "transform" ,true ) ) return false;
-	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
-
-
-	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
-	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-	//Check if there is a random generator selected;
-	if( m_selectedRandomDeviate == -1 )
-	{
-		if( randomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
-		else	return false;
-	}
-
-	//Create the random generator
-	if( !m_rand )	m_rand =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
-
-	//Check if there is a photon map type selected;
-	if( m_selectedPhotonMap == -1 )
-	{
-		if( photonmapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
-		else	return false;
-	}
-
-	//Create the photon map where photons are going to be stored
-	if( !m_increasePhotonMap )
-	{
-		delete m_photonMap;
-		m_photonMap = 0;
-	}
-
-	if( !m_photonMap )
-	{
-		QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-		m_photonMap = photonmapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
-		m_tracedRays = 0;
-	}
-
-	return true;
 }
 
 //Ray trace menu actions

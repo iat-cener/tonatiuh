@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSEPARATORKIT_H_
 
 #include <Inventor/nodekits/SoSeparatorKit.h>
-#include <Inventor/SbBox.h>
 
 /*!
   \class TSeparatorKit TSeparatorKit.h TSeparatorKit.h

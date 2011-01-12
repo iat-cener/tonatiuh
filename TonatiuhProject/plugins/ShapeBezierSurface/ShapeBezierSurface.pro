@@ -11,6 +11,7 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS = src/*.h \
+            $$(TONATIUH_ROOT)/src/source/geometry/BBox.h \
             $$(TONATIUH_ROOT)/src/source/geometry/NormalVector.h \
             $$(TONATIUH_ROOT)/src/source/geometry/Point3D.h \
             $$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \                                                      
@@ -18,6 +19,7 @@ HEADERS = src/*.h \
             $$(TONATIUH_ROOT)/src/source/raytracing/TShape.h
 
 SOURCES = src/*.cpp \
+            $$(TONATIUH_ROOT)/src/source/geometry/BBox.cpp \
             $$(TONATIUH_ROOT)/src/source/geometry/NormalVector.cpp \
             $$(TONATIUH_ROOT)/src/source/geometry/Point3D.cpp \
             $$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \                                                        

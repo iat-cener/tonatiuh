@@ -188,7 +188,7 @@
     <property name="title">
      <string>Sun Light</string>
     </property>
-    <addaction name="actionDefine_SunLight"/>
+    <addaction name="actionDefineSunLight"/>
     <addaction name="actionCalculateSunPosition"/>
    </widget>
    <widget class="QMenu" name="menu_Raytrace">
@@ -550,7 +550,7 @@
     <string>Z-YPlane</string>
    </property>
   </action>
-  <action name="actionDefine_SunLight">
+  <action name="actionDefineSunLight">
    <property name="enabled">
     <bool>true</bool>
    </property>
@@ -559,7 +559,7 @@
      <normaloff>:/icons/lightKit.png</normaloff>:/icons/lightKit.png</iconset>
    </property>
    <property name="text">
-    <string>Define SunLight ...</string>
+    <string>Define SunLight...</string>
    </property>
   </action>
   <action name="actionEdit_Mode">
