@@ -32,15 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #ifndef PHOTONMAPDEFAULT_H_
 #define PHOTONMAPDEFAULT_H_
 
+#include <vector>
+
 #include <QMap>
-#include <QVector>
 
 //#include "InstanceNode.h"
 #include "Point3D.h"
@@ -57,7 +58,6 @@ class PhotonMapDefault : public TPhotonMap
 
 public:
 	PhotonMapDefault();
-	PhotonMapDefault( long unsigned maxPhotons );
 	~PhotonMapDefault();
 
 	QString GetIcon();
@@ -65,16 +65,15 @@ public:
 	Photon* GetPhoton( double photonID ) const;
 	QList< Photon* > GetAllPhotons() const;
 	QList< Photon* > GetSurfacePhotons( InstanceNode* instance ) const;
-	void StoreRay( Photon* rayFirstPhoton );
+	void StoreRay( std::vector< Photon >* raysPhotonsList );
 	unsigned long StoredPhotons() const { return m_storedPhotons; };
 
 private:
 
 
 	//QMap< double, Photon*> m_photons;
-	QVector< Photon* > m_photons;
+	std::vector< Photon* > m_photons;
 	unsigned long  m_storedPhotons;
-	long unsigned m_maxPhotons;
 
 };
 

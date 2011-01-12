@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -67,7 +67,7 @@ public:
 	virtual QList< Photon* > GetAllPhotons() const = 0;
 	virtual Photon* GetPhoton( double photonID ) const = 0;
 	virtual QList< Photon* > GetSurfacePhotons( InstanceNode* instance ) const = 0;
-	virtual void StoreRay( Photon* rayFirstPhoton ) = 0;
+	virtual void StoreRay( std::vector< Photon >*  raysPhotonsList ) = 0;
 	virtual unsigned long StoredPhotons() const = 0 ;
 
 };

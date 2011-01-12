@@ -137,7 +137,6 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 				photonsVector.push_back( lastNode );
 		}
 
-
 	}
 
 	return QPair< TPhotonMap*, std::vector< Photon > >( m_photonMap, photonsVector );

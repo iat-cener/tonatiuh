@@ -59,43 +59,13 @@ class TPhotonMap;
 namespace trf
 {
 	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
-	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons );
+	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > rays );
 
 	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
 	int ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
 	int ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
 	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map);
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
-}
-
-inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > photons )
-{
-	if( !photonMap )  photonMap = photons.first;
-
-	std::vector<Photon> photonsVector = photons.second;
-	std::vector<Photon>::iterator it;
-	it = photonsVector.begin();
-
-	while( it<photonsVector.end() )
-	{
-		Photon* first = new Photon( *it );
-		//std::cout<<first->pos<<std::endl;
-		it++;
-		Photon* nextPhoton = first;
-
-		while( it<photonsVector.end() && ( (*it).id > 0 ) )
-		{
-			Photon* photon = new Photon( *it );
-
-			nextPhoton->next = photon;
-			photon->prev = nextPhoton;
-			nextPhoton = photon;
-			it++;
-		}
-		photonMap->StoreRay( first );
-	}
-
-	photonsVector.clear();
 }
 
 /**
@@ -159,6 +129,12 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 		instanceNode->SetIntersectionBBox( shapeBB );
 
 	}
+}
+
+inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > rays )
+{
+	if( !photonMap )  photonMap = rays.first;
+	photonMap->StoreRay( &rays.second );
 }
 
 #endif /* TRF_H_ */

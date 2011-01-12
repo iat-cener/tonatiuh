@@ -147,7 +147,7 @@ bool InstanceNode::Intersect( const Ray& ray,
                reflected = childOutputRay;
                isOutputRay = true;
             }
-            else reflected = Ray();
+            //else reflected = Ray();
          }
       }
 

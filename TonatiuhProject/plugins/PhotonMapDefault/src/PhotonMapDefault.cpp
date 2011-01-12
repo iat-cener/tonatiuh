@@ -47,17 +47,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 */
 PhotonMapDefault::PhotonMapDefault()
 {
-	 m_storedPhotons = 0;
-	m_maxPhotons = tgc::Max_Photon;
-
-}
-
-PhotonMapDefault :: PhotonMapDefault( long unsigned maxPhotons )
-{
-    m_storedPhotons = 0;
-	m_maxPhotons = maxPhotons;
-
+	m_storedPhotons = 0;
 	BBox m_bbox();
+
 }
 
 /**
@@ -85,7 +77,7 @@ Photon* PhotonMapDefault::GetPhoton( double photonID ) const
 
 QList< Photon* > PhotonMapDefault::GetAllPhotons() const
 {
-	return QList<Photon*>::fromVector( m_photons );
+	return QVector<Photon*>::fromStdVector( m_photons ).toList();
 
 }
 
@@ -104,11 +96,57 @@ QList< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) c
 }
 
 
-void PhotonMapDefault::StoreRay( Photon* rayFirstPhoton )
+void PhotonMapDefault::StoreRay( std::vector< Photon >* raysPhotonsList )
 {
-	rayFirstPhoton->id = m_storedPhotons+1;
+	std::vector< Photon >::iterator it = raysPhotonsList->begin();
 
-	Photon* currentNode = rayFirstPhoton->next;
+	while( it < raysPhotonsList->end() )
+	{
+		Photon* first = new Photon( *it );
+		first->id = ++m_storedPhotons;
+		m_photons.push_back( first );
+
+		it++;
+
+		while( ( it <  raysPhotonsList->end() ) && ( (*it).id > 0 ) )
+		{
+			Photon* photon = new Photon( *it );
+			photon->id = ++m_storedPhotons;
+			m_photons.push_back( photon );
+
+			first->next = photon;
+			photon->prev = first;
+
+			first = photon;
+			it++;
+
+		}
+	}
+
+	/*for( unsigned int ray = 0; ray < raysList.size(); ray++ )
+	{
+		if( ( m_storedPhotons + raysList[ray].size() ) >= m_maxPhotons )	return;
+
+		Photon* first = new Photon( raysList[ray][0] );
+  	  	m_photons.push_back( first );
+
+		first->id  = ++m_storedPhotons;
+		for( unsigned int photon = 1; photon < raysList[ray].size(); photon++ )
+		{
+			Photon* currentPhoton = new Photon( raysList[ray][photon] );
+	  	  	m_photons.push_back( currentPhoton );
+
+			currentPhoton->id  = ++m_storedPhotons;
+			first->next = currentPhoton;
+			currentPhoton->prev = first;
+
+			first = currentPhoton;
+
+		}
+
+	}*/
+	/*rayFirstPhoton->id = m_storedPhotons + 1;
+	 * Photon* currentNode = rayFirstPhoton->next;
 	while( currentNode )
 	{
 		currentNode->id = currentNode->prev->id +1;
@@ -127,7 +165,7 @@ void PhotonMapDefault::StoreRay( Photon* rayFirstPhoton )
   	  	m_photons.push_back( currentNode );
 
   	  	currentNode = currentNode->next;
-  	}
+  	}*/
 
-	//std::cout<<"PhotonMapDefault::StoreRay"<<m_storedPhotons<<std::endl;
+
 }
