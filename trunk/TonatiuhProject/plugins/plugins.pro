@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 
+
 SUBDIRS =  MaterialBasicRefractive \
 			MaterialStandardSpecular \
 			PhotonMapDefault \
@@ -26,3 +27,8 @@ SUBDIRS =  MaterialBasicRefractive \
 			SunshapePillbox \
 			TrackerHeliostat \
 			TrackerOneAxis
+
+plugins.target= plugins
+plugins.depends = src
+
+QMAKE_EXTRA_TARGETS += plugins

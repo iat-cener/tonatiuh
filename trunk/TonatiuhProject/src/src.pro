@@ -56,3 +56,6 @@ else{
 }
 	
 QMAKE_CLEAN -= *.rc  
+
+src.target= src
+QMAKE_EXTRA_TARGETS += src
