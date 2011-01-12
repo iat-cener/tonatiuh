@@ -125,11 +125,11 @@ bool InstanceNode::Intersect( const Ray& ray,
       bool isOutputRay = false;
       bool isChildOutputRay;
 
+      Ray childOutputRay;
       for( int index = 0; index < children.size(); ++index )
       {
          InstanceNode* intersectedChild = 0;
          bool isChildFront = false;
-         Ray childOutputRay;
          double childHit = *tHit;
 
          isChildOutputRay = children[index]->Intersect( ray, rand, &childHit, &intersectedChild, &isChildFront, &childOutputRay );
@@ -156,52 +156,56 @@ bool InstanceNode::Intersect( const Ray& ray,
       if( isOutputRay )	return true;
 
    }
-   else
-   {
-      Ray childCoordinatesRay( m_transformWTO( ray ) );
-      childCoordinatesRay.maxt = ray.maxt;
+	else
+	{
+		Ray childCoordinatesRay( m_transformWTO( ray ) );
 
-      bool isShapeFront = false;
+		bool isShapeFront = false;
 
-      InstanceNode* shapeInstance = 0;
-      if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) ) shapeInstance = children[0];
-      else if(  children.count() > 1 )	shapeInstance =  children[1];
+		InstanceNode* shapeInstance = 0;
+		InstanceNode* materialInstance = 0;
+		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+		{
+			shapeInstance = children[0];
+			if( children.size() > 1 )	materialInstance =  children[1];
+		}
+		else if(  children.count() > 1 )
+		{
+			materialInstance =  children[0];
+			shapeInstance =  children[1];
+		}
 
-      if( shapeInstance )
-      {
-         TShape* tshape = static_cast< TShape* >( shapeInstance->GetNode() );
+		if( shapeInstance )
+		{
+			TShape* tshape = static_cast< TShape* >( shapeInstance->GetNode() );
 
-         double thit = 0.0;
-         DifferentialGeometry dg;
-         bool intersect = tshape->Intersect( childCoordinatesRay, &thit, &dg );
-         isShapeFront = dg.shapeFrontSide;
+			 double thit = 0.0;
+			 DifferentialGeometry dg;
+			 bool intersect = tshape->Intersect( m_transformWTO( ray ), &thit, &dg );
+			 isShapeFront = dg.shapeFrontSide;
 
-         if( intersect )
-         {
-            childCoordinatesRay.maxt = thit;
-            *tHit = childCoordinatesRay.maxt;
+			 if( !intersect )	return false;
 
-            InstanceNode* materialInstance = 0;
-            if( children[0]->GetNode()->getTypeId().isDerivedFrom( TMaterial::getClassTypeId() ) ) materialInstance = children[0];
-            else if(  children.count() > 1 )	materialInstance =  children[1];
+			 childCoordinatesRay.maxt = thit;
+			 *tHit = childCoordinatesRay.maxt;
 
-            if( materialInstance )
-            {
-               TMaterial* tmaterial = static_cast< TMaterial* > ( materialInstance->GetNode() );
+			 if( materialInstance )
+			 {
+				TMaterial* tmaterial = static_cast< TMaterial* > ( materialInstance->GetNode() );
 
-               Ray surfaceOutputRay;
-               bool isOutputRay = tmaterial->OutputRay( childCoordinatesRay, &dg, rand, &surfaceOutputRay );
+				Ray surfaceOutputRay;
+				bool isOutputRay = tmaterial->OutputRay( childCoordinatesRay, &dg, rand, &surfaceOutputRay );
 
-               *modelNode = this;
-               *isFront = isShapeFront;
+				*modelNode = this;
+				*isFront = isShapeFront;
 
-               if( isOutputRay )
-               {
-                  *outRay = m_transformOTW( surfaceOutputRay );
-                  return true;
-               }
-            }
-         }
+				if( isOutputRay )
+				{
+					*outRay = m_transformOTW( surfaceOutputRay );
+					return true;
+				}
+			}
+
       }
    }
    return false;
