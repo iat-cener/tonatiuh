@@ -1560,7 +1560,6 @@ void MainWindow::Run()
 		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 		// Create a QFutureWatcher and conncect signals and slots.
 		QFutureWatcher< TPhotonMap* > futureWatcher;
-		//QFutureWatcher< QPair< TPhotonMap*, std::vector< Photon* > > > futureWatcher;
 		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
 		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
 		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
@@ -1568,7 +1567,6 @@ void MainWindow::Run()
 
 		QMutex mutex;
 		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-		//QFuture< QPair< TPhotonMap*, std::vector< Photon* > > > photonMap = QtConcurrent::mapped( raysPerThread, RayTracer(  rootSeparatorInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ) );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.
