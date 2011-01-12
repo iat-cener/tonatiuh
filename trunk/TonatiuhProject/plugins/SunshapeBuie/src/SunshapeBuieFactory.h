@@ -37,7 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #ifndef SUNSHAPEBUIEFACTORY_H_
-#define SUNSHAPEPILLBOXFACTORY_H_
+#define SUNSHAPEBUIEFACTORY_H_
 
 #include <QObject>
 

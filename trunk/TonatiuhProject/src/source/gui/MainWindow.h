@@ -55,7 +55,6 @@ class PluginManager;
 class RandomDeviate;
 class RandomDeviateFactory;
 class Ray;
-class BBox;
 class SbViewportRegion;
 class SceneModel;
 class SoNodeKitPath;
@@ -101,16 +100,8 @@ public slots:
 	void on_actionPaste_Copy_triggered();
 	void on_actionDelete_triggered();
 
-	//Sun Light menu actions
-	void on_actionDefine_SunLight_triggered();
-	void on_actionCalculateSunPosition_triggered();
 
 	//Ray trace menu actions
-	bool ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
-			                 InstanceNode*& lightInstance,
-			                 SoTransform*& lightTransform,
-			                 TSunShape*& sunShape,
-			                 TShape*& shape );
 	void on_actionDisplay_rays_toggled();
 	void on_actionExport_PhotonMap_triggered();
 	void on_actionRayTraceOptions_triggered();
@@ -180,6 +171,8 @@ protected:
     void closeEvent( QCloseEvent* event );
 
 protected slots:
+	void CalculateSunPosition();
+	void DefineSunLight();
 	void Redo();
 	void ShowCommandView();
     void ShowMenu( const QModelIndex& index );
@@ -196,11 +189,17 @@ private:
    	QSplitter* GetHorizontalSplitterPointer();
    	ParametersView* GetParamtersViewPointer();
    	SceneModelView* GetSceneModelViewPointer();
+	bool ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
+			                 InstanceNode*& lightInstance,
+			                 SoTransform*& lightTransform,
+			                 TSunShape*& sunShape,
+			                 TShape*& shape );
+
+    void SetupActions();
    	void SetupActionsInsertFieldComponent();
     void SetupActionsInsertMaterial();
     void SetupActionsInsertShape();
     void SetupActionsInsertTracker();
-    void SetupActions();
     void SetupCommandView();
     void SetupDocument();
     void SetupGraphicView();
