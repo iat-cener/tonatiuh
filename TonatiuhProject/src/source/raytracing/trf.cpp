@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 #include <cmath>
+#include <iostream>
 
 #include <QFile>
 #include <QTextStream>
@@ -73,16 +74,23 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
 	QDataStream out( &exportFile );
 	out<< wPhoton;
 
-	QList< Photon* > photonsList = photonMap->GetAllPhotons();
-	for (int i = 0; i < photonsList.size(); ++i)
+	std::vector< Photon > photonsList = photonMap->GetAllPhotons();
+	int photon = 0;
+	unsigned long nPhotons = photonsList.size();
+	while( (unsigned long ) photon < nPhotons)
 	{
-		Photon* node = photonsList[i];
-		Point3D photon = node->pos;
-		double id = node->id;
-		double prev_id = ( node->prev ) ? node->prev->id : 0;
-		double next_id = ( node->next ) ? node->next->id : 0;
-		out<<id <<photon.x << photon.y << photon.z <<prev_id << next_id;
+		Point3D nodePos = photonsList[photon].pos;
+		int prev = 0;
+		while( photonsList[ photon++].id !=0 )
+		{
+			out<<(photon -1)<<nodePos.x << nodePos.y << nodePos.z<<prev<< photon;
+			prev = photon -1;
+
+		}
+		out<<photon<<nodePos.x<<nodePos.y<<nodePos.z <<prev<< 0;
+
 	}
+
 	exportFile.close();
 
 	return 1;
@@ -105,8 +113,8 @@ int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selecte
 	QDataStream out( &exportFile );
 	out<< wPhoton;
 
-	QList< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
-	if( nodePhotonsList.size() == 0 )
+	std::vector< Photon > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
+	/*if( nodePhotonsList.size() == 0 )
 	{
 		exportFile.close();
 		return 1;
@@ -120,7 +128,7 @@ int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selecte
 		double prev_id = ( node->prev ) ? node->prev->id : 0;
 		double next_id = ( node->next ) ? node->next->id : 0;
 		out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
-	}
+	}*/
 
 	exportFile.close();
 
@@ -144,8 +152,8 @@ int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selected
 	QDataStream out( &exportFile );
 	out<< wPhoton;
 
-	QList< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
-	if( nodePhotonsList.size() == 0 )
+	std::vector< Photon > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
+	/*if( nodePhotonsList.size() == 0 )
 	{
 		exportFile.close();
 		return 1;
@@ -159,7 +167,7 @@ int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selected
 		double prev_id = ( node->prev ) ? node->prev->id : 0;
 		double next_id = ( node->next ) ? node->next->id : 0;
 		out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
-	}
+	}*/
 
 	exportFile.close();
 	return 1;
@@ -170,11 +178,11 @@ SoSeparator* trf::DrawPhotonMapPoints( const TPhotonMap& map )
         SoSeparator* drawpoints=new SoSeparator;
         SoCoordinate3* points = new SoCoordinate3;
 
-        QList< Photon* > photonsList = map.GetAllPhotons();
+        std::vector< Photon > photonsList = map.GetAllPhotons();
 
-        for (int i = 0; i < photonsList.size(); ++i)
+        for( unsigned int i = 0; i < photonsList.size(); ++i)
         {
-                Point3D photon = photonsList[i]->pos;
+                Point3D photon = photonsList[i].pos;
                 points->point.set1Value( i, photon.x, photon.y, photon.z );
         }
 
@@ -195,59 +203,54 @@ SoSeparator* trf::DrawPhotonMapPoints( const TPhotonMap& map )
 
 SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction )
 {
-        SoSeparator* drawrays = new SoSeparator;
-        SoCoordinate3* points = new SoCoordinate3;
+	SoSeparator* drawrays = new SoSeparator;
+	SoCoordinate3* points = new SoCoordinate3;
 
-        int drawRays =  (int) (numberOfRays * ( fraction / 100 ) );
-        if( drawRays == 0 ) drawRays = 1;
+	int drawRays =  (int) (numberOfRays * ( fraction / 100 ) );
+	if( drawRays == 0 ) drawRays = 1;
 
-        int* lines = new int[drawRays];
+	int* lines = new int[drawRays];
 
-        unsigned long rayLength = 0;
+	unsigned long rayLength = 0;
+	unsigned long numberOfPhoton = 0;
 
-        unsigned long numberOfPhoton = 0;
+	std::vector< Photon > photonsList = map.GetAllPhotons();
+	unsigned long photon = 0;
+	unsigned long nPhotons = photonsList.size();
+	for (int drawnRay = 0; drawnRay < drawRays; ++drawnRay)
+	{
+		while( ( photon < nPhotons ) && ( photonsList[photon].id != 0 ) )	photon++;
 
-        QList< Photon* > photonsList = map.GetAllPhotons();
+		if ( photonsList[photon].id == 0 )
+		{
+			rayLength = 0;
+			do
+			{
+				Point3D pPos =  photonsList[photon].pos;
+				points->point.set1Value( numberOfPhoton, pPos.x, pPos.y, pPos.z );
 
-        int indexPhotonList = 0;
-        for (int drawnRay = 0; drawnRay < drawRays; ++drawnRay)
-        {
-        	 while( ( indexPhotonList < photonsList.size() ) && ( photonsList[indexPhotonList]->prev != 0 ) )	indexPhotonList++;
+				rayLength++;
+				numberOfPhoton++;
+				photon++;
 
-        	 if ( photonsList[indexPhotonList]->prev == 0 )
-        	 {
-        		 Photon* node = photonsList[indexPhotonList];
-        		 rayLength = 0;
+			}while( photonsList[photon].id != 0 );
 
-        		 while ( node != 0 )
-        		 {
-        			 Point3D photon = node->pos;
-        			 points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
+			lines[drawnRay]= rayLength;
 
-        			 if( node->next != 0 )   node = map.GetPhoton( node->next->id );
-        			 else    node = 0;
+		}
 
-        			 rayLength++;
-        			 numberOfPhoton++;
-				 }
+	}
 
-        		 lines[drawnRay]= rayLength;
-        		 indexPhotonList++;
-        	 }
+	SoMaterial* myMaterial = new SoMaterial;
+	myMaterial->diffuseColor.setValue(1.0, 1.0, 0.8);
+	drawrays->addChild( myMaterial );
+	drawrays->addChild( points );
 
-        }
-
-
-        SoMaterial* myMaterial = new SoMaterial;
-        myMaterial->diffuseColor.setValue(1.0, 1.0, 0.8);
-        drawrays->addChild( myMaterial );
-        drawrays->addChild( points );
-
-        SoLineSet* lineset = new SoLineSet;
-        lineset->numVertices.setValues( 0, drawRays, lines );
-        drawrays->addChild( lineset );
+	SoLineSet* lineset = new SoLineSet;
+	lineset->numVertices.setValues( 0, drawRays, lines );
+	drawrays->addChild( lineset );
 
 
-        delete lines;
-        return drawrays;
+	delete lines;
+	return drawrays;
 }

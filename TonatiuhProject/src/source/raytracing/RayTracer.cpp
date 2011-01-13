@@ -101,11 +101,11 @@ QPair< TPhotonMap*, std::vector< Photon > > RayTracer::operator()( double number
 
 		//Trace the ray
 		bool intersection = true;
+		Ray reflectedRay;
 		while ( intersection )
 		{
 			intersectedSurface = 0;
 			isFront = 0;
-			Ray reflectedRay;
 
 			double tHit = ray.maxt;
 			intersection = m_rootNode->Intersect( ray, rand, &tHit, &intersectedSurface, &isFront, &reflectedRay );

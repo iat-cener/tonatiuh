@@ -134,7 +134,7 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > rays )
 {
 	if( !photonMap )  photonMap = rays.first;
-	photonMap->StoreRay( &rays.second );
+	photonMap->StoreRay( rays.second );
 }
 
 #endif /* TRF_H_ */

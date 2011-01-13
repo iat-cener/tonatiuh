@@ -47,7 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "BBox.h"
 #include "NormalVector.h"
 #include "Photon.h"
-#include <vector>
 
 class QString;
 
@@ -64,10 +63,10 @@ public:
     virtual ~TPhotonMap();
 
 	virtual QString GetIcon() = 0;
-	virtual QList< Photon* > GetAllPhotons() const = 0;
-	virtual Photon* GetPhoton( double photonID ) const = 0;
-	virtual QList< Photon* > GetSurfacePhotons( InstanceNode* instance ) const = 0;
-	virtual void StoreRay( std::vector< Photon >*  raysPhotonsList ) = 0;
+	virtual std::vector< Photon > GetAllPhotons() const = 0;
+	//virtual Photon GetPhoton( double photonID ) const = 0;
+	virtual std::vector< Photon > GetSurfacePhotons( InstanceNode* instance ) const = 0;
+	virtual void StoreRay( std::vector< Photon >  raysPhotonsList ) = 0;
 	virtual unsigned long StoredPhotons() const = 0 ;
 
 };
