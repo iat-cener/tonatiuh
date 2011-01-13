@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XML>
+<appname>
+    <version>
+        <version value="1.1.4" />
+    </version>
+    <files>
+        <os value="win">
+            <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/libShapeParabolicDish1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/libShapeTrumpet1.dll" />
+            <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
+        </os>
+        <os value="mac">
+            <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/libShapeParabolicDish.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.dylib" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/libShapeTrumpet.dylib" />
+            <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
+        </os>
+        <os value="linux">
+             <file type="new" value="bin/release/plugins/libShapeTroughHyperbola.so" />
+             <file type="new" value="bin/release/plugins/libShapeTrumpet.so" />
+             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+        </os>
+    </files>
+</appname>
