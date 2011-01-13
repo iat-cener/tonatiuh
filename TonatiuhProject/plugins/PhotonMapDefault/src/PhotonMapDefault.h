@@ -62,7 +62,7 @@ public:
 
 	QString GetIcon();
 
-	std::vector< Photon > GetAllPhotons() const;
+	const std::vector< Photon >* GetAllPhotons() const;
 	std::vector< Photon > GetSurfacePhotons( InstanceNode* instance ) const;
 	unsigned long StoredPhotons() const;
 	void StoreRay( std::vector< Photon > raysPhotonsList );

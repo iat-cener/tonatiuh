@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
 #include <QString>
 
 #include "PhotonMapDefault.h"
@@ -65,9 +64,9 @@ QString PhotonMapDefault::GetIcon()
 	return QString(":icons/eclipse32.png");
 }
 
-std::vector< Photon >  PhotonMapDefault::GetAllPhotons() const
+const std::vector< Photon >*   PhotonMapDefault::GetAllPhotons() const
 {
-	return m_photons;
+	return &m_photons;
 
 }
 
