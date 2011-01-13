@@ -135,6 +135,7 @@ inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , s
 {
 	if( !photonMap )  photonMap = rays.first;
 	photonMap->StoreRay( rays.second );
+	rays.second.clear();
 }
 
 #endif /* TRF_H_ */
