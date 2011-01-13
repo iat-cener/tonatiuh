@@ -38,8 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Photon.h"
 
-Photon::Photon( Point3D pos, Photon* previous, Photon* next, double id  )
-:id(id), pos(pos), prev(previous), next(next), intersectedSurface( 0 )
+Photon::Photon( Point3D pos,/* Photon* previous, Photon* next,*/ double id  )
+:id(id), pos(pos),/* prev(previous), next(next),*/ intersectedSurface( 0 )
 {
 
 }
