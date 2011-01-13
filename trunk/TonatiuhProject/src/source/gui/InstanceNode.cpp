@@ -178,14 +178,14 @@ bool InstanceNode::Intersect( const Ray& ray,
 		if( shapeInstance )
 		{
 			TShape* tshape = static_cast< TShape* >( shapeInstance->GetNode() );
+			if( !tshape->IntersectP( childCoordinatesRay) ) return false;
 
 			 double thit = 0.0;
 			 DifferentialGeometry dg;
-			 bool intersect = tshape->Intersect( m_transformWTO( ray ), &thit, &dg );
-			 isShapeFront = dg.shapeFrontSide;
-
+			 bool intersect = tshape->Intersect( childCoordinatesRay, &thit, &dg );
 			 if( !intersect )	return false;
 
+			 isShapeFront = dg.shapeFrontSide;
 			 childCoordinatesRay.maxt = thit;
 			 *tHit = childCoordinatesRay.maxt;
 

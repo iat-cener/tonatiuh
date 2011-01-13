@@ -956,16 +956,7 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 		return;
 	}
 	m_lastExportFileName = fileName;
-
-	QFile exportFile( m_lastExportFileName );
-
-	 if(!exportFile.open( QIODevice::WriteOnly ) )
-	 {
-		 QMessageBox::information( this, "Tonatiuh Error",
-								 "Tonatiuh can't open export file\n", 1);
-			return;
-	 }
-	QDataStream out( &exportFile );
+	m_lastExportInGlobal = exportDialog.ExportPhotonsInGlobal();
 
 	//Compute photon power
 	SoSceneKit* coinScene = m_document->GetSceneKit();
@@ -984,73 +975,33 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
 
-	out<< wPhoton;
-
+	int okExport;
 	if( exportDialog.ExportAllPhotonMap() )
-	{
-		m_lastExportSurfaceUrl.clear();
-		m_lastExportInGlobal = true;
-
-		QList< Photon* > photonsList = m_photonMap->GetAllPhotons();
-		for (int i = 0; i < photonsList.size(); ++i)
-		{
-			Photon* node = photonsList[i];
-			Point3D photon = node->pos;
-			double id = node->id;
-			double prev_id = ( node->prev ) ? node->prev->id : 0;
-			double next_id = ( node->next ) ? node->next->id : 0;
-			out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
-		}
-
-	}
+		okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_photonMap );
 	else
 	{
 		QString nodeURL = exportDialog.GetSelectedSurface();
 		if( !nodeURL.isEmpty() )	m_lastExportSurfaceUrl = nodeURL;
 
 		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
-		InstanceNode* selectedNode = m_sceneModel->NodeFromIndex( selectedNodeIndex );
-
-		QList< Photon* > nodePhotonsList = m_photonMap->GetSurfacePhotons( selectedNode );
-
-		if( nodePhotonsList.size() == 0 )
+		InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
+		if( !selectedSurface )
 		{
-			QMessageBox::information( this, "Tonatiuh Error",
-										"There are not photons to export\n", 1);
+			QMessageBox::warning( this, "Tonatiuh", "Selected node in not a valid export node." );
 			return;
 		}
 
-		if( !exportDialog.ExportPhotonsInGlobal() )
-		{
-			m_lastExportInGlobal = false;
-			Transform worldToObject = selectedNode->GetIntersectionTransform();
-			for( int i = 0; i< nodePhotonsList.size(); ++i )
-			{
-
-				Photon* node = nodePhotonsList[i];
-				Point3D photon = worldToObject( node->pos );
-				double id = node->id;
-				double prev_id = ( node->prev ) ? node->prev->id : 0;
-				double next_id = ( node->next ) ? node->next->id : 0;
-				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
-			}
-
-		}else
-		{
-			m_lastExportInGlobal = true;
-
-			for( int i = 0; i< nodePhotonsList.size(); ++i )
-			{
-				Photon* node = nodePhotonsList[i];
-				Point3D photon = node->pos;
-				double id = node->id;
-				double prev_id = ( node->prev ) ? node->prev->id : 0;
-				double next_id = ( node->next ) ? node->next->id : 0;
-				out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
-			}
-		}
+		if( m_lastExportInGlobal )
+			okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
+		else
+			okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
 	}
-	exportFile.close();
+	if( !okExport )
+	{
+		QMessageBox::warning( this, "Tonatiuh", "An unexpected error has occurred exporting photon map to a file." );
+		return;
+	}
+
 }
 
 /**

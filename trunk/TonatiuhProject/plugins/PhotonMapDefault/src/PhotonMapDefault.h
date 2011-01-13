@@ -62,18 +62,13 @@ public:
 
 	QString GetIcon();
 
-	Photon* GetPhoton( double photonID ) const;
-	QList< Photon* > GetAllPhotons() const;
-	QList< Photon* > GetSurfacePhotons( InstanceNode* instance ) const;
-	void StoreRay( std::vector< Photon >* raysPhotonsList );
-	unsigned long StoredPhotons() const { return m_storedPhotons; };
+	std::vector< Photon > GetAllPhotons() const;
+	std::vector< Photon > GetSurfacePhotons( InstanceNode* instance ) const;
+	unsigned long StoredPhotons() const;
+	void StoreRay( std::vector< Photon > raysPhotonsList );
 
 private:
-
-
-	//QMap< double, Photon*> m_photons;
-	std::vector< Photon* > m_photons;
-	unsigned long  m_storedPhotons;
+	std::vector< Photon > m_photons;
 
 };
 

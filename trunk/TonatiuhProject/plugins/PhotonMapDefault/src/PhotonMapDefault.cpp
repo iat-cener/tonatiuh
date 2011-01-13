@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <QString>
 
 #include "PhotonMapDefault.h"
@@ -47,7 +48,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 */
 PhotonMapDefault::PhotonMapDefault()
 {
-	m_storedPhotons = 0;
 	BBox m_bbox();
 
 }
@@ -57,9 +57,6 @@ PhotonMapDefault::PhotonMapDefault()
  */
 PhotonMapDefault :: ~PhotonMapDefault()
 {
-	for( int index = 0; index < m_photons.size(); ++index )
-		delete m_photons[index];
-
 	m_photons.clear();
 }
 
@@ -68,104 +65,33 @@ QString PhotonMapDefault::GetIcon()
 	return QString(":icons/eclipse32.png");
 }
 
-Photon* PhotonMapDefault::GetPhoton( double photonID ) const
+std::vector< Photon >  PhotonMapDefault::GetAllPhotons() const
 {
-	//if( !m_photons.contains( photonID ) ) return 0;
-	return m_photons[photonID-1];
-}
-
-
-QList< Photon* > PhotonMapDefault::GetAllPhotons() const
-{
-	return QVector<Photon*>::fromStdVector( m_photons ).toList();
+	return m_photons;
 
 }
 
-QList< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) const
+std::vector< Photon > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) const
 {
-	QList< Photon* > surfacePhotonsList;
-
-	//QList< Photon* > mapPhotons = m_photons.values();
-
-	for( int index = 0; index < m_photons.size(); ++index )
+	std::vector< Photon >surfacePhotonsList;
+	for( unsigned int index = 0; index < m_photons.size(); ++index )
 	{
-		if( m_photons[index]->intersectedSurface == instance )
+		if( m_photons[index].intersectedSurface == instance )
 			surfacePhotonsList.push_back( m_photons[index] );
 	}
+
 	return surfacePhotonsList;
 }
 
-
-void PhotonMapDefault::StoreRay( std::vector< Photon >* raysPhotonsList )
+/*!
+ * Returns the number of stored photons.
+ */
+unsigned long PhotonMapDefault::StoredPhotons() const
 {
-	std::vector< Photon >::iterator it = raysPhotonsList->begin();
+	return m_photons.size();
+}
 
-	while( it < raysPhotonsList->end() )
-	{
-		Photon* first = new Photon( *it );
-		first->id = ++m_storedPhotons;
-		m_photons.push_back( first );
-
-		it++;
-
-		while( ( it <  raysPhotonsList->end() ) && ( (*it).id > 0 ) )
-		{
-			Photon* photon = new Photon( *it );
-			photon->id = ++m_storedPhotons;
-			m_photons.push_back( photon );
-
-			first->next = photon;
-			photon->prev = first;
-
-			first = photon;
-			it++;
-
-		}
-	}
-
-	/*for( unsigned int ray = 0; ray < raysList.size(); ray++ )
-	{
-		if( ( m_storedPhotons + raysList[ray].size() ) >= m_maxPhotons )	return;
-
-		Photon* first = new Photon( raysList[ray][0] );
-  	  	m_photons.push_back( first );
-
-		first->id  = ++m_storedPhotons;
-		for( unsigned int photon = 1; photon < raysList[ray].size(); photon++ )
-		{
-			Photon* currentPhoton = new Photon( raysList[ray][photon] );
-	  	  	m_photons.push_back( currentPhoton );
-
-			currentPhoton->id  = ++m_storedPhotons;
-			first->next = currentPhoton;
-			currentPhoton->prev = first;
-
-			first = currentPhoton;
-
-		}
-
-	}*/
-	/*rayFirstPhoton->id = m_storedPhotons + 1;
-	 * Photon* currentNode = rayFirstPhoton->next;
-	while( currentNode )
-	{
-		currentNode->id = currentNode->prev->id +1;
-		currentNode = currentNode->next;
-	}
-
-	if ( m_storedPhotons >= m_maxPhotons ) return;
-	m_photons.push_back( rayFirstPhoton );
-	++m_storedPhotons;
-  	currentNode = rayFirstPhoton->next;
-
-  	while( currentNode )
-  	{
-		if ( m_storedPhotons >= m_maxPhotons ) return;
-  		m_storedPhotons += 1;
-  	  	m_photons.push_back( currentNode );
-
-  	  	currentNode = currentNode->next;
-  	}*/
-
-
+void PhotonMapDefault::StoreRay( std::vector< Photon > raysPhotonsList )
+{
+	m_photons.insert( m_photons.end(), raysPhotonsList.begin(), raysPhotonsList.end() );
 }
