@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -71,6 +71,7 @@ UpdatesManager::UpdatesManager( QString currentVersion )
 {
 	DeleteOldFiles();
 
+
 #if defined( Q_WS_MAC )
 	m_osType = QLatin1String( "mac" );
 #endif
@@ -83,6 +84,9 @@ UpdatesManager::UpdatesManager( QString currentVersion )
 	m_osType = QLatin1String( "linux" );
 #endif
 
+#if defined( __x86_64__ )
+	m_osType += QLatin1String( "_64" );
+#endif
 
 }
 
