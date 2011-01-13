@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>397</width>
-    <height>453</height>
+    <height>459</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,7 +66,7 @@
          <number>1</number>
         </property>
         <property name="maximum">
-         <number>99999999</number>
+         <number>999999999</number>
         </property>
         <property name="singleStep">
          <number>1000</number>
