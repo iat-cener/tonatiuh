@@ -95,9 +95,11 @@ unsigned long PhotonMapDefault::StoredPhotons() const
 
 void PhotonMapDefault::StoreRay( std::vector< Photon > raysPhotonsList )
 {
-	//m_photons.insert( m_photons.end(), raysPhotonsList.begin(), raysPhotonsList.end() );
+	int storedPhotons = m_photons.size();
+	m_photons.resize( storedPhotons + raysPhotonsList.size() );
+
 	for( unsigned int i = 0; i < raysPhotonsList.size(); ++i )
 	{
-		m_photons.push_back( new Photon( raysPhotonsList[i] ) );
+		m_photons[storedPhotons +i] =  new Photon( raysPhotonsList[i] );
 	}
 }
