@@ -43,7 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QMap>
 
-//#include "InstanceNode.h"
 #include "Point3D.h"
 #include "Vector3D.h"
 #include "BBox.h"
@@ -62,13 +61,13 @@ public:
 
 	QString GetIcon();
 
-	const std::vector< Photon >* GetAllPhotons() const;
-	std::vector< Photon > GetSurfacePhotons( InstanceNode* instance ) const;
+	std::vector< Photon* > GetAllPhotons() const;
+	std::vector< Photon* > GetSurfacePhotons( InstanceNode* instance ) const;
 	unsigned long StoredPhotons() const;
 	void StoreRay( std::vector< Photon > raysPhotonsList );
 
 private:
-	std::vector< Photon > m_photons;
+	std::vector< Photon* > m_photons;
 
 };
 

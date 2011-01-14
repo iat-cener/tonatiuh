@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -44,13 +44,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 struct Photon
 {
-	Photon( Point3D pos, /*Photon* previous = 0, Photon* next = 0,*/ double id = 0 );
+	Photon( );
+	Photon( const Photon& photon );
+	Photon( Point3D pos, double id = 0 );
 	~Photon();
 
 	double id;
 	Point3D pos;
-	//Photon* prev;
-	//Photon* next;
 	InstanceNode* intersectedSurface;
 	double surfaceSide;
 };

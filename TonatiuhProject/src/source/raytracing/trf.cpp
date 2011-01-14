@@ -73,14 +73,14 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
 	QDataStream out( &exportFile );
 	out<< wPhoton;
 
-	const std::vector< Photon >* photonsList = photonMap->GetAllPhotons();
+	std::vector< Photon* > photonsList = photonMap->GetAllPhotons();
 	int photon = 0;
-	unsigned long nPhotons = photonsList->size();
+	unsigned long nPhotons = photonsList.size();
 	while( (unsigned long ) photon < nPhotons)
 	{
-		Point3D nodePos = photonsList->at( photon ).pos;
+		Point3D nodePos = photonsList.at( photon )->pos;
 		int prev = 0;
-		while( photonsList->at( photon ).id !=0 )
+		while( photonsList.at( photon )->id !=0 )
 		{
 			out<<(photon -1)<<nodePos.x << nodePos.y << nodePos.z<<prev<< photon;
 			prev = photon -1;
@@ -112,11 +112,11 @@ int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selecte
 	QDataStream out( &exportFile );
 	out<< wPhoton;
 
-	std::vector< Photon > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
+	std::vector< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
 	for( unsigned int i = 0; i< nodePhotonsList.size(); ++i )
 	{
-		Point3D photon = nodePhotonsList[i].pos;
-		out<<nodePhotonsList[i].id<<photon.x << photon.y <<photon.z<<0 <<0 ;
+		Point3D photon = nodePhotonsList[i]->pos;
+		out<<nodePhotonsList[i]->id<<photon.x << photon.y <<photon.z<<0 <<0 ;
 	}
 
 	exportFile.close();
@@ -140,13 +140,13 @@ int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selected
 	QDataStream out( &exportFile );
 	out<< wPhoton;
 
-	std::vector< Photon > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
+	std::vector< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
 
 	Transform worldToObject = selectedSurface->GetIntersectionTransform();
 	for( unsigned int i = 0; i< nodePhotonsList.size(); ++i )
 	{
-		Point3D photon =  worldToObject( nodePhotonsList[i].pos );
-		out<<nodePhotonsList[i].id<<photon.x << photon.y <<photon.z<<0 <<0 ;
+		Point3D photon =  worldToObject( nodePhotonsList[i]->pos );
+		out<<nodePhotonsList[i]->id<<photon.x << photon.y <<photon.z<<0 <<0 ;
 	}
 
 	exportFile.close();
@@ -158,11 +158,10 @@ SoSeparator* trf::DrawPhotonMapPoints( const TPhotonMap& map )
 	SoSeparator* drawpoints=new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
-	const std::vector< Photon >* photonsList = map.GetAllPhotons();
-
-	for( unsigned int i = 0; i < photonsList->size(); ++i)
+	std::vector< Photon* > photonsList = map.GetAllPhotons();
+	for( unsigned int i = 0; i < photonsList.size(); ++i)
 	{
-		Point3D photon = photonsList->at( i ).pos;
+		Point3D photon = photonsList.at( i )->pos;
 		points->point.set1Value( i, photon.x, photon.y, photon.z );
 	}
 
@@ -194,9 +193,9 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 	unsigned long rayLength = 0;
 	unsigned long numberOfPhoton = 0;
 
-	const std::vector< Photon >* photonsList = map.GetAllPhotons();
+	std::vector< Photon* > photonsList = map.GetAllPhotons();
 	unsigned long photon = 0;
-	unsigned long nPhotons = photonsList->size();
+	unsigned long nPhotons = photonsList.size();
 	for (int drawnRay = 0; drawnRay < drawRays; ++drawnRay)
 	{
 		if ( photon < nPhotons )
@@ -204,14 +203,14 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 			rayLength = 0;
 			do
 			{
-				Point3D pPos =  photonsList->at( photon ).pos;
+				Point3D pPos =  photonsList.at( photon )->pos;
 				points->point.set1Value( numberOfPhoton, pPos.x, pPos.y, pPos.z );
 
 				rayLength++;
 				numberOfPhoton++;
 				photon++;
 
-			}while( ( photon < nPhotons ) && ( photonsList->at( photon ).id != 0 ) );
+			}while( ( photon < nPhotons ) && ( photonsList.at( photon )->id != 0 ) );
 
 			lines[drawnRay]= rayLength;
 
