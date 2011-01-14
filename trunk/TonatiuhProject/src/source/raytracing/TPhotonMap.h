@@ -63,9 +63,8 @@ public:
     virtual ~TPhotonMap();
 
 	virtual QString GetIcon() = 0;
-	virtual const std::vector< Photon >* GetAllPhotons() const = 0;
-	//virtual Photon GetPhoton( double photonID ) const = 0;
-	virtual std::vector< Photon > GetSurfacePhotons( InstanceNode* instance ) const = 0;
+	virtual std::vector< Photon* > GetAllPhotons() const = 0;
+	virtual std::vector< Photon* > GetSurfacePhotons( InstanceNode* instance ) const = 0;
 	virtual void StoreRay( std::vector< Photon >  raysPhotonsList ) = 0;
 	virtual unsigned long StoredPhotons() const = 0 ;
 

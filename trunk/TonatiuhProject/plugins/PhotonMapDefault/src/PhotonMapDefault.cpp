@@ -56,6 +56,9 @@ PhotonMapDefault::PhotonMapDefault()
  */
 PhotonMapDefault :: ~PhotonMapDefault()
 {
+	for( unsigned int i = 0; i< m_photons.size(); ++i )
+		delete m_photons[i];
+
 	m_photons.clear();
 }
 
@@ -64,18 +67,18 @@ QString PhotonMapDefault::GetIcon()
 	return QString(":icons/eclipse32.png");
 }
 
-const std::vector< Photon >*   PhotonMapDefault::GetAllPhotons() const
+std::vector< Photon* >   PhotonMapDefault::GetAllPhotons() const
 {
-	return &m_photons;
+	return m_photons;
 
 }
 
-std::vector< Photon > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) const
+std::vector< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instance ) const
 {
-	std::vector< Photon >surfacePhotonsList;
+	std::vector< Photon* >surfacePhotonsList;
 	for( unsigned int index = 0; index < m_photons.size(); ++index )
 	{
-		if( m_photons[index].intersectedSurface == instance )
+		if( m_photons[index]->intersectedSurface == instance )
 			surfacePhotonsList.push_back( m_photons[index] );
 	}
 
@@ -92,5 +95,9 @@ unsigned long PhotonMapDefault::StoredPhotons() const
 
 void PhotonMapDefault::StoreRay( std::vector< Photon > raysPhotonsList )
 {
-	m_photons.insert( m_photons.end(), raysPhotonsList.begin(), raysPhotonsList.end() );
+	//m_photons.insert( m_photons.end(), raysPhotonsList.begin(), raysPhotonsList.end() );
+	for( unsigned int i = 0; i < raysPhotonsList.size(); ++i )
+	{
+		m_photons.push_back( new Photon( raysPhotonsList[i] ) );
+	}
 }
