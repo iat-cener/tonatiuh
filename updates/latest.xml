@@ -21,7 +21,7 @@
         </os>
         <os value="mac">
             <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
-            <file type="replace" value="Contents/MacOS/plugins/MaterialStandardSpecular/libMaterialStandardSpeculart.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/MaterialStandardSpecular/libMaterialStandardSpecular.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/PhotonMapDefault/libPhotonMapDefault.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/RandomMersenneTwister/libRandomMersenneTwister.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/RandomRngStream/libRandomRngStream.dylib" />
@@ -50,7 +50,7 @@
         </os>
         <os value="linux">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
-            <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/libMaterialStandardSpeculart.so" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/libMaterialStandardSpecular.so" />
             <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
             <file type="replace" value="bin/release/plugins/RandomMersenneTwister/libRandomMersenneTwister.so" />
             <file type="replace" value="bin/release/plugins/RandomRngStream/libRandomRngStream.so" />
