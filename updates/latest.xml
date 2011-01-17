@@ -20,17 +20,32 @@
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
         </os>
         <os value="mac">
+            <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/MaterialStandardSpecular/libMaterialStandardSpeculart.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/PhotonMapDefault/libPhotonMapDefault.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/RandomMersenneTwister/libRandomMersenneTwister.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/RandomRngStream/libRandomRngStream.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeBezierSurface/libShapeBezierSurface.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeCone/libShapeCone.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeCylinder/libShapeCylinder.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeFlatDisk/libShapeFlatDisk.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeFlatRectangle/libShapeFlatRectangle.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeFlatTriangle/libShapeFlatTriangle.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeHyperboloid/libShapeHyperboloid.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicDish/libShapeParabolicDish.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeSphere/libShapeSphere.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeTroughCHC/libShapeTroughCHC.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeTroughCPC/libShapeTroughCPC.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeTroughParabola/libShapeTroughParabola.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeTrumpet/libShapeTrumpet.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/SunshapeBuie/libSunshapeBuie.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/SunshapePillbox/libSunshapePillbox.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/TrackerHeliostat/libTrackerHeliostat.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/TrackerOneAxis/libTrackerOneAxis.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
         </os>
         <os value="linux">
@@ -61,7 +76,7 @@
             <file type="replace" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
             <file type="remove" value="bin/release/plugins/libShapeTroughHyperbola.so" />
-            <file type="removenew" value="bin/release/plugins/libShapeTrumpet.so" />
+            <file type="remove" value="bin/release/plugins/libShapeTrumpet.so" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
         </os>
     </files>
