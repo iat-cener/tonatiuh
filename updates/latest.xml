@@ -2,18 +2,50 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.1.3" />
+        <version value="1.1.4" />
     </version>
     <files>
         <os value="win">
-            <file type="new" value="bin/release/plugins/ShapeTroughHyperbola1.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTrumpet1.dll" />
-            <file type="replace" value="bin/release/Tonatiuh.exe" />
+<os value="win">
+            <file type="replace" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/ShapeParabolicDish1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/ShapeSphere1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet1.dll" />
+            <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
         </os>
         <os value="mac">
+            <file type="replace" value="Contents/MacOS//plugins/PhotonMapDefault/libPhotonMapDefault.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeFlatTriangle/libShapeFlatTriangle.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeParabolicDish/libShapeParabolicDish.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeSphere/libShapeSphere.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
+            <file type="replace" value="Contents/MacOS//plugins/ShapeTrumpet/libShapeTrumpet.so" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
         </os>
         <os value="linux">
+            <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/libShapeParabolicDish.so" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.so" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/libShapeTrumpet.so" />
              <file type="new" value="bin/release/plugins/libShapeTroughHyperbola.so" />
              <file type="new" value="bin/release/plugins/libShapeTrumpet.so" />
              <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
