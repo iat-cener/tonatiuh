@@ -6,7 +6,6 @@
     </version>
     <files>
         <os value="win">
-<os value="win">
             <file type="replace" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle1.dll" />
