@@ -6,17 +6,18 @@
     </version>
     <files>
         <os value="win">
-            <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/libShapeParabolicDish1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeTrumpet/libShapeTrumpet1.dll" />
+<os value="win">
+            <file type="replace" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/ShapeParabolicDish1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/ShapeSphere1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
         </os>
         <os value="mac">
