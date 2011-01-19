@@ -47,8 +47,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/fields/SoMFVec3d.h>
 
-#include "BBox.h"
 #include "BezierPatch.h"
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Ray.h"
@@ -65,6 +65,8 @@ void BezierPatch::initClass()
 BezierPatch::BezierPatch()
 {
 	SO_NODE_CONSTRUCTOR(BezierPatch);
+
+
 
 	numUControlPoints = 4;
 	numVControlPoints = 4 ;
@@ -86,9 +88,7 @@ BBox BezierPatch::GetComputeBBox()
 	BBox box;
 	int nControlPoints = m_controlPoints.getNum();
 	for (int i = 0; i < nControlPoints; i++)
-	{
-		box = Union( box , Point3D( m_controlPoints[i][0], m_controlPoints[i][1],m_controlPoints[i][2] )  );
-	}
+		box = Union( box, Point3D( m_controlPoints[i][0], m_controlPoints[i][1], m_controlPoints[i][2] ) );
 	return box;
 }
 
@@ -99,7 +99,7 @@ SoMFVec3f BezierPatch::GetControlPoints(  )
 }
 
 
-void BezierPatch::SetControlPoints( std::vector< Point3D > boundedPoints )
+void BezierPatch::SetControlPoints( QVector< Point3D > boundedPoints )
 {
 	//derivates: qu00, qv00, quv00, qu01, qv01, quv01, qu10, qv10, quv10, qu11, qv11,quv11
 	QVector< Vector3D > derivates = CornerDerivates( boundedPoints );
@@ -146,7 +146,6 @@ void BezierPatch::SetControlPoints( std::vector< Point3D > boundedPoints )
 	m_controlPoints.set1Value( 15, SbVec3f( p33.x, p33.y, p33.z ) );
 
 }
-
 
 void BezierPatch::GeneratePrimitives( SoAction* action )
 {
@@ -486,7 +485,7 @@ void BezierPatch::generatePrimitives( SoAction *action )
 }
 
 
-QVector< Vector3D > BezierPatch::CornerDerivates( std::vector< Point3D > boundedPoints )
+QVector< Vector3D > BezierPatch::CornerDerivates( QVector< Point3D > boundedPoints )
 {
 	QVector< Vector3D > cornerDerivates;
 

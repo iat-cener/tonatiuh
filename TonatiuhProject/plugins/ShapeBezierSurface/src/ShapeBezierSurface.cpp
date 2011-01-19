@@ -43,8 +43,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include "BBox.h"
 #include "BezierPatch.h"
+#include "BBox.h"
 #include "Curve.h"
 #include "CurveNetwork.h"
 #include "DifferentialGeometry.h"
@@ -158,7 +158,7 @@ bool ShapeBezierSurface::Intersect(const Ray& objectRay, double* tHit, Different
 
 		//Check if the ray intersects with the patch BoundingBox
 		BBox bbox = m_surfacesVector[surface]->GetComputeBBox();
-		bool intersectBBox = bbox.IntersectP( objectRay );
+		bool intersectBBox = bbox.IntersectP( objectRay  );
 		if( intersectBBox )
 		{
 			double tHitPatch;
@@ -221,11 +221,10 @@ void ShapeBezierSurface::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 	box.makeEmpty();
 	for (int i = 0; i < m_surfacesVector.size(); i++)
 	{
-		BBox surfaceBBox = m_surfacesVector[i]->GetComputeBBox();
-		Point3D pMin = surfaceBBox.pMin;
-		Point3D pMax = surfaceBBox.pMax;
-		box.extendBy( SbVec3f( pMin[0], pMin[1], pMin[2] ) );
-		box.extendBy( SbVec3f( pMax[0], pMax[1], pMax[2] ) );
+		BBox patchBox = m_surfacesVector[i]->GetComputeBBox();
+		SbVec3f pMin( patchBox.pMin.x, patchBox.pMin.y, patchBox.pMin.z );
+		box.extendBy( pMin );
+		box.extendBy( SbVec3f( patchBox.pMax.x, patchBox.pMax.y, patchBox.pMax.z ) );
 	}
 }
 
