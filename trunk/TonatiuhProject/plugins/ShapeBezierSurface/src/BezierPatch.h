@@ -39,16 +39,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef BEZIERPATCH_H_
 #define BEZIERPATCH_H_
 
-#include <vector>
-
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/nodes/SoNurbsSurface.h>
 
 #include "TShape.h"
 
 class BBox;
-class SoMFVec3d;
 class Vector3D;
+class SoMFVec3d;
 
 class BezierPatch : public SoNurbsSurface
 {
@@ -61,7 +59,7 @@ public:
 
     BBox GetComputeBBox();
     SoMFVec3f GetControlPoints( );
-    void SetControlPoints( std::vector< Point3D > boundedPoints );
+    void SetControlPoints( QVector< Point3D > boundedPoints );
 
     void GeneratePrimitives( SoAction *action );
     void GLRender (SoGLRenderAction* action);
@@ -79,7 +77,7 @@ protected:
     virtual ~BezierPatch();
 
 private:
-	QVector< Vector3D > CornerDerivates( std::vector< Point3D > boundedPoints );
+	QVector< Vector3D > CornerDerivates( QVector< Point3D > boundedPoints );
 
 	Vector3D DPDU( double u, double v, SoMFVec3d& controlPoints  ) const;
 	Vector3D DPDV( double u, double v, SoMFVec3d& controlPoints  ) const;
