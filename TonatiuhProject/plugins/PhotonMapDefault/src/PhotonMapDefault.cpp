@@ -93,13 +93,18 @@ unsigned long PhotonMapDefault::StoredPhotons() const
 	return m_photons.size();
 }
 
-void PhotonMapDefault::StoreRay( std::vector< Photon > raysPhotonsList )
+void PhotonMapDefault::StoreRay( Photon* rayFirstPhoton, int rayLength )
 {
 	int storedPhotons = m_photons.size();
-	m_photons.resize( storedPhotons + raysPhotonsList.size() );
+	m_photons.resize( storedPhotons + rayLength );
 
-	for( unsigned int i = 0; i < raysPhotonsList.size(); ++i )
+	Photon* photon = rayFirstPhoton;
+	photon->id = storedPhotons;
+	m_photons[storedPhotons ] = photon;
+	while( photon->next )
 	{
-		m_photons[storedPhotons +i] =  new Photon( raysPhotonsList[i] );
+		photon = photon->next;
+		photon->id = ++storedPhotons;
+		m_photons[storedPhotons] = photon;
 	}
 }

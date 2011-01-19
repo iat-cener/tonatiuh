@@ -64,7 +64,7 @@ public:
 	std::vector< Photon* > GetAllPhotons() const;
 	std::vector< Photon* > GetSurfacePhotons( InstanceNode* instance ) const;
 	unsigned long StoredPhotons() const;
-	void StoreRay( std::vector< Photon > raysPhotonsList );
+	void StoreRay( Photon* rayFirstPhoton, int rayLength );
 
 private:
 	std::vector< Photon* > m_photons;
