@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <Inventor/nodes/SoNode.h>
 
 #include "BBox.h"
@@ -110,105 +112,80 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
    instanceChild->SetParent(this);
 }
 
-bool InstanceNode::Intersect( const Ray& ray,
+Ray* InstanceNode::Intersect( const Ray& ray,
                               RandomDeviate& rand,
                               double* tHit,
-                              InstanceNode** modelNode,
-                              bool* isFront,
-                              Ray* outRay )
+                              InstanceNode** modelNode )
 {
-   //Check if the ray intersects with the BoundingBox
-   if( !m_bbox.IntersectP(ray) ) return false;
-
+	//Check if the ray intersects with the BoundingBox
+   if( !m_bbox.IntersectP(ray) ) return 0;
    if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
    {
-      bool isOutputRay = false;
-      bool isChildOutputRay;
 
-      Ray childOutputRay;
+      Ray* childOutputRay = 0;
+      Ray* outputRay = 0;
+      double t = *tHit;
       for( int index = 0; index < children.size(); ++index )
       {
          InstanceNode* intersectedChild = 0;
-         bool isChildFront = false;
-         double childHit = *tHit;
+         double childHit = t;
 
-         isChildOutputRay = children[index]->Intersect( ray, rand, &childHit, &intersectedChild, &isChildFront, &childOutputRay );
+         childOutputRay = children[index]->Intersect( ray, rand, &childHit, &intersectedChild );
 
-         if( childHit < *tHit )
+         if( childHit < t )
          {
-            *tHit = childHit;
+            t = childHit;
             *modelNode = intersectedChild;
-            *isFront = isChildFront;
 
-            if( isChildOutputRay )
-            {
-            	*outRay = childOutputRay;
-               isOutputRay = true;
-            }
-            else
-            {
-                isOutputRay = false;
-            	*outRay = Ray();
-            }
+            delete outputRay;
+            outputRay = 0;
+            if( childOutputRay )	outputRay = childOutputRay;
+
          }
       }
+      *tHit = t;
 
-      if( isOutputRay )	return true;
+      return outputRay;
 
    }
 	else
 	{
 		Ray childCoordinatesRay( m_transformWTO( ray ) );
 
-		bool isShapeFront = false;
-
-		InstanceNode* shapeInstance = 0;
-		InstanceNode* materialInstance = 0;
+		TShape* tshape = 0;
+		TMaterial* tmaterial = 0;
 		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
 		{
-			shapeInstance = children[0];
-			if( children.size() > 1 )	materialInstance =  children[1];
+			tshape = static_cast< TShape* >( children[0]->GetNode() );
+			if( children.size() > 1 )	tmaterial = static_cast< TMaterial* > ( children[1]->GetNode() );
 		}
 		else if(  children.count() > 1 )
 		{
-			materialInstance =  children[0];
-			shapeInstance =  children[1];
+			tmaterial = static_cast< TMaterial* > ( children[0]->GetNode() );
+			tshape = static_cast< TShape* >( children[1]->GetNode() );
 		}
 
-		if( shapeInstance )
+		if( tshape )
 		{
-			TShape* tshape = static_cast< TShape* >( shapeInstance->GetNode() );
 			if( !tshape->IntersectP( childCoordinatesRay) ) return false;
 
 			 double thit = 0.0;
 			 DifferentialGeometry dg;
-			 bool intersect = tshape->Intersect( childCoordinatesRay, &thit, &dg );
-			 if( !intersect )	return false;
+			 tshape->Intersect( childCoordinatesRay, &thit, &dg );
 
-			 isShapeFront = dg.shapeFrontSide;
 			 childCoordinatesRay.maxt = thit;
 			 *tHit = childCoordinatesRay.maxt;
+			 *modelNode = this;
 
-			 if( materialInstance )
+			 if( tmaterial )
 			 {
-				TMaterial* tmaterial = static_cast< TMaterial* > ( materialInstance->GetNode() );
-
-				Ray surfaceOutputRay;
-				bool isOutputRay = tmaterial->OutputRay( childCoordinatesRay, &dg, rand, &surfaceOutputRay );
-
-				*modelNode = this;
-				*isFront = isShapeFront;
-
-				if( isOutputRay )
-				{
-					*outRay = m_transformOTW( surfaceOutputRay );
-					return true;
-				}
+				 Ray surfaceOutputRay;
+				 if( tmaterial->OutputRay( childCoordinatesRay, &dg, rand, &surfaceOutputRay ) )
+					 return new Ray( m_transformOTW( surfaceOutputRay ) );
 			}
-
       }
    }
-   return false;
+	return 0;
 }
 
 BBox InstanceNode::GetIntersectionBBox()

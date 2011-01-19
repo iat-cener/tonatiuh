@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 
 #include "Photon.h"
+#include "RayTracerPhoton.h"
 #include "TPhotonMap.h"
 #include "Ray.h"
 #include "TShape.h"
@@ -59,7 +60,7 @@ class TPhotonMap;
 namespace trf
 {
 	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
-	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > rays );
+	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList );
 
 	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
 	int ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
@@ -131,11 +132,34 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 	}
 }
 
-inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon > > rays )
+inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList )
 {
-	if( !photonMap )  photonMap = rays.first;
-	photonMap->StoreRay( rays.second );
-	rays.second.clear();
+	if( !photonMap )  photonMap = photonsList.first;
+
+	std::vector< RayTracerPhoton >::iterator it;
+	it = photonsList.second.begin();
+
+	while( it < photonsList.second.end() )
+	{
+		int rayLength = 1;
+		Photon* first = new Photon( it->pos, 0, 0, 0, it->intersectedSurface );
+		it++;
+
+		Photon* nextPhoton = first;
+
+		while( it<photonsList.second.end() && ( it->id > 0 ) )
+		{
+			Photon* photon = new Photon( it->pos, nextPhoton, 0, 0, it->intersectedSurface );
+
+			nextPhoton->next = photon;
+			//photon->prev = nextPhoton;
+			nextPhoton = photon;
+			it++;
+			rayLength++;
+		}
+		photonMap->StoreRay( first, rayLength );
+	}
+	photonsList.second.clear();
 }
 
 #endif /* TRF_H_ */

@@ -46,13 +46,14 @@ struct Photon
 {
 	Photon( );
 	Photon( const Photon& photon );
-	Photon( Point3D pos, double id = 0 );
+	Photon( Point3D pos, Photon* previous = 0, Photon* next = 0, double id = 0, InstanceNode* intersectedSurface = 0 );
 	~Photon();
 
 	double id;
 	Point3D pos;
+	Photon* prev;
+	Photon* next;
 	InstanceNode* intersectedSurface;
-	double surfaceSide;
 };
 
 #endif /*PHOTON_H_*/

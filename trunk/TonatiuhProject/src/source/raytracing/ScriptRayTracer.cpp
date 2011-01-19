@@ -268,7 +268,7 @@ int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
 
 int ScriptRayTracer::Trace()
 {
-	delete m_photonMap;
+	/*delete m_photonMap;
 	m_photonMap = 0;
 
 	if( m_selectedPhotonMap > -1 )	m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
@@ -355,7 +355,7 @@ int ScriptRayTracer::Trace()
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;
 
-	m_wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
+	m_wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;*/
 
 	return 1;
 }
