@@ -44,13 +44,13 @@ Photon::Photon( )
 }
 
 Photon::Photon( const Photon& photon )
-:id( photon.id ), pos( photon.pos ), intersectedSurface( photon.intersectedSurface )
+:id( photon.id ), pos( photon.pos ), prev(0), next(0), intersectedSurface( photon.intersectedSurface )
 {
 
 }
 
-Photon::Photon( Point3D pos,/* Photon* previous, Photon* next,*/ double id  )
-:id(id), pos(pos),/* prev(previous), next(next),*/ intersectedSurface( 0 )
+Photon::Photon( Point3D pos, Photon* previous, Photon* next, double id, InstanceNode* intersectedSurface  )
+:id(id), pos(pos), prev(previous), next(next), intersectedSurface( intersectedSurface )
 {
 
 }

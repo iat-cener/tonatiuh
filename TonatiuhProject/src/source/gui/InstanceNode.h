@@ -73,12 +73,10 @@ public:
     QString GetNodeURL() const;
     void Print( int level ) const;
 
-    bool Intersect( const Ray& ray,
+    Ray* Intersect( const Ray& ray,
             		        RandomDeviate& rand,
             		        double* tHit,
-    						InstanceNode** modelNode,
-            		        bool* isFront,
-            		        Ray* outRay);
+    						InstanceNode** modelNode );
 
     BBox GetIntersectionBBox();
     Transform GetIntersectionTransform();
