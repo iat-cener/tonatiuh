@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="720">
+   <rect id="red stripe" width="1080" height="240" x="0" y="0" fill="#D21034" fill-opacity="1" stroke="none" stroke-opacity="1"/>
+   <rect id="upper white stripe" width="1080" height="40" x="0" y="240" fill="#FFFFFF" fill-opacity="1" stroke="none" stroke-opacity="1"/>
+   <rect id="blue stripe" width="1080" height="160" x="0" y="280" fill="#0047B6" fill-opacity="1" stroke="none" stroke-opacity="1"/>
+   <rect id="lower white stripe" width="1080" height="40" x="0" y="440" fill="#FFFFFF" fill-opacity="1" stroke="none" stroke-opacity="1"/>
+   <rect width="1080" height="240" x="0" y="480" fill="#12AD2B" fill-opacity="1" stroke="none" stroke-opacity="1"/>
+</svg>

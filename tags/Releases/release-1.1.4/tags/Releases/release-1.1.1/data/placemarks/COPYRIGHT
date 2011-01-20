@@ -1,0 +1,25 @@
+CITIES:
+
+The file "cities.txt", "timeZones.txt" and "statecodes.txt" are data dumps from Geonames.org:
+http://geonames.org
+
+The file "cities.txt" contains all cities with a population of
+more than 15000 people. It is contained in the cities15000.zip file at Geonames.org.
+
+The file "timeZones.txt" contains the names of timezones and their GMT and DST offsets.
+It is timeZones.txt at Geonames.org.
+
+The file "statecodes.txt" contains the names for the administrative subdivision.
+It is admin1Codes.txt at Geonames.org.
+
+"cityplacemarks.kml" and "cityplacemarks.cache" are generated from these files as described in the file "HOWTO-cities.txt".
+
+
+This work is licensed under a Creative Commons Attribution 3.0 License,
+see http://creativecommons.org/licenses/by/3.0/
+The Data is provided "as is" without warranty or any representation of accuracy, timeliness or completeness.
+
+
+OCEANS:
+
+The ocean data inside the "boundaryplacemarks.kml" was taken from the CIA World Factbook which is placed in the public domain.
