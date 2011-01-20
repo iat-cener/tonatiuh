@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>icons/ShapeTrumpet.png</file>
+    </qresource>
+</RCC>
