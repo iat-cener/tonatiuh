@@ -32,10 +32,11 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <algorithm>
 
 #include <QFileDialog>
@@ -43,8 +44,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include "BezierPatch.h"
 #include "BBox.h"
+#include "BezierPatch.h"
 #include "Curve.h"
 #include "CurveNetwork.h"
 #include "DifferentialGeometry.h"
@@ -158,7 +159,8 @@ bool ShapeBezierSurface::Intersect(const Ray& objectRay, double* tHit, Different
 
 		//Check if the ray intersects with the patch BoundingBox
 		BBox bbox = m_surfacesVector[surface]->GetComputeBBox();
-		bool intersectBBox = bbox.IntersectP( objectRay  );
+		bool intersectBBox = bbox.IntersectP( objectRay );
+
 		if( intersectBBox )
 		{
 			double tHitPatch;
@@ -206,14 +208,14 @@ void ShapeBezierSurface::GLRender( SoGLRenderAction* action )
 
 }
 
-Point3D ShapeBezierSurface::GetPoint3D( double /* u */, double /* v */ ) const
+Point3D ShapeBezierSurface::GetPoint3D( double u, double v ) const
 {
-   return Point3D();
+	return Point3D();
 }
 
-NormalVector ShapeBezierSurface::GetNormal (double /* u */, double /* v */ ) const
+NormalVector ShapeBezierSurface::GetNormal (double u, double v ) const
 {
-   return NormalVector();
+	return NormalVector();
 }
 
 void ShapeBezierSurface::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
@@ -221,10 +223,11 @@ void ShapeBezierSurface::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 	box.makeEmpty();
 	for (int i = 0; i < m_surfacesVector.size(); i++)
 	{
-		BBox patchBox = m_surfacesVector[i]->GetComputeBBox();
-		SbVec3f pMin( patchBox.pMin.x, patchBox.pMin.y, patchBox.pMin.z );
+		BBox pBox =  m_surfacesVector[i]->GetComputeBBox();
+		SbVec3f pMin( pBox.pMin[0], pBox.pMin[1], pBox.pMin[2] );
 		box.extendBy( pMin );
-		box.extendBy( SbVec3f( patchBox.pMax.x, patchBox.pMax.y, patchBox.pMax.z ) );
+		SbVec3f pMax( pBox.pMax[0], pBox.pMax[1], pBox.pMax[2] );
+		box.extendBy( pMax );
 	}
 }
 

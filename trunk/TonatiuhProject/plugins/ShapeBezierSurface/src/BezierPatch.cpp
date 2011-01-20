@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -47,8 +47,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/fields/SoMFVec3d.h>
 
-#include "BezierPatch.h"
 #include "BBox.h"
+#include "BezierPatch.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Ray.h"
@@ -88,7 +88,7 @@ BBox BezierPatch::GetComputeBBox()
 	BBox box;
 	int nControlPoints = m_controlPoints.getNum();
 	for (int i = 0; i < nControlPoints; i++)
-		box = Union( box, Point3D( m_controlPoints[i][0], m_controlPoints[i][1], m_controlPoints[i][2] ) );
+		box = Union( box , Point3D( m_controlPoints[i][0], m_controlPoints[i][1],m_controlPoints[i][2] )  );
 	return box;
 }
 
@@ -145,6 +145,10 @@ void BezierPatch::SetControlPoints( QVector< Point3D > boundedPoints )
 	m_controlPoints.set1Value( 14, SbVec3f( p32.x, p32.y, p32.z ) );
 	m_controlPoints.set1Value( 15, SbVec3f( p33.x, p33.y, p33.z ) );
 
+
+	/*std::cout<<"---m_controlPoints---"<<std::endl;
+	for( int i = 0; i < m_controlPoints.size() ; i++ )
+		std::cout<<"m_controlPoints: "<<m_controlPoints[i]<<std::endl;*/
 }
 
 void BezierPatch::GeneratePrimitives( SoAction* action )
@@ -163,16 +167,17 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	Vector3D t;
 	if( fabs(objectRay.direction().x )< fabs(objectRay.direction().y ) )
 	{
-		if( fabs(objectRay.direction().x )< fabs(objectRay.direction().z ) ) t = Vector3D( 1.0, 0.0, 0.0 );
+		if( fabs(objectRay.direction().x )< fabs(objectRay.direction().z ) )	t = Vector3D( 1.0, 0.0, 0.0 );
 		else	t = Vector3D( 0.0, 0.0, 1.0 );
 	}
 	else
 	{
-		if( fabs(objectRay.direction().y )< fabs( objectRay.direction().z )	) t = Vector3D( 0.0, 1.0, 0.0 );
+		if( fabs(objectRay.direction().y )< fabs(objectRay.direction().z )	) t = Vector3D( 0.0, 1.0, 0.0 );
 		else	t = Vector3D( 0.0, 0.0, 1.0 );
 	}
 	Vector3D nu = CrossProduct( t, objectRay.direction() );
 	Vector3D nv = CrossProduct( nu, objectRay.direction() );
+
 
 	double au = nu[0];
 	double av = nv[0];
@@ -318,14 +323,14 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 		}
 		buffer1.clear();
 
-                unsigned int patches = 4;
-                if( patches > distances.size() ) patches = distances.size();
-                for ( unsigned int i = 0; i < patches; ++i)
+		unsigned int patches = 4;
+		if( patches > distances.size() )	patches = distances.size();
+		for (int i = 0; i < patches; ++i)
 		{
 			if( distances[i] != tgc::Infinity ) buffer1.push_back( distancesMap.value( distances[i] ) );
 
 		}
-                for ( unsigned int i = patches; i < distances.size(); ++i)
+		for (int i = patches; i < distances.size(); ++i)
 		{
 			delete distancesMap.value( distances[i] );
 		}
@@ -346,6 +351,16 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 		return false;
 	}
 
+	// Now check if the fucntion is being called from IntersectP,
+		// in which case the pointers tHit and dg are 0
+	if( ( tHit == 0 ) && ( dg == 0 ) )
+	{
+		for (int i = 0; i < buffer1.size(); ++i)
+		{
+			delete 	buffer1[i];
+		}
+		return true;
+	}
 
 	SbVec3d vCenter = ( 1 / 64.0 ) * ( iPatch->operator[]( 0 ) +  3 * iPatch->operator[]( 4 )
 									+ 3 * iPatch->operator[]( 8 ) + iPatch->operator[]( 12 )
@@ -358,10 +373,11 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 
 	Point3D intersectionPoint( vCenter[0], vCenter[1], vCenter[2] );
 
+
 	double thit;
-	if( objectRay.direction().x != 0 ) thit = ( intersectionPoint.x - objectRay.origin.x ) * objectRay.invDirection().x;
-	else if ( objectRay.direction().y != 0 ) thit = ( intersectionPoint.y - objectRay.origin.y ) * objectRay.invDirection().y;
-	else	thit = ( intersectionPoint.z - objectRay.origin.z ) * objectRay.invDirection().z;
+	if( objectRay.direction().x != 0 ) thit = ( intersectionPoint.x - objectRay.origin.x ) / objectRay.direction().x;
+	else if ( objectRay.direction().y != 0 ) thit = ( intersectionPoint.y - objectRay.origin.y ) / objectRay.direction().y;
+	else	thit = ( intersectionPoint.z - objectRay.origin.z ) / objectRay.direction().z;
 
 	if( thit < 0.001 ) return false;
 	if( ( thit > objectRay.maxt ) || ( (thit - objectRay.mint) < tol ) )
@@ -397,7 +413,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	Vector3D dndv = (g*F - f*G) * invEGF2 * dpdu +
 					(f*F - g*E) * invEGF2 * dpdv;
 
-	// Initialize _DifferentialGeometry_ from parametric information
+// Initialize _DifferentialGeometry_ from parametric information
 	*dg = DifferentialGeometry( intersectionPoint,
 								dpdu,
 								dpdv,
@@ -406,7 +422,9 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 								0.5, 0.5, 0 );
 	*tHit = thit;
 
+
 	for (int i = 0; i < buffer1.size(); ++i)	delete 	buffer1[i];
+
 	return true;
 
 }
