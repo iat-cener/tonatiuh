@@ -139,22 +139,20 @@ inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , s
 	std::vector< RayTracerPhoton >::iterator it;
 	it = photonsList.second.begin();
 
+	int rayLength;
 	while( it < photonsList.second.end() )
 	{
-		int rayLength = 1;
+		rayLength = 1;
 		Photon* first = new Photon( it->pos, 0, 0, 0, it->intersectedSurface );
-		it++;
-
 		Photon* nextPhoton = first;
 
-		while( it<photonsList.second.end() && ( it->id > 0 ) )
+		while( (++it)<photonsList.second.end() && ( it->id > 0 ) )
 		{
 			Photon* photon = new Photon( it->pos, nextPhoton, 0, 0, it->intersectedSurface );
 
 			nextPhoton->next = photon;
-			//photon->prev = nextPhoton;
 			nextPhoton = photon;
-			it++;
+
 			rayLength++;
 		}
 		photonMap->StoreRay( first, rayLength );
