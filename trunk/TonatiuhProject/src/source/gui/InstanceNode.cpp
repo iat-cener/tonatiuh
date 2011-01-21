@@ -167,11 +167,9 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 
 		if( tshape )
 		{
-			if( !tshape->IntersectP( childCoordinatesRay) ) return false;
-
 			 double thit = 0.0;
 			 DifferentialGeometry dg;
-			 tshape->Intersect( childCoordinatesRay, &thit, &dg );
+			 if( !tshape->Intersect( childCoordinatesRay, &thit, &dg ) ) return false;
 
 			 childCoordinatesRay.maxt = thit;
 			 *tHit = childCoordinatesRay.maxt;
