@@ -6,7 +6,6 @@
     </version>
     <files>
         <os value="win">
-<os value="win">
             <file type="replace" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle1.dll" />
@@ -21,34 +20,65 @@
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
         </os>
         <os value="mac">
-            <file type="replace" value="Contents/MacOS//plugins/PhotonMapDefault/libPhotonMapDefault.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeFlatTriangle/libShapeFlatTriangle.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeParabolicDish/libShapeParabolicDish.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeSphere/libShapeSphere.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
-            <file type="replace" value="Contents/MacOS//plugins/ShapeTrumpet/libShapeTrumpet.so" />
+            <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/MaterialStandardSpecular/libMaterialStandardSpecular.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/PhotonMapDefault/libPhotonMapDefault.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/RandomMersenneTwister/libRandomMersenneTwister.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/RandomRngStream/libRandomRngStream.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeBezierSurface/libShapeBezierSurface.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeCone/libShapeCone.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeCylinder/libShapeCylinder.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeFlatDisk/libShapeFlatDisk.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeFlatRectangle/libShapeFlatRectangle.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeFlatTriangle/libShapeFlatTriangle.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeHyperboloid/libShapeHyperboloid.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicDish/libShapeParabolicDish.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeSphere/libShapeSphere.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeTroughCHC/libShapeTroughCHC.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeTroughCPC/libShapeTroughCPC.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeTroughParabola/libShapeTroughParabola.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeTrumpet/libShapeTrumpet.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/SunshapeBuie/libSunshapeBuie.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/SunshapePillbox/libSunshapePillbox.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/TrackerHeliostat/libTrackerHeliostat.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/TrackerOneAxis/libTrackerOneAxis.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
         </os>
         <os value="linux">
+            <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/libMaterialStandardSpecular.so" />
             <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
+            <file type="replace" value="bin/release/plugins/RandomMersenneTwister/libRandomMersenneTwister.so" />
+            <file type="replace" value="bin/release/plugins/RandomRngStream/libRandomRngStream.so" />
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
+            <file type="replace" value="bin/release/plugins/ShapeCone/libShapeCone.so" />
+            <file type="replace" value="bin/release/plugins/ShapeCylinder/libShapeCylinder.so" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/libShapeFlatDisk.so" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatRectangle/libShapeFlatRectangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeHyperboloid/libShapeHyperboloid.so" />
             <file type="replace" value="bin/release/plugins/ShapeParabolicDish/libShapeParabolicDish.so" />
             <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughParabola/libShapeTroughParabola.so" />
             <file type="replace" value="bin/release/plugins/ShapeTrumpet/libShapeTrumpet.so" />
-             <file type="new" value="bin/release/plugins/libShapeTroughHyperbola.so" />
-             <file type="new" value="bin/release/plugins/libShapeTrumpet.so" />
-             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+            <file type="replace" value="bin/release/plugins/SunshapeBuie/libSunshapeBuie.so" />
+            <file type="replace" value="bin/release/plugins/SunshapePillbox/libSunshapePillbox.so" />
+            <file type="replace" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
+            <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
+            <file type="remove" value="bin/release/plugins/libShapeTroughHyperbola.so" />
+            <file type="remove" value="bin/release/plugins/libShapeTrumpet.so" />
+            <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+            <file type="new" value="Tonatiuh.sh" executable="true"/>
         </os>
     </files>
 </appname>

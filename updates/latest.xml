@@ -78,6 +78,7 @@
             <file type="remove" value="bin/release/plugins/libShapeTroughHyperbola.so" />
             <file type="remove" value="bin/release/plugins/libShapeTrumpet.so" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+            <file type="new" value="Tonatiuh.sh" executable="true"/>
         </os>
     </files>
 </appname>
