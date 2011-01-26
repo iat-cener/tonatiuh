@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class QModelIndex;
 class SceneModel;
 
+
 //!  CmdDelete class is the delete command stored in the command stack.
 /*!
   CmdDelete represents a single node delete action on a scene. Deletes a node from the scene and all children.
