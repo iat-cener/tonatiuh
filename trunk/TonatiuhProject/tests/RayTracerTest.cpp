@@ -83,11 +83,13 @@ TEST(RayTracerTest, CreateTargetPhotonMap )
 
 TEST(RayTracerTest, PowerPerPhoton )
 {
-	QFile targetPhotonsFile( "tests/targetSurfaceData.dat" );
+	QString targetDataFileName( "tests/targetSurfaceData.dat" );
+	QFile targetPhotonsFile( targetDataFileName );
 	if( !targetPhotonsFile.open( QIODevice::ReadOnly ) )
 	{
 		//FAIL();
-		QMessageBox::warning( 0, QString( "RayTracerTest"), "Cannont open file" );
+		QString errorMessage = QString( "Cannont open file %1." ).arg( targetDataFileName );
+		FAIL()<<errorMessage.toStdString();
 	}
 
 	QDataStream in( &targetPhotonsFile );

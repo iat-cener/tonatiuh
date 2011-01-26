@@ -372,6 +372,14 @@ void MainWindow::Redo()
 }
 
 /*!
+ *
+ */
+void MainWindow::SetNodeName( QWidget* editor )
+{
+	std::cout<<"MainWindow::SetNodeName("<<std::endl;
+}
+
+/*!
  * Shows a windows with the applied commands.
  * The most recently executed command is always selected.
  * When a different command is selected the model returns to the state after selected command was applied.
@@ -829,12 +837,16 @@ void MainWindow::SetupParametersView()
     connect ( parametersView, SIGNAL(valueModificated( const QStringList&, SoBaseKit*, QString  ) ),
 		                this, SLOT( parameterModified( const QStringList&, SoBaseKit*, QString  ) ) );
 	connect( m_selectionModel, SIGNAL( currentChanged ( const QModelIndex& , const QModelIndex& ) ),
-			             this, SLOT( selectionChanged( const QModelIndex& , const QModelIndex& ) ) );
+			             this, SLOT( ChangeSelection( const QModelIndex& ) ) );
 }
 
 void MainWindow::SetupTreeView()
 {
 	NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
+
+	connect( delegate, SIGNAL( closeEditor( QWidget* , QAbstractItemDelegate::EndEditHint ) ),
+			 this, SLOT ( SetNodeName( QWidget* ) ) );
+
 	m_treeView = GetSceneModelViewPointer();
 	m_treeView->setItemDelegate( delegate );
 	m_treeView->setModel( m_sceneModel );
@@ -853,6 +865,8 @@ void MainWindow::SetupTreeView()
 			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
 	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
 				 this, SLOT ( ShowMenu( const QModelIndex& ) ) );
+	connect( m_treeView, SIGNAL( doubleClicked ( const QModelIndex& ) ),
+			this, SLOT( ChangeNodeName( const QModelIndex& ) ) );
 }
 
 /*!
@@ -1364,6 +1378,16 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 }
 
 /*!
+ * Changes selected node to the node with \a nodeUrl. If model does not contains a node with defined url,
+ * the selection will be null.
+ */
+void MainWindow::ChangeSelection( QString nodeUrl )
+{
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
+	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
+}
+
+/*!
  *
  * Inserts an existing tonatiuh component into the tonatiuh model as a selected node child.
  *
@@ -1612,6 +1636,14 @@ bool MainWindow::SaveComponent()
 }
 
 /*!
+ * Sets \a nodeName as the current node name.
+ */
+void MainWindow::SetNodeName( QString nodeName )
+{
+
+}
+
+/*!
  *Sets the photon map type, \a typeName, for ray tracing.
  */
 int MainWindow::SetPhotonMapType( QString typeName )
@@ -1655,7 +1687,7 @@ void MainWindow::SoTransform_to_SoCenterballManip()
    	manipulator->center.setValue(transform->center.getValue());
 
 	coinNode->setPart("transform", manipulator);
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	SoDragger* dragger = manipulator->getDragger();
 	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
@@ -1681,7 +1713,7 @@ void MainWindow::SoTransform_to_SoJackManip()
    	manipulator->center.setValue(transform->center.getValue());
 
 	coinNode->setPart("transform", manipulator);
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	SoDragger* dragger = manipulator->getDragger();
 	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
@@ -1707,7 +1739,7 @@ void MainWindow::SoTransform_to_SoHandleBoxManip()
    	manipulator->center.setValue(transform->center.getValue());
 
 	coinNode->setPart("transform", manipulator);
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	SoDragger* dragger = manipulator->getDragger();
 	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
@@ -1733,7 +1765,7 @@ void MainWindow::SoTransform_to_SoTabBoxManip()
    	manipulator->center.setValue(transform->center.getValue());
 
 	coinNode->setPart("transform", manipulator);
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	SoDragger* dragger = manipulator->getDragger();
 	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
@@ -1759,7 +1791,7 @@ void MainWindow::SoTransform_to_SoTrackballManip()
    	manipulator->center.setValue(transform->center.getValue());
 
 	coinNode->setPart("transform", manipulator);
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	SoDragger* dragger = manipulator->getDragger();
 	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
@@ -1786,7 +1818,7 @@ void MainWindow::SoTransform_to_SoTransformBoxManip()
 
 	coinNode->setPart("transform", manipulator);
 
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	SoDragger* dragger = manipulator->getDragger();
 	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
@@ -1813,7 +1845,7 @@ void MainWindow::SoTransform_to_SoTransformerManip()
 
 
 	coinNode->setPart("transform", manipulator);
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	SoDragger* dragger = manipulator->getDragger();
 	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
@@ -1841,7 +1873,7 @@ void MainWindow::SoManip_to_SoTransform()
    	transform->center.setValue(manipulator->center.getValue());
 
 	coinNode->setPart("transform", transform);
-	selectionChanged( currentIndex, currentIndex );
+	ChangeSelection( currentIndex );
 
 	m_document->SetDocumentModified( true );
 }
@@ -1865,7 +1897,7 @@ void MainWindow::selectionFinish( SoSelection* selection )
 
 }
 
-void MainWindow::selectionChanged( const QModelIndex& current, const QModelIndex& /*previous*/ )
+void MainWindow::ChangeSelection( const QModelIndex& current )
 {
 	InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
     SoNode* selectedCoinNode = instanceSelected->GetNode();
@@ -1982,7 +2014,7 @@ void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double la
  * If the action is disabled, it does not disappear from menu, but it is displayed
  * in a way which indicates that they are unavailable.
  */
-void MainWindow::SetEnabled_SunPositionCalculator( int enabled )
+void MainWindow::SetSunPositionCalculatorEnabled( int enabled )
 {
 	actionCalculateSunPosition->setEnabled( enabled );
 }
@@ -2042,7 +2074,7 @@ bool MainWindow::StartOver( const QString& fileName )
 	m_commandStack->clear();
 	m_sceneModel->Clear();
 
-	SetEnabled_SunPositionCalculator( 0 );
+	SetSunPositionCalculatorEnabled( 0 );
 
 	QStatusBar* statusbar = new QStatusBar;
 	setStatusBar( statusbar );
