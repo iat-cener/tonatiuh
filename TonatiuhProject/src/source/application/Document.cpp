@@ -49,8 +49,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QStatusBar>
 
 #include "Document.h"
-#include "TLightKit.h"
-#include "TShapeKit.h"
 
 
 void selectionFinishCallback( void * userData, SoSelection* selection )

@@ -117,8 +117,6 @@ public slots:
 	void on_action_X_Z_Plane_triggered();
 	void on_action_Y_Z_Plane_triggered();
 
-	//Automation menu actions
-	void on_actionOpenScriptEditor_triggered();
 
 	//Create actions
 	void CreateGroupNode();
@@ -127,6 +125,7 @@ public slots:
 	void CreateSurfaceNode();
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 
+    void ChangeSelection( QString nodeUrl );
 	void InsertFileComponent( QString componentFileName = QString( "" ) );
 	void InsertUserDefinedComponent();
 	void New();
@@ -136,6 +135,7 @@ public slots:
 	bool Save();
     bool SaveAs();
     bool SaveComponent();
+    void SetNodeName( QString nodeName );
     int SetPhotonMapType( QString typeName );
     void SetRaysPerIteration( unsigned long rays );
 
@@ -152,7 +152,6 @@ public slots:
 
     //Slots for graphicview signals
     void selectionFinish( SoSelection* selection );
-    void selectionChanged( const QModelIndex & current, const QModelIndex & previous );
     void mousePressEvent ( QMouseEvent * e );
 
     //Slots for treeview signals
@@ -165,18 +164,23 @@ public slots:
     //Slots for sunposdialog signals
     void ChangeSunPosition( QDateTime* time, double longitude, double latitude );
 
-    void SetEnabled_SunPositionCalculator( int enabled );
+    void SetSunPositionCalculatorEnabled( int enabled );
 
 protected:
     void closeEvent( QCloseEvent* event );
 
 protected slots:
 	void CalculateSunPosition();
+    void ChangeSelection( const QModelIndex & current );
 	void DefineSunLight();
 	void Redo();
+    void SetNodeName( QWidget* editor );
 	void ShowCommandView();
     void ShowMenu( const QModelIndex& index );
 	void Undo();
+
+	//Automation menu actions
+	void on_actionOpenScriptEditor_triggered();
 
 	//Help menu actions
 	void on_actionAbout_triggered();
