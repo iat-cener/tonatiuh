@@ -9,7 +9,7 @@ Installation
 To build and install goolge test library, first, we must install python and cmake in our development environment.
 
 == CMake ==
-To obtain CMake, cross-platform make, follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the last stable cmake version for unix platform, _"cmake-versión.tar.gz". This will start the downloading of the CMake sources. When prompted, select the appropriate option to store the excutable file in your computer. Then, open a shell and go to download directory. To configure and install cmake type:
+To obtain CMake, cross-platform make, follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the last stable cmake version for unix platform, _"cmake-versión.tar.gz"_. This will start the downloading of the CMake sources. When prompted, select the appropriate option to store the excutable file in your computer. Then, open a shell and go to download directory. To configure and install cmake type:
 {{{
 tar xvf cmake-version.tar
 ./configure
