@@ -31,7 +31,9 @@ To be able to develop Tonatiuh under Windows you need to:
   * Install Doxygen and configure it.
     * [InstallingDoxygenForWindows Installing Doxygen]
 
-  * Install the Unit Testing and Continuous Integration infrastructure. 
+  * Install the Unit Testing and Continuous Integration infrastructure.
+    * [InstallingGoogleTestForWindows Install GoogleTest]
+ 
  
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
