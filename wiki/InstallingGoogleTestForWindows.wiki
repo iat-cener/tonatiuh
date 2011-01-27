@@ -24,7 +24,7 @@ tar -xzvf gtest-version.tar.gz
 
 For build the library type:
 {{{
- export PATH=$PATH:/c/sde/CMake/bin:/c/sde/Python-2.7
+export PATH=$PATH:/c/sde/CMake/bin:/c/sde/Python-2.7
 cd gtest-version
 mkdir mybuild
 cd mybuild
