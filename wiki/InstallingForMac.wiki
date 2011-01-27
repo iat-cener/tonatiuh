@@ -1,37 +1,33 @@
 #summary A guide to install and configurate development environment on Mac.
 #labels Phase-Implementation
 
-= Mac Configuration =
+= Introduction =
 
 Configuration of the standard Tonatiuh development environment in a Mac workstation. It is supposed that administrator permissions are available in order to configure the whole environment. 
 
 
-= Install and configurate development enviroment=
+= Details=
 
 Install and configurate development enviroment
 The following links will guide the developer through all the process: 
+  
+  * Install the third-party libraries needed by the program.
+    * [InstallingQtForMac Installing Qt]
+    * [InstallingSimageForMac  Installing Simage]
+    * [InstallingCoin3DForMac  Installing Coin3D]
+    * [InstallingSoQtForMac  Installing SoQt]
+    * [InstallingMarbleForMac Installing Marble] 
+    * [InstallingBerkeleyDBForMac Installing Berkeley DB]
 
-  * [InstallingQtForMac Installing Qt]
-  * [InstallingSimageForMac  Installing Simage]
-  * [InstallingCoin3DForMac  Installing Coin3D]
-  * [InstallingSoQtForMac  Installing SoQt]
-  * [InstallingMarbleForMac Installing Marble] 
-  * [InstallingAndConfiguringEclipseForMac Installing and Configuring Eclipse]
-  * [Installing_Subversive Installing Subversive]
-  * [BuildingTonatiuhOnMac Building Tonatiuh and plugins]
-  * [InstallingBerkeleyDBForMac Installing Berkeley DB]
+  * Install and configure the Integrated Development Environment. 
+    * [InstallingAndConfiguringEclipseForMac Installing and Configuring Eclipse]
+    * [Installing_Subversive Installing Subversive]
+    * [BuildingTonatiuhOnMac Building Tonatiuh and plugins]
 
-= Unit testing =
-
-Unit testing is the method selected to test that verifies the individual units of source code are working properly and ensure that the code have been written meets software requirements and behaves. Each test case must be independent from the others.
-
-[http://sourceforge.net/projects/cppunit/ CppUnit] s a unit testing framework module for C++
-
-  * [InstallingCppUnitForMac Installing CppUnit]
-
-= Doxygen =
-Doxygen is a documentation system for C++, C, Java, Objective-C, Python, IDL (Corba and Microsoft flavors), Fortran, VHDL, PHP, C#, and to some extent D. 
-
- * [InstallingDoxygenForMac Installing Doxygen]
+  * Install Doxygen and configure it. 
+    * [InstallingDoxygenForMac Installing Doxygen]
+  
+  * Install the Unit Testing and Continuous Integration infrastructure.
+    * Install GoogleTest 
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
