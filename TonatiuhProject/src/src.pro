@@ -8,14 +8,14 @@ include( ../config.pri )
 TARGET = Tonatiuh   
 
 DEPENDPATH += . \
-              src \
-              src/source \
-              src/source/application \
-              src/source/auxiliary \
-              src/source/geometry \
-              src/source/gui \
-              src/source/raytracing \
-              src/source/statistics
+                $$(TONATIUH_ROOT)/src \
+                $$(TONATIUH_ROOT)/src/source \
+                $$(TONATIUH_ROOT)/src/source/application \
+                $$(TONATIUH_ROOT)/src/source/auxiliary \
+                $$(TONATIUH_ROOT)/src/source/geometry \
+                $$(TONATIUH_ROOT)/src/source/gui \
+                $$(TONATIUH_ROOT)/src/source/raytracing \
+                $$(TONATIUH_ROOT)/src/source/statistics
               
  
               
