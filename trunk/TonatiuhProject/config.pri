@@ -30,6 +30,13 @@ CONFIG(debug, debug|release) {
     QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
     QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage
 } 
+else{
+	QMAKE_CFLAGS -= -O2
+	QMAKE_CXXFLAGS -= O2
+	QMAKE_CFLAGS += -O3 -march=prescott -mfpmath=sse
+	QMAKE_CXXFLAGS += -O3 -march=prescott -mfpmath=sse
+}
+
 
 contains( CONFIG, plugin ){  
 	
