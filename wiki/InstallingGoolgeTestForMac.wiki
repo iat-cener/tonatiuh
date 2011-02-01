@@ -29,7 +29,12 @@ mkdir mybuild
 cd mybuild
 cmake -G"Unix Makefiles" ..
 make
-make install
+}}}
+
+Now, to install builded libray type:
+{{{
+cp -r ../include/gtest /usr/local/include
+cp lib*.a /usr/local/lib
 }}}
 
 
