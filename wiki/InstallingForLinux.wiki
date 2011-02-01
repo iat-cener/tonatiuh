@@ -25,7 +25,7 @@ To be able to develop Tonatiuh under Linux you need to:
     * [BuildingTonatiuhOnLinux Building Tonatiuh and plugins]
 
   * Install Doxygen and configure it.
-    * Installing Doxygen
+    * [InstallingDoxygenForLinux Installing Doxygen]
 
   * Install the Unit Testing and Continuous Integration infrastructure.
     * Install GoogleTest 
