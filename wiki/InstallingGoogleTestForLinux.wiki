@@ -15,27 +15,21 @@ To obtain CMake follow this [http://www.cmake.org/cmake/resources/software.html 
 If you nedd to download python, ho to python [http://www.python.org/download/ downloads] web site. We need python 2.7 version.
 
 == !GoogleTest ==
-Finally we have to download google test library sources. Downlaod them from the [ http://code.google.com/p/googletest/ GoogleTest web site], clicking on _"gtest-1.5.0.tar.gz"_. Store the download file in your computer.
+Finally we have to download google test library sources. Downlaod them from the  [http://code.google.com/p/googletest/ GoogleTest web site], clicking on _"gtest-1.5.0.tar.gz"_. Store the download file in your computer.
 
-Once the sources file is on your PC, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\1.0\home\username"_. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
+Once the sources file is on your PC, open a shell console. Navigate to your download directory and extract the archive by typing:
 {{{
 tar -xzvf gtest-version.tar.gz
 }}}
 
 For build the library type:
 {{{
-export PATH=$PATH:/c/sde/CMake/bin:/c/sde/Python-2.7
 cd gtest-version
 mkdir mybuild
 cd mybuild
-cmake -G"MSYS Makefiles" ..
+cmake -G"Unix Makefiles" ..
 make
-}}}
-
-Now, to install builded libray type:
-{{{
-cp -r ../include/gtest /usr/local/include
-cp lib*.a /usr/local/lib
+make install
 }}}
 
 
