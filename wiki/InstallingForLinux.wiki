@@ -28,6 +28,6 @@ To be able to develop Tonatiuh under Linux you need to:
     * [InstallingDoxygenForLinux Installing Doxygen]
 
   * Install the Unit Testing and Continuous Integration infrastructure.
-    * Install GoogleTest 
+    * [InstallingGoogleTestForLinux Install GoogleTest]
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
