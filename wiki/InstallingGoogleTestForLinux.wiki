@@ -12,7 +12,7 @@ To build and install goolge test library, first, we must install python and cmak
 To obtain CMake follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, download the latest binary version for Linux.
 
 == Python ==
-Now, download python from the python [http://www.python.org/download/ downloads] web site. We need python 2.7 version, click _"Python 2.7 Windows installer"_. Store the excutable file in your computer. Then, left-click twice on the installer and install Python at the folder "C:\sde\Python-2.7".
+If you nedd to download python, ho to python [http://www.python.org/download/ downloads] web site. We need python 2.7 version.
 
 == !GoogleTest ==
 Finally we have to download google test library sources. Downlaod them from the !GoogleTest, clicking on _"gtest-1.5.0.tar.gz"_. Store the download file in your computer.
