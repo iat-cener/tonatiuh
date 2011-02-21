@@ -37,8 +37,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
+
 #include <Inventor/nodes/SoTransform.h>
+
 #include "RandomDeviate.h"
+#include "tgc.h"
 #include "tgf.h"
 #include "Transform.h"
 
@@ -129,7 +132,15 @@ Transform tgf::TransformFromSoTransform( SoTransform* const & soTransform )
 						    soTransform->scaleOrientation.getValue(),
 						    soTransform->center.getValue() );
 
-	Transform transform( sbMatrix[0][0], sbMatrix[1][0], sbMatrix[2][0], sbMatrix[3][0],
+	Transform transform;
+	if( sbMatrix.det4() < tgc::Epsilon )
+	{
+		transform = Transform( new Matrix4x4(), new Matrix4x4() );
+
+	}
+	else
+
+		transform = Transform( sbMatrix[0][0], sbMatrix[1][0], sbMatrix[2][0], sbMatrix[3][0],
 						 sbMatrix[0][1], sbMatrix[1][1], sbMatrix[2][1], sbMatrix[3][1],
 						 sbMatrix[0][2], sbMatrix[1][2], sbMatrix[2][2], sbMatrix[3][2],
 						 sbMatrix[0][3], sbMatrix[1][3], sbMatrix[2][3], sbMatrix[3][3] );
