@@ -88,21 +88,11 @@ public:
 	MainWindow( QString tonatiuhFile = 0, QWidget* parent = 0, Qt::WindowFlags flags = 0 );
     ~MainWindow();
 
-    QDir PluginDirectory();
     void FinishManipulation( );
     void StartManipulation( SoDragger* dragger );
 
 public slots:
-    // Edit menu actions
-	void on_actionCut_triggered();
-	void on_actionCopy_triggered();
-	void on_actionPaste_Link_triggered();
-	void on_actionPaste_Copy_triggered();
-	void on_actionDelete_triggered();
-
-
 	//Ray trace menu actions
-	void on_actionDisplay_rays_toggled();
 	void on_actionExport_PhotonMap_triggered();
 	void on_actionRayTraceOptions_triggered();
 
@@ -117,20 +107,26 @@ public slots:
 	void on_action_X_Z_Plane_triggered();
 	void on_action_Y_Z_Plane_triggered();
 
-
-	//Create actions
+	void ChangeSelection( QString nodeUrl );
+	void Copy();
+	void Copy( QString nodeURL );
 	void CreateGroupNode();
-	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
-    void CreateShape( TShapeFactory* pTShapeFactory );
+	void CreateMaterial( QString materialType );
+    void CreateShape( QString shapeType );
 	void CreateSurfaceNode();
-	void CreateTracker( TTrackerFactory* pTTrackerFactory );
-
-    void ChangeSelection( QString nodeUrl );
+	void CreateTracker( QString trackerType );
+    void Cut();
+	void Cut( QString nodeURL );
+	void Delete();
+	void Delete( QString nodeURL );
 	void InsertFileComponent( QString componentFileName = QString( "" ) );
 	void InsertUserDefinedComponent();
 	void New();
 	void Open();
 	void OpenRecentFile();
+	void Paste( QString nodeURL, QString pasteType = QString( "Shared" ) );
+	void PasteCopy();
+	void PasteLink();
 	void Run();
 	bool Save();
     bool SaveAs();
@@ -172,9 +168,13 @@ protected:
 protected slots:
 	void CalculateSunPosition();
     void ChangeSelection( const QModelIndex & current );
+	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
+    void CreateShape( TShapeFactory* pTShapeFactory );
+	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
+	void DisplayRays( bool display );
 	void Redo();
-    void SetNodeName( QWidget* editor );
+    //void SetNodeName( QWidget* editor );
 	void ShowCommandView();
     void ShowMenu( const QModelIndex& index );
 	void Undo();
@@ -188,17 +188,24 @@ protected slots:
 
 
 private:
+	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
     QToolBar* CreateMaterialsTooBar( QMenu* pMaterialsMenu );
     QToolBar* CreateTrackerTooBar( QMenu* pMaterialsMenu );
+    bool Delete( QModelIndex index );
    	QSplitter* GetHorizontalSplitterPointer();
-   	ParametersView* GetParamtersViewPointer();
-   	SceneModelView* GetSceneModelViewPointer();
+   	void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
+    bool OkToContinue();
+    bool Paste( QModelIndex nodeIndex, tgc::PasteType type );
+    QDir PluginDirectory();
 	bool ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
 			                 InstanceNode*& lightInstance,
 			                 SoTransform*& lightTransform,
 			                 TSunShape*& sunShape,
 			                 TShape*& shape );
 
+    void ReadSettings();
+    bool SaveFile( const QString& fileName );
+    void SetCurrentFile( const QString& fileName );
     void SetupActions();
    	void SetupActionsInsertFieldComponent();
     void SetupActionsInsertMaterial();
@@ -217,21 +224,11 @@ private:
    	void SetupUpdateManager();
     void SetupVRMLBackground();
 	void ShowRaysIn3DView();
-    void ReadSettings();
-    bool OkToContinue();
     bool StartOver( const QString& fileName );
-    bool SaveFile( const QString& fileName );
-    bool Copy();
-    bool Paste( tgc::PasteType type );
-    bool Cut();
-    bool Delete();
-    void SetCurrentFile( const QString& fileName );
     QString StrippedName( const QString& fullFileName );
     void UpdateRecentFileActions();
     void WriteSettings();
-    void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
-	//void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
-	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
+
 
     enum { m_maxRecentFiles = 7 };
     QString m_currentFile;
@@ -277,7 +274,6 @@ private:
     double m_gridXSpacing;
     double m_gridZSpacing;
     std::vector<GraphicView*> m_graphicView;
-    SceneModelView* m_treeView;
     int m_focusView;
 
 };
