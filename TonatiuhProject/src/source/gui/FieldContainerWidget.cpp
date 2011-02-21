@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <QComboBox>
 #include <QLineEdit>
 #include <QTreeView>
@@ -59,28 +61,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * The container name is \a containerName.
  */
 FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent )
-:QWidget( parent ), m_ptreeView( 0 ), m_pFieldContainer( fieldContainer ), m_delegate( 0 ), m_pModel ( 0 ), m_containerName( containerName )
+:QTreeView( parent ),
+ m_containerName( containerName ),
+ m_currentIndex(),
+ m_pDelegate( 0 ),
+ m_pFieldContainer( fieldContainer ),
+ m_pModel ( 0 )
 {
-	m_ptreeView = new QTreeView;
-	m_ptreeView->setAlternatingRowColors( true );
-	connect (m_ptreeView, SIGNAL(doubleClicked ( const QModelIndex& ) ), this, SLOT( EditorOpened( const QModelIndex& ) ) );
+	setAlternatingRowColors( true );
 
-
-	m_delegate = new ParametersDelegate;
-	m_ptreeView->setItemDelegate( m_delegate );
-	connect( m_delegate, SIGNAL( closeEditor( QWidget* ) ), this, SLOT( EditorClosed( QWidget* ) ) );
-
-	QVBoxLayout* mainLayout = new QVBoxLayout;
-	mainLayout->addWidget( m_ptreeView );
-	setLayout( mainLayout );
+	m_pDelegate = new ParametersDelegate;
+	setItemDelegate( m_pDelegate );
 
 	m_pModel = new ParametersModel();
 	m_pModel->SetEditable( true );
 	m_pModel->setHorizontalHeaderLabels( QStringList() << tr("Parameter") << tr("Value") );
-	m_ptreeView->setModel(m_pModel);
+	setModel(m_pModel);
 
 	if( m_pFieldContainer ) ReadFields( );
-	m_ptreeView->resizeColumnToContents ( 1 );
+	resizeColumnToContents ( 1 );
 }
 
 /**
@@ -88,8 +87,7 @@ FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QS
  */
 FieldContainerWidget::~FieldContainerWidget()
 {
-	delete m_ptreeView;
- 	delete m_delegate;
+ 	delete m_pDelegate;
  	delete m_pModel;
 
 }
@@ -102,23 +100,18 @@ void FieldContainerWidget::SetEditable( bool editable )
 	m_pModel->SetEditable( editable );
 }
 
-/**
- * Sets \a index as the last parameter index that has been starting to modify.
+/*!
+ * Sets \a current as the view current element index.
  */
-void FieldContainerWidget::EditorOpened( const QModelIndex& index )
+void FieldContainerWidget::currentChanged( const QModelIndex& current, const QModelIndex& /*previous*/ )
 {
-	m_lastEditingIndex = index;
+	m_currentIndex = current;
 }
 
-/**
- * Sets to the last parameter that has begun to change the \a editor value.
- *
- * Emits a valueModificated signal width the widget current container name and the container parameters old values;
- */
-void FieldContainerWidget::EditorClosed( QWidget* editor )
+void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::EndEditHint hint )
 {
 	QString newValue;
-	SoField* field = m_pModel->ModelItem( m_lastEditingIndex )->GetField();
+	SoField* field = m_pModel->ModelItem( m_currentIndex )->GetField();
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
 	{
 		QComboBox* combo = qobject_cast<QComboBox *>(editor);
@@ -142,14 +135,10 @@ void FieldContainerWidget::EditorClosed( QWidget* editor )
 		oldValuesList->append( QString(indexValue.getString() ) );
 	 }
 
-	 m_pModel->setData(m_lastEditingIndex, newValue, Qt::UserRole);
+	 m_pModel->setData( m_currentIndex, newValue, Qt::UserRole );
 
 	 emit valueModificated( *oldValuesList, m_containerName );
-}
-
-void FieldContainerWidget::Reset()
-{
-	m_ptreeView->reset();
+	 QTreeView::closeEditor( editor, hint );
 }
 
 /**
