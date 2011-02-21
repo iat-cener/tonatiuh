@@ -53,20 +53,19 @@ class SoFieldContainer;
 class SoField;
 class ParametersModel;
 
-class FieldContainerWidget : public QWidget
+class FieldContainerWidget : public QTreeView
 {
     Q_OBJECT
 
 public:
     FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent = 0 );
     ~FieldContainerWidget();
-   	void Reset();
 
     void SetEditable( bool editable );
 
-private slots:
-	void EditorOpened( const QModelIndex& index );
-	void EditorClosed(  QWidget* editor );
+protected slots:
+	void currentChanged ( const QModelIndex & current, const QModelIndex & previous );
+	void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
 
 signals:
 	void valueModificated( const QStringList& oldValuesList, QString containerName );
@@ -74,12 +73,11 @@ signals:
 private:
     void ReadFields( );
 
-    QTreeView* m_ptreeView;
-    SoFieldContainer* m_pFieldContainer;
-    ParametersDelegate* m_delegate;
-   	ParametersModel* m_pModel;
    	QString m_containerName;
-   	QModelIndex m_lastEditingIndex;
+   	QModelIndex m_currentIndex;
+    ParametersDelegate* m_pDelegate;
+    SoFieldContainer* m_pFieldContainer;
+   	ParametersModel* m_pModel;
 
 };
 
