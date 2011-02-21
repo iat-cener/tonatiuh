@@ -174,7 +174,7 @@ m_gridZElements( 0 ),
 m_gridXSpacing( 0 ),
 m_gridZSpacing( 0 ),
 m_graphicView( 0 ),
-m_treeView( 0 ),
+//sceneModelView( 0 ),
 m_focusView( 0 )
 {
 	setupUi( this );
@@ -228,8 +228,8 @@ void MainWindow::SetupVRMLBackground()
  */
 void MainWindow::ShowRaysIn3DView()
 {
-	actionDisplay_rays->setEnabled( false );
-	actionDisplay_rays->setChecked( false );
+	actionDisplayRays->setEnabled( false );
+	actionDisplayRays->setChecked( false );
 
 	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
 
@@ -259,46 +259,12 @@ void MainWindow::ShowRaysIn3DView()
 			{
 				m_pRays->addChild(currentRays);
 
-				actionDisplay_rays->setEnabled( true );
-				actionDisplay_rays->setChecked( true );
+				actionDisplayRays->setEnabled( true );
+				actionDisplayRays->setChecked( true );
 			}
 
 		}
 	}
-}
-
-QSplitter* MainWindow::GetHorizontalSplitterPointer()
-{
-    QSplitter* pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
-    if( !pSplitter ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: splitter not found" );
-    return pSplitter;
-}
-
-SceneModelView* MainWindow::GetSceneModelViewPointer()
-{
-    QSplitter* pSplitter = GetHorizontalSplitterPointer();
-    SceneModelView* pTreeView = pSplitter->findChild< SceneModelView* >( "treeView" );
-    if ( !pTreeView ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: treeView not found" );
-    return pTreeView;
-}
-
-ParametersView* MainWindow::GetParamtersViewPointer()
-{
-    QSplitter* pSplitter = GetHorizontalSplitterPointer();
-    ParametersView* pParametersView = pSplitter->findChild< ParametersView* >( "parametersView" );
-    if ( !pParametersView ) tgf::SevereError( "MainWindow::GetParamtersViewPointer: parametersView not found" );
-    return pParametersView;
-}
-
-QDir MainWindow::PluginDirectory()
-{
-	// Returns the path to the top level plug-in directory.
-	// It is assumed that this is a subdirectory named "plugins" of the directory in
-	// which the running version of Tonatiuh is located.
-
-    QDir directory( qApp->applicationDirPath() );
-  	directory.cd( "plugins" );
-	return directory;
 }
 
 /*!
@@ -307,7 +273,7 @@ QDir MainWindow::PluginDirectory()
 void MainWindow::CalculateSunPosition()
 {
 	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene->getPart("lightList[0]", false) ) return;
+	if( !coinScene->getPart( "lightList[0]", false ) ) return;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
 
@@ -364,6 +330,18 @@ void MainWindow::DefineSunLight()
 }
 
 /*!
+ *If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden.
+ */
+void MainWindow::DisplayRays( bool display )
+{
+	if( display && (m_pRays ) )
+		m_document->GetRoot()->insertChild( m_pRays, 0 );
+	else if( !display )
+		if ( m_pRays->getRefCount( ) > 0 )	m_document->GetRoot()->removeChild( 0 );
+
+}
+
+/*!
  * Applies las reverted command action changes to Tonatiuh.
  */
 void MainWindow::Redo()
@@ -371,13 +349,6 @@ void MainWindow::Redo()
     m_commandStack->redo();
 }
 
-/*!
- *
- */
-void MainWindow::SetNodeName( QWidget* editor )
-{
-	std::cout<<"MainWindow::SetNodeName("<<std::endl;
-}
 
 /*!
  * Shows a windows with the applied commands.
@@ -402,11 +373,11 @@ void MainWindow::ShowMenu( const QModelIndex& index)
 
 	QMenu popupmenu(this);
 
-   	popupmenu.addAction(actionCut);
-   	popupmenu.addAction(actionCopy);
-  	popupmenu.addAction(actionPaste_Copy);
-  	popupmenu.addAction(actionPaste_Link);
-  	popupmenu.addAction(actionDelete);
+   	popupmenu.addAction( actionCut );
+   	popupmenu.addAction( actionCopy );
+  	popupmenu.addAction( actionPasteCopy );
+  	popupmenu.addAction( actionPasteLink );
+  	popupmenu.addAction( actionDelete );
 
 	QMenu transformMenu( "Convert to", &popupmenu );
 
@@ -443,34 +414,6 @@ void MainWindow::Undo()
     m_commandStack->undo();
 }
 
-/*!
- * Creates a toolbar for insert material actions.
- */
-QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
-{
-	QToolBar* pMaterialsToolBar = new QToolBar( pMaterialsMenu );
-	if (! pMaterialsToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pMaterialsToolBar" );
-	pMaterialsToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
-	pMaterialsToolBar->setOrientation( Qt::Horizontal );
-	pMaterialsToolBar->setWindowTitle( QLatin1String( "Materials" ) );
-	addToolBar( pMaterialsToolBar );
-	return pMaterialsToolBar;
-}
-
-
-/*!
- * Creates a toolbar for insert trackers actions.
- */
-QToolBar* MainWindow::CreateTrackerTooBar( QMenu* pTrackersMenu )
-{
-	QToolBar* pTrackersToolBar = new QToolBar( pTrackersMenu );
-	if (! pTrackersToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pTrackersToolBar" );
-	pTrackersToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
-	pTrackersToolBar->setOrientation( Qt::Horizontal );
-	pTrackersToolBar->setWindowTitle( QLatin1String( "Trackers" ) );
-	addToolBar( pTrackersToolBar );
-	return pTrackersToolBar;
-}
 
 void MainWindow::SetupActionsInsertMaterial()
 {
@@ -574,6 +517,57 @@ void MainWindow::SetupActionsInsertTracker()
 	}
 }
 
+
+
+/*!
+ * Creates a new \a type paste command. The clipboard node is inserted as \a nodeIndex node
+ * child.
+ *
+ * Returns \a true if the node was successfully pasted, otherwise returns \a false.
+ */
+bool MainWindow::Paste( QModelIndex nodeIndex, tgc::PasteType type )
+{
+	if( !nodeIndex.isValid() ) return false;
+	if( !m_coinNode_Buffer ) return false;
+
+	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( nodeIndex );
+	SoNode* selectedCoinNode = ancestor->GetNode();
+
+	if ( !selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) return false;
+	if ( ( selectedCoinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
+	( m_coinNode_Buffer->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) )	return false;
+
+	if( ancestor->GetNode() == m_coinNode_Buffer)  return false;
+	while( ancestor->GetParent() )
+	{
+		if(ancestor->GetParent()->GetNode() == m_coinNode_Buffer )	return false;
+		ancestor = ancestor->GetParent();
+	}
+
+	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
+	m_commandStack->push( commandPaste );
+
+
+
+	m_document->SetDocumentModified( true );
+	return true;
+
+}
+
+/*!
+ * Returns the directory of where the plugins are saved.
+ */
+QDir MainWindow::PluginDirectory()
+{
+	// Returns the path to the top level plug-in directory.
+	// It is assumed that this is a subdirectory named "plugins" of the directory in
+	// which the running version of Tonatiuh is located.
+
+    QDir directory( qApp->applicationDirPath() );
+  	directory.cd( "plugins" );
+	return directory;
+}
+
 /*!
  * Checks whether a ray tracing can be started with the current light and model.
  */
@@ -584,7 +578,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 	if ( !coinScene )  return false;
 
 	//Check if there is a rootSeparator InstanceNode
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
 	if ( !sceneInstance )  return false;
 	rootSeparatorInstance = sceneInstance->children[1];
 	if( !rootSeparatorInstance ) return false;
@@ -847,25 +841,25 @@ void MainWindow::SetupTreeView()
 	connect( delegate, SIGNAL( closeEditor( QWidget* , QAbstractItemDelegate::EndEditHint ) ),
 			 this, SLOT ( SetNodeName( QWidget* ) ) );
 
-	m_treeView = GetSceneModelViewPointer();
-	m_treeView->setItemDelegate( delegate );
-	m_treeView->setModel( m_sceneModel );
-	m_treeView->setSelectionModel( m_selectionModel );
-	m_treeView->setDragEnabled(true);
-	m_treeView->setAcceptDrops(true);
-	m_treeView->setDropIndicatorShown(true);
-	m_treeView->setDragDropMode(QAbstractItemView::DragDrop);
-	m_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
-	m_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-	m_treeView->setRootIsDecorated(true);
+	//sceneModelView = GetSceneModelViewPointer();
+	sceneModelView->setItemDelegate( delegate );
+	sceneModelView->setModel( m_sceneModel );
+	sceneModelView->setSelectionModel( m_selectionModel );
+	//sceneModelView->setDragEnabled(true);
+	//sceneModelView->setAcceptDrops(true);
+	//sceneModelView->setDropIndicatorShown(true);
+	//sceneModelView->setDragDropMode(QAbstractItemView::DragDrop);
+	//sceneModelView->setSelectionMode(QAbstractItemView::SingleSelection);
+	//sceneModelView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	//sceneModelView->setRootIsDecorated(true);
 
-	connect( m_treeView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
+	connect( sceneModelView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
 			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
-	connect( m_treeView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
+	connect( sceneModelView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
 			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
-	connect( m_treeView, SIGNAL( showMenu( const QModelIndex& ) ),
+	connect( sceneModelView, SIGNAL( showMenu( const QModelIndex& ) ),
 				 this, SLOT ( ShowMenu( const QModelIndex& ) ) );
-	connect( m_treeView, SIGNAL( doubleClicked ( const QModelIndex& ) ),
+	connect( sceneModelView, SIGNAL( doubleClicked ( const QModelIndex& ) ),
 			this, SLOT( ChangeNodeName( const QModelIndex& ) ) );
 }
 
@@ -886,6 +880,11 @@ void MainWindow::SetupTriggers()
 	connect( actionUndo, SIGNAL( triggered() ), this, SLOT ( Undo() ) );
 	connect( actionRedo, SIGNAL( triggered() ), this, SLOT ( Redo() ) );
 	connect( actionUndoView, SIGNAL( triggered() ), this, SLOT ( ShowCommandView() ) );
+	connect( actionCut, SIGNAL( triggered() ), this, SLOT ( Cut() ) );
+	connect( actionCopy, SIGNAL( triggered() ), this, SLOT ( Copy() ) );
+	connect( actionPasteCopy, SIGNAL( triggered() ), this, SLOT ( PasteCopy() ) );
+	connect( actionPasteLink, SIGNAL( triggered() ), this, SLOT ( PasteLink() ) );
+	connect( actionDelete, SIGNAL( triggered() ), this, SLOT ( Delete() ) );
 
 	//Insert actions
 	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
@@ -897,6 +896,7 @@ void MainWindow::SetupTriggers()
 	connect( actionCalculateSunPosition, SIGNAL( triggered() ), this, SLOT ( CalculateSunPosition() ) );
 
 	//Ray trace menu actions
+	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
 }
 /*!
@@ -907,47 +907,6 @@ void MainWindow::SetupUpdateManager()
 	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
 }
 
-// Edit menu actions
-void MainWindow::on_actionCut_triggered()
-{
-	Cut();
-}
-
-void MainWindow::on_actionCopy_triggered()
-{
- 	Copy();
-}
-
-void MainWindow::on_actionPaste_Copy_triggered()
-{
-	Paste( tgc::Copied );
-}
-
-void MainWindow::on_actionPaste_Link_triggered()
-{
-	Paste( tgc::Shared );
-}
-
-void MainWindow::on_actionDelete_triggered()
-{
-	Delete ();
-}
-
-//Ray trace menu actions
-/**
- * If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden.
- */
-void MainWindow::on_actionDisplay_rays_toggled()
-{
-	if ( actionDisplay_rays->isChecked() && (m_pRays ) )
-	{
-	  	m_document->GetRoot()->insertChild( m_pRays, 0 );
-	}
-	else if( !actionDisplay_rays->isChecked() )
-	{
-		if ( m_pRays->getRefCount( ) > 0 )	m_document->GetRoot()->removeChild( 0 );
-	}
-}
 
 /*!
  * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
@@ -1060,7 +1019,7 @@ void MainWindow::on_actionGrid_toggled()
 {
 	if( actionGrid->isChecked() )
 	{
-		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
+		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
 		if ( !sceneInstance )  return;
 		SoNode* rootNode = sceneInstance->GetNode();
 		SoPath* nodePath = new SoPath( rootNode );
@@ -1130,7 +1089,7 @@ void MainWindow::on_actionGridSettings_triggered()
 		}
 		else
 		{
-			InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( m_treeView->rootIndex() );
+			InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
 			if ( !sceneInstance )  return;
 			SoNode* rootNode = sceneInstance->GetNode();
 			SoPath* nodePath = new SoPath( rootNode );
@@ -1294,35 +1253,133 @@ void MainWindow::on_actionAbout_triggered()
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
 }
 
-//Create actions
-void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
+/*!
+ * Changes selected node to the node with \a nodeUrl. If model does not contains a node with defined url,
+ * the selection will be null.
+ */
+void MainWindow::ChangeSelection( QString nodeUrl )
 {
-    QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
-								m_sceneModel->index (0,0,m_treeView->rootIndex()) : m_treeView->currentIndex();
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
+	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
+}
+
+/*!
+ * Copies current node to the clipboard.
+ * The current node cannot be the model root node or concentrator node.
+ */
+void MainWindow::Copy( )
+{
+	if( !m_selectionModel->hasSelection() ) return;
+	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return;
+	if( m_selectionModel->currentIndex().parent() == sceneModelView->rootIndex() ) return;
+
+
+	CmdCopy* command = new CmdCopy( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
+	m_commandStack->push( command );
+
+	m_document->SetDocumentModified( true );
+	return;
+}
+
+/*!
+ * Copies the node defined with the \a nodeURL to the clipboard.
+ *
+ * The current node cannot be the model root node or concentrator node.
+ */
+void MainWindow::Copy( QString nodeURL )
+{
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
+
+	if( !nodeIndex.isValid() )	return;
+	if( nodeIndex == sceneModelView->rootIndex() ) return;
+	if( nodeIndex.parent() == sceneModelView->rootIndex() ) return;
+
+	CmdCopy* command = new CmdCopy( nodeIndex, m_coinNode_Buffer, m_sceneModel );
+	m_commandStack->push( command );
+
+	m_document->SetDocumentModified( true );
+
+}
+
+/*!
+ * Creates a new group node as a selected node child.
+ */
+void MainWindow::CreateGroupNode()
+{
+	QModelIndex parentIndex;
+	if (( !sceneModelView->currentIndex().isValid() ) || ( sceneModelView->currentIndex() == sceneModelView->rootIndex()))
+		parentIndex = m_sceneModel->index (0,0,sceneModelView->rootIndex());
+	else
+		parentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	SoNode* parentNode = parentInstance->GetNode();
-	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
+	if( !parentInstance ) return;
 
-	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
-	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
+	SoNode* coinNode = parentInstance->GetNode();
+	if( !coinNode ) return;
 
-    if (shape)
-    {
-    	QMessageBox::information( this, "Tonatiuh Action",
-	                          "This TShapeKit already contains a shape", 1);
-    }
-    else
-    {
-    	shape = pTShapeFactory->CreateTShape();
-    	shape->setName( pTShapeFactory->TShapeName().toStdString().c_str() );
-        CmdInsertShape* createShape = new CmdInsertShape( shapeKit, shape, m_sceneModel );
-        QString commandText = QString( "Create Shape: %1" ).arg( pTShapeFactory->TShapeName().toLatin1().constData());
-        createShape->setText( commandText );
-        m_commandStack->push( createShape );
 
-        m_document->SetDocumentModified( true );
-    }
+	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		TSeparatorKit* separatorKit = new TSeparatorKit();
+
+		CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( separatorKit, QPersistentModelIndex(parentIndex), m_sceneModel );
+		cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
+		m_commandStack->push( cmdInsertSeparatorKit );
+
+		int count = 1;
+		QString nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
+		while ( !m_sceneModel->SetNodeName( separatorKit, nodeName ) )
+		{
+			count++;
+			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
+		}
+
+		m_document->SetDocumentModified( true );
+
+	}
+}
+
+/*!
+ * Creates a \a materialType material node from the as current selected node child.
+ *
+ * If the current node is not a surface type node or \a materialType is not a valid type, the material node will not be created.
+ */
+void MainWindow::CreateMaterial( QString materialType )
+{
+	QVector< TMaterialFactory* > factoryList = m_pluginManager->GetMaterialFactories();
+	if( factoryList.size() == 0 )	return;
+
+	QVector< QString > materialNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		materialNames<< factoryList[i]->TMaterialName();
+
+	int selectedMaterial = materialNames.indexOf( materialType );
+	if( selectedMaterial < 0 )	return;
+
+	CreateMaterial( factoryList[ selectedMaterial ] );
+}
+
+/*!
+ * Creates a \a shapeType shape node from the as current selected node child.
+ *
+ * If the current node is not a valid parent node or \a shapeType is not a valid type, the shape node will not be created.
+ *
+ */
+void MainWindow::CreateShape( QString shapeType )
+{
+	QVector< TShapeFactory* > factoryList = m_pluginManager->GetShapeFactories();
+	if( factoryList.size() == 0 )	return;
+
+	QVector< QString > shapeNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		shapeNames<< factoryList[i]->TShapeName();
+
+	int selectedShape = shapeNames.indexOf( shapeType );
+	if( selectedShape < 0 )	return;
+
+	CreateShape( factoryList[ selectedShape ] );
+
 }
 
 /*!
@@ -1331,10 +1388,10 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 void MainWindow::CreateSurfaceNode()
 {
 	QModelIndex parentIndex;
-	if (( ! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex()))
-		parentIndex = m_sceneModel->index (0,0, m_treeView->rootIndex());
+	if (( ! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex()))
+		parentIndex = m_sceneModel->index (0,0, sceneModelView->rootIndex());
 	else
-		parentIndex = m_treeView->currentIndex();
+		parentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
 	if( !parentInstance ) return;
@@ -1360,31 +1417,84 @@ void MainWindow::CreateSurfaceNode()
 	}
 }
 
-void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
+
+/*!
+ * Creates a \a trackerType shape node from the as current selected node child.
+ *
+ * If the current node is not a valid parent node or \a trackerType is not a valid type, the shape node will not be created.
+ *
+ */
+void MainWindow::CreateTracker( QString trackerType )
 {
-	QModelIndex parentIndex = ((! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex())) ?
-									m_sceneModel->index (0,0,m_treeView->rootIndex()):
-									m_treeView->currentIndex();
+	QVector< TTrackerFactory* > factoryList = m_pluginManager->GetTrackerFactories();
+	if( factoryList.size() == 0 )	return;
 
-	SoSceneKit* scene = m_document->GetSceneKit();
+	QVector< QString > trackerNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		trackerNames<< factoryList[i]->TTrackerName();
 
-	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
-	tracker->SetSceneKit( scene );
+	int selectedTracker = trackerNames.indexOf( trackerType );
+	if( selectedTracker < 0 )	return;
 
-	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
+	CreateTracker( factoryList[ selectedTracker ] );
+}
+
+/*!
+ * If there is a node selected and this node is not the root node, cuts current selected node from the model. Otherwise, nothing is done.
+ */
+void MainWindow::Cut()
+{
+	if( !m_selectionModel->hasSelection() ) return;
+	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return;
+	if( m_selectionModel->currentIndex().parent() == sceneModelView->rootIndex() ) return;
+
+	CmdCut* command = new CmdCut( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
 	m_document->SetDocumentModified( true );
 }
 
 /*!
- * Changes selected node to the node with \a nodeUrl. If model does not contains a node with defined url,
- * the selection will be null.
+ * If there \a nodeURL is a valid node url and this node is not the root node, cuts current selected node from the model. Otherwise, nothing is done.
  */
-void MainWindow::ChangeSelection( QString nodeUrl )
+void MainWindow::Cut( QString nodeURL )
 {
-	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
-	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
+
+	if( !nodeIndex.isValid() )	return;
+	if( nodeIndex == sceneModelView->rootIndex() ) return;
+	if( nodeIndex.parent() == sceneModelView->rootIndex() ) return;
+
+	CmdCut* command = new CmdCut( nodeIndex, m_coinNode_Buffer, m_sceneModel );
+	m_commandStack->push( command );
+
+	m_document->SetDocumentModified( true );
+
+}
+
+/*!
+ * * Deletes selected node if there is a valid node to delete.
+ */
+void MainWindow::Delete( )
+{
+	if( !m_selectionModel->hasSelection() ) return;
+	Delete( m_selectionModel->currentIndex() );
+	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
+
+}
+
+/*!
+ * Creates a new delete command, where the node with the \a nodeURL was deleted.
+ *
+ * If \a nodeURL is not a valid node url, nothing is done.
+ */
+void MainWindow::Delete( QString nodeURL )
+{
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
+	if( !nodeIndex.isValid() )	return;
+	Delete( nodeIndex );
+	if( m_selectionModel->isSelected ( nodeIndex ) ) m_selectionModel->clearSelection();
+
 }
 
 /*!
@@ -1396,10 +1506,10 @@ void MainWindow::ChangeSelection( QString nodeUrl )
 void MainWindow::InsertFileComponent( QString componentFileName )
 {
 	QModelIndex parentIndex;
-	if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex() ) )
-			parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
+	if (( !sceneModelView->currentIndex().isValid() ) || ( sceneModelView->currentIndex() == sceneModelView->rootIndex() ) )
+			parentIndex = m_sceneModel->index (0,0,sceneModelView->rootIndex());
 	else
-		parentIndex = m_treeView->currentIndex();
+		parentIndex = sceneModelView->currentIndex();
 
 	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
 	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
@@ -1442,10 +1552,10 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 void MainWindow::InsertUserDefinedComponent()
 {
 	QModelIndex parentIndex;
-	 if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex() ) )
-		 parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
+	 if (( !sceneModelView->currentIndex().isValid() ) || ( sceneModelView->currentIndex() == sceneModelView->rootIndex() ) )
+		 parentIndex = m_sceneModel->index (0,0,sceneModelView->rootIndex());
 	 else
-		 parentIndex = m_treeView->currentIndex();
+		 parentIndex = sceneModelView->currentIndex();
 
 	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
 
@@ -1497,6 +1607,44 @@ void MainWindow::OpenRecentFile()
         	StartOver( fileName );
         }
     }
+}
+
+/*!
+ * Inserts a new node as a \a nodeURL node child. The new node is a copy to node saved into the clipboard.
+ * The \a pasteType take "Shared" or "Copied" values.
+ */
+void MainWindow::Paste( QString nodeURL, QString pasteType)
+{
+
+	if( !m_coinNode_Buffer ) return;
+
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
+	if( !nodeIndex.isValid() )	return;
+
+	if( pasteType == QString( "Shared" ) )
+		Paste( nodeIndex, tgc::Shared );
+	else
+		Paste( nodeIndex, tgc::Copied );
+
+}
+
+
+/*!
+ * Inserts a new node as a current node child. The new node is a copy to node saved into the clipboard.
+ */
+void MainWindow::PasteCopy()
+{
+	if( !m_selectionModel->hasSelection() )	return;
+	Paste( m_selectionModel->currentIndex(), tgc::Copied );
+}
+
+/*!
+ * Inserts a new node as a current node child. The new node is a link to node saved into the clipboard.
+ */
+void MainWindow::PasteLink()
+{
+	if( !m_selectionModel->hasSelection() )	return;
+	Paste( m_selectionModel->currentIndex(), tgc::Shared );
 }
 
 /*!
@@ -1596,9 +1744,9 @@ bool MainWindow::SaveAs()
 bool MainWindow::SaveComponent()
 {
     if( !m_selectionModel->hasSelection() ) return false;
-    if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
+    if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return false;
 
-    QModelIndex componentIndex = m_treeView->currentIndex();
+    QModelIndex componentIndex = sceneModelView->currentIndex();
 
     SoNode* coinNode = m_sceneModel->NodeFromIndex( componentIndex )->GetNode();
 
@@ -1673,7 +1821,7 @@ void MainWindow::SetRaysPerIteration( unsigned long rays )
 void MainWindow::SoTransform_to_SoCenterballManip()
 {
 	//Transform to a SoCenterballManip manipulator
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1699,7 +1847,7 @@ void MainWindow::SoTransform_to_SoCenterballManip()
 void MainWindow::SoTransform_to_SoJackManip()
 {
 	//Transform to a SoJackManip manipulator
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1725,7 +1873,7 @@ void MainWindow::SoTransform_to_SoJackManip()
 void MainWindow::SoTransform_to_SoHandleBoxManip()
 {
 	//Transform to a SoHandleBoxManip manipulator
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1751,7 +1899,7 @@ void MainWindow::SoTransform_to_SoHandleBoxManip()
 void MainWindow::SoTransform_to_SoTabBoxManip()
 {
 	//Transform to a SoTabBoxManip manipulator
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1777,7 +1925,7 @@ void MainWindow::SoTransform_to_SoTabBoxManip()
 void MainWindow::SoTransform_to_SoTrackballManip()
 {
 	//Transform to a SoTrackballManip manipulator
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1803,7 +1951,7 @@ void MainWindow::SoTransform_to_SoTrackballManip()
 void MainWindow::SoTransform_to_SoTransformBoxManip()
 {
 	//Transform to a SoTransformBoxManip manipulator
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1830,7 +1978,7 @@ void MainWindow::SoTransform_to_SoTransformBoxManip()
 void MainWindow::SoTransform_to_SoTransformerManip()
 {
 	//Transform to a SoTransformerManip manipulator
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1858,7 +2006,7 @@ void MainWindow::SoTransform_to_SoTransformerManip()
 void MainWindow::SoManip_to_SoTransform()
 {
 	//Transform manipulator to a SoTransform
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
@@ -1923,6 +2071,102 @@ void MainWindow::ChangeSelection( const QModelIndex& current )
 	}
 }
 
+
+/*!
+ * Creates a material node from the \a pTMaterialFactory as current selected node child.
+ *
+ * If the current node is not a surface type node, the material node will not be created.
+ */
+void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
+{
+	QModelIndex parentIndex = ( (! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex() ) ) ?
+								m_sceneModel->index( 0, 0, sceneModelView->rootIndex( )):
+								sceneModelView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
+
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
+
+    if ( material )
+    {
+    	QMessageBox::information( this, "Tonatiuh Action",
+	                          "This TShapeKit already contains a material node", 1);
+	    return;
+    }
+
+	material = pTMaterialFactory->CreateTMaterial();
+    QString typeName = pTMaterialFactory->TMaterialName();
+    material->setName( typeName.toStdString().c_str() );
+
+    CmdInsertMaterial* createMaterial = new CmdInsertMaterial( shapeKit, material, m_sceneModel );
+    QString commandText = QString( "Create Material: %1").arg( pTMaterialFactory->TMaterialName().toLatin1().constData() );
+    createMaterial->setText(commandText);
+    m_commandStack->push( createMaterial );
+
+    m_document->SetDocumentModified( true );
+}
+
+/*!
+ * Creates a shape node from the \a pTShapeFactory as current selected node child.
+ *
+ * If the current node is not a surface type node, the shape node will not be created.
+ */
+void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
+{
+    QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
+								m_sceneModel->index (0,0,sceneModelView->rootIndex()) : sceneModelView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
+
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
+
+    if (shape)
+    {
+    	QMessageBox::information( this, "Tonatiuh Action",
+	                          "This TShapeKit already contains a shape", 1);
+    }
+    else
+    {
+    	shape = pTShapeFactory->CreateTShape();
+    	shape->setName( pTShapeFactory->TShapeName().toStdString().c_str() );
+        CmdInsertShape* createShape = new CmdInsertShape( shapeKit, shape, m_sceneModel );
+        QString commandText = QString( "Create Shape: %1" ).arg( pTShapeFactory->TShapeName().toLatin1().constData());
+        createShape->setText( commandText );
+        m_commandStack->push( createShape );
+
+        m_document->SetDocumentModified( true );
+    }
+}
+
+
+/*!
+ * Creates a shape node from the \a pTTrackerFactory as current selected node child.
+ *
+ */
+void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
+{
+	QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
+									m_sceneModel->index (0,0,sceneModelView->rootIndex()):
+									sceneModelView->currentIndex();
+
+	SoSceneKit* scene = m_document->GetSceneKit();
+
+	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
+	tracker->SetSceneKit( scene );
+
+	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
+	m_commandStack->push( command );
+
+	m_document->SetDocumentModified( true );
+}
+
+
 //for treeview signals
 void MainWindow::mousePressEvent( QMouseEvent * e )
 {
@@ -1960,7 +2204,7 @@ void MainWindow::mousePressEvent( QMouseEvent * e )
 
 void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelIndex& node)
 {
-	if( node == m_treeView->rootIndex() ) return;
+	if( node == sceneModelView->rootIndex() ) return;
 
 	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
 	SoNode* coinNode = nodeInstnace->GetNode();
@@ -1993,6 +2237,10 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 }
 
 //for sunposdialog signals
+/*!
+ * Changes the light position to the position computed from \a time, \a longitude and \a latitude.
+ * The \a time is ut time and \a longitude and \a latitude are defined in degrees.
+ */
 void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double latitude )
 {
 	SoSceneKit* coinScene = m_document->GetSceneKit();
@@ -2051,58 +2299,6 @@ bool MainWindow::OkToContinue()
 }
 
 /*!
- * Returns to the start origin state and starts with a new model defined in \a fileName.
- * If the file name is not defined, it starts with an empty scene.
- */
-bool MainWindow::StartOver( const QString& fileName )
-{
-
-	//m_selectionModel->setCurrentIndex( m_treeView->rootIndex(), QItemSelectionModel::ClearAndSelect );
-	actionDisplay_rays->setEnabled( false );
-	actionDisplay_rays->setChecked( false );
-
-	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
-
-	if( m_pRays )
-	{
-		m_pRays->removeAllChildren();
-		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("StartOver: m_pRays referenced in excess ");
-		m_pRays->unref();
-		m_pRays = 0;
-	}
-
-	m_commandStack->clear();
-	m_sceneModel->Clear();
-
-	SetSunPositionCalculatorEnabled( 0 );
-
-	QStatusBar* statusbar = new QStatusBar;
-	setStatusBar( statusbar );
-
-    if( fileName.isEmpty() )
-    {
-    	m_document->New();
-    	statusbar->showMessage( tr( "New file" ), 2000 );
-    }
-    else
-    {
-    	if( !m_document->ReadFile( fileName ) )
-		{
-			statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
-			return false;
-		}
-       statusbar->showMessage( tr( "File loaded" ), 2000 );
-    }
-
-    SetCurrentFile( fileName );
-	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-	m_selectionModel->setCurrentIndex( m_treeView->rootIndex(), QItemSelectionModel::ClearAndSelect );
-
-
-    return true;
-}
-
-/*!
  * Returns \a true if the tonatiuh model is correctly saved into the the given \a fileName. Otherwise, returns \a false.
  *
  * \sa Save, SaveAs.
@@ -2117,180 +2313,6 @@ bool MainWindow::SaveFile( const QString& fileName )
 
 	SetCurrentFile( fileName );
 	statusBar()->showMessage( tr( "File saved" ), 2000 );
-	return true;
-}
-
-bool MainWindow::Copy( )
-{
-	if( !m_selectionModel->hasSelection() ) return false;
-	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
-	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
-
-
-	CmdCopy* command = new CmdCopy( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
-	m_commandStack->push( command );
-
-	m_document->SetDocumentModified( true );
-	return true;
-}
-
-/*!
- * Creates a new \a type paste command. The clipboard node was inerted as selected node
- * child.
- *
- * Returns \a true if the node was successfully pasted, otherwise returns \a false.
- */
-bool MainWindow::Paste( tgc::PasteType type )
-{
-	if( !m_selectionModel->hasSelection() ) return false;
-	if( !m_coinNode_Buffer ) return false;
-
-	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
-	SoNode* selectedCoinNode = ancestor->GetNode();
-
-	if ( !selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) return false;
-	if ( ( selectedCoinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
-	( m_coinNode_Buffer->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) )	return false;
-
-	if( ancestor->GetNode() == m_coinNode_Buffer)  return false;
-	while( ancestor->GetParent() )
-	{
-		if(ancestor->GetParent()->GetNode() == m_coinNode_Buffer )	return false;
-		ancestor = ancestor->GetParent();
-	}
-
-	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
-	m_commandStack->push( commandPaste );
-
-	/*QString nodeName( m_coinNode_Buffer->getName().getString() );
-	int count = 1;
-	QString newName = nodeName;
-	while ( !m_sceneModel->SetNodeName( *m_coinNode_Buffer, newName ) )
-	{
-		count++;
-		newName = QString( "%1_copy%2").arg( nodeName, QString::number( count) );
-	}*/
-
-
-	m_document->SetDocumentModified( true );
-	return true;
-
-}
-
-/*!
- * Creates a new delete command, where the selected node was deleted.
- * child.
- *
- * Returns \a true if the node was successfully deleted, otherwise returns \a false.
- */
-bool MainWindow::Delete( )
-{
-	if( !m_selectionModel->hasSelection() ) return false;
-	if( !m_selectionModel->currentIndex().isValid()) return false;
-	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
-	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( m_selectionModel->currentIndex() );
-	SoNode* coinNode = instanceNode->GetNode();
-
-	if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )
-	{
-		CmdDeleteTracker* commandDelete = new CmdDeleteTracker( m_selectionModel->currentIndex(), m_document->GetSceneKit(), *m_sceneModel );
-		m_commandStack->push( commandDelete );
-	}
-	else
-	{
-		CmdDelete* commandDelete = new CmdDelete( m_selectionModel->currentIndex(), *m_sceneModel );
-		m_commandStack->push( commandDelete );
-	}
-	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
-	m_document->SetDocumentModified( true );
-
-	return true;
-}
-
-/*!
- * Creates a new group node as a selected node child.
- */
-
-void MainWindow::CreateGroupNode()
-{
-	QModelIndex parentIndex;
-	if (( !m_treeView->currentIndex().isValid() ) || ( m_treeView->currentIndex() == m_treeView->rootIndex()))
-		parentIndex = m_sceneModel->index (0,0,m_treeView->rootIndex());
-	else
-		parentIndex = m_treeView->currentIndex();
-
-	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	if( !parentInstance ) return;
-
-	SoNode* coinNode = parentInstance->GetNode();
-	if( !coinNode ) return;
-
-
-	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		TSeparatorKit* separatorKit = new TSeparatorKit();
-
-		CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( separatorKit, QPersistentModelIndex(parentIndex), m_sceneModel );
-		cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
-		m_commandStack->push( cmdInsertSeparatorKit );
-
-		int count = 1;
-		QString nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
-		while ( !m_sceneModel->SetNodeName( separatorKit, nodeName ) )
-		{
-			count++;
-			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
-		}
-
-		m_document->SetDocumentModified( true );
-
-	}
-}
-
-void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
-{
-	QModelIndex parentIndex = ( (! m_treeView->currentIndex().isValid() ) || (m_treeView->currentIndex() == m_treeView->rootIndex() ) ) ?
-								m_sceneModel->index( 0, 0, m_treeView->rootIndex( )):
-								m_treeView->currentIndex();
-
-	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	SoNode* parentNode = parentInstance->GetNode();
-	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
-
-	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
-	TMaterial* material = static_cast< TMaterial* >( shapeKit->getPart( "material", false ) );
-
-    if ( material )
-    {
-    	QMessageBox::information( this, "Tonatiuh Action",
-	                          "This TShapeKit already contains a material node", 1);
-	    return;
-    }
-
-	material = pTMaterialFactory->CreateTMaterial();
-    QString typeName = pTMaterialFactory->TMaterialName();
-    material->setName( typeName.toStdString().c_str() );
-
-    CmdInsertMaterial* createMaterial = new CmdInsertMaterial( shapeKit, material, m_sceneModel );
-    QString commandText = QString( "Create Material: %1").arg( pTMaterialFactory->TMaterialName().toLatin1().constData() );
-    createMaterial->setText(commandText);
-    m_commandStack->push( createMaterial );
-
-    m_document->SetDocumentModified( true );
-}
-
-bool MainWindow::Cut()
-{
-	if( !m_selectionModel->hasSelection() ) return false;
-	if( m_selectionModel->currentIndex() == m_treeView->rootIndex() ) return false;
-	if( m_selectionModel->currentIndex().parent() == m_treeView->rootIndex() ) return false;
-
-	CmdCut* command = new CmdCut( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
-	m_commandStack->push( command );
-
-	m_document->SetDocumentModified( true );
 	return true;
 }
 
@@ -2309,57 +2331,6 @@ void MainWindow::SetCurrentFile( const QString& fileName )
 	}
 
 	setWindowTitle( tr( "%1[*] - %2" ).arg( shownName ).arg( tr( "Tonatiuh" ) ) );
-}
-
-QString MainWindow::StrippedName( const QString& fullFileName )
-{
-	return QFileInfo( fullFileName ).fileName();
-}
-
-void MainWindow::UpdateRecentFileActions()
-{
-	QMutableStringListIterator iterator( m_recentFiles );
-	while ( iterator.hasNext() )
-	{
-		if ( !QFile::exists( iterator.next() ) ) iterator.remove();
-	}
-
-	for ( int j = 0; j < m_maxRecentFiles; ++j )
-	{
-		if ( j < m_recentFiles.count() )
-		{
-			QString text = tr( "&%1 %2" )
-			               .arg( j + 1 )
-			               .arg( StrippedName( m_recentFiles[j] ) );
-			m_recentFileActions[j]->setText( text );
-			m_recentFileActions[j]->setData( m_recentFiles[j] );
-			m_recentFileActions[j]->setVisible( true );
-		}
-		else m_recentFileActions[j]->setVisible( false );
-	}
-}
-
-/**
- * Saves application settings.
- **/
-void MainWindow::WriteSettings()
-{
-	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
-	settings.setValue( "geometry", geometry() );
-
-	Qt::WindowStates states = windowState();
-	if( states.testFlag( Qt::WindowNoState ) )	settings.setValue( "windowNoState", true );
-	else	settings.setValue( "windowNoState", false );
-	if( states.testFlag( Qt::WindowMinimized ) )	settings.setValue( "windowMinimized", true );
-	else	settings.setValue( "windowMinimized", false );
-	if( states.testFlag( Qt::WindowMaximized ) )	settings.setValue( "windowMaximized", true );
-	else	settings.setValue( "windowMaximized", false );
-	if( states.testFlag( Qt::WindowFullScreen ) )	settings.setValue( "windowFullScreen", true );
-	else	settings.setValue( "windowFullScreen", false );
-	if( states.testFlag( Qt::WindowActive ) )	settings.setValue( "windowActive", true );
-	else	settings.setValue( "windowActive", false );
-
-    settings.setValue( "recentFiles", m_recentFiles );
 }
 
 /**
@@ -2396,69 +2367,6 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
 
 	m_sceneModel->UpdateSceneModel();
 }
-
-/**
- * Compute a map with the InstanceNodes of sub-tree with top node \a instanceNode.
- *
- *The map stores for each InstanceNode its BBox and its transform in global coordinates.
- **/
-/*void MainWindow::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
-{
-
-	if( !instanceNode ) return;
-	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
-	if( !coinNode ) return;
-
-	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		SoTransform* nodeTransform = static_cast< SoTransform* >(coinNode->getPart( "transform", true ) );
-		Transform objectToWorld = tgf::TransformFromSoTransform( nodeTransform );
-		Transform worldToObject = objectToWorld.GetInverse();
-
-		BBox nodeBB;
-		Transform nodeWTO(worldToObject * parentWTO );
-		instanceNode->SetIntersectionTransform( nodeWTO );
-
-		for( int index = 0; index < instanceNode->children.count() ; ++index )
-		{
-			InstanceNode* childInstance = instanceNode->children[index];
-			ComputeSceneTreeMap(childInstance, nodeWTO );
-
-			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
-		}
-
-		instanceNode->SetIntersectionBBox( nodeBB );
-
-	}
-	else
-	{
-		Transform shapeTransform = parentWTO;
-		Transform shapeToWorld = shapeTransform.GetInverse();
-		BBox shapeBB;
-
-		if(  instanceNode->children.count() > 0 )
-		{
-			InstanceNode* shapeInstance = 0;
-			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-				shapeInstance =  instanceNode->children[0];
-			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
-
-			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-			coinNode->getBoundingBox( bbAction );
-
-			SbBox3f box = bbAction->getXfBoundingBox().project();
-			delete bbAction;
-
-			SbVec3f pMin = box.getMin();
-			SbVec3f pMax = box.getMax();
-			shapeBB = shapeToWorld( BBox( Point3D( pMin[0],pMin[1],pMin[2]), Point3D( pMax[0],pMax[1],pMax[2]) ) );
-		}
-		instanceNode->SetIntersectionTransform( shapeTransform );
-
-		instanceNode->SetIntersectionBBox( shapeBB );
-	}
-
-}*/
 
 void MainWindow::StartManipulation( SoDragger* dragger )
 {
@@ -2507,7 +2415,7 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 
 void MainWindow::FinishManipulation( )
 {
-	QModelIndex currentIndex = m_treeView->currentIndex();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( m_sceneModel->NodeFromIndex(currentIndex)->GetNode() );
 
 	CmdParameterModified* parameterModified;
@@ -2518,6 +2426,9 @@ void MainWindow::FinishManipulation( )
 
 }
 
+/*!
+ * Creates a \a xDimension by \a zDimension grid and shows in the 3D view. Each grid cell is a \a xSpacing x \a zSpacing.
+ */
 SoSeparator* MainWindow::CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing )
 {
 
@@ -2577,4 +2488,181 @@ SoSeparator* MainWindow::CreateGrid( int xDimension, int zDimension, double xSpa
     delete[] lines;
 	return grid;
 
+}
+
+
+/*!
+ * Creates a toolbar for insert material actions.
+ */
+QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
+{
+	QToolBar* pMaterialsToolBar = new QToolBar( pMaterialsMenu );
+	if (! pMaterialsToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pMaterialsToolBar" );
+	pMaterialsToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
+	pMaterialsToolBar->setOrientation( Qt::Horizontal );
+	pMaterialsToolBar->setWindowTitle( QLatin1String( "Materials" ) );
+	addToolBar( pMaterialsToolBar );
+	return pMaterialsToolBar;
+}
+
+/*!
+ * Creates a toolbar for insert trackers actions.
+ */
+QToolBar* MainWindow::CreateTrackerTooBar( QMenu* pTrackersMenu )
+{
+	QToolBar* pTrackersToolBar = new QToolBar( pTrackersMenu );
+	if (! pTrackersToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pTrackersToolBar" );
+	pTrackersToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
+	pTrackersToolBar->setOrientation( Qt::Horizontal );
+	pTrackersToolBar->setWindowTitle( QLatin1String( "Trackers" ) );
+	addToolBar( pTrackersToolBar );
+	return pTrackersToolBar;
+}
+
+/*!
+ * Creates a new delete command, where the \a index node was deleted.
+  *
+ * Returns \a true if the node was successfully deleted, otherwise returns \a false.
+ */
+bool MainWindow::Delete( QModelIndex index )
+{
+
+	if( !index.isValid()) return false;
+	if( index == sceneModelView->rootIndex() ) return false;
+	if( index.parent() == sceneModelView->rootIndex() ) return false;
+
+	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex( index );
+	SoNode* coinNode = instanceNode->GetNode();
+
+	if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) )
+	{
+		CmdDeleteTracker* commandDelete = new CmdDeleteTracker( index, m_document->GetSceneKit(), *m_sceneModel );
+		m_commandStack->push( commandDelete );
+	}
+	else
+	{
+		CmdDelete* commandDelete = new CmdDelete( index, *m_sceneModel );
+		m_commandStack->push( commandDelete );
+	}
+	//if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
+	m_document->SetDocumentModified( true );
+
+	return true;
+}
+
+/*!
+ * Return horizontalSplitter splitter object.
+ */
+QSplitter* MainWindow::GetHorizontalSplitterPointer()
+{
+    QSplitter* pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
+    if( !pSplitter ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: splitter not found" );
+    return pSplitter;
+}
+
+/*!
+ * Returns to the start origin state and starts with a new model defined in \a fileName.
+ * If the file name is not defined, it starts with an empty scene.
+ */
+bool MainWindow::StartOver( const QString& fileName )
+{
+	actionDisplayRays->setEnabled( false );
+	actionDisplayRays->setChecked( false );
+
+	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
+
+	if( m_pRays )
+	{
+		m_pRays->removeAllChildren();
+		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("StartOver: m_pRays referenced in excess ");
+		m_pRays->unref();
+		m_pRays = 0;
+	}
+
+	m_commandStack->clear();
+	m_sceneModel->Clear();
+
+	SetSunPositionCalculatorEnabled( 0 );
+
+	QStatusBar* statusbar = new QStatusBar;
+	setStatusBar( statusbar );
+
+    if( fileName.isEmpty() )
+    {
+    	m_document->New();
+    	statusbar->showMessage( tr( "New file" ), 2000 );
+    }
+    else
+    {
+    	if( !m_document->ReadFile( fileName ) )
+		{
+			statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
+			return false;
+		}
+       statusbar->showMessage( tr( "File loaded" ), 2000 );
+    }
+
+    SetCurrentFile( fileName );
+	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
+	m_selectionModel->setCurrentIndex( sceneModelView->rootIndex(), QItemSelectionModel::ClearAndSelect );
+
+
+    return true;
+}
+
+/*!
+ * Returns the \a fullFileName file´s name, without path.
+ */
+QString MainWindow::StrippedName( const QString& fullFileName )
+{
+	return QFileInfo( fullFileName ).fileName();
+}
+
+/*!
+ * Updates the recently opened files actions list.
+ */
+void MainWindow::UpdateRecentFileActions()
+{
+	QMutableStringListIterator iterator( m_recentFiles );
+	while ( iterator.hasNext() )
+	{
+		if ( !QFile::exists( iterator.next() ) ) iterator.remove();
+	}
+
+	for ( int j = 0; j < m_maxRecentFiles; ++j )
+	{
+		if ( j < m_recentFiles.count() )
+		{
+			QString text = tr( "&%1 %2" )
+			               .arg( j + 1 )
+			               .arg( StrippedName( m_recentFiles[j] ) );
+			m_recentFileActions[j]->setText( text );
+			m_recentFileActions[j]->setData( m_recentFiles[j] );
+			m_recentFileActions[j]->setVisible( true );
+		}
+		else m_recentFileActions[j]->setVisible( false );
+	}
+}
+
+/*!
+ * Saves application settings.
+ */
+void MainWindow::WriteSettings()
+{
+	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+	settings.setValue( "geometry", geometry() );
+
+	Qt::WindowStates states = windowState();
+	if( states.testFlag( Qt::WindowNoState ) )	settings.setValue( "windowNoState", true );
+	else	settings.setValue( "windowNoState", false );
+	if( states.testFlag( Qt::WindowMinimized ) )	settings.setValue( "windowMinimized", true );
+	else	settings.setValue( "windowMinimized", false );
+	if( states.testFlag( Qt::WindowMaximized ) )	settings.setValue( "windowMaximized", true );
+	else	settings.setValue( "windowMaximized", false );
+	if( states.testFlag( Qt::WindowFullScreen ) )	settings.setValue( "windowFullScreen", true );
+	else	settings.setValue( "windowFullScreen", false );
+	if( states.testFlag( Qt::WindowActive ) )	settings.setValue( "windowActive", true );
+	else	settings.setValue( "windowActive", false );
+
+    settings.setValue( "recentFiles", m_recentFiles );
 }

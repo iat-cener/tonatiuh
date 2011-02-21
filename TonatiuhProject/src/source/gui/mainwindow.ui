@@ -47,7 +47,7 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="SceneModelView" name="treeView">
+       <widget class="SceneModelView" name="sceneModelView">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -64,7 +64,7 @@
          <bool>true</bool>
         </property>
         <property name="dragDropMode">
-         <enum>QAbstractItemView::InternalMove</enum>
+         <enum>QAbstractItemView::DragDrop</enum>
         </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
@@ -106,8 +106,8 @@
     <addaction name="separator"/>
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
-    <addaction name="actionPaste_Copy"/>
-    <addaction name="actionPaste_Link"/>
+    <addaction name="actionPasteCopy"/>
+    <addaction name="actionPasteLink"/>
     <addaction name="actionDelete"/>
    </widget>
    <widget class="QMenu" name="menuFile">
@@ -196,7 +196,7 @@
      <string>&amp;Ray Trace</string>
     </property>
     <addaction name="actionRun"/>
-    <addaction name="actionDisplay_rays"/>
+    <addaction name="actionDisplayRays"/>
     <addaction name="actionExport_PhotonMap"/>
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
@@ -266,8 +266,8 @@
    <addaction name="separator"/>
    <addaction name="actionCut"/>
    <addaction name="actionCopy"/>
-   <addaction name="actionPaste_Copy"/>
-   <addaction name="actionPaste_Link"/>
+   <addaction name="actionPasteCopy"/>
+   <addaction name="actionPasteLink"/>
    <addaction name="actionDelete"/>
   </widget>
   <widget class="QToolBar" name="raytraceToolBar">
@@ -418,13 +418,16 @@
     <string>Ctrl+C</string>
    </property>
   </action>
-  <action name="actionPaste_Copy">
+  <action name="actionPasteCopy">
    <property name="icon">
     <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Paste</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste a clipboard node copy</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+V</string>
@@ -474,7 +477,7 @@
     <string>Group Node</string>
    </property>
   </action>
-  <action name="actionDisplay_rays">
+  <action name="actionDisplayRays">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -488,13 +491,16 @@
     <string>Display rays</string>
    </property>
   </action>
-  <action name="actionPaste_Link">
+  <action name="actionPasteLink">
    <property name="icon">
     <iconset resource="../../tonatiuh.qrc">
      <normaloff>:/icons/paste_link.png</normaloff>:/icons/paste_link.png</iconset>
    </property>
    <property name="text">
     <string>Paste Link</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste a link to the clipboard node</string>
    </property>
   </action>
   <action name="actionDelete">
