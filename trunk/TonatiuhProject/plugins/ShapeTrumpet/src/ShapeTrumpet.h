@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 #include "TShape.h"
 
+class SoFieldSensor;
 class SoSensor;
 class Vector3D;
 
@@ -101,6 +102,11 @@ private:
 	double m_lastTruncationHeightValue;
 	double m_lastZLengthXMinValue;
 	double m_lastZLengthXMaxValue;
+
+	SoFieldSensor* m_apertureSensor;
+	SoFieldSensor* m_fHSensor;
+	SoFieldSensor* m_heightSensor;
+	SoFieldSensor* m_truncationSensor;
 };
 
 #endif /* SHAPETRUMPET_H_ */
