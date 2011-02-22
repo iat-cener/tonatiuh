@@ -183,8 +183,8 @@ void TLightKit::ResizeToBBox( BBox box )
 	Point3D sMin = shapeBB.pMin;
 	Point3D sMax = shapeBB.pMax;
 
-	double xScaleFactor  = distance.getValue() * 0.01 + std::max( fabs( localBox.pMin.x/sMin.x ), fabs( localBox.pMax.x/sMax.x ) );
-	double zScaleFactor  = distance.getValue() * 0.01 +  std::max( fabs( localBox.pMin.z/sMin.z ), fabs( localBox.pMax.z/sMax.z ) );
+	double xScaleFactor  = distance.getValue() * 0.1 + std::max( fabs( localBox.pMin.x/sMin.x ), fabs( localBox.pMax.x/sMax.x ) );
+	double zScaleFactor  = distance.getValue() * 0.1 +  std::max( fabs( localBox.pMin.z/sMin.z ), fabs( localBox.pMax.z/sMax.z ) );
 
 	lightTransform->scaleFactor.setValue( xScaleFactor, 1, zScaleFactor );
 

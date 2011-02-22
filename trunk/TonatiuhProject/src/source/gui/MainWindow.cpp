@@ -200,7 +200,12 @@ m_focusView( 0 )
  */
 MainWindow::~MainWindow()
 {
+    delete m_pluginManager;
+    delete m_updateManager;
+    delete m_sceneModel;
 	delete m_document;
+	delete m_commandStack;
+	delete m_commandView;
 	delete m_rand;
 	delete[] m_recentFileActions;
 	delete m_photonMap;

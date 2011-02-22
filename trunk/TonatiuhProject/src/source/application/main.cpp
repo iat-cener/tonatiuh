@@ -124,6 +124,8 @@ int main( int argc, char ** argv )
     splash->finish( mw );
     delete splash;
 
+    int exit = a.exec();
+    delete mw;
 
-	return a.exec();
+	return exit;
 }

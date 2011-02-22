@@ -53,17 +53,20 @@ void updateItem(void *data, SoSensor* )
 }
 
 ParametersItem::ParametersItem( QString text,  bool editable, SoField* field  )
-:QStandardItem( text ), m_pField( field ), m_text( text )
+:QStandardItem( text ),
+ m_pField( field ),
+ m_pFieldSensor( 0 ),
+ m_text( text )
 {
  	setEditable (editable );
- 	SoFieldSensor* sensor = new SoFieldSensor(updateItem, this);
- 	sensor->attach( m_pField );
+ 	m_pFieldSensor = new SoFieldSensor(updateItem, this);
+ 	m_pFieldSensor->attach( m_pField );
 
 }
 
 ParametersItem::~ParametersItem()
 {
-
+	delete m_pFieldSensor;
 }
 
 QVariant ParametersItem::data ( int role ) const
