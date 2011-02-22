@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -167,6 +167,7 @@ protected:
 
 protected slots:
 	void CalculateSunPosition();
+	void ChangeNodeName( const QModelIndex& index, const QString& newName);
     void ChangeSelection( const QModelIndex & current );
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
@@ -174,7 +175,6 @@ protected slots:
 	void DefineSunLight();
 	void DisplayRays( bool display );
 	void Redo();
-    //void SetNodeName( QWidget* editor );
 	void ShowCommandView();
     void ShowMenu( const QModelIndex& index );
 	void Undo();

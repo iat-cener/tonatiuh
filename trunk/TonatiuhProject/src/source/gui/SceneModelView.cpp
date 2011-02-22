@@ -35,8 +35,13 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
- 
-#include <QtGui>
+
+#include <QApplication>
+#include <QLineEdit>
+#include <QMouseEvent>
+
+#include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
 
 #include "InstanceNode.h"
 #include "SceneModelView.h"
@@ -44,16 +49,18 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
 
-#include <Inventor/nodekits/SoBaseKit.h> 
-#include <Inventor/nodekits/SoNodeKitListPart.h> 
-
-
 /**
  * Creates a new view for a model. This
  */
-SceneModelView::SceneModelView(QWidget *parent)
-    : QTreeView(parent)
+SceneModelView::SceneModelView( QWidget *parent )
+: QTreeView(parent),
+  m_currentIndex( ),
+  m_iteimsDelegate( 0 )
 {
+
+	m_iteimsDelegate = new NodeNameDelegate( );
+	setItemDelegate( m_iteimsDelegate );
+
     setAcceptDrops(true);
 
 	connect( this, SIGNAL( collapsed( const QModelIndex& ) ),
@@ -61,6 +68,14 @@ SceneModelView::SceneModelView(QWidget *parent)
 	connect( this, SIGNAL( expanded ( const QModelIndex& ) ),
 			this, SLOT ( resizeViewToContents ( const QModelIndex& ) ) );
 
+}
+
+/*!
+ * Destoryes view object.
+ */
+SceneModelView::~SceneModelView( )
+{
+	delete m_iteimsDelegate;
 }
 
 /**
@@ -86,7 +101,7 @@ void SceneModelView::mouseMoveEvent(QMouseEvent *event)
 {
 	if (event->buttons() & Qt::LeftButton) {
         int distance = (event->pos() - startPos).manhattanLength();
-        if (distance >= QApplication::startDragDistance())
+        if( distance >= QApplication::startDragDistance() )
             startDrag(event);
     }
    // QTreeView::mouseMoveEvent(event);
@@ -173,6 +188,26 @@ void SceneModelView::dropEvent(QDropEvent *event)
     }
 
 }
+
+
+/*!
+ * Sets \a current as the view current element index.
+ */
+void SceneModelView::currentChanged( const QModelIndex& current, const QModelIndex& /*previous*/ )
+{
+	m_currentIndex = current;
+}
+
+void SceneModelView::closeEditor( QWidget* editor, QAbstractItemDelegate::EndEditHint hint )
+{
+
+	QLineEdit* textEdit = qobject_cast<QLineEdit *>(editor);
+	QString	newValue = textEdit->text();
+
+	 emit nodeNameModificated( m_currentIndex, newValue );
+	 QTreeView::closeEditor( editor, hint );
+}
+
 
 /**
  * Resizes the view to the size of its contents.

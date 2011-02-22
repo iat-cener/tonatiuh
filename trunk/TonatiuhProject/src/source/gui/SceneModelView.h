@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
@@ -41,16 +41,20 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QTreeView>
 
+#include "NodeNameDelegate.h"
+
 class SceneModelView : public QTreeView
 {
     Q_OBJECT
 
 public:
     SceneModelView(QWidget *parent = 0);
+    ~SceneModelView( );
 
 signals:
 	void dragAndDrop(const QModelIndex& newParent, const QModelIndex& item);
 	void dragAndDropCopy(const QModelIndex& newParent, const QModelIndex& item);
+	void nodeNameModificated( const QModelIndex& index, const QString& newName );
 	void showMenu( const QModelIndex& index );
 	
 protected:
@@ -61,11 +65,17 @@ protected:
     void dropEvent(QDropEvent *event);
 
 protected slots:
+	void currentChanged ( const QModelIndex & current, const QModelIndex & previous );
+	void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
 	void resizeViewToContents( const QModelIndex& index );
+
+protected slots:
 
 private:
     void startDrag(QMouseEvent *event);
     
+    QModelIndex m_currentIndex;
+    NodeNameDelegate* m_iteimsDelegate;
     QPoint startPos;
     
 };
