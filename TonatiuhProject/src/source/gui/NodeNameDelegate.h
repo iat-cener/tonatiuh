@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
@@ -53,18 +53,14 @@ class NodeNameDelegate : public QItemDelegate
 	Q_OBJECT
 
 public:
-	NodeNameDelegate( SceneModel* sceneModel, QObject* parent = 0 );
+	NodeNameDelegate( QObject* parent = 0 );
 	~NodeNameDelegate();
 	
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                            const QModelIndex &index) const;
                            
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model,
-                       const QModelIndex &index) const;
-	
-private: 
-	SceneModel* m_pModel;
+
 	
 	
 };

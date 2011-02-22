@@ -74,6 +74,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ActionInsertMaterial.h"
 #include "ActionInsertShape.h"
 #include "ActionInsertTracker.h"
+#include "CmdChangeNodeName.h"
 #include "CmdCopy.h"
 #include "CmdCut.h"
 #include "CmdDelete.h"
@@ -94,7 +95,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "LightDialog.h"
 #include "MainWindow.h"
-#include "NodeNameDelegate.h"
 #include "PluginManager.h"
 #include "ProgressUpdater.h"
 #include "RandomDeviate.h"
@@ -690,7 +690,7 @@ void MainWindow::SetupModels()
     m_selectionModel = new QItemSelectionModel( m_sceneModel );
 
     connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ),
-    		         this, SLOT( SetEnabled_SunPositionCalculator( int ) ) );
+    		         this, SLOT( SetSunPositionCalculatorEnabled( int ) ) );
 }
 
 /*!
@@ -718,22 +718,10 @@ void MainWindow::SetupParametersView()
 
 void MainWindow::SetupTreeView()
 {
-	NodeNameDelegate* delegate = new NodeNameDelegate( m_sceneModel );
 
-	connect( delegate, SIGNAL( closeEditor( QWidget* , QAbstractItemDelegate::EndEditHint ) ),
-			 this, SLOT ( SetNodeName( QWidget* ) ) );
-
-	//sceneModelView = GetSceneModelViewPointer();
-	sceneModelView->setItemDelegate( delegate );
 	sceneModelView->setModel( m_sceneModel );
 	sceneModelView->setSelectionModel( m_selectionModel );
-	//sceneModelView->setDragEnabled(true);
-	//sceneModelView->setAcceptDrops(true);
-	//sceneModelView->setDropIndicatorShown(true);
-	//sceneModelView->setDragDropMode(QAbstractItemView::DragDrop);
-	//sceneModelView->setSelectionMode(QAbstractItemView::SingleSelection);
-	//sceneModelView->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//sceneModelView->setRootIsDecorated(true);
+
 
 	connect( sceneModelView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
 			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
@@ -741,8 +729,9 @@ void MainWindow::SetupTreeView()
 			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
 	connect( sceneModelView, SIGNAL( showMenu( const QModelIndex& ) ),
 				 this, SLOT ( ShowMenu( const QModelIndex& ) ) );
-	connect( sceneModelView, SIGNAL( doubleClicked ( const QModelIndex& ) ),
-			this, SLOT( ChangeNodeName( const QModelIndex& ) ) );
+	connect( sceneModelView, SIGNAL( nodeNameModificated( const QModelIndex&, const QString& ) ),
+				 this, SLOT ( ChangeNodeName( const QModelIndex&, const QString& ) ) );
+
 }
 
 /*!
@@ -1133,6 +1122,26 @@ void MainWindow::on_actionAbout_triggered()
 			"\nPlease see http://www.gnu.org/licenses/gpl.html for an overview of GPLv3 licensing.\n"
 			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
+}
+
+/*!
+ *
+ */
+void MainWindow::ChangeNodeName( const QModelIndex& index, const QString& newName)
+{
+	if( !index.isValid() )	return;
+
+	InstanceNode* nodeInstance = m_sceneModel->NodeFromIndex( index );
+	if( !nodeInstance ) return;
+	if( ! nodeInstance->GetNode() )	return;
+
+	CmdChangeNodeName* command = new CmdChangeNodeName( index, newName, m_sceneModel );
+	QString commandText = QString( "Node name changed to: %1").arg( newName );
+	command->setText(commandText);
+	m_commandStack->push( command );
+
+	m_document->SetDocumentModified( true );
+
 }
 
 /*!
@@ -2613,7 +2622,7 @@ bool MainWindow::StartOver( const QString& fileName )
 }
 
 /*!
- * Returns the \a fullFileName file´s name, without path.
+ * Returns the \a fullFileName fileï¿½s name, without path.
  */
 QString MainWindow::StrippedName( const QString& fullFileName )
 {
