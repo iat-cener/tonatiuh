@@ -68,7 +68,7 @@ SceneModel::SceneModel( QObject* parent)
  */
 SceneModel::~SceneModel()
 {
-
+	delete m_instanceRoot;
 }
 
 /*!
@@ -330,6 +330,7 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 	            return QVariant::fromValue( pathWrapper );
 
         	}
+        	coinKitPath->unref();
         	return  QVariant();
         }
         if (role == Qt::DecorationRole)
@@ -905,6 +906,8 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 		SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
 		if( !nodePath ) tgf::SevereError( "PathFromIndex Null nodePath." );
 
+		nodePath->ref();
+		delete coinSearch;
 
 		InstanceNode* instanceNode = NodeFromIndex( modelIndex );
 
