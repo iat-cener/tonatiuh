@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeTroughCPC.h"
@@ -112,6 +113,19 @@ ShapeTroughCPC::~ShapeTroughCPC()
 double ShapeTroughCPC::GetArea() const
 {
 	return -1;
+}
+
+BBox ShapeTroughCPC::GetBBox() const
+{
+	double xMin = a.getValue();
+	double xMax =( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(m_thetaMin-m_thetaI) )
+			 / ( 1 - cos(m_thetaMin) ) )- a.getValue();
+	double yMin = 0.0;
+	double yMax = ( 2 * a.getValue() * cos(m_thetaMin-m_thetaI)* (1 + sin(m_thetaI ) ) )/(1 - cos( m_thetaMin ) );
+
+	double zMin = - lengthXMax.getValue() /2;
+	double zMax = lengthXMax.getValue() /2;
+	return BBox( Point3D( xMin, yMin, zMin ), Point3D( xMax, yMax, zMax ) );
 }
 
 QString ShapeTroughCPC::GetIcon() const
@@ -414,15 +428,15 @@ bool ShapeTroughCPC::OutOfRange( double u, double v ) const
 
 void ShapeTroughCPC::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double xMin = a.getValue();
-	double xMax =( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(m_thetaMin-m_thetaI) )
-			 / ( 1 - cos(m_thetaMin) ) )- a.getValue();
-	double yMin = 0.0;
-	double yMax = ( 2 * a.getValue() * cos(m_thetaMin-m_thetaI)* (1 + sin(m_thetaI ) ) )/(1 - cos( m_thetaMin ) );
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+	SbVec3f min, max;
 
-	double zMin = - lengthXMax.getValue() /2;
-	double zMax = lengthXMax.getValue() /2;
-	box.setBounds(SbVec3f( xMin, yMin, zMin ), SbVec3f( xMax, yMax, zMax ) );
+	min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+	max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );
+
+	// Set the box to bound the two extreme points.
+	box.setBounds(min, max);
 }
 
 void ShapeTroughCPC::generatePrimitives(SoAction *action)

@@ -193,17 +193,16 @@ private:
     QToolBar* CreateTrackerTooBar( QMenu* pMaterialsMenu );
     bool Delete( QModelIndex index );
    	QSplitter* GetHorizontalSplitterPointer();
-   	void GetShapeTransformations( SoBaseKit* coinNode, SbViewportRegion region, std::map< TShapeKit*, QList< Transform > >& objectToWorld, std::map< TShapeKit*, QList< Transform > >& worldToObject );
     bool OkToContinue();
     bool Paste( QModelIndex nodeIndex, tgc::PasteType type );
     QDir PluginDirectory();
+
+    void ReadSettings();
 	bool ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
 			                 InstanceNode*& lightInstance,
 			                 SoTransform*& lightTransform,
 			                 TSunShape*& sunShape,
 			                 TShape*& shape );
-
-    void ReadSettings();
     bool SaveFile( const QString& fileName );
     void SetCurrentFile( const QString& fileName );
     void SetupActions();
@@ -226,6 +225,7 @@ private:
 	void ShowRaysIn3DView();
     bool StartOver( const QString& fileName );
     QString StrippedName( const QString& fullFileName );
+    void UpdateLightDimensions();
     void UpdateRecentFileActions();
     void WriteSettings();
 

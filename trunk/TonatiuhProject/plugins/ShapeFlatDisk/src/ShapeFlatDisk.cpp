@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeFlatDisk.h"
@@ -76,6 +77,18 @@ double ShapeFlatDisk::GetArea() const
 {
 	return ( tgc::Pi * radius.getValue() * radius.getValue() );
 }
+
+/*!
+ * Return the shape bounding box.
+ */
+BBox ShapeFlatDisk::GetBBox() const
+{
+	Point3D min = Point3D(-radius.getValue(), 0.0, -radius.getValue());
+	Point3D max = Point3D(radius.getValue(), 0.0, radius.getValue());
+
+	return BBox( min, max );
+}
+
 
 QString ShapeFlatDisk::GetIcon() const
 {
@@ -176,11 +189,18 @@ bool ShapeFlatDisk::OutOfRange( double u, double v ) const
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
-void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
+void ShapeFlatDisk::computeBBox(SoAction *, SbBox3f &box, SbVec3f& center )
 {
-	Point3D min = Point3D(-radius.getValue(), 0.0, -radius.getValue());
-	Point3D max = Point3D(radius.getValue(), 0.0, radius.getValue());
-	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+    SbVec3f min, max;
+
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
+
+    // Set the box to bound the two extreme points.
+    box.setBounds(min, max);
+	center.setValue(0.0, 0.0, 0.0);
 }
 
 void ShapeFlatDisk::generatePrimitives(SoAction *action)

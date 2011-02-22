@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMap>
 #include <QMessageBox>
 
+#include "BBox.h"
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
@@ -101,6 +102,19 @@ ShapeTroughCHC::~ShapeTroughCHC()
 double ShapeTroughCHC::GetArea() const
 {
 	return -1;
+}
+
+BBox ShapeTroughCHC::GetBBox() const
+{
+	double xMin = r1.getValue();
+	double xMax = p1.getValue();
+	double yMin = 0.0;
+	double yMax = height.getValue();
+
+	double maxlength = std::max( lengthX1.getValue(), lengthX2.getValue() );
+	double zMin = - maxlength /2;
+	double zMax = maxlength /2;
+	return BBox( Point3D( xMin, yMin, zMin ), Point3D( xMax, yMax, zMax ) );
 }
 
 QString ShapeTroughCHC::GetIcon() const
@@ -296,15 +310,15 @@ bool ShapeTroughCHC::OutOfRange( double u, double v ) const
 
 void ShapeTroughCHC::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double xMin = r1.getValue();
-	double xMax = p1.getValue();
-	double yMin = 0.0;
-	double yMax = height.getValue();
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+	SbVec3f min, max;
 
-	double maxlength = std::max( lengthX1.getValue(), lengthX2.getValue() );
-	double zMin = - maxlength /2;
-	double zMax = maxlength /2;
-	box.setBounds(SbVec3f( xMin, yMin, zMin ), SbVec3f( xMax, yMax, zMax ) );
+	min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+	max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );
+
+	// Set the box to bound the two extreme points.
+	box.setBounds(min, max);
 }
 
 void ShapeTroughCHC::generatePrimitives(SoAction *action)

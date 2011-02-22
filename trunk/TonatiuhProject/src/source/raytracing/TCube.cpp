@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/misc/SoState.h>
 
+#include "BBox.h"
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "TCube.h"
@@ -98,6 +99,26 @@ double TCube::GetArea() const
 
 }
 
+/*!
+ * Return the shape bounding box.
+ */
+BBox TCube::GetBBox() const
+{
+	BBox bBox;
+
+	// Compute the half-width, half-height, and half-depth of
+     // the pyramid. We'll use this info to set the min and max
+     // points.
+    double halfWidth = m_width.getValue()/2.0;
+    double halfHeight = m_height.getValue()/2.0;
+    double halfDepth = m_depth.getValue()/2.0;
+
+    bBox.pMin = Point3D( -halfWidth, -halfHeight, -halfDepth );
+    bBox.pMax = Point3D( halfWidth, halfHeight, halfDepth );
+
+    return bBox;
+}
+
 QString TCube::GetIcon() const
 {
 	return ":/icons/tcube.png";
@@ -115,22 +136,14 @@ bool TCube::IntersectP( const Ray& /*objectRay*/ ) const
 	return false;
 }
 
-
 void TCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
 {
+	BBox bBox = GetBBox();
 	// These points define the min and max extents of the box.
     SbVec3f min, max;
 
-     // Compute the half-width, half-height, and half-depth of
-     // the pyramid. We'll use this info to set the min and max
-     // points.
-    double halfWidth = m_width.getValue()/2.0;
-    double halfHeight = m_height.getValue()/2.0;
-    double halfDepth = m_depth.getValue()/2.0;
-
-    min.setValue(-halfWidth, -halfHeight, -halfDepth);
-    max.setValue(halfWidth, halfHeight, halfDepth);
-
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
 
     // Set the box to bound the two extreme points.
     box.setBounds(min, max);

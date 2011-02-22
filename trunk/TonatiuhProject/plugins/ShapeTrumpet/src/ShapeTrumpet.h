@@ -56,6 +56,7 @@ public:
 	ShapeTrumpet();
 	static void initClass();
 	double GetArea() const;
+	BBox GetBBox() const;
 	QString GetIcon() const;
 
 	bool Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;

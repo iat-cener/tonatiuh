@@ -41,12 +41,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QDateTime>
 
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodekits/SoLightKit.h>
 
 #include "trt.h"
 #include "TShape.h"
 #include "TSunShape.h"
 
+class BBox;
 
 /*!
   \class TLightKit TLightKit.h TLightKit.h
@@ -97,11 +99,13 @@ public:
     void ChangePosition( double newAzimuth, double newZenith, double newDistance );
     void GetPositionData( QDateTime* time, double* longitude, double* latitude );
 
+    void ResizeToBBox( BBox box );
     void Update();
 
     trt::TONATIUH_REAL azimuth;
     trt::TONATIUH_REAL zenith;
     trt::TONATIUH_REAL distance;
+    SoSFBool automaticallyResizable;
 
 private:
     virtual ~TLightKit();

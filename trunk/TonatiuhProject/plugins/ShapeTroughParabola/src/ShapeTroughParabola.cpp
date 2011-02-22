@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeTroughParabola.h"
@@ -89,6 +90,23 @@ ShapeTroughParabola::~ShapeTroughParabola()
 double ShapeTroughParabola::GetArea() const
 {
 	return -1;
+}
+
+BBox ShapeTroughParabola::GetBBox() const
+{
+	double xmin = xMin.getValue();
+	double xmax = xMax.getValue();
+
+	double y1 = ( xMin.getValue() * xMin.getValue() ) / ( 4 * focusLength.getValue() );
+	double y2 = ( xMax.getValue() * xMax.getValue() ) / ( 4 * focusLength.getValue() );
+
+	double ymin = 0.0;
+	if( ( xMin.getValue() * xMax.getValue() ) > 0 ) ymin = std::min( y1, y2 );
+	double ymax = std::max( y1, y2 );
+
+	double zmin = 0.0;
+	double zmax = std::max( lengthXMin.getValue(), lengthXMax.getValue() );
+	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
 QString ShapeTroughParabola::GetIcon() const
@@ -281,25 +299,15 @@ bool ShapeTroughParabola::OutOfRange( double u, double v ) const
 
 void ShapeTroughParabola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double xmin = xMin.getValue();
-	double xmax = xMax.getValue();
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+	SbVec3f min, max;
 
-	/*double ymin = ( xmin * xmin ) / ( 4 * focusLength.getValue() );
-	double ymax = ( xmax * xmax ) / ( 4 * focusLength.getValue() );
+	min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+	max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );
 
-	double n = 6;
-	double zmin = - xmax * tan( tgc::Pi / n );
-	double zmax = xmax * tan( tgc::Pi / n );*/
-	double y1 = ( xMin.getValue() * xMin.getValue() ) / ( 4 * focusLength.getValue() );
-	double y2 = ( xMax.getValue() * xMax.getValue() ) / ( 4 * focusLength.getValue() );
-
-	double ymin = 0.0;
-	if( ( xMin.getValue() * xMax.getValue() ) > 0 ) ymin = std::min( y1, y2 );
-	double ymax = std::max( y1, y2 );
-
-	double zmin = 0.0;
-	double zmax = std::max( lengthXMin.getValue(), lengthXMax.getValue() );
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
+	// Set the box to bound the two extreme points.
+	box.setBounds(min, max);
 }
 
 void ShapeTroughParabola::generatePrimitives(SoAction *action)

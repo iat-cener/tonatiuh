@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFVec3f.h>
 
 #include "TTracker.h"
+#include "trt.h"
 
 class QString;
 
@@ -57,7 +58,7 @@ public:
 	//Constructor
 	TrackerHeliostat();
 
-	SoSFVec3f aimingPoint;
+	trt::TONATIUH_REALVECTOR3 aimingPoint;
 
 protected:
 	virtual ~TrackerHeliostat();

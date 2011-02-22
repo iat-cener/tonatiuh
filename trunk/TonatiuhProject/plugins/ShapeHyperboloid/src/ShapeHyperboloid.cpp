@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeHyperboloid.h"
@@ -80,6 +81,34 @@ ShapeHyperboloid::~ShapeHyperboloid()
 double ShapeHyperboloid::GetArea() const
 {
 	return -1.0;
+}
+
+/*!
+ * Return the shape bounding box.
+ */
+BBox ShapeHyperboloid::GetBBox() const
+{
+	double cConic = fabs( distanceTwoFocus.getValue() /2 );
+	double aConic = cConic - focusLegth.getValue();
+	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
+
+	double xmin = - ( reflectorMaxDiameter.getValue() / 2 );
+	double xmax = reflectorMaxDiameter.getValue() / 2;
+	double r = reflectorMaxDiameter.getValue() / 2;
+	double ymax = -aConic
+							+( sqrt(  aConic * aConic * bConic * bConic
+										*  ( bConic * bConic + r * r) )
+					/ ( bConic * bConic ) );
+
+
+	double ymin  = 0.0;
+
+	double zmin = - ( reflectorMaxDiameter.getValue() / 2 );
+	double zmax = reflectorMaxDiameter.getValue() / 2;
+
+
+
+	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
 QString ShapeHyperboloid::GetIcon() const
@@ -250,24 +279,15 @@ NormalVector ShapeHyperboloid::GetNormal (double u, double v) const
 
 void ShapeHyperboloid::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 {
-	double cConic = fabs( distanceTwoFocus.getValue() /2 );
-	double aConic = cConic - focusLegth.getValue();
-	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+    SbVec3f min, max;
 
-	double xmin = - ( reflectorMaxDiameter.getValue() / 2 );
-	double xmax = reflectorMaxDiameter.getValue() / 2;
-	double r = reflectorMaxDiameter.getValue() / 2;
-	double ymax = -aConic
-							+( sqrt(  aConic * aConic * bConic * bConic
-										*  ( bConic * bConic + r * r) )
-					/ ( bConic * bConic ) );
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
 
-
-	double ymin  = 0.0;
-
-	double zmin = - ( reflectorMaxDiameter.getValue() / 2 );
-	double zmax = reflectorMaxDiameter.getValue() / 2;
-	box.setBounds( SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
+    // Set the box to bound the two extreme points.
+    box.setBounds(min, max);
 }
 
 void ShapeHyperboloid::generatePrimitives(SoAction *action)

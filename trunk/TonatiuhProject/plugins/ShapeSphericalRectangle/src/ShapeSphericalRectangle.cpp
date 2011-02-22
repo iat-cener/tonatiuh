@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeSphericalRectangle.h"
@@ -94,6 +95,20 @@ ShapeSphericalRectangle::~ShapeSphericalRectangle()
 double ShapeSphericalRectangle::GetArea() const
 {
 	return -1;
+}
+
+
+BBox ShapeSphericalRectangle::GetBBox() const
+{
+	double xmin = -widthX.getValue()/2;
+	double xmax = widthX.getValue()/2;
+
+	double zmin = -widthZ.getValue() / 2;
+	double zmax = widthZ.getValue() / 2;
+	double ymin = 0.0;
+	double ymax = radius.getValue() - sqrt( radius.getValue()* radius.getValue() - xmin * xmin - zmin * zmin );
+
+	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
 QString ShapeSphericalRectangle::GetIcon() const
@@ -324,15 +339,15 @@ void ShapeSphericalRectangle::updateWidthZ(void *data, SoSensor *)
 
 void ShapeSphericalRectangle::computeBBox( SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
 {
-	double xmin = -widthX.getValue()/2;
-	double xmax = widthX.getValue()/2;
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+	SbVec3f min, max;
 
-	double zmin = -widthZ.getValue() / 2;
-	double zmax = widthZ.getValue() / 2;
-	double ymin = 0.0;
-	double ymax = radius.getValue() - sqrt( radius.getValue()* radius.getValue() - xmin * xmin - zmin * zmin );
+	min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+	max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );
 
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ));
+	// Set the box to bound the two extreme points.
+	box.setBounds( min, max );
 }
 
 void ShapeSphericalRectangle::generatePrimitives(SoAction *action)

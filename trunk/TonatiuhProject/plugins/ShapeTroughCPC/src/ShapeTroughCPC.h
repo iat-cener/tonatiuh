@@ -56,6 +56,7 @@ public:
 	ShapeTroughCPC( );
 	static void initClass();
 	double GetArea() const;
+	BBox GetBBox() const;
 	QString GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;

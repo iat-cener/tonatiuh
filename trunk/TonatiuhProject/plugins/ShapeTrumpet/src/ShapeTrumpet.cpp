@@ -57,6 +57,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Point3D.h"
@@ -132,6 +133,25 @@ double ShapeTrumpet::GetArea() const
 	return -1;
 }
 
+/*!
+ * Returns shape bbox.
+ */
+BBox ShapeTrumpet::GetBBox() const
+{
+	double xMin= - sqrt( a.getValue()  * a.getValue()  * ( 1 +
+			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
+					/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+	double xMax = sqrt( a.getValue()  * a.getValue()  * ( 1 +
+			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
+					/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+
+	double yMin = truncationHeight.getValue();
+	double yMax = hyperbolaHeight.getValue();
+
+	double zMin = xMin;
+	double zMax = xMax;
+	return BBox( Point3D( xMin, yMin, zMin ), Point3D( xMax, yMax, zMax ) );
+}
 
 /*!
  * Returns shape icon file name.
@@ -405,19 +425,15 @@ bool ShapeTrumpet::OutOfRange( double u, double v ) const
  */
 void ShapeTrumpet::computeBBox( SoAction* /* action */, SbBox3f& box, SbVec3f& /* center */)
 {
-	double xMin= - sqrt( a.getValue()  * a.getValue()  * ( 1 +
-			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
-					/ ( m_bHyperbola * m_bHyperbola ) ) ) );
-	double xMax = sqrt( a.getValue()  * a.getValue()  * ( 1 +
-			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
-					/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+	SbVec3f min, max;
 
-	double yMin = truncationHeight.getValue();
-	double yMax = hyperbolaHeight.getValue();
+	min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+	max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );
 
-	double zMin = xMin;
-	double zMax = xMax;
-	box.setBounds(SbVec3f( xMin, yMin, zMin ), SbVec3f( xMax, yMax, zMax ) );
+	// Set the box to bound the two extreme points.
+	box.setBounds(min, max);
 }
 
 /*!

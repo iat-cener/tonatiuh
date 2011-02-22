@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "BBox.h"
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "tgf.h"
@@ -71,6 +72,16 @@ double TSquare::GetArea() const
 {
 	return ( m_sideLength.getValue() * m_sideLength.getValue() );
 }
+
+
+BBox TSquare::GetBBox() const
+{
+	Point3D min = Point3D(-m_sideLength.getValue()/2,0.0, -m_sideLength.getValue()/2);
+	Point3D max = Point3D(m_sideLength.getValue()/2,0.0,m_sideLength.getValue()/2);
+
+	return BBox( min, max );
+}
+
 
 QString TSquare::GetIcon() const
 {
@@ -111,11 +122,23 @@ NormalVector TSquare::GetNormal (double /*u*/, double /*v*/) const
 	return NormalVector( 0, 1, 0 );
 }
 
-void TSquare::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
+
+void TSquare::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
 {
-	Point3D min = Point3D(-m_sideLength.getValue()/2,0.0, -m_sideLength.getValue()/2);
-	Point3D max = Point3D(m_sideLength.getValue()/2,0.0,m_sideLength.getValue()/2);
-	box.setBounds(SbVec3f( min.x, min.y, min.z ), SbVec3f( max.x, max.y, max.z ));
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+    SbVec3f min, max;
+
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
+
+    // Set the box to bound the two extreme points.
+    box.setBounds(min, max);
+
+   // This defines the "natural center" of the TCube. We could
+   // define it to be the center of the base, if we want, but
+   // let's just make it the center of the bounding box.
+   center.setValue(0.0, 0.0, 0.0);
 }
 
 void TSquare::generatePrimitives(SoAction *action)

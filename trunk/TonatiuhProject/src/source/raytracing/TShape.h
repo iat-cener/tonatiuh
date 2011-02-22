@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodes/SoShape.h>
 
+class BBox;
 class DifferentialGeometry;
 class NormalVector;
 class Point3D;
@@ -57,9 +58,9 @@ public:
 	virtual bool IntersectP( const Ray& objectRay ) const = 0;
 	virtual bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const = 0;
 	virtual double GetArea() const = 0;
+	virtual BBox GetBBox() const = 0;
 	virtual QString GetIcon() const = 0;
 	virtual Point3D Sample( double u, double v ) const = 0;
-	//virtual SetMinimumEnvolve( BBox box ) = 0;
 
 protected:
 	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) = 0;

@@ -57,6 +57,7 @@ public:
 	ShapeFlatTriangle( );
 	static void initClass();
 	double GetArea() const;
+	BBox GetBBox() const;
 	QString GetIcon() const;
 
 	bool Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg ) const;
@@ -64,9 +65,9 @@ public:
 
 	Point3D Sample( double u, double v ) const;
 
-	trt::TONATIUH_REALVECTOR a;
-	trt::TONATIUH_REALVECTOR b;
-	trt::TONATIUH_REALVECTOR c;
+	trt::TONATIUH_REALVECTOR3 a;
+	trt::TONATIUH_REALVECTOR3 b;
+	trt::TONATIUH_REALVECTOR3 c;
 
 protected:
 	static void updateA(void *data, SoSensor *);
@@ -83,9 +84,9 @@ protected:
 
 
 private:
-	trt::TONATIUH_REALVECTOR m_lastValidA;
-	trt::TONATIUH_REALVECTOR m_lastValidB;
-	trt::TONATIUH_REALVECTOR m_lastValidC;
+	trt::TONATIUH_REALVECTOR3 m_lastValidA;
+	trt::TONATIUH_REALVECTOR3 m_lastValidB;
+	trt::TONATIUH_REALVECTOR3 m_lastValidC;
 };
 
 #endif /* SHAPEFLATTRIANGLE_H_ */

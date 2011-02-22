@@ -270,6 +270,7 @@ QScriptValue tonatiuh_script::tonatiuh_random_generator(QScriptContext* context,
 
 QScriptValue  tonatiuh_script::tonatiuh_sunposition(QScriptContext* context, QScriptEngine* engine )
 {
+	//tonatiuh_sunposition( azimuth, elevation, distance );
 	if( context->argumentCount() != 3 )	context->throwError( "tonatiuh_sunposition: takes exactly one argument." );
 	if( !context->argument( 0 ).isNumber() )	context->throwError( "tonatiuh_sunposition: argument 1 is not a number." );
 	if( !context->argument( 1 ).isNumber() )	context->throwError( "tonatiuh_sunposition: argument 2 is not a number." );

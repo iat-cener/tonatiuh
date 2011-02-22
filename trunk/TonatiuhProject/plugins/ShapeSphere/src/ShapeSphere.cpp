@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeSphere.h"
@@ -106,6 +107,31 @@ SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 double ShapeSphere::GetArea() const
 {
 	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() );
+}
+
+BBox ShapeSphere::GetBBox() const
+{
+	double cosPhiMax = cos( phiMax.getValue() );
+   	double sinPhiMax = sin( phiMax.getValue() );
+
+   	double thetaMin = acos( yMax.getValue() / radius.getValue() );
+   	double thetaMax = acos( yMin.getValue()/radius.getValue() );
+   	double maxRadius = ( yMax.getValue() * yMin.getValue() > 0.0 ) ?  std::max( sin(thetaMin) * radius.getValue() , sin(thetaMax) * radius.getValue() )
+																	: radius.getValue();
+   	double minRadius = std::min( sin(thetaMin) * radius.getValue(), sin(thetaMax) * radius.getValue() );
+   	double xmin = ( phiMax.getValue() < tgc::Pi  ) ?  0.0
+								: ( phiMax.getValue() < 1.5 * tgc::Pi  ) ? sinPhiMax * maxRadius
+										: -maxRadius;
+   	double xmax = ( phiMax.getValue() >= tgc::Pi / 2 ) ? maxRadius : sinPhiMax * maxRadius;
+
+   	double ymin = yMin.getValue();
+	double ymax = yMax.getValue();
+
+	double zmin = ( phiMax.getValue() > tgc::Pi ) ? -maxRadius
+					:( phiMax.getValue() > tgc::Pi / 2 ) ? maxRadius* cosPhiMax : std::min( maxRadius * cosPhiMax, minRadius * cosPhiMax );
+	double zmax = maxRadius;
+
+	return BBox( Point3D( xmin, ymin, zmin), Point3D( xmax, ymax, zmax) );
 }
 
 QString ShapeSphere::GetIcon() const
@@ -335,27 +361,15 @@ bool ShapeSphere::OutOfRange( double u, double v ) const
 
 void ShapeSphere::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-   	double cosPhiMax = cos( phiMax.getValue() );
-   	double sinPhiMax = sin( phiMax.getValue() );
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+	SbVec3f min, max;
 
-   	double thetaMin = acos( yMax.getValue() / radius.getValue() );
-   	double thetaMax = acos( yMin.getValue()/radius.getValue() );
-   	double maxRadius = ( yMax.getValue() * yMin.getValue() > 0.0 ) ?  std::max( sin(thetaMin) * radius.getValue() , sin(thetaMax) * radius.getValue() )
-																	: radius.getValue();
-   	double minRadius = std::min( sin(thetaMin) * radius.getValue(), sin(thetaMax) * radius.getValue() );
-   	double xmin = ( phiMax.getValue() < tgc::Pi  ) ?  0.0
-								: ( phiMax.getValue() < 1.5 * tgc::Pi  ) ? sinPhiMax * maxRadius
-										: -maxRadius;
-   	double xmax = ( phiMax.getValue() >= tgc::Pi / 2 ) ? maxRadius : sinPhiMax * maxRadius;
+	min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+	max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );
 
-   	double ymin = yMin.getValue();
-	double ymax = yMax.getValue();
-
-	double zmin = ( phiMax.getValue() > tgc::Pi ) ? -maxRadius
-					:( phiMax.getValue() > tgc::Pi / 2 ) ? maxRadius* cosPhiMax : std::min( maxRadius * cosPhiMax, minRadius * cosPhiMax );
-	double zmax = maxRadius;
-
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
+	// Set the box to bound the two extreme points.
+	box.setBounds(min, max);
 }
 
 void ShapeSphere::generatePrimitives(SoAction *action)
