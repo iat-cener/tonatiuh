@@ -58,9 +58,11 @@ class FieldContainerWidget : public QTreeView
     Q_OBJECT
 
 public:
+    FieldContainerWidget( QWidget* parent = 0 );
     FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent = 0 );
     ~FieldContainerWidget();
 
+    void SetContainer( SoFieldContainer* fieldContainer, QString containerName );
     void SetEditable( bool editable );
 
 protected slots:

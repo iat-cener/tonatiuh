@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "FieldContainerWidget.h"
 #include "LightDialog.h"
 #include "tgc.h"
@@ -89,29 +91,39 @@ LightDialog::~LightDialog()
 }
 
 /*!
- * Resutrn a lightkit with the parameters defined in the dialog.
+ * Returns a lightkit with the parameters defined in the dialog.
  */
 TLightKit* LightDialog::GetTLightKit()
 {
 	TLightKit* lightKit = new TLightKit;
+
 	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
 	if( m_newShape ) lightKit->setPart( "icon", m_newShape );
+	if( automaticSizeRadio->isChecked() )	lightKit->automaticallyResizable.setValue( true );
+	else	lightKit->automaticallyResizable.setValue( false );
 
 	lightKit->ChangePosition( azimuthSpin->value()* tgc::Degree, ( 90 - elevationSpin->value() ) * tgc::Degree, distanceSpin->value() );
 	return lightKit;
 }
 
 /*!
+ *
+ */
+void LightDialog::accept()
+{
+	if( sunshapeCombo->currentIndex() == 0 )
+		QMessageBox::warning( this, tr( "Tonatiuh" ), tr( "You must select a sunshape type." ), QMessageBox::Ok );
+	else if( shapeCombo->currentIndex() == 0 )
+		QMessageBox::warning( this, tr( "Tonatiuh" ), tr( "You must select an input aperture shape before for light." ), QMessageBox::Ok );
+	else
+		QDialog::accept();
+}
+
+/*!
  * Changes parameters of the shunshape paraneters view to sunshape type given by \a index.
  */
-void LightDialog::changeSunshape( int index )
+void LightDialog::ChangeSunshape( int index )
 {
-	QLayout* frameLayout = sunshapeParametersFrame->layout();
-	if( !frameLayout ) return;
-	int children = frameLayout->count();
-	for( int i = 0; i< children; ++i )
-		frameLayout->removeItem ( frameLayout->itemAt( i ) );
-
 	while( (m_newSunShape!=0) && m_newSunShape->getRefCount() > 0 )	m_newSunShape->unref();
 	if( index == 0 ) m_newSunShape = 0;
 	else if( index == m_currentSunShapeIndex)	m_newSunShape = static_cast< TSunShape* >( m_currentLightKit->getPart( "tsunshape", false )->copy( true ) );
@@ -121,9 +133,8 @@ void LightDialog::changeSunshape( int index )
 		m_newSunShape = sunshapeFactory->CreateTSunShape();
 
 	}
-	FieldContainerWidget* nodeContainer = new FieldContainerWidget( m_newSunShape, QString() );
-	//nodeContainer->setFixedSize( QSize( 170, 100 ) );
-	frameLayout->addWidget( nodeContainer );
+
+	sunshapeParameters->SetContainer( m_newSunShape, QString() );
 }
 
 
@@ -131,14 +142,8 @@ void LightDialog::changeSunshape( int index )
  * Changes parameters of the shape paraneters view to shape type given by \a index.
  */
 
-void LightDialog::changeShape( int index )
+void LightDialog::ChangeShape( int index )
 {
-	QLayout* frameLayout = shapeParametersFrame->layout();
-	if( !frameLayout && frameLayout != 0 ) return;
-	int children = frameLayout->count();
-	for( int i = 0; i< children; ++i )
-		frameLayout->removeItem ( frameLayout->itemAt( i ) );
-
 	while( ( m_newShape != 0) && ( m_newShape->getRefCount() > 0 ) )	m_newShape->unref();
 
 	if ( index == 0 )	m_newShape = 0;
@@ -149,9 +154,8 @@ void LightDialog::changeShape( int index )
 		m_newShape = shapeFactory->CreateTShape();
 	}
 
-	FieldContainerWidget* nodeContainer = new FieldContainerWidget( m_newShape, QString() );
-	//nodeContainer->setFixedSize( QSize( 170, 100 ) );
-	frameLayout->addWidget( nodeContainer );
+	sunshapeParameters->SetContainer( m_newShape, QString() );
+
 }
 
 /*!
@@ -179,7 +183,7 @@ void LightDialog::SunshapeTab()
 
 void LightDialog::ShapeBox( )
 {
-	connect( shapeCombo, SIGNAL( activated( int ) ), this, SLOT( changeShape( int ) ) );
+	connect( shapeCombo, SIGNAL( activated( int ) ), this, SLOT( ChangeShape( int ) ) );
 
 	//Add elements to sunshape combo
 	QList< TShapeFactory* > shapeFactoryList = m_shapeList.values();
@@ -195,17 +199,13 @@ void LightDialog::ShapeBox( )
 		m_currentShapeIndex = shapeCombo->findData( name );
 	}
 
-	QVBoxLayout* parametersShapeLayout = new QVBoxLayout;
-	parametersShapeLayout->setContentsMargins ( 0, 0, 0, 0 );
-	//parametersShapeLayout->setSizeConstraint( QLayout::SetFixedSize );
-	shapeParametersFrame->setLayout( parametersShapeLayout );
-    changeShape( m_currentShapeIndex );
+    ChangeShape( m_currentShapeIndex );
     shapeCombo->setCurrentIndex( m_currentShapeIndex );
 }
 
 void LightDialog::SunshapeBox()
 {
-	connect( sunshapeCombo, SIGNAL( activated( int ) ), this, SLOT( changeSunshape( int ) ) );
+	connect( sunshapeCombo, SIGNAL( activated( int ) ), this, SLOT( ChangeSunshape( int ) ) );
 
 	//Add elements to sunshape combo
 	QList< TSunShapeFactory* > sunShapeFactoryList = m_sunshapeList.values();
@@ -221,10 +221,6 @@ void LightDialog::SunshapeBox()
 		m_currentSunShapeIndex = sunshapeCombo->findData( name );
 	}
 
-	QVBoxLayout* parametersSunShapeLayout = new QVBoxLayout;
-	parametersSunShapeLayout->setContentsMargins ( 0, 0, 0, 0 );
-	//parametersSunShapeLayout->setSizeConstraint( QLayout::SetFixedSize );
-	sunshapeParametersFrame->setLayout( parametersSunShapeLayout );
-    changeSunshape( m_currentSunShapeIndex );
+    ChangeSunshape( m_currentSunShapeIndex );
     sunshapeCombo->setCurrentIndex( m_currentSunShapeIndex );
 }

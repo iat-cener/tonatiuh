@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeCylinder.h"
@@ -79,6 +80,26 @@ ShapeCylinder::~ShapeCylinder()
 double ShapeCylinder::GetArea() const
 {
 	return (2 * tgc::Pi * radius.getValue() * length.getValue() );
+}
+
+/*!
+ * Return the shape bounding box.
+ */
+BBox ShapeCylinder::GetBBox() const
+{
+	double cosPhiMax = cos( phiMax.getValue() );
+	double sinPhiMax = sin( phiMax.getValue() );
+
+	double xmin = ( phiMax.getValue() >= Pi ) ? -radius.getValue() : radius.getValue() * cosPhiMax;
+	double xmax = radius.getValue();
+	double ymin = 0.0;
+	if( phiMax.getValue() > Pi ) ymin = ( phiMax.getValue() < 1.5*Pi ) ? radius.getValue() * sinPhiMax : -radius.getValue();
+	double ymax = ( phiMax.getValue() < Pi/2.0 )? radius.getValue() * sinPhiMax : radius.getValue();
+
+	double zmin = 0.0;
+	double zmax = length.getValue();
+
+	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
 QString ShapeCylinder::GetIcon() const
@@ -232,18 +253,15 @@ NormalVector ShapeCylinder::GetNormal (double u, double /* v */) const
 
 void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 {
-	double cosPhiMax = cos( phiMax.getValue() );
-	double sinPhiMax = sin( phiMax.getValue() );
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+    SbVec3f min, max;
 
-	double xmin = ( phiMax.getValue() >= Pi ) ? -radius.getValue() : radius.getValue() * cosPhiMax;
-	double xmax = radius.getValue();
-	double ymin = 0.0;
-	if( phiMax.getValue() > Pi ) ymin = ( phiMax.getValue() < 1.5*Pi ) ? radius.getValue() * sinPhiMax : -radius.getValue();
-	double ymax = ( phiMax.getValue() < Pi/2.0 )? radius.getValue() * sinPhiMax : radius.getValue();
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
 
-	double zmin = 0.0;
-	double zmax = length.getValue();
-	box.setBounds( SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
+    // Set the box to bound the two extreme points.
+    box.setBounds(min, max);
 }
 
 void ShapeCylinder::generatePrimitives(SoAction *action)

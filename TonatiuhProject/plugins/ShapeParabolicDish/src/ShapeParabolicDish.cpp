@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeParabolicDish.h"
@@ -90,6 +91,28 @@ ShapeParabolicDish::~ShapeParabolicDish()
 double ShapeParabolicDish::GetArea() const
 {
 	return -1;
+}
+
+BBox ShapeParabolicDish::GetBBox() const
+{
+	double cosPhiMax = cos( phiMax.getValue() );
+	double sinPhiMax = sin( phiMax.getValue() );
+
+	double xmin = ( phiMax.getValue() >= tgc::Pi  ) ? ( phiMax.getValue() >= 1.5 * tgc::Pi  ) ? -dishMaxRadius.getValue()
+																								: sinPhiMax* dishMaxRadius.getValue()
+														: 0.0;
+	double xmax = ( phiMax.getValue() >= tgc::Pi / 2 ) ? dishMaxRadius.getValue()
+														: sinPhiMax* dishMaxRadius.getValue();
+
+	double ymin = ( dishMinRadius.getValue() > 0.0 ) ? dishMinRadius.getValue()*dishMinRadius.getValue()/( 4*focusLength.getValue() ) : 0.0;
+	double ymax = dishMaxRadius.getValue()*dishMaxRadius.getValue()/( 4*focusLength.getValue() );
+
+	double zmin = ( phiMax.getValue() > tgc::Pi ) ? -dishMaxRadius.getValue()
+													: std::min( dishMinRadius.getValue() * cosPhiMax, dishMaxRadius.getValue() * cosPhiMax );
+	double zmax = dishMaxRadius.getValue();
+
+	return BBox( Point3D( xmin, ymin, zmin), Point3D( xmax, ymax, zmax) );
+
 }
 
 QString ShapeParabolicDish::GetIcon() const
@@ -257,23 +280,16 @@ bool ShapeParabolicDish::OutOfRange( double u, double v ) const
 
 void ShapeParabolicDish::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double cosPhiMax = cos( phiMax.getValue() );
-	double sinPhiMax = sin( phiMax.getValue() );
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+    SbVec3f min, max;
 
-	double xmin = ( phiMax.getValue() >= tgc::Pi  ) ? ( phiMax.getValue() >= 1.5 * tgc::Pi  ) ? -dishMaxRadius.getValue()
-																								: sinPhiMax* dishMaxRadius.getValue()
-														: 0.0;
-	double xmax = ( phiMax.getValue() >= tgc::Pi / 2 ) ? dishMaxRadius.getValue()
-														: sinPhiMax* dishMaxRadius.getValue();
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
 
-	double ymin = ( dishMinRadius.getValue() > 0.0 ) ? dishMinRadius.getValue()*dishMinRadius.getValue()/( 4*focusLength.getValue() ) : 0.0;
-	double ymax = dishMaxRadius.getValue()*dishMaxRadius.getValue()/( 4*focusLength.getValue() );
+    // Set the box to bound the two extreme points.
+    box.setBounds(min, max);
 
-	double zmin = ( phiMax.getValue() > tgc::Pi ) ? -dishMaxRadius.getValue()
-													: std::min( dishMinRadius.getValue() * cosPhiMax, dishMaxRadius.getValue() * cosPhiMax );
-	double zmax = dishMaxRadius.getValue();
-
-	box.setBounds(SbVec3f( xmin, ymin, zmin), SbVec3f( xmax, ymax, zmax));
 }
 
 void ShapeParabolicDish::generatePrimitives(SoAction *action)

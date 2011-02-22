@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Ray.h"
@@ -83,6 +84,31 @@ double ShapeCone::GetArea() const
 {
 	return -1;
 }
+
+/*!
+ * Return the shape bounding box.
+ */
+BBox ShapeCone::GetBBox() const
+{
+
+	double cosPhiMax = cos( phiMax.getValue() );
+	double sinPhiMax = sin( phiMax.getValue() );
+	double minradius = std::min( baseRadius.getValue(), topRadius.getValue());
+	double maxradius = std::max( baseRadius.getValue(), topRadius.getValue());
+
+
+	double xmin = ( phiMax.getValue() > tgc::Pi ) ?
+						( ( phiMax.getValue() < 1.5*tgc::Pi ) ? maxradius * sinPhiMax : -maxradius ) :
+						0.0;
+	double xmax = ( phiMax.getValue() < tgc::Pi/2.0 )?  maxradius * sinPhiMax : maxradius;
+	double ymin = 0.0;
+	double ymax = height.getValue();
+	double zmin = ( phiMax.getValue() >= tgc::Pi ) ? -maxradius : std::min( minradius * cosPhiMax, maxradius * cosPhiMax );
+	double zmax = maxradius;
+
+	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
+}
+
 
 QString ShapeCone::GetIcon() const
 {
@@ -257,25 +283,17 @@ bool ShapeCone::OutOfRange( double u, double v ) const
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
-void ShapeCone::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
+void ShapeCone::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 {
-	double cosPhiMax = cos( phiMax.getValue() );
-	double sinPhiMax = sin( phiMax.getValue() );
-	double minradius = std::min( baseRadius.getValue(), topRadius.getValue());
-	double maxradius = std::max( baseRadius.getValue(), topRadius.getValue());
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+    SbVec3f min, max;
 
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
 
-	double xmin = ( phiMax.getValue() > tgc::Pi ) ?
-						( ( phiMax.getValue() < 1.5*tgc::Pi ) ? maxradius * sinPhiMax : -maxradius ) :
-						0.0;
-	double xmax = ( phiMax.getValue() < tgc::Pi/2.0 )?  maxradius * sinPhiMax : maxradius;
-	double ymin = 0.0;
-	double ymax = height.getValue();
-	double zmin = ( phiMax.getValue() >= tgc::Pi ) ? -maxradius : std::min( minradius * cosPhiMax, maxradius * cosPhiMax );
-	double zmax = maxradius;
-
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
-
+    // Set the box to bound the two extreme points.
+    box.setBounds(min, max);
 }
 
 void ShapeCone::generatePrimitives(SoAction *action)

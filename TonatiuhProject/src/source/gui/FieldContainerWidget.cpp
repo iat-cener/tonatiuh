@@ -55,6 +55,28 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParametersItem.h"
 #include "ParametersModel.h"
 
+/*!
+ * Creates an empty widget.
+ */
+FieldContainerWidget::FieldContainerWidget( QWidget* parent )
+:QTreeView( parent ),
+ m_containerName( QString( "" ) ),
+ m_currentIndex(),
+ m_pDelegate( 0 ),
+ m_pFieldContainer( 0 ),
+ m_pModel ( 0 )
+{
+	setAlternatingRowColors( true );
+
+	m_pDelegate = new ParametersDelegate;
+	setItemDelegate( m_pDelegate );
+
+	m_pModel = new ParametersModel();
+	m_pModel->SetEditable( true );
+	setModel(m_pModel);
+
+}
+
 /**
  * Creates a new FieldContainerWidget for the parameters in the \a fieldContainer with parent \a parent.
  *
@@ -90,6 +112,18 @@ FieldContainerWidget::~FieldContainerWidget()
  	delete m_pDelegate;
  	delete m_pModel;
 
+}
+
+/*!
+ * Sets \a fieldContainer as widget container and \a containerName as its containerName name.
+ */
+void FieldContainerWidget::SetContainer( SoFieldContainer* fieldContainer, QString containerName )
+{
+	m_pFieldContainer = fieldContainer;
+	m_containerName = containerName;
+
+	if( m_pFieldContainer ) ReadFields( );
+	resizeColumnToContents ( 1 );
 }
 
 /**
@@ -146,6 +180,9 @@ void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::
  */
 void FieldContainerWidget::ReadFields( )
 {
+	m_pModel->clear();
+	m_pModel->setHorizontalHeaderLabels( QStringList() << tr("Parameter") << tr("Value") );
+
 	SoFieldList fieldList;
 	int totalFields = m_pFieldContainer->getFields( fieldList );
 

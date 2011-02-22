@@ -322,10 +322,13 @@ void MainWindow::DefineSunLight()
 		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
 		m_commandStack->push( command );
 
+		UpdateLightDimensions();
+
 		parametersView->UpdateView();
 		m_document->SetDocumentModified( true );
 
 		actionCalculateSunPosition->setEnabled( true );
+
 	}
 }
 
@@ -515,127 +518,6 @@ void MainWindow::SetupActionsInsertTracker()
 		connect( actionInsertTracker, SIGNAL( triggered() ), actionInsertTracker, SLOT( OnActionInsertTrackerTriggered() ) );
 		connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
 	}
-}
-
-
-
-/*!
- * Creates a new \a type paste command. The clipboard node is inserted as \a nodeIndex node
- * child.
- *
- * Returns \a true if the node was successfully pasted, otherwise returns \a false.
- */
-bool MainWindow::Paste( QModelIndex nodeIndex, tgc::PasteType type )
-{
-	if( !nodeIndex.isValid() ) return false;
-	if( !m_coinNode_Buffer ) return false;
-
-	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( nodeIndex );
-	SoNode* selectedCoinNode = ancestor->GetNode();
-
-	if ( !selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) return false;
-	if ( ( selectedCoinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
-	( m_coinNode_Buffer->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) )	return false;
-
-	if( ancestor->GetNode() == m_coinNode_Buffer)  return false;
-	while( ancestor->GetParent() )
-	{
-		if(ancestor->GetParent()->GetNode() == m_coinNode_Buffer )	return false;
-		ancestor = ancestor->GetParent();
-	}
-
-	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
-	m_commandStack->push( commandPaste );
-
-
-
-	m_document->SetDocumentModified( true );
-	return true;
-
-}
-
-/*!
- * Returns the directory of where the plugins are saved.
- */
-QDir MainWindow::PluginDirectory()
-{
-	// Returns the path to the top level plug-in directory.
-	// It is assumed that this is a subdirectory named "plugins" of the directory in
-	// which the running version of Tonatiuh is located.
-
-    QDir directory( qApp->applicationDirPath() );
-  	directory.cd( "plugins" );
-	return directory;
-}
-
-/*!
- * Checks whether a ray tracing can be started with the current light and model.
- */
-bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
-{
-	//Check if there is a scene
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if ( !coinScene )  return false;
-
-	//Check if there is a rootSeparator InstanceNode
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-	if ( !sceneInstance )  return false;
-	rootSeparatorInstance = sceneInstance->children[1];
-	if( !rootSeparatorInstance ) return false;
-
-	//Check if there is a light and is properly configured
-	if ( !coinScene->getPart( "lightList[0]", false ) )	return false;
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
-
-	lightInstance = sceneInstance->children[0];
-	if ( !lightInstance ) return false;
-
-	if( !lightKit->getPart( "tsunshape", false ) ) return false;
-	sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-
-	if( !lightKit->getPart( "icon", false ) ) return false;
-	raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
-
-	if( !lightKit->getPart( "transform" ,true ) ) return false;
-	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
-
-
-	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
-	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-	//Check if there is a random generator selected;
-	if( m_selectedRandomDeviate == -1 )
-	{
-		if( randomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
-		else	return false;
-	}
-
-	//Create the random generator
-	if( !m_rand )	m_rand =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
-
-	//Check if there is a photon map type selected;
-	if( m_selectedPhotonMap == -1 )
-	{
-		if( photonmapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
-		else	return false;
-	}
-
-	//Create the photon map where photons are going to be stored
-	if( !m_increasePhotonMap )
-	{
-		delete m_photonMap;
-		m_photonMap = 0;
-	}
-
-	if( !m_photonMap )
-	{
-		QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-		m_photonMap = photonmapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
-		m_tracedRays = 0;
-	}
-
-	return true;
 }
 
 /*!
@@ -2114,6 +1996,10 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
  *
  * If the current node is not a surface type node, the shape node will not be created.
  */
+/*!
+ * Creates a shape node from the \a pTTrackerFactory as current selected node child.
+ *
+ */
 void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
     QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
@@ -2145,10 +2031,6 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 }
 
 
-/*!
- * Creates a shape node from the \a pTTrackerFactory as current selected node child.
- *
- */
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
 	QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
@@ -2277,45 +2159,6 @@ void MainWindow::closeEvent( QCloseEvent* event )
     else event->ignore();
 }
 
-/*!
- * Returns \a true if the application is ready to start with other model. Otherwise,
- * returns \a false.
- */
-bool MainWindow::OkToContinue()
-{
-	if ( m_document->IsModified() )
-	{
-		int answer = QMessageBox::warning( this, tr( "Tonatiuh" ),
-		                 tr( "The document has been modified.\n"
-		                     "Do you want to save your changes?"),
-		                 QMessageBox::Yes | QMessageBox::Default,
-		                 QMessageBox::No,
-		                 QMessageBox::Cancel | QMessageBox::Escape );
-
-		if ( answer == QMessageBox::Yes ) return Save();
-		else if ( answer == QMessageBox::Cancel ) return false;
-	}
-	return true;
-}
-
-/*!
- * Returns \a true if the tonatiuh model is correctly saved into the the given \a fileName. Otherwise, returns \a false.
- *
- * \sa Save, SaveAs.
- */
-bool MainWindow::SaveFile( const QString& fileName )
-{
- 	if( !m_document->WriteFile( fileName ) )
-	{
-		statusBar()->showMessage( tr( "Saving canceled" ), 2000 );
-		return false;
-	}
-
-	SetCurrentFile( fileName );
-	statusBar()->showMessage( tr( "File saved" ), 2000 );
-	return true;
-}
-
 void MainWindow::SetCurrentFile( const QString& fileName )
 {
 	m_currentFile = fileName;
@@ -2333,26 +2176,6 @@ void MainWindow::SetCurrentFile( const QString& fileName )
 	setWindowTitle( tr( "%1[*] - %2" ).arg( shownName ).arg( tr( "Tonatiuh" ) ) );
 }
 
-/**
- * Restores application settings.
- **/
-void MainWindow::ReadSettings()
-{
-    QSettings settings( "NREL UTB CENER", "Tonatiuh" );
-    QRect rect = settings.value( "geometry", QRect(200, 200, 400, 400 ) ).toRect();
-    move( rect.topLeft() );
-    resize( rect.size() );
-
-    setWindowState( Qt::WindowNoState );
-    if( settings.value( "windowNoState", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowNoState );
-    if( settings.value( "windowMinimized", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowMinimized );
-    if( settings.value( "windowMaximized", true ).toBool() )	setWindowState( windowState() ^ Qt::WindowMaximized );
-    if( settings.value( "windowFullScreen", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowFullScreen );
-    if( settings.value( "windowActive", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowActive );
-    m_recentFiles = settings.value( "recentFiles" ).toStringList();
-    UpdateRecentFileActions();
-
-}
 /**
  * Creates a command for the modification of a node parameter.
  *
@@ -2561,6 +2384,185 @@ QSplitter* MainWindow::GetHorizontalSplitterPointer()
 }
 
 /*!
+ * Returns \a true if the application is ready to start with other model. Otherwise,
+ * returns \a false.
+ */
+bool MainWindow::OkToContinue()
+{
+	if ( m_document->IsModified() )
+	{
+		int answer = QMessageBox::warning( this, tr( "Tonatiuh" ),
+		                 tr( "The document has been modified.\n"
+		                     "Do you want to save your changes?"),
+		                 QMessageBox::Yes | QMessageBox::Default,
+		                 QMessageBox::No,
+		                 QMessageBox::Cancel | QMessageBox::Escape );
+
+		if ( answer == QMessageBox::Yes ) return Save();
+		else if ( answer == QMessageBox::Cancel ) return false;
+	}
+	return true;
+}
+
+/*!
+ * Creates a new \a type paste command. The clipboard node is inserted as \a nodeIndex node
+ * child.
+ *
+ * Returns \a true if the node was successfully pasted, otherwise returns \a false.
+ */
+bool MainWindow::Paste( QModelIndex nodeIndex, tgc::PasteType type )
+{
+	if( !nodeIndex.isValid() ) return false;
+	if( !m_coinNode_Buffer ) return false;
+
+	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( nodeIndex );
+	SoNode* selectedCoinNode = ancestor->GetNode();
+
+	if ( !selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) return false;
+	if ( ( selectedCoinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
+	( m_coinNode_Buffer->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) ) )	return false;
+
+	if( ancestor->GetNode() == m_coinNode_Buffer)  return false;
+	while( ancestor->GetParent() )
+	{
+		if(ancestor->GetParent()->GetNode() == m_coinNode_Buffer )	return false;
+		ancestor = ancestor->GetParent();
+	}
+
+	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
+	m_commandStack->push( commandPaste );
+
+
+
+	m_document->SetDocumentModified( true );
+	return true;
+
+}
+
+/*!
+ * Returns the directory of where the plugins are saved.
+ */
+QDir MainWindow::PluginDirectory()
+{
+	// Returns the path to the top level plug-in directory.
+	// It is assumed that this is a subdirectory named "plugins" of the directory in
+	// which the running version of Tonatiuh is located.
+
+    QDir directory( qApp->applicationDirPath() );
+  	directory.cd( "plugins" );
+	return directory;
+}
+
+/**
+ * Restores application settings.
+ **/
+void MainWindow::ReadSettings()
+{
+    QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+    QRect rect = settings.value( "geometry", QRect(200, 200, 400, 400 ) ).toRect();
+    move( rect.topLeft() );
+    resize( rect.size() );
+
+    setWindowState( Qt::WindowNoState );
+    if( settings.value( "windowNoState", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowNoState );
+    if( settings.value( "windowMinimized", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowMinimized );
+    if( settings.value( "windowMaximized", true ).toBool() )	setWindowState( windowState() ^ Qt::WindowMaximized );
+    if( settings.value( "windowFullScreen", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowFullScreen );
+    if( settings.value( "windowActive", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowActive );
+    m_recentFiles = settings.value( "recentFiles" ).toStringList();
+    UpdateRecentFileActions();
+
+}
+
+/*!
+ * Checks whether a ray tracing can be started with the current light and model.
+ */
+bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
+{
+	//Check if there is a scene
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if ( !coinScene )  return false;
+
+	//Check if there is a rootSeparator InstanceNode
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+	if ( !sceneInstance )  return false;
+	rootSeparatorInstance = sceneInstance->children[1];
+	if( !rootSeparatorInstance ) return false;
+
+	//Check if there is a light and is properly configured
+	if ( !coinScene->getPart( "lightList[0]", false ) )	return false;
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+
+	lightInstance = sceneInstance->children[0];
+	if ( !lightInstance ) return false;
+
+	if( !lightKit->getPart( "tsunshape", false ) ) return false;
+	sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+
+	if( !lightKit->getPart( "icon", false ) ) return false;
+	raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
+
+	if( !lightKit->getPart( "transform" ,true ) ) return false;
+	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
+
+
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
+	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+	//Check if there is a random generator selected;
+	if( m_selectedRandomDeviate == -1 )
+	{
+		if( randomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
+		else	return false;
+	}
+
+	//Create the random generator
+	if( !m_rand )	m_rand =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
+
+	//Check if there is a photon map type selected;
+	if( m_selectedPhotonMap == -1 )
+	{
+		if( photonmapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
+		else	return false;
+	}
+
+	//Create the photon map where photons are going to be stored
+	if( !m_increasePhotonMap )
+	{
+		delete m_photonMap;
+		m_photonMap = 0;
+	}
+
+	if( !m_photonMap )
+	{
+		QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+		m_photonMap = photonmapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
+		m_tracedRays = 0;
+	}
+
+	return true;
+}
+
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved into the the given \a fileName. Otherwise, returns \a false.
+ *
+ * \sa Save, SaveAs.
+ */
+bool MainWindow::SaveFile( const QString& fileName )
+{
+ 	if( !m_document->WriteFile( fileName ) )
+	{
+		statusBar()->showMessage( tr( "Saving canceled" ), 2000 );
+		return false;
+	}
+
+	SetCurrentFile( fileName );
+	statusBar()->showMessage( tr( "File saved" ), 2000 );
+	return true;
+}
+
+/*!
  * Returns to the start origin state and starts with a new model defined in \a fileName.
  * If the file name is not defined, it starts with an empty scene.
  */
@@ -2616,6 +2618,32 @@ bool MainWindow::StartOver( const QString& fileName )
 QString MainWindow::StrippedName( const QString& fullFileName )
 {
 	return QFileInfo( fullFileName ).fileName();
+}
+
+
+/*!
+ * Updates the light dimensions if the automatic light dimensions is defined.
+ * Otherwise, nothing is done.
+ */
+void MainWindow::UpdateLightDimensions()
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	if ( !lightKit )	return;
+
+	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+	coinScene->getBoundingBox( bbAction );
+
+	SbBox3f box = bbAction->getXfBoundingBox().project();
+	delete bbAction;
+
+	Point3D pMin( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
+	Point3D pMax( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+	BBox sceneBox( pMin, pMax );
+
+	lightKit->ResizeToBBox( sceneBox );
+
 }
 
 /*!

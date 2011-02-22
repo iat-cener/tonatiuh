@@ -62,6 +62,7 @@ public:
     static void initClass();
 
 	double GetArea() const;
+	BBox GetBBox() const;
 	QString GetIcon() const;
 
 	bool IntersectP( const Ray& objectRay ) const;

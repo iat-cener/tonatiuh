@@ -48,7 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Point3D.h"
@@ -113,6 +113,21 @@ double ShapeFlatTriangle::GetArea() const
 
 	double area = 0.5 * CrossProduct( edge1, edge2).length();
 	return area;
+}
+
+/*!
+ * Return the shape bounding box.
+ */
+BBox ShapeFlatTriangle::GetBBox() const
+{
+	double xmin = std::min( a.getValue()[0], std::min( b.getValue()[0], c.getValue()[0] ) );
+	double xmax = std::max( a.getValue()[0], std::max( b.getValue()[0], c.getValue()[0] ) );
+	double ymin = std::min( a.getValue()[1], std::min( b.getValue()[1], c.getValue()[1] ) );
+	double ymax = std::max( a.getValue()[1], std::max( b.getValue()[1], c.getValue()[1] ) );
+	double zmin = std::min( a.getValue()[2], std::min( b.getValue()[2], c.getValue()[2] ) );
+	double zmax = std::max( a.getValue()[2], std::max( b.getValue()[2], c.getValue()[2] ) );
+
+	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
 QString ShapeFlatTriangle::GetIcon() const
@@ -349,15 +364,15 @@ bool ShapeFlatTriangle::OutOfRange( double u, double v ) const
 
 void ShapeFlatTriangle::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/)
 {
-	double xmin = std::min( a.getValue()[0], std::min( b.getValue()[0], c.getValue()[0] ) );
-	double xmax = std::max( a.getValue()[0], std::max( b.getValue()[0], c.getValue()[0] ) );
-	double ymin = std::min( a.getValue()[1], std::min( b.getValue()[1], c.getValue()[1] ) );
-	double ymax = std::max( a.getValue()[1], std::max( b.getValue()[1], c.getValue()[1] ) );
-	double zmin = std::min( a.getValue()[2], std::min( b.getValue()[2], c.getValue()[2] ) );
-	double zmax = std::max( a.getValue()[2], std::max( b.getValue()[2], c.getValue()[2] ) );
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+    SbVec3f min, max;
 
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ) );
+    min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+    max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
 
+    // Set the box to bound the two extreme points.
+    box.setBounds(min, max);
 }
 
 void ShapeFlatTriangle::generatePrimitives(SoAction *action)

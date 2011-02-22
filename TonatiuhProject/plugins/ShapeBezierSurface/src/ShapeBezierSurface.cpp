@@ -90,6 +90,17 @@ double ShapeBezierSurface::GetArea() const
 	return -1;
 }
 
+BBox ShapeBezierSurface::GetBBox() const
+{
+	BBox bBox;
+	for (int i = 0; i < m_surfacesVector.size(); i++)
+	{
+		BBox pBox =  m_surfacesVector[i]->GetComputeBBox();
+		bBox = Union( bBox, pBox );
+	}
+	return bBox;
+}
+
 void ShapeBezierSurface::DefineSurfacePatches( QVector< Point3D > inputData, int nUCurves, int nVCurves )
 {
 	int k = 4;

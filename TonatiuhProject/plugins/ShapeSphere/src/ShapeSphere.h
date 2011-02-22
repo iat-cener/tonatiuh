@@ -62,6 +62,7 @@ public:
 	static void initClass();
     SoNode* copy( SbBool copyConnections ) const;
 	double GetArea() const;
+	BBox GetBBox() const;
     QString GetIcon() const;
 
     Point3D Sample( double u1, double u2 ) const;

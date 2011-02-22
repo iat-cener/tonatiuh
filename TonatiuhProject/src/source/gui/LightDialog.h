@@ -69,9 +69,12 @@ public:
 
 	TLightKit* GetTLightKit();
 
+public slots:
+	 void accept();
+
 protected slots:
-	void changeShape( int index );
-	void changeSunshape( int index );
+	void ChangeShape( int index );
+	void ChangeSunshape( int index );
 
 private:
 	void SunPositionTab();

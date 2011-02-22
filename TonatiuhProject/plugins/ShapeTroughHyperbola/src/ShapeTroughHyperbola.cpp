@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeTroughHyperbola.h"
@@ -114,6 +115,27 @@ ShapeTroughHyperbola::~ShapeTroughHyperbola()
 double ShapeTroughHyperbola::GetArea() const
 {
 	return -1;
+}
+
+BBox ShapeTroughHyperbola::GetBBox() const
+{
+	double a = a0.getValue();
+	double b = a / tan( m_asymptoticAngle );
+
+	double xMin =  sqrt( a * a * ( 1 +
+			( ( truncationHeight.getValue() * truncationHeight.getValue() )
+					/ ( b* b ) ) ) );
+	double xMax = sqrt( a * a * ( 1 +
+			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
+					/ ( b* b ) ) ) );
+
+	double yMin = truncationHeight.getValue();
+	double yMax = hyperbolaHeight.getValue();
+
+	double zLengthMax = std::max( zLengthXMin.getValue(), zLengthXMax.getValue() );
+	double zMin = - zLengthMax /2;
+	double zMax = zLengthMax /2;
+	return BBox( Point3D( xMin, yMin, zMin ), Point3D( xMax, yMax, zMax ) );
 }
 
 QString ShapeTroughHyperbola::GetIcon() const
@@ -381,23 +403,15 @@ bool ShapeTroughHyperbola::OutOfRange( double u, double v ) const
 
 void ShapeTroughHyperbola::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double a = a0.getValue();
-	double b = a / tan( m_asymptoticAngle );
+	BBox bBox = GetBBox();
+		// These points define the min and max extents of the box.
+		SbVec3f min, max;
 
-	double xMin =  sqrt( a * a * ( 1 +
-			( ( truncationHeight.getValue() * truncationHeight.getValue() )
-					/ ( b* b ) ) ) );
-	double xMax = sqrt( a * a * ( 1 +
-			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
-					/ ( b* b ) ) ) );
+		min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+		max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );
 
-	double yMin = truncationHeight.getValue();
-	double yMax = hyperbolaHeight.getValue();
-
-	double zLengthMax = std::max( zLengthXMin.getValue(), zLengthXMax.getValue() );
-	double zMin = - zLengthMax /2;
-	double zMax = zLengthMax /2;
-	box.setBounds(SbVec3f( xMin, yMin, zMin ), SbVec3f( xMax, yMax, zMax ) );
+		// Set the box to bound the two extreme points.
+		box.setBounds(min, max);
 }
 
 void ShapeTroughHyperbola::generatePrimitives(SoAction *action)

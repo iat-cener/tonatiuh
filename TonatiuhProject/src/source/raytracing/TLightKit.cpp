@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoNodekitCatalog.h>
 
+#include "BBox.h"
 #include "Matrix4x4.h"
 #include "Point3D.h"
 #include "sunpos.h"
@@ -79,6 +80,7 @@ TLightKit::TLightKit()
 	SO_NODE_ADD_FIELD( azimuth, (0.0) );
 	SO_NODE_ADD_FIELD( zenith, (0.0) );
 	SO_NODE_ADD_FIELD( distance, (200.0) );
+	SO_NODE_ADD_FIELD( automaticallyResizable, ( TRUE ) );
 
 	SO_KIT_INIT_INSTANCE();
 
@@ -134,6 +136,8 @@ void TLightKit::ChangePosition( QDateTime newTime, double longitude, double lati
 	azimuth.setValue( results.dAzimuth * tgc::Degree );
 	zenith = results.dZenithAngle * tgc::Degree;
 	UpdateSunPosition();
+
+	//connect( buttonBox, SIGNAL( accepted() ), this, SLOT() );
 }
 
 /*!
@@ -163,6 +167,27 @@ void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* lat
 	*latitude = m_latitude.getValue();
 }
 
+/*!
+ * Resizes the light to cover the \a box projection.
+ */
+void TLightKit::ResizeToBBox( BBox box )
+{
+	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
+	Transform lTW = tgf::TransformFromSoTransform( lightTransform );
+	BBox localBox = lTW( box );
+
+	TShape* shape = static_cast< TShape* >( this->getPart( "icon", true ) );
+	BBox shapeBB = shape->GetBBox();
+
+	Point3D sMin = shapeBB.pMin;
+	Point3D sMax = shapeBB.pMax;
+
+	double xScaleFactor  = std::max( localBox.pMin.x/sMin.x, localBox.pMax.x/sMax.x );
+	double zScaleFactor  = std::max( localBox.pMin.z/sMin.z, localBox.pMax.z/sMax.z );
+
+	lightTransform->scaleFactor.setValue( xScaleFactor, 1, zScaleFactor );
+
+}
 
 void TLightKit::Update()
 {
@@ -172,6 +197,7 @@ void TLightKit::Update()
 	double oldZenith = zenith.getValue();
 	zenith.setValue( 0 );
 	zenith.setValue( oldZenith );
+
 }
 
 void TLightKit::UpdateSunPosition()

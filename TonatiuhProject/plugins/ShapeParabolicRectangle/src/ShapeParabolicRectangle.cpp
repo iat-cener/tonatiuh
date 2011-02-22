@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeParabolicRectangle.h"
@@ -79,6 +80,22 @@ ShapeParabolicRectangle::~ShapeParabolicRectangle()
 double ShapeParabolicRectangle::GetArea() const
 {
 	return -1;
+}
+
+BBox ShapeParabolicRectangle::GetBBox() const
+{
+	double xmin = -widthX.getValue()/2;
+	double xmax = widthX.getValue()/2;
+
+	double ymin = 0.0;
+	double ymax = ( ( widthX.getValue() * widthX.getValue() ) + ( widthZ.getValue() * widthZ.getValue() ) )
+			/ ( 16 * focusLength.getValue() );
+
+	double zmin = -widthZ.getValue() / 2;
+	double zmax = widthZ.getValue() / 2;
+
+	return BBox( Point3D( xmin, ymin, zmin), Point3D( xmax, ymax, zmax) );
+
 }
 
 QString ShapeParabolicRectangle::GetIcon() const
@@ -212,17 +229,15 @@ NormalVector ShapeParabolicRectangle::GetNormal( double u, double v ) const
 }
 void ShapeParabolicRectangle::computeBBox( SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
 {
-	double xmin = -widthX.getValue()/2;
-	double xmax = widthX.getValue()/2;
+	BBox bBox = GetBBox();
+	// These points define the min and max extents of the box.
+	SbVec3f min, max;
 
-	double ymin = 0.0;
-	double ymax = ( ( widthX.getValue() * widthX.getValue() ) + ( widthZ.getValue() * widthZ.getValue() ) )
-			/ ( 16 * focusLength.getValue() );
+	min.setValue( bBox.pMin.x, bBox.pMin.y, bBox.pMin.z );
+	max.setValue( bBox.pMax.x, bBox.pMax.y, bBox.pMax.z );;
 
-	double zmin = -widthZ.getValue() / 2;
-	double zmax = widthZ.getValue() / 2;
-
-	box.setBounds(SbVec3f( xmin, ymin, zmin ), SbVec3f( xmax, ymax, zmax ));
+	// Set the box to bound the two extreme points.
+	box.setBounds(min, max);
 }
 
 void ShapeParabolicRectangle::generatePrimitives(SoAction *action)
