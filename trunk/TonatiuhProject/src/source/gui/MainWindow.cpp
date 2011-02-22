@@ -2691,7 +2691,7 @@ void MainWindow::UpdateLightDimensions()
 {
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 	if ( !lightKit )	return;
 
 	if( !lightKit->automaticallyResizable.getValue() )	return;
