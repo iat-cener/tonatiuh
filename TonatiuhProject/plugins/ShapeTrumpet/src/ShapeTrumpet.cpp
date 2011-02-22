@@ -86,7 +86,11 @@ ShapeTrumpet::ShapeTrumpet()
  m_lastApertureValue( 0.25 ),
  m_lastFocusHyperbola( 0.32 ),
  m_lastHyperbolaHeightValue( 1.0 ),
- m_lastTruncationHeightValue( 0.0 )
+ m_lastTruncationHeightValue( 0.0 ),
+ m_apertureSensor( 0 ),
+ m_fHSensor( 0 ),
+ m_heightSensor( 0 ),
+ m_truncationSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeTrumpet);
 	SO_NODE_ADD_FIELD( a, (0.25) );
@@ -102,16 +106,16 @@ ShapeTrumpet::ShapeTrumpet()
 
 	SetBHyperbola();
 
-	SoFieldSensor* m_apertureSensor = new SoFieldSensor(updateApertureValue, this);
+	m_apertureSensor = new SoFieldSensor(updateApertureValue, this);
 	m_apertureSensor->setPriority( 0 );
 	m_apertureSensor->attach( &a );
-	SoFieldSensor* m_fHSensor = new SoFieldSensor(updateFocusValue, this);
+	m_fHSensor = new SoFieldSensor(updateFocusValue, this);
 	m_fHSensor->setPriority( 0 );
 	m_fHSensor->attach( &focusHyperbola );
-	SoFieldSensor* m_heightSensor = new SoFieldSensor(updateHeightValue, this);
+	m_heightSensor = new SoFieldSensor(updateHeightValue, this);
 	m_heightSensor->setPriority( 0 );
 	m_heightSensor->attach( &hyperbolaHeight );
-	SoFieldSensor* m_truncationSensor = new SoFieldSensor(updateTruncationValue, this);
+	m_truncationSensor = new SoFieldSensor(updateTruncationValue, this);
 	m_truncationSensor->setPriority( 0 );
 	m_truncationSensor->attach( &truncationHeight );
 
@@ -122,6 +126,10 @@ ShapeTrumpet::ShapeTrumpet()
  */
 ShapeTrumpet::~ShapeTrumpet()
 {
+	delete m_apertureSensor;
+	delete m_fHSensor;
+	delete m_heightSensor;
+	delete m_truncationSensor;
 }
 
 
