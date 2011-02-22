@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/SbLinear.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 
@@ -118,7 +119,7 @@ void TrackerHeliostat::evaluate()
 	SbVec3f i;
 	worldToObject.multDirMatrix ( globalSunVector, i );
 
-	SbVec3f focus = aimingPoint.getValue( );
+	SbVec3f focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
 	SbVec3f r;
 	worldToObject.multVecMatrix( focus, r );
 	r.normalize();
