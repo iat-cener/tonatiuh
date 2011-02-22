@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeSphericalPolygon.h"
@@ -105,6 +106,15 @@ SoNode* ShapeSphericalPolygon::copy( SbBool copyConnections ) const
 double ShapeSphericalPolygon::GetArea() const
 {
 	return -1;
+}
+
+BBox ShapeSphericalPolygon::GetBBox() const
+{
+	double xmax = radius.getValue();
+	double ymax = radius.getValue();
+	double zmax = sphereRadius.getValue() * ( 1 - cos( m_thetaMax ) );
+
+	return BBox( Point3D( - xmax, - ymax, 0 ), Point3D( xmax, ymax, zmax) );
 }
 
 QString ShapeSphericalPolygon::GetIcon() const
