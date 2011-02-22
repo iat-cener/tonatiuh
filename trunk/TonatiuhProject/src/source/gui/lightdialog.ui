@@ -182,7 +182,7 @@
         <widget class="FieldContainerWidget" name="sunshapeParameters"/>
        </item>
        <item row="8" column="3">
-        <widget class="QTreeView" name="shapeParameters">
+        <widget class="FieldContainerWidget" name="shapeParameters">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -386,6 +386,22 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>userSizeRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>shapeParameters</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>348</x>
+     <y>335</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>414</y>
     </hint>
    </hints>
   </connection>

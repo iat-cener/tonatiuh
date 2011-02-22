@@ -51,6 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QUndoStack>
 #include <QUndoView>
 
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -136,6 +137,9 @@ void finishManipulator(void *data, SoDragger* /*dragger*/ )
 	mainwindow->FinishManipulation( );
 }
 
+/*!
+ * Creates a new MainWindow object.
+ */
 MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags flags )
 :QMainWindow( parent, flags ),
 m_currentFile( "" ),
@@ -191,6 +195,9 @@ m_focusView( 0 )
     if( !tonatiuhFile.isEmpty() )	StartOver( tonatiuhFile );
 }
 
+/*!
+ * Destroyes MainWindow object.
+ */
 MainWindow::~MainWindow()
 {
 	delete m_document;
@@ -199,72 +206,70 @@ MainWindow::~MainWindow()
 	delete m_photonMap;
 }
 
-void MainWindow::SetupViews()
+/*!
+ * Finish the manipulation of the current selected node.
+ */
+void MainWindow::FinishManipulation( )
 {
-    SetupCommandView();
-    SetupGraphicView();
-   	SetupTreeView();
-   	SetupParametersView();
+	QModelIndex currentIndex = sceneModelView->currentIndex();
+	SoBaseKit* coinNode = static_cast< SoBaseKit* >( m_sceneModel->NodeFromIndex(currentIndex)->GetNode() );
+
+	CmdParameterModified* parameterModified;
+	QString type = coinNode->getTypeId().getName().getString() ;
+	if ( type == "TLightKit" )	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "tshapekit.transform" );
+	else	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "transform" );
+	m_commandStack->push( parameterModified );
+
+	UpdateLightDimensions();
+
 }
-
-void MainWindow::SetupVRMLBackground()
-{
-    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
-    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
-    float gangle= 1.570f;
-    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
-    vrmlBackground->groundAngle.setValue( gangle );
-    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
-    float sangle= 1.570f;
-    vrmlBackground->skyColor.setValues( 0,6,scolor );
-    vrmlBackground->skyAngle.setValue( sangle );
-	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
-}
-
-
 
 /*!
- * Shows the rays and photons stored at the photon map in the 3D view.
+ * Starts manipulating current selected node with \a dragger.
  */
-void MainWindow::ShowRaysIn3DView()
+void MainWindow::StartManipulation( SoDragger* dragger )
 {
-	actionDisplayRays->setEnabled( false );
-	actionDisplayRays->setChecked( false );
+	SoSearchAction* coinSearch = new SoSearchAction();
+	coinSearch->setNode( dragger );
+	coinSearch->setInterest( SoSearchAction::FIRST);
 
-	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
+	coinSearch->apply( m_document->GetRoot() );
 
-	if( m_pRays )
+	SoPath* coinScenePath = coinSearch->getPath( );
+	if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
+
+	SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
+	if( !nodePath ) tgf::SevereError( "PathFromIndex Null nodePath." );
+
+
+	nodePath->truncate(nodePath->getLength()-1 );
+	SoBaseKit* coinNode =  static_cast< SoBaseKit* > ( nodePath->getTail() );
+
+	QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodePath );
+	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
+
+	SoNode* manipulator = coinNode->getPart( "transform", true );
+	m_manipulators_Buffer = new QStringList();
+
+	SoFieldList fieldList;
+    int totalFields = manipulator->getFields( fieldList );
+
+    SoField* pField = 0;
+    SbName fieldName;
+    SbString fieldValue = "null";
+
+
+	for( int index = 0; index < totalFields; ++index )
 	{
-		m_pRays->removeAllChildren();
-		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
-		m_pRays->unref();
-		m_pRays = 0;
-	}
-
-	if( m_fraction > 0.0 || m_drawPhotons )
-	{
-		m_pRays = new SoSeparator;
-		m_pRays->ref();
-		m_pRays->setName( "Rays" );
-
-		if( m_drawPhotons )
+		pField = fieldList.get( index );
+		if( pField )
 		{
-			SoSeparator* points = trf::DrawPhotonMapPoints(*m_photonMap);
-			m_pRays->addChild(points);
-		}
-		if( m_fraction > 0.0 )
-		{
-			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
-			if( currentRays )
-			{
-				m_pRays->addChild(currentRays);
 
-				actionDisplayRays->setEnabled( true );
-				actionDisplayRays->setChecked( true );
-			}
-
+    		pField->get( fieldValue );
+			m_manipulators_Buffer->push_back(QString( fieldValue.getString() ) );
 		}
 	}
+	delete coinSearch;
 }
 
 /*!
@@ -350,8 +355,8 @@ void MainWindow::DisplayRays( bool display )
 void MainWindow::Redo()
 {
     m_commandStack->redo();
+    UpdateLightDimensions();
 }
-
 
 /*!
  * Shows a windows with the applied commands.
@@ -415,369 +420,8 @@ void MainWindow::ShowMenu( const QModelIndex& index)
 void MainWindow::Undo()
 {
     m_commandStack->undo();
+    UpdateLightDimensions();
 }
-
-
-void MainWindow::SetupActionsInsertMaterial()
-{
-	QVector< TMaterialFactory* > materialsFactoryList = m_pluginManager->GetMaterialFactories();
-	if( !( materialsFactoryList.size() > 0 ) )	return;
-
-	QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
-	if( !pMaterialsMenu ) return;
-	if( pMaterialsMenu->isEmpty() )
-	{
-		//Enable material menu
-		pMaterialsMenu->setEnabled( true );
-		m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
-	}
-
-	for( int i = 0; i < materialsFactoryList.size(); ++i )
-	{
-		TMaterialFactory* pTMaterialFactory = materialsFactoryList[i];
-
-		ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
-	    actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
-
-	    pMaterialsMenu->addAction( actionInsertMaterial );
-		m_materialsToolBar->addAction( actionInsertMaterial );
-		m_materialsToolBar->addSeparator();
-	    connect( actionInsertMaterial, SIGNAL( triggered() ),
-	    		 actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
-		connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ),
-				                 this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
-
-	}
-
-}
-
-/**
- * Creates an action for the /a pTShapeFactory and adds to shape insert menu and toolbar.
- */
-void MainWindow::SetupActionsInsertShape()
-{
-	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
-	if( !( shapeFactoryList.size() > 0 ) )	return;
-
-    QMenu* menuShape = menuInsert->findChild< QMenu* >( "menuShape" );
-    if( !menuShape ) return;
-   	if( menuShape->isEmpty() )
-    {
-   	  	//Enable Shape menu
-   		menuShape->setEnabled( true );
-
-    	//Create a new toolbar for trackers
-    	m_shapeToolBar = new QToolBar( menuShape );
-		if( m_shapeToolBar )
-		{
-			m_shapeToolBar->setObjectName( QString::fromUtf8( "shapeToolBar" ) );
-			m_shapeToolBar->setOrientation( Qt::Horizontal );
-	    	addToolBar( m_shapeToolBar );
-		}
-		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
-    }
-   	for( int i = 0; i < shapeFactoryList.size(); ++i )
-   	{
-   		TShapeFactory* pTShapeFactory = shapeFactoryList[i];
-   		ActionInsertShape* actionInsertShape = new ActionInsertShape( pTShapeFactory->TShapeName(), this, pTShapeFactory );
-   		actionInsertShape->setIcon( pTShapeFactory->TShapeIcon() );
-
-   		menuShape->addAction( actionInsertShape );
-   		m_shapeToolBar->addAction( actionInsertShape );
-   		m_shapeToolBar->addSeparator();
-   		connect( actionInsertShape, SIGNAL( triggered() ), actionInsertShape, SLOT( OnActionInsertShapeTriggered() ) );
-   		connect( actionInsertShape, SIGNAL( CreateShape( TShapeFactory* ) ), this, SLOT( CreateShape(TShapeFactory*) ) );
-   	}
-}
-
-void MainWindow::SetupActionsInsertTracker()
-{
-	QVector< TTrackerFactory* > trackerFactoryList = m_pluginManager->GetTrackerFactories();
-	if( !( trackerFactoryList.size() > 0 ) )	return;
-
-	QMenu* pTrackerMenu = menuInsert->findChild< QMenu* >( "menuTracker" );
-	if( !pTrackerMenu ) return;
-	if( pTrackerMenu->isEmpty() )
-	{
-		//Enable material menu
-		pTrackerMenu->setEnabled( true );
-
-		//Create a new toolbar for trackers
-		m_trackersToolBar = CreateTrackerTooBar( pTrackerMenu );
-	}
-
-	for( int i = 0; i < trackerFactoryList.size(); ++i )
-	{
-		TTrackerFactory* pTTrackerFactory = trackerFactoryList[i];
-		ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
-		actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
-
-		pTrackerMenu->addAction( actionInsertTracker );
-		m_trackersToolBar->addAction( actionInsertTracker );
-		m_trackersToolBar->addSeparator();
-		connect( actionInsertTracker, SIGNAL( triggered() ), actionInsertTracker, SLOT( OnActionInsertTrackerTriggered() ) );
-		connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
-	}
-}
-
-/*!
- * Creates actions form recent files.
- */
-void MainWindow::SetupActions()
-{
-    m_recentFileActions = new QAction*[m_maxRecentFiles];
-    for ( int i = 0; i < m_maxRecentFiles; ++i )
-    {
-    	m_recentFileActions[i] = new QAction( this );
-    	m_recentFileActions[i]->setVisible( false );
-    	connect( m_recentFileActions[i], SIGNAL( triggered() ),
-    			                   this, SLOT( OpenRecentFile() ) );
-    }
-}
-
-/*!
- * Creates a view for visualize user done last actions.
- */
-void MainWindow::SetupCommandView()
-{
-    m_commandStack = new QUndoStack(this);
-	m_commandView = new QUndoView( m_commandStack );
-	m_commandView->setWindowTitle( tr( "Command List" ) );
-	m_commandView->setAttribute( Qt::WA_QuitOnClose, false );
-    connect( m_commandStack, SIGNAL( canRedoChanged( bool ) ),
-    		     actionRedo, SLOT( setEnabled( bool ) ) );
-    connect( m_commandStack, SIGNAL( canUndoChanged( bool ) ),
-    		     actionUndo, SLOT( setEnabled( bool ) ) );
-}
-
-/*!
- * Initializes tonatiuh document object.
- */
-void MainWindow::SetupDocument()
-{
-    m_document = new Document();
-    if ( m_document )
-    	connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
-    			       this, SLOT(selectionFinish( SoSelection* ) ) );
-    else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
-}
-
-/*!
- * Initializates tonatiuh graphic view.
- */
-void MainWindow::SetupGraphicView()
-{
-
-    SetupVRMLBackground();
-	QSplitter* pSplitter = findChild<QSplitter *>( "horizontalSplitter" );
-
-	QSplitter* graphicHorizontalSplitter = new QSplitter();
-	graphicHorizontalSplitter->setObjectName( QString::fromUtf8("graphicHorizontalSplitter") );
-    graphicHorizontalSplitter->setOrientation( Qt::Vertical );
-    pSplitter->insertWidget( 0, graphicHorizontalSplitter );
-
-	QList<int> sizes;
-    sizes<<500<<200;
-    pSplitter->setSizes ( sizes );
-
-
-    QSplitter *graphicVerticalSplitter1 = new QSplitter();
-    graphicVerticalSplitter1->setObjectName( QString::fromUtf8( "graphicVerticalSplitter1" ) );
-    graphicVerticalSplitter1->setOrientation( Qt::Horizontal );
-    graphicHorizontalSplitter->insertWidget( 0, graphicVerticalSplitter1 );
-
-    QSplitter *graphicVerticalSplitter2 = new QSplitter();
-    graphicVerticalSplitter2->setObjectName(QString::fromUtf8("graphicVerticalSplitter2"));
-    graphicVerticalSplitter2->setOrientation(Qt::Horizontal);
-    graphicHorizontalSplitter->insertWidget( 1, graphicVerticalSplitter2 );
-
-    QList<int> height;
-    height<<200<<200;
-    graphicHorizontalSplitter->setSizes ( height );
-
-    GraphicView* graphicView1 = new GraphicView(graphicVerticalSplitter1);
-    graphicView1->setObjectName(QString::fromUtf8("graphicView1"));
-    m_graphicView.push_back(graphicView1);
-    GraphicView* graphicView2 = new GraphicView(graphicVerticalSplitter1);
-    graphicView2->setObjectName(QString::fromUtf8("graphicView2"));
-	m_graphicView.push_back(graphicView2);
-    GraphicView* graphicView3 = new GraphicView(graphicVerticalSplitter2);
-    graphicView3->setObjectName(QString::fromUtf8("graphicView3"));
-	m_graphicView.push_back(graphicView3);
-    GraphicView* graphicView4 = new GraphicView(graphicVerticalSplitter2);
-    graphicView4->setObjectName(QString::fromUtf8("graphicView4"));
-	m_graphicView.push_back(graphicView4);
-
-    graphicVerticalSplitter1->addWidget(m_graphicView[0]);
-    graphicVerticalSplitter1->addWidget(m_graphicView[1]);
-    graphicVerticalSplitter2->addWidget(m_graphicView[2]);
-    graphicVerticalSplitter2->addWidget(m_graphicView[3]);
-
-    QList<int> widthSizes;
-    widthSizes<<100<<100;
-    graphicVerticalSplitter1->setSizes ( widthSizes );
-    graphicVerticalSplitter2->setSizes ( widthSizes );
-
-    if( graphicVerticalSplitter1 && graphicVerticalSplitter2 )
-	{
-		m_graphicView[0] = graphicVerticalSplitter1->findChild< GraphicView* >( "graphicView1" );
-        if ( m_graphicView[0] != NULL )
-        {
-    	    m_graphicView[0]->resize( 600, 400 );
-    	    m_graphicView[0]->SetSceneGraph( m_document->GetRoot( ) );
-    	    m_graphicView[0]->setModel( m_sceneModel );
-    	    m_graphicView[0]->setSelectionModel( m_selectionModel );
-        }
-        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[0] not found" );
-        m_graphicView[1] = graphicVerticalSplitter1->findChild< GraphicView* >( "graphicView2" );
-        if ( m_graphicView[1] != NULL )
-        {
-    	    m_graphicView[1]->resize( 600, 400 );
-    	    m_graphicView[1]->SetSceneGraph( m_document->GetRoot( ) );
-    	    m_graphicView[1]->setModel( m_sceneModel );
-    	    m_graphicView[1]->setSelectionModel( m_selectionModel );
-    	    m_focusView=1;
-    	    on_action_X_Y_Plane_triggered();
-
-        }
-        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[1] not found" );
-        m_graphicView[2] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView3" );
-        if ( m_graphicView[2] != NULL )
-        {
-    	    m_graphicView[2]->resize( 600, 400 );
-    	    m_graphicView[2]->SetSceneGraph( m_document->GetRoot( ) );
-    	    m_graphicView[2]->setModel( m_sceneModel );
-    	    m_graphicView[2]->setSelectionModel( m_selectionModel );
-    	    m_focusView=2;
-    	    on_action_Y_Z_Plane_triggered();
-        }
-        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[2] not found" );
-        m_graphicView[3] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView4" );
-        if ( m_graphicView[3] !=  NULL )
-        {
-    	    m_graphicView[3]->resize( 600, 400 );
-    	    m_graphicView[3]->SetSceneGraph( m_document->GetRoot( ) );
-    	    m_graphicView[3]->setModel( m_sceneModel );
-    	    m_graphicView[3]->setSelectionModel( m_selectionModel );
-    	    m_focusView=3;
-    	    on_action_X_Z_Plane_triggered();
-        }
-	    else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[3] not found" );
-    }
-	else tgf::SevereError( "MainWindow::InitializeGraphicView: verticalSplitter not found" );
-
-	m_graphicView[1]->hide();
-	m_graphicView[2]->hide();
-	m_graphicView[3]->hide();
-	m_focusView = 0;
-}
-
-/*!
- * Creates a menu for last used files
- */
-void MainWindow::SetupMenus()
-{
-    for ( int i = 0; i < m_maxRecentFiles; ++i )
-          menuRecent->addAction( m_recentFileActions[i] );
-}
-
-
-void MainWindow::SetupModels()
-{
-    m_sceneModel = new SceneModel();
-    m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
-    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-    m_selectionModel = new QItemSelectionModel( m_sceneModel );
-
-    connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ),
-    		         this, SLOT( SetSunPositionCalculatorEnabled( int ) ) );
-}
-
-/*!
- * Initializes plugin manager and load available plugins.
- */
-void MainWindow::SetupPluginsManager()
-{
-	m_pluginManager = new PluginManager;
-	m_pluginManager->LoadAvailablePlugins( PluginDirectory() );
-
-	SetupActionsInsertMaterial( );
-	SetupActionsInsertShape();
-	SetupActionsInsertTracker();
-
-}
-
-void MainWindow::SetupParametersView()
-{
-    ParametersView* petParamtersViewPointer();
-    connect ( parametersView, SIGNAL(valueModificated( const QStringList&, SoBaseKit*, QString  ) ),
-		                this, SLOT( parameterModified( const QStringList&, SoBaseKit*, QString  ) ) );
-	connect( m_selectionModel, SIGNAL( currentChanged ( const QModelIndex& , const QModelIndex& ) ),
-			             this, SLOT( ChangeSelection( const QModelIndex& ) ) );
-}
-
-void MainWindow::SetupTreeView()
-{
-
-	sceneModelView->setModel( m_sceneModel );
-	sceneModelView->setSelectionModel( m_selectionModel );
-
-
-	connect( sceneModelView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
-	connect( sceneModelView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
-	connect( sceneModelView, SIGNAL( showMenu( const QModelIndex& ) ),
-				 this, SLOT ( ShowMenu( const QModelIndex& ) ) );
-	connect( sceneModelView, SIGNAL( nodeNameModificated( const QModelIndex&, const QString& ) ),
-				 this, SLOT ( ChangeNodeName( const QModelIndex&, const QString& ) ) );
-
-}
-
-/*!
- * Defines slots function for main window signals.
- */
-void MainWindow::SetupTriggers()
-{
-	//File actions
-	connect( actionNew, SIGNAL( triggered() ), this, SLOT ( New() ) );
-	connect( actionOpen, SIGNAL( triggered() ), this, SLOT ( Open() ) );
-	connect( actionSave, SIGNAL( triggered() ), this, SLOT ( Save() ) );
-	connect( actionSaveAs, SIGNAL( triggered() ), this, SLOT ( SaveAs() ) );
-	connect( actionSaveComponent, SIGNAL( triggered() ), this, SLOT ( SaveComponent() ) );
-	connect( actionClose, SIGNAL( triggered() ), this, SLOT ( close() ) );
-
-	//Edit actions
-	connect( actionUndo, SIGNAL( triggered() ), this, SLOT ( Undo() ) );
-	connect( actionRedo, SIGNAL( triggered() ), this, SLOT ( Redo() ) );
-	connect( actionUndoView, SIGNAL( triggered() ), this, SLOT ( ShowCommandView() ) );
-	connect( actionCut, SIGNAL( triggered() ), this, SLOT ( Cut() ) );
-	connect( actionCopy, SIGNAL( triggered() ), this, SLOT ( Copy() ) );
-	connect( actionPasteCopy, SIGNAL( triggered() ), this, SLOT ( PasteCopy() ) );
-	connect( actionPasteLink, SIGNAL( triggered() ), this, SLOT ( PasteLink() ) );
-	connect( actionDelete, SIGNAL( triggered() ), this, SLOT ( Delete() ) );
-
-	//Insert actions
-	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
-	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
-	connect( actionUserComponent, SIGNAL( triggered() ), this, SLOT ( InsertUserDefinedComponent() ) );
-
-	//Sun Light menu actions
-	connect( actionDefineSunLight, SIGNAL( triggered() ), this, SLOT ( DefineSunLight() ) );
-	connect( actionCalculateSunPosition, SIGNAL( triggered() ), this, SLOT ( CalculateSunPosition() ) );
-
-	//Ray trace menu actions
-	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
-	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
-}
-/*!
- * Initializates tonatiuh update manager.
- */
-void MainWindow::SetupUpdateManager()
-{
-	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
-}
-
 
 /*!
  * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
@@ -1225,6 +869,7 @@ void MainWindow::CreateGroupNode()
 			count++;
 			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
 		}
+		UpdateLightDimensions();
 
 		m_document->SetDocumentModified( true );
 
@@ -1304,6 +949,7 @@ void MainWindow::CreateSurfaceNode()
 			count++;
 			nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
 		}
+		UpdateLightDimensions();
 		m_document->SetDocumentModified( true );
 	}
 }
@@ -1342,6 +988,7 @@ void MainWindow::Cut()
 	CmdCut* command = new CmdCut( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 }
 
@@ -1359,6 +1006,7 @@ void MainWindow::Cut( QString nodeURL )
 	CmdCut* command = new CmdCut( nodeIndex, m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 
 }
@@ -1431,6 +1079,7 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 	cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
 	m_commandStack->push( cmdInsertSeparatorKit );
 
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 
 }
@@ -1679,7 +1328,10 @@ bool MainWindow::SaveComponent()
  */
 void MainWindow::SetNodeName( QString nodeName )
 {
+	if( !m_selectionModel->hasSelection() ) return;
+	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return;
 
+	ChangeNodeName( m_selectionModel->currentIndex(), nodeName );
 }
 
 /*!
@@ -1997,6 +1649,7 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
     createMaterial->setText(commandText);
     m_commandStack->push( createMaterial );
 
+    UpdateLightDimensions();
     m_document->SetDocumentModified( true );
 }
 
@@ -2035,6 +1688,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
         createShape->setText( commandText );
         m_commandStack->push( createShape );
 
+        UpdateLightDimensions();
         m_document->SetDocumentModified( true );
     }
 }
@@ -2054,6 +1708,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
 	m_commandStack->push( command );
 
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 }
 
@@ -2108,6 +1763,7 @@ void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelInd
 	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDrop );
 	m_commandStack->push( dragAndDrop );
 
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 
 }
@@ -2124,6 +1780,7 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDropCopy );
 	m_commandStack->push( dragAndDropCopy );
 
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 }
 
@@ -2144,6 +1801,9 @@ void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double la
 	{
 		CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, *time, longitude, latitude );
 		m_commandStack->push( command );
+
+		UpdateLightDimensions();
+		m_document->SetDocumentModified( true );
 	}
 	delete time;
 }
@@ -2168,23 +1828,6 @@ void MainWindow::closeEvent( QCloseEvent* event )
     else event->ignore();
 }
 
-void MainWindow::SetCurrentFile( const QString& fileName )
-{
-	m_currentFile = fileName;
-	m_document->SetDocumentModified( false );
-
-	QString shownName = "Untitled";
-	if ( !m_currentFile.isEmpty() )
-	{
-		shownName = StrippedName( m_currentFile );
-		m_recentFiles.removeAll( m_currentFile );
-		m_recentFiles.prepend( m_currentFile );
-		UpdateRecentFileActions();
-	}
-
-	setWindowTitle( tr( "%1[*] - %2" ).arg( shownName ).arg( tr( "Tonatiuh" ) ) );
-}
-
 /**
  * Creates a command for the modification of a node parameter.
  *
@@ -2195,67 +1838,10 @@ void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* 
    	CmdParameterModified* parameterModified = new CmdParameterModified( oldValueList, coinNode, coinPart );
 	if ( m_commandStack ) m_commandStack->push( parameterModified );
 
-	m_document->SetDocumentModified( true );
-
 	m_sceneModel->UpdateSceneModel();
-}
 
-void MainWindow::StartManipulation( SoDragger* dragger )
-{
-	SoSearchAction* coinSearch = new SoSearchAction();
-	coinSearch->setNode( dragger );
-	coinSearch->setInterest( SoSearchAction::FIRST);
-
-	coinSearch->apply( m_document->GetRoot() );
-
-	SoPath* coinScenePath = coinSearch->getPath( );
-	if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
-
-	SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
-	if( !nodePath ) tgf::SevereError( "PathFromIndex Null nodePath." );
-
-
-	nodePath->truncate(nodePath->getLength()-1 );
-	SoBaseKit* coinNode =  static_cast< SoBaseKit* > ( nodePath->getTail() );
-
-	QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodePath );
-	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
-
-	SoNode* manipulator = coinNode->getPart( "transform", true );
-	m_manipulators_Buffer = new QStringList();
-
-	SoFieldList fieldList;
-    int totalFields = manipulator->getFields( fieldList );
-
-    SoField* pField = 0;
-    SbName fieldName;
-    SbString fieldValue = "null";
-
-
-	for( int index = 0; index < totalFields; ++index )
-	{
-		pField = fieldList.get( index );
-		if( pField )
-		{
-
-    		pField->get( fieldValue );
-			m_manipulators_Buffer->push_back(QString( fieldValue.getString() ) );
-		}
-	}
-	delete coinSearch;
-}
-
-void MainWindow::FinishManipulation( )
-{
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( m_sceneModel->NodeFromIndex(currentIndex)->GetNode() );
-
-	CmdParameterModified* parameterModified;
-	QString type = coinNode->getTypeId().getName().getString() ;
-	if ( type == "TLightKit" )	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "tshapekit.transform" );
-	else	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "transform" );
-	m_commandStack->push( parameterModified );
-
+	UpdateLightDimensions();
+	m_document->SetDocumentModified( true );
 }
 
 /*!
@@ -2376,7 +1962,9 @@ bool MainWindow::Delete( QModelIndex index )
 		CmdDelete* commandDelete = new CmdDelete( index, *m_sceneModel );
 		m_commandStack->push( commandDelete );
 	}
-	//if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
+
+
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 
 	return true;
@@ -2441,8 +2029,7 @@ bool MainWindow::Paste( QModelIndex nodeIndex, tgc::PasteType type )
 	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
 	m_commandStack->push( commandPaste );
 
-
-
+	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 	return true;
 
@@ -2572,6 +2159,467 @@ bool MainWindow::SaveFile( const QString& fileName )
 }
 
 /*!
+ * Sets \a fileName files as current file.
+ */
+void MainWindow::SetCurrentFile( const QString& fileName )
+{
+	m_currentFile = fileName;
+	m_document->SetDocumentModified( false );
+
+	QString shownName = "Untitled";
+	if ( !m_currentFile.isEmpty() )
+	{
+		shownName = StrippedName( m_currentFile );
+		m_recentFiles.removeAll( m_currentFile );
+		m_recentFiles.prepend( m_currentFile );
+		UpdateRecentFileActions();
+	}
+
+	setWindowTitle( tr( "%1[*] - %2" ).arg( shownName ).arg( tr( "Tonatiuh" ) ) );
+}
+
+/*!
+ * Creates actions form recent files.
+ */
+void MainWindow::SetupActions()
+{
+    m_recentFileActions = new QAction*[m_maxRecentFiles];
+    for ( int i = 0; i < m_maxRecentFiles; ++i )
+    {
+    	m_recentFileActions[i] = new QAction( this );
+    	m_recentFileActions[i]->setVisible( false );
+    	connect( m_recentFileActions[i], SIGNAL( triggered() ),
+    			                   this, SLOT( OpenRecentFile() ) );
+    }
+}
+
+void MainWindow::SetupActionsInsertMaterial()
+{
+	QVector< TMaterialFactory* > materialsFactoryList = m_pluginManager->GetMaterialFactories();
+	if( !( materialsFactoryList.size() > 0 ) )	return;
+
+	QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
+	if( !pMaterialsMenu ) return;
+	if( pMaterialsMenu->isEmpty() )
+	{
+		//Enable material menu
+		pMaterialsMenu->setEnabled( true );
+		m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
+	}
+
+	for( int i = 0; i < materialsFactoryList.size(); ++i )
+	{
+		TMaterialFactory* pTMaterialFactory = materialsFactoryList[i];
+
+		ActionInsertMaterial* actionInsertMaterial = new ActionInsertMaterial( pTMaterialFactory->TMaterialName(), this, pTMaterialFactory );
+	    actionInsertMaterial->setIcon( pTMaterialFactory->TMaterialIcon() );
+
+	    pMaterialsMenu->addAction( actionInsertMaterial );
+		m_materialsToolBar->addAction( actionInsertMaterial );
+		m_materialsToolBar->addSeparator();
+	    connect( actionInsertMaterial, SIGNAL( triggered() ),
+	    		 actionInsertMaterial, SLOT( OnActionInsertMaterialTriggered() ) );
+		connect( actionInsertMaterial, SIGNAL( CreateMaterial( TMaterialFactory* ) ),
+				                 this, SLOT( CreateMaterial( TMaterialFactory* ) ) );
+
+	}
+
+}
+
+/**
+ * Creates an action for the /a pTShapeFactory and adds to shape insert menu and toolbar.
+ */
+void MainWindow::SetupActionsInsertShape()
+{
+	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+	if( !( shapeFactoryList.size() > 0 ) )	return;
+
+    QMenu* menuShape = menuInsert->findChild< QMenu* >( "menuShape" );
+    if( !menuShape ) return;
+   	if( menuShape->isEmpty() )
+    {
+   	  	//Enable Shape menu
+   		menuShape->setEnabled( true );
+
+    	//Create a new toolbar for trackers
+    	m_shapeToolBar = new QToolBar( menuShape );
+		if( m_shapeToolBar )
+		{
+			m_shapeToolBar->setObjectName( QString::fromUtf8( "shapeToolBar" ) );
+			m_shapeToolBar->setOrientation( Qt::Horizontal );
+	    	addToolBar( m_shapeToolBar );
+		}
+		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
+    }
+   	for( int i = 0; i < shapeFactoryList.size(); ++i )
+   	{
+   		TShapeFactory* pTShapeFactory = shapeFactoryList[i];
+   		ActionInsertShape* actionInsertShape = new ActionInsertShape( pTShapeFactory->TShapeName(), this, pTShapeFactory );
+   		actionInsertShape->setIcon( pTShapeFactory->TShapeIcon() );
+
+   		menuShape->addAction( actionInsertShape );
+   		m_shapeToolBar->addAction( actionInsertShape );
+   		m_shapeToolBar->addSeparator();
+   		connect( actionInsertShape, SIGNAL( triggered() ), actionInsertShape, SLOT( OnActionInsertShapeTriggered() ) );
+   		connect( actionInsertShape, SIGNAL( CreateShape( TShapeFactory* ) ), this, SLOT( CreateShape(TShapeFactory*) ) );
+   	}
+}
+
+void MainWindow::SetupActionsInsertTracker()
+{
+	QVector< TTrackerFactory* > trackerFactoryList = m_pluginManager->GetTrackerFactories();
+	if( !( trackerFactoryList.size() > 0 ) )	return;
+
+	QMenu* pTrackerMenu = menuInsert->findChild< QMenu* >( "menuTracker" );
+	if( !pTrackerMenu ) return;
+	if( pTrackerMenu->isEmpty() )
+	{
+		//Enable material menu
+		pTrackerMenu->setEnabled( true );
+
+		//Create a new toolbar for trackers
+		m_trackersToolBar = CreateTrackerTooBar( pTrackerMenu );
+	}
+
+	for( int i = 0; i < trackerFactoryList.size(); ++i )
+	{
+		TTrackerFactory* pTTrackerFactory = trackerFactoryList[i];
+		ActionInsertTracker* actionInsertTracker = new ActionInsertTracker( pTTrackerFactory->TTrackerName(), this, pTTrackerFactory );
+		actionInsertTracker->setIcon( pTTrackerFactory->TTrackerIcon() );
+
+		pTrackerMenu->addAction( actionInsertTracker );
+		m_trackersToolBar->addAction( actionInsertTracker );
+		m_trackersToolBar->addSeparator();
+		connect( actionInsertTracker, SIGNAL( triggered() ), actionInsertTracker, SLOT( OnActionInsertTrackerTriggered() ) );
+		connect( actionInsertTracker, SIGNAL( CreateTracker( TTrackerFactory* ) ), this, SLOT( CreateTracker(TTrackerFactory*) ) );
+	}
+}
+
+/*!
+ * Creates a view for visualize user done last actions.
+ */
+void MainWindow::SetupCommandView()
+{
+    m_commandStack = new QUndoStack(this);
+	m_commandView = new QUndoView( m_commandStack );
+	m_commandView->setWindowTitle( tr( "Command List" ) );
+	m_commandView->setAttribute( Qt::WA_QuitOnClose, false );
+    connect( m_commandStack, SIGNAL( canRedoChanged( bool ) ),
+    		     actionRedo, SLOT( setEnabled( bool ) ) );
+    connect( m_commandStack, SIGNAL( canUndoChanged( bool ) ),
+    		     actionUndo, SLOT( setEnabled( bool ) ) );
+}
+
+/*!
+ * Initializes tonatiuh document object.
+ */
+void MainWindow::SetupDocument()
+{
+    m_document = new Document();
+    if ( m_document )
+    	connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
+    			       this, SLOT(selectionFinish( SoSelection* ) ) );
+    else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
+}
+
+/*!
+ * Initializates tonatiuh graphic view.
+ */
+void MainWindow::SetupGraphicView()
+{
+
+    SetupVRMLBackground();
+	QSplitter* pSplitter = findChild<QSplitter *>( "horizontalSplitter" );
+
+	QSplitter* graphicHorizontalSplitter = new QSplitter();
+	graphicHorizontalSplitter->setObjectName( QString::fromUtf8("graphicHorizontalSplitter") );
+    graphicHorizontalSplitter->setOrientation( Qt::Vertical );
+    pSplitter->insertWidget( 0, graphicHorizontalSplitter );
+
+	QList<int> sizes;
+    sizes<<500<<200;
+    pSplitter->setSizes ( sizes );
+
+
+    QSplitter *graphicVerticalSplitter1 = new QSplitter();
+    graphicVerticalSplitter1->setObjectName( QString::fromUtf8( "graphicVerticalSplitter1" ) );
+    graphicVerticalSplitter1->setOrientation( Qt::Horizontal );
+    graphicHorizontalSplitter->insertWidget( 0, graphicVerticalSplitter1 );
+
+    QSplitter *graphicVerticalSplitter2 = new QSplitter();
+    graphicVerticalSplitter2->setObjectName(QString::fromUtf8("graphicVerticalSplitter2"));
+    graphicVerticalSplitter2->setOrientation(Qt::Horizontal);
+    graphicHorizontalSplitter->insertWidget( 1, graphicVerticalSplitter2 );
+
+    QList<int> height;
+    height<<200<<200;
+    graphicHorizontalSplitter->setSizes ( height );
+
+    GraphicView* graphicView1 = new GraphicView(graphicVerticalSplitter1);
+    graphicView1->setObjectName(QString::fromUtf8("graphicView1"));
+    m_graphicView.push_back(graphicView1);
+    GraphicView* graphicView2 = new GraphicView(graphicVerticalSplitter1);
+    graphicView2->setObjectName(QString::fromUtf8("graphicView2"));
+	m_graphicView.push_back(graphicView2);
+    GraphicView* graphicView3 = new GraphicView(graphicVerticalSplitter2);
+    graphicView3->setObjectName(QString::fromUtf8("graphicView3"));
+	m_graphicView.push_back(graphicView3);
+    GraphicView* graphicView4 = new GraphicView(graphicVerticalSplitter2);
+    graphicView4->setObjectName(QString::fromUtf8("graphicView4"));
+	m_graphicView.push_back(graphicView4);
+
+    graphicVerticalSplitter1->addWidget(m_graphicView[0]);
+    graphicVerticalSplitter1->addWidget(m_graphicView[1]);
+    graphicVerticalSplitter2->addWidget(m_graphicView[2]);
+    graphicVerticalSplitter2->addWidget(m_graphicView[3]);
+
+    QList<int> widthSizes;
+    widthSizes<<100<<100;
+    graphicVerticalSplitter1->setSizes ( widthSizes );
+    graphicVerticalSplitter2->setSizes ( widthSizes );
+
+    if( graphicVerticalSplitter1 && graphicVerticalSplitter2 )
+	{
+		m_graphicView[0] = graphicVerticalSplitter1->findChild< GraphicView* >( "graphicView1" );
+        if ( m_graphicView[0] != NULL )
+        {
+    	    m_graphicView[0]->resize( 600, 400 );
+    	    m_graphicView[0]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[0]->setModel( m_sceneModel );
+    	    m_graphicView[0]->setSelectionModel( m_selectionModel );
+        }
+        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[0] not found" );
+        m_graphicView[1] = graphicVerticalSplitter1->findChild< GraphicView* >( "graphicView2" );
+        if ( m_graphicView[1] != NULL )
+        {
+    	    m_graphicView[1]->resize( 600, 400 );
+    	    m_graphicView[1]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[1]->setModel( m_sceneModel );
+    	    m_graphicView[1]->setSelectionModel( m_selectionModel );
+    	    m_focusView=1;
+    	    on_action_X_Y_Plane_triggered();
+
+        }
+        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[1] not found" );
+        m_graphicView[2] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView3" );
+        if ( m_graphicView[2] != NULL )
+        {
+    	    m_graphicView[2]->resize( 600, 400 );
+    	    m_graphicView[2]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[2]->setModel( m_sceneModel );
+    	    m_graphicView[2]->setSelectionModel( m_selectionModel );
+    	    m_focusView=2;
+    	    on_action_Y_Z_Plane_triggered();
+        }
+        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[2] not found" );
+        m_graphicView[3] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView4" );
+        if ( m_graphicView[3] !=  NULL )
+        {
+    	    m_graphicView[3]->resize( 600, 400 );
+    	    m_graphicView[3]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[3]->setModel( m_sceneModel );
+    	    m_graphicView[3]->setSelectionModel( m_selectionModel );
+    	    m_focusView=3;
+    	    on_action_X_Z_Plane_triggered();
+        }
+	    else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[3] not found" );
+    }
+	else tgf::SevereError( "MainWindow::InitializeGraphicView: verticalSplitter not found" );
+
+	m_graphicView[1]->hide();
+	m_graphicView[2]->hide();
+	m_graphicView[3]->hide();
+	m_focusView = 0;
+}
+
+/*!
+ * Creates a menu for last used files
+ */
+void MainWindow::SetupMenus()
+{
+    for ( int i = 0; i < m_maxRecentFiles; ++i )
+          menuRecent->addAction( m_recentFileActions[i] );
+}
+
+/*!
+ * Initializes Tonatiuh models.
+ */
+void MainWindow::SetupModels()
+{
+    m_sceneModel = new SceneModel();
+    m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
+    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
+    m_selectionModel = new QItemSelectionModel( m_sceneModel );
+
+    connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ),
+    		         this, SLOT( SetSunPositionCalculatorEnabled( int ) ) );
+}
+
+/*!
+ *Initializes the tonatiuh objects parameters view.
+ */
+void MainWindow::SetupParametersView()
+{
+    ParametersView* petParamtersViewPointer();
+    connect ( parametersView, SIGNAL(valueModificated( const QStringList&, SoBaseKit*, QString  ) ),
+		                this, SLOT( parameterModified( const QStringList&, SoBaseKit*, QString  ) ) );
+	connect( m_selectionModel, SIGNAL( currentChanged ( const QModelIndex& , const QModelIndex& ) ),
+			             this, SLOT( ChangeSelection( const QModelIndex& ) ) );
+}
+
+/*!
+ * Initializes plugin manager and load available plugins.
+ */
+void MainWindow::SetupPluginsManager()
+{
+	m_pluginManager = new PluginManager;
+	m_pluginManager->LoadAvailablePlugins( PluginDirectory() );
+
+	SetupActionsInsertMaterial( );
+	SetupActionsInsertShape();
+	SetupActionsInsertTracker();
+
+}
+
+/*!
+ * Initializates Tonatiuh objectes tree view.
+ */
+void MainWindow::SetupTreeView()
+{
+
+	sceneModelView->setModel( m_sceneModel );
+	sceneModelView->setSelectionModel( m_selectionModel );
+
+
+	connect( sceneModelView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
+	connect( sceneModelView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
+			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
+	connect( sceneModelView, SIGNAL( showMenu( const QModelIndex& ) ),
+				 this, SLOT ( ShowMenu( const QModelIndex& ) ) );
+	connect( sceneModelView, SIGNAL( nodeNameModificated( const QModelIndex&, const QString& ) ),
+				 this, SLOT ( ChangeNodeName( const QModelIndex&, const QString& ) ) );
+
+}
+
+/*!
+ * Defines slots function for main window signals.
+ */
+void MainWindow::SetupTriggers()
+{
+	//File actions
+	connect( actionNew, SIGNAL( triggered() ), this, SLOT ( New() ) );
+	connect( actionOpen, SIGNAL( triggered() ), this, SLOT ( Open() ) );
+	connect( actionSave, SIGNAL( triggered() ), this, SLOT ( Save() ) );
+	connect( actionSaveAs, SIGNAL( triggered() ), this, SLOT ( SaveAs() ) );
+	connect( actionSaveComponent, SIGNAL( triggered() ), this, SLOT ( SaveComponent() ) );
+	connect( actionClose, SIGNAL( triggered() ), this, SLOT ( close() ) );
+
+	//Edit actions
+	connect( actionUndo, SIGNAL( triggered() ), this, SLOT ( Undo() ) );
+	connect( actionRedo, SIGNAL( triggered() ), this, SLOT ( Redo() ) );
+	connect( actionUndoView, SIGNAL( triggered() ), this, SLOT ( ShowCommandView() ) );
+	connect( actionCut, SIGNAL( triggered() ), this, SLOT ( Cut() ) );
+	connect( actionCopy, SIGNAL( triggered() ), this, SLOT ( Copy() ) );
+	connect( actionPasteCopy, SIGNAL( triggered() ), this, SLOT ( PasteCopy() ) );
+	connect( actionPasteLink, SIGNAL( triggered() ), this, SLOT ( PasteLink() ) );
+	connect( actionDelete, SIGNAL( triggered() ), this, SLOT ( Delete() ) );
+
+	//Insert actions
+	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
+	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
+	connect( actionUserComponent, SIGNAL( triggered() ), this, SLOT ( InsertUserDefinedComponent() ) );
+
+	//Sun Light menu actions
+	connect( actionDefineSunLight, SIGNAL( triggered() ), this, SLOT ( DefineSunLight() ) );
+	connect( actionCalculateSunPosition, SIGNAL( triggered() ), this, SLOT ( CalculateSunPosition() ) );
+
+	//Ray trace menu actions
+	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
+	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
+}
+
+/*!
+ * Initializates tonatiuh update manager.
+ */
+void MainWindow::SetupUpdateManager()
+{
+	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
+}
+
+/*!
+ * Starts MainWindow views.
+ */
+void MainWindow::SetupViews()
+{
+    SetupCommandView();
+    SetupGraphicView();
+   	SetupTreeView();
+   	SetupParametersView();
+}
+
+/*!
+ * Defines 3D view background.
+ */
+void MainWindow::SetupVRMLBackground()
+{
+    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
+    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
+    float gangle= 1.570f;
+    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
+    vrmlBackground->groundAngle.setValue( gangle );
+    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
+    float sangle= 1.570f;
+    vrmlBackground->skyColor.setValues( 0,6,scolor );
+    vrmlBackground->skyAngle.setValue( sangle );
+	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
+}
+
+/*!
+ * Shows the rays and photons stored at the photon map in the 3D view.
+ */
+void MainWindow::ShowRaysIn3DView()
+{
+	actionDisplayRays->setEnabled( false );
+	actionDisplayRays->setChecked( false );
+
+	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
+
+	if( m_pRays )
+	{
+		m_pRays->removeAllChildren();
+		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
+		m_pRays->unref();
+		m_pRays = 0;
+	}
+
+	if( m_fraction > 0.0 || m_drawPhotons )
+	{
+		m_pRays = new SoSeparator;
+		m_pRays->ref();
+		m_pRays->setName( "Rays" );
+
+		if( m_drawPhotons )
+		{
+			SoSeparator* points = trf::DrawPhotonMapPoints(*m_photonMap);
+			m_pRays->addChild(points);
+		}
+		if( m_fraction > 0.0 )
+		{
+			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
+			if( currentRays )
+			{
+				m_pRays->addChild(currentRays);
+
+				actionDisplayRays->setEnabled( true );
+				actionDisplayRays->setChecked( true );
+			}
+
+		}
+	}
+}
+
+/*!
  * Returns to the start origin state and starts with a new model defined in \a fileName.
  * If the file name is not defined, it starts with an empty scene.
  */
@@ -2641,14 +2689,20 @@ void MainWindow::UpdateLightDimensions()
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
 	if ( !lightKit )	return;
 
+	if( !lightKit->automaticallyResizable.getValue() )	return;
+
+	TSeparatorKit* concentratorRoot = static_cast< TSeparatorKit* >( coinScene->getPart( "childList[0]", true ) );
+	if ( !concentratorRoot )	return;
+
 	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-	coinScene->getBoundingBox( bbAction );
+	concentratorRoot->getBoundingBox( bbAction );
 
 	SbBox3f box = bbAction->getXfBoundingBox().project();
 	delete bbAction;
 
 	Point3D pMin( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
 	Point3D pMax( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+
 	BBox sceneBox( pMin, pMax );
 
 	lightKit->ResizeToBBox( sceneBox );

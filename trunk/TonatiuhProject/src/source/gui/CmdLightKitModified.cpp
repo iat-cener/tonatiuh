@@ -51,7 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
-: QUndoCommand("Modify LightKit", parent),m_previousLightKit( false ), m_previousAzimuth( 0 ), m_previousZenith( 0 ), m_previousDistance( 0 ),  m_pPreviousShape( 0 ), m_pPreviousSunShape( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
+: QUndoCommand("Modify LightKit", parent),m_previousLightKit( false ), m_previousAzimuth( 0 ), m_previousZenith( 0 ), m_previousDistance( 0 ),  m_previousResizable( true), m_pPreviousShape( 0 ), m_pPreviousSunShape( 0 ), m_pNewLightKit( 0 ), m_scene( scene ), m_pModel( &sceneModel )
 {
     if( newLightKit == 0 ) tgf::SevereError( "CmdLightKitModified called with NULL TLightKit*" );
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
@@ -66,6 +66,7 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
 			m_previousAzimuth = lightKit->azimuth.getValue();
 			m_previousZenith = lightKit->zenith.getValue();
 			m_previousDistance = lightKit->distance.getValue();
+			m_previousResizable = lightKit->automaticallyResizable.getValue();
 
 			m_pPreviousShape = dynamic_cast< TShape* >( lightKit->getPart( "icon", false )->copy( true ) );
 			if ( m_pPreviousShape ) m_pPreviousShape->ref();
@@ -101,6 +102,7 @@ void CmdLightKitModified::undo()
     	lightKit->setPart( "icon", m_pPreviousShape );
    		lightKit->setPart("tsunshape", m_pPreviousSunShape );
    		lightKit->ChangePosition( m_previousAzimuth, m_previousZenith, m_previousDistance );
+   		lightKit->automaticallyResizable.setValue( m_previousResizable );
     }
     else	m_pModel->RemoveLightNode( *m_pNewLightKit );
 }
@@ -127,6 +129,7 @@ void CmdLightKitModified::redo( )
    		lightKit->setPart("tsunshape", sunhape );
 
    		lightKit->ChangePosition( m_pNewLightKit->azimuth.getValue(), m_pNewLightKit->zenith.getValue(), m_pNewLightKit->distance.getValue() );
+   		lightKit->automaticallyResizable.setValue( m_pNewLightKit->automaticallyResizable.getValue() );
    	}
 
 }
