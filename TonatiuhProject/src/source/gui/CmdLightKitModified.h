@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -68,9 +68,9 @@ private:
      double m_previousAzimuth;
      double m_previousZenith;
      double m_previousDistance;
+     bool m_previousResizable;
      TShape* m_pPreviousShape;
      TSunShape* m_pPreviousSunShape;
-     //TLightKit* m_pPreviousLightKit;
      TLightKit* m_pNewLightKit;
      SoSceneKit* m_scene;
      SceneModel* m_pModel;

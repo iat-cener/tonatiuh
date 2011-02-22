@@ -206,8 +206,7 @@ private:
     bool SaveFile( const QString& fileName );
     void SetCurrentFile( const QString& fileName );
     void SetupActions();
-   	void SetupActionsInsertFieldComponent();
-    void SetupActionsInsertMaterial();
+   	void SetupActionsInsertMaterial();
     void SetupActionsInsertShape();
     void SetupActionsInsertTracker();
     void SetupCommandView();

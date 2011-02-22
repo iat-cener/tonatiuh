@@ -75,6 +75,9 @@ m_newShape( 0 ), m_newSunShape( 0 )
 	{
 		if( currentLightKit->getPart( "tsunshape", false ) )	m_newSunShape = static_cast< TSunShape* >( currentLightKit->getPart( "tsunshape", false )->copy( true ) );
 		if( currentLightKit->getPart( "icon", false ) )	m_newShape = static_cast< TShape* >( currentLightKit->getPart( "icon", false )->copy( true ) );
+
+		if( currentLightKit->automaticallyResizable.getValue() ) automaticSizeRadio->setChecked( true );
+		else	userSizeRadio->setChecked( true );
 	}
 
 	SunPositionTab();
@@ -154,7 +157,7 @@ void LightDialog::ChangeShape( int index )
 		m_newShape = shapeFactory->CreateTShape();
 	}
 
-	sunshapeParameters->SetContainer( m_newShape, QString() );
+	shapeParameters->SetContainer( m_newShape, QString() );
 
 }
 
