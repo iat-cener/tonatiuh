@@ -2630,6 +2630,8 @@ void MainWindow::ShowRaysIn3DView()
  */
 bool MainWindow::StartOver( const QString& fileName )
 {
+	m_selectionModel->setCurrentIndex( sceneModelView->rootIndex(), QItemSelectionModel::ClearAndSelect );
+
 	actionDisplayRays->setEnabled( false );
 	actionDisplayRays->setChecked( false );
 

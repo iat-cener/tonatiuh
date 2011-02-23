@@ -177,14 +177,21 @@ void TLightKit::ResizeToBBox( BBox box )
 	Transform wTL = lTW.GetInverse();
 	BBox localBox = wTL( box );
 
+	Vector3D vMin( localBox.pMin.x, 0.0, localBox.pMin.z );
+	Vector3D pMin = Normalize( vMin ) * ( vMin.length() + tan( 2.5 * tgc::Degree ) * distance.getValue() );
+
+	Vector3D vMax( localBox.pMax.x, 0.0, localBox.pMax.z );
+	Vector3D pMax = Normalize( vMax ) * ( vMax.length() + tan( 5 * tgc::Degree ) * distance.getValue() );
+
 	TShape* shape = static_cast< TShape* >( this->getPart( "icon", true ) );
 	BBox shapeBB = shape->GetBBox();
 
 	Point3D sMin = shapeBB.pMin;
 	Point3D sMax = shapeBB.pMax;
 
-	double xScaleFactor  = distance.getValue() * 0.1 + std::max( fabs( localBox.pMin.x/sMin.x ), fabs( localBox.pMax.x/sMax.x ) );
-	double zScaleFactor  = distance.getValue() * 0.1 +  std::max( fabs( localBox.pMin.z/sMin.z ), fabs( localBox.pMax.z/sMax.z ) );
+	double xScaleFactor  = std::max( fabs( pMin.x/sMin.x ), fabs( pMin.x/sMax.x ) );
+	double zScaleFactor  = std::max( fabs( pMax.z/sMin.z ), fabs( pMax.z/sMax.z ) );
+
 
 	lightTransform->scaleFactor.setValue( xScaleFactor, 1, zScaleFactor );
 
