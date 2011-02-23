@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "trt.h"
 
+class SoFieldSensor;
 class SoSensor;
 class Vector3D;
 
@@ -89,6 +90,11 @@ protected:
 	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	void generatePrimitives(SoAction *action);
    	~ShapeSphericalRectangle();
+
+private:
+	SoFieldSensor* m_radiusSensor;
+	SoFieldSensor* m_widthXSensor;
+	SoFieldSensor* m_widthZSensor;
 };
 
 #endif /*SHAPESPHERICALRECTANGLE_H_*/

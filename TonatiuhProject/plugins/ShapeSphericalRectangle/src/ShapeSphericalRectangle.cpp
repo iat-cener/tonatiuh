@@ -63,6 +63,9 @@ void ShapeSphericalRectangle::initClass()
 }
 
 ShapeSphericalRectangle::ShapeSphericalRectangle()
+:m_radiusSensor( 0 ),
+ m_widthXSensor( 0 ),
+ m_widthZSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeSphericalRectangle);
 	SO_NODE_ADD_FIELD( radius, (0.75) );
@@ -78,18 +81,21 @@ ShapeSphericalRectangle::ShapeSphericalRectangle()
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
 
-	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
+	m_radiusSensor = new SoFieldSensor(updateRadius, this);
 	m_radiusSensor->attach( &radius );
 
-	SoFieldSensor* m_widthXSensor = new SoFieldSensor(updateWidthX, this);
+	m_widthXSensor = new SoFieldSensor(updateWidthX, this);
 	m_widthXSensor->attach( &widthX );
 
-	SoFieldSensor* m_widthZSensor = new SoFieldSensor(updateWidthZ, this);
+	m_widthZSensor = new SoFieldSensor(updateWidthZ, this);
 	m_widthZSensor->attach( &widthZ );
 }
 
 ShapeSphericalRectangle::~ShapeSphericalRectangle()
 {
+	delete m_radiusSensor;
+	delete m_widthXSensor;
+	delete m_widthZSensor;
 }
 
 double ShapeSphericalRectangle::GetArea() const
