@@ -59,6 +59,12 @@ void ShapeSphere::initClass()
 }
 
 ShapeSphere::ShapeSphere( )
+:m_lastValidYMax( 0 ),
+ m_lastValidYMin( 0 ),
+ m_radiusSensor( 0 ),
+ m_yMinSensor( 0 ),
+ m_yMaxSensor( 0 ),
+ m_phiMaxSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeSphere);
 	SO_NODE_ADD_FIELD( radius, (0.5) );
@@ -89,6 +95,10 @@ ShapeSphere::ShapeSphere( )
 
 ShapeSphere::~ShapeSphere()
 {
+	delete m_radiusSensor;
+	delete m_yMinSensor;
+	delete m_yMaxSensor;
+	delete m_phiMaxSensor;
 }
 
 SoNode* ShapeSphere::copy( SbBool copyConnections ) const
