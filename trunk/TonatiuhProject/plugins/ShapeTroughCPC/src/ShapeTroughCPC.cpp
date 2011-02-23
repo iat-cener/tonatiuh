@@ -81,6 +81,11 @@ void ShapeTroughCPC::initClass()
 }
 
 ShapeTroughCPC::ShapeTroughCPC()
+:m_thetaI( 0 ),
+ m_thetaMin( 0 ),
+ m_aSensor( 0 ),
+ m_cMaxSensor( 0 ),
+ m_heightSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeTroughCPC);
 	SO_NODE_ADD_FIELD( a, (0.5) );
@@ -92,13 +97,13 @@ ShapeTroughCPC::ShapeTroughCPC()
 	m_thetaI = asin( 1 / cMax.getValue() );
 	m_thetaMin = 2 * m_thetaI;
 
-	SoFieldSensor* m_aSensor = new SoFieldSensor(updateHeightValues, this);
+	m_aSensor = new SoFieldSensor(updateHeightValues, this);
 	m_aSensor->setPriority( 0 );
 	m_aSensor->attach( &a );
-	SoFieldSensor* m_cMaxSensor = new SoFieldSensor(updateCMaxValues, this);
+	m_cMaxSensor = new SoFieldSensor(updateCMaxValues, this);
 	m_cMaxSensor->setPriority( 0 );
 	m_cMaxSensor->attach( &cMax );
-	SoFieldSensor* m_heightSensor = new SoFieldSensor(updateHeightValues, this);
+	m_heightSensor = new SoFieldSensor(updateHeightValues, this);
 	m_heightSensor->setPriority( 0 );
 	m_heightSensor->attach( &height );
 
@@ -107,6 +112,9 @@ ShapeTroughCPC::ShapeTroughCPC()
 
 ShapeTroughCPC::~ShapeTroughCPC()
 {
+	delete m_aSensor;
+	delete m_cMaxSensor;
+	delete m_heightSensor;
 }
 
 
