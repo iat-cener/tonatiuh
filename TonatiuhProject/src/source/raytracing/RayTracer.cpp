@@ -105,13 +105,11 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 			intersectedSurface = 0;
 			isFront = 0;
 
-			double tHit = ray->maxt;
-			reflectedRay = m_rootNode->Intersect( *ray, rand, &tHit, &intersectedSurface );
+			reflectedRay = m_rootNode->Intersect( *ray, rand, &intersectedSurface );
 
-			ray->maxt = tHit;
 			if( reflectedRay )
 			{
-				photonsVector.push_back( RayTracerPhoton( (*ray)( tHit ), ++rayLength, intersectedSurface) );
+				photonsVector.push_back( RayTracerPhoton( (*ray)( ray->maxt ), ++rayLength, intersectedSurface) );
 
 				//Prepare node and ray for next iteration
 				delete ray;
@@ -129,6 +127,7 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 		delete ray;
 		ray = 0;
+
 
 	}
 	photonsVector.resize( photonsVector.size() );

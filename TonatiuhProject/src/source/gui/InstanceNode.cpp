@@ -112,11 +112,12 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
    instanceChild->SetParent(this);
 }
 
-Ray* InstanceNode::Intersect( const Ray& ray,
-                              RandomDeviate& rand,
-                              double* tHit,
-                              InstanceNode** modelNode )
+/*Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand,
+                              double* tHit, InstanceNode** modelNode )*/
+Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode )
+
 {
+
 	//Check if the ray intersects with the BoundingBox
    if( !m_bbox.IntersectP(ray) ) return 0;
    if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
@@ -124,17 +125,16 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 
       Ray* childOutputRay = 0;
       Ray* outputRay = 0;
-      double t = *tHit;
+      double t = ray.maxt;
       for( int index = 0; index < children.size(); ++index )
       {
          InstanceNode* intersectedChild = 0;
-         double childHit = t;
 
-         childOutputRay = children[index]->Intersect( ray, rand, &childHit, &intersectedChild );
+         childOutputRay = children[index]->Intersect( ray, rand, &intersectedChild );
 
-         if( childHit < t )
+         if( ray.maxt < t )
          {
-            t = childHit;
+            t = ray.maxt;
             *modelNode = intersectedChild;
 
             delete outputRay;
@@ -143,7 +143,6 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 
          }
       }
-      *tHit = t;
 
       return outputRay;
 
@@ -172,7 +171,7 @@ Ray* InstanceNode::Intersect( const Ray& ray,
 			 if( !tshape->Intersect( childCoordinatesRay, &thit, &dg ) ) return false;
 
 			 childCoordinatesRay.maxt = thit;
-			 *tHit = childCoordinatesRay.maxt;
+			 ray.maxt = childCoordinatesRay.maxt;
 			 *modelNode = this;
 
 			 if( tmaterial )
