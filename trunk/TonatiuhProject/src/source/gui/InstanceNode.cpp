@@ -112,39 +112,37 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
    instanceChild->SetParent(this);
 }
 
-/*Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand,
-                              double* tHit, InstanceNode** modelNode )*/
-Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode )
-
+//Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode )
+bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode, Ray* outputRay )
 {
 
 	//Check if the ray intersects with the BoundingBox
-   if( !m_bbox.IntersectP(ray) ) return 0;
+   if( !m_bbox.IntersectP(ray) ) return false;
    if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
    {
 
-      Ray* childOutputRay = 0;
-      Ray* outputRay = 0;
+      //Ray* childOutputRay = 0;
+      //Ray* outputRay = 0;
+      bool isOutputRay = false;
       double t = ray.maxt;
       for( int index = 0; index < children.size(); ++index )
       {
          InstanceNode* intersectedChild = 0;
-
-         childOutputRay = children[index]->Intersect( ray, rand, &intersectedChild );
+         Ray childOutputRay;
+         bool isChildOutputRay = children[index]->Intersect( ray, rand, &intersectedChild, &childOutputRay );
 
          if( ray.maxt < t )
          {
             t = ray.maxt;
             *modelNode = intersectedChild;
 
-            delete outputRay;
-            outputRay = 0;
-            if( childOutputRay )	outputRay = childOutputRay;
+            *outputRay = childOutputRay;
+            isOutputRay = isChildOutputRay;
 
          }
       }
 
-      return outputRay;
+      return isOutputRay;
 
    }
 	else
@@ -178,11 +176,14 @@ Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode*
 			 {
 				 Ray surfaceOutputRay;
 				 if( tmaterial->OutputRay( childCoordinatesRay, &dg, rand, &surfaceOutputRay ) )
-					 return new Ray( m_transformOTW( surfaceOutputRay ) );
+				 {
+					 *outputRay = m_transformOTW( surfaceOutputRay );
+					 return true;
+				 }
 			}
       }
    }
-	return 0;
+	return false;
 }
 
 BBox InstanceNode::GetIntersectionBBox()
