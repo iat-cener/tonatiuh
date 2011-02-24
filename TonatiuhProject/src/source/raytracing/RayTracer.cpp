@@ -98,23 +98,23 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 		bool isFront = false;
 
 		//Trace the ray
-		Ray* reflectedRay = ray;
-		while( reflectedRay !=0 )
+		//Ray* reflectedRay = ray;
+		bool isReflectedRay = true;
+		while( isReflectedRay )
 		{
-			reflectedRay = 0;
 			intersectedSurface = 0;
 			isFront = 0;
+			Ray reflectedRay;
+			isReflectedRay = m_rootNode->Intersect( *ray, rand, &intersectedSurface, &reflectedRay );
 
-			reflectedRay = m_rootNode->Intersect( *ray, rand, &intersectedSurface );
-
-			if( reflectedRay )
+			if( isReflectedRay )
 			{
 				photonsVector.push_back( RayTracerPhoton( (*ray)( ray->maxt ), ++rayLength, intersectedSurface) );
 
 				//Prepare node and ray for next iteration
-				delete ray;
-				ray = 0;
-				ray = reflectedRay;
+				/*delete ray;
+				ray = 0;*/
+				*ray = reflectedRay;
 			}
 
 		}
@@ -127,7 +127,39 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 		delete ray;
 		ray = 0;
+		/*Ray ray = NewPrimitiveRay( rand );
 
+		photonsVector.push_back( RayTracerPhoton( ray.origin, 0, m_lightNode ) );
+		int rayLength = 0;
+
+		InstanceNode* intersectedSurface = 0;
+		bool isFront = false;
+
+		//Trace the ray
+		Ray* reflectedRay = &ray;
+		while( reflectedRay !=0 )
+		{
+			reflectedRay = 0;
+			intersectedSurface = 0;
+			isFront = 0;
+
+			reflectedRay = m_rootNode->Intersect( ray, rand, &intersectedSurface );
+
+			if( reflectedRay )
+			{
+				photonsVector.push_back( RayTracerPhoton( ray( ray.maxt ), ++rayLength, intersectedSurface) );
+
+				//Prepare node and ray for next iteration
+				ray = *reflectedRay;
+			}
+
+		}
+
+		if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+		{
+			if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
+			photonsVector.push_back( RayTracerPhoton( ray( ray.maxt ), ++rayLength, intersectedSurface) );
+		}*/
 
 	}
 	photonsVector.resize( photonsVector.size() );
