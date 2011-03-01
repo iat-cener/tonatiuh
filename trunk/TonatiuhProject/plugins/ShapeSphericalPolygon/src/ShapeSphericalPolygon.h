@@ -50,6 +50,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "trt.h"
 
+class SoFieldSensor;
 class SoSensor;
 
 class ShapeSphericalPolygon : public TShape
@@ -84,13 +85,11 @@ protected:
 
 private:
    	~ShapeSphericalPolygon();
+
 	Point3D GetPoint3D( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
-	bool IsInside( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
-	std::vector<double> Distribution( const double num ) const;
-	std::vector< std::pair<double,double> > MeshTriangle( const std::vector<double>& distribution ) const;
 	static void RadiusChanged( void* data, SoSensor* );
 	static void SidesChanged( void* data, SoSensor* );
 	static void SphereRadiusChanged( void* data, SoSensor* );
@@ -98,9 +97,12 @@ private:
 	void generatePrimitives( SoAction* action );
 	void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center );
 
-	double m_thetaMax;
-	double m_phiMax;
-	double m_xMax;
+	double m_lastValidSidesValue;
+	double m_lastValidSphereRadiusValue;
+
+	SoFieldSensor* m_radiusSensor;
+	SoFieldSensor* m_sidesSensor;
+	SoFieldSensor* m_sphereRadiusSensor;
 };
 
 #endif /*SHAPESPHERICALPOLYGON_H_*/
