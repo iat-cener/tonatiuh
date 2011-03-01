@@ -42,15 +42,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/lists/SbStringList.h>
 
 #include <QModelIndex>
-#include <QTreeWidget>
+#include <QTreeView>
 
 class ParametersDelegate;
-class ParametersItem;
-class QStandardItem;
-class QTreeView;
-class QTreeWidgetItem;
-class SoFieldContainer;
 class SoField;
+class SoNode;
 class ParametersModel;
 
 class FieldContainerWidget : public QTreeView
@@ -59,10 +55,10 @@ class FieldContainerWidget : public QTreeView
 
 public:
     FieldContainerWidget( QWidget* parent = 0 );
-    FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent = 0 );
+    FieldContainerWidget( SoNode* fieldContainer, QString containerName, QWidget* parent = 0 );
     ~FieldContainerWidget();
 
-    void SetContainer( SoFieldContainer* fieldContainer, QString containerName );
+    void SetContainer( SoNode* fieldContainer, QString containerName );
     void SetEditable( bool editable );
 
 protected slots:
@@ -70,7 +66,7 @@ protected slots:
 	void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
 
 signals:
-	void valueModificated( const QStringList& oldValuesList, QString containerName );
+	void valueModificated( SoNode* nodeContainer, QString parameterName, QString newValue );
 
 private:
     void ReadFields( );
@@ -78,7 +74,7 @@ private:
    	QString m_containerName;
    	QModelIndex m_currentIndex;
     ParametersDelegate* m_pDelegate;
-    SoFieldContainer* m_pFieldContainer;
+    SoNode* m_pFieldContainer;
    	ParametersModel* m_pModel;
 
 };

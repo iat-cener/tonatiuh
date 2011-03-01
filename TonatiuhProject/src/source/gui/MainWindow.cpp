@@ -87,7 +87,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdInsertTracker.h"
 #include "CmdLightKitModified.h"
 #include "CmdLightPositionModified.h"
-#include "CmdParameterModified.h"
+#include "CmdModifyParameter.h"
 #include "CmdPaste.h"
 #include "Document.h"
 #include "ExportDialog.h"
@@ -219,13 +219,31 @@ void MainWindow::FinishManipulation( )
 	QModelIndex currentIndex = sceneModelView->currentIndex();
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( m_sceneModel->NodeFromIndex(currentIndex)->GetNode() );
 
-	CmdParameterModified* parameterModified;
+	SoTransform* nodeTransform = static_cast< SoTransform* >( coinNode->getPart( "transform", true ) );
+
+	QUndoCommand* command = new QUndoCommand();
+
+	QString translationValue = QString( "%1 %2 %3" ).arg( QString::number( nodeTransform->translation.getValue()[0] ),
+														QString::number( nodeTransform->translation.getValue()[1] ),
+														QString::number( nodeTransform->translation.getValue()[2] ) );
+	new CmdModifyParameter( nodeTransform, QString( "translation" ), translationValue, m_sceneModel, command );
+
+	/*dragAndDrop->setText("Drag and Drop node");
+	new CmdCut( node, m_coinNode_Buffer, m_sceneModel, dragAndDrop );
+
+	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDrop );*/
+	m_commandStack->push( command );
+
+	UpdateLightDimensions();
+	m_document->SetDocumentModified( true );
+
+	//CmdModifyParameter* command =new CmdModifyParameter( nodeTransform, coinNode, "transform" );
+	/*CmdParameterModified* parameterModified;
 	QString type = coinNode->getTypeId().getName().getString() ;
 	if ( type == "TLightKit" )	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "tshapekit.transform" );
 	else	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "transform" );
-	m_commandStack->push( parameterModified );
+	m_commandStack->push( parameterModified );*/
 
-	UpdateLightDimensions();
 
 }
 
@@ -355,83 +373,9 @@ void MainWindow::DisplayRays( bool display )
 }
 
 /*!
- * Applies las reverted command action changes to Tonatiuh.
- */
-void MainWindow::Redo()
-{
-    m_commandStack->redo();
-    UpdateLightDimensions();
-}
-
-/*!
- * Shows a windows with the applied commands.
- * The most recently executed command is always selected.
- * When a different command is selected the model returns to the state after selected command was applied.
- */
-void MainWindow:: ShowCommandView()
-{
-    m_commandView->show();
-}
-
-/*!
- * Shows selected node right menu.
- */
-void MainWindow::ShowMenu( const QModelIndex& index)
-{
-	if( !index.isValid() ) return;
-	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
-
-	SoNode* coinNode = m_sceneModel->NodeFromIndex(index)->GetNode();
-	SoType type = coinNode->getTypeId();
-
-	QMenu popupmenu(this);
-
-   	popupmenu.addAction( actionCut );
-   	popupmenu.addAction( actionCopy );
-  	popupmenu.addAction( actionPasteCopy );
-  	popupmenu.addAction( actionPasteLink );
-  	popupmenu.addAction( actionDelete );
-
-	QMenu transformMenu( "Convert to", &popupmenu );
-
-	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		popupmenu.addAction( transformMenu.menuAction() );
-		transformMenu.addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
-		transformMenu.addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
-		transformMenu.addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
-		transformMenu.addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
-		transformMenu.addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
-		transformMenu.addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
-		transformMenu.addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
-
-		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
-		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
-		SoType transformType = transform->getTypeId();
-
-      	//Manipuladores
-		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu.addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
-
-	}
-
-	//Mostramos el menu contextual
-	popupmenu.exec( QCursor::pos() );
-
-}
-
-/*!
- * Reverts a change to Tonatiuh model. The model is returne to the previous state before the command is applied.
- */
-void MainWindow::Undo()
-{
-    m_commandStack->undo();
-    UpdateLightDimensions();
-}
-
-/*!
  * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
  */
-void MainWindow::on_actionExport_PhotonMap_triggered()
+void MainWindow::ExportPhotonMap()
 {
 	if ( m_photonMap == NULL )
 	{
@@ -497,10 +441,137 @@ void MainWindow::on_actionExport_PhotonMap_triggered()
 
 }
 
-/**
- * Action slot to open a Ray Trace Options dialog.
+/*!
+ * Shows a dialog to the user to open a existing tonatiuh file.
  */
-void MainWindow::on_actionRayTraceOptions_triggered()
+void MainWindow::Open()
+{
+    if ( OkToContinue() )
+    {
+    	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+    	QString openDirectory = settings.value( "openDirectory", QString( "." ) ).toString();
+
+        QString fileName = QFileDialog::getOpenFileName( this,
+                               tr( "Open" ), openDirectory,
+                               tr( "Tonatiuh files (*.tnh)" ) );
+
+    	if( fileName.isEmpty() ) return;
+
+    	QFileInfo file( fileName );
+    	settings.setValue( "openDirectory", file.absolutePath() );
+    	StartOver( fileName );
+    }
+}
+
+/*!
+ * Opens selected tonatiuh file from the recent file menu.
+ */
+void MainWindow::OpenRecentFile()
+{
+    if ( OkToContinue() )
+    {
+        QAction* action = qobject_cast<QAction *>( sender() );
+
+        if ( action )
+        {
+        	QString fileName = action->data().toString();
+        	StartOver( fileName );
+        }
+    }
+}
+
+/*!
+ * Applies las reverted command action changes to Tonatiuh.
+ */
+void MainWindow::Redo()
+{
+    m_commandStack->redo();
+    UpdateLightDimensions();
+}
+
+/*!
+ * Changes to the node defined by \a node the value of the \a parameter to \a value.
+ */
+void MainWindow::SetParameterValue( SoNode* node, QString paramenterName, QString newValue )
+{
+	CmdModifyParameter* command = new CmdModifyParameter( node, paramenterName, newValue, m_sceneModel );
+	if ( m_commandStack ) m_commandStack->push( command );
+	m_sceneModel->UpdateSceneModel();
+
+	UpdateLightDimensions();
+	m_document->SetDocumentModified( true );
+}
+
+/*!
+ * This property holds whether the SunPositionCalculator action is enabled.
+ * If the action is disabled, it does not disappear from menu, but it is displayed
+ * in a way which indicates that they are unavailable.
+ */
+void MainWindow::SetSunPositionCalculatorEnabled( int enabled )
+{
+	actionCalculateSunPosition->setEnabled( enabled );
+}
+
+/*!
+ * Shows a windows with the applied commands.
+ * The most recently executed command is always selected.
+ * When a different command is selected the model returns to the state after selected command was applied.
+ */
+void MainWindow:: ShowCommandView()
+{
+    m_commandView->show();
+}
+
+/*!
+ * Shows selected node right menu.
+ */
+void MainWindow::ShowMenu( const QModelIndex& index)
+{
+	if( !index.isValid() ) return;
+	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
+
+	SoNode* coinNode = m_sceneModel->NodeFromIndex(index)->GetNode();
+	SoType type = coinNode->getTypeId();
+
+	QMenu popupmenu(this);
+
+   	popupmenu.addAction( actionCut );
+   	popupmenu.addAction( actionCopy );
+  	popupmenu.addAction( actionPasteCopy );
+  	popupmenu.addAction( actionPasteLink );
+  	popupmenu.addAction( actionDelete );
+
+	QMenu transformMenu( "Convert to", &popupmenu );
+
+	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		popupmenu.addAction( transformMenu.menuAction() );
+		transformMenu.addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
+		transformMenu.addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
+		transformMenu.addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
+		transformMenu.addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
+		transformMenu.addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
+		transformMenu.addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
+		transformMenu.addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
+
+		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
+		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
+		SoType transformType = transform->getTypeId();
+
+      	//Manipuladores
+		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu.addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
+
+	}
+
+	//Mostramos el menu contextual
+	popupmenu.exec( QCursor::pos() );
+
+}
+
+/*!
+ * Shows a dialog with ray tracer options and modifies the ray tracer parameters if changes are done.
+ */
+void MainWindow::ShowRayTracerOptionsDialog()
 {
 	double oldSelectedRandomDeviate = m_selectedRandomDeviate;
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
@@ -509,7 +580,7 @@ void MainWindow::on_actionRayTraceOptions_triggered()
 	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, randomDeviateFactoryList, m_fraction, m_drawPhotons, photonmapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
 	options->exec();
 
-	m_raysPerIteration = options->GetNumRays();
+	SetRaysPerIteration( options->GetNumRays() );
 	m_selectedRandomDeviate = options->GetRandomDeviateFactoryIndex();
 	if( oldSelectedRandomDeviate != m_selectedRandomDeviate )
 	{
@@ -517,11 +588,21 @@ void MainWindow::on_actionRayTraceOptions_triggered()
 		m_rand = 0;
 	}
 
-    m_fraction = options->GetRaysFactionToDraw();
-    m_drawPhotons = options->DrawPhotons();
+	m_fraction = options->GetRaysFactionToDraw();
+	m_drawPhotons = options->DrawPhotons();
 
 	m_selectedPhotonMap =options->GetPhotonMapFactoryIndex();
-    m_increasePhotonMap = options->IncreasePhotonMap();
+	m_increasePhotonMap = options->IncreasePhotonMap();
+
+}
+
+/*!
+ * Reverts a change to Tonatiuh model. The model is returne to the previous state before the command is applied.
+ */
+void MainWindow::Undo()
+{
+    m_commandStack->undo();
+    UpdateLightDimensions();
 }
 
 //View menu actions
@@ -791,16 +872,6 @@ void MainWindow::ChangeNodeName( const QModelIndex& index, const QString& newNam
 
 	m_document->SetDocumentModified( true );
 
-}
-
-/*!
- * Changes selected node to the node with \a nodeUrl. If model does not contains a node with defined url,
- * the selection will be null.
- */
-void MainWindow::ChangeSelection( QString nodeUrl )
-{
-	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
-	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
 }
 
 /*!
@@ -1125,33 +1196,12 @@ void MainWindow::New()
 }
 
 /*!
- * Shows a dialog to the user to open a existing tonatiuh file.
+ * Opens \a fileName file is there is a valid tonatiuh file.
  */
-void MainWindow::Open()
+void MainWindow::Open( QString fileName )
 {
-    if ( OkToContinue() )
-    {
-        QString fileName = QFileDialog::getOpenFileName( this,
-                               tr( "Open Tonatiuh document" ), ".",
-                               tr( "Tonatiuh files (*.tnh)" ) );
-        if ( !fileName.isEmpty() ) StartOver( fileName );
-    }
-}
-/*!
- * Opens selected tonatiuh file from the recent file menu.
- */
-void MainWindow::OpenRecentFile()
-{
-    if ( OkToContinue() )
-    {
-        QAction* action = qobject_cast<QAction *>( sender() );
-
-        if ( action )
-        {
-        	QString fileName = action->data().toString();
-        	StartOver( fileName );
-        }
-    }
+	if( fileName.isEmpty() )	return;
+	StartOver( fileName );
 }
 
 /*!
@@ -1274,12 +1324,30 @@ bool MainWindow::Save()
  */
 bool MainWindow::SaveAs()
 {
+
+	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+
+	QString tonatiuhFilter( "Tonatiuh files (*.tnh)" );
+	QString saveDirectory = settings.value( "saveDirectory", QString( "." ) ).toString();
+
 	QString fileName = QFileDialog::getSaveFileName( this,
-	                       tr( "Save Tonatiuh document" ), ".",
+	                       tr( "Save" ), saveDirectory,
 	                       tr( "Tonatiuh files (*.tnh)" ) );
 	if( fileName.isEmpty() ) return false;
 
+	QFileInfo file( fileName );
+	settings.setValue( "saveDirectory", file.absolutePath() );
 	return SaveFile( fileName );
+}
+
+/*!
+ * Changes selected node to the node with \a nodeUrl. If model does not contains a node with defined url,
+ * the selection will be null.
+ */
+void MainWindow::SelectNode( QString nodeUrl )
+{
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
+	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
 }
 
 /*!
@@ -1364,6 +1432,50 @@ void MainWindow::SetRaysPerIteration( unsigned long rays )
 {
 	m_raysPerIteration = rays;
 }
+
+/*!
+ * Sets to the \a parameter of the node \a nodeUrl the value defined at \a value.
+ */
+void MainWindow::SetValue( QString nodeUrl, QString parameter, QString value )
+{
+	if( nodeUrl.isEmpty() || parameter.isEmpty() || value.isEmpty() )
+	{
+		QMessageBox::information( this, "Tonatiuh",
+            "You must define a node url, a parameter name and a value.", 1 );
+		return;
+	}
+
+	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
+	if( !nodeIndex.isValid() )
+	{
+		QMessageBox::information( this, "Tonatiuh",
+            "Defined node url is not a valid url.", 1 );
+		return;
+	}
+
+	InstanceNode* nodeInstance = m_sceneModel->NodeFromIndex( nodeIndex );
+	if( !nodeInstance )	return;
+
+	SoNode* node = nodeInstance->GetNode();
+	if( !node )	return;
+	if ( node->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		TSeparatorKit* separatorNode = static_cast< TSeparatorKit* >( node );
+		SoTransform* nodeTransform = static_cast< SoTransform* >( separatorNode->getPart( "transform", true ) );
+		node = nodeTransform;
+	}
+
+
+	SoField* parameterField = node->getField( parameter.toStdString().c_str() );
+	if( !parameterField )
+	{
+		QMessageBox::information( this, "Tonatiuh",
+            QString( "Defined node has not contains the parameter %1." ).arg( parameter), 1 );
+		return;
+	}
+	SetParameterValue( node, parameter, value );
+}
+
 
 //Manipulators actions
 void MainWindow::SoTransform_to_SoCenterballManip()
@@ -1728,7 +1840,7 @@ void MainWindow::mousePressEvent( QMouseEvent * e )
 	QSplitter *pSplitter = findChild<QSplitter *>( "graphicHorizontalSplitter" );
 	QRect mainViewRect = pSplitter->geometry();
 
-	if(mainViewRect.contains(x,y))
+	if( mainViewRect.contains( x, y ) )
 	{
 		QSplitter *pvSplitter1 = findChild<QSplitter *>( "graphicVerticalSplitter1" );
 		QSplitter *pvSplitter2 = findChild<QSplitter *>( "graphicVerticalSplitter1" );
@@ -1813,16 +1925,6 @@ void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double la
 	delete time;
 }
 
-/*!
- * This property holds whether the SunPositionCalculator action is enabled.
- * If the action is disabled, it does not disappear from menu, but it is displayed
- * in a way which indicates that they are unavailable.
- */
-void MainWindow::SetSunPositionCalculatorEnabled( int enabled )
-{
-	actionCalculateSunPosition->setEnabled( enabled );
-}
-
 void MainWindow::closeEvent( QCloseEvent* event )
 {
     if ( OkToContinue() )
@@ -1831,22 +1933,6 @@ void MainWindow::closeEvent( QCloseEvent* event )
     	event->accept();
     }
     else event->ignore();
-}
-
-/**
- * Creates a command for the modification of a node parameter.
- *
- *The command is stored at the stack.
- **/
-void MainWindow::parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart )
-{
-   	CmdParameterModified* parameterModified = new CmdParameterModified( oldValueList, coinNode, coinPart );
-	if ( m_commandStack ) m_commandStack->push( parameterModified );
-
-	m_sceneModel->UpdateSceneModel();
-
-	UpdateLightDimensions();
-	m_document->SetDocumentModified( true );
 }
 
 /*!
@@ -2465,9 +2551,9 @@ void MainWindow::SetupModels()
  */
 void MainWindow::SetupParametersView()
 {
-    ParametersView* petParamtersViewPointer();
-    connect ( parametersView, SIGNAL(valueModificated( const QStringList&, SoBaseKit*, QString  ) ),
-		                this, SLOT( parameterModified( const QStringList&, SoBaseKit*, QString  ) ) );
+    connect ( parametersView, SIGNAL( valueModificated( SoNode*, QString, QString  ) ),
+		                this, SLOT( SetParameterValue( SoNode*, QString, QString  ) ) );
+
 	connect( m_selectionModel, SIGNAL( currentChanged ( const QModelIndex& , const QModelIndex& ) ),
 			             this, SLOT( ChangeSelection( const QModelIndex& ) ) );
 }
@@ -2542,6 +2628,8 @@ void MainWindow::SetupTriggers()
 	//Ray trace menu actions
 	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
+	connect( actionExportPhotonMap, SIGNAL( triggered() ), this, SLOT( ExportPhotonMap() ) );
+	connect( actionRayTraceOptions, SIGNAL( triggered() ), this, SLOT( ShowRayTracerOptionsDialog() )  );
 }
 
 /*!

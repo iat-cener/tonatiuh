@@ -92,22 +92,6 @@ public:
     void StartManipulation( SoDragger* dragger );
 
 public slots:
-	//Ray trace menu actions
-	void on_actionExport_PhotonMap_triggered();
-	void on_actionRayTraceOptions_triggered();
-
-	//View menu actions
-	void on_actionAxis_toggled();
-	void on_actionBackground_toggled();
-	void on_actionEdit_Mode_toggled();
-	void on_actionGrid_toggled();
-	void on_actionGridSettings_triggered();
-	void on_actionSunPlane_triggered();
-	void on_action_X_Y_Plane_triggered();
-	void on_action_X_Z_Plane_triggered();
-	void on_action_Y_Z_Plane_triggered();
-
-	void ChangeSelection( QString nodeUrl );
 	void Copy();
 	void Copy( QString nodeURL );
 	void CreateGroupNode();
@@ -122,8 +106,7 @@ public slots:
 	void InsertFileComponent( QString componentFileName = QString( "" ) );
 	void InsertUserDefinedComponent();
 	void New();
-	void Open();
-	void OpenRecentFile();
+	void Open( QString fileName );
 	void Paste( QString nodeURL, QString pasteType = QString( "Shared" ) );
 	void PasteCopy();
 	void PasteLink();
@@ -131,9 +114,11 @@ public slots:
 	bool Save();
     bool SaveAs();
     bool SaveComponent();
+    void SelectNode( QString nodeUrl );
     void SetNodeName( QString nodeName );
     int SetPhotonMapType( QString typeName );
     void SetRaysPerIteration( unsigned long rays );
+    void SetValue( QString nodeUrl, QString parameter, QString value );
 
 
     //Manipulators actions
@@ -154,13 +139,8 @@ public slots:
 	void itemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
 	void itemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
 
-    //Slots for parameterview signals
-    void parameterModified( const QStringList& oldValueList, SoBaseKit* coinNode, QString coinPart );
-
-    //Slots for sunposdialog signals
+	//Slots for sunposdialog signals
     void ChangeSunPosition( QDateTime* time, double longitude, double latitude );
-
-    void SetSunPositionCalculatorEnabled( int enabled );
 
 protected:
     void closeEvent( QCloseEvent* event );
@@ -174,10 +154,27 @@ protected slots:
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
 	void DisplayRays( bool display );
+	void ExportPhotonMap();
+	void Open();
+	void OpenRecentFile();
 	void Redo();
+	void SetParameterValue( SoNode* node, QString paramenterName, QString newValue );
+    void SetSunPositionCalculatorEnabled( int enabled );
 	void ShowCommandView();
     void ShowMenu( const QModelIndex& index );
+    void ShowRayTracerOptionsDialog();
 	void Undo();
+
+	//View menu actions
+	void on_actionAxis_toggled();
+	void on_actionBackground_toggled();
+	void on_actionEdit_Mode_toggled();
+	void on_actionGrid_toggled();
+	void on_actionGridSettings_triggered();
+	void on_actionSunPlane_triggered();
+	void on_action_X_Y_Plane_triggered();
+	void on_action_X_Z_Plane_triggered();
+	void on_action_Y_Z_Plane_triggered();
 
 	//Automation menu actions
 	void on_actionOpenScriptEditor_triggered();
