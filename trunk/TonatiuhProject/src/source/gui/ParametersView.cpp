@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
 #include <QString>
 
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -91,11 +90,11 @@ void ParametersView::UpdateView()
 }
 
 /*!
- * Emits a valueModificated signal with \a oldValuesList, the actual node and \a containerName.
+ * Emits a valueModificated signal with \a node as the actual node, \a paramenterName and \a newValue.
  */
-void ParametersView::ValueModification( const QStringList& oldValuesList, QString containerName )
+void ParametersView::SetValue( SoNode* node, QString paramenterName, QString newValue )
 {
-	emit valueModificated( oldValuesList, m_actualCoinNode, containerName );
+	emit valueModificated( node, paramenterName, newValue );
 }
 
 /*!
@@ -107,7 +106,7 @@ void ParametersView::AddTab( SoNode* coinNode, QString partName )
 
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( coinNode, partName, this );
 	addTab( nodeContainer, type );
-	connect(nodeContainer, SIGNAL( valueModificated( const QStringList& , QString ) ), this, SLOT( ValueModification( const QStringList& , QString ) ) );
+	connect( nodeContainer, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
 }
 
 /*!

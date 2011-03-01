@@ -115,15 +115,19 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
 
 
-			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+			/*SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
 			shapeInstance->GetNode()->getBoundingBox( bbAction );
 
 			SbBox3f box = bbAction->getXfBoundingBox().project();
 			delete bbAction;
 
 			SbVec3f pMin = box.getMin();
-			SbVec3f pMax = box.getMax();
-			shapeBB = shapeToWorld( BBox( Point3D( pMin[0],pMin[1],pMin[2]), Point3D( pMax[0],pMax[1],pMax[2]) ) );
+			SbVec3f pMax = box.getMax();*/
+			if( shapeInstance )
+			{
+				TShape* shapeNode = dynamic_cast< TShape* > ( shapeInstance->GetNode() );
+				shapeBB = shapeToWorld( shapeNode->GetBBox() );
+			}
 		}
 		instanceNode->SetIntersectionTransform( shapeTransform );
 

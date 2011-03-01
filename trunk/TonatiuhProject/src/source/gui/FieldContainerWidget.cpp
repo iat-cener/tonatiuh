@@ -49,6 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/lists/SoFieldList.h>
+#include <Inventor/nodes/SoNode.h>
 
 #include "FieldContainerWidget.h"
 #include "ParametersDelegate.h"
@@ -82,7 +83,7 @@ FieldContainerWidget::FieldContainerWidget( QWidget* parent )
  *
  * The container name is \a containerName.
  */
-FieldContainerWidget::FieldContainerWidget( SoFieldContainer* fieldContainer, QString containerName, QWidget* parent )
+FieldContainerWidget::FieldContainerWidget( SoNode* fieldContainer, QString containerName, QWidget* parent )
 :QTreeView( parent ),
  m_containerName( containerName ),
  m_currentIndex(),
@@ -117,7 +118,7 @@ FieldContainerWidget::~FieldContainerWidget()
 /*!
  * Sets \a fieldContainer as widget container and \a containerName as its containerName name.
  */
-void FieldContainerWidget::SetContainer( SoFieldContainer* fieldContainer, QString containerName )
+void FieldContainerWidget::SetContainer( SoNode* fieldContainer, QString containerName )
 {
 	m_pFieldContainer = fieldContainer;
 	m_containerName = containerName;
@@ -144,7 +145,7 @@ void FieldContainerWidget::currentChanged( const QModelIndex& current, const QMo
 
 void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::EndEditHint hint )
 {
-	QString newValue;
+QString newValue;
 	SoField* field = m_pModel->ModelItem( m_currentIndex )->GetField();
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
 	{
@@ -156,23 +157,13 @@ void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::
 		QLineEdit* textEdit = qobject_cast<QLineEdit *>(editor);
 		newValue = textEdit->text();
 	}
+	SbName fieldName;
+	m_pFieldContainer->getFieldName( field, fieldName );
+	QString parameterName( fieldName.getString() );
 
-	SoFieldList fieldList;
-	int numFields = m_pFieldContainer->getFields (fieldList);
+	emit valueModificated( m_pFieldContainer, parameterName, newValue );
+	QTreeView::closeEditor( editor, hint );
 
-	QStringList* oldValuesList = new QStringList;
-
-	for( int num = 0; num < numFields; ++num )
-	{
-		SbString indexValue;
-		fieldList[num]->get( indexValue );
-		oldValuesList->append( QString(indexValue.getString() ) );
-	 }
-
-	 m_pModel->setData( m_currentIndex, newValue, Qt::UserRole );
-
-	 emit valueModificated( *oldValuesList, m_containerName );
-	 QTreeView::closeEditor( editor, hint );
 }
 
 /**

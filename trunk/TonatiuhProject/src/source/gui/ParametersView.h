@@ -66,17 +66,17 @@ public:
 	void UpdateView();
 
 signals:
-	/*!
+	 /*!
 	 * Emmits a signal when a parameters of the view is modified.
 	 *
-	 * The modified paramenters is a \a coinNode \a containerName part name paramenter.
+	 * The modified paramenters is a \a coinNode paramenter named \a parameterName.
 	 *
-	 * The part parameters previous values are saved in \a oldValuesList.
+	 * The new value for the parameter is \a newValue.
 	 * */
-	 void valueModificated( const QStringList& oldValuesList, SoBaseKit* coinNode, QString containerName );
+	 void valueModificated( SoNode* coinNode, QString parameterName, QString newValue );
 
 public slots:
-	void ValueModification( const QStringList& oldValuesList, QString containerName );
+	void SetValue( SoNode* node, QString paramenterName, QString newValue );
 
 private:
 	void AddTab( SoNode* coinNode, QString partName );
