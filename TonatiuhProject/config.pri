@@ -31,10 +31,10 @@ CONFIG(debug, debug|release) {
     QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage
 } 
 else{
-	QMAKE_CFLAGS -= -O2
-	QMAKE_CXXFLAGS -= O2
-	QMAKE_CFLAGS += -O3 -march=prescott -mfpmath=sse
-	QMAKE_CXXFLAGS += -O3 -march=prescott -mfpmath=sse
+    QMAKE_CFLAGS_RELEASE -= -O2 
+    QMAKE_CFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
+	QMAKE_CXXFLAGS_RELEASE -= -O2
+	QMAKE_CXXFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
 }
 
 
