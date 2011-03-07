@@ -126,9 +126,9 @@ SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 Transform tgf::TransformFromMatrix( SbMatrix const& matrix )
 {
 	Transform transform;
-	if( matrix.det4() < tgc::Epsilon )
+	/*if( matrix.det4() < tgc::Epsilon )
 		transform = Transform( new Matrix4x4(), new Matrix4x4() );
-	else
+	else*/
 		transform = Transform( matrix[0][0], matrix[1][0], matrix[2][0], matrix[3][0],
 							 matrix[0][1], matrix[1][1], matrix[2][1], matrix[3][1],
 							 matrix[0][2], matrix[1][2], matrix[2][2], matrix[3][2],
@@ -147,19 +147,6 @@ Transform tgf::TransformFromSoTransform( SoTransform* const & soTransform )
 						    soTransform->center.getValue() );
 
 	return TransformFromMatrix( sbMatrix );
-	/*Transform transform  = ;
-	if( sbMatrix.det4() < tgc::Epsilon )
-	{
-		transform = Transform( new Matrix4x4(), new Matrix4x4() );
 
-	}
-	else
-
-		transform = Transform( sbMatrix[0][0], sbMatrix[1][0], sbMatrix[2][0], sbMatrix[3][0],
-						 sbMatrix[0][1], sbMatrix[1][1], sbMatrix[2][1], sbMatrix[3][1],
-						 sbMatrix[0][2], sbMatrix[1][2], sbMatrix[2][2], sbMatrix[3][2],
-						 sbMatrix[0][3], sbMatrix[1][3], sbMatrix[2][3], sbMatrix[3][3] );
-
-	return transform;*/
 }
 
