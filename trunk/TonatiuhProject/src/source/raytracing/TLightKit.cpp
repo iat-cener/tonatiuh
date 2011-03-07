@@ -172,13 +172,21 @@ void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* lat
  */
 void TLightKit::ResizeToBBox( BBox box )
 {
-	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
-	Transform lTW = tgf::TransformFromSoTransform( lightTransform );
+	Vector3D direction = Vector3D( sin( zenith.getValue() ) * sin( azimuth.getValue() ), cos( zenith.getValue() ), -sin( zenith.getValue() )*cos( azimuth.getValue() ) );
+
+	Vector3D center = direction * distance.getValue();
+	Transform translate = Translate( center.x, center.y, center.z );
+
+	Transform rotX  = RotateX( -zenith.getValue() );
+	Transform rotY = RotateY( -azimuth.getValue() );
+
+	Transform lTW = translate * rotY * rotX;
+
 	Transform wTL = lTW.GetInverse();
 	BBox localBox = wTL( box );
 
 	Vector3D vMin( localBox.pMin.x, 0.0, localBox.pMin.z );
-	Vector3D pMin = Normalize( vMin ) * ( vMin.length() + tan( 2.5 * tgc::Degree ) * distance.getValue() );
+	Vector3D pMin = Normalize( vMin ) * ( vMin.length() + tan( 5 * tgc::Degree ) * distance.getValue() );
 
 	Vector3D vMax( localBox.pMax.x, 0.0, localBox.pMax.z );
 	Vector3D pMax = Normalize( vMax ) * ( vMax.length() + tan( 5 * tgc::Degree ) * distance.getValue() );
@@ -189,10 +197,10 @@ void TLightKit::ResizeToBBox( BBox box )
 	Point3D sMin = shapeBB.pMin;
 	Point3D sMax = shapeBB.pMax;
 
-	double xScaleFactor  = std::max( fabs( pMin.x/sMin.x ), fabs( pMin.x/sMax.x ) );
-	double zScaleFactor  = std::max( fabs( pMax.z/sMin.z ), fabs( pMax.z/sMax.z ) );
+	double xScaleFactor  = std::max( fabs( pMin.x/sMin.x ), fabs( pMax.x/sMax.x ) );
+	double zScaleFactor  = std::max( fabs( pMin.z/sMin.z ), fabs( pMax.z/sMax.z ) );
 
-
+	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
 	lightTransform->scaleFactor.setValue( xScaleFactor, 1, zScaleFactor );
 
 }
