@@ -112,7 +112,6 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
    instanceChild->SetParent(this);
 }
 
-//Ray* InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode )
 bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode, Ray* outputRay )
 {
 
@@ -121,8 +120,6 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode*
    if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
    {
 
-      //Ray* childOutputRay = 0;
-      //Ray* outputRay = 0;
       bool isOutputRay = false;
       double t = ray.maxt;
       for( int index = 0; index < children.size(); ++index )
@@ -168,8 +165,7 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode*
 			 DifferentialGeometry dg;
 			 if( !tshape->Intersect( childCoordinatesRay, &thit, &dg ) ) return false;
 
-			 childCoordinatesRay.maxt = thit;
-			 ray.maxt = childCoordinatesRay.maxt;
+			 ray.maxt = thit;
 			 *modelNode = this;
 
 			 if( tmaterial )
