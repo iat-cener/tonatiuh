@@ -26,6 +26,7 @@ SUBDIRS =  MaterialBasicRefractive \
             SunshapeBuie \
 			SunshapePillbox \
 			TrackerHeliostat \
+            TrackerLinearFresnel \
 			TrackerOneAxis
 
 plugins.target= plugins
