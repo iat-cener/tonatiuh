@@ -47,7 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 */
 PhotonMapDefault::PhotonMapDefault()
 {
-	BBox m_bbox();
 
 }
 
