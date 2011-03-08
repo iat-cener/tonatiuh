@@ -17,8 +17,8 @@ Once the IDE for C/C++ Developers compressed package file is in your computer, r
 == Configuring the Eclipse IDE for C/C++ Developers for developing Qt applications ==
 
 On the Eclipse main menu select _"Window"_ and within it _"Preferences"_. This will triger a pop-up dialog titled _Preferences"_, which can be used to adjust different Eclipse options. In the left tree-like view of the preferences dialog select "General\Editors\File Associations" (see Figure 1). In the dialog's _"File Associations"_ right view, within the _"File types"_ window, add the new types:
-  * .ui  /usr/local/Trolltech/Qt-4.7.0/bin/designer
-  * .ts  /usr/local/Trolltech/Qt-4.7.0//bin/linguit
+  * .ui
+  * .ts
 
 And within the _"Associated editors"_ window, associate this file types with the following programs, respectively:
   * /usr/local/Trolltech/Qt-4.7.0/bin/designer
