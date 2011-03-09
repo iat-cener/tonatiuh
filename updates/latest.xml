@@ -2,22 +2,38 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.1.4" />
+        <version value="1.1.5" />
     </version>
     <files>
         <os value="win">
+            <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive1.dll" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/MaterialStandardSpecular1.dll" />
             <file type="replace" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
+            <file type="replace" value="bin/release/plugins/RandomMersenneTwister/RandomMersenneTwister1.dylib" />
+            <file type="replace" value="bin/release/plugins//RandomRngStream/RandomRngStream1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeCone/ShapeCone1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeCylinder/ShapeCylinder1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/ShapeFlatDisk1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatRectangle/ShapeFlatRectangle1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle1.dll" />
+    		<file type="replace" value="bin/release/plugins/ShapeHyperboloid/ShapeHyperboloid1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeParabolicDish/ShapeParabolicDish1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeSphere/ShapeSphere1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughParabola/ShapeTroughParabola1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet1.dll" />
+			<file type="replace" value="bin/release/plugins/SunshapeBuie/SunshapeBuie1.dll" />
+            <file type="replace" value="bin/release/plugins/SunshapePillbox/SunshapePillbox1.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat1.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
+            <file type="new" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat1.dll" />
         </os>
         <os value="mac">
             <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
@@ -47,6 +63,7 @@
             <file type="replace" value="Contents/MacOS/plugins/TrackerHeliostat/libTrackerHeliostat.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/TrackerOneAxis/libTrackerOneAxis.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
+            <file type="new" value="Contents/MacOS/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.dylib" />
         </os>
         <os value="linux">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
@@ -75,10 +92,38 @@
             <file type="replace" value="bin/release/plugins/SunshapePillbox/libSunshapePillbox.so" />
             <file type="replace" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
-            <file type="remove" value="bin/release/plugins/libShapeTroughHyperbola.so" />
-            <file type="remove" value="bin/release/plugins/libShapeTrumpet.so" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
-            <file type="new" value="Tonatiuh.sh" executable="true"/>
+            <file type="new" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
+        </os>
+        <os value="linux_64">
+            <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/libMaterialStandardSpecular.so" />
+            <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
+            <file type="replace" value="bin/release/plugins/RandomMersenneTwister/libRandomMersenneTwister.so" />
+            <file type="replace" value="bin/release/plugins/RandomRngStream/libRandomRngStream.so" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
+            <file type="replace" value="bin/release/plugins/ShapeCone/libShapeCone.so" />
+            <file type="replace" value="bin/release/plugins/ShapeCylinder/libShapeCylinder.so" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/libShapeFlatDisk.so" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatRectangle/libShapeFlatRectangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeHyperboloid/libShapeHyperboloid.so" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/libShapeParabolicDish.so" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.so" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughParabola/libShapeTroughParabola.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/libShapeTrumpet.so" />
+            <file type="replace" value="bin/release/plugins/SunshapeBuie/libSunshapeBuie.so" />
+            <file type="replace" value="bin/release/plugins/SunshapePillbox/libSunshapePillbox.so" />
+            <file type="replace" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
+            <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
+            <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+            <file type="new" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
         </os>
     </files>
 </appname>
