@@ -10,7 +10,7 @@
             <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/MaterialStandardSpecular1.dll" />
             <file type="replace" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
             <file type="replace" value="bin/release/plugins/RandomMersenneTwister/RandomMersenneTwister1.dylib" />
-            <file type="replace" value="bin/release/plugins//RandomRngStream/RandomRngStream1.dll" />
+            <file type="replace" value="bin/release/plugins/RandomRngStream/RandomRngStream1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeCone/ShapeCone1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeCylinder/ShapeCylinder1.dll" />
@@ -22,7 +22,7 @@
             <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeSphere/ShapeSphere1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon1.dll" />
-            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalRectangle/ShapeSphericalRectangle1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC1.dll" />
             <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola1.dll" />
@@ -52,7 +52,7 @@
             <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeSphere/libShapeSphere.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.dylib" />
-            <file type="replace" value="Contents/MacOS/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle.dylib" />
+            <file type="replace" value="Contents/MacOS/plugins/ShapeSphericalRectangle/libShapeSphericalRectangle.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeTroughCHC/libShapeTroughCHC.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeTroughCPC/libShapeTroughCPC.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.dylib" />
@@ -82,7 +82,7 @@
             <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
-            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeShapeSphericalRectangle/libShapeSphericalRectangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
@@ -112,7 +112,7 @@
             <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
-            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeShapeSphericalRectangle/libSShapeSphericalRectangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
