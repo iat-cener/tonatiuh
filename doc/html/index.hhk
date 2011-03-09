@@ -4,463 +4,645 @@
 <param name="FrameName" value="right">
 </OBJECT>
 <UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#2512130c3d68081d214233cd765960c2"><param name="Name" value="accept"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a2512130c3d68081d214233cd765960c2"><param name="Name" value="accept"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html"><param name="Name" value="ActionInsertMaterial"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#734babb0327ba2da05da17b3e56ca2f8"><param name="Name" value="ActionInsertMaterial"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#995fea9f7d75e2f284ec07576efe9d4b"><param name="Name" value="OnActionInsertMaterialTriggered"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#f706679d562ffca3b61586ae82142d7d"><param name="Name" value="~ActionInsertMaterial"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#a734babb0327ba2da05da17b3e56ca2f8"><param name="Name" value="ActionInsertMaterial"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#a995fea9f7d75e2f284ec07576efe9d4b"><param name="Name" value="OnActionInsertMaterialTriggered"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#af706679d562ffca3b61586ae82142d7d"><param name="Name" value="~ActionInsertMaterial"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html"><param name="Name" value="ActionInsertShape"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#e258060d02bfa41b8fa181dec7ef85e4"><param name="Name" value="ActionInsertShape"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#dfae40ca6b80eba6f7117cb99c6d53f6"><param name="Name" value="OnActionInsertShapeTriggered"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#5908e07dd30232bd3cfe4a241e566dfc"><param name="Name" value="~ActionInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#ae258060d02bfa41b8fa181dec7ef85e4"><param name="Name" value="ActionInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#adfae40ca6b80eba6f7117cb99c6d53f6"><param name="Name" value="OnActionInsertShapeTriggered"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#a5908e07dd30232bd3cfe4a241e566dfc"><param name="Name" value="~ActionInsertShape"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html"><param name="Name" value="ActionInsertTracker"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#7c35f868ff1dd708da910061f7b82f92"><param name="Name" value="ActionInsertTracker"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#fb6a533165dfca1071a7d6f4852ea901"><param name="Name" value="OnActionInsertTrackerTriggered"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#95a726a11f0986e1943b946a55305cb5"><param name="Name" value="~ActionInsertTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#a7c35f868ff1dd708da910061f7b82f92"><param name="Name" value="ActionInsertTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#afb6a533165dfca1071a7d6f4852ea901"><param name="Name" value="OnActionInsertTrackerTriggered"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#a95a726a11f0986e1943b946a55305cb5"><param name="Name" value="~ActionInsertTracker"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#201dbc32e4bde1f36a053b00ca33a6c1"><param name="Name" value="AddChild"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#69f34d522c1b8a4c516e7d1a9b9f13ca"><param name="Name" value="AddCodeEditorWidgetToolbar"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#234834c504d1793ee08798d9757c7b98"><param name="Name" value="AddFilesExplorerWidgetToolbar"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#09f8ea8a2da9a646ba5ae4179c64708b"><param name="Name" value="AddTab"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#32832a17b2dbe45c4e32d8b3466078e3"><param name="Name" value="applyChanges"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#d8eb1cc541181bb5c22ebb985efcf633"><param name="Name" value="CdUpDir"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#3d54a49543d03e021ed7dafa86ce17a4"><param name="Name" value="ChangeGPSPosition"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555"><param name="Name" value="ChangePosition"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#06a25d0d9b420b7836c44dc7c9a1e29b"><param name="Name" value="changeShape"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#02c44bf3704f7f4ca8318cda5ec7a20e"><param name="Name" value="changeSunshape"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#eda0c3f95636eb8892b0436a4def2a0d"><param name="Name" value="ClearScene"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#644a24723d1cf5da77b5a6b63f2100a0"><param name="Name" value="Close"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#fb44484947cd76a10ec2ed77adebdd8e"><param name="Name" value="closeEvent"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a201dbc32e4bde1f36a053b00ca33a6c1"><param name="Name" value="AddChild"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a69f34d522c1b8a4c516e7d1a9b9f13ca"><param name="Name" value="AddCodeEditorWidgetToolbar"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a234834c504d1793ee08798d9757c7b98"><param name="Name" value="AddFilesExplorerWidgetToolbar"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#af1c8173c7b07f7c7a2e22e5b679adff2"><param name="Name" value="AddFilesToList"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a09f8ea8a2da9a646ba5ae4179c64708b"><param name="Name" value="AddTab"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a32832a17b2dbe45c4e32d8b3466078e3"><param name="Name" value="applyChanges"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a5aed370f378ce5bcf7bcf928855f25b3"><param name="Name" value="BuildFileList"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae5e6386cb1b3add615ed81c62052c8fa"><param name="Name" value="CalculateSunPosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ad8eb1cc541181bb5c22ebb985efcf633"><param name="Name" value="CdUpDir"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a0a70f365cdc1f26c9345b08cc037d555"><param name="Name" value="ChangePosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#ac0d1cb5dc8d5c77dbd317a23297536f8"><param name="Name" value="ChangeShape"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a01d9edd6bf29b148e6545f18a7480907"><param name="Name" value="ChangeSunPosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a7e8c102642906d9618cadf87c7b3f672"><param name="Name" value="ChangeSunshape"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a732f8d4f8b965f81e055bde77d50aad5"><param name="Name" value="CheckForUpdates"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a31cbf811fd988d8cef1f45b25fb7fc5b"><param name="Name" value="CheckLastUpdate"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#aeda0c3f95636eb8892b0436a4def2a0d"><param name="Name" value="ClearScene"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a644a24723d1cf5da77b5a6b63f2100a0"><param name="Name" value="Close"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#afb44484947cd76a10ec2ed77adebdd8e"><param name="Name" value="closeEvent"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html"><param name="Name" value="CmdChangeNodeName"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a370220f024743b86c53b189133b41a8b"><param name="Name" value="CmdChangeNodeName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#ad1ca7876794694cc1477596a2bbc5528"><param name="Name" value="m_newName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a4cf455eb55b544b93b1db84b2056148d"><param name="Name" value="m_pModel"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a4d297174c8aa8fca83849d257a75662e"><param name="Name" value="m_pNode"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#ab96753a43d51865e9361563be2bf40a1"><param name="Name" value="m_previousName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a0cd79eaac449bf21e28dfa92921c5b0d"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#aadbb40a8061b535c04318b0e7aaeb7b8"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a610bfdf17178c413af5579d29b775eb3"><param name="Name" value="~CmdChangeNodeName"></OBJECT>
+  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html"><param name="Name" value="CmdCopy"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#436118a14fec3a30e03227fc9fe3638d"><param name="Name" value="CmdCopy"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f"><param name="Name" value="m_pClipboard"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#762d06b10d548855ded73d545827acc7"><param name="Name" value="m_pModel"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0"><param name="Name" value="m_pNode"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f"><param name="Name" value="m_previousNode"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#9382bb594dc2b7a2d0c6a8a7fdaae885"><param name="Name" value="~CmdCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a436118a14fec3a30e03227fc9fe3638d"><param name="Name" value="CmdCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a112c5fedd734af26054e3891261b0c7f"><param name="Name" value="m_pClipboard"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a762d06b10d548855ded73d545827acc7"><param name="Name" value="m_pModel"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a1011d55874bc325c7e19e759a1d111d0"><param name="Name" value="m_pNode"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#ade0efbbbb8f6e85a906a7a658eeec54f"><param name="Name" value="m_previousNode"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a9382bb594dc2b7a2d0c6a8a7fdaae885"><param name="Name" value="~CmdCopy"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html"><param name="Name" value="CmdCut"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#70f3400e838170331347fa4179c4b001"><param name="Name" value="CmdCut"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#5eab68232b3d774797ba7ac5b16c82b8"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#6a6d40c7a475df168868bef3751bf7e9"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#62652c31d754786353f69b476aa9c1f3"><param name="Name" value="~CmdCut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#a70f3400e838170331347fa4179c4b001"><param name="Name" value="CmdCut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#a5eab68232b3d774797ba7ac5b16c82b8"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#a6a6d40c7a475df168868bef3751bf7e9"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#a62652c31d754786353f69b476aa9c1f3"><param name="Name" value="~CmdCut"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html"><param name="Name" value="CmdDelete"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#82e4e18339540c2b81ce4a17e2d7a69a"><param name="Name" value="CmdDelete"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#babbc03830ad1fe82cef935fc0fd7e5e"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#447f65329ba6705f7d4b731f7094e548"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#eccf7317ad66e2a425012b076da5e9b5"><param name="Name" value="~CmdDelete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#a82e4e18339540c2b81ce4a17e2d7a69a"><param name="Name" value="CmdDelete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#ababbc03830ad1fe82cef935fc0fd7e5e"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#a447f65329ba6705f7d4b731f7094e548"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#aeccf7317ad66e2a425012b076da5e9b5"><param name="Name" value="~CmdDelete"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html"><param name="Name" value="CmdDeleteTracker"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#4973eb033366118613c887b2faa5e1f6"><param name="Name" value="CmdDeleteTracker"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#ab53e710698d8735607d05d9ff7d2498"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#d44ffa630136f7f53a797acba9959925"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#b943084d05ddc2ae461ac4f1e3cc8e86"><param name="Name" value="~CmdDeleteTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#a4973eb033366118613c887b2faa5e1f6"><param name="Name" value="CmdDeleteTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#aab53e710698d8735607d05d9ff7d2498"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#ad44ffa630136f7f53a797acba9959925"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#ab943084d05ddc2ae461ac4f1e3cc8e86"><param name="Name" value="~CmdDeleteTracker"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html"><param name="Name" value="CmdInsertMaterial"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#961a075d1dd33bba65402f09d1915a19"><param name="Name" value="CmdInsertMaterial"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#d4d69d5bcd778400d8e153a147321c36"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#7a5c7434e22c20f02169fb4e62fad42f"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#86f9d16c9966f51e425962c6b949bd3c"><param name="Name" value="~CmdInsertMaterial"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#a961a075d1dd33bba65402f09d1915a19"><param name="Name" value="CmdInsertMaterial"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#ad4d69d5bcd778400d8e153a147321c36"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#a7a5c7434e22c20f02169fb4e62fad42f"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#a86f9d16c9966f51e425962c6b949bd3c"><param name="Name" value="~CmdInsertMaterial"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html"><param name="Name" value="CmdInsertSeparatorKit"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#e7ca0e65a84108258ed306f4d2d483fe"><param name="Name" value="CmdInsertSeparatorKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#5a4afe76f94938a8d9c98e59bccdd06b"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#b07f31e358328c0b273d899ebcef5669"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#3290e3af5013303dccdc51997d757360"><param name="Name" value="~CmdInsertSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#ae7ca0e65a84108258ed306f4d2d483fe"><param name="Name" value="CmdInsertSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#a5a4afe76f94938a8d9c98e59bccdd06b"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#ab07f31e358328c0b273d899ebcef5669"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#a3290e3af5013303dccdc51997d757360"><param name="Name" value="~CmdInsertSeparatorKit"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html"><param name="Name" value="CmdInsertShape"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#539f1ad18ef831c85b9aca1b7b2f5f8d"><param name="Name" value="CmdInsertShape"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#b7a5ba8c795362e2280bf91e6dc68b43"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#f7432da6f9c79464fb1b9dd0a0866574"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#569949ce3620ac15e73f47b0b2f7bcfd"><param name="Name" value="~CmdInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#a539f1ad18ef831c85b9aca1b7b2f5f8d"><param name="Name" value="CmdInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#ab7a5ba8c795362e2280bf91e6dc68b43"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#af7432da6f9c79464fb1b9dd0a0866574"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#a569949ce3620ac15e73f47b0b2f7bcfd"><param name="Name" value="~CmdInsertShape"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html"><param name="Name" value="CmdInsertShapeKit"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#fdc0104c9f2beeefe38a1dde8ae3dc2a"><param name="Name" value="CmdInsertShapeKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#dc08452592388fe3b280446bd479b219"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#13274bf16107612fb5fc1d5d8883fee0"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#cb0d679cd42fe64679c22a9281f3dca0"><param name="Name" value="~CmdInsertShapeKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#afdc0104c9f2beeefe38a1dde8ae3dc2a"><param name="Name" value="CmdInsertShapeKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#adc08452592388fe3b280446bd479b219"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#a13274bf16107612fb5fc1d5d8883fee0"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#acb0d679cd42fe64679c22a9281f3dca0"><param name="Name" value="~CmdInsertShapeKit"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html"><param name="Name" value="CmdInsertTracker"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#3ef9f942db034bdbf81b59e26c0eb6c3"><param name="Name" value="CmdInsertTracker"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#d699e4e579bd5c5d3107e8b41f9e17a3"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#1737cc12f30987db677d192a3e076010"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#14f3463301e4128a81aaadd5391d9d9e"><param name="Name" value="~CmdInsertTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#a3ef9f942db034bdbf81b59e26c0eb6c3"><param name="Name" value="CmdInsertTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#ad699e4e579bd5c5d3107e8b41f9e17a3"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#a1737cc12f30987db677d192a3e076010"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#a14f3463301e4128a81aaadd5391d9d9e"><param name="Name" value="~CmdInsertTracker"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html"><param name="Name" value="CmdLightKitModified"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#9d1e7ab8e456d00e6ad4d6be36f71d0b"><param name="Name" value="CmdLightKitModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#1a619f08d037316bbe57bb54cefc9716"><param name="Name" value="~CmdLightKitModified"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html"><param name="Name" value="CmdParameterModified"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html#4b1935d5ca8f6bd3c1ba2c7a6884e7fd"><param name="Name" value="CmdParameterModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html#abe00b410fdda5adef6438ad3cef055a"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html#d7d4c3573004227d30858a7610fc4e39"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html#329592a2084fccd3a506fde20f63f599"><param name="Name" value="~CmdParameterModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#a9d1e7ab8e456d00e6ad4d6be36f71d0b"><param name="Name" value="CmdLightKitModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#a5d53907434e85429d167d4e0c083c71e"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#ad00eeb6079d0b3c7e72185aa114b5675"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#a1a619f08d037316bbe57bb54cefc9716"><param name="Name" value="~CmdLightKitModified"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html"><param name="Name" value="CmdPaste"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#d85bed8ed753b25d7a773e246380fe43"><param name="Name" value="CmdPaste"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#eb4bceaf409fa91857763e14984ba609"><param name="Name" value="redo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#19b47031fcd58523427b0a1f25074fa6"><param name="Name" value="undo"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#41def34ffaa08c48321997ea78972dc4"><param name="Name" value="~CmdPaste"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#ad85bed8ed753b25d7a773e246380fe43"><param name="Name" value="CmdPaste"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#aeb4bceaf409fa91857763e14984ba609"><param name="Name" value="redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#a19b47031fcd58523427b0a1f25074fa6"><param name="Name" value="undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#a41def34ffaa08c48321997ea78972dc4"><param name="Name" value="~CmdPaste"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#b481932133997cb3535d83703939f318"><param name="Name" value="ComputeSceneTreeMap"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#25d7fed5a49dbdfa8ce0d518b4efd66c"><param name="Name" value="ContainerNodeParts"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a146cb97cb53a5406ee7778b95c03948"><param name="Name" value="createEditor"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#230457e230b7b901d8af4c13d3f3489c"><param name="Name" value="Delete"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_code_editor.html"><param name="Name" value="CodeEditor"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a25d7fed5a49dbdfa8ce0d518b4efd66c"><param name="Name" value="ContainerNodeParts"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a75c57e8e600be270e6fbc79a82869502"><param name="Name" value="Copy"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#aa146cb97cb53a5406ee7778b95c03948"><param name="Name" value="createEditor"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8ca97634d438ceac84ffdcdcbea03f09"><param name="Name" value="CreateGrid"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a1a8d543a6d42b71ce68535f773b60006"><param name="Name" value="CreateGroupNode"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a0b9f62c40894b280e97a8a7339153ac9"><param name="Name" value="CreateMaterial"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ad9302bc22f71e60b69fc51ff6f2137f9"><param name="Name" value="CreateMaterialsTooBar"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a273c4f5566408085ae804aa798fb8d6f"><param name="Name" value="CreateShape"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a61e52c15199bf848a97bf923ae51e7fa"><param name="Name" value="CreateSurfaceNode"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af2edaed696289508b6e9683ac041630e"><param name="Name" value="CreateTracker"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a02cce519c5af231dc7a8286c21af6dea"><param name="Name" value="CreateTrackerTooBar"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae29659f3844aa8db91550645e7a7580c"><param name="Name" value="Cut"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ad2689f9a8089c88eb5f3358770a3331e"><param name="Name" value="DefineSunLight"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5a011d1625aad248d8816770b511b25c"><param name="Name" value="Delete"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a807b7520a83effd571ae938d406ba040"><param name="Name" value="DeleteDirOldFiles"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#aff7bb4acbe40d22318c9a933959ccbd5"><param name="Name" value="DeleteOldFiles"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ac61047807a815b9b40d734a12ed7b5d4"><param name="Name" value="DisplayRays"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html"><param name="Name" value="Document"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#eda0c3f95636eb8892b0436a4def2a0d"><param name="Name" value="ClearScene"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#cdbcbe550084e8c20f4f67eb229ad66a"><param name="Name" value="Document"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#bd4c3279c589fa2b58b1bbf38ae043d8"><param name="Name" value="GetRoot"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#8f6591eaa11736c17f33183b45472b3f"><param name="Name" value="GetSceneKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#67d5995cbed17586e51d31266e8a4df5"><param name="Name" value="GetSceneKitFromFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#72007c5149994baf371330c272311225"><param name="Name" value="InitializeScene"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#d015404a16b85011d94a8dbe2c5d887a"><param name="Name" value="IsModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#cf1417d08107713309c4bcd78d2c350d"><param name="Name" value="New"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#dca548c3aeff8fdf5202ef2c9d0c3e4b"><param name="Name" value="ReadFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#5f0e4cdde240e4accfefdd4f57f860c8"><param name="Name" value="selectionFinishCBAux"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#7aa6c3b5922c88e97b6c40c354482eff"><param name="Name" value="SetDocumentModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#5dd4d845cd2392efd49c8141edb8a538"><param name="Name" value="WriteFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#c2e3f62307dc22baac21ddc10fa1609c"><param name="Name" value="~Document"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#aeda0c3f95636eb8892b0436a4def2a0d"><param name="Name" value="ClearScene"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#acdbcbe550084e8c20f4f67eb229ad66a"><param name="Name" value="Document"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#abd4c3279c589fa2b58b1bbf38ae043d8"><param name="Name" value="GetRoot"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a8f6591eaa11736c17f33183b45472b3f"><param name="Name" value="GetSceneKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a67d5995cbed17586e51d31266e8a4df5"><param name="Name" value="GetSceneKitFromFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a72007c5149994baf371330c272311225"><param name="Name" value="InitializeScene"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#ad015404a16b85011d94a8dbe2c5d887a"><param name="Name" value="IsModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#acf1417d08107713309c4bcd78d2c350d"><param name="Name" value="New"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#adca548c3aeff8fdf5202ef2c9d0c3e4b"><param name="Name" value="ReadFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a5f0e4cdde240e4accfefdd4f57f860c8"><param name="Name" value="selectionFinishCBAux"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a7aa6c3b5922c88e97b6c40c354482eff"><param name="Name" value="SetDocumentModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a5dd4d845cd2392efd49c8141edb8a538"><param name="Name" value="WriteFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#ac2e3f62307dc22baac21ddc10fa1609c"><param name="Name" value="~Document"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#9595789ae3f3397b0ff4431c9009f4f6"><param name="Name" value="DrawPhotons"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#1bea69a737609dc585368769aa11be06"><param name="Name" value="ExportAllPhotonMap"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a9b61b6c1459d21cfc7bdbc83748df573"><param name="Name" value="DownloadFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a9595789ae3f3397b0ff4431c9009f4f6"><param name="Name" value="DrawPhotons"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a1bea69a737609dc585368769aa11be06"><param name="Name" value="ExportAllPhotonMap"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html"><param name="Name" value="ExportDialog"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#2512130c3d68081d214233cd765960c2"><param name="Name" value="accept"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#1bea69a737609dc585368769aa11be06"><param name="Name" value="ExportAllPhotonMap"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#8199cfa739737ce248613af4f349d846"><param name="Name" value="ExportDialog"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#0e5dbfee04c239594619ad4d9433e678"><param name="Name" value="ExportPhotonsInGlobal"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#113e3a9cdb241f1dda94bf457626c493"><param name="Name" value="GetExportFileName"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#dcf5e9d2a9b73175bf7b78c6b74be720"><param name="Name" value="GetSelectedSurface"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#ae6b0553870924fffbaf06c944744bdf"><param name="Name" value="SelectFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a16df6b72cf40057a9e59ea922b8ca03"><param name="Name" value="SetExportAllPhotons"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#e03e1f7a7698d122837ffd090cbf0c4c"><param name="Name" value="SetExportSurfacePhotons"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#ff6cf4e48e6dcde206c3d8eb3bc9fac8"><param name="Name" value="~ExportDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a2512130c3d68081d214233cd765960c2"><param name="Name" value="accept"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a1bea69a737609dc585368769aa11be06"><param name="Name" value="ExportAllPhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a8199cfa739737ce248613af4f349d846"><param name="Name" value="ExportDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a0e5dbfee04c239594619ad4d9433e678"><param name="Name" value="ExportPhotonsInGlobal"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a113e3a9cdb241f1dda94bf457626c493"><param name="Name" value="GetExportFileName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#adcf5e9d2a9b73175bf7b78c6b74be720"><param name="Name" value="GetSelectedSurface"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#aae6b0553870924fffbaf06c944744bdf"><param name="Name" value="SelectFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#aa16df6b72cf40057a9e59ea922b8ca03"><param name="Name" value="SetExportAllPhotons"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#ae03e1f7a7698d122837ffd090cbf0c4c"><param name="Name" value="SetExportSurfacePhotons"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#aff6cf4e48e6dcde206c3d8eb3bc9fac8"><param name="Name" value="~ExportDialog"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#0e5dbfee04c239594619ad4d9433e678"><param name="Name" value="ExportPhotonsInGlobal"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#20556f504d31352331d1e87cd5ce04fa"><param name="Name" value="GetCoordinates"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#4c9649c5f888913092c260e2975ad847"><param name="Name" value="GetCurrentDirectory"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#113e3a9cdb241f1dda94bf457626c493"><param name="Name" value="GetExportFileName"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#192241e1dd66255a683f640227f42c00"><param name="Name" value="getIcon"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#64677cb50f6b3311c1a59f5cc100439e"><param name="Name" value="GetNodeURL"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54"><param name="Name" value="GetNumRays"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35"><param name="Name" value="GetParent"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#786bdf0a9cef9441fcd9ee8cbc6207ba"><param name="Name" value="getPart"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#2a4c513eead5e8a494f506d31b32163a"><param name="Name" value="GetPhotonMapFactoryIndex"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#fc04a1db903b7f6885355daab7995a14"><param name="Name" value="GetPositionData"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#387761f435375e3f0e8ba96a5d5526f2"><param name="Name" value="GetRandomDeviateFactoryIndex"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371"><param name="Name" value="GetRaysFactionToDraw"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#bd4c3279c589fa2b58b1bbf38ae043d8"><param name="Name" value="GetRoot"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#8f6591eaa11736c17f33183b45472b3f"><param name="Name" value="GetSceneKit"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#67d5995cbed17586e51d31266e8a4df5"><param name="Name" value="GetSceneKitFromFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#dcf5e9d2a9b73175bf7b78c6b74be720"><param name="Name" value="GetSelectedSurface"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#7530e9ad5cc036300603a551ca77dedb"><param name="Name" value="GetTLightKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a09f59b4505af532be1138acbc5559bd1"><param name="Name" value="ExportPhotonMap"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a0e5dbfee04c239594619ad4d9433e678"><param name="Name" value="ExportPhotonsInGlobal"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#afaabcb2e0b224a292df2ae4c884f9543"><param name="Name" value="FileDownloadComplete"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4ab6ba065ae867c5ddbed3e18dcb632d"><param name="Name" value="FinishManipulation"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a4c9649c5f888913092c260e2975ad847"><param name="Name" value="GetCurrentDirectory"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a113e3a9cdb241f1dda94bf457626c493"><param name="Name" value="GetExportFileName"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#abae2788cbea8335127284576dc9909f8"><param name="Name" value="GetHorizontalSplitterPointer"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a192241e1dd66255a683f640227f42c00"><param name="Name" value="getIcon"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a1bf4479dff27cb72092a28297605b154"><param name="Name" value="GetMaterialFactories"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a64677cb50f6b3311c1a59f5cc100439e"><param name="Name" value="GetNodeURL"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a5c63cd35e69b611c04ed37b1fa92cc54"><param name="Name" value="GetNumRays"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a8803f190136b9a3a6fa81a9128210f35"><param name="Name" value="GetParent"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a786bdf0a9cef9441fcd9ee8cbc6207ba"><param name="Name" value="getPart"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a9aef7dbb6eb6b3658bab369ec75d03b4"><param name="Name" value="GetPhotonMapFactories"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a2a4c513eead5e8a494f506d31b32163a"><param name="Name" value="GetPhotonMapFactoryIndex"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#afc04a1db903b7f6885355daab7995a14"><param name="Name" value="GetPositionData"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a4d29db6c30978948668af91f95a682a0"><param name="Name" value="GetRandomDeviateFactories"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a387761f435375e3f0e8ba96a5d5526f2"><param name="Name" value="GetRandomDeviateFactoryIndex"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a45231f660f995dc7d6a9e0ff2c522371"><param name="Name" value="GetRaysFactionToDraw"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#abd4c3279c589fa2b58b1bbf38ae043d8"><param name="Name" value="GetRoot"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a8f6591eaa11736c17f33183b45472b3f"><param name="Name" value="GetSceneKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a67d5995cbed17586e51d31266e8a4df5"><param name="Name" value="GetSceneKitFromFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#adcf5e9d2a9b73175bf7b78c6b74be720"><param name="Name" value="GetSelectedSurface"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a17b1ed2171402a503e2d0b283eafe6b0"><param name="Name" value="GetShapeFactories"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a6dc929d6706c1e54370407961dd98798"><param name="Name" value="GetSunShapeFactories"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a7530e9ad5cc036300603a551ca77dedb"><param name="Name" value="GetTLightKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a456a2b9b0c9b44d71cfcae2b04327d1a"><param name="Name" value="GetTrackerFactories"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_graphic_view.html"><param name="Name" value="GraphicView"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1"><param name="Name" value="IncreasePhotonMap"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e"><param name="Name" value="initClass"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e"><param name="Name" value="TLightKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#39fe90220b298997f64bed54bd61d6a4"><param name="Name" value="TSeparatorKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#db688b468a8dcaf49a8fd7544e0a677f"><param name="Name" value="TShapeKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_graphic_view.html#a0235093d39d21f50cffa9085f85c1486"><param name="Name" value="GraphicView"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#72007c5149994baf371330c272311225"><param name="Name" value="InitializeScene"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#307c27c42cfda3954609b058e3863725"><param name="Name" value="InsertChild"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#aba3d73af8382da4e8470c96c68e04ae1"><param name="Name" value="IncreasePhotonMap"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a3c3595509f95672cd90a614092edc47e"><param name="Name" value="initClass"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a3c3595509f95672cd90a614092edc47e"><param name="Name" value="TLightKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a39fe90220b298997f64bed54bd61d6a4"><param name="Name" value="TSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#adb688b468a8dcaf49a8fd7544e0a677f"><param name="Name" value="TShapeKit"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a72007c5149994baf371330c272311225"><param name="Name" value="InitializeScene"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a307c27c42cfda3954609b058e3863725"><param name="Name" value="InsertChild"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#add652a66fa884987e392e39e4ea56a48"><param name="Name" value="InsertFileComponent"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8e2598c03849b969f6189ec28da580e3"><param name="Name" value="InsertUserDefinedComponent"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html"><param name="Name" value="InstanceNode"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#201dbc32e4bde1f36a053b00ca33a6c1"><param name="Name" value="AddChild"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#64677cb50f6b3311c1a59f5cc100439e"><param name="Name" value="GetNodeURL"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#8803f190136b9a3a6fa81a9128210f35"><param name="Name" value="GetParent"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#307c27c42cfda3954609b058e3863725"><param name="Name" value="InsertChild"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#9eb297d1aece061eff00ff013019051c"><param name="Name" value="Intersect"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#7c05c0dd191c07a6e3fc3d4108086af4"><param name="Name" value="SetIntersectionTransform"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a201dbc32e4bde1f36a053b00ca33a6c1"><param name="Name" value="AddChild"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a64677cb50f6b3311c1a59f5cc100439e"><param name="Name" value="GetNodeURL"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a8803f190136b9a3a6fa81a9128210f35"><param name="Name" value="GetParent"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a307c27c42cfda3954609b058e3863725"><param name="Name" value="InsertChild"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a7c05c0dd191c07a6e3fc3d4108086af4"><param name="Name" value="SetIntersectionTransform"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#9eb297d1aece061eff00ff013019051c"><param name="Name" value="Intersect"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#9eb297d1aece061eff00ff013019051c"><param name="Name" value="InstanceNode"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#4d2a0d187b1d0ab329a9a5f478aa9119"><param name="Name" value="TShapeKit"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#20732854ca4a7493e1282584f2904668"><param name="Name" value="IntersectP"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#d015404a16b85011d94a8dbe2c5d887a"><param name="Name" value="IsModified"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#a4d2a0d187b1d0ab329a9a5f478aa9119"><param name="Name" value="Intersect"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#a20732854ca4a7493e1282584f2904668"><param name="Name" value="IntersectP"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#ad015404a16b85011d94a8dbe2c5d887a"><param name="Name" value="IsModified"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html"><param name="Name" value="LightDialog"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#06a25d0d9b420b7836c44dc7c9a1e29b"><param name="Name" value="changeShape"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#02c44bf3704f7f4ca8318cda5ec7a20e"><param name="Name" value="changeSunshape"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#7530e9ad5cc036300603a551ca77dedb"><param name="Name" value="GetTLightKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#f88b3ecac92d89a1c488891214acd0ad"><param name="Name" value="LightDialog"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#d80d1f9cc57cf11efcd9312c585ac205"><param name="Name" value="SunPositionTab"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#3a60b6e67898772cb078b365009c6198"><param name="Name" value="SunshapeTab"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#48e93e3fc9a2d85a3cec78291802cab4"><param name="Name" value="~LightDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#ac0d1cb5dc8d5c77dbd317a23297536f8"><param name="Name" value="ChangeShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a7e8c102642906d9618cadf87c7b3f672"><param name="Name" value="ChangeSunshape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a7530e9ad5cc036300603a551ca77dedb"><param name="Name" value="GetTLightKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#af88b3ecac92d89a1c488891214acd0ad"><param name="Name" value="LightDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#ad80d1f9cc57cf11efcd9312c585ac205"><param name="Name" value="SunPositionTab"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a3a60b6e67898772cb078b365009c6198"><param name="Name" value="SunshapeTab"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a48e93e3fc9a2d85a3cec78291802cab4"><param name="Name" value="~LightDialog"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#fe8ecef1c7fcdbe141d9dffa151d1bf9"><param name="Name" value="m_drawPhotons"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#6c086a820c89a6a224ee4afdcb120867"><param name="Name" value="m_fraction"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#93931024fd0b55f2810dd7c06c7b40bb"><param name="Name" value="m_increasePhotonMap"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#54a4c337a4cc95ba174561ba5d93bbdb"><param name="Name" value="m_numRays"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#112c5fedd734af26054e3891261b0c7f"><param name="Name" value="m_pClipboard"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#762d06b10d548855ded73d545827acc7"><param name="Name" value="m_pModel"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#1011d55874bc325c7e19e759a1d111d0"><param name="Name" value="m_pNode"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#de0efbbbb8f6e85a906a7a658eeec54f"><param name="Name" value="m_previousNode"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#85df880ba69bdbde03407b7bf0717dbf"><param name="Name" value="m_selectedPhotonMapFactory"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#c7d990bb28886a573a26741d02d017d0"><param name="Name" value="m_selectedRandomFactory"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a9e63106c03d2dfc81fc94b2df480ca02"><param name="Name" value="LoadAvailablePlugins"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#abd16d10be3107b743839d45972df328e"><param name="Name" value="LoadRandomDeviatePlugin"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a9aac0ec783b53e09354b2a8f92e570d8"><param name="Name" value="LoadTonatiuhPlugin"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#afe8ecef1c7fcdbe141d9dffa151d1bf9"><param name="Name" value="m_drawPhotons"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a6c086a820c89a6a224ee4afdcb120867"><param name="Name" value="m_fraction"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a93931024fd0b55f2810dd7c06c7b40bb"><param name="Name" value="m_increasePhotonMap"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#ad1ca7876794694cc1477596a2bbc5528"><param name="Name" value="m_newName"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a54a4c337a4cc95ba174561ba5d93bbdb"><param name="Name" value="m_numRays"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a112c5fedd734af26054e3891261b0c7f"><param name="Name" value="m_pClipboard"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a4cf455eb55b544b93b1db84b2056148d"><param name="Name" value="m_pModel"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a4cf455eb55b544b93b1db84b2056148d"><param name="Name" value="CmdChangeNodeName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a762d06b10d548855ded73d545827acc7"><param name="Name" value="CmdCopy"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a4d297174c8aa8fca83849d257a75662e"><param name="Name" value="m_pNode"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a4d297174c8aa8fca83849d257a75662e"><param name="Name" value="CmdChangeNodeName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a1011d55874bc325c7e19e759a1d111d0"><param name="Name" value="CmdCopy"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#ab96753a43d51865e9361563be2bf40a1"><param name="Name" value="m_previousName"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#ade0efbbbb8f6e85a906a7a658eeec54f"><param name="Name" value="m_previousNode"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a85df880ba69bdbde03407b7bf0717dbf"><param name="Name" value="m_selectedPhotonMapFactory"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ac7d990bb28886a573a26741d02d017d0"><param name="Name" value="m_selectedRandomFactory"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html"><param name="Name" value="MainWindow"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#b481932133997cb3535d83703939f318"><param name="Name" value="ComputeSceneTreeMap"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#230457e230b7b901d8af4c13d3f3489c"><param name="Name" value="Delete"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#0130dcbfd54d8f640db7ba43d1267ac7"><param name="Name" value="OkToContinue"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#b40e98eb702f8e85dcec079f50afa32e"><param name="Name" value="on_actionDisplay_rays_toggled"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#743e7c76c6f71cbc94e6d5047ac0a0ba"><param name="Name" value="on_actionExport_PhotonMap_triggered"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#5103ef907a6072410493a53242787dc6"><param name="Name" value="on_actionGrid_toggled"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#8f3934a874d6b1ffeea08f9e191f8c1e"><param name="Name" value="on_actionGridSettings_triggered"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768"><param name="Name" value="on_actionRayTraceOptions_triggered"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#008c49cc8b137a002a34ad008f121ed6"><param name="Name" value="parameterModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#be736da971623f32da4172e9bef8af51"><param name="Name" value="Paste"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#4abba2c52f756524c0f388d0d3e6d6ec"><param name="Name" value="ReadSettings"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#6017d43535c81c10e65a20163b7dac8a"><param name="Name" value="ReadyForRaytracing"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#29aa2dc30d643263ac5df01ef9caefea"><param name="Name" value="Save"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb"><param name="Name" value="SaveAs"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#c16113ab28437528855f827c26c3f1eb"><param name="Name" value="SaveFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#273eaf8e1fd63c33a11ab7e5b41f1ac0"><param name="Name" value="SetEnabled_SunPositionCalculator"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#f3443b509edc90998b023816800e9e03"><param name="Name" value="SetupActionInsertShape"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#b1004b5fadcd42c7909818f73240d817"><param name="Name" value="SetupMenus"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#68dea9a15289cb06b948aa018e191f7f"><param name="Name" value="ShowRaysIn3DView"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#56bd608397f177cc024da9c644388771"><param name="Name" value="StartManipulation"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#1f87ccf62d872d2e3667970097bd4a87"><param name="Name" value="StartOver"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#56a5e4d5e0a022e8c1ecf350d2916ade"><param name="Name" value="WriteSettings"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae5e6386cb1b3add615ed81c62052c8fa"><param name="Name" value="CalculateSunPosition"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a01d9edd6bf29b148e6545f18a7480907"><param name="Name" value="ChangeSunPosition"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a75c57e8e600be270e6fbc79a82869502"><param name="Name" value="Copy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8ca97634d438ceac84ffdcdcbea03f09"><param name="Name" value="CreateGrid"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a1a8d543a6d42b71ce68535f773b60006"><param name="Name" value="CreateGroupNode"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a0b9f62c40894b280e97a8a7339153ac9"><param name="Name" value="CreateMaterial"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ad9302bc22f71e60b69fc51ff6f2137f9"><param name="Name" value="CreateMaterialsTooBar"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a273c4f5566408085ae804aa798fb8d6f"><param name="Name" value="CreateShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a61e52c15199bf848a97bf923ae51e7fa"><param name="Name" value="CreateSurfaceNode"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af2edaed696289508b6e9683ac041630e"><param name="Name" value="CreateTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a02cce519c5af231dc7a8286c21af6dea"><param name="Name" value="CreateTrackerTooBar"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae29659f3844aa8db91550645e7a7580c"><param name="Name" value="Cut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ad2689f9a8089c88eb5f3358770a3331e"><param name="Name" value="DefineSunLight"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5a011d1625aad248d8816770b511b25c"><param name="Name" value="Delete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ac61047807a815b9b40d734a12ed7b5d4"><param name="Name" value="DisplayRays"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a09f59b4505af532be1138acbc5559bd1"><param name="Name" value="ExportPhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4ab6ba065ae867c5ddbed3e18dcb632d"><param name="Name" value="FinishManipulation"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#abae2788cbea8335127284576dc9909f8"><param name="Name" value="GetHorizontalSplitterPointer"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#add652a66fa884987e392e39e4ea56a48"><param name="Name" value="InsertFileComponent"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8e2598c03849b969f6189ec28da580e3"><param name="Name" value="InsertUserDefinedComponent"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a269ddc4265fe984326f4f8535254c834"><param name="Name" value="MainWindow"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4be50dd9285a277a49e92325112e39b7"><param name="Name" value="New"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a0130dcbfd54d8f640db7ba43d1267ac7"><param name="Name" value="OkToContinue"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a6677bc5267488b8d0b465cc98b919f96"><param name="Name" value="on_actionCheckForUpdates_triggered"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5103ef907a6072410493a53242787dc6"><param name="Name" value="on_actionGrid_toggled"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8f3934a874d6b1ffeea08f9e191f8c1e"><param name="Name" value="on_actionGridSettings_triggered"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8f274db18d223c63d2b86451bd515270"><param name="Name" value="Open"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a3009ee78cf2c0a803cfe072ba511e89c"><param name="Name" value="OpenRecentFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5901baa64f847a7fa237f193b65f22ad"><param name="Name" value="Paste"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af9c78eea801dacdd67bc04c4064841c9"><param name="Name" value="PasteCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae52d9466b9ceab5b1d8d304056a6fcb2"><param name="Name" value="PasteLink"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a52c96954cbeeebf8daeb503a7cfd03cc"><param name="Name" value="PluginDirectory"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4abba2c52f756524c0f388d0d3e6d6ec"><param name="Name" value="ReadSettings"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a6017d43535c81c10e65a20163b7dac8a"><param name="Name" value="ReadyForRaytracing"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#aabd1581ef601852985312cb7db6839e0"><param name="Name" value="Redo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a199c0e31444d0ec7d7a2186380cc8386"><param name="Name" value="Run"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a29aa2dc30d643263ac5df01ef9caefea"><param name="Name" value="Save"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5fb546357ba30a5ec4a95a432ee101bb"><param name="Name" value="SaveAs"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a562646f9a32f7ae72740d7fab9df88d6"><param name="Name" value="SaveComponent"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ac16113ab28437528855f827c26c3f1eb"><param name="Name" value="SaveFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a82bedc47053e04200d030b210923d469"><param name="Name" value="SelectNode"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a9d6225870dd477b8a56a85e8ab2ce36f"><param name="Name" value="SetCurrentFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af88649b82a336900a361683f10f650d7"><param name="Name" value="SetNodeName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae80935995ff7437d9500474ed4793574"><param name="Name" value="SetParameterValue"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a62da167010372eb14bed064f9883cb12"><param name="Name" value="SetPhotonMapType"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a358e3f85562fb987c4aee2d485c8ca57"><param name="Name" value="SetRaysPerIteration"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af52662986ebbb2070ca0595ecf037158"><param name="Name" value="SetSunPositionCalculatorEnabled"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a03ebcf99c9feb22715fc2fa6d2b36cfa"><param name="Name" value="SetupActions"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae381cc9d9770cdbe18b4d214cd748a2c"><param name="Name" value="SetupActionsInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#aeb6ec4b5c5920c57bca678edb640b4ee"><param name="Name" value="SetupCommandView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#acbebf78f381b85c3a250aa17f409ca18"><param name="Name" value="SetupDocument"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#abd6b8d8fe35820e570e09ae9c02e3889"><param name="Name" value="SetupGraphicView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ab1004b5fadcd42c7909818f73240d817"><param name="Name" value="SetupMenus"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a81d65f755af509fb8574eb5fcc1d1716"><param name="Name" value="SetupModels"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a9d69e5c426928351c97b68a999045380"><param name="Name" value="SetupParametersView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a087efab66e25e994e0facc321754b9de"><param name="Name" value="SetupPluginsManager"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a57237997e14649a1b262224942c758e0"><param name="Name" value="SetupTreeView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a17a9f791099c450179a2947dae7d4af2"><param name="Name" value="SetupTriggers"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a38c57809e87778c36589835fe157104c"><param name="Name" value="SetupUpdateManager"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#afd814f1f8fc7a5b7438a1530ccc2dd06"><param name="Name" value="SetupViews"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a678b581fba8c272c8d6ebeaecec62d2b"><param name="Name" value="SetupVRMLBackground"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a69e7a8e7ce98d52945c5122af587d356"><param name="Name" value="SetValue"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a6a2fc6f5699521671fff560f34480b17"><param name="Name" value="ShowCommandView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#aa1a061c9d1937224f538abb94e1a4f49"><param name="Name" value="ShowMenu"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a68dea9a15289cb06b948aa018e191f7f"><param name="Name" value="ShowRaysIn3DView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a1ed6a17940e49080e448fd468c807793"><param name="Name" value="ShowRayTracerOptionsDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a56bd608397f177cc024da9c644388771"><param name="Name" value="StartManipulation"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a1f87ccf62d872d2e3667970097bd4a87"><param name="Name" value="StartOver"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a67786e7bcc0b50d4805bb000606aadb5"><param name="Name" value="StrippedName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4ebd44cb9e531fc407eea7be266cd39c"><param name="Name" value="Undo"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a92c5e3d75db454a74e50f4dc285b718f"><param name="Name" value="UpdateLightDimensions"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae9a9900a62aa2e9e2934200e18cbe6e6"><param name="Name" value="UpdateRecentFileActions"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a56a5e4d5e0a022e8c1ecf350d2916ade"><param name="Name" value="WriteSettings"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7"><param name="Name" value="~MainWindow"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html"><param name="Name" value="MapDialog"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#3d54a49543d03e021ed7dafa86ce17a4"><param name="Name" value="ChangeGPSPosition"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#20556f504d31352331d1e87cd5ce04fa"><param name="Name" value="GetCoordinates"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#9c9d373d5a111c5b8a652327148c6e6c"><param name="Name" value="SetCoordinates"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#d2fd5cbf058013431a325414473b5b93"><param name="Name" value="sideBarShown"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#0b40ad9c2c3687221c8f315c767c81bb"><param name="Name" value="UpdateCurrentPosition"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#ab44dbaca10ca824e7da0e090adb7e43d"><param name="Name" value="SetHomePosition"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#ab33a80e2258e6aa07ff487fa91bfd2e1"><param name="Name" value="UpdateHomePosition"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#cf1417d08107713309c4bcd78d2c350d"><param name="Name" value="New"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#9ef0704d285aa29093aa1de4250fa470"><param name="Name" value="NewScriptFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#acf1417d08107713309c4bcd78d2c350d"><param name="Name" value="New"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#acf1417d08107713309c4bcd78d2c350d"><param name="Name" value="Document"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4be50dd9285a277a49e92325112e39b7"><param name="Name" value="MainWindow"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a9ef0704d285aa29093aa1de4250fa470"><param name="Name" value="NewScriptFile"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html"><param name="Name" value="NodeNameDelegate"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a146cb97cb53a5406ee7778b95c03948"><param name="Name" value="createEditor"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#3ce11b0659c7beff9cfe0237493eebff"><param name="Name" value="NodeNameDelegate"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#70a3a3f1378e8d29cb4a7e9c3247413f"><param name="Name" value="setEditorData"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#e45a5a1461409a0f51dd8cee615580b8"><param name="Name" value="setModelData"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#671c08ae9a2573dab5e931ab621549e3"><param name="Name" value="~NodeNameDelegate"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#aa146cb97cb53a5406ee7778b95c03948"><param name="Name" value="createEditor"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#aeb028214c2c127eb107d8f7b740b4489"><param name="Name" value="NodeNameDelegate"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a70a3a3f1378e8d29cb4a7e9c3247413f"><param name="Name" value="setEditorData"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a671c08ae9a2573dab5e931ab621549e3"><param name="Name" value="~NodeNameDelegate"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#0130dcbfd54d8f640db7ba43d1267ac7"><param name="Name" value="OkToContinue"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a0130dcbfd54d8f640db7ba43d1267ac7"><param name="Name" value="OkToContinue"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#0130dcbfd54d8f640db7ba43d1267ac7"><param name="Name" value="MainWindow"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#1c93bc1ad219c4568cd4a7d3c61e84f8"><param name="Name" value="ScriptEditorDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a0130dcbfd54d8f640db7ba43d1267ac7"><param name="Name" value="MainWindow"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a1c93bc1ad219c4568cd4a7d3c61e84f8"><param name="Name" value="ScriptEditorDialog"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#b40e98eb702f8e85dcec079f50afa32e"><param name="Name" value="on_actionDisplay_rays_toggled"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#743e7c76c6f71cbc94e6d5047ac0a0ba"><param name="Name" value="on_actionExport_PhotonMap_triggered"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#5103ef907a6072410493a53242787dc6"><param name="Name" value="on_actionGrid_toggled"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#8f3934a874d6b1ffeea08f9e191f8c1e"><param name="Name" value="on_actionGridSettings_triggered"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#f4a7915e6b3cd765d0a5071c8abca768"><param name="Name" value="on_actionRayTraceOptions_triggered"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#995fea9f7d75e2f284ec07576efe9d4b"><param name="Name" value="OnActionInsertMaterialTriggered"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#dfae40ca6b80eba6f7117cb99c6d53f6"><param name="Name" value="OnActionInsertShapeTriggered"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#fb6a533165dfca1071a7d6f4852ea901"><param name="Name" value="OnActionInsertTrackerTriggered"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#20b1cc8121d5b4bdc3dd2dc624198241"><param name="Name" value="OpenDirectory"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#1812a9b542139a09dcaaaef029d0277c"><param name="Name" value="OpenScriptFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#008c49cc8b137a002a34ad008f121ed6"><param name="Name" value="parameterModified"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a6677bc5267488b8d0b465cc98b919f96"><param name="Name" value="on_actionCheckForUpdates_triggered"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5103ef907a6072410493a53242787dc6"><param name="Name" value="on_actionGrid_toggled"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8f3934a874d6b1ffeea08f9e191f8c1e"><param name="Name" value="on_actionGridSettings_triggered"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#a995fea9f7d75e2f284ec07576efe9d4b"><param name="Name" value="OnActionInsertMaterialTriggered"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#adfae40ca6b80eba6f7117cb99c6d53f6"><param name="Name" value="OnActionInsertShapeTriggered"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#afb6a533165dfca1071a7d6f4852ea901"><param name="Name" value="OnActionInsertTrackerTriggered"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a8f274db18d223c63d2b86451bd515270"><param name="Name" value="Open"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a20b1cc8121d5b4bdc3dd2dc624198241"><param name="Name" value="OpenDirectory"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a3009ee78cf2c0a803cfe072ba511e89c"><param name="Name" value="OpenRecentFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a1812a9b542139a09dcaaaef029d0277c"><param name="Name" value="OpenScriptFile"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html"><param name="Name" value="ParametersView"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#09f8ea8a2da9a646ba5ae4179c64708b"><param name="Name" value="AddTab"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#25d7fed5a49dbdfa8ce0d518b4efd66c"><param name="Name" value="ContainerNodeParts"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#2240563ee3fcb80b16e08a14f5ebf7fb"><param name="Name" value="ParametersView"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#51af2915beaa086f91b30267f9d59db5"><param name="Name" value="SelectionChanged"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#d3d5f5330e34373654936ea1c3f71ba6"><param name="Name" value="valueModificated"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#2231848505a4ab32235a0823fc21a03a"><param name="Name" value="ValueModification"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#db9058e3571f79d14ad6614f964a0e76"><param name="Name" value="~ParametersView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a09f8ea8a2da9a646ba5ae4179c64708b"><param name="Name" value="AddTab"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a25d7fed5a49dbdfa8ce0d518b4efd66c"><param name="Name" value="ContainerNodeParts"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a2240563ee3fcb80b16e08a14f5ebf7fb"><param name="Name" value="ParametersView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a51af2915beaa086f91b30267f9d59db5"><param name="Name" value="SelectionChanged"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a36a49429a1e5767ed48da64550160b7f"><param name="Name" value="SetValue"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#ad087bbcce2ecb6358dcaadb23ff08ba2"><param name="Name" value="UpdateView"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a835f1086778475433dbd4328560691f7"><param name="Name" value="valueModificated"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#adb9058e3571f79d14ad6614f964a0e76"><param name="Name" value="~ParametersView"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#be736da971623f32da4172e9bef8af51"><param name="Name" value="Paste"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5901baa64f847a7fa237f193b65f22ad"><param name="Name" value="Paste"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af9c78eea801dacdd67bc04c4064841c9"><param name="Name" value="PasteCopy"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae52d9466b9ceab5b1d8d304056a6fcb2"><param name="Name" value="PasteLink"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a52c96954cbeeebf8daeb503a7cfd03cc"><param name="Name" value="PluginDirectory"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html"><param name="Name" value="PluginManager"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#af1c8173c7b07f7c7a2e22e5b679adff2"><param name="Name" value="AddFilesToList"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a5aed370f378ce5bcf7bcf928855f25b3"><param name="Name" value="BuildFileList"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a1bf4479dff27cb72092a28297605b154"><param name="Name" value="GetMaterialFactories"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a9aef7dbb6eb6b3658bab369ec75d03b4"><param name="Name" value="GetPhotonMapFactories"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a4d29db6c30978948668af91f95a682a0"><param name="Name" value="GetRandomDeviateFactories"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a17b1ed2171402a503e2d0b283eafe6b0"><param name="Name" value="GetShapeFactories"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a6dc929d6706c1e54370407961dd98798"><param name="Name" value="GetSunShapeFactories"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a456a2b9b0c9b44d71cfcae2b04327d1a"><param name="Name" value="GetTrackerFactories"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a9e63106c03d2dfc81fc94b2df480ca02"><param name="Name" value="LoadAvailablePlugins"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#abd16d10be3107b743839d45972df328e"><param name="Name" value="LoadRandomDeviatePlugin"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a9aac0ec783b53e09354b2a8f92e570d8"><param name="Name" value="LoadTonatiuhPlugin"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#a25f1e568d8d923e4d2a4f777516b4be5"><param name="Name" value="PluginManager"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#ade26c1717d51997644760fe90bfc2d8f"><param name="Name" value="ValidDirectoryName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#ab657302ef5af357907ae11ad817f5dfc"><param name="Name" value="~PluginManager"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_random_deviate.html"><param name="Name" value="RandomDeviate"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_random_deviate_factory.html"><param name="Name" value="RandomDeviateFactory"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html"><param name="Name" value="RayTraceDialog"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#32832a17b2dbe45c4e32d8b3466078e3"><param name="Name" value="applyChanges"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#9595789ae3f3397b0ff4431c9009f4f6"><param name="Name" value="DrawPhotons"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#5c63cd35e69b611c04ed37b1fa92cc54"><param name="Name" value="GetNumRays"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#2a4c513eead5e8a494f506d31b32163a"><param name="Name" value="GetPhotonMapFactoryIndex"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#387761f435375e3f0e8ba96a5d5526f2"><param name="Name" value="GetRandomDeviateFactoryIndex"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#45231f660f995dc7d6a9e0ff2c522371"><param name="Name" value="GetRaysFactionToDraw"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ba3d73af8382da4e8470c96c68e04ae1"><param name="Name" value="IncreasePhotonMap"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#fe8ecef1c7fcdbe141d9dffa151d1bf9"><param name="Name" value="m_drawPhotons"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#6c086a820c89a6a224ee4afdcb120867"><param name="Name" value="m_fraction"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#93931024fd0b55f2810dd7c06c7b40bb"><param name="Name" value="m_increasePhotonMap"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#54a4c337a4cc95ba174561ba5d93bbdb"><param name="Name" value="m_numRays"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#85df880ba69bdbde03407b7bf0717dbf"><param name="Name" value="m_selectedPhotonMapFactory"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#c7d990bb28886a573a26741d02d017d0"><param name="Name" value="m_selectedRandomFactory"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#931c2a6f93a185792187fc2f3ad99d13"><param name="Name" value="RayTraceDialog"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ef25abfd82e88f1e04b2830915a1763b"><param name="Name" value="saveChanges"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae"><param name="Name" value="~RayTraceDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a32832a17b2dbe45c4e32d8b3466078e3"><param name="Name" value="applyChanges"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a9595789ae3f3397b0ff4431c9009f4f6"><param name="Name" value="DrawPhotons"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a5c63cd35e69b611c04ed37b1fa92cc54"><param name="Name" value="GetNumRays"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a2a4c513eead5e8a494f506d31b32163a"><param name="Name" value="GetPhotonMapFactoryIndex"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a387761f435375e3f0e8ba96a5d5526f2"><param name="Name" value="GetRandomDeviateFactoryIndex"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a45231f660f995dc7d6a9e0ff2c522371"><param name="Name" value="GetRaysFactionToDraw"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#aba3d73af8382da4e8470c96c68e04ae1"><param name="Name" value="IncreasePhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#afe8ecef1c7fcdbe141d9dffa151d1bf9"><param name="Name" value="m_drawPhotons"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a6c086a820c89a6a224ee4afdcb120867"><param name="Name" value="m_fraction"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a93931024fd0b55f2810dd7c06c7b40bb"><param name="Name" value="m_increasePhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a54a4c337a4cc95ba174561ba5d93bbdb"><param name="Name" value="m_numRays"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a85df880ba69bdbde03407b7bf0717dbf"><param name="Name" value="m_selectedPhotonMapFactory"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ac7d990bb28886a573a26741d02d017d0"><param name="Name" value="m_selectedRandomFactory"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#a931c2a6f93a185792187fc2f3ad99d13"><param name="Name" value="RayTraceDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#aef25abfd82e88f1e04b2830915a1763b"><param name="Name" value="saveChanges"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#aaf504f936a091396d402c4dbc42be7ae"><param name="Name" value="~RayTraceDialog"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#dca548c3aeff8fdf5202ef2c9d0c3e4b"><param name="Name" value="ReadFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#4abba2c52f756524c0f388d0d3e6d6ec"><param name="Name" value="ReadSettings"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#6017d43535c81c10e65a20163b7dac8a"><param name="Name" value="ReadyForRaytracing"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="redo"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#afcd15a7f3cefd7fabd96fe3c70070a39"><param name="Name" value="Read"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#adca548c3aeff8fdf5202ef2c9d0c3e4b"><param name="Name" value="ReadFile"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="CmdCopy"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#5eab68232b3d774797ba7ac5b16c82b8"><param name="Name" value="CmdCut"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#babbc03830ad1fe82cef935fc0fd7e5e"><param name="Name" value="CmdDelete"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#ab53e710698d8735607d05d9ff7d2498"><param name="Name" value="CmdDeleteTracker"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#d4d69d5bcd778400d8e153a147321c36"><param name="Name" value="CmdInsertMaterial"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#5a4afe76f94938a8d9c98e59bccdd06b"><param name="Name" value="CmdInsertSeparatorKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#b7a5ba8c795362e2280bf91e6dc68b43"><param name="Name" value="CmdInsertShape"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#dc08452592388fe3b280446bd479b219"><param name="Name" value="CmdInsertShapeKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#d699e4e579bd5c5d3107e8b41f9e17a3"><param name="Name" value="CmdInsertTracker"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#5d53907434e85429d167d4e0c083c71e"><param name="Name" value="CmdLightKitModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html#abe00b410fdda5adef6438ad3cef055a"><param name="Name" value="CmdParameterModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#eb4bceaf409fa91857763e14984ba609"><param name="Name" value="CmdPaste"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#adca548c3aeff8fdf5202ef2c9d0c3e4b"><param name="Name" value="Document"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#ae7bc4407a1de0b2e67edfaa78737ff89"><param name="Name" value="UpdatesManager"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#d3a719c1a740b4511ddf30389d1d1d39"><param name="Name" value="RefreshDirList"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#b3f0fccd899c76ff6f302f04f368ce3f"><param name="Name" value="Run"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ed63f578c335d1180f8b27105bcb120c"><param name="Name" value="RunScript"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#29aa2dc30d643263ac5df01ef9caefea"><param name="Name" value="Save"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#5fb546357ba30a5ec4a95a432ee101bb"><param name="Name" value="SaveAs"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#b14cd3f1aee1ecc4222928b4265d7e4f"><param name="Name" value="SaveAsScriptFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#ef25abfd82e88f1e04b2830915a1763b"><param name="Name" value="saveChanges"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#c16113ab28437528855f827c26c3f1eb"><param name="Name" value="SaveFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#8b6a8d3a518dedb3afcaf2563f4d80a0"><param name="Name" value="SaveScript"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#7816333fee46e6c6ed17c808f0509e51"><param name="Name" value="SaveScriptFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4abba2c52f756524c0f388d0d3e6d6ec"><param name="Name" value="ReadSettings"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a6017d43535c81c10e65a20163b7dac8a"><param name="Name" value="ReadyForRaytracing"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a0cd79eaac449bf21e28dfa92921c5b0d"><param name="Name" value="redo"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a0cd79eaac449bf21e28dfa92921c5b0d"><param name="Name" value="CmdChangeNodeName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a2463fd5a7eb85d792e25a247a654dad9"><param name="Name" value="CmdCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#a5eab68232b3d774797ba7ac5b16c82b8"><param name="Name" value="CmdCut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#ababbc03830ad1fe82cef935fc0fd7e5e"><param name="Name" value="CmdDelete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#aab53e710698d8735607d05d9ff7d2498"><param name="Name" value="CmdDeleteTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#ad4d69d5bcd778400d8e153a147321c36"><param name="Name" value="CmdInsertMaterial"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#a5a4afe76f94938a8d9c98e59bccdd06b"><param name="Name" value="CmdInsertSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#ab7a5ba8c795362e2280bf91e6dc68b43"><param name="Name" value="CmdInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#adc08452592388fe3b280446bd479b219"><param name="Name" value="CmdInsertShapeKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#ad699e4e579bd5c5d3107e8b41f9e17a3"><param name="Name" value="CmdInsertTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#a5d53907434e85429d167d4e0c083c71e"><param name="Name" value="CmdLightKitModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#aeb4bceaf409fa91857763e14984ba609"><param name="Name" value="CmdPaste"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#aabd1581ef601852985312cb7db6839e0"><param name="Name" value="Redo"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ad3a719c1a740b4511ddf30389d1d1d39"><param name="Name" value="RefreshDirList"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#ad69e0ef364206a18448df495baf352ed"><param name="Name" value="RemoveDir"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#af0bf3a2e00832d7048087376856bc1c8"><param name="Name" value="ResizeToBBox"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a199c0e31444d0ec7d7a2186380cc8386"><param name="Name" value="Run"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a199c0e31444d0ec7d7a2186380cc8386"><param name="Name" value="MainWindow"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ab3f0fccd899c76ff6f302f04f368ce3f"><param name="Name" value="ScriptEditorDialog"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#aed63f578c335d1180f8b27105bcb120c"><param name="Name" value="RunScript"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a29aa2dc30d643263ac5df01ef9caefea"><param name="Name" value="Save"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a5fb546357ba30a5ec4a95a432ee101bb"><param name="Name" value="SaveAs"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ab14cd3f1aee1ecc4222928b4265d7e4f"><param name="Name" value="SaveAsScriptFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#aef25abfd82e88f1e04b2830915a1763b"><param name="Name" value="saveChanges"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a562646f9a32f7ae72740d7fab9df88d6"><param name="Name" value="SaveComponent"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ac16113ab28437528855f827c26c3f1eb"><param name="Name" value="SaveFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a8b6a8d3a518dedb3afcaf2563f4d80a0"><param name="Name" value="SaveScript"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a7816333fee46e6c6ed17c808f0509e51"><param name="Name" value="SaveScriptFile"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html"><param name="Name" value="ScriptEditorDialog"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#69f34d522c1b8a4c516e7d1a9b9f13ca"><param name="Name" value="AddCodeEditorWidgetToolbar"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#234834c504d1793ee08798d9757c7b98"><param name="Name" value="AddFilesExplorerWidgetToolbar"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#d8eb1cc541181bb5c22ebb985efcf633"><param name="Name" value="CdUpDir"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#644a24723d1cf5da77b5a6b63f2100a0"><param name="Name" value="Close"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#fb44484947cd76a10ec2ed77adebdd8e"><param name="Name" value="closeEvent"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#4c9649c5f888913092c260e2975ad847"><param name="Name" value="GetCurrentDirectory"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#9ef0704d285aa29093aa1de4250fa470"><param name="Name" value="NewScriptFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#1c93bc1ad219c4568cd4a7d3c61e84f8"><param name="Name" value="OkToContinue"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#20b1cc8121d5b4bdc3dd2dc624198241"><param name="Name" value="OpenDirectory"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#1812a9b542139a09dcaaaef029d0277c"><param name="Name" value="OpenScriptFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#d3a719c1a740b4511ddf30389d1d1d39"><param name="Name" value="RefreshDirList"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#b3f0fccd899c76ff6f302f04f368ce3f"><param name="Name" value="Run"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ed63f578c335d1180f8b27105bcb120c"><param name="Name" value="RunScript"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#b14cd3f1aee1ecc4222928b4265d7e4f"><param name="Name" value="SaveAsScriptFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#8b6a8d3a518dedb3afcaf2563f4d80a0"><param name="Name" value="SaveScript"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#7816333fee46e6c6ed17c808f0509e51"><param name="Name" value="SaveScriptFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#d5e12fd53bad11f303b015fa54404b98"><param name="Name" value="ScriptEditorDialog"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#959d249f121f24dc27f4189f28918f3b"><param name="Name" value="SetCurrentFile"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#52e85fa13b3073f62fdbd774e408fa15"><param name="Name" value="StartDocument"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#1b0082a3d0d641b245172bf3df4b1173"><param name="Name" value="~ScriptEditorDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a69f34d522c1b8a4c516e7d1a9b9f13ca"><param name="Name" value="AddCodeEditorWidgetToolbar"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a234834c504d1793ee08798d9757c7b98"><param name="Name" value="AddFilesExplorerWidgetToolbar"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ad8eb1cc541181bb5c22ebb985efcf633"><param name="Name" value="CdUpDir"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a644a24723d1cf5da77b5a6b63f2100a0"><param name="Name" value="Close"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#afb44484947cd76a10ec2ed77adebdd8e"><param name="Name" value="closeEvent"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a4c9649c5f888913092c260e2975ad847"><param name="Name" value="GetCurrentDirectory"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a9ef0704d285aa29093aa1de4250fa470"><param name="Name" value="NewScriptFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a1c93bc1ad219c4568cd4a7d3c61e84f8"><param name="Name" value="OkToContinue"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a20b1cc8121d5b4bdc3dd2dc624198241"><param name="Name" value="OpenDirectory"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a1812a9b542139a09dcaaaef029d0277c"><param name="Name" value="OpenScriptFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ad3a719c1a740b4511ddf30389d1d1d39"><param name="Name" value="RefreshDirList"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ab3f0fccd899c76ff6f302f04f368ce3f"><param name="Name" value="Run"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#aed63f578c335d1180f8b27105bcb120c"><param name="Name" value="RunScript"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ab14cd3f1aee1ecc4222928b4265d7e4f"><param name="Name" value="SaveAsScriptFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a8b6a8d3a518dedb3afcaf2563f4d80a0"><param name="Name" value="SaveScript"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a7816333fee46e6c6ed17c808f0509e51"><param name="Name" value="SaveScriptFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#ad5e12fd53bad11f303b015fa54404b98"><param name="Name" value="ScriptEditorDialog"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a959d249f121f24dc27f4189f28918f3b"><param name="Name" value="SetCurrentFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a52e85fa13b3073f62fdbd774e408fa15"><param name="Name" value="StartDocument"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a1b0082a3d0d641b245172bf3df4b1173"><param name="Name" value="~ScriptEditorDialog"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#ae6b0553870924fffbaf06c944744bdf"><param name="Name" value="SelectFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#51af2915beaa086f91b30267f9d59db5"><param name="Name" value="SelectionChanged"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#5f0e4cdde240e4accfefdd4f57f860c8"><param name="Name" value="selectionFinishCBAux"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#9c9d373d5a111c5b8a652327148c6e6c"><param name="Name" value="SetCoordinates"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#959d249f121f24dc27f4189f28918f3b"><param name="Name" value="SetCurrentFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#7aa6c3b5922c88e97b6c40c354482eff"><param name="Name" value="SetDocumentModified"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#70a3a3f1378e8d29cb4a7e9c3247413f"><param name="Name" value="setEditorData"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#273eaf8e1fd63c33a11ab7e5b41f1ac0"><param name="Name" value="SetEnabled_SunPositionCalculator"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#a16df6b72cf40057a9e59ea922b8ca03"><param name="Name" value="SetExportAllPhotons"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#e03e1f7a7698d122837ffd090cbf0c4c"><param name="Name" value="SetExportSurfacePhotons"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#7c05c0dd191c07a6e3fc3d4108086af4"><param name="Name" value="SetIntersectionTransform"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#e45a5a1461409a0f51dd8cee615580b8"><param name="Name" value="setModelData"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#3474b6ec94c234b2859c8cba3e19518f"><param name="Name" value="setPart"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#f3443b509edc90998b023816800e9e03"><param name="Name" value="SetupActionInsertShape"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#b1004b5fadcd42c7909818f73240d817"><param name="Name" value="SetupMenus"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#68dea9a15289cb06b948aa018e191f7f"><param name="Name" value="ShowRaysIn3DView"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#d2fd5cbf058013431a325414473b5b93"><param name="Name" value="sideBarShown"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#52e85fa13b3073f62fdbd774e408fa15"><param name="Name" value="StartDocument"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#56bd608397f177cc024da9c644388771"><param name="Name" value="StartManipulation"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#1f87ccf62d872d2e3667970097bd4a87"><param name="Name" value="StartOver"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#d80d1f9cc57cf11efcd9312c585ac205"><param name="Name" value="SunPositionTab"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#3a60b6e67898772cb078b365009c6198"><param name="Name" value="SunshapeTab"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#aae6b0553870924fffbaf06c944744bdf"><param name="Name" value="SelectFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a51af2915beaa086f91b30267f9d59db5"><param name="Name" value="SelectionChanged"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a5f0e4cdde240e4accfefdd4f57f860c8"><param name="Name" value="selectionFinishCBAux"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a82bedc47053e04200d030b210923d469"><param name="Name" value="SelectNode"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a9d6225870dd477b8a56a85e8ab2ce36f"><param name="Name" value="SetCurrentFile"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a9d6225870dd477b8a56a85e8ab2ce36f"><param name="Name" value="MainWindow"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a959d249f121f24dc27f4189f28918f3b"><param name="Name" value="ScriptEditorDialog"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a7aa6c3b5922c88e97b6c40c354482eff"><param name="Name" value="SetDocumentModified"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a70a3a3f1378e8d29cb4a7e9c3247413f"><param name="Name" value="setEditorData"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#aa16df6b72cf40057a9e59ea922b8ca03"><param name="Name" value="SetExportAllPhotons"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#ae03e1f7a7698d122837ffd090cbf0c4c"><param name="Name" value="SetExportSurfacePhotons"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#ab44dbaca10ca824e7da0e090adb7e43d"><param name="Name" value="SetHomePosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_instance_node.html#a7c05c0dd191c07a6e3fc3d4108086af4"><param name="Name" value="SetIntersectionTransform"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af88649b82a336900a361683f10f650d7"><param name="Name" value="SetNodeName"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae80935995ff7437d9500474ed4793574"><param name="Name" value="SetParameterValue"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a3474b6ec94c234b2859c8cba3e19518f"><param name="Name" value="setPart"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a62da167010372eb14bed064f9883cb12"><param name="Name" value="SetPhotonMapType"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a358e3f85562fb987c4aee2d485c8ca57"><param name="Name" value="SetRaysPerIteration"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#af52662986ebbb2070ca0595ecf037158"><param name="Name" value="SetSunPositionCalculatorEnabled"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a03ebcf99c9feb22715fc2fa6d2b36cfa"><param name="Name" value="SetupActions"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae381cc9d9770cdbe18b4d214cd748a2c"><param name="Name" value="SetupActionsInsertShape"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#aeb6ec4b5c5920c57bca678edb640b4ee"><param name="Name" value="SetupCommandView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#acbebf78f381b85c3a250aa17f409ca18"><param name="Name" value="SetupDocument"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#abd6b8d8fe35820e570e09ae9c02e3889"><param name="Name" value="SetupGraphicView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ab1004b5fadcd42c7909818f73240d817"><param name="Name" value="SetupMenus"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a81d65f755af509fb8574eb5fcc1d1716"><param name="Name" value="SetupModels"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a9d69e5c426928351c97b68a999045380"><param name="Name" value="SetupParametersView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a087efab66e25e994e0facc321754b9de"><param name="Name" value="SetupPluginsManager"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a57237997e14649a1b262224942c758e0"><param name="Name" value="SetupTreeView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a17a9f791099c450179a2947dae7d4af2"><param name="Name" value="SetupTriggers"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a38c57809e87778c36589835fe157104c"><param name="Name" value="SetupUpdateManager"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#afd814f1f8fc7a5b7438a1530ccc2dd06"><param name="Name" value="SetupViews"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a678b581fba8c272c8d6ebeaecec62d2b"><param name="Name" value="SetupVRMLBackground"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a69e7a8e7ce98d52945c5122af587d356"><param name="Name" value="SetValue"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a69e7a8e7ce98d52945c5122af587d356"><param name="Name" value="MainWindow"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a36a49429a1e5767ed48da64550160b7f"><param name="Name" value="ParametersView"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a6a2fc6f5699521671fff560f34480b17"><param name="Name" value="ShowCommandView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#aa1a061c9d1937224f538abb94e1a4f49"><param name="Name" value="ShowMenu"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a68dea9a15289cb06b948aa018e191f7f"><param name="Name" value="ShowRaysIn3DView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a1ed6a17940e49080e448fd468c807793"><param name="Name" value="ShowRayTracerOptionsDialog"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a52e85fa13b3073f62fdbd774e408fa15"><param name="Name" value="StartDocument"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a56bd608397f177cc024da9c644388771"><param name="Name" value="StartManipulation"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a1f87ccf62d872d2e3667970097bd4a87"><param name="Name" value="StartOver"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a67786e7bcc0b50d4805bb000606aadb5"><param name="Name" value="StrippedName"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#ad80d1f9cc57cf11efcd9312c585ac205"><param name="Name" value="SunPositionTab"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a3a60b6e67898772cb078b365009c6198"><param name="Name" value="SunshapeTab"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html"><param name="Name" value="TLightKit"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#0a70f365cdc1f26c9345b08cc037d555"><param name="Name" value="ChangePosition"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#fc04a1db903b7f6885355daab7995a14"><param name="Name" value="GetPositionData"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#3c3595509f95672cd90a614092edc47e"><param name="Name" value="initClass"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#37e21153bc35291a8f8a711fbda8cad4"><param name="Name" value="TLightKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a7b6cf162466fd02c0a13e9f7311519a"><param name="Name" value="~TLightKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a0a70f365cdc1f26c9345b08cc037d555"><param name="Name" value="ChangePosition"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#afc04a1db903b7f6885355daab7995a14"><param name="Name" value="GetPositionData"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a3c3595509f95672cd90a614092edc47e"><param name="Name" value="initClass"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#af0bf3a2e00832d7048087376856bc1c8"><param name="Name" value="ResizeToBBox"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a37e21153bc35291a8f8a711fbda8cad4"><param name="Name" value="TLightKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#aa7b6cf162466fd02c0a13e9f7311519a"><param name="Name" value="~TLightKit"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html"><param name="Name" value="TPhotonMap"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#754f423508929cfdc18f7ad03dfc9d55"><param name="Name" value="TPhotonMap"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#e37e4a66264cdba6b33e737619658426"><param name="Name" value="~TPhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#a754f423508929cfdc18f7ad03dfc9d55"><param name="Name" value="TPhotonMap"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#ae37e4a66264cdba6b33e737619658426"><param name="Name" value="~TPhotonMap"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html"><param name="Name" value="TSeparatorKit"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#192241e1dd66255a683f640227f42c00"><param name="Name" value="getIcon"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#786bdf0a9cef9441fcd9ee8cbc6207ba"><param name="Name" value="getPart"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#39fe90220b298997f64bed54bd61d6a4"><param name="Name" value="initClass"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#3474b6ec94c234b2859c8cba3e19518f"><param name="Name" value="setPart"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#4d654da635a04924911078d68bd3ebfd"><param name="Name" value="TSeparatorKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#0c542ea90c7cc56b864275f759ff3a42"><param name="Name" value="~TSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a192241e1dd66255a683f640227f42c00"><param name="Name" value="getIcon"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a786bdf0a9cef9441fcd9ee8cbc6207ba"><param name="Name" value="getPart"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a39fe90220b298997f64bed54bd61d6a4"><param name="Name" value="initClass"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a3474b6ec94c234b2859c8cba3e19518f"><param name="Name" value="setPart"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a4d654da635a04924911078d68bd3ebfd"><param name="Name" value="TSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a0c542ea90c7cc56b864275f759ff3a42"><param name="Name" value="~TSeparatorKit"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html"><param name="Name" value="TShapeKit"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#db688b468a8dcaf49a8fd7544e0a677f"><param name="Name" value="initClass"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#4d2a0d187b1d0ab329a9a5f478aa9119"><param name="Name" value="Intersect"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#20732854ca4a7493e1282584f2904668"><param name="Name" value="IntersectP"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#247b092baea68dd7ab22076a819142de"><param name="Name" value="TShapeKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#96d5120fa5dbbf0e5418020c45eba611"><param name="Name" value="~TShapeKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#adb688b468a8dcaf49a8fd7544e0a677f"><param name="Name" value="initClass"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#a4d2a0d187b1d0ab329a9a5f478aa9119"><param name="Name" value="Intersect"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#a20732854ca4a7493e1282584f2904668"><param name="Name" value="IntersectP"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#a247b092baea68dd7ab22076a819142de"><param name="Name" value="TShapeKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#a96d5120fa5dbbf0e5418020c45eba611"><param name="Name" value="~TShapeKit"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="undo"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#aadbb40a8061b535c04318b0e7aaeb7b8"><param name="Name" value="undo"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="CmdCopy"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#6a6d40c7a475df168868bef3751bf7e9"><param name="Name" value="CmdCut"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#447f65329ba6705f7d4b731f7094e548"><param name="Name" value="CmdDelete"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#d44ffa630136f7f53a797acba9959925"><param name="Name" value="CmdDeleteTracker"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#7a5c7434e22c20f02169fb4e62fad42f"><param name="Name" value="CmdInsertMaterial"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#b07f31e358328c0b273d899ebcef5669"><param name="Name" value="CmdInsertSeparatorKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#f7432da6f9c79464fb1b9dd0a0866574"><param name="Name" value="CmdInsertShape"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#13274bf16107612fb5fc1d5d8883fee0"><param name="Name" value="CmdInsertShapeKit"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#1737cc12f30987db677d192a3e076010"><param name="Name" value="CmdInsertTracker"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#d00eeb6079d0b3c7e72185aa114b5675"><param name="Name" value="CmdLightKitModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html#d7d4c3573004227d30858a7610fc4e39"><param name="Name" value="CmdParameterModified"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#19b47031fcd58523427b0a1f25074fa6"><param name="Name" value="CmdPaste"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#aadbb40a8061b535c04318b0e7aaeb7b8"><param name="Name" value="CmdChangeNodeName"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a7ee658f6b969abd5f6e697d15c6dc451"><param name="Name" value="CmdCopy"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#a6a6d40c7a475df168868bef3751bf7e9"><param name="Name" value="CmdCut"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#a447f65329ba6705f7d4b731f7094e548"><param name="Name" value="CmdDelete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#ad44ffa630136f7f53a797acba9959925"><param name="Name" value="CmdDeleteTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#a7a5c7434e22c20f02169fb4e62fad42f"><param name="Name" value="CmdInsertMaterial"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#ab07f31e358328c0b273d899ebcef5669"><param name="Name" value="CmdInsertSeparatorKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#af7432da6f9c79464fb1b9dd0a0866574"><param name="Name" value="CmdInsertShape"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#a13274bf16107612fb5fc1d5d8883fee0"><param name="Name" value="CmdInsertShapeKit"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#a1737cc12f30987db677d192a3e076010"><param name="Name" value="CmdInsertTracker"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#ad00eeb6079d0b3c7e72185aa114b5675"><param name="Name" value="CmdLightKitModified"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#a19b47031fcd58523427b0a1f25074fa6"><param name="Name" value="CmdPaste"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#0b40ad9c2c3687221c8f315c767c81bb"><param name="Name" value="UpdateCurrentPosition"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#d3d5f5330e34373654936ea1c3f71ba6"><param name="Name" value="valueModificated"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#2231848505a4ab32235a0823fc21a03a"><param name="Name" value="ValueModification"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#5dd4d845cd2392efd49c8141edb8a538"><param name="Name" value="WriteFile"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#56a5e4d5e0a022e8c1ecf350d2916ade"><param name="Name" value="WriteSettings"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#f706679d562ffca3b61586ae82142d7d"><param name="Name" value="~ActionInsertMaterial"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#5908e07dd30232bd3cfe4a241e566dfc"><param name="Name" value="~ActionInsertShape"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#95a726a11f0986e1943b946a55305cb5"><param name="Name" value="~ActionInsertTracker"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#9382bb594dc2b7a2d0c6a8a7fdaae885"><param name="Name" value="~CmdCopy"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#62652c31d754786353f69b476aa9c1f3"><param name="Name" value="~CmdCut"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#eccf7317ad66e2a425012b076da5e9b5"><param name="Name" value="~CmdDelete"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#b943084d05ddc2ae461ac4f1e3cc8e86"><param name="Name" value="~CmdDeleteTracker"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#86f9d16c9966f51e425962c6b949bd3c"><param name="Name" value="~CmdInsertMaterial"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#3290e3af5013303dccdc51997d757360"><param name="Name" value="~CmdInsertSeparatorKit"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#569949ce3620ac15e73f47b0b2f7bcfd"><param name="Name" value="~CmdInsertShape"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#cb0d679cd42fe64679c22a9281f3dca0"><param name="Name" value="~CmdInsertShapeKit"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#14f3463301e4128a81aaadd5391d9d9e"><param name="Name" value="~CmdInsertTracker"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#1a619f08d037316bbe57bb54cefc9716"><param name="Name" value="~CmdLightKitModified"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_parameter_modified.html#329592a2084fccd3a506fde20f63f599"><param name="Name" value="~CmdParameterModified"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#41def34ffaa08c48321997ea78972dc4"><param name="Name" value="~CmdPaste"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#c2e3f62307dc22baac21ddc10fa1609c"><param name="Name" value="~Document"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#ff6cf4e48e6dcde206c3d8eb3bc9fac8"><param name="Name" value="~ExportDialog"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#48e93e3fc9a2d85a3cec78291802cab4"><param name="Name" value="~LightDialog"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#671c08ae9a2573dab5e931ab621549e3"><param name="Name" value="~NodeNameDelegate"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#db9058e3571f79d14ad6614f964a0e76"><param name="Name" value="~ParametersView"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#af504f936a091396d402c4dbc42be7ae"><param name="Name" value="~RayTraceDialog"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#1b0082a3d0d641b245172bf3df4b1173"><param name="Name" value="~ScriptEditorDialog"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#a7b6cf162466fd02c0a13e9f7311519a"><param name="Name" value="~TLightKit"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#e37e4a66264cdba6b33e737619658426"><param name="Name" value="~TPhotonMap"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#0c542ea90c7cc56b864275f759ff3a42"><param name="Name" value="~TSeparatorKit"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#96d5120fa5dbbf0e5418020c45eba611"><param name="Name" value="~TShapeKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a4ebd44cb9e531fc407eea7be266cd39c"><param name="Name" value="Undo"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_map_dialog.html#ab33a80e2258e6aa07ff487fa91bfd2e1"><param name="Name" value="UpdateHomePosition"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a92c5e3d75db454a74e50f4dc285b718f"><param name="Name" value="UpdateLightDimensions"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae9a9900a62aa2e9e2934200e18cbe6e6"><param name="Name" value="UpdateRecentFileActions"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html"><param name="Name" value="UpdatesManager"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a732f8d4f8b965f81e055bde77d50aad5"><param name="Name" value="CheckForUpdates"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a31cbf811fd988d8cef1f45b25fb7fc5b"><param name="Name" value="CheckLastUpdate"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a807b7520a83effd571ae938d406ba040"><param name="Name" value="DeleteDirOldFiles"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#aff7bb4acbe40d22318c9a933959ccbd5"><param name="Name" value="DeleteOldFiles"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a9b61b6c1459d21cfc7bdbc83748df573"><param name="Name" value="DownloadFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#afaabcb2e0b224a292df2ae4c884f9543"><param name="Name" value="FileDownloadComplete"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#afcd15a7f3cefd7fabd96fe3c70070a39"><param name="Name" value="Read"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#ae7bc4407a1de0b2e67edfaa78737ff89"><param name="Name" value="ReadFile"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#ad69e0ef364206a18448df495baf352ed"><param name="Name" value="RemoveDir"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a5181f76fe58b052ac81745f072dd6d19"><param name="Name" value="~UpdatesManager"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#ad087bbcce2ecb6358dcaadb23ff08ba2"><param name="Name" value="UpdateView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#ade26c1717d51997644760fe90bfc2d8f"><param name="Name" value="ValidDirectoryName"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#a835f1086778475433dbd4328560691f7"><param name="Name" value="valueModificated"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#a5dd4d845cd2392efd49c8141edb8a538"><param name="Name" value="WriteFile"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#a56a5e4d5e0a022e8c1ecf350d2916ade"><param name="Name" value="WriteSettings"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_material.html#af706679d562ffca3b61586ae82142d7d"><param name="Name" value="~ActionInsertMaterial"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_shape.html#a5908e07dd30232bd3cfe4a241e566dfc"><param name="Name" value="~ActionInsertShape"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_action_insert_tracker.html#a95a726a11f0986e1943b946a55305cb5"><param name="Name" value="~ActionInsertTracker"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_change_node_name.html#a610bfdf17178c413af5579d29b775eb3"><param name="Name" value="~CmdChangeNodeName"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_copy.html#a9382bb594dc2b7a2d0c6a8a7fdaae885"><param name="Name" value="~CmdCopy"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_cut.html#a62652c31d754786353f69b476aa9c1f3"><param name="Name" value="~CmdCut"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete.html#aeccf7317ad66e2a425012b076da5e9b5"><param name="Name" value="~CmdDelete"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_delete_tracker.html#ab943084d05ddc2ae461ac4f1e3cc8e86"><param name="Name" value="~CmdDeleteTracker"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_material.html#a86f9d16c9966f51e425962c6b949bd3c"><param name="Name" value="~CmdInsertMaterial"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_separator_kit.html#a3290e3af5013303dccdc51997d757360"><param name="Name" value="~CmdInsertSeparatorKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape.html#a569949ce3620ac15e73f47b0b2f7bcfd"><param name="Name" value="~CmdInsertShape"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_shape_kit.html#acb0d679cd42fe64679c22a9281f3dca0"><param name="Name" value="~CmdInsertShapeKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_insert_tracker.html#a14f3463301e4128a81aaadd5391d9d9e"><param name="Name" value="~CmdInsertTracker"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_light_kit_modified.html#a1a619f08d037316bbe57bb54cefc9716"><param name="Name" value="~CmdLightKitModified"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_cmd_paste.html#a41def34ffaa08c48321997ea78972dc4"><param name="Name" value="~CmdPaste"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_document.html#ac2e3f62307dc22baac21ddc10fa1609c"><param name="Name" value="~Document"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_export_dialog.html#aff6cf4e48e6dcde206c3d8eb3bc9fac8"><param name="Name" value="~ExportDialog"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_light_dialog.html#a48e93e3fc9a2d85a3cec78291802cab4"><param name="Name" value="~LightDialog"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7"><param name="Name" value="~MainWindow"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_node_name_delegate.html#a671c08ae9a2573dab5e931ab621549e3"><param name="Name" value="~NodeNameDelegate"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_parameters_view.html#adb9058e3571f79d14ad6614f964a0e76"><param name="Name" value="~ParametersView"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_plugin_manager.html#ab657302ef5af357907ae11ad817f5dfc"><param name="Name" value="~PluginManager"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_ray_trace_dialog.html#aaf504f936a091396d402c4dbc42be7ae"><param name="Name" value="~RayTraceDialog"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_script_editor_dialog.html#a1b0082a3d0d641b245172bf3df4b1173"><param name="Name" value="~ScriptEditorDialog"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_light_kit.html#aa7b6cf162466fd02c0a13e9f7311519a"><param name="Name" value="~TLightKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_photon_map.html#ae37e4a66264cdba6b33e737619658426"><param name="Name" value="~TPhotonMap"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_separator_kit.html#a0c542ea90c7cc56b864275f759ff3a42"><param name="Name" value="~TSeparatorKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_t_shape_kit.html#a96d5120fa5dbbf0e5418020c45eba611"><param name="Name" value="~TShapeKit"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_updates_manager.html#a5181f76fe58b052ac81745f072dd6d19"><param name="Name" value="~UpdatesManager"></OBJECT>
 </UL>
 </BODY>
 </HTML>

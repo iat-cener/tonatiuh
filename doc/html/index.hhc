@@ -10,6 +10,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ActionInsertMaterial"><param name="Local" value="class_action_insert_material.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ActionInsertShape"><param name="Local" value="class_action_insert_shape.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ActionInsertTracker"><param name="Local" value="class_action_insert_tracker.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdChangeNodeName"><param name="Local" value="class_cmd_change_node_name.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdCopy"><param name="Local" value="class_cmd_copy.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdCut"><param name="Local" value="class_cmd_cut.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDelete"><param name="Local" value="class_cmd_delete.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -20,7 +21,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertShapeKit"><param name="Local" value="class_cmd_insert_shape_kit.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertTracker"><param name="Local" value="class_cmd_insert_tracker.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdLightKitModified"><param name="Local" value="class_cmd_light_kit_modified.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdParameterModified"><param name="Local" value="class_cmd_parameter_modified.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdPaste"><param name="Local" value="class_cmd_paste.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeEditor"><param name="Local" value="class_code_editor.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Document"><param name="Local" value="class_document.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -32,6 +32,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MapDialog"><param name="Local" value="class_map_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NodeNameDelegate"><param name="Local" value="class_node_name_delegate.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ParametersView"><param name="Local" value="class_parameters_view.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="PluginManager"><param name="Local" value="class_plugin_manager.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RandomDeviate"><param name="Local" value="class_random_deviate.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RandomDeviateFactory"><param name="Local" value="class_random_deviate_factory.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RayTraceDialog"><param name="Local" value="class_ray_trace_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -40,12 +41,14 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TPhotonMap"><param name="Local" value="class_t_photon_map.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TSeparatorKit"><param name="Local" value="class_t_separator_kit.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TShapeKit"><param name="Local" value="class_t_shape_kit.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="UpdatesManager"><param name="Local" value="class_updates_manager.html"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Class Hierarchy"><param name="Local" value="hierarchy.html"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ActionInsertMaterial"><param name="Local" value="class_action_insert_material.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ActionInsertShape"><param name="Local" value="class_action_insert_shape.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ActionInsertTracker"><param name="Local" value="class_action_insert_tracker.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdChangeNodeName"><param name="Local" value="class_cmd_change_node_name.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdCopy"><param name="Local" value="class_cmd_copy.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdCut"><param name="Local" value="class_cmd_cut.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDelete"><param name="Local" value="class_cmd_delete.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -56,7 +59,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertShapeKit"><param name="Local" value="class_cmd_insert_shape_kit.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertTracker"><param name="Local" value="class_cmd_insert_tracker.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdLightKitModified"><param name="Local" value="class_cmd_light_kit_modified.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdParameterModified"><param name="Local" value="class_cmd_parameter_modified.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdPaste"><param name="Local" value="class_cmd_paste.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeEditor"><param name="Local" value="class_code_editor.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Document"><param name="Local" value="class_document.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -68,6 +70,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MapDialog"><param name="Local" value="class_map_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NodeNameDelegate"><param name="Local" value="class_node_name_delegate.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ParametersView"><param name="Local" value="class_parameters_view.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="PluginManager"><param name="Local" value="class_plugin_manager.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RandomDeviate"><param name="Local" value="class_random_deviate.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RandomDeviateFactory"><param name="Local" value="class_random_deviate_factory.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RayTraceDialog"><param name="Local" value="class_ray_trace_dialog.html"><param name="ImageNumber" value="11"></OBJECT>
@@ -76,6 +79,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TPhotonMap"><param name="Local" value="class_t_photon_map.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TSeparatorKit"><param name="Local" value="class_t_separator_kit.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TShapeKit"><param name="Local" value="class_t_shape_kit.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="UpdatesManager"><param name="Local" value="class_updates_manager.html"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Class Members"><param name="Local" value="functions.html"><param name="ImageNumber" value="11"></OBJECT>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="File List"><param name="Local" value="files.html"><param name="ImageNumber" value="1"></OBJECT>
@@ -85,6 +89,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ActionInsertTracker.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="BBox.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CelestialWidget.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdChangeNodeName.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdCopy.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdCut.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdDelete.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -96,7 +101,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdInsertTracker.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdLightKitModified.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdLightPositionModified.h"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdParameterModified.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdModifyParameter.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdPaste.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeEditor.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="DifferentialGeometry.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -112,6 +117,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="LineNumberWidget.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MainWindow.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="MapDialog.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="MapWidgetInputHandler.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Matrix4x4.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NodeNameDelegate.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="NormalVector.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -122,6 +128,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ParametersView.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="PathWrapper.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Photon.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="PluginManager.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Point3D.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ProgressUpdater.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Ptr.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -132,6 +139,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Ray.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RayTraceDialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RayTracer.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="RayTracerPhoton.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="RefCount.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SceneModel.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="SceneModelView.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -168,11 +176,14 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TTrackerFactory.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_exportdialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_gridsettingsdialog.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_heliostatfieldwizard.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_lightdialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_mainwindow.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_mapdialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_raytracedialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_scripteditordialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_sunpositioncalculatordialog.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="UpdatesManager.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Vector3D.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="WorldMap.h"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
