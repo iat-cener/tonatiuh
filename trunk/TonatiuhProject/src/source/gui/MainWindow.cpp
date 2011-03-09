@@ -2718,7 +2718,9 @@ void MainWindow::ShowRaysIn3DView()
  */
 bool MainWindow::StartOver( const QString& fileName )
 {
-	m_selectionModel->setCurrentIndex( sceneModelView->rootIndex(), QItemSelectionModel::ClearAndSelect );
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
+	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
 	actionDisplayRays->setEnabled( false );
 	actionDisplayRays->setChecked( false );
@@ -2758,8 +2760,8 @@ bool MainWindow::StartOver( const QString& fileName )
 
     SetCurrentFile( fileName );
 	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
+	sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+	concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
 
