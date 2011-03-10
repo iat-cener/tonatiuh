@@ -1,4 +1,4 @@
-#Google Summer of Code 2011 - Ideas page
+# Ideas page for the Google Summer of Code (GSoC) 2011
 
 = Introduction =
 
