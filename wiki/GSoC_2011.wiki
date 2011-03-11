@@ -112,3 +112,13 @@ Batch processing will allow Tonatiuh's users to either automate long-running tas
   * Must know: To carry out this project it is desirable to have some previous knowledge of Qt scripting technology.
   * Language: C++
   * Priority: High
+
+== Addition of the Spectral Representation of Light ==
+
+Currently in Tonatiuh the Sun as a light source is defined by the direct irradiance (the amount of solar power per unit area that reaches a surface perpendicular to the main direction of the sun rays), and the sunshape, which is the angular distribution of radiance (power per unit solid angle and unit area perpendicular the direction of propagation) from the center of the solar disk.
+
+In this definition, the spectral nature of sunlight is not considered. This is fine for modeling reflective solar concentrating systems as the ones used in most Concentrating Solar Thermal Power plants being promotes in nowadays, since in those systems the spectral nature of sunlight plays a minor role, if it plays a role at all. However, it is not fine if one wants to model concentrating systems that use refractive elements, such as lenses.
+
+We would like expand Tonatiuh to properly handle refraction. This implies the extension of the definition of the Sun as a light source to incorporate its spectral properties, the definition of material models that incorporate spectral properties of material, and the modeling of the interactions between the sunlight and those spectrally-aware materials.
+
+
