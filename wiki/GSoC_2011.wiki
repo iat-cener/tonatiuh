@@ -105,9 +105,7 @@ Although Tonatiuh already implements some scripting capabilities based on the Qt
   * Batch processing, and
   * Automatic testing.
 
-Batch processing will allow Tonatiuh's users to either automate long-running tasks, or run Tonatiuh's processes separated from the Graphics User Interface (GUI).
-
-Automate testing will make it possible for Tonatiuh's developers to use a scripting interface to the application and automatically exercise the application to verify that its GUI behaves as expected.
+Batch processing will allow Tonatiuh's users to either automate long-running tasks, or run Tonatiuh's processes separated from the Graphics User Interface (GUI); while automatic testing will make it possible for Tonatiuh's developers to use a scripting interface to the application and automatically exercise the application to verify that its GUI behaves as expected.
 
 To carry out this project it is necessary to have some previous knowledge of Qt scripting technology and to be familiar with scripting.
  
