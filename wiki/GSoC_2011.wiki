@@ -29,6 +29,8 @@ It is known that the best student candidates are those that get involved in the 
   * Review our student project list (see below), and 
   * Get in contact with us via the Tonatiuh project IRC channel on Freenode (#tonatiuhrt) or the [https://groups.google.com/forum/#!forum/tonatiuh-raytracer Tonatiuh's users and developers group].
 
+In general, the more you show initiative in getting started with the above and in preparing your application, the more we will be willing to spend time interacting you and to help you in preparing your application to the GSoC program. We look forward to hearing from you!
+
 = Application template =
 
 == Basic contact information ==
