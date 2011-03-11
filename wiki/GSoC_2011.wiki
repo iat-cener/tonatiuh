@@ -137,4 +137,4 @@ Not all of the mentioned languages are expected to be addressed in one student p
 
 == Your Own Ideas ==
 In addition to the proposed projects there are many other possibilities of improving and extending Tonatiuh. Please, feel free to discuss with us any ideas you may be interested in exploring.
-  * Contact person: Submit a post to [https://groups.google.com/forum/?hl=en#!forum/tonatiuh-raytracer Tonatiuh's users and developers group].
+  * Contact person: Get in contact with us in the IRC channel on Freenode (#tonatiuhrt) or submit a post to [https://groups.google.com/forum/?hl=en#!forum/tonatiuh-raytracer Tonatiuh's users and developers group].
