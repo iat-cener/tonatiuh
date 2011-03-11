@@ -26,7 +26,7 @@ It is known that the best student candidates are those that get involved in the 
 
   * Read the instruction on this wiki to set up your Tonatiuh development environment in the operating system of your choice (Windows, Linux or Mac), 
   * Get the Tonatiuh code and build it, 
-  * Review our possible student projects (see below), and 
+  * Review our list of propose student projects (see below), and 
   * Get in contact with us via the Tonatiuh project IRC channel on Freenode (#tonatiuhrt) or the [https://groups.google.com/forum/#!forum/tonatiuh-raytracer Tonatiuh's users and developers group].
 
 In general, the more you show initiative in getting started with the above and in preparing your application, the more we will be willing to spend time interacting you and to help you in preparing your application to the GSoC program. We look forward to hearing from you!
@@ -85,3 +85,5 @@ In general, the more you show initiative in getting started with the above and i
 
 == Why Tonatiuh? ==
   * What is it that makes you want to work with our project?
+
+= Proposed Student Projects =
