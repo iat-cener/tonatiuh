@@ -3,7 +3,7 @@
 
 = Introduction =
 
-The Tonatiuh project is applying this year, for the first time, to the Google Summer of Code program. As it is stated in the [http://www.google-melange.com/ Google Summer of Code 2011 site] Google Summer of Code (GSoC) is a global program that offers student developers stipends to write code for various open source software projects.
+The Tonatiuh project is applying this year, for the first time, to the Google Summer of Code program. As it is stated in the [http://www.google-melange.com/ Google Summer of Code 2011 site], _Google Summer of Code (GSoC) is a global program that offers student developers stipends to write code for various open source software projects._
 
 
 = Details =
