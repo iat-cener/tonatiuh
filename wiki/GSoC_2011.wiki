@@ -19,4 +19,4 @@ If you plan to participate in the GSoC with Tonatiuh, please, note that you have
 
   * Be able to work full-time in your student project for the full duration of 12 weeks.
   * Held weekly project status review sessions with your mentor via the programs IRC channel on Freenode (#tonatiuhrt) or Skype internet videoconferencing.
-  * Submit to [http://tonatiuhchronicles.blogspot.com/ Tonatiuh's blog] weekly post summarizing the progress of your project.
+  * Submit to [http://tonatiuhchronicles.blogspot.com/ Tonatiuh's blog] weekly posts summarizing the progress of your project.
