@@ -106,7 +106,6 @@ Although Tonatiuh already implements some scripting capabilities based on the Qt
   * Automatic testing.
 
 Batch processing will allow Tonatiuh's users to either automate long-running tasks, or run Tonatiuh's processes separated from the Graphics User Interface (GUI); while automatic testing will make it possible for Tonatiuh's developers to use a scripting interface to the application and automatically exercise the application to verify that its GUI behaves as expected.
- 
   * Contact person: [https://profiles.google.com/manuel.jesus.blanco/about/edit/d?hl=en_US Manuel J. Blanco]
   * Level of difficulty: Hard / Medium
   * Must know: To carry out this project it is desirable to have some previous knowledge of Qt scripting technology.
@@ -119,4 +118,9 @@ Currently in Tonatiuh the Sun as a light source is defined by the direct irradia
 
 In this definition, the spectral nature of sunlight is not considered. This is fine for modeling reflective solar concentrating systems as the ones used in most Concentrating Solar Thermal Power plants being proposed nowadays, since in those systems the spectral nature of sunlight plays a minor role, if it plays a role at all. However, it is not fine if one wants to model concentrating systems that use refractive elements, such as lenses.
 
-We would like expand Tonatiuh to properly handle refraction. This implies the extension of the definition of the Sun as a light source to incorporate its spectral properties, the definition of material models that incorporate spectral properties of material, and the modeling of the interactions between the sunlight and those spectrally-aware materials.
+We would like expand Tonatiuh to properly handle refraction. This implies the extension of the definition of the Sun as a light source to incorporate its spectral properties, the definition of material models that incorporate spectral properties of materials, and the modeling of the interactions between the sunlight and those spectrally-aware materials.
+  * Contact person: [https://profiles.google.com/manuel.jesus.blanco/about/edit/d?hl=en_US Manuel J. Blanco]
+  * Level of difficulty: Medium
+  * Must know: To carry out this project it is desirable to have some previous knowledge of optics.
+  * Language: C++
+  * Priority: High
