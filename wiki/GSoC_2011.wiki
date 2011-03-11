@@ -93,7 +93,6 @@ In general, the more you show initiative in getting started with the above and i
 We would like Tonatiuh to import and export 3D geometry from standard file formats such as AutoCAD (.dxf), Stereolithography (.stl), 3D Studio (.3ds), Virtual Reality Modeling Lenguage (.vrml), X3D XML (.x3d), !LuxRender (.LXS), or Google's Sketchup (.skp).
 
 Not all of the mentioned formats are expected to be addressed in one student project. Several student projects could be defined with each project addressing one or two of the formats.
-
   * Contact person: [https://profiles.google.com/manuel.jesus.blanco/about/edit/d?hl=en_US Manuel J. Blanco]
   * Level of difficulty: Hard / Medium
   * Must know: The student should be familiar with the 3D format or formats he or she decides to focus on.
@@ -103,5 +102,10 @@ Not all of the mentioned formats are expected to be addressed in one student pro
 == Enhancement of Tonatiuh scripting capabilities ==
 
 Although Tonatiuh already offers the user some scripting capabilities based on the Qt scripting technologies. It is desirable to review and greatly expand these capabilities, in order to make it possible for Tonatiuh's users to do:
-  * Batch processing, so that long-running tasks can be automated or run as processes separated from the Graphics User Interface (GUI.
-  * Automated testing, so that by using a scripting interface to the application, Tonatiuh developers can automatically exercise the application to verify that the GUI behaves as expected.
+  * *Batch processing*, so that long-running tasks can be automated or run as processes separated from the Graphics User Interface (GUI).
+  * *Automated testing*, so that by using a scripting interface to the application, Tonatiuh developers can automatically exercise the application to verify that the GUI behaves as expected.
+  * Contact person: [https://profiles.google.com/manuel.jesus.blanco/about/edit/d?hl=en_US Manuel J. Blanco]
+  * Level of difficulty: Hard / Medium
+  * Must know: The student should be familiar with the 3D format or formats he or she decides to focus on.
+  * Language: C++
+  * Priority: High
