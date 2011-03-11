@@ -90,7 +90,7 @@ In general, the more you show initiative in getting started with the above and i
 
 == Import and export of 3D geometry from standard formats ==
 
-We would like Tonatiuh to import and export 3D geometry from standard file formats such as AutoCAD (.dxf), Stereolithography (.stl), 3D Studio (.3ds), Virtual Reality Modeling Lenguage (.vrml), X3D XML (.x3d), LuxRender (.LXS), or Google's Sketchup (.skp).
+We would like Tonatiuh to import and export 3D geometry from standard file formats such as AutoCAD (.dxf), Stereolithography (.stl), 3D Studio (.3ds), Virtual Reality Modeling Lenguage (.vrml), X3D XML (.x3d), #LuxRender (.LXS), or Google's Sketchup (.skp).
 
   * Contact person: Manuel J. Blanco
   * Level of difficulty: Hard / Medium
