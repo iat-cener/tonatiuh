@@ -18,6 +18,6 @@ To get acquainted with the GSoC program, please, read:
 If you plan to participate in the GSoC with Tonatiuh, please, note that during the 12 weeks of the duration of your student project you have to comply with the following requirements:
 
   * Be able to work full-time in your student project for the full duration of 12 weeks.
-  * Held weekly project status review sessions with your mentor via the Tonatiuh project IRC channel on Freenode (#tonatiuhrt) or Skype internet videoconferencing.
+  * Held weekly project status review sessions with your assigned mentor via the Tonatiuh project IRC channel on Freenode (#tonatiuhrt) or Skype internet videoconferencing.
   * Submit to [http://tonatiuhchronicles.blogspot.com/ Tonatiuh's blog] weekly posts summarizing the progress of your project.
   * Communicate with your assigned mentor as often as you need to keep your project moving forward and on schedule, using the Tonatiuh project IRC channel and the [https://groups.google.com/forum/#!forum/tonatiuh-raytracer Tonatiuh's users and developers group] at Google groups.
