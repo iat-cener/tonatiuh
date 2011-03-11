@@ -101,7 +101,13 @@ Not all of the mentioned formats are expected to be addressed in one student pro
 
 == Enhancement of Tonatiuh scripting capabilities ==
 
-Although Tonatiuh already implements some scripting capabilities based on the Qt scripting technologies. It is desirable to review and greatly expand these capabilities, in order to make it possible for Tonatiuh's users to do *Batch processing* for either automating long-running tasks, or running Tonatiuh's processes separated from the Graphics User Interface (GUI), and also to make it possible for Tonatiuh's developers to do *Automated testing*, using a scripting interface to the application to automatically exercise the application to verify that its GUI behaves as expected.
+Although Tonatiuh already implements some scripting capabilities based on the Qt scripting technologies. It is desirable to review and greatly expand these capabilities, in order to enable:
+  * Batch processing, and
+  * Automatic testing.
+
+Batch processing will allow Tonatiuh's users to either automate long-running tasks, or run Tonatiuh's processes separated from the Graphics User Interface (GUI).
+
+Automate testing will make it possible for Tonatiuh's developers to use a scripting interface to the application and automatically exercise the application to verify that its GUI behaves as expected.
 
 To carry out this project it is necessary to have some previous knowledge of Qt scripting technology and to be familiar with scripting.
  
