@@ -13,13 +13,9 @@ To get acquainted with the GSoC program, please, read:
   * [http://www.google-melange.com/document/show/gsoc_program/google/gsoc2011/timeline GSoC programm timeline]
   * [http://www.booki.cc/gsocstudentguide/ The student guide to GSoC]
 
+= Requirements to participate in GSoC with Tonatiuh =
 
+If you plan to participate in the GSoC with Tonatiuh, please, note that you have to comply with the following requirements:
 
- 
+Be able to work full-time in your student project for the full duration of 12 weeks.
 
-= Where the GSoC Program =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
