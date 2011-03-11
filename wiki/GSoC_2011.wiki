@@ -92,6 +92,8 @@ In general, the more you show initiative in getting started with the above and i
 
 We would like Tonatiuh to import and export 3D geometry from standard file formats such as AutoCAD (.dxf), Stereolithography (.stl), 3D Studio (.3ds), Virtual Reality Modeling Lenguage (.vrml), X3D XML (.x3d), !LuxRender (.LXS), or Google's Sketchup (.skp).
 
+Not all of the mentioned formats are expected to be addressed in one student project. Several student projects could be defined with each project addressing one or two of the formats.
+
   * Contact person: Manuel J. Blanco
   * Level of difficulty: Hard / Medium
   * Must know: The student should be familiar with the 3D format or formats he or she decides to focus on.
