@@ -120,7 +120,7 @@ In this definition, the spectral nature of sunlight is not considered. This is f
 
 We would like expand Tonatiuh to properly handle refraction. This implies the extension of the definition of the Sun as a light source to incorporate its spectral properties, the definition of material models that incorporate spectral properties of materials, and the modeling of the interactions between the sunlight and those spectrally-aware materials.
   * Contact person: [https://profiles.google.com/manuel.jesus.blanco/about/edit/d?hl=en_US Manuel J. Blanco]
-  * Level of difficulty: Medium
+  * Level of difficulty: Hard
   * Must know: To carry out this project it is desirable to have some previous knowledge of optics.
   * Language: C++
   * Priority: High
