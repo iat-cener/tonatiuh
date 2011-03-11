@@ -112,7 +112,7 @@ Batch processing will allow Tonatiuh's users to either automate long-running tas
   * Language: C++
   * Priority: High
 
-== Modeling of Spectral Interactions ==
+== Modeling of spectral interactions ==
 
 Currently in Tonatiuh the Sun as a light source is defined by the direct irradiance (the amount of solar power per unit area that reaches a surface perpendicular to the main direction of the sun rays), and the sunshape, which is the angular distribution of radiance (power per unit solid angle and unit area perpendicular the direction of propagation) from the center of the solar disk.
 
