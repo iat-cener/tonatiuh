@@ -7,7 +7,17 @@ The Tonatiuh project is applying this year, for the first time, to the Google Su
 
 If you are a student developer and you are interested in participating in the GSoC program with the Tonatiuh project, please, get in contact with us after reading the information contained in this page and in the links it refers to.
 
-= Details =
+To get acquainted with the GSoC program, please, read:
+
+  * [http://code.google.com/soc/ General information about the GSoC program]
+  * [http://www.google-melange.com/document/show/gsoc_program/google/gsoc2011/timeline GSoC programm timeline]
+  * [http://www.booki.cc/gsocstudentguide/ The student guide to GSoC]
+
+
+
+ 
+
+= Where the GSoC Program =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
