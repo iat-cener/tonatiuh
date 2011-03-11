@@ -127,7 +127,7 @@ We would like expand Tonatiuh to properly handle refraction. This implies the ex
 
 == Localization of Tonatiuh ==
 
-We would like to provide Tonatiuh's users with the capability of being able to switch dynamically from English, which is the default language of the program's GUI, to another language such as Spanish, French, or German. 
+We would like to provide Tonatiuh's users with the capability of being able to switch dynamically from English, which is the default language of the program's GUI, to another language such as Spanish, French, German or Chinese. 
 
 By using Qt Linguist localization tools this should not be difficult to achieve. Although, it will require an extensive revision of the Tonatiuh code in order to identify all visible text strings in the program and properly wrap them up in specialized Qt Linguist objects. Furthermore, it will require the translation of all the English text in the program to the selected target languages.
 
