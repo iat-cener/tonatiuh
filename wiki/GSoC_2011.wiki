@@ -106,11 +106,9 @@ Although Tonatiuh already implements some scripting capabilities based on the Qt
   * Automatic testing.
 
 Batch processing will allow Tonatiuh's users to either automate long-running tasks, or run Tonatiuh's processes separated from the Graphics User Interface (GUI); while automatic testing will make it possible for Tonatiuh's developers to use a scripting interface to the application and automatically exercise the application to verify that its GUI behaves as expected.
-
-To carry out this project it is necessary to have some previous knowledge of Qt scripting technology and to be familiar with scripting.
  
   * Contact person: [https://profiles.google.com/manuel.jesus.blanco/about/edit/d?hl=en_US Manuel J. Blanco]
   * Level of difficulty: Hard / Medium
-  * Must know: The student should be familiar with the 3D format or formats he or she decides to focus on.
+  * Must know: To carry out this project it is desirable to have some previous knowledge of Qt scripting technology.
   * Language: C++
   * Priority: High
