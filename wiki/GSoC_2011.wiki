@@ -28,3 +28,58 @@ It is known that the best student candidates are those that get involved in the 
   * Get the Tonatiuh code and build it, 
   * Review our student project list (see below), and 
   * Get in contact with us via the Tonatiuh project IRC channel on Freenode (#tonatiuhrt) or the [https://groups.google.com/forum/#!forum/tonatiuh-raytracer Tonatiuh's users and developers group].
+
+= Application template =
+
+== Basic contact information ==
+  * Name: full name (preferred name in brackets)
+  * Email:
+  * Location: country, city during coding period
+  * University: current university and course, year started, length, expected completion date.
+  * Google talk ID:
+  * Skype nick:
+  * Phone number: (optional)
+  * URL link to your CV: (optional)
+  * URL link to your personal blog/homepage: (optional)
+
+== Project proposal ==
+  * Project title
+  * Project description
+  * Milestones & Schedule
+  * What are the goals of your project?
+  * What is the measure of success for each goal?
+  * What is your planning schedule for completing these goals (preliminary, for further discussion)
+
+== Other commitments ==
+  * Exams or other events you expect to have to deal with during the GSOC period.
+  * How you plan to balance the competing demands on your time?
+  * Note that we require a minimum of weekly contact from all our students, unless forewarned.
+
+== Coding experience ==
+  * Do you have experience in object oriented programming?
+  * Do you consider yourself a beginner, and intermediate or an experienced C++ programmer?
+  * Are you familiar with the Qt libraries?
+  * Are you familiar with Coin 3D?
+  * Are you familiar with the Berkeley DB library?
+
+== Up and running? ==
+  * Were you able to set up the Tonatiuh development environment following the indications provided in the Wiki pages of the Tonatiuh website?
+  * Did you manage to compile it? Is it up and running on your computer?
+  * If not, did you report a bug in the “Issues” section of the Tonatiuh website or request support on Tonatiuh's users and developers group?
+  * Link to a screenshot of Tonatiuh running on your system.
+  * Have you written any Tonatiuh solar concentrating model? Please, attach it to your GSoC application.
+
+== Open source experience ==
+  * Is this your first contact with the Tonatiuh project?
+  * List or link to any code, patches, or bug reports contributed to other open source projects
+  * List or link to any code, patches, bug reports contributed to the Tonatiuh project.
+
+== Relevant professional experience ==
+  * Only if it's relevant, e.g. engineering or computer science paid work.
+  * Give the project details.
+
+== Relevant studies ==
+  * Courses that you have completed that are relevant to Tonatiuh: engineering, maths, computer science. Why are they relevant?
+
+== Why Tonatiuh? ==
+  * What is it that makes you want to work with our project?
