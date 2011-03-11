@@ -26,5 +26,5 @@ It is known that the best student candidates are those that get involved in the 
 
   * Read the instruction on this wiki to set up your Tonatiuh development environment in the operating system of your choice (Windows, Linux or Mac), 
   * Get the Tonatiuh code and build it, 
-  * Review our student project list, and 
+  * Review our student project list (see below), and 
   * Get in contact with us via the Tonatiuh project IRC channel on Freenode (#tonatiuhrt) or the [https://groups.google.com/forum/#!forum/tonatiuh-raytracer Tonatiuh's users and developers group].
