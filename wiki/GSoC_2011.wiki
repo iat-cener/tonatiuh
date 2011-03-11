@@ -99,3 +99,9 @@ Not all of the mentioned formats are expected to be addressed in one student pro
   * Must know: The student should be familiar with the 3D format or formats he or she decides to focus on.
   * Language: C++
   * Priority: High
+
+== Enhancement of Tonatiuh scripting capabilities ==
+
+Although Tonatiuh already offers the user some scripting capabilities based on the Qt scripting technologies. It is desirable to review and greatly expand these capabilities, in order to make it possible for Tonatiuh's users to do:
+  * Batch processing, so that long-running tasks can be automated or run as processes separated from the Graphics User Interface (GUI.
+  * Automated testing, so that by using a scripting interface to the application, Tonatiuh developers can automatically exercise the application to verify that the GUI behaves as expected.
