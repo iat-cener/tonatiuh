@@ -94,7 +94,7 @@ We would like Tonatiuh to import and export 3D geometry from standard file forma
 
 Not all of the mentioned formats are expected to be addressed in one student project. Several student projects could be defined with each project addressing one or two of the formats.
 
-  * Contact person: [https://code.google.com/u/@VhleRFRQAhNAXQl5/ Manuel J. Blanco]
+  * Contact person: [http://www.linkedin.com/in/mjblanco Manuel J. Blanco]
   * Level of difficulty: Hard / Medium
   * Must know: The student should be familiar with the 3D format or formats he or she decides to focus on.
   * Language: C++
