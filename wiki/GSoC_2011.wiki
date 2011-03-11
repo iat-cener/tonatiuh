@@ -132,7 +132,7 @@ We would like to provide Tonatiuh's users with the capability of being able to s
 By using Qt Linguist localization tools this should not be difficult to achieve. Although, it will require an extensive revision of the Tonatiuh code in order to identify all visible text strings in the program and properly wrap them up in specialized Qt Linguist objects. Furthermore, it will require the translation of all the English text in the program to the selected target languages.
 
 Not all of the mentioned languages are expected to be addressed in one student project. Several student projects could be defined with each project addressing one or two of the languages.
-  * Contact person: [https://profiles.google.com/manuel.jesus.blanco/about/edit/d?hl=en_US Manuel J. Blanco]
+  * Contact person: Amaia Mutuberria
   * Level of difficulty: Medium / Low
   * Must know: In addition to English, the student should have a medium knowledge of the language or languages she or he is targeting.
   * Language: C++
