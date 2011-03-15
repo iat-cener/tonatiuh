@@ -326,6 +326,7 @@ int ScriptRayTracer::Trace()
 	if( !lightKit->getPart( "icon", false ) ) return 0;
 	TShape* raycastingSurface = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
 	double inputAperture = raycastingSurface->GetArea();
+	//std::cout<<"inputAperture: "<<inputAperture<<std::endl;
 
 	if( !lightKit->getPart( "transform" ,true ) ) return 0;
 	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,true ) );

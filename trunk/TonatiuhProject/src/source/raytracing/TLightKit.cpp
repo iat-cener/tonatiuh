@@ -225,9 +225,18 @@ void TLightKit::UpdateSunPosition()
 
 	Transform rotX  = RotateX( -zenith.getValue() );
 	Transform rotY = RotateY( -azimuth.getValue() );
-
 	Transform transform = translate * rotY * rotX;
 
+	SbMatrix coinMatrix = tgf::MatrixFromTransform( transform );
+
+	SbVec3f translation;
+	SbRotation rotation;
+	SbVec3f scaleFactor;
+	SbRotation scaleOrientation;
+	coinMatrix.getTransform( translation, rotation, scaleFactor, scaleOrientation );
+
 	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
-	lightTransform->setMatrix( tgf::MatrixFromTransform( transform ) );
+	lightTransform->translation.setValue( translation );
+	lightTransform->rotation.setValue( rotation );
+
 }
