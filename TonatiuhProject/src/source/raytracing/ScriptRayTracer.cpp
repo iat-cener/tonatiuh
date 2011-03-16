@@ -327,6 +327,22 @@ int ScriptRayTracer::Trace()
 	TShape* raycastingSurface = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
 	double inputAperture = raycastingSurface->GetArea();
 	//std::cout<<"inputAperture: "<<inputAperture<<std::endl;
+	if( lightKit->automaticallyResizable.getValue() )
+	{
+		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+		rootSeparatorInstance->GetNode()->getBoundingBox( bbAction );
+
+		SbBox3f box = bbAction->getXfBoundingBox().project();
+		delete bbAction;
+
+		Point3D pMin( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
+		Point3D pMax( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+
+		BBox sceneBox( pMin, pMax );
+
+		lightKit->ResizeToBBox( sceneBox );
+
+	}
 
 	if( !lightKit->getPart( "transform" ,true ) ) return 0;
 	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,true ) );

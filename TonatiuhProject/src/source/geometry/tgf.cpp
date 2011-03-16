@@ -116,10 +116,38 @@ double tgf::AlternateBoxMuller( RandomDeviate& rand )
 SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 {
 	Ptr<Matrix4x4> transformMatrix = transform.GetMatrix()->Transpose();
-	return SbMatrix( transformMatrix->m[0][0], transformMatrix->m[0][1], transformMatrix->m[0][2], transformMatrix->m[0][3],
-											transformMatrix->m[1][0], transformMatrix->m[1][1], transformMatrix->m[1][2], transformMatrix->m[1][3],
-											transformMatrix->m[2][0], transformMatrix->m[2][1], transformMatrix->m[2][2], transformMatrix->m[2][3],
-											transformMatrix->m[3][0], transformMatrix->m[3][1], transformMatrix->m[3][2], transformMatrix->m[3][3] );
+	float m00 = float ( transformMatrix->m[0][0] );
+	float m01 = float ( transformMatrix->m[0][1] );
+	float m02 = float ( transformMatrix->m[0][2] );
+	float m03 = float ( transformMatrix->m[0][3] );
+	float m10 = float ( transformMatrix->m[1][0] );
+	float m11 = float ( transformMatrix->m[1][1] );
+	float m12 = float ( transformMatrix->m[1][2] );
+	float m13 = float ( transformMatrix->m[1][3] );
+	float m20 = float ( transformMatrix->m[2][0] );
+	float m21 = float ( transformMatrix->m[2][1] );
+	float m22 = float ( transformMatrix->m[2][2] );
+	float m23 = float ( transformMatrix->m[2][3] );
+	float m30 = float ( transformMatrix->m[3][0] );
+	float m31 = float ( transformMatrix->m[3][1] );
+	float m32 = float ( transformMatrix->m[3][2] );
+	float m33 = float ( transformMatrix->m[3][3] );
+
+	SbVec3f axis1( m00, m10, m20 );
+	std::cout<<"axis1: "<<axis1.normalize()<<std::endl;
+
+	SbVec3f axis2( m01, m11, m21 );
+	axis2.normalize();
+	std::cout<<"axis2: "<<axis2.normalize()<<std::endl;
+
+	SbVec3f axis3( m02, m12, m22 );
+	axis3.normalize();
+	std::cout<<"axis3: "<<axis3.normalize()<<std::endl;
+
+	return SbMatrix( axis1[0], axis2[0], axis3[0], m03,
+			axis1[1], axis2[1], axis3[1], m13,
+			axis1[2], axis2[2], axis3[2], m23,
+			m30, m31, m32, m33 );
 
 }
 
