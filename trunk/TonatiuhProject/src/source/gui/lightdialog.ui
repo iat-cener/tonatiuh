@@ -167,7 +167,7 @@
        <item row="7" column="3">
         <widget class="FieldContainerWidget" name="shapeParameters">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
         </widget>
        </item>

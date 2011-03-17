@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "FieldContainerWidget.h"
 #include "LightDialog.h"
 #include "tgc.h"
+#include "tgf.h"
 #include "TLightKit.h"
 #include "TShape.h"
 #include "TShapeFactory.h"
@@ -58,6 +59,9 @@ LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TShapeFactory* >
 m_newShape( 0 ), m_newSunShape( 0 )
 {
 	setupUi( this );
+	connect( sunshapeParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
+	connect( shapeParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
+
 
 	for( int shape = 0; shape < (int) shapeFactoryList.size(); ++shape )
 	{
@@ -121,6 +125,14 @@ void LightDialog::accept()
 		QMessageBox::warning( this, tr( "Tonatiuh" ), tr( "You must select an input aperture shape before for light." ), QMessageBox::Ok );
 	else
 		QDialog::accept();
+}
+
+void LightDialog::SetValue( SoNode* node, QString paramenterName, QString newValue )
+{
+	SoField* parameterField = node->getField( SbName( paramenterName.toStdString().c_str() ) );
+	if( parameterField )
+		parameterField->set( newValue.toStdString().c_str() );
+
 }
 
 /*!
