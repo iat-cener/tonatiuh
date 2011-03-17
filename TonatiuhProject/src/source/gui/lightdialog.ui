@@ -148,24 +148,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="2" colspan="2">
-        <widget class="QRadioButton" name="automaticSizeRadio">
-         <property name="text">
-          <string>Ajust to scene automatically</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="2" colspan="2">
-        <widget class="QRadioButton" name="userSizeRadio">
-         <property name="text">
-          <string>User difined</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="3">
+       <item row="9" column="3">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -181,7 +164,7 @@
        <item row="3" column="3">
         <widget class="FieldContainerWidget" name="sunshapeParameters"/>
        </item>
-       <item row="8" column="3">
+       <item row="7" column="3">
         <widget class="FieldContainerWidget" name="shapeParameters">
          <property name="enabled">
           <bool>false</bool>
@@ -386,22 +369,6 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>userSizeRadio</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>shapeParameters</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>348</x>
-     <y>335</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>351</x>
-     <y>414</y>
     </hint>
    </hints>
   </connection>

@@ -76,8 +76,8 @@ m_newShape( 0 ), m_newSunShape( 0 )
 		if( currentLightKit->getPart( "tsunshape", false ) )	m_newSunShape = static_cast< TSunShape* >( currentLightKit->getPart( "tsunshape", false )->copy( true ) );
 		if( currentLightKit->getPart( "icon", false ) )	m_newShape = static_cast< TShape* >( currentLightKit->getPart( "icon", false )->copy( true ) );
 
-		if( currentLightKit->automaticallyResizable.getValue() ) automaticSizeRadio->setChecked( true );
-		else	userSizeRadio->setChecked( true );
+		/*if( currentLightKit->automaticallyResizable.getValue() ) automaticSizeRadio->setChecked( true );
+		else	userSizeRadio->setChecked( true );*/
 	}
 
 	SunPositionTab();
@@ -102,8 +102,9 @@ TLightKit* LightDialog::GetTLightKit()
 
 	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
 	if( m_newShape ) lightKit->setPart( "icon", m_newShape );
-	if( automaticSizeRadio->isChecked() )	lightKit->automaticallyResizable.setValue( true );
-	else	lightKit->automaticallyResizable.setValue( false );
+	//if( automaticSizeRadio->isChecked() )	lightKit->automaticallyResizable.setValue( true );
+	//else
+	lightKit->automaticallyResizable.setValue( false );
 
 	lightKit->ChangePosition( azimuthSpin->value()* tgc::Degree, ( 90 - elevationSpin->value() ) * tgc::Degree, distanceSpin->value() );
 	return lightKit;
