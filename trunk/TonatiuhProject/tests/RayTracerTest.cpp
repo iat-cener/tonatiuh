@@ -26,8 +26,8 @@ TEST(RayTracerTest, CreateTargetPhotonMap )
 	pluginManager.LoadAvailablePlugins( pluginsDirectory );
 
 
-	QDir testDirectory( qApp->applicationDirPath() );
-	testDirectory.cd( "../../tests" );
+	QDir testDirectory( TEST_DIR );
+	QString testDirPath = testDirectory.absolutePath();
 
 	QScriptEngine* interpreter = new QScriptEngine;
 
@@ -38,7 +38,7 @@ TEST(RayTracerTest, CreateTargetPhotonMap )
 	QScriptValue rayTracerValue = interpreter->newQObject( rayTracer );
 	interpreter->globalObject().setProperty( "rayTracer", rayTracerValue );
 
-	QString fileName = testDirectory.absoluteFilePath( "RayTracerTest.tnhs" );
+	QString fileName = QDir( testDirPath ).absoluteFilePath( "RayTracerTest.tnhs" );
 	QFile scriptFile( fileName );
 	if( !scriptFile.open( QIODevice::ReadOnly) )
 	{
@@ -83,12 +83,14 @@ TEST(RayTracerTest, CreateTargetPhotonMap )
 
 TEST(RayTracerTest, PowerPerPhoton )
 {
-	QString targetDataFileName( "tests/targetSurfaceData.dat" );
-	QFile targetPhotonsFile( targetDataFileName );
+	QDir testDirectory( TEST_DIR );
+	QString testDirPath = testDirectory.absolutePath();
+
+	QFile targetPhotonsFile( QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" ) );
 	if( !targetPhotonsFile.open( QIODevice::ReadOnly ) )
 	{
 		//FAIL();
-		QString errorMessage = QString( "Cannont open file %1." ).arg( targetDataFileName );
+		QString errorMessage = QString( "Cannont open file %1." ).arg(  QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" ) );
 		FAIL()<<errorMessage.toStdString();
 	}
 
@@ -108,7 +110,10 @@ TEST(RayTracerTest, PowerPerPhoton )
 
 TEST(RayTracerTest, TotalPower )
 {
-	QFile targetPhotonsFile( "tests/targetSurfaceData.dat" );
+	QDir testDirectory( TEST_DIR );
+	QString testDirPath = testDirectory.absolutePath();
+
+	QFile targetPhotonsFile( QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" ) );
 	if( !targetPhotonsFile.open( QIODevice::ReadOnly ) )
 	{
 		//FAIL();
@@ -139,7 +144,10 @@ TEST(RayTracerTest, TotalPower )
 
 TEST(RayTracerTest, FluxMaximum )
 {
-	QFile targetPhotonsFile( "tests/targetSurfaceData.dat" );
+	QDir testDirectory( TEST_DIR );
+	QString testDirPath = testDirectory.absolutePath();
+
+	QFile targetPhotonsFile( QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" ) );
 	if( !targetPhotonsFile.open( QIODevice::ReadOnly ) )
 	{
 		//FAIL();
