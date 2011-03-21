@@ -358,7 +358,7 @@ void ShapeSphericalPolygon::SphereRadiusChanged( void* data, SoSensor* )
 }
 
 
-void ShapeSphericalPolygon::computeBBox(SoAction *, SbBox3f& box, SbVec3f& center)
+void ShapeSphericalPolygon::computeBBox(SoAction *, SbBox3f& box, SbVec3f& /*center*/ )
 {
 	BBox bBox = GetBBox();
 	// These points define the min and max extents of the box.
