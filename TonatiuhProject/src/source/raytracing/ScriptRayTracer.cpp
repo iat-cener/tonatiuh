@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -326,8 +326,9 @@ int ScriptRayTracer::Trace()
 	if( !lightKit->getPart( "icon", false ) ) return 0;
 	TShape* raycastingSurface = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
 	double inputAperture = raycastingSurface->GetArea();
+
 	//std::cout<<"inputAperture: "<<inputAperture<<std::endl;
-	if( lightKit->automaticallyResizable.getValue() )
+	/*if( lightKit->automaticallyResizable.getValue() )
 	{
 		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
 		rootSeparatorInstance->GetNode()->getBoundingBox( bbAction );
@@ -342,7 +343,7 @@ int ScriptRayTracer::Trace()
 
 		lightKit->ResizeToBBox( sceneBox );
 
-	}
+	}*/
 
 	if( !lightKit->getPart( "transform" ,true ) ) return 0;
 	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,true ) );

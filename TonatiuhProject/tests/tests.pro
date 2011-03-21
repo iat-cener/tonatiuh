@@ -4,6 +4,7 @@ include( ../config.pri )
 
 QT += xml opengl svg  script network
 
+DEFINES += TEST_DIR=\\\"PWD/../tests\\\"
 
 SOURCES += *.cpp 
            
