@@ -1,0 +1,71 @@
+/***************************************************************************
+Copyright (C) 2008 by the Tonatiuh Software Development Team.
+
+This file is part of Tonatiuh.
+
+Tonatiuh program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Acknowledgments:
+
+The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+then Chair of the Department of Engineering of the University of Texas at
+Brownsville. From May 2004 to July 2008, it was supported by the Department
+of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+During 2007, NREL also contributed to the validation of Tonatiuh under the
+framework of the Memorandum of Understanding signed with the Spanish
+National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+Since June 2006, the development of Tonatiuh is being led by the CENER, under the
+direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
+
+Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
+
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu.
+***************************************************************************/
+
+#ifndef PARAMETERSVIEW_H_
+#define PARAMETERSVIEW_H_
+
+#include <QWidget>
+
+class SoNode;
+class QTabWidget;
+
+class ParametersView : public QWidget
+{
+	Q_OBJECT
+
+public:
+	ParametersView( QWidget* parent = 0, Qt::WindowFlags f = 0  );
+	~ParametersView();
+	void ChangeParameters( SoNode* coinNode );
+	void SelectionChanged( SoNode* coinNode, QStringList parts );
+	void AddTab( SoNode* coinNode, QString partName );
+	void Reset();
+
+signals:
+	 void valueModificated( const QStringList& oldValuesList, SoNode* coinNode, QString containerName );
+
+public slots:
+	void valueModification( const QStringList& oldValuesList, QString containerName );
+
+private:
+	QTabWidget* m_ptabWidget;
+	SoNode* m_actualCoinNode;
+
+};
+
+#endif /*PARAMETERSVIEW_H_*/
