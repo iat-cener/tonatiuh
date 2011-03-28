@@ -113,11 +113,14 @@ TEST(RayTracerTest, TotalPower )
 	QDir testDirectory( TEST_DIR );
 	QString testDirPath = testDirectory.absolutePath();
 
-	QFile targetPhotonsFile( QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" ) );
+	QString taragetPhotonsFileName = QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" );
+
+	QFile targetPhotonsFile( taragetPhotonsFileName );
 	if( !targetPhotonsFile.open( QIODevice::ReadOnly ) )
 	{
-		//FAIL();
-		QMessageBox::warning( 0, QString( "RayTracerTest"), "Cannont open file" );
+		QString errorMessage = QString( "Cannont open file %1." ).arg(  taragetPhotonsFileName );
+		FAIL()<<errorMessage.toStdString();
+
 	}
 	QDataStream in( &targetPhotonsFile );
 
@@ -150,8 +153,8 @@ TEST(RayTracerTest, FluxMaximum )
 	QFile targetPhotonsFile( QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" ) );
 	if( !targetPhotonsFile.open( QIODevice::ReadOnly ) )
 	{
-		//FAIL();
-		QMessageBox::warning( 0, QString( "RayTracerTest"), "Cannont open file" );
+		QString errorMessage = QString( "Cannont open file %1." ).arg( QDir( testDirPath ).absoluteFilePath( "targetSurfaceData.dat" ) );
+		FAIL()<<errorMessage.toStdString();
 	}
 	QDataStream in( &targetPhotonsFile );
 
