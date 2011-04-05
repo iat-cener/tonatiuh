@@ -110,6 +110,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 #include "trf.h"
 #include "TLightKit.h"
+#include "TLightShape.h"
 #include "TMaterial.h"
 #include "TMaterialFactory.h"
 #include "TPhotonMap.h"
@@ -227,23 +228,10 @@ void MainWindow::FinishManipulation( )
 														QString::number( nodeTransform->translation.getValue()[1] ),
 														QString::number( nodeTransform->translation.getValue()[2] ) );
 	new CmdModifyParameter( nodeTransform, QString( "translation" ), translationValue, m_sceneModel, command );
-
-	/*dragAndDrop->setText("Drag and Drop node");
-	new CmdCut( node, m_coinNode_Buffer, m_sceneModel, dragAndDrop );
-
-	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDrop );*/
 	m_commandStack->push( command );
 
 	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
-
-	//CmdModifyParameter* command =new CmdModifyParameter( nodeTransform, coinNode, "transform" );
-	/*CmdParameterModified* parameterModified;
-	QString type = coinNode->getTypeId().getName().getString() ;
-	if ( type == "TLightKit" )	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "tshapekit.transform" );
-	else	parameterModified = new CmdParameterModified( *m_manipulators_Buffer, coinNode, "transform" );
-	m_commandStack->push( parameterModified );*/
-
 
 }
 
@@ -312,9 +300,9 @@ void MainWindow::CalculateSunPosition()
 	lightKit->GetPositionData( &currentTime, &longitude, &latitude );
 
 	SunPositionCalculatorDialog sunposDialog;
-	sunposDialog.ChangePosition( currentTime, longitude, latitude );
+	//sunposDialog.ChangePosition( currentTime, longitude, latitude );
 
-	connect( &sunposDialog, SIGNAL( changeSunLight( QDateTime*, double, double ) ) , this, SLOT( ChangeSunPosition( QDateTime*, double, double ) ) );
+	connect( &sunposDialog, SIGNAL( changeSunLight( double, double ) ) , this, SLOT( ChangeSunPosition( double, double ) ) );
 
 	sunposDialog.exec();
 }
@@ -327,6 +315,10 @@ void MainWindow::DefineSunLight()
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
 
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
+	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
+
 	TLightKit* currentLight = 0;
 	if( coinScene->getPart( "lightList[0]", false ) )	currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
@@ -338,7 +330,7 @@ void MainWindow::DefineSunLight()
 
 	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
 
-	LightDialog dialog( currentLight, tFlatShapeFactoryList, tSunShapeFactoryList );
+	LightDialog dialog( currentLight, tSunShapeFactoryList );
 	if( dialog.exec() )
 	{
 
@@ -350,7 +342,8 @@ void MainWindow::DefineSunLight()
 		CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
 		m_commandStack->push( command );
 
-		UpdateLightDimensions();
+		//UpdateLightDimensions();
+		m_sceneModel->UpdateSceneModel();
 
 		parametersView->UpdateView();
 		m_document->SetDocumentModified( true );
@@ -486,7 +479,8 @@ void MainWindow::OpenRecentFile()
 void MainWindow::Redo()
 {
     m_commandStack->redo();
-    UpdateLightDimensions();
+    //UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 }
 
 /*!
@@ -498,7 +492,7 @@ void MainWindow::SetParameterValue( SoNode* node, QString paramenterName, QStrin
 	if ( m_commandStack ) m_commandStack->push( command );
 	m_sceneModel->UpdateSceneModel();
 
-	UpdateLightDimensions();
+	//UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
 }
 
@@ -1254,12 +1248,18 @@ void MainWindow::Run()
 	InstanceNode* lightInstance = 0;
 	SoTransform* lightTransform = 0;
 	TSunShape* sunShape = 0;
-	TShape* raycastingSurface = 0;
+	TLightShape* raycastingSurface = 0;
 
 	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
 	{
+		QVector< QPair< TShapeKit*, Transform > > surfacesList;
+
+
 		//Compute bounding boxes and world to object transforms
-		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
+		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList );
+
+		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
+		light->ComputeLightSourceArea( surfacesList );
 
 		QVector< double > raysPerThread;
 		const int maximumValueProgressScale = 100;
@@ -1731,6 +1731,30 @@ void MainWindow::ChangeSelection( const QModelIndex& current )
 	}
 }
 
+//for sunposdialog signals
+/*!
+ * Changes the light position to the position defined by \a azimuth and \a zenith.
+ * The parameters are defined in radians.
+ */
+void MainWindow::ChangeSunPosition(  double azimuth, double zenith )
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	if ( !lightKit )
+	{
+		QMessageBox::warning( this, "Toantiuh warning", tr( "Sun not defined in scene" ) );
+	}
+	else
+	{
+		CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, azimuth, zenith );
+		m_commandStack->push( command );
+
+		//UpdateLightDimensions();
+		m_sceneModel->UpdateSceneModel();
+		m_document->SetDocumentModified( true );
+	}
+}
+
 
 /*!
  * Creates a material node from the \a pTMaterialFactory as current selected node child.
@@ -1899,30 +1923,6 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 
 	UpdateLightDimensions();
 	m_document->SetDocumentModified( true );
-}
-
-//for sunposdialog signals
-/*!
- * Changes the light position to the position computed from \a time, \a longitude and \a latitude.
- * The \a time is ut time and \a longitude and \a latitude are defined in degrees.
- */
-void MainWindow::ChangeSunPosition( QDateTime* time, double longitude, double latitude )
-{
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
-	if ( !lightKit )
-	{
-		QMessageBox::warning( this, "Toantiuh warning", tr( "Sun not defined in scene" ) );
-	}
-	else
-	{
-		CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, *time, longitude, latitude );
-		m_commandStack->push( command );
-
-		UpdateLightDimensions();
-		m_document->SetDocumentModified( true );
-	}
-	delete time;
 }
 
 void MainWindow::closeEvent( QCloseEvent* event )
@@ -2164,7 +2164,7 @@ void MainWindow::ReadSettings()
 /*!
  * Checks whether a ray tracing can be started with the current light and model.
  */
-bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TShape*& raycastingShape )
+bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TLightShape*& raycastingShape )
 {
 	//Check if there is a scene
 	SoSceneKit* coinScene = m_document->GetSceneKit();
@@ -2187,7 +2187,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 	sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
 
 	if( !lightKit->getPart( "icon", false ) ) return false;
-	raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
+	raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
 
 	if( !lightKit->getPart( "transform" ,true ) ) return false;
 	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
@@ -2700,15 +2700,11 @@ void MainWindow::ShowRaysIn3DView()
 		if( m_fraction > 0.0 )
 		{
 			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
-			if( currentRays )
-			{
-				m_pRays->addChild(currentRays);
-
-				actionDisplayRays->setEnabled( true );
-				actionDisplayRays->setChecked( true );
-			}
+			if( currentRays )	m_pRays->addChild(currentRays);
 
 		}
+		actionDisplayRays->setEnabled( true );
+		actionDisplayRays->setChecked( true );
 	}
 }
 
@@ -2783,7 +2779,7 @@ QString MainWindow::StrippedName( const QString& fullFileName )
  */
 void MainWindow::UpdateLightDimensions()
 {
-	SoSceneKit* coinScene = m_document->GetSceneKit();
+	/*SoSceneKit* coinScene = m_document->GetSceneKit();
 
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 	if ( !lightKit )	return;
@@ -2804,7 +2800,7 @@ void MainWindow::UpdateLightDimensions()
 
 	BBox sceneBox( pMin, pMax );
 
-	lightKit->ResizeToBBox( sceneBox );
+	lightKit->ResizeToBBox( sceneBox );*/
 
 }
 

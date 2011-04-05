@@ -62,6 +62,7 @@ class SoTransform;
 class SoDragger;
 class SoSelection;
 class SoSeparator;
+class TLightShape;
 class TMaterialFactory;
 class TPhotonMap;
 class TPhotonMapFactory;
@@ -139,9 +140,6 @@ public slots:
 	void itemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
 	void itemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
 
-	//Slots for sunposdialog signals
-    void ChangeSunPosition( QDateTime* time, double longitude, double latitude );
-
 protected:
     void closeEvent( QCloseEvent* event );
 
@@ -149,6 +147,7 @@ protected slots:
 	void CalculateSunPosition();
 	void ChangeNodeName( const QModelIndex& index, const QString& newName);
     void ChangeSelection( const QModelIndex & current );
+    void ChangeSunPosition( double azimuth, double zenith );
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
@@ -199,7 +198,7 @@ private:
 			                 InstanceNode*& lightInstance,
 			                 SoTransform*& lightTransform,
 			                 TSunShape*& sunShape,
-			                 TShape*& shape );
+			                 TLightShape*& shape );
     bool SaveFile( const QString& fileName );
     void SetCurrentFile( const QString& fileName );
     void SetupActions();

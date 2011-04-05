@@ -64,7 +64,7 @@ class LightDialog : public QDialog, private Ui::LightDialog
 	Q_OBJECT
 
 public:
-	LightDialog(  TLightKit* currentLightKit, QVector< TShapeFactory* > shapeFactoryList, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent = 0 );
+	LightDialog(  TLightKit* currentLightKit, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent = 0 );
 	~LightDialog();
 
 	TLightKit* GetTLightKit();
@@ -74,24 +74,19 @@ public slots:
 	void SetValue( SoNode* node, QString paramenterName, QString newValue );
 
 protected slots:
-	void ChangeShape( int index );
 	void ChangeSunshape( int index );
 
 private:
 	void SunPositionTab();
 	void SunshapeTab();
-	void ShapeBox();
 	void SunshapeBox();
 
 
     TLightKit* m_currentLightKit;
-	int m_currentSunShapeIndex;
-	int m_currentShapeIndex;
 
-    TShape* m_newShape;
+	int m_currentSunShapeIndex;
     TSunShape* m_newSunShape;
 
-    QMap< QString, TShapeFactory* > m_shapeList;
 	QMap< QString, TSunShapeFactory* > m_sunshapeList;
 
 };

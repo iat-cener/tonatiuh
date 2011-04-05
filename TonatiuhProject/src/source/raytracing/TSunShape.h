@@ -57,6 +57,7 @@ public:
 
 	virtual void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;
 	virtual double GetIrradiance() const = 0;
+    virtual double GetThetaMax() const = 0;
 
 protected:
     TSunShape();

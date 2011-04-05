@@ -40,15 +40,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TLIGHTKIT_H_
 
 #include <QDateTime>
+#include <QPair>
+#include <QVector>
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodekits/SoLightKit.h>
 
+
 #include "trt.h"
-#include "TShape.h"
 #include "TSunShape.h"
 
 class BBox;
+class Transform;
+class TShapeKit;
 
 /*!
   \class TLightKit TLightKit.h TLightKit.h
@@ -87,6 +91,8 @@ class TLightKit : public SoLightKit
 {
     SO_KIT_HEADER(TLightKit);
  	SO_KIT_CATALOG_ENTRY_HEADER(iconMaterial);
+    //SO_KIT_CATALOG_ENTRY_HEADER(iconHints);
+ 	SO_KIT_CATALOG_ENTRY_HEADER(iconTexture);
  	SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
 
 
@@ -95,17 +101,15 @@ public:
     TLightKit();
     static void initClass();
 
-    void ChangePosition( QDateTime newTime, double longitude, double latitude );
-    void ChangePosition( double newAzimuth, double newZenith, double newDistance );
+    //void ChangePosition( QDateTime newTime, double longitude, double latitude );
+    void ChangePosition( double newAzimuth, double newZenith/*, double newDistance*/ );
     void GetPositionData( QDateTime* time, double* longitude, double* latitude );
 
-    void ResizeToBBox( BBox box );
-    void Update();
+    void Update( BBox box );
+    void ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > > surfacesList );
 
     trt::TONATIUH_REAL azimuth;
     trt::TONATIUH_REAL zenith;
-    trt::TONATIUH_REAL distance;
-    SoSFBool automaticallyResizable;
 
 private:
     virtual ~TLightKit();

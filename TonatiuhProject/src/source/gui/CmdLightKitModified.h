@@ -67,9 +67,6 @@ private:
      bool m_previousLightKit;
      double m_previousAzimuth;
      double m_previousZenith;
-     double m_previousDistance;
-     bool m_previousResizable;
-     TShape* m_pPreviousShape;
      TSunShape* m_pPreviousSunShape;
      TLightKit* m_pNewLightKit;
      SoSceneKit* m_scene;

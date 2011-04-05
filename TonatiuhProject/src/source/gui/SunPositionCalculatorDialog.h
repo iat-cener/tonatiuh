@@ -56,8 +56,11 @@ public:
 	SunPositionCalculatorDialog( QWidget* parent = 0 );
 	~SunPositionCalculatorDialog();
 
-	void ChangePosition( QDateTime time, double longitude, double latitude );
-	void SetDateTime( QDateTime time );
+	//void ChangePosition( QDateTime time, double longitude, double latitude );
+	//void SetDateTime( QDateTime time );
+
+protected:
+    void closeEvent( QCloseEvent* event );
 
 private slots:
 	void UpdatePosition( QAbstractButton* button );
@@ -70,11 +73,13 @@ private slots:
 
 signals:
 	void changeRepresentation( cSunCoordinates results );
-	void changeSunLight( QDateTime* time, double longitude, double latitude );
+	void changeSunLight( double azimuth, double zenith );
 
 private:
 	void CalculateSunPosition();
-	QDateTime* GetTime();
+	QDateTime GetTime();
+	void ReadSettings();
+	void WriteSettings();
 
 };
 

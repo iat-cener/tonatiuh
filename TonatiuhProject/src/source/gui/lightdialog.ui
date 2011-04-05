@@ -98,57 +98,10 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="inputApertureLabel">
-         <property name="text">
-          <string>Input Aperture</string>
-         </property>
-        </widget>
+       <item row="3" column="3">
+        <widget class="FieldContainerWidget" name="sunshapeParameters"/>
        </item>
-       <item row="4" column="1" colspan="3">
-        <widget class="Line" name="inputApertureHLine">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="shapeLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>177</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Shape Type:   </string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2" colspan="2">
-        <widget class="QComboBox" name="shapeCombo">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLabel" name="sizeLabel">
-         <property name="text">
-          <string>Size:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="3">
+       <item row="4" column="0" colspan="4">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -160,16 +113,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="3" column="3">
-        <widget class="FieldContainerWidget" name="sunshapeParameters"/>
-       </item>
-       <item row="7" column="3">
-        <widget class="FieldContainerWidget" name="shapeParameters">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>
@@ -185,7 +128,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="3" column="0">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -284,44 +227,6 @@
         <widget class="Line" name="positionHLine">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="distanceLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Distance:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QDoubleSpinBox" name="distanceSpin">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="decimals">
-          <number>4</number>
-         </property>
-         <property name="maximum">
-          <double>999999999.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>200.000000000000000</double>
          </property>
         </widget>
        </item>

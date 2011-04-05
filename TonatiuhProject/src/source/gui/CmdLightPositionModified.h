@@ -48,7 +48,7 @@ class CmdLightPositionModified : public QUndoCommand
 {
 
 public:
-	CmdLightPositionModified( TLightKit* light, QDateTime time, double longitude, double latitude, QUndoCommand* parent = 0 );
+	CmdLightPositionModified( TLightKit* light, double azimuth, double zenith, QUndoCommand* parent = 0 );
 	~CmdLightPositionModified();
 
 	virtual void undo();
@@ -57,14 +57,11 @@ public:
 private:
 	TLightKit* lightKit;
 
-	QDateTime oldTime;
-	QDateTime newTime;
+	double m_newAzimuth;
+	double m_newZenith;
 
-	double oldLongitude;
-	double newLongitude;
-
-	double oldLatitude;
-	double newLatitude;
+	double m_oldAzimuth;
+	double m_oldZenith;
 };
 
 #endif /*CMDLIGHTPOSITIONMODIFIED_H_*/

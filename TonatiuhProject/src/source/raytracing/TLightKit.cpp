@@ -36,11 +36,18 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/nodes/SoCube.h>
+#include <QImage>
+#include <QBrush>
+#include <QColor>
+#include <QImage>
+#include <QPaintEngine>
+
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoLabel.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoNodekitCatalog.h>
 
@@ -52,6 +59,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include "tgf.h"
 #include "TLightKit.h"
+#include "TLightShape.h"
 #include "Transform.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
@@ -74,13 +82,12 @@ TLightKit::TLightKit()
 	SO_KIT_CONSTRUCTOR(TLightKit);
 
 	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(iconMaterial, SoNode, SoMaterial, TRUE, iconSeparator, icon, TRUE);
+	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(iconTexture, SoNode, SoTexture2, TRUE, iconSeparator, iconMaterial, TRUE);
 	SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(tsunshape, TSunShape, TDefaultSunShape, TRUE, transformGroup, "", TRUE);
-
 
 	SO_NODE_ADD_FIELD( azimuth, (0.0) );
 	SO_NODE_ADD_FIELD( zenith, (0.0) );
-	SO_NODE_ADD_FIELD( distance, (200.0) );
-	SO_NODE_ADD_FIELD( automaticallyResizable, ( TRUE ) );
+
 
 	SO_KIT_INIT_INSTANCE();
 
@@ -91,9 +98,36 @@ TLightKit::TLightKit()
 	setPart( "transform", transform );
 
 	SoMaterial* lightMaterial = static_cast<SoMaterial*>( getPart( "iconMaterial", true ) );
-	lightMaterial->diffuseColor.setValue( 0.933, 0.91, 0.666);
+	//lightMaterial->diffuseColor.setValue( 0.933, 0.91, 0.666);
 	lightMaterial->transparency = 0.5;
 	setPart( "iconMaterial", lightMaterial );
+
+	int widthPixeles = 100;
+	int heightPixeles = 100;
+
+
+	unsigned char bitmap[ widthPixeles * heightPixeles ];
+	//julia(  widthPixeles, heightPixeles, bitmap, 128 );
+
+
+	for( int y = 0; y < heightPixeles; y++ )
+	{
+		for( int x = 0; x < widthPixeles; x++ )
+		{
+			bitmap[ y* widthPixeles +x] = 255;
+		}
+
+	}
+
+
+	SoTexture2 * texture = new SoTexture2;
+    texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
+    texture->model = SoTexture2::BLEND;
+    texture->blendColor.setValue( 0.933, 0.91, 0.666 );
+	setPart( "iconTexture", texture );
+
+	TLightShape* iconShape = new TLightShape;;
+	setPart( "icon", iconShape );
 }
 
 /**
@@ -105,52 +139,16 @@ TLightKit::~TLightKit()
 }
 
 /*!
- * Computes the sun position local coordinates for the \a longitude and \a latitude in the \a newTime.
- * The light is positioned at these coordinates.
- * \a longitude  and \a latitude are in degrees.
- */
-void TLightKit::ChangePosition( QDateTime newTime, double longitude, double latitude )
-{
-	m_time = newTime;
-	m_longitude = longitude;
-	m_latitude = latitude;
-
-	int year = m_time.date().year();
-	int month = m_time.date().month();
-	int day = m_time.date().day();
-
-	double hours = m_time.time().hour ();
-	double minutes = m_time.time().minute ();
-	double seconds = m_time.time().second ();
-	cTime myTime = { year, month, day, hours, minutes, seconds };
-
-	//Localization
-	double lon = m_longitude.getValue();
-	double lat = m_latitude.getValue();
-    cLocation myLocation = {lon , lat };
-
-	//Calculate sun position
-	cSunCoordinates results;
-	sunpos( myTime, myLocation, &results );
-
-	azimuth.setValue( results.dAzimuth * tgc::Degree );
-	zenith = results.dZenithAngle * tgc::Degree;
-	UpdateSunPosition();
-
-	//connect( buttonBox, SIGNAL( accepted() ), this, SLOT() );
-}
-
-/*!
  * Changes the light position to \a azimuth, \a zenith, and \a distance from the scene centre.
  * Azimuth and Zenith are in radians.
  * \sa redo().
  */
-void TLightKit::ChangePosition( double newAzimuth, double newZenith, double newDistance )
+void TLightKit::ChangePosition( double newAzimuth, double newZenith/*, double newDistance*/ )
 {
 	azimuth = newAzimuth;
 	zenith = newZenith;
-	distance = newDistance;
-	UpdateSunPosition();
+	/*distance = newDistance;*/
+	//UpdateSunPosition();
 
 }
 
@@ -167,76 +165,171 @@ void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* lat
 	*latitude = m_latitude.getValue();
 }
 
-/*!
- * Resizes the light to cover the \a box projection.
- */
-void TLightKit::ResizeToBBox( BBox box )
+void TLightKit::Update( BBox box )
 {
-	Vector3D direction = Vector3D( sin( zenith.getValue() ) * sin( azimuth.getValue() ), cos( zenith.getValue() ), -sin( zenith.getValue() )*cos( azimuth.getValue() ) );
 
-	Vector3D center = direction * distance.getValue();
-	Transform translate = Translate( center.x, center.y, center.z );
+	double yMin = box.pMin.y;
+	double yMax = box.pMax.y + 10;
+	double distMax = yMax - yMin;
 
-	Transform rotX  = RotateX( -zenith.getValue() );
-	Transform rotY = RotateY( -azimuth.getValue() );
+	TSunShape* sunshape = static_cast< TSunShape* >( this->getPart( "tsunshape", false ) );
+	if( !sunshape )	return;
+	double thetaMax = sunshape->GetThetaMax();
+	double delta = 0.01;
+	if(  thetaMax > 0.0 ) delta = 5 * distMax * tan( thetaMax );
 
-	Transform lTW = translate * rotY * rotX;
+	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", true ) );
+	if( !shape )	return;
+	shape->xMin.setValue( box.pMin.x - delta );
+	shape->xMax.setValue( box.pMax.x + delta );
+	shape->zMin.setValue( box.pMin.z - delta );
+	shape->zMax.setValue( box.pMax.z + delta );
+	shape->delta.setValue( delta );
 
-	Transform wTL = lTW.GetInverse();
-	BBox localBox = wTL( box );
-
-	Vector3D vMin( localBox.pMin.x, 0.0, localBox.pMin.z );
-	Vector3D pMin = Normalize( vMin ) * ( vMin.length() + tan( 5 * tgc::Degree ) * distance.getValue() );
-
-	Vector3D vMax( localBox.pMax.x, 0.0, localBox.pMax.z );
-	Vector3D pMax = Normalize( vMax ) * ( vMax.length() + tan( 5 * tgc::Degree ) * distance.getValue() );
-
-	TShape* shape = static_cast< TShape* >( this->getPart( "icon", true ) );
-	BBox shapeBB = shape->GetBBox();
-
-	Point3D sMin = shapeBB.pMin;
-	Point3D sMax = shapeBB.pMax;
-
-	double xScaleFactor  = std::max( fabs( pMin.x/sMin.x ), fabs( pMax.x/sMax.x ) );
-	double zScaleFactor  = std::max( fabs( pMin.z/sMin.z ), fabs( pMax.z/sMax.z ) );
 
 	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
-	lightTransform->scaleFactor.setValue( xScaleFactor, 1, zScaleFactor );
+	SbVec3f translation( 0.0, yMax, 0.0 );
+	lightTransform->translation.setValue(translation );
 
-}
 
-void TLightKit::Update()
-{
-	double oldAzimuth = azimuth.getValue();
+	/*double oldAzimuth = azimuth.getValue();
 	azimuth.setValue( 0 );
 	azimuth.setValue( oldAzimuth );
 	double oldZenith = zenith.getValue();
 	zenith.setValue( 0 );
-	zenith.setValue( oldZenith );
+	zenith.setValue( oldZenith );*/
 
 }
 
-void TLightKit::UpdateSunPosition()
+void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > > surfacesList )
 {
-	Vector3D direction = Vector3D( sin( zenith.getValue() ) * sin( azimuth.getValue() ), cos( zenith.getValue() ), -sin( zenith.getValue() )*cos( azimuth.getValue() ) );
+	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", true ) );
+	if( !shape )	return;
 
-	Vector3D center = direction * distance.getValue();
-	Transform translate = Translate( center.x, center.y, center.z );
+	double width =  shape->xMax.getValue() - shape->xMin.getValue();
+	double height = shape->zMax.getValue() - shape->zMin.getValue();
 
-	Transform rotX  = RotateX( -zenith.getValue() );
-	Transform rotY = RotateY( -azimuth.getValue() );
-	Transform transform = translate * rotY * rotX;
 
-	SbMatrix coinMatrix = tgf::MatrixFromTransform( transform );
+	int pixels = 100;
+	int widthPixeles = pixels;
+	if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
+	double pixelWidth = double( width / widthPixeles );
 
-	SbVec3f translation;
-	SbRotation rotation;
-	SbVec3f scaleFactor;
-	SbRotation scaleOrientation;
-	coinMatrix.getTransform( translation, rotation, scaleFactor, scaleOrientation );
+	int heightPixeles = pixels;
+	if( ( height / pixels ) < shape->delta.getValue() ) heightPixeles = ceil( height / shape->delta.getValue() );
+	double pixelHeight = height / heightPixeles;
 
-	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
-	lightTransform->translation.setValue( translation );
-	lightTransform->rotation.setValue( rotation );
+	QImage  sourceImage( widthPixeles, heightPixeles, QImage::Format_RGB32 );
+	sourceImage.fill( Qt::white  );
+
+	QPainter painter( &sourceImage );
+
+	QBrush brush( Qt::black );
+	painter.setBrush( brush );
+
+	QPen pen( Qt::black, Qt::NoPen );
+	painter.setPen( pen );
+
+	for( int s = 0; s < surfacesList.size(); s++ )
+	{
+		TShapeKit* surfaceKit = surfacesList[s].first;
+		Transform surfaceTransform = surfacesList[s].second;
+		Transform shapeToWorld = surfaceTransform.GetInverse();
+
+		TShape* shapeNode = dynamic_cast< TShape* > ( surfaceKit->getPart( "shape", false ) );
+		if( shapeNode )
+		{
+			BBox shapeBB = shapeNode->GetBBox();
+
+			Point3D p1( shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMin.z );
+			Point3D p2( shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMin.z );
+			Point3D p3( shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMax.z );
+			Point3D p4( shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMax.z );
+			Point3D p5( shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMin.z );
+			Point3D p6( shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMin.z );
+			Point3D p7( shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMax.z );
+			Point3D p8( shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMax.z );
+
+
+			Point3D tP1 = shapeToWorld( p1 );
+			Point3D tP2 = shapeToWorld( p2 );
+			Point3D tP3 = shapeToWorld( p3 );
+			Point3D tP4 = shapeToWorld( p4 );
+			Point3D tP5 = shapeToWorld( p5 );
+			Point3D tP6 = shapeToWorld( p6 );
+			Point3D tP7 = shapeToWorld( p7 );
+			Point3D tP8 = shapeToWorld( p8 );
+
+			QPointF  qP1( ( tP1.x - shape->xMin.getValue() ) /pixelWidth, ( tP1.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP2( ( tP2.x - shape->xMin.getValue() ) /pixelWidth, ( tP2.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP3( ( tP3.x - shape->xMin.getValue() ) /pixelWidth, ( tP3.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP4( ( tP4.x - shape->xMin.getValue() ) /pixelWidth, ( tP4.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP5( ( tP5.x - shape->xMin.getValue() ) /pixelWidth, ( tP5.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP6( ( tP6.x - shape->xMin.getValue() ) /pixelWidth, ( tP6.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP7( ( tP7.x - shape->xMin.getValue() ) /pixelWidth, ( tP7.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP8( ( tP8.x - shape->xMin.getValue() ) /pixelWidth, ( tP8.z - shape->zMin.getValue() ) /pixelHeight );
+
+			QPointF polygon1[4] = { qP1, qP2, qP3, qP4 };
+			QPointF polygon2[4] = { qP1, qP2, qP5, qP6 };
+			QPointF polygon3[4] = { qP1, qP4, qP5, qP8 };
+			QPointF polygon4[4] = { qP2, qP3, qP6, qP7 };
+			QPointF polygon5[4] = { qP3, qP4, qP7, qP8 };
+			QPointF polygon6[4] = { qP5, qP6, qP7, qP8 };
+			painter.drawPolygon( polygon1, 4 );
+			painter.drawPolygon( polygon2, 4 );
+			painter.drawPolygon( polygon3, 4 );
+			painter.drawPolygon( polygon4, 4 );
+			painter.drawPolygon( polygon5, 4 );
+			painter.drawPolygon( polygon6, 4 );
+		}
+
+	}
+
+	sourceImage.save( "sourceImage_prueba.png" );
+
+	int** areaMatrix = new int*[heightPixeles];
+	for( int i = 0; i < heightPixeles; i++ )
+	{
+		areaMatrix[i] = new int[widthPixeles];
+	}
+
+	unsigned char bitmap[ widthPixeles * heightPixeles ];
+
+	QRgb black = qRgb( 0, 0, 0);
+
+	for( int i = 0; i < widthPixeles; i++ )
+	{
+		for( int j = 0; j < heightPixeles; j++ )
+		{
+			double pixelIntensity = ( sourceImage.pixel( i, j ) == black ) ? 1: 0;
+			if( ( i - 1 ) >= 0 && ( j - 1 ) >= 0 ) pixelIntensity += ( sourceImage.pixel( i - 1, j - 1 ) == black ) ? 1: 0;
+			if( ( j - 1 ) >= 0 ) pixelIntensity += ( sourceImage.pixel( i, j - 1 ) == black ) ? 1: 0;
+			if( ( i + 1 ) < widthPixeles && ( j - 1) >= 0 )  pixelIntensity += ( sourceImage.pixel( i + 1, j - 1 ) == black ) ? 1: 0;
+			if( ( i - 1 ) >= 0 )	pixelIntensity += ( sourceImage.pixel( i - 1, j ) == black ) ? 1: 0;
+			if( ( i + 1 ) < widthPixeles )  pixelIntensity += ( sourceImage.pixel( i + 1, j ) == black ) ? 1: 0;
+			if( ( i - 1 ) >= 0 && ( j + 1 ) < heightPixeles ) pixelIntensity += ( sourceImage.pixel( i - 1, j + 1 ) == black ) ? 1: 0;
+			if( ( j + 1 ) < heightPixeles ) pixelIntensity += ( sourceImage.pixel( i, j + 1 ) == black ) ? 1: 0;
+			if( ( i + 1 ) < widthPixeles && ( j + 1 ) < heightPixeles ) pixelIntensity += ( sourceImage.pixel( i + 1, j + 1 ) == black ) ? 1: 0;
+
+			if( pixelIntensity > 0.0 )
+			{
+				areaMatrix[j][i] = 1;
+				bitmap[ i * heightPixeles +  j ] = 0;
+			}
+			else
+			{
+				areaMatrix[j][i] = 0;
+				bitmap[ i * heightPixeles +  j ] = 255;
+			}
+
+		}
+	}
+
+	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
+    texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
+
+    shape->SetLightSourceArea( heightPixeles, widthPixeles, areaMatrix );
 
 }
+
+

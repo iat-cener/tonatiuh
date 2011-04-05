@@ -54,20 +54,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * aperture and shows the the light parameters defined in the light \a currentLightKit.
  */
 
-LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TShapeFactory* > shapeFactoryList, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent )
-:QDialog( parent ), m_currentLightKit( currentLightKit ), m_currentSunShapeIndex( -1 ), m_currentShapeIndex( -1 ),
-m_newShape( 0 ), m_newSunShape( 0 )
+LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent )
+:QDialog( parent ), m_currentLightKit( currentLightKit ), m_currentSunShapeIndex( -1 ), m_newSunShape( 0 )
 {
 	setupUi( this );
 	connect( sunshapeParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
-	connect( shapeParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
 
-
-	for( int shape = 0; shape < (int) shapeFactoryList.size(); ++shape )
-	{
-		QString shapeTypeName( shapeFactoryList[shape]->CreateTShape()->getTypeId().getName().getString() );
-		m_shapeList.insert( shapeTypeName, shapeFactoryList[shape] );
-	}
 
 	for( int sunShape = 0; sunShape < (int) sunshapeFactoryList.size(); ++sunShape )
 	{
@@ -78,10 +70,6 @@ m_newShape( 0 ), m_newSunShape( 0 )
 	if( currentLightKit )
 	{
 		if( currentLightKit->getPart( "tsunshape", false ) )	m_newSunShape = static_cast< TSunShape* >( currentLightKit->getPart( "tsunshape", false )->copy( true ) );
-		if( currentLightKit->getPart( "icon", false ) )	m_newShape = static_cast< TShape* >( currentLightKit->getPart( "icon", false )->copy( true ) );
-
-		/*if( currentLightKit->automaticallyResizable.getValue() ) automaticSizeRadio->setChecked( true );
-		else	userSizeRadio->setChecked( true );*/
 	}
 
 	SunPositionTab();
@@ -105,12 +93,9 @@ TLightKit* LightDialog::GetTLightKit()
 	TLightKit* lightKit = new TLightKit;
 
 	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
-	if( m_newShape ) lightKit->setPart( "icon", m_newShape );
-	//if( automaticSizeRadio->isChecked() )	lightKit->automaticallyResizable.setValue( true );
-	//else
-	lightKit->automaticallyResizable.setValue( false );
+	//if( m_newShape ) lightKit->setPart( "icon", m_newShape );
 
-	lightKit->ChangePosition( azimuthSpin->value()* tgc::Degree, ( 90 - elevationSpin->value() ) * tgc::Degree, distanceSpin->value() );
+	lightKit->ChangePosition( azimuthSpin->value()* tgc::Degree, ( 90 - elevationSpin->value() ) * tgc::Degree/*, distanceSpin->value()*/ );
 	return lightKit;
 }
 
@@ -121,8 +106,7 @@ void LightDialog::accept()
 {
 	if( sunshapeCombo->currentIndex() == 0 )
 		QMessageBox::warning( this, tr( "Tonatiuh" ), tr( "You must select a sunshape type." ), QMessageBox::Ok );
-	else if( shapeCombo->currentIndex() == 0 )
-		QMessageBox::warning( this, tr( "Tonatiuh" ), tr( "You must select an input aperture shape before for light." ), QMessageBox::Ok );
+
 	else
 		QDialog::accept();
 }
@@ -157,7 +141,7 @@ void LightDialog::ChangeSunshape( int index )
 /*!
  * Changes parameters of the shape paraneters view to shape type given by \a index.
  */
-
+/*
 void LightDialog::ChangeShape( int index )
 {
 	while( ( m_newShape != 0) && ( m_newShape->getRefCount() > 0 ) )	m_newShape->unref();
@@ -172,7 +156,7 @@ void LightDialog::ChangeShape( int index )
 
 	shapeParameters->SetContainer( m_newShape, QString() );
 
-}
+}*/
 
 /*!
  * Updates the sun position tab values to the values of the current light.
@@ -183,7 +167,7 @@ void LightDialog::SunPositionTab()
 	{
 		azimuthSpin->setValue( m_currentLightKit->azimuth.getValue() / tgc::Degree );
 		elevationSpin->setValue( 90 - ( m_currentLightKit->zenith.getValue() / tgc::Degree ) );
-		distanceSpin->setValue( m_currentLightKit->distance.getValue() );
+		//distanceSpin->setValue( m_currentLightKit->distance.getValue() );
 	}
 
 }
@@ -194,9 +178,10 @@ void LightDialog::SunPositionTab()
 void LightDialog::SunshapeTab()
 {
 	SunshapeBox();
-	ShapeBox();
+	//ShapeBox();
 }
 
+/*
 void LightDialog::ShapeBox( )
 {
 	connect( shapeCombo, SIGNAL( activated( int ) ), this, SLOT( ChangeShape( int ) ) );
@@ -217,7 +202,7 @@ void LightDialog::ShapeBox( )
 
     ChangeShape( m_currentShapeIndex );
     shapeCombo->setCurrentIndex( m_currentShapeIndex );
-}
+}*/
 
 void LightDialog::SunshapeBox()
 {
