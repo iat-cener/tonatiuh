@@ -58,6 +58,7 @@ public:
     //Sunshape Interface
     void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand) const;
 	double GetIrradiance() const;
+    double GetThetaMax() const;
 
 	trt::TONATIUH_REAL irradiance;
 	trt::TONATIUH_REAL thetaMax;
