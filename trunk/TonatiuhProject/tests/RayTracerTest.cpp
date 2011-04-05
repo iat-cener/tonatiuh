@@ -96,9 +96,9 @@ TEST(RayTracerTest, PowerPerPhoton )
 
 	QDataStream in( &targetPhotonsFile );
 
-	double nPhotons = 15000000;
+	double nPhotons = 50000000;
 	double irradiance = 1000;
-	double inputArea = 736.9223048464;
+	double inputArea = ( 23.571325 + 3.2974949 ) * ( 6.7119265 + 21.504433 );
 
 	double expectedWPhoton = ( ( irradiance * inputArea )/ nPhotons) ;
 
@@ -108,8 +108,6 @@ TEST(RayTracerTest, PowerPerPhoton )
 	targetPhotonsFile.close();
 
 	EXPECT_PRED_FORMAT2(::testing::DoubleLE, ( wPhoton - expectedWPhoton ) / expectedWPhoton, 0.02);
-
-	//EXPECT_DOUBLE_EQ( , wPhoton );
 
 }
 

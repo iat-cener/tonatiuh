@@ -400,7 +400,7 @@ void MainWindow::ExportPhotonMap()
 	double irradiance = sunShape->GetIrradiance();
 
 	if( !lightKit->getPart( "icon", false ) ) return;
-	TShape* raycastingShape = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
+	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
 	double inputAperture = raycastingShape->GetArea();
 
 	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
