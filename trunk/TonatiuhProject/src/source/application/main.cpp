@@ -49,7 +49,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TDefaultTracker.h"
 #include "TCube.h"
 #include "TLightKit.h"
+#include "TLightShape.h"
 #include "TSeparatorKit.h"
+#include "TSceneTracker.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
 
@@ -100,6 +102,7 @@ int main( int argc, char ** argv )
 	TSeparatorKit::initClass();
 	TShape::initClass();
 	TCube::initClass();
+	TLightShape::initClass();
 	TShapeKit::initClass();
 	TSquare::initClass();
 	TLightKit::initClass();
@@ -107,6 +110,7 @@ int main( int argc, char ** argv )
 	TDefaultSunShape::initClass();
 	TTracker::initClass();
 	TDefaultTracker::initClass();
+	TSceneTracker::initClass();
 
 
 	MainWindow* mw;

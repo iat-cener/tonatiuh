@@ -134,15 +134,11 @@ SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 	float m33 = float ( transformMatrix->m[3][3] );
 
 	SbVec3f axis1( m00, m10, m20 );
-	std::cout<<"axis1: "<<axis1.normalize()<<std::endl;
-
 	SbVec3f axis2( m01, m11, m21 );
 	axis2.normalize();
-	std::cout<<"axis2: "<<axis2.normalize()<<std::endl;
 
 	SbVec3f axis3( m02, m12, m22 );
 	axis3.normalize();
-	std::cout<<"axis3: "<<axis3.normalize()<<std::endl;
 
 	return SbMatrix( axis1[0], axis2[0], axis3[0], m03,
 			axis1[1], axis2[1], axis3[1], m13,

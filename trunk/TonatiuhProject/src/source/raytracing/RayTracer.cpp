@@ -51,12 +51,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RayTracerPhoton.h"
 #include "TPhotonMap.h"
 #include "TPhotonMapFactory.h"
-#include "TShape.h"
+#include "TLightShape.h"
 #include "TSunShape.h"
 
 RayTracer::RayTracer( InstanceNode* rootNode,
 	       InstanceNode* lightNode,
-	       TShape* lightShape,
+	       TLightShape* lightShape,
 	       TSunShape* const lightSunShape,
 	       Transform lightToWorld,
 	       RandomDeviate& rand,
@@ -74,13 +74,27 @@ m_photonMap( photonMap )
 
 }
 
+/*
 Ray RayTracer::NewPrimitiveRay( ParallelRandomDeviate& rand )
 {
 	Point3D origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
 	Vector3D direction;
 	m_lightSunShape->GenerateRayDirection( direction, rand );
 	return m_lightToWorld( Ray( origin, direction ) );
+}*/
+
+bool RayTracer::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand )
+{
+	Point3D origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
+	if( !m_lightShape->IsIntoValidArea( origin ) )	return false;
+
+	Vector3D direction;
+	m_lightSunShape->GenerateRayDirection( direction, rand );
+	*ray =  m_lightToWorld( Ray( origin, direction ) );
+
+	return true;
 }
+
 
 QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( double numberOfRays )
 {
@@ -89,40 +103,41 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		Ray ray = NewPrimitiveRay( rand );
-
-		photonsVector.push_back( RayTracerPhoton( ray.origin, 0, m_lightNode ) );
-		int rayLength = 0;
-
-		InstanceNode* intersectedSurface = 0;
-		bool isFront = false;
-
-		//Trace the ray
-		//Ray* reflectedRay = ray;
-		bool isReflectedRay = true;
-		while( isReflectedRay )
+		Ray ray;
+		if( NewPrimitiveRay( &ray, rand ) )
 		{
-			intersectedSurface = 0;
-			isFront = 0;
-			Ray reflectedRay;
-			isReflectedRay = m_rootNode->Intersect( ray, rand, &intersectedSurface, &reflectedRay );
+			photonsVector.push_back( RayTracerPhoton( ray.origin, 0, m_lightNode ) );
+			int rayLength = 0;
 
-			if( isReflectedRay )
+			InstanceNode* intersectedSurface = 0;
+			bool isFront = false;
+
+			//Trace the ray
+			bool isReflectedRay = true;
+			while( isReflectedRay )
 			{
-				photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), ++rayLength, intersectedSurface) );
+				intersectedSurface = 0;
+				isFront = 0;
+				Ray reflectedRay;
+				isReflectedRay = m_rootNode->Intersect( ray, rand, &intersectedSurface, &reflectedRay );
 
-				//Prepare node and ray for next iteration
-				/*delete ray;
-				ray = 0;*/
-				ray = reflectedRay;
+				if( isReflectedRay )
+				{
+					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), ++rayLength, intersectedSurface) );
+
+					//Prepare node and ray for next iteration
+					/*delete ray;
+					ray = 0;*/
+					ray = reflectedRay;
+				}
+
 			}
 
-		}
-
-		if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
-		{
-			if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
-			photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), ++rayLength, intersectedSurface) );
+			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+			{
+				if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
+				photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), ++rayLength, intersectedSurface) );
+			}
 		}
 
 	}

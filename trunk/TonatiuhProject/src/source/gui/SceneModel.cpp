@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMessageBox>
 
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoSceneKit.h>
@@ -50,7 +51,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
+#include "TSceneTracker.h"
 #include "TSeparatorKit.h"
+#include "TShape.h"
 #include "TShapeKit.h"
 #include "TTracker.h"
 
@@ -138,19 +141,33 @@ void SceneModel::SetConcentrator()
 {
 	SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
 
-	TSeparatorKit* separatorKit;
+	//TSeparatorKit* separatorKit;
 	if ( coinPartList && coinPartList->getNumChildren() == 0 )
 	{
-		separatorKit = new TSeparatorKit();
+		//Create Sun coordinate system node
+		TSeparatorKit* sunSeparatorKit = new TSeparatorKit();
+		sunSeparatorKit->setName( "SunNode" );
+		coinPartList->addChild( sunSeparatorKit );
+		sunSeparatorKit->setSearchingChildren( true );
+		InstanceNode* instanceNode = AddInstanceNode( *m_instanceRoot, sunSeparatorKit );
+		SoNodeKitListPart* sunSeparatorChildList = static_cast< SoNodeKitListPart* >( sunSeparatorKit->getPart( "childList", true ) );
+
+		TSceneTracker* sceneTracker = new TSceneTracker;
+		sunSeparatorKit->setPart( "tracker", sceneTracker );
+		sceneTracker->SetSceneKit( m_coinScene );
+
+
+		//Create Concentrator coordinate system node
+		TSeparatorKit* separatorKit = new TSeparatorKit();
 		separatorKit->setName( "RootNode" );
-		coinPartList->addChild( separatorKit );
+		sunSeparatorChildList->addChild( separatorKit );
 		separatorKit->setSearchingChildren( true );
 
-		AddInstanceNode( *m_instanceRoot, separatorKit );
+		AddInstanceNode( *instanceNode, separatorKit );
 	}
 	else
 	{
-		separatorKit = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
+		TSeparatorKit* separatorKit = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
 		if ( !separatorKit ) return;
 
 		InstanceNode* instanceNode = AddInstanceNode( *m_instanceRoot, separatorKit );
@@ -841,8 +858,28 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 
 void SceneModel::UpdateSceneModel()
 {
-	TLightKit* lightList = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
-	if( lightList ) lightList->Update();
+
+	TLightKit* lightKit = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
+	if ( !lightKit )	return;
+
+	TSeparatorKit* concentratorRoot = static_cast< TSeparatorKit* >( m_coinScene->getPart( "childList[0]", true ) );
+	if ( !concentratorRoot )	return;
+
+	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+	concentratorRoot->getBoundingBox( bbAction );
+
+	SbBox3f box = bbAction->getXfBoundingBox().project();
+	delete bbAction;
+
+	Point3D pMin( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
+	Point3D pMax( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+
+	BBox sceneBox( pMin, pMax );
+
+	//lightKit->ResizeToBBox( sceneBox );
+
+	//TLightKit* lightList = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
+	if( lightKit ) lightKit->Update( sceneBox );
 
 
 	emit layoutChanged();

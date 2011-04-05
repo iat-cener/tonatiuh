@@ -81,6 +81,11 @@ double TDefaultSunShape::GetIrradiance() const
 	return -1;
 }
 
+double TDefaultSunShape::GetThetaMax() const
+{
+	return 0.0;
+}
+
 SoNode* TDefaultSunShape::copy( SbBool copyConnections ) const
 {
 	// Use the standard version of the copy method to create

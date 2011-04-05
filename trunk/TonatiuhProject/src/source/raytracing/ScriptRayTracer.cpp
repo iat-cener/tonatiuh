@@ -53,6 +53,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RayTracer.h"
 #include "tgf.h"
 #include "TLightKit.h"
+#include "TLightShape.h"
 #include "TPhotonMap.h"
 #include "TPhotonMapFactory.h"
 #include "trf.h"
@@ -316,7 +317,7 @@ int ScriptRayTracer::Trace()
 
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
-	if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation, m_sunDistance );
+	if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation/*, m_sunDistance*/ );
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
@@ -324,33 +325,20 @@ int ScriptRayTracer::Trace()
 	if( irradiance < 0 ) irradiance = sunShape->GetIrradiance();
 
 	if( !lightKit->getPart( "icon", false ) ) return 0;
-	TShape* raycastingSurface = static_cast< TShape * >( lightKit->getPart( "icon", false ) );
-	double inputAperture = raycastingSurface->GetArea();
-
-	//std::cout<<"inputAperture: "<<inputAperture<<std::endl;
-	/*if( lightKit->automaticallyResizable.getValue() )
-	{
-		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-		rootSeparatorInstance->GetNode()->getBoundingBox( bbAction );
-
-		SbBox3f box = bbAction->getXfBoundingBox().project();
-		delete bbAction;
-
-		Point3D pMin( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
-		Point3D pMax( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
-
-		BBox sceneBox( pMin, pMax );
-
-		lightKit->ResizeToBBox( sceneBox );
-
-	}*/
+	TLightShape* raycastingSurface = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
 
 	if( !lightKit->getPart( "transform" ,true ) ) return 0;
 	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,true ) );
 	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 	lightInstance->SetIntersectionTransform( lightToWorld. GetInverse() );
 
-	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ) );
+	QVector< QPair< TShapeKit*, Transform > > surfacesList;
+
+	//Compute bounding boxes and world to object transforms
+	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList );
+
+	TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
+	light->ComputeLightSourceArea( surfacesList );
 
 	QVector< double > raysPerThread;
 	const int maximumValueProgressScale = 100;
@@ -361,7 +349,7 @@ int ScriptRayTracer::Trace()
 	if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )	raysPerThread<< ( m_numberOfRays-( t1* maximumValueProgressScale) );
 
 	//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
-	// Create a QFutureWatcher and conncect signals and slots.
+	// Create a QFutureWatcher and connect signals and slots.
 	QFutureWatcher< TPhotonMap* > futureWatcher;
 
 	QMutex mutex;
@@ -373,6 +361,7 @@ int ScriptRayTracer::Trace()
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;
 
+	double inputAperture = raycastingSurface->GetArea();
 	m_wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
 
 	return 1;

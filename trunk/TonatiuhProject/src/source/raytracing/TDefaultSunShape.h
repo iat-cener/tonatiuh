@@ -53,6 +53,7 @@ public:
     //Sunshape Interface
     void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
 	double GetIrradiance() const;
+    double GetThetaMax() const;
 
 protected:
 	 ~TDefaultSunShape();

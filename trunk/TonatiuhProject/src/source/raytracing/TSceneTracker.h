@@ -36,46 +36,37 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "CmdLightPositionModified.h"
-#include "tgf.h"
-#include "TLightKit.h"
 
-/**
- * Creates a new lightKit position command that represents a \a light move with \a parent parent.
- *
- * The new position is defined by \a azimuth and \a zenith in radians.
- */
-CmdLightPositionModified::CmdLightPositionModified( TLightKit* light, double azimuth, double zenith, QUndoCommand* parent )
-:QUndoCommand( "Sun position changed", parent ), lightKit( light ), m_newAzimuth( azimuth ), m_newZenith( zenith )
+#ifndef TSCENETRACKER_H_
+#define TSCENETRACKER_H_
+
+
+#include <Inventor/engines/SoSubNodeEngine.h>
+#include <Inventor/fields/SoSFVec3f.h>
+
+#include "TTracker.h"
+#include "trt.h"
+
+class QString;
+
+class TSceneTracker : public TTracker
 {
-	if( light == 0 ) tgf::SevereError( "CmdLinghtPositionModified called with NULL TLightKit" );
+	SO_NODEENGINE_HEADER( TSceneTracker );
 
-	m_oldAzimuth = light->azimuth.getValue();
-	m_oldZenith = light->zenith.getValue();
-}
+public:
+    static void initClass();
+	QString getIcon();
 
-/*!
- * Destroys the CmdLightPositionModified object.
- */
-CmdLightPositionModified::~CmdLightPositionModified()
-{
-}
+	//Constructor
+	TSceneTracker();
 
-/*!
- * Reverts to the previous light positions. After undo() is called, the light position will be the same as before redo() was called.
- *
- * \sa redo().
- */
-void CmdLightPositionModified::undo()
-{
-	lightKit->ChangePosition( m_oldAzimuth, m_oldZenith );
-}
 
-/*!
- * Applies a change to the scene. After redo() the light position will be the position defined by the constructor parameters.
- * \sa undo().
- */
-void CmdLightPositionModified::redo()
-{
-	lightKit->ChangePosition( m_newAzimuth, m_newZenith );
-}
+protected:
+	virtual ~TSceneTracker();
+
+private:
+  virtual void evaluate();
+
+};
+
+#endif /* TSCENETRACKER_H_ */

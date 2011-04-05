@@ -36,7 +36,9 @@
  Juana Amieva, Azael Mancillas, Cesar Cantu.
  ***************************************************************************/
 
+#include <QCloseEvent>
 #include <QDateTime>
+#include <QSettings>
 #include <QTime>
 
 #include "MapDialog.h"
@@ -47,6 +49,7 @@ SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 : QDialog( parent )
 {
 	setupUi(this);
+
 
 	connect( buttonBox, SIGNAL( clicked( QAbstractButton* ) ), this, SLOT( UpdatePosition( QAbstractButton* ) ) );
 
@@ -63,8 +66,8 @@ SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 	connect( latitudeSpin, SIGNAL( valueChanged(  double ) ), worldMap, SLOT( LocalLatitudeChanged( double ) ) );
 
 	connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), worldMap, SLOT( SunChanged( cSunCoordinates ) ) );
-	//connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), horizontalWidget, SLOT( CoordinatesChanged( cSunCoordinates ) ) );
-	//connect( this, SIGNAL( changeRepresentation( cSunCoordinates ) ), celestialWidget, SLOT( CoordinatesChanged( cSunCoordinates ) ) );
+
+	ReadSettings();
 }
 
 SunPositionCalculatorDialog::~SunPositionCalculatorDialog()
@@ -72,15 +75,22 @@ SunPositionCalculatorDialog::~SunPositionCalculatorDialog()
 
 }
 
-void SunPositionCalculatorDialog::SetDateTime( QDateTime time )
+/*void SunPositionCalculatorDialog::SetDateTime( QDateTime time )
 {
 	utTime->setTime( time.time() );
 	ctTime->setTime( time.time() );
 	zoneSpin->setValue( 0 );
 	calendarWidget-> setSelectedDate( time.date() );
+}*/
+
+void SunPositionCalculatorDialog::closeEvent( QCloseEvent* event )
+{
+	WriteSettings();
+	event->accept();
+
 }
 
-void SunPositionCalculatorDialog::ChangePosition( QDateTime time, double longitude, double latitude )
+/*void SunPositionCalculatorDialog::ChangePosition( QDateTime time, double longitude, double latitude )
 {
 	calendarWidget->setSelectedDate( time.date() );
 	utRadio->setChecked( true);
@@ -88,14 +98,34 @@ void SunPositionCalculatorDialog::ChangePosition( QDateTime time, double longitu
 
 	longitudeSpin->setValue( longitude );
 	latitudeSpin->setValue( latitude );
-}
+}*/
 
 void SunPositionCalculatorDialog::UpdatePosition( QAbstractButton* button )
 {
 	if( buttonBox->buttonRole( button ) == QDialogButtonBox::ApplyRole )
 	{
-		QDateTime* time = GetTime();
-		emit changeSunLight( time, longitudeSpin->value(), latitudeSpin->value() );
+		//Fecha y Hora
+		QDateTime time = GetTime();
+
+		int year = time.date().year();
+		int month = time.date().month();
+		int day = time.date().day();
+
+		double hours = time.time().hour ();
+		double minutes = time.time().minute ();
+		double seconds = time.time().second ();
+		cTime myTime = { year, month, day, hours, minutes, seconds };
+
+		//Localization
+		double longitude = longitudeSpin->value();
+		double latitude = latitudeSpin->value();
+	    cLocation myLocation = {longitude , latitude };
+
+		//Calculate sun position
+		cSunCoordinates results;
+		sunpos( myTime, myLocation, &results );
+
+		emit changeSunLight( results.dAzimuth * tgc::Degree ,results.dZenithAngle * tgc::Degree );
 	}
 
 }
@@ -143,15 +173,15 @@ void SunPositionCalculatorDialog::CalculateSunPosition()
 {
 
 	//Fecha y Hora
-	QDateTime* time = GetTime();
+	QDateTime time = GetTime();
 
-	int year = time->date().year();
-	int month = time->date().month();
-	int day = time->date().day();
+	int year = time.date().year();
+	int month = time.date().month();
+	int day = time.date().day();
 
-	double hours = time->time().hour ();
-	double minutes = time->time().minute ();
-	double seconds = time->time().second ();
+	double hours = time.time().hour ();
+	double minutes = time.time().minute ();
+	double seconds = time.time().second ();
 	cTime myTime = { year, month, day, hours, minutes, seconds };
 
 	//Localization
@@ -166,12 +196,42 @@ void SunPositionCalculatorDialog::CalculateSunPosition()
     emit changeRepresentation(results);
 }
 
-QDateTime* SunPositionCalculatorDialog::GetTime()
+QDateTime SunPositionCalculatorDialog::GetTime()
 {
 	QTime time = utRadio->isChecked() ? utTime->time() : ctTime->time().addSecs( zoneSpin->value() * 3600 );
 
-	QDateTime* dateTime = new QDateTime( calendarWidget->selectedDate(), time );
+	QDateTime dateTime( calendarWidget->selectedDate(), time );
 	return dateTime;
 
-	return 0;
+}
+
+
+void SunPositionCalculatorDialog::ReadSettings()
+{
+	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+	calendarWidget->setSelectedDate( settings.value( "sunpositioncalculator.date" ).toDate() );
+
+
+	utRadio->setChecked( settings.value( "sunpositioncalculator.utTimeSelected", true ).toBool() );
+	ctRadio->setChecked( settings.value( "sunpositioncalculator.ctTimeSelected", false  ).toBool() );
+	utTime->setTime( settings.value( "sunpositioncalculator.utTime" ).toTime() );
+	ctTime->setTime( settings.value( "sunpositioncalculator.ctTime" ).toTime() );
+	zoneSpin->setValue( settings.value( "sunpositioncalculator.zone", 0 ).toInt() );
+	latitudeSpin->setValue( settings.value( "sunpositioncalculator.latitude", 0 ).toDouble() );
+	longitudeSpin->setValue( settings.value( "sunpositioncalculator.longitude", 0 ).toDouble() );
+}
+
+void SunPositionCalculatorDialog::WriteSettings()
+{
+	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+	settings.setValue( "sunpositioncalculator.date", calendarWidget->selectedDate() );
+
+	settings.setValue( "sunpositioncalculator.utTimeSelected", utRadio->isChecked() );
+	settings.setValue( "sunpositioncalculator.ctTimeSelected", ctRadio->isChecked() );
+	settings.setValue( "sunpositioncalculator.utTime", utTime->time() );
+	settings.setValue( "sunpositioncalculator.ctTime", ctTime->time() );
+	settings.setValue( "sunpositioncalculator.zone", zoneSpin->value() );
+	settings.setValue( "sunpositioncalculator.latitude", latitudeSpin->value() );
+	settings.setValue( "sunpositioncalculator.longitude", longitudeSpin->value() );
+
 }

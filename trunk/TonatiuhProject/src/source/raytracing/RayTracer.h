@@ -53,7 +53,7 @@ class RandomDeviate;
 class RayTracerPhoton;
 class QMutex;
 class TPhotonMap;
-class TShape;
+class TLightShape;
 class TSunShape;
 class ParallelRandomDeviate;
 
@@ -63,7 +63,7 @@ class RayTracer
 public:
 	RayTracer( InstanceNode* rootNode,
 		       InstanceNode* lightNode,
-		       TShape* lightShape,
+		       TLightShape* lightShape,
 		       TSunShape* const lightSunShape,
 		       Transform lightToWorld,
 		       RandomDeviate& rand,
@@ -72,7 +72,6 @@ public:
 
 	typedef QPair< TPhotonMap*, std::vector< RayTracerPhoton > > result_type;
 
-	//QPair< TPhotonMap*, std::vector< Photon > > operator()( double numberOfRays );
 	QPair< TPhotonMap*, std::vector< RayTracerPhoton > > operator()( double numberOfRays );
 
 
@@ -80,14 +79,15 @@ public:
 private:
 	InstanceNode* m_rootNode;
 	InstanceNode* m_lightNode;
-	TShape* m_lightShape;
+	TLightShape* m_lightShape;
 	const TSunShape* m_lightSunShape;
 	Transform m_lightToWorld;
 	RandomDeviate* m_pRand;
     QMutex* m_mutex;
 	TPhotonMap* m_photonMap;
 
-	Ray NewPrimitiveRay( ParallelRandomDeviate& rand );
+	//Ray NewPrimitiveRay( ParallelRandomDeviate& rand );
+	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
 };
 
 
