@@ -78,6 +78,11 @@ double SunshapePillbox::GetIrradiance( void ) const
 	return irradiance.getValue();
 }
 
+double SunshapePillbox::GetThetaMax() const
+{
+	return thetaMax.getValue();
+}
+
 SoNode* SunshapePillbox::copy( SbBool copyConnections ) const
 {
 	// Use the standard version of the copy method to create

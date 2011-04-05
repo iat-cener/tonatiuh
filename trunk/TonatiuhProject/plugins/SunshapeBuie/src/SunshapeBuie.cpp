@@ -111,6 +111,11 @@ double SunshapeBuie::GetIrradiance( void ) const
 	return irradiance.getValue();
 }
 
+double SunshapeBuie::GetThetaMax() const
+{
+	return m_thetaCS;
+}
+
 SoNode* SunshapeBuie::copy( SbBool copyConnections ) const
 {
 	// Use the standard version of the copy method to create
