@@ -1,5 +1,5 @@
 tonatiuh_filename( "SolarFurnace_normal.tnh" );
-tonatiuh_numrays( 15000000  );
+tonatiuh_numrays( 50000000  );
 tonatiuh_photon_map("PhotonMapDefault");
 tonatiuh_random_generator("Mersenne Twister");
 
