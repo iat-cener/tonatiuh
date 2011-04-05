@@ -1,10 +1,3 @@
-/*
- * gtest_main.cpp
- *
- *  Created on: Nov 29, 2009
- *      Author: mblanco
- */
-
 // Copyright 2006, Google Inc.
 // All rights reserved.
 //
@@ -47,9 +40,11 @@
 #include "TDefaultTracker.h"
 #include "TCube.h"
 #include "TLightKit.h"
+#include "TLightShape.h"
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
+#include "TSceneTracker.h"
 
 int main(int argc, char **argv )
 {
@@ -64,6 +59,7 @@ int main(int argc, char **argv )
 	TSeparatorKit::initClass();
 	TShape::initClass();
 	TCube::initClass();
+	TLightShape::initClass();
 	TShapeKit::initClass();
 	TSquare::initClass();
 	TLightKit::initClass();
@@ -71,6 +67,7 @@ int main(int argc, char **argv )
 	TDefaultSunShape::initClass();
 	TTracker::initClass();
 	TDefaultTracker::initClass();
+	TSceneTracker::initClass();
 
 
     testing::InitGoogleTest(&argc, argv);
