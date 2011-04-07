@@ -42,6 +42,7 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/Transform.o \
                         $$(TONATIUH_ROOT)/debug/trf.o \
                         $$(TONATIUH_ROOT)/debug/TSceneTracker.o \
+                        $$(TONATIUH_ROOT)/debug/TSceneKit.o \
                         $$(TONATIUH_ROOT)/debug/TSeparatorKit.o \
                         $$(TONATIUH_ROOT)/debug/TShape.o \
                         $$(TONATIUH_ROOT)/debug/TShapeKit.o \
@@ -85,6 +86,7 @@ else {
                         $$(TONATIUH_ROOT)/release/Transform.o \
                         $$(TONATIUH_ROOT)/release/trf.o \
                         $$(TONATIUH_ROOT)/release/TSeparatorKit.o \
+                        $$(TONATIUH_ROOT)/release/TSceneKit.o \
                         $$(TONATIUH_ROOT)/release/TShape.o \
                         $$(TONATIUH_ROOT)/release/TShapeKit.o \
                         $$(TONATIUH_ROOT)/release/TSunShape.o \
