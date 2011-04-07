@@ -186,6 +186,8 @@ TSceneKit {
         tsunshape 
         SunshapePillbox {
           fields [ SFFloat irradiance, SFFloat thetaMax ]
+          irradiance 1000
+          thetaMax 0.00465
 
         }
 
