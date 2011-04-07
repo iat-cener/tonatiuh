@@ -44,6 +44,7 @@
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
+#include "TSceneKit.h"
 #include "TSceneTracker.h"
 
 int main(int argc, char **argv )
@@ -54,6 +55,7 @@ int main(int argc, char **argv )
 
 	SoQt::init( (QWidget *) NULL );
 
+	TSceneKit::initClass();
 	TMaterial::initClass();
 	TDefaultMaterial::initClass();
 	TSeparatorKit::initClass();
