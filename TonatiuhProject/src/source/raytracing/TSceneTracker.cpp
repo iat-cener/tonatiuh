@@ -46,13 +46,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
 
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "tgc.h"
-#include "TSceneTracker.h"
 #include "Transform.h"
+#include "TSceneTracker.h"
+#include "TSceneKit.h"
 #include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( TSceneTracker );
@@ -96,14 +96,17 @@ void TSceneTracker::evaluate()
 	if( !m_azimuth.isConnected() ) return;
 	if( !m_zenith.isConnected() ) return;
 
+	if( m_scene )
+	{
+		m_scene->azimuth.setValue( m_azimuth.getValue() );
+		m_scene->zenith.setValue( m_zenith.getValue() );
+	}
 
 	double alpha = tgc::Pi - m_azimuth.getValue();
 
 	SbVec3f yAxis( 0.0, 1.0, 0.0 );
 	SbRotation yRotation( yAxis, -alpha );
-	//Transform yRotation = RotateY( -alpha );
 
-	//Transform xRotation = RotateX( -m_zenith.getValue() );
 	SbVec3f xAxis( 1.0, 0.0, 0.0 );
 	SbRotation xRotation( xAxis, -m_zenith.getValue() );
 
@@ -116,53 +119,4 @@ void TSceneTracker::evaluate()
 	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( SbRotation() ) );
 	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( SbVec3f( 0.0, 0.0, 0.0 ) ) );
 
-
-	/*SoSearchAction* coinSearch = new SoSearchAction();
-	coinSearch->setNode( this );
-	coinSearch->setInterest( SoSearchAction::FIRST );
-	coinSearch->apply( m_scene );
-	SoPath* nodePath = coinSearch->getPath( );
-	if( !nodePath ) return;
-
-
-	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
-	getmatrixAction->apply( nodePath );
-
-
-	SbMatrix objectToWorld = getmatrixAction->getMatrix();
-	SbMatrix worldToObject = objectToWorld.inverse();
-
-	SbVec3f globalSunVector( sin( m_azimuth.getValue() ) * sin( m_zenith.getValue() ),
-							 cos( m_zenith.getValue() ),
-							-cos( m_azimuth.getValue() ) * sin( m_zenith.getValue() ) );
-	SbVec3f i;
-	worldToObject.multDirMatrix ( globalSunVector, i );
-
-	SbVec3f focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
-	SbVec3f r;
-	worldToObject.multVecMatrix( focus, r );
-	r.normalize();
-
-	SbVec3f n = ( i + r );
-	n.normalize();
-
-	SbVec3f t = SbVec3f( n[2], 0.0f, -n[0] );
-	t.normalize();
-
-	SbVec3f p = t.cross(n);
-	p.normalize();
-
-	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
-							  n[0], n[1], n[2], 0.0,
-							  p[0], p[1], p[2], 0.0,
-							  0.0, 0.0, 0.0, 1.0 );
-
-	SoTransform* newTransform = new SoTransform();
-	newTransform->setMatrix( transformMatrix );
-
-	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( newTransform->translation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( newTransform->rotation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( newTransform->scaleFactor.getValue() ) );
-	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( newTransform->scaleOrientation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( newTransform->center.getValue() ) );*/
 }

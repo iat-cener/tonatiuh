@@ -41,11 +41,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QAbstractItemView>
 
+class GraphicRoot;
 class QModelIndex;
 class SbViewportRegion;
 class SoCamera;
 class SoQtExaminerViewer;
-class SoSelection;
 class TSeparatorKit;
 
 //!  GraphicView class implements a 3D representation of items from a model.
@@ -62,7 +62,8 @@ public:
     GraphicView( QWidget* parent = 0 );
     ~GraphicView();
 
-    void SetSceneGraph( SoSelection* sceneGraphRoot );
+    void SetSceneGraph( GraphicRoot* sceneGraphRoot );
+
     SbViewportRegion GetViewportRegion() const;
     SoCamera* GetCamera() const;
     virtual QModelIndex indexAt ( const QPoint & point ) const;
@@ -87,7 +88,7 @@ protected:
     virtual QRegion visualRegionForSelection ( const QItemSelection & selection ) const;
 
 private:
-    SoSelection* m_sceneGraphRoot;
+    GraphicRoot* m_sceneGraphRoot;
     SoQtExaminerViewer* m_myRenderArea;
 };
 

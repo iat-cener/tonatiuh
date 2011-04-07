@@ -36,12 +36,14 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include <QVariant>
 
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
-#include <Inventor/nodes/SoSelection.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 
+#include "GraphicRoot.h"
 #include "GraphicView.h"
 #include "PathWrapper.h"
 
@@ -51,7 +53,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * Use setModel() to set the model.
  */
 GraphicView::GraphicView( QWidget* parent )
-:QAbstractItemView( parent ), m_sceneGraphRoot( 0 ), m_myRenderArea( 0 )
+:QAbstractItemView( parent ),
+ m_sceneGraphRoot( 0 ),
+ m_myRenderArea( 0 )
 {
 
 }
@@ -61,14 +65,14 @@ GraphicView::~GraphicView()
     delete m_myRenderArea;
 }
 
-void GraphicView::SetSceneGraph( SoSelection* sceneGraphRoot )
+void GraphicView::SetSceneGraph( GraphicRoot* sceneGraphRoot )
 {
 
     m_sceneGraphRoot = 	sceneGraphRoot;
     m_myRenderArea = new SoQtExaminerViewer( this );
     m_myRenderArea->setGLRenderAction( new SoBoxHighlightRenderAction() );
     m_myRenderArea->setTransparencyType( SoGLRenderAction::SORTED_OBJECT_BLEND );
-    m_myRenderArea->setSceneGraph( m_sceneGraphRoot );
+    m_myRenderArea->setSceneGraph( m_sceneGraphRoot->GetNode() );
 
     ViewCoordinateSystem( true );
 }
@@ -154,16 +158,19 @@ QRegion GraphicView::visualRegionForSelection( const QItemSelection& /*selection
 
 void GraphicView::currentChanged( const QModelIndex & current, const QModelIndex& /*previous*/ )
 {
-    m_sceneGraphRoot->deselectAll();
+	if( m_sceneGraphRoot )
+	{
+		m_sceneGraphRoot->DeselectAll();
 
-	SoFullPath* path;
-	QVariant variant = current.data(Qt::UserRole);
+		SoFullPath* path;
+		QVariant variant = current.data(Qt::UserRole);
 
-	if ( variant.canConvert<PathWrapper>() )
-    {
-    	path = static_cast< SoFullPath*>( variant.value< PathWrapper >().GetPath() );
-    	m_sceneGraphRoot->select( path );
-    }
+		if ( variant.canConvert<PathWrapper>() )
+		{
+			path = static_cast< SoFullPath*>( variant.value< PathWrapper >().GetPath() );
+			m_sceneGraphRoot->Select( path );
+		}
 
-    m_sceneGraphRoot->touch();
+		//m_sceneGraphRoot->touch();
+	}
 }

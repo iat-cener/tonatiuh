@@ -1,7 +1,10 @@
 #Inventor V2.1 ascii
 
 
-SceneKit {
+TSceneKit {
+  fields [ SFFloat azimuth, SFFloat zenith, SFNode callbackList, SFNode cameraList, SFNode lightList, SFNode childList, SFNode topSeparator ]
+  azimuth 5.497787
+  zenith 0.79063416
   lightList 
   NodeKitListPart {
     childTypeNames "LightKit"
@@ -183,8 +186,6 @@ SceneKit {
         tsunshape 
         SunshapePillbox {
           fields [ SFFloat irradiance, SFFloat thetaMax ]
-          irradiance 1000
-          thetaMax 0.00465
 
         }
 

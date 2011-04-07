@@ -48,10 +48,10 @@ class QModelIndex;
 class SoBaseKit;
 class SoNode;
 class SoNodeKitPath;
-class SoSceneKit;
-class SoSelection;
+class SoSeparator;
 class TLightKit;
 class TSeparatorKit;
+class TSceneKit;
 
 class SceneModel : public QAbstractItemModel
 {
@@ -61,10 +61,11 @@ public:
 	SceneModel( QObject* parent = 0);
 	~SceneModel();
 
-	void SetCoinRoot( SoSelection& coinRoot );
-	void SetCoinScene( SoSceneKit& coinScene );
-
 	void Clear();
+
+	void SetCoinRoot( SoSeparator& coinRoot );
+	void SetCoinScene( TSceneKit& coinScene );
+
 
 	QModelIndex index( int row, int column, const QModelIndex& parentModelIndex = QModelIndex()) const;
 	int rowCount( const QModelIndex& parentModelIndex ) const;
@@ -112,8 +113,8 @@ private:
 	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
 
 private:
-	SoSelection* m_coinRoot;
-    SoSceneKit* m_coinScene;
+	SoSeparator* m_coinRoot;
+	TSceneKit* m_coinScene;
 	InstanceNode* m_instanceRoot;
 	std::map< SoNode*, QList<InstanceNode*> > m_mapCoinQt;
 };

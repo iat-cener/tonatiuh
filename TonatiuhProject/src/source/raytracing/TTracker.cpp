@@ -38,8 +38,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QString>
 
-#include <Inventor/nodekits/SoSceneKit.h>
+//#include <Inventor/nodekits/SoSceneKit.h>
 
+#include "TSceneKit.h"
 #include "TTracker.h"
 
 
@@ -78,7 +79,7 @@ void TTracker::SetZenithAngle( trt::TONATIUH_REAL* zenithField )
 	m_zenith.connectFrom( zenithField );
 }
 
-void TTracker::SetSceneKit( SoSceneKit* scene )
+void TTracker::SetSceneKit( TSceneKit* scene )
 {
 	m_scene = scene;
 }

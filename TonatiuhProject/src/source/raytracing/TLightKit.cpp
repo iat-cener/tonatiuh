@@ -167,10 +167,23 @@ void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* lat
 
 void TLightKit::Update( BBox box )
 {
-
+	double xMin = box.pMin.x;
+	double xMax = box.pMax.x;
+	double zMin = box.pMin.z;
+	double zMax = box.pMax.z;
 	double yMin = box.pMin.y;
 	double yMax = box.pMax.y + 10;
 	double distMax = yMax - yMin;
+
+	if( -tgc::Infinity  == box.Volume() )
+	{
+		xMin = 0.0;
+		xMax = 0.0;
+		zMin = 0.0;
+		zMax = 0.0;
+		yMax = 10;
+		distMax = 0.0;
+	}
 
 	TSunShape* sunshape = static_cast< TSunShape* >( this->getPart( "tsunshape", false ) );
 	if( !sunshape )	return;
@@ -180,10 +193,10 @@ void TLightKit::Update( BBox box )
 
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", true ) );
 	if( !shape )	return;
-	shape->xMin.setValue( box.pMin.x - delta );
-	shape->xMax.setValue( box.pMax.x + delta );
-	shape->zMin.setValue( box.pMin.z - delta );
-	shape->zMax.setValue( box.pMax.z + delta );
+	shape->xMin.setValue( xMin - delta );
+	shape->xMax.setValue( xMax + delta );
+	shape->zMin.setValue( zMin - delta );
+	shape->zMax.setValue( zMax + delta );
 	shape->delta.setValue( delta );
 
 
