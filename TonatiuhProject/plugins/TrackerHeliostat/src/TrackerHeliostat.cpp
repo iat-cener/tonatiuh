@@ -46,13 +46,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
 
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "tgc.h"
 #include "TrackerHeliostat.h"
 #include "Transform.h"
+#include "TSceneKit.h"
 #include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( TrackerHeliostat );

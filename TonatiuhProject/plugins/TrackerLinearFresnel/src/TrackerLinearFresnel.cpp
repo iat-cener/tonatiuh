@@ -52,6 +52,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgf.h"
 #include "TrackerLinearFresnel.h"
 #include "Transform.h"
+#include "TSceneKit.h"
 #include "Vector3D.h"
 
 
