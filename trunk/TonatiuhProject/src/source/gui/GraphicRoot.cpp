@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
@@ -58,6 +60,7 @@ GraphicRoot::GraphicRoot()
  m_pGrid( 0 ),
  m_pRays( 0 ),
  m_pRootTransform( 0 ),
+ m_pSceneSeparator( 0 ),
  m_pSelectionNode( 0 ),
  m_pTracker( 0 )
 {
@@ -74,8 +77,11 @@ GraphicRoot::GraphicRoot()
 	vrmlBackground->skyAngle.setValue( sangle );
 	m_graphicsRoot->addChild( vrmlBackground );
 
+	m_pSceneSeparator = new SoSeparator;
+	m_graphicsRoot->addChild( m_pSceneSeparator );
+
 	m_pRootTransform = new SoTransform;
-	m_graphicsRoot->addChild( m_pRootTransform );
+	m_pSceneSeparator->addChild( m_pRootTransform );
 
 	m_pTracker = new GraphicRootTracker;
 	m_pTracker->ref();
@@ -89,7 +95,8 @@ GraphicRoot::GraphicRoot()
 	m_pSelectionNode->ref();
 	m_pSelectionNode->policy = SoSelection::SINGLE;
 	m_pSelectionNode->addFinishCallback( selectionFinishCallback, static_cast< void*>( this ) );
-	m_graphicsRoot->addChild( m_pSelectionNode );
+	m_pSceneSeparator->addChild( m_pSelectionNode );
+
 
 
 }
@@ -105,11 +112,11 @@ GraphicRoot::~GraphicRoot()
 
 }
 
-
 void GraphicRoot::AddGrid( SoSeparator* grid )
 {
-	RemoveGrid();
+	//RemoveGrid();
 	m_pGrid = grid;
+	grid->ref();
 }
 
 void GraphicRoot::AddRays( SoSeparator* rays )
@@ -144,7 +151,10 @@ void GraphicRoot::RemoveGrid()
 {
 	if( m_pGrid )
 	{
+		ShowGrid( false );
 		m_pGrid->removeAllChildren();
+		std::cout<<"m_pGrid: "<<m_pGrid->getRefCount()<<std::endl;
+		while( m_pGrid->getRefCount() > 1 ) m_pGrid->unref();
 		if ( m_pGrid->getRefCount() > 1 ) tgf::SevereError( "RemoveGrid: m_pGrid referenced in excess ");
 		m_pGrid->unref();
 		m_pGrid = 0;
@@ -218,7 +228,7 @@ void GraphicRoot::ShowBackground( bool view )
 
 void GraphicRoot::ShowGrid( bool view )
 {
-	if( view && ( m_pGrid ) )
+	if( view && m_pGrid )
 		m_graphicsRoot->addChild( m_pGrid );
 	else if( !view )
 		if ( m_pGrid->getRefCount( ) > 0 )	m_graphicsRoot->removeChild( m_pGrid );
@@ -228,8 +238,8 @@ void GraphicRoot::ShowGrid( bool view )
 void GraphicRoot::ShowRays( bool view )
 {
 	if( view && ( m_pRays ) )
-		m_graphicsRoot->addChild( m_pRays );
+		m_pSceneSeparator->addChild( m_pRays );
 	else if( !view )
-		if ( m_pRays->getRefCount( ) > 0 )	m_graphicsRoot->removeChild( m_pRays );
+		if ( m_pRays->getRefCount( ) > 0 )	m_pSceneSeparator->removeChild( m_pRays );
 }
 

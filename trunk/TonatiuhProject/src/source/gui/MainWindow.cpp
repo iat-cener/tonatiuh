@@ -765,7 +765,7 @@ void MainWindow::ChangeGridSettings()
 
 		}
 		m_graphicsRoot->AddGrid( CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing ) );
-
+		m_graphicsRoot->ShowGrid( true );
 	}
 
 }
@@ -1919,7 +1919,6 @@ SoSeparator* MainWindow::CreateGrid( int xDimension, int zDimension, double xSpa
 
 
 	SoSeparator* grid = new SoSeparator;
-	grid->ref();
 
 	SoMaterial* mat = new SoMaterial;
 	static float colors[2][3] = { {0.4f, 0.4f, 0.4f}, {0.6f, 0.6f, 0.6f} };
