@@ -36,11 +36,12 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSelection.h>
-#include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
 
 #include <QApplication>
@@ -49,26 +50,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QStatusBar>
 
 #include "Document.h"
-
-
-void selectionFinishCallback( void * userData, SoSelection* selection )
-{
-	Document* document = static_cast< Document* >( userData  );
-    if ( document ) document->selectionFinishCBAux( selection );
-}
+#include "TSceneKit.h"
 
 /*!
  * Creates a new document object.
  */
 Document::Document()
-: m_root(0), m_scene(0), m_isModified( false )
+:
+  m_scene(0),
+  m_isModified( false )
 {
-    m_root = new SoSelection;
-	m_root->ref();
-
-    m_root->policy = SoSelection::SINGLE;
-    m_root->addFinishCallback( selectionFinishCallback, static_cast< void*>( this ) );
-
     InitializeScene();
 }
 
@@ -77,7 +68,6 @@ Document::Document()
  */
 Document::~Document()
 {
-	if ( m_root ) m_root->unref();
 }
 
 /*!
@@ -95,9 +85,9 @@ void Document::InitializeScene()
 {
     if ( m_scene ) ClearScene();
 
-	m_scene = new SoSceneKit;
+	m_scene = new TSceneKit;
 	m_scene->ref();
-	m_root->addChild( m_scene );
+	//m_root->addChild( m_scene );
     m_scene->setSearchingChildren( true );
 }
 
@@ -115,14 +105,10 @@ void Document::New()
  */
 void Document::ClearScene()
 {
-    if( m_root )
-    {
-    	if ( m_scene )
-    	{
-    	    if ( m_root ) m_root->removeChild( m_scene );
-   	        if ( m_scene )	while ( m_scene->getRefCount( ) > 1 )	m_scene->unref();
-    	}
-    }
+	if ( m_scene )
+	{
+		if ( m_scene )	while ( m_scene->getRefCount( ) > 1 )	m_scene->unref();
+	}
 
     m_scene = 0;
 }
@@ -132,11 +118,10 @@ void Document::ClearScene()
  */
 bool Document::ReadFile( const QString& fileName )
 {
-    if( SoSceneKit* inputScene = GetSceneKitFromFile( fileName ) )
+    if( TSceneKit* inputScene = static_cast< TSceneKit* >( GetSceneKitFromFile( fileName ) ) )
 	{
         if ( m_scene ) ClearScene();
 	    m_scene = inputScene;
-	    m_root->addChild( m_scene );
 	    m_scene->setSearchingChildren( true );
 	    m_isModified = false;
 	    return true;
@@ -178,17 +163,9 @@ bool Document::IsModified( )
 }
 
 /*!
- * Returns the document root.
- */
-SoSelection* Document::GetRoot() const
-{
-   return m_root;
-}
-
-/*!
  * Returns the document scene.
  */
-SoSceneKit* Document::GetSceneKit() const
+TSceneKit* Document::GetSceneKit() const
 {
     return m_scene;
 }
@@ -198,7 +175,7 @@ SoSceneKit* Document::GetSceneKit() const
  *
  * Returns null on any error.
  */
-SoSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
+TSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
 {
     SoInput sceneInput;
 	if ( !sceneInput.openFile( fileName.toLatin1().constData() ) )
@@ -220,13 +197,5 @@ SoSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
 		return 0;
 	}
 
-   return static_cast< SoSceneKit* >( graphSeparator->getChild(0) );
-}
-
-/*!
- * Emits a signal to indicate that a document scene nodes selection changes has been finished.
- */
-void Document::selectionFinishCBAux( SoSelection* selection )
-{
-    emit selectionFinish( selection );
+   return static_cast< TSceneKit* >( graphSeparator->getChild(0) );
 }

@@ -42,38 +42,27 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tgc.h"
 #include <ui_mainwindow.h>
 
-class BBox;
 class Document;
-class FieldComponentFactory;
+class GraphicRoot;
 class GraphicView;
 class InstanceNode;
+class PluginManager;
 class QDir;
 class QUndoStack;
 class QUndoView;
-class Photon;
-class PluginManager;
 class RandomDeviate;
-class RandomDeviateFactory;
-class Ray;
-class SbViewportRegion;
-class SceneModel;
-class SoNodeKitPath;
-class SoTransform;
 class SoDragger;
 class SoSelection;
 class SoSeparator;
+class SoTransform;;
 class TLightShape;
 class TMaterialFactory;
 class TPhotonMap;
-class TPhotonMapFactory;
-class Transform;
 class TShapeFactory;
-class TShapeKit;
-class TShape;
-class TSunShapeFactory;
 class TSunShape;
 class TTrackerFactory;
 class UpdatesManager;
+
 
 //!  Main window class.
 /*!
@@ -145,6 +134,7 @@ protected:
 
 protected slots:
 	void CalculateSunPosition();
+	void ChangeGridSettings();
 	void ChangeNodeName( const QModelIndex& index, const QString& newName);
     void ChangeSelection( const QModelIndex & current );
     void ChangeSunPosition( double azimuth, double zenith );
@@ -159,17 +149,16 @@ protected slots:
 	void Redo();
 	void SetParameterValue( SoNode* node, QString paramenterName, QString newValue );
     void SetSunPositionCalculatorEnabled( int enabled );
+	void ShowBackground();
 	void ShowCommandView();
+	void ShowGrid();
     void ShowMenu( const QModelIndex& index );
     void ShowRayTracerOptionsDialog();
 	void Undo();
 
 	//View menu actions
 	void on_actionAxis_toggled();
-	void on_actionBackground_toggled();
 	void on_actionEdit_Mode_toggled();
-	void on_actionGrid_toggled();
-	void on_actionGridSettings_triggered();
 	void on_actionSunPlane_triggered();
 	void on_action_X_Y_Plane_triggered();
 	void on_action_X_Z_Plane_triggered();
@@ -184,6 +173,7 @@ protected slots:
 
 
 private:
+    void ChangeModelScene();
 	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
     QToolBar* CreateMaterialsTooBar( QMenu* pMaterialsMenu );
     QToolBar* CreateTrackerTooBar( QMenu* pMaterialsMenu );
@@ -207,6 +197,7 @@ private:
     void SetupActionsInsertTracker();
     void SetupCommandView();
     void SetupDocument();
+    void SetupGraphcisRoot();
     void SetupGraphicView();
     void SetupMenus();
     void SetupModels();
@@ -216,11 +207,9 @@ private:
    	void SetupTriggers();
     void SetupViews();
    	void SetupUpdateManager();
-    void SetupVRMLBackground();
 	void ShowRaysIn3DView();
     bool StartOver( const QString& fileName );
     QString StrippedName( const QString& fullFileName );
-    void UpdateLightDimensions();
     void UpdateRecentFileActions();
     void WriteSettings();
 
@@ -256,8 +245,7 @@ private:
 
     QString m_scriptDirectory;
 
-    SoSeparator* m_pRays;
-    SoSeparator* m_pGrid;
+    GraphicRoot* m_graphicsRoot;
     SoNode* m_coinNode_Buffer;
     QStringList* m_manipulators_Buffer;
     unsigned long m_tracedRays;

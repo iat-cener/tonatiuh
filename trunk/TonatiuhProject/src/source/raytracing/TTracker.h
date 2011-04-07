@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 
 class QString; 
-class SoSceneKit;
+class TSceneKit;
 
 class TTracker : public SoNodeEngine
 {
@@ -58,7 +58,7 @@ public:
 	void Disconnect();
 	void SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField );
 	void SetZenithAngle( trt::TONATIUH_REAL* zenithField );
-	void SetSceneKit( SoSceneKit* scene );
+	void SetSceneKit( TSceneKit* scene );
 
 	SoEngineOutput  outputTranslation;
 	SoEngineOutput  outputRotation;
@@ -74,7 +74,7 @@ protected:
 
 	trt::TONATIUH_REAL m_azimuth;
 	trt::TONATIUH_REAL m_zenith;
-	SoSceneKit* m_scene;
+	TSceneKit* m_scene;
 
 private:
 	virtual void evaluate() = 0;

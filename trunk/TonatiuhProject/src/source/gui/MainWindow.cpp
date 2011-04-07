@@ -70,7 +70,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
-#include <Inventor/VRMLnodes/SoVRMLBackground.h>
 
 #include "ActionInsertMaterial.h"
 #include "ActionInsertShape.h"
@@ -92,6 +91,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Document.h"
 #include "ExportDialog.h"
 #include "GraphicView.h"
+#include "GraphicRoot.h"
 #include "GridSettingsDialog.h"
 #include "InstanceNode.h"
 #include "LightDialog.h"
@@ -108,7 +108,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SunPositionCalculatorDialog.h"
 #include "TDefaultTracker.h"
 #include "tgf.h"
-#include "trf.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
 #include "TMaterial.h"
@@ -116,6 +115,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TPhotonMap.h"
 #include "TPhotonMapFactory.h"
 #include "Transform.h"
+#include "trf.h"
+#include "TSceneKit.h"
 #include "TSeparatorKit.h"
 #include "TShapeFactory.h"
 #include "TShapeKit.h"
@@ -126,7 +127,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 
-void startManipulator(void *data, SoDragger* dragger)
+void startManipulator(void *data, SoDragger* dragger )
 {
 	MainWindow* mainwindow = static_cast< MainWindow* >( data );
 	mainwindow->StartManipulation( dragger );
@@ -166,8 +167,10 @@ m_lastExportFileName( "" ),
 m_lastExportSurfaceUrl( "" ),
 m_lastExportInGlobal( true ),
 m_scriptDirectory("." ),
-m_pRays( 0 ),
+m_graphicsRoot( 0 ),
+/*m_pRays( 0 ),
 m_pGrid( 0 ),
+m_sceneNode( 0 ),*/
 m_coinNode_Buffer( 0 ),
 m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ),
@@ -179,19 +182,20 @@ m_gridZElements( 0 ),
 m_gridXSpacing( 0 ),
 m_gridZSpacing( 0 ),
 m_graphicView( 0 ),
-//sceneModelView( 0 ),
 m_focusView( 0 )
 {
 	setupUi( this );
     SetupActions();
     SetupMenus();
     SetupDocument();
+    SetupGraphcisRoot();
     SetupModels();
-	SetupViews();
+    SetupViews();
 	SetupUpdateManager();
 	SetupPluginsManager();
 	SetupTriggers();
-    ReadSettings();
+
+	ReadSettings();
 
     if( !tonatiuhFile.isEmpty() )	StartOver( tonatiuhFile );
 }
@@ -230,7 +234,7 @@ void MainWindow::FinishManipulation( )
 	new CmdModifyParameter( nodeTransform, QString( "translation" ), translationValue, m_sceneModel, command );
 	m_commandStack->push( command );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 
 }
@@ -240,7 +244,7 @@ void MainWindow::FinishManipulation( )
  */
 void MainWindow::StartManipulation( SoDragger* dragger )
 {
-	SoSearchAction* coinSearch = new SoSearchAction();
+	/*SoSearchAction* coinSearch = new SoSearchAction();
 	coinSearch->setNode( dragger );
 	coinSearch->setInterest( SoSearchAction::FIRST);
 
@@ -280,7 +284,7 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 			m_manipulators_Buffer->push_back(QString( fieldValue.getString() ) );
 		}
 	}
-	delete coinSearch;
+	delete coinSearch;*/
 }
 
 /*!
@@ -312,7 +316,7 @@ void MainWindow::CalculateSunPosition()
  */
 void MainWindow::DefineSunLight()
 {
-	SoSceneKit* coinScene = m_document->GetSceneKit();
+	TSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
 
 	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
@@ -358,11 +362,11 @@ void MainWindow::DefineSunLight()
  */
 void MainWindow::DisplayRays( bool display )
 {
-	if( display && (m_pRays ) )
-		m_document->GetRoot()->insertChild( m_pRays, 0 );
+	m_graphicsRoot->ShowRays( display );
+	/*if( display && ( m_pRays ) )
+		m_graphicsRoot->insertChild( m_pRays, 0 );
 	else if( !display )
-		if ( m_pRays->getRefCount( ) > 0 )	m_document->GetRoot()->removeChild( 0 );
-
+		if ( m_pRays->getRefCount( ) > 0 )	m_graphicsRoot->removeChild( 0 );*/
 }
 
 /*!
@@ -490,9 +494,8 @@ void MainWindow::SetParameterValue( SoNode* node, QString paramenterName, QStrin
 {
 	CmdModifyParameter* command = new CmdModifyParameter( node, paramenterName, newValue, m_sceneModel );
 	if ( m_commandStack ) m_commandStack->push( command );
-	m_sceneModel->UpdateSceneModel();
 
-	//UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 }
 
@@ -596,7 +599,7 @@ void MainWindow::ShowRayTracerOptionsDialog()
 void MainWindow::Undo()
 {
     m_commandStack->undo();
-    UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 }
 
 //View menu actions
@@ -606,144 +609,6 @@ void MainWindow::on_actionAxis_toggled()
 	m_graphicView[1]->ViewCoordinateSystem( actionAxis->isChecked() );
 	m_graphicView[2]->ViewCoordinateSystem( actionAxis->isChecked() );
 	m_graphicView[3]->ViewCoordinateSystem( actionAxis->isChecked() );
-}
-/**
- * Action slot to show/hide a grid with the scene dimensions.
- */
-void MainWindow::on_actionGrid_toggled()
-{
-	if( actionGrid->isChecked() )
-	{
-		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-		if ( !sceneInstance )  return;
-		SoNode* rootNode = sceneInstance->GetNode();
-		SoPath* nodePath = new SoPath( rootNode );
-		nodePath->ref();
-
-		SbViewportRegion region = m_graphicView[m_focusView]->GetViewportRegion();
-		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
-		if(nodePath)	bbAction->apply(nodePath);
-
-		SbXfBox3f box= bbAction->getXfBoundingBox();
-		delete bbAction;
-		nodePath->unref();
-
-		m_gridXElements = 10;
-	    m_gridZElements = 10;
-	    m_gridXSpacing = 10;
-	    m_gridZSpacing = 10;
-
-		if( !box.isEmpty() )
-		{
-			SbVec3f min, max;
-			box.getBounds(min, max);
-
-			m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
-			m_gridZSpacing = ( 2 *  std::max( fabs( max[2] ), fabs( min[2] ) ) + 5 ) / m_gridZElements;
-
-		}
-
-		m_pGrid = new SoSeparator;
-		m_pGrid->ref();
-		m_pGrid->addChild( CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing ) );
-		m_document->GetRoot()->addChild(m_pGrid);
-	}
-	else
-	{
-		m_document->GetRoot()->removeChild( m_pGrid );
-		m_pGrid->removeAllChildren();
-		if ( m_pGrid->getRefCount() > 1 ) tgf::SevereError("on_actionGridSettings_triggered: m_pGrid referenced in excess ");
-		m_pGrid->unref();
-		m_pGrid = 0;
-
-	}
-
-}
-
-/**
- * Action slot to open grid settings dialog.
- */
-void MainWindow::on_actionGridSettings_triggered()
-{
-	GridSettingsDialog* gridDialog = new GridSettingsDialog( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing );
-	if( gridDialog->exec() )
-	{
-		m_document->GetRoot()->removeChild(m_pGrid);
-		m_pGrid->removeAllChildren();
-		if ( m_pGrid->getRefCount() > 1 ) tgf::SevereError("on_actionGridSettings_triggered: m_pGrid referenced in excess ");
-		m_pGrid->unref();
-		m_pGrid = 0;
-
-		m_gridXElements = gridDialog->GetXDimension();
-		m_gridZElements = gridDialog->GetZDimension();
-
-		if( gridDialog->IsSizeDefined() )
-		{
-			m_gridXSpacing = gridDialog->GetXSpacing();
-			m_gridZSpacing = gridDialog->GetZSpacing();
-		}
-		else
-		{
-			InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-			if ( !sceneInstance )  return;
-			SoNode* rootNode = sceneInstance->GetNode();
-			SoPath* nodePath = new SoPath( rootNode );
-			nodePath->ref();
-
-			SbViewportRegion region = m_graphicView[m_focusView]->GetViewportRegion();
-			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
-			if(nodePath)	bbAction->apply(nodePath);
-
-			SbXfBox3f box= bbAction->getXfBoundingBox();
-			delete bbAction;
-			nodePath->unref();
-
-		    m_gridXSpacing = 10;
-		    m_gridZSpacing = 10;
-
-			if( !box.isEmpty() )
-			{
-				SbVec3f min, max;
-				box.getBounds(min, max);
-
-				m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
-				m_gridZSpacing = ( 2 *  std::max( fabs( max[2] ), fabs( min[2] ) ) + 5 ) / m_gridZElements;
-
-			}
-
-		}
-		m_pGrid = CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing );
-		m_pGrid->ref();
-		m_document->GetRoot()->addChild(m_pGrid);
-	}
-	delete gridDialog;
-}
-
-void MainWindow::on_actionBackground_toggled()
-{
-	SoVRMLBackground* vrmlBackground = static_cast< SoVRMLBackground* > ( m_document->GetRoot()->getChild( 0 ) );
-
-	if( actionBackground->isChecked() )
-	{
-		float gcolor[][3] = { {0.9843, 0.8862, 0.6745}, {0.7843, 0.6157, 0.4785} };
-		float gangle= 1.570f;
-
-		vrmlBackground->groundColor.setValues( 0, 6, gcolor );
-		vrmlBackground->groundAngle.setValue( gangle );
-		float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
-		float sangle= 1.570f;
-		vrmlBackground->skyColor.setValues( 0,6,scolor );
-		vrmlBackground->skyAngle.setValue( sangle );
-	}
-	else
-	{
-		float color[][3] = { {0.1, 0.1, 0.1}, {0.1, 0.1, 0.1} };
-		float angle= 1.570f;
-		vrmlBackground->groundColor.setValues( 0, 6, color );
-		vrmlBackground->groundAngle.setValue( angle );
-		vrmlBackground->skyColor.setValues( 0,6,color );
-		vrmlBackground->skyAngle.setValue( angle );
-	}
 }
 
 void MainWindow::on_actionEdit_Mode_toggled()
@@ -787,7 +652,7 @@ void MainWindow::on_actionSunPlane_triggered()
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( camPosition.x, camPosition.y, camPosition.z ) );
 	cam->pointAt( SbVec3f( targetPoint.x, targetPoint.y, targetPoint.z ) );
-	cam->viewAll( m_document->GetRoot(), vpr );
+	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
 void MainWindow::on_action_X_Y_Plane_triggered()
@@ -796,7 +661,9 @@ void MainWindow::on_action_X_Y_Plane_triggered()
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 0, 1 ) );
 	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 1, 0 )  );
-	cam->viewAll( m_document->GetRoot(), vpr );
+	//cam->viewAll( m_document->GetRoot(), vpr );
+	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
+
 }
 
 void MainWindow::on_action_X_Z_Plane_triggered()
@@ -805,7 +672,8 @@ void MainWindow::on_action_X_Z_Plane_triggered()
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 1, 0 ) );
 	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 0, 1 )  );
-	cam->viewAll( m_document->GetRoot(), vpr );
+	//cam->viewAll( m_document->GetRoot(), vpr );
+	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
 void MainWindow::on_action_Y_Z_Plane_triggered()
@@ -814,7 +682,8 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( -1, 0, 0 ) );
 	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 1, 0 )  );
-	cam->viewAll( m_document->GetRoot(), vpr );
+	//cam->viewAll( m_document->GetRoot(), vpr );
+	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
 void MainWindow::on_actionOpenScriptEditor_triggered()
@@ -838,14 +707,67 @@ void MainWindow::on_actionCheckForUpdates_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	//QMessageBox::aboutQt( this );
-
 	QString appVersion = qApp->applicationVersion();
 	QString aboutMessage("Tonatiuh\n"
 			"Version: "+ appVersion + "\n"
 			"\nPlease see http://www.gnu.org/licenses/gpl.html for an overview of GPLv3 licensing.\n"
 			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
+}
+
+/*!
+ * Changes the number of the grid cells and grid cell dimensions.
+ */
+void MainWindow::ChangeGridSettings()
+{
+	GridSettingsDialog gridDialog( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing );
+	if( gridDialog.exec() )
+	{
+		m_graphicsRoot->RemoveGrid();
+
+		m_gridXElements = gridDialog.GetXDimension();
+		m_gridZElements = gridDialog.GetZDimension();
+
+		if( gridDialog.IsSizeDefined() )
+		{
+			m_gridXSpacing = gridDialog.GetXSpacing();
+			m_gridZSpacing = gridDialog.GetZSpacing();
+		}
+		else
+		{
+
+			InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+			if ( !sceneInstance )  return;
+			SoNode* rootNode = sceneInstance->GetNode();
+			SoPath* nodePath = new SoPath( rootNode );
+			nodePath->ref();
+
+			SbViewportRegion region = m_graphicView[m_focusView]->GetViewportRegion();
+			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
+			if(nodePath)	bbAction->apply(nodePath);
+
+			SbXfBox3f box= bbAction->getXfBoundingBox();
+			delete bbAction;
+			nodePath->unref();
+
+			m_gridXSpacing = 10;
+			m_gridZSpacing = 10;
+
+			if( !box.isEmpty() )
+			{
+				SbVec3f min, max;
+				box.getBounds(min, max);
+
+				m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
+				m_gridZSpacing = ( 2 *  std::max( fabs( max[2] ), fabs( min[2] ) ) + 5 ) / m_gridZElements;
+
+			}
+
+		}
+		m_graphicsRoot->AddGrid( CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing ) );
+
+	}
+
 }
 
 /*!
@@ -939,8 +861,8 @@ void MainWindow::CreateGroupNode()
 			count++;
 			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
 		}
-		UpdateLightDimensions();
-
+		
+		m_sceneModel->UpdateSceneModel();
 		m_document->SetDocumentModified( true );
 
 	}
@@ -1019,7 +941,7 @@ void MainWindow::CreateSurfaceNode()
 			count++;
 			nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
 		}
-		UpdateLightDimensions();
+		m_sceneModel->UpdateSceneModel();
 		m_document->SetDocumentModified( true );
 	}
 }
@@ -1058,7 +980,7 @@ void MainWindow::Cut()
 	CmdCut* command = new CmdCut( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 }
 
@@ -1076,7 +998,7 @@ void MainWindow::Cut( QString nodeURL )
 	CmdCut* command = new CmdCut( nodeIndex, m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 
 }
@@ -1149,7 +1071,7 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 	cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
 	m_commandStack->push( cmdInsertSeparatorKit );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 
 }
@@ -1790,7 +1712,7 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
     createMaterial->setText(commandText);
     m_commandStack->push( createMaterial );
 
-    UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
     m_document->SetDocumentModified( true );
 }
 
@@ -1829,7 +1751,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
         createShape->setText( commandText );
         m_commandStack->push( createShape );
 
-        UpdateLightDimensions();
+    	m_sceneModel->UpdateSceneModel();
         m_document->SetDocumentModified( true );
     }
 }
@@ -1841,7 +1763,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 									m_sceneModel->index (0,0,sceneModelView->rootIndex()):
 									sceneModelView->currentIndex();
 
-	SoSceneKit* scene = m_document->GetSceneKit();
+	TSceneKit* scene = m_document->GetSceneKit();
 
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
 	tracker->SetSceneKit( scene );
@@ -1849,7 +1771,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
 	m_commandStack->push( command );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 }
 
@@ -1904,7 +1826,7 @@ void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelInd
 	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDrop );
 	m_commandStack->push( dragAndDrop );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 
 }
@@ -1921,7 +1843,7 @@ void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDropCopy );
 	m_commandStack->push( dragAndDropCopy );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 }
 
@@ -1933,6 +1855,25 @@ void MainWindow::closeEvent( QCloseEvent* event )
     	event->accept();
     }
     else event->ignore();
+}
+/*!
+ * Set current document coin scene into Tonatiuh Models and views.
+ */
+void MainWindow::ChangeModelScene()
+{
+	TSceneKit* coinScene = m_document->GetSceneKit();
+
+	m_sceneModel->SetCoinScene( *coinScene );
+    m_graphicsRoot->AddModel( coinScene );
+
+	QModelIndex viewRootNodeIndex = m_sceneModel->IndexFromNodeUrl( QString( "//SunNode" ) );
+	InstanceNode* viewRootNode = m_sceneModel->NodeFromIndex( viewRootNodeIndex );
+	sceneModelView->setRootIndex( viewRootNodeIndex );
+
+	InstanceNode* concentratorRoot = viewRootNode->children[ 0 ];
+
+	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
+
 }
 
 /*!
@@ -1977,14 +1918,15 @@ SoSeparator* MainWindow::CreateGrid( int xDimension, int zDimension, double xSpa
 	}
 
 
-	SoSeparator * grid = new SoSeparator;
+	SoSeparator* grid = new SoSeparator;
+	grid->ref();
 
-	SoMaterial * mat = new SoMaterial;
+	SoMaterial* mat = new SoMaterial;
 	static float colors[2][3] = { {0.4f, 0.4f, 0.4f}, {0.6f, 0.6f, 0.6f} };
 	mat->diffuseColor.setValues(0, 2, colors);
 	grid->addChild(mat);
 
-	SoCoordinate3 * line_coords = new SoCoordinate3;
+	SoCoordinate3* line_coords = new SoCoordinate3;
 	line_coords->point.setValues(0, nVertex, vertex);
 	grid->addChild(line_coords);
 
@@ -1998,7 +1940,6 @@ SoSeparator* MainWindow::CreateGrid( int xDimension, int zDimension, double xSpa
 	return grid;
 
 }
-
 
 /*!
  * Creates a toolbar for insert material actions.
@@ -2055,7 +1996,7 @@ bool MainWindow::Delete( QModelIndex index )
 	}
 
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 
 	return true;
@@ -2120,7 +2061,7 @@ bool MainWindow::Paste( QModelIndex nodeIndex, tgc::PasteType type )
 	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
 	m_commandStack->push( commandPaste );
 
-	UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
 	return true;
 
@@ -2166,15 +2107,17 @@ void MainWindow::ReadSettings()
  */
 bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TLightShape*& raycastingShape )
 {
+
 	//Check if there is a scene
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if ( !coinScene )  return false;
 
 	//Check if there is a rootSeparator InstanceNode
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-	if ( !sceneInstance )  return false;
-	rootSeparatorInstance = sceneInstance->children[1];
+	rootSeparatorInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
 	if( !rootSeparatorInstance ) return false;
+
+	InstanceNode* sceneInstance = rootSeparatorInstance->GetParent();
+	if ( !sceneInstance )  return false;
 
 	//Check if there is a light and is properly configured
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return false;
@@ -2227,6 +2170,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 		m_photonMap = photonmapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
 		m_tracedRays = 0;
 	}
+
 
 	return true;
 }
@@ -2386,6 +2330,15 @@ void MainWindow::SetupActionsInsertTracker()
 	}
 }
 
+/**
+ * Action slot to show/hide viewer background.
+ */
+void MainWindow::ShowBackground()
+{
+	if( actionBackground->isChecked() )	m_graphicsRoot->ShowBackground( true );
+	else	m_graphicsRoot->ShowBackground( false );
+}
+
 /*!
  * Creates a view for visualize user done last actions.
  */
@@ -2401,16 +2354,92 @@ void MainWindow::SetupCommandView()
     		     actionUndo, SLOT( setEnabled( bool ) ) );
 }
 
+/**
+ * Action slot to show/hide a grid with the scene dimensions.
+ */
+void MainWindow::ShowGrid()
+{
+	if( actionGrid->isChecked() )
+		m_graphicsRoot->ShowGrid( true );
+	else
+		m_graphicsRoot->ShowGrid( false );
+
+	/*if( actionGrid->isChecked() )
+	{
+		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+		if ( !sceneInstance )  return;
+		SoNode* rootNode = sceneInstance->GetNode();
+		SoPath* nodePath = new SoPath( rootNode );
+		nodePath->ref();
+
+		SbViewportRegion region = m_graphicView[m_focusView]->GetViewportRegion();
+		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
+		if(nodePath)	bbAction->apply(nodePath);
+
+		SbXfBox3f box= bbAction->getXfBoundingBox();
+		delete bbAction;
+		nodePath->unref();
+
+		m_gridXElements = 10;
+	    m_gridZElements = 10;
+	    m_gridXSpacing = 10;
+	    m_gridZSpacing = 10;
+
+		if( !box.isEmpty() )
+		{
+			SbVec3f min, max;
+			box.getBounds(min, max);
+
+			m_gridXSpacing = ( 2 *  std::max( fabs( max[0] ), fabs( min[0] ) ) + 5  ) / m_gridXElements;
+			m_gridZSpacing = ( 2 *  std::max( fabs( max[2] ), fabs( min[2] ) ) + 5 ) / m_gridZElements;
+
+		}
+
+		m_pGrid->addChild( CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing ) );
+
+	}
+	else
+		m_pGrid->removeAllChildren();*/
+
+}
+
 /*!
  * Initializes tonatiuh document object.
  */
 void MainWindow::SetupDocument()
 {
     m_document = new Document();
-    if ( m_document )
-    	connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
-    			       this, SLOT(selectionFinish( SoSelection* ) ) );
+	/* if ( m_document )
+       connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
+       			       this, SLOT(selectionFinish( SoSelection* ) ) );
+       else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );*/
+}
+
+/*!
+ * Defines 3D view background.
+ */
+void MainWindow::SetupGraphcisRoot()
+{
+	m_graphicsRoot = new GraphicRoot;
+
+
+    if ( m_graphicsRoot )
+    {
+        m_graphicsRoot->AddModel( m_document->GetSceneKit() );
+        connect( m_graphicsRoot, SIGNAL( ChangeSelection( SoSelection* ) ),
+		       this, SLOT(selectionFinish( SoSelection* ) ) );
+
+
+        m_gridXElements = 10;
+        m_gridZElements = 10;
+        m_gridXSpacing = 10;
+        m_gridZSpacing = 10;
+
+        m_graphicsRoot->AddGrid( CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing ) );
+
+    }
     else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
+
 }
 
 /*!
@@ -2418,8 +2447,8 @@ void MainWindow::SetupDocument()
  */
 void MainWindow::SetupGraphicView()
 {
+	//SetupGraphcisRoot();
 
-    SetupVRMLBackground();
 	QSplitter* pSplitter = findChild<QSplitter *>( "horizontalSplitter" );
 
 	QSplitter* graphicHorizontalSplitter = new QSplitter();
@@ -2475,39 +2504,40 @@ void MainWindow::SetupGraphicView()
         if ( m_graphicView[0] != NULL )
         {
     	    m_graphicView[0]->resize( 600, 400 );
-    	    m_graphicView[0]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[0]->SetSceneGraph( m_graphicsRoot );
     	    m_graphicView[0]->setModel( m_sceneModel );
     	    m_graphicView[0]->setSelectionModel( m_selectionModel );
         }
-        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[0] not found" );
-        m_graphicView[1] = graphicVerticalSplitter1->findChild< GraphicView* >( "graphicView2" );
-        if ( m_graphicView[1] != NULL )
+		else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[0] not found" );
+
+		if ( m_graphicView[1] != NULL )
         {
     	    m_graphicView[1]->resize( 600, 400 );
-    	    m_graphicView[1]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[1]->SetSceneGraph( m_graphicsRoot );
     	    m_graphicView[1]->setModel( m_sceneModel );
     	    m_graphicView[1]->setSelectionModel( m_selectionModel );
     	    m_focusView=1;
     	    on_action_X_Y_Plane_triggered();
-
         }
-        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[1] not found" );
-        m_graphicView[2] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView3" );
+    	else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[1] not found" );
+
+		m_graphicView[2] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView3" );
         if ( m_graphicView[2] != NULL )
         {
     	    m_graphicView[2]->resize( 600, 400 );
-    	    m_graphicView[2]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[2]->SetSceneGraph( m_graphicsRoot );
     	    m_graphicView[2]->setModel( m_sceneModel );
     	    m_graphicView[2]->setSelectionModel( m_selectionModel );
     	    m_focusView=2;
     	    on_action_Y_Z_Plane_triggered();
         }
         else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[2] not found" );
+
         m_graphicView[3] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView4" );
         if ( m_graphicView[3] !=  NULL )
         {
     	    m_graphicView[3]->resize( 600, 400 );
-    	    m_graphicView[3]->SetSceneGraph( m_document->GetRoot( ) );
+    	    m_graphicView[3]->SetSceneGraph( m_graphicsRoot );
     	    m_graphicView[3]->setModel( m_sceneModel );
     	    m_graphicView[3]->setSelectionModel( m_selectionModel );
     	    m_focusView=3;
@@ -2537,10 +2567,11 @@ void MainWindow::SetupMenus()
  */
 void MainWindow::SetupModels()
 {
-    m_sceneModel = new SceneModel();
-    m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
-    m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-    m_selectionModel = new QItemSelectionModel( m_sceneModel );
+	m_sceneModel = new SceneModel();
+	m_sceneModel->SetCoinRoot( *m_graphicsRoot->GetNode() );
+	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
+
+	m_selectionModel = new QItemSelectionModel( m_sceneModel );
 
     connect( m_sceneModel, SIGNAL( LightNodeStateChanged( int ) ),
     		         this, SLOT( SetSunPositionCalculatorEnabled( int ) ) );
@@ -2569,7 +2600,6 @@ void MainWindow::SetupPluginsManager()
 	SetupActionsInsertMaterial( );
 	SetupActionsInsertShape();
 	SetupActionsInsertTracker();
-
 }
 
 /*!
@@ -2580,7 +2610,7 @@ void MainWindow::SetupTreeView()
 
 	sceneModelView->setModel( m_sceneModel );
 	sceneModelView->setSelectionModel( m_selectionModel );
-
+	sceneModelView->setRootIndex( m_sceneModel->IndexFromNodeUrl( QString( "//SunNode") ) );
 
 	connect( sceneModelView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
 			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
@@ -2630,6 +2660,12 @@ void MainWindow::SetupTriggers()
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
 	connect( actionExportPhotonMap, SIGNAL( triggered() ), this, SLOT( ExportPhotonMap() ) );
 	connect( actionRayTraceOptions, SIGNAL( triggered() ), this, SLOT( ShowRayTracerOptionsDialog() )  );
+
+	//View Menu actions
+	connect( actionGrid, SIGNAL( triggered() ), this, SLOT( ShowGrid() )  );
+	connect( actionGridSettings, SIGNAL( triggered() ), this, SLOT( ChangeGridSettings() )  );
+	connect( actionBackground, SIGNAL( triggered() ), this, SLOT( ShowBackground() )  );
+
 }
 
 /*!
@@ -2652,23 +2688,6 @@ void MainWindow::SetupViews()
 }
 
 /*!
- * Defines 3D view background.
- */
-void MainWindow::SetupVRMLBackground()
-{
-    SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
-    float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
-    float gangle= 1.570f;
-    vrmlBackground->groundColor.setValues( 0, 6, gcolor );
-    vrmlBackground->groundAngle.setValue( gangle );
-    float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
-    float sangle= 1.570f;
-    vrmlBackground->skyColor.setValues( 0,6,scolor );
-    vrmlBackground->skyAngle.setValue( sangle );
-	m_document->GetRoot()->insertChild( vrmlBackground, 0 );
-}
-
-/*!
  * Shows the rays and photons stored at the photon map in the 3D view.
  */
 void MainWindow::ShowRaysIn3DView()
@@ -2676,33 +2695,26 @@ void MainWindow::ShowRaysIn3DView()
 	actionDisplayRays->setEnabled( false );
 	actionDisplayRays->setChecked( false );
 
-	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
-
-	if( m_pRays )
-	{
-		m_pRays->removeAllChildren();
-		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("ShowRaysIn3DView: m_pRays referenced in excess ");
-		m_pRays->unref();
-		m_pRays = 0;
-	}
 
 	if( m_fraction > 0.0 || m_drawPhotons )
 	{
-		m_pRays = new SoSeparator;
-		m_pRays->ref();
-		m_pRays->setName( "Rays" );
+		SoSeparator* rays = new SoSeparator;
+		rays->ref();
+		rays->setName( "Rays" );
 
 		if( m_drawPhotons )
 		{
 			SoSeparator* points = trf::DrawPhotonMapPoints(*m_photonMap);
-			m_pRays->addChild(points);
+			rays->addChild(points);
 		}
 		if( m_fraction > 0.0 )
 		{
 			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
-			if( currentRays )	m_pRays->addChild(currentRays);
+			if( currentRays )	rays->addChild(currentRays);
 
 		}
+		m_graphicsRoot->AddRays( rays );
+
 		actionDisplayRays->setEnabled( true );
 		actionDisplayRays->setChecked( true );
 	}
@@ -2721,15 +2733,8 @@ bool MainWindow::StartOver( const QString& fileName )
 	actionDisplayRays->setEnabled( false );
 	actionDisplayRays->setChecked( false );
 
-	if( m_document->GetRoot()->getChild( 0 )->getName() == "Rays"  ) m_document->GetRoot()->removeChild( 0 );
-
-	if( m_pRays )
-	{
-		m_pRays->removeAllChildren();
-		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError("StartOver: m_pRays referenced in excess ");
-		m_pRays->unref();
-		m_pRays = 0;
-	}
+	m_graphicsRoot->RemoveRays();
+	m_graphicsRoot->RemoveModel();
 
 	m_commandStack->clear();
 	m_sceneModel->Clear();
@@ -2755,11 +2760,8 @@ bool MainWindow::StartOver( const QString& fileName )
     }
 
     SetCurrentFile( fileName );
-	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
-	sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-	concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
-	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
+    ChangeModelScene();
 
     return true;
 }
@@ -2770,38 +2772,6 @@ bool MainWindow::StartOver( const QString& fileName )
 QString MainWindow::StrippedName( const QString& fullFileName )
 {
 	return QFileInfo( fullFileName ).fileName();
-}
-
-
-/*!
- * Updates the light dimensions if the automatic light dimensions is defined.
- * Otherwise, nothing is done.
- */
-void MainWindow::UpdateLightDimensions()
-{
-	/*SoSceneKit* coinScene = m_document->GetSceneKit();
-
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-	if ( !lightKit )	return;
-
-	if( !lightKit->automaticallyResizable.getValue() )	return;
-
-	TSeparatorKit* concentratorRoot = static_cast< TSeparatorKit* >( coinScene->getPart( "childList[0]", true ) );
-	if ( !concentratorRoot )	return;
-
-	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-	concentratorRoot->getBoundingBox( bbAction );
-
-	SbBox3f box = bbAction->getXfBoundingBox().project();
-	delete bbAction;
-
-	Point3D pMin( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
-	Point3D pMax( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
-
-	BBox sceneBox( pMin, pMax );
-
-	lightKit->ResizeToBBox( sceneBox );*/
-
 }
 
 /*!

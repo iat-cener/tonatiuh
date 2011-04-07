@@ -52,6 +52,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TLightKit.h"
 #include "TMaterial.h"
 #include "TSceneTracker.h"
+#include "TSceneKit.h"
 #include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TShapeKit.h"
@@ -77,7 +78,7 @@ SceneModel::~SceneModel()
 /*!
  * Sets \a coinRoot as the model root.
  */
-void SceneModel::SetCoinRoot( SoSelection& coinRoot )
+void SceneModel::SetCoinRoot( SoSeparator& coinRoot )
 {
 	m_coinRoot = &coinRoot;
 	m_mapCoinQt.clear();
@@ -88,7 +89,7 @@ void SceneModel::SetCoinRoot( SoSelection& coinRoot )
  *
  * Creates nodes for the model to the scene subnodes.
  */
-void SceneModel::SetCoinScene( SoSceneKit& coinScene )
+void SceneModel::SetCoinScene( TSceneKit& coinScene )
 {
 	if( m_instanceRoot )	Clear();
 	m_mapCoinQt.clear();
@@ -167,10 +168,26 @@ void SceneModel::SetConcentrator()
 	}
 	else
 	{
-		TSeparatorKit* separatorKit = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
-		if ( !separatorKit ) return;
+		TSeparatorKit* sunSeparatorKit = static_cast< TSeparatorKit* >( coinPartList->getChild( 0 ) );
+		if ( !sunSeparatorKit ) return;
 
-		InstanceNode* instanceNode = AddInstanceNode( *m_instanceRoot, separatorKit );
+		InstanceNode* sunInstanceNode = AddInstanceNode( *m_instanceRoot, sunSeparatorKit );
+		SoNodeKitListPart* sunSeparatorChildList = static_cast< SoNodeKitListPart* >( sunSeparatorKit->getPart( "childList", true ) );
+		if ( !sunSeparatorChildList ) return;
+
+		SoNode* tracker = sunSeparatorKit->getPart( "tracker", false );
+		if( tracker )
+		{
+			TTracker* trackerNode = static_cast< TTracker* >( tracker );
+			trackerNode->SetSceneKit( m_coinScene );
+			//AddInstanceNode( instanceNodeParent, tracker );
+		}
+
+
+		TSeparatorKit* separatorKit = static_cast< TSeparatorKit* >( sunSeparatorChildList->getChild( 0 ) );
+		if( !separatorKit )	return;
+
+		InstanceNode* instanceNode = AddInstanceNode( *sunInstanceNode, separatorKit );
 		GenerateInstanceTree( *instanceNode );
 	}
 }

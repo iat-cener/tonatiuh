@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class QString;
 class SoSelection;
 class SoSeparator;
-class SoSceneKit;
+class TSceneKit;
 class TShapeKit;
 
 //!  Document class stores the application scene.
@@ -65,21 +65,14 @@ public:
     bool WriteFile( const QString& fileName );
 
     bool IsModified( );
-    SoSelection* GetRoot() const;
-    SoSceneKit* GetSceneKit() const;
-
-    void selectionFinishCBAux( SoSelection* selection );
-
-signals:
-    void selectionFinish( SoSelection* selection );
+    TSceneKit* GetSceneKit() const;
 
 private:
-    SoSceneKit* GetSceneKitFromFile( const QString& fileName );
+    TSceneKit* GetSceneKitFromFile( const QString& fileName );
     void InitializeScene();
     void ClearScene();
 
-	SoSelection* m_root;
-    SoSceneKit* m_scene;
+    TSceneKit* m_scene;
     bool m_isModified;
 
 

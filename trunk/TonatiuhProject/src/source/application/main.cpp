@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/Qt/SoQt.h>
 
+#include "GraphicRootTracker.h"
 #include "MainWindow.h"
 #include "TDefaultMaterial.h"
 #include "TDefaultSunShape.h"
@@ -50,6 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TCube.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
+#include "TSceneKit.h"
 #include "TSeparatorKit.h"
 #include "TSceneTracker.h"
 #include "TShapeKit.h"
@@ -96,7 +98,7 @@ int main( int argc, char ** argv )
 
 	SoQt::init( (QWidget *) NULL );
 
-
+	TSceneKit::initClass();
 	TMaterial::initClass();
 	TDefaultMaterial::initClass();
 	TSeparatorKit::initClass();
@@ -111,6 +113,7 @@ int main( int argc, char ** argv )
 	TTracker::initClass();
 	TDefaultTracker::initClass();
 	TSceneTracker::initClass();
+	GraphicRootTracker::initClass();
 
 
 	MainWindow* mw;
