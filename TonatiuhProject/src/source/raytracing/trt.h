@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRT_H_
 #define TRT_H_
 
-
 #include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFVec2d.h>
@@ -50,7 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 namespace trt
 {
-	#if( defined(Q_WS_X11) || defined(Q_WS_MAC) )
+	#if unix//( defined(Q_WS_X11) || defined(Q_WS_MAC) )
 		typedef SoSFDouble TONATIUH_REAL;
 		typedef SoSFVec3d TONATIUH_REALVECTOR3;
 		typedef SoSFVec2d TONATIUH_REALVECTOR2;
