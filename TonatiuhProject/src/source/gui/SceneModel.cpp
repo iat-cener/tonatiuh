@@ -888,14 +888,13 @@ void SceneModel::UpdateSceneModel()
 	SbBox3f box = bbAction->getXfBoundingBox().project();
 	delete bbAction;
 
-	Point3D pMin( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
-	Point3D pMax( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+	BBox sceneBox;
+	if( !box.isEmpty() )
+	{
+		sceneBox.pMin = Point3D( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
+		sceneBox.pMax = Point3D( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+	}
 
-	BBox sceneBox( pMin, pMax );
-
-	//lightKit->ResizeToBBox( sceneBox );
-
-	//TLightKit* lightList = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
 	if( lightKit ) lightKit->Update( sceneBox );
 
 
