@@ -124,20 +124,24 @@ QString ShapeTroughCHC::GetIcon() const
 
 bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
-	//Ray ray = Ray( Point3D(0.4, 2.0, 0.0 ), Vector3D(0.0, -1.0, 0.0) );
 	double a = ( m_s - height.getValue() )/( cos( m_theta ) * 2 *  m_eccentricity);
-
 	double b = sqrt( ( m_eccentricity * m_eccentricity - 1 ) *  a * a );
 
 	double angle = -( 0.5 * tgc::Pi ) + m_theta;
-	Transform rotation = Rotate( angle, Vector3D( 0.0, 0.0, 1.0 ) );
+	/*Transform rotation = Rotate( angle, Vector3D( 0.0, 0.0, 1.0 ) );
 	Transform translate = Translate( -r1.getValue() + a * m_eccentricity * sin( m_theta ),
 			- a * m_eccentricity * cos( m_theta ),
 			0.0 );
 
-
-	//std::cout<<"angle "<<angle<<std::endl;
 	Transform hTransform = translate * rotation ;
+	*/
+
+	Transform hTransform( cos( angle ), -sin( angle ), 0.0, -r1.getValue() + a * m_eccentricity * sin( m_theta ),
+			sin( angle ), cos( angle ), 0.0, - a * m_eccentricity * cos( m_theta ),
+	           0.0, 0.0, 1.0, 0.0,
+	           0.0, 0.0, 0.0, 1.0 );
+
+
 	Ray transformedRay = hTransform.GetInverse()( objectRay );
 
 	double A =   ( transformedRay.direction().x * transformedRay.direction().x ) / ( a * a )
@@ -192,9 +196,6 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 					|| hitPoint.y < 0.0 || hitPoint.y > height.getValue()
 					|| hitPoint.z < zmin ||  hitPoint.z > zmax )	return false;
 	}
-
-
-
 
 	// Find parametric representation of CHC concentrator hit
 

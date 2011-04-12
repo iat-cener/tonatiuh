@@ -41,12 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SHAPEFLATTRIANGLE_H_
 
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/nodes/SoShape.h>
 
 #include "TShape.h"
 #include "trt.h"
 
-class Transform;
 class SoSensor;
 
 class ShapeFlatTriangle : public TShape

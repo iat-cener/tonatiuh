@@ -58,15 +58,16 @@ public:
 
 	//Constructor
 	TrackerHeliostat();
-	enum Rotations{
+
+	trt::TONATIUH_REALVECTOR3 aimingPoint;
+	/*enum Rotations{
 		YX = 0,
 		YZ   = 1,
 		XZ   = 2,
 		ZX   = 3
 	};
 
-	trt::TONATIUH_REALVECTOR3 aimingPoint;
-	SoSFEnum typeOfRotation;
+	SoSFEnum typeOfRotation;*/
 
 protected:
 	virtual ~TrackerHeliostat();
