@@ -228,11 +228,11 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	buffer1.push_back( r2 );
 
 
-	int nIterations = 30;
+	int nIterations = 100;
 	double previousDistance = 0;
 	double currentDistance = tgc::Infinity;
 
-	double tol = 0.00000001;
+	double tol = 0.000000001;
 	int iteration = 0;
 	while( ( iteration < nIterations ) && ( fabs( previousDistance - currentDistance ) > tol ) )
 	{

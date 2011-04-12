@@ -105,10 +105,14 @@ QString ShapeParabolicRectangle::GetIcon() const
 
 bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
+	double focus = focusLength.getValue();
+	double wX = widthX.getValue();
+	double wZ = widthZ.getValue();
+
 	// Compute quadratic coefficients
 	double A = objectRay.direction().x * objectRay.direction().x + objectRay.direction().z * objectRay.direction().z;
-	double B = 2.0 * ( objectRay.direction().x * objectRay.origin.x + objectRay.direction().z * objectRay.origin.z  - 2 * focusLength.getValue() * objectRay.direction().y );
-	double C = objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z - 4 * focusLength.getValue()* objectRay.origin.y;
+	double B = 2.0 * ( objectRay.direction().x * objectRay.origin.x + objectRay.direction().z * objectRay.origin.z  - 2 * focus * objectRay.direction().y );
+	double C = objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z - 4 * focus * objectRay.origin.y;
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -126,16 +130,16 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	Point3D hitPoint = objectRay( thit );
 
 	// Test intersection against clipping parameters
-	if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - widthX.getValue() / 2 ) || hitPoint.x > ( widthX.getValue() / 2 ) ||
-			hitPoint.z < ( - widthZ.getValue() / 2 ) || hitPoint.z > ( widthZ.getValue() / 2 ) )
+	if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - wX / 2 ) || hitPoint.x > ( wX / 2 ) ||
+			hitPoint.z < ( - wZ / 2 ) || hitPoint.z > ( wZ / 2 ) )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
 		thit = t1;
 
 		hitPoint = objectRay( thit );
-		if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - widthX.getValue() / 2 ) || hitPoint.x > ( widthX.getValue() / 2 ) ||
-					hitPoint.z < ( - widthZ.getValue() / 2 ) || hitPoint.z > ( widthZ.getValue() / 2 ) )	return false;
+		if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - wX / 2 ) || hitPoint.x > ( wX / 2 ) ||
+					hitPoint.z < ( - wZ / 2 ) || hitPoint.z > ( wZ / 2 ) )	return false;
 
 	}
 
@@ -149,16 +153,16 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	// Compute possible parabola hit position
 
 	// Find parametric representation of paraboloid hit
-	double u =  ( hitPoint.x  / widthX.getValue() ) + 0.5;
-	double v =  ( hitPoint.z  / widthZ.getValue() ) + 0.5;
+	double u =  ( hitPoint.x  / wX ) + 0.5;
+	double v =  ( hitPoint.z  / wZ ) + 0.5;
 
-	Vector3D dpdu( widthX.getValue(), ( (-0.5 + u) * widthX.getValue() *  widthX.getValue() )/(2 * focusLength.getValue()), 0 );
-	Vector3D dpdv( 0.0, (( -0.5 + v) * widthZ.getValue() *  widthZ.getValue() ) /( 2 * focusLength.getValue() ), widthZ.getValue() );
+	Vector3D dpdu( wX, ( (-0.5 + u) * wX *  wX ) / ( 2 * focus ), 0 );
+	Vector3D dpdv( 0.0, (( -0.5 + v) * wZ *  wZ ) /( 2 * focus ), wZ );
 
 	// Compute parabaloid \dndu and \dndv
-	Vector3D d2Pduu( 0.0,  (widthX.getValue() *  widthX.getValue() ) /( 2 * focusLength.getValue() ), 0.0 );
+	Vector3D d2Pduu( 0.0,  (wX *  wX ) /( 2 * focus ), 0.0 );
 	Vector3D d2Pduv( 0.0, 0.0, 0.0 );
-	Vector3D d2Pdvv( 0.0,  (widthZ.getValue() *  widthZ.getValue() ) /( 2 * focusLength.getValue() ), 0.0 );
+	Vector3D d2Pdvv( 0.0,  (wZ *  wZ ) /( 2 * focus ), 0.0 );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
