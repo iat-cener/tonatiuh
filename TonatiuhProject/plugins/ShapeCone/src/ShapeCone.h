@@ -39,15 +39,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPECONE_H_
 #define SHAPECONE_H_
 
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/nodes/SoShape.h>
 
 #include "TShape.h"
 #include "trt.h"
-
-class Transform;
 
 class ShapeCone : public TShape
 {

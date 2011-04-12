@@ -233,6 +233,7 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 	double pixelHeight = height / heightPixeles;
 
 	QImage  sourceImage( widthPixeles, heightPixeles, QImage::Format_RGB32 );
+	sourceImage.setOffset( QPoint( 0.5, 0.5 ) );
 	sourceImage.fill( Qt::white  );
 
 	QPainter painter( &sourceImage );
@@ -298,8 +299,6 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 
 	}
 
-	sourceImage.save( "sourceImage_prueba.png" );
-
 	int** areaMatrix = new int*[heightPixeles];
 	for( int i = 0; i < heightPixeles; i++ )
 	{
@@ -340,6 +339,8 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 
 	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
     texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
+    texture->wrapS = SoTexture2::CLAMP;
+    texture->wrapT = SoTexture2::CLAMP;
 
     shape->SetLightSourceArea( heightPixeles, widthPixeles, areaMatrix );
 

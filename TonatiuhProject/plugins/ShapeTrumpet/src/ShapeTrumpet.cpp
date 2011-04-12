@@ -178,6 +178,10 @@ QString ShapeTrumpet::GetIcon() const
 bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 	double a0 = a.getValue();
+	double fH = focusHyperbola.getValue();
+	double tH = truncationHeight.getValue();
+	double hH = hyperbolaHeight.getValue();
+
 	double b = m_bHyperbola;
 
 	double A = ( ( b * b ) * ( objectRay.direction().x * objectRay.direction().x + objectRay.direction().z * objectRay.direction().z ) )
@@ -206,11 +210,11 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	Point3D hitPoint = objectRay( thit );
 
 	double rMin = sqrt( a0 * a0 * ( 1 +
-			( ( truncationHeight.getValue() * truncationHeight.getValue() )
+			( ( tH * tH )
 					/ ( b * b ) ) ) );
 
 	double rMax = sqrt( a0 * a0 * ( 1 +
-			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
+			( ( hH * hH )
 					/ ( b * b ) ) ) );
 
 	double length = sqrt( hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z );
@@ -219,7 +223,7 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	// Test intersection against clipping parameters
 	if( (thit - objectRay.mint) < tol
 			|| length < rMin || length > rMax
-			|| hitPoint.y < truncationHeight.getValue() || hitPoint.y > hyperbolaHeight.getValue() )
+			|| hitPoint.y < tH || hitPoint.y > hH )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
@@ -231,7 +235,7 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 
 		if( (thit - objectRay.mint) < tol
 				|| length < rMin || length > rMax
-				|| hitPoint.y < truncationHeight.getValue() || hitPoint.y > hyperbolaHeight.getValue() )	return false;
+				|| hitPoint.y < tH || hitPoint.y > hH )	return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -244,13 +248,14 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	if( phi < 0 ) phi += tgc::TwoPi;
 	double v = phi/ tgc::TwoPi;
 
+
 	// Compute  \dpdu and \dpdv
 	Vector3D dpdu = GetDPDU( u, v );
 	Vector3D dpdv = GetDPDV( u, v );
 
 	// Compute cylinder \dndu and \dndv
-	double h2 = hyperbolaHeight.getValue();
-	double h1 = truncationHeight.getValue();
+	double h2 = hH;
+	double h1 = tH;
 	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
 	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
 
