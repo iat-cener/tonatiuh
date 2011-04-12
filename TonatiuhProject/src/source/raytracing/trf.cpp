@@ -78,10 +78,11 @@ int trf::ExportAll( QString fileName, double wPhoton, TPhotonMap* photonMap )
         {
                 Photon* node = photonsList[i];
                 Point3D photon = node->pos;
+                double side = double( node->side );
                 double id = node->id;
                 double prev_id = ( node->prev ) ? node->prev->id : 0;
                 double next_id = ( node->next ) ? node->next->id : 0;
-                out<<id <<photon.x << photon.y << photon.z <<prev_id << next_id;
+                out<<id <<photon.x << photon.y << photon.z <<side<<prev_id << next_id;
         }
         exportFile.close();
 
@@ -116,10 +117,11 @@ int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selecte
         {
                 Photon* node = nodePhotonsList[i];
                 Point3D photon = node->pos;
+                double side = double( node->side );
                 double id = node->id;
                 double prev_id = ( node->prev ) ? node->prev->id : 0;
                 double next_id = ( node->next ) ? node->next->id : 0;
-                out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+                out<<id <<photon.x << photon.y <<photon.z<<side<<prev_id <<next_id ;
         }
 
         exportFile.close();
@@ -155,10 +157,11 @@ int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selected
         {
                 Photon* node = nodePhotonsList[i];
                 Point3D photon =  worldToObject( node->pos );
+                double side = double( node->side );
                 double id = node->id;
                 double prev_id = ( node->prev ) ? node->prev->id : 0;
                 double next_id = ( node->next ) ? node->next->id : 0;
-                out<<id <<photon.x << photon.y <<photon.z<<prev_id <<next_id ;
+                out<<id <<photon.x << photon.y <<photon.z<<side<<prev_id <<next_id ;
         }
 
         exportFile.close();
