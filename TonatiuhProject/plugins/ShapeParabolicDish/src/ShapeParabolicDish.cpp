@@ -122,10 +122,11 @@ QString ShapeParabolicDish::GetIcon() const
 
 bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
-	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
-	double A = objectRay.direction().x*objectRay.direction().x + objectRay.direction().z*objectRay.direction().z;
+	double pMax = phiMax.getValue();
+	double A = objectRay.direction().x*objectRay.direction().x + objectRay.direction().z * objectRay.direction().z;
     double B = 2.0 * ( objectRay.direction().x* objectRay.origin.x + objectRay.direction().z * objectRay.origin.z - 2 * focusLength.getValue() * objectRay.direction().y );
 	double C = objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z - 4 * focusLength.getValue() * objectRay.origin.y;
+
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -141,6 +142,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 
 	//Compute possible hit position
 	Point3D hitPoint = objectRay( thit );
+
 	double radius = sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) ;
     double phi;
     if( ( hitPoint.z == 0.0 ) &&( hitPoint.x ==0.0 ) ) phi = 0.0;
@@ -148,7 +150,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
     else phi = tgc::TwoPi + atan2( hitPoint.x, hitPoint.z );
 
     // Test intersection against clipping parameters
-	if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius.getValue() || radius > dishMaxRadius.getValue() || phi > phiMax.getValue() )
+	if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius.getValue() || radius > dishMaxRadius.getValue() || phi > pMax )
 		{
 			if ( thit == t1 ) return false;
 			if ( t1 > objectRay.maxt ) return false;
@@ -160,7 +162,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 		    else if( hitPoint.x > 0 ) phi = atan2( hitPoint.x, hitPoint.z );
 		    else phi = tgc::TwoPi + atan2( hitPoint.x, hitPoint.z );
 
-			if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius.getValue() || radius > dishMaxRadius.getValue() || phi > phiMax.getValue() ) return false;
+			if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius.getValue() || radius > dishMaxRadius.getValue() || phi > pMax ) return false;
 		}
 
 	// Now check if the function is being called from IntersectP,
@@ -171,28 +173,28 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 ///////////////////////////////////////////////////////////////////////////////////////
 
 	// Find parametric representation of paraboloid hit
-	double u = phi / phiMax.getValue();
+	double u = phi / pMax;
 	double v = ( radius - dishMinRadius.getValue() )  /( dishMaxRadius.getValue() - dishMinRadius.getValue() );
 
 	// Compute Circular Parabolic Facet \dpdu and \dpdv
 	double r = v * ( dishMaxRadius.getValue() - dishMinRadius.getValue() ) + dishMinRadius.getValue();
-
-	Vector3D dpdu( phiMax.getValue() * r * cos( phiMax.getValue() * u ),
+	Vector3D dpdu( pMax * r * cos( pMax * u ),
 					0,
-					-phiMax.getValue() * r * sin( phiMax.getValue() * u ) );
+					-pMax * r * sin( pMax * u ) );
 
-	Vector3D dpdv( ( dishMaxRadius.getValue() - dishMinRadius.getValue() )  * sin( phiMax.getValue() * u ),
+	Vector3D dpdv( ( dishMaxRadius.getValue() - dishMinRadius.getValue() )  * sin( pMax * u ),
 				   ( ( dishMaxRadius.getValue() - dishMinRadius.getValue() ) * r  )
 							   / ( 2 * focusLength.getValue() ),
-					( dishMaxRadius.getValue() - dishMinRadius.getValue() ) * cos( phiMax.getValue() * u ) );
+					( dishMaxRadius.getValue() - dishMinRadius.getValue() ) * cos( pMax * u ) );
+
 
 	// Compute Circular Parabolic Facet \dndu and \dndv
-	Vector3D d2Pduu ( -phiMax.getValue()* phiMax.getValue() * r * sin( phiMax.getValue() * u ),
+	Vector3D d2Pduu ( -pMax * pMax * r * sin( pMax * u ),
+			0.0,
+			-pMax* pMax * r * cos( pMax * u ) );
+	Vector3D d2Pduv ( pMax* ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) * cos( pMax * u ),
 					0.0,
-					-phiMax.getValue()* phiMax.getValue() * r * cos( phiMax.getValue() * u ) );
-	Vector3D d2Pduv ( phiMax.getValue()* ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) * cos( phiMax.getValue() * u ),
-					0.0,
-					-phiMax.getValue()* ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) * sin( phiMax.getValue() * u ) );
+					-pMax * ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) * sin( pMax * u ) );
 	Vector3D d2Pdvv (0, ( ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) * ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) ) /(2 * focusLength.getValue() ), 0 );
 
 
@@ -202,7 +204,6 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	double G = DotProduct(dpdv, dpdv);
 
 	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-
 
 	double e = DotProduct(N, d2Pduu);
 	double f = DotProduct(N, d2Pduv);
@@ -229,6 +230,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
+
 	return true;
 }
 

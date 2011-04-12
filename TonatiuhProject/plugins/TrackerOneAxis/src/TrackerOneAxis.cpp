@@ -50,6 +50,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "tgc.h"
 #include "TrackerOneAxis.h"
+#include "TSeparatorKit.h"
 #include "TSceneKit.h"
 
 SO_NODEENGINE_SOURCE( TrackerOneAxis );
@@ -90,11 +91,16 @@ void TrackerOneAxis::evaluate()
 	if( !m_azimuth.isConnected() ) return;
 	if( !m_zenith.isConnected() ) return;
 
+	TSeparatorKit* sunNode = static_cast< TSeparatorKit* > ( m_scene->getPart( "childList[0]", true ) );
+	if( !sunNode )	return;
+
+	TSeparatorKit* rootNode = static_cast< TSeparatorKit* > ( sunNode->getPart( "childList[0]", true ) );
+	if( !rootNode )	return;
 
 	SoSearchAction* coinSearch = new SoSearchAction();
 	coinSearch->setNode( this );
 	coinSearch->setInterest( SoSearchAction::FIRST );
-	coinSearch->apply( m_scene );
+	coinSearch->apply( rootNode );
 	SoPath* nodePath = coinSearch->getPath( );
 	if( !nodePath ) return;
 

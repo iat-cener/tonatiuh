@@ -124,6 +124,10 @@ QString ShapeSphericalRectangle::GetIcon() const
 
 bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
+	double r = radius.getValue();
+	double wX = widthX.getValue();
+	double wZ = widthZ.getValue();
+
 	// Compute quadratic ShapeSphere coefficients
 	double A =   objectRay.direction().x * objectRay.direction().x
 			   + objectRay.direction().y * objectRay.direction().y
@@ -132,12 +136,12 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	double B = 2.0 * (   objectRay.origin.x * objectRay.direction().x
 				       + objectRay.origin.y * objectRay.direction().y
 				       + objectRay.origin.z * objectRay.direction().z
-				       - objectRay.direction().y * radius.getValue() );
+				       - objectRay.direction().y * r );
 
 	double C =   objectRay.origin.x * objectRay.origin.x
 			   + objectRay.origin.y * objectRay.origin.y
 			   + objectRay.origin.z * objectRay.origin.z
-			   - 2 * objectRay.origin.y * radius.getValue();
+			   - 2 * objectRay.origin.y * r;
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -151,23 +155,23 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
     //Evaluate Tolerance
 	double tol = 0.00001;
 
-	double ymax = radius.getValue() - sqrt( radius.getValue()* radius.getValue() - ( widthX.getValue() / 2 ) * ( widthX.getValue() / 2 )
-													- ( widthZ.getValue() / 2 ) * ( widthZ.getValue() / 2 ) );
+	double ymax = r - sqrt( r* r - ( wX / 2 ) * ( wX / 2 )
+													- ( wZ / 2 ) * ( wZ / 2 ) );
 
 	//Compute possible hit position
 	Point3D hitPoint = objectRay( thit );
 
 	// Test intersection against clipping parameters
-	if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - widthX.getValue() / 2 ) || hitPoint.x > ( widthX.getValue() / 2 ) ||
-			hitPoint.z < ( - widthZ.getValue() / 2 ) || hitPoint.z > ( widthZ.getValue() / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
+	if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - wX / 2 ) || hitPoint.x > ( wX / 2 ) ||
+			hitPoint.z < ( - wZ / 2 ) || hitPoint.z > ( wZ / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
 		thit = t1;
 
 		hitPoint = objectRay( thit );
-		if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - widthX.getValue() / 2 ) || hitPoint.x > ( widthX.getValue() / 2 ) ||
-					hitPoint.z < ( - widthZ.getValue() / 2 ) || hitPoint.z > ( widthZ.getValue() / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
+		if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - wX / 2 ) || hitPoint.x > ( wX / 2 ) ||
+					hitPoint.z < ( - wZ / 2 ) || hitPoint.z > ( wZ / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
 			return false;
 
 	}
@@ -175,35 +179,35 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
     // Now check if the function is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ParabolicCyl::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeSphericalRectangle::Intersect(...) called with null pointers" );
 
 ///////////////////////////////////////////////////////////////////////////////////////
 	// Compute possible parabola hit position
 
 	// Find parametric representation of paraboloid hit
-	double u =  ( hitPoint.x  / widthX.getValue() ) + 0.5;
-	double v =  ( hitPoint.z  / widthZ.getValue() ) + 0.5;
+	double u =  ( hitPoint.x  / wX ) + 0.5;
+	double v =  ( hitPoint.z  / wZ ) + 0.5;
 
-	double aux = radius.getValue() * radius.getValue()
-			- (-0.5 + u) * (-0.5 + u) * widthX.getValue() *widthX.getValue()
-			- (-0.5 + v) * (-0.5 + v) * widthZ.getValue() *widthZ.getValue();
+	double aux = r * r
+			- (-0.5 + u) * (-0.5 + u) * wX *wX
+			- (-0.5 + v) * (-0.5 + v) * wZ *wZ;
 	Vector3D dpdu = GetDPDU( u, v );
 	Vector3D dpdv = GetDPDV( u, v );
 
 	// Compute parabaloid \dndu and \dndv
 
 	Vector3D d2Pduu( 0.0,
-			( ( (-0.5 + u) * (-0.5 + u) * widthX.getValue() *  widthX.getValue() * widthX.getValue() *  widthX.getValue() ) / sqrt( aux * aux * aux ) )
-				+ ( ( widthX.getValue() *  widthX.getValue() )  / sqrt( aux ) ),
+			( ( (-0.5 + u) * (-0.5 + u) * wX *  wX * wX *  wX ) / sqrt( aux * aux * aux ) )
+				+ ( ( wX *  wX )  / sqrt( aux ) ),
 			0.0 );
 
 	Vector3D d2Pduv( 0.0,
-			( (-0.5 + u) * (-0.5 + v ) * widthX.getValue() *  widthX.getValue() * widthZ.getValue() *  widthZ.getValue()  )
+			( (-0.5 + u) * (-0.5 + v ) * wX *  wX * wZ *  wZ  )
 				/ sqrt( aux * aux * aux ),
 			0.0 );
 	Vector3D d2Pdvv( 0.0,
-				( ( (-0.5 + u) * (-0.5 + u) * widthZ.getValue() *  widthZ.getValue() * widthZ.getValue() *  widthZ.getValue() ) / sqrt( aux * aux * aux ) )
-					+ ( ( widthZ.getValue() *  widthZ.getValue() )  / sqrt( aux ) ),
+				( ( (-0.5 + u) * (-0.5 + u) * wZ *  wZ * wZ *  wZ ) / sqrt( aux * aux * aux ) )
+					+ ( ( wZ *  wZ )  / sqrt( aux ) ),
 				0.0 );
 
 	// Compute coefficients for fundamental forms
@@ -239,8 +243,6 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
 	return true;
-
-
 }
 
 bool ShapeSphericalRectangle::IntersectP( const Ray& objectRay ) const
