@@ -214,12 +214,12 @@ inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , s
 	while( it < photonsList.second.end() )
 	{
 		rayLength = 1;
-		Photon* first = new Photon( it->pos, 0, 0, 0, it->intersectedSurface );
+		Photon* first = new Photon( it->pos, it->shapeFront, 0, 0, 0, it->intersectedSurface );
 		Photon* nextPhoton = first;
 
 		while( (++it)<photonsList.second.end() && ( it->id > 0 ) )
 		{
-			Photon* photon = new Photon( it->pos, nextPhoton, 0, 0, it->intersectedSurface );
+			Photon* photon = new Photon( it->pos, it->shapeFront, nextPhoton, 0, 0, it->intersectedSurface );
 
 			nextPhoton->next = photon;
 			nextPhoton = photon;

@@ -13,13 +13,13 @@ RayTracerPhoton::RayTracerPhoton( )
 }
 
 RayTracerPhoton::RayTracerPhoton( const RayTracerPhoton& photon )
-:id( photon.id ), pos( photon.pos ), intersectedSurface( photon.intersectedSurface )
+:id( photon.id ), pos( photon.pos ), shapeFront( photon.shapeFront ), intersectedSurface( photon.intersectedSurface )
 {
 
 }
 
-RayTracerPhoton::RayTracerPhoton( Point3D pos, double id, InstanceNode* intersectedSurface )
-:id( id ), pos( pos ), intersectedSurface( intersectedSurface )
+RayTracerPhoton::RayTracerPhoton( Point3D pos, int shapeFront, double id, InstanceNode* intersectedSurface )
+:id( id ), pos( pos ), shapeFront( shapeFront ), intersectedSurface( intersectedSurface )
 {
 
 }

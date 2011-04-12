@@ -15,11 +15,12 @@ struct RayTracerPhoton
 {
 	RayTracerPhoton( );
 	RayTracerPhoton( const RayTracerPhoton& photon );
-	RayTracerPhoton( Point3D pos, double id = 0, InstanceNode* intersectedSurface = 0 );
+	RayTracerPhoton( Point3D pos, int shapeFront, double id = 0, InstanceNode* intersectedSurface = 0 );
 	~RayTracerPhoton();
 
 	double id;
 	Point3D pos;
+	int shapeFront;
 	InstanceNode* intersectedSurface;
 };
 

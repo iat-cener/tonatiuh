@@ -135,7 +135,8 @@ TEST(RayTracerTest, TotalPower )
 	{
 		double id, prev, next;
 		double x, y, z;
-		in>>id>>x>>y>>z>>prev>>next;
+		double side;
+		in>>id>>x>>y>>z>>side>>prev>>next;
 		photons.push_back( Point3D( x, y, z) );
 	}
 	targetPhotonsFile.close();
@@ -169,7 +170,8 @@ TEST(RayTracerTest, FluxMaximum )
 	{
 		double id, prev, next;
 		double x, y, z;
-		in>>id>>x>>y>>z>>prev>>next;
+		double side;
+		in>>id>>x>>y>>z>>side>>prev>>next;
 		photons.push_back( Point3D( x, y, z) );
 	}
 	targetPhotonsFile.close();

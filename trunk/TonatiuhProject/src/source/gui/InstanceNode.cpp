@@ -112,7 +112,9 @@ void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
    instanceChild->SetParent(this);
 }
 
-bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode, Ray* outputRay )
+
+//bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode, Ray* outputRay )
+bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, InstanceNode** modelNode, Ray* outputRay )
 {
 
 	//Check if the ray intersects with the BoundingBox
@@ -126,12 +128,14 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode*
       {
          InstanceNode* intersectedChild = 0;
          Ray childOutputRay;
-         bool isChildOutputRay = children[index]->Intersect( ray, rand, &intersectedChild, &childOutputRay );
+         bool childShapreFront = true;
+         bool isChildOutputRay = children[index]->Intersect( ray, rand, &childShapreFront, &intersectedChild, &childOutputRay );
 
          if( ray.maxt < t )
          {
             t = ray.maxt;
             *modelNode = intersectedChild;
+            *isShapeFront = childShapreFront;
 
             *outputRay = childOutputRay;
             isOutputRay = isChildOutputRay;
@@ -167,6 +171,8 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode*
 
 			 ray.maxt = thit;
 			 *modelNode = this;
+
+			 *isShapeFront = dg.shapeFrontSide;
 
 			 if( tmaterial )
 			 {

@@ -223,7 +223,7 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 	double height = shape->zMax.getValue() - shape->zMin.getValue();
 
 
-	int pixels = 100;
+	int pixels = 150;
 	int widthPixeles = pixels;
 	if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
 	double pixelWidth = double( width / widthPixeles );
