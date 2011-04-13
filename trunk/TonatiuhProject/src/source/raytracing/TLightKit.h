@@ -101,9 +101,7 @@ public:
     TLightKit();
     static void initClass();
 
-    //void ChangePosition( QDateTime newTime, double longitude, double latitude );
-    void ChangePosition( double newAzimuth, double newZenith/*, double newDistance*/ );
-    void GetPositionData( QDateTime* time, double* longitude, double* latitude );
+    void ChangePosition( double newAzimuth, double newZenith );
 
     void Update( BBox box );
     void ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > > surfacesList );
@@ -114,11 +112,6 @@ public:
 private:
     virtual ~TLightKit();
     void UpdateSunPosition();
-
-    QDateTime m_time;
-    SoSFDouble m_longitude;
-    SoSFDouble m_latitude;
-
 
 };
 

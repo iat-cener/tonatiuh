@@ -56,9 +56,6 @@ public:
 	SunPositionCalculatorDialog( QWidget* parent = 0 );
 	~SunPositionCalculatorDialog();
 
-	//void ChangePosition( QDateTime time, double longitude, double latitude );
-	//void SetDateTime( QDateTime time );
-
 protected:
     void closeEvent( QCloseEvent* event );
 

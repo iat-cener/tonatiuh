@@ -30,7 +30,7 @@ Understanding signed with the Spanish National Renewable Energy Centre (CENER)
 on February, 20, 2007 (MOU#NREL-07-117). Since June 2006, the development of
 Tonatiuh is being led by CENER, under the direction of Dr. Blanco, now
 Manager of the Solar Thermal Energy Department of CENER.
-
+tgc
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
@@ -43,7 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TestsAuxiliaryFunctions.h"
 
 const double maximumCoordinate = 5000000.0;
-//const unsigned long int maximumNumberOfTests = 6000000;
 const unsigned long int maximumNumberOfTests = 1000;
 
 TEST( Matrix4x4Tests, ConstructorDefault)

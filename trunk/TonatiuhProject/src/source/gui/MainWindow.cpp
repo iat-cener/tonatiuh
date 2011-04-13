@@ -244,11 +244,11 @@ void MainWindow::FinishManipulation( )
  */
 void MainWindow::StartManipulation( SoDragger* dragger )
 {
-	/*SoSearchAction* coinSearch = new SoSearchAction();
+	SoSearchAction* coinSearch = new SoSearchAction();
 	coinSearch->setNode( dragger );
 	coinSearch->setInterest( SoSearchAction::FIRST);
 
-	coinSearch->apply( m_document->GetRoot() );
+	coinSearch->apply( m_graphicsRoot->GetNode() );
 
 	SoPath* coinScenePath = coinSearch->getPath( );
 	if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
@@ -284,7 +284,7 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 			m_manipulators_Buffer->push_back(QString( fieldValue.getString() ) );
 		}
 	}
-	delete coinSearch;*/
+	delete coinSearch;
 }
 
 /*!
@@ -294,18 +294,8 @@ void MainWindow::CalculateSunPosition()
 {
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene->getPart( "lightList[0]", false ) ) return;
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-
-
-	QDateTime currentTime;
-	double longitude;
-	double latitude;
-
-	lightKit->GetPositionData( &currentTime, &longitude, &latitude );
 
 	SunPositionCalculatorDialog sunposDialog;
-	//sunposDialog.ChangePosition( currentTime, longitude, latitude );
-
 	connect( &sunposDialog, SIGNAL( changeSunLight( double, double ) ) , this, SLOT( ChangeSunPosition( double, double ) ) );
 
 	sunposDialog.exec();

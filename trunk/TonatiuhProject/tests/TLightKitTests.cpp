@@ -1,0 +1,53 @@
+/*
+ * TLightKitTests.cpp
+ *
+ *  Created on: 13/04/2011
+ *      Author: amutuberria
+ */
+
+#include <Inventor/nodes/SoTransform.h>
+
+#include <gtest/gtest.h>
+
+#include "tgc.h"
+#include "TLightKit.h"
+#include "TestsAuxiliaryFunctions.h"
+
+const unsigned long int maximumNumberOfTests = 1000;
+
+TEST( TLightKitTests, ConstructorDefault)
+{
+	TLightKit* light = new TLightKit;
+
+	EXPECT_TRUE( light->azimuth.getValue() == 0.0);
+	EXPECT_TRUE( light->zenith.getValue() == 0.0);
+	//EXPECT_TRUE( t.m_minv == 0);
+}
+
+TEST( TLightKitTests, ChangePosition)
+{
+
+	double minA = 0;
+	double maxA = tgc::TwoPi;
+
+	double minZ = -tgc::Pi;
+	double maxZ = tgc::Pi;
+
+	TLightKit* light = new TLightKit;
+	SoTransform* lightTransform = static_cast< SoTransform* >( light->getPart( "transform", true ) );
+
+	SbVec3f scaleFactor( 1, 1, 1 );
+
+	for( unsigned int i = 0; i < maximumNumberOfTests; i++ )
+	{
+		double azimuth = taf::randomNumber( minA, maxA );
+		double zenith = taf::randomNumber( minZ, maxZ );
+
+		light->ChangePosition( azimuth, zenith );
+
+		EXPECT_TRUE( light->azimuth.getValue() == azimuth );
+		EXPECT_TRUE( light->zenith.getValue() ==  zenith );
+		EXPECT_TRUE( lightTransform->scaleFactor.getValue() == scaleFactor );
+	}
+
+}

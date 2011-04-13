@@ -3,7 +3,7 @@ tonatiuh_numrays( 50000000  );
 tonatiuh_photon_map("PhotonMapDefault");
 tonatiuh_random_generator("Mersenne Twister");
 
-var targetSurface = "//SunNode/RootNode/SolarFurnace/Target/Target/TargetSurface";
+var targetSurface = "//RootNode/SolarFurnace/Target/Target/TargetSurface";
 var targetFileName = "targetSurfaceData.dat";
 
 tonatiuh_trace();

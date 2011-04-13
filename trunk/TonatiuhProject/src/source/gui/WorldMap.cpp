@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <QColor>
 #include <QLabel>
 #include <QMouseEvent>
@@ -72,10 +74,13 @@ void WorldMap::mouseMoveEvent( QMouseEvent* e)
 	int x=e->x();
 	int y=e->y();
 
-	//Change tool tip
-	QString country = m_gray->country( x, y );
-	if ( !( country == "EMPTY" ) )	QToolTip::showText( e->globalPos(), country );
-	else	QToolTip::showText( e->globalPos(), "" );
+	if( x < m_map.width() && y < m_map.height() )
+	{
+		//Change tool tip
+		QString country = m_gray->country( x, y );
+		if ( !( country == "EMPTY" ) )	QToolTip::showText( e->globalPos(), country );
+		else	QToolTip::showText( e->globalPos(), "" );
+	}
 
 }
 
@@ -173,12 +178,13 @@ void WorldMap::paintEvent(QPaintEvent* /*event*/ )
 		int x = int ( ( ( -m_hourAngle + tgc::Pi) * m_map.width() ) / tgc::TwoPi );
 		if( x < 0 )	x = m_map.width() + x;
 		int y = int ( (m_map.height()/ 2) + ( (-m_declination   * ( m_map.height()/ 2 ) )  / ( tgc::Pi / 2 ) ) );
-		painter.drawImage( x, y-10, m_sun );
+		painter.drawImage( x, y - 10, m_sun );
 
 		x = int ( ( ( m_longitude* tgc::Degree + tgc::Pi) * m_map.width() ) / tgc::TwoPi );
 		if( x < 0 )	x = m_map.width() + x;
 		y = int ( (m_map.height()/ 2) + ( (-m_latitude* tgc::Degree   * ( m_map.height()/ 2 ) )  / ( tgc::Pi / 2 ) ) );
 		painter.drawImage( x, y-10, m_position );
+
 
 		//Draw Text
 		painter.setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::RoundCap ) );
