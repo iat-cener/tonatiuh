@@ -147,6 +147,14 @@ QScriptValue tonatiuh_script::tonatiuh_export(QScriptContext* context, QScriptEn
 	exportFile.close();
 
 	QString surfaceName = context->argument(1).toString();
+	QStringList nodeNames =  surfaceName.split( "/",QString::SkipEmptyParts );
+
+	if( nodeNames[0] != "SunNode" )
+	{
+			surfaceName = QString( "//SunNode/" );
+			surfaceName.append( nodeNames.join( QString( "/" ) ) );
+	};
+
 	bool isValidSurface = rayTracer->IsValidSurface( surfaceName );
 	if( !isValidSurface )
 	{
