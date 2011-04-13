@@ -72,16 +72,8 @@ SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 
 SunPositionCalculatorDialog::~SunPositionCalculatorDialog()
 {
-
+	WriteSettings();
 }
-
-/*void SunPositionCalculatorDialog::SetDateTime( QDateTime time )
-{
-	utTime->setTime( time.time() );
-	ctTime->setTime( time.time() );
-	zoneSpin->setValue( 0 );
-	calendarWidget-> setSelectedDate( time.date() );
-}*/
 
 void SunPositionCalculatorDialog::closeEvent( QCloseEvent* event )
 {
@@ -89,16 +81,6 @@ void SunPositionCalculatorDialog::closeEvent( QCloseEvent* event )
 	event->accept();
 
 }
-
-/*void SunPositionCalculatorDialog::ChangePosition( QDateTime time, double longitude, double latitude )
-{
-	calendarWidget->setSelectedDate( time.date() );
-	utRadio->setChecked( true);
-	utTime->setTime( time.time() );
-
-	longitudeSpin->setValue( longitude );
-	latitudeSpin->setValue( latitude );
-}*/
 
 void SunPositionCalculatorDialog::UpdatePosition( QAbstractButton* button )
 {

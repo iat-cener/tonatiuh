@@ -135,6 +135,8 @@ TLightKit::TLightKit()
  */
 TLightKit::~TLightKit()
 {
+	//void ChangePosition( QDateTime time, double longitude, double latitude );
+	//void SetDateTime( QDateTime time );
 
 }
 
@@ -150,19 +152,6 @@ void TLightKit::ChangePosition( double newAzimuth, double newZenith/*, double ne
 	/*distance = newDistance;*/
 	//UpdateSunPosition();
 
-}
-
-/*!
- * Returns local time at \a time, \a zenith, and the localization \a longitue and \a latitude.
- * \a longitude  and \a latitude are in degrees.
- *
- * \sa ChangePosition()
- */
-void TLightKit::GetPositionData( QDateTime* time, double* longitude, double* latitude )
-{
-	*time = m_time;
-	*longitude = m_longitude.getValue();
-	*latitude = m_latitude.getValue();
 }
 
 void TLightKit::Update( BBox box )
@@ -223,7 +212,7 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 	double height = shape->zMax.getValue() - shape->zMin.getValue();
 
 
-	int pixels = 150;
+	int pixels = 200;
 	int widthPixeles = pixels;
 	if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
 	double pixelWidth = double( width / widthPixeles );
