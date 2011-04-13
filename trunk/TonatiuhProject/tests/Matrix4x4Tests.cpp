@@ -37,6 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <time.h>
 #include <gtest/gtest.h>
 
 #include "Matrix4x4.h"

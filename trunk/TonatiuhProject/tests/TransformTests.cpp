@@ -5,6 +5,8 @@
  *      Author: amutuberria
  */
 
+#include <time.h>
+
 #include <gtest/gtest.h>
 
 #include "Transform.h"
