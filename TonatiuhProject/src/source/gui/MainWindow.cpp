@@ -166,11 +166,7 @@ m_increasePhotonMap( false ),
 m_lastExportFileName( "" ),
 m_lastExportSurfaceUrl( "" ),
 m_lastExportInGlobal( true ),
-m_scriptDirectory("." ),
 m_graphicsRoot( 0 ),
-/*m_pRays( 0 ),
-m_pGrid( 0 ),
-m_sceneNode( 0 ),*/
 m_coinNode_Buffer( 0 ),
 m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ),
@@ -583,6 +579,11 @@ void MainWindow::ShowRayTracerOptionsDialog()
 
 }
 
+void MainWindow::ShowWarning( QString message )
+{
+    QMessageBox::warning( this, tr( "Tonatiuh" ), message );
+}
+
 /*!
  * Reverts a change to Tonatiuh model. The model is returne to the previous state before the command is applied.
  */
@@ -681,10 +682,8 @@ void MainWindow::on_actionOpenScriptEditor_triggered()
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
 	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
 
-	ScriptEditorDialog editor( photonmapFactoryList, randomDeviateFactoryList, m_scriptDirectory, this );
+	ScriptEditorDialog editor( photonmapFactoryList, randomDeviateFactoryList, this );
 	editor.exec();
-
-	m_scriptDirectory = editor.GetCurrentDirectory();
 }
 
 /*!
@@ -2398,10 +2397,9 @@ void MainWindow::ShowGrid()
 void MainWindow::SetupDocument()
 {
     m_document = new Document();
-	/* if ( m_document )
-       connect( m_document, SIGNAL( selectionFinish( SoSelection* ) ),
-       			       this, SLOT(selectionFinish( SoSelection* ) ) );
-       else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );*/
+	if ( m_document )
+		connect( m_document, SIGNAL( Warning( QString ) ), this, SLOT( ShowWarning( QString ) ) );
+
 }
 
 /*!
@@ -2733,7 +2731,23 @@ bool MainWindow::StartOver( const QString& fileName )
 	QStatusBar* statusbar = new QStatusBar;
 	setStatusBar( statusbar );
 
-    if( fileName.isEmpty() )
+	if( !fileName.isEmpty() && m_document->ReadFile( fileName ) )
+	{
+		statusbar->showMessage( tr( "File loaded" ), 2000 );
+	    SetCurrentFile( fileName );
+	}
+	else
+	{
+		m_document->New();
+	    statusbar->showMessage( tr( "New file" ), 2000 );
+
+	    SetCurrentFile( "" );
+	}
+
+    ChangeModelScene();
+
+
+   /*if( fileName.isEmpty() )
     {
     	m_document->New();
     	statusbar->showMessage( tr( "New file" ), 2000 );
@@ -2750,7 +2764,7 @@ bool MainWindow::StartOver( const QString& fileName )
 
     SetCurrentFile( fileName );
 
-    ChangeModelScene();
+    ChangeModelScene();*/
 
     return true;
 }

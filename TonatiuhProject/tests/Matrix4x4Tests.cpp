@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Matrix4x4.h"
 #include "TestsAuxiliaryFunctions.h"
+#include "tgc.h"
 
 const double maximumCoordinate = 5000000.0;
 const unsigned long int maximumNumberOfTests = 1000;
@@ -288,7 +289,7 @@ TEST( Matrix4x4Tests, Inverse )
 		            - matrix1.m[0][1] * matrix1.m[1][0] * matrix1.m[2][2] * matrix1.m[3][3]
 		            + matrix1.m[0][0] * matrix1.m[1][1] * matrix1.m[2][2] * matrix1.m[3][3];
 
-		if( det != 0 )
+		if( std::fabs( det ) > tgc::Epsilon )
 		{
 			double cofactor[4][4];
 

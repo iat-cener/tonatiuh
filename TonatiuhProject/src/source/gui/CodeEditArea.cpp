@@ -42,52 +42,37 @@
 #include <QPainter>
 #include <QTextBlock>
 
-#include "CodeEditor.h"
-#include "LineNumberWidget.h"
+#include "CodeEditArea.h"
 
-CodeEditor::CodeEditor( QWidget *parent )
-:QPlainTextEdit( parent ), m_LineNumberWidget( 0 )
+CodeEditArea::CodeEditArea( QWidget* parent )
+:QPlainTextEdit( parent )
 {
-	m_LineNumberWidget = new LineNumberWidget( this );
-
-	connect(this, SIGNAL( blockCountChanged( int ) ), this, SLOT( UpdateCodeEditorWidth( int ) ) );
-	connect(this, SIGNAL( updateRequest( QRect, int ) ), m_LineNumberWidget, SLOT( UpdateLineNumberArea( QRect, int ) ) );
 	connect(this, SIGNAL( cursorPositionChanged() ), this, SLOT( UpdateCurrentLine() ) );
+	/*connect(this, SIGNAL( blockCountChanged( int ) ), this, SLOT( UpdateCodeEditAreaWidth( int ) ) );
+	connect(this, SIGNAL( updateRequest( QRect, int ) ), m_LineNumberWidget, SLOT( UpdateLineNumberArea( QRect, int ) ) );
 
-	UpdateCodeEditorWidth(0);
+*/
+	//UpdateCodeEditAreaWidth(0);
 	UpdateCurrentLine();
 }
 
 
-CodeEditor::~CodeEditor()
+CodeEditArea::~CodeEditArea()
 {
-	delete m_LineNumberWidget;
+
 }
 
-int CodeEditor::BlockTop( const QTextBlock & block ) const
+int CodeEditArea::BlockTop( const QTextBlock & block ) const
 {
 	return (int) blockBoundingGeometry(block).translated(contentOffset()).top();
 }
 
-int CodeEditor::BlockHeight( const QTextBlock & block ) const
+int CodeEditArea::BlockHeight( const QTextBlock & block ) const
 {
 	return (int) blockBoundingRect(block).height();
 }
 
-void CodeEditor::UpdateCodeEditorWidth(int /* width */)
-{
-	setViewportMargins( m_LineNumberWidget->LineNumberAreaWidth(), 0, 0, 0);
-}
-
-void CodeEditor::resizeEvent(QResizeEvent *e)
-{
-	QPlainTextEdit::resizeEvent(e);
-
-	QRect cr = contentsRect();
-	m_LineNumberWidget->setGeometry(QRect(cr.left(), cr.top(), m_LineNumberWidget->LineNumberAreaWidth(), cr.height()));
-}
-
- void CodeEditor::UpdateCurrentLine()
+ void CodeEditArea::UpdateCurrentLine()
 {
 	QList<QTextEdit::ExtraSelection> extraSelections;
 

@@ -154,6 +154,7 @@ protected slots:
 	void ShowGrid();
     void ShowMenu( const QModelIndex& index );
     void ShowRayTracerOptionsDialog();
+    void ShowWarning( QString message );
 	void Undo();
 
 	//View menu actions
@@ -242,8 +243,6 @@ private:
     QString m_lastExportFileName;
     QString m_lastExportSurfaceUrl;
     bool m_lastExportInGlobal;
-
-    QString m_scriptDirectory;
 
     GraphicRoot* m_graphicsRoot;
     SoNode* m_coinNode_Buffer;

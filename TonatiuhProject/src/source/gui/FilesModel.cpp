@@ -32,53 +32,22 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef DOCUMENT_H_
-#define DOCUMENT_H_
+#include "FilesModel.h"
 
-#include <QObject>
-
-class QString;
-class SoSelection;
-class SoSeparator;
-class TSceneKit;
-class TShapeKit;
-
-//!  Document class stores the application scene.
-/*!
- * This class is not yet documented.
-*/
-
-class Document : public QObject
+FilesModel::FilesModel( QObject* parent )
+:QFileSystemModel( parent )
 {
-    Q_OBJECT
 
-public:
-    Document();
-    ~Document();
-    void SetDocumentModified( bool status );
-    void New();
-    bool ReadFile( const QString& fileName );
-    bool WriteFile( const QString& fileName );
+    setFilter( QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files );
+    setNameFilterDisables( false );
 
-    bool IsModified( );
-    TSceneKit* GetSceneKit() const;
+}
 
-signals:
-    void Warning( QString message );
-
-private:
-    TSceneKit* GetSceneKitFromFile( const QString& fileName );
-    void InitializeScene();
-    void ClearScene();
-
-    TSceneKit* m_scene;
-    bool m_isModified;
-
-
-};
-
-#endif /*DOCUMENT_H_*/
+int FilesModel::columnCount( const QModelIndex& /*parent*/ ) const
+{
+	return 1;
+}

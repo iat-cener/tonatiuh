@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
 
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -46,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QApplication>
 #include <QString>
-#include <QMessageBox>
 #include <QStatusBar>
 
 #include "Document.h"
@@ -87,7 +85,6 @@ void Document::InitializeScene()
 
 	m_scene = new TSceneKit;
 	m_scene->ref();
-	//m_root->addChild( m_scene );
     m_scene->setSearchingChildren( true );
 }
 
@@ -139,9 +136,9 @@ bool Document::WriteFile( const QString& fileName )
     SoWriteAction SceneOuput;
     if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
 	{
-        QMessageBox::warning( 0, tr( "Tonatiuh" ),
-                              tr( "Cannot open file %1. " )
-                            .arg( fileName ));
+		QString message = QString( "Cannot open file %1." ).arg( fileName );
+		emit Warning( message );
+
    		return false;
    	}
 
@@ -180,9 +177,17 @@ TSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
     SoInput sceneInput;
 	if ( !sceneInput.openFile( fileName.toLatin1().constData() ) )
 	{
-        QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
-                              tr( "Cannot open file %1." )
-                            .arg( fileName ) );
+		QString message = QString( "Cannot open file %1." ).arg( fileName );
+		emit Warning( message );
+
+		return 0;
+	}
+
+	if( !sceneInput.isValidFile() )
+	{
+		QString message = QString( "Error reading file %1.\n" ).arg( fileName );
+		emit Warning( message );
+
 		return 0;
 	}
 
@@ -191,11 +196,12 @@ TSceneKit* Document::GetSceneKitFromFile( const QString& fileName )
 
 	if ( !graphSeparator )
 	{
-        QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
-                              tr( "Error reading file %1:\n%2." )
-                             .arg( fileName ) );
+		QString message = QString( "Error reading file %1.\n" ).arg( fileName );
+		emit Warning( message );
+
 		return 0;
 	}
 
    return static_cast< TSceneKit* >( graphSeparator->getChild(0) );
+	return 0;
 }

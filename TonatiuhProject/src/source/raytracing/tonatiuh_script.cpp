@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -175,12 +177,13 @@ QScriptValue tonatiuh_script::tonatiuh_filename(QScriptContext* context, QScript
 	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
 
-	if( context->argumentCount() != 1 )	context->throwError( "tonatiuh_filename: takes exactly one argument." );
-	if( !context->argument( 0 ).isString() )	context->throwError( "tonatiuh_filename: argument is not a string.");
+	if( context->argumentCount() != 1 )	return context->throwError( "tonatiuh_filename: takes exactly one argument." );
+	if( !context->argument( 0 ).isString() )	return context->throwError( "tonatiuh_filename: argument is not a string.");
+
 
 
 	QString fileName = context->argument(0).toString();
-	if( fileName.isEmpty()  )	context->throwError( "tonatiuh_filename: the model file is not correct." );
+	if( fileName.isEmpty()  )	return	context->throwError( "tonatiuh_filename: the model file is not correct." );
 
 	QFileInfo file(  fileName );
 	if( !file.isAbsolute() )
@@ -189,18 +192,22 @@ QScriptValue tonatiuh_script::tonatiuh_filename(QScriptContext* context, QScript
 		QDir currentDir( dirName );
 		QFileInfo absolutefile( currentDir, fileName );
 		fileName = absolutefile.absoluteFilePath();
+
 	}
 
-	QFile modelFile( fileName ) ;
-	if(!modelFile.open( QIODevice::ReadOnly ) )
+	QFileInfo modelFile( fileName ) ;
+	if( !modelFile.exists() )
 	{
 		QString message = QString( "tonatiuh_filename: The %1 file can not be opened." ).arg( fileName );
-		context->throwError( message );
+		return context->throwError( QScriptContext::UnknownError, message );
 	}
-	modelFile.close();
 
 	int result = rayTracer->SetTonatiuhModelFile( fileName );
-	if( result == 0 ) context->throwError( "tonatiuh_filename: Error." );
+	if( result == 0 )
+	{
+		QString message = QString( "tonatiuh_filename: The %1 file is not a valid file." ).arg( fileName );
+		return context->throwError( message );
+	}
 
 	return 1;
 }

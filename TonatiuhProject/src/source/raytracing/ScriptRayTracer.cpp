@@ -261,7 +261,6 @@ int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
 	delete m_sceneModel;
 	m_sceneModel = 0;
 	m_sceneModel = new SceneModel;
-	//m_sceneModel->SetCoinRoot( *m_document->GetRoot() );
 	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
 
 	return 1;
