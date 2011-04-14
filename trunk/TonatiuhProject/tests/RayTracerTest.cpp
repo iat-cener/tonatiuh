@@ -75,7 +75,7 @@ TEST(RayTracerTest, CreateTargetPhotonMap )
 	{
 		QScriptValue lineNumber = result.property( "lineNumber");
 
-		QString errorMessage = QString( "Script Execution Error.\nLine %1. %2" ).arg( QString::number( lineNumber.toNumber() ), result.toString() );
+		QString errorMessage = QString( "Script Execution Error. %1" ).arg( result.toString() );
 		FAIL()<<errorMessage.toStdString();
 
 	}

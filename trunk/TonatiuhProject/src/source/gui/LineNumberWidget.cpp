@@ -37,13 +37,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QPainter>
+#include <QPlainTextEdit>
 #include <QTextBlock>
 
-#include "CodeEditor.h"
+#include "CodeEditorWidget.h"
 #include "LineNumberWidget.h"
 
-LineNumberWidget::LineNumberWidget( CodeEditor* parent, Qt::WindowFlags f )
-:QWidget( parent, f ), m_codeEditor( parent )
+LineNumberWidget::LineNumberWidget( QWidget* parent, Qt::WindowFlags f )
+:QWidget( parent, f ),
+ m_codeEditArea( 0 )
 {
 
 }
@@ -53,9 +55,9 @@ LineNumberWidget::~LineNumberWidget()
 
 }
 
-void LineNumberWidget::SetCodeEditor( CodeEditor* editor )
+void LineNumberWidget::SetCodeEditor( CodeEditArea* editor )
 {
-	m_codeEditor = editor;
+	m_codeEditArea = editor;
 }
 
 QSize LineNumberWidget::sizeHint() const
@@ -66,7 +68,7 @@ QSize LineNumberWidget::sizeHint() const
 int LineNumberWidget::LineNumberAreaWidth() const
 {
 	int digits = 1;
-	int max = qMax(1, m_codeEditor->blockCount());
+	int max = qMax(1, m_codeEditArea->blockCount() );
 	while (max >= 10)
 	{
 		max /= 10;
@@ -83,7 +85,9 @@ void LineNumberWidget::UpdateLineNumberArea( const QRect& rect, int dy )
 	if( dy )	scroll( 0, dy );
 	else	update( 0, rect.y(), width(), rect.height() );
 
-	m_codeEditor->UpdateCodeEditorWidth( 0 );
+	QWidget* viewport = m_codeEditArea->viewport();
+	viewport->setContentsMargins( LineNumberAreaWidth(), 0, 0, 0 );
+
 }
 
 void  LineNumberWidget::paintEvent( QPaintEvent *event )
@@ -91,10 +95,11 @@ void  LineNumberWidget::paintEvent( QPaintEvent *event )
 	QPainter painter( this );
 	painter.fillRect(event->rect(), Qt::lightGray);
 
-	QTextBlock block = m_codeEditor->document()->begin();
+	QTextBlock block = m_codeEditArea->document()->begin();
 	int blockNumber = block.blockNumber();
-	int top = m_codeEditor->BlockTop(block);
-	int bottom = top + m_codeEditor->BlockHeight(block);
+
+	int top = m_codeEditArea->BlockTop( block );
+	int bottom = top + m_codeEditArea->BlockHeight(block);
 
 	while( block.isValid() && top <= ( event->rect().bottom() ) )
 	{
@@ -107,7 +112,7 @@ void  LineNumberWidget::paintEvent( QPaintEvent *event )
 
 		block = block.next();
 		top = bottom;
-		bottom = top + m_codeEditor->BlockHeight(block);
+		bottom = top + m_codeEditArea->BlockHeight(block);
 		++blockNumber;
 	}
 }

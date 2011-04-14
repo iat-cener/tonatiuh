@@ -43,6 +43,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QDialog>
 #include "ui_scripteditordialog.h"
 
+class FilesModel;
+class QItemSelectionModel;
 class QLineEdit;
 class QScriptEngine;
 class TPhotonMapFactory;
@@ -58,44 +60,23 @@ class ScriptEditorDialog : public QDialog, private Ui::ScriptEditorDialog
 	Q_OBJECT
 
 public:
-	ScriptEditorDialog( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QString dirName = 0, QWidget* parent = 0 );
+	ScriptEditorDialog( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent = 0 );
 	~ScriptEditorDialog();
-
-	QString GetCurrentDirectory();
-	void OpenScriptFile( QString fileName );
-
-public slots:
-	void Run();
 
 protected:
     void closeEvent( QCloseEvent* event );
 
-private:
-	void AddCodeEditorWidgetToolbar();
-	void AddFilesExplorerWidgetToolbar( QString dirName );
-	bool OkToContinue();
-	bool SaveScriptFile( const QString& fileName );
-	void StartDocument( QString fileName );
-
 private slots:
-	void CdUpDir();
 	void Close( bool checked  );
-	void NewScriptFile();
-	void OpenDirectory();
-	void OpenScriptFile( QListWidgetItem* item );
-	void OpenScriptFile();
-	void RefreshDirList();
-	void Run( bool checked );
-	bool SaveAsScriptFile();
-	bool SaveScript();
-	void SetCurrentFile( const QString& fileName );
+	void OpenScriptFile( const QModelIndex& index );
+	void RunScript();
+	void SetCurrentFile( QString fileName );
+	void WriteMessage(  QString message );
 
 
 private:
-	void RunScript();
-
-	QLineEdit* m_dirLineEdit;
 	QString m_currentScritFileName;
+	FilesModel* m_fileModel;
 	QScriptEngine* m_interpreter;
 };
 

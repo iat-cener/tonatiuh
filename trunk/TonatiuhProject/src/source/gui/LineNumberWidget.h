@@ -42,17 +42,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QWidget>
 
-class CodeEditor;
+class CodeEditArea;
 
 class LineNumberWidget: public QWidget
 {
 	Q_OBJECT
 
 public:
-	LineNumberWidget( CodeEditor* parent = 0, Qt::WindowFlags f = 0 );
+	LineNumberWidget( QWidget* parent = 0, Qt::WindowFlags f = 0 );
 	~LineNumberWidget();
 
-	void SetCodeEditor( CodeEditor* editor );
+	void SetCodeEditor( CodeEditArea* editor );
 	QSize sizeHint() const;
 
 	int LineNumberAreaWidth() const;
@@ -64,7 +64,7 @@ protected:
 	void paintEvent( QPaintEvent *event );
 
 private:
-	CodeEditor* m_codeEditor;
+	CodeEditArea* m_codeEditArea;
 
 };
 #endif /* LINENUMBERWIDGET_H_ */
