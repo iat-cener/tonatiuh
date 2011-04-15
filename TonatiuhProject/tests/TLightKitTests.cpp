@@ -45,8 +45,8 @@ TEST( TLightKitTests, ChangePosition)
 
 		light->ChangePosition( azimuth, zenith );
 
-		EXPECT_TRUE( light->azimuth.getValue() == azimuth );
-		EXPECT_TRUE( light->zenith.getValue() ==  zenith );
+		EXPECT_PRED_FORMAT2(::testing::DoubleLE, ( light->azimuth.getValue() - azimuth ) / azimuth, 1e-6);
+		EXPECT_PRED_FORMAT2(::testing::DoubleLE, ( light->zenith.getValue() - zenith ) / zenith, 1e-6);
 		EXPECT_TRUE( lightTransform->scaleFactor.getValue() == scaleFactor );
 	}
 
