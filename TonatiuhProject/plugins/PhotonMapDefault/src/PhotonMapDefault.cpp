@@ -77,7 +77,7 @@ std::vector< Photon* > PhotonMapDefault::GetSurfacePhotons( InstanceNode* instan
 	std::vector< Photon* >surfacePhotonsList;
 	for( unsigned int index = 0; index < m_photons.size(); ++index )
 	{
-		if( m_photons[index]->intersectedSurface == instance )
+		if( m_photons[index]->intersectedSurface  && m_photons[index]->intersectedSurface == instance )
 			surfacePhotonsList.push_back( m_photons[index] );
 	}
 
