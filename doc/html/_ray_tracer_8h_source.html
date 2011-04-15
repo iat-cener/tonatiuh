@@ -107,7 +107,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00053"></a>00053 <span class="keyword">class </span>RayTracerPhoton;
 <a name="l00054"></a>00054 <span class="keyword">class </span>QMutex;
 <a name="l00055"></a>00055 <span class="keyword">class </span><a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>;
-<a name="l00056"></a>00056 <span class="keyword">class </span>TShape;
+<a name="l00056"></a>00056 <span class="keyword">class </span>TLightShape;
 <a name="l00057"></a>00057 <span class="keyword">class </span>TSunShape;
 <a name="l00058"></a>00058 <span class="keyword">class </span>ParallelRandomDeviate;
 <a name="l00059"></a>00059 
@@ -117,7 +117,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00063"></a>00063 <span class="keyword">public</span>:
 <a name="l00064"></a>00064         RayTracer( <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* rootNode,
 <a name="l00065"></a>00065                        <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* lightNode,
-<a name="l00066"></a>00066                        TShape* lightShape,
+<a name="l00066"></a>00066                        TLightShape* lightShape,
 <a name="l00067"></a>00067                        TSunShape* <span class="keyword">const</span> lightSunShape,
 <a name="l00068"></a>00068                        Transform lightToWorld,
 <a name="l00069"></a>00069                        <a class="code" href="class_random_deviate.html" title="RandomDeviate is the base class for random generators.">RandomDeviate</a>&amp; rand,
@@ -126,22 +126,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00072"></a>00072 
 <a name="l00073"></a>00073         <span class="keyword">typedef</span> QPair&lt; TPhotonMap*, std::vector&lt; RayTracerPhoton &gt; &gt; result_type;
 <a name="l00074"></a>00074 
-<a name="l00075"></a>00075         <span class="comment">//QPair&lt; TPhotonMap*, std::vector&lt; Photon &gt; &gt; operator()( double numberOfRays );</span>
-<a name="l00076"></a>00076         QPair&lt; TPhotonMap*, std::vector&lt; RayTracerPhoton &gt; &gt; operator()( <span class="keywordtype">double</span> numberOfRays );
+<a name="l00075"></a>00075         QPair&lt; TPhotonMap*, std::vector&lt; RayTracerPhoton &gt; &gt; operator()( <span class="keywordtype">double</span> numberOfRays );
+<a name="l00076"></a>00076 
 <a name="l00077"></a>00077 
 <a name="l00078"></a>00078 
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 <span class="keyword">private</span>:
-<a name="l00081"></a>00081         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_rootNode;
-<a name="l00082"></a>00082         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_lightNode;
-<a name="l00083"></a>00083         TShape* m_lightShape;
-<a name="l00084"></a>00084         <span class="keyword">const</span> TSunShape* m_lightSunShape;
-<a name="l00085"></a>00085         Transform m_lightToWorld;
-<a name="l00086"></a>00086         <a class="code" href="class_random_deviate.html" title="RandomDeviate is the base class for random generators.">RandomDeviate</a>* m_pRand;
-<a name="l00087"></a>00087     QMutex* m_mutex;
-<a name="l00088"></a>00088         <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>* m_photonMap;
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090         Ray NewPrimitiveRay( ParallelRandomDeviate&amp; rand );
+<a name="l00079"></a>00079 <span class="keyword">private</span>:
+<a name="l00080"></a>00080         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_rootNode;
+<a name="l00081"></a>00081         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* m_lightNode;
+<a name="l00082"></a>00082         TLightShape* m_lightShape;
+<a name="l00083"></a>00083         <span class="keyword">const</span> TSunShape* m_lightSunShape;
+<a name="l00084"></a>00084         Transform m_lightToWorld;
+<a name="l00085"></a>00085         <a class="code" href="class_random_deviate.html" title="RandomDeviate is the base class for random generators.">RandomDeviate</a>* m_pRand;
+<a name="l00086"></a>00086     QMutex* m_mutex;
+<a name="l00087"></a>00087         <a class="code" href="class_t_photon_map.html" title="TPhotonMap is the interface of the structures to store photons.">TPhotonMap</a>* m_photonMap;
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089         <span class="comment">//Ray NewPrimitiveRay( ParallelRandomDeviate&amp; rand );</span>
+<a name="l00090"></a>00090         <span class="keywordtype">bool</span> NewPrimitiveRay( Ray* ray, ParallelRandomDeviate&amp; rand );
 <a name="l00091"></a>00091 };
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093 
@@ -162,7 +162,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 9 2011 11:17:49 for Tonatiuh by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Apr 15 2011 13:45:39 for Tonatiuh by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

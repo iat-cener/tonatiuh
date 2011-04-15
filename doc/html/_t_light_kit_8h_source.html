@@ -94,52 +94,49 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00040"></a>00040 <span class="preprocessor"></span><span class="preprocessor">#define TLIGHTKIT_H_</span>
 <a name="l00041"></a>00041 <span class="preprocessor"></span>
 <a name="l00042"></a>00042 <span class="preprocessor">#include &lt;QDateTime&gt;</span>
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044 <span class="preprocessor">#include &lt;Inventor/fields/SoSFBool.h&gt;</span>
-<a name="l00045"></a>00045 <span class="preprocessor">#include &lt;Inventor/nodekits/SoLightKit.h&gt;</span>
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047 <span class="preprocessor">#include &quot;trt.h&quot;</span>
-<a name="l00048"></a>00048 <span class="preprocessor">#include &quot;TShape.h&quot;</span>
-<a name="l00049"></a>00049 <span class="preprocessor">#include &quot;TSunShape.h&quot;</span>
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="keyword">class </span>BBox;
+<a name="l00043"></a>00043 <span class="preprocessor">#include &lt;QPair&gt;</span>
+<a name="l00044"></a>00044 <span class="preprocessor">#include &lt;QVector&gt;</span>
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046 <span class="preprocessor">#include &lt;Inventor/fields/SoSFBool.h&gt;</span>
+<a name="l00047"></a>00047 <span class="preprocessor">#include &lt;Inventor/nodekits/SoLightKit.h&gt;</span>
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="preprocessor">#include &quot;trt.h&quot;</span>
+<a name="l00051"></a>00051 <span class="preprocessor">#include &quot;TSunShape.h&quot;</span>
 <a name="l00052"></a>00052 
-<a name="l00086"></a><a class="code" href="class_t_light_kit.html">00086</a> <span class="keyword">class </span><a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents th...">TLightKit</a> : <span class="keyword">public</span> SoLightKit
-<a name="l00087"></a>00087 {
-<a name="l00088"></a>00088     SO_KIT_HEADER(<a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents th...">TLightKit</a>);
-<a name="l00089"></a>00089         SO_KIT_CATALOG_ENTRY_HEADER(iconMaterial);
-<a name="l00090"></a>00090         SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
-<a name="l00091"></a>00091 
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094 <span class="keyword">public</span>:
-<a name="l00095"></a>00095     <a class="code" href="class_t_light_kit.html#a37e21153bc35291a8f8a711fbda8cad4">TLightKit</a>();
-<a name="l00096"></a>00096     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#a3c3595509f95672cd90a614092edc47e">initClass</a>();
+<a name="l00053"></a>00053 <span class="keyword">class </span>BBox;
+<a name="l00054"></a>00054 <span class="keyword">class </span>Transform;
+<a name="l00055"></a>00055 <span class="keyword">class </span><a class="code" href="class_t_shape_kit.html" title="TShapeKit class groups what is necessary to the shape.">TShapeKit</a>;
+<a name="l00056"></a>00056 
+<a name="l00090"></a><a class="code" href="class_t_light_kit.html">00090</a> <span class="keyword">class </span><a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents th...">TLightKit</a> : <span class="keyword">public</span> SoLightKit
+<a name="l00091"></a>00091 {
+<a name="l00092"></a>00092     SO_KIT_HEADER(<a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents th...">TLightKit</a>);
+<a name="l00093"></a>00093         SO_KIT_CATALOG_ENTRY_HEADER(iconMaterial);
+<a name="l00094"></a>00094     <span class="comment">//SO_KIT_CATALOG_ENTRY_HEADER(iconHints);</span>
+<a name="l00095"></a>00095         SO_KIT_CATALOG_ENTRY_HEADER(iconTexture);
+<a name="l00096"></a>00096         SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
 <a name="l00097"></a>00097 
-<a name="l00098"></a>00098     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#a0a70f365cdc1f26c9345b08cc037d555">ChangePosition</a>( QDateTime newTime, <span class="keywordtype">double</span> longitude, <span class="keywordtype">double</span> latitude );
-<a name="l00099"></a>00099     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#a0a70f365cdc1f26c9345b08cc037d555">ChangePosition</a>( <span class="keywordtype">double</span> newAzimuth, <span class="keywordtype">double</span> newZenith, <span class="keywordtype">double</span> newDistance );
-<a name="l00100"></a>00100     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#afc04a1db903b7f6885355daab7995a14">GetPositionData</a>( QDateTime* time, <span class="keywordtype">double</span>* longitude, <span class="keywordtype">double</span>* latitude );
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#af0bf3a2e00832d7048087376856bc1c8">ResizeToBBox</a>( BBox box );
-<a name="l00103"></a>00103     <span class="keywordtype">void</span> Update();
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105     trt::TONATIUH_REAL azimuth;
-<a name="l00106"></a>00106     trt::TONATIUH_REAL zenith;
-<a name="l00107"></a>00107     trt::TONATIUH_REAL distance;
-<a name="l00108"></a>00108     SoSFBool automaticallyResizable;
-<a name="l00109"></a>00109 
-<a name="l00110"></a>00110 <span class="keyword">private</span>:
-<a name="l00111"></a>00111     <span class="keyword">virtual</span> <a class="code" href="class_t_light_kit.html#aa7b6cf162466fd02c0a13e9f7311519a">~TLightKit</a>();
-<a name="l00112"></a>00112     <span class="keywordtype">void</span> UpdateSunPosition();
-<a name="l00113"></a>00113 
-<a name="l00114"></a>00114     QDateTime m_time;
-<a name="l00115"></a>00115     SoSFDouble m_longitude;
-<a name="l00116"></a>00116     SoSFDouble m_latitude;
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100 <span class="keyword">public</span>:
+<a name="l00101"></a>00101     <a class="code" href="class_t_light_kit.html#a37e21153bc35291a8f8a711fbda8cad4">TLightKit</a>();
+<a name="l00102"></a>00102     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#a3c3595509f95672cd90a614092edc47e">initClass</a>();
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104     <span class="keywordtype">void</span> <a class="code" href="class_t_light_kit.html#aa17277b912860bcef89acbb86784496b">ChangePosition</a>( <span class="keywordtype">double</span> newAzimuth, <span class="keywordtype">double</span> newZenith );
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106     <span class="keywordtype">void</span> Update( BBox box );
+<a name="l00107"></a>00107     <span class="keywordtype">void</span> ComputeLightSourceArea( QVector&lt; QPair&lt; TShapeKit*, Transform &gt; &gt; surfacesList );
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109     trt::TONATIUH_REAL azimuth;
+<a name="l00110"></a>00110     trt::TONATIUH_REAL zenith;
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112 <span class="keyword">private</span>:
+<a name="l00113"></a>00113     <span class="keyword">virtual</span> <a class="code" href="class_t_light_kit.html#aa7b6cf162466fd02c0a13e9f7311519a">~TLightKit</a>();
+<a name="l00114"></a>00114     <span class="keywordtype">void</span> UpdateSunPosition();
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116 };
 <a name="l00117"></a>00117 
-<a name="l00118"></a>00118 
-<a name="l00119"></a>00119 };
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121 <span class="preprocessor">#endif </span><span class="comment">/*TLIGHTKIT_H_*/</span>
+<a name="l00118"></a>00118 <span class="preprocessor">#endif </span><span class="comment">/*TLIGHTKIT_H_*/</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -156,7 +153,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 9 2011 11:17:49 for Tonatiuh by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Apr 15 2011 13:45:39 for Tonatiuh by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

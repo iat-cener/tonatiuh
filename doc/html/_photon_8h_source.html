@@ -100,17 +100,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00046"></a>00046 {
 <a name="l00047"></a>00047         Photon( );
 <a name="l00048"></a>00048         Photon( <span class="keyword">const</span> Photon&amp; photon );
-<a name="l00049"></a>00049         Photon( Point3D pos, Photon* previous = 0, Photon* next = 0, <span class="keywordtype">double</span> <span class="keywordtype">id</span> = 0, <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* intersectedSurface = 0 );
+<a name="l00049"></a>00049         Photon( Point3D pos, <span class="keywordtype">int</span> side, Photon* previous = 0, Photon* next = 0, <span class="keywordtype">double</span> <span class="keywordtype">id</span> = 0, <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* intersectedSurface = 0 );
 <a name="l00050"></a>00050         ~Photon();
 <a name="l00051"></a>00051 
 <a name="l00052"></a>00052         <span class="keywordtype">double</span> id;
 <a name="l00053"></a>00053         Point3D pos;
-<a name="l00054"></a>00054         Photon* prev;
-<a name="l00055"></a>00055         Photon* next;
-<a name="l00056"></a>00056         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* intersectedSurface;
-<a name="l00057"></a>00057 };
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="preprocessor">#endif </span><span class="comment">/*PHOTON_H_*/</span>
+<a name="l00054"></a>00054         <span class="keywordtype">int</span> side;
+<a name="l00055"></a>00055         Photon* prev;
+<a name="l00056"></a>00056         Photon* next;
+<a name="l00057"></a>00057         <a class="code" href="class_instance_node.html" title="InstanceNode class represents a instance of a node in the scene.">InstanceNode</a>* intersectedSurface;
+<a name="l00058"></a>00058 };
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="preprocessor">#endif </span><span class="comment">/*PHOTON_H_*/</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -127,7 +128,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 9 2011 11:17:48 for Tonatiuh by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Apr 15 2011 13:45:39 for Tonatiuh by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

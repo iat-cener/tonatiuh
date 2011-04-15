@@ -102,7 +102,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00048"></a>00048 {
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050 <span class="keyword">public</span>:
-<a name="l00051"></a>00051         CmdLightPositionModified( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents th...">TLightKit</a>* light, QDateTime time, <span class="keywordtype">double</span> longitude, <span class="keywordtype">double</span> latitude, QUndoCommand* parent = 0 );
+<a name="l00051"></a>00051         CmdLightPositionModified( <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents th...">TLightKit</a>* light, <span class="keywordtype">double</span> azimuth, <span class="keywordtype">double</span> zenith, QUndoCommand* parent = 0 );
 <a name="l00052"></a>00052         ~CmdLightPositionModified();
 <a name="l00053"></a>00053 
 <a name="l00054"></a>00054         <span class="keyword">virtual</span> <span class="keywordtype">void</span> undo();
@@ -111,17 +111,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00057"></a>00057 <span class="keyword">private</span>:
 <a name="l00058"></a>00058         <a class="code" href="class_t_light_kit.html" title="The TLightKit class provides a kit with a transform, a light, a shape and a sunshape to represents th...">TLightKit</a>* lightKit;
 <a name="l00059"></a>00059 
-<a name="l00060"></a>00060         QDateTime oldTime;
-<a name="l00061"></a>00061         QDateTime newTime;
+<a name="l00060"></a>00060         <span class="keywordtype">double</span> m_newAzimuth;
+<a name="l00061"></a>00061         <span class="keywordtype">double</span> m_newZenith;
 <a name="l00062"></a>00062 
-<a name="l00063"></a>00063         <span class="keywordtype">double</span> oldLongitude;
-<a name="l00064"></a>00064         <span class="keywordtype">double</span> newLongitude;
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066         <span class="keywordtype">double</span> oldLatitude;
-<a name="l00067"></a>00067         <span class="keywordtype">double</span> newLatitude;
-<a name="l00068"></a>00068 };
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 <span class="preprocessor">#endif </span><span class="comment">/*CMDLIGHTPOSITIONMODIFIED_H_*/</span>
+<a name="l00063"></a>00063         <span class="keywordtype">double</span> m_oldAzimuth;
+<a name="l00064"></a>00064         <span class="keywordtype">double</span> m_oldZenith;
+<a name="l00065"></a>00065 };
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 <span class="preprocessor">#endif </span><span class="comment">/*CMDLIGHTPOSITIONMODIFIED_H_*/</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -138,7 +135,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 9 2011 11:17:48 for Tonatiuh by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Apr 15 2011 13:45:39 for Tonatiuh by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

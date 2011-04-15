@@ -103,11 +103,15 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdLightPositionModified.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdModifyParameter.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CmdPaste.h"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeEditor.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeEditArea.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeEditorWidget.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="DifferentialGeometry.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Document.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ExportDialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="FieldContainerWidget.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="FilesModel.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="GraphicRoot.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="GraphicRootTracker.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="GraphicView.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="GridSettingsDialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="HorizontalWidget.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -155,6 +159,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="tgf.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Timer.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TLightKit.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="TLightShape.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TMaterial.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TMaterialFactory.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="tonatiuh_script.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -165,6 +170,8 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Transform.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="trf.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="trt.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="TSceneKit.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="TSceneTracker.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TSeparatorKit.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TShape.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TShapeFactory.h"><param name="ImageNumber" value="11"></OBJECT>
@@ -174,6 +181,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TSunShapeFactory.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TTracker.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TTrackerFactory.h"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_codeeditorwidget.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_exportdialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_gridsettingsdialog.h"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ui_heliostatfieldwizard.h"><param name="ImageNumber" value="11"></OBJECT>

@@ -69,12 +69,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light_dialog.html#af88b3ecac92d89a1c488891214acd0ad">LightDialog</a> (<a class="el" href="class_t_light_kit.html">TLightKit</a> *currentLightKit, QVector&lt; TShapeFactory * &gt; shapeFactoryList, QVector&lt; TSunShapeFactory * &gt; sunshapeFactoryList, QWidget *parent=0)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light_dialog.html#a775b4cd5ec81c71afabd4a731fb97515">LightDialog</a> (<a class="el" href="class_t_light_kit.html">TLightKit</a> *currentLightKit, QVector&lt; TSunShapeFactory * &gt; sunshapeFactoryList, QWidget *parent=0)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light_dialog.html#a48e93e3fc9a2d85a3cec78291802cab4">~LightDialog</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_light_kit.html">TLightKit</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light_dialog.html#a7530e9ad5cc036300603a551ca77dedb">GetTLightKit</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-slots"></a>
 Protected Slots</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light_dialog.html#ac0d1cb5dc8d5c77dbd317a23297536f8">ChangeShape</a> (int index)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light_dialog.html#a7e8c102642906d9618cadf87c7b3f672">ChangeSunshape</a> (int index)</td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -85,7 +84,7 @@ Private Member Functions</h2></td></tr>
 <p><a class="el" href="class_light_dialog.html" title="LightDialog class is the dialog to define the light parameters.">LightDialog</a> class is the dialog to define the light parameters. </p>
 <p><a class="el" href="class_light_dialog.html" title="LightDialog class is the dialog to define the light parameters.">LightDialog</a> sets light parameters. The parameters that user can define are light suunshape, light input aperture shape and light position. </p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="af88b3ecac92d89a1c488891214acd0ad"></a><!-- doxytag: member="LightDialog::LightDialog" ref="af88b3ecac92d89a1c488891214acd0ad" args="(TLightKit *currentLightKit, QVector&lt; TShapeFactory * &gt; shapeFactoryList, QVector&lt; TSunShapeFactory * &gt; sunshapeFactoryList, QWidget *parent=0)" -->
+<a class="anchor" id="a775b4cd5ec81c71afabd4a731fb97515"></a><!-- doxytag: member="LightDialog::LightDialog" ref="a775b4cd5ec81c71afabd4a731fb97515" args="(TLightKit *currentLightKit, QVector&lt; TSunShapeFactory * &gt; sunshapeFactoryList, QWidget *parent=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -94,12 +93,6 @@ Private Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_t_light_kit.html">TLightKit</a> *&#160;</td>
           <td class="paramname"> <em>currentLightKit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">QVector&lt; TShapeFactory * &gt;&#160;</td>
-          <td class="paramname"> <em>shapeFactoryList</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -144,24 +137,6 @@ Private Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="ac0d1cb5dc8d5c77dbd317a23297536f8"></a><!-- doxytag: member="LightDialog::ChangeShape" ref="ac0d1cb5dc8d5c77dbd317a23297536f8" args="(int index)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LightDialog::ChangeShape </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"> <em>index</em>&#160;)</td>
-          <td><code> [protected, slot]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Changes parameters of the shape paraneters view to shape type given by <em>index</em>. </p>
-
-</div>
-</div>
 <a class="anchor" id="a7e8c102642906d9618cadf87c7b3f672"></a><!-- doxytag: member="LightDialog::ChangeSunshape" ref="a7e8c102642906d9618cadf87c7b3f672" args="(int index)" -->
 <div class="memitem">
 <div class="memproto">
@@ -210,6 +185,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Changes parameters of the shape paraneters view to shape type given by <em>index</em>.</p>
 <p>Updates the sun position tab values to the values of the current light. </p>
 
 </div>
@@ -250,7 +226,7 @@ Private Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 9 2011 11:17:50 for Tonatiuh by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Apr 15 2011 13:45:40 for Tonatiuh by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

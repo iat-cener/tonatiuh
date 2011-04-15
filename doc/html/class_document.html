@@ -73,12 +73,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#adca548c3aeff8fdf5202ef2c9d0c3e4b">ReadFile</a> (const QString &amp;fileName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a5dd4d845cd2392efd49c8141edb8a538">WriteFile</a> (const QString &amp;fileName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#ad015404a16b85011d94a8dbe2c5d887a">IsModified</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">SoSelection *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#abd4c3279c589fa2b58b1bbf38ae043d8">GetRoot</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">SoSceneKit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a8f6591eaa11736c17f33183b45472b3f">GetSceneKit</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a5f0e4cdde240e4accfefdd4f57f860c8">selectionFinishCBAux</a> (SoSelection *selection)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">TSceneKit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a9b555e7fd525fdc3b551306c61826452">GetSceneKit</a> () const </td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">SoSceneKit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a67d5995cbed17586e51d31266e8a4df5">GetSceneKitFromFile</a> (const QString &amp;fileName)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">TSceneKit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#aeb9fd4443ae660a0305ea1941618c333">GetSceneKitFromFile</a> (const QString &amp;fileName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a72007c5149994baf371330c272311225">InitializeScene</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#aeda0c3f95636eb8892b0436a4def2a0d">ClearScene</a> ()</td></tr>
 </table>
@@ -138,29 +136,12 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abd4c3279c589fa2b58b1bbf38ae043d8"></a><!-- doxytag: member="Document::GetRoot" ref="abd4c3279c589fa2b58b1bbf38ae043d8" args="() const " -->
+<a class="anchor" id="a9b555e7fd525fdc3b551306c61826452"></a><!-- doxytag: member="Document::GetSceneKit" ref="a9b555e7fd525fdc3b551306c61826452" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">SoSelection * Document::GetRoot </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Returns the document root. </p>
-
-</div>
-</div>
-<a class="anchor" id="a8f6591eaa11736c17f33183b45472b3f"></a><!-- doxytag: member="Document::GetSceneKit" ref="a8f6591eaa11736c17f33183b45472b3f" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SoSceneKit * Document::GetSceneKit </td>
+          <td class="memname">TSceneKit * Document::GetSceneKit </td>
           <td>(</td>
           <td class="paramname">&#160;)</td>
           <td> const</td>
@@ -172,12 +153,12 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a67d5995cbed17586e51d31266e8a4df5"></a><!-- doxytag: member="Document::GetSceneKitFromFile" ref="a67d5995cbed17586e51d31266e8a4df5" args="(const QString &amp;fileName)" -->
+<a class="anchor" id="aeb9fd4443ae660a0305ea1941618c333"></a><!-- doxytag: member="Document::GetSceneKitFromFile" ref="aeb9fd4443ae660a0305ea1941618c333" args="(const QString &amp;fileName)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">SoSceneKit * Document::GetSceneKitFromFile </td>
+          <td class="memname">TSceneKit * Document::GetSceneKitFromFile </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;&#160;</td>
           <td class="paramname"> <em>fileName</em>&#160;)</td>
@@ -260,24 +241,6 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5f0e4cdde240e4accfefdd4f57f860c8"></a><!-- doxytag: member="Document::selectionFinishCBAux" ref="a5f0e4cdde240e4accfefdd4f57f860c8" args="(SoSelection *selection)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Document::selectionFinishCBAux </td>
-          <td>(</td>
-          <td class="paramtype">SoSelection *&#160;</td>
-          <td class="paramname"> <em>selection</em>&#160;)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Emits a signal to indicate that a document scene nodes selection changes has been finished. </p>
-
-</div>
-</div>
 <a class="anchor" id="a7aa6c3b5922c88e97b6c40c354482eff"></a><!-- doxytag: member="Document::SetDocumentModified" ref="a7aa6c3b5922c88e97b6c40c354482eff" args="(bool status)" -->
 <div class="memitem">
 <div class="memproto">
@@ -334,7 +297,7 @@ Private Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 9 2011 11:17:50 for Tonatiuh by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Apr 15 2011 13:45:40 for Tonatiuh by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

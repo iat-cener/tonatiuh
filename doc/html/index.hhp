@@ -32,11 +32,15 @@ _cmd_light_kit_modified_8h_source.html
 _cmd_light_position_modified_8h_source.html
 _cmd_modify_parameter_8h_source.html
 _cmd_paste_8h_source.html
-_code_editor_8h_source.html
+_code_edit_area_8h_source.html
+_code_editor_widget_8h_source.html
 _differential_geometry_8h_source.html
 _document_8h_source.html
 _export_dialog_8h_source.html
 _field_container_widget_8h_source.html
+_files_model_8h_source.html
+_graphic_root_8h_source.html
+_graphic_root_tracker_8h_source.html
 _graphic_view_8h_source.html
 _grid_settings_dialog_8h_source.html
 _horizontal_widget_8h_source.html
@@ -84,6 +88,7 @@ tgc_8h_source.html
 tgf_8h_source.html
 _timer_8h_source.html
 _t_light_kit_8h_source.html
+_t_light_shape_8h_source.html
 _t_material_8h_source.html
 _t_material_factory_8h_source.html
 tonatiuh__script_8h_source.html
@@ -94,6 +99,8 @@ _tracer_8h_source.html
 _transform_8h_source.html
 trf_8h_source.html
 trt_8h_source.html
+_t_scene_kit_8h_source.html
+_t_scene_tracker_8h_source.html
 _t_separator_kit_8h_source.html
 _t_shape_8h_source.html
 _t_shape_factory_8h_source.html
@@ -103,6 +110,7 @@ _t_sun_shape_8h_source.html
 _t_sun_shape_factory_8h_source.html
 _t_tracker_8h_source.html
 _t_tracker_factory_8h_source.html
+ui__codeeditorwidget_8h_source.html
 ui__exportdialog_8h_source.html
 ui__gridsettingsdialog_8h_source.html
 ui__heliostatfieldwizard_8h_source.html
@@ -190,7 +198,6 @@ class_cmd_light_kit_modified-members.html
 class_cmd_paste.html
 class_cmd_paste-members.html
 class_code_editor.html
-class_code_editor-members.html
 class_document.html
 class_document-members.html
 class_export_dialog.html

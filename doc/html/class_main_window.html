@@ -97,7 +97,6 @@ Public Slots</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a62da167010372eb14bed064f9883cb12">SetPhotonMapType</a> (QString typeName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a358e3f85562fb987c4aee2d485c8ca57">SetRaysPerIteration</a> (unsigned long rays)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a69e7a8e7ce98d52945c5122af587d356">SetValue</a> (QString nodeUrl, QString parameter, QString value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a01d9edd6bf29b148e6545f18a7480907">ChangeSunPosition</a> (QDateTime *time, double longitude, double latitude)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a269ddc4265fe984326f4f8535254c834">MainWindow</a> (QString tonatiuhFile=0, QWidget *parent=0, Qt::WindowFlags flags=0)</td></tr>
@@ -107,6 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pro-slots"></a>
 Protected Slots</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ae5e6386cb1b3add615ed81c62052c8fa">CalculateSunPosition</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a5e476335319b7d02943cf7b125289357">ChangeGridSettings</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a0031681db718a747fd99e232a88d5a47">ChangeSunPosition</a> (double azimuth, double zenith)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ae5290e013a45eac1b50863bc609c102c">CreateMaterial</a> (TMaterialFactory *pTMaterialFactory)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a7803710ef6bf8410d5a3e0bcd16fe27a">CreateShape</a> (TShapeFactory *pTShapeFactory)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ad2689f9a8089c88eb5f3358770a3331e">DefineSunLight</a> ()</td></tr>
@@ -117,15 +118,16 @@ Protected Slots</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#aabd1581ef601852985312cb7db6839e0">Redo</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ae80935995ff7437d9500474ed4793574">SetParameterValue</a> (SoNode *node, QString paramenterName, QString newValue)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#af52662986ebbb2070ca0595ecf037158">SetSunPositionCalculatorEnabled</a> (int enabled)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a2fc85de1031444eb8be7ce058f515871">ShowBackground</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a6a2fc6f5699521671fff560f34480b17">ShowCommandView</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a74c5edfafcfb5747dd404eea2c6d8b20">ShowGrid</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#aa1a061c9d1937224f538abb94e1a4f49">ShowMenu</a> (const QModelIndex &amp;index)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a1ed6a17940e49080e448fd468c807793">ShowRayTracerOptionsDialog</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a4ebd44cb9e531fc407eea7be266cd39c">Undo</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a5103ef907a6072410493a53242787dc6">on_actionGrid_toggled</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a8f3934a874d6b1ffeea08f9e191f8c1e">on_actionGridSettings_triggered</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a6677bc5267488b8d0b465cc98b919f96">on_actionCheckForUpdates_triggered</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a2a1b75e753fd2f26a2015433f0924187">ChangeModelScene</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">SoSeparator *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a8ca97634d438ceac84ffdcdcbea03f09">CreateGrid</a> (int xDimension, int zDimension, double xSpacing, double zSpacing)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">QToolBar *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ad9302bc22f71e60b69fc51ff6f2137f9">CreateMaterialsTooBar</a> (QMenu *pMaterialsMenu)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">QToolBar *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a02cce519c5af231dc7a8286c21af6dea">CreateTrackerTooBar</a> (QMenu *pMaterialsMenu)</td></tr>
@@ -135,13 +137,14 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#abf141a40697d1f6209ec3917996cb3f8">Paste</a> (QModelIndex nodeIndex, tgc::PasteType type)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">QDir&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a52c96954cbeeebf8daeb503a7cfd03cc">PluginDirectory</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a4abba2c52f756524c0f388d0d3e6d6ec">ReadSettings</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a6017d43535c81c10e65a20163b7dac8a">ReadyForRaytracing</a> (<a class="el" href="class_instance_node.html">InstanceNode</a> *&amp;rootSeparatorInstance, <a class="el" href="class_instance_node.html">InstanceNode</a> *&amp;lightInstance, SoTransform *&amp;lightTransform, TSunShape *&amp;sunShape, TShape *&amp;shape)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a256627154779c6889f8db774b2c84623">ReadyForRaytracing</a> (<a class="el" href="class_instance_node.html">InstanceNode</a> *&amp;rootSeparatorInstance, <a class="el" href="class_instance_node.html">InstanceNode</a> *&amp;lightInstance, SoTransform *&amp;lightTransform, TSunShape *&amp;sunShape, TLightShape *&amp;shape)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ac16113ab28437528855f827c26c3f1eb">SaveFile</a> (const QString &amp;fileName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a9d6225870dd477b8a56a85e8ab2ce36f">SetCurrentFile</a> (const QString &amp;fileName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a03ebcf99c9feb22715fc2fa6d2b36cfa">SetupActions</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ae381cc9d9770cdbe18b4d214cd748a2c">SetupActionsInsertShape</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#aeb6ec4b5c5920c57bca678edb640b4ee">SetupCommandView</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#acbebf78f381b85c3a250aa17f409ca18">SetupDocument</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a23b3fdfe88b4755bf1b2a13188e53c4e">SetupGraphcisRoot</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#abd6b8d8fe35820e570e09ae9c02e3889">SetupGraphicView</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ab1004b5fadcd42c7909818f73240d817">SetupMenus</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a81d65f755af509fb8574eb5fcc1d1716">SetupModels</a> ()</td></tr>
@@ -151,11 +154,9 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a17a9f791099c450179a2947dae7d4af2">SetupTriggers</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#afd814f1f8fc7a5b7438a1530ccc2dd06">SetupViews</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a38c57809e87778c36589835fe157104c">SetupUpdateManager</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a678b581fba8c272c8d6ebeaecec62d2b">SetupVRMLBackground</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a68dea9a15289cb06b948aa018e191f7f">ShowRaysIn3DView</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a1f87ccf62d872d2e3667970097bd4a87">StartOver</a> (const QString &amp;fileName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a67786e7bcc0b50d4805bb000606aadb5">StrippedName</a> (const QString &amp;fullFileName)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a92c5e3d75db454a74e50f4dc285b718f">UpdateLightDimensions</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#ae9a9900a62aa2e9e2934200e18cbe6e6">UpdateRecentFileActions</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main_window.html#a56a5e4d5e0a022e8c1ecf350d2916ade">WriteSettings</a> ()</td></tr>
 </table>
@@ -232,37 +233,65 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a01d9edd6bf29b148e6545f18a7480907"></a><!-- doxytag: member="MainWindow::ChangeSunPosition" ref="a01d9edd6bf29b148e6545f18a7480907" args="(QDateTime *time, double longitude, double latitude)" -->
+<a class="anchor" id="a5e476335319b7d02943cf7b125289357"></a><!-- doxytag: member="MainWindow::ChangeGridSettings" ref="a5e476335319b7d02943cf7b125289357" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::ChangeGridSettings </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td><code> [protected, slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Changes the number of the grid cells and grid cell dimensions. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2a1b75e753fd2f26a2015433f0924187"></a><!-- doxytag: member="MainWindow::ChangeModelScene" ref="a2a1b75e753fd2f26a2015433f0924187" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::ChangeModelScene </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Set current document coin scene into Tonatiuh Models and views. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0031681db718a747fd99e232a88d5a47"></a><!-- doxytag: member="MainWindow::ChangeSunPosition" ref="a0031681db718a747fd99e232a88d5a47" args="(double azimuth, double zenith)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void MainWindow::ChangeSunPosition </td>
           <td>(</td>
-          <td class="paramtype">QDateTime *&#160;</td>
-          <td class="paramname"> <em>time</em>, </td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"> <em>azimuth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"> <em>longitude</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"> <em>latitude</em>&#160;</td>
+          <td class="paramname"> <em>zenith</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td><code> [slot]</code></td>
+          <td></td><td><code> [protected, slot]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Changes the light position to the position computed from <em>time</em>, <em>longitude</em> and <em>latitude</em>. The <em>time</em> is ut time and <em>longitude</em> and <em>latitude</em> are defined in degrees. </p>
+<p>Changes the light position to the position defined by <em>azimuth</em> and <em>zenith</em>. The parameters are defined in radians. </p>
 
 </div>
 </div>
@@ -359,25 +388,6 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae5290e013a45eac1b50863bc609c102c"></a><!-- doxytag: member="MainWindow::CreateMaterial" ref="ae5290e013a45eac1b50863bc609c102c" args="(TMaterialFactory *pTMaterialFactory)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MainWindow::CreateMaterial </td>
-          <td>(</td>
-          <td class="paramtype">TMaterialFactory *&#160;</td>
-          <td class="paramname"> <em>pTMaterialFactory</em>&#160;)</td>
-          <td><code> [protected, slot]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Creates a material node from the <em>pTMaterialFactory</em> as current selected node child.</p>
-<p>If the current node is not a surface type node, the material node will not be created. </p>
-
-</div>
-</div>
 <a class="anchor" id="a0b9f62c40894b280e97a8a7339153ac9"></a><!-- doxytag: member="MainWindow::CreateMaterial" ref="a0b9f62c40894b280e97a8a7339153ac9" args="(QString materialType)" -->
 <div class="memitem">
 <div class="memproto">
@@ -394,6 +404,25 @@ Private Member Functions</h2></td></tr>
 <div class="memdoc">
 <p>Creates a <em>materialType</em> material node from the as current selected node child.</p>
 <p>If the current node is not a surface type node or <em>materialType</em> is not a valid type, the material node will not be created. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae5290e013a45eac1b50863bc609c102c"></a><!-- doxytag: member="MainWindow::CreateMaterial" ref="ae5290e013a45eac1b50863bc609c102c" args="(TMaterialFactory *pTMaterialFactory)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::CreateMaterial </td>
+          <td>(</td>
+          <td class="paramtype">TMaterialFactory *&#160;</td>
+          <td class="paramname"> <em>pTMaterialFactory</em>&#160;)</td>
+          <td><code> [protected, slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Creates a material node from the <em>pTMaterialFactory</em> as current selected node child.</p>
+<p>If the current node is not a surface type node, the material node will not be created. </p>
 
 </div>
 </div>
@@ -772,40 +801,6 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5103ef907a6072410493a53242787dc6"></a><!-- doxytag: member="MainWindow::on_actionGrid_toggled" ref="a5103ef907a6072410493a53242787dc6" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MainWindow::on_actionGrid_toggled </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td><code> [protected, slot]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Action slot to show/hide a grid with the scene dimensions. </p>
-
-</div>
-</div>
-<a class="anchor" id="a8f3934a874d6b1ffeea08f9e191f8c1e"></a><!-- doxytag: member="MainWindow::on_actionGridSettings_triggered" ref="a8f3934a874d6b1ffeea08f9e191f8c1e" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MainWindow::on_actionGridSettings_triggered </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td><code> [protected, slot]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Action slot to open grid settings dialog. </p>
-
-</div>
-</div>
 <a class="anchor" id="a8f274db18d223c63d2b86451bd515270"></a><!-- doxytag: member="MainWindow::Open" ref="a8f274db18d223c63d2b86451bd515270" args="(QString fileName)" -->
 <div class="memitem">
 <div class="memproto">
@@ -983,7 +978,7 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6017d43535c81c10e65a20163b7dac8a"></a><!-- doxytag: member="MainWindow::ReadyForRaytracing" ref="a6017d43535c81c10e65a20163b7dac8a" args="(InstanceNode *&amp;rootSeparatorInstance, InstanceNode *&amp;lightInstance, SoTransform *&amp;lightTransform, TSunShape *&amp;sunShape, TShape *&amp;shape)" -->
+<a class="anchor" id="a256627154779c6889f8db774b2c84623"></a><!-- doxytag: member="MainWindow::ReadyForRaytracing" ref="a256627154779c6889f8db774b2c84623" args="(InstanceNode *&amp;rootSeparatorInstance, InstanceNode *&amp;lightInstance, SoTransform *&amp;lightTransform, TSunShape *&amp;sunShape, TLightShape *&amp;shape)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1014,7 +1009,7 @@ Private Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TShape *&amp;&#160;</td>
+          <td class="paramtype">TLightShape *&amp;&#160;</td>
           <td class="paramname"> <em>raycastingShape</em>&#160;</td>
         </tr>
         <tr>
@@ -1346,6 +1341,23 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a23b3fdfe88b4755bf1b2a13188e53c4e"></a><!-- doxytag: member="MainWindow::SetupGraphcisRoot" ref="a23b3fdfe88b4755bf1b2a13188e53c4e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::SetupGraphcisRoot </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Defines 3D view background. </p>
+
+</div>
+</div>
 <a class="anchor" id="abd6b8d8fe35820e570e09ae9c02e3889"></a><!-- doxytag: member="MainWindow::SetupGraphicView" ref="abd6b8d8fe35820e570e09ae9c02e3889" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -1499,23 +1511,6 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a678b581fba8c272c8d6ebeaecec62d2b"></a><!-- doxytag: member="MainWindow::SetupVRMLBackground" ref="a678b581fba8c272c8d6ebeaecec62d2b" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MainWindow::SetupVRMLBackground </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Defines 3D view background. </p>
-
-</div>
-</div>
 <a class="anchor" id="a69e7a8e7ce98d52945c5122af587d356"></a><!-- doxytag: member="MainWindow::SetValue" ref="a69e7a8e7ce98d52945c5122af587d356" args="(QString nodeUrl, QString parameter, QString value)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1550,6 +1545,23 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a2fc85de1031444eb8be7ce058f515871"></a><!-- doxytag: member="MainWindow::ShowBackground" ref="a2fc85de1031444eb8be7ce058f515871" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::ShowBackground </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td><code> [protected, slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Action slot to show/hide viewer background. </p>
+
+</div>
+</div>
 <a class="anchor" id="a6a2fc6f5699521671fff560f34480b17"></a><!-- doxytag: member="MainWindow::ShowCommandView" ref="a6a2fc6f5699521671fff560f34480b17" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -1564,6 +1576,23 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Shows a windows with the applied commands. The most recently executed command is always selected. When a different command is selected the model returns to the state after selected command was applied. </p>
+
+</div>
+</div>
+<a class="anchor" id="a74c5edfafcfb5747dd404eea2c6d8b20"></a><!-- doxytag: member="MainWindow::ShowGrid" ref="a74c5edfafcfb5747dd404eea2c6d8b20" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MainWindow::ShowGrid </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td><code> [protected, slot]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Action slot to show/hide a grid with the scene dimensions. </p>
 
 </div>
 </div>
@@ -1690,23 +1719,6 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a92c5e3d75db454a74e50f4dc285b718f"></a><!-- doxytag: member="MainWindow::UpdateLightDimensions" ref="a92c5e3d75db454a74e50f4dc285b718f" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MainWindow::UpdateLightDimensions </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Updates the light dimensions if the automatic light dimensions is defined. Otherwise, nothing is done. </p>
-
-</div>
-</div>
 <a class="anchor" id="ae9a9900a62aa2e9e2934200e18cbe6e6"></a><!-- doxytag: member="MainWindow::UpdateRecentFileActions" ref="ae9a9900a62aa2e9e2934200e18cbe6e6" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -1760,7 +1772,7 @@ Private Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 9 2011 11:17:50 for Tonatiuh by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Apr 15 2011 13:45:40 for Tonatiuh by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
