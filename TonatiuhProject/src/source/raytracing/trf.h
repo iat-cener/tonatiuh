@@ -61,8 +61,6 @@ class TPhotonMap;
 namespace trf
 {
 	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,QVector< QPair< TShapeKit*, Transform > >* surfacesList );
-
-	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO );
 	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList );
 
 	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
@@ -121,13 +119,13 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 
 			if( shapeInstance )
 			{
-				TShape* shapeNode = dynamic_cast< TShape* > ( shapeInstance->GetNode() );
+				TShape* shapeNode = static_cast< TShape* > ( shapeInstance->GetNode() );
 				shapeBB = shapeToWorld( shapeNode->GetBBox() );
 
 				instanceNode->SetIntersectionTransform( shapeTransform );
 				instanceNode->SetIntersectionBBox( shapeBB );
 
-				TShapeKit* surface = dynamic_cast< TShapeKit* > ( coinNode );
+				TShapeKit* surface = static_cast< TShapeKit* > ( coinNode );
 				surfacesList->push_back( QPair< TShapeKit*, Transform >( surface, shapeTransform ) );
 			}
 		}
@@ -135,73 +133,6 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 	}
 }
 
-
-/**
- * Compute a map with the InstanceNodes of sub-tree with top node \a instanceNode.
- *
- *The map stores for each InstanceNode its BBox and its transform in global coordinates.
- **/
-inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO )
-{
-	if( !instanceNode ) return;
-	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
-	if( !coinNode ) return;
-
-	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		SoTransform* nodeTransform = static_cast< SoTransform* >(coinNode->getPart( "transform", true ) );
-		Transform objectToWorld = tgf::TransformFromSoTransform( nodeTransform );
-		Transform worldToObject = objectToWorld.GetInverse();
-
-		BBox nodeBB;
-		Transform nodeWTO(worldToObject * parentWTO );
-		instanceNode->SetIntersectionTransform( nodeWTO );
-
-		for( int index = 0; index < instanceNode->children.count() ; ++index )
-		{
-			InstanceNode* childInstance = instanceNode->children[index];
-			ComputeSceneTreeMap(childInstance, nodeWTO );
-
-			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
-		}
-
-		instanceNode->SetIntersectionBBox( nodeBB );
-
-	}
-	else
-	{
-		Transform shapeTransform = parentWTO;
-		Transform shapeToWorld = shapeTransform.GetInverse();
-		BBox shapeBB;
-
-		if(  instanceNode->children.count() > 0 )
-		{
-			InstanceNode* shapeInstance = 0;
-			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-				shapeInstance =  instanceNode->children[0];
-			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
-
-
-			/*SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-			shapeInstance->GetNode()->getBoundingBox( bbAction );
-
-			SbBox3f box = bbAction->getXfBoundingBox().project();
-			delete bbAction;
-
-			SbVec3f pMin = box.getMin();
-			SbVec3f pMax = box.getMax();*/
-			if( shapeInstance )
-			{
-				TShape* shapeNode = dynamic_cast< TShape* > ( shapeInstance->GetNode() );
-				shapeBB = shapeToWorld( shapeNode->GetBBox() );
-			}
-		}
-		instanceNode->SetIntersectionTransform( shapeTransform );
-
-		instanceNode->SetIntersectionBBox( shapeBB );
-
-	}
-}
 
 inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList )
 {

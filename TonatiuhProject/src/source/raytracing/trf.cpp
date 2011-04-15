@@ -136,24 +136,29 @@ int trf::ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selecte
  */
 int trf::ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap )
 {
-        if( ( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
+	if( !selectedSurface )	return 0;
+
+
+    if( ( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) ) &&
                 ( !selectedSurface->GetNode()->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) ) )
                         return 0;
 
-        QFile exportFile( fileName );
-        if(!exportFile.open( QIODevice::WriteOnly ) )   return 0;
+    Transform worldToObject = selectedSurface->GetIntersectionTransform();
 
-        QDataStream out( &exportFile );
-        out<< wPhoton;
+	QFile exportFile( fileName );
+	if(!exportFile.open( QIODevice::WriteOnly ) )   return 0;
 
-        std::vector< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
-        if( nodePhotonsList.size() == 0 )
-        {
-                exportFile.close();
-                return 1;
-        }
-        Transform worldToObject = selectedSurface->GetIntersectionTransform();
-        for( unsigned int i = 0; i< nodePhotonsList.size(); ++i )
+	QDataStream out( &exportFile );
+    out<< wPhoton;
+    std::vector< Photon* > nodePhotonsList = photonMap->GetSurfacePhotons( selectedSurface );
+
+    if( nodePhotonsList.size() == 0 )
+    {
+               exportFile.close();
+               return 1;
+    }
+
+    for( unsigned int i = 0; i< nodePhotonsList.size(); ++i )
         {
                 Photon* node = nodePhotonsList[i];
                 Point3D photon =  worldToObject( node->pos );

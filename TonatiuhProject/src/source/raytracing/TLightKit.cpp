@@ -98,18 +98,12 @@ TLightKit::TLightKit()
 	setPart( "transform", transform );
 
 	SoMaterial* lightMaterial = static_cast<SoMaterial*>( getPart( "iconMaterial", true ) );
-	//lightMaterial->diffuseColor.setValue( 0.933, 0.91, 0.666);
 	lightMaterial->transparency = 0.5;
 	setPart( "iconMaterial", lightMaterial );
 
 	int widthPixeles = 100;
 	int heightPixeles = 100;
-
-
 	unsigned char bitmap[ widthPixeles * heightPixeles ];
-	//julia(  widthPixeles, heightPixeles, bitmap, 128 );
-
-
 	for( int y = 0; y < heightPixeles; y++ )
 	{
 		for( int x = 0; x < widthPixeles; x++ )
@@ -118,7 +112,6 @@ TLightKit::TLightKit()
 		}
 
 	}
-
 
 	SoTexture2 * texture = new SoTexture2;
     texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
@@ -239,7 +232,7 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 		Transform surfaceTransform = surfacesList[s].second;
 		Transform shapeToWorld = surfaceTransform.GetInverse();
 
-		TShape* shapeNode = dynamic_cast< TShape* > ( surfaceKit->getPart( "shape", false ) );
+		TShape* shapeNode = static_cast< TShape* > ( surfaceKit->getPart( "shape", false ) );
 		if( shapeNode )
 		{
 			BBox shapeBB = shapeNode->GetBBox();
