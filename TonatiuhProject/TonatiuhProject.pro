@@ -11,6 +11,7 @@ plugins.recurse = plugins
 tests.target = tests
 tests.CONFIG = recursive
 tests.recurse = tests
+tests.depends = src
 
 QMAKE_EXTRA_TARGETS += src plugins tests
 SUBDIRS = src \
