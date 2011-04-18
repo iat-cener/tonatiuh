@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -145,10 +145,6 @@ void BezierPatch::SetControlPoints( QVector< Point3D > boundedPoints )
 	m_controlPoints.set1Value( 14, SbVec3f( p32.x, p32.y, p32.z ) );
 	m_controlPoints.set1Value( 15, SbVec3f( p33.x, p33.y, p33.z ) );
 
-
-	/*std::cout<<"---m_controlPoints---"<<std::endl;
-	for( int i = 0; i < m_controlPoints.size() ; i++ )
-		std::cout<<"m_controlPoints: "<<m_controlPoints[i]<<std::endl;*/
 }
 
 void BezierPatch::GeneratePrimitives( SoAction* action )
@@ -325,12 +321,12 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 
 		unsigned int patches = 4;
 		if( patches > distances.size() )	patches = distances.size();
-		for (int i = 0; i < patches; ++i)
+		for( unsigned int i = 0; i < patches; ++i)
 		{
 			if( distances[i] != tgc::Infinity ) buffer1.push_back( distancesMap.value( distances[i] ) );
 
 		}
-		for (int i = patches; i < distances.size(); ++i)
+		for( unsigned int i = patches; i < distances.size(); ++i)
 		{
 			delete distancesMap.value( distances[i] );
 		}
