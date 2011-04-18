@@ -30,7 +30,7 @@ National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117)
 Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
-Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
+Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Martin.
 
 Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
@@ -79,6 +79,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdCut.h"
 #include "CmdDelete.h"
 #include "CmdDeleteTracker.h"
+	//cam->viewAll( m_document->GetRoot(), vpr );
 #include "CmdInsertMaterial.h"
 #include "CmdInsertSeparatorKit.h"
 #include "CmdInsertShape.h"
@@ -621,6 +622,7 @@ void MainWindow::on_actionEdit_Mode_toggled()
 
 void MainWindow::on_actionSunPlane_triggered()
 {
+
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if ( !coinScene )  return;
 
@@ -629,8 +631,21 @@ void MainWindow::on_actionSunPlane_triggered()
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
 	if ( !lightKit ) return;
 
-	SoTransform* lightTransform = static_cast< SoTransform* > ( lightKit->getPart( "transform", true ) );
-	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
+
+	SoSearchAction* coinSearch = new SoSearchAction();
+	coinSearch->setNode( lightKit );
+	coinSearch->setInterest( SoSearchAction::FIRST );
+	coinSearch->apply( m_graphicsRoot->GetNode() );
+
+	SoPath* lightPath = coinSearch->getPath( );
+	if( !lightPath ) tgf::SevereError( "MainWindow Null light path." );
+
+	const SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
+	SoGetMatrixAction * getmatrixaction = new SoGetMatrixAction(vpr);
+	getmatrixaction->apply( lightPath );
+
+	Transform  lightToWorld = tgf::TransformFromMatrix( getmatrixaction->getMatrix() );
+
 	Point3D camPosition = lightToWorld( Point3D( 0.0, 0.0, 0.0 ) );
 	Vector3D camOrientation= lightToWorld( Vector3D( 0.0, -1.0, 0.0 ) );
 
@@ -640,7 +655,6 @@ void MainWindow::on_actionSunPlane_triggered()
 
 
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
-	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( camPosition.x, camPosition.y, camPosition.z ) );
 	cam->pointAt( SbVec3f( targetPoint.x, targetPoint.y, targetPoint.z ) );
 	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
@@ -652,7 +666,6 @@ void MainWindow::on_action_X_Y_Plane_triggered()
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 0, 1 ) );
 	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 1, 0 )  );
-	//cam->viewAll( m_document->GetRoot(), vpr );
 	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 
 }
@@ -663,7 +676,6 @@ void MainWindow::on_action_X_Z_Plane_triggered()
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( 0, 1, 0 ) );
 	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 0, 1 )  );
-	//cam->viewAll( m_document->GetRoot(), vpr );
 	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
@@ -673,7 +685,6 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	cam->position.setValue( SbVec3f( -1, 0, 0 ) );
 	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 1, 0 )  );
-	//cam->viewAll( m_document->GetRoot(), vpr );
 	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
