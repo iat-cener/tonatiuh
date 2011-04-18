@@ -178,7 +178,6 @@ QString ShapeTrumpet::GetIcon() const
 bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 	double a0 = a.getValue();
-	double fH = focusHyperbola.getValue();
 	double tH = truncationHeight.getValue();
 	double hH = hyperbolaHeight.getValue();
 
