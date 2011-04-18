@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -207,9 +207,9 @@ bool ShapeBezierSurface::IntersectP( const Ray& objectRay ) const
 	return false;
 }
 
-Point3D ShapeBezierSurface::Sample( double u, double v ) const
+Point3D ShapeBezierSurface::Sample( double /*u*/, double /*v*/ ) const
 {
-	return GetPoint3D( u, v );
+	return Point3D();
 }
 
 void ShapeBezierSurface::GLRender( SoGLRenderAction* action )
@@ -217,16 +217,6 @@ void ShapeBezierSurface::GLRender( SoGLRenderAction* action )
 	for( int i = 0; i < m_surfacesVector.size(); ++i )
 		m_surfacesVector[i]->GLRender(action);
 
-}
-
-Point3D ShapeBezierSurface::GetPoint3D( double u, double v ) const
-{
-	return Point3D();
-}
-
-NormalVector ShapeBezierSurface::GetNormal (double u, double v ) const
-{
-	return NormalVector();
 }
 
 void ShapeBezierSurface::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/ )

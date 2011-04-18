@@ -32,9 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
-***************************************************************************/
+***************** unsigned **********************************************************/
 
 #ifndef SHAPEBEZIERPATCH_H_
 #define SHAPEBEZIERPATCH_H_
@@ -77,12 +77,8 @@ public:
 	SoSFString inputDataFile;
 
 protected:
-	Point3D GetPoint3D (double u, double v) const;
-	NormalVector GetNormal( double u, double v ) const;
-
-	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
+	void computeBBox( SoAction *action, SbBox3f &box, SbVec3f &center);
 	void generatePrimitives(SoAction *action);
-
 
 	static void updateInputDataFile(void *data, SoSensor *);
 
