@@ -1249,16 +1249,19 @@ bool MainWindow::SaveAs()
 
 	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
 
-	QString tonatiuhFilter( "Tonatiuh files (*.tnh)" );
 	QString saveDirectory = settings.value( "saveDirectory", QString( "." ) ).toString();
 
+	QString tonatiuhFilter( "Tonatiuh files (*.tnh)" );
 	QString fileName = QFileDialog::getSaveFileName( this,
 	                       tr( "Save" ), saveDirectory,
-	                       tr( "Tonatiuh files (*.tnh)" ) );
+	                       tonatiuhFilter, &tonatiuhFilter );
 	if( fileName.isEmpty() ) return false;
 
 	QFileInfo file( fileName );
 	settings.setValue( "saveDirectory", file.absolutePath() );
+
+	if( file.completeSuffix().compare( "tnh" ) )
+		fileName.append( ".tnh" );
 	return SaveFile( fileName );
 }
 
@@ -1300,6 +1303,10 @@ bool MainWindow::SaveComponent()
 	                       tr( "Save Tonatiuh component" ), ".",
 	                       tr( "Tonatiuh component (*.tcmp)" ) );
 	if( fileName.isEmpty() ) return false;
+
+	QFileInfo componentFile( fileName );
+	if( componentFile.completeSuffix().compare( "tcmp" ) )
+		fileName.append( ".tcmp" );
 
     SoWriteAction SceneOuput;
     if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
