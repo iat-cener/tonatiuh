@@ -725,27 +725,28 @@ QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
     	int row = coinPartList->findChild(coinNode);
     	if( coinParent->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 		{
-
-    		//TSeparatorKit* parentSeparator = dynamic_cast< TSeparatorKit* >( coinParent );
-    		if( coinParent->getPart( "tracker", false ) ) row++;
+    		if( coinParent->getPart( "tracker", false ) &&  !coinParent->getPart( "tracker", false )->getTypeId().isDerivedFrom( TSceneTracker::getClassTypeId() ) ) row++;
 		}
-		if(coinNodePath.getNodeFromTail(1) == m_coinScene )
+    	if( coinNodePath.getNodeFromTail(1)->getTypeId().isDerivedFrom( SoSceneKit::getClassTypeId() ) )
 		{
-			int child = 0;
+    		int child = 0;
 			while( child < m_instanceRoot->children.count() )
 			{
 				if ( m_instanceRoot->children[child]->GetNode() == coinNode )
 					break;
 				child++;
 			}
-			return index(child, 0 );
-		}else{
-			SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* > ( coinNodePath.copy( 0, 0 ) );
-			parentPath->truncate(parentPath->getLength()-1 );
-			QModelIndex parentIndex = IndexFromPath( *parentPath );
-
-			return index (row, 0, parentIndex );
+    		return index( child, 0 );
 		}
+		else
+		{
+			SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* > ( coinNodePath.copy( 0, 0 ) );
+			parentPath->truncate( parentPath->getLength() - 1 );
+						QModelIndex parentIndex = IndexFromPath( *parentPath );
+			QModelIndex childIndex =  index (row, 0, parentIndex );
+    		return childIndex;
+		}
+
 	}
 	else
 		return QModelIndex();
