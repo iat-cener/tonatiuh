@@ -1624,6 +1624,7 @@ void MainWindow::selectionFinish( SoSelection* selection )
     QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
 	if ( !nodeIndex.isValid() ) return;
 	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
+	m_selectionModel->select( nodeIndex , QItemSelectionModel::ClearAndSelect );
 
 }
 
