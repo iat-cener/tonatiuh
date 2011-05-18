@@ -315,7 +315,7 @@ int ScriptRayTracer::Trace()
 	SoSceneKit* coinScene =  static_cast< SoSceneKit* >( sceneInstance->GetNode() );
 
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 	if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation/*, m_sunDistance*/ );
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
@@ -326,8 +326,8 @@ int ScriptRayTracer::Trace()
 	if( !lightKit->getPart( "icon", false ) ) return 0;
 	TLightShape* raycastingSurface = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
 
-	if( !lightKit->getPart( "transform" ,true ) ) return 0;
-	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,true ) );
+	if( !lightKit->getPart( "transform" ,false ) ) return 0;
+	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,false ) );
 	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 	lightInstance->SetIntersectionTransform( lightToWorld. GetInverse() );
 
