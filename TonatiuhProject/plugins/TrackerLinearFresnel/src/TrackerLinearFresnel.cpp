@@ -107,10 +107,10 @@ void TrackerLinearFresnel::evaluate()
 	if( !m_azimuth.isConnected() ) return;
 	if( !m_zenith.isConnected() ) return;
 
-	TSeparatorKit* sunNode = static_cast< TSeparatorKit* > ( m_scene->getPart( "childList[0]", true ) );
+	TSeparatorKit* sunNode = static_cast< TSeparatorKit* > ( m_scene->getPart( "childList[0]", false ) );
 	if( !sunNode )	return;
 
-	TSeparatorKit* rootNode = static_cast< TSeparatorKit* > ( sunNode->getPart( "childList[0]", true ) );
+	TSeparatorKit* rootNode = static_cast< TSeparatorKit* > ( sunNode->getPart( "childList[0]", false ) );
 	if( !rootNode )	return;
 
 	SoSearchAction* coinSearch = new SoSearchAction();
