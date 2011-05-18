@@ -628,7 +628,7 @@ void MainWindow::on_actionSunPlane_triggered()
 
 	//Check if there is a light and is properly configured
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return;
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 	if ( !lightKit ) return;
 
 
@@ -1669,7 +1669,7 @@ void MainWindow::ChangeSelection( const QModelIndex& current )
 void MainWindow::ChangeSunPosition(  double azimuth, double zenith )
 {
 	SoSceneKit* coinScene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 	if ( !lightKit )
 	{
 		QMessageBox::warning( this, "Toantiuh warning", tr( "Sun not defined in scene" ) );
@@ -2128,7 +2128,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 
 	//Check if there is a light and is properly configured
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return false;
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", true ) );
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
 	lightInstance = sceneInstance->children[0];
 	if ( !lightInstance ) return false;
@@ -2139,8 +2139,8 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, Insta
 	if( !lightKit->getPart( "icon", false ) ) return false;
 	raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
 
-	if( !lightKit->getPart( "transform" ,true ) ) return false;
-	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,true ) );
+	if( !lightKit->getPart( "transform" ,false ) ) return false;
+	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,false ) );
 
 
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
