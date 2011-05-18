@@ -173,7 +173,7 @@ void TLightKit::Update( BBox box )
 	double delta = 0.01;
 	if(  thetaMax > 0.0 ) delta = 5 * distMax * tan( thetaMax );
 
-	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", true ) );
+	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
 	shape->xMin.setValue( xMin - delta );
 	shape->xMax.setValue( xMax + delta );
@@ -182,10 +182,10 @@ void TLightKit::Update( BBox box )
 	shape->delta.setValue( delta );
 
 
-	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", true ) );
+	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", false ) );
+	if(!lightTransform) return;
 	SbVec3f translation( 0.0, yMax, 0.0 );
 	lightTransform->translation.setValue(translation );
-
 
 	/*double oldAzimuth = azimuth.getValue();
 	azimuth.setValue( 0 );
@@ -198,7 +198,7 @@ void TLightKit::Update( BBox box )
 
 void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > > surfacesList )
 {
-	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", true ) );
+	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
 
 	double width =  shape->xMax.getValue() - shape->xMin.getValue();
