@@ -132,8 +132,6 @@ Point3D TLightShape::GetPoint3D (double u, double v) const
 
 void TLightShape::SetLightSourceArea(  int h, int w, int** lightArea )
 {
-	m_heightElements = h;
-	m_widthElements = w;
 
 	if( m_lightAreaMatrix != 0 )
 	{
@@ -141,6 +139,9 @@ void TLightShape::SetLightSourceArea(  int h, int w, int** lightArea )
 			delete[] m_lightAreaMatrix[i];
 		delete[] m_lightAreaMatrix;
 	}
+
+	m_heightElements = h;
+	m_widthElements = w;
 	m_lightAreaMatrix = lightArea;
 }
 
