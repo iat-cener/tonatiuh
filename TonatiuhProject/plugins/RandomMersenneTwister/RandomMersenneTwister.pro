@@ -5,7 +5,7 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-include( $$(TONATIUH_ROOT)/config.pri)
+include( ../../config.pri )
 
 INCLUDEPATH += . \
 			src \
@@ -18,13 +18,11 @@ SOURCES = src/*.cpp
 
 TARGET        = RandomMersenneTwister
 
-contains(TEMPLATE,lib) {  
 
-	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/RandomMersenneTwister	
+CONFIG(debug, debug|release) {
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/RandomMersenneTwister	
 
-	}
-	else { 
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/RandomMersenneTwister
-	}
+}
+else { 
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/RandomMersenneTwister
 }

@@ -38,6 +38,7 @@
 
 #ifndef SUNPOSITIONCALCULATORDIALOG_H_
 #define SUNPOSITIONCALCULATORDIALOG_H_
+#ifndef NO_MARBLE
 
 
 #include <QDialog>
@@ -79,5 +80,6 @@ private:
 	void WriteSettings();
 
 };
+#endif /* NO_MARBLE */
 
 #endif /* SUNPOSITIONCALCULATORDIALOG_H_ */

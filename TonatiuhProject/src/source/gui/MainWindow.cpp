@@ -82,6 +82,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	//cam->viewAll( m_document->GetRoot(), vpr );
 #include "CmdInsertMaterial.h"
 #include "CmdInsertSeparatorKit.h"
+#include "CmdInsertAnalyzerKit.h"
 #include "CmdInsertShape.h"
 #include "CmdInsertShapeKit.h"
 #include "CmdInsertTracker.h"
@@ -119,6 +120,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trf.h"
 #include "TSceneKit.h"
 #include "TSeparatorKit.h"
+#include "TAnalyzerKit.h"
+#include "TAnalyzerResult.h"
 #include "TShapeFactory.h"
 #include "TShapeKit.h"
 #include "TSunShapeFactory.h"
@@ -289,6 +292,8 @@ void MainWindow::StartManipulation( SoDragger* dragger )
  */
 void MainWindow::CalculateSunPosition()
 {
+#ifndef NO_MARBLE
+
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene->getPart( "lightList[0]", false ) ) return;
 
@@ -296,6 +301,8 @@ void MainWindow::CalculateSunPosition()
 	connect( &sunposDialog, SIGNAL( changeSunLight( double, double ) ) , this, SLOT( ChangeSunPosition( double, double ) ) );
 
 	sunposDialog.exec();
+#endif /* NO_MARBLE*/
+
 }
 
 /*!
@@ -343,6 +350,13 @@ void MainWindow::DefineSunLight()
 
 	}
 }
+
+void MainWindow::DisconnectAllTrackers( bool disconnect )
+{
+	if (disconnect) m_sceneModel->DisconnectAllTrackers();
+	else m_sceneModel->ReconnectAllTrackers();
+}
+
 
 /*!
  *If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden.
@@ -514,21 +528,24 @@ void MainWindow::ShowMenu( const QModelIndex& index)
 	if( !index.isValid() ) return;
 	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
 
-	SoNode* coinNode = m_sceneModel->NodeFromIndex(index)->GetNode();
+	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(index);
+	SoNode* coinNode = instanceNode->GetNode();
 	SoType type = coinNode->getTypeId();
 
 	QMenu popupmenu(this);
 
-   	popupmenu.addAction( actionCut );
-   	popupmenu.addAction( actionCopy );
-  	popupmenu.addAction( actionPasteCopy );
-  	popupmenu.addAction( actionPasteLink );
-  	popupmenu.addAction( actionDelete );
-
-	QMenu transformMenu( "Convert to", &popupmenu );
+	if(instanceNode->GetParent()&&instanceNode->GetParent()->GetNode()->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+	{
+		popupmenu.addAction( actionCut );
+		popupmenu.addAction( actionCopy );
+		popupmenu.addAction( actionPasteCopy );
+		popupmenu.addAction( actionPasteLink );
+		popupmenu.addAction( actionDelete );
+	}
 
 	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
+		QMenu transformMenu( "Convert to", &popupmenu );
 		popupmenu.addAction( transformMenu.menuAction() );
 		transformMenu.addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
 		transformMenu.addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
@@ -845,6 +862,7 @@ void MainWindow::CreateGroupNode()
 	SoNode* coinNode = parentInstance->GetNode();
 	if( !coinNode ) return;
 
+	if ( coinNode->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) ) return;
 
 	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
@@ -868,6 +886,45 @@ void MainWindow::CreateGroupNode()
 	}
 }
 
+/*!
+ * Creates a new analyzer node as a selected node child.
+ */
+void MainWindow::CreateAnalyzerNode()
+{
+	QModelIndex parentIndex;
+	if (( ! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex()))
+		parentIndex = m_sceneModel->index (0,0, sceneModelView->rootIndex());
+	else
+		parentIndex = sceneModelView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	if( !parentInstance ) return;
+
+		SoNode* selectedCoinNode = parentInstance->GetNode();
+	if( !selectedCoinNode ) return;
+
+	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		TAnalyzerKit* analyzerKit = new TAnalyzerKit;
+
+/*
+		TAnalyzerResult* lanalyzerResult = new TAnalyzerResult;
+		analyzerKit->setPart("result", lanalyzerResult );
+*/
+		CmdInsertAnalyzerKit* insertAnalyzerKit = new CmdInsertAnalyzerKit( parentIndex, analyzerKit, m_sceneModel );
+		m_commandStack->push( insertAnalyzerKit );
+
+		int count = 1;
+		QString nodeName = QString( "TAnalyzerKit%1").arg( QString::number( count) );
+		while ( !m_sceneModel->SetNodeName( analyzerKit, nodeName ) )
+		{
+			count++;
+			nodeName = QString( "TAnalyzerKit%1").arg( QString::number( count) );
+		}
+		m_sceneModel->UpdateSceneModel();
+		m_document->SetDocumentModified( true );
+	}
+}
 /*!
  * Creates a \a materialType material node from the as current selected node child.
  *
@@ -1009,9 +1066,13 @@ void MainWindow::Cut( QString nodeURL )
 void MainWindow::Delete( )
 {
 	if( !m_selectionModel->hasSelection() ) return;
-	Delete( m_selectionModel->currentIndex() );
-	if( m_selectionModel->hasSelection() )	m_selectionModel->clearSelection();
+	QModelIndex selection = m_selectionModel->currentIndex();
+	m_selectionModel->clearSelection();
 
+	InstanceNode* selectionNode = m_sceneModel->NodeFromIndex( selection );
+	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( selectionNode->GetParent()->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
+
+	Delete( selection );
 }
 
 /*!
@@ -1174,11 +1235,12 @@ void MainWindow::Run()
 
 	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
 	{
+		m_sceneModel->PrepareAnalyze();
 		QVector< QPair< TShapeKit*, Transform > > surfacesList;
 
 
 		//Compute bounding boxes and world to object transforms
-		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList );
+		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList,true );
 
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 		light->ComputeLightSourceArea( surfacesList );
@@ -1218,6 +1280,13 @@ void MainWindow::Run()
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
 		m_tracedRays += m_raysPerIteration;
+
+		SoSFVec3f scaleVect = lightTransform->scaleFactor;
+		float scalex,scaley,scalez;
+		scaleVect.getValue().getValue(scalex,scaley,scalez);
+		m_sceneModel->FinalyzeAnalyze(double(m_raysPerIteration)/(raycastingSurface->GetArea()*scalex*scalez));
+
+
 		ShowRaysIn3DView();
 
 	}
@@ -1225,6 +1294,13 @@ void MainWindow::Run()
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
+
+
+void MainWindow::ResetAnalyzerValues()
+{
+	m_sceneModel->ResetAnalyzeValues();
+}
+
 
 /*!
  * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
@@ -1640,24 +1716,14 @@ void MainWindow::ChangeSelection( const QModelIndex& current )
 	InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
     SoNode* selectedCoinNode = instanceSelected->GetNode();
 
-    if (! selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+    if (selectedCoinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
-		SoBaseKit* parentNode = static_cast< SoBaseKit* >( instanceSelected->GetParent()->GetNode() );
-		SbString partName = parentNode->getPartString( selectedCoinNode );
-
-		if( partName.getLength() == 0 ) partName = "material";
-		QStringList parts;
-		parts<<QString( partName.getString() );
-
-		parametersView->SelectionChanged( parentNode, parts );
-
+		SoBaseKit* selectedCoinNodeKit = static_cast< SoBaseKit* >( selectedCoinNode );
+		parametersView->SelectionChangedToKit( selectedCoinNodeKit);
 	}
 	else
 	{
-		SoBaseKit* selectedCoinNodeKit = static_cast< SoBaseKit* >( selectedCoinNode );
-
-		QStringList parts;
-		parametersView->SelectionChanged( selectedCoinNodeKit, parts );
+		parametersView->SelectionChangedToPart(selectedCoinNode);
 	}
 }
 
@@ -1823,19 +1889,23 @@ void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelInd
 {
 	if( node == sceneModelView->rootIndex() ) return;
 
+
 	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
-	SoNode* coinNode = nodeInstnace->GetNode();
-	//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
+	if(nodeInstnace->GetParent()&&nodeInstnace->GetParent()->GetNode()->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
+	{
+		SoNode* coinNode = nodeInstnace->GetNode();
+		//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
 
-	QUndoCommand* dragAndDrop = new QUndoCommand();
-	dragAndDrop->setText("Drag and Drop node");
-	new CmdCut( node, m_coinNode_Buffer, m_sceneModel, dragAndDrop );
+		QUndoCommand* dragAndDrop = new QUndoCommand();
+		dragAndDrop->setText("Drag and Drop node");
+		new CmdCut( node, m_coinNode_Buffer, m_sceneModel, dragAndDrop );
 
-	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDrop );
-	m_commandStack->push( dragAndDrop );
+		new CmdPaste( tgc::Copied, newParent, coinNode, *m_sceneModel, dragAndDrop );
+		m_commandStack->push( dragAndDrop );
 
-	m_sceneModel->UpdateSceneModel();
-	m_document->SetDocumentModified( true );
+		m_sceneModel->UpdateSceneModel();
+		m_document->SetDocumentModified( true );
+	}
 
 }
 
@@ -2654,18 +2724,21 @@ void MainWindow::SetupTriggers()
 
 	//Insert actions
 	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
+	connect( actionAnalyzerNode, SIGNAL( triggered() ), this, SLOT ( CreateAnalyzerNode() ) );
 	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
 	connect( actionUserComponent, SIGNAL( triggered() ), this, SLOT ( InsertUserDefinedComponent() ) );
 
 	//Sun Light menu actions
 	connect( actionDefineSunLight, SIGNAL( triggered() ), this, SLOT ( DefineSunLight() ) );
 	connect( actionCalculateSunPosition, SIGNAL( triggered() ), this, SLOT ( CalculateSunPosition() ) );
+	connect( actionDisconnect_All_Trackers, SIGNAL( toggled( bool ) ), this, SLOT ( DisconnectAllTrackers( bool ) ) );
 
 	//Ray trace menu actions
 	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
 	connect( actionExportPhotonMap, SIGNAL( triggered() ), this, SLOT( ExportPhotonMap() ) );
 	connect( actionRayTraceOptions, SIGNAL( triggered() ), this, SLOT( ShowRayTracerOptionsDialog() )  );
+	connect( actionReset_Analyzer_Values, SIGNAL( triggered() ), this, SLOT ( ResetAnalyzerValues() ) );
 
 	//View Menu actions
 	connect( actionGrid, SIGNAL( triggered() ), this, SLOT( ShowGrid() )  );
@@ -2784,6 +2857,8 @@ bool MainWindow::StartOver( const QString& fileName )
     SetCurrentFile( fileName );
 
     ChangeModelScene();*/
+
+	m_sceneModel->DisplayAnalyzeResults();
 
     return true;
 }

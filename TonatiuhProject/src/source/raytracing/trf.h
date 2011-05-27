@@ -52,6 +52,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunShape.h"
 #include "Transform.h"
 #include "TSeparatorKit.h"
+#include "TAnalyzerKit.h"
 #include "TShapeKit.h"
 
 class InstanceNode;
@@ -60,7 +61,7 @@ class TPhotonMap;
 
 namespace trf
 {
-	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,QVector< QPair< TShapeKit*, Transform > >* surfacesList );
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,QVector< QPair< TShapeKit*, Transform > >* surfacesList, bool insertInSurfaceList );
 	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList );
 
 	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
@@ -76,7 +77,7 @@ namespace trf
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,QVector< QPair< TShapeKit*, Transform > >* surfacesList )
+inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,QVector< QPair< TShapeKit*, Transform > >* surfacesList, bool insertInSurfaceList )
 {
 
 	if( !instanceNode ) return;
@@ -93,10 +94,15 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 		Transform nodeWTO(worldToObject * parentWTO );
 		instanceNode->SetIntersectionTransform( nodeWTO );
 
+		bool insertChildInSurfaceList=insertInSurfaceList;
+		if( coinNode->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
+		{
+			insertChildInSurfaceList = false;
+		}
 		for( int index = 0; index < instanceNode->children.count() ; ++index )
 		{
 			InstanceNode* childInstance = instanceNode->children[index];
-			ComputeSceneTreeMap(childInstance, nodeWTO, surfacesList );
+			ComputeSceneTreeMap(childInstance, nodeWTO, surfacesList, insertChildInSurfaceList );
 
 			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
 		}
@@ -104,10 +110,25 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 		instanceNode->SetIntersectionBBox( nodeBB );
 
 	}
-	else
+	else if (coinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId()))
 	{
-		Transform shapeTransform = parentWTO;
-		Transform shapeToWorld = shapeTransform.GetInverse();
+		Transform shapeTransform;
+		Transform shapeToWorld;
+
+		SoTransform* nodeTransform = static_cast< SoTransform* >(((SoBaseKit*)coinNode)->getPart( "transform", false ) );
+		if (nodeTransform)
+		{
+			shapeToWorld = tgf::TransformFromSoTransform( nodeTransform );
+			Transform worldToObject = shapeToWorld.GetInverse();
+			shapeTransform = worldToObject * parentWTO ;
+		}
+		else
+		{
+			shapeTransform = parentWTO;
+			shapeToWorld = shapeTransform.GetInverse();
+		}
+
+
 		BBox shapeBB;
 
 		if(  instanceNode->children.count() > 0 )
@@ -125,8 +146,11 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 				instanceNode->SetIntersectionTransform( shapeTransform );
 				instanceNode->SetIntersectionBBox( shapeBB );
 
-				TShapeKit* surface = static_cast< TShapeKit* > ( coinNode );
-				surfacesList->push_back( QPair< TShapeKit*, Transform >( surface, shapeTransform ) );
+				if (insertInSurfaceList)
+				{
+					TShapeKit* surface = static_cast< TShapeKit* > ( coinNode );
+					surfacesList->push_back( QPair< TShapeKit*, Transform >( surface, shapeTransform ) );
+				}
 			}
 		}
 

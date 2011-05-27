@@ -48,7 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 struct Point3D;
 struct Vector3D;
 struct NormalVector;
-struct Ray;
+class Ray;
 struct BBox;
 
 class Transform
@@ -81,6 +81,8 @@ public:
 	Transform Transpose() const;
 	Transform GetInverse() const ;
 	bool SwapsHandedness( ) const;
+	Vector3D multMatrixVec(const Vector3D & src) const;
+	Vector3D multDirMatrix(const Vector3D & src) const;
 
 private:
 	Ptr<Matrix4x4> m_mdir;

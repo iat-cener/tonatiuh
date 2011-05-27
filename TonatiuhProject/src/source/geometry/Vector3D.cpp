@@ -129,14 +129,14 @@ double Vector3D::operator[]( int i ) const
 {
     if( i == 0 ) return x;
     if( i == 1 ) return y;
-    if( i == 2 ) return z;
+    return z;
 }
 
 double& Vector3D::operator[]( int i )
 {
     if( i == 0 ) return x;
     if( i == 1 ) return y;
-    if( i == 2 ) return z;
+    return z;
 }
 
 void Vector3D::zero()
@@ -232,7 +232,8 @@ Vector3D CrossProduct( const NormalVector& nA, const Vector3D& vB )
 
 Vector3D Normalize( const Vector3D& vA )
 {
-    return vA / vA.length();
+	if (vA.length() > 0.0f) return vA / vA.length();
+	return vA;
 }
 
 bool SameHemisphere( const Vector3D& vA, const Vector3D& vB )

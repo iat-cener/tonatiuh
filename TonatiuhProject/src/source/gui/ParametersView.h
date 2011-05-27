@@ -62,7 +62,8 @@ public:
 	ParametersView( QWidget* parent = 0 );
 	~ParametersView();
 
-	void SelectionChanged( SoBaseKit* coinNode, QStringList parts );
+	void SelectionChangedToPart( SoNode* coinPart );
+	void SelectionChangedToKit( SoBaseKit* coinNode );
 	void UpdateView();
 
 signals:
@@ -82,7 +83,8 @@ private:
 	void AddTab( SoNode* coinNode, QString partName );
 	QStringList ContainerNodeParts( SoBaseKit* coinNode );
 
-	SoBaseKit* m_actualCoinNode;
+	SoNode* m_actualCoinNode;
+	bool m_isPart;
 
 };
 

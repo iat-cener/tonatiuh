@@ -68,12 +68,12 @@ MaterialStandardSpecular::MaterialStandardSpecular()
   	SO_NODE_SET_SF_ENUM_TYPE(m_distribution, Distribution);
 	SO_NODE_ADD_FIELD( m_distribution, (PILLBOX) );
 
-	SO_NODE_ADD_FIELD( m_ambientColor, (0.2, 0.2, 0.2) );
-	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8, 0.8, 0.8) );
+	SO_NODE_ADD_FIELD( m_ambientColor, (0.2f, 0.2f, 0.2f) );
+	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8f, 0.8f, 0.8f) );
 	SO_NODE_ADD_FIELD( m_specularColor, (0.0, 0.0, 0.0) );
 	SO_NODE_ADD_FIELD( m_emissiveColor, (0.0, 0.0, 0.0) );
-	SO_NODE_ADD_FIELD( m_shininess, (0.2) );
-	SO_NODE_ADD_FIELD( m_transparency, (0.0) );
+	SO_NODE_ADD_FIELD( m_shininess, (0.2f) );
+	SO_NODE_ADD_FIELD( m_transparency, (0.0f) );
 
 	SoFieldSensor* m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
 	m_reflectivitySensor->attach( &m_reflectivity );

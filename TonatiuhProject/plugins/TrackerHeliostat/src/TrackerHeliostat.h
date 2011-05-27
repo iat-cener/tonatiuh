@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/engines/SoSubNodeEngine.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFVec3f.h>
+//#include <Inventor/fields/SoSFVec3f.h>
 
 #include "TTracker.h"
 #include "trt.h"
@@ -58,16 +58,15 @@ public:
 
 	//Constructor
 	TrackerHeliostat();
-
-	trt::TONATIUH_REALVECTOR3 aimingPoint;
-	/*enum Rotations{
+	enum Rotations{
 		YX = 0,
 		YZ   = 1,
 		XZ   = 2,
 		ZX   = 3
 	};
 
-	SoSFEnum typeOfRotation;*/
+	trt::TONATIUH_REALVECTOR3 aimingPoint;
+	SoSFEnum typeOfRotation;
 
 protected:
 	virtual ~TrackerHeliostat();

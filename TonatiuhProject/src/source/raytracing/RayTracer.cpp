@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
 Copyright (C) 2008 by the Tonatiuh Software Development Team.
 
 This file is part of Tonatiuh.
@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -71,7 +71,6 @@ m_pRand( &rand ),
 m_mutex( mutex ),
 m_photonMap( photonMap )
 {
-
 }
 
 /*
@@ -103,6 +102,7 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
+		std::vector<Ray> currentRaysWay;
 		Ray ray;
 		if( NewPrimitiveRay( &ray, rand ) )
 		{
@@ -111,6 +111,7 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 			InstanceNode* intersectedSurface = 0;
 			bool isFront = false;
+			bool isDirectSun = true;
 
 			//Trace the ray
 			bool isReflectedRay = true;
@@ -121,6 +122,7 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 				Ray reflectedRay;
 				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
 
+				if (!isDirectSun) currentRaysWay.push_back(ray);
 				if( isReflectedRay )
 				{
 					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
@@ -129,20 +131,23 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 					/*delete ray;
 					ray = 0;*/
 					ray = reflectedRay;
+					isDirectSun = false;
 				}
 
 			}
 
 			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
 			{
-				int shapeSide = ( isFront )? 1: 0;
-				if( ray.maxt == HUGE_VAL  )
-				{
-					ray.maxt = 0.1;
-					isFront  = -1;
-				}
-				photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), shapeSide, ++rayLength, intersectedSurface) );
+				if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
+				photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), -1, ++rayLength, intersectedSurface) );
 			}
+			if (currentRaysWay.size()>0)
+			{
+				currentRaysWay.resize(currentRaysWay.size());
+				m_rootNode->Analyze(&currentRaysWay,m_mutex);
+				currentRaysWay.clear();
+			}
+
 		}
 
 	}

@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TSceneKit.h"
 #include "TTracker.h"
+#include "TLightKit.h"
 
 
 SO_NODEENGINE_ABSTRACT_SOURCE( TTracker );
@@ -67,6 +68,12 @@ void TTracker::Disconnect()
 {
 	m_azimuth.disconnect();
 	m_zenith.disconnect();
+}
+
+void TTracker::SetLightAngles(TLightKit * coinLight )
+{
+	m_azimuth.connectFrom( &(coinLight->azimuth) );
+	m_zenith.connectFrom( &(coinLight->zenith) );
 }
 
 void TTracker::SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField )

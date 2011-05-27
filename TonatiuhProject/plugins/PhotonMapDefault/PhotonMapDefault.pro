@@ -5,7 +5,7 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-include( $$(TONATIUH_ROOT)/config.pri)
+include( ../../config.pri )
 
 INCLUDEPATH += . \
 			src \
@@ -48,13 +48,11 @@ SOURCES = src/*.cpp \
 RESOURCES += src/PhotonMapDefault.qrc
 TARGET        = PhotonMapDefault
 
-contains(TEMPLATE,lib) {  
 
-	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/PhotonMapDefault	
+CONFIG(debug, debug|release) {
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/PhotonMapDefault	
 
-	}
-	else { 
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/PhotonMapDefault
-	}
+}
+else { 
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/PhotonMapDefault
 }

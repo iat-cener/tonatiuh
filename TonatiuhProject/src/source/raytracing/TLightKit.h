@@ -50,7 +50,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 #include "TSunShape.h"
 
-class BBox;
+struct BBox;
 class Transform;
 class TShapeKit;
 

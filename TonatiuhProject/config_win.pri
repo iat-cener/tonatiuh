@@ -1,14 +1,19 @@
-VERSION = 1.1.5
+VERSION = 1.2.0
 
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-COINDIR = $$(COINDIR)
+COMPILER = $$(COMPILER)
+contains( COMPILER, MSVC ) {
+	COINDIR = $$(COINDIR)
+	MARBLEDIR = $$(MARBLEDIR)
+}
 
 isEmpty( COINDIR ) {
 	COINDIR = $$(TDE_ROOT)/local
+}
+isEmpty( MARBLEDIR ) {
 	MARBLEDIR = $$(TDE_ROOT)/local
-	BERKELEYDBDIR = $$(TDE_ROOT)/local
 }
 
 
@@ -23,16 +28,16 @@ INCLUDEPATH += 	. \
                 $$(TONATIUH_ROOT)/src/source/raytracing \
                 $$(TONATIUH_ROOT)/src/source/statistics \
 			    $${COINDIR}/include \
-#			    $${MARBLEDIR}/include/marble
+			    $${MARBLEDIR}/include/marble
 
 win32 {
-	DEFINES+= COIN_DLL SOQT_DLL NO_MARBLE
+	DEFINES+= COIN_DLL SOQT_DLL
 }
 
 COMPILER = $$(COMPILER)
 contains( COMPILER, MSVC ) {
 	CONFIG(debug, debug|release) {
-		LIBS += -L$${COINDIR}/lib -lcoin -lSoQt
+		LIBS += -L$${COINDIR}/lib -lcoin3d -lSoQt1d
 	}
 	else{
 		LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
@@ -96,8 +101,19 @@ else{
 		RCC_DIR  = $$(TONATIUH_ROOT)/release
 	}
 
-#	INCLUDEPATH += $${MARBLEDIR}/include/marble
-#	LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
+	INCLUDEPATH += $${MARBLEDIR}/include/marble
+
+	contains( COMPILER, MSVC ) {
+		CONFIG(debug, debug|release) {
+			LIBS += -L$${MARBLEDIR}/lib -lmarblewidgetd
+		}
+		else {
+			LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
+		}
+	}
+	else {
+		LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
+	}
 }
 
 

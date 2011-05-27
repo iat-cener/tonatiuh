@@ -44,8 +44,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TShape.h"
 
-class BBox;
-class Vector3D;
+struct BBox;
+#include "Point3D.h"
+#include "Vector3D.h"
 class SoMFVec3d;
 
 class BezierPatch : public SoNurbsSurface

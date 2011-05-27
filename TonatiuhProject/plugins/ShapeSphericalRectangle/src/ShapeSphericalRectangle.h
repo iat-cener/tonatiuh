@@ -48,7 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class SoFieldSensor;
 class SoSensor;
-class Vector3D;
+struct Vector3D;
 
 class ShapeSphericalRectangle : public TShape
 {

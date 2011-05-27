@@ -41,7 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodes/SoMaterial.h>
 
-class DifferentialGeometry;
+struct DifferentialGeometry;
 class RandomDeviate;
 class Ray;
 class QString;

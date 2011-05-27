@@ -48,9 +48,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Transform.h"
 
-class Photon;
+struct Photon;
 class RandomDeviate;
-class RayTracerPhoton;
+struct RayTracerPhoton;
 class QMutex;
 class TPhotonMap;
 class TLightShape;

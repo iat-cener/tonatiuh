@@ -103,7 +103,8 @@ TLightKit::TLightKit()
 
 	int widthPixeles = 100;
 	int heightPixeles = 100;
-	unsigned char bitmap[ widthPixeles * heightPixeles ];
+	//unsigned char bitmap[ widthPixeles * heightPixeles ];
+	unsigned char*  bitmap = new unsigned char[ widthPixeles * heightPixeles ];
 	for( int y = 0; y < heightPixeles; y++ )
 	{
 		for( int x = 0; x < widthPixeles; x++ )
@@ -115,11 +116,12 @@ TLightKit::TLightKit()
 
 	SoTexture2 * texture = new SoTexture2;
     texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
+	delete bitmap;
     texture->model = SoTexture2::BLEND;
-    texture->blendColor.setValue( 0.933, 0.91, 0.666 );
+    texture->blendColor.setValue( 0.933f, 0.91f, 0.666f );
 	setPart( "iconTexture", texture );
 
-	TLightShape* iconShape = new TLightShape;;
+	TLightShape* iconShape = new TLightShape;
 	setPart( "icon", iconShape );
 }
 
@@ -149,13 +151,19 @@ void TLightKit::ChangePosition( double newAzimuth, double newZenith/*, double ne
 
 void TLightKit::Update( BBox box )
 {
-	double xMin = box.pMin.x;
-	double xMax = box.pMax.x;
-	double zMin = box.pMin.z;
-	double zMax = box.pMax.z;
-	double yMin = box.pMin.y;
-	double yMax = box.pMax.y + 10;
-	double distMax = yMax - yMin;
+
+	double xWidth = SbMax(-box.pMin.x,box.pMax.x) - SbMin(box.pMin.x,-box.pMax.x);
+	double zWidth = SbMax(-box.pMin.z,box.pMax.z) - SbMin(box.pMin.z,-box.pMax.z);
+	double xMax = sqrt(xWidth*xWidth + zWidth*zWidth)/2.0;
+	double xMin = -xMax;
+	double zMin = xMin;
+	double zMax = xMax;
+	if (-box.pMin.y>0) zMax = sqrt(box.pMin.y*box.pMin.y + xMax*xMax);
+	if (-box.pMax.y<0) zMin = -sqrt(box.pMax.y*box.pMax.y + xMin*xMin);
+
+	double distMax = box.pMax.y + 10 - box.pMin.y;
+	double back = SbMax(box.pMax.y,xMax) +10;
+
 
 	if( -tgc::Infinity  == box.Volume() )
 	{
@@ -163,7 +171,6 @@ void TLightKit::Update( BBox box )
 		xMax = 0.0;
 		zMin = 0.0;
 		zMax = 0.0;
-		yMax = 10;
 		distMax = 0.0;
 	}
 
@@ -184,15 +191,8 @@ void TLightKit::Update( BBox box )
 
 	SoTransform* lightTransform = static_cast< SoTransform* >( this->getPart( "transform", false ) );
 	if(!lightTransform) return;
-	SbVec3f translation( 0.0, yMax, 0.0 );
+	SbVec3f translation( 0.0, back, 0.0 );
 	lightTransform->translation.setValue(translation );
-
-	/*double oldAzimuth = azimuth.getValue();
-	azimuth.setValue( 0 );
-	azimuth.setValue( oldAzimuth );
-	double oldZenith = zenith.getValue();
-	zenith.setValue( 0 );
-	zenith.setValue( oldZenith );*/
 
 }
 
@@ -287,7 +287,8 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 		areaMatrix[i] = new int[widthPixeles];
 	}
 
-	unsigned char bitmap[ widthPixeles * heightPixeles ];
+	//unsigned char bitmap[ widthPixeles * heightPixeles ];
+	unsigned char* bitmap = new unsigned char[ widthPixeles * heightPixeles ];
 
 	QRgb black = qRgb( 0, 0, 0);
 
@@ -321,6 +322,7 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 
 	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
     texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
+	delete bitmap;
     texture->wrapS = SoTexture2::CLAMP;
     texture->wrapT = SoTexture2::CLAMP;
 

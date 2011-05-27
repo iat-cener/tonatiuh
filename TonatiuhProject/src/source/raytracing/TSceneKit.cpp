@@ -60,7 +60,7 @@ TSceneKit::TSceneKit()
     SO_KIT_CONSTRUCTOR(TSceneKit);
 
 	SO_NODE_ADD_FIELD( azimuth, ( tgc::Pi ) );
-	SO_NODE_ADD_FIELD( zenith, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( zenith, ( 0.0f ) );
 
     SO_KIT_INIT_INSTANCE();
 

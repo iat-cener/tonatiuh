@@ -1,4 +1,4 @@
-VERSION = 1.2.0
+VERSION = 1.1.5
 
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
@@ -10,6 +10,7 @@ BERKELEYDBDIR = $$(TDE_ROOT)/local
 INCLUDEPATH += 	. \
 				$$(TONATIUH_ROOT)/src \
 				$$(TONATIUH_ROOT)/src/source \
+                $$(TONATIUH_ROOT)/src/source/analyzer \
                 $$(TONATIUH_ROOT)/src/source/application \
                 $$(TONATIUH_ROOT)/src/source/auxiliary \
                 $$(TONATIUH_ROOT)/src/source/geometry \

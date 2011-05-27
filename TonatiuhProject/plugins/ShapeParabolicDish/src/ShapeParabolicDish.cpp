@@ -63,10 +63,10 @@ void ShapeParabolicDish::initClass()
 ShapeParabolicDish::ShapeParabolicDish()
 {
 	SO_NODE_CONSTRUCTOR(ShapeParabolicDish);
-	SO_NODE_ADD_FIELD( focusLength, (0.125));
-	SO_NODE_ADD_FIELD( dishMinRadius, (0.1) );
+	SO_NODE_ADD_FIELD( focusLength, (0.125f));
+	SO_NODE_ADD_FIELD( dishMinRadius, (0.1f) );
 	m_lastMinRadius = 0.1;
-	SO_NODE_ADD_FIELD( dishMaxRadius, (0.5) );
+	SO_NODE_ADD_FIELD( dishMaxRadius, (0.5f) );
 	m_lastMaxRadius = 0.5;
 	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi) );
 

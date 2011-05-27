@@ -46,10 +46,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "trt.h"
 
-class BezierPatch;
+#include "BezierPatch.h";
 class SoMFVec3d;
 class SoSensor;
-class Vector3D;
+#include "Vector3D.h"
 
 
 class ShapeBezierSurface : public TShape

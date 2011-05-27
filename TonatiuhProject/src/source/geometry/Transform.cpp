@@ -221,6 +221,47 @@ Transform Transform::Transpose() const
 }
 
 
+Vector3D Transform::multMatrixVec(const Vector3D & src) const
+{
+  Vector3D dst;
+  // Checks if the "this" matrix is equal to the identity matrix.  See
+  // also code comments at the start of SbMatrix::multRight().
+  //if (SbMatrixP::isIdentity(this->matrix)) { dst = src; return dst; }
+
+  const double * t0 = (m_mdir->m)[0];
+  const double * t1 = (m_mdir->m)[1];
+  const double * t2 = (m_mdir->m)[2];
+  const double * t3 = (m_mdir->m)[3];
+
+  double W = src[0]*t3[0] + src[1]*t3[1] + src[2]*t3[2] + t3[3];
+
+  if (W != 0.0f)
+  {
+	  dst[0] = (src[0]*t0[0] + src[1]*t0[1] + src[2]*t0[2] + t0[3])/W;
+	  dst[1] = (src[0]*t1[0] + src[1]*t1[1] + src[2]*t1[2] + t1[3])/W;
+	  dst[2] = (src[0]*t2[0] + src[1]*t2[1] + src[2]*t2[2] + t2[3])/W;
+  }
+  return dst;
+}
+
+Vector3D Transform::multDirMatrix(const Vector3D & src) const
+{
+  Vector3D dst;
+  // Checks if the "this" matrix is equal to the identity matrix.  See
+  // also code comments at the start of SbMatrix::multRight().
+  //if (SbMatrixP::isIdentity(this->matrix)) { dst = src; return dst; }
+
+
+  const double * t0 = (m_mdir->m)[0];
+  const double * t1 = (m_mdir->m)[1];
+  const double * t2 = (m_mdir->m)[2];
+  // Copy the src vector, just in case src and dst is the same vector.
+
+  dst[0] = src[0]*t0[0] + src[1]*t1[0] + src[2]*t2[0];
+  dst[1] = src[0]*t0[1] + src[1]*t1[1] + src[2]*t2[1];
+  dst[2] = src[0]*t0[2] + src[1]*t1[2] + src[2]*t2[2];
+  return dst;
+}
 bool Transform::SwapsHandedness( ) const
 {
 	double det = ( ( m_mdir->m[0][0] *

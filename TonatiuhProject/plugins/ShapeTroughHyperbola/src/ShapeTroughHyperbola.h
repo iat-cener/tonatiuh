@@ -46,7 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 #include "TShape.h"
 
-class Vector3D;
+struct Vector3D;
 
 class ShapeTroughHyperbola: public TShape
 {

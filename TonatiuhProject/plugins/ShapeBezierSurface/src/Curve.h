@@ -9,8 +9,8 @@
 #define CURVE_H_
 
 #include <QVector>
-
-class Point3D;
+#include "Point3D.h"
+#include "Vector3D.h"
 
 class Curve
 {
