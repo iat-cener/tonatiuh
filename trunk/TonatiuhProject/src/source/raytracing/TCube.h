@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFDouble.h>
 
 #include "TShape.h"
+#include "trt.h"
 
 class TCube : public TShape
 {
@@ -58,9 +59,9 @@ public:
 	bool IntersectP( const Ray &ray ) const;
 	Point3D Sample( double u1, double u2 ) const;
 
-	SoSFDouble m_width;
-	SoSFDouble m_height;
-	SoSFDouble m_depth;
+	trt::TONATIUH_REAL m_width;
+	trt::TONATIUH_REAL m_height;
+	trt::TONATIUH_REAL m_depth;
 
 protected:
 	Point3D GetPoint3D (double u, double v) const;

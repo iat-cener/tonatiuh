@@ -56,7 +56,7 @@ SunshapeBuie::SunshapeBuie( )
 {
 	SO_NODE_CONSTRUCTOR( SunshapeBuie );
 	SO_NODE_ADD_FIELD( irradiance, (1000));
-	SO_NODE_ADD_FIELD( csr, ( 0.02 ) );
+	SO_NODE_ADD_FIELD( csr, ( 0.02f ) );
 
 	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCSR, this );
 	irradianceSensor->setPriority( 0 );

@@ -5,7 +5,7 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-include( $$(TONATIUH_ROOT)/config.pri)
+include( ../../config.pri )
 
 INCLUDEPATH += . \
 			src \
@@ -18,13 +18,10 @@ SOURCES = src/*.cpp
 
 TARGET        = RandomRngStream
 
-contains(TEMPLATE,lib) {  
+CONFIG(debug, debug|release) {
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/RandomRngStream	
 
-	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/RandomRngStream	
-
-	}
-	else { 
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/RandomRngStream
-	}
+}
+else { 
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/RandomRngStream
 }

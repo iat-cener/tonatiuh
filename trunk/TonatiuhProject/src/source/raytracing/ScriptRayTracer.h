@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QVector>
 
 class Document;
+class GraphicRoot;
 class InstanceNode;
 class RandomDeviate;
 class RandomDeviateFactory;
@@ -89,9 +90,15 @@ public:
 	void SetSunElevation( double elevation );
 	void SetSunDistance( double distance );
 
+	void SetupGraphcisRoot();
+	void SetupModels();
 	int SetTonatiuhModelFile ( QString filename );
 
 	int Trace();
+
+	int SetSunPositionToScene();
+	int SetDisconnectAllTrackers(bool disconnect);
+	int Save( const QString& fileName);
 
 private:
 	Document* m_document;

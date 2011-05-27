@@ -46,6 +46,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class QString; 
 class TSceneKit;
+class TLightKit;
+
 
 class TTracker : public SoNodeEngine
 {
@@ -56,6 +58,7 @@ public:
 	virtual QString getIcon() = 0;
 		
 	void Disconnect();
+	void SetLightAngles(TLightKit * coinLight );
 	void SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField );
 	void SetZenithAngle( trt::TONATIUH_REAL* zenithField );
 	void SetSceneKit( TSceneKit* scene );

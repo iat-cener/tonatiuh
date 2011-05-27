@@ -67,11 +67,11 @@ GraphicRoot::GraphicRoot()
 	m_graphicsRoot = new SoSeparator;
 
 	SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
-	float gcolor[][3] = { {0.9843, 0.8862, 0.6745},{ 0.7843, 0.6157, 0.4785 } };
+	float gcolor[][3] = { {0.9843f, 0.8862f, 0.6745f},{ 0.7843f, 0.6157f, 0.4785f } };
 	float gangle= 1.570f;
 	vrmlBackground->groundColor.setValues( 0, 6, gcolor );
 	vrmlBackground->groundAngle.setValue( gangle );
-	float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
+	float scolor[][3] = { {0.0157f, 0.0235f, 0.4509f}, {0.5569f, 0.6157f, 0.8471f} };
 	float sangle= 1.570f;
 	vrmlBackground->skyColor.setValues( 0,6,scolor );
 	vrmlBackground->skyAngle.setValue( sangle );
@@ -204,19 +204,19 @@ void GraphicRoot::ShowBackground( bool view )
 
 	if( view )
 	{
-		float gcolor[][3] = { {0.9843, 0.8862, 0.6745}, {0.7843, 0.6157, 0.4785} };
+		float gcolor[][3] = { {0.9843f, 0.8862f, 0.6745f}, {0.7843f, 0.6157f, 0.4785f} };
 		float gangle= 1.570f;
 
 		vrmlBackground->groundColor.setValues( 0, 6, gcolor );
 		vrmlBackground->groundAngle.setValue( gangle );
-		float scolor[][3] = { {0.0157, 0.0235, 0.4509}, {0.5569, 0.6157, 0.8471} };
+		float scolor[][3] = { {0.0157f, 0.0235f, 0.4509f}, {0.5569f, 0.6157f, 0.8471f} };
 		float sangle= 1.570f;
 		vrmlBackground->skyColor.setValues( 0,6,scolor );
 		vrmlBackground->skyAngle.setValue( sangle );
 	}
 	else
 	{
-		float color[][3] = { {0.1, 0.1, 0.1}, {0.1, 0.1, 0.1} };
+		float color[][3] = { {0.1f, 0.1f, 0.1f}, {0.1f, 0.1f, 0.1f} };
 		float angle= 1.570f;
 		vrmlBackground->groundColor.setValues( 0, 6, color );
 		vrmlBackground->groundAngle.setValue( angle );

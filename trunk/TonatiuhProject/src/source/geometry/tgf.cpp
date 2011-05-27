@@ -135,10 +135,10 @@ SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 
 	SbVec3f axis1( m00, m10, m20 );
 	SbVec3f axis2( m01, m11, m21 );
-	axis2.normalize();
+	//axis2.normalize();
 
 	SbVec3f axis3( m02, m12, m22 );
-	axis3.normalize();
+	//axis3.normalize();
 
 	return SbMatrix( axis1[0], axis2[0], axis3[0], m03,
 			axis1[1], axis2[1], axis3[1], m13,

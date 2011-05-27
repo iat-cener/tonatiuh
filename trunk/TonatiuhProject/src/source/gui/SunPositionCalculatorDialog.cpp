@@ -35,6 +35,7 @@
  Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola, Gilda Jimenez,
  Juana Amieva, Azael Mancillas, Cesar Cantu.
  ***************************************************************************/
+#ifndef NO_MARBLE
 
 #include <QCloseEvent>
 #include <QDateTime>
@@ -217,3 +218,4 @@ void SunPositionCalculatorDialog::WriteSettings()
 	settings.setValue( "sunpositioncalculator.longitude", longitudeSpin->value() );
 
 }
+#endif /* NO_MARBLE*/

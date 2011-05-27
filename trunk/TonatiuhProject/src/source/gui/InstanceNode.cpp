@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 
 #include "BBox.h"
 #include "DifferentialGeometry.h"
@@ -48,6 +49,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 #include "TShape.h"
 #include "TShapeKit.h"
+#include "TLightKit.h"
+#include "TAnalyzerKit.h"
+#include "TAnalyzerResultKit.h"
+#include "TTracker.h"
 
 
 InstanceNode::InstanceNode( SoNode* node )
@@ -119,6 +124,7 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, bool* isShape
 
 	//Check if the ray intersects with the BoundingBox
    if( !m_bbox.IntersectP(ray) ) return false;
+   if( GetNode()->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) ) return false;
    if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
    {
 
@@ -188,6 +194,133 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, bool* isShape
 	return false;
 }
 
+void InstanceNode::Analyze(  std::vector<Ray> * raysWays, QMutex* mutex )
+{
+
+   if ( GetNode()->getTypeId().isDerivedFrom( TAnalyzerResultKit::getClassTypeId() ) )
+   {
+	   TAnalyzerResultKit * tanalyzerResult = static_cast< TAnalyzerResultKit* > ( GetNode() );
+	   tanalyzerResult->Compute( raysWays, &m_transformWTO, mutex);
+   }
+   else
+   {
+      for( int index = 0; index < children.size(); ++index )
+      {
+         children[index]->Analyze( raysWays, mutex);
+      }
+   }
+}
+void InstanceNode::ResetAnalyzeValues()
+{
+	RecursivlyApply<TAnalyzerKit>(&TAnalyzerKit::ResetValues);
+}
+
+void InstanceNode::DisplayAnalyzeResults()
+{
+	RecursivlyApply<TAnalyzerKit>(&TAnalyzerKit::DisplayResults);
+}
+
+void InstanceNode::DisconnectAllTrackers()
+{
+	RecursivlyApply<TTracker>(&TTracker::Disconnect);
+}
+
+
+void InstanceNode::ReconnectAllTrackers(TLightKit * coinLight)
+{
+	RecursivlyApply<TTracker,TLightKit *>(&TTracker::SetLightAngles,coinLight);
+}
+
+void InstanceNode::UpdateAnalyzerSize(SceneModel* pModel)
+{
+	RecursivlyApply<TAnalyzerKit,SceneModel*>(&TAnalyzerKit::UpdateSize, pModel);
+}
+
+void InstanceNode::PrepareAnalyze(SceneModel * pModel, TAnalyzerKit * analyzerKit )
+{
+	RecursivlyApply<TAnalyzerKit,SceneModel *>(&TAnalyzerKit::PrepareCompute,pModel);
+	RecursivlyApply<TAnalyzerResultKit>(&TAnalyzerResultKit::PrepareCompute);
+}
+
+void InstanceNode::FinalyzeAnalyze(double raydensity, TAnalyzerKit * analyzerKit )
+{
+
+   if ( GetNode()->getTypeId().isDerivedFrom( TAnalyzerResultKit::getClassTypeId() ) )
+   {
+	   TAnalyzerResultKit * tanalyzerResult = static_cast< TAnalyzerResultKit* > ( GetNode() );
+	   tanalyzerResult->FinalizeCompute(raydensity, &m_transformOTW);
+   }
+   else
+   {
+	   if( GetNode()->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
+	   {
+		  ((TAnalyzerKit *) GetNode())->FinalizeCompute(raydensity, &m_transformWTO);
+		  for( int index = 0; index < children.size(); ++index )
+		  {
+			 children[index]->FinalyzeAnalyze( raydensity, ((TAnalyzerKit *) GetNode()));
+		  }
+	   }
+	   else
+	   {
+		  for( int index = 0; index < children.size(); ++index )
+		  {
+			 children[index]->FinalyzeAnalyze( raydensity, analyzerKit);
+		  }
+	   }
+   }
+}
+
+void InstanceNode::extendBoxForLight( SbBox3f * extendedBox )
+{
+   if( GetNode()->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
+   {
+	  return;
+   }
+   if( !IsTreeContainAnalyzer() )
+   {
+		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+		GetNode()->getBoundingBox( bbAction );
+
+		SbBox3f box = bbAction->getXfBoundingBox().project();
+		/*SbVec3f min,max;
+		box.getBounds( min,max);
+
+		SbVec3f center = bbAction->getCenter();
+		min += center;
+		max += center;*/
+
+		delete bbAction;
+		extendedBox->extendBy(box);
+		//SbBox3f * box2 = new SbBox3f(min,max);
+		//(*extendedBox) = *box2;
+		//(*extendedBox) = box;
+   }
+   else
+   {
+	  for( int index = 0; index < children.size(); ++index )
+	  {
+		children[index]->extendBoxForLight(extendedBox);
+	  }
+   }
+}
+
+bool InstanceNode::IsTreeContainAnalyzer( )
+{
+   if( GetNode()->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
+   {
+	  return true;
+   }
+   else
+   {
+	  for( int index = 0; index < children.size(); ++index )
+	  {
+		 if (children[index]->IsTreeContainAnalyzer()) return true;
+	  }
+   }
+   return false;
+}
+
+
 BBox InstanceNode::GetIntersectionBBox()
 {
 	return m_bbox;
@@ -228,4 +361,66 @@ bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
 {
 	return ( (thisNode.GetNode() == otherNode.GetNode()) &&
 			 (thisNode.GetParent()->GetNode() == otherNode.GetParent()->GetNode()) );
+}
+
+
+template<class T> void InstanceNode::RecursivlyApply(void (T::*func)(void))
+{
+	if ( GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
+	{
+	   T * elem = static_cast< T* > ( GetNode() );
+	   (elem->*func)();
+	}
+	else
+	{
+      for( int index = 0; index < children.size(); ++index )
+      {
+         children[index]->RecursivlyApply<T>(func);
+      }
+	}
+}
+template<class T,class Param1> void InstanceNode::RecursivlyApply(void (T::*func)(Param1),Param1 param1)
+{
+	if (GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
+	{
+	   T * elem = static_cast< T* > ( GetNode() );
+	   (elem->*func)(param1);
+	}
+	else
+	{
+      for( int index = 0; index < children.size(); ++index )
+      {
+         children[index]->RecursivlyApply<T,Param1>(func,param1);
+      }
+	}
+}
+template<class T,class Param1> void InstanceNode::RecursivlyApplyWithMto(void (T::*func)(Param1),Param1 param1)
+{
+	if (GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
+	{
+	   T * elem = static_cast< T* > ( GetNode() );
+	   (elem->*func)(&m_transformWTO, param1);
+	}
+	else
+	{
+      for( int index = 0; index < children.size(); ++index )
+      {
+         children[index]->RecursivlyApplyWithMto<T,Param1>(func,param1);
+      }
+	}
+}
+template<class T,class Param1,class Param2> void InstanceNode::RecursivlyApplyWithMto(void (T::*func)(Param1,Param2),Param1 param1,Param1 param2)
+{
+	if (GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
+	{
+	   T * elem = static_cast< T* > ( GetNode() );
+	   (elem->*func)(&m_transformWTO, param1,param2);
+	}
+	else
+	{
+      for( int index = 0; index < children.size(); ++index )
+      {
+         children[index]->RecursivlyApplyWithMto<T,Param1,Param2>(func,param1,param2);
+      }
+	}
 }

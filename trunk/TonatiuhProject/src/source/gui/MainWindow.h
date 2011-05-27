@@ -85,6 +85,7 @@ public slots:
 	void Copy();
 	void Copy( QString nodeURL );
 	void CreateGroupNode();
+	void CreateAnalyzerNode();
 	void CreateMaterial( QString materialType );
     void CreateShape( QString shapeType );
 	void CreateSurfaceNode();
@@ -101,6 +102,7 @@ public slots:
 	void PasteCopy();
 	void PasteLink();
 	void Run();
+	void ResetAnalyzerValues();
 	bool Save();
     bool SaveAs();
     bool SaveComponent();
@@ -142,6 +144,7 @@ protected slots:
     void CreateShape( TShapeFactory* pTShapeFactory );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
+	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );
 	void ExportPhotonMap();
 	void Open();

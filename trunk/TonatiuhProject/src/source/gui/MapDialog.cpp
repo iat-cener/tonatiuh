@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+#include <GeoDataCoordinates.h>
 #include <GeoSceneDocument.h>
 #include <GeoSceneHead.h>
 #include <HttpDownloadManager.h>

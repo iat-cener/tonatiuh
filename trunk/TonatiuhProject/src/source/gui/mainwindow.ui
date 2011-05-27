@@ -193,6 +193,7 @@
     </property>
     <addaction name="actionDefineSunLight"/>
     <addaction name="actionCalculateSunPosition"/>
+    <addaction name="actionDisconnect_All_Trackers"/>
    </widget>
    <widget class="QMenu" name="menu_Raytrace">
     <property name="title">
@@ -203,6 +204,7 @@
     <addaction name="actionExportPhotonMap"/>
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
+    <addaction name="actionReset_Analyzer_Values"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -315,6 +317,7 @@
    </attribute>
    <addaction name="actionNode"/>
    <addaction name="actionSurfaceNode"/>
+   <addaction name="actionAnalyzerNode"/>
   </widget>
   <action name="actionNew">
    <property name="icon">
@@ -668,6 +671,33 @@
   <action name="actionCheckForUpdates">
    <property name="text">
     <string>Check for updates</string>
+   </property>
+  </action>
+  <action name="actionAnalyzerNode">
+   <property name="icon">
+    <iconset resource="../../tonatiuh.qrc">
+     <normaloff>:/icons/AnalyzerKit.png</normaloff>:/icons/AnalyzerKit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Analyzer Node</string>
+   </property>
+  </action>
+  <action name="actionTrackers_Connected">
+   <property name="text">
+    <string>Trackers Connected</string>
+   </property>
+  </action>
+  <action name="actionDisconnect_All_Trackers">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Disconnect All Trackers</string>
+   </property>
+  </action>
+  <action name="actionReset_Analyzer_Values">
+   <property name="text">
+    <string>Reset Analyzer Values</string>
    </property>
   </action>
  </widget>

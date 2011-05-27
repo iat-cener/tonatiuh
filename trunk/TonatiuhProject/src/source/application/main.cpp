@@ -54,6 +54,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSceneKit.h"
 #include "TSeparatorKit.h"
 #include "TSceneTracker.h"
+#include "TAnalyzerKit.h"
+#include "TAnalyzerParameter.h"
+#include "TAnalyzerResult.h"
+#include "TAnalyzerLevel.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
 
@@ -106,6 +110,11 @@ int main( int argc, char ** argv )
 	TCube::initClass();
 	TLightShape::initClass();
 	TShapeKit::initClass();
+	TAnalyzerKit::initClass();
+	TAnalyzerResultKit::initClass();
+	TAnalyzerParameter::initClass();
+	TAnalyzerResult::initClass();
+	TAnalyzerLevel::initClass();
 	TSquare::initClass();
 	TLightKit::initClass();
 	TSunShape::initClass();

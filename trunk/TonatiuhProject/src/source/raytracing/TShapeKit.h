@@ -53,6 +53,8 @@ class Ray;
 
 class TShapeKit : public SoShapeKit
 {
+	typedef SoShapeKit inherited;
+
     SO_KIT_HEADER(TShapeKit);
 
 public:
@@ -62,7 +64,7 @@ public:
     bool IntersectP( const Ray& ray ) const;
 	Ray* Intersect( const Ray& objectRay, bool* isShapeFront, RandomDeviate& rand ) const;
 
-private:
+protected:
     virtual ~TShapeKit();
 
 };

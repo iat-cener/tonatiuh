@@ -136,14 +136,14 @@ double Point3D::operator[]( int i ) const
 {
     if( i == 0 ) return x;
     if( i == 1 ) return y;
-    if( i == 2 ) return z;
+    return z;
 }
 
 double& Point3D::operator[]( int i )
 {
     if( i == 0 ) return x;
     if( i == 1 ) return y;
-    if( i == 2 ) return z;
+    return z;
 }
 
 Point3D operator*( double scalar, const Point3D& point )

@@ -49,18 +49,17 @@ SOURCES = src/*.cpp \
 RESOURCES += src/MaterialBasicRefractive.qrc
 
 TARGET        = MaterialBasicRefractive
-
-contains(TEMPLATE,lib) {  
-	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/MaterialBasicRefractive	
-		unix {
-			TARGET = $$member(TARGET, 0)_debug
-		}
-		else {
-			TARGET = $$member(TARGET, 0)d
-		}
+ 
+CONFIG(debug, debug|release) {
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/MaterialBasicRefractive	
+	unix {
+		TARGET = $$member(TARGET, 0)_debug
 	}
-	else { 
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/MaterialBasicRefractive
+	else {
+		TARGET = $$member(TARGET, 0)d
 	}
 }
+else { 
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/MaterialBasicRefractive
+}
+

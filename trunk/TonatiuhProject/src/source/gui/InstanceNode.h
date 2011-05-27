@@ -39,16 +39,21 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef INSTANCENODE_H_
 #define INSTANCENODE_H_
 
+#include <vector>
+
 #include <QVector>
+#include <QMutex>
+#include <Inventor/SbBox3f.h>
 
 #include "BBox.h"
 #include "Transform.h"
 
-class BBox;
 class RandomDeviate;
 class Ray;
 class SoNode;
-class Transform;
+class TAnalyzerKit;
+class TLightKit;
+class SceneModel;
 
 
 //!  InstanceNode class represents a instance of a node in the scene.
@@ -75,6 +80,20 @@ public:
 
     //bool Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode, Ray* outputRay );
     bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, InstanceNode** modelNode, Ray* outputRay );
+    void Analyze( std::vector<Ray>* raysWay, QMutex* mutex );
+	template<class T> void RecursivlyApply(void (T::*func)(void));
+	template<class T,class Param1> void RecursivlyApply(void (T::*func)(Param1),Param1 param1);
+	template<class T,class Param1> void RecursivlyApplyWithMto(void (T::*func)(Param1),Param1 param1);
+	template<class T,class Param1,class Param2> void RecursivlyApplyWithMto(void (T::*func)(Param1,Param2),Param1 param1,Param1 param2);
+	void DisconnectAllTrackers();
+	void ReconnectAllTrackers(TLightKit * coinLight);
+	void DisplayAnalyzeResults();
+	void ResetAnalyzeValues();
+	void UpdateAnalyzerSize(SceneModel* pModel);
+	void PrepareAnalyze(SceneModel * pModel, TAnalyzerKit * analyzerKit );
+    void FinalyzeAnalyze(double raydensity, TAnalyzerKit * analyzerKit );
+	void extendBoxForLight( SbBox3f * extendedBox );
+	bool IsTreeContainAnalyzer();
 
     BBox GetIntersectionBBox();
     Transform GetIntersectionTransform();
@@ -117,5 +136,6 @@ inline InstanceNode* InstanceNode::GetParent() const
 {
 	return m_parent;
 }
+
 
 #endif /*INSTANCENODE_H_*/

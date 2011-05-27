@@ -42,7 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Point3D.h"
 
-struct Ray;
+class Ray;
 
 struct BBox
 {

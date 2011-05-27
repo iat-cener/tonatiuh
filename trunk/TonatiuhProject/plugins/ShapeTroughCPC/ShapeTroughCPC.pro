@@ -5,7 +5,7 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-include( $$(TONATIUH_ROOT)/config.pri)
+include( ../../config.pri )
 
 
 INCLUDEPATH += . \
@@ -22,8 +22,7 @@ HEADERS = src/*.h \
            	$$(TONATIUH_ROOT)/src/source/geometry/RefCount.h \
            	$$(TONATIUH_ROOT)/src/source/geometry/tgf.h \
            	$$(TONATIUH_ROOT)/src/source/geometry/Transform.h \
-           	$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \           				
- 			$$(TONATIUH_ROOT)/src/source/gui/InstanceNode.h \			
+           	$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \           						
            	$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \
            	$$(TONATIUH_ROOT)/src/source/raytracing/Photon.h \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h \
@@ -39,8 +38,7 @@ SOURCES = src/*.cpp  \
            	$$(TONATIUH_ROOT)/src/source/geometry/RefCount.cpp \
            	$$(TONATIUH_ROOT)/src/source/geometry/tgf.cpp \
            	$$(TONATIUH_ROOT)/src/source/geometry/Transform.cpp \
-           	$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \           				
- 			$$(TONATIUH_ROOT)/src/source/gui/InstanceNode.cpp \			
+           	$$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \           						
            	$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
            	$$(TONATIUH_ROOT)/src/source/raytracing/Photon.cpp \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.cpp \
@@ -52,17 +50,17 @@ RESOURCES = src/ShapeTroughCPC.qrc
 
 LIBS +=-L$$(TDE_ROOT)/local/lib -lCoin -lSoQt
 		
-contains(TEMPLATE,lib) {  
-	CONFIG(debug, debug|release) {
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeTroughCPC
-		unix { 
-			TARGET = $$member(TARGET, 0)_debug
-		}
-		else {
-			TARGET = $$member(TARGET, 0)d
-		}
+
+CONFIG(debug, debug|release) {
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeTroughCPC
+	unix { 
+		TARGET = $$member(TARGET, 0)_debug
 	}
-	else { 
-		DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeTroughCPC
+	else {
+		TARGET = $$member(TARGET, 0)d
 	}
 }
+else { 
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/ShapeTroughCPC
+}
+

@@ -95,9 +95,16 @@ public:
 	void RemoveCoinNode( int row, SoBaseKit& coinParent );
 	void RemoveLightNode( TLightKit& coinLight );
 
+	void PrepareAnalyze(  );
+	void FinalyzeAnalyze( double raydensity );
+	void DisplayAnalyzeResults(  );
+	void ResetAnalyzeValues(  );
+
 	bool SetNodeName( SoNode* coinChild, QString newName );
 
 	void UpdateSceneModel();
+	void DisconnectAllTrackers();
+	void ReconnectAllTrackers();
 
 signals:
 	void LightNodeStateChanged( int newState );
@@ -110,12 +117,15 @@ private:
 	InstanceNode* AddInstanceNode( InstanceNode& instanceNodeParent, SoNode* separatorKit );
 	void GenerateInstanceTree( InstanceNode& instanceParent );
 	void GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
+//	void GenerateTAnalyzerKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
+//	void GenerateSoNodeKitListPartSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
 	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
 
 private:
 	SoSeparator* m_coinRoot;
 	TSceneKit* m_coinScene;
 	InstanceNode* m_instanceRoot;
+	InstanceNode* m_instanceConcentrator;
 	std::map< SoNode*, QList<InstanceNode*> > m_mapCoinQt;
 };
 

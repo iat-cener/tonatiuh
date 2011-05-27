@@ -44,12 +44,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/SbLinear.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransform.h>
 
 #include "NormalVector.h"
 #include "Point3D.h"
-#include "tgc.h"
+#include "tgf.h"
 #include "TrackerHeliostat.h"
 #include "Transform.h"
 #include "TSceneKit.h"
@@ -73,12 +72,12 @@ TrackerHeliostat::TrackerHeliostat()
 	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
 	SO_NODE_ADD_FIELD( aimingPoint, ( 0.0, 0.0, 0.0 ) );
 
-	/*SO_NODE_DEFINE_ENUM_VALUE( Rotations, YX );
+	SO_NODE_DEFINE_ENUM_VALUE( Rotations, YX );
 	SO_NODE_DEFINE_ENUM_VALUE( Rotations, YZ );
 	SO_NODE_DEFINE_ENUM_VALUE( Rotations, XZ );
 	SO_NODE_DEFINE_ENUM_VALUE( Rotations, ZX );
 	SO_NODE_SET_SF_ENUM_TYPE( typeOfRotation, Rotations );
-	SO_NODE_ADD_FIELD( typeOfRotation, (YX) );*/
+	SO_NODE_ADD_FIELD( typeOfRotation, (YX) );
 
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
@@ -122,8 +121,48 @@ void TrackerHeliostat::evaluate()
 	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
 	getmatrixAction->apply( nodePath );
 
+	Transform objectToWorld = tgf::TransformFromMatrix( getmatrixAction->getMatrix( ) );
+	Transform worldToObject = objectToWorld.GetInverse();
+	Vector3D globalSunVector( sin( m_azimuth.getValue() ) * sin( m_zenith.getValue() ),
+			 cos( m_zenith.getValue() ),
+			-cos( m_azimuth.getValue() ) * sin( m_zenith.getValue() ) );
 
-	SbMatrix objectToWorld = getmatrixAction->getMatrix();
+	Vector3D i = worldToObject.multDirMatrix ( globalSunVector );
+	if (i.length() == 0.0f) return;
+	i = Normalize(i);
+
+	Vector3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
+	Vector3D r = worldToObject.multMatrixVec( focus );
+	if (r.length() == 0.0f) return;
+	r = Normalize(r);
+
+	Vector3D n = ( i + r );
+	if (n.length() == 0.0f) return;
+	n = Normalize(n);
+
+	Vector3D Axe1;
+	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 1 ))// YX or YZ
+	{
+		Axe1 = Vector3D(0.0f, 1.0f, 0.0f);
+	}
+	else if (typeOfRotation.getValue() == 2 ) // XZ
+	{
+		Axe1 = Vector3D(1.0f, 0.0f, 0.0f);
+	}
+	else // ZX
+	{
+		Axe1 = Vector3D(0.0f, 0.0f, 1.0f);
+	}
+	Vector3D t = CrossProduct(n, Axe1);
+	//Vector3D t( n[2], 0.0f, -n[0] );
+	if (t.length() == 0.0f) return;
+	t = Normalize(t);
+
+	Vector3D p = CrossProduct(t,n);
+	if (p.length() == 0.0f) return;
+	p = Normalize(p);
+
+/*	SbMatrix objectToWorld = getmatrixAction->getMatrix();
 	SbMatrix worldToObject = objectToWorld.inverse();
 
 	SbVec3f globalSunVector( sin( m_azimuth.getValue() ) * sin( m_zenith.getValue() ),
@@ -138,29 +177,55 @@ void TrackerHeliostat::evaluate()
 
 
 	SbVec3f focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
-
-
-
+	if (focus.length()==0.0f) return;
 	SbVec3f r;
 	worldToObject.multVecMatrix( focus, r );
-
+	if (r.length()==0.0f) return;
 	r.normalize();
 
 
 	SbVec3f n = ( i + r );
+	if (n.length()==0.0f) return;
 	n.normalize();
 
-	SbVec3f t = SbVec3f( n[2], 0.0f, -n[0] );
+	SbVec3f Axe1;
+	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 1 ))// YX or YZ
+	{
+		Axe1 = SbVec3f(0.0f, 1.0f, 0.0f);
+	}
+	else if (typeOfRotation.getValue() == 2 ) // XZ
+	{
+		Axe1 = SbVec3f(1.0f, 0.0f, 0.0f);
+	}
+	else // ZX
+	{
+		Axe1 = SbVec3f(0.0f, 0.0f, 1.0f);
+	}
+	SbVec3f t =  n.cross(Axe1);
+	//SbVec3f t = SbVec3f( n[2], 0.0f, -n[0] );
+	if (t.length()==0.0f) return;
 	t.normalize();
 
 	SbVec3f p = t.cross(n);
+	if (p.length()==0.0f) return;
 	p.normalize();
+*/
+	SbMatrix transformMatrix;
+	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 3 ))// YX ou  ZX
+	{
+		 transformMatrix = SbMatrix( t[0], t[1], t[2], 0.0,
+								  n[0], n[1], n[2], 0.0,
+								  p[0], p[1], p[2], 0.0,
+								  0.0, 0.0, 0.0, 1.0 );
+	}
+	else // YZ
+	{
+		transformMatrix = SbMatrix( p[0], p[1], p[2], 0.0,
+								  n[0], n[1], n[2], 0.0,
+								  t[0], t[1], t[2], 0.0,
+								  0.0, 0.0, 0.0, 1.0 );
+	}
 
-
-	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
-							  n[0], n[1], n[2], 0.0,
-							  p[0], p[1], p[2], 0.0,
-							  0.0, 0.0, 0.0, 1.0 );
 
 
 	SoTransform* newTransform = new SoTransform();
@@ -173,4 +238,87 @@ void TrackerHeliostat::evaluate()
 	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( newTransform->scaleOrientation.getValue() ) );
 	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( newTransform->center.getValue() ) );
 
+
+	/*
+	SbRotation rotation;
+	if (typeOfRotation.getValue() == 0 ) // YX
+	{
+		double sinX= sqrt(n[2]*n[2]+n[0]*n[0]); //it is a simplification (could be negative too)
+		if (sinX>1) sinX =1;
+		double angleX = asin(sinX);
+		SbRotation rotationx(SbVec3f(1, 0, 0), angleX);
+		double sinY= (n[0]/sinX);
+		if (sinY>1) sinY =1;
+		if (sinY<-1) sinY =-1;
+		double angleY = asin(sinY);
+		if (n[2]<0) angleY=M_PI-angleY; // cosY = n[2]/sinX
+		SbRotation rotationy(SbVec3f(0, 1, 0), angleY);
+		rotation = rotationx;
+		rotation *= rotationy;
+	}
+	else if (typeOfRotation.getValue() == 1 ) // YZ
+	{
+		double sinZ= sqrt(n[2]*n[2]+n[0]*n[0]); //it is a simplification (could be negative too)
+		if (sinZ>1) sinZ =1;
+		double angleZ = asin(sinZ);
+		SbRotation rotationz(SbVec3f(0, 0, 1), angleZ);
+		double sinY= (n[2]/sinZ);
+		if (sinY>1) sinY =1;
+		if (sinY<-1) sinY =-1;
+		double angleY = asin(sinY);
+		if (n[0]>0) angleY=M_PI-angleY; // cosY = -n[0]/sinZ
+		SbRotation rotationy(SbVec3f(0, 1, 0), angleY);
+		rotation = rotationz;
+		rotation *= rotationy;
+	}
+	else if (typeOfRotation.getValue() == 2 ) // XZ
+	{
+		double sinZ= -n[0];
+		if (sinZ>1) sinZ =1;
+		if (sinZ<-1) sinZ =-1;
+		double angleZ = asin(sinZ);
+		SbRotation rotationz(SbVec3f(0, 0, 1), angleZ);
+		double sinX= 0.0f;
+		if ((n[1]!=0.0f) ||(n[2]!=0.0f))
+		{
+			sinX=n[2]/(sqrt(n[1]*n[1]+n[2]*n[2]));
+			if (sinX>1) sinX =1;
+			if (sinX<-1) sinX =-1;
+		}
+		double angleX = asin(sinX);
+		SbRotation rotationx(SbVec3f(1, 0, 0), angleX);
+		rotation = rotationz;
+		rotation *= rotationx;
+	}
+	else // ZX
+	{
+		double sinX= n[2];
+		if (sinX>1) sinX =1;
+		if (sinX<-1) sinX =-1;
+		double angleX = asin(sinX);
+		SbRotation rotationx(SbVec3f(1, 0, 0), angleX);
+		double sinZ= 0.0f;
+		if ((n[0]!=0.0f) ||(n[1]!=0.0f))
+		{
+			sinZ=-n[0]/(sqrt(n[0]*n[0]+n[1]*n[1]));
+			if (sinZ>1.0f) sinZ =1.0f;
+			if (sinZ<-1.0f) sinZ =-1.0f;
+		}
+		double angleZ = asin(sinZ);
+		SbRotation rotationz(SbVec3f(0, 0, 1), angleZ);
+		rotation = rotationx;
+		rotation *= rotationz;
+	}
+
+
+
+	SoTransform* newTransform = new SoTransform();
+	//newTransform->setMatrix( transformMatrix );
+
+	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( newTransform->translation.getValue() ) );
+	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rotation.getValue() ) );
+	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( newTransform->scaleFactor.getValue() ) );
+	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( newTransform->scaleOrientation.getValue() ) );
+	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( newTransform->center.getValue() ) );
+	*/
 }

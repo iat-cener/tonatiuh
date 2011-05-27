@@ -41,10 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodes/SoShape.h>
 
-class BBox;
-class DifferentialGeometry;
-class NormalVector;
-class Point3D;
+struct BBox;
+struct DifferentialGeometry;
+struct NormalVector;
+struct Point3D;
 class QString;
 class Ray;
 

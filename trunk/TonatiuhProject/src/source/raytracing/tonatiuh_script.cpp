@@ -81,6 +81,15 @@ int tonatiuh_script::init( QScriptEngine* engine )
 	QScriptValue fun_tonatiuh_sunposition = engine->newFunction( tonatiuh_script::tonatiuh_sunposition );
 	engine->globalObject().setProperty("tonatiuh_sunposition", fun_tonatiuh_sunposition );
 
+	QScriptValue fun_tonatiuh_setsunpositiontoscene = engine->newFunction( tonatiuh_script::tonatiuh_setsunpositiontoscene );
+	engine->globalObject().setProperty("tonatiuh_setsunpositiontoscene", fun_tonatiuh_setsunpositiontoscene );
+
+	QScriptValue fun_tonatiuh_setdisconnectalltrackers = engine->newFunction( tonatiuh_script::tonatiuh_setdisconnectalltrackers );
+	engine->globalObject().setProperty("tonatiuh_setdisconnectalltrackers", fun_tonatiuh_setdisconnectalltrackers );
+
+	QScriptValue fun_tonatiuh_saveas = engine->newFunction( tonatiuh_script::tonatiuh_saveas );
+	engine->globalObject().setProperty("tonatiuh_saveas", fun_tonatiuh_saveas );
+
 	QScriptValue fun_tonatiuh_trace = engine->newFunction( tonatiuh_script::tonatiuh_trace );
 	engine->globalObject().setProperty("tonatiuh_trace", fun_tonatiuh_trace );
 
@@ -289,7 +298,7 @@ QScriptValue tonatiuh_script::tonatiuh_random_generator(QScriptContext* context,
 QScriptValue  tonatiuh_script::tonatiuh_sunposition(QScriptContext* context, QScriptEngine* engine )
 {
 	//tonatiuh_sunposition( azimuth, elevation, distance );
-	if( context->argumentCount() != 3 )	return context->throwError( "tonatiuh_sunposition: takes exactly one argument." );
+	if( context->argumentCount() != 3 )	return context->throwError( "tonatiuh_sunposition: takes exactly 3 argument." );
 	if( !context->argument( 0 ).isNumber() )	return context->throwError( "tonatiuh_sunposition: argument 1 is not a number." );
 	if( !context->argument( 1 ).isNumber() )	return context->throwError( "tonatiuh_sunposition: argument 2 is not a number." );
 	if( !context->argument( 2 ).isNumber() )	return context->throwError( "tonatiuh_sunposition: argument 3 is not a number." );
@@ -314,13 +323,69 @@ QScriptValue  tonatiuh_script::tonatiuh_sunposition(QScriptContext* context, QSc
 
 }
 
+QScriptValue tonatiuh_script::tonatiuh_setsunpositiontoscene(QScriptContext* context, QScriptEngine* engine )
+{
+	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
+	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
+	if( !rayTracer ) return 0;
+
+	if( context->argumentCount() )	context->throwError( "tonatiuh_setsunpositiontoscene() no takes arguments." );
+
+	int result = rayTracer->SetSunPositionToScene();
+	if( result == 0 ) 	context->throwError( "tonatiuh_setsunpositiontoscene() error." );
+
+	return 1;
+}
+
+QScriptValue tonatiuh_script::tonatiuh_setdisconnectalltrackers(QScriptContext* context, QScriptEngine* engine )
+{
+	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
+	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
+	if( !rayTracer ) return 0;
+
+	if( context->argumentCount()!=1 )	context->throwError( "tonatiuh_setdisconnectalltrackers() takes exactly one argument." );
+	if( !context->argument( 0 ).isBool() )	context->throwError( "tonatiuh_setdisconnectalltrackers: argument is not a bool.");
+	int result = rayTracer->SetDisconnectAllTrackers(context->argument( 0 ).toBool());
+	if( result == 0 ) 	context->throwError( "tonatiuh_setdisconnectalltrackers() error." );
+
+	return 1;
+}
+
+QScriptValue tonatiuh_script::tonatiuh_saveas(QScriptContext* context, QScriptEngine* engine )
+{
+	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
+	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
+	if( !rayTracer ) return 0;
+
+	if( context->argumentCount()!=1 )	context->throwError( "tonatiuh_saveas() takes exactly one argument." );
+	if( !context->argument( 0 ).isString() )	context->throwError( "tonatiuh_saveas: argument is not a string.");
+
+	QString fileName = context->argument(0).toString();
+	if( fileName.isEmpty()  )	context->throwError( "tonatiuh_saveas: the model file is not correct." );
+
+	QFileInfo file(  fileName );
+	if( !file.isAbsolute() )
+	{
+		QString dirName = rayTracer->GetDir();
+		QDir currentDir( dirName );
+		QFileInfo absolutefile( currentDir, fileName );
+		fileName = absolutefile.absoluteFilePath();
+	}
+
+
+	int result = rayTracer->Save(fileName);
+	if( result == 0 ) 	context->throwError( "tonatiuh_saveas() error." );
+
+	return 1;
+}
+
 QScriptValue tonatiuh_script::tonatiuh_trace(QScriptContext* context, QScriptEngine* engine )
 {
 	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
 	if( !rayTracer ) return 0;
 
-	if( context->argumentCount() )	return context->throwError( "tonatiuh_trace() no takes argumets." );
+	if( context->argumentCount() )	return context->throwError( "tonatiuh_trace() no takes arguments." );
 
 	int result = rayTracer->Trace();
 	if( result == 0 )	return context->throwError( "tonatiuh_trace() error." );

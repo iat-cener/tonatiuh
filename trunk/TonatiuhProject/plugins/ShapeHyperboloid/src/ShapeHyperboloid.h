@@ -47,7 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "trt.h"
 
-class Vector3D;
+struct Vector3D;
 
 class ShapeHyperboloid : public TShape
 {

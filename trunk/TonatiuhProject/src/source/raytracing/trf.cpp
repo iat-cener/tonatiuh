@@ -246,7 +246,7 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 	}
 
 	SoMaterial* myMaterial = new SoMaterial;
-	myMaterial->diffuseColor.setValue(1.0, 1.0, 0.8);
+	myMaterial->diffuseColor.setValue(1.0f, 1.0f, 0.8f);
 	drawrays->addChild( myMaterial );
 	drawrays->addChild( points );
 

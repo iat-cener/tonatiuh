@@ -44,8 +44,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
+#include <Inventor/nodes/SoSelection.h>
 
 #include "Document.h"
+#include "GraphicRoot.h"
 #include "SceneModel.h"
 #include "ScriptRayTracer.h"
 #include "RandomDeviate.h"
@@ -230,6 +232,7 @@ void ScriptRayTracer::SetSunAzimtuh( double azimuth )
 {
 	m_sunAzimuth = azimuth * tgc::Degree;
 	m_sunPosistionChnaged = true;
+
 }
 
 /*!
@@ -250,6 +253,52 @@ void ScriptRayTracer::SetSunDistance( double distance )
 	m_sunPosistionChnaged = true;
 }
 
+int  ScriptRayTracer::SetSunPositionToScene()
+{
+	if (m_sceneModel)
+	{
+		QModelIndex sceneIndex;
+		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneIndex );
+		SoSceneKit* coinScene =  static_cast< SoSceneKit* >( sceneInstance->GetNode() );
+
+		if ((coinScene)&& ( coinScene->getPart( "lightList[0]", false ) ))
+		{
+			TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+			if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation/*, m_sunDistance*/ );
+			return 1;
+		}
+		std::cerr<<"ScriptRayTracer::SetSunPositionToScene() light not found in scene"<<std::endl;
+		return 0;
+	}
+	std::cerr<<"ScriptRayTracer::SetSunPositionToScene() sceneModel not found"<<std::endl;
+	return 0;
+}
+
+int  ScriptRayTracer::SetDisconnectAllTrackers(bool disconnect)
+{
+	if (m_sceneModel)
+	{
+		if (disconnect) m_sceneModel->DisconnectAllTrackers();
+		else m_sceneModel->ReconnectAllTrackers();
+		return 1;
+	}
+	std::cerr<<"ScriptRayTracer::SetSunPositionToScene() sceneModel not found"<<std::endl;
+	return 0;
+}
+
+int   ScriptRayTracer::Save( const QString& fileName)
+{
+ 	if( !m_document->WriteFile( fileName ) )
+	{
+ 		std::cerr<< "Saving canceled";
+		return 0;
+	}
+
+	std::cerr<< "File saved";
+	return 1;
+}
+
+
 int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
 {
 	delete m_document;
@@ -261,6 +310,7 @@ int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
 	delete m_sceneModel;
 	m_sceneModel = 0;
 	m_sceneModel = new SceneModel;
+
 	m_sceneModel->SetCoinScene( *m_document->GetSceneKit() );
 
 	return 1;
@@ -331,10 +381,11 @@ int ScriptRayTracer::Trace()
 	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 	lightInstance->SetIntersectionTransform( lightToWorld. GetInverse() );
 
+	m_sceneModel->PrepareAnalyze();
 	QVector< QPair< TShapeKit*, Transform > > surfacesList;
 
 	//Compute bounding boxes and world to object transforms
-	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList );
+	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList, true );
 
 	TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 	light->ComputeLightSourceArea( surfacesList );
@@ -356,6 +407,12 @@ int ScriptRayTracer::Trace()
 	futureWatcher.setFuture( photonMap );
 
 	futureWatcher.waitForFinished();
+
+	SoSFVec3f scaleVect = lightTransform->scaleFactor;
+	float scalex,scaley,scalez;
+	scaleVect.getValue().getValue(scalex,scaley,scalez);
+	m_sceneModel->FinalyzeAnalyze(double(m_numberOfRays)/(raycastingSurface->GetArea()*scalex*scalez));
+
 
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;

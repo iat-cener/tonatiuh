@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "TCube.h"
+#include "Ray.h"
 
 using namespace std;
 
@@ -130,10 +131,65 @@ bool TCube::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGe
 	return false;
 }
 
-bool TCube::IntersectP( const Ray& /*objectRay*/ ) const
+bool TCube::IntersectP( const Ray& ray ) const
 {
-	//Yet to be implemented
-	return false;
+    double t0 = ray.mint;
+    double t1 = ray.maxt;
+    double tmin, tmax, tymin, tymax, tzmin, tzmax;
+    double halfWidth = m_width.getValue()/2.0;
+    double halfHeight = m_height.getValue()/2.0;
+    double halfDepth = m_depth.getValue()/2.0;
+
+    double invDirection = ray.invDirection().x;
+	if( invDirection >= 0.0 )
+	{
+       tmin = ( -halfWidth - ray.origin.x ) * invDirection;
+	   tmax = ( halfWidth - ray.origin.x ) * invDirection;
+	}
+	else
+	{
+	   tmin = ( halfWidth - ray.origin.x ) * invDirection;
+	   tmax = ( -halfWidth - ray.origin.x ) * invDirection;
+	}
+
+	invDirection = ray.invDirection().y;
+	if( invDirection >= 0.0 )
+	{
+	   tymin = ( -halfHeight - ray.origin.y ) * invDirection;
+	   tymax = ( halfHeight - ray.origin.y ) * invDirection;
+	}
+	else
+	{
+	   tymin = ( halfHeight - ray.origin.y ) * invDirection;
+	   tymax = ( -halfHeight - ray.origin.y ) * invDirection;
+	}
+
+	if ( ( tmin > tymax ) || ( tymin > tmax ) ) return false;
+
+	if ( tymin > tmin ) tmin = tymin;
+	if ( tymax < tmax ) tmax = tymax;
+
+	invDirection = ray.invDirection().z;
+	if( invDirection >= 0.0 )
+	{
+	   tzmin = ( -halfDepth - ray.origin.z ) * invDirection;
+	   tzmax = ( halfDepth - ray.origin.z ) * invDirection;
+	}
+	else
+	{
+	   tzmin = ( halfDepth - ray.origin.z ) * invDirection;
+	   tzmax = ( -halfDepth - ray.origin.z ) * invDirection;
+	}
+
+	if ( ( tmin > tzmax ) || ( tzmin > tmax ) ) return false;
+
+	if ( tzmin > tmin ) tmin = tzmin;
+	if ( tzmax < tmax ) tmax = tzmax;
+	if ( ( tmin < t1 ) && ( tmax > t0 ) )
+	{
+		return true;
+	}
+	else return false;
 }
 
 void TCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
