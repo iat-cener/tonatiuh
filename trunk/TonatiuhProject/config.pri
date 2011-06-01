@@ -1,11 +1,21 @@
-VERSION = 1.1.5
+VERSION = 1.2.0
 
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-COINDIR = $$(TDE_ROOT)/local
-MARBLEDIR = $$(TDE_ROOT)/local
-BERKELEYDBDIR = $$(TDE_ROOT)/local
+COMPILER = $$(COMPILER)
+contains( COMPILER, MSVC ) {
+	COINDIR = $$(COINDIR)
+	MARBLEDIR = $$(MARBLEDIR)
+}
+
+isEmpty( COINDIR ) {
+	COINDIR = $$(TDE_ROOT)/local
+}
+isEmpty( MARBLEDIR ) {
+	MARBLEDIR = $$(TDE_ROOT)/local
+}
+
 
 INCLUDEPATH += 	. \
 				$$(TONATIUH_ROOT)/src \
@@ -24,8 +34,18 @@ win32 {
 	DEFINES+= COIN_DLL SOQT_DLL
 }
 
-
-LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
+COMPILER = $$(COMPILER)
+contains( COMPILER, MSVC ) {
+	CONFIG(debug, debug|release) {
+		LIBS += -L$${COINDIR}/lib -lcoin3d -lSoQt1d
+	}
+	else{
+		LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
+	}
+}
+else {
+	LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
+}
 
 CONFIG(debug, debug|release) {
     QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
@@ -82,7 +102,18 @@ else{
 	}
 
 	INCLUDEPATH += $${MARBLEDIR}/include/marble
-	LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
+
+	contains( COMPILER, MSVC ) {
+		CONFIG(debug, debug|release) {
+			LIBS += -L$${MARBLEDIR}/lib -lmarblewidgetd
+		}
+		else {
+			LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
+		}
+	}
+	else {
+		LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
+	}
 }
 
 
