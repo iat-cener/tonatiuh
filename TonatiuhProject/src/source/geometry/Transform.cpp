@@ -256,10 +256,10 @@ Vector3D Transform::multDirMatrix(const Vector3D & src) const
   const double * t1 = (m_mdir->m)[1];
   const double * t2 = (m_mdir->m)[2];
   // Copy the src vector, just in case src and dst is the same vector.
+  dst[0] = src[0]*t0[0] + src[1]*t0[1] + src[2]*t0[2];
+  dst[1] = src[0]*t1[0] + src[1]*t1[1] + src[2]*t1[2];
+  dst[2] = src[0]*t2[0] + src[1]*t2[1] + src[2]*t2[2];
 
-  dst[0] = src[0]*t0[0] + src[1]*t1[0] + src[2]*t2[0];
-  dst[1] = src[0]*t0[1] + src[1]*t1[1] + src[2]*t2[1];
-  dst[2] = src[0]*t0[2] + src[1]*t1[2] + src[2]*t2[2];
   return dst;
 }
 bool Transform::SwapsHandedness( ) const
