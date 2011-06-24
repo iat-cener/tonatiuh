@@ -670,46 +670,72 @@ void MainWindow::on_actionSunPlane_triggered()
 
 	Transform  lightToWorld = tgf::TransformFromMatrix( getmatrixaction->getMatrix() );
 
-	Point3D camPosition = lightToWorld( Point3D( 0.0, 0.0, 0.0 ) );
-	Vector3D camOrientation= lightToWorld( Vector3D( 0.0, -1.0, 0.0 ) );
+	//Vector3D camOrientation= lightToWorld( Vector3D( 0.0, -1.0, 0.0 ) );
 
-	double t = 1.0;
-	if( camPosition.y != 0.0 && camOrientation.y != 0.0 ) t = -camPosition.y / camOrientation.y;
-	Point3D targetPoint = camPosition + camOrientation * t;
+	//double t = 1.0;
+	//if( camPosition.y != 0.0 && camOrientation.y != 0.0 ) t = -camPosition.y / camOrientation.y;
+	//Point3D targetPoint = camPosition + camOrientation * t;
 
 
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
-	cam->position.setValue( SbVec3f( camPosition.x, camPosition.y, camPosition.z ) );
-	cam->pointAt( SbVec3f( targetPoint.x, targetPoint.y, targetPoint.z ) );
-	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
+	Point3D camPosition = lightToWorld( Point3D( 0.0, cam->focalDistance.getValue(), 0.0 ) );
+
+
+	SbVec3f target = getTargetOfCamera(cam);
+
+	cam->position.setValue( target + SbVec3f( camPosition.x, camPosition.y, camPosition.z ) );
+	cam->pointAt( target );
+	//cam->viewAll( m_graphicsRoot->GetNode(), vpr );
+}
+
+SbVec3f MainWindow::getTargetOfCamera(SoCamera* cam)
+{
+	SbVec3f axis;
+	float angle;
+	cam->orientation.getValue(axis,angle);
+	SbRotation * rotation  = new SbRotation (axis,angle);
+	SbVec3f center;
+	rotation->multVec(SbVec3f (0, 0, -cam->focalDistance.getValue()), center);
+	center += cam->position.getValue();
+	return center;
 }
 
 void MainWindow::on_action_X_Y_Plane_triggered()
 {
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
-	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
-	cam->position.setValue( SbVec3f( 0, 0, 1 ) );
-	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 1, 0 )  );
-	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
+
+	SbVec3f target = getTargetOfCamera(cam);
+
+	cam->position.setValue( target + SbVec3f( 0, 0, cam->focalDistance.getValue() ) );
+	cam->pointAt( target, SbVec3f( 0, 1, 0 )  );
+
+	//SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
+	//cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 
 }
 
 void MainWindow::on_action_X_Z_Plane_triggered()
 {
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
-	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
-	cam->position.setValue( SbVec3f( 0, 1, 0 ) );
-	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 0, 1 )  );
-	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
+	SbVec3f target = getTargetOfCamera(cam);
+
+	cam->position.setValue( target + SbVec3f( 0, cam->focalDistance.getValue(), 0 ) );
+	cam->pointAt( target, SbVec3f( 0, 0, 1 )  );
+
+	//SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
+	//cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
 void MainWindow::on_action_Y_Z_Plane_triggered()
 {
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
-	SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
-	cam->position.setValue( SbVec3f( -1, 0, 0 ) );
-	cam->pointAt( SbVec3f( 0, 0, 0 ), SbVec3f( 0, 1, 0 )  );
-	cam->viewAll( m_graphicsRoot->GetNode(), vpr );
+	SbVec3f target = getTargetOfCamera(cam);
+
+	cam->position.setValue( target + SbVec3f( -cam->focalDistance.getValue(), 0, 0 ) );
+	cam->pointAt( target, SbVec3f( 0, 1, 0 )  );
+
+	//SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
+	//cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
 void MainWindow::on_actionOpenScriptEditor_triggered()

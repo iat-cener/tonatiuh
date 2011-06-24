@@ -62,6 +62,8 @@ class TShapeFactory;
 class TSunShape;
 class TTrackerFactory;
 class UpdatesManager;
+#include <Inventor/SbVec3f.h>
+class SoCamera;
 
 
 //!  Main window class.
@@ -161,6 +163,8 @@ protected slots:
     void ShowRayTracerOptionsDialog();
     void ShowWarning( QString message );
 	void Undo();
+
+	SbVec3f getTargetOfCamera(SoCamera* cam);
 
 	//View menu actions
 	void on_actionAxis_toggled();
