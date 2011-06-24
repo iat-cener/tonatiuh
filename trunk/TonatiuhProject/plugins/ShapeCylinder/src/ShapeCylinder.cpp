@@ -82,6 +82,11 @@ double ShapeCylinder::GetArea() const
 	return (2 * tgc::Pi * radius.getValue() * length.getValue() );
 }
 
+double ShapeCylinder::GetVolume() const
+{
+	return (tgc::Pi * (radius.getValue()*radius.getValue()) * length.getValue() );
+}
+
 /*!
  * Return the shape bounding box.
  */

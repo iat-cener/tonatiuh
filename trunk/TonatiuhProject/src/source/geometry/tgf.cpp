@@ -163,6 +163,11 @@ Transform tgf::TransformFromMatrix( SbMatrix const& matrix )
 
 Transform tgf::TransformFromSoTransform( SoTransform* const & soTransform )
 {
+	return TransformFromMatrix( MatrixFromSoTransform( soTransform ) );
+}
+
+SbMatrix tgf::MatrixFromSoTransform( SoTransform* const & soTransform )
+{
 	SbMatrix sbMatrix;
 	sbMatrix.setTransform( 	soTransform->translation.getValue(),
 							soTransform->rotation.getValue(),
@@ -170,7 +175,7 @@ Transform tgf::TransformFromSoTransform( SoTransform* const & soTransform )
 						    soTransform->scaleOrientation.getValue(),
 						    soTransform->center.getValue() );
 
-	return TransformFromMatrix( sbMatrix );
+	return sbMatrix;
 
 }
 

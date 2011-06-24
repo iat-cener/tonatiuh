@@ -62,6 +62,7 @@ TDefaultTracker::TDefaultTracker()
 {
 	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
 
+	//ConstructEngineOutput();
 	// Define input fields and their default values
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
@@ -91,13 +92,8 @@ QString TDefaultTracker::getIcon()
  */
 void TDefaultTracker::evaluate()
 {
-	if( !m_azimuth.isConnected() ) return;
-	if( !m_zenith.isConnected() ) return;
+	if (!IsConnected()) return;
 
-	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
-	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
-	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( 1.0, 1.0, 1.0 ) );
-	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
+	SetEngineOutputIdentity();
 
 }

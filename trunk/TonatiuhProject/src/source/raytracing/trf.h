@@ -43,6 +43,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QPair>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoNode.h>
 
 #include "Photon.h"
 #include "RayTracerPhoton.h"
@@ -54,6 +57,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSeparatorKit.h"
 #include "TAnalyzerKit.h"
 #include "TShapeKit.h"
+#include "tgf.h"
+
 
 class InstanceNode;
 class RandomDeviate;
@@ -69,6 +74,7 @@ namespace trf
 	int ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
 	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map);
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
+	Transform GetObjectToWorld(SoPath* nodePath);
 }
 
 
@@ -184,6 +190,14 @@ inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , s
 		photonMap->StoreRay( first, rayLength );
 	}
 	photonsList.second.clear();
+}
+
+inline Transform trf::GetObjectToWorld(SoPath* nodePath)
+{
+	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
+	getmatrixAction->apply( nodePath );
+
+	return tgf::TransformFromMatrix( getmatrixAction->getMatrix( ) );
 }
 
 #endif /* TRF_H_ */

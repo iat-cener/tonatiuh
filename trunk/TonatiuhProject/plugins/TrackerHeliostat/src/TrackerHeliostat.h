@@ -39,17 +39,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRACKERHELIOSTAT_H_
 #define TRACKERHELIOSTAT_H_
 
-#include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/fields/SoSFEnum.h>
-//#include <Inventor/fields/SoSFVec3f.h>
 
-#include "TTracker.h"
-#include "trt.h"
+#include <Inventor/fields/SoSFEnum.h>
+
+#include "TTrackerForAiming.h"
 
 class QString;
 
-class TrackerHeliostat : public TTracker
+class TrackerHeliostat : public TTrackerForAiming
 {
+	typedef TTrackerForAiming inherited;
 	SO_NODEENGINE_HEADER( TrackerHeliostat );
 
 public:
@@ -64,15 +63,17 @@ public:
 		XZ   = 2,
 		ZX   = 3
 	};
-
-	trt::TONATIUH_REALVECTOR3 aimingPoint;
 	SoSFEnum typeOfRotation;
+	trt::TONATIUH_REALVECTOR3 aimingPoint;
+	
+	virtual void SwitchAimingPointType();
 
 protected:
 	virtual ~TrackerHeliostat();
 
 private:
   virtual void evaluate();
+
 
 };
 

@@ -28,6 +28,7 @@ public:
 	TLightShape( );
 	static void initClass();
 	double GetArea() const;
+	double GetVolume() const {return 0.0;};
 
 	bool IsIntoValidArea( Point3D point ) const;
 	Point3D Sample( double u, double v ) const;

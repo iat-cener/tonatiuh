@@ -97,13 +97,20 @@
      <x>0</x>
      <y>0</y>
      <width>857</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>&amp;Edit</string>
     </property>
+    <widget class="QMenu" name="menuTrackers">
+     <property name="title">
+      <string>Trackers</string>
+     </property>
+     <addaction name="actionSetAimingPointRelative"/>
+     <addaction name="actionSetAimingPointAbsolute"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -112,6 +119,7 @@
     <addaction name="actionPasteCopy"/>
     <addaction name="actionPasteLink"/>
     <addaction name="actionDelete"/>
+    <addaction name="menuTrackers"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -698,6 +706,16 @@
   <action name="actionReset_Analyzer_Values">
    <property name="text">
     <string>Reset Analyzer Values</string>
+   </property>
+  </action>
+  <action name="actionSetAimingPointRelative">
+   <property name="text">
+    <string>Set Aiming Point Relative</string>
+   </property>
+  </action>
+  <action name="actionSetAimingPointAbsolute">
+   <property name="text">
+    <string>Set Aiming Point Absolute</string>
    </property>
   </action>
  </widget>

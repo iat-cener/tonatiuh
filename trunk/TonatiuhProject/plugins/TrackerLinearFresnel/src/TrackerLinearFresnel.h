@@ -43,12 +43,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/engines/SoSubNodeEngine.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-#include "TTracker.h"
+#include "TTrackerForAiming.h"
 #include "trt.h"
 
 class QString;
 
-class TrackerLinearFresnel : public TTracker
+class TrackerLinearFresnel : public TTrackerForAiming
 {
 	SO_NODEENGINE_HEADER( TrackerLinearFresnel );
 
@@ -61,12 +61,13 @@ public:
 
 	enum Axis{
 		X = 0,
-		Y   = 1,
-		Z   = 2,
+		Y = 1,
+		Z = 2,
 	};
 
 	trt::TONATIUH_REALVECTOR2 axisOrigin;
 	SoSFEnum activeAxis;
+	void SwitchAimingPointType();
 
 protected:
 	virtual ~TrackerLinearFresnel();

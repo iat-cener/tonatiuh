@@ -543,24 +543,31 @@ void MainWindow::ShowMenu( const QModelIndex& index)
 		popupmenu.addAction( actionDelete );
 	}
 
-	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) && !(type.isDerivedFrom( TAnalyzerKit::getClassTypeId() )))
 	{
-		QMenu transformMenu( "Convert to", &popupmenu );
-		popupmenu.addAction( transformMenu.menuAction() );
-		transformMenu.addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
-		transformMenu.addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
-		transformMenu.addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
-		transformMenu.addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
-		transformMenu.addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
-		transformMenu.addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
-		transformMenu.addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
+		QMenu * trackersMenu = popupmenu.addMenu("Trackers" );
+		trackersMenu->addAction( actionSetAimingPointRelative);
+		trackersMenu->addAction( actionSetAimingPointAbsolute);
 
+		QMenu * transformMenu = popupmenu.addMenu("Convert to" );
+		//QMenu transformMenu( "Convert to", &popupmenu );
+		//popupmenu.addAction( transformMenu.menuAction() );
 		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
 		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
 		SoType transformType = transform->getTypeId();
 
-      	//Manipuladores
-		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu.addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
+
+		if (!transformType.isDerivedFrom(SoCenterballManip::getClassTypeId()) )	transformMenu->addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
+		if (!transformType.isDerivedFrom(SoHandleBoxManip::getClassTypeId()) )	transformMenu->addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
+		if (!transformType.isDerivedFrom(SoJackManip::getClassTypeId()) )	transformMenu->addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
+		if (!transformType.isDerivedFrom(SoTabBoxManip::getClassTypeId()) )	transformMenu->addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
+		if (!transformType.isDerivedFrom(SoTrackballManip::getClassTypeId()) ) transformMenu->addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
+		if (!transformType.isDerivedFrom(SoTransformBoxManip::getClassTypeId()) ) transformMenu->addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
+		if (!transformType.isDerivedFrom(SoTransformerManip::getClassTypeId()) ) transformMenu->addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
+
+
+
+		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu->addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
 
 	}
 
@@ -1086,6 +1093,39 @@ void MainWindow::Delete( QString nodeURL )
 	if( !nodeIndex.isValid() )	return;
 	Delete( nodeIndex );
 	if( m_selectionModel->isSelected ( nodeIndex ) ) m_selectionModel->clearSelection();
+
+}
+
+
+void MainWindow::SetAimingPointAbsolute()
+{
+	SetAimingPointRelativity(false);
+}
+
+void MainWindow::SetAimingPointRelative()
+{
+	SetAimingPointRelativity(true);
+}
+void MainWindow::SetAimingPointRelativity( bool relative )
+{
+	if( !m_selectionModel->hasSelection() )	return;
+	SetAimingPointRelativity( m_selectionModel->currentIndex(),relative );
+}
+
+/*!
+ * * Set all subnodes as relative or absolute.
+ *
+ * If \a nodeURL is not a valid node url, nothing is done.
+ */
+
+bool MainWindow::SetAimingPointRelativity( QModelIndex nodeIndex,bool relative)
+{
+	if( !nodeIndex.isValid() ) return false;
+
+	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( nodeIndex );
+	ancestor->SetAimingPointRelativity(relative);
+
+	return true;
 
 }
 
@@ -2721,6 +2761,8 @@ void MainWindow::SetupTriggers()
 	connect( actionPasteCopy, SIGNAL( triggered() ), this, SLOT ( PasteCopy() ) );
 	connect( actionPasteLink, SIGNAL( triggered() ), this, SLOT ( PasteLink() ) );
 	connect( actionDelete, SIGNAL( triggered() ), this, SLOT ( Delete() ) );
+	connect( actionSetAimingPointRelative, SIGNAL( triggered() ), this, SLOT ( SetAimingPointRelative() ) );
+	connect( actionSetAimingPointAbsolute, SIGNAL( triggered() ), this, SLOT ( SetAimingPointAbsolute() ) );
 
 	//Insert actions
 	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );

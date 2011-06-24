@@ -55,6 +55,7 @@ public:
 	ShapeFlatDisk( );
 	static void initClass();
 	double GetArea() const;
+	double GetVolume() const {return 0.0;};
 	BBox GetBBox() const;
 	QString GetIcon() const;
 

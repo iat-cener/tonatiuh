@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QVector>
 #include <QMutex>
 #include <Inventor/SbBox3f.h>
+#include <Inventor/SbMatrix.h>
 
 #include "BBox.h"
 #include "Transform.h"
@@ -90,11 +91,11 @@ public:
 	void DisplayAnalyzeResults();
 	void ResetAnalyzeValues();
 	void UpdateAnalyzerSize(SceneModel* pModel);
-	void PrepareAnalyze(SceneModel * pModel, TAnalyzerKit * analyzerKit );
+	void SetAimingPointRelativity( bool relative );
+	void PrepareAnalyze(SceneModel * pModel );
     void FinalyzeAnalyze(double raydensity, TAnalyzerKit * analyzerKit );
 	void extendBoxForLight( SbBox3f * extendedBox );
 	bool IsTreeContainAnalyzer();
-
     BBox GetIntersectionBBox();
     Transform GetIntersectionTransform();
     void SetIntersectionBBox( BBox nodeBBox );

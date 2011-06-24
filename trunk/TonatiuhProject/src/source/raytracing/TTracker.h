@@ -41,8 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoSubNodeEngine.h>
+#include <Inventor/nodes/SoTransform.h>
 
 #include "trt.h"
+#include "Vector3D.h"
 
 class QString; 
 class TSceneKit;
@@ -62,6 +64,25 @@ public:
 	void SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField );
 	void SetZenithAngle( trt::TONATIUH_REAL* zenithField );
 	void SetSceneKit( TSceneKit* scene );
+	void SetAnglesToScene();
+	void ConnectParentTranform(SoTransform* parentTransform);
+	double GetAzimuth() { return m_azimuth.getValue();};
+	double GetZenith() { return m_zenith.getValue();};
+
+
+protected:
+	//Constructor
+	TTracker();
+	virtual ~TTracker(); 
+
+	TSceneKit* m_scene;
+	void SetEngineOutput(SoTransform* newTransform);
+	void SetEngineOutputIdentity();
+	void SetEngineOutputRotation(SbRotation rotation);
+	void ConstructEngineOutput();
+	Vector3D GetGobalSunVector();
+	SbVec3f GetGobalSunVect();
+	bool IsConnected();
 
 	SoEngineOutput  outputTranslation;
 	SoEngineOutput  outputRotation;
@@ -69,17 +90,9 @@ public:
 	SoEngineOutput  outputScaleOrientation ;
 	SoEngineOutput  outputCenter;
 
-	 
-protected:
-	//Constructor
-	TTracker();
-	virtual ~TTracker(); 
-
+private:
 	trt::TONATIUH_REAL m_azimuth;
 	trt::TONATIUH_REAL m_zenith;
-	TSceneKit* m_scene;
-
-private:
 	virtual void evaluate() = 0;
 
 };

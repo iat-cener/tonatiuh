@@ -94,6 +94,8 @@ public slots:
 	void Cut( QString nodeURL );
 	void Delete();
 	void Delete( QString nodeURL );
+	void SetAimingPointAbsolute();
+	void SetAimingPointRelative();
 	void InsertFileComponent( QString componentFileName = QString( "" ) );
 	void InsertUserDefinedComponent();
 	void New();
@@ -185,6 +187,8 @@ private:
    	QSplitter* GetHorizontalSplitterPointer();
     bool OkToContinue();
     bool Paste( QModelIndex nodeIndex, tgc::PasteType type );
+	void SetAimingPointRelativity(bool relative);
+	bool SetAimingPointRelativity( QModelIndex nodeIndex, bool relative);
     QDir PluginDirectory();
 
     void ReadSettings();

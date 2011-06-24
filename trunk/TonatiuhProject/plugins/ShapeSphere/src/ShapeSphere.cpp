@@ -118,6 +118,10 @@ double ShapeSphere::GetArea() const
 {
 	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() );
 }
+double ShapeSphere::GetVolume() const
+{
+	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() * radius.getValue() /3 );
+}
 
 BBox ShapeSphere::GetBBox() const
 {

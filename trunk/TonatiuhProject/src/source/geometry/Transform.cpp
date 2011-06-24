@@ -221,7 +221,7 @@ Transform Transform::Transpose() const
 }
 
 
-Vector3D Transform::multMatrixVec(const Vector3D & src) const
+Vector3D Transform::multVecMatrix(const Vector3D & src) const
 {
   Vector3D dst;
   // Checks if the "this" matrix is equal to the identity matrix.  See

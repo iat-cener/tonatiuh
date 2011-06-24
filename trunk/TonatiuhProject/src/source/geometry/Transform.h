@@ -81,7 +81,7 @@ public:
 	Transform Transpose() const;
 	Transform GetInverse() const ;
 	bool SwapsHandedness( ) const;
-	Vector3D multMatrixVec(const Vector3D & src) const;
+	Vector3D multVecMatrix(const Vector3D & src) const;
 	Vector3D multDirMatrix(const Vector3D & src) const;
 
 private:

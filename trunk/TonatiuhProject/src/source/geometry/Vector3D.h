@@ -43,11 +43,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 struct Point3D;
 struct NormalVector;
+class SbVec3f;
 
 struct Vector3D
 {
     Vector3D( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
     Vector3D( const NormalVector& norm );
+	Vector3D( const SbVec3f& vec );
+
     explicit Vector3D( const Point3D& point );
     ~Vector3D( );
     Vector3D& operator+=( const Vector3D& vector );
@@ -68,6 +71,7 @@ struct Vector3D
     void zero();
     double lengthSquared( ) const;
     double length( ) const;
+	SbVec3f ToSbVec3f();
 
     double x;
     double y;

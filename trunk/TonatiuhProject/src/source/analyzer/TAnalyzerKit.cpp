@@ -68,7 +68,7 @@ SO_KIT_SOURCE(TAnalyzerKit);
  */
 void TAnalyzerKit::initClass()
 {
-	SO_KIT_INIT_CLASS(TAnalyzerKit, TSeparatorKit, "AnalyzerKit");
+	SO_KIT_INIT_CLASS(TAnalyzerKit, TSeparatorKit, "TSeparatorKit");
 }
 
 /**

@@ -41,15 +41,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QString>
 
-#include <Inventor/SbLinear.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
 
 #include "NormalVector.h"
 #include "Point3D.h"
-#include "tgf.h"
+#include "trf.h"
 #include "TrackerLinearFresnel.h"
 #include "Transform.h"
 #include "TSceneKit.h"
@@ -61,8 +57,9 @@ SO_NODEENGINE_SOURCE( TrackerLinearFresnel );
 
 void TrackerLinearFresnel::initClass()
 {
-	SO_NODEENGINE_INIT_CLASS( TrackerLinearFresnel, TTracker, "TTracker" );
-
+	TTracker::initClass();
+	TTrackerForAiming::initClass();
+	SO_NODEENGINE_INIT_CLASS( TrackerLinearFresnel, TTrackerForAiming, "TTrackerForAiming" );
 }
 
 TrackerLinearFresnel::TrackerLinearFresnel()
@@ -70,8 +67,8 @@ TrackerLinearFresnel::TrackerLinearFresnel()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerLinearFresnel );
 
 	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
+	/*SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );*/
 
 	SO_NODE_DEFINE_ENUM_VALUE( Axis, X );
 	SO_NODE_DEFINE_ENUM_VALUE( Axis, Y );
@@ -81,13 +78,12 @@ TrackerLinearFresnel::TrackerLinearFresnel()
 
 	SO_NODE_ADD_FIELD( axisOrigin, ( 0.0, 0.0 ) );
 
-
+	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
 	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
-
 
 }
 
@@ -104,51 +100,38 @@ QString TrackerLinearFresnel::getIcon()
 void TrackerLinearFresnel::evaluate()
 {
 
-	if( !m_azimuth.isConnected() ) return;
-	if( !m_zenith.isConnected() ) return;
+	if (!IsConnected()) return;
+	SoPath* nodePath= m_scene->GetSoPath(this );
+	if (!nodePath) return;
+	Transform objectToWorld = trf::GetObjectToWorld(nodePath);
 
-	TSeparatorKit* sunNode = static_cast< TSeparatorKit* > ( m_scene->getPart( "childList[0]", false ) );
-	if( !sunNode )	return;
-
-	TSeparatorKit* rootNode = static_cast< TSeparatorKit* > ( sunNode->getPart( "childList[0]", false ) );
-	if( !rootNode )	return;
-
-	SoSearchAction* coinSearch = new SoSearchAction();
-	coinSearch->setNode( this );
-	coinSearch->setInterest( SoSearchAction::FIRST );
-	coinSearch->apply( rootNode );
-	SoPath* nodePath = coinSearch->getPath( );
-	if( !nodePath ) return;
-
-
-	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
-	getmatrixAction->apply( nodePath );
-
-	Transform objectToWorld = tgf::TransformFromMatrix( getmatrixAction->getMatrix( ) );
 	Transform worldToObject = objectToWorld.GetInverse();
 
-	Vector3D globalSunVector( sin( m_azimuth.getValue() ) * sin( m_zenith.getValue() ),
-			 cos( m_zenith.getValue() ),
-			-cos( m_azimuth.getValue() ) * sin( m_zenith.getValue() ) );
-
-	Vector3D i = worldToObject( globalSunVector );
+	//Vector3D i = worldToObject( GetGobalSunVector() );
+	Vector3D i = worldToObject.multDirMatrix ( GetGobalSunVector() );
 
 	Vector3D localAxis;
-	Point3D focus;
+	Vector3D focus;
 	if( activeAxis.getValue() == 0 )
 	{
-		localAxis  = worldToObject( Vector3D( 1.0, 0.0, 0.0 ) );
-		focus = worldToObject( Point3D( 0.0, axisOrigin.getValue()[0], axisOrigin.getValue()[1] ) );
+		localAxis  =  Vector3D( 1.0, 0.0, 0.0 ) ;
+		focus = Vector3D( 0.0, axisOrigin.getValue()[0], axisOrigin.getValue()[1] ) ;
 	}
 	else if( activeAxis.getValue() == 1 )
 	{
-		localAxis = worldToObject( Vector3D( 0.0, 1.0, 0.0 ) );
-		focus = worldToObject( Point3D( axisOrigin.getValue()[0], 0.0, axisOrigin.getValue()[1] ) );
+		localAxis =  Vector3D( 0.0, 1.0, 0.0 );
+		focus = Vector3D( axisOrigin.getValue()[0], 0.0, axisOrigin.getValue()[1] ) ;
 	}
 	else
 	{
-		focus = worldToObject( Point3D( axisOrigin.getValue()[0], axisOrigin.getValue()[1], 0.0 ) );
-		localAxis  = worldToObject( Vector3D( 0.0, 0.0, 1.0 ) );
+		localAxis  = Vector3D( 0.0, 0.0, 1.0 ) ;
+		focus = Vector3D( axisOrigin.getValue()[0], axisOrigin.getValue()[1], 0.0 ) ;
+	}
+	
+	if (typeOfAimingPoint.getValue() == 0) //Absolute
+	{
+		localAxis  = worldToObject.multDirMatrix( localAxis );
+		focus = worldToObject.multVecMatrix( focus );
 	}
 
 
@@ -182,10 +165,51 @@ void TrackerLinearFresnel::evaluate()
 	SoTransform* newTransform = new SoTransform();
 	newTransform->rotation.setValue( axis, angle );
 
-	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( newTransform->translation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( newTransform->rotation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( newTransform->scaleFactor.getValue() ) );
-	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( newTransform->scaleOrientation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( newTransform->center.getValue() ) );
+	SetEngineOutput(newTransform);
+}
 
+
+void TrackerLinearFresnel::SwitchAimingPointType()
+{
+	SoPath* nodePath= m_scene->GetSoPath( this );
+	if (!nodePath) return;
+	Transform objectToWorld = trf::GetObjectToWorld(nodePath);
+
+	Vector3D focus;
+	if( activeAxis.getValue() == 0 )
+	{
+		focus =  Vector3D( 0.0, axisOrigin.getValue()[0], axisOrigin.getValue()[1] ) ;
+	}
+	else if( activeAxis.getValue() == 1 )
+	{
+		focus =  Vector3D( axisOrigin.getValue()[0], 0.0, axisOrigin.getValue()[1] ) ;
+	}
+	else
+	{
+		focus =  Vector3D( axisOrigin.getValue()[0], axisOrigin.getValue()[1], 0.0 );
+	}
+
+	Vector3D r;
+	if (typeOfAimingPoint.getValue() == 1)
+	{
+		Transform worldToObject = objectToWorld.GetInverse();
+		r = worldToObject.multVecMatrix( focus );
+	}
+	else
+	{
+		r = objectToWorld.multVecMatrix( focus );
+	}
+
+	if( activeAxis.getValue() == 0 )
+	{
+		axisOrigin.setValue(r[1],r[2]);
+	}
+	else if( activeAxis.getValue() == 1 )
+	{
+		axisOrigin.setValue(r[0],r[2]);
+	}
+	else
+	{
+		axisOrigin.setValue(r[0],r[1]);
+	}
 }

@@ -52,6 +52,7 @@ public:
 	TCube( );
 	static void initClass();
 	double GetArea() const;
+	double GetVolume() const;
 	BBox GetBBox() const;
 	QString GetIcon() const;
 
