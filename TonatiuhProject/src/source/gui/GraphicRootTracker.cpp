@@ -68,9 +68,10 @@ GraphicRootTracker::GraphicRootTracker()
 	SO_NODEENGINE_CONSTRUCTOR( GraphicRootTracker );
 
 	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
+	/*SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );*/
 
+	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
@@ -93,24 +94,23 @@ QString GraphicRootTracker::getIcon()
 void GraphicRootTracker::evaluate()
 {
 
-	if( !m_azimuth.isConnected() ) return;
-	if( !m_zenith.isConnected() ) return;
+	if (!IsConnected()) return;
 
-
-	double alpha = tgc::Pi - m_azimuth.getValue();
+	double alpha = tgc::Pi - GetAzimuth();
 
 	SbVec3f yAxis( 0.0, 1.0, 0.0 );
 	SbRotation yRotation( yAxis, alpha );
 	SbVec3f xAxis( 1.0, 0.0, 0.0 );
-	SbRotation xRotation( xAxis, m_zenith.getValue() );
+	SbRotation xRotation( xAxis, GetZenith() );
 
 	SbRotation rotation = xRotation * yRotation;
 
+	SetEngineOutputRotation(rotation);
 
-	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( SbVec3f( 0.0, 0.0, 0.0 ) ) );
+	/*SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( SbVec3f( 0.0, 0.0, 0.0 ) ) );
 	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rotation ) );
 	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( SbVec3f( 1.0, 1.0, 1.0 ) ) );
 	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( SbRotation() ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( SbVec3f( 0.0, 0.0, 0.0 ) ) );
+	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( SbVec3f( 0.0, 0.0, 0.0 ) ) );*/
 
 }

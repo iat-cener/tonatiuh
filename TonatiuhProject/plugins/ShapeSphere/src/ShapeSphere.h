@@ -63,6 +63,7 @@ public:
 	static void initClass();
     SoNode* copy( SbBool copyConnections ) const;
 	double GetArea() const;
+	double GetVolume() const;
 	BBox GetBBox() const;
     QString GetIcon() const;
 

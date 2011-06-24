@@ -100,6 +100,11 @@ double TCube::GetArea() const
 
 }
 
+double TCube::GetVolume() const
+{
+	return m_width.getValue() * m_height.getValue() * m_depth.getValue();
+}
+
 /*!
  * Return the shape bounding box.
  */

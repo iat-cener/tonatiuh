@@ -60,6 +60,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TAnalyzerLevel.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
+#include "TTrackerForAiming.h"
 
 /*!
   \mainpage
@@ -120,6 +121,7 @@ int main( int argc, char ** argv )
 	TSunShape::initClass();
 	TDefaultSunShape::initClass();
 	TTracker::initClass();
+	TTrackerForAiming::initClass();
 	TDefaultTracker::initClass();
 	TSceneTracker::initClass();
 	GraphicRootTracker::initClass();

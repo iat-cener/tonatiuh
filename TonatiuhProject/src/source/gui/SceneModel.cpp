@@ -549,7 +549,7 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 
 void SceneModel::PrepareAnalyze(  )
 {
-	m_instanceRoot->PrepareAnalyze(this,NULL);
+	m_instanceRoot->PrepareAnalyze(this);
 }
 
 void SceneModel::DisplayAnalyzeResults(  )
@@ -938,12 +938,9 @@ void SceneModel::UpdateSceneModel()
 	{
 		sceneBox.pMin = Point3D( box->getMin()[0], box->getMin()[1], box->getMin()[2] );
 		sceneBox.pMax = Point3D( box->getMax()[0], box->getMax()[1], box->getMax()[2] );
+		if( lightKit ) lightKit->Update( sceneBox );
 	}
 	delete box;
-
-
-	if( lightKit ) lightKit->Update( sceneBox );
-
 
 	emit layoutChanged();
 

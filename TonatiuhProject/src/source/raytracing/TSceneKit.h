@@ -40,8 +40,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSCENEKIT_H_
 
 #include <Inventor/nodekits/SoSceneKit.h>
-
+#include <Inventor/actions/SoSearchAction.h>
+#include "TSeparatorKit.h"
 #include "trt.h"
+#include "tgf.h"
+
 
 class QString;
 
@@ -54,6 +57,7 @@ class TSceneKit : public SoSceneKit
 public:
  	TSceneKit();
     static void initClass();
+	SoPath* GetSoPath(SoNode * theNode );
 
 
     trt::TONATIUH_REAL azimuth;
@@ -61,9 +65,7 @@ public:
 
 protected:
     virtual ~TSceneKit();
-
-
-
 };
+
 
 #endif /* TSCENEKIT_H_ */

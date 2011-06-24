@@ -85,11 +85,14 @@ GraphicRoot::GraphicRoot()
 
 	m_pTracker = new GraphicRootTracker;
 	m_pTracker->ref();
-	m_pRootTransform->translation.connectFrom( &m_pTracker->outputTranslation );
+
+	m_pTracker->ConnectParentTranform(m_pRootTransform);
+
+	/*m_pRootTransform->translation.connectFrom( &m_pTracker->outputTranslation );
 	m_pRootTransform->rotation.connectFrom( &m_pTracker->outputRotation );
 	m_pRootTransform->scaleFactor.connectFrom( &m_pTracker->outputScaleFactor );
 	m_pRootTransform->scaleOrientation.connectFrom( &m_pTracker->outputScaleOrientation );
-	m_pRootTransform->center.connectFrom( &m_pTracker->outputCenter );
+	m_pRootTransform->center.connectFrom( &m_pTracker->outputCenter );*/
 
 	m_pSelectionNode = new SoSelection;
 	m_pSelectionNode->ref();

@@ -36,12 +36,14 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <Inventor/SbVec3f.h>
 #include <cmath>
 #include <float.h>
 #include <iostream>
 
 #include "NormalVector.h"
 #include "Point3D.h"
+#include "Vector3D.h"
 #include "Vector3D.h"
 
 Vector3D::Vector3D( double dx, double dy, double dz )
@@ -58,9 +60,20 @@ Vector3D::Vector3D( const Point3D& point )
 : x(point.x), y(point.y), z(point.z)
 {
 }
+Vector3D::Vector3D( const SbVec3f& vec )
+: x(vec[0]), y(vec[1]), z(vec[2])
+{
+}
+
+
 
 Vector3D::~Vector3D( )
 {
+}
+
+SbVec3f Vector3D::ToSbVec3f()
+{
+	return SbVec3f(float(x),float(y),float(z));
 }
 
 Vector3D& Vector3D::operator+=( const Vector3D& vector )

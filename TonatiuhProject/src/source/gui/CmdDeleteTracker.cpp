@@ -94,11 +94,13 @@ void CmdDeleteTracker::undo()
 		m_tracker->SetZenithAngle( &lightKit->zenith );
 	}
 
-	parentTransform->translation.connectFrom( &m_tracker->outputTranslation );
+	m_tracker->ConnectParentTranform(parentTransform);
+
+	/*parentTransform->translation.connectFrom( &m_tracker->outputTranslation );
 	parentTransform->rotation.connectFrom( &m_tracker->outputRotation );
 	parentTransform->scaleFactor.connectFrom( &m_tracker->outputScaleFactor );
 	parentTransform->scaleOrientation.connectFrom( &m_tracker->outputScaleOrientation );
-	parentTransform->center.connectFrom( &m_tracker->outputCenter );
+	parentTransform->center.connectFrom( &m_tracker->outputCenter );*/
 
 	m_pModel->Paste( tgc::Shared, *m_coinParent, *m_tracker, m_row );
 }

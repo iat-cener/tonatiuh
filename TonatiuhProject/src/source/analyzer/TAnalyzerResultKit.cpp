@@ -68,7 +68,7 @@ SO_KIT_SOURCE(TAnalyzerResultKit);
  */
 void TAnalyzerResultKit::initClass()
 {
-	SO_KIT_INIT_CLASS(TAnalyzerResultKit, TShapeKit, "AnalyzerKit");
+	SO_KIT_INIT_CLASS(TAnalyzerResultKit, TShapeKit, "TShapeKit");
 }
 
 /**
@@ -139,7 +139,13 @@ void TAnalyzerResultKit::FinalizeCompute(double raydensity, Transform *m_transfo
 	scaleFactor.getValue(scalex,scaley,scalez);
 	if( tshape && analyzerResult )
 	{
-		analyzerResult->FinalizeCompute(1.0/(raydensity*(tshape->GetArea()*scalex*scalez/6.0)));
+		double sizeOfReference = tshape->GetVolume() *scalex*scaley*scalez;
+		if (sizeOfReference == 0.0){
+			sizeOfReference = tshape->GetArea()*scalex*scalez;
+		}
+		if (sizeOfReference != 0.0){
+			analyzerResult->FinalizeCompute(1.0/(raydensity*(sizeOfReference)));
+		}
 	}
 	//TODO: add a GetProjecttedArea(scalex,scaley,scalez) function to all tShape
 }

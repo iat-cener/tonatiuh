@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 
+#include "tgf.h"
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "InstanceNode.h"
@@ -53,6 +54,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TAnalyzerKit.h"
 #include "TAnalyzerResultKit.h"
 #include "TTracker.h"
+#include "TTrackerForAiming.h"
 
 
 InstanceNode::InstanceNode( SoNode* node )
@@ -235,8 +237,12 @@ void InstanceNode::UpdateAnalyzerSize(SceneModel* pModel)
 {
 	RecursivlyApply<TAnalyzerKit,SceneModel*>(&TAnalyzerKit::UpdateSize, pModel);
 }
+void  InstanceNode::SetAimingPointRelativity( bool relative )
+{
+	RecursivlyApply<TTrackerForAiming,bool>(&TTrackerForAiming::SetAimingPointRelativity, relative);
+}
 
-void InstanceNode::PrepareAnalyze(SceneModel * pModel, TAnalyzerKit * analyzerKit )
+void InstanceNode::PrepareAnalyze(SceneModel * pModel )
 {
 	RecursivlyApply<TAnalyzerKit,SceneModel *>(&TAnalyzerKit::PrepareCompute,pModel);
 	RecursivlyApply<TAnalyzerResultKit>(&TAnalyzerResultKit::PrepareCompute);
@@ -272,36 +278,45 @@ void InstanceNode::FinalyzeAnalyze(double raydensity, TAnalyzerKit * analyzerKit
 
 void InstanceNode::extendBoxForLight( SbBox3f * extendedBox )
 {
-   if( GetNode()->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
-   {
-	  return;
-   }
-   if( !IsTreeContainAnalyzer() )
-   {
+	if( GetNode()->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
+	{
+		return;
+	}
+	if( !IsTreeContainAnalyzer() )
+	{
 		SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
 		GetNode()->getBoundingBox( bbAction );
 
 		SbBox3f box = bbAction->getXfBoundingBox().project();
-		/*SbVec3f min,max;
-		box.getBounds( min,max);
-
-		SbVec3f center = bbAction->getCenter();
-		min += center;
-		max += center;*/
-
 		delete bbAction;
 		extendedBox->extendBy(box);
-		//SbBox3f * box2 = new SbBox3f(min,max);
-		//(*extendedBox) = *box2;
-		//(*extendedBox) = box;
-   }
-   else
-   {
-	  for( int index = 0; index < children.size(); ++index )
-	  {
-		children[index]->extendBoxForLight(extendedBox);
-	  }
-   }
+
+	}
+	else
+	{
+		SbMatrix matrixOTW = SbMatrix::identity();
+		if( GetNode()->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+		{
+			SoBaseKit* coinNode = static_cast< SoBaseKit* > ( GetNode() );
+			SoTransform* nodeTransform = static_cast< SoTransform* >(coinNode->getPart( "transform", true ) );
+			matrixOTW = tgf::MatrixFromSoTransform( nodeTransform );
+		}
+
+		for( int index = 0; index < children.size(); ++index )
+		{
+			SbBox3f * box = new SbBox3f;
+			children[index]->extendBoxForLight(box);
+			if (!box->isEmpty())
+			{
+				SbVec3f min,max;
+				box->getBounds(min,max);
+				matrixOTW.multVecMatrix(min,min);
+				matrixOTW.multVecMatrix(max,max);
+				extendedBox->extendBy(min);
+				extendedBox->extendBy(max);
+			}
+		}
+	}
 }
 
 bool InstanceNode::IsTreeContainAnalyzer( )

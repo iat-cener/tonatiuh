@@ -11,13 +11,15 @@ INCLUDEPATH += 	. \
 HEADERS = src/*.h \
             $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
             $$(TONATIUH_ROOT)/src/source/raytracing/TSceneKit.h \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TTracker.h \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TTrackerFactory.h
+            $$(TONATIUH_ROOT)/src/source/geometry/Vector3D.h \
+            $$(TONATIUH_ROOT)/src/source/raytracing/TTracker.h \
+            $$(TONATIUH_ROOT)/src/source/raytracing/TTrackerFactory.h
 
 
 SOURCES = src/*.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/TSceneKit.cpp \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TTracker.cpp
+            $$(TONATIUH_ROOT)/src/source/geometry/Vector3D.cpp \
+            $$(TONATIUH_ROOT)/src/source/raytracing/TTracker.cpp
 
 RESOURCES += src/TrackerOneAxis.qrc
 TARGET        = TrackerOneAxis

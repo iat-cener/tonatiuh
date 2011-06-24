@@ -57,6 +57,7 @@ SO_NODEENGINE_SOURCE( TrackerOneAxis );
 
 void TrackerOneAxis::initClass()
 {
+	TTracker::initClass();
 	SO_NODEENGINE_INIT_CLASS( TrackerOneAxis, TTracker, "TTracker" );
 
 }
@@ -66,9 +67,10 @@ TrackerOneAxis::TrackerOneAxis()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerOneAxis );
 
 	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
+	/*SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );*/
 
+	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
@@ -88,22 +90,9 @@ QString TrackerOneAxis::getIcon()
 
 void TrackerOneAxis::evaluate()
 {
-	if( !m_azimuth.isConnected() ) return;
-	if( !m_zenith.isConnected() ) return;
-
-	TSeparatorKit* sunNode = static_cast< TSeparatorKit* > ( m_scene->getPart( "childList[0]", false ) );
-	if( !sunNode )	return;
-
-	TSeparatorKit* rootNode = static_cast< TSeparatorKit* > ( sunNode->getPart( "childList[0]", false ) );
-	if( !rootNode )	return;
-
-	SoSearchAction* coinSearch = new SoSearchAction();
-	coinSearch->setNode( this );
-	coinSearch->setInterest( SoSearchAction::FIRST );
-	coinSearch->apply( rootNode );
-	SoPath* nodePath = coinSearch->getPath( );
-	if( !nodePath ) return;
-
+	if (!IsConnected()) return;
+	SoPath* nodePath= m_scene->GetSoPath(this );
+	if (!nodePath) return;
 
 	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
 	getmatrixAction->apply( nodePath );
@@ -112,11 +101,8 @@ void TrackerOneAxis::evaluate()
 	SbMatrix objectToWorld = getmatrixAction->getMatrix();
 	SbMatrix worldToObject = getmatrixAction->getInverse();
 
-	SbVec3f globalSunVector( sin( m_zenith.getValue() ) * sin( m_azimuth.getValue() ),
-					cos( m_zenith.getValue() ),
-					-sin( m_zenith.getValue() )*cos( m_azimuth.getValue() ) );
 	SbVec3f s;
-	worldToObject.multDirMatrix( globalSunVector, s );
+	worldToObject.multDirMatrix( GetGobalSunVect(), s );
 
 
 	SbVec3f p( 1.0f, 0.0f, 0.0f);
@@ -143,10 +129,5 @@ void TrackerOneAxis::evaluate()
 	SoTransform* newTransform = new SoTransform();
 	newTransform->setMatrix( transformMatrix );
 
-	SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( newTransform->translation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( newTransform->rotation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( newTransform->scaleFactor.getValue() ) );
-	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( newTransform->scaleOrientation.getValue() ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( newTransform->center.getValue() ) );
-
+	SetEngineOutput(newTransform);
 }
