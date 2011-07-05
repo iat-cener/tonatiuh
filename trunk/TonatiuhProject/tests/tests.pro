@@ -30,6 +30,11 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/SceneModel.o \
                         $$(TONATIUH_ROOT)/debug/ScriptRayTracer.o \
                         $$(TONATIUH_ROOT)/debug/sunpos.o \
+                        $$(TONATIUH_ROOT)/debug/TAnalyzerKit.o \
+                        $$(TONATIUH_ROOT)/debug/TAnalyzerLevel.o \
+                        $$(TONATIUH_ROOT)/debug/TAnalyzerResult.o \
+                        $$(TONATIUH_ROOT)/debug/TAnalyzerParameter.o \
+                        $$(TONATIUH_ROOT)/debug/TAnalyzerResultKit.o \
                         $$(TONATIUH_ROOT)/debug/TCube.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultSunShape.o \
@@ -49,6 +54,7 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/TSunShape.o \
                         $$(TONATIUH_ROOT)/debug/TSquare.o \
                         $$(TONATIUH_ROOT)/debug/TTracker.o \
+                        $$(TONATIUH_ROOT)/debug/TTrackerForAiming.o \
                         $$(TONATIUH_ROOT)/debug/Vector3D.o
 }                     
 else { 
@@ -73,7 +79,11 @@ else {
                         $$(TONATIUH_ROOT)/release/SceneModel.o \
                         $$(TONATIUH_ROOT)/release/ScriptRayTracer.o \
                         $$(TONATIUH_ROOT)/release/sunpos.o \
-                        $$(TONATIUH_ROOT)/release/TSceneTracker.o \
+                        $$(TONATIUH_ROOT)/release/TAnalyzerKit.o \
+                        $$(TONATIUH_ROOT)/release/TAnalyzerLevel.o \
+                        $$(TONATIUH_ROOT)/release/TAnalyzerParameter.o \
+                        $$(TONATIUH_ROOT)/release/TAnalyzerResult.o \
+                        $$(TONATIUH_ROOT)/release/TAnalyzerResultKit.o \
                         $$(TONATIUH_ROOT)/release/TCube.o \
                         $$(TONATIUH_ROOT)/release/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/release/TDefaultSunShape.o \
@@ -87,11 +97,13 @@ else {
                         $$(TONATIUH_ROOT)/release/trf.o \
                         $$(TONATIUH_ROOT)/release/TSeparatorKit.o \
                         $$(TONATIUH_ROOT)/release/TSceneKit.o \
+                        $$(TONATIUH_ROOT)/release/TSceneTracker.o \
                         $$(TONATIUH_ROOT)/release/TShape.o \
                         $$(TONATIUH_ROOT)/release/TShapeKit.o \
                         $$(TONATIUH_ROOT)/release/TSunShape.o \
                         $$(TONATIUH_ROOT)/release/TSquare.o \
                         $$(TONATIUH_ROOT)/release/TTracker.o \
+                        $$(TONATIUH_ROOT)/release/TTrackerForAiming.o \
                         $$(TONATIUH_ROOT)/release/Vector3D.o
 }
 
