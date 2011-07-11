@@ -10,19 +10,18 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 = Details =
 
-Download the latest installer of the Qt SDK for Windows. To do it, click on the following [ftp://ftp.qt.nokia.com/pub/qtsdk/ link]. Once you reach the webpage, click on the link titled _"qt-sdk-win-opensource-2010.05.exe"_ . This will start the downloading of the Qt SDK for Windows installer. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer. 
+Download the latest installer of the Qt SDK for Windows. To do it, click on the following [http://qt.nokia.com/downloads link]. Once you reach the webpage, go to the _"Download Qt, the cross-platform application framework "_ section and click on the link titled _"Offline installer - 1.7 GB "_ (see Figure 1). This will start the downloading of the Qt SDK for Windows installer. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer. 
+
+||<a href="https://picasaweb.google.com/lh/photo/OWDX_LCZHbf_LC4WunpNbehPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh4.googleusercontent.com/-RNNsi5FunH4/ThqxzjvDFFI/AAAAAAAAAJU/VO70vOBMuck/s400/QtForWindows.png" height="297" width="400" /></a>||
+|| *Figure 1.* View of the "Qt Download" webpage.||
 
 Once the Qt SDK for Windows installer is in your PC, left-click twice upon it to execute it.
 
 During the execution of the installer do the following:
-  * Check the _"I accept the terms of the License Agreement"_ and click the _"Next_ button.
-  * Select the following components to install:
-    * _"Qt"_
-    * _"Create DEsktop Shortcut"_
-  * Verify that the selec components option _"MinGW"_ is not selected. If it is selected, be sure to unselect it.
-  * Enter _"C:\sde\Qt\2010.05"_ as the destination folder.
-
-By instructing the Qt SDK for Windows installer to create the directory _"C:\sde\Qt\2010.05"_ and to use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying into these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
+  * Enter _"C:\sde\Qt"_ as the destination folder.
+  * Check the _"I have read and agree the following terms..."_ and click the _"Next_ button.
+  
+By instructing the Qt SDK for Windows installer to create the directory _"C:\sde\Qt"_ and to use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying into these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
 
 Once the Qt libraries and development tools (including Qt creator) are installed, the next step is to install the Simage library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows Simage] 
 
