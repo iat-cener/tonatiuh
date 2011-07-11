@@ -28,7 +28,7 @@ This will create a directory called _!SoQt-1.5.0_ in your user directory. Using 
 
 To build the library in release mode type:
 {{{
-export QTDIR=/c/sde/Qt/2010.05/qt
+export QTDIR=/c/sde/Qt/Desktop/Qt/4.7.3/mingw
 export COINDIR=/usr/local
 export INCLUDE=/usr/local/include:/c/sde/MinGW/include
 export PATH=$QTDIR/bin:$PATH
@@ -40,7 +40,7 @@ This will start the configuration process. Depending on your computer, this proc
 ||<a href="http://picasaweb.google.com/lh/photo/XDBDPsDIIWsoWNEyDv_nNckjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLCjufdju0I/AAAAAAAAAno/YuZV_pqk2R8/s400/SoQt_config_final_screen.png" height="202" width="400" /></a>||
 || *Figure 2.* MSYS shell messages shown when the configuration process ends.||
 
-Now, you can install the SoQt library by typing:
+Now, you can install the !SoQt library by typing:
 {{{
 make 
 make install
