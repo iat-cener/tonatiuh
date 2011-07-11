@@ -27,7 +27,7 @@ As an alternative, you can download a compressed archive of the source code from
 
 After downloading the marble source code, using the MSYS shell navigate to the marble directory just created in your computer and type:
 {{{
-export QTDIR=/c/sde/Qt/2010.05/qt
+export QTDIR=/c/sde/Qt/Desktop/Qt/4.7.3/mingw
 export PATH=$QTDIR/bin:$PATH:/c/sde/CMake/bin
 }}}
 
