@@ -20,7 +20,6 @@ To be able to develop Tonatiuh under Windows you need to:
     * [InstallingCoin3DForWindows Installing Coin3D]
     * [InstallingSoQt Installing SoQt]
     * [InstallingMarbleForWindows Installing Marble ]
-    * [InstallingBerkeleyDBOnWindows Installing Berkeley DB]
 
   * Install and configure the Integrated Development Environment.
     * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
