@@ -17,10 +17,7 @@ Now, download python from the python [http://www.python.org/download/ downloads]
 == !GoogleTest ==
 Finally we have to download google test library sources. Downlaod them from the !GoogleTest, clicking on [http://code.google.com/p/googletest/downloads/detail?name=gtest-1.6.0.zip "gtest-1.6.0.zip"]. Store the download file in your computer.
 
-Once the sources file is on your PC, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\1.0\home\username"_. Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
-{{{
-tar -xzvf gtest-version.tar.gz
-}}}
+Once the sources file is on your PC, place it into the user directory under your MSYS folder and extract the archive. This will typically be _"C:\sde\MinGW\msys\1.0\home\username"_. Open an MSYS shell console and navigate to your MSYS user directory.
 
 For build the library type:
 {{{
