@@ -8,7 +8,7 @@ Here you will find instructions to carry out this first and important step towar
 
 = Details =
 
-Download the latest version of the MinGW installer. To do it, click on the following [http://sourceforge.net/projects/mingw/files/ link] to go to the "Files" webpage of the MinGW project website at !SourceForge. Once you reach the webpage, click on the large green button labeled "Download Now" (see Figure 1). This will start the downloading of the MinGW installer. When prompted if to open or to store the file in your computer, select the appropriate option to store file on your computer. 
+Download the latest version of the MinGW installer. To do it, click on the following [http://sourceforge.net/projects/mingw/ link] to go to the webpage of the MinGW project website at !SourceForge. Once you reach the webpage, click on the large green button labeled "Download" (see Figure 1). This will start the downloading of the MinGW installer. When prompted if to open or to store the file in your computer, select the appropriate option to store file on your computer. 
 
 ||<a href="http://picasaweb.google.com/manuel.jesus.blanco/TonatiuhWikiFigures?authkey=Gv1sRgCN2umpjNtK24Kg&feat=embedwebsite#5525738049229577330"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TK9deqowXHI/AAAAAAAAAl8/73yAlG78Kn4/s400/MinGW_installer.png" /></a>||
 || *Figure 1.* View of the "Files" webpage of the MinGW website in !SourceForge.||
@@ -23,6 +23,14 @@ During the execution of the installer do the following:
     * _"C++ Compiler"_, 
     * _"MSYS Basic System"_ and 
     * _"MinGW Developer !ToolKit"_.
+
+After the installation is completed, open a MSYS shell console at _"C:\sde\MinGW\msys\1.0\msys.bat"_ and type:
+{{{
+sh /postinstall/pi.sh
+}}}
+  * Type _"y"_ to continue with the installation.
+  * Type _"y"_ to say that MinGW is installed.
+  * Enter _"c:/sde/MinGW"_ as the MinGW installation location.
 
 By instructing the MSYS and MinGW installer to create the directory _"C:\sde\MinGW"_ and to use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying into these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
 
