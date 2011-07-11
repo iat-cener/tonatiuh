@@ -9,7 +9,7 @@ Installation
 To build and install goolge test library, first, we must install python and cmake in our development environment.
 
 == CMake ==
-To obtain CMake follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.2-win32-x86.exe"_, which is the CMake binary installer for Windows. This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
+To obtain CMake follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.5-win32-x86.exe"_, which is the CMake binary installer for Windows. This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
 
 == Python ==
 Now, download python from the python [http://www.python.org/download/ downloads] web site. We need python 2.7 version, click _"Python 2.7 Windows installer"_. Store the excutable file in your computer. Then, left-click twice on the installer and install Python at the folder "C:\sde\Python-2.7".
