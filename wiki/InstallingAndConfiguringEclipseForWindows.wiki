@@ -11,24 +11,24 @@ Here you will find instructions to install the Eclipse Integrated Development En
 
 == Installing the Eclipse IDE for C/C++ Developers == 
 
-Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the Eclipse website. To do it, click on the following [http://www.eclipse.org/downloads/ link] to go to the "Downloads" webpage of the Eclipse website. Once you reach the webpage, click on the appropriate version (Windows 32 Bit or Windows 64 Bit) of the link titled _"Eclipse IDE for C/C++ Developers" (see Figure 1). Then follow the instructions to select a mirror site from where to download the compressed package file. When prompted, select the appropriate option to store the file in your computer. Currently, the latest version of the compressed package file is titled _"eclipse-cpp-helios-SR1-win32.zip"_.
+Download the latest version of the_"Eclipse IDE for C/C++ Developers"_ from the Eclipse website. To do it, click on the following [http://www.eclipse.org/downloads/ link] to go to the "Downloads" webpage of the Eclipse website. Once you reach the webpage, click on the appropriate version (Windows 32 Bit or Windows 64 Bit) of the link titled _"Eclipse IDE for C/C++ Developers" (see Figure 1). Then follow the instructions to select a mirror site from where to download the compressed package file. When prompted, select the appropriate option to store the file in your computer. Currently, the latest version of the compressed package file is titled _"eclipse-cpp-indigo-incubation-win32.zip"_.
 
-||<a href="http://picasaweb.google.com/lh/photo/PRd6_FB1u9WjjvkCA--cCg?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLN5Lgx7neI/AAAAAAAAAqs/GI1teO5QlUk/s400/Eclipse_package.png" height="286" width="400" /></a>||
+||<a href="https://picasaweb.google.com/lh/photo/mMLkBkgu9mZxQdzQLIDt0ehPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh4.googleusercontent.com/-_Arz-Chsk8w/ThrCyi0zZoI/AAAAAAAAAJs/PpKp0h3uMf0/s400/EclipseForWindows.png" height="286" width="400" /></a>||
 || *Figure 1.* View of the Eclipse "Downloads" webpage.||
 
-Once the IDE for C/C++ Developers compressed package file is in your computer, right-click upon it to extract its content. This will create a top level folder titled _"eclipse-cpp-helios-SR1-win32"_ that will contain just one folder titled _"eclipse"_. Move or copy the _"eclipse"_ folder into the folder _"C:\sde\"
+Once the IDE for C/C++ Developers compressed package file is in your computer, right-click upon it to extract its content. Move or copy the _"eclipse"_ folder into the folder _"C:\sde\"
 
 Now, go to the folder _"C:\sde\eclipse"_ and run the program _"eclipse.exe"_. When asked for a workspace, set it to _"C:\sde\workspace"_.
 
 == Configuring the Eclipse IDE for C/C++ Developers for developing Qt applications ==
 
 On the Eclipse main menu select _"Window"_ and within it _"Preferences"_. This will triger a pop-up dialog titled _Preferences"_, which can be used to adjust different Eclipse options. In the left tree-like view of the preferences dialog select "General\EditorsªFile Associations" (see Figure 1). In the dialog's _"File Associations"_ right view, within the _"File types"_ window, add the new types:
-  * .ui  C:\sde\Qt\2010.05\qt\bin\designer.exe
-  * .ts  C:\sde\Qt\2010.05\qt\bin\linguist.exe 
+  * .ui  C:\sde\Qt\Desktop\Qt\4.7.3\mingw\bin\designer.exe
+  * .ts  C:\sde\Qt\Desktop\Qt\4.7.3\mingw\bin\linguist.exe 
 
 And within the _"Associated editors"_ window, associate this file types with the following programs, respectively:
-  * C:\sde\Qt\2010.05\qt\bin\designer.exe
-  * C:\sde\Qt\2010.05\qt\bin\linguist.exe
+  * C:\sde\Qt\Desktop\Qt\4.7.3\mingw\bin\designer.exe
+  * C:\sde\Qt\Desktop\Qt\4.7.3\mingw\bin\linguist.exe
 
 ||<a href="http://picasaweb.google.com/lh/photo/qsb4_Ia8dQQ4MpdeF904fA?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TLONfbgLfYI/AAAAAAAAAq4/1Yxl6FBiHU8/s400/Eclipse_file_associations.png" height="299" width="400" /></a>||
 || *Figure 1.* View of the Eclipse IDE and the _"Preferences\File Associations"_ dialog.||
