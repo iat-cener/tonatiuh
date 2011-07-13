@@ -75,7 +75,7 @@ make
 make install
 }}}
 
-The installation process may take some time. At the end of the installation process, the Coin dynamic library _"libCoin-60.dll"_ and the file _"coin-config"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_ and the Coin library files "libCoin.dll.a" and "libCoin.la" will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the file _"Coin.pc"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib\pkgconfig"_ and the necessary include files will be installed at the folders _"C:\sde\MinGW\msys\1.0\local\include"_ and _"C:\sde\MinGW\msys\1.0\local\include\Inventor"_.
+The installation process may take some time. At the end of the installation process, the Coin dynamic library _"libCoin-60.dll"_ and the file _"coin-config"_ will be installed at the folder _"C:\sde\MinGW\msys\local\bin"_ and the Coin library files "libCoin.dll.a" and "libCoin.la" will be installed at the folder _"C:\sde\MinGW\msys\local\lib"_. In addition, the file _"Coin.pc"_ will be installed at the folder _"C:\sde\MinGW\msys\local\lib\pkgconfig"_ and the necessary include files will be installed at the folders _"C:\sde\MinGW\msys\local\include"_ and _"C:\sde\MinGW\msys\local\include\Inventor"_.
 
 Once the Coin library is installed, the next step in setting up the Tonatiuh development environment is to install the !SoQt library. To do it, follow the instructions in the following wiki page: [InstallingSoQt64 Installing SoQt]
 
