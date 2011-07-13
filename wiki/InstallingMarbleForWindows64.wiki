@@ -27,7 +27,7 @@ As an alternative, you can download a compressed archive of the source code from
 
 After downloading the marble source code, using the MSYS shell navigate to the marble directory just created in your computer and type:
 {{{
-export QTDIR=/c/sde/Qt/Desktop/Qt/4.7.3/mingw
+export QTDIR=/c/sde/qt-version
 export PATH=$QTDIR/bin:$PATH:/c/sde/CMake/bin
 }}}
 
@@ -89,7 +89,7 @@ cp src/plugins/render/stars/libStarsPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/weather/libWeather.dll /usr/local/bin/marble 
 cp src/plugins/render/wikipedia/libWikipedia.dll /usr/local/bin/marble
 }}}
-At the end of the process, the Marble dynamic library _"libmarblewidget.dll"_ and the programs _"marble.exe"_ and _"tilecreator.exe"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_. The plugins _"ibCompassFloatItem.dll"_, _"libCrosshairsPlugin.dll"_, _"libGeoRendererPlugin.dll"_, _"libMapScaleFloatItem.dll"_, _"libNavigationFloatItem.dll"_, _"libOverviewMap.dll"_, and _"libStarsPlugin.dll"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin\marble"_ and the Marble library file "libmarblewidget.dll.a" will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\include\marble"_.
+At the end of the process, the Marble dynamic library _"libmarblewidget.dll"_ and the programs _"marble.exe"_ and _"tilecreator.exe"_ will be installed at the folder _"C:\sde\MinGW\msys\local\bin"_. The plugins _"ibCompassFloatItem.dll"_, _"libCrosshairsPlugin.dll"_, _"libGeoRendererPlugin.dll"_, _"libMapScaleFloatItem.dll"_, _"libNavigationFloatItem.dll"_, _"libOverviewMap.dll"_, and _"libStarsPlugin.dll"_ will be installed at the folder _"C:\sde\MinGW\msys\local\bin\marble"_ and the Marble library file "libmarblewidget.dll.a" will be installed at the folder _"C:\sde\MinGW\msys\local\lib"_. In addition, the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\local\include\marble"_.
 
 Once the Marble library is installed the next step is to install the Eclipse Integrated Development Environment (IDE). To do it, follow the instructions in the following wiki page: [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
 
