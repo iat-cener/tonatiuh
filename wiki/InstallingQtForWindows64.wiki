@@ -1,0 +1,27 @@
+#summary Instructions to install the Qt libraries needed to develop Tonatiuh under Windows 64 Bit.
+
+= Introduction =
+[http://tonatiuh.googlecode.com/svn/wiki/images/qt/qtLogo.png]
+
+Qt is cross-platform application framework for Graphics User Interface (GUI) development. This application framework is implemented as a set of related libraries. The Qt libraries are used within Tonatiuh to implement the program's GUI, the plug-in architecture, the parallel processing functionality, and the scripting capabilities, among other things.
+
+Here you will find instructions to install the Qt libraries in your computer and make those libraries available for the development of Tonatiuh.
+
+= Details =
+
+Download the latest installer of the Qt SDK for Windows. To do it, click on the following [http://qt.nokia.com/downloads link]. Once you reach the webpage, go to the _"Download Qt, the cross-platform application framework "_ section and click on the link titled _"Offline installer - 1.7 GB "_ (see Figure 1). This will start the downloading of the Qt SDK for Windows installer. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer. 
+
+||<a href="https://picasaweb.google.com/lh/photo/OWDX_LCZHbf_LC4WunpNbehPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh4.googleusercontent.com/-RNNsi5FunH4/ThqxzjvDFFI/AAAAAAAAAJU/VO70vOBMuck/s400/QtForWindows.png" height="297" width="400" /></a>||
+|| *Figure 1.* View of the "Qt Download" webpage.||
+
+Once the Qt SDK for Windows installer is in your PC, left-click twice upon it to execute it.
+
+During the execution of the installer do the following:
+  * Enter _"C:\sde\Qt"_ as the destination folder.
+  * Check the _"I have read and agree the following terms..."_ and click the _"Next_ button.
+  
+By instructing the Qt SDK for Windows installer to create the directory _"C:\sde\Qt"_ and to use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying into these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
+
+Once the Qt libraries and development tools (including Qt creator) are installed, the next step is to install the Simage library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows64 Simage] 
+
+[InstallingForWindows64 Windows 64 Bit Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
