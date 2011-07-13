@@ -24,14 +24,44 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 tar -zxvf Coin-3.1.3.tar.gz
 }}}
 
-This will create a directory called _Coin-3.1.3_ in your user directory. Using the MSYS shell navigate to just created Coin-3.1.0 directory.
+This will create a directory called _Coin-3.1.3_ in your user directory. To solve some compilation errors, change the following:
+  * File include/Inventor/C/glue/spidermonkey.h (line 50):
+  {{{
+  -typedef long jsword 
+  +typedef long long jsword
+  }}}
+ 
+  * File src/threads/thread.cppn (line 157):
+  {{{
+  -return (unsigned long) val;
+  +return (unsigned long long) val;
+  }}}
+  
+  * File src/threads/thread_win32.icc (line 32):
+  {{{
+  -return (DWORD) thread->func(thread->closure);
+  +return (unsigned long long) thread->func(thread->closure);
+  }}}
 
-To build the library in release mode type:
+  * File src/vrml97/JS_VRMLClasses.cpp (lines 667, 683, 1427, 1437 ):
+  {{{
+  -unsigned long 
+  +unsigned long long
+  }}}
+
+  * File src/foreignfiles/SoSTLFileKit.cpp (lines 600, 601, 602, 604):
+  {{{
+  long
+  long long
+  }}}
+
+
+Using the MSYS shell navigate to just created Coin-3.1.0 directory. To build the library in release mode type:
 {{{
-export QTDIR=/c:/sde/Qt/Desktop/Qt/4.7.3/mingw
+export QTDIR=/c:/sde/qt-version
 export COINDIR=/usr/local
 export INCLUDE=/usr/local/include:/c:/sde/MinGW/include
-./configure --disable-msvc --enable-debug=no --enable-symbols=no
+./configure --disable-msvc --build=x86_64-w64-mingw32
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the Coin configuration settings will be displayed at MSYS shell (see Figure 2).
