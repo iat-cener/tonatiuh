@@ -14,7 +14,7 @@ To be able to develop Tonatiuh under Windows 64 Bit you need to:
     * [InstallingMinGWForWindows64 Installing MinGW 64 Bit and MSYS]
 
   * Install the third-party libraries needed by the program.
-    * [InstallingQtForWindows Installing Qt]
+    * [InstallingQtForWindows64 Installing Qt]
     * [InstallingSimageForWindows Installing Simage]
     * [InstallingCoin3DForWindows Installing Coin3D]
     * [InstallingSoQt Installing SoQt]
