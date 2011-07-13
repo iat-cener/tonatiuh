@@ -12,8 +12,6 @@ Here you will find instructions to carry out this first and important step towar
 
 Download the latest version of the MinGW-w64 binaries. To do it, click on the following [http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Automated%20Builds/ link] to go to the MinGW-w64 automated builds download webpage at !SourceForge. Once you reach the webpage, click on the file for last version of mingw. This will start the downloading of the MinGW-w64. When prompted if to open or to store the file in your computer, select the appropriate option to store file on your computer. 
 
-||<a href="https://picasaweb.google.com/lh/photo/0WO8ffkDqjc5BEVplH7bwOhPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh5.googleusercontent.com/-dzVKufhTiB8/Th1D-fmSq4I/AAAAAAAAAJ8/6xGTu2f-Kxs/s400/MinGW-w64.png" /></a>||
-|| *Figure 1.* View of the "Automated Builds" webpage of the MinGW-w64 website in !SourceForge.||
 
 Once the MinGW installer is in your PC, right-click upon it to extract its content. Move or copy the "eclipse" folder into the folder "C:\sde\".
 
