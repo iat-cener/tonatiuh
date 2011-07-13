@@ -17,7 +17,7 @@ Download the latest release of the !SoQt, currently !SoQt 1.5.0. To do it, click
 ||<a href="http://picasaweb.google.com/lh/photo/3r_TwpwkMdF2hc8h-_Ggq8kjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TLCToThqs9I/AAAAAAAAAnY/yWkESmsWGPQ/s400/SoQt_sourcecode.png" height="261" width="400" /></a>||
 || *Figure 1.* View of the "!SoQt 1.5.0" webpage.|| 
 
-Once the !SoQt source code package is on your computer, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\1.0\home\username"_. 
+Once the !SoQt source code package is on your computer, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\home\username"_. 
 
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
