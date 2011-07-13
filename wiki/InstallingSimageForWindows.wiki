@@ -16,7 +16,7 @@ Download the latest realese of the Simage source package, currently simage-1.7.0
 ||<a href="http://picasaweb.google.com/lh/photo/OKxlezrM1MlVCjjDSjTCX8kjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TK-kOAPXjZI/AAAAAAAAAmQ/YfNdlO1VcvM/s400/Simage_sourcecode.png" height="297" width="400" /></a>||
 || *Figure 1.* View of the "simage 1.7.0" webpage.||
 
-Once the simage source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _C:\sde\MinGW\msys\usr\home\username_.
+Once the simage source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _C:\sde\MinGW\msys\1.0\home\username_.
  
 Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
 {{{
