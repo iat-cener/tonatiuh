@@ -1,0 +1,96 @@
+#summary Instructions to install the Marble library needed to develop Tonatiuh under Windows 64 Bit.
+
+= Introduction =
+
+Marble is a Virtual Globe and World Atlas. As a library, it is used within Tonatiuh to provide the geographical positioning functionalities needed, among other things, to facilitate the user the task of specifying the location on Earh of the solar concentrating systems she or he wants to analyze.
+
+Here you will find instructions to install the Marble library in your computer and make this library available for the development of Tonatiuh.
+
+= Details =
+
+To compile Marble you need CMake -a cross-platform make. To obtain it follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.5-win32-x86.exe"_, which is the CMake binary installer for Windows (see Figure 1). This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
+
+||<a href="http://picasaweb.google.com/lh/photo/5Iue-oDOBsZN6zeEpmRBQMkjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLDLa3oJp1I/AAAAAAAAAn4/mZPF8osxLas/s400/CMake_installer.png" height="338" width="400" /></a>||
+|| *Figure 1.* View of the "CMake" webpage.||
+
+Now, you need to download the latest stable version of the Marble source code. To do it, you need a git client and use one of these commands:
+
+{{{
+git clone -b kde-4.6 git://anongit.kde.org/marble
+}}}
+or
+{{{
+git clone -b marble-1.1 git://anongit.kde.org/marble
+}}}
+
+As an alternative, you can download a compressed archive of the source code from Marble download web page at this [http://edu.kde.org/marble/download.php link].
+
+After downloading the marble source code, using the MSYS shell navigate to the marble directory just created in your computer and type:
+{{{
+export QTDIR=/c/sde/Qt/Desktop/Qt/4.7.3/mingw
+export PATH=$QTDIR/bin:$PATH:/c/sde/CMake/bin
+}}}
+
+The command to create Makefiles on release mode is:
+{{{
+cmake -G"MSYS Makefiles" -Wno-dev -DQTONLY=ON -DCMAKE_BUILD_TYPE=Release ../marble
+}}}
+
+Then,
+{{{
+make
+}}}
+
+Copy Marble include files to the folder "/local/include/marble".
+{{{
+mkdir /usr/local/include/marble
+cp src/lib/*.h /usr/local/include/marble
+cp src/lib/blendings/*.h /usr/local/include/marble 
+cp src/lib/geodata/*.h /usr/local/include/marble 
+cp src/lib/geodata/data/*.h /usr/local/include/marble 
+cp src/lib/geodata/graphicsitem/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/dgml/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/gpx/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/kml/*.h /usr/local/include/marble 
+cp src/lib/geodata/handlers/osm-namefinder/*.h /usr/local/include/marble 
+cp src/lib/geodata/parser/*.h /usr/local/include/marble 
+cp src/lib/geodata/scene/*.h /usr/local/include/marble
+cp src/lib/geodata/writer/*.h /usr/local/include/marble  
+cp src/lib/geodata/writers/kml/*.h /usr/local/include/marble
+cp src/lib/graphicsview/*.h /usr/local/include/marble
+cp src/lib/graphicsview/screengraphicsitem/*.h /usr/local/include/marble  
+cp src/lib/Projections/*.h /usr/local/include/marble
+cp src/lib/routing/*.h /usr/local/include/marble
+}}}
+Copy executable files to the folder "/local/local/bin".
+{{{
+cp src/marble.exe /usr/local/bin
+cp src/tilecreator/tilecreator.exe /usr/local/bin
+cp src/lib/geodatatest.exe /usr/local/bin
+}}}
+Copy main library files to the appropriate "/usr/local" folders.
+{{{
+cp src/lib/libmarblewidget.dll /usr/local/bin
+cp src/lib/libmarblewidget.dll.a /usr/local/lib
+}}}
+Copy Marble plugins to the folder "/usr/local/bin/marble".
+{{{
+mkdir /usr/local/bin/marble
+cp src/plugins/network/qnam/libQNamNetworkPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble 
+cp src/plugins/render/crosshairs/libCrosshairsPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/graticule/libGraticulePlugin.dll /usr/local/bin/marble
+cp src/plugins/render/mapscale/libMapScaleFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/navigation/libNavigationFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/overviewmap/libOverviewMap.dll /usr/local/bin/marble
+cp src/plugins/render/photo/libPhoto.dll /usr/local/bin/marble
+cp src/plugins/render/progress/libProgressFloatItem.dll /usr/local/bin/marble
+cp src/plugins/render/stars/libStarsPlugin.dll /usr/local/bin/marble
+cp src/plugins/render/weather/libWeather.dll /usr/local/bin/marble 
+cp src/plugins/render/wikipedia/libWikipedia.dll /usr/local/bin/marble
+}}}
+At the end of the process, the Marble dynamic library _"libmarblewidget.dll"_ and the programs _"marble.exe"_ and _"tilecreator.exe"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_. The plugins _"ibCompassFloatItem.dll"_, _"libCrosshairsPlugin.dll"_, _"libGeoRendererPlugin.dll"_, _"libMapScaleFloatItem.dll"_, _"libNavigationFloatItem.dll"_, _"libOverviewMap.dll"_, and _"libStarsPlugin.dll"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin\marble"_ and the Marble library file "libmarblewidget.dll.a" will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the necessary include files will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\include\marble"_.
+
+Once the Marble library is installed the next step is to install the Eclipse Integrated Development Environment (IDE). To do it, follow the instructions in the following wiki page: [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
+
+[InstallingForWindows64 Windows 64 Bit Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
