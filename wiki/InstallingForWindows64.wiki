@@ -15,10 +15,10 @@ To be able to develop Tonatiuh under Windows 64 Bit you need to:
 
   * Install the third-party libraries needed by the program.
     * [InstallingQtForWindows64 Installing Qt]
-    * [InstallingSimageForWindows Installing Simage]
-    * [InstallingCoin3DForWindows Installing Coin3D]
-    * [InstallingSoQt Installing SoQt]
-    * [InstallingMarbleForWindows Installing Marble ]
+    * [InstallingSimageForWindows64 Installing Simage]
+    * [InstallingCoin3DForWindows64 Installing Coin3D]
+    * [InstallingSoQt64 Installing SoQt]
+    * [InstallingMarbleForWindows64 Installing Marble ]
 
   * Install and configure the Integrated Development Environment.
     * [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
