@@ -34,4 +34,4 @@ By instructing the MSYS and MinGW installer to create the directory _"C:\sde\Min
 
 Once MinGW is installed, the next step is to install the Qt libraries. To do it, follow the instruction in the following wike page: [InstallingQtForWindows]. 
 
-[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForWindows64 Windows 64 Bit Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
