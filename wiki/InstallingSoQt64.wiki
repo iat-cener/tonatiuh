@@ -23,17 +23,30 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 {{{
 tar -zxvf SoQt-1.5.0.tar.gz
 }}}
-This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the MSYS shell navigate to the just created !SoQt-1.5.0. directory.
+This will create a directory called _!SoQt-1.5.0_ in your user directory. To solve some compilation errors, change the following:
+  * File src/Inventor/Qt/SoQtComponent.cpp (lines 135, 182):
+  {{{
+  -unsigned long 
+  +unsigned long long
+  }}}
 
-To build the library in release mode type:
+ * File src/Inventor/Qt/common/SoQtComponentCommon.cpp.in (lines 444, 451, 458, 478, 491):
+  {{{
+  -long
+  +long long
+  }}}
+
+
+Using the MSYS shell navigate to the just created !SoQt-1.5.0. directory. To build the library in release mode type:
 {{{
-export QTDIR=/c/sde/Qt/Desktop/Qt/4.7.3/mingw
+export QTDIR=/c/sde/qt-version
 export COINDIR=/usr/local
 export INCLUDE=/usr/local/include:/c/sde/MinGW/include
 export PATH=$QTDIR/bin:$PATH
 export QMAKESPEC=$QTDIR/mkspecs/win32-g++
-./configure --disable-msvc --enable-debug=no --enable-symbols=no
+./configure --with-qt=/c/sde/qt-version --build=x86_64-w64-mingw32
 }}}
+
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the SoQt configuration settings will be displayed at MSYS shell (see Figure 2). 
 
 ||<a href="http://picasaweb.google.com/lh/photo/XDBDPsDIIWsoWNEyDv_nNckjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLCjufdju0I/AAAAAAAAAno/YuZV_pqk2R8/s400/SoQt_config_final_screen.png" height="202" width="400" /></a>||
