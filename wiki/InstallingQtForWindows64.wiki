@@ -50,6 +50,6 @@ configure.exe -platform win32-g++ -phonon -debug-and-release
 mingw32-make
 }}}
 
-The installation process may take several hours. Once the Qt libraries and development tools (including Qt creator) are installed, the next step is to install the Simage library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows64 Simage] 
+The installation process may take several hours. Once the Qt libraries and development tools are installed, the next step is to install the Simage library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows64 Simage] 
 
 [InstallingForWindows64 Windows 64 Bit Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
