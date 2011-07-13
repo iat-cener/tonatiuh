@@ -1,0 +1,37 @@
+#summary Instructions to install the MinGW 64 compiler and the MSYS Linux-like shell environment for Windows 64 Bit.
+
+= Introduction =
+
+To be able to develop Tonatiuh under Windows 64 Bit, you need to install he MSYS shell environment, the MinGW 64 C++ compiler, and a series of libraries. The installation of the MSYS shell environment and the MinGW 64 C++ compiler is the first step in this process.
+
+Here you will find instructions to carry out this first and important step towards setting up of a programming environment that will allow you to contribute to the development of Tonatiuh and / or to create your own plug-ins for Tonatiuh.
+
+= Details =
+
+== Installing the Mingw-w64 == 
+
+Download the latest version of the MinGW-w64 binaries. To do it, click on the following [http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Automated%20Builds/ link] to go to the MinGW-w64 automated builds download webpage at !SourceForge. Once you reach the webpage, click on the file for last version of mingw. This will start the downloading of the MinGW-w64. When prompted if to open or to store the file in your computer, select the appropriate option to store file on your computer. 
+
+||<a href="https://picasaweb.google.com/lh/photo/0WO8ffkDqjc5BEVplH7bwOhPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh5.googleusercontent.com/-dzVKufhTiB8/Th1D-fmSq4I/AAAAAAAAAJ8/6xGTu2f-Kxs/s400/MinGW-w64.png" /></a>||
+|| *Figure 1.* View of the "Automated Builds" webpage of the MinGW-w64 website in !SourceForge.||
+
+Once the MinGW installer is in your PC, right-click upon it to extract its content. Move or copy the "eclipse" folder into the folder "C:\sde\".
+
+== Installing the MSYS == 
+Now, to download MSYS Environment go to the following [http://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/MSYS%20%2832-bit%29/ link] and click for the last MSYS version binary. After the download is finished, extract it to  "C:\sde\MinGW".
+
+== Configuring MSYS to use with MinGW == 
+
+After the installation is completed, open a MSYS shell console at _"C:\sde\MinGW\msys\1.0\msys.bat"_ and type:
+{{{
+sh /postinstall/pi.sh
+}}}
+  * Type _"y"_ to continue with the installation.
+  * Type _"y"_ to say that MinGW is installed.
+  * Enter _"c:/sde/MinGW"_ as the MinGW installation location.
+
+By instructing the MSYS and MinGW installer to create the directory _"C:\sde\MinGW"_ and to use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying into these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
+
+Once MinGW is installed, the next step is to install the Qt libraries. To do it, follow the instruction in the following wike page: [InstallingQtForWindows]. 
+
+[InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
