@@ -14,7 +14,7 @@ Download the latest libraries sources of the Qt . To do it, click on the followi
 ||<a href="https://picasaweb.google.com/lh/photo/8IzJ_7ReDW5DFQfjs78__uhPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh3.googleusercontent.com/-uiaozxTLwWE/Th1fxWZY_TI/AAAAAAAAAKE/4d-Ndz5Qoyc/s400/QtSources.png" height="297" width="400" /></a>||
 || *Figure 1.* View of the "Qt Download" webpage.||
 
-Once the source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\usr\home\username"_. Navigate to your MSYS user directory and extract the archive. 
+Once the source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\home\username"_. Navigate to your MSYS user directory and extract the archive. 
 
 To solve some compilation errors, change the following:
   * File /qmake/Makefile.win32-g++-sh, line 31:
