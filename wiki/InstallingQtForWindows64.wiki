@@ -47,7 +47,7 @@ Once the changes are made, open a MSYS shell and navigate to your MSYS user dire
 {{{
 cd qt-version
 configure.exe -platform win32-g++ -phonon -debug-and-release 
-mingw32-make
+make
 }}}
 
 The installation process may take several hours. Once the Qt libraries and development tools are installed, the next step is to install the Simage library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows64 Simage] 
