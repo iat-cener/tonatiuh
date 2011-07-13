@@ -1,0 +1,52 @@
+#summary Instructions to install the SoQt library needed to develop Tonatiuh under Windows 64 Bit.
+
+= Introduction =
+
+!SoQt is a library that provides the glue between the Coin 3D libraries and the Qt 2D GUI and application framework libraries. The !SoQt library is used within Tonatiuh mainly to implement different types of Coin 3D scene viewers inside traditional 2D Qt-generated windows.
+
+Here you will find instructions to install the !SoQt library in your computer and make this library available for the development of Tonatiuh.
+
+= Details =
+
+Before installing !SoQt, please, verify that the Qt and Coin 3D libraries are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingQtForWindows installing Qt] and [InstallingCoin3DForWindows installing Coin].
+
+Since the !SoQt library binary installers for Windows, available at the Coin 3D website, are only valid for Visual C++ and the open source version of the Qt libraries can only be compiled under Windows with the MinGW C++ compiler, the !SoQt library have to be built from the source code. 
+
+Download the latest release of the !SoQt, currently !SoQt 1.5.0. To do it, click on the following [http://www.coin3d.org/lib/soqt/releases/1.5.0 link] to go to the _"!SoQt 1.5.0"_ webpage of the Coin website. Once you reach the webpage, click on the link titled _"Get !SoQt 1.5.0 for all platforms"_ (see Figure 1). This will start the downloading of the !SoQt source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer.
+
+||<a href="http://picasaweb.google.com/lh/photo/3r_TwpwkMdF2hc8h-_Ggq8kjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TLCToThqs9I/AAAAAAAAAnY/yWkESmsWGPQ/s400/SoQt_sourcecode.png" height="261" width="400" /></a>||
+|| *Figure 1.* View of the "!SoQt 1.5.0" webpage.|| 
+
+Once the !SoQt source code package is on your computer, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\1.0\home\username"_. 
+
+Open an MSYS shell console. Navigate to your MSYS user directory and extract the archive by typing:
+{{{
+tar -zxvf SoQt-1.5.0.tar.gz
+}}}
+This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the MSYS shell navigate to the just created !SoQt-1.5.0. directory.
+
+To build the library in release mode type:
+{{{
+export QTDIR=/c/sde/Qt/Desktop/Qt/4.7.3/mingw
+export COINDIR=/usr/local
+export INCLUDE=/usr/local/include:/c/sde/MinGW/include
+export PATH=$QTDIR/bin:$PATH
+export QMAKESPEC=$QTDIR/mkspecs/win32-g++
+./configure --disable-msvc --enable-debug=no --enable-symbols=no
+}}}
+This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the SoQt configuration settings will be displayed at MSYS shell (see Figure 2). 
+
+||<a href="http://picasaweb.google.com/lh/photo/XDBDPsDIIWsoWNEyDv_nNckjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLCjufdju0I/AAAAAAAAAno/YuZV_pqk2R8/s400/SoQt_config_final_screen.png" height="202" width="400" /></a>||
+|| *Figure 2.* MSYS shell messages shown when the configuration process ends.||
+
+Now, you can install the !SoQt library by typing:
+{{{
+make 
+make install
+}}}
+
+The installation process may take some time. At the end of the installation process, the SoQt dynamic library _"libSoQt-20.dll"_ and the file _"soqt-config"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\bin"_ and the SoQt library files "libSoQt.dll.a" and "libSoQt.la" will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib"_. In addition, the file _"SoQt.pc"_ will be installed at the folder _"C:\sde\MinGW\msys\1.0\local\lib\pkgconfig"_ and the necessary include files will be installed at the folders _"C:\sde\MinGW\msys\1.0\local\include"_ and _"C:\sde\MinGW\msys\1.0\local\include\Inventor"_.
+
+Once the !SoQt library is installed the next step is to install the Marble library. To do it, follow the instructions in the following wiki page: [InstallingMarbleForWindows64 Installing Marble for Windows]
+
+[InstallingForWindows64 Windows 64 BitConfiguration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
