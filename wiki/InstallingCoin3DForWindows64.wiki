@@ -58,7 +58,7 @@ This will create a directory called _Coin-3.1.3_ in your user directory. To solv
 
 Using the MSYS shell navigate to just created Coin-3.1.0 directory. To build the library in release mode type:
 {{{
-export QTDIR=/c:/sde/qt-version
+export QTDIR=/c/sde/qt-version
 export COINDIR=/usr/local
 export INCLUDE=/usr/local/include:/c:/sde/MinGW/include
 ./configure --disable-msvc --build=x86_64-w64-mingw32
