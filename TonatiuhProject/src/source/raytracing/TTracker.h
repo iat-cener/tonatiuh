@@ -75,14 +75,16 @@ protected:
 	TTracker();
 	virtual ~TTracker(); 
 
-	TSceneKit* m_scene;
 	void SetEngineOutput(SoTransform* newTransform);
 	void SetEngineOutputIdentity();
 	void SetEngineOutputRotation(SbRotation rotation);
-	void ConstructEngineOutput();
 	Vector3D GetGobalSunVector();
 	SbVec3f GetGobalSunVect();
 	bool IsConnected();
+
+	trt::TONATIUH_REAL m_azimuth;
+	TSceneKit* m_scene;
+	trt::TONATIUH_REAL m_zenith;
 
 	SoEngineOutput  outputTranslation;
 	SoEngineOutput  outputRotation;
@@ -91,8 +93,6 @@ protected:
 	SoEngineOutput  outputCenter;
 
 private:
-	trt::TONATIUH_REAL m_azimuth;
-	trt::TONATIUH_REAL m_zenith;
 	virtual void evaluate() = 0;
 
 };

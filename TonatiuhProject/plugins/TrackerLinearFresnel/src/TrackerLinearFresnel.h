@@ -73,7 +73,9 @@ protected:
 	virtual ~TrackerLinearFresnel();
 
 private:
-  virtual void evaluate();
+	virtual void evaluate();
+
+	int m_previousAimingPointType;
 
 };
 

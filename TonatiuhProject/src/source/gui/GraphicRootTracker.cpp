@@ -68,8 +68,8 @@ GraphicRootTracker::GraphicRootTracker()
 	SO_NODEENGINE_CONSTRUCTOR( GraphicRootTracker );
 
 	// Define input fields and their default values
-	/*SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );*/
+	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
 
 	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);

@@ -54,25 +54,17 @@ void TTracker::initClass()
 
 TTracker::TTracker()
 {
-	SO_NODEENGINE_CONSTRUCTOR( TTracker );
+	/*SO_NODEENGINE_CONSTRUCTOR( TTracker );
+
 	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
 	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
 	// Define input fields and their default values
 
-/*	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);*/
-}
-
-void TTracker::ConstructEngineOutput()
-{
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
+	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);*/
 }
 
 TTracker::~TTracker()
