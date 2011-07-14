@@ -59,7 +59,6 @@ public:
 
 	SoSFEnum typeOfAimingPoint;
 
-	//inline void InitAimingPointField();
 	static void updateTypeOfAimingPoint( void* data, SoSensor* );
 	virtual void SwitchAimingPointType() =0;
 	void SetAimingPointRelativity(bool relative);

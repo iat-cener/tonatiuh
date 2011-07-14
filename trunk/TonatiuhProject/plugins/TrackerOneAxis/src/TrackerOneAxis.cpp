@@ -37,11 +37,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
-#include <iostream>
 
 #include <QString>
 
 #include <Inventor/SbLinear.h>
+#include <Inventor/SoNodeKitPath.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/fields/SoSFMatrix.h>
@@ -50,6 +50,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "tgc.h"
 #include "TrackerOneAxis.h"
+#include "Transform.h"
+#include "trf.h"
 #include "TSeparatorKit.h"
 #include "TSceneKit.h"
 
@@ -57,7 +59,7 @@ SO_NODEENGINE_SOURCE( TrackerOneAxis );
 
 void TrackerOneAxis::initClass()
 {
-	TTracker::initClass();
+	//TTracker::initClass();
 	SO_NODEENGINE_INIT_CLASS( TrackerOneAxis, TTracker, "TTracker" );
 
 }
@@ -67,8 +69,8 @@ TrackerOneAxis::TrackerOneAxis()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerOneAxis );
 
 	// Define input fields and their default values
-	/*SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );*/
+	SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
@@ -91,36 +93,31 @@ QString TrackerOneAxis::getIcon()
 void TrackerOneAxis::evaluate()
 {
 	if (!IsConnected()) return;
-	SoPath* nodePath= m_scene->GetSoPath(this );
-	if (!nodePath) return;
+	SoPath* nodePath= m_scene->GetSoPath( this );
+	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath->copy() );
+	parentPath->pop();
+	if( !parentPath ) return;
 
-	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
-	getmatrixAction->apply( nodePath );
-
-
-	SbMatrix objectToWorld = getmatrixAction->getMatrix();
-	SbMatrix worldToObject = getmatrixAction->getInverse();
-
-	SbVec3f s;
-	worldToObject.multDirMatrix( GetGobalSunVect(), s );
+	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
+	Transform worldToObject = objectToWorld.GetInverse();
 
 
-	SbVec3f p( 1.0f, 0.0f, 0.0f);
+	Vector3D s = worldToObject( GetGobalSunVect() );
+	Vector3D p( 1.0f, 0.0f, 0.0f);
 
-	SbVec3f n;
-	SbVec3f t;
-	if( fabs( s.dot( p ) ) < 1.0 )
+	Vector3D n;
+	Vector3D t;
+	if( fabs( DotProduct( s, p ) ) < 1.0 )
 	{
-		n = ( s - ( s.dot( p )*  p ) ) / ( sqrt( 1 - s.dot( p ) * s.dot( p ) ) );
-
-		n.normalize();
-		t = p.cross( n );
+		n = Normalize( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
+		t = CrossProduct( p, n );
 	}
 	else
 	{
-		t = SbVec3f( 0.0f, 0.0f, 1.0f );
-		n = t.cross( p );
+		t = Vector3D( 0.0f, 0.0f, 1.0f );
+		n = CrossProduct( t, p );
 	}
+
 	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
 								n[0], n[1], n[2], 0.0,
 								p[0], p[1], p[2], 0.0,

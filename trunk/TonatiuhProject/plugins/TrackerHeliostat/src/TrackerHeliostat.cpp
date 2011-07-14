@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
-#include <iostream>
 
 #include <QString>
 
@@ -55,18 +54,26 @@ SO_NODEENGINE_SOURCE( TrackerHeliostat );
 
 void TrackerHeliostat::initClass()
 {
-	TTracker::initClass();
-	TTrackerForAiming::initClass();
+
 	SO_NODEENGINE_INIT_CLASS( TrackerHeliostat, TTrackerForAiming, "TTrackerForAiming" );
 }
 
 TrackerHeliostat::TrackerHeliostat()
+:m_previousAimingPointType( 0 )
 {
 	SO_NODEENGINE_CONSTRUCTOR( TrackerHeliostat );
+	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
+
 	// Define input fields and their default values
-	/*SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );*/
 	SO_NODE_ADD_FIELD( aimingPoint, ( 0.0, 0.0, 0.0 ) );
+	SO_NODE_DEFINE_ENUM_VALUE( AimingPointType, Absolute );
+	SO_NODE_DEFINE_ENUM_VALUE( AimingPointType, Relative );
+	SO_NODE_SET_SF_ENUM_TYPE( typeOfAimingPoint, AimingPointType );
+	SO_NODE_ADD_FIELD( typeOfAimingPoint, (Absolute) );
+	SoFieldSensor* m_infoDisplayed = new SoFieldSensor( TTrackerForAiming::updateTypeOfAimingPoint, this );
+	m_infoDisplayed->attach( &typeOfAimingPoint );
+
 
 	SO_NODE_DEFINE_ENUM_VALUE( Rotations, YX );
 	SO_NODE_DEFINE_ENUM_VALUE( Rotations, YZ );
@@ -99,54 +106,54 @@ QString TrackerHeliostat::getIcon()
 
 void TrackerHeliostat::evaluate()
 {
-
-	if (!IsConnected()) return;
+	if( !IsConnected() )	return;
 	SoPath* nodePath= m_scene->GetSoPath(this );
-	if (!nodePath) return;
-	Transform objectToWorld = trf::GetObjectToWorld(nodePath);
+	if( !nodePath ) return;
 
+	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath->copy() );
+	parentPath->pop();
+
+	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
 	Transform worldToObject = objectToWorld.GetInverse();
 
-	Vector3D i = worldToObject.multDirMatrix ( GetGobalSunVector() );
-	if (i.length() == 0.0f) return;
+	Vector3D i = worldToObject( GetGobalSunVector() );
+
+	if( i.length() == 0.0f ) return;
 	i = Normalize(i);
 
-	Vector3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
+	Point3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
 	Vector3D r;
 	if (typeOfAimingPoint.getValue() == 0) //Absolute
 	{
-		r = worldToObject.multVecMatrix( focus );
+		r = Vector3D( worldToObject( focus ) );
 	}
 	else
-	{
-		r= focus;
-	}
-	if (r.length() == 0.0f) return;
+		r = Vector3D( focus );
+
+
+	if( r.length() == 0.0f ) return;
 	r = Normalize(r);
 
 	Vector3D n = ( i + r );
-	if (n.length() == 0.0f) return;
-	n = Normalize(n);
+	if( n.length() == 0.0f ) return;
+	n = Normalize( n );
 
 	Vector3D Axe1;
 	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 1 ))// YX or YZ
-	{
-		Axe1 = Vector3D(0.0f, 1.0f, 0.0f);
-	}
+		Axe1 = Vector3D( 0.0f, 1.0f, 0.0f );
+
 	else if (typeOfRotation.getValue() == 2 ) // XZ
-	{
-		Axe1 = Vector3D(1.0f, 0.0f, 0.0f);
-	}
+		Axe1 = Vector3D( 1.0f, 0.0f, 0.0f );
+
 	else // ZX
-	{
 		Axe1 = Vector3D(0.0f, 0.0f, 1.0f);
-	}
-	Vector3D t = CrossProduct(n, Axe1);
+
+	Vector3D t = CrossProduct( n, Axe1 );
 	//Vector3D t( n[2], 0.0f, -n[0] );
-	if (t.length() == 0.0f) return;
+	if( t.length() == 0.0f ) return;
 	t = Normalize(t);
 
-	Vector3D p = CrossProduct(t,n);
+	Vector3D p = CrossProduct( t, n );
 	if (p.length() == 0.0f) return;
 	p = Normalize(p);
 
@@ -178,21 +185,27 @@ void TrackerHeliostat::evaluate()
 
 void TrackerHeliostat::SwitchAimingPointType()
 {
+	if( m_previousAimingPointType == typeOfAimingPoint.getValue() )	return;
+
 	SoPath* nodePath= m_scene->GetSoPath( this );
 	if (!nodePath) return;
-	Transform objectToWorld = trf::GetObjectToWorld(nodePath);
 
-	Vector3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
-	
+	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath->copy() );
+	parentPath->pop();
+
+	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
+
+	Point3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
+	Point3D r;
 	if (typeOfAimingPoint.getValue() == 1)
 	{
 		Transform worldToObject = objectToWorld.GetInverse();
-		Vector3D r = worldToObject.multVecMatrix( focus );
-		aimingPoint.setValue(r[0],r[1],r[2]);
+		r = worldToObject( focus );
 	}
 	else
-	{
-		Vector3D r = objectToWorld.multVecMatrix( focus );
-		aimingPoint.setValue(r[0],r[1],r[2]);
-	}
+		r = objectToWorld( focus );
+
+	aimingPoint.setValue( r.x, r.y, r.z );
+
+	m_previousAimingPointType = typeOfAimingPoint.getValue();
 }

@@ -38,7 +38,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <cmath>
 #include <iostream>
-
 #include <QString>
 
 #include <Inventor/nodes/SoTransform.h>
@@ -57,18 +56,26 @@ SO_NODEENGINE_SOURCE( TrackerLinearFresnel );
 
 void TrackerLinearFresnel::initClass()
 {
-	TTracker::initClass();
-	TTrackerForAiming::initClass();
 	SO_NODEENGINE_INIT_CLASS( TrackerLinearFresnel, TTrackerForAiming, "TTrackerForAiming" );
 }
 
 TrackerLinearFresnel::TrackerLinearFresnel()
+:m_previousAimingPointType( 0 )
 {
 	SO_NODEENGINE_CONSTRUCTOR( TrackerLinearFresnel );
 
 	// Define input fields and their default values
-	/*SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );*/
+	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
+
+
+	// Define input fields and their default values
+	SO_NODE_DEFINE_ENUM_VALUE( AimingPointType, Absolute );
+	SO_NODE_DEFINE_ENUM_VALUE( AimingPointType, Relative );
+	SO_NODE_SET_SF_ENUM_TYPE( typeOfAimingPoint, AimingPointType );
+	SO_NODE_ADD_FIELD( typeOfAimingPoint, (Absolute) );
+	SoFieldSensor* m_infoDisplayed = new SoFieldSensor( TTrackerForAiming::updateTypeOfAimingPoint, this );
+	m_infoDisplayed->attach( &typeOfAimingPoint );
 
 	SO_NODE_DEFINE_ENUM_VALUE( Axis, X );
 	SO_NODE_DEFINE_ENUM_VALUE( Axis, Y );
@@ -77,6 +84,8 @@ TrackerLinearFresnel::TrackerLinearFresnel()
 	SO_NODE_ADD_FIELD( activeAxis, (Z) );
 
 	SO_NODE_ADD_FIELD( axisOrigin, ( 0.0, 0.0 ) );
+
+
 
 	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
@@ -103,35 +112,37 @@ void TrackerLinearFresnel::evaluate()
 	if (!IsConnected()) return;
 	SoPath* nodePath= m_scene->GetSoPath(this );
 	if (!nodePath) return;
-	Transform objectToWorld = trf::GetObjectToWorld(nodePath);
 
+	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath->copy() );
+	parentPath->pop();
+	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
 	Transform worldToObject = objectToWorld.GetInverse();
 
-	//Vector3D i = worldToObject( GetGobalSunVector() );
-	Vector3D i = worldToObject.multDirMatrix ( GetGobalSunVector() );
+	Vector3D i = worldToObject( GetGobalSunVector() );
 
 	Vector3D localAxis;
-	Vector3D focus;
+	Point3D focusPoint;
 	if( activeAxis.getValue() == 0 )
 	{
 		localAxis  =  Vector3D( 1.0, 0.0, 0.0 ) ;
-		focus = Vector3D( 0.0, axisOrigin.getValue()[0], axisOrigin.getValue()[1] ) ;
+		focusPoint = Point3D( 0.0, axisOrigin.getValue()[0], axisOrigin.getValue()[1] ) ;
 	}
 	else if( activeAxis.getValue() == 1 )
 	{
 		localAxis =  Vector3D( 0.0, 1.0, 0.0 );
-		focus = Vector3D( axisOrigin.getValue()[0], 0.0, axisOrigin.getValue()[1] ) ;
+		focusPoint = Point3D( axisOrigin.getValue()[0], 0.0, axisOrigin.getValue()[1] ) ;
 	}
 	else
 	{
 		localAxis  = Vector3D( 0.0, 0.0, 1.0 ) ;
-		focus = Vector3D( axisOrigin.getValue()[0], axisOrigin.getValue()[1], 0.0 ) ;
+		focusPoint = Point3D( axisOrigin.getValue()[0], axisOrigin.getValue()[1], 0.0 ) ;
 	}
 	
-	if (typeOfAimingPoint.getValue() == 0) //Absolute
+	Vector3D focus = Vector3D( focusPoint );
+	if (typeOfAimingPoint.getValue() == 0 ) //Absolute
 	{
-		localAxis  = worldToObject.multDirMatrix( localAxis );
-		focus = worldToObject.multVecMatrix( focus );
+		localAxis  = worldToObject( localAxis );
+		focus = Vector3D( worldToObject( focusPoint ) );
 	}
 
 
@@ -171,45 +182,32 @@ void TrackerLinearFresnel::evaluate()
 
 void TrackerLinearFresnel::SwitchAimingPointType()
 {
+	if( m_previousAimingPointType == typeOfAimingPoint.getValue() )	return;
+
+
 	SoPath* nodePath= m_scene->GetSoPath( this );
 	if (!nodePath) return;
 	Transform objectToWorld = trf::GetObjectToWorld(nodePath);
 
-	Vector3D focus;
-	if( activeAxis.getValue() == 0 )
-	{
-		focus =  Vector3D( 0.0, axisOrigin.getValue()[0], axisOrigin.getValue()[1] ) ;
-	}
-	else if( activeAxis.getValue() == 1 )
-	{
-		focus =  Vector3D( axisOrigin.getValue()[0], 0.0, axisOrigin.getValue()[1] ) ;
-	}
-	else
-	{
-		focus =  Vector3D( axisOrigin.getValue()[0], axisOrigin.getValue()[1], 0.0 );
-	}
+	Point3D focus;
+	if( activeAxis.getValue() == 0 )	focus =  Point3D( 0.0, axisOrigin.getValue()[0], axisOrigin.getValue()[1] ) ;
+	else if( activeAxis.getValue() == 1 )	focus =  Point3D( axisOrigin.getValue()[0], 0.0, axisOrigin.getValue()[1] ) ;
+	else	focus =  Point3D( axisOrigin.getValue()[0], axisOrigin.getValue()[1], 0.0 );
 
-	Vector3D r;
-	if (typeOfAimingPoint.getValue() == 1)
+
+	Point3D r;
+	if( typeOfAimingPoint.getValue() == 1 )
 	{
 		Transform worldToObject = objectToWorld.GetInverse();
-		r = worldToObject.multVecMatrix( focus );
+		r = worldToObject( focus );
 	}
 	else
-	{
-		r = objectToWorld.multVecMatrix( focus );
-	}
+		r = objectToWorld( focus );
 
-	if( activeAxis.getValue() == 0 )
-	{
-		axisOrigin.setValue(r[1],r[2]);
-	}
-	else if( activeAxis.getValue() == 1 )
-	{
-		axisOrigin.setValue(r[0],r[2]);
-	}
-	else
-	{
-		axisOrigin.setValue(r[0],r[1]);
-	}
+
+	if( activeAxis.getValue() == 0 )	axisOrigin.setValue( r.y, r.z );
+	else if( activeAxis.getValue() == 1 )	axisOrigin.setValue( r.x, r.z );
+	else	axisOrigin.setValue( r.x, r.y );
+
+	m_previousAimingPointType = typeOfAimingPoint.getValue();
 }

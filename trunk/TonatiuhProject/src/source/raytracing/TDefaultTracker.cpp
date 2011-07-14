@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QString>
 
+#include "tgc.h"
 #include "TDefaultTracker.h"
 
 SO_NODEENGINE_SOURCE( TDefaultTracker );
@@ -52,6 +53,7 @@ SO_NODEENGINE_SOURCE( TDefaultTracker );
  */
 void TDefaultTracker::initClass()
 {
+
 	SO_NODEENGINE_INIT_CLASS( TDefaultTracker, TTracker, "TTracker" );
 }
 
@@ -61,6 +63,9 @@ void TDefaultTracker::initClass()
 TDefaultTracker::TDefaultTracker()
 {
 	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
+
+	SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();
 	// Define input fields and their default values
