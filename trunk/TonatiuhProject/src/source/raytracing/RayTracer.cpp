@@ -36,21 +36,12 @@ Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Ji
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
-#include <QFile>
-#include <QTextStream>
-#include <QTime>
-#include <QVector>
-
-#include "BBox.h"
 #include "DifferentialGeometry.h"
-#include "Photon.h"
 #include "ParallelRandomDeviate.h"
 #include "Ray.h"
 #include "RayTracer.h"
 #include "RayTracerPhoton.h"
 #include "TPhotonMap.h"
-#include "TPhotonMapFactory.h"
 #include "TLightShape.h"
 #include "TSunShape.h"
 
@@ -73,14 +64,6 @@ m_photonMap( photonMap )
 {
 }
 
-/*
-Ray RayTracer::NewPrimitiveRay( ParallelRandomDeviate& rand )
-{
-	Point3D origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble() );
-	Vector3D direction;
-	m_lightSunShape->GenerateRayDirection( direction, rand );
-	return m_lightToWorld( Ray( origin, direction ) );
-}*/
 
 bool RayTracer::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand )
 {
@@ -155,3 +138,4 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 	return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
 }
+

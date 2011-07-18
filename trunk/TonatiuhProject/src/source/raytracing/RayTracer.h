@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Transform.h"
 
+class InstanceNode;
 struct Photon;
 class RandomDeviate;
 struct RayTracerPhoton;
@@ -86,7 +87,6 @@ private:
     QMutex* m_mutex;
 	TPhotonMap* m_photonMap;
 
-	//Ray NewPrimitiveRay( ParallelRandomDeviate& rand );
 	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
 };
 
