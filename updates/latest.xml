@@ -34,6 +34,38 @@
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel1.dll" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
+            <file type="new" value="bin/release/plugins/ShapeTroughAsymmetricCPC/ShapeTroughAsymmetricCPC1.dll" />
+        </os>
+        <os value="win_64">
+            <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive1.dll" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/MaterialStandardSpecular1.dll" />
+            <file type="replace" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
+            <file type="replace" value="bin/release/plugins/RandomMersenneTwister/RandomMersenneTwister1.dylib" />
+            <file type="replace" value="bin/release/plugins/RandomRngStream/RandomRngStream1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeCone/ShapeCone1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeCylinder/ShapeCylinder1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/ShapeFlatDisk1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatRectangle/ShapeFlatRectangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle1.dll" />
+    		<file type="replace" value="bin/release/plugins/ShapeHyperboloid/ShapeHyperboloid1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/ShapeParabolicDish1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/ShapeSphere1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalRectangle/ShapeSphericalRectangle1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughParabola/ShapeTroughParabola1.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet1.dll" />
+			<file type="replace" value="bin/release/plugins/SunshapeBuie/SunshapeBuie1.dll" />
+            <file type="replace" value="bin/release/plugins/SunshapePillbox/SunshapePillbox1.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat1.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel1.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
+            <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
+            <file type="new" value="bin/release/plugins/ShapeTroughAsymmetricCPC/ShapeTroughAsymmetricCPC1.dll" />
         </os>
         <os value="mac">
             <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
@@ -64,6 +96,7 @@
             <file type="replace" value="Contents/MacOS/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/TrackerOneAxis/libTrackerOneAxis.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
+            <file type="new" value="Contents/MacOS/plugins/ShapeTroughAsymmetricCPC/libShapeTroughAsymmetricCPC.dylib" />
         </os>
         <os value="linux">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
@@ -94,6 +127,7 @@
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+            <file type="new" value="bin/release/plugins/ShapeTroughAsymmetricCPC/libShapeTroughAsymmetricCPC.so" />
         </os>
         <os value="linux_64">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
@@ -124,6 +158,7 @@
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+            <file type="new" value="bin/release/plugins/ShapeTroughAsymmetricCPC/libShapeTroughAsymmetricCPC.so" />
         </os>
     </files>
 </appname>
