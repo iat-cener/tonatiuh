@@ -46,6 +46,7 @@
 #include "TSquare.h"
 #include "TSceneKit.h"
 #include "TSceneTracker.h"
+#include "TTrackerForAiming.h"
 
 int main(int argc, char **argv )
 {
@@ -70,6 +71,7 @@ int main(int argc, char **argv )
 	TTracker::initClass();
 	TDefaultTracker::initClass();
 	TSceneTracker::initClass();
+	TTrackerForAiming::initClass();
 
 
     testing::InitGoogleTest(&argc, argv);
