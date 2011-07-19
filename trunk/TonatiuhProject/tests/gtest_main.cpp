@@ -35,6 +35,8 @@
 
 #include <gtest/gtest.h>
 
+#include "TAnalyzerKit.h"
+#include "TAnalyzerLevel.h"
 #include "TDefaultMaterial.h"
 #include "TDefaultSunShape.h"
 #include "TDefaultTracker.h"
@@ -72,6 +74,11 @@ int main(int argc, char **argv )
 	TDefaultTracker::initClass();
 	TSceneTracker::initClass();
 	TTrackerForAiming::initClass();
+	TAnalyzerKit::initClass();
+	TAnalyzerResultKit::initClass();
+	TAnalyzerParameter::initClass();
+	TAnalyzerResult::initClass();
+	TAnalyzerLevel::initClass();
 
 
     testing::InitGoogleTest(&argc, argv);
