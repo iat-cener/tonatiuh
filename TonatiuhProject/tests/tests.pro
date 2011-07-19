@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console
+CONFIG += console debug_and_release
 include( ../config.pri )
 
 QT += xml opengl svg  script network
