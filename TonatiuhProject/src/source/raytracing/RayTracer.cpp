@@ -121,8 +121,13 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
 			{
-				if( ray.maxt == HUGE_VAL  ) ray.maxt = 0.1;
-				photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), -1, ++rayLength, intersectedSurface) );
+				if( ray.maxt == HUGE_VAL  )
+				{
+					ray.maxt = 0.1;
+					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
+				}
+				else
+					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
 			}
 			if (currentRaysWay.size()>0)
 			{

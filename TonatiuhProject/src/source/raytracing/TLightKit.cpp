@@ -152,7 +152,7 @@ void TLightKit::ChangePosition( double newAzimuth, double newZenith/*, double ne
 void TLightKit::Update( BBox box )
 {
 
-	double xWidth = SbMax(-box.pMin.x,box.pMax.x) - SbMin(box.pMin.x,-box.pMax.x);
+	/*double xWidth = SbMax(-box.pMin.x,box.pMax.x) - SbMin(box.pMin.x,-box.pMax.x);
 	double zWidth = SbMax(-box.pMin.z,box.pMax.z) - SbMin(box.pMin.z,-box.pMax.z);
 	double xMax = sqrt(xWidth*xWidth + zWidth*zWidth)/2.0;
 	double xMin = -xMax;
@@ -160,9 +160,16 @@ void TLightKit::Update( BBox box )
 	double zMax = xMax;
 	if (-box.pMin.y>0) zMax = sqrt(box.pMin.y*box.pMin.y + xMax*xMax);
 	if (-box.pMax.y<0) zMin = -sqrt(box.pMax.y*box.pMax.y + xMin*xMin);
+	*/
+
+	double xMax = box.pMax.x;
+	double xMin = box.pMin.x;
+	double zMin = box.pMin.z;
+	double zMax = box.pMax.z;
+
 
 	double distMax = box.pMax.y + 10 - box.pMin.y;
-	double back = SbMax(box.pMax.y,xMax) +10;
+	double back = box.pMax.y +10;
 
 
 	if( -tgc::Infinity  == box.Volume() )
@@ -180,12 +187,13 @@ void TLightKit::Update( BBox box )
 	double delta = 0.01;
 	if(  thetaMax > 0.0 ) delta = 5 * distMax * tan( thetaMax );
 
+	std::cout<<delta<<std::endl;
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
-	shape->xMin.setValue( xMin - delta );
-	shape->xMax.setValue( xMax + delta );
-	shape->zMin.setValue( zMin - delta );
-	shape->zMax.setValue( zMax + delta );
+	shape->xMin.setValue( ( xMin - delta ) );
+	shape->xMax.setValue( ( xMax + delta ) );
+	shape->zMin.setValue( ( zMin - delta ) );
+	shape->zMax.setValue( ( zMax + delta ) );
 	shape->delta.setValue( delta );
 
 

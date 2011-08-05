@@ -929,19 +929,19 @@ void SceneModel::UpdateSceneModel()
 	TSeparatorKit* concentratorRoot = static_cast< TSeparatorKit* >( m_coinScene->getPart( "childList[0]", false ) );
 	if ( !concentratorRoot )	return;
 
-	m_instanceRoot->UpdateAnalyzerSize(this);
-	
-	SbBox3f * box = new SbBox3f;
-	m_instanceConcentrator->extendBoxForLight(box);
+	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+	concentratorRoot->getBoundingBox( bbAction );
+
+	SbBox3f box = bbAction->getXfBoundingBox().project();
+	delete bbAction;
+
 	BBox sceneBox;
-	if( !box->isEmpty() )
+	if( !box.isEmpty() )
 	{
-		sceneBox.pMin = Point3D( box->getMin()[0], box->getMin()[1], box->getMin()[2] );
-		sceneBox.pMax = Point3D( box->getMax()[0], box->getMax()[1], box->getMax()[2] );
+		sceneBox.pMin = Point3D( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
+		sceneBox.pMax = Point3D( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
 		if( lightKit ) lightKit->Update( sceneBox );
 	}
-	delete box;
-
 	emit layoutChanged();
 
 }
