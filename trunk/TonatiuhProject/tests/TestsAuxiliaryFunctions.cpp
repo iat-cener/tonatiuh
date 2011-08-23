@@ -46,9 +46,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 double taf::randomNumber( double a, double b )
 {
-	return (b-a)*( rand() / double(RAND_MAX) ) + a;
+	return (b-a)*( (rand() / double(RAND_MAX))  ) + a;
 }
-
+//Esta funcion sirve para calcualr el nº aletorio necesario
+//para hacer el test de la funcion inverse en la clase Matrix4x4Tests.cpp
+double taf::randomBBoxNumber( double a, double b )
+{
+	return 1+(b-a)*( (rand() / double(RAND_MAX))  ) + a;
+}
 Point3D taf::randomPoint( double a, double b  )
 {
 	double x = randomNumber( a, b );

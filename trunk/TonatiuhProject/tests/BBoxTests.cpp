@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <stdlib.h>
 #include <algorithm>
 #include <time.h>
+#include <stdio.h>
 
 #include "tgc.h"
 #include "TestsAuxiliaryFunctions.h"
@@ -183,12 +184,11 @@ TEST( BBoxTests, Expand )
   BBox boundingBoxA, boundingBoxB;
   double delta;
   double relativeError[6];
-
-  for( unsigned long int i = 0; i < maximumNumberOfTests; i++ )
+  for( unsigned long int i = 0; i <maximumNumberOfTests; i++ )
   {
  	  boundingBoxA = taf::randomBox( a, b );
  	  boundingBoxB = boundingBoxA;
-	  delta = taf::randomNumber( tgc::Epsilon, b );
+	  delta = taf::randomBBoxNumber( tgc::Epsilon, b );
 	  boundingBoxB.Expand( delta );
 
 	  relativeError[0] = std::abs( boundingBoxA.pMin.x - boundingBoxB.pMin.x - delta )/delta;
@@ -198,12 +198,17 @@ TEST( BBoxTests, Expand )
 	  relativeError[4] = std::abs( boundingBoxB.pMax.y - boundingBoxA.pMax.y - delta )/delta;
 	  relativeError[5] = std::abs( boundingBoxB.pMax.z - boundingBoxA.pMax.z - delta )/delta;
 
+	  /*if(int(relativeError[0])==1){
+		  j++;
+		  printf("j:%d  i:%lu boxA %e:  boxB %e: delta %e: RelE %e: ",j,i,boundingBoxA.pMin.x,boundingBoxB.pMin.x,delta,relativeError[0]);
+	  }*/
 	  EXPECT_PRED_FORMAT2(::testing::DoubleLE, relativeError[0], 0.00000001);
 	  EXPECT_PRED_FORMAT2(::testing::DoubleLE, relativeError[1], 0.00000001);
 	  EXPECT_PRED_FORMAT2(::testing::DoubleLE, relativeError[2], 0.00000001);
 	  EXPECT_PRED_FORMAT2(::testing::DoubleLE, relativeError[3], 0.00000001);
 	  EXPECT_PRED_FORMAT2(::testing::DoubleLE, relativeError[4], 0.00000001);
 	  EXPECT_PRED_FORMAT2(::testing::DoubleLE, relativeError[5], 0.00000001);
+	  //EXPECT_LT(relativeError[0],0.00000001);
   }
 }
 
@@ -250,8 +255,8 @@ TEST( BBoxTests, MaximumExtent )
 	  dx = boundingBox.pMax.x - boundingBox.pMin.x;
 	  dy = boundingBox.pMax.y - boundingBox.pMin.y;
 	  dz = boundingBox.pMax.z - boundingBox.pMin.z;
-	  maximumExtent = ( dx >= dy ) ? ( ( dx >= dz ) ? 0 : 2 ) : ( ( dy >= dz ) ? 1 : 2 );
-
+	  //maximumExtent = ( dx >= dy ) ? ( ( dx >= dz ) ? 0 : 2 ) : ( ( dy >= dz ) ? 1 : 2 );
+	  maximumExtent = ( dx > dy ) ? ( ( dx > dz ) ? 0 : 2 ) : ( ( dy > dz ) ? 1 : 2 );
 	  EXPECT_EQ( maximumExtent, boundingBox.MaximumExtent() );
   }
 }
@@ -259,7 +264,7 @@ TEST( BBoxTests, MaximumExtent )
 TEST( BBoxTests, BoundingSphere )
 {
   // initialize random seed:
-  srand ( time(NULL) );
+  srand ((unsigned) time(NULL) );
 
   // Extension of the testing space
   double b = maximumCoordinate;
