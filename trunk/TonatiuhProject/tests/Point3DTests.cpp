@@ -2,6 +2,8 @@
 #include "Vector3D.h"
 #include <gtest/gtest.h>
 
+#include <cmath>
+
 // Tests the Set method.
 TEST(Point3DTests, ConstructorDefault) {
   Point3D point;
@@ -161,4 +163,26 @@ TEST(Point3DTests, IndexingOperatorsLhs) {
 	  point[i] = coordinate[i];
 	  EXPECT_DOUBLE_EQ(  coordinate[i], point[i] );
   }
+}
+
+TEST(Point3DTests, DistanceFromPointToPoint) {
+  Point3D pointA ( 3456.78, -348.89, -28.223 );
+  Point3D pointB( 67.24, -23.56, 0.008 );
+  double x0=(pointA.x)-(pointB.x);
+  double y0=(pointA.y)-(pointB.y);
+  double z0=(pointA.z)-(pointB.z);
+  double result=sqrt(x0*x0+y0*y0+z0*z0);
+  EXPECT_DOUBLE_EQ(result,Distance(pointA,pointB) );
+
+}
+
+TEST(Point3DTests, DistanceSquaredFromPointToPoint) {
+  Point3D pointA ( 3456.78, -348.89, -28.223 );
+  Point3D pointB( 67.24, -23.56, 0.008 );
+  double x0=(pointA.x)-(pointB.x);
+  double y0=(pointA.y)-(pointB.y);
+  double z0=(pointA.z)-(pointB.z);
+  double result=x0*x0+y0*y0+z0*z0;
+  EXPECT_DOUBLE_EQ(result,DistanceSquared(pointA,pointB) );
+
 }

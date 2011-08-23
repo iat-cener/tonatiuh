@@ -243,7 +243,7 @@ TEST( Matrix4x4Tests, Transpose )
 TEST( Matrix4x4Tests, Inverse )
 {
 	/* initialize random seed: */
-	srand ( time(NULL) );
+	srand (time(NULL) );
 
 	// Extension of the testing space
 	double b = maximumCoordinate;
