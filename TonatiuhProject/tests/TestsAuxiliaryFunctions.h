@@ -47,6 +47,7 @@ class BBox;
 namespace taf
 {
    double randomNumber( double a, double b );
+   double randomBBoxNumber( double a, double b );
    Point3D randomPoint( double a, double b  );
    BBox randomBox( double a, double b );
    Vector3D randomDirection( );
