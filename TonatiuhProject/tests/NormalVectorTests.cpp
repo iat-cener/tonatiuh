@@ -207,3 +207,14 @@ TEST(NormalVectorTests, NonMemberFunctionOperatorPlusScalar)
   EXPECT_DOUBLE_EQ( ( scalar*normalVector.y ), result.y );
   EXPECT_DOUBLE_EQ( ( scalar*normalVector.z ), result.z );
 }
+
+TEST(NormalVectorTests, FunctionAbsDotProduct)
+{
+	NormalVector normal1( 130.43, 728.29, 54.716 );
+	NormalVector normal2( 89.12, 76.24, 1.243 );
+
+	double result=fabs(normal1[0]*normal2[0]+normal1[1]*normal2[1]+normal1[2]*normal2[3]);
+
+	EXPECT_DOUBLE_EQ( AbsDotProduct(normal1,normal2), result);
+
+}
