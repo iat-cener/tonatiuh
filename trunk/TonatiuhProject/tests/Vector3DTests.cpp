@@ -10,6 +10,10 @@
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "Vector3D.h"
+#include <Inventor/SbVec3f.h>
+
+
+
 
 TEST(Vector3DTests, ConstructorDefault){
 	Vector3D vector;
@@ -33,27 +37,34 @@ TEST(Vector3DTests, ConstructorFromPoint){
 	EXPECT_DOUBLE_EQ(vector.z , point.z);
 }
 
-//TEST(Vector3DTests, ConstructorFromSbVec3f){
+TEST(Vector3DTests, ConstructorFromSbVec3f){
 
-/*	float x=6789.0;
-	float y=893;
-	float z=0.56273;
+    float x0=6789.0;
+    float y0=893;
+    float z0=0.56273;
+
+	SbVec3f scaleFactor(x0,y0,z0);
+	Vector3D vector3D(scaleFactor);
 
 
-	Vector3D vector3D(SbVec3f(float(x),float(y),float(z)));
+	EXPECT_FLOAT_EQ(vector3D.x, x0);
+	EXPECT_FLOAT_EQ(vector3D.y, y0);
+	EXPECT_FLOAT_EQ(vector3D.z, z0);
+}
 
+TEST(Vector3DTests,Vector3DToSbVec3f){
 
-	EXPECT_DOUBLE_EQ(SbVec3f.vector3D.x,double(x));
-	EXPECT_FLOAT_EQ(vector3D.y, y);
-	EXPECT_FLOAT_EQ(vector3D.z, z);
-}*/
+	float x0=6789.0;
+	float y0=893;
+	float z0=0.56273;
 
-/*TEST(Vector3DTests,Vector3DToSbVec3f){
-	Vector3D vector(6789.0,893,0.56273);
-	EXPECT_FLOAT_EQ(vector.ToSbVec3f().vec[0] , float(vector.x));
-	EXPECT_FLOAT_EQ(vector3D.y , float(vector.y));
-	EXPECT_FLOAT_EQ(vector3D.z , float(vector.z));
-}*/
+	Vector3D vector(x0,y0,z0);
+
+	EXPECT_FLOAT_EQ(vector.ToSbVec3f()[0] , float(x0));
+	EXPECT_FLOAT_EQ(vector.ToSbVec3f()[1] , float(y0));
+	EXPECT_FLOAT_EQ(vector.ToSbVec3f()[2] , float(z0));
+}
+
 TEST(Vector3DTests,OperatorPlusEqVector){
 	double x0 = 23.4;
 	double y0 = 78.9;
