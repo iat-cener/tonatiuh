@@ -1885,6 +1885,8 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
     else
     {
     	shape = pTShapeFactory->CreateTShape();
+    	/*Hay que comprobar si shape es nulo para no crear una superficie a partir de nulo que probacara el cierre de la aplicacion.*/
+    	if(shape!=0){
     	shape->setName( pTShapeFactory->TShapeName().toStdString().c_str() );
         CmdInsertShape* createShape = new CmdInsertShape( shapeKit, shape, m_sceneModel );
         QString commandText = QString( "Create Shape: %1" ).arg( pTShapeFactory->TShapeName().toLatin1().constData());
@@ -1893,6 +1895,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 
     	m_sceneModel->UpdateSceneModel();
         m_document->SetDocumentModified( true );
+    	}
     }
 }
 
@@ -1905,6 +1908,12 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 
 	TSceneKit* scene = m_document->GetSceneKit();
 
+	/*Las 2 lineas siguientes son para obtener el valor del nodo padre*/
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	/*Si el valor del nodo padre es del tipo TseparatorKit, permitimos la creacion del Traker**/
+	if(parentNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ){
+	/**/
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
 	tracker->SetSceneKit( scene );
 
@@ -1913,6 +1922,11 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 
 	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
+	}
+	/*En caso de que el valor del nodo padre no sea del tipo TSeparatorKit,
+	 *no realizamos ninguna modicacion en SceneModel*/
+	else return;
+	/**/
 }
 
 
@@ -2957,9 +2971,11 @@ void MainWindow::UpdateRecentFileActions()
 			QString text = tr( "&%1 %2" )
 			               .arg( j + 1 )
 			               .arg( StrippedName( m_recentFiles[j] ) );
+            if(text!="shape NULL"){
 			m_recentFileActions[j]->setText( text );
 			m_recentFileActions[j]->setData( m_recentFiles[j] );
 			m_recentFileActions[j]->setVisible( true );
+            }
 		}
 		else m_recentFileActions[j]->setVisible( false );
 	}
