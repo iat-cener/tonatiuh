@@ -69,6 +69,7 @@ TShapeKit::TShapeKit()
 	SO_KIT_CONSTRUCTOR(TShapeKit);
 
 	SO_KIT_CHANGE_ENTRY_TYPE(shape, TShape, TCube);
+	SO_KIT_CHANGE_NULL_BY_DEFAULT(shape,TRUE);
 	SO_KIT_INIT_INSTANCE();
 
 	setPart("shape", NULL );
