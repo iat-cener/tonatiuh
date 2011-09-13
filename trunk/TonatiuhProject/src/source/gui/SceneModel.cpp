@@ -838,7 +838,6 @@ bool SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 			coinParent.setPart( "tracker", coinChild );
 
 		}
-
 		if( coinChild->getTypeId().isDerivedFrom( SoShape::getClassTypeId() ) )
 		{
 			TShapeKit* shapeKit = static_cast< TShapeKit* >( pCoinParent );
@@ -948,21 +947,21 @@ void SceneModel::UpdateSceneModel()
 
 void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 {
-	if( instanceNode.GetNode()->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	/*if( instanceNode.GetNode()->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		TSeparatorKit* separatorNode = static_cast<TSeparatorKit*>( instanceNode.GetNode() );
 		SoNode* tracker = separatorNode->getPart( "tracker", false );
 		if( tracker )
 		{
 			TTracker* trackerNode = static_cast< TTracker* >( tracker );
-			trackerNode->SetSceneKit( 0 );
+			//trackerNode->SetSceneKit( 0 );
 		}
-	}
+	}*/
 	while (instanceNode.children.count()>0)
 	{
 		InstanceNode* childInstance = instanceNode.children[instanceNode.children.count()-1];
 		DeleteInstanceTree( *childInstance );
-		delete childInstance;
+		//delete childInstance;
 	}
 
 	QList<InstanceNode*>& instanceList = m_mapCoinQt[ instanceNode.GetNode()];
