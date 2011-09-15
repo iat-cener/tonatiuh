@@ -1768,6 +1768,14 @@ void MainWindow::selectionFinish( SoSelection* selection )
     if ( !selectionPath->containsNode ( m_document->GetSceneKit() ) ) return;
 
     SoNodeKitPath* nodeKitPath = static_cast< SoNodeKitPath* >( selectionPath );
+    if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(TLightKit::getClassTypeId() ) )
+    {
+    	selection->deselectAll();
+    	QModelIndex currentIndex = m_selectionModel->currentIndex();
+    	m_selectionModel->setCurrentIndex( currentIndex , QItemSelectionModel::ClearAndSelect );
+    	return;
+    }
+
     if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(SoDragger::getClassTypeId() ) ) return;
 
     QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
