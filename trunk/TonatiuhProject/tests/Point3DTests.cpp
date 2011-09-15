@@ -4,6 +4,12 @@
 
 #include <cmath>
 
+#include "TestsAuxiliaryFunctions.h"
+#include <time.h>
+
+const double maximumCoordinate = 5000000.0;
+const unsigned long int maximumNumberOfTests = 60000;
+
 // Tests the Set method.
 TEST(Point3DTests, ConstructorDefault) {
   Point3D point;
@@ -14,108 +20,202 @@ TEST(Point3DTests, ConstructorDefault) {
 
 TEST(Point3DTests, ConstructorFromVector) {
 
-  Vector3D vector( 6789.0,893,0.56273);
-  Point3D point( vector );
-  EXPECT_DOUBLE_EQ( vector.x, point.x );
-  EXPECT_DOUBLE_EQ( vector.y, point.y );
-  EXPECT_DOUBLE_EQ( vector.z, point.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  Vector3D vector( taf::randomNumber(a,b),taf::randomNumber(a,b),taf::randomNumber(a,b));
+		  Point3D point( vector );
+		  EXPECT_DOUBLE_EQ( vector.x, point.x );
+		  EXPECT_DOUBLE_EQ( vector.y, point.y );
+		  EXPECT_DOUBLE_EQ( vector.z, point.z );
+	}
 }
 
 TEST(Point3DTests, OperatorPlusEqVector) {
-  double x0 = 23.4;
-  double y0 = 78.9;
-  double z0 = 254.76;
-  Point3D point( x0, y0, z0 );
-  Vector3D vector( 89.12, 76.24, 1.243 );
-  point += vector;
-  EXPECT_DOUBLE_EQ( (x0+vector.x), point.x );
-  EXPECT_DOUBLE_EQ( (y0+vector.y), point.y );
-  EXPECT_DOUBLE_EQ( (z0+vector.z), point.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double x0;
+	double y0;
+	double z0;
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  x0=taf::randomNumber(a,b);
+		  y0=taf::randomNumber(a,b);
+		  z0=taf::randomNumber(a,b);
+		  Point3D point( x0, y0, z0 );
+		  Vector3D vector( 89.12, 76.24, 1.243 );
+		  point += vector;
+		  EXPECT_DOUBLE_EQ( (x0+vector.x), point.x );
+		  EXPECT_DOUBLE_EQ( (y0+vector.y), point.y );
+		  EXPECT_DOUBLE_EQ( (z0+vector.z), point.z );
+	}
 }
 
 TEST(Point3DTests, OperatorPlusVector) {
-  Point3D point( 130.43, 728.29, 54.716 );
-  Vector3D vector( 89.12, 76.24, 1.243 );
-  Point3D result;
-  result = point + vector;
-  EXPECT_DOUBLE_EQ( ( point.x + vector.x ), result.x );
-  EXPECT_DOUBLE_EQ( ( point.y + vector.y ), result.y );
-  EXPECT_DOUBLE_EQ( ( point.z + vector.z ), result.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double x0;
+	double y0;
+	double z0;
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  x0=taf::randomNumber(a,b);
+		  y0=taf::randomNumber(a,b);
+		  z0=taf::randomNumber(a,b);
+		  Point3D point=taf::randomPoint(a,b);
+		  Vector3D vector( x0, y0, z0 );
+		  Point3D result;
+		  result = point + vector;
+		  EXPECT_DOUBLE_EQ( ( point.x + vector.x ), result.x );
+		  EXPECT_DOUBLE_EQ( ( point.y + vector.y ), result.y );
+		  EXPECT_DOUBLE_EQ( ( point.z + vector.z ), result.z );
+	}
 }
 
 TEST(Point3DTests, OperatorMinusEqVector) {
-  double x0 = 43.3;
-  double y0 = 172.9;
-  double z0 = 828.6;
-  Point3D point( x0, y0, z0 );
-  Vector3D vector( 64.20, 676.46, 12.43 );
-  point -= vector;
-  EXPECT_DOUBLE_EQ( (x0-vector.x), point.x );
-  EXPECT_DOUBLE_EQ( (y0-vector.y), point.y );
-  EXPECT_DOUBLE_EQ( (z0-vector.z), point.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double x0;
+	double y0;
+	double z0;
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  x0=taf::randomNumber(a,b);
+		  y0=taf::randomNumber(a,b);
+		  z0=taf::randomNumber(a,b);
+		  Point3D point(x0, y0, z0);
+		  Vector3D vector(taf::randomPoint(a,b));
+		  point -= vector;
+		  EXPECT_DOUBLE_EQ( (x0-vector.x), point.x );
+		  EXPECT_DOUBLE_EQ( (y0-vector.y), point.y );
+		  EXPECT_DOUBLE_EQ( (z0-vector.z), point.z );
+	}
 }
 
 TEST(Point3DTests, OperatorMinusVector) {
-  Point3D point( 589.37, 28.229, 147.16 );
-  Vector3D vector( 1.243, 19.12, 67.24 );
-  Point3D result;
-  result = point - vector;
-  EXPECT_DOUBLE_EQ( ( point.x - vector.x ), result.x );
-  EXPECT_DOUBLE_EQ( ( point.y - vector.y ), result.y );
-  EXPECT_DOUBLE_EQ( ( point.z - vector.z ), result.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  Point3D point=taf::randomPoint(a,b);
+		  Vector3D vector( taf::randomPoint(a,b) );
+		  Point3D result;
+		  result = point - vector;
+		  EXPECT_DOUBLE_EQ( ( point.x - vector.x ), result.x );
+		  EXPECT_DOUBLE_EQ( ( point.y - vector.y ), result.y );
+		  EXPECT_DOUBLE_EQ( ( point.z - vector.z ), result.z );
+	}
 }
 
 TEST(Point3DTests, OperatorTimesEqScalar) {
-  double x0 = 43.3;
-  double y0 = 172.9;
-  double z0 = 828.6;
-  Point3D point( x0, y0, z0 );
-  double scalar = 233.6785;
-  point *= scalar;
-  EXPECT_DOUBLE_EQ( (x0 * scalar), point.x );
-  EXPECT_DOUBLE_EQ( (y0 * scalar), point.y );
-  EXPECT_DOUBLE_EQ( (z0 * scalar), point.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double x0;
+	double y0;
+	double z0;
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  x0=taf::randomNumber(a,b);
+		  y0=taf::randomNumber(a,b);
+		  z0=taf::randomNumber(a,b);
+		  Point3D point( x0, y0, z0 );
+		  double scalar = taf::randomNumber(a,b);
+		  point *= scalar;
+		  EXPECT_DOUBLE_EQ( (x0 * scalar), point.x );
+		  EXPECT_DOUBLE_EQ( (y0 * scalar), point.y );
+		  EXPECT_DOUBLE_EQ( (z0 * scalar), point.z );
+	}
 }
 
 TEST(Point3DTests, OperatorTimesScalar) {
-  Point3D point( 589.37, 28.229, 147.16 );
-  double scalar = 145.89;
-  Point3D result;
-  result = point * scalar;
-  EXPECT_DOUBLE_EQ( ( point.x * scalar ), result.x );
-  EXPECT_DOUBLE_EQ( ( point.y * scalar ), result.y );
-  EXPECT_DOUBLE_EQ( ( point.z * scalar ), result.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  Point3D point( taf::randomPoint(a,b) );
+		  double scalar = taf::randomNumber(a,b);
+		  Point3D result;
+		  result = point * scalar;
+		  EXPECT_DOUBLE_EQ( ( point.x * scalar ), result.x );
+		  EXPECT_DOUBLE_EQ( ( point.y * scalar ), result.y );
+		  EXPECT_DOUBLE_EQ( ( point.z * scalar ), result.z );
+	}
 }
 
 TEST(Point3DTests, OperatorDivideEqScalar) {
-  double x0 = 438.9;
-  double y0 = 12.2;
-  double z0 = 628.46;
-  Point3D point( x0, y0, z0 );
-  double scalar = 6785.234;
-  point /= scalar;
-  EXPECT_DOUBLE_EQ( (x0 / scalar), point.x );
-  EXPECT_DOUBLE_EQ( (y0 / scalar), point.y );
-  EXPECT_DOUBLE_EQ( (z0 / scalar), point.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double x0;
+	double y0;
+	double z0;
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  x0=taf::randomNumber(a,b);
+		  y0=taf::randomNumber(a,b);
+		  z0=taf::randomNumber(a,b);
+		  Point3D point( x0, y0, z0 );
+		  double scalar = taf::randomNumber(a,b);
+		  point /= scalar;
+		  EXPECT_DOUBLE_EQ( (x0 / scalar), point.x );
+		  EXPECT_DOUBLE_EQ( (y0 / scalar), point.y );
+		  EXPECT_DOUBLE_EQ( (z0 / scalar), point.z );
+	}
 }
 
 TEST(Point3DTests, OperatorDivideScalar) {
-  Point3D point( 593.75, 82.292, 714.16 );
-  double scalar = 145.89;
-  Point3D result;
-  result = point / scalar;
-  EXPECT_DOUBLE_EQ( ( point.x / scalar ), result.x );
-  EXPECT_DOUBLE_EQ( ( point.y / scalar ), result.y );
-  EXPECT_DOUBLE_EQ( ( point.z / scalar ), result.z );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  Point3D point( taf::randomPoint(a,b) );
+		  double scalar = taf::randomNumber(a,b);
+		  Point3D result;
+		  result = point / scalar;
+		  EXPECT_DOUBLE_EQ( ( point.x / scalar ), result.x );
+		  EXPECT_DOUBLE_EQ( ( point.y / scalar ), result.y );
+		  EXPECT_DOUBLE_EQ( ( point.z / scalar ), result.z );
+	}
 }
 
 TEST(Point3DTests, OperatorMinusPoint) {
-  Point3D pointA( 0.37, 228.229, -47.16 );
-  Point3D pointB( 3.46, 26.4, 87.2 );
-  Vector3D vector = pointA - pointB;
-  EXPECT_DOUBLE_EQ( ( pointA.x - pointB.x ), vector.x );
-  EXPECT_DOUBLE_EQ( ( pointA.y - pointB.y ), vector.y );
-  EXPECT_DOUBLE_EQ( ( pointA.z - pointB.z ), vector.z );
+
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  Point3D pointA( taf::randomPoint(a,b) );
+		  Point3D pointB( taf::randomPoint(a,b) );
+		  Vector3D vector = pointA - pointB;
+		  EXPECT_DOUBLE_EQ( ( pointA.x - pointB.x ), vector.x );
+		  EXPECT_DOUBLE_EQ( ( pointA.y - pointB.y ), vector.y );
+		  EXPECT_DOUBLE_EQ( ( pointA.z - pointB.z ), vector.z );
+	}
 }
 
 TEST(Point3DTests, EqualityOperators) {
@@ -144,45 +244,88 @@ TEST(Point3DTests, EqualityOperators) {
 }
 
 TEST(Point3DTests, IndexingOperatorsRhs) {
-  double coordinate[] = { 3456.78, -348.89, -28.223 };
-  double value = 0.0;
-  Point3D point( coordinate[0], coordinate[1], coordinate[2] );
-  for( int i = 0; i<3; i++ )
-  {
-	  EXPECT_DOUBLE_EQ( coordinate[i], point[i] );
-	  value = point[i];
-	  EXPECT_DOUBLE_EQ( coordinate[i], value );
-  }
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double x0;
+	double y0;
+	double z0;
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  x0=taf::randomNumber(a,b);
+		  y0=taf::randomNumber(a,b);
+		  z0=taf::randomNumber(a,b);
+		  double coordinate[] = { x0, y0, z0 };
+		  double value = 0.0;
+		  Point3D point( coordinate[0], coordinate[1], coordinate[2] );
+		  for( int i = 0; i<3; i++ )
+		  {
+			  EXPECT_DOUBLE_EQ( coordinate[i], point[i] );
+			  value = point[i];
+			  EXPECT_DOUBLE_EQ( coordinate[i], value );
+		  }
+	}
 }
 
 TEST(Point3DTests, IndexingOperatorsLhs) {
-  double coordinate[] = { 3456.78, -348.89, -28.223 };
-  Point3D point( 0, 0, 0 );
-  for( int i = 0; i<3; i++ )
-  {
-	  point[i] = coordinate[i];
-	  EXPECT_DOUBLE_EQ(  coordinate[i], point[i] );
-  }
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double x0;
+	double y0;
+	double z0;
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  x0=taf::randomNumber(a,b);
+		  y0=taf::randomNumber(a,b);
+		  z0=taf::randomNumber(a,b);
+		  double coordinate[] = { x0, y0, z0 };
+		  Point3D point( 0, 0, 0 );
+		  for( int i = 0; i<3; i++ )
+		  {
+			  point[i] = coordinate[i];
+			  EXPECT_DOUBLE_EQ(  coordinate[i], point[i] );
+		  }
+	}
 }
 
 TEST(Point3DTests, DistanceFromPointToPoint) {
-  Point3D pointA ( 3456.78, -348.89, -28.223 );
-  Point3D pointB( 67.24, -23.56, 0.008 );
-  double x0=(pointA.x)-(pointB.x);
-  double y0=(pointA.y)-(pointB.y);
-  double z0=(pointA.z)-(pointB.z);
-  double result=sqrt(x0*x0+y0*y0+z0*z0);
-  EXPECT_DOUBLE_EQ(result,Distance(pointA,pointB) );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		  Point3D pointA ( taf::randomPoint(a,b) );
+		  Point3D pointB ( taf::randomPoint(a,b) );
+		  double x0=(pointA.x)-(pointB.x);
+		  double y0=(pointA.y)-(pointB.y);
+		  double z0=(pointA.z)-(pointB.z);
+		  double result=sqrt(x0*x0+y0*y0+z0*z0);
+		  EXPECT_DOUBLE_EQ(result,Distance(pointA,pointB) );
+	}
 
 }
 
 TEST(Point3DTests, DistanceSquaredFromPointToPoint) {
-  Point3D pointA ( 3456.78, -348.89, -28.223 );
-  Point3D pointB( 67.24, -23.56, 0.008 );
-  double x0=(pointA.x)-(pointB.x);
-  double y0=(pointA.y)-(pointB.y);
-  double z0=(pointA.z)-(pointB.z);
-  double result=x0*x0+y0*y0+z0*z0;
-  EXPECT_DOUBLE_EQ(result,DistanceSquared(pointA,pointB) );
+	srand ( time(NULL) );
+
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+
+		  Point3D pointA ( taf::randomPoint(a,b) );
+		  Point3D pointB ( taf::randomPoint(a,b) );
+		  double x0=(pointA.x)-(pointB.x);
+		  double y0=(pointA.y)-(pointB.y);
+		  double z0=(pointA.z)-(pointB.z);
+		  double result=x0*x0+y0*y0+z0*z0;
+		  EXPECT_DOUBLE_EQ(result,DistanceSquared(pointA,pointB) );
+	}
 
 }

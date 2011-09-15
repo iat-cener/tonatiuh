@@ -12,6 +12,7 @@
 #include "tgc.h"
 #include "TLightKit.h"
 #include "TestsAuxiliaryFunctions.h"
+#include <time.h>
 
 const unsigned long int maximumNumberOfTests = 1000;
 
@@ -26,7 +27,7 @@ TEST( TLightKitTests, ConstructorDefault)
 
 TEST( TLightKitTests, ChangePosition)
 {
-
+	srand ( time(NULL) );
 	double minA = 0;
 	double maxA = tgc::TwoPi;
 

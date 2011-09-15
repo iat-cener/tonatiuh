@@ -7,6 +7,7 @@
 
 #include "TSquare.h"
 #include "BBox.h"
+#include "NormalVector.h"
 
 #include <gtest/gtest.h>
 
@@ -59,8 +60,8 @@ TEST(TShapeTests, TShapeSample){
 	double z1=double(1450/5231);
 
 	EXPECT_DOUBLE_EQ(square->Sample(x1,z1).x,(x1*value)-(value/2));
-
-
-
+	EXPECT_DOUBLE_EQ(square->Sample(x1,z1).y,0);
+	EXPECT_DOUBLE_EQ(square->Sample(x1,z1).z,(z1*value)-(value/2));
 
 }
+

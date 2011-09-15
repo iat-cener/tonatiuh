@@ -9,6 +9,11 @@
 #include "Point3D.h"
 
 #include <gtest/gtest.h>
+#include "TestsAuxiliaryFunctions.h"
+#include <time.h>
+
+const double maximumCoordinate = 5000000.0;
+const unsigned long int maximumNumberOfTests = 60000;
 
 TEST(TLightShapeTests , DefaultConstructor){
 
@@ -23,19 +28,40 @@ TEST(TLightShapeTests , DefaultConstructor){
 
 TEST(TLightShapeTests , TLightShapeGetArea){
 
-    double xmin=-25;
-    double xmax=40;
-    double zmin=7;
-    double zmax=32;
+	srand ( time(NULL) );
 
-	TLightShape* shape= new TLightShape;
+	// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
 
-	shape->xMin.setValue(xmin);
-	shape->xMax.setValue(xmax);
-	shape->zMin.setValue(zmin);
-	shape->zMax.setValue(zmax);
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
+		float xmin=float(taf::randomNumber(a,b));
+		float xmax=float(taf::randomNumber(a,b));
+		float zmin=float(taf::randomNumber(a,b));
+		float zmax=float(taf::randomNumber(a,b));
 
-	EXPECT_DOUBLE_EQ(double(shape->GetArea()),(xmax-xmin)*(zmax-zmin));
+		TLightShape* shape= new TLightShape;
+
+		shape->xMin.setValue(xmin);
+		shape->xMax.setValue(xmax);
+		shape->zMin.setValue(zmin);
+		shape->zMax.setValue(zmax);
+
+		trt::TONATIUH_REAL xminR;
+		trt::TONATIUH_REAL xmaxR;
+		trt::TONATIUH_REAL zminR;
+		trt::TONATIUH_REAL zmaxR;
+		xminR.setValue(xmin);
+		xmaxR.setValue(xmax);
+		zminR.setValue(zmin);
+		zmaxR.setValue(zmax);
+
+		double width= xmaxR.getValue()-xminR.getValue();
+		double heigh= zmaxR.getValue()-zminR.getValue();
+
+		EXPECT_DOUBLE_EQ(shape->GetArea(),width*heigh);
+	}
+
 
 }
 
@@ -81,32 +107,48 @@ TEST(TLightShapeTests , TLightShapeIsIntoValidArea){
 
 TEST(TLightShapeTests , TLightShapeSample){
 
-	double xmin=-25;
-	double xmax=40;
-	double zmin=7;
-    double zmax=32;
+	srand ( time(NULL) );
 
-    double x0=5;
-    double z0=40;
+			// Extension of the testing space
+	double b = maximumCoordinate;
+	double a = -b;
+	double c = 0;
+	double d = 1;
 
+	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
 
-    double x1=double(12/150);
-    double z1=double(1450/5231);
+		double xmin=taf::randomNumber(a,b);
+		double xmax=taf::randomNumber(a,b);
+		double zmin=taf::randomNumber(a,b);
+		double zmax=taf::randomNumber(a,b);
 
-    TLightShape* shape= new TLightShape;
+		double x0=taf::randomNumber(c,d);
+		double z0=taf::randomNumber(c,d);
 
-	shape->xMin.setValue(xmin);
-	shape->xMax.setValue(xmax);
-	shape->zMin.setValue(zmin);
-	shape->zMax.setValue(zmax);
-    /* Este ejemplo produce que el programa mande un mensaje de error y se cierre
-     * ya que los valores x0 y0 no pertenecen al rango {0,1}
-     * EXPECT_FALSE(shape->Sample(x0,y0) == true);
-     */
+		TLightShape* shape= new TLightShape;
 
-    EXPECT_DOUBLE_EQ(shape->Sample(x1,z1).x,(x1*(xmax-xmin)+xmin));
-    EXPECT_DOUBLE_EQ(shape->Sample(x1,z1).y,0.0);
-    EXPECT_DOUBLE_EQ(shape->Sample(x1,z1).z,(z1*(zmax-zmin)+zmin));
+		shape->xMin.setValue(xmin);
+		shape->xMax.setValue(xmax);
+		shape->zMin.setValue(zmin);
+		shape->zMax.setValue(zmax);
+
+		trt::TONATIUH_REAL xminR;
+		trt::TONATIUH_REAL xmaxR;
+		trt::TONATIUH_REAL zminR;
+		trt::TONATIUH_REAL zmaxR;
+		xminR.setValue(xmin);
+		xmaxR.setValue(xmax);
+		zminR.setValue(zmin);
+		zmaxR.setValue(zmax);
+		/* Este ejemplo produce que el programa mande un mensaje de error y se cierre
+		 * ya que los valores x0 y0 no pertenecen al rango {0,1}
+		 * EXPECT_FALSE(shape->Sample(x0,y0) == true);
+		 */
+
+		EXPECT_DOUBLE_EQ(shape->Sample(x0,z0).x,(x0*(xmaxR.getValue()-xminR.getValue())+xminR.getValue()));
+		EXPECT_DOUBLE_EQ(shape->Sample(x0,z0).y,0.0);
+		EXPECT_DOUBLE_EQ(shape->Sample(x0,z0).z,(z0*(zmaxR.getValue()-zminR.getValue())+zminR.getValue()));
+	}
 
 
 }
