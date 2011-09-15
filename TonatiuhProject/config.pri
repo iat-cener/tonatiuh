@@ -1,4 +1,4 @@
-VERSION = 1.2.1
+VERSION = 1.2.2
 
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
