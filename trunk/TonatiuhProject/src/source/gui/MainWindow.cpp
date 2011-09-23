@@ -1105,6 +1105,8 @@ void MainWindow::Delete( )
 	InstanceNode* selectionNode = m_sceneModel->NodeFromIndex( selection );
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( selectionNode->GetParent()->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
+
+
 	Delete( selection );
 }
 
@@ -1779,6 +1781,8 @@ void MainWindow::selectionFinish( SoSelection* selection )
     if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(SoDragger::getClassTypeId() ) ) return;
 
     QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
+
+
 	if ( !nodeIndex.isValid() ) return;
 	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
 	m_selectionModel->select( nodeIndex , QItemSelectionModel::ClearAndSelect );
@@ -1922,6 +1926,15 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	/*Si el valor del nodo padre es del tipo TseparatorKit, permitimos la creacion del Traker**/
 	if(parentNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ){
 	/**/
+		TSeparatorKit* separatorKit = static_cast< TSeparatorKit* >( parentNode );
+		TTracker* trak = static_cast< TTracker* >( separatorKit->getPart( "tracker", false ) );
+
+	    if ( trak )
+	    {
+	    	QMessageBox::information( this, "Tonatiuh Action",
+		                          "This TSeparatorKit already contains a traker node", 1);
+		    return;
+	    }
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
 	tracker->SetSceneKit( scene );
 
@@ -2154,9 +2167,11 @@ bool MainWindow::Delete( QModelIndex index )
 		CmdDeleteTracker* commandDelete = new CmdDeleteTracker( index, m_document->GetSceneKit(), *m_sceneModel );
 		m_commandStack->push( commandDelete );
 	}
+	else if( coinNode->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) ) return false;
 	else
 	{
 		CmdDelete* commandDelete = new CmdDelete( index, *m_sceneModel );
+
 		m_commandStack->push( commandDelete );
 	}
 
@@ -2979,11 +2994,9 @@ void MainWindow::UpdateRecentFileActions()
 			QString text = tr( "&%1 %2" )
 			               .arg( j + 1 )
 			               .arg( StrippedName( m_recentFiles[j] ) );
-            if(text!="shape NULL"){
 			m_recentFileActions[j]->setText( text );
 			m_recentFileActions[j]->setData( m_recentFiles[j] );
 			m_recentFileActions[j]->setVisible( true );
-            }
 		}
 		else m_recentFileActions[j]->setVisible( false );
 	}
