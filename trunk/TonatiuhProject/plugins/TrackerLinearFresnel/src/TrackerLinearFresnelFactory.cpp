@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString TrackerLinearFresnelFactory::TTrackerName() const
 {
-	return QString("Heliostat_tracker");
+	return QString("Linear_Fresnel_tracker");
 }
 
 QIcon TrackerLinearFresnelFactory::TTrackerIcon() const
