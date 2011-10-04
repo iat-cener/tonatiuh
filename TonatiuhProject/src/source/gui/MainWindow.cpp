@@ -788,17 +788,15 @@ void MainWindow::ChangeGridSettings()
 
 			InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
 			if ( !sceneInstance )  return;
-			SoNode* rootNode = sceneInstance->GetNode();
-			SoPath* nodePath = new SoPath( rootNode );
-			nodePath->ref();
+			InstanceNode* rootInstance = sceneInstance->children[sceneInstance->children.size() -1 ];
+			if ( !rootInstance )  return;
 
-			SbViewportRegion region = m_graphicView[m_focusView]->GetViewportRegion();
-			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( region ) ;
-			if(nodePath)	bbAction->apply(nodePath);
+			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+			rootInstance->GetNode()->getBoundingBox( bbAction );
 
-			SbXfBox3f box= bbAction->getXfBoundingBox();
+			SbBox3f box = bbAction->getXfBoundingBox().project();
 			delete bbAction;
-			nodePath->unref();
+
 
 			m_gridXSpacing = 10;
 			m_gridZSpacing = 10;
