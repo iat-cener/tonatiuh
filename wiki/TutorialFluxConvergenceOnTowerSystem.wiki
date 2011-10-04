@@ -2,7 +2,7 @@
 
 = Introduction =
 
-*The main aim of this tutorial is explain how to analyze the tonatiuh output data to stimate the flux distribution on the target.
+ * The main aim of this tutorial is explain how to analyze the tonatiuh output data to stimate the flux distribution on the target.
 
 
 = Characteristics of the system =
@@ -26,3 +26,35 @@ We are asumming that the solar concentrating system is placed in Sevilla, Spain 
  * When the node is created, rename it to "Tower". With this new node selected, create a new TSeparator as a node child and rename it to "Base".
  * If we select the "Base" node,we can add one shape on it. Only if we create first a TShape node (the red circle icon next to the blue one), we will be able to insert a shape.
  * With the TShape node, previously created, selected, we can add a shape. In this case, we are using a cylinder shape called cylinder. We can find it on the plugin menu bar.
+ * Once the cylinder is created, select it and change their values to those ones:
+{{{
+radious        15
+length         120
+phiMax         6.2831855
+activeSide     OUTSIDE
+}}}
+ * Now, it is time to create the target. Select the node "Tower" and create a new TSeparator. Rename it to "Target". Change it transform values to:
+{{{
+translation        0 100 0
+rotation           0 1 0 1.5707964
+scaleFactor        1 1 1 
+scaleOrientation   0 0 1 0 
+center             0 0 0 
+}}}
+
+ * Select the new node and add a new TSeparatorKit as a child. Rename it to "target" and change the parameters to:
+{{{
+translation        0 0 0
+rotation           0 0 -1 1.5707964
+scaleFactor        1 1 1 
+scaleOrientation   0 0 1 0 
+center             0 0 0 
+}}}
+ * Add a new TShapekit as a child of the last node created.Now add a new shape as a child.In this example, the shape must be a "flat_rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
+ * Set those parameters on the "flat_rectangle" options:
+ {{{
+width        15
+heigth       15
+activeSide   FRONT
+ }}}
+ * Select the last Tshapekit created and add a "specular_standar_material" as a child. 
