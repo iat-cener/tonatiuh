@@ -44,7 +44,7 @@ center             0 0 0
 
  * Select the new node and add a new TSeparatorKit as a child. Rename it to "target" and change the parameters to:
 {{{
-translation        0 0 0
+
 rotation           0 0 -1 1.5707964
 scaleFactor        1 1 1 
 scaleOrientation   0 0 1 0 
@@ -64,9 +64,17 @@ activeSide   FRONT
 
 By this moment, the tower of the system has been created. Now we need to create the heliostat. According to the initial conditions, the heliostat must be situated 400 meters away the tower with an inclination of 45º. To create it, follow those steps:
  * Select the rootNode and create TSeparator node by clicking on the "Group Node" icon. Rename it to "Heliostat".
- * Select "Heliostat" and add a new TSeparator.
+ * Select "Heliostat" and add a new TSeparator. Rename it to "HeliostatSurface"
 
  * Select the last node created and add a Traker (the last icon on the rigth icon bar). In the transform options,change the aimingPoint to:
  {{{
 aimingPoint   0 100 0
+ }}}
+ * Select the "HeliostatSurface" node and add a TShapeKit node.
+ * Now, add a "flat-rectangle" shape and a "specular_Standar_Material" as a child on the previous TShapeKit.
+ * We want a square flat which surface of with a surface of 60 m<sup>2</sup>. So we have to set it values to:
+ {{{
+width         7.7399998
+heigth        7.7399998
+activeSide    FRONT
  }}}
