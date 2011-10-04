@@ -9,9 +9,9 @@
 
 The system we want to simulate consists of:
 
-* A tower.
-* One heliostat.
-* A flat plane as a receiver.
+ * A tower.
+ * One heliostat.
+ * A flat plane as a receiver.
 
 =General aspects of the system =
 
@@ -22,4 +22,7 @@ We are asumming that the solar concentrating system is placed in Sevilla, Spain 
 = Modeling the system =
 
 == Modeling the tower ==
-Once tonatiuh is opened, we have to select the RootNode and, then, add a TSeparator as a childen. The TSeparator
+ * Once tonatiuh is opened, we have to select the rootNode and, then, add a TSeparator as a childen. The TSeparator node is the blue circular buttom allocated on the icon bar.
+ * When the node is created, rename it to "Tower". With this new node selected, create a new TSeparator as a node child and rename it to "Base".
+ * If we select the "Base" node,we can add one shape on it. Only if we create first a TShape node (the red circle icon next to the blue one), we will be able to insert a shape.
+ * With the TShape node, previously created, selected, we can add a shape. In this case, we are using a cylinder shape called cylinder. We can find it on the plugin menu bar.
