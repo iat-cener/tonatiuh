@@ -181,7 +181,7 @@ void SunPositionCalculatorDialog::CalculateSunPosition()
 
 QDateTime SunPositionCalculatorDialog::GetTime()
 {
-	QTime time = utRadio->isChecked() ? utTime->time() : ctTime->time().addSecs( zoneSpin->value() * 3600 );
+	QTime time = utRadio->isChecked() ? utTime->time() : ctTime->time().addSecs( - zoneSpin->value() * 3600 );
 
 	QDateTime dateTime( calendarWidget->selectedDate(), time );
 	return dateTime;
