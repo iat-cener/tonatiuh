@@ -193,6 +193,12 @@
                 <height>25</height>
                </size>
               </property>
+              <property name="minimum">
+               <number>-12</number>
+              </property>
+              <property name="maximum">
+               <number>12</number>
+              </property>
              </widget>
             </item>
            </layout>
