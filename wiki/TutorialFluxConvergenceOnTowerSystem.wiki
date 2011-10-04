@@ -24,8 +24,8 @@ We are asumming that the solar concentrating system is placed in Sevilla, Spain 
 == Modeling the tower ==
  * Once tonatiuh is opened, we have to select the rootNode and, then, add a TSeparator as a childen. The TSeparator node is the blue circular buttom allocated on the icon bar.
  * When the node is created, rename it to "Tower". With this new node selected, create a new TSeparator as a node child and rename it to "Base".
- * If we select the "Base" node,we can add one shape on it. Only if we create first a TShape node (the red circle icon next to the blue one), we will be able to insert a shape.
- * With the TShape node, previously created, selected, we can add a shape. In this case, we are using a cylinder shape called cylinder. We can find it on the plugin menu bar.
+ * If we select the "Base" node,we can add one shape on it. Only if we create first a TShapeKit node (the red circle icon next to the blue one), we will be able to insert a shape.
+ * With the TShape node, previously created, selected, we can add a shape. In this case, we are using a cylinder shape called Cylinder. We can find it on the plugin menu bar.
  * Once the cylinder is created, select it and change their values to those ones:
 {{{
 radious        15
@@ -50,11 +50,23 @@ scaleFactor        1 1 1
 scaleOrientation   0 0 1 0 
 center             0 0 0 
 }}}
- * Add a new TShapekit as a child of the last node created.Now add a new shape as a child.In this example, the shape must be a "flat_rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
+ * Add a new TShapeKit as a child of the last node created.Now add a new shape as a child.In this example, the shape must be a "flat_rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
  * Set those parameters on the "flat_rectangle" options:
  {{{
 width        15
 heigth       15
 activeSide   FRONT
  }}}
- * Select the last Tshapekit created and add a "specular_standar_material" as a child. 
+ * Select the last TShapekit created and add a "specular_standar_material" as a child. 
+
+
+== Modeling the heliostat ==
+
+By this moment, the tower of the system has been created. Now we need to create the heliostat. According to the initial conditions, the heliostat must be situated 400 meters away the tower with an inclination of 45º. To create it, follow those steps:
+ * Select the rootNode and create TSeparator node by clicking on the "Group Node" icon. Rename it to "Heliostat".
+ * Select "Heliostat" and add a new TSeparator.
+
+ * Select the last node created and add a Traker (the last icon on the rigth icon bar). In the transform options,change the aimingPoint to:
+ {{{
+aimingPoint   0 100 0
+ }}}
