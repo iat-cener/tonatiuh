@@ -119,4 +119,4 @@ for( var i = 1; i <= 400; ++i ){
 
 = Tonatiuh post-processing =
 
-Tonaituh doesn't provide a photon map results analizer so it's necessary to use an external aplication such as Mathematica and R. The output photon map is saved in a .dat extension in a sever-tuple for each photon.
+Tonaituh doesn't provide a photon map results analizer so it's necessary to use an external aplication such as Mathematica and R. The output photon map is saved in a .dat extension in a seven-tuple for each photon.
