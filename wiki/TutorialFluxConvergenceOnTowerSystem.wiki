@@ -22,11 +22,11 @@ We are asumming that the solar concentrating system is placed in Sevilla, Spain 
 = Modeling the system =
 
 == Modeling the tower ==
- * Once tonatiuh is opened, we have to select the rootNode and, then, add a TSeparator as a childen. The TSeparator node is the blue circular buttom allocated on the icon bar.
+ * Once tonatiuh is opened, we have to select the rootNode and, then, add a TSeparator as a childen. The TSeparator node is the blue circular button allocated on the icon bar.
  * When the node is created, rename it to "Tower". With this new node selected, create a new TSeparator as a node child and rename it to "Base".
- * If we select the "Base" node,we can add one shape on it. Only if we create first a TShapeKit node (the red circle icon next to the blue one), we will be able to insert a shape.
+ * If we select the "Base" node, we can add one shape on it. Only if we create first a TShapeKit node (the red circle icon next to the blue one), we will be able to insert a shape.
  * With the TShape node, previously created, selected, we can add a shape. In this case, we are using a cylinder shape called Cylinder. We can find it on the plugin menu bar.
- * Once the cylinder is created, select it and change their values to those ones:
+ * Once the Cylinder is created, select it and change their values to those ones:
 {{{
 radious        15
 length         120
@@ -50,33 +50,33 @@ scaleFactor        1 1 1
 scaleOrientation   0 0 1 0 
 center             0 0 0 
 }}}
- * Add a new TShapeKit as a child of the last node created.Now add a new shape as a child.In this example, the shape must be a "flat_rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
- * Set those parameters on the "flat_rectangle" options:
+ * Add a new TShapeKit as a child of the last node created. Now add a new shape as a child. In this example, the shape must be a "!Flat_Rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
+ * Set those parameters on the "!Flat_Rectangle" options:
  {{{
 width        15
 heigth       15
 activeSide   FRONT
  }}}
- * Select the last TShapekit created and add a "specular_standar_material" as a child. 
+ * Select the last TShapeKit created and add a "!Specular_Standar_Material" as a child. 
 
 
 == Modeling the heliostat ==
 
 By this moment, the tower of the system has been created. Now we need to create the heliostat. According to the initial conditions, the heliostat must be situated 400 meters away the tower with an inclination of 45º. To create it, follow those steps:
- * Select the rootNode and create TSeparator node by clicking on the "Group Node" icon. Rename it to "heliostat". We want the heliostat with an inclination of 45º and 400 metres away the tower. To fix the heliostat on the correct point we need to know the values for x and z. For x we have to calculate cos(45º) x 400. For z we have to calculate sen(45º) x 400. Now, we have to set them on the "!HelioStat" transform parameters in that way:
+ * Select the !RootNode and create TSeparator node by clicking on the "Group Node" icon. Rename it to "Heliostat". We want the heliostat with an inclination of 45º and 400 metres away the tower. To fix the heliostat on the correct point we need to know the values for x and z. For x we have to calculate cos(45º) x 400. For z we have to calculate sen(45º) x 400. Now, we have to set them on the "!HelioStat" transform parameters in that way:
 {{{
 translation    282.85 0 282.85
  }}}
 
- * Select "Heliostat" and add a new TSeparator. Rename it to "heliostatSurface".
+ * Select "Heliostat" and add a new TSeparator. Rename it to "!HeliostatSurface".
 
  * Select the last node created and add a Traker (the last icon on the rigth icon bar). In the transform options,change the aimingPoint to:
  {{{
 aimingPoint   0 100 0
  }}}
- The main property of this element is to make the heliostat change the position  while the sun is moving. Doing that, we can project more rays from the sun to to the target.
- * Select the "heliostatSurface" node and add a TShapeKit node.
- * Now, add a "flat-rectangle" shape and a "specular_Standar_material" as a child on the previous TShapeKit.
+ The main property of this element is to make the heliostat change the position  while the sun is moving. Doing that, we can project more rays from the sun to the target.
+ * Select the "!HeliostatSurface" node and add a TShapeKit node.
+ * Now, add a "!Flat-Rectangle" shape and a "!Specular_Standar_Material" as a child on the previous TShapeKit.
  * We want a square flat which surface of with a surface of 60 m<sup>2</sup>. So we have to set it values to:
  {{{
 width         7.7399998
@@ -122,9 +122,10 @@ for( var i = 1; i <= 400; ++i ){
 Tonatiuh doesn't provide a photon map results analizer so it's necessary to use an external aplication such as Mathematica and R. The output photon map is saved in a .dat extension in a seven-tuple for each photon.
 
 == Data post-processing with Mathematica ==
- We use mathematica to know when the photon maps converge. When we compare the convergence two by two, we get the relative error. If this error reaches a value lower than 0.5% in at least 5 cases, we will admit the result.
+ We use mathematica to know when photon maps converge. When we compare the convergence two by two, we get the relative error. If this error reaches a value lower than 0.5% in at least 5 cases, we will admit the result.
 
    === How to create a post-proccess script using Mathematica ===
+
    The following steps explain how we can make a script in Mathematica to read photons properly. In this case the taget was a square flat plane: 
  * First set the way Mathematica has to read the data and how to transform the coordinate to the target we are using currently. In this case we only need x and z to create a flat plane.
 {{{
@@ -142,15 +143,15 @@ absorberArea = absorberLength*absorberWidth
 widthDivisions = 50;
 lengthDivisions = 50;
 }}}
- * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with
+ * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with:
 {{{
 SetDirectory[NotebookDirectory[]]
 }}}
- * Search the folder in the current directory (DirectoryQ)where we have the .dat files.
+ * Search the folder in the current directory (DirectoryQ) where we have the .dat files.
 {{{
 directoryList = Select[FileNames["*"], DirectoryQ]
 }}}
- * Get all the .dat files allocates in the directory "(directoryList[i]". i is folder of the directorylist we are going to use) found in the previous step. 
+ * Get all the .dat files allocates in the directory "directoryList{{i}}"; i is folder of the directoryList we are going to use) found in the previous step. 
 {{{
 fileList = FileNames["*.dat", directoryList[[1]]];
 }}}
@@ -159,7 +160,7 @@ fileList = FileNames["*.dat", directoryList[[1]]];
 binsFilesList = Map[FluxMatrix, fileList];
 }}}
 This instruction applies the !FluxMatrix function in all files of the directory.
-!FluxMatrix convert the .dat file to a .txt file. The .txt file has as many columns and files as the number of lengthDivisions and widthDivisions we have set and the haver the number of rays in the target in this cell.
+!FluxMatrix convert the .dat file to a .txt file. The .txt file has as many columns and files as the number of lengthDivisions and widthDivisions we have set and they have the number of rays in the target per cell.
 {{{
 FluxMatrix[fileName_] := 
  Module[{data, powerPerPhoton, photonsData2D, totalPhotons, totalPowerAtAbsorberTube, radialElementLength, 
@@ -198,17 +199,17 @@ FluxMatrix[fileName_] :=
   Export[StringJoin[DirectoryName[fileName], FileBaseName[fileName], "bins.txt"], photonCounts, "Table"]]
 }}}
 
- * Now, we have to mix the element in the variable binsFileList to create a table with the simulation files. The first element of this new table only contains the first element of the table binsFileList;the second element contains the first an the second element of binsFilelist;the last element of this new table will contain all the files of the table binsFileList. 
+ * Now, we have to mix the element in the variable binsFileList to create a table with the simulation files. The first element of this new table only contains the first element of the table binsFileList;the second element contains the first and the second element of binsFilelist;the last element of this new table will contain all the files of the table binsFileList. 
 {{{
 simulationsFiles = Table[{ binsFilesList[[1 ;; i]], i}, {i, 1, Lengt[binsFilesList]}] ;
 }}}
-  Each element of simulationFiles is made whit two elements.The first one is a table of files and the second one is the number of elements on the first element.
+  Each element of simulationFiles is made with two elements. The first one is a table of files and the second one is the number of elements of the first element.
 
- * Using the funtion !PositionFluxMatrix, we will create the simulation files with the elemnts of the table simulationFiles.
+ * Using the funtion !PositionFluxMatrix, we will create the simulation files with the elements of the table simulationFiles.
 {{{
 simulationsBinsFiles = Map[PositionFluxMatrix[#[[1]], #[[2]]] &, simulationsFiles] ;
 }}}
-In the function PositionFluxMatrix, which has two parametes(the first one is the list, and the second is the number of elements in the list),create a new file by adding the elements of the file list all together. So, finally, the first simulation file will be compounded with the first "bins.txt" files; the secnd with the first and the second file;the last simulation file will contain the addition of all the bins files.
+In the function !PositionFluxMatrix, which has two parametes(the first one is the list, and the second is the number of elements in the list),create a new file by adding the elements of the file list all together. So, finally, the first simulation file will be compounded with the first "bins.txt" files; the second with the first and the second file;the last simulation file will contain the addition of all the bins files.
 {{{
 PositionFluxMatrix[binsFileList_, number_] := Module[{bins},
   (Read all files of the list and we add all together in another to know the total of rays at this momment *)
@@ -224,7 +225,7 @@ PositionFluxMatrix[binsFileList_, number_] := Module[{bins},
   ]
 }}}
 
-To make it easier in case you have lots of photon map files, you can do a parallel simulation. Instead of the last step, we have to use the following ones:
+To make it easier, in case you have lots of photon map files, you can do a parallel simulation. Instead of the last step, we have to use the following ones:
 {{{
 LaunchKernels[]
 DistributeDefinitions["Global`"]
@@ -262,7 +263,7 @@ rel = ListPlot[errorFluxMax, Joined -> True,
 
 Export["TargetMFlux_error.png", rel]
 }}}
- * Another interesting result migth be how the maximun flux is going. To know that, type:
+ * Another interesting result might be how the maximun flux is going. To know that, type:
 {{{
 fluxMax = Table[results[[i, 5]], {i, 1, Length[results] }];
 flux= ListPlot[fluxMax, Joined -> True, 
@@ -275,7 +276,7 @@ flux= ListPlot[fluxMax, Joined -> True,
 Export["TargetMaximumFlux.png", flux]
 }}}
 
- * If you want to see graphically haw the flux distribution is going, you can use this:
+ * If you want to see graphically how the flux distribution is going, you can use this:
 
 {{{
 results = Table[fluxAnalysis[{simulationsBinsFiles[[i]],wPhotons[[i]]}],{i, 1, Length[simulationsBinsFiles]}];
@@ -319,4 +320,4 @@ tonatiuh3D = ListPlot3D[incidentFluxMatrix, PlotRange -> All,
   {fileName, totalPhotons, totalPower, minimumFlux, maximumFlux}]
 }}}
 
-This is a basic tonatiuh data proccesing. You can look into Mathematica to get other results.
+This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results.
