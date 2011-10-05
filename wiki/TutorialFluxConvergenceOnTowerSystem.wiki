@@ -67,13 +67,14 @@ By this moment, the tower of the system has been created. Now we need to create 
 {{{
 translation    282.85 0 282.85
  }}}
- * Select "Heliostat" and add a new TSeparator. Rename it to "heliostatSurface"
+
+ * Select "Heliostat" and add a new TSeparator. Rename it to "heliostatSurface".
 
  * Select the last node created and add a Traker (the last icon on the rigth icon bar). In the transform options,change the aimingPoint to:
  {{{
 aimingPoint   0 100 0
  }}}
-The main property of this element is to make the heliostat change the position while the sun is moving. Doing that,
+The main property of this element is to make the heliostat change the position  while the sun is moving. Doing that, we can project more rays from the sun to to the target.
  * Select the "heliostatSurface" node and add a TShapeKit node.
  * Now, add a "flat-rectangle" shape and a "specular_Standar_material" as a child on the previous TShapeKit.
  * We want a square flat which surface of with a surface of 60 m<sup>2</sup>. So we have to set it values to:
