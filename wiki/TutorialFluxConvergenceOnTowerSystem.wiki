@@ -85,10 +85,12 @@ activeSide    FRONT
  }}}
 If we have done all steps successfully, we are about to run the system.
 
-== Runnning the system ==
+== Running the system ==
 
 The main purpose of Tonatiuh is to get information about how rays can reach the target. We can simulate the rays in two ways: 
- * The easiest one consists of pressing the run button in the icon bar. You only obtain one photon map for each interaction. 
+ * The easiest one consists of pressing the run button in the icon bar. You only obtain one photon map for each interaction. To expoer the pohoton map press Ray Trace, export photmmap.
+
+
  * The other is using the script editor.You can obtain it pressing Automation -->script editor. This will display a new window. A basic script can be like this:
 {{{
 //load the file
@@ -113,3 +115,8 @@ for( var i = 1; i <= 400; ++i ){
 	tonatiuh_export(  concentratorFileName.concat( "_", s, ".dat" ),  concentratorSurface, false );
 }
 }}}
+ The results in that case are saved automatically into the folder we have defined in concentratorFileName variable.
+
+= Tonatiuh post-processing =
+
+Tonaituh doesn't provide a photon map results analizer so it's necessary to use an external aplication such as Mathematica and R. The output photon map is saved in a .dat extension in a sever-tuple for each photon.
