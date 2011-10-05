@@ -68,7 +68,8 @@ By this moment, the tower of the system has been created. Now we need to create 
 translation    282.85 0 282.85
  }}}
 
- * Select "Heliostat" and add a new TSeparator. Rename it to "heliostatSurface".
+ * Select "Heliostat" and add a new TSeparator. Rename it to 
+"heliostatSurface".
 
  * Select the last node created and add a Traker (the last icon on the rigth icon bar). In the transform options,change the aimingPoint to:
  {{{
@@ -123,3 +124,77 @@ Tonatiuh doesn't provide a photon map results analizer so it's necessary to use 
 
 == Data post-processing with Mathematica ==
  We use mathematica to know when the photon maps converge. when we compare the convergence two by two, we get the relative error. if this error reaches a value lower than 0.5% in at least 5 cases, we will admit the result.
+
+   === How to create a post-proccess script using Mathematica ===
+   The following steps explain how we can make a script in Mathematica to read photons properly. Inthis case the tager was a square flat plane: 
+ * First set the way Mathematica has to read the data and how to transform the coordinate to the target we are using currently. In this case we only need x and z to create a flat plane.
+{{{
+ReadTonatiuhResults[filename_] :=  BinaryReadList[ filename, "Real64", ByteOrdering -> +1];
+transform01[{x_, y_, z_}] := { x , z }
+}}}
+ * Select the width and the heigth of the flat plane and calculate the area:
+{{{
+absorberLength = 15
+absorberWidth = 15
+absorberArea = absorberLength*absorberWidth
+}}}
+ *Define the number of cells in which the target is divided up. The more number you put, the more number of rays need simulating to reach the goal.
+{{{
+widthDivisions = 50;
+lengthDivisions = 50;
+}}}
+ * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with
+{{{
+SetDirectory[NotebookDirectory[]]
+}}}
+ * Search the folder in the current directory (DirectoryQ)where we have the .dat files.
+{{{
+directoryList = Select[FileNames["*"], DirectoryQ]
+}}}
+ * Get all the .dat files allocates in the directory (directoryList[[i]]. i is folder of the directorylist we are going to use) found in the previous step. 
+{{
+fileList = FileNames["*.dat", directoryList[[1]]];
+}}
+ * Once we have got all the files, we have to get their photons.
+{{{
+binsFilesList = Map[FluxMatrix, fileList];
+}}}
+This instruction applies the FluxMatrix function in all files of the directory.
+FluxMatrix convert the .dat file to a .txt file. The .txt file has as many columns and files as the number of lengthDivisions and widthDivisions we have set and the haver the number of rays in the target in this cell.
+{{{
+FluxMatrix[fileName_] := 
+ Module[{data, powerPerPhoton, photonsData2D, totalPhotons,totalPowerAtAbsorberTube, radialElementLength, longitudinalElementLength, 
+photonCounts, elementArea, fluxConversionFactor, incidentFluxMatrix, minimumFlux, maximumFlux,zmin, zmax, contourLevels, tonatiuhContour},
+
+
+  data = ReadTonatiuhResults[fileName]; (*read file data*)
+  powerPerPhoton = data[[1]]
+  data = Drop[data, 1];
+  (*read the seven-tuplas photon info*)
+  (*[[5]]-->0 read back rays; [[5]]--> read front rays; none-->read all rays*)
+  data = Select[Partition[data, 7], #[[5]] == 1 &] /. {id_, x_, y_, z_,side_, next_, prev_} -> {x, y, z};
+
+  (*get the area*)
+  data = Map[transform01, data];
+  (*number of photons*)
+   totalPhotons = Length[data];
+  (*average power per photon*)
+  totalPowerAtAbsorberTube = (totalPhotons * powerPerPhoton)/1000 (* kW *);
+  (*cell width*)
+  ElementWidth = absorberWidth  /widthDivisions (* meters *);
+  (*cell length*)
+  ElementLength = absorberLength/lengthDivisions (* meters *);
+
+  (*put the photon in the corresponding cell *)
+  photonCounts = 
+   BinCounts[
+    data, {-absorberWidth/2, absorberWidth/2, 
+     radialElementLength}, {-absorberLength/2, absorberLength/2, 
+     longitudinalElementLength}];
+  (*create and export *bins.txt files with the rays*)
+
+  
+  Export[StringJoin[DirectoryName[fileName], FileBaseName[fileName], 
+    "bins.txt"], photonCounts, "Table"]
+  ]
+}}}
