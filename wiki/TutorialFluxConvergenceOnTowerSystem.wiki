@@ -210,6 +210,20 @@ simulationsFiles = Table[{ binsFilesList[[1 ;; i]], i}, {i, 1, Lengt[binsFilesLi
 simulationsBinsFiles = Map[PositionFluxMatrix[#[[1]], #[[2]]] &, simulationsFiles] ;
 }}}
 In the function PositionFluxMatrix, which has two parametes(the first one is the list, and the second is the number of elements in the list),create a new file by adding the elements of the file list all together. So, finally, the first simulation file will be compounded with the first "bins.txt" files; the secnd with the first and the second file;the last simulation file will contain the addition of all the bins files.
+{{{
+PositionFluxMatrix[binsFileList_, number_] := Module[{bins},
+  (Read all files of the list and we add all together in another to know the total of rays at this momment *)
+
+ 
+  bins = Table[
+    Partition[ReadList[binsFileList[[i]], Real], lengthDivisions], {i,
+      Length[binsFileList]}];
+
+  (*Export data in *bins.txt files*)
+  Export["Simulation" <> ToString[number] <> "_bins.txt", Total[bins],
+    "Table"]
+  ]
+}}}
 
 To make it easier in case you have lots of photon map files, you can do a parallel simulation. Instead of the last step, we have to use the following ones:
 {{{
@@ -267,5 +281,43 @@ Export["TargetMaximumFlux.png", flux]
 {{{
 results = Table[fluxAnalysis[{simulationsBinsFiles[[i]],wPhotons[[i]]}],{i, 1, Length[simulationsBinsFiles]}];
 }}}
+The funtion fluxAnalysis returns,for each files, the photons, the power, the maximunmFlux and the minimum. It may be like this:
+{{{
+fluxAnalysis[{fileName_, powerPerPhoton_}] := 
+ Module[{totalPhotons, totalPower, radialElementLength, 
+   longitudinalElementLength, photonCounts, elementArea, 
+   fluxConversionFactor, incidentFluxMatrix, minimumFlux, maximumFlux,
+    zmin, zmax, contourLevels, tonatiuhContour, tonatiuh3D},
 
-This is a basic tonatiuh data proccesing
+
+  totalPower = (totalPhotons * powerPerPhoton)/1000 (* kW *);
+  radialElementLength = absorberWidth  /widthDivisions (* meters *);
+  longitudinalElementLength = absorberLength/lengthDivisions (* meters *);
+  photonCounts = Partition[ReadList[fileName, Real], lengthDivisions];
+  totalPhotons = Total[Total[photonCounts]];
+  elementArea = radialElementLength* longitudinalElementLength (* meters square *);
+  fluxConversionFactor = (powerPerPhoton/1000)/elementArea (* kW/(m^2- photon) *);
+  incidentFluxMatrix = photonCounts * fluxConversionFactor (* kW/m^2 *);
+  minimumFlux = Min[incidentFluxMatrix];
+  maximumFlux = Max[incidentFluxMatrix];
+  contourLevels = Table[Exp[i], {i, 0, Log[maximumFlux], Log[maximumFlux]/20.0}];
+  {zmin = 0, zmax = maximumFlux};
+
+  (*create a graphic with the flux distribution on the target*)
+tonatiuh3D = ListPlot3D[incidentFluxMatrix, PlotRange -> All, 
+    DataRange -> { {-absorberLength/2, 
+       absorberLength/2}, {-absorberWidth/2 , absorberWidth /2}}, 
+    ColorFunctionScaling -> False, 
+    ColorFunction -> 
+     Function[{x, y, z}, 
+      ColorData[
+        "VisibleSpectrum"][(z - zmin)*(750 - 380)/(zmax - zmin) + 
+        380]], ViewPoint -> {1.3, -2.4, 2}, PlotLabel -> "TONATIUH", 
+    ImageSize -> {400, 400}];
+
+  Export[StringJoin[FileBaseName[fileName], "3D.jpg"], tonatiuh3D];
+
+  {fileName, totalPhotons, totalPower, minimumFlux, maximumFlux}]
+}}}
+
+This is a basic tonatiuh data proccesing. You can look into Mathematica to get other results.
