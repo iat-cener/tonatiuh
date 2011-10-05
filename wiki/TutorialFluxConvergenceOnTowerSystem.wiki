@@ -150,7 +150,7 @@ SetDirectory[NotebookDirectory[]]
 {{{
 directoryList = Select[FileNames["*"], DirectoryQ]
 }}}
- * Get all the .dat files allocates in the directory "!(directoryList[[i]]". i is folder of the directorylist we are going to use) found in the previous step. 
+ * Get all the .dat files allocates in the directory "(directoryList[i]". i is folder of the directorylist we are going to use) found in the previous step. 
 {{{
 fileList = FileNames["*.dat", directoryList[[1]]];
 }}}
