@@ -13,7 +13,7 @@ The system we want to simulate consists of:
  * One heliostat.
  * A flat plane as a receiver.
 
-||<a href="https://picasaweb.google.com/lh/photo/uiDtAvD00LfqhEY273bOOw?full-exif=true?feat=embedwebsite"><img src="https://lh4.googleusercontent.com/-mYxx1L76YPk/To2JSGxekaI/AAAAAAAAA9Y/9hq7wwYNVco/s510/EsquemaTutorialFlux.png" width="300"/></a>||
+||<a href="https://picasaweb.google.com/100251272352990958135/TonatiuhWikiFigures#5660331250823369122"><img src="https://lh4.googleusercontent.com/-mYxx1L76YPk/To2JSGxekaI/AAAAAAAAA9Y/9hq7wwYNVco/s510/EsquemaTutorialFlux.png" width="300"/></a>||
 || *Figure 1.* Tower system layout.||
 
 =General aspects of the system =
