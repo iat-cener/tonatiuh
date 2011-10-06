@@ -70,7 +70,7 @@ activeSide   FRONT
  }}}
  * Select the last TShapeKit created and add a "!Specular_Standar_Material" as a child. 
 
-||<a href="https://picasaweb.google.com/lh/photo/uiDtAvD00LfqhEY273bOOw?feat=embedwebsite"><img src="https://lh4.googleusercontent.com/-BLQv-KY_p6U/To2CkTqlXDI/AAAAAAAAA9E/Y8K0OQvIQ8s/s640/TowerImage2.png" height="240" width="400" /></a>||
+||<a href="https://picasaweb.google.com/lh/photo/uiDtAvD00LfqhEY273bOOw?full-exif=true"><img src="https://lh4.googleusercontent.com/-BLQv-KY_p6U/To2CkTqlXDI/AAAAAAAAA9E/Y8K0OQvIQ8s/s640/TowerImage2.png" height="240" width="400" /></a>||
 || *Figure 2.* Tonatiuh's GUI after modeling the target and the tower.||
 
 == Modeling the heliostat ==
