@@ -76,7 +76,7 @@ aimingPoint   0 100 0
  }}}
  The main property of this element is to make the heliostat change the position  while the sun is moving. Doing that, we can project more rays from the sun to the target.
  * Select the "!HeliostatSurface" node and add a TShapeKit node.
- * Now, add a "!Flat-Rectangle" shape and a "!Specular_Standar_Material" as a child on the previous TShapeKit.
+ * Now, add a "!Flat_Rectangle" shape and a "!Specular_Standar_Material" as a child on the previous TShapeKit.
  * We want a square flat which surface of with a surface of 60 m<sup>2</sup>. So we have to set it values to:
  {{{
 width         7.7399998
