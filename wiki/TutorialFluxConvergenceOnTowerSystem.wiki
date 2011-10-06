@@ -23,7 +23,15 @@ We are asumming that the solar concentrating system is placed in Sevilla, Spain 
 
 == Modeling the tower ==
  * Once tonatiuh is opened, we have to select the rootNode and, then, add a TSeparator as a childen. The TSeparator node is the blue circular button allocated on the icon bar.
- * When the node is created, rename it to "Tower". With this new node selected, create a new TSeparator as a node child and rename it to "Base".
+ * When the node is created, rename it to "Tower". With this new node selected, create a new TSeparator as a node child and rename it to "Base". Set the Transform parameters to this:
+{{{
+translation        0 120 8
+rotation           1 0 0 1.5707964
+scaleFactor        1 0.5 1 
+scaleOrientation   0 0 1 0 
+center             0 0 0 
+}}}
+
  * If we select the "Base" node, we can add one shape on it. Only if we create first a TShapeKit node (the red circle icon next to the blue one), we will be able to insert a shape.
  * With the TShape node, previously created, selected, we can add a shape. In this case, we are using a cylinder shape called Cylinder. We can find it on the plugin menu bar.
  * Once the Cylinder is created, select it and change their values to those ones:
@@ -65,7 +73,7 @@ activeSide   FRONT
 By this moment, the tower of the system has been created. Now we need to create the heliostat. According to the initial conditions, the heliostat must be situated 400 meters away the tower with an inclination of 45º. To create it, follow those steps:
  * Select the !RootNode and create TSeparator node by clicking on the "Group Node" icon. Rename it to "Heliostat". We want the heliostat with an inclination of 45º and 400 metres away the tower. To fix the heliostat on the correct point we need to know the values for x and z. For x we have to calculate cos(45º) x 400. For z we have to calculate sen(45º) x 400. Now, we have to set them on the "!HelioStat" transform parameters in that way:
 {{{
-translation    282.85 0 282.85
+translation    282.85 0 -282.85
  }}}
 
  * Select "Heliostat" and add a new TSeparator. Rename it to "!HeliostatSurface".
@@ -77,6 +85,7 @@ aimingPoint   0 100 0
  The main property of this element is to make the heliostat change the position  while the sun is moving. Doing that, we can project more rays from the sun to the target.
  * Select the "!HeliostatSurface" node and add a TShapeKit node.
  * Now, add a "!Flat_Rectangle" shape and a "!Specular_Standar_Material" as a child on the previous TShapeKit.
+ * Select the "!Standar_Specular_Material" and change the m_reflectivity to 1.
  * We want a square flat which surface of with a surface of 60 m<sup>2</sup>. So we have to set it values to:
  {{{
 width         7.7399998
