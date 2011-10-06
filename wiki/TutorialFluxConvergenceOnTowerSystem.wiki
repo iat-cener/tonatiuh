@@ -44,7 +44,7 @@ center             0 0 0
 
  * Select the new node and add a new TSeparatorKit as a child. Rename it to "target" and change the parameters to:
 {{{
-
+translation        0 0 0
 rotation           0 0 -1 1.5707964
 scaleFactor        1 1 1 
 scaleOrientation   0 0 1 0 
@@ -171,6 +171,7 @@ FluxMatrix[fileName_] :=
   data = ReadTonatiuhResults[fileName]; (*read file data*)
   powerPerPhoton = data[[1]]
   data = Drop[data, 1];
+
   (*read the seven-tuplas photon info*)
   (*[[5]]-->0 read back rays; [[5]]--> read front rays; none-->read all rays*)
   data = Select[Partition[data, 7], #[[5]] == 1 &] /. {id_, x_, y_, z_,side_, next_, prev_} -> {x, y, z};
@@ -255,7 +256,7 @@ wPhotons = Table[irradiance* inputArea/(nPhotons*i), {i, 1, Length[simulationsBi
 }}}
 *The simulation will be a success if the relative error result is lower than 0.5 in, at least, 5 consecutive cases.
 
- * We can plot and get a graphical file of the results of the realtive error by typing:
+ * We can plot and get a graphical file of the results of the relative error by typing:
 {{{
 rel = ListPlot[errorFluxMax, Joined -> True, 
   LabelStyle -> Directive["Helvetica", 14], AxesLabel -> {"Millions of Rays"}, 
@@ -284,18 +285,18 @@ results = Table[fluxAnalysis[{simulationsBinsFiles[[i]],wPhotons[[i]]}],{i, 1, L
 The funtion fluxAnalysis returns,for each files, the photons, the power, the maximunmFlux and the minimum. It may be like this:
 {{{
 fluxAnalysis[{fileName_, powerPerPhoton_}] := 
- Module[{totalPhotons, totalPower, radialElementLength, 
-   longitudinalElementLength, photonCounts, elementArea, 
+ Module[{totalPhotons, totalPower, ElementWidth, 
+   ElementLength, photonCounts, elementArea, 
    fluxConversionFactor, incidentFluxMatrix, minimumFlux, maximumFlux,
     zmin, zmax, contourLevels, tonatiuhContour, tonatiuh3D},
 
 
   totalPower = (totalPhotons * powerPerPhoton)/1000 (* kW *);
-  radialElementLength = absorberWidth  /widthDivisions (* meters *);
-  longitudinalElementLength = absorberLength/lengthDivisions (* meters *);
+  ElementWidth = absorberWidth  /widthDivisions (* meters *);
+  ElementLength = absorberLength/lengthDivisions (* meters *);
   photonCounts = Partition[ReadList[fileName, Real], lengthDivisions];
   totalPhotons = Total[Total[photonCounts]];
-  elementArea = radialElementLength* longitudinalElementLength (* meters square *);
+  elementArea = ElementWidth*ElementLength (* meters square *);
   fluxConversionFactor = (powerPerPhoton/1000)/elementArea (* kW/(m^2- photon) *);
   incidentFluxMatrix = photonCounts * fluxConversionFactor (* kW/m^2 *);
   minimumFlux = Min[incidentFluxMatrix];
