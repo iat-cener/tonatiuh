@@ -13,6 +13,8 @@ The system we want to simulate consists of:
  * One heliostat.
  * A flat plane as a receiver.
 
+||<a href="https://picasaweb.google.com/lh/photo/yJNpX9SSCXLkuMfaAfsCTQ?feat=embedwebsite"><img src="https://picasaweb.google.com/lh/photo/yJNpX9SSCXLkuMfaAfsCTQ?feat=embedwebsite" height="360" width="400" /></a>||
+|| *Figure 1.* Tower system layout.||
 =General aspects of the system =
 
 The system we are going to simulate is made up of a flat square of 15 x 15 meters located on the top of a cylindric tower of 150 meters heigth.
