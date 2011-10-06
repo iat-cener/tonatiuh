@@ -308,7 +308,7 @@ Export["TargetMaximumFlux.png", flux]
 {{{
 results = Table[fluxAnalysis[{simulationsBinsFiles[[i]],wPhotons[[i]]}],{i, 1, Length[simulationsBinsFiles]}];
 }}}
-The funtion fluxAnalysis returns,for each files, the photons, the power, the maximunmFlux and the minimum. It may be like this:
+The funtion fluxAnalysis returns, for each files, the photons, the power, the maximunmFlux and the minimum. It may be like this:
 {{{
 fluxAnalysis[{fileName_, powerPerPhoton_}] := 
  Module[{totalPhotons, totalPower, ElementWidth, 
