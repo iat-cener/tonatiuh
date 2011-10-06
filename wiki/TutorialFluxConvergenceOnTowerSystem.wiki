@@ -106,7 +106,7 @@ Now we have to define the sun. Whitout it we will not be able to simulate the sy
 
 If we have done all steps successfully, we are about to run the system.
 
-||<a href="https://picasaweb.google.com/lh/photo/uiDtAvD00LfqhEY273bOOw?full-exif=true"><img src="https://lh3.googleusercontent.com/-S_x8vA4PYPU/To2qlbmM92I/AAAAAAAAA9w/76sPARv1i4Y/s800/FluxTutorialModel.png" height="240" width="400" /></a>||
+||<a href="https://picasaweb.google.com/100251272352990958135/TonatiuhWikiFigures#5660367866714453858"><img src="https://lh3.googleusercontent.com/-S_x8vA4PYPU/To2qlbmM92I/AAAAAAAAA9w/76sPARv1i4Y/s800/FluxTutorialModel.png" height="240" width="400" /></a>||
 || *Figure 2.* Tonatiuh's GUI after modeling system.||
 
 
