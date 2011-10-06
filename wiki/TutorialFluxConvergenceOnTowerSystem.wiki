@@ -2,7 +2,7 @@
 
 = Introduction =
 
- * The main aim of this tutorial is explain how to analyze the tonatiuh output data to stimate the flux distribution on the target.
+ * The main aim of this tutorial is explain how to analyze the tonatiuh output data to stimate the flux distribution on the target. Basically, we want to know when Tonatiuh converges. The convergence is how many rays we have to display with tonatiuh to get a stable FluxMax and relative FluxMax error
 
 
 = Characteristics of the system =
