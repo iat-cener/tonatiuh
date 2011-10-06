@@ -120,7 +120,8 @@ The main purpose of Tonatiuh is to get information about how rays can reach the 
 {{{
 //load the file
 tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
-//number of rays to simulate
+||<a href="https://picasaweb.google.com/lh/photo/DCtNZD5EXkHQeYHfb-QkuA?full-exif=true?"><img src="https://lh6.googleusercontent.com/-SEAJudVH7R8/To3HdHLoHTI/AAAAAAAAA-Y/R_eMUOfpPac/s912/TargetMFlux_error.png" height="140" width="600" /></a>||
+|| *Figure 4.* Relative error graphical output.||//number of rays to simulate
 tonatiuh_numrays( 1000000  ); 
 
 //type of phton map
@@ -291,7 +292,7 @@ rel = ListPlot[errorFluxMax, Joined -> True,
 Export["TargetMFlux_error.png", rel]
 }}}
 
-||<a href="https://picasaweb.google.com/lh/photo/DCtNZD5EXkHQeYHfb-QkuA?full-exif=true?"><img src="https://lh6.googleusercontent.com/-SEAJudVH7R8/To3HdHLoHTI/AAAAAAAAA-Y/R_eMUOfpPac/s912/TargetMFlux_error.png" height="240" width="400" /></a>||
+||<a href="https://picasaweb.google.com/lh/photo/DCtNZD5EXkHQeYHfb-QkuA?full-exif=true?"><img src="https://lh6.googleusercontent.com/-SEAJudVH7R8/To3HdHLoHTI/AAAAAAAAA-Y/R_eMUOfpPac/s912/TargetMFlux_error.png" height="140" width="600" /></a>||
 || *Figure 4.* Relative error graphical output.||
 
  * Another interesting result might be how the maximun flux is going. To know that, type:
@@ -306,6 +307,9 @@ flux= ListPlot[fluxMax, Joined -> True,
 
 Export["TargetMaximumFlux.png", flux]
 }}}
+
+||<a href="https://picasaweb.google.com/lh/photo/OwklIiH5m8cEziZfujgkiQ?full-exif=true"><img src="https://lh5.googleusercontent.com/-_rKqDUuufb4/To3GQTJyoUI/AAAAAAAAA-I/4NUpNieX0qA/s912/TargetMaximumFlux.png" height="140" width="600" /></a>||
+|| *Figure 5.* Graphical representationof the Maximum Flux.||
 
  * If you want to see graphically how the flux distribution is going, you can use this:
 
@@ -350,5 +354,9 @@ tonatiuh3D = ListPlot3D[incidentFluxMatrix, PlotRange -> All,
 
   {fileName, totalPhotons, totalPower, minimumFlux, maximumFlux}]
 }}}
+tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
+
+||<a href="https://picasaweb.google.com/lh/photo/6hIDSnUw6CE4ODoow2WThg?full-exif=true?"><img src="https://lh3.googleusercontent.com/-OekpEjfzS0c/To3GR0LqO5I/AAAAAAAAA-M/C7GDiVli2Ks/s512/Simulation3D.jpg" height="240" width="450" /></a>||
+|| *Figure 4.* Relative error graphical output.||
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results.
