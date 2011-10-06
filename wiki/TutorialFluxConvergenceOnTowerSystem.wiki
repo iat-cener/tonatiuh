@@ -13,7 +13,7 @@ The system we want to simulate consists of:
  * One heliostat.
  * A flat plane as a receiver.
 
-||<a href="https://picasaweb.google.com/lh/photo/yJNpX9SSCXLkuMfaAfsCTQ?full-exif=true?"><img src="https://lh4.googleusercontent.com/-mYxx1L76YPk/To2JSGxekaI/AAAAAAAAA9Y/9hq7wwYNVco/s510/EsquemaTutorialFlux.png" width="400"/></a>||
+||<a href="https://picasaweb.google.com/lh/photo/yJNpX9SSCXLkuMfaAfsCTQ?full-exif=true?"><img src="https://lh4.googleusercontent.com/-mYxx1L76YPk/To2JSGxekaI/AAAAAAAAA9Y/9hq7wwYNVco/s510/EsquemaTutorialFlux.png" width="300"/></a>||
 || *Figure 1.* Tower system layout.||
 
 =General aspects of the system =
@@ -70,7 +70,7 @@ activeSide   FRONT
  }}}
  * Select the last TShapeKit created and add a "!Specular_Standar_Material" as a child. 
 
-||<a href="https://picasaweb.google.com/lh/photo/uiDtAvD00LfqhEY273bOOw?full-exif=true"><img src="https://lh4.googleusercontent.com/-BLQv-KY_p6U/To2CkTqlXDI/AAAAAAAAA9E/Y8K0OQvIQ8s/s640/TowerImage2.png" height="240" width="300" /></a>||
+||<a href="https://picasaweb.google.com/lh/photo/uiDtAvD00LfqhEY273bOOw?full-exif=true"><img src="https://lh4.googleusercontent.com/-BLQv-KY_p6U/To2CkTqlXDI/AAAAAAAAA9E/Y8K0OQvIQ8s/s640/TowerImage2.png" height="240" width="400" /></a>||
 || *Figure 2.* Tonatiuh's GUI after modeling the target and the tower.||
 
 == Modeling the heliostat ==
