@@ -1,4 +1,5 @@
 #summary List of tutorials that ilustrate possible uses of Tonatiuh.
+#labels Featured
 
 = Introduction =
 
