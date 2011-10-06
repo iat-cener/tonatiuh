@@ -71,7 +71,7 @@ activeSide   FRONT
 == Modeling the heliostat ==
 
 By this moment, the tower of the system has been created. Now we need to create the heliostat. According to the initial conditions, the heliostat must be situated 400 meters away the tower with an inclination of 45º. To create it, follow those steps:
- * Select the !RootNode and create TSeparator node by clicking on the "Group Node" icon. Rename it to "Heliostat". We want the heliostat with an inclination of 45º and 400 metres away the tower. To fix the heliostat on the correct point we need to know the values for x and z. For x we have to calculate cos(45º) x 400. For z we have to calculate sen(45º) x 400. Now, we have to set them on the "!HelioStat" transform parameters in that way:
+ * Select the !RootNode and create TSeparator node by clicking on the "Group Node" icon. Rename it to "Heliostat". We want the heliostat with an inclination of 45º and 400 metres away the tower. To fix the heliostat on the correct point we need to know the values for x and z. For x we have to calculate cos(45º) x 400. For z we have to calculate sen(45º) x 400. Now, we have to set them on the "!Heliostat" transform parameters in that way:
 {{{
 translation    282.85 0 -282.85
  }}}
@@ -92,6 +92,13 @@ width         7.7399998
 heigth        7.7399998
 activeSide    FRONT
  }}}
+
+== Defining the sun ==
+
+Now we have to define the sun. Whitout it we will not be able to simulate the system. Only following two steps the sun will be created correctly:
+ * First, click on "Sun Ligth" --> "Define SunLigth". In this case, choose a Pillbox_SunShape and click "OK".
+ * Finally,we want to set the sun is Sevilla at 11 A.M. Click on "SunLigth" -->"Sun position Claculator". As we are assumming the simulation is done in summer, the local hour in Sevilla is two more hours than UTC system which is the standar used in Tonatiuh. So we have to sete the time at 9.00 UTC. to se the coodinates of Sevilla, press the "Select" button inside the box called "Position Coordinates".Once Sevilla is found, right click and select "Set Home Location". Press "Ok" to change the coordinates.
+
 If we have done all steps successfully, we are about to run the system.
 
 == Running the system ==
