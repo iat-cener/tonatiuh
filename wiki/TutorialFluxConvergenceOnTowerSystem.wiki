@@ -173,7 +173,7 @@ lengthDivisions = 50;
 {{{
 SetDirectory[NotebookDirectory[]]
 }}}
- * Search the folder in the current directory (DirectoryQ) where we have the .dat files.
+ * Search the folders (DirectoryQ) in the current directory  where we have the .dat files.
 {{{
 directoryList = Select[FileNames["*"], DirectoryQ]
 }}}
