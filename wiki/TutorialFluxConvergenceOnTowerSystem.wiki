@@ -357,6 +357,6 @@ tonatiuh3D = ListPlot3D[incidentFluxMatrix, PlotRange -> All,
 tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
 
 ||<a href="https://picasaweb.google.com/lh/photo/6hIDSnUw6CE4ODoow2WThg?full-exif=true?"><img src="https://lh3.googleusercontent.com/-OekpEjfzS0c/To3GR0LqO5I/AAAAAAAAA-M/C7GDiVli2Ks/s512/Simulation3D.jpg" height="240" width="450" /></a>||
-|| *Figure 4.* Relative error graphical output.||
+|| *Figure 6.* Example of a flux distribution on the target.||
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results.
