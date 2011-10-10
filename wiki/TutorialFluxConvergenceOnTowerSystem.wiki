@@ -121,7 +121,7 @@ The main purpose of Tonatiuh is to get information about how rays can reach the 
 //load the file
 tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
 //number of rays to simulate
-tonatiuh_numrays( 1000000  ); 
+tonatiuh_numrays( 8000000  ); 
 
 //type of phton map
 tonatiuh_photon_map("PhotonMapDefault"); 
@@ -133,7 +133,7 @@ var concentratorSurface = "//RootNode/Tower/Target/Target/Target";
 var concentratorFileName = "folder/filename"; 
 
 //number of interactions
-for( var i = 1; i <= 300; ++i ){ 
+for( var i = 1; i <= 150; ++i ){ 
 	tonatiuh_trace(); //simulate the system
 	var s = i.toString();
 //export the photon map data
