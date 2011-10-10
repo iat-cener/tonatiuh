@@ -263,7 +263,7 @@ simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulat
  * From this point, we can start to proccess the simulation files we have created to get results. The first thing is to load all the sun data such as irradiance,surface and number of photons per simulation:
 {{{
 irradiance = 1000; 
-nPhotons = 5000000;
+nPhotons = 8000000;
 (*sun area *)
 xMin = -23.74863394708676;
 xMax = 307.1679263970379;
