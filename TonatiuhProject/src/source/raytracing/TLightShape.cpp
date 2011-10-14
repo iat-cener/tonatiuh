@@ -109,7 +109,6 @@ bool TLightShape::IsIntoValidArea( Point3D point ) const
 
 	if(  m_lightAreaMatrix[h][w] == 0 )	return false;
 
-	//std::cout<<"m_lightAreaMatrix[h][w] "<<m_lightAreaMatrix[h][w] <<std::endl;
 	return true;
 }
 
