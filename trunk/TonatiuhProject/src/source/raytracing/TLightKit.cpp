@@ -187,7 +187,6 @@ void TLightKit::Update( BBox box )
 	double delta = 0.01;
 	if(  thetaMax > 0.0 ) delta = 5 * distMax * tan( thetaMax );
 
-	std::cout<<delta<<std::endl;
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
 	shape->xMin.setValue( ( xMin - delta ) );
@@ -264,7 +263,7 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 			Point3D tP7 = shapeToWorld( p7 );
 			Point3D tP8 = shapeToWorld( p8 );
 
-			QPointF  qP1( ( tP1.x - shape->xMin.getValue() ) /pixelWidth, ( tP1.z - shape->zMin.getValue() ) /pixelHeight );
+			QPointF qP1( ( tP1.x - shape->xMin.getValue() ) /pixelWidth, ( tP1.z - shape->zMin.getValue() ) /pixelHeight );
 			QPointF qP2( ( tP2.x - shape->xMin.getValue() ) /pixelWidth, ( tP2.z - shape->zMin.getValue() ) /pixelHeight );
 			QPointF qP3( ( tP3.x - shape->xMin.getValue() ) /pixelWidth, ( tP3.z - shape->zMin.getValue() ) /pixelHeight );
 			QPointF qP4( ( tP4.x - shape->xMin.getValue() ) /pixelWidth, ( tP4.z - shape->zMin.getValue() ) /pixelHeight );
@@ -274,10 +273,10 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 			QPointF qP8( ( tP8.x - shape->xMin.getValue() ) /pixelWidth, ( tP8.z - shape->zMin.getValue() ) /pixelHeight );
 
 			QPointF polygon1[4] = { qP1, qP2, qP3, qP4 };
-			QPointF polygon2[4] = { qP1, qP2, qP5, qP6 };
-			QPointF polygon3[4] = { qP1, qP4, qP5, qP8 };
-			QPointF polygon4[4] = { qP2, qP3, qP6, qP7 };
-			QPointF polygon5[4] = { qP3, qP4, qP7, qP8 };
+			QPointF polygon2[4] = { qP1, qP2, qP6, qP5 };
+			QPointF polygon3[4] = { qP1, qP4, qP8, qP5 };
+			QPointF polygon4[4] = { qP2, qP3, qP7, qP6 };
+			QPointF polygon5[4] = { qP3, qP4, qP8, qP7 };
 			QPointF polygon6[4] = { qP5, qP6, qP7, qP8 };
 			painter.drawPolygon( polygon1, 4 );
 			painter.drawPolygon( polygon2, 4 );
