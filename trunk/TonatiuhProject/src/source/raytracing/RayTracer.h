@@ -53,6 +53,7 @@ struct Photon;
 class RandomDeviate;
 struct RayTracerPhoton;
 class QMutex;
+class QPoint;
 class TPhotonMap;
 class TLightShape;
 class TSunShape;
@@ -73,7 +74,7 @@ public:
 
 	typedef QPair< TPhotonMap*, std::vector< RayTracerPhoton > > result_type;
 
-	QPair< TPhotonMap*, std::vector< RayTracerPhoton > > operator()( double numberOfRays );
+	QPair< TPhotonMap*, std::vector< RayTracerPhoton > > operator()( QPair< double, QPoint > pixel );
 
 
 

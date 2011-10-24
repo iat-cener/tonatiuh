@@ -406,7 +406,7 @@ void MainWindow::ExportPhotonMap()
 
 	if( !lightKit->getPart( "icon", false ) ) return;
 	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
-	double inputAperture = raycastingShape->GetArea();
+	double inputAperture = raycastingShape->GetValidArea();
 
 	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
 
@@ -1304,28 +1304,41 @@ void MainWindow::Run()
 		m_sceneModel->PrepareAnalyze();
 		QVector< QPair< TShapeKit*, Transform > > surfacesList;
 
-
 		//Compute bounding boxes and world to object transforms
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList,true );
 
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 		light->ComputeLightSourceArea( surfacesList );
 
-		QVector< double > raysPerThread;
-		const int maximumValueProgressScale = 100;
+		//Compute the valid areas for the raytracing
+		QVector< QPair< int, int > > validAreasList = raycastingSurface->GetValidAreasCoord();
+
+		QVector< QPair< double, QPoint > > raysPerPixel;
+		const int maximumValueProgressScale = validAreasList.count();
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-			raysPerThread<< t1;
+		{
+			QPair< int, int > coord = validAreasList[ progressCount ];
+			QPoint pixelsCoord( coord.first, coord.second );
+			raysPerPixel<<QPair< double, QPoint >( t1, pixelsCoord );
+		}
 
-		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )	raysPerThread<< ( m_raysPerIteration-( t1* maximumValueProgressScale) );
+		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )
+		{
+			int raysToTrace = m_raysPerIteration - ( t1 * maximumValueProgressScale );
+			for( int r = 0; r < raysToTrace; r++ )
+			{
+				int area = ( int )( m_rand->RandomDouble() * validAreasList.count() ) ;
+				raysPerPixel[area].first = (raysPerPixel[area].first)++;
+			}
+		}
 
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 
 		// Create a progress dialog.
 		QProgressDialog dialog;
-		dialog.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
+		dialog.setLabelText( QString("Progressing using %1 thread(s)..." ).arg( QThread::idealThreadCount() ) );
 
-		//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 		// Create a QFutureWatcher and conncect signals and slots.
 		QFutureWatcher< TPhotonMap* > futureWatcher;
 		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
@@ -1334,7 +1347,7 @@ void MainWindow::Run()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.
@@ -1347,11 +1360,12 @@ void MainWindow::Run()
 
 		m_tracedRays += m_raysPerIteration;
 
-		SoSFVec3f scaleVect = lightTransform->scaleFactor;
-		float scalex,scaley,scalez;
-		scaleVect.getValue().getValue(scalex,scaley,scalez);
-		m_sceneModel->FinalyzeAnalyze(double(m_raysPerIteration)/(raycastingSurface->GetArea()*scalex*scalez));
+		/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
+		float scalex, scaley, scalez;
+		scaleVect.getValue().getValue( scalex, scaley, scalez );
+		m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetValidArea() * scalex * scalez ) );
 
+		*/
 
 		ShowRaysIn3DView();
 

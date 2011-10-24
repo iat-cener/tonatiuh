@@ -36,8 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
 #include <QString>
+#include <QVector>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -91,6 +91,38 @@ double TLightShape::GetArea() const
 	double height = zMax.getValue() - zMin.getValue();
 	return ( width * height );
 }
+
+double TLightShape::GetValidArea() const
+{
+	int numberOfValidAreas = GetValidAreasCoord().count();
+
+	double width =  xMax.getValue() - xMin.getValue();
+	double pixelWidth = width / m_widthElements;
+
+	double height = zMax.getValue() - zMin.getValue();
+	double pixelHeight = height / m_heightElements;
+
+	double validArea = ( pixelWidth * pixelHeight ) * numberOfValidAreas;
+
+	return validArea;
+}
+
+
+/*!
+ * Returns the indexes of the valid pixels to the ray tracer.
+ */
+
+QVector< QPair< int, int > > TLightShape::GetValidAreasCoord() const
+{
+	QVector< QPair< int, int > > validAreasList;
+
+	for( int i = 0; i < m_heightElements; i++ )
+		for( int j = 0; j < m_widthElements; j++ )
+			if( m_lightAreaMatrix[i][j] == 1 )	validAreasList.push_back( QPair< int, int >( i, j ) );
+
+	return validAreasList;
+}
+
 
 bool TLightShape::IsIntoValidArea( Point3D point ) const
 {

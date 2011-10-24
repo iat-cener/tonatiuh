@@ -8,7 +8,7 @@
 #ifndef TLIGHTSHAPE_H_
 #define TLIGHTSHAPE_H_
 
-
+#include <QPair>
 
 #include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -27,11 +27,14 @@ class TLightShape : public SoShape
 public:
 	TLightShape( );
 	static void initClass();
+
 	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+	double GetValidArea() const;
+	QVector< QPair< int, int > > GetValidAreasCoord() const;
+	double GetVolume() const { return 0.0; };
 
 	bool IsIntoValidArea( Point3D point ) const;
-	Point3D Sample( double u, double v, int a,int b) const;
+	Point3D Sample( double u, double v, int a, int b ) const;
 	void SetLightSourceArea( int h, int w, int** lightArea );
 
 	trt::TONATIUH_REAL xMin;
@@ -39,9 +42,6 @@ public:
 	trt::TONATIUH_REAL zMin;
 	trt::TONATIUH_REAL zMax;
 	trt::TONATIUH_REAL delta;
-	int m_heightElements;
-	int** m_lightAreaMatrix;
-	int m_widthElements;
 protected:
 	Point3D GetPoint3D ( double u, double v ,int h,int w) const;
 	bool OutOfRange( double u, double v ) const;
@@ -50,7 +50,10 @@ protected:
 	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	~TLightShape();
 
-
+private:
+	int m_heightElements;
+	int** m_lightAreaMatrix;
+	int m_widthElements;
 
 };
 

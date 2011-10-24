@@ -213,6 +213,7 @@
       <string>Transmissivity</string>
      </property>
      <addaction name="separator"/>
+     <addaction name="actionDefineTransmissivity"/>
     </widget>
     <addaction name="menuSunLight"/>
     <addaction name="menuTransmissivity"/>
@@ -736,6 +737,11 @@
   <action name="actionSetAimingPointAbsolute">
    <property name="text">
     <string>Set Aiming Point Absolute</string>
+   </property>
+  </action>
+  <action name="actionDefineTransmissivity">
+   <property name="text">
+    <string>Define Transmissivity...</string>
    </property>
   </action>
  </widget>

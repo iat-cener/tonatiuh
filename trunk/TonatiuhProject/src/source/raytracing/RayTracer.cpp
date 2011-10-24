@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Ji
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QPoint>
+
 #include "DifferentialGeometry.h"
 #include "ParallelRandomDeviate.h"
 #include "Ray.h"
@@ -65,10 +67,10 @@ m_photonMap( photonMap )
 }
 
 
-bool RayTracer::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand, int a,int b)
+bool RayTracer::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand, int a, int b )
 {
     //generacion del rayo
-	Point3D origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble(),a,b );
+	Point3D origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble(), a, b );
 	//printf("launch points\n");
 	//printf("created:%f,%f \n",origin.x,origin.z);
 
@@ -82,97 +84,77 @@ bool RayTracer::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand, int a,in
 }
 
 
-QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( double numberOfRays )
+QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()(  QPair< double, QPoint > pixel )
 {
 	std::vector< RayTracerPhoton > photonsVector;
 	ParallelRandomDeviate rand( m_pRand, m_mutex );
-	//calculo el numero de celdas de las que se pueden lanzar rayos
-	int numberOfAvailableCells=0;
-	for( int i = 0; i < m_lightShape->m_heightElements; i++ ){
-		for( int j = 0; j < m_lightShape->m_widthElements; j++ ){
-			if(m_lightShape->m_lightAreaMatrix[i][j]==1){
-				numberOfAvailableCells++;
-			}
-		}
-	}
-	//numero de rayos por celda
-    double numberOfRaysperCell=numberOfRays/numberOfAvailableCells;
-    double resto=numberOfRays-(numberOfAvailableCells*int(numberOfRaysperCell));
-    int i;
-    if(resto!=0){
-    printf("Number of available cells:%d-->rays %d-->rays per cell:: %f;;resto %d",numberOfAvailableCells,int(numberOfRays),numberOfRaysperCell,int(resto));
-    }
-    for(int a=0; a<m_lightShape->m_heightElements;a++){
-		for(int b=0; b<m_lightShape->m_widthElements; b++){
-			if(m_lightShape->m_lightAreaMatrix[a][b]==1){
-				if(resto>0){
-					i=0;
-					resto--;
-				}
-				else{
-					i=1;
-				}
-				while(i<=numberOfRaysperCell){
-				std::vector<Ray> currentRaysWay;
-				Ray ray;
-				if( NewPrimitiveRay( &ray, rand,a, b ) )
+
+	double numberOfRays = pixel.first;
+	QPoint coord = pixel.second;
+
+	int coordA = coord.x();
+	int coordB = coord.y();
+
+    for(  unsigned long  i = 0; i < numberOfRays; ++i )
+    {
+    	std::vector<Ray> currentRaysWay;
+    	Ray ray;
+    	if( NewPrimitiveRay( &ray, rand, coordA, coordB ) )
+    	{
+    		photonsVector.push_back( RayTracerPhoton( ray.origin, 1, 0, m_lightNode ) );
+    		int rayLength = 0;
+
+			InstanceNode* intersectedSurface = 0;
+			bool isFront = false;
+			bool isDirectSun = true;
+
+			//Trace the ray
+			bool isReflectedRay = true;
+			while( isReflectedRay )
+			{
+				intersectedSurface = 0;
+				isFront = 0;
+				Ray reflectedRay;
+				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
+
+				if (!isDirectSun) currentRaysWay.push_back(ray);
+				if( isReflectedRay )
 				{
-					photonsVector.push_back( RayTracerPhoton( ray.origin, 1, 0, m_lightNode ) );
-					int rayLength = 0;
+					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
 
-					InstanceNode* intersectedSurface = 0;
-					bool isFront = false;
-					bool isDirectSun = true;
-
-					//Trace the ray
-					bool isReflectedRay = true;
-					while( isReflectedRay )
-					{
-						intersectedSurface = 0;
-						isFront = 0;
-						Ray reflectedRay;
-						isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
-
-						if (!isDirectSun) currentRaysWay.push_back(ray);
-						if( isReflectedRay )
-						{
-							photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-
-							//Prepare node and ray for next iteration
-							/*delete ray;
-							ray = 0;*/
-							ray = reflectedRay;
-							isDirectSun = false;
-						}
-
-					}
-
-					if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
-					{
-						if( ray.maxt == HUGE_VAL  )
-						{
-							ray.maxt = 0.1;
-							photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
-						}
-						else
-							photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-					}
-					if (currentRaysWay.size()>0)
-					{
-						currentRaysWay.resize(currentRaysWay.size());
-						m_rootNode->Analyze(&currentRaysWay,m_mutex);
-						currentRaysWay.clear();
-					}
-
+					//Prepare node and ray for next iteration
+					/*delete ray;
+					ray = 0;*/
+					ray = reflectedRay;
+					isDirectSun = false;
 				}
-            i++;
-			}
-		  }
-		 i=0;
-		}
-	}
-	photonsVector.resize( photonsVector.size() );
 
-	return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
+			}
+
+			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+			{
+				if( ray.maxt == HUGE_VAL  )
+				{
+					ray.maxt = 0.1;
+					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
+				}
+				else
+					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+			}
+
+			if( currentRaysWay.size()>0 )
+			{
+				currentRaysWay.resize(currentRaysWay.size());
+				m_rootNode->Analyze(&currentRaysWay,m_mutex);
+				currentRaysWay.clear();
+			}
+
+		}
+
+    }
+    photonsVector.resize( photonsVector.size() );
+
+    return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
+
 }
 

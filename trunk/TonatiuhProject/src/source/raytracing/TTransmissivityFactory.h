@@ -43,14 +43,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class QString;
 class QIcon;
-class TransmissivityDefualt;
+class TTransmissivity;
 
 class TTransmissivityFactory
 {
 public:
     virtual QString TTransmissivityName() const  = 0;
     virtual QIcon TTransmissivityIcon() const = 0;
-    virtual TransmissivityDefualt* CreateTTransmissivity( ) const = 0;
+    virtual TTransmissivity* CreateTTransmissivity( ) const = 0;
 };
 
 Q_DECLARE_INTERFACE( TTransmissivityFactory, "tonatiuh.TTransmissivityFactory" )
