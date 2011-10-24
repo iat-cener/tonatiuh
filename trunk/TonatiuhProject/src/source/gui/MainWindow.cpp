@@ -117,6 +117,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TPhotonMap.h"
 #include "TPhotonMapFactory.h"
 #include "Transform.h"
+#include "TransmissivityDialog.h"
 #include "trf.h"
 #include "TSceneKit.h"
 #include "TSeparatorKit.h"
@@ -127,6 +128,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunShapeFactory.h"
 #include "TTracker.h"
 #include "TTrackerFactory.h"
+#include "TTransmissivity.h"
 #include "UpdatesManager.h"
 
 
@@ -348,6 +350,26 @@ void MainWindow::DefineSunLight()
 
 		actionCalculateSunPosition->setEnabled( true );
 
+	}
+}
+
+/*!
+ * Opens a dialog to define the scene transmissivity.
+ */
+void MainWindow::DefineTransmissivity()
+{
+	TransmissivityDialog dialog( m_pluginManager->GetTransmissivityFactories() );
+
+	TSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene ) return;
+
+	TTransmissivity* currentTransmissivity = static_cast< TTransmissivity* > ( coinScene->getPart( "transmissivity", false ) );
+	if( currentTransmissivity )	dialog.SetCurrentTransmissivity( currentTransmissivity );
+	if( dialog.exec() )
+	{
+		TTransmissivity* newTransmissivity = dialog.GetTransmissivity();
+		coinScene->setPart( "transmissivity", newTransmissivity );
+		return;
 	}
 }
 
@@ -1360,12 +1382,11 @@ void MainWindow::Run()
 
 		m_tracedRays += m_raysPerIteration;
 
-		/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
+		SoSFVec3f scaleVect = lightTransform->scaleFactor;
 		float scalex, scaley, scalez;
 		scaleVect.getValue().getValue( scalex, scaley, scalez );
-		m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetValidArea() * scalex * scalez ) );
-
-		*/
+		//m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetArea() * scalex * scalez ) );
+		m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetValidArea() ) );
 
 		ShowRaysIn3DView();
 
@@ -2845,10 +2866,11 @@ void MainWindow::SetupTriggers()
 	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
 	connect( actionUserComponent, SIGNAL( triggered() ), this, SLOT ( InsertUserDefinedComponent() ) );
 
-	//Sun Light menu actions
+	//Environment menu actions
 	connect( actionDefineSunLight, SIGNAL( triggered() ), this, SLOT ( DefineSunLight() ) );
 	connect( actionCalculateSunPosition, SIGNAL( triggered() ), this, SLOT ( CalculateSunPosition() ) );
 	connect( actionDisconnect_All_Trackers, SIGNAL( toggled( bool ) ), this, SLOT ( DisconnectAllTrackers( bool ) ) );
+	connect( actionDefineTransmissivity, SIGNAL( triggered() ), this, SLOT ( DefineTransmissivity() ) );
 
 	//Ray trace menu actions
 	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );

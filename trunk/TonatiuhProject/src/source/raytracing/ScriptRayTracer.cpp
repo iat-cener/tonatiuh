@@ -424,11 +424,11 @@ int ScriptRayTracer::Trace()
 
 	futureWatcher.waitForFinished();
 
-	/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
+	SoSFVec3f scaleVect = lightTransform->scaleFactor;
 	float scalex,scaley,scalez;
 	scaleVect.getValue().getValue(scalex,scaley,scalez);
-	m_sceneModel->FinalyzeAnalyze(double(m_numberOfRays)/(raycastingSurface->GetArea()*scalex*scalez));
-	*/
+	//m_sceneModel->FinalyzeAnalyze(double(m_numberOfRays)/(raycastingSurface->GetArea()*scalex*scalez));
+	m_sceneModel->FinalyzeAnalyze( double(m_numberOfRays) /( raycastingSurface->GetValidArea() ) );
 
 
 	if( !m_photonMap ) return 1;

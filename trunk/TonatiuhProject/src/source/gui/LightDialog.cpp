@@ -55,7 +55,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 
 LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent )
-:QDialog( parent ), m_currentLightKit( currentLightKit ), m_currentSunShapeIndex( -1 ), m_newSunShape( 0 )
+:QDialog( parent ),
+ m_currentLightKit( currentLightKit ),
+ m_currentSunShapeIndex( -1 ), m_newSunShape( 0 )
 {
 	setupUi( this );
 	connect( sunshapeParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
@@ -139,26 +141,6 @@ void LightDialog::ChangeSunshape( int index )
 
 
 /*!
- * Changes parameters of the shape paraneters view to shape type given by \a index.
- */
-/*
-void LightDialog::ChangeShape( int index )
-{
-	while( ( m_newShape != 0) && ( m_newShape->getRefCount() > 0 ) )	m_newShape->unref();
-
-	if ( index == 0 )	m_newShape = 0;
-	else if( index == m_currentShapeIndex )	m_newShape = static_cast< TShape* >( m_currentLightKit->getPart( "icon", false )->copy( true ) );
-	else
-	{
-		TShapeFactory* shapeFactory = m_shapeList.value( shapeCombo->itemData( index ).toString() );
-		m_newShape = shapeFactory->CreateTShape();
-	}
-
-	shapeParameters->SetContainer( m_newShape, QString() );
-
-}*/
-
-/*!
  * Updates the sun position tab values to the values of the current light.
  */
 void LightDialog::SunPositionTab()
@@ -180,29 +162,6 @@ void LightDialog::SunshapeTab()
 	SunshapeBox();
 	//ShapeBox();
 }
-
-/*
-void LightDialog::ShapeBox( )
-{
-	connect( shapeCombo, SIGNAL( activated( int ) ), this, SLOT( ChangeShape( int ) ) );
-
-	//Add elements to sunshape combo
-	QList< TShapeFactory* > shapeFactoryList = m_shapeList.values();
-	shapeCombo->addItem ( "---" );
-	for( int j = 0; j <(int) shapeFactoryList.size(); ++j )
-		shapeCombo->addItem( shapeFactoryList[j]->TShapeIcon(), shapeFactoryList[j]->TShapeName(), m_shapeList.key( shapeFactoryList[j] ) );
-
-	//Select current LightKit Shape
-	m_currentShapeIndex = 0;
-	if( m_newShape )
-	{
-		QString name( m_newShape->getTypeId().getName() );
-		m_currentShapeIndex = shapeCombo->findData( name );
-	}
-
-    ChangeShape( m_currentShapeIndex );
-    shapeCombo->setCurrentIndex( m_currentShapeIndex );
-}*/
 
 void LightDialog::SunshapeBox()
 {

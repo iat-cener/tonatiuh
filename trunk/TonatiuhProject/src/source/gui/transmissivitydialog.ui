@@ -31,7 +31,7 @@
     <widget class="QComboBox" name="transmissivityCombo"/>
    </item>
    <item row="1" column="1">
-    <widget class="QTreeView" name="transmissivityParameters"/>
+    <widget class="FieldContainerWidget" name="transmissivityParameters"/>
    </item>
    <item row="2" column="1">
     <spacer name="verticalSpacer">
@@ -71,6 +71,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FieldContainerWidget</class>
+   <extends>QTreeView</extends>
+   <header>FieldContainerWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

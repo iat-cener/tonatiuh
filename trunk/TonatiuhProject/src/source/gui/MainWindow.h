@@ -148,6 +148,7 @@ protected slots:
     void CreateShape( TShapeFactory* pTShapeFactory );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
+	void DefineTransmissivity();
 	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );
 	void ExportPhotonMap();

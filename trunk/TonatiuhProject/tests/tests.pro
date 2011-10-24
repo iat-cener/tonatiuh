@@ -39,6 +39,7 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultSunShape.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultTracker.o \
+                        $$(TONATIUH_ROOT)/debug/TDefaultTransmissivity.o \
                         $$(TONATIUH_ROOT)/debug/tgf.o \
                         $$(TONATIUH_ROOT)/debug/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/debug/TLightKit.o \
@@ -55,6 +56,7 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/TSquare.o \
                         $$(TONATIUH_ROOT)/debug/TTracker.o \
                         $$(TONATIUH_ROOT)/debug/TTrackerForAiming.o \
+                        $$(TONATIUH_ROOT)/debug/TTransmissivity.o \
                         $$(TONATIUH_ROOT)/debug/Vector3D.o
 }                     
 else { 
@@ -88,6 +90,7 @@ else {
                         $$(TONATIUH_ROOT)/release/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/release/TDefaultSunShape.o \
                         $$(TONATIUH_ROOT)/release/TDefaultTracker.o \
+                        $$(TONATIUH_ROOT)/release/TDefaultTransmissivity.o \
                         $$(TONATIUH_ROOT)/release/tgf.o \
                         $$(TONATIUH_ROOT)/release/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/release/TLightKit.o \
@@ -104,6 +107,7 @@ else {
                         $$(TONATIUH_ROOT)/release/TSquare.o \
                         $$(TONATIUH_ROOT)/release/TTracker.o \
                         $$(TONATIUH_ROOT)/release/TTrackerForAiming.o \
+                        $$(TONATIUH_ROOT)/release/TTransmissivity.o \
                         $$(TONATIUH_ROOT)/release/Vector3D.o
 }
 

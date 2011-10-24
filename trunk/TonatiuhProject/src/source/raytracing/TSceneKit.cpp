@@ -38,8 +38,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodes/SoTransform.h>
 
+#include "TDefaultTransmissivity.h"
 #include "tgc.h"
 #include "TSceneKit.h"
+#include "TTransmissivity.h"
 
 SO_KIT_SOURCE(TSceneKit);
 
@@ -58,6 +60,8 @@ void TSceneKit::initClass()
 TSceneKit::TSceneKit()
 {
     SO_KIT_CONSTRUCTOR(TSceneKit);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY( transmissivity, TTransmissivity, TDefaultTransmissivity, TRUE, topSeparator, "", TRUE);
+
 
 	SO_NODE_ADD_FIELD( azimuth, ( tgc::Pi ) );
 	SO_NODE_ADD_FIELD( zenith, ( 0.0f ) );
