@@ -87,7 +87,7 @@ private:
     QMutex* m_mutex;
 	TPhotonMap* m_photonMap;
 
-	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
+	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand, int a,int b );
 };
 
 
