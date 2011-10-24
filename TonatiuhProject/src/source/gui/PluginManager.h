@@ -51,6 +51,7 @@ class TPhotonMapFactory;
 class TShapeFactory;
 class TSunShapeFactory;
 class TTrackerFactory;
+class TTransmissivityFactory;
 
 class PluginManager
 {
@@ -65,6 +66,7 @@ public:
     QVector< TShapeFactory* > GetShapeFactories() const;
     QVector< TSunShapeFactory* > GetSunShapeFactories() const;
     QVector< TTrackerFactory* > GetTrackerFactories() const;
+    QVector< TTransmissivityFactory* > GetTransmissivityFactories() const;
 	void LoadAvailablePlugins( QDir pluginsDirectory );
 
 private:
@@ -77,6 +79,7 @@ private:
 	void LoadShapePlugin( QObject* plugin );
 	void LoadSunshapePlugin( QObject* plugin );
 	void LoadTrackerPlugin( QObject* plugin );
+	void LoadTransmissivityPlugin( QObject* plugin );
 	void LoadTonatiuhPlugin( const QString& fileName );
 	bool ValidDirectoryName( QString& directoryName  );
 
@@ -87,6 +90,7 @@ private:
 	QVector< TShapeFactory* > m_shapeFactoryList;
 	QVector< TSunShapeFactory* > m_sunshapeFactoryList;
 	QVector< TTrackerFactory* > m_trackerFactoryList;
+	QVector< TTransmissivityFactory* > m_transmissivityFactoryList;
 };
 
 #endif /* PLUGINMANAGER_H_ */

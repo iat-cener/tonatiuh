@@ -55,6 +55,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeFactory.h"
 #include "TSunShapeFactory.h"
 #include "TTrackerFactory.h"
+#include "TTransmissivityFactory.h"
 
 /*!
  * Creates a new PluginManager object.
@@ -117,13 +118,20 @@ QVector< TSunShapeFactory* > PluginManager::GetSunShapeFactories() const
 	return m_sunshapeFactoryList;
 }
 
-
 /*!
  * Returns available tracker plugins factory list.
  */
 QVector< TTrackerFactory* > PluginManager::GetTrackerFactories() const
 {
 	return m_trackerFactoryList;
+}
+
+/*!
+ * Returns available tracker plugins factory list.
+ */
+QVector< TTransmissivityFactory* > PluginManager::GetTransmissivityFactories() const
+{
+	return m_transmissivityFactoryList;
 }
 
 /*!
@@ -219,6 +227,17 @@ void PluginManager::LoadTrackerPlugin( QObject* plugin )
     if( !pTTrackerFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Tracker plug-in not recognized" );
    	pTTrackerFactory->CreateTTracker( );
    	m_trackerFactoryList.push_back( pTTrackerFactory );
+}
+
+/*!
+ * Loads \a plugin as transmissivity plugin.
+ */
+void PluginManager::LoadTransmissivityPlugin( QObject* plugin )
+{
+	TTransmissivityFactory* pTTransmissivityFactory = qobject_cast< TTransmissivityFactory* >( plugin );
+    if( !pTTransmissivityFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Transmissivity plug-in not recognized" );
+    pTTransmissivityFactory->CreateTTransmissivity( );
+    m_transmissivityFactoryList.push_back( pTTransmissivityFactory );
 }
 
 

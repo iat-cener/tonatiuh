@@ -195,13 +195,27 @@
     <addaction name="separator"/>
     <addaction name="actionUserComponent"/>
    </widget>
-   <widget class="QMenu" name="menuSun_Light">
+   <widget class="QMenu" name="menuEnvironment">
     <property name="title">
-     <string>Sun Light</string>
+     <string>Environment</string>
     </property>
-    <addaction name="actionDefineSunLight"/>
-    <addaction name="actionCalculateSunPosition"/>
-    <addaction name="actionDisconnect_All_Trackers"/>
+    <widget class="QMenu" name="menuSunLight">
+     <property name="title">
+      <string>Sun Light</string>
+     </property>
+     <addaction name="actionDefineSunLight"/>
+     <addaction name="actionCalculateSunPosition"/>
+     <addaction name="separator"/>
+     <addaction name="actionDisconnect_All_Trackers"/>
+    </widget>
+    <widget class="QMenu" name="menuTransmissivity">
+     <property name="title">
+      <string>Transmissivity</string>
+     </property>
+     <addaction name="separator"/>
+    </widget>
+    <addaction name="menuSunLight"/>
+    <addaction name="menuTransmissivity"/>
    </widget>
    <widget class="QMenu" name="menu_Raytrace">
     <property name="title">
@@ -231,7 +245,7 @@
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuInsert"/>
-   <addaction name="menuSun_Light"/>
+   <addaction name="menuEnvironment"/>
    <addaction name="menu_Raytrace"/>
    <addaction name="menuView"/>
    <addaction name="menuAutomation"/>
