@@ -53,6 +53,7 @@ class TSceneKit : public SoSceneKit
 	typedef SoSceneKit inherited;
 
     SO_KIT_HEADER( TSceneKit );
+ 	SO_KIT_CATALOG_ENTRY_HEADER( transmissivity );
 
 public:
  	TSceneKit();

@@ -256,6 +256,7 @@ void PluginManager::LoadTonatiuhPlugin( const QString& fileName )
     	if( plugin->inherits( "TMaterialFactory" ) ) LoadMaterialPlugin( plugin );
     	if( plugin->inherits( "TPhotonMapFactory" ) ) LoadPhotonMapPlugin( plugin );
     	if( plugin->inherits( "TTrackerFactory" ) ) LoadTrackerPlugin( plugin );
+    	if( plugin->inherits( "TTransmissivityFactory" ) ) LoadTransmissivityPlugin( plugin );
 	}
 }
 

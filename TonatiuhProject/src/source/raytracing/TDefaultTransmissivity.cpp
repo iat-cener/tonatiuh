@@ -30,44 +30,34 @@ National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117)
 Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
-Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Martin.
+Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
 Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "TDefaultTransmissivity.h"
 
-#ifndef TRANSMISSIVITYDIALOG_H_
-#define TRANSMISSIVITYDIALOG_H_
+SO_NODE_SOURCE( TDefaultTransmissivity );
 
-#include <QDialog>
-#include <QMap>
 
-#include "ui_transmissivitydialog.h"
-
-class TTransmissivity;
-class TTransmissivityFactory;
-
-class TransmissivityDialog : public QDialog, private Ui::TransmissivityDialog
+void TDefaultTransmissivity::initClass()
 {
-	Q_OBJECT
+	SO_NODE_INIT_CLASS( TDefaultTransmissivity, TTransmissivity, "TTransmissivity" );
+}
 
-public:
-	TransmissivityDialog( QVector< TTransmissivityFactory* > transmissivityFactoryList, QWidget* parent = 0, Qt::WindowFlags f = 0 );
-	~TransmissivityDialog();
+TDefaultTransmissivity::TDefaultTransmissivity( )
+{
+	SO_NODE_CONSTRUCTOR( TDefaultTransmissivity );
+	SO_NODE_ADD_FIELD( constant, ( 0.001 ) );
+}
 
-	TTransmissivity* GetTransmissivity() const;
-	void SetCurrentTransmissivity( TTransmissivity* transmissivity );
+TDefaultTransmissivity::~TDefaultTransmissivity()
+{
 
-protected slots:
-	void ChangeTransmissivityType( int index );
+}
 
-private:
-	int m_currentTransmissivityIndex;
-	TTransmissivity* m_currentTransmissivity;
-	TTransmissivity* m_newTransmissivity;
-	QMap< QString, TTransmissivityFactory* > m_transmissivityFactoryList;
-
-};
-
-#endif /* TRANSMISSIVITYDIALOG_H_ */
+bool TDefaultTransmissivity::IsTransmitted( double& /*distance*/, RandomDeviate& /*rand*/ ) const
+{
+	return true;
+}

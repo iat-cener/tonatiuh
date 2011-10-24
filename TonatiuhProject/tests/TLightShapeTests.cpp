@@ -145,10 +145,10 @@ TEST(TLightShapeTests , TLightShapeSample){
 		 * EXPECT_FALSE(shape->Sample(x0,y0) == true);
 		 */
 
-		EXPECT_DOUBLE_EQ(shape->Sample(x0,z0).x,(x0*(xmaxR.getValue()-xminR.getValue())+xminR.getValue()));
+		/*EXPECT_DOUBLE_EQ(shape->Sample(x0,z0).x,(x0*(xmaxR.getValue()-xminR.getValue())+xminR.getValue()));
 		EXPECT_DOUBLE_EQ(shape->Sample(x0,z0).y,0.0);
 		EXPECT_DOUBLE_EQ(shape->Sample(x0,z0).z,(z0*(zmaxR.getValue()-zminR.getValue())+zminR.getValue()));
+
+		*/
 	}
-
-
 }

@@ -30,44 +30,34 @@ National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117)
 Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
-Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Martin.
+Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
 Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#ifndef TDEFAULTTRANSMISSIVITY_H_
+#define TDEFAULTTRANSMISSIVITY_H_
 
-#ifndef TRANSMISSIVITYDIALOG_H_
-#define TRANSMISSIVITYDIALOG_H_
+#include "trt.h"
+#include "TTransmissivity.h"
 
-#include <QDialog>
-#include <QMap>
 
-#include "ui_transmissivitydialog.h"
-
-class TTransmissivity;
-class TTransmissivityFactory;
-
-class TransmissivityDialog : public QDialog, private Ui::TransmissivityDialog
+class TDefaultTransmissivity : public TTransmissivity
 {
-	Q_OBJECT
+	SO_NODE_HEADER( TransmissivityDefualt );
 
 public:
-	TransmissivityDialog( QVector< TTransmissivityFactory* > transmissivityFactoryList, QWidget* parent = 0, Qt::WindowFlags f = 0 );
-	~TransmissivityDialog();
+    static void initClass();
+    TDefaultTransmissivity();
 
-	TTransmissivity* GetTransmissivity() const;
-	void SetCurrentTransmissivity( TTransmissivity* transmissivity );
+	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
 
-protected slots:
-	void ChangeTransmissivityType( int index );
+	trt::TONATIUH_REAL constant;
 
-private:
-	int m_currentTransmissivityIndex;
-	TTransmissivity* m_currentTransmissivity;
-	TTransmissivity* m_newTransmissivity;
-	QMap< QString, TTransmissivityFactory* > m_transmissivityFactoryList;
+protected:
+    virtual ~TDefaultTransmissivity();
 
 };
 
-#endif /* TRANSMISSIVITYDIALOG_H_ */
+#endif /* TDEFAULTTRANSMISSIVITY_H_ */

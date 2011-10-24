@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TDefaultMaterial.h"
 #include "TDefaultSunShape.h"
 #include "TDefaultTracker.h"
+#include "TDefaultTransmissivity.h"
 #include "TCube.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
@@ -127,6 +128,7 @@ int main( int argc, char ** argv )
 	TSceneTracker::initClass();
 	GraphicRootTracker::initClass();
 	TTransmissivity::initClass();
+	TDefaultTransmissivity::initClass();
 
 
 	MainWindow* mw;
