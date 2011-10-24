@@ -44,6 +44,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
+#include <math.h>
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
@@ -92,6 +94,8 @@ double TLightShape::GetArea() const
 
 bool TLightShape::IsIntoValidArea( Point3D point ) const
 {
+	//printf("xMax: %f,xmin: %f,zMax: %f,zMin:%f",xMax.getValue(),xMin.getValue(),zMax.getValue(),zMin.getValue());
+
 	if( point.x < xMin.getValue() || point.x > xMax.getValue() )
 		return false;
 	if( point.y < -tgc::Epsilon || point.y > tgc::Epsilon )
@@ -106,25 +110,30 @@ bool TLightShape::IsIntoValidArea( Point3D point ) const
 	double height = zMax.getValue() - zMin.getValue();
 	double pixelHeight = height / m_heightElements;
 	int h = ( point.z - zMin.getValue() ) /pixelHeight;
-
 	if(  m_lightAreaMatrix[h][w] == 0 )	return false;
 
+	//std::cout<<"m_lightAreaMatrix[h][w]; "<<m_lightAreaMatrix[h][w]<<"width"<<w<<"heigth"<<h <<std::endl;
 	return true;
 }
 
-Point3D TLightShape::Sample( double u, double v ) const
-{
-	return GetPoint3D( u, v );
+Point3D TLightShape::Sample( double u, double v, int a, int b) const
+{   //vamos a crear el punto de una celda de la matriz que se que es valida
+	//printf("m_lightAreaMatrix[%d][%d]:%d ",7,1,m_lightAreaMatrix[5][1]);
+	return GetPoint3D( u, v,a,b );
 }
 
-Point3D TLightShape::GetPoint3D (double u, double v) const
+Point3D TLightShape::GetPoint3D (double u, double v, int h,int w) const
 {
 	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function TLightShape::GetPoint3D called with invalid parameters" );
 
-	double width =  xMax.getValue() - xMin.getValue();
-	double height = zMax.getValue() - zMin.getValue();
-	double x = ( u * width ) + xMin.getValue();
-	double z = ( v * height ) + zMin.getValue();
+    //tamaño de las celdas en la superficie del sol
+	double width =  (xMax.getValue() - xMin.getValue())/m_widthElements;
+	double height = (zMax.getValue() - zMin.getValue())/m_heightElements;
+	//printf(" u-v:%f-%f ",u,v);
+	//printf("celda de x-z:%f-%f,w-* %d h-* %d ",width,height,m_widthElements,m_heightElements);
+	//calculo de la coodenada del punto
+	double x = xMin.getValue()+( u * width ) + (w*width);
+	double z = zMin.getValue()+( v * height ) + (h*height);
 
 	return Point3D( x, 0, z );
 }
