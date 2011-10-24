@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QFutureWatcher>
 #include <QMutex>
+#include <QPoint>
 #include <QScriptContext>
 #include <QtConcurrentMap>
 
@@ -366,7 +367,7 @@ int ScriptRayTracer::Trace()
 
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-	if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation/*, m_sunDistance*/ );
+	if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation );
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
@@ -390,35 +391,52 @@ int ScriptRayTracer::Trace()
 	TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 	light->ComputeLightSourceArea( surfacesList );
 
-	QVector< double > raysPerThread;
-	const int maximumValueProgressScale = 100;
+	//Compute the valid areas for the raytracing
+	QVector< QPair< int, int > > validAreasList = raycastingSurface->GetValidAreasCoord();
+
+	QVector< QPair< double, QPoint > > raysPerPixel;
+	const int maximumValueProgressScale = validAreasList.count();
 	unsigned long  t1 = m_numberOfRays / maximumValueProgressScale;
 	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-		raysPerThread<< t1;
+	{
+		QPair< int, int > coord = validAreasList[ progressCount ];
+		QPoint pixelsCoord( coord.first, coord.second );
+		raysPerPixel<<QPair< double, QPoint >( t1, pixelsCoord );
+	}
 
-	if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )	raysPerThread<< ( m_numberOfRays-( t1* maximumValueProgressScale) );
+	if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )
+	{
+		int raysToTrace = m_numberOfRays - ( t1 * maximumValueProgressScale );
+		for( int r = 0; r < raysToTrace; r++ )
+		{
+			int area = ( int ) m_randomDeviate->RandomDouble();
+			raysPerPixel[area].first = (raysPerPixel[area].first)++;
+		}
+	}
 
 	//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 	// Create a QFutureWatcher and connect signals and slots.
 	QFutureWatcher< TPhotonMap* > futureWatcher;
 
 	QMutex mutex;
-	QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+	QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 	futureWatcher.setFuture( photonMap );
 
 	futureWatcher.waitForFinished();
 
-	SoSFVec3f scaleVect = lightTransform->scaleFactor;
+	/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
 	float scalex,scaley,scalez;
 	scaleVect.getValue().getValue(scalex,scaley,scalez);
 	m_sceneModel->FinalyzeAnalyze(double(m_numberOfRays)/(raycastingSurface->GetArea()*scalex*scalez));
+	*/
 
 
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;
 
-	double inputAperture = raycastingSurface->GetArea();
+	double inputAperture = raycastingSurface->GetValidArea();
 	m_wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
+
 
 	return 1;
 }
