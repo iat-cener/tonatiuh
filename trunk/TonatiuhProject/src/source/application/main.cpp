@@ -61,6 +61,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeKit.h"
 #include "TSquare.h"
 #include "TTrackerForAiming.h"
+#include "TTransmissivity.h"
 
 /*!
   \mainpage
@@ -125,6 +126,7 @@ int main( int argc, char ** argv )
 	TDefaultTracker::initClass();
 	TSceneTracker::initClass();
 	GraphicRootTracker::initClass();
+	TTransmissivity::initClass();
 
 
 	MainWindow* mw;
