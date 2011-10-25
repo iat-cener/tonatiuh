@@ -1320,8 +1320,9 @@ void MainWindow::Run()
 	SoTransform* lightTransform = 0;
 	TSunShape* sunShape = 0;
 	TLightShape* raycastingSurface = 0;
+	TTransmissivity* transmissivity = 0;
 
-	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface ) )
+	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface, transmissivity ) )
 	{
 		m_sceneModel->PrepareAnalyze();
 		QVector< QPair< TShapeKit*, Transform > > surfacesList;
@@ -1369,7 +1370,7 @@ void MainWindow::Run()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.
@@ -2318,12 +2319,22 @@ void MainWindow::ReadSettings()
 /*!
  * Checks whether a ray tracing can be started with the current light and model.
  */
-bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance, InstanceNode*& lightInstance, SoTransform*& lightTransform, TSunShape*& sunShape, TLightShape*& raycastingShape )
+bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
+									InstanceNode*& lightInstance,
+									SoTransform*& lightTransform,
+									TSunShape*& sunShape,
+									TLightShape*& raycastingShape,
+									TTransmissivity*& transmissivity )
 {
 
 	//Check if there is a scene
-	SoSceneKit* coinScene = m_document->GetSceneKit();
+	TSceneKit* coinScene = m_document->GetSceneKit();
 	if ( !coinScene )  return false;
+
+	//Check if there is a transmissivity defined
+	if ( !coinScene->getPart( "transmissivity", false ) )	transmissivity = 0;
+	else
+		transmissivity = static_cast< TTransmissivity* > ( coinScene->getPart( "transmissivity", false ) );
 
 	//Check if there is a rootSeparator InstanceNode
 	rootSeparatorInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );

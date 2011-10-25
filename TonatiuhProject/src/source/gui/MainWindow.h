@@ -39,8 +39,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <Inventor/SbVec3f.h>
+
 #include "tgc.h"
-#include <ui_mainwindow.h>
+
+#include "ui_mainwindow.h"
 
 class Document;
 class GraphicRoot;
@@ -61,8 +64,8 @@ class TPhotonMap;
 class TShapeFactory;
 class TSunShape;
 class TTrackerFactory;
+class TTransmissivity;
 class UpdatesManager;
-#include <Inventor/SbVec3f.h>
 class SoCamera;
 
 
@@ -201,7 +204,8 @@ private:
 			                 InstanceNode*& lightInstance,
 			                 SoTransform*& lightTransform,
 			                 TSunShape*& sunShape,
-			                 TLightShape*& shape );
+			                 TLightShape*& shape,
+			                 TTransmissivity*& transmissivity );
     bool SaveFile( const QString& fileName );
     void SetCurrentFile( const QString& fileName );
     void SetupActions();

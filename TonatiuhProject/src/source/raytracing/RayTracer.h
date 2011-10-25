@@ -49,6 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 
 class InstanceNode;
+class ParallelRandomDeviate;
 struct Photon;
 class RandomDeviate;
 struct RayTracerPhoton;
@@ -57,7 +58,7 @@ class QPoint;
 class TPhotonMap;
 class TLightShape;
 class TSunShape;
-class ParallelRandomDeviate;
+class TTransmissivity;
 
 class RayTracer
 {
@@ -68,6 +69,7 @@ public:
 		       TLightShape* lightShape,
 		       TSunShape* const lightSunShape,
 		       Transform lightToWorld,
+		       TTransmissivity* transmissivity,
 		       RandomDeviate& rand,
 		       QMutex* mutex,
 		       TPhotonMap* photonMap );
@@ -87,6 +89,7 @@ private:
 	RandomDeviate* m_pRand;
     QMutex* m_mutex;
 	TPhotonMap* m_photonMap;
+	TTransmissivity * m_transmissivity;
 
 	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand, int a,int b );
 };
