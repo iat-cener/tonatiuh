@@ -28,12 +28,10 @@ public:
 	TLightShape( );
 	static void initClass();
 
-	double GetArea() const;
 	double GetValidArea() const;
 	QVector< QPair< int, int > > GetValidAreasCoord() const;
 	double GetVolume() const { return 0.0; };
 
-	bool IsIntoValidArea( Point3D point ) const;
 	Point3D Sample( double u, double v, int a, int b ) const;
 	void SetLightSourceArea( int h, int w, int** lightArea );
 
