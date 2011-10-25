@@ -40,8 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TrackerOneAxisFactory.h"
 #include "TrackerOneAxis.h"
 
-#include <iostream>
-
 QString TrackerOneAxisFactory::TTrackerName() const
 {
 	return QString("One Axis tracker");
