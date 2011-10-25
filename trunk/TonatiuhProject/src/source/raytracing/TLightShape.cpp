@@ -85,13 +85,6 @@ TLightShape::~TLightShape()
 	delete[] m_lightAreaMatrix;
 }
 
-double TLightShape::GetArea() const
-{
-	double width =  xMax.getValue() - xMin.getValue();
-	double height = zMax.getValue() - zMin.getValue();
-	return ( width * height );
-}
-
 double TLightShape::GetValidArea() const
 {
 	int numberOfValidAreas = GetValidAreasCoord().count();
@@ -109,7 +102,7 @@ double TLightShape::GetValidArea() const
 
 
 /*!
- * Returns the indexes of the valid pixels to the ray tracer.
+ * Returns the indexes of the valid areas to the ray tracer.
  */
 
 QVector< QPair< int, int > > TLightShape::GetValidAreasCoord() const
@@ -123,34 +116,8 @@ QVector< QPair< int, int > > TLightShape::GetValidAreasCoord() const
 	return validAreasList;
 }
 
-
-bool TLightShape::IsIntoValidArea( Point3D point ) const
-{
-	//printf("xMax: %f,xmin: %f,zMax: %f,zMin:%f",xMax.getValue(),xMin.getValue(),zMax.getValue(),zMin.getValue());
-
-	if( point.x < xMin.getValue() || point.x > xMax.getValue() )
-		return false;
-	if( point.y < -tgc::Epsilon || point.y > tgc::Epsilon )
-		return false;
-	if( point.z < zMin.getValue() || point.z > zMax.getValue() )
-		return false;
-
-	double width =  xMax.getValue() - xMin.getValue();
-	double pixelWidth = width / m_widthElements;
-	int w = ( point.x - xMin.getValue() ) /pixelWidth;
-
-	double height = zMax.getValue() - zMin.getValue();
-	double pixelHeight = height / m_heightElements;
-	int h = ( point.z - zMin.getValue() ) /pixelHeight;
-	if(  m_lightAreaMatrix[h][w] == 0 )	return false;
-
-	//std::cout<<"m_lightAreaMatrix[h][w]; "<<m_lightAreaMatrix[h][w]<<"width"<<w<<"heigth"<<h <<std::endl;
-	return true;
-}
-
 Point3D TLightShape::Sample( double u, double v, int a, int b) const
-{   //vamos a crear el punto de una celda de la matriz que se que es valida
-	//printf("m_lightAreaMatrix[%d][%d]:%d ",7,1,m_lightAreaMatrix[5][1]);
+{   //calculate the coordinates of a photon un a cell
 	return GetPoint3D( u, v,a,b );
 }
 
@@ -158,12 +125,10 @@ Point3D TLightShape::GetPoint3D (double u, double v, int h,int w) const
 {
 	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function TLightShape::GetPoint3D called with invalid parameters" );
 
-    //tamaño de las celdas en la superficie del sol
+    //size of cells the sun is divided
 	double width =  (xMax.getValue() - xMin.getValue())/m_widthElements;
 	double height = (zMax.getValue() - zMin.getValue())/m_heightElements;
-	//printf(" u-v:%f-%f ",u,v);
-	//printf("celda de x-z:%f-%f,w-* %d h-* %d ",width,height,m_widthElements,m_heightElements);
-	//calculo de la coodenada del punto
+	//calculate the photon coordinate
 	double x = xMin.getValue()+( u * width ) + (w*width);
 	double z = zMin.getValue()+( v * height ) + (h*height);
 
