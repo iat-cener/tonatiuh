@@ -207,6 +207,7 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 	SoCoordinate3* points = new SoCoordinate3;
 
 	int drawRays =  (int) (numberOfRays * ( fraction / 100 ) );
+	int intervalRays = (int) ( numberOfRays / drawRays );
 	if( drawRays == 0 ) drawRays = 1;
 
 	QVector< int >	rayLengths;
@@ -217,12 +218,13 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 	std::vector< Photon* > photonsList = map.GetAllPhotons();
 
 	unsigned int indexPhotonList = 0;
-	int drawnRay = 0;
-	while( ( indexPhotonList < photonsList.size() ) && ( drawnRay < drawRays ) )
+	int nRay = 0;
+
+	while( ( indexPhotonList < photonsList.size() ) && ( nRay < ( int )numberOfRays ) )
 	{
 		 while( ( indexPhotonList < photonsList.size() ) && ( photonsList[indexPhotonList]->prev != 0 ) )       indexPhotonList++;
 
-		 if( ( indexPhotonList < photonsList.size() ) && photonsList[indexPhotonList]->prev == 0 )
+		 if( ( indexPhotonList < photonsList.size() ) && ( photonsList[indexPhotonList]->prev == 0 ) && fmod( nRay, intervalRays ) == 0 )
 		 {
 				 Photon* node = photonsList[indexPhotonList];
 				 rayLength = 0;
@@ -241,7 +243,10 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 				 rayLengths.push_back( rayLength );
 				 indexPhotonList++;
 		 }
-		 drawnRay++;
+		 else
+			 indexPhotonList++;
+
+		 nRay++;
 
 	}
 

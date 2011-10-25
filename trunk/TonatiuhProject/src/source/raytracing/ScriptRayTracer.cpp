@@ -63,7 +63,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TSunShape.h"
-
+#include "TTransmissivity.h"
 
 ScriptRayTracer::ScriptRayTracer( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory )
 :
@@ -391,6 +391,12 @@ int ScriptRayTracer::Trace()
 	TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 	light->ComputeLightSourceArea( surfacesList );
 
+	//Check if there is a transmissivity defined
+	TTransmissivity* transmissivity;
+	if ( !coinScene->getPart( "transmissivity", false ) )	transmissivity = 0;
+	else
+		transmissivity = static_cast< TTransmissivity* > ( coinScene->getPart( "transmissivity", false ) );
+
 	//Compute the valid areas for the raytracing
 	QVector< QPair< int, int > > validAreasList = raycastingSurface->GetValidAreasCoord();
 
@@ -419,7 +425,7 @@ int ScriptRayTracer::Trace()
 	QFutureWatcher< TPhotonMap* > futureWatcher;
 
 	QMutex mutex;
-	QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+	QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 	futureWatcher.setFuture( photonMap );
 
 	futureWatcher.waitForFinished();
