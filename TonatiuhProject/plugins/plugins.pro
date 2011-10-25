@@ -28,7 +28,8 @@ SUBDIRS =  MaterialBasicRefractive \
 			SunshapePillbox \
 			TrackerHeliostat \
             TrackerLinearFresnel \
-			TrackerOneAxis
+			TrackerOneAxis \
+			TransmissivityDefault
 
 plugins.target= plugins
 plugins.depends = src
