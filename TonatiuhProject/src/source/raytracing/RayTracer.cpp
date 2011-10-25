@@ -69,13 +69,15 @@ m_transmissivity( transmissivity )
 {
 }
 
-
+//generating the ray
 bool RayTracer::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand, int a, int b )
 {
-    //generacion del rayo
+	//generating the photon
 	Point3D origin = m_lightShape->Sample( rand.RandomDouble(), rand.RandomDouble(), a, b );
+	//generating the ray direction
 	Vector3D direction;
 	m_lightSunShape->GenerateRayDirection( direction, rand );
+	//generatin the ray
 	*ray =  m_lightToWorld( Ray( origin, direction ) );
 
 	return true;
