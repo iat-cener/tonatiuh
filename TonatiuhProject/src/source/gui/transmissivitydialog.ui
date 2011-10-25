@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="transmissivityLabel">
      <property name="text">
-      <string>Tansmissivity type:</string>
+      <string>Transmissivity type:</string>
      </property>
     </widget>
    </item>
