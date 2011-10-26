@@ -120,6 +120,9 @@ FieldContainerWidget::~FieldContainerWidget()
  */
 void FieldContainerWidget::SetContainer( SoNode* fieldContainer, QString containerName )
 {
+
+	m_pModel->clear();
+
 	m_pFieldContainer = fieldContainer;
 	m_containerName = containerName;
 

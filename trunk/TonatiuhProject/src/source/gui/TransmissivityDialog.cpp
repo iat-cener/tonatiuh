@@ -58,7 +58,7 @@ TransmissivityDialog::TransmissivityDialog( QVector< TTransmissivityFactory* > t
 		transmissivityCombo->addItem( transmissivityFactoryList[t]->TTransmissivityIcon(), transmissivityFactoryList[t]->TTransmissivityName(), transmissivityTypeName );
 	}
 
-	connect( transmissivityCombo, SIGNAL( activated( int ) ), this, SLOT( ChangeTransmissivityType( int ) ) );
+	connect( transmissivityCombo, SIGNAL( currentIndexChanged( int ) ), this, SLOT( ChangeTransmissivityType( int ) ) );
 
 
 }
@@ -88,6 +88,7 @@ void TransmissivityDialog::SetCurrentTransmissivity( TTransmissivity* transmissi
 	{
 		QString name( m_currentTransmissivity->getTypeId().getName() );
 		m_currentTransmissivityIndex = transmissivityCombo->findData( name );
+		transmissivityCombo->setCurrentIndex( m_currentTransmissivityIndex );
 	}
 }
 
