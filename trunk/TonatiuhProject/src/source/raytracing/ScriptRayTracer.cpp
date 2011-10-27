@@ -440,9 +440,16 @@ int ScriptRayTracer::Trace()
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;
 
-	double inputAperture = raycastingSurface->GetValidArea();
-	m_wPhoton = ( inputAperture * irradiance ) / m_numberOfRays;
-
+	m_area = raycastingSurface->GetValidArea();
+	m_wPhoton = ( m_area * irradiance ) / m_numberOfRays;
 
 	return 1;
+}
+
+double ScriptRayTracer::GetArea(){
+	return m_area;
+}
+
+double ScriptRayTracer::GetNumrays(){
+	return m_numberOfRays;
 }

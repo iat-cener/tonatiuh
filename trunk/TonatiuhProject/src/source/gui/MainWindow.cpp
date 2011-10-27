@@ -786,7 +786,9 @@ void MainWindow::on_actionAbout_triggered()
 			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
 }
+void MainWindow::on_actionHelp_triggered(){
 
+}
 /*!
  * Changes the number of the grid cells and grid cell dimensions.
  */
@@ -1380,8 +1382,14 @@ void MainWindow::Run()
 
 		QDateTime time2 = QDateTime::currentDateTime();
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
-
 		m_tracedRays += m_raysPerIteration;
+
+		//Display a dialog
+		QString st;
+		QString area( QString("The valid sun shape is %2 meters" ).arg(st.setNum(raycastingSurface->GetValidArea())) + QChar( 0x00B2) );
+		QString drawRays( QString(" There are %1 traced rays.").arg(st.setNum(m_tracedRays)));
+		QString Finishmessage=QString("The execution is succesfully finished in %1 seconds.\n %2.\n %3").arg(st.setNum(startTime.secsTo( time2 )),area,drawRays);
+		QMessageBox::information( this, QString( "Completed" ), Finishmessage);
 
 		SoSFVec3f scaleVect = lightTransform->scaleFactor;
 		float scalex, scaley, scalez;
