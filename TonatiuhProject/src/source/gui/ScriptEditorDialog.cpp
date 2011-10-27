@@ -146,8 +146,8 @@ void ScriptEditorDialog::OpenScriptFile( const QModelIndex& index )
 void  ScriptEditorDialog::RunScript()
 {
 
-
-	QString logmessage = QString( "[%1]\t Start running script\n.").arg( QDateTime::currentDateTime().toString() );
+    QDateTime start=QDateTime::currentDateTime();
+	QString logmessage = QString( "[%1]\t Start running script\n.").arg( start.toString() );
 	WriteMessage( logmessage );
 
 	int initialized = tonatiuh_script::init( m_interpreter );
@@ -188,7 +188,11 @@ void  ScriptEditorDialog::RunScript()
 	}
 	else
 	{
-		QString logmessage = QString( "[%1]\t The script execution is successfully finished\n" ).arg( QDateTime::currentDateTime().toString() );
+		//Display a dialog
+		QString st;
+		QString area( QString("The valid sun shape is %2 meters" ).arg(st.setNum(rayTracer->GetArea())) + QChar( 0x00B2) );
+		QString drawRays( QString(" There are %1 traced rays.").arg(st.setNum(int(rayTracer->GetNumrays()))));
+		QString logmessage = QString( "[%1]\t The script execution is successfully finished in %2 seconds.\n \t %3 \n \t %4 \n" ).arg( QDateTime::currentDateTime().toString(),st.setNum(start.secsTo( QDateTime::currentDateTime() )),area,drawRays );
 		WriteMessage( logmessage );
 	}
 

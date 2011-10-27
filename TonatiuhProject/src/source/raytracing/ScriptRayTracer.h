@@ -73,6 +73,9 @@ public:
 	bool IsValidRandomGeneratorType( QString type );
 	bool IsValidSurface( QString surfaceName );
 
+	double GetArea();
+	double GetNumrays();
+
 	int SetDir( QString dir );
 
 	int SetExportAll( QString filename );
@@ -116,6 +119,7 @@ private:
 
 	SceneModel* m_sceneModel;
 
+	double m_area;
 	bool m_sunPosistionChnaged;
 	double m_sunAzimuth;
 	double m_sunElevation;
