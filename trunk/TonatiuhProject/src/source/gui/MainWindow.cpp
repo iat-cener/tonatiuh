@@ -1386,9 +1386,9 @@ void MainWindow::Run()
 
 		//Display a dialog
 		QString st;
-		QString area( QString("The valid sun shape is %2 meters" ).arg(st.setNum(raycastingSurface->GetValidArea())) + QChar( 0x00B2) );
-		QString drawRays( QString(" There are %1 traced rays.").arg(st.setNum(m_tracedRays)));
-		QString Finishmessage=QString("The execution is succesfully finished in %1 seconds.\n %2.\n %3").arg(st.setNum(startTime.secsTo( time2 )),area,drawRays);
+		QString area( QString("The valid sun area is %2" ).arg(st.setNum(raycastingSurface->GetValidArea())));
+		QString drawRays( QString("Number of rays traced: %1\n").arg(st.setNum(m_tracedRays)));
+		QString Finishmessage=QString(" The execution is succesfully finished in %1 seconds.\n %2.\n %3").arg(st.setNum(startTime.secsTo( time2 )),area,drawRays);
 		QMessageBox::information( this, QString( "Completed" ), Finishmessage);
 
 		SoSFVec3f scaleVect = lightTransform->scaleFactor;
