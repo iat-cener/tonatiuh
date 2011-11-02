@@ -404,6 +404,7 @@ int ScriptRayTracer::Trace()
 	QVector< QPair< double, QPoint > > raysPerPixel;
 	const int maximumValueProgressScale = validAreasList.count();
 	unsigned long  t1 = m_numberOfRays / maximumValueProgressScale;
+
 	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 	{
 		QPair< int, int > coord = validAreasList[ progressCount ];
@@ -411,37 +412,29 @@ int ScriptRayTracer::Trace()
 		raysPerPixel<<QPair< double, QPoint >( t1, pixelsCoord );
 	}
 
-	m_numberOfRays=t1*maximumValueProgressScale;
-	/*if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )
-	{
-		int raysToTrace = m_numberOfRays - ( t1 * maximumValueProgressScale );
-		for( int r = 0; r < raysToTrace; r++ )
-		{
-			int area = ( int ) m_randomDeviate->RandomDouble();
-			raysPerPixel[area].first = (raysPerPixel[area].first)++;
-		}
-	}*/
+	m_numberOfRays = t1 * maximumValueProgressScale;
 
 	//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 	// Create a QFutureWatcher and connect signals and slots.
 	QFutureWatcher< TPhotonMap* > futureWatcher;
 
 	QMutex mutex;
-	if(transmissivity){
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-		futureWatcher.setFuture( photonMap );
-	}
-	else{
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-		futureWatcher.setFuture( photonMap );
-	}
+	QFuture< TPhotonMap* > photonMap;
+	if( transmissivity )
+		photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+
+	else
+		photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+
+	futureWatcher.setFuture( photonMap );
 	futureWatcher.waitForFinished();
 
-	SoSFVec3f scaleVect = lightTransform->scaleFactor;
+	/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
 	float scalex,scaley,scalez;
 	scaleVect.getValue().getValue(scalex,scaley,scalez);
 	//m_sceneModel->FinalyzeAnalyze(double(m_numberOfRays)/(raycastingSurface->GetArea()*scalex*scalez));
 	m_sceneModel->FinalyzeAnalyze( double(m_numberOfRays) /( raycastingSurface->GetValidArea() ) );
+	*/
 
 
 	if( !m_photonMap ) return 1;
