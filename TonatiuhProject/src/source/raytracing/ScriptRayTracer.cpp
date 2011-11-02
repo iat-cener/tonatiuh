@@ -54,6 +54,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "RandomDeviateFactory.h"
 #include "RayTracer.h"
+#include "RayTracerNoTr.h"
 #include "tgf.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
@@ -410,7 +411,8 @@ int ScriptRayTracer::Trace()
 		raysPerPixel<<QPair< double, QPoint >( t1, pixelsCoord );
 	}
 
-	if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )
+	m_numberOfRays=t1*maximumValueProgressScale;
+	/*if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )
 	{
 		int raysToTrace = m_numberOfRays - ( t1 * maximumValueProgressScale );
 		for( int r = 0; r < raysToTrace; r++ )
@@ -418,16 +420,21 @@ int ScriptRayTracer::Trace()
 			int area = ( int ) m_randomDeviate->RandomDouble();
 			raysPerPixel[area].first = (raysPerPixel[area].first)++;
 		}
-	}
+	}*/
 
 	//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 	// Create a QFutureWatcher and connect signals and slots.
 	QFutureWatcher< TPhotonMap* > futureWatcher;
 
 	QMutex mutex;
-	QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-	futureWatcher.setFuture( photonMap );
-
+	if(transmissivity){
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		futureWatcher.setFuture( photonMap );
+	}
+	else{
+		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		futureWatcher.setFuture( photonMap );
+	}
 	futureWatcher.waitForFinished();
 
 	SoSFVec3f scaleVect = lightTransform->scaleFactor;

@@ -105,6 +105,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "RayTraceDialog.h"
 #include "RayTracer.h"
+#include "RayTracerNoTr.h"
 #include "SceneModel.h"
 #include "ScriptEditorDialog.h"
 #include "SunPositionCalculatorDialog.h"
@@ -1348,16 +1349,6 @@ void MainWindow::Run()
 			raysPerPixel<<QPair< double, QPoint >( t1, pixelsCoord );
 		}
 
-		if( ( t1 * maximumValueProgressScale ) < m_raysPerIteration )
-		{
-			int raysToTrace = m_raysPerIteration - ( t1 * maximumValueProgressScale );
-			for( int r = 0; r < raysToTrace; r++ )
-			{
-				int area = ( int )( m_rand->RandomDouble() * validAreasList.count() ) ;
-				raysPerPixel[area].first = (raysPerPixel[area].first)++;
-			}
-		}
-
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 
 		// Create a progress dialog.
@@ -1372,8 +1363,16 @@ void MainWindow::Run()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-		futureWatcher.setFuture( photonMap );
+		if(transmissivity){
+			QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+			futureWatcher.setFuture( photonMap );
+			printf("Transimisividad\n");
+		}
+		else{
+			QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+			futureWatcher.setFuture( photonMap );
+			printf("Sin Transimisividad\n");
+		}
 
 		// Display the dialog and start the event loop.
 		dialog.exec();
@@ -1382,7 +1381,7 @@ void MainWindow::Run()
 
 		QDateTime time2 = QDateTime::currentDateTime();
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
-		m_tracedRays += m_raysPerIteration;
+		m_tracedRays += t1*validAreasList.count();
 
 		//Display a dialog
 		QString st;
