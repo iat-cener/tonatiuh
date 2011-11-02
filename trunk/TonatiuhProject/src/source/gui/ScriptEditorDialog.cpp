@@ -191,7 +191,7 @@ void  ScriptEditorDialog::RunScript()
 		//Display a dialog
 		QString st;
 		QString area( QString("The valid sun area is %2" ).arg(st.setNum(rayTracer->GetArea())));
-		QString drawRays( QString("Number of rays traced: %1").arg(st.setNum(int(rayTracer->GetNumrays()))));
+		QString drawRays( QString("Number of rays traced per interaction: %1").arg(st.setNum(int(rayTracer->GetNumrays()))));
 		QString logmessage = QString( "[%1]\t The script execution is successfully finished in %2 seconds.\n \t\t %3 \n \t\t %4 \n" ).arg( QDateTime::currentDateTime().toString(),st.setNum(start.secsTo( QDateTime::currentDateTime() )),area,drawRays );
 		WriteMessage( logmessage );
 	}
