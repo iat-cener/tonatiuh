@@ -79,7 +79,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdCut.h"
 #include "CmdDelete.h"
 #include "CmdDeleteTracker.h"
-	//cam->viewAll( m_document->GetRoot(), vpr );
 #include "CmdInsertMaterial.h"
 #include "CmdInsertSeparatorKit.h"
 #include "CmdInsertAnalyzerKit.h"
@@ -756,9 +755,6 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 
 	cam->position.setValue( target + SbVec3f( -cam->focalDistance.getValue(), 0, 0 ) );
 	cam->pointAt( target, SbVec3f( 0, 1, 0 )  );
-
-	//SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
-	//cam->viewAll( m_graphicsRoot->GetNode(), vpr );
 }
 
 void MainWindow::on_actionOpenScriptEditor_triggered()
@@ -787,9 +783,12 @@ void MainWindow::on_actionAbout_triggered()
 			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
 }
+/*
 void MainWindow::on_actionHelp_triggered(){
 
 }
+*/
+
 /*!
  * Changes the number of the grid cells and grid cell dimensions.
  */
@@ -1342,6 +1341,7 @@ void MainWindow::Run()
 		QVector< QPair< double, QPoint > > raysPerPixel;
 		const int maximumValueProgressScale = validAreasList.count();
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
+
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 		{
 			QPair< int, int > coord = validAreasList[ progressCount ];
@@ -1363,25 +1363,25 @@ void MainWindow::Run()
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		if(transmissivity){
-			QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-			futureWatcher.setFuture( photonMap );
-			printf("Transimisividad\n");
-		}
-		else{
-			QFuture< TPhotonMap* > photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-			futureWatcher.setFuture( photonMap );
-			printf("Sin Transimisividad\n");
-		}
+		QFuture< TPhotonMap* > photonMap;
+
+		if( transmissivity )
+			photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+
+		else
+			photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+
+		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.
 		dialog.exec();
 		futureWatcher.waitForFinished();
+		m_tracedRays += t1 * validAreasList.count();
+
 
 
 		QDateTime time2 = QDateTime::currentDateTime();
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
-		m_tracedRays += t1*validAreasList.count();
 
 		//Display a dialog
 		QString st;
@@ -1390,13 +1390,15 @@ void MainWindow::Run()
 		QString Finishmessage=QString(" The execution is succesfully finished in %1 seconds.\n %2.\n %3").arg(st.setNum(startTime.secsTo( time2 )),area,drawRays);
 		QMessageBox::information( this, QString( "Completed" ), Finishmessage);
 
-		SoSFVec3f scaleVect = lightTransform->scaleFactor;
+		/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
 		float scalex, scaley, scalez;
 		scaleVect.getValue().getValue( scalex, scaley, scalez );
 		//m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetArea() * scalex * scalez ) );
 		m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetValidArea() ) );
+	*/
 
 		ShowRaysIn3DView();
+
 
 	}
 
@@ -2932,7 +2934,7 @@ void MainWindow::ShowRaysIn3DView()
 	actionDisplayRays->setChecked( false );
 
 
-	if( m_fraction > 0.0 || m_drawPhotons )
+	if( m_tracedRays > 0.0 && ( m_fraction > 0.0 || m_drawPhotons ) )
 	{
 		SoSeparator* rays = new SoSeparator;
 		rays->ref();

@@ -25,6 +25,7 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/Point3D.o \
                         $$(TONATIUH_ROOT)/debug/PluginManager.o \
                         $$(TONATIUH_ROOT)/debug/RayTracer.o \
+                        $$(TONATIUH_ROOT)/debug/RayTracerNoTr.o \
                         $$(TONATIUH_ROOT)/debug/RayTracerPhoton.o \
                         $$(TONATIUH_ROOT)/debug/RefCount.o \
                         $$(TONATIUH_ROOT)/debug/SceneModel.o \
@@ -76,6 +77,7 @@ else {
                         $$(TONATIUH_ROOT)/release/Point3D.o \
                         $$(TONATIUH_ROOT)/release/PluginManager.o \
                         $$(TONATIUH_ROOT)/release/RayTracer.o \
+                        $$(TONATIUH_ROOT)/release/RayTracerNoTr.o \
                         $$(TONATIUH_ROOT)/release/RayTracerPhoton.o \
                         $$(TONATIUH_ROOT)/release/RefCount.o \
                         $$(TONATIUH_ROOT)/release/SceneModel.o \

@@ -184,7 +184,7 @@ protected slots:
 	//Help menu actions
 	void on_actionAbout_triggered();
 	void on_actionCheckForUpdates_triggered();
-	void on_actionHelp_triggered();
+	//void on_actionHelp_triggered();
 
 
 private:
