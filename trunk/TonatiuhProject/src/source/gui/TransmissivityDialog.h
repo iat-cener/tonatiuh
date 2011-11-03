@@ -59,6 +59,9 @@ public:
 	TTransmissivity* GetTransmissivity() const;
 	void SetCurrentTransmissivity( TTransmissivity* transmissivity );
 
+public slots:
+	void SetValue( SoNode* node, QString paramenterName, QString newValue );
+
 protected slots:
 	void ChangeTransmissivityType( int index );
 
