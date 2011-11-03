@@ -15,6 +15,8 @@
 #include "tonatiuh_script.h"
 
 double** binCounts( QVector< Point3D >  photons, int widthDivisions, int heightDivisions );
+double m_area;
+double m_numrays;
 
 // Tests the Set method.
 TEST(RayTracerTest, CreateTargetPhotonMap )
@@ -79,6 +81,8 @@ TEST(RayTracerTest, CreateTargetPhotonMap )
 		FAIL()<<errorMessage.toStdString();
 
 	}
+	m_area=rayTracerObject->GetArea();
+	m_numrays=rayTracerObject->GetNumrays();
 }
 
 TEST(RayTracerTest, PowerPerPhoton )
@@ -96,9 +100,9 @@ TEST(RayTracerTest, PowerPerPhoton )
 
 	QDataStream in( &targetPhotonsFile );
 
-	double nPhotons = 50000000;
+	double nPhotons =m_numrays;
 	double irradiance = 1000;
-	double inputArea = ( 23.571325 + 3.2974949 ) * ( 6.7119265 + 21.504433 );
+	double inputArea = m_area;
 
 	double expectedWPhoton = ( ( irradiance * inputArea )/ nPhotons) ;
 
@@ -140,9 +144,9 @@ TEST(RayTracerTest, TotalPower )
 		photons.push_back( Point3D( x, y, z) );
 	}
 	targetPhotonsFile.close();
-
+    double irradiance=1000;
 	double totalPower = ( wPhoton * photons.size() )/1000;
-	double expectedTotalPower = 9.76163; /* kW */
+	double expectedTotalPower =((m_area*irradiance)/m_numrays)*photons.size()/1000; /* kW */
 
 	double relativeError = ( totalPower - expectedTotalPower ) / expectedTotalPower;
 	EXPECT_PRED_FORMAT2(::testing::DoubleLE, relativeError, 0.02);
