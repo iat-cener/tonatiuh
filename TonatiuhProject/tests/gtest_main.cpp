@@ -49,6 +49,7 @@
 #include "TSceneKit.h"
 #include "TSceneTracker.h"
 #include "TTrackerForAiming.h"
+#include "TTransmissivity.h"
 
 int main(int argc, char **argv )
 {
@@ -79,6 +80,7 @@ int main(int argc, char **argv )
 	TAnalyzerParameter::initClass();
 	TAnalyzerResult::initClass();
 	TAnalyzerLevel::initClass();
+	TTransmissivity::initClass();
 
 
     testing::InitGoogleTest(&argc, argv);
