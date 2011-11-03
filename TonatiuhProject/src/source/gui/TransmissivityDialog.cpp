@@ -40,6 +40,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QVector>
 
+
+#include <Inventor/fields/SoSFBool.h>
+
+
 #include "TransmissivityDialog.h"
 #include "TTransmissivity.h"
 #include "TTransmissivityFactory.h"
@@ -59,7 +63,8 @@ TransmissivityDialog::TransmissivityDialog( QVector< TTransmissivityFactory* > t
 	}
 
 	connect( transmissivityCombo, SIGNAL( currentIndexChanged( int ) ), this, SLOT( ChangeTransmissivityType( int ) ) );
-
+	//change parameter signal
+	connect( transmissivityParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
 
 }
 
@@ -75,8 +80,16 @@ TTransmissivity* TransmissivityDialog::GetTransmissivity() const
 {
 	return m_newTransmissivity;
 }
+/*
+ * Set new new value into the parameter field
+ */
+void TransmissivityDialog::SetValue( SoNode* node, QString paramenterName, QString newValue )
+{
+	SoField* parameterField = node->getField( SbName( paramenterName.toStdString().c_str() ) );
+	if( parameterField )
+		parameterField->set( newValue.toStdString().c_str() );
 
-
+}
 void TransmissivityDialog::SetCurrentTransmissivity( TTransmissivity* transmissivity )
 {
 	if( !transmissivity )	return;
