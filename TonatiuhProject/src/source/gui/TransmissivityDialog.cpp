@@ -95,7 +95,7 @@ void TransmissivityDialog::SetCurrentTransmissivity( TTransmissivity* transmissi
 	if( !transmissivity )	return;
 	m_currentTransmissivity = static_cast< TTransmissivity* >( transmissivity->copy( true ) );
 
-	//Select current LightKit Sunshape
+	//Select current Transmissivity
 	m_currentTransmissivityIndex = 0;
 	if( m_currentTransmissivity )
 	{
