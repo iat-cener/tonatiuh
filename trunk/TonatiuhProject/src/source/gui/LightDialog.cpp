@@ -115,9 +115,18 @@ void LightDialog::accept()
 
 void LightDialog::SetValue( SoNode* node, QString paramenterName, QString newValue )
 {
+	if(paramenterName=="irradiance"){
+		if(newValue.toDouble()>=0){
+			SoField* parameterField = node->getField( SbName( paramenterName.toStdString().c_str() ) );
+				if( parameterField )
+					parameterField->set( newValue.toStdString().c_str() );
+		}
+	}
+	else{
 	SoField* parameterField = node->getField( SbName( paramenterName.toStdString().c_str() ) );
 	if( parameterField )
 		parameterField->set( newValue.toStdString().c_str() );
+	}
 
 }
 

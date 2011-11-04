@@ -85,10 +85,13 @@ TTransmissivity* TransmissivityDialog::GetTransmissivity() const
  */
 void TransmissivityDialog::SetValue( SoNode* node, QString paramenterName, QString newValue )
 {
+	double value=newValue.toDouble();
+	if(value>=0){
+
 	SoField* parameterField = node->getField( SbName( paramenterName.toStdString().c_str() ) );
 	if( parameterField )
 		parameterField->set( newValue.toStdString().c_str() );
-
+	}
 }
 void TransmissivityDialog::SetCurrentTransmissivity( TTransmissivity* transmissivity )
 {
