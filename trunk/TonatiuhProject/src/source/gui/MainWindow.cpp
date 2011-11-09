@@ -1383,12 +1383,17 @@ void MainWindow::Run()
 		QDateTime time2 = QDateTime::currentDateTime();
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
+		/*
+		 *
 		//Display a dialog
+
 		QString st;
 		QString area( QString("The valid sun area is %2" ).arg(st.setNum(raycastingSurface->GetValidArea())));
 		QString drawRays( QString("Number of rays traced: %1\n").arg(st.setNum(m_tracedRays)));
 		QString Finishmessage=QString(" The execution is succesfully finished in %1 seconds.\n %2.\n %3").arg(st.setNum(startTime.secsTo( time2 )),area,drawRays);
 		QMessageBox::information( this, QString( "Completed" ), Finishmessage);
+        *
+        */
 
 		/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
 		float scalex, scaley, scalez;
