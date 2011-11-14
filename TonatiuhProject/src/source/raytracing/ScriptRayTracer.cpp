@@ -320,6 +320,7 @@ int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
 
 int ScriptRayTracer::Trace()
 {
+	m_sceneModel->UpdateSceneModel();
 	delete m_photonMap;
 	m_photonMap = 0;
 
@@ -382,6 +383,7 @@ int ScriptRayTracer::Trace()
 	SoTransform* lightTransform = static_cast< SoTransform* >( lightKit->getPart( "transform" ,false ) );
 	Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 	lightInstance->SetIntersectionTransform( lightToWorld. GetInverse() );
+
 
 	m_sceneModel->PrepareAnalyze();
 	QVector< QPair< TShapeKit*, Transform > > surfacesList;
