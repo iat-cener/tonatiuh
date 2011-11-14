@@ -176,8 +176,8 @@ m_graphicsRoot( 0 ),
 m_coinNode_Buffer( 0 ),
 m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ),
-m_raysPerIteration( 1000 ),
-m_fraction( 10 ),
+m_raysPerIteration( 10000 ),
+m_fraction( 1 ),
 m_drawPhotons( false ),
 m_gridXElements( 0 ),
 m_gridZElements( 0 ),
@@ -1326,6 +1326,7 @@ void MainWindow::Run()
 
 	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface, transmissivity ) )
 	{
+		m_sceneModel->UpdateSceneModel();
 		m_sceneModel->PrepareAnalyze();
 		QVector< QPair< TShapeKit*, Transform > > surfacesList;
 
@@ -1383,8 +1384,7 @@ void MainWindow::Run()
 		QDateTime time2 = QDateTime::currentDateTime();
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
-		/*
-		 *
+        /*
 		//Display a dialog
 
 		QString st;
@@ -1392,7 +1392,6 @@ void MainWindow::Run()
 		QString drawRays( QString("Number of rays traced: %1\n").arg(st.setNum(m_tracedRays)));
 		QString Finishmessage=QString(" The execution is succesfully finished in %1 seconds.\n %2.\n %3").arg(st.setNum(startTime.secsTo( time2 )),area,drawRays);
 		QMessageBox::information( this, QString( "Completed" ), Finishmessage);
-        *
         */
 
 		/*SoSFVec3f scaleVect = lightTransform->scaleFactor;

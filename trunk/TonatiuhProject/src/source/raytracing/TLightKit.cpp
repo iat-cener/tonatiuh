@@ -185,7 +185,7 @@ void TLightKit::Update( BBox box )
 	if( !sunshape )	return;
 	double thetaMax = sunshape->GetThetaMax();
 	double delta = 0.01;
-	if(  thetaMax > 0.0 ) delta = 5 * distMax * tan( thetaMax );
+	if(  thetaMax > 0.0 ) delta =distMax * tan( thetaMax );
 
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
@@ -212,7 +212,7 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 	double height = shape->zMax.getValue() - shape->zMin.getValue();
 
 
-	int pixels = 200;
+	int pixels = 400;
 	int widthPixeles = pixels;
 	if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
 	double pixelWidth = double( width / widthPixeles );
