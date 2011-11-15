@@ -178,6 +178,7 @@ m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ),
 m_raysPerIteration( 10000 ),
 m_fraction( 1 ),
+m_divisions(200),
 m_drawPhotons( false ),
 m_gridXElements( 0 ),
 m_gridZElements( 0 ),
@@ -607,7 +608,7 @@ void MainWindow::ShowRayTracerOptionsDialog()
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
 	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
 
-	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, randomDeviateFactoryList, m_fraction, m_drawPhotons, photonmapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
+	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, randomDeviateFactoryList, m_fraction,m_divisions, m_drawPhotons, photonmapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
 	options->exec();
 
 	SetRaysPerIteration( options->GetNumRays() );
@@ -619,6 +620,7 @@ void MainWindow::ShowRayTracerOptionsDialog()
 	}
 
 	m_fraction = options->GetRaysFactionToDraw();
+	m_divisions=options->GetNumDivisions();
 	m_drawPhotons = options->DrawPhotons();
 
 	m_selectedPhotonMap =options->GetPhotonMapFactoryIndex();
@@ -1334,13 +1336,14 @@ void MainWindow::Run()
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList,true );
 
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
-		light->ComputeLightSourceArea( surfacesList );
+		light->ComputeLightSourceArea( m_divisions,surfacesList );
 
 		//Compute the valid areas for the raytracing
 		QVector< QPair< int, int > > validAreasList = raycastingSurface->GetValidAreasCoord();
 
 		QVector< QPair< double, QPoint > > raysPerPixel;
 		const int maximumValueProgressScale = validAreasList.count();
+		if(int(m_raysPerIteration)<validAreasList.count())m_raysPerIteration=validAreasList.count();
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
 
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
@@ -1378,7 +1381,7 @@ void MainWindow::Run()
 		dialog.exec();
 		futureWatcher.waitForFinished();
 		m_tracedRays += t1 * validAreasList.count();
-
+        printf("Areas Validas %d",validAreasList.count());
 
 
 		QDateTime time2 = QDateTime::currentDateTime();

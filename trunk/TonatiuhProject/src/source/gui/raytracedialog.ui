@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>397</width>
-    <height>459</height>
+    <width>342</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -99,6 +99,32 @@
         </property>
         <property name="sizeAdjustPolicy">
          <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="divisionsQLabel">
+        <property name="text">
+         <string>Number of divisions</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="divisionsSpinBox">
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>2000</number>
+        </property>
+        <property name="singleStep">
+         <number>50</number>
+        </property>
+        <property name="value">
+         <number>200</number>
         </property>
        </widget>
       </item>
