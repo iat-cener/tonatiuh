@@ -55,7 +55,7 @@ void SunshapeBuie::initClass()
 SunshapeBuie::SunshapeBuie( )
 {
 	SO_NODE_CONSTRUCTOR( SunshapeBuie );
-	SO_NODE_ADD_FIELD( irradiance, (1000));
+	SO_NODE_ADD_FIELD( irradiance, ( 1000 ) );
 	SO_NODE_ADD_FIELD( csr, ( 0.02f ) );
 
 	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCSR, this );
@@ -173,9 +173,24 @@ double SunshapeBuie::zenithAngle( RandomDeviate& rand ) const
 
 double SunshapeBuie::chiValue( double csr ) const
 {
+	if( csr < 0.029 )
+		return 0.015225585070350609 + csr
+				* ( 1.0218994324124886 + csr
+						* ( -10.526697028479914 + (166.82200008446324 - 897.5958554995839 * csr)
+								* csr ) );
+	if( csr < 0.161 )
+		return 0.01681775171997384 + csr
+				* ( 0.8370414360823029 + csr
+						* ( -3.2148908062414527 + ( 43.37360723276668 - 120.48879243398568 * csr )
+								* csr ) );
 
-	return -4.7172422329669 * (-1.4070438092190156 + csr) * (0.0313462488977661 + csr) * (0.08846465256738223 + csr) *
+	return -0.05605094742175201 + csr
+				* ( 1.5344248578480248 + csr
+						* ( -0.8756174755520756 + ( -0.15110745500205472 + 0.7092283284730116 * csr )
+								* csr ) );
+	/*return -4.7172422329669 * (-1.4070438092190156 + csr) * (0.0313462488977661 + csr) * (0.08846465256738223 + csr) *
 			( 0.7843687910540035 + (-1.2947513603654814 + csr ) * csr );
+			*/
 }
 
 double SunshapeBuie::phiSolarDisk( double theta ) const
