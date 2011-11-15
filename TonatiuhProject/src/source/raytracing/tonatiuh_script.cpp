@@ -72,6 +72,9 @@ int tonatiuh_script::init( QScriptEngine* engine )
 	QScriptValue fun_tonatiuh_numrays = engine->newFunction( tonatiuh_script::tonatiuh_numrays );
 	engine->globalObject().setProperty("tonatiuh_numrays", fun_tonatiuh_numrays );
 
+	QScriptValue fun_tonatiuh_numdivisions = engine->newFunction( tonatiuh_script::tonatiuh_numdivisions );
+	engine->globalObject().setProperty("tonatiuh_numdivisions", fun_tonatiuh_numdivisions );
+
 	QScriptValue fun_tonatiuh_photon_map = engine->newFunction( tonatiuh_script::tonatiuh_photon_map );
 	engine->globalObject().setProperty("tonatiuh_photon_map", fun_tonatiuh_photon_map );
 
@@ -254,6 +257,23 @@ QScriptValue tonatiuh_script::tonatiuh_numrays(QScriptContext* context, QScriptE
 
 	int result = rayTracer->SetNumberOfRays( nrays );
 	if( result == 0 )	return context->throwError( "tonatiuh_numrays: UnknownError." );
+
+	return 1;
+}
+
+QScriptValue tonatiuh_script::tonatiuh_numdivisions(QScriptContext* context, QScriptEngine* engine )
+{
+	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
+	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
+
+	if( context->argumentCount() != 1 )	return context->throwError( "tonatiuh_numdivisions: takes exactly one argument." );
+	if( !context->argument( 0 ).isNumber() )	return context->throwError( "tonatiuh_numdivisions: argument is not a number." );
+
+	double ndivisions = context->argument(0).toNumber();
+	if( ndivisions < 1 )	return context->throwError( "tonatiuh_numdivisions: the number of divisions must be at least 1." );
+
+	int result = rayTracer->SetNumberOfDivisions( ndivisions );
+	if( result == 0 )	return context->throwError( "tonatiuh_numdivisions: UnknownError." );
 
 	return 1;
 }

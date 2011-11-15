@@ -203,7 +203,7 @@ void TLightKit::Update( BBox box )
 
 }
 
-void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > > surfacesList )
+void TLightKit::ComputeLightSourceArea(int divisions, QVector< QPair< TShapeKit*, Transform > > surfacesList )
 {
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
@@ -212,13 +212,13 @@ void TLightKit::ComputeLightSourceArea( QVector< QPair< TShapeKit*, Transform > 
 	double height = shape->zMax.getValue() - shape->zMin.getValue();
 
 
-	int pixels = 400;
+	int pixels = divisions;
 	int widthPixeles = pixels;
-	if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
+	//if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
 	double pixelWidth = double( width / widthPixeles );
 
 	int heightPixeles = pixels;
-	if( ( height / pixels ) < shape->delta.getValue() ) heightPixeles = ceil( height / shape->delta.getValue() );
+	//if( ( height / pixels ) < shape->delta.getValue() ) heightPixeles = ceil( height / shape->delta.getValue() );
 	double pixelHeight = height / heightPixeles;
 
 	QImage  sourceImage( widthPixeles, heightPixeles, QImage::Format_RGB32 );

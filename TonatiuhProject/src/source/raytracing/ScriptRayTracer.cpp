@@ -82,7 +82,8 @@ m_sunAzimuth( 0 ),
 m_sunElevation( 0 ),
 m_sunDistance( 0 ),
 m_wPhoton( 0 ),
-m_dirName( "" )
+m_dirName( "" ),
+m_divisions(200)
 {
 
 }
@@ -196,6 +197,11 @@ int ScriptRayTracer::SetNumberOfRays( double nrays )
 	return 1;
 }
 
+int ScriptRayTracer::SetNumberOfDivisions( int ndivisions )
+{
+	m_divisions = ndivisions;
+	return 1;
+}
 
 int ScriptRayTracer::SetPhotonMapType( QString typeName )
 {
@@ -392,7 +398,8 @@ int ScriptRayTracer::Trace()
 	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList, true );
 
 	TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
-	light->ComputeLightSourceArea( surfacesList );
+	printf("Num divisions %d",m_divisions);
+	light->ComputeLightSourceArea( m_divisions,surfacesList );
 
 	//Check if there is a transmissivity defined
 	TTransmissivity* transmissivity;
@@ -405,6 +412,7 @@ int ScriptRayTracer::Trace()
 
 	QVector< QPair< double, QPoint > > raysPerPixel;
 	const int maximumValueProgressScale = validAreasList.count();
+	if(int(m_numberOfRays)<validAreasList.count())m_numberOfRays=validAreasList.count();
 	unsigned long  t1 = m_numberOfRays / maximumValueProgressScale;
 
 	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )

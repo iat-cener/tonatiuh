@@ -57,6 +57,8 @@ namespace tonatiuh_script
 
 	QScriptValue tonatiuh_numrays(QScriptContext* context, QScriptEngine* engine );
 
+	QScriptValue tonatiuh_numdivisions(QScriptContext* context, QScriptEngine* engine );
+
 	QScriptValue tonatiuh_photon_map(QScriptContext* context, QScriptEngine* engine );
 
 	QScriptValue tonatiuh_random_generator(QScriptContext* context, QScriptEngine* engine );
