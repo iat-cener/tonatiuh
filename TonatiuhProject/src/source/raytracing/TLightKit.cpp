@@ -214,10 +214,12 @@ void TLightKit::ComputeLightSourceArea(int widthDivisions,int heigthDivisions, Q
 
 	//int pixels = divisions;
 	int widthPixeles = widthDivisions;
+	while( ( width / widthPixeles ) < shape->delta.getValue() )	widthPixeles--;
 	//if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
 	double pixelWidth = double( width / widthPixeles );
 
 	int heightPixeles = heigthDivisions;
+	while( ( height / heightPixeles ) < shape->delta.getValue() )	heightPixeles--;
 	//if( ( height / pixels ) < shape->delta.getValue() ) heightPixeles = ceil( height / shape->delta.getValue() );
 	double pixelHeight = height / heightPixeles;
 
@@ -328,7 +330,7 @@ void TLightKit::ComputeLightSourceArea(int widthDivisions,int heigthDivisions, Q
 	}
 
 	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
-    texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
+    texture->image.setValue( SbVec2s(  heightPixeles, widthPixeles ), 1, bitmap );
 	delete bitmap;
     texture->wrapS = SoTexture2::COIN_1_0;
     texture->wrapT = SoTexture2::COIN_1_0;
