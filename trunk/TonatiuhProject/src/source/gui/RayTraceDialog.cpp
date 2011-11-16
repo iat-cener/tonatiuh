@@ -62,8 +62,8 @@ RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
  *
  * The variables take the values specified by \a numRats, \a faction, \a drawPhotons and \a increasePhotonMap.
  */
-RayTraceDialog::RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > randomFactoryList, double fraction,int divisions, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedRandomFactory, int selectedPhotonMapFactory, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ), m_numRays( numRays ), m_selectedRandomFactory(selectedRandomFactory), m_fraction( fraction ),m_divisions(divisions), m_drawPhotons( drawPhotons ), m_selectedPhotonMapFactory( selectedPhotonMapFactory ), m_increasePhotonMap( increasePhotonMap )
+RayTraceDialog::RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > randomFactoryList, double fraction,int widthDivisions, int heightDivisions, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedRandomFactory, int selectedPhotonMapFactory, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
+:QDialog ( parent, f ), m_numRays( numRays ), m_selectedRandomFactory(selectedRandomFactory), m_fraction( fraction ),m_widthDivisions(widthDivisions),m_heightDivisions(heightDivisions), m_drawPhotons( drawPhotons ), m_selectedPhotonMapFactory( selectedPhotonMapFactory ), m_increasePhotonMap( increasePhotonMap )
 {
 	setupUi( this );
 	raysSpinBox->setValue( m_numRays );
@@ -76,7 +76,8 @@ RayTraceDialog::RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > ra
 	randomCombo->setCurrentIndex( m_selectedRandomFactory );
 
 	drawSpin->setValue( m_fraction );
-	divisionsSpinBox->setValue( m_divisions );
+	widthDivisionsSpinBox->setValue( m_widthDivisions );
+	heightDivisionsSpinBox->setValue( m_heightDivisions );
 	photonsCheck->setChecked( m_drawPhotons );
 
 	for( int index = 0; index < photonMapFactoryList.size(); ++index )
@@ -119,11 +120,19 @@ double RayTraceDialog::GetRaysFactionToDraw() const
 };
 
 /**
- * Returns the fraction of trace rays to draw.
+ * Returns the the width divisions applied to the sun shape.
  */
-int RayTraceDialog::GetNumDivisions() const
+int RayTraceDialog::GetWidthDivisions() const
 {
-	return m_divisions;
+	return m_widthDivisions;
+};
+
+/**
+ * Returns the the width divisions applied to the sun shape.
+ */
+int RayTraceDialog::GetHeightDivisions() const
+{
+	return m_heightDivisions;
 };
 
 /**
@@ -176,7 +185,8 @@ void RayTraceDialog::saveChanges()
 	m_selectedRandomFactory = randomCombo->currentIndex();
 
 	m_fraction = drawSpin->value();
-	m_divisions= divisionsSpinBox->value();
+	m_widthDivisions= widthDivisionsSpinBox->value();
+	m_heightDivisions= heightDivisionsSpinBox->value();
 	m_drawPhotons = photonsCheck->isChecked();
 
 	m_selectedPhotonMapFactory = photonmapTypeCombo->currentIndex();

@@ -178,14 +178,15 @@ m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ),
 m_raysPerIteration( 10000 ),
 m_fraction( 1 ),
-m_divisions(200),
 m_drawPhotons( false ),
 m_gridXElements( 0 ),
 m_gridZElements( 0 ),
 m_gridXSpacing( 0 ),
 m_gridZSpacing( 0 ),
 m_graphicView( 0 ),
-m_focusView( 0 )
+m_focusView( 0 ),
+m_heightDivisions( 200 ),
+m_widthDivisions( 200 )
 {
 	setupUi( this );
     SetupActions();
@@ -608,7 +609,7 @@ void MainWindow::ShowRayTracerOptionsDialog()
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
 	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
 
-	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, randomDeviateFactoryList, m_fraction,m_divisions, m_drawPhotons, photonmapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
+	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, randomDeviateFactoryList, m_fraction,m_widthDivisions,m_heightDivisions, m_drawPhotons, photonmapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
 	options->exec();
 
 	SetRaysPerIteration( options->GetNumRays() );
@@ -620,7 +621,8 @@ void MainWindow::ShowRayTracerOptionsDialog()
 	}
 
 	m_fraction = options->GetRaysFactionToDraw();
-	m_divisions=options->GetNumDivisions();
+	m_widthDivisions=options->GetWidthDivisions();
+	m_heightDivisions=options->GetHeightDivisions();
 	m_drawPhotons = options->DrawPhotons();
 
 	m_selectedPhotonMap =options->GetPhotonMapFactoryIndex();
@@ -1336,7 +1338,7 @@ void MainWindow::Run()
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList,true );
 
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
-		light->ComputeLightSourceArea( m_divisions,surfacesList );
+		light->ComputeLightSourceArea( m_widthDivisions,m_heightDivisions,surfacesList );
 
 		//Compute the valid areas for the raytracing
 		QVector< QPair< int, int > > validAreasList = raycastingSurface->GetValidAreasCoord();
@@ -1381,7 +1383,8 @@ void MainWindow::Run()
 		dialog.exec();
 		futureWatcher.waitForFinished();
 		m_tracedRays += t1 * validAreasList.count();
-        printf("Areas Validas %d",validAreasList.count());
+		m_raysPerIteration=m_tracedRays;
+
 
 
 		QDateTime time2 = QDateTime::currentDateTime();

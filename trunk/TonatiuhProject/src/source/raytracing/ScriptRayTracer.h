@@ -85,7 +85,8 @@ public:
 
 	int SetNumberOfRays( double nrays );
 
-	int SetNumberOfDivisions( int ndivisions );
+	int SetNumberOfWidthDivisions( int wdivisions );
+	int SetNumberOfHeightDivisions( int hdivisions );
 
 	int SetPhotonMapType( QString typeName );
 
@@ -122,7 +123,8 @@ private:
 	SceneModel* m_sceneModel;
 
 	double m_area;
-	int m_divisions;
+	int m_widthDivisions;
+	int m_heightDivisions;
 	bool m_sunPosistionChnaged;
 	double m_sunAzimuth;
 	double m_sunElevation;

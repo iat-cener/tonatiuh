@@ -203,7 +203,7 @@ void TLightKit::Update( BBox box )
 
 }
 
-void TLightKit::ComputeLightSourceArea(int divisions, QVector< QPair< TShapeKit*, Transform > > surfacesList )
+void TLightKit::ComputeLightSourceArea(int widthDivisions,int heigthDivisions, QVector< QPair< TShapeKit*, Transform > > surfacesList )
 {
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
@@ -212,12 +212,12 @@ void TLightKit::ComputeLightSourceArea(int divisions, QVector< QPair< TShapeKit*
 	double height = shape->zMax.getValue() - shape->zMin.getValue();
 
 
-	int pixels = divisions;
-	int widthPixeles = pixels;
+	//int pixels = divisions;
+	int widthPixeles = widthDivisions;
 	//if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
 	double pixelWidth = double( width / widthPixeles );
 
-	int heightPixeles = pixels;
+	int heightPixeles = heigthDivisions;
 	//if( ( height / pixels ) < shape->delta.getValue() ) heightPixeles = ceil( height / shape->delta.getValue() );
 	double pixelHeight = height / heightPixeles;
 
@@ -330,8 +330,8 @@ void TLightKit::ComputeLightSourceArea(int divisions, QVector< QPair< TShapeKit*
 	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
     texture->image.setValue( SbVec2s( heightPixeles, widthPixeles ), 1, bitmap );
 	delete bitmap;
-    texture->wrapS = SoTexture2::CLAMP;
-    texture->wrapT = SoTexture2::CLAMP;
+    texture->wrapS = SoTexture2::COIN_1_0;
+    texture->wrapT = SoTexture2::COIN_1_0;
 
     shape->SetLightSourceArea( heightPixeles, widthPixeles, areaMatrix );
 
