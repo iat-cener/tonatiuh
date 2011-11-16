@@ -267,7 +267,8 @@ private:
     unsigned long m_tracedRays;
     unsigned long m_raysPerIteration;
     double m_fraction;
-    int m_divisions;
+    int m_widthDivisions;
+    int m_heightDivisions;
     bool m_drawPhotons;
     int m_gridXElements;
     int m_gridZElements;

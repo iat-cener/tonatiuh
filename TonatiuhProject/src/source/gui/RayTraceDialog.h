@@ -62,7 +62,7 @@ class RayTraceDialog: public QDialog, private Ui::RayTraceDialog
 public:
 	RayTraceDialog( QWidget * parent = 0, Qt::WindowFlags f = 0 );
 	RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > randomFactoryList,
-				double fraction,int divisions, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList,
+				double fraction,int widthDivisions,int heightDivisions, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList,
 				int selectedRandomFactory = 0, int selectedPhotonMapFactory = 0, bool increasePhotonMap = false,
 				QWidget * parent = 0, Qt::WindowFlags f = 0 );
     ~RayTraceDialog();
@@ -71,7 +71,8 @@ public:
     int GetRandomDeviateFactoryIndex() const;
 
     double GetRaysFactionToDraw() const;
-    int GetNumDivisions() const;
+    int GetWidthDivisions() const;
+    int GetHeightDivisions() const;
     bool DrawPhotons() const;
 
     int GetPhotonMapFactoryIndex() const;
@@ -86,7 +87,8 @@ private:
 	int m_selectedRandomFactory; /*!< The index of factory selected from TPhotonMapFactory list. */
 
 	double m_fraction; /*!< Faction of traced rays to draw. */
-	int m_divisions; /*numbre oof sun divisions */
+	int m_widthDivisions; /*number of width divisions in the sun*/
+	int m_heightDivisions; /*number of height divisions in the sun*/
 	bool m_drawPhotons;  /*!<This property holds whether photons are going to be drawn. */
 
 	int m_selectedPhotonMapFactory; /*!< The index of factory selected from TPhotonMapFactory list. */

@@ -104,7 +104,7 @@ public:
     void ChangePosition( double newAzimuth, double newZenith );
 
     void Update( BBox box );
-    void ComputeLightSourceArea( int divisions,QVector< QPair< TShapeKit*, Transform > > surfacesList );
+    void ComputeLightSourceArea( int widthDivisions,int heightDivisions,QVector< QPair< TShapeKit*, Transform > > surfacesList );
 
     trt::TONATIUH_REAL azimuth;
     trt::TONATIUH_REAL zenith;

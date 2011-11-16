@@ -266,13 +266,23 @@ QScriptValue tonatiuh_script::tonatiuh_numdivisions(QScriptContext* context, QSc
 	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
 
-	if( context->argumentCount() != 1 )	return context->throwError( "tonatiuh_numdivisions: takes exactly one argument." );
+	if( context->argumentCount() < 1 )	return context->throwError( "tonatiuh_numdivisions: takes at least one argument." );
+	if( context->argumentCount() > 2 )	return context->throwError( "tonatiuh_numdivisions: takes no more than two arguments." );
+	if(context->argumentCount()==2){
+		if( !context->argument( 1 ).isNumber() )	return context->throwError( "tonatiuh_numdivisions: second argument is not a number." );
+
+			double nheightdivisions = context->argument(1).toNumber();
+			if( nheightdivisions < 1 )	return context->throwError( "tonatiuh_numdivisions: the number of heigth divisions must be at least 1." );
+
+			int result = rayTracer->SetNumberOfHeightDivisions( nheightdivisions );
+			if( result == 0 )	return context->throwError( "tonatiuh_numdivisions: UnknownError." );
+	}
 	if( !context->argument( 0 ).isNumber() )	return context->throwError( "tonatiuh_numdivisions: argument is not a number." );
 
-	double ndivisions = context->argument(0).toNumber();
-	if( ndivisions < 1 )	return context->throwError( "tonatiuh_numdivisions: the number of divisions must be at least 1." );
+	double nwidthdivisions = context->argument(0).toNumber();
+	if( nwidthdivisions < 1 )	return context->throwError( "tonatiuh_numdivisions: the number of width divisions must be at least 1." );
 
-	int result = rayTracer->SetNumberOfDivisions( ndivisions );
+	int result = rayTracer->SetNumberOfWidthDivisions( nwidthdivisions );
 	if( result == 0 )	return context->throwError( "tonatiuh_numdivisions: UnknownError." );
 
 	return 1;
