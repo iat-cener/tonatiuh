@@ -77,14 +77,14 @@ m_photonMap( 0 ),
 m_RandomDeviateFactoryList( listRandomDeviateFactory ),
 m_randomDeviate( 0 ),
 m_sceneModel ( 0 ),
-m_sunPosistionChnaged( false ),
+m_widthDivisions(200),
+m_heightDivisions(200),
+m_sunPosistionChanged( false ),
 m_sunAzimuth( 0 ),
 m_sunElevation( 0 ),
 m_sunDistance( 0 ),
 m_wPhoton( 0 ),
-m_dirName( "" ),
-m_widthDivisions(200),
-m_heightDivisions(200)
+m_dirName( "" )
 {
 
 }
@@ -245,7 +245,7 @@ int ScriptRayTracer::SetRandomDeviateType( QString typeName )
 void ScriptRayTracer::SetSunAzimtuh( double azimuth )
 {
 	m_sunAzimuth = azimuth * tgc::Degree;
-	m_sunPosistionChnaged = true;
+	m_sunPosistionChanged = true;
 
 }
 
@@ -255,7 +255,7 @@ void ScriptRayTracer::SetSunAzimtuh( double azimuth )
 void ScriptRayTracer::SetSunElevation( double elevation )
 {
 	m_sunElevation = elevation * tgc::Degree;
-	m_sunPosistionChnaged = true;
+	m_sunPosistionChanged = true;
 }
 
 /*!
@@ -264,7 +264,7 @@ void ScriptRayTracer::SetSunElevation( double elevation )
 void ScriptRayTracer::SetSunDistance( double distance )
 {
 	m_sunDistance = distance;
-	m_sunPosistionChnaged = true;
+	m_sunPosistionChanged = true;
 }
 
 int  ScriptRayTracer::SetSunPositionToScene()
@@ -278,7 +278,7 @@ int  ScriptRayTracer::SetSunPositionToScene()
 		if ((coinScene)&& ( coinScene->getPart( "lightList[0]", false ) ))
 		{
 			TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-			if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation/*, m_sunDistance*/ );
+			if( m_sunPosistionChanged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation/*, m_sunDistance*/ );
 			return 1;
 		}
 		std::cerr<<"ScriptRayTracer::SetSunPositionToScene() light not found in scene"<<std::endl;
@@ -381,12 +381,11 @@ int ScriptRayTracer::Trace()
 
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-	if( m_sunPosistionChnaged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation );
+	if( m_sunPosistionChanged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation );
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance  = m_irradiance;
-	if( irradiance < 0 ) irradiance = sunShape->GetIrradiance();
+
 
 	if( !lightKit->getPart( "icon", false ) ) return 0;
 	TLightShape* raycastingSurface = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
@@ -456,6 +455,8 @@ int ScriptRayTracer::Trace()
 	if( !m_photonMap ) return 1;
 	if( m_photonMap->StoredPhotons() == 0 )	return 1;
 
+	double irradiance  = m_irradiance;
+	if( irradiance < 0 ) irradiance = sunShape->GetIrradiance();
 	m_area = raycastingSurface->GetValidArea();
 	m_wPhoton = ( m_area * irradiance ) / m_numberOfRays;
 
