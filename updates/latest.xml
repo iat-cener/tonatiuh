@@ -35,6 +35,7 @@
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel1.dll" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
+            <file type="new" value="bin/release/plugins/TransmissivityDefault/TransmissivityDefault1.dll" />
         </os>
         <os value="win_64">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive1.dll" />
@@ -66,6 +67,7 @@
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel1.dll" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
+            <file type="new" value="bin/release/plugins/TransmissivityDefault/TransmissivityDefault1.dll" />
         </os>
         <os value="mac">
             <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
@@ -148,6 +150,7 @@
             <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
             <file type="replace" value="bin/release/plugins/ShapeShapeSphericalRectangle/libSShapeSphericalRectangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughAsymmetricCPC/libShapeTroughAsymmetricCPC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/libShapeTroughHyperbola.so" />
@@ -159,7 +162,6 @@
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
-            <file type="new" value="bin/release/plugins/ShapeTroughAsymmetricCPC/libShapeTroughAsymmetricCPC.so" />
         </os>
     </files>
 </appname>
