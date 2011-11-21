@@ -82,7 +82,6 @@ m_heightDivisions(200),
 m_sunPosistionChanged( false ),
 m_sunAzimuth( 0 ),
 m_sunElevation( 0 ),
-m_sunDistance( 0 ),
 m_wPhoton( 0 ),
 m_dirName( "" )
 {
@@ -112,7 +111,6 @@ void ScriptRayTracer::Clear()
 	m_sceneModel = 0;
 	m_sunAzimuth = 0;
 	m_sunElevation = 0;
-	m_sunDistance = 0;
 	m_wPhoton = 0;
 	m_dirName.clear();
 }
@@ -258,15 +256,6 @@ void ScriptRayTracer::SetSunElevation( double elevation )
 	m_sunPosistionChanged = true;
 }
 
-/*!
- * Saves the sun position \a distance value.
- */
-void ScriptRayTracer::SetSunDistance( double distance )
-{
-	m_sunDistance = distance;
-	m_sunPosistionChanged = true;
-}
-
 int  ScriptRayTracer::SetSunPositionToScene()
 {
 	if (m_sceneModel)
@@ -382,6 +371,7 @@ int ScriptRayTracer::Trace()
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 	if( m_sunPosistionChanged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation );
+	m_sceneModel->UpdateSceneModel();
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
 	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
