@@ -347,7 +347,7 @@ tonatiuh3D = ListPlot3D[incidentFluxMatrix, PlotRange -> All,
 }}}
 
 
-||<a href="https://picasaweb.google.com/lh/photo/4mzRiAipV0Q8_OsVs3S6SA?full-exif=true?"><img src="https://lh5.googleusercontent.com/-JtXozzjDUf8/TpL8FIbqnuI/AAAAAAAAA-k/DaWwplYCG8A/s400/Simulation150_bins3D.jpg" height="240" width="450" /></a>||
+||<a href="https://picasaweb.google.com/lh/photo/wCUuCooUVM0oE2-7q2h6VA?full-exif=true?"><img src="https://lh4.googleusercontent.com/-HacP8YPkuSI/Tsp5yNUhr7I/AAAAAAAABAk/3anJI0Br_mQ/s500/100Simulation_bins3D.jpg" height="240" width="450" /></a>||
 || *Figure 6.* Example of a flux distribution on the target.||
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results.
