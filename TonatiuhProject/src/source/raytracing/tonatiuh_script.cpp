@@ -328,10 +328,10 @@ QScriptValue tonatiuh_script::tonatiuh_random_generator(QScriptContext* context,
 QScriptValue  tonatiuh_script::tonatiuh_sunposition(QScriptContext* context, QScriptEngine* engine )
 {
 	//tonatiuh_sunposition( azimuth, elevation, distance );
-	if( context->argumentCount() != 3 )	return context->throwError( "tonatiuh_sunposition: takes exactly 3 argument." );
+	if( ( context->argumentCount() < 2 ) || ( context->argumentCount() > 3 ) )
+		return context->throwError( "tonatiuh_sunposition: takes 2 argument." );
 	if( !context->argument( 0 ).isNumber() )	return context->throwError( "tonatiuh_sunposition: argument 1 is not a number." );
 	if( !context->argument( 1 ).isNumber() )	return context->throwError( "tonatiuh_sunposition: argument 2 is not a number." );
-	if( !context->argument( 2 ).isNumber() )	return context->throwError( "tonatiuh_sunposition: argument 3 is not a number." );
 
 	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
@@ -344,10 +344,6 @@ QScriptValue  tonatiuh_script::tonatiuh_sunposition(QScriptContext* context, QSc
 	double elevation = context->argument(1).toNumber();
 	if( ( elevation < 0. ) || ( elevation > 90. ) )	return context->throwError( "tonatiuh_sunposition: elevation value must be between 0 and 90 degrees." );
 	rayTracer->SetSunElevation( elevation );
-
-	double distance = context->argument(2).toNumber();
-	if( distance < 0. )	return context->throwError( "tonatiuh_sunposition: distance must be greater than 0." );
-	rayTracer->SetSunDistance( distance );
 
 	return 1;
 

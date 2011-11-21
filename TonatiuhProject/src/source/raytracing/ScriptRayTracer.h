@@ -94,7 +94,6 @@ public:
 
 	void SetSunAzimtuh( double azimuth);
 	void SetSunElevation( double elevation );
-	void SetSunDistance( double distance );
 
 	void SetupGraphcisRoot();
 	void SetupModels();
@@ -128,7 +127,6 @@ private:
 	bool m_sunPosistionChanged;
 	double m_sunAzimuth;
 	double m_sunElevation;
-	double m_sunDistance;
 
 	double m_wPhoton;
 
