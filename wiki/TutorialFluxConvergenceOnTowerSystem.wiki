@@ -113,10 +113,10 @@ If we have done all steps successfully, we are about to run the system.
 == Running the system ==
 
 The main purpose of Tonatiuh is to get information about how rays can reach the target. We can simulate the rays in two ways: 
- * The easiest one consists of pressing the run button in the icon bar. You only obtain one photon map for each interaction. To export the photon map press Ray Trace, export photonMap. You can define the options to run Tonatiuh in that way by clicking on Ray trace --> Ray trace Options. Here, you can set the number of rays per interaction, you can choose between two types of random generators or set the number of divisions you want to divide the sun. Althougth you will get better results, the computation and the time will be higher. Otherwise, the improvement on the results will be better depending on the fiel we were using.
+ * The easiest one consists of pressing the run button in the icon bar. You only obtain one photon map for each interaction. To export the photon map press Ray Trace, export photonMap. You can define the options to run Tonatiuh in that way by clicking on Ray trace --> Ray trace Options. Here, you can set the number of rays per interaction, you can choose between two types of random generators or set the number of divisions you want to divide the sun. Althougth you will get better results, the computation and the time will be higher. Otherwise, the improvement on the results will be better depending on the field we were using.
 
 
- * The other, is using the script editor.You can obtain it pressing Automation -->script editor. This will display a new window. A basic script can be like this:
+ * The other, is using the script editor.Please, select Automation -->script editor. This will display a new window. A basic script can be like this:
 {{{
 //load the file
 tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
