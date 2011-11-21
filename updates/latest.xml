@@ -2,7 +2,7 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.2.2" />
+        <version value="1.2.3" />
     </version>
     <files>
         <os value="win">
@@ -97,6 +97,7 @@
             <file type="replace" value="Contents/MacOS/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/TrackerOneAxis/libTrackerOneAxis.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
+            <file type="new" value="Contents/MacOS/plugins/TransmissivityDefault/libTransmissivityDefault.dylib" />
         </os>
         <os value="linux">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
