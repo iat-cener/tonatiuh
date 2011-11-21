@@ -138,7 +138,7 @@
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
             <file type="replace" value="bin/release/plugins/ShapeCone/libShapeCone.so" />
             <file type="replace" value="bin/release/plugins/ShapeCylinder/libShapeCylinder.so" />
-            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/libShapeFlatDisk.so" Sergio Garayalde [quitar]/>
+            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/libShapeFlatDisk.so"/>
             <file type="replace" value="bin/release/plugins/ShapeFlatRectangle/libShapeFlatRectangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeHyperboloid/libShapeHyperboloid.so" />
