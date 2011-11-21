@@ -256,7 +256,7 @@ PositionFluxMatrix[binsFileList_, number_] := Module[{bins},
 
 To make it easier, in case you have lots of photon map files, you can do a parallel simulation. Instead of the last step, we have to use the following ones:
 {{{
-LaunchKernels[]
+LaunchKernels[8]
 DistributeDefinitions["Global`"]
 simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulationsFiles] ;
 }}}
