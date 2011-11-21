@@ -283,7 +283,7 @@ rel = ListPlot[errorFluxMax, Joined -> True,
 Export["TargetMFlux_error.png", rel]
 }}}
 
-||<a href="https://picasaweb.google.com/lh/photo/uXOJ0vgG2m9eFVBkn4hUEg?full-exif=true?"><img src="https://lh4.googleusercontent.com/-eJCumnC7HBg/TpL8t_2uOQI/AAAAAAAAA-0/5tWJipIMua0/s800/TargetMFlux_error.png" height="140" width="600" /></a>||
+||<a href="https://picasaweb.google.com/lh/photo/NRTamUJ3Bli2n3ZNFrQVrw?full-exif=true?"><img src="https://lh4.googleusercontent.com/-kvECkvg7Xrg/Tsp64jlXCdI/AAAAAAAABA0/NTrN20idqZo/s912/TargetMFlux_error.png" height="140" width="600" /></a>||
 || *Figure 4.* Relative error graphical output.||
 
  * Another interesting result might be how the maximun flux is going. To know that, type:
