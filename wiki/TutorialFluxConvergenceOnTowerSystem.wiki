@@ -277,9 +277,11 @@ wPhotons = Table[powerPerphoton/i), {i, 1, Length[simulationsBinsFiles]}] // N ;
  * We can plot and get a graphical file of the results of the relative error by typing:
 {{{
 rel = ListPlot[errorFluxMax, Joined -> True, 
-  LabelStyle -> Directive["Helvetica", 14], AxesLabel -> {"Millions of Rays"}, 
-  PlotRange -> {All, {-100, 100}}  , ImageSize -> {1000, 600}]
-
+  LabelStyle -> Directive["Helvetica", 14], 
+  AxesLabel -> {"Rays", 
+    "Relative difference between maximum flux estimates (% of \
+previous estimate)"}, PlotRange -> {All, {-5, 5}}  , 
+  ImageSize -> {1000, 600}]; 
 Export["TargetMFlux_error.png", rel]
 }}}
 
@@ -288,15 +290,15 @@ Export["TargetMFlux_error.png", rel]
 
  * Another interesting result might be how the maximun flux is going. To know that, type:
 {{{
-fluxMax = Table[results[[i, 5]], {i, 1, Length[results] }];
-flux= ListPlot[fluxMax, Joined -> True, 
-  LabelStyle -> Directive["Helvetica", 14], 
-  AxesLabel -> {"Millions of Rays", 
-    "Maximum flux(kW/\!\(\*SuperscriptBox[\(m\), \(2\)]\))"}, 
-  PlotStyle -> Thickness[0.007], PlotRange -> {All, {0, 10}} , 
-  ImageSize -> {1000, 600}]
+fluxMax = 
+  Table[{results[[i, 2]], results[[i, 5]]}, {i, 1, Length[results] }];
 
-Export["TargetMaximumFlux.png", flux]
+flux = ListPlot[fluxMax, Joined -> True, 
+  LabelStyle -> Directive["Helvetica", 14], 
+  AxesLabel -> {"Rays", 
+    "Maximum flux(kW/\!\(\*SuperscriptBox[\(m\), \(2\)]\))"}, 
+  PlotRange -> {All, {0, 2}} , ImageSize -> {1000, 600}]
+Export["TargetMaximumFlux.png", flux] 
 }}}
 
 ||<a href="https://picasaweb.google.com/lh/photo/uGqpzkO7CY2ihd4kWs0k4Q?full-exif=true?"><img src="https://lh6.googleusercontent.com/-yJF0v4fzogg/Tsp64ge5API/AAAAAAAABAw/Y0rU0Ga_Esc/s912/TargetMaximumFlux.png" height="140" width="600" /></a>||
