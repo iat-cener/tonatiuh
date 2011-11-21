@@ -264,7 +264,9 @@ simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulat
 
    * For each simulationBinFiles, calculate the power per photon.
 {{{
-wPhotons = Table[irradiance* inputArea/(nPhotons*i), {i, 1, Length[simulationsBinsFiles]}] // N ;
+fileList = FileNames[directoryList[[1]] <> "*_*.dat", directoryList];
+powerPerPhoton = ReadTonatiuhResults[fileList[[1]]][[1]]
+wPhotons = Table[powerPerphoton/i), {i, 1, Length[simulationsBinsFiles]}] // N ;
 }}}
  * To see if the results are good or not,we have to get the relative error:
 {{{
