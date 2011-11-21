@@ -64,8 +64,8 @@ center             0 0 0
  * Add a new TShapeKit as a child of the last node created. Now add a new shape as a child. In this example, the shape must be a "!Flat_Rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
  * Set those parameters on the "!Flat_Rectangle" options:
  {{{
-width        15
-heigth       15
+width        20
+heigth       20
 activeSide   FRONT
  }}}
  * Select the last TShapeKit created and add a "!Specular_Standar_Material" as a child. 
@@ -162,8 +162,8 @@ transform01[{x_, y_, z_}] := { x , z }
 }}}
  * Select the width and the heigth of the flat plane and calculate the area:
 {{{
-absorberLength = 15
-absorberWidth = 15
+absorberLength = 20
+absorberWidth = 20
 absorberArea = absorberLength*absorberWidth
 }}}
  * Define the number of cells in which the target is divided up. The more number you put, the more number of rays need simulating to reach the goal.
