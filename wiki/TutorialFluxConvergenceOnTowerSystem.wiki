@@ -299,7 +299,7 @@ flux= ListPlot[fluxMax, Joined -> True,
 Export["TargetMaximumFlux.png", flux]
 }}}
 
-||<a href="https://picasaweb.google.com/lh/photo/tdAtF2TmqOKJoyuMrgoxxQ?full-exif=true"><img src="https://lh4.googleusercontent.com/-z7NER4hpgY4/TpL8phfrVLI/AAAAAAAAA-w/9lkPeUkolpU/s800/TargetMaximumFlux.png" height="140" width="600" /></a>||
+||<a href="https://picasaweb.google.com/lh/photo/uGqpzkO7CY2ihd4kWs0k4Q?full-exif=true?"><img src="https://lh6.googleusercontent.com/-yJF0v4fzogg/Tsp64ge5API/AAAAAAAABAw/Y0rU0Ga_Esc/s912/TargetMaximumFlux.png" height="140" width="600" /></a>||
 || *Figure 5.* Graphical representationof the Maximum Flux.||
 
  * If you want to see graphically how the flux distribution is going, you can use this:
