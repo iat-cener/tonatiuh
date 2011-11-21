@@ -162,6 +162,7 @@
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
+            <file type="new" value="bin/release/plugins/TransmissivityDefault/libTransmissivityDefault.so" />
         </os>
     </files>
 </appname>
