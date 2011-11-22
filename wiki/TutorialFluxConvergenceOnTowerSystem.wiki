@@ -223,7 +223,8 @@ FluxMatrix[fileName_] :=
      ElementLength}];
   (*create and export*bins.txt files with the rays*)
   Export[StringJoin[DirectoryName[fileName], FileBaseName[fileName], 
-    "bins.txt"], photonCounts, "Table"]]}}}
+    "bins.txt"], photonCounts, "Table"]]
+}}}
 
  * Now, we have to mix the element in the variable binsFileList to create a table with the simulation files. The first element of this new table only contains the first element of the table binsFileList;the second element contains the first and the second element of binsFilelist;the last element of this new table will contain all the files of the table binsFileList. 
 {{{
