@@ -269,7 +269,7 @@ fileList = FileNames[directoryList[[1]] <> "*_*.dat", directoryList];
 powerPerPhoton = ReadTonatiuhResults[fileList[[1]]][[1]]
 wPhotons = Table[powerPerphoton/i, {i, 1, Length[simulationsBinsFiles]}] // N ;
 }}}
- * With those lines you can get a result and some graphis about how the flux distribution is going:
+ * With those lines you can get a result and some graphics about how the flux distribution is going on:
 
 {{{
 results = Table[fluxAnalysis[{simulationsBinsFiles[[i]],wPhotons[[i]]}],{i, 1, Length[simulationsBinsFiles]}];
