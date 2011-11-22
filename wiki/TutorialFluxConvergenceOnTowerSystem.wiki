@@ -177,11 +177,11 @@ SetDirectory[NotebookDirectory[]]
 }}}
  * Search the folders (DirectoryQ) in the current directory  where we have the .dat files.
 {{{
-directoryList = Select[FileNames["*"], DirectoryQ]
+directoryList = Select[FileNames["Folder_Name"], DirectoryQ]
 }}}
  * Get all the .dat files allocates in the directory "directoryList{{i}}"; i is folder of the directoryList we are going to use) found in the previous step. 
 {{{
-fileList = FileNames["*.dat", directoryList[[1]]];
+fileList = FileNames[directoryList[[1]] <> "*.dat", directoryList]
 }}}
  * Once we have got all the files, we have to get their photons.
 {{{
@@ -191,42 +191,39 @@ This instruction applies the !FluxMatrix function in all files of the directory.
 !FluxMatrix convert the .dat file to a .txt file. The .txt file has as many columns and files as the number of lengthDivisions and widthDivisions we have set and they have the number of rays in the target per cell.
 {{{
 FluxMatrix[fileName_] := 
- Module[{data, powerPerPhoton, photonsData2D, totalPhotons, totalPowerAtAbsorberTube, radialElementLength, 
-        longitudinalElementLength, photonCounts, elementArea, fluxConversionFactor,
-        incidentFluxMatrix, minimumFlux, maximumFlux,zmin, zmax, contourLevels, tonatiuhContour},
-
-
-  data = ReadTonatiuhResults[fileName]; (*read file data*)
-  powerPerPhoton = data[[1]]
+ Module[{data, powerPerPhoton, photonsData2D, totalPhotons, 
+   totalPowerAtAbsorberTube, ElementWidth, ElementLength, 
+   photonCounts, elementArea, fluxConversionFactor, 
+   incidentFluxMatrix, minimumFlux, maximumFlux, zmin, zmax, 
+   contourLevels, tonatiuhContour},
+  data = ReadTonatiuhResults[fileName];
+  (*read file data*)
+  powerPerPhoton = data[[1]] ;
   data = Drop[data, 1];
-
-  (*read the seven-tuplas photon info*)
-  (*[[5]]-->0 read back rays; [[5]]--> read front rays; none-->read all rays*)
-  data = Select[Partition[data, 7], #[[5]] == 1 &] /. {id_, x_, y_, z_,side_, next_, prev_} -> {x, y, z};
-
+  (*read the seven-tuplas photon info*)(*[[5]]-->
+  0 read back rays;[[5]]-->read front rays;none-->read all rays*)
+  data = Select[
+     Partition[data, 7], #[[5]] == 1 &] /. {id_, x_, y_, z_, side_, 
+      next_, prev_} -> {x, y, z};
   (*get the area*)
   data = Map[transform01, data];
-
   (*number of photons*)
-   totalPhotons = Length[data];
-
+  totalPhotons = Length[data];
   (*average power per photon*)
-  totalPowerAtAbsorberTube = (totalPhotons * powerPerPhoton)/1000 (* kW *);
-
+  totalPowerAtAbsorberTube = (totalPhotons*powerPerPhoton)/1000 (*kW*);
   (*cell width*)
-  ElementWidth = absorberWidth  /widthDivisions (* meters *);
-
+  ElementWidth = absorberWidth/widthDivisions (*meters*);
   (*cell length*)
-  ElementLength = absorberLength/lengthDivisions (* meters *);
-
-  (*put the photon in the corresponding cell *)
-  photonCounts = BinCounts[data, {-absorberWidth/2, absorberWidth/2, radialElementLength}, 
-                                 {-absorberLength/2, absorberLength/2, longitudinalElementLength}
-     ];
-
-  (*create and export *bins.txt files with the rays*)
-  Export[StringJoin[DirectoryName[fileName], FileBaseName[fileName], "bins.txt"], photonCounts, "Table"]]
-}}}
+  ElementLength = absorberLength/lengthDivisions (*meters*);
+  (*put the photon in the corresponding cell*)
+  photonCounts = 
+   BinCounts[
+    data, {-absorberWidth/2, absorberWidth/2, 
+     ElementWidth}, {-absorberLength/2, absorberLength/2, 
+     ElementLength}];
+  (*create and export*bins.txt files with the rays*)
+  Export[StringJoin[DirectoryName[fileName], FileBaseName[fileName], 
+    "bins.txt"], photonCounts, "Table"]]}}}
 
  * Now, we have to mix the element in the variable binsFileList to create a table with the simulation files. The first element of this new table only contains the first element of the table binsFileList;the second element contains the first and the second element of binsFilelist;the last element of this new table will contain all the files of the table binsFileList. 
 {{{
@@ -266,7 +263,7 @@ simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulat
 {{{
 fileList = FileNames[directoryList[[1]] <> "*_*.dat", directoryList];
 powerPerPhoton = ReadTonatiuhResults[fileList[[1]]][[1]]
-wPhotons = Table[powerPerphoton/i), {i, 1, Length[simulationsBinsFiles]}] // N ;
+wPhotons = Table[powerPerphoton/i, {i, 1, Length[simulationsBinsFiles]}] // N ;
 }}}
  * To see if the results are good or not,we have to get the relative error:
 {{{
