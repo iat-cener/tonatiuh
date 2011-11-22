@@ -105,8 +105,7 @@ Now we have to define the sun. Without it, we will not be able to simulate the s
 
 If we have done all steps successfully, we are about to run the system.
 
-||<a href="https://picasaweb.google.com/lh/photo/QHVJLKrPP5ewfcbLBsu5zQ?full-exif=true"><img src="https://lh3.googleusercontent.com/-S_x8vA4PYPU/To2qlbmM92I/AAAAAAAAA9w/76sPARv1i4Y/s800/FluxTutorialModel.png" height="240" width="400" /></a>||
-|| *Figure 3.* Tonatiuh's GUI after modeling system.||
+
 
 
 == Running the system ==
@@ -143,6 +142,9 @@ for( var i = 1; i <= 250; ++i ){
 }}}
 
  In this case, we want to get 5000000 of rays in the target. The previous script creates 250 files of 2000000 of rays to reach the desided number of photons in the target. We have to do that because of the memory limitations to get that amount of data doing one interaction.
+
+||<a href="https://picasaweb.google.com/lh/photo/QHVJLKrPP5ewfcbLBsu5zQ?full-exif=true"><img src="https://lh3.googleusercontent.com/-S_x8vA4PYPU/To2qlbmM92I/AAAAAAAAA9w/76sPARv1i4Y/s800/FluxTutorialModel.png" height="240" width="400" /></a>||
+|| *Figure 3.* Tonatiuh's GUI after modeling system.||
 
 = Tonatiuh post-processing =
 
