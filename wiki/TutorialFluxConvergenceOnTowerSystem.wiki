@@ -190,7 +190,8 @@ This instruction applies the !FluxMatrix function in all files of the directory.
 !FluxMatrix convert the .dat file to a .txt file. The .txt file has as many columns and files as the number of lengthDivisions and widthDivisions we have set and they have the number of rays in the target per cell.
 {{{
 FluxMatrix[fileName_] := 
- Module[{data, powerPerPhoton, photonsData2D, totalPhotons, totalPowerAtAbsorberTube, ElementWidth, ElementLength, photonCounts, elementArea, fluxConversionFactor, incidentFluxMatrix, minimumFlux, maximumFlux, zmin, zmax, contourLevels, tonatiuhContour},
+ Module[{data, powerPerPhoton, photonsData2D, totalPhotons, totalPowerAtAbsorberTube, ElementWidth, ElementLength, photonCounts,
+ elementArea, fluxConversionFactor, incidentFluxMatrix, minimumFlux, maximumFlux, zmin, zmax, contourLevels, tonatiuhContour},
 
   data = ReadTonatiuhResults[fileName];
   (*read file data*)
