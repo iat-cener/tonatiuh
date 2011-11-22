@@ -191,11 +191,8 @@ This instruction applies the !FluxMatrix function in all files of the directory.
 !FluxMatrix convert the .dat file to a .txt file. The .txt file has as many columns and files as the number of lengthDivisions and widthDivisions we have set and they have the number of rays in the target per cell.
 {{{
 FluxMatrix[fileName_] := 
- Module[{data, powerPerPhoton, photonsData2D, totalPhotons, 
-   totalPowerAtAbsorberTube, ElementWidth, ElementLength, 
-   photonCounts, elementArea, fluxConversionFactor, 
-   incidentFluxMatrix, minimumFlux, maximumFlux, zmin, zmax, 
-   contourLevels, tonatiuhContour},
+ Module[{data, powerPerPhoton, photonsData2D, totalPhotons, totalPowerAtAbsorberTube, ElementWidth, ElementLength, photonCounts, elementArea, fluxConversionFactor, incidentFluxMatrix, minimumFlux, maximumFlux, zmin, zmax, contourLevels, tonatiuhContour},
+
   data = ReadTonatiuhResults[fileName];
   (*read file data*)
   powerPerPhoton = data[[1]] ;
@@ -209,6 +206,7 @@ FluxMatrix[fileName_] :=
   data = Map[transform01, data];
   (*number of photons*)
   totalPhotons = Length[data];
+
   (*average power per photon*)
   totalPowerAtAbsorberTube = (totalPhotons*powerPerPhoton)/1000 (*kW*);
   (*cell width*)
@@ -221,6 +219,7 @@ FluxMatrix[fileName_] :=
     data, {-absorberWidth/2, absorberWidth/2, 
      ElementWidth}, {-absorberLength/2, absorberLength/2, 
      ElementLength}];
+
   (*create and export*bins.txt files with the rays*)
   Export[StringJoin[DirectoryName[fileName], FileBaseName[fileName], 
     "bins.txt"], photonCounts, "Table"]]
