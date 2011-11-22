@@ -116,7 +116,7 @@ The main purpose of Tonatiuh is to get information about how rays can reach the 
 
  * The other, is using the script editor.Please, select Automation -->script editor. This will display a new window. A basic script can be like this:
 {{{
-//load the file
+//load a file
 tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
 //number of rays to simulate
 tonatiuh_numrays( 2000000  ); 
