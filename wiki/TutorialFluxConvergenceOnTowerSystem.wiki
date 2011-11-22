@@ -339,7 +339,7 @@ Export["TargetMFlux_error.png", rel]
 }}}
 
 ||<a href="https://picasaweb.google.com/lh/photo/NRTamUJ3Bli2n3ZNFrQVrw?full-exif=true?"><img src="https://lh4.googleusercontent.com/-kvECkvg7Xrg/Tsp64jlXCdI/AAAAAAAABA0/NTrN20idqZo/s912/TargetMFlux_error.png" height="140" width="750" /></a>||
-|| *Figure 5.* Relative error graphical output.The red vertical line determines the last element which has a relative error >|0.5%| ||
+|| *Figure 5.* Relative error graphical output.The red vertical line <BR> determines the last element which has a relative error >|0.5%| ||
 
  * Another interesting result might be how the maximun flux is going. To know that, type:
 {{{
