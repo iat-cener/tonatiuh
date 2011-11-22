@@ -265,47 +265,12 @@ fileList = FileNames[directoryList[[1]] <> "*_*.dat", directoryList];
 powerPerPhoton = ReadTonatiuhResults[fileList[[1]]][[1]]
 wPhotons = Table[powerPerphoton/i, {i, 1, Length[simulationsBinsFiles]}] // N ;
 }}}
- * To see if the results are good or not,we have to get the relative error:
-{{{
- errorFluxMax = Table[100*(results[[i, 5]] - results[[i - 1, 5]])/results[[i 1, 5]], {i, 2, Length[results]}]
-}}}
-*The simulation will be a success if the relative error result is lower than 0.5 in, at least, 5 consecutive cases.
-
- * We can plot and get a graphical file of the results of the relative error by typing:
-{{{
-rel = ListPlot[errorFluxMax, Joined -> True, 
-  LabelStyle -> Directive["Helvetica", 14], 
-  AxesLabel -> {"Rays", 
-    "Relative difference between maximum flux estimates (% of \
-previous estimate)"}, PlotRange -> {All, {-5, 5}}  , 
-  ImageSize -> {1000, 600}]; 
-Export["TargetMFlux_error.png", rel]
-}}}
-
-||<a href="https://picasaweb.google.com/lh/photo/NRTamUJ3Bli2n3ZNFrQVrw?full-exif=true?"><img src="https://lh4.googleusercontent.com/-kvECkvg7Xrg/Tsp64jlXCdI/AAAAAAAABA0/NTrN20idqZo/s912/TargetMFlux_error.png" height="140" width="600" /></a>||
-|| *Figure 4.* Relative error graphical output.The red vertical line determines the last element which has a relative error >|0.5%| ||
-
- * Another interesting result might be how the maximun flux is going. To know that, type:
-{{{
-fluxMax = 
-  Table[{results[[i, 2]], results[[i, 5]]}, {i, 1, Length[results] }];
-
-flux = ListPlot[fluxMax, Joined -> True, 
-  LabelStyle -> Directive["Helvetica", 14], 
-  AxesLabel -> {"Rays", 
-    "Maximum flux(kW/\!\(\*SuperscriptBox[\(m\), \(2\)]\))"}, 
-  PlotRange -> {All, {0, 2}} , ImageSize -> {1000, 600}]
-Export["TargetMaximumFlux.png", flux] 
-}}}
-
-||<a href="https://picasaweb.google.com/lh/photo/uGqpzkO7CY2ihd4kWs0k4Q?full-exif=true?"><img src="https://lh6.googleusercontent.com/-yJF0v4fzogg/Tsp64ge5API/AAAAAAAABAw/Y0rU0Ga_Esc/s912/TargetMaximumFlux.png" height="140" width="600" /></a>||
-|| *Figure 5.* Graphical representationof the Maximum Flux.||
-
- * If you want to see graphically how the flux distribution is going, you can use this:
+ * With those lines you can get a result and some graphis about how the flux distribution is going:
 
 {{{
 results = Table[fluxAnalysis[{simulationsBinsFiles[[i]],wPhotons[[i]]}],{i, 1, Length[simulationsBinsFiles]}];
-}}}
+}}} 
+
 The funtion fluxAnalysis returns, for each files, the photons, the power, the maximunmFlux and the minimum. It may be like this:
 {{{
 fluxAnalysis[{fileName_, powerPerPhoton_}] := 
@@ -349,4 +314,42 @@ tonatiuh3D = ListPlot3D[incidentFluxMatrix, PlotRange -> All,
 ||<a href="https://picasaweb.google.com/lh/photo/wCUuCooUVM0oE2-7q2h6VA?full-exif=true?"><img src="https://lh4.googleusercontent.com/-HacP8YPkuSI/Tsp5yNUhr7I/AAAAAAAABAk/3anJI0Br_mQ/s500/100Simulation_bins3D.jpg" height="240" width="450" /></a>||
 || *Figure 6.* Example of a flux distribution on the target.||
 
-This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results.
+ * To see if the results are good or not,we have to get the relative error:
+{{{
+ errorFluxMax = Table[100*(results[[i, 5]] - results[[i - 1, 5]])/results[[i 1, 5]], {i, 2, Length[results]}]
+}}}
+*The simulation will be a success if the relative error result is lower than 0.5 in, at least, 5 consecutive cases.
+
+ * We can plot and get a graphical file of the results of the relative error by typing:
+{{{
+rel = ListPlot[errorFluxMax, Joined -> True, 
+  LabelStyle -> Directive["Helvetica", 14], 
+  AxesLabel -> {"Rays", 
+    "Relative difference between maximum flux estimates (% of \
+previous estimate)"}, PlotRange -> {All, {-5, 5}}  , 
+  ImageSize -> {1000, 600}]; 
+Export["TargetMFlux_error.png", rel]
+}}}
+
+||<a href="https://picasaweb.google.com/lh/photo/NRTamUJ3Bli2n3ZNFrQVrw?full-exif=true?"><img src="https://lh4.googleusercontent.com/-kvECkvg7Xrg/Tsp64jlXCdI/AAAAAAAABA0/NTrN20idqZo/s912/TargetMFlux_error.png" height="140" width="600" /></a>||
+|| *Figure 4.* Relative error graphical output.The red vertical line determines the last element which has a relative error >|0.5%| ||
+
+ * Another interesting result might be how the maximun flux is going. To know that, type:
+{{{
+fluxMax = 
+  Table[{results[[i, 2]], results[[i, 5]]}, {i, 1, Length[results] }];
+
+flux = ListPlot[fluxMax, Joined -> True, 
+  LabelStyle -> Directive["Helvetica", 14], 
+  AxesLabel -> {"Rays", 
+    "Maximum flux(kW/\!\(\*SuperscriptBox[\(m\), \(2\)]\))"}, 
+  PlotRange -> {All, {0, 2}} , ImageSize -> {1000, 600}]
+Export["TargetMaximumFlux.png", flux] 
+}}}
+
+||<a href="https://picasaweb.google.com/lh/photo/uGqpzkO7CY2ihd4kWs0k4Q?full-exif=true?"><img src="https://lh6.googleusercontent.com/-yJF0v4fzogg/Tsp64ge5API/AAAAAAAABAw/Y0rU0Ga_Esc/s912/TargetMaximumFlux.png" height="140" width="600" /></a>||
+|| *Figure 5.* Graphical representationof the Maximum Flux.||
+
+
+
+This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results. If there are any problem or something is wrong eithe in this tutorial or in Tonatiuh, please, type your dicussion at the <a href=http://groups.google.com/group/tonatiuh-raytracer>Tonatiuh users group forum. </a> 
