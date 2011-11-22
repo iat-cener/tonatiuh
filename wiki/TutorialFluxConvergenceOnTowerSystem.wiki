@@ -275,7 +275,8 @@ The funtion fluxAnalysis returns, for each files, the photons, the power, the ma
 fluxAnalysis[{fileName_, powerPerPhoton_}] := 
  Module[{totalPhotons, totalPower, ElementWidth, 
    ElementLength, photonCounts, elementArea, 
-   fluxConversionFactor, incidentFluxMatrix, minimumFlux, maximumFlux,
+   fluxConversionFactor, 
+incidentFluxMatrix, minimumFlux, maximumFlux,
     zmin, zmax, contourLevels, tonatiuhContour, tonatiuh3D},
 
 
