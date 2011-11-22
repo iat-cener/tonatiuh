@@ -313,7 +313,11 @@ tonatiuh3D = ListPlot3D[incidentFluxMatrix, PlotRange -> All,
   {fileName, totalPhotons, totalPower, minimumFlux, maximumFlux}]
 }}}
 
+ * If you want to represent graphically the results of the flux in the target,only this line is required:
 
+{{{
+fluxAnalysis[{simulationsBinsFiles[[-1]], powerPerPhoton/100}]
+}}}
 ||<a href="https://picasaweb.google.com/lh/photo/wCUuCooUVM0oE2-7q2h6VA?full-exif=true?"><img src="https://lh4.googleusercontent.com/-HacP8YPkuSI/Tsp5yNUhr7I/AAAAAAAABAk/3anJI0Br_mQ/s500/100Simulation_bins3D.jpg" height="240" width="450" /></a>||
 || *Figure 6.* Example of a flux distribution on the target.||
 
