@@ -257,11 +257,11 @@ PositionFluxMatrix[binsFileList_, number_] := Module[{bins},
 
 To make it easier, in case you have lots of photon map files, you can do a parallel simulation. Instead of the last step, we have to use the following ones:
 {{{
-LaunchKernels[4]
+LaunchKernels[2]
 DistributeDefinitions["Global`"]
 simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulationsFiles] ;
 }}}
-*Note:This only will work of the computer have more than one core. If it not your case, you will not be able to use this step.
+*Note:This only will work if the computer has more than one core. If it not your case, you will not be able to use this step.
 
    * For each simulationBinFiles, calculate the power per photon. The power per photon is the same in all the files of this simulation because there are the same number of rays traced on each cells that the sun is divided. So we can calculate the power per photon as we show bellow:
 {{{
