@@ -155,8 +155,8 @@ Tonatiuh doesn't provide a photon map results analizer so it's necessary to use 
 
    === How to create a post-proccess script using Mathematica ===
 
-   The following steps explain how we can make a script in Mathematica to read photons properly. In this case the taget was a square flat plane: 
- * First set the way Mathematica has to read the data and how to transform the coordinate to the target we are using currently. In this case we only need x and z to create a flat plane.
+   The following steps explain how we can make a script in Mathematica to read photons properly. In this case the taget was a flat square plane: 
+ * First, set the way Mathematica has to read the data and how to transform the coordinate to the target we are using currently. In this case we only need x and z to create a flat plane.
 {{{
 ReadTonatiuhResults[filename_] :=  BinaryReadList[ filename, "Real64", ByteOrdering -> +1];
 transform01[{x_, y_, z_}] := { x , z }
