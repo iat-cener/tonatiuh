@@ -403,33 +403,25 @@ int ScriptRayTracer::Trace()
 		transmissivity = static_cast< TTransmissivity* > ( coinScene->getPart( "transmissivity", false ) );
 
 	//Compute the valid areas for the raytracing
-	QVector< QPair< int, int > > validAreasList = raycastingSurface->GetValidAreasCoord();
 
-	QVector< QPair< double, QPoint > > raysPerPixel;
-	const int maximumValueProgressScale = validAreasList.count();
-	if(int(m_numberOfRays)<validAreasList.count())m_numberOfRays=validAreasList.count();
+	QVector< double > raysPerThread;
+	const int maximumValueProgressScale = 100;
 	unsigned long  t1 = m_numberOfRays / maximumValueProgressScale;
-
 	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-	{
-		QPair< int, int > coord = validAreasList[ progressCount ];
-		QPoint pixelsCoord( coord.first, coord.second );
-		raysPerPixel<<QPair< double, QPoint >( t1, pixelsCoord );
-	}
+		raysPerThread<< t1;
 
-	m_numberOfRays = t1 * maximumValueProgressScale;
+	if( ( t1 * maximumValueProgressScale ) < m_numberOfRays )	raysPerThread<< ( m_numberOfRays-( t1* maximumValueProgressScale) );
 
-	//ParallelRandomDeviate* m_pParallelRand = new ParallelRandomDeviate( *m_rand,140000 );
 	// Create a QFutureWatcher and connect signals and slots.
 	QFutureWatcher< TPhotonMap* > futureWatcher;
 
 	QMutex mutex;
 	QFuture< TPhotonMap* > photonMap;
 	if( transmissivity )
-		photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 
 	else
-		photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+		photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_randomDeviate, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 
 	futureWatcher.setFuture( photonMap );
 	futureWatcher.waitForFinished();
