@@ -104,75 +104,6 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 			InstanceNode* intersectedSurface = 0;
 			bool isFront = false;
-			bool isDirectSun = true;
-
-			//Trace the ray
-			bool isReflectedRay = true;
-			while( isReflectedRay )
-			{
-				intersectedSurface = 0;
-				isFront = 0;
-				Ray reflectedRay;
-				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
-
-				if (!isDirectSun) currentRaysWay.push_back(ray);
-				if( isReflectedRay )
-				{
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-
-					//Prepare node and ray for next iteration
-					ray = reflectedRay;
-					isDirectSun = false;
-				}
-
-			}
-
-			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
-			{
-				if( ray.maxt == HUGE_VAL  )
-				{
-					ray.maxt = 0.1;
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
-				}
-				else
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize(currentRaysWay.size());
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				currentRaysWay.clear();
-			}
-
-		}
-
-	}
-	photonsVector.resize( photonsVector.size() );
-
-	return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
-
-
-	/*std::vector< RayTracerPhoton > photonsVector;
-	ParallelRandomDeviate rand( m_pRand, m_mutex );
-
-	double numberOfRays = pixel.first;
-	QPoint coord = pixel.second;
-
-	int coordA = coord.x();
-	int coordB = coord.y();
-
-    for(  unsigned long  i = 0; i < numberOfRays; ++i )
-    {
-    	std::vector<Ray> currentRaysWay;
-    	Ray ray;
-    	if( NewPrimitiveRay( &ray, rand, coordA, coordB ) )
-    	{
-    		photonsVector.push_back( RayTracerPhoton( ray.origin, 1, 0, m_lightNode ) );
-    		int rayLength = 0;
-
-			InstanceNode* intersectedSurface = 0;
-			bool isFront = false;
-			//bool isDirectSun = true;
 
 			//Trace the ray
 			bool isReflectedRay = true;
@@ -215,21 +146,19 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 				else
 					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
 			}
-
-			if( currentRaysWay.size() > 0 )
+			if (currentRaysWay.size()>0)
 			{
-				currentRaysWay.resize( currentRaysWay.size() );
+				currentRaysWay.resize(currentRaysWay.size());
 				m_rootNode->Analyze(&currentRaysWay,m_mutex);
 				currentRaysWay.clear();
 			}
 
 		}
 
-    }
-    photonsVector.resize( photonsVector.size() );
+	}
+	photonsVector.resize( photonsVector.size() );
 
-    return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
-    */
+	return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
 
 }
 
