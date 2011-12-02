@@ -8,6 +8,8 @@
 #ifndef TLIGHTSHAPE_H_
 #define TLIGHTSHAPE_H_
 
+#include <vector>
+
 #include <QPair>
 
 #include <Inventor/fields/SoSFDouble.h>
@@ -29,7 +31,7 @@ public:
 	static void initClass();
 
 	double GetValidArea() const;
-	QVector< QPair< int, int > > GetValidAreasCoord() const;
+	std::vector< QPair< int, int > > GetValidAreasCoord() const;
 	double GetVolume() const { return 0.0; };
 
 	Point3D Sample( double u, double v, int a, int b ) const;
@@ -52,6 +54,7 @@ private:
 	int m_heightElements;
 	int** m_lightAreaMatrix;
 	int m_widthElements;
+	std::vector< QPair< int, int > > m_validAreasVector;
 
 };
 

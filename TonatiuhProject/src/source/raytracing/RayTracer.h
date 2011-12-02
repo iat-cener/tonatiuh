@@ -75,9 +75,7 @@ public:
 		       TPhotonMap* photonMap );
 
 	typedef QPair< TPhotonMap*, std::vector< RayTracerPhoton > > result_type;
-
-	QPair< TPhotonMap*, std::vector< RayTracerPhoton > > operator()( QPair< double, QPoint > pixel );
-
+	QPair< TPhotonMap*, std::vector< RayTracerPhoton > > operator()( double numberOfRays );
 
 
 private:
@@ -90,8 +88,10 @@ private:
     QMutex* m_mutex;
 	TPhotonMap* m_photonMap;
 	TTransmissivity * m_transmissivity;
+	std::vector< QPair< int, int > >  m_validAreasVector;
 
-	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand, int a,int b );
+	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
+
 };
 
 

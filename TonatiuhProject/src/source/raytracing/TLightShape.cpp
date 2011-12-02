@@ -87,7 +87,7 @@ TLightShape::~TLightShape()
 
 double TLightShape::GetValidArea() const
 {
-	int numberOfValidAreas = GetValidAreasCoord().count();
+	int numberOfValidAreas = m_validAreasVector.size();
 
 	double width =  xMax.getValue() - xMin.getValue();
 	double pixelWidth = width / m_widthElements;
@@ -105,29 +105,26 @@ double TLightShape::GetValidArea() const
  * Returns the indexes of the valid areas to the ray tracer.
  */
 
-QVector< QPair< int, int > > TLightShape::GetValidAreasCoord() const
+std::vector< QPair< int, int > > TLightShape::GetValidAreasCoord() const
 {
-	QVector< QPair< int, int > > validAreasList;
 
-	for( int i = 0; i < m_heightElements; i++ )
-		for( int j = 0; j < m_widthElements; j++ )
-			if( m_lightAreaMatrix[i][j] == 1 )	validAreasList.push_back( QPair< int, int >( i, j ) );
-
-	return validAreasList;
+	return m_validAreasVector;
 }
 
 Point3D TLightShape::Sample( double u, double v, int a, int b) const
-{   //calculate the coordinates of a photon un a cell
+{
+	//calculate the coordinates of a photon un a cell
 	return GetPoint3D( u, v,a,b );
 }
 
-Point3D TLightShape::GetPoint3D (double u, double v, int h,int w) const
+Point3D TLightShape::GetPoint3D( double u, double v, int h, int w ) const
 {
 	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function TLightShape::GetPoint3D called with invalid parameters" );
 
     //size of cells the sun is divided
 	double width =  (xMax.getValue() - xMin.getValue())/m_widthElements;
 	double height = (zMax.getValue() - zMin.getValue())/m_heightElements;
+
 	//calculate the photon coordinate
 	double x = xMin.getValue()+( u * width ) + (w*width);
 	double z = zMin.getValue()+( v * height ) + (h*height);
@@ -135,7 +132,7 @@ Point3D TLightShape::GetPoint3D (double u, double v, int h,int w) const
 	return Point3D( x, 0, z );
 }
 
-void TLightShape::SetLightSourceArea(  int h, int w, int** lightArea )
+void TLightShape::SetLightSourceArea( int h, int w, int** lightArea )
 {
 
 	if( m_lightAreaMatrix != 0 )
@@ -148,6 +145,13 @@ void TLightShape::SetLightSourceArea(  int h, int w, int** lightArea )
 	m_heightElements = h;
 	m_widthElements = w;
 	m_lightAreaMatrix = lightArea;
+
+	m_validAreasVector.clear();
+
+	for( int i = 0; i < m_heightElements; i++ )
+		for( int j = 0; j < m_widthElements; j++ )
+			if( m_lightAreaMatrix[i][j] == 1 )	m_validAreasVector.push_back( QPair< int, int >( i, j ) );
+
 }
 
 bool TLightShape::OutOfRange( double u, double v ) const

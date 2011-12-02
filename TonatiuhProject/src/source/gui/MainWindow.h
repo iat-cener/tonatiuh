@@ -267,8 +267,6 @@ private:
     unsigned long m_tracedRays;
     unsigned long m_raysPerIteration;
     double m_fraction;
-    int m_widthDivisions;
-    int m_heightDivisions;
     bool m_drawPhotons;
     int m_gridXElements;
     int m_gridZElements;
@@ -276,6 +274,8 @@ private:
     double m_gridZSpacing;
     std::vector<GraphicView*> m_graphicView;
     int m_focusView;
+    int m_heightDivisions;
+    int m_widthDivisions;
 
 };
 
