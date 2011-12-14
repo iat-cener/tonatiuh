@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ScriptRayTracer.h"
 #include "RandomDeviateFactory.h"
 #include "tonatiuh_script.h"
+#include "sunpos.h"
 
 
 int tonatiuh_script::init( QScriptEngine* engine )
@@ -83,6 +84,9 @@ int tonatiuh_script::init( QScriptEngine* engine )
 
 	QScriptValue fun_tonatiuh_sunposition = engine->newFunction( tonatiuh_script::tonatiuh_sunposition );
 	engine->globalObject().setProperty("tonatiuh_sunposition", fun_tonatiuh_sunposition );
+
+	QScriptValue fun_tonatiuh_calculatesun = engine->newFunction( tonatiuh_script::tonatiuh_calculatesun );
+	engine->globalObject().setProperty("tonatiuh_calculatesun", fun_tonatiuh_calculatesun );
 
 	QScriptValue fun_tonatiuh_setsunpositiontoscene = engine->newFunction( tonatiuh_script::tonatiuh_setsunpositiontoscene );
 	engine->globalObject().setProperty("tonatiuh_setsunpositiontoscene", fun_tonatiuh_setsunpositiontoscene );
@@ -345,6 +349,51 @@ QScriptValue  tonatiuh_script::tonatiuh_sunposition(QScriptContext* context, QSc
 	if( ( elevation < 0. ) || ( elevation > 90. ) )	return context->throwError( "tonatiuh_sunposition: elevation value must be between 0 and 90 degrees." );
 	rayTracer->SetSunElevation( elevation );
 
+	return 1;
+
+}
+
+QScriptValue  tonatiuh_script::tonatiuh_calculatesun(QScriptContext* context, QScriptEngine* engine )
+{
+	//tonatiuh_sunposition( azimuth, elevation, distance );
+	if( ( context->argumentCount()!=6))
+		return context->throwError( "tonatiuh_calculatesun: must take 5 arguments." );
+	if( !context->argument( 0 ).isNumber() )	return context->throwError( "tonatiuh_calculatesun: argument 1 is not a number." );
+	if( !context->argument( 1 ).isNumber() )	return context->throwError( "tonatiuh_calculatesun: argument 2 is not a number." );
+	if( !context->argument( 2 ).isNumber() )	return context->throwError( "tonatiuh_calculatesun: argument 3 is not a number." );
+	if( !context->argument( 3 ).isNumber() )	return context->throwError( "tonatiuh_calculatesun: argument 4 is not a number." );
+	if( !context->argument( 4 ).isNumber() )	return context->throwError( "tonatiuh_calculatesun: argument 5 is not a number." );
+	if( !context->argument( 5 ).isNumber() )	return context->throwError( "tonatiuh_calculatesun: argument 6 is not a number." );
+
+	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
+	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
+	if( !rayTracer ) return 0;
+
+	int year = context->argument(0).toNumber();
+	int month = context->argument(1).toNumber();
+	int day = context->argument(2).toNumber();
+	double hours = context->argument(3).toNumber();
+	double latitude = context->argument(4).toNumber();
+	double longitude = context->argument(5).toNumber();
+	if( ( month < 0 ) || ( month> 12 ) ) return context->throwError( "tonatiuh_calculatesun: month must be between 1 and 12." );
+	if( ( day < 0 ) || ( day > 31  ) ) return context->throwError( "tonatiuh_calculatesun: the day must be between 1 and 31." );
+	if( ( hours < 0 ) || ( hours > 23  ) ) return context->throwError( "tonatiuh_calculatesun: the hour must be between 1 and 31." );
+	if( ( longitude < -180. ) || ( longitude > 180.  ) ) return context->throwError( "tonatiuh_calculatesun: the longitude must be between -180 and 180." );
+	if( ( latitude < -90. ) || ( latitude > 90.  ) ) return context->throwError( "tonatiuh_calculatesun: the hour must be between -90 and 90." );
+
+	cTime myTime = { year, month, day, hours, 0, 0 };
+	cLocation myLocation = {longitude , latitude };
+	cSunCoordinates results;
+	sunpos( myTime, myLocation, &results );
+
+	//if( ( results.dAzimuth < 0. ) || ( azimuth > 360. ) )	return context->throwError( "tonatiuh_sunposition: azimuth value must be between 0 and 360 degrees." );
+	rayTracer->SetSunAzimtuh( results.dAzimuth );
+
+	//double elevation = context->argument(1).toNumber();
+	//if( ( < 0. ) || ( elevation > 90. ) )	return context->throwError( "tonatiuh_sunposition: elevation value must be between 0 and 90 degrees." );
+	rayTracer->SetSunElevation(results.dZenithAngle );
+
+	rayTracer->SetSunPositionToScene();
 	return 1;
 
 }
