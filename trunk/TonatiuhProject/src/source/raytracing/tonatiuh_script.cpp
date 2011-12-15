@@ -379,7 +379,7 @@ QScriptValue  tonatiuh_script::tonatiuh_calculatesun(QScriptContext* context, QS
 	if( ( day < 0 ) || ( day > 31  ) ) return context->throwError( "tonatiuh_calculatesun: the day must be between 1 and 31." );
 	if( ( hours < 0 ) || ( hours > 23  ) ) return context->throwError( "tonatiuh_calculatesun: the hour must be between 1 and 31." );
 	if( ( longitude < -180. ) || ( longitude > 180.  ) ) return context->throwError( "tonatiuh_calculatesun: the longitude must be between -180 and 180." );
-	if( ( latitude < -90. ) || ( latitude > 90.  ) ) return context->throwError( "tonatiuh_calculatesun: the hour must be between -90 and 90." );
+	if( ( latitude < -90. ) || ( latitude > 90.  ) ) return context->throwError( "tonatiuh_calculatesun: the latitude must be between -90 and 90." );
 
 	cTime myTime = { year, month, day, hours, 0, 0 };
 	cLocation myLocation = {longitude , latitude };
@@ -393,8 +393,12 @@ QScriptValue  tonatiuh_script::tonatiuh_calculatesun(QScriptContext* context, QS
 	//if( ( < 0. ) || ( elevation > 90. ) )	return context->throwError( "tonatiuh_sunposition: elevation value must be between 0 and 90 degrees." );
 	rayTracer->SetSunElevation(results.dZenithAngle );
 
+	/*if(90-results.dZenithAngle<0){
+		return 2;
+	}*/
 	rayTracer->SetSunPositionToScene();
-	return 1;
+	if((90-results.dZenithAngle)<0)return false;
+	else return true;
 
 }
 
