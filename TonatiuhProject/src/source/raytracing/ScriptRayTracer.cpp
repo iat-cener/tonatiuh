@@ -406,8 +406,6 @@ int ScriptRayTracer::Trace()
 
 	QVector< double > raysPerThread;
 	const int maximumValueProgressScale = 100;
-	if(m_sunElevation>0.5*tgc::Pi) return 1;
-
 	unsigned long  t1 = m_numberOfRays / maximumValueProgressScale;
 	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 		raysPerThread<< t1;
