@@ -720,6 +720,9 @@ QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
 	{
 		QString nodeName = nodeList.last();
 		nodeList.removeLast();
+		if(nodeName=="TrackerHeliostat" || nodeName=="TrackerLinearFresnel" || nodeName=="TrackerOneAxis"){
+			nodeName="";
+		}
 
 		QString parentNodeURL = QString( "//" ) + nodeList.join( "/" );
 		QModelIndex parentIndex = IndexFromNodeUrl( parentNodeURL );
@@ -737,6 +740,7 @@ QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
 			child++;
 		}
 		if( row < 0 )	return QModelIndex();
+		//if(nodeName == ".") return index(row+1, 0, parentIndex );
 		return index(row, 0, parentIndex );
 	}
 	else

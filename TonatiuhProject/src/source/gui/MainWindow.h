@@ -143,6 +143,7 @@ protected:
 
 protected slots:
 	void CalculateSunPosition();
+	void CalculateSunPosition(int year, int month, int day, int hours,double latitude, double longitude);
 	void ChangeGridSettings();
 	void ChangeNodeName( const QModelIndex& index, const QString& newName);
     void ChangeSelection( const QModelIndex & current );
@@ -151,10 +152,12 @@ protected slots:
     void CreateShape( TShapeFactory* pTShapeFactory );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
+	//void DefineSunLight(QScript typeOfSun, double irradiance, double angle, double azimuth, double zenith);
 	void DefineTransmissivity();
 	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );
 	void ExportPhotonMap();
+	void ExportPhotonMap(QString ruta, QString file, bool GlobalCoord,bool exportAllMap);
 	void Open();
 	void OpenRecentFile();
 	void Redo();
@@ -165,6 +168,7 @@ protected slots:
 	void ShowGrid();
     void ShowMenu( const QModelIndex& index );
     void ShowRayTracerOptionsDialog();
+    void ShowRayTracerOptionsDialog(int numRays, QString photonMapType, int randomType,int widthDivisions, int heightDivisions, double raysToDraw, bool drawPhotons, bool increasePhotonMap);
     void ShowWarning( QString message );
 	void Undo();
 
