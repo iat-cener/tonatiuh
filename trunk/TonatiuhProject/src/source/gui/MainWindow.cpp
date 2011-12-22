@@ -309,6 +309,26 @@ void MainWindow::CalculateSunPosition()
 
 }
 
+void MainWindow::CalculateSunPosition(int year, int month, int day, int hours,double latitude, double longitude){
+
+
+		if( ( month < 0 ) || ( month> 12 ) ) return;
+		if( ( day < 0 ) || ( day > 31  ) ) return;
+		if( ( hours < 0 ) || ( hours > 23  ) ) return;
+		if( ( longitude < -180. ) || ( longitude > 180.  ) ) return;
+		if( ( latitude < -90. ) || ( latitude > 90.  ) ) return;
+
+		cTime myTime = { year, month, day, hours, 0, 0 };
+		cLocation myLocation = {longitude , latitude };
+		cSunCoordinates results;
+		sunpos( myTime, myLocation, &results );
+		ChangeSunPosition( results.dAzimuth* tgc::Degree, ( 90 - results.dZenithAngle ) * tgc::Degree);
+
+		/*if((90-results.dZenithAngle)<0)return false;
+		else return true;*/
+
+}
+
 /*!
  *Defines Tonatiuh model light paramenters with a dilog window.
  */
@@ -354,6 +374,74 @@ void MainWindow::DefineSunLight()
 
 	}
 }
+
+/*void MainWindow::DefineSunLight(QString typeOfSun, double irradiance, double angle, double azimuth, double zenith){
+
+	TSceneKit* coinScene = m_document->GetSceneKit();
+		if( !coinScene ) return;
+
+		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+		InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
+		m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
+
+        TLightKit* lightKit = new TLightKit;
+
+        //if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
+        //if( m_newShape ) lightKit->setPart( "icon", m_newShape );
+
+		QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+
+		QVector< TShapeFactory* > tFlatShapeFactoryList;
+		for( int i = 0; i < shapeFactoryList.size(); ++i  )
+			if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
+
+		QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
+
+		LightDialog dialog( currentLight, tSunShapeFactoryList );
+		if( dialog.exec() )
+		{
+
+			//TLightKit* lightKit = dialog.GetTLightKit();
+
+		QVector< TShapeFactory* > factoryList = m_pluginManager->GetShapeFactories();
+			if( factoryList.size() == 0 )	return;
+
+			QVector< QString > shapeNames;
+			for( int i = 0; i < factoryList.size(); i++ )
+				shapeNames<< factoryList[i]->TShapeName();
+
+
+
+
+			CreateShape( factoryList[ selectedShape ] );
+		QVector< TSunShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+
+				QVector< QScriptClass > tFlatShapeFactoryList;
+				for( int i = 0; i < shapeFactoryList.size(); ++i  ){
+					QString sunShapeTypeName( shapeFactoryList[i]->CreateTSunShape()->getTypeId().getName().getString());
+					if( sunShapeTypeName== typeOfSun) break;
+				}
+
+
+		QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
+			TLightKit* lightKit = new TLightKit;
+
+			lightKit->ChangePosition( azimuth* tgc::Degree, ( 90 - zenith ) * tgc::Degree);
+			if( !lightKit ) return;
+
+			lightKit->setName( "Light" );
+
+			CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
+			m_commandStack->push( command );
+
+			//UpdateLightDimensions();
+			m_sceneModel->UpdateSceneModel();
+
+			parametersView->UpdateView();
+			m_document->SetDocumentModified( true );
+
+			actionCalculateSunPosition->setEnabled( true );
+}*/
 
 /*!
  * Opens a dialog to define the scene transmissivity.
@@ -443,6 +531,75 @@ void MainWindow::ExportPhotonMap()
 		if( !nodeURL.isEmpty() )	m_lastExportSurfaceUrl = nodeURL;
 
 		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
+		InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
+		if( !selectedSurface )
+		{
+			QMessageBox::warning( this, "Tonatiuh", "Selected node in not a valid export node." );
+			return;
+		}
+
+		if( m_lastExportInGlobal )
+			okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
+		else
+			okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
+	}
+	if( !okExport )
+	{
+		QMessageBox::warning( this, "Tonatiuh", "An unexpected error has occurred exporting photon map to a file." );
+		return;
+	}
+
+}
+
+/*!
+ * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
+ */
+void MainWindow::ExportPhotonMap(QString nodeRoute, QString fileToExport, bool GlobalCoord,bool exportAllMap)
+{
+	if ( m_photonMap == NULL )
+	{
+		QMessageBox::information( this, "Tonatiuh", "No Photon Map stored", 1 );
+	    return;
+	}
+
+	//ExportDialog exportDialog( *m_sceneModel, m_lastExportSurfaceUrl, m_lastExportInGlobal, m_lastExportFileName, this );
+	//if( !exportDialog.exec() ) return;
+
+	//QString fileName = exportDialog.GetExportFileName();
+	if( nodeRoute.isEmpty() )
+	{
+		QMessageBox::information( this, "Tonatiuh", "No file defined to save Photon Map", 1 );
+		return;
+	}
+	m_lastExportFileName = fileToExport;
+	m_lastExportInGlobal = GlobalCoord;
+
+	//Compute photon power
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene ) return;
+	if( !coinScene->getPart( "lightList[0]", false ) ) return;
+	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+
+
+	if( !lightKit->getPart( "tsunshape", false ) ) return;
+	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+	double irradiance = sunShape->GetIrradiance();
+
+	if( !lightKit->getPart( "icon", false ) ) return;
+	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
+	double inputAperture = raycastingShape->GetValidArea();
+
+	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
+
+	int okExport;
+	if( exportAllMap )
+		okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_photonMap );
+	else
+	{
+		//QString nodeURL = exportDialog.GetSelectedSurface();
+		if( !nodeRoute.isEmpty() )	m_lastExportSurfaceUrl = nodeRoute;
+
+		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeRoute );
 		InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
 		if( !selectedSurface )
 		{
@@ -627,6 +784,31 @@ void MainWindow::ShowRayTracerOptionsDialog()
 
 	m_selectedPhotonMap =options->GetPhotonMapFactoryIndex();
 	m_increasePhotonMap = options->IncreasePhotonMap();
+
+}
+
+void MainWindow::ShowRayTracerOptionsDialog(int numRays, QString photonMapType, int randomType,int widthDivisions, int heightDivisions, double raysToDraw, bool drawPhotons, bool increasePhotonMap)
+{
+	SetPhotonMapType(photonMapType);
+
+	double oldSelectedRandomDeviate = m_selectedRandomDeviate;
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
+	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
+
+	SetRaysPerIteration( numRays );
+
+	m_selectedRandomDeviate = randomType;
+	if( oldSelectedRandomDeviate != m_selectedRandomDeviate )
+	{
+		delete m_rand;
+		m_rand = 0;
+	}
+
+	m_fraction = raysToDraw;
+	m_widthDivisions= widthDivisions;
+	m_heightDivisions=heightDivisions;
+	m_drawPhotons =drawPhotons;
+	m_increasePhotonMap = increasePhotonMap;
 
 }
 
@@ -1868,7 +2050,7 @@ void MainWindow::ChangeSunPosition(  double azimuth, double zenith )
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 	if ( !lightKit )
 	{
-		QMessageBox::warning( this, "Toantiuh warning", tr( "Sun not defined in scene" ) );
+		QMessageBox::warning( this, "Tonatiuh warning", tr( "Sun not defined in scene" ) );
 	}
 	else
 	{
@@ -1984,7 +2166,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	    if ( trak )
 	    {
 	    	QMessageBox::information( this, "Tonatiuh Action",
-		                          "This TSeparatorKit already contains a traker node", 1);
+		                          "This TSeparatorKit already contains a tracker node", 1);
 		    return;
 	    }
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
