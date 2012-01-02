@@ -199,9 +199,9 @@ TSeparatorKit * TAnalyzerKit::GetResultsList()
 
 std::string to_string( const int & Value )
 {
-    // utiliser un flux de sortie pour créer la chaîne
+    // utiliser un flux de sortie pour crï¿½er la chaï¿½ne
     std::ostringstream oss;
-    // écrire la valeur dans le flux
+    // ï¿½crire la valeur dans le flux
     oss << Value;
     // renvoyer une string
     return oss.str();
@@ -227,24 +227,17 @@ void TAnalyzerKit::RemoveResult(SceneModel * pModel)
 	}
 }
 
-void TAnalyzerKit::PrepareCompute(SceneModel * pModel)
+void TAnalyzerKit::PrepareCompute( SceneModel* pModel )
 {
 
-    TAnalyzerParameter * analyzerParameter;
-    TAnalyzerResult * analyzerResult;
-    TShape* tshape;
-    TMaterial * material ;
-
-
-	analyzerResult = static_cast<TAnalyzerResult*> (getPart("result", false));
+    TAnalyzerResult* analyzerResult = static_cast<TAnalyzerResult*> ( getPart( "result", false ) );
+	analyzerResult->numRayIntersected = 0;
 
 	SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( getPart( "childList", true ) );
-	TShapeKit * mainShapeKit = static_cast< TShapeKit* >( coinPartList->getChild(0) );
-	material = static_cast< TMaterial* >(mainShapeKit->getPart("material", false) );
-	tshape = static_cast< TShape* >( mainShapeKit->getPart("shape", false) );
+	TShapeKit * mainShapeKit = static_cast< TShapeKit* >( coinPartList->getChild( 0 ) );
+	TShape* tshape = static_cast< TShape* >( mainShapeKit->getPart( "shape", false) );
 
-	analyzerResult->numRayIntersected=0;
-	analyzerParameter = static_cast<TAnalyzerParameter*> (getPart("parameter", false));
+	TAnalyzerParameter* analyzerParameter = static_cast< TAnalyzerParameter* > ( getPart( "parameter", false ) );
 	analyzerParameter->setParent(this);
 
 	short xSplit,ySplit,zSplit;
