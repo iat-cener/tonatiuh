@@ -37,9 +37,9 @@ TEST(DiferencialGeometryTests, Constructor)
 		Vector3D dpdv(taf::randomPoint(a,b));
 		Vector3D dndu(taf::randomPoint(a,b));
 		Vector3D dndv(taf::randomPoint(a,b));
-		double u=taf::randomNumber(a,b);
-		double v=taf::randomNumber(a,b);
-		TShape* shape;
+		double u = taf::randomNumber(a,b);
+		double v = taf::randomNumber(a,b);
+		TShape* shape = 0;
 
 		DifferentialGeometry dif(point,dpdu,dpdv,dndu,dndv,u,v,shape);
 
