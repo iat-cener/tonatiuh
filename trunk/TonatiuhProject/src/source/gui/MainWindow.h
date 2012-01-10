@@ -152,7 +152,7 @@ protected slots:
     void CreateShape( TShapeFactory* pTShapeFactory );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
-	//void DefineSunLight(QScript typeOfSun, double irradiance, double angle, double azimuth, double zenith);
+	void DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith);
 	void DefineTransmissivity();
 	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );

@@ -375,7 +375,7 @@ void MainWindow::DefineSunLight()
 	}
 }
 
-/*void MainWindow::DefineSunLight(QString typeOfSun, double irradiance, double angle, double azimuth, double zenith){
+void MainWindow::DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith){
 
 	TSceneKit* coinScene = m_document->GetSceneKit();
 		if( !coinScene ) return;
@@ -384,64 +384,49 @@ void MainWindow::DefineSunLight()
 		InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
 		m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
-        TLightKit* lightKit = new TLightKit;
 
-        //if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
-        //if( m_newShape ) lightKit->setPart( "icon", m_newShape );
+        QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
 
-		QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+        	QVector< TShapeFactory* > tFlatShapeFactoryList;
+        	for( int i = 0; i < shapeFactoryList.size(); ++i  )
+        		if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
 
-		QVector< TShapeFactory* > tFlatShapeFactoryList;
-		for( int i = 0; i < shapeFactoryList.size(); ++i  )
-			if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
+        	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
 
-		QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
+        	TSunShape* newSunShape = tSunShapeFactoryList[typeOfSun]->CreateTSunShape();
+        	//newSunShape = static_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
 
-		LightDialog dialog( currentLight, tSunShapeFactoryList );
-		if( dialog.exec() )
-		{
+        	TLightKit* lightKit = new TLightKit;
+        	if( newSunShape ) lightKit->setPart( "tsunshape", newSunShape );
+        	lightKit->ChangePosition( azimuth* tgc::Degree, ( 90 - zenith ) * tgc::Degree);
 
-			//TLightKit* lightKit = dialog.GetTLightKit();
+        	if(irradiance>=0){
+        				SoField* parameterField = newSunShape->getField( SbName( QString("irradiance").toStdString().c_str() ) );
+        					if( parameterField )
+        						parameterField->set(QString::number(irradiance).toStdString().c_str() );
+        			}
+            if(typeOfSun==1){
+            	SoField* parameterField = newSunShape->getField( SbName(QString("thetaMax").toStdString().c_str() ) );
+            		if( parameterField )
+            			parameterField->set( QString::number(angle).toStdString().c_str() );
 
-		QVector< TShapeFactory* > factoryList = m_pluginManager->GetShapeFactories();
-			if( factoryList.size() == 0 )	return;
+                    }
+            else{
+            	SoField* parameterField = newSunShape->getField( SbName(QString("csr").toStdString().c_str() ) );
+            	            		if( parameterField )
+            	            			parameterField->set( QString::number(angle).toStdString().c_str() );
+            }
+        	CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
+        			m_commandStack->push( command );
 
-			QVector< QString > shapeNames;
-			for( int i = 0; i < factoryList.size(); i++ )
-				shapeNames<< factoryList[i]->TShapeName();
+        			//UpdateLightDimensions();
+        			m_sceneModel->UpdateSceneModel();
 
+        			parametersView->UpdateView();
+        			m_document->SetDocumentModified( true );
 
-
-
-			CreateShape( factoryList[ selectedShape ] );
-		QVector< TSunShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
-
-				QVector< QScriptClass > tFlatShapeFactoryList;
-				for( int i = 0; i < shapeFactoryList.size(); ++i  ){
-					QString sunShapeTypeName( shapeFactoryList[i]->CreateTSunShape()->getTypeId().getName().getString());
-					if( sunShapeTypeName== typeOfSun) break;
-				}
-
-
-		QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
-			TLightKit* lightKit = new TLightKit;
-
-			lightKit->ChangePosition( azimuth* tgc::Degree, ( 90 - zenith ) * tgc::Degree);
-			if( !lightKit ) return;
-
-			lightKit->setName( "Light" );
-
-			CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
-			m_commandStack->push( command );
-
-			//UpdateLightDimensions();
-			m_sceneModel->UpdateSceneModel();
-
-			parametersView->UpdateView();
-			m_document->SetDocumentModified( true );
-
-			actionCalculateSunPosition->setEnabled( true );
-}*/
+        			actionCalculateSunPosition->setEnabled( true );
+}
 
 /*!
  * Opens a dialog to define the scene transmissivity.
@@ -2170,8 +2155,9 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 		    return;
 	    }
 	TTracker* tracker = pTTrackerFactory->CreateTTracker( );
-	tracker->SetSceneKit( scene );
 
+	tracker->SetSceneKit( scene );
+	tracker->setName(pTTrackerFactory->TTrackerName().toStdString().c_str() );
 	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
 	m_commandStack->push( command );
 
