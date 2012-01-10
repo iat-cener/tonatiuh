@@ -332,8 +332,8 @@ void TLightKit::ComputeLightSourceArea(int widthDivisions,int heigthDivisions, Q
 	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
     texture->image.setValue( SbVec2s(  heightPixeles, widthPixeles ), 1, bitmap );
 	delete bitmap;
-    texture->wrapS = SoTexture2::COIN_1_0;
-    texture->wrapT = SoTexture2::COIN_1_0;
+    texture->wrapS = SoTexture2::CLAMP;
+    texture->wrapT = SoTexture2::CLAMP;
 
     shape->SetLightSourceArea( heightPixeles, widthPixeles, areaMatrix );
 
