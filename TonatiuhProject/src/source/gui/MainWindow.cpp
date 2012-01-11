@@ -129,6 +129,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTracker.h"
 #include "TTrackerFactory.h"
 #include "TTransmissivity.h"
+#include "TTransmissivityFactory.h"
 #include "UpdatesManager.h"
 
 
@@ -374,7 +375,9 @@ void MainWindow::DefineSunLight()
 
 	}
 }
-
+/*!
+ *Defines Tonatiuh model light parameters using a script.
+ */
 void MainWindow::DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith){
 
 	TSceneKit* coinScene = m_document->GetSceneKit();
@@ -393,6 +396,7 @@ void MainWindow::DefineSunLight(int typeOfSun, double irradiance, double angle, 
 
         	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
 
+        	if(typeOfSun>=tSunShapeFactoryList.size()|| typeOfSun<0) return;
         	TSunShape* newSunShape = tSunShapeFactoryList[typeOfSun]->CreateTSunShape();
         	//newSunShape = static_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
 
@@ -428,6 +432,7 @@ void MainWindow::DefineSunLight(int typeOfSun, double irradiance, double angle, 
         			actionCalculateSunPosition->setEnabled( true );
 }
 
+
 /*!
  * Opens a dialog to define the scene transmissivity.
  */
@@ -448,6 +453,26 @@ void MainWindow::DefineTransmissivity()
 	}
 }
 
+void MainWindow::DefineTransmissivity(int typeOfTransmissivity, double value){
+
+	TSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene ) return;
+	QVector< TTransmissivityFactory* > tTransmissivityFactoryList = m_pluginManager->GetTransmissivityFactories();
+	if(typeOfTransmissivity>=tTransmissivityFactoryList.size()|| typeOfTransmissivity<-1) return;
+	TTransmissivity* transmissivity;
+	if(typeOfTransmissivity==-1) transmissivity=0;
+	else{
+	transmissivity = tTransmissivityFactoryList[typeOfTransmissivity]->CreateTTransmissivity();
+	SoField* parameterField = transmissivity->getField( SbName( QString("constant").toStdString().c_str() ) );
+		if( parameterField )
+		    parameterField->set(QString::number(value).toStdString().c_str() );
+	}
+	coinScene->setPart( "transmissivity", transmissivity );
+
+
+
+
+}
 void MainWindow::DisconnectAllTrackers( bool disconnect )
 {
 	if (disconnect) m_sceneModel->DisconnectAllTrackers();

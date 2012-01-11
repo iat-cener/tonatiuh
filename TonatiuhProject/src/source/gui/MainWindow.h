@@ -154,6 +154,7 @@ protected slots:
 	void DefineSunLight();
 	void DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith);
 	void DefineTransmissivity();
+	void DefineTransmissivity(int typeOfTransmissivity, double value);
 	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );
 	void ExportPhotonMap();
