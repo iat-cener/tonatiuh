@@ -452,7 +452,9 @@ void MainWindow::DefineTransmissivity()
 		return;
 	}
 }
-
+/*!
+ * Define the scene transmissivity without opening a dialog.
+ */
 void MainWindow::DefineTransmissivity(int typeOfTransmissivity, double value){
 
 	TSceneKit* coinScene = m_document->GetSceneKit();
@@ -1528,7 +1530,7 @@ void MainWindow::Run()
 
 		//Compute bounding boxes and world to object transforms
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList,true );
-
+		if(surfacesList.count()<1)return;
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 		light->ComputeLightSourceArea( m_widthDivisions,m_heightDivisions,surfacesList );
 
@@ -1543,7 +1545,6 @@ void MainWindow::Run()
 
 
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
-
 		// Create a progress dialog.
 		QProgressDialog dialog;
 		dialog.setLabelText( QString("Progressing using %1 thread(s)..." ).arg( QThread::idealThreadCount() ) );
@@ -1557,7 +1558,6 @@ void MainWindow::Run()
 
 		QMutex mutex;
 		QFuture< TPhotonMap* > photonMap;
-
 		if( transmissivity )
 			//photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 			photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
