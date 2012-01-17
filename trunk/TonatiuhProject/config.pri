@@ -52,10 +52,19 @@ CONFIG(debug, debug|release) {
     QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage
 } 
 else{
-    QMAKE_CFLAGS_RELEASE -= -O2 
-    QMAKE_CFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
-	QMAKE_CXXFLAGS_RELEASE -= -O2
-	QMAKE_CXXFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
+	macx{
+		QMAKE_CFLAGS_RELEASE -= -O2 
+    	QMAKE_CFLAGS_RELEASE += -O3 -mfpmath=sse
+		QMAKE_CXXFLAGS_RELEASE -= -O2
+		QMAKE_CXXFLAGS_RELEASE += -O3 -mfpmath=sse
+	}
+	else{
+   		QMAKE_CFLAGS_RELEASE -= -O2 
+    	QMAKE_CFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
+		QMAKE_CXXFLAGS_RELEASE -= -O2
+		QMAKE_CXXFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
+	}
+	
 }
 
 
