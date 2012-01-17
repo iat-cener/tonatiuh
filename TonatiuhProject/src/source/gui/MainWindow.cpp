@@ -89,6 +89,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdLightPositionModified.h"
 #include "CmdModifyParameter.h"
 #include "CmdPaste.h"
+#include "CmdTransmissivityModified.h"
 #include "Document.h"
 #include "ExportDialog.h"
 #include "GraphicView.h"
@@ -151,12 +152,12 @@ void finishManipulator(void *data, SoDragger* /*dragger*/ )
  */
 MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags flags )
 :QMainWindow( parent, flags ),
-m_currentFile( "" ),
-m_recentFiles( "" ),
-m_recentFileActions( 0 ),
-m_document( 0 ),
-m_commandStack( 0 ),
-m_commandView( 0 ),
+ m_commandStack( 0 ),
+ m_commandView( 0 ),
+ m_currentFile( "" ),
+ m_document( 0 ),
+ m_recentFiles( "" ),
+ m_recentFileActions( 0 ),
 m_materialsToolBar( 0 ),
 m_photonMapToolBar(0),
 m_shapeToolBar( 0 ),
@@ -293,44 +294,6 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 }
 
 /*!
- * Shows a dialog to allow define current light position with a position calculator.
- */
-void MainWindow::CalculateSunPosition()
-{
-#ifndef NO_MARBLE
-
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene->getPart( "lightList[0]", false ) ) return;
-
-	SunPositionCalculatorDialog sunposDialog;
-	connect( &sunposDialog, SIGNAL( changeSunLight( double, double ) ) , this, SLOT( ChangeSunPosition( double, double ) ) );
-
-	sunposDialog.exec();
-#endif /* NO_MARBLE*/
-
-}
-
-void MainWindow::CalculateSunPosition(int year, int month, int day, int hours,double latitude, double longitude){
-
-
-		if( ( month < 0 ) || ( month> 12 ) ) return;
-		if( ( day < 0 ) || ( day > 31  ) ) return;
-		if( ( hours < 0 ) || ( hours > 23  ) ) return;
-		if( ( longitude < -180. ) || ( longitude > 180.  ) ) return;
-		if( ( latitude < -90. ) || ( latitude > 90.  ) ) return;
-
-		cTime myTime = { year, month, day, hours, 0, 0 };
-		cLocation myLocation = {longitude , latitude };
-		cSunCoordinates results;
-		sunpos( myTime, myLocation, &results );
-		ChangeSunPosition( results.dAzimuth* tgc::Degree, ( 90 - results.dZenithAngle ) * tgc::Degree);
-
-		/*if((90-results.dZenithAngle)<0)return false;
-		else return true;*/
-
-}
-
-/*!
  *Defines Tonatiuh model light paramenters with a dilog window.
  */
 void MainWindow::DefineSunLight()
@@ -375,63 +338,64 @@ void MainWindow::DefineSunLight()
 
 	}
 }
+
 /*!
  *Defines Tonatiuh model light parameters using a script.
  */
-void MainWindow::DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith){
+/*void MainWindow::DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith){
 
 	TSceneKit* coinScene = m_document->GetSceneKit();
-		if( !coinScene ) return;
+	if( !coinScene ) return;
 
-		InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-		InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
-		m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
+	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
+	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
 
-        QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
 
-        	QVector< TShapeFactory* > tFlatShapeFactoryList;
-        	for( int i = 0; i < shapeFactoryList.size(); ++i  )
-        		if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
+	QVector< TShapeFactory* > tFlatShapeFactoryList;
+	for( int i = 0; i < shapeFactoryList.size(); ++i  )
+		if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
 
-        	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
+	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
 
-        	if(typeOfSun>=tSunShapeFactoryList.size()|| typeOfSun<0) return;
-        	TSunShape* newSunShape = tSunShapeFactoryList[typeOfSun]->CreateTSunShape();
-        	//newSunShape = static_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
+	if(typeOfSun>=tSunShapeFactoryList.size()|| typeOfSun<0) return;
+	TSunShape* newSunShape = tSunShapeFactoryList[typeOfSun]->CreateTSunShape();
+	//newSunShape = static_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
 
-        	TLightKit* lightKit = new TLightKit;
-        	if( newSunShape ) lightKit->setPart( "tsunshape", newSunShape );
-        	lightKit->ChangePosition( azimuth* tgc::Degree, ( 90 - zenith ) * tgc::Degree);
+	TLightKit* lightKit = new TLightKit;
+	if( newSunShape ) lightKit->setPart( "tsunshape", newSunShape );
+	lightKit->ChangePosition( azimuth* tgc::Degree, ( 90 - zenith ) * tgc::Degree);
 
-        	if(irradiance>=0){
-        				SoField* parameterField = newSunShape->getField( SbName( QString("irradiance").toStdString().c_str() ) );
-        					if( parameterField )
-        						parameterField->set(QString::number(irradiance).toStdString().c_str() );
-        			}
-            if(typeOfSun==1){
-            	SoField* parameterField = newSunShape->getField( SbName(QString("thetaMax").toStdString().c_str() ) );
-            		if( parameterField )
-            			parameterField->set( QString::number(angle).toStdString().c_str() );
+	if(irradiance>=0){
+				SoField* parameterField = newSunShape->getField( SbName( QString("irradiance").toStdString().c_str() ) );
+					if( parameterField )
+						parameterField->set(QString::number(irradiance).toStdString().c_str() );
+			}
+	if(typeOfSun==1){
+		SoField* parameterField = newSunShape->getField( SbName(QString("thetaMax").toStdString().c_str() ) );
+			if( parameterField )
+				parameterField->set( QString::number(angle).toStdString().c_str() );
 
-                    }
-            else{
-            	SoField* parameterField = newSunShape->getField( SbName(QString("csr").toStdString().c_str() ) );
-            	            		if( parameterField )
-            	            			parameterField->set( QString::number(angle).toStdString().c_str() );
-            }
-        	CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
-        			m_commandStack->push( command );
+			}
+	else{
+		SoField* parameterField = newSunShape->getField( SbName(QString("csr").toStdString().c_str() ) );
+							if( parameterField )
+								parameterField->set( QString::number(angle).toStdString().c_str() );
+	}
+	CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
+	m_commandStack->push( command );
 
-        			//UpdateLightDimensions();
-        			m_sceneModel->UpdateSceneModel();
+	//UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
 
-        			parametersView->UpdateView();
-        			m_document->SetDocumentModified( true );
+	parametersView->UpdateView();
+	m_document->SetDocumentModified( true );
 
-        			actionCalculateSunPosition->setEnabled( true );
+	actionCalculateSunPosition->setEnabled( true );
 }
-
+*/
 
 /*!
  * Opens a dialog to define the scene transmissivity.
@@ -445,17 +409,21 @@ void MainWindow::DefineTransmissivity()
 
 	TTransmissivity* currentTransmissivity = static_cast< TTransmissivity* > ( coinScene->getPart( "transmissivity", false ) );
 	if( currentTransmissivity )	dialog.SetCurrentTransmissivity( currentTransmissivity );
-	if( dialog.exec() )
-	{
-		TTransmissivity* newTransmissivity = dialog.GetTransmissivity();
-		coinScene->setPart( "transmissivity", newTransmissivity );
-		return;
-	}
+	if( !dialog.exec() )	return;
+
+	TTransmissivity* newTransmissivity = dialog.GetTransmissivity();
+	//	coinScene->setPart( "transmissivity", newTransmissivity );
+
+	CmdTransmissivityModified* command = new CmdTransmissivityModified( newTransmissivity, coinScene );
+	if ( m_commandStack ) m_commandStack->push( command );
+    m_document->SetDocumentModified( true );
+
 }
+
 /*!
  * Define the scene transmissivity without opening a dialog.
  */
-void MainWindow::DefineTransmissivity(int typeOfTransmissivity, double value){
+/*void MainWindow::DefineTransmissivity(int typeOfTransmissivity, double value){
 
 	TSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
@@ -475,6 +443,7 @@ void MainWindow::DefineTransmissivity(int typeOfTransmissivity, double value){
 
 
 }
+*/
 void MainWindow::DisconnectAllTrackers( bool disconnect )
 {
 	if (disconnect) m_sceneModel->DisconnectAllTrackers();
@@ -514,46 +483,19 @@ void MainWindow::ExportPhotonMap()
 		QMessageBox::information( this, "Tonatiuh", "No file defined to save Photon Map", 1 );
 		return;
 	}
-	m_lastExportFileName = fileName;
-	m_lastExportInGlobal = exportDialog.ExportPhotonsInGlobal();
-
-	//Compute photon power
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene ) return;
-	if( !coinScene->getPart( "lightList[0]", false ) ) return;
-	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-
-
-	if( !lightKit->getPart( "tsunshape", false ) ) return;
-	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->GetIrradiance();
-
-	if( !lightKit->getPart( "icon", false ) ) return;
-	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
-	double inputAperture = raycastingShape->GetValidArea();
-
-	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
 
 	int okExport;
-	if( exportDialog.ExportAllPhotonMap() )
-		okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_photonMap );
+	if( exportDialog.ExportAllPhotonMap() )	okExport = ExportAllPhotonMap( fileName );
 	else
 	{
 		QString nodeURL = exportDialog.GetSelectedSurface();
-		if( !nodeURL.isEmpty() )	m_lastExportSurfaceUrl = nodeURL;
-
-		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
-		InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
-		if( !selectedSurface )
+		if( !nodeURL.isEmpty() )
 		{
 			QMessageBox::warning( this, "Tonatiuh", "Selected node in not a valid export node." );
 			return;
 		}
+		okExport = ExportPhotonMap( fileName, nodeURL, exportDialog.ExportPhotonsInGlobal() );
 
-		if( m_lastExportInGlobal )
-			okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
-		else
-			okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
 	}
 	if( !okExport )
 	{
@@ -564,72 +506,75 @@ void MainWindow::ExportPhotonMap()
 }
 
 /*!
- * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
+ * Inserts an existing tonatiuh component into the tonatiuh model as a selected node child.
+ *
+ * A open file dialog is opened to select the file where the existing component is saved.
  */
-void MainWindow::ExportPhotonMap(QString nodeRoute, QString fileToExport, bool GlobalCoord,bool exportAllMap)
+void MainWindow::InsertUserDefinedComponent()
 {
-	if ( m_photonMap == NULL )
+	QModelIndex parentIndex;
+	 if (( !sceneModelView->currentIndex().isValid() ) || ( sceneModelView->currentIndex() == sceneModelView->rootIndex() ) )
+		 parentIndex = m_sceneModel->index (0,0,sceneModelView->rootIndex());
+	 else
+		 parentIndex = sceneModelView->currentIndex();
+
+	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
+
+	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
+
+	QString fileName = QFileDialog::getOpenFileName( this,
+			                               tr( "Open Tonatiuh document" ), ".",
+			                               tr( "Tonatiuh component (*.tcmp)" ) );
+
+	if ( fileName.isEmpty() ) return;
+
+	InsertFileComponent( fileName );
+}
+
+/*!
+ *Moves the scene node with index \a node to the parent with index \a newParent.
+ */
+void MainWindow::ItemDragAndDrop( const QModelIndex& newParent, const QModelIndex& node)
+{
+	if( node == sceneModelView->rootIndex() ) return;
+
+
+	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
+	if(nodeInstnace->GetParent()&&nodeInstnace->GetParent()->GetNode()->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
-		QMessageBox::information( this, "Tonatiuh", "No Photon Map stored", 1 );
-	    return;
+		SoNode* coinNode = nodeInstnace->GetNode();
+		//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
+
+		QUndoCommand* dragAndDrop = new QUndoCommand();
+		dragAndDrop->setText("Drag and Drop node");
+		new CmdCut( node, m_coinNode_Buffer, m_sceneModel, dragAndDrop );
+
+		new CmdPaste( tgc::Copied, newParent, coinNode, *m_sceneModel, dragAndDrop );
+		m_commandStack->push( dragAndDrop );
+
+		m_sceneModel->UpdateSceneModel();
+		m_document->SetDocumentModified( true );
 	}
 
-	//ExportDialog exportDialog( *m_sceneModel, m_lastExportSurfaceUrl, m_lastExportInGlobal, m_lastExportFileName, this );
-	//if( !exportDialog.exec() ) return;
+}
 
-	//QString fileName = exportDialog.GetExportFileName();
-	if( nodeRoute.isEmpty() )
-	{
-		QMessageBox::information( this, "Tonatiuh", "No file defined to save Photon Map", 1 );
-		return;
-	}
-	m_lastExportFileName = fileToExport;
-	m_lastExportInGlobal = GlobalCoord;
+/*!
+ * Inserts a copy of the node \a node as a \a newParent child.
+ */
+void MainWindow::ItemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node)
+{
+	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
+	SoNode* coinNode = nodeInstnace->GetNode();
+	//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
 
-	//Compute photon power
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene ) return;
-	if( !coinScene->getPart( "lightList[0]", false ) ) return;
-	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+	QUndoCommand* dragAndDropCopy = new QUndoCommand();
+	dragAndDropCopy->setText("Drag and Drop Copy");
+	new CmdCopy( node, m_coinNode_Buffer, m_sceneModel );
+	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDropCopy );
+	m_commandStack->push( dragAndDropCopy );
 
-
-	if( !lightKit->getPart( "tsunshape", false ) ) return;
-	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->GetIrradiance();
-
-	if( !lightKit->getPart( "icon", false ) ) return;
-	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
-	double inputAperture = raycastingShape->GetValidArea();
-
-	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
-
-	int okExport;
-	if( exportAllMap )
-		okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_photonMap );
-	else
-	{
-		//QString nodeURL = exportDialog.GetSelectedSurface();
-		if( !nodeRoute.isEmpty() )	m_lastExportSurfaceUrl = nodeRoute;
-
-		QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeRoute );
-		InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
-		if( !selectedSurface )
-		{
-			QMessageBox::warning( this, "Tonatiuh", "Selected node in not a valid export node." );
-			return;
-		}
-
-		if( m_lastExportInGlobal )
-			okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
-		else
-			okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
-	}
-	if( !okExport )
-	{
-		QMessageBox::warning( this, "Tonatiuh", "An unexpected error has occurred exporting photon map to a file." );
-		return;
-	}
-
+	m_sceneModel->UpdateSceneModel();
+	m_document->SetDocumentModified( true );
 }
 
 /*!
@@ -677,8 +622,127 @@ void MainWindow::OpenRecentFile()
 void MainWindow::Redo()
 {
     m_commandStack->redo();
-    //UpdateLightDimensions();
 	m_sceneModel->UpdateSceneModel();
+}
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
+ *
+ * If a current file is not defined, it calls to SaveAs funtios.
+ *
+ * \sa SaveAs, SaveFile.
+ */
+bool MainWindow::Save()
+{
+	if ( m_currentFile.isEmpty() ) return SaveAs();
+	else return SaveFile( m_currentFile );
+}
+
+/*!
+ * Returns \a true if the tonatiuh model is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
+ *
+ * \sa Save, SaveFile.
+ */
+bool MainWindow::SaveAs()
+{
+
+	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+
+	QString saveDirectory = settings.value( "saveDirectory", QString( "." ) ).toString();
+
+	QString tonatiuhFilter( "Tonatiuh files (*.tnh)" );
+	QString fileName = QFileDialog::getSaveFileName( this,
+	                       tr( "Save" ), saveDirectory,
+	                       tonatiuhFilter, &tonatiuhFilter );
+	if( fileName.isEmpty() ) return false;
+
+	QFileInfo file( fileName );
+	settings.setValue( "saveDirectory", file.absolutePath() );
+
+	if( file.completeSuffix().compare( "tnh" ) )
+		fileName.append( ".tnh" );
+	return SaveFile( fileName );
+}
+
+/*!
+ * Saves selected node subtree as a component in a file.
+ * A dialog is opened to select a file name and its location.
+ */
+bool MainWindow::SaveComponent()
+{
+    if( !m_selectionModel->hasSelection() ) return false;
+    if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return false;
+
+    QModelIndex componentIndex = sceneModelView->currentIndex();
+
+    SoNode* coinNode = m_sceneModel->NodeFromIndex( componentIndex )->GetNode();
+
+    if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+    {
+    	QMessageBox::warning( 0, tr( "Tonatiuh" ),
+                                  tr( "Selected node in not valid  for component node" ) );
+    	return false;
+    }
+
+    TSeparatorKit* componentRoot = dynamic_cast< TSeparatorKit* > ( coinNode );
+    if( !componentRoot ) return false;
+
+
+	QString fileName = QFileDialog::getSaveFileName( this,
+	                       tr( "Save Tonatiuh component" ), ".",
+	                       tr( "Tonatiuh component (*.tcmp)" ) );
+	if( fileName.isEmpty() ) return false;
+
+	QFileInfo componentFile( fileName );
+	if( componentFile.completeSuffix().compare( "tcmp" ) )
+		fileName.append( ".tcmp" );
+
+    SoWriteAction SceneOuput;
+    if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
+	{
+        QMessageBox::warning( 0, tr( "Tonatiuh" ),
+                              tr( "Cannot open file %1. " )
+                            .arg( fileName ));
+   		return false;
+   	}
+
+    QApplication::setOverrideCursor( Qt::WaitCursor );
+   	SceneOuput.getOutput()->setBinary( false );
+   	SceneOuput.apply( componentRoot );
+   	SceneOuput.getOutput()->closeFile();
+   	QApplication::restoreOverrideCursor();
+	return true;
+}
+
+/*!
+ * Changes the selected elements to the nodes into \a selection.
+ */
+void MainWindow::SelectionFinish( SoSelection* selection )
+{
+    if(selection->getNumSelected() == 0 ) return;
+
+    SoPath* selectionPath = selection->getPath( 0 );
+    if ( !selectionPath ) return;
+
+    if ( !selectionPath->containsNode ( m_document->GetSceneKit() ) ) return;
+
+    SoNodeKitPath* nodeKitPath = static_cast< SoNodeKitPath* >( selectionPath );
+    if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(TLightKit::getClassTypeId() ) )
+    {
+    	selection->deselectAll();
+    	QModelIndex currentIndex = m_selectionModel->currentIndex();
+    	m_selectionModel->setCurrentIndex( currentIndex , QItemSelectionModel::ClearAndSelect );
+    	return;
+    }
+
+    if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(SoDragger::getClassTypeId() ) ) return;
+
+    QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
+
+
+	if ( !nodeIndex.isValid() ) return;
+	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
+	m_selectionModel->select( nodeIndex , QItemSelectionModel::ClearAndSelect );
+
 }
 
 /*!
@@ -774,7 +838,6 @@ void MainWindow::ShowMenu( const QModelIndex& index)
  */
 void MainWindow::ShowRayTracerOptionsDialog()
 {
-	double oldSelectedRandomDeviate = m_selectedRandomDeviate;
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
 	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
 
@@ -782,45 +845,14 @@ void MainWindow::ShowRayTracerOptionsDialog()
 	options->exec();
 
 	SetRaysPerIteration( options->GetNumRays() );
-	m_selectedRandomDeviate = options->GetRandomDeviateFactoryIndex();
-	if( oldSelectedRandomDeviate != m_selectedRandomDeviate )
-	{
-		delete m_rand;
-		m_rand = 0;
-	}
+	SetRandomDeviateType( randomDeviateFactoryList[options->GetRandomDeviateFactoryIndex()]->RandomDeviateName() );
+	SetPhotonMapType( photonmapFactoryList[options->GetPhotonMapFactoryIndex()]->TPhotonMapName() );
 
-	m_fraction = options->GetRaysFactionToDraw();
-	m_widthDivisions=options->GetWidthDivisions();
-	m_heightDivisions=options->GetHeightDivisions();
-	m_drawPhotons = options->DrawPhotons();
+	SetRaysDrawingOptions( options->GetRaysFactionToDraw(), options->DrawPhotons() );
+	SetRayCastingGrid( options->GetWidthDivisions(), options->GetHeightDivisions() );
 
-	m_selectedPhotonMap =options->GetPhotonMapFactoryIndex();
-	m_increasePhotonMap = options->IncreasePhotonMap();
 
-}
-
-void MainWindow::ShowRayTracerOptionsDialog(int numRays, QString photonMapType, int randomType,int widthDivisions, int heightDivisions, double raysToDraw, bool drawPhotons, bool increasePhotonMap)
-{
-	SetPhotonMapType(photonMapType);
-
-	double oldSelectedRandomDeviate = m_selectedRandomDeviate;
-	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
-	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-	SetRaysPerIteration( numRays );
-
-	m_selectedRandomDeviate = randomType;
-	if( oldSelectedRandomDeviate != m_selectedRandomDeviate )
-	{
-		delete m_rand;
-		m_rand = 0;
-	}
-
-	m_fraction = raysToDraw;
-	m_widthDivisions= widthDivisions;
-	m_heightDivisions=heightDivisions;
-	m_drawPhotons =drawPhotons;
-	m_increasePhotonMap = increasePhotonMap;
+	SetIncreasePhtonMap( options->IncreasePhotonMap() );
 
 }
 
@@ -1043,7 +1075,7 @@ void MainWindow::ChangeGridSettings()
 /*!
  *
  */
-void MainWindow::ChangeNodeName( const QModelIndex& index, const QString& newName)
+void MainWindow::ChangeNodeName( const QModelIndex& index, const QString& newName )
 {
 	if( !index.isValid() )	return;
 
@@ -1061,21 +1093,80 @@ void MainWindow::ChangeNodeName( const QModelIndex& index, const QString& newNam
 }
 
 /*!
+ * Changes the light position to the position defined by \a azimuth and \a zenith.
+ * The parameters are defined in radians.
+ */
+void MainWindow::ChangeSunPosition(  double azimuth, double zenith )
+{
+
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+	if ( !lightKit )
+	{
+		QMessageBox::warning( this, "Tonatiuh warning", tr( "ChangeSunPosition:: Sun not defined in scene" ) );
+		return;
+	}
+	CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, azimuth, zenith );
+	m_commandStack->push( command );
+
+	//UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
+	m_document->SetDocumentModified( true );
+
+}
+
+/*!
+ * Sets the sun position for the localitation given by \a latitude and \a longitude coordinates.
+ * Latitude is positive for North and positive longitude for east.
+ * The time  defined by \a year, \a month and \a day, \a hours, \a minustes and \a seconds is ut time.
+ */
+void MainWindow::ChangeSunPosition(int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude )
+{
+	if( ( month < 0 ) || ( month> 12 ) ||
+			( day < 0 ) || ( day > 31  ) ||
+			( hours < 0 ) || ( hours > 23  ) ||
+			( minutes < 0 ) || ( minutes > 59  ) ||
+			( seconds < 0 ) || ( seconds >= 60  ) ||
+			( longitude < -180. ) || ( longitude > 180.  ) ||
+			( latitude < -90. ) || ( latitude > 90.  ) )
+	{
+		QMessageBox::warning( this, "Tonatiuh warning", tr( "ChangeSunPosition:: Not valid value define to new sun position." ) );
+		return;
+	}
+
+	cTime myTime = { year, month, day, hours, minutes, seconds };
+	cLocation myLocation = { longitude , latitude };
+	cSunCoordinates results;
+	sunpos( myTime, myLocation, &results );
+	ChangeSunPosition( results.dAzimuth* tgc::Degree, ( 90 - results.dZenithAngle ) * tgc::Degree);
+}
+
+/*!
  * Copies current node to the clipboard.
  * The current node cannot be the model root node or concentrator node.
  */
-void MainWindow::Copy( )
+void  MainWindow::Copy( )
 {
-	if( !m_selectionModel->hasSelection() ) return;
-	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return;
-	if( m_selectionModel->currentIndex().parent() == sceneModelView->rootIndex() ) return;
-
+	if( !m_selectionModel->hasSelection() )
+	{
+		emit Abort( tr( "Copy: No node seleted to copy." ) );
+		return;
+	}
+	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() )
+	{
+		emit Abort( tr( "Copy: The root node can not bee copied." ) );
+		return;
+	}
+	if( m_selectionModel->currentIndex().parent() == sceneModelView->rootIndex() )
+	{
+		emit Abort( tr( "Copy: The root node can not bee copied." ) );
+		return;
+	}
 
 	CmdCopy* command = new CmdCopy( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
 	m_document->SetDocumentModified( true );
-	return;
 }
 
 /*!
@@ -1087,14 +1178,22 @@ void MainWindow::Copy( QString nodeURL )
 {
 	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
 
-	if( !nodeIndex.isValid() )	return;
-	if( nodeIndex == sceneModelView->rootIndex() ) return;
-	if( nodeIndex.parent() == sceneModelView->rootIndex() ) return;
+	if( !nodeIndex.isValid() )
+	{
+		emit Abort( tr( "Copy: There is no node with defined url." ) );
+		return;
+	}
+	if( nodeIndex == sceneModelView->rootIndex() || nodeIndex.parent() == sceneModelView->rootIndex() )
+	{
+		emit Abort( tr( "Copy: The root node can not bee copied." ) );
+		return;
+	}
 
 	CmdCopy* command = new CmdCopy( nodeIndex, m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
 	m_document->SetDocumentModified( true );
+	return;
 
 }
 
@@ -1110,12 +1209,24 @@ void MainWindow::CreateGroupNode()
 		parentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	if( !parentInstance ) return;
+	if( !parentInstance )
+	{
+		emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
+		return;
+	}
 
 	SoNode* coinNode = parentInstance->GetNode();
-	if( !coinNode ) return;
+	if( !coinNode )
+	{
+		emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
+		return;
+	}
 
-	if ( coinNode->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) ) return;
+	if ( coinNode->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
+	{
+		emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
+		return;
+	}
 
 	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
@@ -1136,7 +1247,10 @@ void MainWindow::CreateGroupNode()
 		m_sceneModel->UpdateSceneModel();
 		m_document->SetDocumentModified( true );
 
+
 	}
+	emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
+
 }
 
 /*!
@@ -1151,19 +1265,24 @@ void MainWindow::CreateAnalyzerNode()
 		parentIndex = sceneModelView->currentIndex();
 
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	if( !parentInstance ) return;
+	if( !parentInstance )
+	{
+		emit Abort( tr( "CreateAnalyzerNode: No parent node for analyzer node." ) );
+		return;
+	}
 
-		SoNode* selectedCoinNode = parentInstance->GetNode();
-	if( !selectedCoinNode ) return;
+
+	SoNode* selectedCoinNode = parentInstance->GetNode();
+	if( !selectedCoinNode )
+	{
+		emit Abort( tr( "CreateAnalyzerNode: There is no node selected for analyzer node." ) );
+		return;
+	}
 
 	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		TAnalyzerKit* analyzerKit = new TAnalyzerKit;
 
-/*
-		TAnalyzerResult* lanalyzerResult = new TAnalyzerResult;
-		analyzerKit->setPart("result", lanalyzerResult );
-*/
 		CmdInsertAnalyzerKit* insertAnalyzerKit = new CmdInsertAnalyzerKit( parentIndex, analyzerKit, m_sceneModel );
 		m_commandStack->push( insertAnalyzerKit );
 
@@ -1193,7 +1312,11 @@ void MainWindow::CreateMaterial( QString materialType )
 		materialNames<< factoryList[i]->TMaterialName();
 
 	int selectedMaterial = materialNames.indexOf( materialType );
-	if( selectedMaterial < 0 )	return;
+	if( selectedMaterial < 0 )
+	{
+		emit Abort( tr( "CreateMaterial: Selected material type is not valid." ) );
+		return;
+	}
 
 	CreateMaterial( factoryList[ selectedMaterial ] );
 }
@@ -1214,10 +1337,13 @@ void MainWindow::CreateShape( QString shapeType )
 		shapeNames<< factoryList[i]->TShapeName();
 
 	int selectedShape = shapeNames.indexOf( shapeType );
-	if( selectedShape < 0 )	return;
+	if( selectedShape < 0 )
+	{
+		emit Abort( tr( "CreateShape: Selected shape type is not valid." ) );
+		return ;
+	}
 
 	CreateShape( factoryList[ selectedShape ] );
-
 }
 
 /*!
@@ -1234,7 +1360,7 @@ void MainWindow::CreateSurfaceNode()
 	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
 	if( !parentInstance ) return;
 
-		SoNode* selectedCoinNode = parentInstance->GetNode();
+	SoNode* selectedCoinNode = parentInstance->GetNode();
 	if( !selectedCoinNode ) return;
 
 	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
@@ -1253,7 +1379,11 @@ void MainWindow::CreateSurfaceNode()
 		}
 		m_sceneModel->UpdateSceneModel();
 		m_document->SetDocumentModified( true );
+
 	}
+
+	emit Abort( tr( "CreateSurfaceNode: Selected node is not valid as surface node parent." ) );
+
 }
 
 
@@ -1273,7 +1403,11 @@ void MainWindow::CreateTracker( QString trackerType )
 		trackerNames<< factoryList[i]->TTrackerName();
 
 	int selectedTracker = trackerNames.indexOf( trackerType );
-	if( selectedTracker < 0 )	return;
+	if( selectedTracker < 0 )
+	{
+		emit Abort( tr( "CreateTracker: Selected tracker type is not valid." ) );
+		return;
+	}
 
 	CreateTracker( factoryList[ selectedTracker ] );
 }
@@ -1283,10 +1417,15 @@ void MainWindow::CreateTracker( QString trackerType )
  */
 void MainWindow::Cut()
 {
-	if( !m_selectionModel->hasSelection() ) return;
-	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return;
-	if( m_selectionModel->currentIndex().parent() == sceneModelView->rootIndex() ) return;
-
+	int validNode = 1;
+	if( !m_selectionModel->hasSelection() ) validNode = 0;
+	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) validNode = 0;
+	if( m_selectionModel->currentIndex().parent() == sceneModelView->rootIndex() ) validNode = 0;
+	if( !validNode )
+	{
+		emit Abort( tr( "Cut: No valid node selected to cut." ) );
+		return;
+	}
 	CmdCut* command = new CmdCut( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
@@ -1299,18 +1438,36 @@ void MainWindow::Cut()
  */
 void MainWindow::Cut( QString nodeURL )
 {
+	if( nodeURL.isEmpty() )
+	{
+		emit Abort(  tr( "Cut: There is no node with defined url." ) );
+		return;
+	}
+
 	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
 
-	if( !nodeIndex.isValid() )	return;
-	if( nodeIndex == sceneModelView->rootIndex() ) return;
-	if( nodeIndex.parent() == sceneModelView->rootIndex() ) return;
+	if( !nodeIndex.isValid() )
+	{
+		emit Abort( tr( "Cut: There is no node with defined url." ) );
+		return;
+	}
+
+	if( nodeIndex == sceneModelView->rootIndex() )
+	{
+		emit Abort( tr( "Cut: Selected node is not valid node to cut." ) );
+		return;
+	}
+	if( nodeIndex.parent() == sceneModelView->rootIndex() )
+	{
+		emit Abort( tr( "Cut: Selected node is not valid node to cut." ) );
+		return;
+	}
 
 	CmdCut* command = new CmdCut( nodeIndex, m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
 	m_sceneModel->UpdateSceneModel();
 	m_document->SetDocumentModified( true );
-
 }
 
 /*!
@@ -1318,14 +1475,17 @@ void MainWindow::Cut( QString nodeURL )
  */
 void MainWindow::Delete( )
 {
-	if( !m_selectionModel->hasSelection() ) return;
+	if( !m_selectionModel->hasSelection() )
+	{
+		emit Abort(  tr( "Delete: There is no node selected to delete." ) );
+		return;
+	}
+
 	QModelIndex selection = m_selectionModel->currentIndex();
 	m_selectionModel->clearSelection();
 
 	InstanceNode* selectionNode = m_sceneModel->NodeFromIndex( selection );
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( selectionNode->GetParent()->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
-
-
 
 	Delete( selection );
 }
@@ -1338,21 +1498,91 @@ void MainWindow::Delete( )
 void MainWindow::Delete( QString nodeURL )
 {
 	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
-	if( !nodeIndex.isValid() )	return;
+	if( !nodeIndex.isValid() )
+	{
+		emit Abort(  tr( "Delete: There is no node with defined url." ) );
+		return;
+	}
+
 	Delete( nodeIndex );
 	if( m_selectionModel->isSelected ( nodeIndex ) ) m_selectionModel->clearSelection();
+}
+
+/*!
+ * Save all photon map data into \a fileName file.
+ */
+int MainWindow::ExportAllPhotonMap( QString fileName )
+{
+	if ( m_photonMap == NULL )	return 0 ;
+
+	//Compute photon power
+	TSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene ) return 0;
+	if( !coinScene->getPart( "lightList[0]", false ) ) return 0;
+	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+
+
+	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
+	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+	double irradiance = sunShape->GetIrradiance();
+
+	if( !lightKit->getPart( "icon", false ) ) return 0;
+	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
+	double inputAperture = raycastingShape->GetValidArea();
+
+	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
+
+	m_lastExportFileName = fileName;
+	int okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_photonMap );
+
+	return okExport;
 
 }
 
-
-void MainWindow::SetAimingPointAbsolute()
+/*!
+ * Writes the \a nodeUrl surface photon's data at file \a fileName.
+ * If \a globalCoord is true the photon coordinates will be written in scene coordintes. Otherwise, in surface local coordinates.
+ */
+int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord )
 {
-	SetAimingPointRelativity(false);
-}
+	if( fileName.isEmpty() )	return 0;
+	if( nodeUrl.isEmpty() )	return 0;
+	if ( m_photonMap == NULL )	return 0;
 
-void MainWindow::SetAimingPointRelative()
-{
-	SetAimingPointRelativity(true);
+	//Compute photon power
+	TSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene ) return 0;
+	if( !coinScene->getPart( "lightList[0]", false ) ) return 0;
+	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+
+
+	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
+	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+	double irradiance = sunShape->GetIrradiance();
+
+	if( !lightKit->getPart( "icon", false ) ) return 0;
+	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
+	double inputAperture = raycastingShape->GetValidArea();
+
+	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
+
+	m_lastExportFileName = fileName;
+	m_lastExportSurfaceUrl = nodeUrl;
+	m_lastExportInGlobal = globalCoord;
+
+	QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
+	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
+	if( !selectedSurface )	return 0;
+
+	int okExport = 0;
+
+	if( m_lastExportInGlobal )
+		okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
+	else
+		okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
+
+	return okExport;
+
 }
 void MainWindow::SetAimingPointRelativity( bool relative )
 {
@@ -1392,15 +1622,22 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 		parentIndex = sceneModelView->currentIndex();
 
 	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
-	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
+	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		emit Abort( tr( "InsertFileComponent: Parent node is not valid node type." ) );
+		return;
+	}
 
-	if ( componentFileName.isEmpty() ) return;
+	if ( componentFileName.isEmpty() )
+	{
+		emit Abort( tr( "InsertFileComponent: Cannot open file:\n%1." ).arg( componentFileName ) );
+		return;
+	}
 
 	SoInput componentInput;
 	if ( !componentInput.openFile( componentFileName.toLatin1().constData() ) )
 	{
-		QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
-				tr( "Cannot open file:\n%1." ).arg( componentFileName ) );
+		emit Abort( tr( "Cannot open file:\n%1." ).arg( componentFileName ) );
 		return;
 	}
 
@@ -1409,9 +1646,7 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 
 	if ( !componentSeparator )
 	{
-		QMessageBox::warning( 0, tr( "Scene Graph Structure" ),
-				tr( "Error reading file: \n%1." )
-				.arg( componentFileName ) );
+		emit Abort( tr( "Error reading file: \n%1." ) .arg( componentFileName ) );
 		return;
 	}
 
@@ -1426,38 +1661,18 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 }
 
 /*!
- * Inserts an existing tonatiuh component into the tonatiuh model as a selected node child.
- *
- * A open file dialog is opened to select the file where the existing component is saved.
- */
-void MainWindow::InsertUserDefinedComponent()
-{
-	QModelIndex parentIndex;
-	 if (( !sceneModelView->currentIndex().isValid() ) || ( sceneModelView->currentIndex() == sceneModelView->rootIndex() ) )
-		 parentIndex = m_sceneModel->index (0,0,sceneModelView->rootIndex());
-	 else
-		 parentIndex = sceneModelView->currentIndex();
-
-	SoNode* coinNode = m_sceneModel->NodeFromIndex( parentIndex )->GetNode();
-
-	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
-
-	QString fileName = QFileDialog::getOpenFileName( this,
-			                               tr( "Open Tonatiuh document" ), ".",
-			                               tr( "Tonatiuh component (*.tcmp)" ) );
-
-	if ( fileName.isEmpty() ) return;
-
-	InsertFileComponent( fileName );
-}
-
-/*!
  * Starts new tonatiuh empty model.
  */
 
 void MainWindow::New()
 {
-    if ( OkToContinue() ) StartOver( "" );
+    if ( !OkToContinue() )
+    {
+    	emit Abort( tr( "Current Tonatiuh model cannot be closed." ) );
+    	return;
+    }
+
+    StartOver( "" );
 }
 
 /*!
@@ -1465,7 +1680,23 @@ void MainWindow::New()
  */
 void MainWindow::Open( QString fileName )
 {
-	if( fileName.isEmpty() )	return;
+	if( fileName.isEmpty() )
+	{
+		QMessageBox::warning( this, QLatin1String( "Tonatiuh" ),
+				tr( "Open: Cannot open file:\n%1." ).arg( fileName ) );
+		emit Abort( tr( "Open: Cannot open file:\n%1." ).arg( fileName ) );
+		return;
+	}
+
+	QFileInfo file( fileName );
+	if( !file.exists() )
+	{
+		QMessageBox::warning( this, QLatin1String( "Tonatiuh" ),
+				tr( "Open: Cannot open file:\n%1." ).arg( fileName ) );
+		emit Abort( tr( "Open: Cannot open file:\n%1." ).arg( fileName ) );
+		return;
+	}
+
 	StartOver( fileName );
 }
 
@@ -1473,19 +1704,26 @@ void MainWindow::Open( QString fileName )
  * Inserts a new node as a \a nodeURL node child. The new node is a copy to node saved into the clipboard.
  * The \a pasteType take "Shared" or "Copied" values.
  */
-void MainWindow::Paste( QString nodeURL, QString pasteType)
+void MainWindow::Paste( QString nodeURL, QString pasteType )
 {
 
-	if( !m_coinNode_Buffer ) return;
+	if( !m_coinNode_Buffer )
+	{
+		emit Abort( tr( "Paste: There is not node copied." ) );
+		return;
+	}
 
 	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeURL );
-	if( !nodeIndex.isValid() )	return;
+	if( !nodeIndex.isValid() )
+	{
+		emit Abort( tr( "Paste: The node url is not valid." ) );
+		return;
+	}
 
 	if( pasteType == QString( "Shared" ) )
 		Paste( nodeIndex, tgc::Shared );
 	else
 		Paste( nodeIndex, tgc::Copied );
-
 }
 
 
@@ -1494,7 +1732,11 @@ void MainWindow::Paste( QString nodeURL, QString pasteType)
  */
 void MainWindow::PasteCopy()
 {
-	if( !m_selectionModel->hasSelection() )	return;
+	if( !m_selectionModel->hasSelection() )
+	{
+		emit Abort( tr( "PasteCopy: There is not node copied." ) );
+		return;
+	}
 	Paste( m_selectionModel->currentIndex(), tgc::Copied );
 }
 
@@ -1503,7 +1745,11 @@ void MainWindow::PasteCopy()
  */
 void MainWindow::PasteLink()
 {
-	if( !m_selectionModel->hasSelection() )	return;
+	if( !m_selectionModel->hasSelection() )
+	{
+		emit Abort( tr( "PasteCopy: There is not node copied." ) );
+		return;
+	}
 	Paste( m_selectionModel->currentIndex(), tgc::Shared );
 }
 
@@ -1530,7 +1776,12 @@ void MainWindow::Run()
 
 		//Compute bounding boxes and world to object transforms
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList,true );
-		if(surfacesList.count()<1)return;
+		if( surfacesList.count() < 1 )
+		{
+			emit Abort( tr( "There are no surfaces defined for ray tracing" ) );
+			return;
+		}
+
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 		light->ComputeLightSourceArea( m_widthDivisions,m_heightDivisions,surfacesList );
 
@@ -1581,23 +1832,6 @@ void MainWindow::Run()
 		QDateTime time2 = QDateTime::currentDateTime();
 		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
-        /*
-		//Display a dialog
-
-		QString st;
-		QString area( QString("The valid sun area is %2" ).arg(st.setNum(raycastingSurface->GetValidArea())));
-		QString drawRays( QString("Number of rays traced: %1\n").arg(st.setNum(m_tracedRays)));
-		QString Finishmessage=QString(" The execution is succesfully finished in %1 seconds.\n %2.\n %3").arg(st.setNum(startTime.secsTo( time2 )),area,drawRays);
-		QMessageBox::information( this, QString( "Completed" ), Finishmessage);
-        */
-
-		/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
-		float scalex, scaley, scalez;
-		scaleVect.getValue().getValue( scalex, scaley, scalez );
-		//m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetArea() * scalex * scalez ) );
-		m_sceneModel->FinalyzeAnalyze( double( m_raysPerIteration )/( raycastingSurface->GetValidArea() ) );
-	*/
-
 		ShowRaysIn3DView();
 
 
@@ -1607,50 +1841,30 @@ void MainWindow::Run()
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
 
+/*!
+ * Saves current tonatiuh model into \a fileName file.
+ */
+void MainWindow::SaveAs( QString fileName )
+{
+	if( fileName.isEmpty() )
+	{
+		emit Abort( tr( "SaveAs: There is no file defined.") );
+		return;
+	}
+	QFileInfo fileInfo;
+	if( fileInfo.completeSuffix() != QLatin1String( "tnh" ) )
+	{
+		emit Abort( tr( "SaveAs: The file defined is not a tonatiuh file. The suffix must be tnh.") );
+		return;
+	}
+	SaveFile( fileName );
+
+}
+
 
 void MainWindow::ResetAnalyzerValues()
 {
 	m_sceneModel->ResetAnalyzeValues();
-}
-
-
-/*!
- * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
- *
- * If a current file is not defined, it calls to SaveAs funtios.
- *
- * \sa SaveAs, SaveFile.
- */
-bool MainWindow::Save()
-{
-	if ( m_currentFile.isEmpty() ) return SaveAs();
-	else return SaveFile( m_currentFile );
-}
-
-/*!
- * Returns \a true if the tonatiuh model is correctly saved. Otherwise, returns \a false. A file dialog is created to select a file.
- *
- * \sa Save, SaveFile.
- */
-bool MainWindow::SaveAs()
-{
-
-	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
-
-	QString saveDirectory = settings.value( "saveDirectory", QString( "." ) ).toString();
-
-	QString tonatiuhFilter( "Tonatiuh files (*.tnh)" );
-	QString fileName = QFileDialog::getSaveFileName( this,
-	                       tr( "Save" ), saveDirectory,
-	                       tonatiuhFilter, &tonatiuhFilter );
-	if( fileName.isEmpty() ) return false;
-
-	QFileInfo file( fileName );
-	settings.setValue( "saveDirectory", file.absolutePath() );
-
-	if( file.completeSuffix().compare( "tnh" ) )
-		fileName.append( ".tnh" );
-	return SaveFile( fileName );
 }
 
 /*!
@@ -1664,53 +1878,27 @@ void MainWindow::SelectNode( QString nodeUrl )
 }
 
 /*!
- * Saves selected node subtree as a component in a file.
- * A dialog is opened to select a file name and its location.
+ * Sets current tracker aiming .
  */
-bool MainWindow::SaveComponent()
+void MainWindow::SetAimingPointAbsolute()
 {
-    if( !m_selectionModel->hasSelection() ) return false;
-    if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return false;
+	SetAimingPointRelativity( false );
+}
 
-    QModelIndex componentIndex = sceneModelView->currentIndex();
+/*!
+ * Disables current tracker aiming.
+ */
+void MainWindow::SetAimingPointRelative()
+{
+	SetAimingPointRelativity( true );
+}
 
-    SoNode* coinNode = m_sceneModel->NodeFromIndex( componentIndex )->GetNode();
-
-    if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-    {
-    	QMessageBox::warning( 0, tr( "Tonatiuh" ),
-                                  tr( "Selected node in not valid  for component node" ) );
-    	return false;
-    }
-
-    TSeparatorKit* componentRoot = dynamic_cast< TSeparatorKit* > ( coinNode );
-    if( !componentRoot ) return false;
-
-
-	QString fileName = QFileDialog::getSaveFileName( this,
-	                       tr( "Save Tonatiuh component" ), ".",
-	                       tr( "Tonatiuh component (*.tcmp)" ) );
-	if( fileName.isEmpty() ) return false;
-
-	QFileInfo componentFile( fileName );
-	if( componentFile.completeSuffix().compare( "tcmp" ) )
-		fileName.append( ".tcmp" );
-
-    SoWriteAction SceneOuput;
-    if ( !SceneOuput.getOutput()->openFile( fileName.toLatin1().constData() ) )
-	{
-        QMessageBox::warning( 0, tr( "Tonatiuh" ),
-                              tr( "Cannot open file %1. " )
-                            .arg( fileName ));
-   		return false;
-   	}
-
-    QApplication::setOverrideCursor( Qt::WaitCursor );
-   	SceneOuput.getOutput()->setBinary( false );
-   	SceneOuput.apply( componentRoot );
-   	SceneOuput.getOutput()->closeFile();
-   	QApplication::restoreOverrideCursor();
-	return true;
+/*!
+ * If \a increase is false, starts with a new photon map every ray tracer. Otherwise, the photon map increases.
+ */
+void MainWindow::SetIncreasePhtonMap( bool increase )
+{
+	m_increasePhotonMap = increase;
 }
 
 /*!
@@ -1718,8 +1906,17 @@ bool MainWindow::SaveComponent()
  */
 void MainWindow::SetNodeName( QString nodeName )
 {
-	if( !m_selectionModel->hasSelection() ) return;
-	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return;
+	if( !m_selectionModel->hasSelection() )
+	{
+		emit Abort( tr( "SetNodeName: No node selected.") );
+		return;
+	}
+
+	if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() )
+	{
+		emit Abort( tr( "SetNodeName: Cannot change the name of the current selected node cannot.") );
+		return;
+	}
 
 	ChangeNodeName( m_selectionModel->currentIndex(), nodeName );
 }
@@ -1727,27 +1924,212 @@ void MainWindow::SetNodeName( QString nodeName )
 /*!
  *Sets the photon map type, \a typeName, for ray tracing.
  */
-int MainWindow::SetPhotonMapType( QString typeName )
+void MainWindow::SetPhotonMapType( QString typeName )
 {
 	QVector< TPhotonMapFactory* > factoryList = m_pluginManager->GetPhotonMapFactories();
-	if( factoryList.size() == 0 )	return 0;
+	if( factoryList.size() == 0 )	return;
 
 	QVector< QString > photonMapNames;
 	for( int i = 0; i < factoryList.size(); i++ )
 		photonMapNames<< factoryList[i]->TPhotonMapName();
 
+	if( photonMapNames.indexOf( typeName ) < 0 )
+	{
+		emit Abort( tr( "SetPhotonMapType: Defined photon map type is not valid type.") );
+		return;
+	}
 	m_selectedPhotonMap = photonMapNames.indexOf( typeName );
-	if( m_selectedPhotonMap < 0 )	return 0;
 
-	return 1;
+}
+
+/*!
+ *Sets the random number generator type, \a typeName, for ray tracing.
+ */
+void MainWindow::SetRandomDeviateType( QString typeName )
+{
+	QVector< RandomDeviateFactory* > factoryList = m_pluginManager->GetRandomDeviateFactories();
+	if( factoryList.size() == 0 )	return;
+
+	QVector< QString > randomNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		randomNames<< factoryList[i]->RandomDeviateName();
+
+	int oldSelectedRandomDeviate = m_selectedRandomDeviate;
+
+	if( randomNames.indexOf( typeName ) < 0 )
+	{
+		emit Abort( tr( "SetRandomDeviateType: Defined random generator is not valid type.") );
+		return;
+	}
+	m_selectedRandomDeviate = randomNames.indexOf( typeName );
+	if( oldSelectedRandomDeviate != m_selectedRandomDeviate )
+	{
+		delete m_rand;
+		m_rand = 0;
+	}
+
+}
+
+/*!
+ * Sets the ray casting surface grid elemets to \a widthDivisions x \a heightDivisions.
+ */
+void MainWindow::SetRayCastingGrid( int widthDivisions, int heightDivisions )
+{
+	m_widthDivisions = widthDivisions;
+	m_heightDivisions = heightDivisions;
+}
+
+/*!
+ * Sets the parameters to represent the ray tracer results.
+ * Tonatiuh draws the \a raysFaction faction of traced rays. If \a drawPhotons is true all photons are represented.
+ *
+ */
+void MainWindow::SetRaysDrawingOptions( double raysFaction, bool drawPhotons )
+{
+	m_fraction = raysFaction;
+	m_drawPhotons = drawPhotons;
 }
 
 /*!
  *	Sets \a rays as the number of rays to trace for each run action.
  */
-void MainWindow::SetRaysPerIteration( unsigned long rays )
+void MainWindow::SetRaysPerIteration( unsigned int rays )
 {
 	m_raysPerIteration = rays;
+}
+
+/*!
+ *	Set selected sunshape, \a sunshapeType, to the sun.
+ */
+void MainWindow::SetSunshape( QString sunshapeType )
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	TLightKit* lightKit = 0;
+	if ( coinScene->getPart( "lightList[0]", false ) )
+	{
+		lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+	}
+	else
+		lightKit = new TLightKit;
+
+
+	QVector< TSunShapeFactory* > factoryList = m_pluginManager->GetSunShapeFactories();
+	if( factoryList.size() == 0 )	return;
+
+	QVector< QString > factoryNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+	{
+		QString name = factoryList[i]->TSunShapeName();
+		factoryNames<<name;
+	}
+
+	int selectedSunShapeIndex = factoryNames.indexOf( sunshapeType );
+	if( selectedSunShapeIndex < 0 )
+	{
+		emit Abort( tr( "SetSunshape: Defined sunshape is not valid type.") );
+		return;
+	}
+
+	lightKit->setPart( "tsunshape", factoryList[selectedSunShapeIndex]->CreateTSunShape() );
+
+	CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
+	m_commandStack->push( command );
+
+	//UpdateLightDimensions();
+	m_sceneModel->UpdateSceneModel();
+
+	parametersView->UpdateView();
+	m_document->SetDocumentModified( true );
+
+	actionCalculateSunPosition->setEnabled( true );
+}
+
+/*!
+ * Set the \a value for the sunshape parameter \a parameter.
+ */
+void MainWindow::SetSunshapeParameter( QString parameter, QString value )
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+	if( !lightKit )
+	{
+		emit Abort( tr( "SetSunshapeParameter: There is not light defined.") );
+		return;
+	}
+
+	TSunShape* sunshape = static_cast< TSunShape* > ( lightKit->getPart( "tsunshape", false ) );
+	if( !sunshape )
+	{
+		emit Abort( tr( "SetSunshapeParameter: There is not sunshape defined.") );
+		return;
+	}
+
+	CmdModifyParameter* command = new CmdModifyParameter( sunshape, parameter, value, m_sceneModel );
+	if ( m_commandStack ) m_commandStack->push( command );
+    m_document->SetDocumentModified( true );
+}
+
+/*!
+ *	Set selected transmissivity, \a transmissivityType, to the scene.
+ */
+void MainWindow::SetTransmissivity( QString transmissivityType  )
+{
+	TSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene )
+	{
+		emit Abort( tr( "SetTransmissivity: Error defining transmissivity.") );
+		return;
+	}
+	QVector< TTransmissivityFactory* > transmissivityFactoryList = m_pluginManager->GetTransmissivityFactories();
+	if( transmissivityFactoryList.count() < 1 )
+	{
+		emit Abort( tr( "SetTransmissivity: Error defining transmissivity.") );
+		return;
+	}
+
+	QStringList factoryNames;
+	for( int i = 0; i < transmissivityFactoryList.count(); i++ )
+	{
+		QString name = transmissivityFactoryList[i]->TTransmissivityName();
+		factoryNames<<name;
+	}
+
+
+	int transmissivityIndex = factoryNames.indexOf( transmissivityType );
+	if( transmissivityIndex < 0 )
+	{
+		emit Abort( tr( "SetTransmissivity: Defined transmissivity is not valid type.") );
+		return;
+	}
+
+	TTransmissivity* transmissivity = transmissivityFactoryList[ transmissivityIndex ]->CreateTTransmissivity();
+	if( !transmissivity )
+	{
+		emit Abort( tr( "SetTransmissivity: Error defining transmissivity.") );
+		return;
+	}
+
+	CmdTransmissivityModified* command = new CmdTransmissivityModified( transmissivity, coinScene );
+	if ( m_commandStack ) m_commandStack->push( command );
+    m_document->SetDocumentModified( true );
+}
+
+/*!
+ * Set the \a value for the transmissivity parameter \a parameter.
+ */
+void MainWindow::SetTransmissivityParameter( QString parameter, QString value )
+{
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	TTransmissivity* transmissivity = static_cast< TTransmissivity* >( coinScene->getPart( "transmissivity", false ) );
+	if( !transmissivity )
+	{
+		emit Abort( tr( "SetTransmissivity: No transmissivity type defined.") );
+		return;
+	}
+
+	CmdModifyParameter* command = new CmdModifyParameter( transmissivity, parameter, value, m_sceneModel );
+	if ( m_commandStack ) m_commandStack->push( command );
+    m_document->SetDocumentModified( true );
 }
 
 /*!
@@ -1757,21 +2139,23 @@ void MainWindow::SetValue( QString nodeUrl, QString parameter, QString value )
 {
 	if( nodeUrl.isEmpty() || parameter.isEmpty() || value.isEmpty() )
 	{
-		QMessageBox::information( this, "Tonatiuh",
-            "You must define a node url, a parameter name and a value.", 1 );
+		emit Abort( tr( "SetValue: You must define a node url, a parameter name and a value." ) );
 		return;
 	}
 
 	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
 	if( !nodeIndex.isValid() )
 	{
-		QMessageBox::information( this, "Tonatiuh",
-            "Defined node url is not a valid url.", 1 );
+		emit Abort( tr( "SetValue: Defined node url is not a valid url." ) );
 		return;
 	}
 
 	InstanceNode* nodeInstance = m_sceneModel->NodeFromIndex( nodeIndex );
-	if( !nodeInstance )	return;
+	if( !nodeInstance )
+	{
+		emit Abort( tr( "SetValue: Defined node url is not a valid url." ) );
+		return;
+	}
 
 	SoNode* node = nodeInstance->GetNode();
 	if( !node )	return;
@@ -2003,36 +2387,6 @@ void MainWindow::SoManip_to_SoTransform()
 	m_document->SetDocumentModified( true );
 }
 
-//for graphicview signals
-void MainWindow::selectionFinish( SoSelection* selection )
-{
-    if(selection->getNumSelected() == 0 ) return;
-
-    SoPath* selectionPath = selection->getPath( 0 );
-    if ( !selectionPath ) return;
-
-    if ( !selectionPath->containsNode ( m_document->GetSceneKit() ) ) return;
-
-    SoNodeKitPath* nodeKitPath = static_cast< SoNodeKitPath* >( selectionPath );
-    if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(TLightKit::getClassTypeId() ) )
-    {
-    	selection->deselectAll();
-    	QModelIndex currentIndex = m_selectionModel->currentIndex();
-    	m_selectionModel->setCurrentIndex( currentIndex , QItemSelectionModel::ClearAndSelect );
-    	return;
-    }
-
-    if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(SoDragger::getClassTypeId() ) ) return;
-
-    QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
-
-
-	if ( !nodeIndex.isValid() ) return;
-	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
-	m_selectionModel->select( nodeIndex , QItemSelectionModel::ClearAndSelect );
-
-}
-
 void MainWindow::ChangeSelection( const QModelIndex& current )
 {
 	InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
@@ -2049,29 +2403,7 @@ void MainWindow::ChangeSelection( const QModelIndex& current )
 	}
 }
 
-//for sunposdialog signals
-/*!
- * Changes the light position to the position defined by \a azimuth and \a zenith.
- * The parameters are defined in radians.
- */
-void MainWindow::ChangeSunPosition(  double azimuth, double zenith )
-{
-	SoSceneKit* coinScene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-	if ( !lightKit )
-	{
-		QMessageBox::warning( this, "Tonatiuh warning", tr( "Sun not defined in scene" ) );
-	}
-	else
-	{
-		CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, azimuth, zenith );
-		m_commandStack->push( command );
 
-		//UpdateLightDimensions();
-		m_sceneModel->UpdateSceneModel();
-		m_document->SetDocumentModified( true );
-	}
-}
 
 
 /*!
@@ -2195,9 +2527,20 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	/**/
 }
 
+void MainWindow::closeEvent( QCloseEvent* event )
+{
+    if ( OkToContinue() )
+    {
+    	WriteSettings();
+    	event->accept();
+    }
+    else event->ignore();
+}
 
-//for treeview signals
-void MainWindow::mousePressEvent( QMouseEvent * e )
+/*!
+ * Receives mouse press event \a e, an sets as active 3D view the view that contains the mouse press position.
+ */
+void MainWindow::mousePressEvent( QMouseEvent* e )
 {
 	QPoint pos = e->pos();
 	int x = pos.x();
@@ -2230,56 +2573,6 @@ void MainWindow::mousePressEvent( QMouseEvent * e )
 	}
 }
 
-
-void MainWindow::itemDragAndDrop( const QModelIndex& newParent,  const QModelIndex& node)
-{
-	if( node == sceneModelView->rootIndex() ) return;
-
-
-	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
-	if(nodeInstnace->GetParent()&&nodeInstnace->GetParent()->GetNode()->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
-	{
-		SoNode* coinNode = nodeInstnace->GetNode();
-		//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
-
-		QUndoCommand* dragAndDrop = new QUndoCommand();
-		dragAndDrop->setText("Drag and Drop node");
-		new CmdCut( node, m_coinNode_Buffer, m_sceneModel, dragAndDrop );
-
-		new CmdPaste( tgc::Copied, newParent, coinNode, *m_sceneModel, dragAndDrop );
-		m_commandStack->push( dragAndDrop );
-
-		m_sceneModel->UpdateSceneModel();
-		m_document->SetDocumentModified( true );
-	}
-
-}
-
-void MainWindow::itemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node)
-{
-	InstanceNode* nodeInstnace = m_sceneModel->NodeFromIndex( node );
-	SoNode* coinNode = nodeInstnace->GetNode();
-	//if( coinNode->getTypeId().isDerivedFrom( TTracker::getClassTypeId() ) ) return;
-
-	QUndoCommand* dragAndDropCopy = new QUndoCommand();
-	dragAndDropCopy->setText("Drag and Drop Copy");
-	new CmdCopy( node, m_coinNode_Buffer, m_sceneModel );
-	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDropCopy );
-	m_commandStack->push( dragAndDropCopy );
-
-	m_sceneModel->UpdateSceneModel();
-	m_document->SetDocumentModified( true );
-}
-
-void MainWindow::closeEvent( QCloseEvent* event )
-{
-    if ( OkToContinue() )
-    {
-    	WriteSettings();
-    	event->accept();
-    }
-    else event->ignore();
-}
 /*!
  * Set current document coin scene into Tonatiuh Models and views.
  */
@@ -2297,6 +2590,24 @@ void MainWindow::ChangeModelScene()
 	InstanceNode* concentratorRoot = viewRootNode->children[ 0 ];
 
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
+
+}
+
+/*!
+ * Shows a dialog to allow define current light position with a position calculator.
+ */
+void MainWindow::CalculateSunPosition()
+{
+#ifndef NO_MARBLE
+
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+	if( !coinScene->getPart( "lightList[0]", false ) ) return;
+
+	SunPositionCalculatorDialog sunposDialog;
+	connect( &sunposDialog, SIGNAL( changeSunLight( double, double ) ) , this, SLOT( ChangeSunPosition( double, double ) ) );
+
+	sunposDialog.exec();
+#endif /* NO_MARBLE*/
 
 }
 
@@ -2861,7 +3172,7 @@ void MainWindow::SetupGraphcisRoot()
     {
         m_graphicsRoot->AddModel( m_document->GetSceneKit() );
         connect( m_graphicsRoot, SIGNAL( ChangeSelection( SoSelection* ) ),
-		       this, SLOT(selectionFinish( SoSelection* ) ) );
+		       this, SLOT( SelectionFinish( SoSelection* ) ) );
 
 
         m_gridXElements = 10;
@@ -3047,9 +3358,9 @@ void MainWindow::SetupTreeView()
 	sceneModelView->setRootIndex( m_sceneModel->IndexFromNodeUrl( QString( "//SunNode") ) );
 
 	connect( sceneModelView, SIGNAL( dragAndDrop( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
+			 this, SLOT ( ItemDragAndDrop( const QModelIndex&, const QModelIndex& ) ) );
 	connect( sceneModelView, SIGNAL( dragAndDropCopy( const QModelIndex&, const QModelIndex& ) ),
-			 this, SLOT ( itemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
+			 this, SLOT ( ItemDragAndDropCopy( const QModelIndex&, const QModelIndex& ) ) );
 	connect( sceneModelView, SIGNAL( showMenu( const QModelIndex& ) ),
 				 this, SLOT ( ShowMenu( const QModelIndex& ) ) );
 	connect( sceneModelView, SIGNAL( nodeNameModificated( const QModelIndex&, const QString& ) ),

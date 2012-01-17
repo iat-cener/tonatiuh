@@ -63,6 +63,9 @@ public:
 	ScriptEditorDialog( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent = 0 );
 	~ScriptEditorDialog();
 
+public slots:
+	void AbortEvaluation( QString error );
+
 protected:
     void closeEvent( QCloseEvent* event );
 

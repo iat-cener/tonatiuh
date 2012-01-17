@@ -75,6 +75,7 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
 
   	//Init QtScript environment
 	m_interpreter = new QScriptEngine;
+	m_interpreter->importExtension( "qt.core" );
 
 	QScriptValue tonatiuh = m_interpreter->newQObject( parent );
 	m_interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
@@ -89,6 +90,7 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
 	 connect( codeEditorWidget, SIGNAL( RunScript( ) ), this, SLOT( RunScript() ) );
 	 connect( runButton, SIGNAL( clicked( bool ) ), this, SLOT( RunScript() ) );
 	 connect( closeButton, SIGNAL( clicked( bool ) ), this, SLOT( Close( bool ) ) );
+	 connect( parent, SIGNAL( Abort( QString ) ), this, SLOT( AbortEvaluation( QString ) ) );
 
 
 
@@ -101,6 +103,13 @@ ScriptEditorDialog::~ScriptEditorDialog()
 {
 	delete m_fileModel;
 	delete m_interpreter;
+}
+
+void ScriptEditorDialog::AbortEvaluation( QString error )
+{
+	QScriptContext* context = m_interpreter->currentContext();
+	context->throwError(  error  );
+
 }
 
 /**

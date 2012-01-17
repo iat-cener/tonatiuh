@@ -173,7 +173,8 @@ bool RayTraceDialog::IncreasePhotonMap() const
  */
 void RayTraceDialog::applyChanges( QAbstractButton* button  )
 {
-	if( buttonBox->buttonRole( button ) == 8 ) saveChanges();
+	if( buttonBox->buttonRole( button ) == QDialogButtonBox::ApplyRole )
+		saveChanges();
 }
 
 /**

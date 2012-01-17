@@ -85,24 +85,27 @@ public:
 
     void FinishManipulation( );
     void StartManipulation( SoDragger* dragger );
+signals:
+	void Abort( QString error );
 
 public slots:
+	void ChangeSunPosition( double azimuth, double zenith );
+	void ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude );
 	void Copy();
 	void Copy( QString nodeURL );
 	void CreateGroupNode();
 	void CreateAnalyzerNode();
 	void CreateMaterial( QString materialType );
-    void CreateShape( QString shapeType );
+	void CreateShape( QString shapeType );
 	void CreateSurfaceNode();
 	void CreateTracker( QString trackerType );
-    void Cut();
+	void Cut();
 	void Cut( QString nodeURL );
 	void Delete();
 	void Delete( QString nodeURL );
-	void SetAimingPointAbsolute();
-	void SetAimingPointRelative();
+	int ExportAllPhotonMap( QString fileName );
+	int ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord );
 	void InsertFileComponent( QString componentFileName = QString( "" ) );
-	void InsertUserDefinedComponent();
 	void New();
 	void Open( QString fileName );
 	void Paste( QString nodeURL, QString pasteType = QString( "Shared" ) );
@@ -110,15 +113,61 @@ public slots:
 	void PasteLink();
 	void Run();
 	void ResetAnalyzerValues();
+	void SaveAs( QString fileName );
+    void SelectNode( QString nodeUrl );
+	void SetAimingPointAbsolute();
+	void SetAimingPointRelative();
+    void SetIncreasePhtonMap( bool increase );
+    void SetNodeName( QString nodeName );
+    void SetPhotonMapType( QString typeName );
+    void SetRandomDeviateType( QString typeName );
+    void SetRayCastingGrid( int widthDivisions, int heightDivisions );
+    void SetRaysDrawingOptions( double raysFaction, bool drawPhotons );
+    void SetRaysPerIteration( unsigned int rays );
+    void SetSunshape( QString sunshapeType );
+    void SetSunshapeParameter( QString parameter, QString value );
+    void SetTransmissivity( QString transmissivityType );
+    void SetTransmissivityParameter( QString parameter, QString value );
+    void SetValue( QString nodeUrl, QString parameter, QString value );
+
+protected:
+    void closeEvent( QCloseEvent* event );
+    void mousePressEvent ( QMouseEvent * e );
+
+private slots:
+	void CalculateSunPosition();
+	void ChangeGridSettings();
+	void ChangeNodeName( const QModelIndex& index, const QString& newName);
+    void ChangeSelection( const QModelIndex & current );
+	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
+    void CreateShape( TShapeFactory* pTShapeFactory );
+	void CreateTracker( TTrackerFactory* pTTrackerFactory );
+	void DefineSunLight();
+	void DefineTransmissivity();
+	void DisconnectAllTrackers( bool disconnect );
+	void DisplayRays( bool display );
+	void ExportPhotonMap();
+	void InsertUserDefinedComponent();
+	void ItemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
+	void ItemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
+	void Open();
+	void OpenRecentFile();
+	void Redo();
 	bool Save();
     bool SaveAs();
     bool SaveComponent();
-    void SelectNode( QString nodeUrl );
-    void SetNodeName( QString nodeName );
-    int SetPhotonMapType( QString typeName );
-    void SetRaysPerIteration( unsigned long rays );
-    void SetValue( QString nodeUrl, QString parameter, QString value );
+    void SelectionFinish( SoSelection* selection );
+	void SetParameterValue( SoNode* node, QString paramenterName, QString newValue );
+    void SetSunPositionCalculatorEnabled( int enabled );
+	void ShowBackground();
+	void ShowCommandView();
+	void ShowGrid();
+    void ShowMenu( const QModelIndex& index );
+    void ShowRayTracerOptionsDialog();
+    void ShowWarning( QString message );
+	void Undo();
 
+	SbVec3f getTargetOfCamera(SoCamera* cam);
 
     //Manipulators actions
     void SoTransform_to_SoCenterballManip();
@@ -129,51 +178,6 @@ public slots:
 	void SoTransform_to_SoTransformBoxManip();
 	void SoTransform_to_SoTransformerManip();
 	void SoManip_to_SoTransform();
-
-    //Slots for graphicview signals
-    void selectionFinish( SoSelection* selection );
-    void mousePressEvent ( QMouseEvent * e );
-
-    //Slots for treeview signals
-	void itemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
-	void itemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
-
-protected:
-    void closeEvent( QCloseEvent* event );
-
-protected slots:
-	void CalculateSunPosition();
-	void CalculateSunPosition(int year, int month, int day, int hours,double latitude, double longitude);
-	void ChangeGridSettings();
-	void ChangeNodeName( const QModelIndex& index, const QString& newName);
-    void ChangeSelection( const QModelIndex & current );
-    void ChangeSunPosition( double azimuth, double zenith );
-	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
-    void CreateShape( TShapeFactory* pTShapeFactory );
-	void CreateTracker( TTrackerFactory* pTTrackerFactory );
-	void DefineSunLight();
-	void DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith);
-	void DefineTransmissivity();
-	void DefineTransmissivity(int typeOfTransmissivity, double value);
-	void DisconnectAllTrackers( bool disconnect );
-	void DisplayRays( bool display );
-	void ExportPhotonMap();
-	void ExportPhotonMap(QString ruta, QString file, bool GlobalCoord,bool exportAllMap);
-	void Open();
-	void OpenRecentFile();
-	void Redo();
-	void SetParameterValue( SoNode* node, QString paramenterName, QString newValue );
-    void SetSunPositionCalculatorEnabled( int enabled );
-	void ShowBackground();
-	void ShowCommandView();
-	void ShowGrid();
-    void ShowMenu( const QModelIndex& index );
-    void ShowRayTracerOptionsDialog();
-    void ShowRayTracerOptionsDialog(int numRays, QString photonMapType, int randomType,int widthDivisions, int heightDivisions, double raysToDraw, bool drawPhotons, bool increasePhotonMap);
-    void ShowWarning( QString message );
-	void Undo();
-
-	SbVec3f getTargetOfCamera(SoCamera* cam);
 
 	//View menu actions
 	void on_actionAxis_toggled();
@@ -238,12 +242,12 @@ private:
 
 
     enum { m_maxRecentFiles = 7 };
-    QString m_currentFile;
-    QStringList m_recentFiles;
-    QAction** m_recentFileActions;//[m_maxRecentFiles];
-    Document* m_document;
     QUndoStack* m_commandStack;
     QUndoView* m_commandView;
+    QString m_currentFile;
+    Document* m_document;
+    QStringList m_recentFiles;
+    QAction** m_recentFileActions;//[m_maxRecentFiles];
     QToolBar* m_materialsToolBar;
     QToolBar* m_photonMapToolBar;
     QToolBar* m_shapeToolBar;
