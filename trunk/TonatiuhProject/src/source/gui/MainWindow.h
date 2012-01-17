@@ -89,7 +89,7 @@ signals:
 	void Abort( QString error );
 
 public slots:
-	void ChangeSunPosition( double azimuth, double zenith );
+	void ChangeSunPosition( double azimuth, double elevation );
 	void ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude );
 	void Copy();
 	void Copy( QString nodeURL );

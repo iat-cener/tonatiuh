@@ -1093,10 +1093,10 @@ void MainWindow::ChangeNodeName( const QModelIndex& index, const QString& newNam
 }
 
 /*!
- * Changes the light position to the position defined by \a azimuth and \a zenith.
- * The parameters are defined in radians.
+ * Changes the light position to the position defined by \a azimuth and \a elevation.
+ * The parameters are defined in degree.
  */
-void MainWindow::ChangeSunPosition(  double azimuth, double zenith )
+void MainWindow::ChangeSunPosition( double azimuth, double elevation )
 {
 
 	SoSceneKit* coinScene = m_document->GetSceneKit();
@@ -1106,7 +1106,7 @@ void MainWindow::ChangeSunPosition(  double azimuth, double zenith )
 		QMessageBox::warning( this, "Tonatiuh warning", tr( "ChangeSunPosition:: Sun not defined in scene" ) );
 		return;
 	}
-	CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, azimuth, zenith );
+	CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, azimuth* tgc::Degree, ( 90 - elevation ) * tgc::Degree );
 	m_commandStack->push( command );
 
 	//UpdateLightDimensions();
@@ -1138,7 +1138,7 @@ void MainWindow::ChangeSunPosition(int year, int month, int day, double hours, d
 	cLocation myLocation = { longitude , latitude };
 	cSunCoordinates results;
 	sunpos( myTime, myLocation, &results );
-	ChangeSunPosition( results.dAzimuth* tgc::Degree, ( 90 - results.dZenithAngle ) * tgc::Degree);
+	ChangeSunPosition( results.dAzimuth, ( 90 - results.dZenithAngle ) );
 }
 
 /*!
