@@ -1,13 +1,31 @@
-#summary One-sentence summary of this page.
+#summary How to model a tower system with 500 one-facet small heliostats using the Tonatiuh script tool.
 
 = Introduction =
 
-Add your content here.
+This tutorial is going to be an introduction to tonatiuh script tool, which will allow users to create easier solar concentrating systems.
 
 
-= Details =
+= Main functions =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Those are the functions to develop a sytem by scripting. They are explained folling an alphabetic order:
+
+{{{
+ChangeSunPosition(double azimuth, double elevation) --> Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
+
+ChangeSunPosition(int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude ) --> Sets the sun azimuth and sun elevation to the position the sun should be at the date and geographical position defined.
+
+Copy()-->Copy the selected node.
+
+Copy(QString nodeURL)-->Copy the nodeURL defined.
+
+CreateGroupNode() --> Creates a separator node.
+
+CreateAnalyzerNode() --> Creates an analyzer node.
+
+CreateMaterial() --> Creates a material surface.
+
+CreateShape() --> Creates a new shape.
+
+CreateSurfaceNode() --> Creates a TShapeKit node.
+
+}}}
