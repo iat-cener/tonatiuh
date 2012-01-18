@@ -7,7 +7,7 @@ This tutorial is going to be an introduction to tonatiuh script tool, which will
 
 = Main functions =
 
-Those are the functions to develop a sytem by scripting. They are explained folling an alphabetic order:
+Those are the functions to develop a sytem by scripting. They are explained following an alphabetic order:
 
 {{{
 ChangeSunPosition(double azimuth, double elevation) --> 
