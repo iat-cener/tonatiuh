@@ -10,9 +10,11 @@ This tutorial is going to be an introduction to tonatiuh script tool, which will
 Those are the functions to develop a sytem by scripting. They are explained folling an alphabetic order:
 
 {{{
-ChangeSunPosition(double azimuth, double elevation) --> Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
+ChangeSunPosition(double azimuth, double elevation) --> 
+Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
 
-ChangeSunPosition(int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude ) --> Sets the sun azimuth and sun elevation to the position the sun should be at the date and geographical position defined.
+ChangeSunPosition(int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude ) --> 
+Sets the sun azimuth and sun elevation to the position the sun should be at the date and geographical position defined.
 
 Copy()-->Copy the selected node.
 
@@ -24,8 +26,48 @@ CreateAnalyzerNode() --> Creates an analyzer node.
 
 CreateMaterial() --> Creates a material surface.
 
-CreateShape() --> Creates a new shape.
+CreateShape(QString shapeType) --> Creates a new shape.
 
 CreateSurfaceNode() --> Creates a TShapeKit node.
+
+CreateTracker(QString trackerType) --> Creates a new tracker.
+
+Cut() --> Cuts the selected node.
+
+Cut(QString nodeURL) --> Cuts the node defined as nodeURL.
+
+Delele() --> the selected node is deleted.
+
+Delete( QString nodeURL) --> Deletes the node defined as nodeURL.
+
+ExportAllPhotonMap(QString fileName) --> saves all PhotonMap in fileName.
+
+ExportPhotonMap(QString fileName, QString nodeURL, bool globalCoord) -->
+saves the nodeURL photonMap in global or relative coordinates into the fileName file.
+
+InsertFileComponent(QString fileName) --> insert a component previously saved in fileName.
+
+New() --> Opens a new window.
+
+Open(QString fileName) --> opens the fileName file.
+
+Paste(QString nodeURL, QString pasteType) --> Paste the node allocated on the clipboard as a child of nodeURL. pasteType is to indicate the type of paste
+between Shared or Copied.
+
+PasteCopy() --> Pastes the node allocated on the clipboard as a new child of the selected node.
+
+PasteLink() --> Pastes the node allocated on the clipboard as a new child of the selected node. Instead a new node, this function creates a new pointer to the physical node.
+
+Run() --> Runs tonatiuh system.
+
+ResetAnalyzerValues() --> Resets analyzer values.
+
+SaveAs(QString fileName)  --> Saves the current system into fileName.
+
+SelectNode(QString nodeURL) --> Selects the nodeURL.
+
+SetAimingPointAbsolute() --> AimingPoint set to Absolute value.
+
+SetAimingPointRelative() --> AimingPoint set to Relative value.
 
 }}}
