@@ -1249,7 +1249,7 @@ void MainWindow::CreateGroupNode()
 
 
 	}
-	emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
+	//emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
 
 }
 
@@ -1382,7 +1382,7 @@ void MainWindow::CreateSurfaceNode()
 
 	}
 
-	emit Abort( tr( "CreateSurfaceNode: Selected node is not valid as surface node parent." ) );
+	//emit Abort( tr( "CreateSurfaceNode: Selected node is not valid as surface node parent." ) );
 
 }
 
