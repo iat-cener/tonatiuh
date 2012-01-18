@@ -70,4 +70,29 @@ SetAimingPointAbsolute() --> AimingPoint set to Absolute value.
 
 SetAimingPointRelative() --> AimingPoint set to Relative value.
 
+SetIncreasePhotonMap(bool increase) --> Decides whether increase the photonMap or not.
+
+SetNodeName(QString nodeName) --> Changes the selected node name to nodeName.
+
+SetPhotonMapType(QString typeName)--> Selects the typeName photon map.
+
+SetRandomDeviateType(QString typeName) --> Selects the typeName random seed.
+
+SetRayCastingGrid(int widthDivisions, int heightDivisions) --> Sets the number of sun divisions.
+
+SetRaysDrawingOptions(double raysFraction, bool drawPhotons) -->Checks between dypay or not the Photons and the percent of rays to draw after running the system.
+
+SetRaysPerInteraction(int rays) --> Sets the number of desired rays to launch the system.
+
+SetSunShape( QString sunshapeType) -->  Selects the type of sun to simulate the system.
+
+SetSunShapeParameter(QString parameter, QString value) -->Assigns the value to the parameter of the sun.
+
+SetTransmissivity(QString transmissivityType) --> Set the transmissivityType transmissivity to the system.
+
+SetTransmissivityParameter(QString parameter, QString value) --> Assigns the value to the parameter of the transmissivity.
+
+SetValue(QString nodeURL,QString parameter, QString value) --> Set to nodeURL, the value to the parameter.
+
+
 }}}
