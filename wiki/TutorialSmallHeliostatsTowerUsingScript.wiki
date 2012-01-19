@@ -107,3 +107,9 @@ tonatiuh.New(); //Creates a new file
 tonatiuh.!CreateShape("Cone"); //Creates a cone.
 
 Pressing the buttom Run will ejecute it.
+
+= Script Example =
+
+To explain more in detail the scritp funcionality we are going to create <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystem> this tutorial </a>
+
+== Create a 
