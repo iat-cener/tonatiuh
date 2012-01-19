@@ -56,7 +56,7 @@ between Shared or Copied.
 
 PasteCopy() --> Pastes the node allocated on the clipboard as a new child of the selected node.
 
-PasteLink() --> Pastes the node allocated on the clipboard as a new child of the selected node. Instead a new node, this function creates a new pointer to the physical node.
+PasteLink() --> Pastes the node allocated on the clipboard as a new child of the selected node.Instead a new node, this function creates a new pointer to the physical node.
 
 Run() --> Runs tonatiuh system.
 
