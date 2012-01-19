@@ -104,6 +104,6 @@ Once the script editor window is opened, you can use a function only by typing t
 
 tonatiuh.New(); //Creates a new file
 
-tonatiuh.CreateShape("Cone"); //Creates a cone.
+tonatiuh.!CreateShape("Cone"); //Creates a cone.
 
 Pressing the buttom Run will ejecute it.
