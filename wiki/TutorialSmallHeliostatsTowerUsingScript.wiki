@@ -166,3 +166,54 @@ tonatiuh.SetValue(tower_shapeKitCone,"activeSide","OUTSIDE");
 }}}
 
 As soon as those lines were typed, please, click Run button and the tower will be created. 
+
+
+= Modeling the receiver =
+
+Now lets continue modeling, in that case, whit the receiver. This shape will receive the whole rays reflected on the heliostats field. (The field will be created later)
+So the following piece of code will create it:
+
+{{{
+//Create the target
+//Select the RootNode
+
+tonatiuh.SelectNode("//SunNode/RootNode");
+
+//Creates a new TSepatatorKit node, select it and rename it to Target_Frame
+
+tonatiuh.CreateGroupNode();
+tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");
+tonatiuh.SetNodeName("Target_Frame");
+
+//Craete a variable to save the node tree path
+var Target_FramePath="//SunNode/RootNode/Target_Frame"
+tonatiuh.SetValue("//SunNode/RootNode/Target_Frame","translation","0 130 74.25");
+tonatiuh.SetValue(Target_FramePath,"rotation"," -1 0 0 1.5707964 ");
+
+//Creates a TShapeKit node
+tonatiuh.CreateSurfaceNode();
+
+//Select the TShapeKitNode and rename it to Target_shapeKit
+tonatiuh.SelectNode(Target_FramePath.concat("/TShapeKit1"));
+tonatiuh.SetNodeName("Target_shapeKit");
+
+//Add a to Target_shapekit a flat_Rectangle and a "Specular_Standard_Material"
+tonatiuh.CreateShape("Flat_Rectangle");
+tonatiuh.CreateMaterial("Specular_Standard_Material");
+
+var Target_shapekitpath= "//SunNode/RootNode/Target_Frame/Target_shapeKit";
+
+//Set the parameter width,height and activeSide
+tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"width","10");
+tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"height","10");
+tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"activeSide","FRONT");
+
+//Set some options to the material
+
+tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_reflectivity","0");
+tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_distribution","PILLBOX");
+tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_ambientColor","0 0 0");
+tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_diffuseColor","0 0 0");
+tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_shininess","0.2");
+
+}}}
