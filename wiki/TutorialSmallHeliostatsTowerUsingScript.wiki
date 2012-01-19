@@ -100,7 +100,10 @@ SetValue(QString nodeURL,QString parameter, QString value) --> Set to nodeURL, t
 
 = How to use the functions =
 
-Once the script editor window is opened, you can use a function only by typing tonatiuh and then, the name of the function to use. For example to creta a new  file, you have to type this:
-tonatiuh.New();
+Once the script editor window is opened, you can use a function only by typing tonatiuh and then, the name of the function to use. For example:
+
+tonatiuh.New(); //Creates a new file
+
+tonatiuh.CreateShape("Cone"); //Creates a cone.
 
 Pressing the buttom Run will ejecute it.
