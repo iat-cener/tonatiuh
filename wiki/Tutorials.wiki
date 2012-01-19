@@ -18,4 +18,4 @@ The links to the available tutorials are listed below. To go to the wiki page of
 
  * [TutorialFluxConvergenceOnTowerSystem How to analyze the maximum flux convergence on a tower system with one heliostat.]
 
-* [TutorialSmallHeliostatsTowerUsingScript How to model a tower system with 500 small one-facet heliostats using the scripting tool.]
+ * [TutorialSmallHeliostatsTowerUsingScript How to model a tower system with 500 small one-facet heliostats using the scripting tool.]
