@@ -155,6 +155,7 @@ tonatiuh.SetNodeName("Tower_shapeKit");
 
 tonatiuh.CreateShape("Cone");
 //Creates a variable with the route to avoid typing it  the whole time
+
 var tower_shapeKitCone= "//SunNode/RootNode/Tower_Frame/Tower_shapeKit/Cone";
 
 //Change some cone properties such as baseRadius, topRadius, height and activeSide
@@ -205,6 +206,7 @@ tonatiuh.CreateMaterial("Specular_Standard_Material");
 var Target_shapekitpath= "//SunNode/RootNode/Target_Frame/Target_shapeKit";
 
 //Set the parameter width,height and activeSide
+
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"width","10");
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"height","10");
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"activeSide","FRONT");
@@ -230,33 +232,42 @@ Once the tower and the target are created, it is time to create the heliostats f
 var rootnode="//SunNode/RootNode";
 
 //Select the RootNode and create a new TSeparatorKit node.
+
 tonatiuh.SelectNode(rootnode);
 tonatiuh.CreateGroupNode();
 
 //Select it and rename to HeliostatField_Frame
+
 tonatiuh.SelectNode(rootnode.concat("/TSeparatorKit1"));
 tonatiuh.SetNodeName("HeliostatField_Frame");
 var helFramePath=rootnode.concat("/HeliostatField_Frame");
+
 //traslation represents the z_position of the heliostasts
 //this first one is in z=-52.3 and they  are separated 5.5 meters
+
 var trans=-52.3;
 //We are going to create 20 rows
+
 for(i=1;i<=20;++i){
 
           //Create a new TSeparatorKitNode
+
           tonatiuh.SelectNode(helFramePath);
           tonatiuh.CreateGroupNode();
           tonatiuh.SelectNode(helFramePath.concat("/TSeparatorKit1"));
 
           //set the value of translaation to the heliostat
+
           tonatiuh.SetValue(helFramePath.concat("/TSeparatorKit1"),"translation","0 0".concat(" ",trans));
 
           //Change the node name to Row0i_Frame. i goes from 0 to 20
           //The first node will be called Row01_Frame and the last one Row020_Frame
+
           tonatiuh.SetNodeName("Row0".concat("",i).concat("_Frame"));
 
           
           //Select the node created create a group node as a child and rename it to Row
+
           var row=helFramePath.concat("/Row0".concat("",i).concat("_Frame"));
           tonatiuh.SelectNode(row);
           tonatiuh.CreateGroupNode();
@@ -264,10 +275,12 @@ for(i=1;i<=20;++i){
           tonatiuh.SetNodeName("Row");
 
           //for each row, we have to create the tree to alocate 25 heliostats
+
           var NewRow=row.concat("/Row");
 
           //translation represents the x_position of the heliostasts
           //this first one is in x=-66 and they  are separated 5.5 meters
+
           var translationRow=-66;
           for(j=1;j<=25;++j){
 
@@ -278,11 +291,13 @@ for(i=1;i<=20;++i){
                             tonatiuh.SetValue(NewRow.concat("/TSeparatorKit1"),"translation","".concat("",translationRow).concat(" 0 0"));
                             
                             //Change the  translation parameter for the next iteration
+
                             translationRow=translationRow+5.5;
                             tonatiuh.SetNodeName("Heliostat".concat("",j).concat("_Frame"));
 	                   var helRow=NewRow.concat("/Heliostat".concat("",j).concat("_Frame"));
                             
                             //Create a new groupNode and rename it to Heliostat
+
                             tonatiuh.SelectNode(helRow);
                             tonatiuh.CreateGroupNode();
                             tonatiuh.SelectNode(helRow.concat("/TSeparatorKit1"));
@@ -290,6 +305,7 @@ for(i=1;i<=20;++i){
                             tonatiuh.SelectNode(helRow.concat("/Heliostat"));
 
                             //Create a tracker as a child of Heliostat and set the amimingPoint to "0 130 74.25"
+
                             tonatiuh.CreateTracker("Heliostat_tracker");
                             tonatiuh.SetValue(helRow.concat("/Heliostat/Heliostat_tracker"),"aimingPoint","0 130 74.25");
                            
@@ -297,6 +313,7 @@ for(i=1;i<=20;++i){
                       }
                      
             //Change the translation parameter for the next iteration
+
             traslation=traslation+5.5;
          
 }
@@ -309,44 +326,58 @@ In the previous step we haver created the struct in which the heliostats are loc
 
 {{{
 //Creating the first heliostat
+
 var i=1;
 var j=1;
+
 //get the path to put the heliostat
+
 var path="//SunNode/RootNode/HeliostatField_Frame/Row0".concat("",i).concat("_Frame/Row/Heliostat").concat("",j).concat("_Frame/Heliostat");
 tonatiuh.SelectNode(path);
+
 //Create a tShapeKitNode which will contain the shape and the material of the heliostat
+
 tonatiuh.CreateSurfaceNode();
 tonatiuh.SelectNode(path.concat("/TShapeKit1"));
 
 //Create the shape. It's going to be a "Spherical_rectangle"
+
 tonatiuh.CreateShape("Spherical_rectangle");
 
 //Create the material. It's going to be a "Specular_Standard_Material"
+
 tonatiuh.CreateMaterial("Specular_Standard_Material");
 
 //Set the "Spherical_rectangle properties"
+
 tonatiuh.SetValue(path.concat("/TShapeKit1/Spherical_rectangle"),"radius","300");
 tonatiuh.SetValue(path.concat("/TShapeKit1/Spherical_rectangle"),"widthX","5");
 tonatiuh.SetValue(path.concat("/TShapeKit1/Spherical_rectangle"),"widthZ","5");
 tonatiuh.SetValue(path.concat("/TShapeKit1/Spherical_rectangle"),"activeSide","INSIDE");
 
-//Ser the material properties.
+//Set the material properties.
+
 tonatiuh.SetValue(path.concat("/TShapeKit1/Specular_Standard_Material"),"m_reflectivity","1");
 tonatiuh.SelectNode(path.concat("/TShapeKit1"));
 
 //Copy the node just created
+
 tonatiuh.Copy();
 //we need to paste it inall the files and columns.
+
 for(i=1;i<=25;i++){
 for(j=1;j<=25;j++){
       //we eliminate the first case because the heliostat has been created
+
       if(i==1 && j==1){
       }
       else{
       //Search the path whre we have to paste the heliostat
+
         var path="//SunNode/RootNode/HeliostatField_Frame/Row0".concat("",i).concat("_Frame/Row/Heliostat").concat("",j).concat("_Frame/Heliostat");
         
         //Select the node and make pasteLink
+
         tonatiuh.SelectNode(path);
         tonatiuh.PasteLink();
 }
