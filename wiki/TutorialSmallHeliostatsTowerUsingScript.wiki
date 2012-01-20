@@ -110,7 +110,7 @@ Pressing the buttom Run will ejecute it.
 
 = Script Example =
 
-To explain more in detail the script funcionality we are going to create <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystem> this tutorial </a>
+To explain more in detail the script funcionality we are going to develop <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystem> this tutorial </a>
 
 == Modeling the tower ==
 
