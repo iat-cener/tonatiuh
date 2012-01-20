@@ -120,7 +120,7 @@ To build it, click Automation-->Script Editor to open the script editor window a
 {{{
 
 //Select the RootNode
-
+<br>
 tonatiuh.SelectNode("//SunNode/RootNode");
 
 //Creates a new TSeparatorKit
