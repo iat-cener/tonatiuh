@@ -7,7 +7,7 @@ This tutorial is going to be an introduction to tonatiuh script tool, which will
 
 = Main functions =
 
-Those are the functions to develop a sytem by scripting. They are explained following an alphabetic order:
+Those are the functions to develop a system by scripting. They are explained following an alphabetic order:
 
 {{{
 ChangeSunPosition(double azimuth, double elevation) --> 
@@ -36,20 +36,20 @@ Cut() --> Cuts the selected node.
 
 Cut(QString nodeURL) --> Cuts the node defined as nodeURL.
 
-Delele() --> the selected node is deleted.
+Delele() --> The node selected is deleted.
 
 Delete( QString nodeURL) --> Deletes the node defined as nodeURL.
 
 ExportAllPhotonMap(QString fileName) --> saves all PhotonMap in fileName.
 
 ExportPhotonMap(QString fileName, QString nodeURL, bool globalCoord) -->
-saves the nodeURL photonMap in global or relative coordinates into the fileName file.
+Saves the nodeURL photonMap in global or relative coordinates into the fileName file.
 
 InsertFileComponent(QString fileName) --> insert a component previously saved in fileName.
 
 New() --> Opens a new window.
 
-Open(QString fileName) --> opens the fileName file.
+Open(QString fileName) --> Opens the fileName file.
 
 Paste(QString nodeURL, QString pasteType) --> Paste the node allocated on the clipboard as a child of nodeURL. pasteType is to indicate the type of paste
 between Shared or Copied.
@@ -80,7 +80,7 @@ SetRandomDeviateType(QString typeName) --> Selects the typeName random seed.
 
 SetRayCastingGrid(int widthDivisions, int heightDivisions) --> Sets the number of sun divisions.
 
-SetRaysDrawingOptions(double raysFraction, bool drawPhotons) -->Checks between dypay or not the Photons and the percent of rays to draw after running the system.
+SetRaysDrawingOptions(double raysFraction, bool drawPhotons) -->Checks between display or not the Photons and the percent of rays to draw after running the system.
 
 SetRaysPerInteraction(int rays) --> Sets the number of desired rays to launch the system.
 
@@ -114,7 +114,7 @@ To explain more in detail the script funcionality we are going to create <a href
 
 == Modeling the tower ==
 
-The tower is the element in which surface will be the target frame. It will have 130 meters height. 
+The tower is the element in which surface will be fixed the target frame. It will have 130 meters height. 
 To build it, click Automation-->Script Editor to open the script editor window and, please,type:
 
 {{{
@@ -146,7 +146,7 @@ tonatiuh.SetValue("//SunNode/RootNode/Tower_Frame","rotation"," 0 0 1 0");
 
 tonatiuh.CreateSurfaceNode();
 
-//Select it and rename it to "Tower_shapekit"
+//Select the last node created and rename it to "Tower_shapekit"
 tonatiuh.SelectNode("//SunNode/RootNode/Tower_Frame/TShapeKit1");
 tonatiuh.SetNodeName("Tower_shapeKit");
 
@@ -170,7 +170,7 @@ As soon as those lines were typed, please, click Run button and the tower will b
 
 = Modeling the receiver =
 
-Now lets continue modeling, in that case, whit the receiver. This shape will receive the whole rays reflected on the heliostats field. (The field will be created later)
+Now lets continue modeling, in that case, with the receiver. This shape will receive the whole rays reflected on the heliostats field. (The field will be created later)
 So the following piece of code will create it:
 
 {{{
@@ -185,7 +185,7 @@ tonatiuh.CreateGroupNode();
 tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");
 tonatiuh.SetNodeName("Target_Frame");
 
-//Craete a variable to save the node tree path
+//Create a variable to save the node tree path
 var Target_FramePath="//SunNode/RootNode/Target_Frame"
 tonatiuh.SetValue("//SunNode/RootNode/Target_Frame","translation","0 130 74.25");
 tonatiuh.SetValue(Target_FramePath,"rotation"," -1 0 0 1.5707964 ");
@@ -208,7 +208,8 @@ tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"width","10");
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"height","10");
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"activeSide","FRONT");
 
-//Set some options to the material
+//Set some options to the material. 
+The most important option is to set the reflectiviy to 0 to avoid rays reflected from the target
 
 tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_reflectivity","0");
 tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_distribution","PILLBOX");
