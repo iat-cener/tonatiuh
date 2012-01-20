@@ -120,7 +120,8 @@ To build it, click Automation-->Script Editor to open the script editor window a
 {{{
 
 //Select the RootNode
-<br>
+
+
 tonatiuh.SelectNode("//SunNode/RootNode");
 
 //Creates a new TSeparatorKit
@@ -168,7 +169,8 @@ tonatiuh.SetValue(tower_shapeKitCone,"activeSide","OUTSIDE");
 }}}
 
 As soon as those lines were typed, please, click Run button and the tower will be created. 
-
+=== Note:=== 
+I recommend NOT to copy this code directly on the script window of Tonatiuh because it ommit the "intro" command. It would be better save it in a file with a .tnhs extension such as tower.tnhs and, then, open it through the editor.
 
 == Modeling the receiver ==
 
@@ -188,18 +190,23 @@ tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");
 tonatiuh.SetNodeName("Target_Frame");
 
 //Create a variable to save the node tree path
+
 var Target_FramePath="//SunNode/RootNode/Target_Frame"
+
 tonatiuh.SetValue("//SunNode/RootNode/Target_Frame","translation","0 130 74.25");
+
 tonatiuh.SetValue(Target_FramePath,"rotation"," -1 0 0 1.5707964 ");
 
 //Creates a TShapeKit node
 tonatiuh.CreateSurfaceNode();
 
 //Select the TShapeKitNode and rename it to Target_shapeKit
+
 tonatiuh.SelectNode(Target_FramePath.concat("/TShapeKit1"));
 tonatiuh.SetNodeName("Target_shapeKit");
 
 //Add a to Target_shapekit a flat_Rectangle and a "Specular_Standard_Material"
+
 tonatiuh.CreateShape("Flat_Rectangle");
 tonatiuh.CreateMaterial("Specular_Standard_Material");
 
@@ -208,7 +215,9 @@ var Target_shapekitpath= "//SunNode/RootNode/Target_Frame/Target_shapeKit";
 //Set the parameter width,height and activeSide
 
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"width","10");
+
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"height","10");
+
 tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"activeSide","FRONT");
 
 //Set some options to the material. 
@@ -365,7 +374,7 @@ tonatiuh.SelectNode(path.concat("/TShapeKit1"));
 tonatiuh.Copy();
 //we need to paste it inall the files and columns.
 
-for(i=1;i<=25;i++){
+for(i=1;i<=20;i++){
 for(j=1;j<=25;j++){
       //we eliminate the first case because the heliostat has been created
 
@@ -387,3 +396,7 @@ for(j=1;j<=25;j++){
 }}}
 
 Now we have the whole system created.
+
+== Simulating the system ==
+
+Now, we can use some functions to define the sun or the amount of rays desired to simulate the system and then use Run() to simulate it.
