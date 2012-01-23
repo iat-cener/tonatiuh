@@ -423,5 +423,9 @@ tonatiuh.ChangeSunPosition(2010,12,11,10,0,0,35.5,-5.23);
 tonatiuh.ExportAllPhotonMap("exportAll.dat"); 
 //export the photon in a file called exportAll.dat
 
-tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Target_ShapeKit",true); 
+tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Target_shapeKit",true); 
 //export the photon map of the node Target_ShapeKit to the file exportNode.dat
+
+}}}
+
+This is the end of the tutorial. If anybody has any doubts or experiences any problem, please report in here or in <a href="http://groups.google.com/group/tonatiuh-raytracer">Tonatiuh discussion forum</a>
