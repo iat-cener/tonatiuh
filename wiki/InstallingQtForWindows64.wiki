@@ -9,7 +9,7 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 = Details =
 
-Download the latest libraries sources of the Qt . To do it, click on the following [http://qt.nokia.com/downloads link]. Once you reach the webpage, go to the _"Qt library"_ section and click on the link to download the source code in the fortat that you like (see Figure 1). 
+Download the latest libraries sources of the Qt . To do it, click on the following [http://qt.nokia.com/downloads link]. Once you reach the webpage, go to the _"Qt library"_ section and click on the link to download the source code in the format that you like (see Figure 1). 
 
 ||<a href="https://picasaweb.google.com/lh/photo/8IzJ_7ReDW5DFQfjs78__uhPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh3.googleusercontent.com/-uiaozxTLwWE/Th1fxWZY_TI/AAAAAAAAAKE/4d-Ndz5Qoyc/s400/QtSources.png" height="297" width="400" /></a>||
 || *Figure 1.* View of the "Qt Download" webpage.||
