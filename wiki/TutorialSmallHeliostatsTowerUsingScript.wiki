@@ -429,4 +429,4 @@ tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Ta
 
 }}}
 
-This is the end of the tutorial. If anybody has any doubts or experiences any problem, please report it here or in <a href="http://groups.google.com/group/tonatiuh-raytracer">Tonatiuh discussion forum</a>
+This is the end of the tutorial. If anybody has any doubts or experiences any problem, please report it here or in <a href="http://groups.google.com/group/tonatiuh-raytracer">Tonatiuh discussion forum</a>.
