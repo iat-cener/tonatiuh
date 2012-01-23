@@ -170,7 +170,7 @@ tonatiuh.SetValue(tower_shapeKitCone,"activeSide","OUTSIDE");
 
 As soon as those lines were typed, please, click Run button and the tower will be created. 
 === Note:=== 
-I recommend NOT to copy this code directly on the script window of Tonatiuh because it ommit the "intro" command. It would be better save it in a file with a .tnhs extension such as tower.tnhs and, then, open it through the editor.
+*I recommend NOT to copy this code directly on the script window of Tonatiuh because it ommit the "intro" command. It would be better save it in a file with a .tnhs extension such as tower.tnhs and, then, open it through the editor.
 
 == Modeling the receiver ==
 
@@ -400,3 +400,5 @@ Now we have the whole system created.
 == Simulating the system ==
 
 Now, we can use some functions to define the sun or the amount of rays desired to simulate the system and then use Run() to simulate it.
+
+We decided that we want to simulate 1000000 rays. Todo that, type:  tonatiuh.SetraysPerIteration(1000000);
