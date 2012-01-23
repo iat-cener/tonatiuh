@@ -404,5 +404,7 @@ Now we have the whole system created.
  * We decided that we want to simulate 1000000 rays. Todo that, type:  tonatiuh.!SetRaysPerIteration(1000000);
 
  * Now we need to define the sun. A default sun shape can be created using this:
+{{{
  tonatiuh.SetSunshape("Buie_sunshape");  //define a Buie_sunshape type
  tonatiuh.SetSunshape("Pillbox_sunshape"); // define a Pillbox_sunshape type
+}}}
