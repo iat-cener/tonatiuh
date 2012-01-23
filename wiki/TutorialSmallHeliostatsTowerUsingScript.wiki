@@ -419,6 +419,8 @@ tonatiuh.ChangeSunPosition(2010,12,11,10,0,0,35.5,-5.23); //this function calcul
 
  * There are two functions to export Tonatiuh data, or we export all photon map or only a certain part.
 {{{
-tonatiuh.ExportAllPhotonMap("exportAll.dat"); //export the photon in a file called exportAll.dat
+tonatiuh.ExportAllPhotonMap("exportAll.dat"); 
+//export the photon in a file called exportAll.dat
 
-tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Target_ShapeKit",true); //export the photon map of the node Target_ShapeKit to the file exportNode.dat
+tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Target_ShapeKit",true); 
+//export the photon map of the node Target_ShapeKit to the file exportNode.dat
