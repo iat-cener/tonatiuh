@@ -401,4 +401,7 @@ Now we have the whole system created.
 
 Now, we can use some functions to define the sun or the amount of rays desired to simulate the system and then use Run() to simulate it.
 
-We decided that we want to simulate 1000000 rays. Todo that, type:  tonatiuh.SetraysPerIteration(1000000);
+We decided that we want to simulate 1000000 rays. Todo that, type:  tonatiuh.!SetRaysPerIteration(1000000);
+
+Now we need to define the sun. A default sun shape can be created using this:
+ tonatiuh.SetSunshape("Buie_sunshape") or tonatiuh.SetSunshape("Pillbox_Sunshape")
