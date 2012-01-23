@@ -414,5 +414,11 @@ Now we have the whole system created.
 {{{
 tonatiuh.ChangeSunPosition(123,25); //Set the azimuth to 123 and zenith to 25
 
-tonatiuh.ChangeSunPosition(2010,12,11,10,0,0,35.5,-5.23); this function calculates the azimuth and zenith in the place which coordinates are (35.5,-5.23) and date is 11/12/2010 at 10:00:00AM.
+tonatiuh.ChangeSunPosition(2010,12,11,10,0,0,35.5,-5.23); //this function calculates the azimuth and zenith in the place which coordinates are (35.5,-5.23) and date is 11/12/2010 at 10:00:00AM.
 }}}
+
+ * There are two functions to export Tonatiuh data, or we export all photon map or only a certain part.
+{{{
+tonatiuh.ExportAllPhotonMap("exportAll.dat"); //export the photon in a file called exportAll.dat
+
+tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Target_ShapeKit",true); //export the photon map of the node Target_ShapeKit to the file exportNode.dat
