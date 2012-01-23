@@ -403,8 +403,16 @@ Now we have the whole system created.
 
  * We decided that we want to simulate 1000000 rays. Todo that, type:  tonatiuh.!SetRaysPerIteration(1000000);
 
- * Now we need to define the sun. A default sun shape can be created using this:
+ * Now we need to define the sun. A default sun shape can be created one of the following lines:
 {{{
  tonatiuh.SetSunshape("Buie_sunshape");  //define a Buie_sunshape type
  tonatiuh.SetSunshape("Pillbox_sunshape"); // define a Pillbox_sunshape type
+}}}
+
+ * If we want to change the sun azimut and zenit we have two ways to do it:
+
+{{{
+tonatiuh.ChangeSunPosition(123,25); //Set the azimuth to 123 and zenith to 25
+
+tonatiuh.ChangeSunPosition(2010,12,11,10,0,0,35.5,-5.23); this function calculates the azimuth and zenith in the place which coordinates are (35.5,-5.23) and date is 11/12/2010 at 10:00:00AM.
 }}}
