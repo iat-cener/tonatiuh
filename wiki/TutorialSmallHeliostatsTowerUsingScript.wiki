@@ -170,11 +170,11 @@ tonatiuh.SetValue(tower_shapeKitCone,"activeSide","OUTSIDE");
 
 As soon as those lines were typed, please, click Run button and the tower will be created. 
 === Note:=== 
-*I recommend NOT to copy this code directly on the script window of Tonatiuh because it ommit the "intro" command. It would be better save it in a file with a .tnhs extension such as tower.tnhs and, then, open it through the editor.
+*I recommend NOT to copy this code directly on the script window of Tonatiuh because it ommits the "intro" command. It would be better save it in a file with a .tnhs extension such as tower.tnhs and, then, open it through the script editor.
 
 == Modeling the receiver ==
 
-Now lets continue modeling, in that case, with the receiver. This shape will receive the whole rays reflected on the heliostats field. (The field will be created later). It will be a 10m x 10 m square.
+Now, continue modeling, in that case, with the receiver. This shape will receive the whole rays reflected on the heliostats field. (The field will be created later). It will be a 10m x 10 m square.
 So the following piece of code will create it:
 
 {{{
@@ -251,7 +251,7 @@ tonatiuh.SelectNode(rootnode.concat("/TSeparatorKit1"));
 tonatiuh.SetNodeName("HeliostatField_Frame");
 var helFramePath=rootnode.concat("/HeliostatField_Frame");
 
-//traslation represents the z_position of the heliostasts
+//trans represents the z_position of the heliostasts
 //this first one is in z=-52.3 and they  are separated 5.5 meters
 
 var trans=-52.3;
@@ -331,7 +331,7 @@ for(i=1;i<=20;++i){
 
 == Inserting the shape and  material ==
 
-In the previous step we haver created the struct in which the heliostats are located. Now we are going to insert them using the Pastelink way. This technique consists of the creation of an heliostat and the creation of pointer to it to save memory.
+In the previous step we have created the struct in which the heliostats will be located. Now, we are going to insert them using the Pastelink way. This technique consists of the creation of an heliostat and the creation of a pointer to it to save memory.
 
 {{{
 //Creating the first heliostat
@@ -409,7 +409,7 @@ Now we have the whole system created.
  tonatiuh.SetSunshape("Pillbox_sunshape"); // define a Pillbox_sunshape type
 }}}
 
- * If we want to change the sun azimut and zenit we have two ways to do it:
+ * If we want to change the sun azimuth and zenith we have two ways to do it:
 
 {{{
 tonatiuh.ChangeSunPosition(123,25); //Set the azimuth to 123 and zenith to 25
