@@ -61,7 +61,7 @@ Using the MSYS shell navigate to just created Coin-3.1.0 directory. To build the
 export QTDIR=/c/sde/qt-version
 export COINDIR=/usr/local
 export INCLUDE=/usr/local/include:/c:/sde/MinGW/include
-./configure --disable-msvc --build=x86_64-w64-mingw32
+./configure --disable-msvc --enable-debug=no --enable-symbols=no --build=x86_64-w64-mingw32
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the Coin configuration settings will be displayed at MSYS shell (see Figure 2).
