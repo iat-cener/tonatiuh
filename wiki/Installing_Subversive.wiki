@@ -32,7 +32,7 @@ At the end of the software installation process you will be asked to restart Ecl
 == Enabling Subversion Auto-Props ==
 Open your Subversion _"config"_ file in a text editor. Depending on your Operating System the location of the subversion configuration file may vary: 
 
- * For Windows XP the location is: C:\Documents and Settings\_username_\Application Data\Subversion\config
+ * For Windows XP the location is: C:\Documents and Settings\_username_\Datos de programa\Subversion\config
  * For Windows Vista and Windows 7 the location is: C:\Users\_username_\AppData\Roaming\!Subversion\config
  * For Mac OS X the location is:  ~/.subversion/config 
  * For Linux the location is: ~/.subversion/config 
