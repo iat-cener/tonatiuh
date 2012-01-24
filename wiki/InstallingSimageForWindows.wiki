@@ -27,7 +27,7 @@ This will create a directory called _simage-1.7.0_ in your user directory. Using
 
 To build the library in release mode type:
 {{{
-./configure --disable-msvc --without-gdiplus --with-qt=/c:/sde/Qt/Desktop/Qt/4.7.3/mingw --enable-debug=no --enable-symbols=no
+./configure --disable-msvc --without-gdiplus --with-qt=/c:/sde/Qt/Desktop/Qt/4.7.4/mingw --enable-debug=no --enable-symbols=no
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, install the Simage library by typing:
