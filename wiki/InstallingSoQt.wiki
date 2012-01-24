@@ -35,7 +35,7 @@ export PATH=$QTDIR/bin:$PATH
 export QMAKESPEC=$QTDIR/mkspecs/win32-g++
 ./configure --disable-msvc --enable-debug=no --enable-symbols=no
 }}}
-This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the SoQt configuration settings will be displayed at MSYS shell (see Figure 2). 
+This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the !SoQt configuration settings will be displayed at MSYS shell (see Figure 2). 
 
 ||<a href="http://picasaweb.google.com/lh/photo/XDBDPsDIIWsoWNEyDv_nNckjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLCjufdju0I/AAAAAAAAAno/YuZV_pqk2R8/s400/SoQt_config_final_screen.png" height="202" width="400" /></a>||
 || *Figure 2.* MSYS shell messages shown when the configuration process ends.||
