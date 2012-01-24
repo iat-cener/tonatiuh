@@ -14,36 +14,7 @@ Download the latest libraries sources of the Qt . To do it, click on the followi
 ||<a href="https://picasaweb.google.com/lh/photo/8IzJ_7ReDW5DFQfjs78__uhPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh3.googleusercontent.com/-uiaozxTLwWE/Th1fxWZY_TI/AAAAAAAAAKE/4d-Ndz5Qoyc/s400/QtSources.png" height="297" width="400" /></a>||
 || *Figure 1.* View of the "Qt Download" webpage.||
 
-Once the source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _"C:\sde\MinGW\msys\home\username"_. Navigate to your MSYS user directory and extract the archive. 
-
-To solve some compilation errors, change the following:
-  * File /qmake/Makefile.win32-g++-sh, line 31:
-  {{{
-  -LIBS	    = -lole32 -luuid
-  +LIBS	    = -lole32 -luuid -ladvapi32 -lkernel32
-  }}} 
-
-  * File qmake/qmake.pri, (line 138):
-  {{{
-  -   win32-g++*:LIBS += -lole32 -luuid
-  +   win32-g++*:LIBS += -lole32 -luuid -ladvapi32 -lkernel32
-  }}}
-
-  * File src/corelib/global/qglobal.h (lines 1135-1136):
-  {{{
-  -typedef long Q_LONG;             /* word up to 64 bit signed */
-  -typedef unsigned long Q_ULONG;   /* word up to 64 bit unsigned */
-  +typedef long long Q_LONG;             /* word up to 64 bit signed */
-  +typedef unsigned long long Q_ULONG;   /* word up to 64 bit unsigned */
-  }}}
-
-  * File src/3rdparty/webkit/JavaScriptCore/wtf/Platform.h (line 940) ,append:
-  {{{
-  #elif CPU(X86_64) && OS(WINDOWS) && COMPILER(MINGW64) && GCC_VERSION >= 40100
- #define ENABLE_JIT 0
-  }}}
-
-Once the changes are made, open a MSYS shell and navigate to your MSYS user directory and type:
+Once the source code package is on your PC, open a MSYS shell and navigate to your MSYS user directory and type:
 {{{
 cd qt-version
 configure.exe -platform win32-g++ -phonon -debug-and-release 
