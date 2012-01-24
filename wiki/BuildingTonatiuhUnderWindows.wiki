@@ -78,7 +78,7 @@ On the Make Target tab, right click on the folder titled "TonatiuhProject"_. The
 {{{
 Target name: qmake
 Make target: TonatiuhProject.pro
-Build command: C:\sde\Qt\2010.05\qt\bin\qmake
+Build command: qmake
 }}}
 
 To fill the _"Make target"_ field you need uncheck the _"Same as the target name"_ option. Likewise, to fill the _"Build command"_ field uncheck the _"Use builder settings"_ option. Before clicking on the _"OK"_ button to close the dialog, please, verify that the _"Run all project builders"_ option is checked.
