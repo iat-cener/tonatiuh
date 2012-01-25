@@ -9,7 +9,7 @@ Doxygen is the acronym of dox(document) gen(generator), source code documentatio
 
 = Installation=
 
-The doxygen sources and binaies are available on the doxygen download web page at http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc. For Windows you can download _doxygen binaries on a zip_ and extract them at _C:\doxygen_.
+The doxygen sources and binaies are available on the doxygen download web page at http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc. For Windows you can download _doxygen binaries on a zip_ and extract them at _C:\sde\doxygen_.
 
 = Eclipse configuration for Doxygen =
 
@@ -25,7 +25,7 @@ The doxygen sources and binaies are available on the doxygen download web page a
 Now, indicate to Eclipse to use installed doxigen version:
  * Go to Window->Preferences.
  * Go to Doxygen and push "Add..." button.
- * Select in the file dialog the doxygen installation path: _C:\doxygen_.
+ * Select in the file dialog the doxygen installation path: _C:\sde\doxygen\bin_.
  * Acept and verificate that added version is selected. Apply changes before finish.
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
