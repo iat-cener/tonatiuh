@@ -44,7 +44,7 @@ export COINDIR=/usr/local
 export INCLUDE=/usr/local/include:/c/sde/MinGW/include
 export PATH=$QTDIR/bin:$PATH
 export QMAKESPEC=$QTDIR/mkspecs/win32-g++
-./configure --with-qt=/c/sde/qt-version --build=x86_64-w64-mingw32
+./configure -enable-debug=no --enable-symbols=no --with-qt=/c/sde/qt-version --build=x86_64-w64-mingw32
 }}}
 
 This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the SoQt configuration settings will be displayed at MSYS shell (see Figure 2). 
