@@ -36,7 +36,7 @@ Within the C/C++ perspective, locate the _"Project Explorer"_ pane and right-cli
 ||<a href="http://picasaweb.google.com/lh/photo/1a5w7RkC4vdZODnZwwlRxA?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TL9iRxJ5MgI/AAAAAAAAAsg/oHe8ouHEOfY/s400/Eclipse_convertCC%2B%2B.png" height="400" width="318" /></a>||
 || *Figure 3.* _"Convert C/C++ Projects"_ Eclipse dialog.||
 
-In the _"Candidates for conversion"_ section of the dialog, verify that the folder _"!TonatiuhProject"_ is checked. In the _"Convert to C or C++"_ section verify that the _"C++ Project"_ option is selected. In the _"Project options"_ section verify that the _"Specify project type"_ option is cheked, that the selected _"Project type:"_ is _"Makefile project"_, and that the selected _"Toolchains"_ is _"MinGW GCC"_. After all of the above is done, click on the _"Finish"_ button.
+In the _"Candidates for conversion"_ section of the dialog, verify that the folder _"!TonatiuhProject"_ is checked. In the _"Convert to C or C++"_ section verify that the _"C++ Project"_ option is selected. In the _"Project options"_ section verify that the _"Specify project type"_ option is cheked, that the selected _"Project type:"_ is _"Makefile project"_, and that the selected _"Toolchains"_ is _"Other Tool Chains"_. After all of the above is done, click on the _"Finish"_ button.
 
 === Define environment variables ===
 
@@ -60,6 +60,12 @@ Name: TONATIUH_ROOT
 Value: C:\sde\workspace\TonatiuhProject
 }}}
 
+It's also necessary to define the environment variable PATH with this information:
+
+{{{
+Name: PATH
+Value: C:\sde\MinGW\bin;C:\sde\Qt\Desktop\Qt\4.7.4\mingw\bin
+}}} 
 And click the "OK" button.
 
 At the end of the process the "Properties for !TonatiuhProject" pop-up dialog, should look like Figure 4.
