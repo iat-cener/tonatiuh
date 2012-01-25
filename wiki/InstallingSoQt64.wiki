@@ -23,7 +23,27 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 {{{
 tar -zxvf SoQt-1.5.0.tar.gz
 }}}
-This will create a directory called _!SoQt-1.5.0_ in your user directory. To solve some compilation errors, change the following:
+This will create a directory called _!SoQt-1.5.0_ in your user directory. Using the MSYS shell navigate to the just created !SoQt-1.5.0. directory. To build the library in release mode type:
+{{{
+export QTDIR=/c/sde/qt-version
+export COINDIR=/usr/local
+export INCLUDE=/usr/local/include:/c/sde/MinGW/include
+export PATH=$QTDIR/bin:$PATH
+export QMAKESPEC=$QTDIR/mkspecs/win32-g++
+./configure -enable-debug=no --enable-symbols=no --with-qt=/c/sde/qt-version --build=x86_64-w64-mingw32
+}}}
+
+This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the !SoQt configuration settings will be displayed at MSYS shell (see Figure 2). 
+
+||<a href="http://picasaweb.google.com/lh/photo/XDBDPsDIIWsoWNEyDv_nNckjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLCjufdju0I/AAAAAAAAAno/YuZV_pqk2R8/s400/SoQt_config_final_screen.png" height="202" width="400" /></a>||
+|| *Figure 2.* MSYS shell messages shown when the configuration process ends.||
+
+To solve some compilation errors, change the following:
+   * File libtool (line 582):
+   {{{
+   -$EGREP -e 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
+   +$EGREP -e 'file format pe-x86-64' >/dev/null ; then
+   }}}
   * File src/Inventor/Qt/!SoQtComponent.cpp (lines 135, 182):
   {{{
   -unsigned long 
@@ -35,22 +55,6 @@ This will create a directory called _!SoQt-1.5.0_ in your user directory. To sol
   -long
   +long long
   }}}
-
-
-Using the MSYS shell navigate to the just created !SoQt-1.5.0. directory. To build the library in release mode type:
-{{{
-export QTDIR=/c/sde/qt-version
-export COINDIR=/usr/local
-export INCLUDE=/usr/local/include:/c/sde/MinGW/include
-export PATH=$QTDIR/bin:$PATH
-export QMAKESPEC=$QTDIR/mkspecs/win32-g++
-./configure -enable-debug=no --enable-symbols=no --with-qt=/c/sde/qt-version --build=x86_64-w64-mingw32
-}}}
-
-This will start the configuration process. Depending on your computer, this process may take some time to finish. When it does, a set of messages indicating the SoQt configuration settings will be displayed at MSYS shell (see Figure 2). 
-
-||<a href="http://picasaweb.google.com/lh/photo/XDBDPsDIIWsoWNEyDv_nNckjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLCjufdju0I/AAAAAAAAAno/YuZV_pqk2R8/s400/SoQt_config_final_screen.png" height="202" width="400" /></a>||
-|| *Figure 2.* MSYS shell messages shown when the configuration process ends.||
 
 Now, you can install the !SoQt library by typing:
 {{{
