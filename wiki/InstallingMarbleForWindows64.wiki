@@ -13,10 +13,9 @@ To compile Marble you need CMake -a cross-platform make. To obtain it follow thi
 ||<a href="http://picasaweb.google.com/lh/photo/5Iue-oDOBsZN6zeEpmRBQMkjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLDLa3oJp1I/AAAAAAAAAn4/mZPF8osxLas/s400/CMake_installer.png" height="338" width="400" /></a>||
 || *Figure 1.* View of the "CMake" webpage.||
 
-Now, you need to download the latest stable version of the Marble source code. To do it, you need a git client and use one of these commands:
-
+Now, you need to download the latest stable version of the Marble source code. To do it, you need a git client and use one of these commands: 
 {{{
-git clone -b kde-4.6 git://anongit.kde.org/marble
+git clone -b KDE/4.6 git://anongit.kde.org/marble
 }}}
 or
 {{{
