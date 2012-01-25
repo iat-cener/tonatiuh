@@ -69,6 +69,12 @@ This will start the configuration process. Depending on your computer, this proc
 ||<a href="http://picasaweb.google.com/lh/photo/WYeLOhf48chNSykrpIxVWMkjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLB670Ev2zI/AAAAAAAAAnE/J0_F_CRcPiw/s400/Coin_config_final_screen.png" height="323" width="400" /></a>||
 || *Figure 2.* MSYS shell messages shown when the configuration process ends.||
 
+Then, edit libtool file to create Coin3D shared library correctly. Open _libtool_ file and go to 582 line:
+{{{
+-$EGREP -e 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
++$EGREP -e 'file format pe-x86-64' >/dev/null ; then
+}}}
+
 Now, you can install the Coin3D library by typing:
 {{{
 make 
