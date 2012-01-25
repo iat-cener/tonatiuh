@@ -24,13 +24,13 @@ Open an MSYS shell console. Navigate to your MSYS user directory and extract the
 tar -zxvf SoQt-1.5.0.tar.gz
 }}}
 This will create a directory called _!SoQt-1.5.0_ in your user directory. To solve some compilation errors, change the following:
-  * File src/Inventor/Qt/SoQtComponent.cpp (lines 135, 182):
+  * File src/Inventor/Qt/!SoQtComponent.cpp (lines 135, 182):
   {{{
   -unsigned long 
   +unsigned long long
   }}}
 
- * File src/Inventor/Qt/common/SoQtComponentCommon.cpp.in (lines 444, 451, 458, 478, 491):
+ * File src/Inventor/Qt/common/!SoQtComponentCommon.cpp.in (lines 444, 451, 458, 479, 491):
   {{{
   -long
   +long long
