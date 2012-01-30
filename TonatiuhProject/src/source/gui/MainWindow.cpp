@@ -1571,7 +1571,9 @@ int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalC
 	m_lastExportInGlobal = globalCoord;
 
 	QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
+	//std::cout<<"Node to export: "<<nodeUrl.toStdString()<<std::endl;
 	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
+	//std::cout<<"Node to export: "<<selectedSurface->GetNode()->getName().getString()<<std::endl;
 	if( !selectedSurface )	return 0;
 
 	int okExport = 0;
