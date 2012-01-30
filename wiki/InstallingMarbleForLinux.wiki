@@ -7,14 +7,10 @@ Marble is a Virtual Globe and World Atlas that you can use to learn more about E
 = Details =
 To compile marble you need CMake -a cross-platform make. It can be download from http://www.cmake.org/cmake/resources/software.html. Download the latest binary version for Linux. You need a version newer than 2.4.
 
-Now, you need to download the latest stable version of the Marble source code. To do it, you need to use a subversion or svn client to access the appropriate Marble's svn repository and check out the appropriate marble folder, with all of its content, including all files and subdirectories.
+Now, you need to download the latest stable version of the Marble source code. To do it, go here:
+[http://edu.kde.org/marble/download.php]
 
-If you have installed in your computer a command-line svn client, the command you should execute in your shell to get the marble folder with all its content is:
-{{{
-svn co svn://anonsvn.kde.org/home/kde/trunk/KDE/kdeedu/marble
-}}}
-
-After checking out the marble directory from the svn site, using the shell navigate to the marble directory just created in your computer and type:
+After dowloadin the marble source code, please uncomres it to a folder called _marble_ and, using the shell, navigate to the marble directory just created in your computer and type:
 {{{
 cmake -G"Unix Makefiles" -DQTONLY=ON ../marble
 }}}
