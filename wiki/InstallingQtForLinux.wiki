@@ -14,8 +14,8 @@ To install the Qt SDK in your computer download the latest release of the instal
 
 Open a shell console, navigate to the downloads directory and run it by typing:
 {{{
-chmod u+x qt-sdk-linux-x86-opensource-2010.05.1.bin
-sudo ./qt-sdk-linux-x86-opensource-2010.05.1.bin
+chmod u+x Qt_SDK_Lin32_online_v1_1_4_en.run
+sudo ./Qt_SDK_Lin32_online_v1_1_4_en.run
 }}}
 
 This will open an installation wizard.During the execution of the installer do the following:
