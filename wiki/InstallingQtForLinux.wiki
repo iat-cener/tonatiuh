@@ -10,7 +10,7 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 In the Tonatiuh development, the las Qt version, Qt-4.7, is used. If this version is not available from the SO software management tool, configure it following the these steps.
 
-To install the Qt SDK in your computer download the latest release of the installer file, _qt-sdk-linux-x86-opensource-2010.05.1.bin_ , from the [http://www.qtsoftware.com/ Qt] website by clicking [http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
+To install the Qt SDK in your computer download the latest release of the installer file, _Qt_SDK_Lin32_online_v1_1_4_en.run_ , from the [http://www.qtsoftware.com/ Qt] website by clicking [http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp here]. Place it on your "downloads" directory, e.g., _/home/downloads_.
 
 Open a shell console, navigate to the downloads directory and run it by typing:
 {{{
