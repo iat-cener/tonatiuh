@@ -20,9 +20,9 @@ To build the library type:
 make
 }}}
 
-Copy marble include files to the folder "/local/include/marble".
+Copy marble include files to the folder "/usr/local/include/marble".
 {{{
-mkdir /usr/local/include/marble
+mkdir -p /usr/local/include/marble
 cp src/lib/*.h /usr/local/include/marble 
 cp src/lib/blendings/*.h /usr/local/include/marble 
 cp src/lib/geodata/*.h /usr/local/include/marble 
@@ -50,7 +50,7 @@ cp src/lib/libmarblewidget.so* /usr/local/lib
 
 Copy mable plugins to the folder "/usr/local/bin/marble".
 {{{
-mkdir /usr/local/bin/marble 
+mkdir -p /usr/local/bin/marble 
 cp src/plugins/network/qnam/libQNamNetworkPlugin.so /usr/local/bin/marble
 cp src/plugins/render/compass/libCompassFloatItem.so /usr/local/bin/marble 
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.so /usr/local/bin/marble
