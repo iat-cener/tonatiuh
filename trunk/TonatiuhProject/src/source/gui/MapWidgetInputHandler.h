@@ -17,7 +17,7 @@ class MapWidgetInputHandler : public MarbleWidgetDefaultInputHandler
     Q_OBJECT
 
 public:
-	MapWidgetInputHandler();
+	MapWidgetInputHandler(MarbleWidget *marbleWidget);
 	~MapWidgetInputHandler();
 
     virtual bool eventFilter( QObject* object, QEvent* event );

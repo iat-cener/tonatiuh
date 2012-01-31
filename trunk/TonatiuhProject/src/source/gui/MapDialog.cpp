@@ -97,13 +97,13 @@ MapDialog::MapDialog( QWidget *parent )
 	marbleWidget->setProjection( (Marble::Projection) 0 );
 
 	marbleWidget->setMouseTracking( false );
-	marbleWidget->map()->model()->downloadManager()->setDownloadEnabled( false );
+	marbleWidget->model()->downloadManager()->setDownloadEnabled( false );
 	marbleWidget->setMapThemeId( DefaultMapThemeId() );
 	marbleWidget->setShowOverviewMap( true );
 	marbleWidget->setShowScaleBar( true );
 
 
-	MapWidgetInputHandler* inputHandler = new MapWidgetInputHandler();
+	MapWidgetInputHandler* inputHandler = new MapWidgetInputHandler(marbleWidget);
 	marbleWidget->setInputHandler( inputHandler );
 	connect( inputHandler, SIGNAL( WidgetModified() ), this, SLOT( UpdateHomePosition() ) );
 
@@ -134,7 +134,7 @@ void MapDialog::SetHomeLatitude()
 	if( latitudeCombo->currentText() == "N" )	m_latitude = latitudeSpin->value();
 	else m_latitude = - latitudeSpin->value();
 
-	marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
+	marbleWidget->model()->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
 }
 /*
  * Sets home coordinates longitude value to the values of the GUI.
@@ -144,7 +144,7 @@ void MapDialog::SetHomeLongitude()
 	if( longitudeCombo->currentText() == "E" )	m_longitude = longitudeSpin->value();
 	else m_longitude = - longitudeSpin->value();
 
-	marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
+	marbleWidget->model()->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
 }
 
 /*!
@@ -166,7 +166,7 @@ void MapDialog::SetHomePosition( double lon, double lat )
 		else latitudeCombo->setCurrentIndex( 0 );
 		latitudeSpin->setValue( fabs( lat ) );*/
 
-		marbleWidget->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
+		marbleWidget->model()->setHome( m_longitude , m_latitude, marbleWidget->zoom() );
 	}
 
 }
@@ -181,7 +181,7 @@ void MapDialog::UpdateHomePosition()
 	double lat;
 	int zoom;
 
-	marbleWidget->home( lon, lat, zoom );
+	marbleWidget->model()->home( lon, lat, zoom );
 
 	if( m_longitude != lon || m_latitude != lat )
 	{
