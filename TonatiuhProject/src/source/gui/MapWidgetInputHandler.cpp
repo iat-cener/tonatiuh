@@ -8,8 +8,9 @@
 #include <QEvent>
 #include "MapWidgetInputHandler.h"
 
-MapWidgetInputHandler::MapWidgetInputHandler()
-:MarbleWidgetDefaultInputHandler()
+
+MapWidgetInputHandler::MapWidgetInputHandler(MarbleWidget *marbleWidget)
+:MarbleWidgetDefaultInputHandler(marbleWidget)
 {
 
 }
