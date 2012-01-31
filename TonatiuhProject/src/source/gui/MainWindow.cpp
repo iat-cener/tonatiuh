@@ -489,7 +489,7 @@ void MainWindow::ExportPhotonMap()
 	else
 	{
 		QString nodeURL = exportDialog.GetSelectedSurface();
-		if( !nodeURL.isEmpty() )
+		if( nodeURL.isEmpty() )
 		{
 			QMessageBox::warning( this, "Tonatiuh", "Selected node in not a valid export node." );
 			return;
@@ -1573,11 +1573,12 @@ int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalC
 	QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
 	//std::cout<<"Node to export: "<<nodeUrl.toStdString()<<std::endl;
 	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
-	//std::cout<<"Node to export: "<<selectedSurface->GetNode()->getName().getString()<<std::endl;
+	//std::cout<<"fileName: "<<fileName.toStdString()<<std::endl;
 	if( !selectedSurface )	return 0;
 
 	int okExport = 0;
 
+	//std::cout<<"Node to export: "<<nodeUrl.toStdString()<<std::endl;
 	if( m_lastExportInGlobal )
 		okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
 	else
