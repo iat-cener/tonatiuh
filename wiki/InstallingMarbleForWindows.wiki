@@ -33,7 +33,7 @@ make
 
 Copy Marble include files to the folder "/local/include/marble".
 {{{
-mkdir /usr/local/include/marble
+mkdir -p /usr/local/include/marble
 cp src/lib/*.h /usr/local/include/marble
 cp src/lib/blendings/*.h /usr/local/include/marble 
 cp src/lib/geodata/*.h /usr/local/include/marble 
@@ -65,7 +65,7 @@ cp src/lib/libmarblewidget.dll.a /usr/local/lib
 }}}
 Copy Marble plugins to the folder "/usr/local/bin/marble".
 {{{
-mkdir /usr/local/bin/marble
+mkdir -p /usr/local/bin/marble
 cp src/plugins/network/qnam/libQNamNetworkPlugin.dll /usr/local/bin/marble
 cp src/plugins/render/compass/libCompassFloatItem.dll /usr/local/bin/marble 
 cp src/plugins/render/crosshairs/libCrosshairsPlugin.dll /usr/local/bin/marble
