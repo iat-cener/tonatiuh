@@ -31,6 +31,7 @@ make
 make install
 }}}
 
+May be, you will need to type _sudo make install_ if you don't have enough privileges.
 
 
 At the end of the installation process, the libraries will be installed at _/usr/local/lib_. Now, you can proceed to the installation of [InstallingCoin3DForLinux Coin3D].
