@@ -19,7 +19,7 @@ Once the source code package is on your PC, extract the file to _"C:\sde"_ direc
 Then, open a MSYS shell and navigate _"C:\sde"_ directory and type:
 {{{
 cd qt-version
-configure.exe -platform win32-g++ -phonon -debug-and-release 
+configure.exe -qt-style-windowsxp -qt-style-windowsvista -platform win32-g++ -phonon -debug-and-release 
 make
 }}}
 
