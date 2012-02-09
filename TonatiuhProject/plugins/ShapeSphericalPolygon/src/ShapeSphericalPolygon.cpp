@@ -78,15 +78,15 @@ ShapeSphericalPolygon::ShapeSphericalPolygon()
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
     m_sphereRadiusSensor = new SoFieldSensor( SphereRadiusChanged, this );
-    m_sphereRadiusSensor->setPriority( 0 );
+    m_sphereRadiusSensor->setPriority( 1 );
     m_sphereRadiusSensor->attach( &sphereRadius );
 
     m_radiusSensor = new SoFieldSensor( RadiusChanged, this );
-    m_radiusSensor->setPriority( 0 );
+    m_radiusSensor->setPriority( 1 );
     m_radiusSensor->attach( &radius );
 
     m_sidesSensor = new SoFieldSensor( SidesChanged, this );
-    m_sidesSensor->setPriority( 0 );
+    m_sidesSensor->setPriority( 1 );
     m_sidesSensor->attach( &polygonSides );
 }
 

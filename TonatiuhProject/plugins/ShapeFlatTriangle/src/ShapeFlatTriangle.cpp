@@ -80,13 +80,13 @@ ShapeFlatTriangle::ShapeFlatTriangle(  )
 
 
 	SoFieldSensor* m_aSensor = new SoFieldSensor(updateA, this);
-	m_aSensor->setPriority( 0 );
+	m_aSensor->setPriority( 1 );
 	m_aSensor->attach( &a );
 	SoFieldSensor* m_bSensor = new SoFieldSensor(updateB, this);
-	m_bSensor->setPriority( 0 );
+	m_bSensor->setPriority( 1 );
 	m_bSensor->attach( &b );
 	SoFieldSensor* m_cSensor = new SoFieldSensor(updateC, this);
-	m_cSensor->setPriority( 0 );
+	m_cSensor->setPriority( 1 );
 	m_cSensor->attach( &c );
 
 	m_lastValidA = a;

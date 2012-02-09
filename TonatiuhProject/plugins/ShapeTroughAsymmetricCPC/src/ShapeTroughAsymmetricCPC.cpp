@@ -83,25 +83,25 @@ ShapeTroughAsymmetricCPC::ShapeTroughAsymmetricCPC()
 	SetInternalValues();
 
 	SoFieldSensor* m_rIntSensor = new SoFieldSensor(updateInternalValues, this);
-	m_rIntSensor->setPriority( 0 );
+	m_rIntSensor->setPriority( 1 );
 	m_rIntSensor->attach( &rInt );
 	SoFieldSensor* m_rExtSensor = new SoFieldSensor(updateInternalValues, this);
-	m_rExtSensor->setPriority( 0 );
+	m_rExtSensor->setPriority( 1 );
 	m_rExtSensor->attach( &rExt );
 	SoFieldSensor* m_acceptanceAngleCWSensor = new SoFieldSensor(updateInternalValues, this);
-	m_acceptanceAngleCWSensor->setPriority( 0 );
+	m_acceptanceAngleCWSensor->setPriority( 1 );
 	m_acceptanceAngleCWSensor->attach( &acceptanceAngleCW );
 	SoFieldSensor* m_acceptanceAngleCCWSensor = new SoFieldSensor(updateInternalValues, this);
-	m_acceptanceAngleCCWSensor->setPriority( 0 );
+	m_acceptanceAngleCCWSensor->setPriority( 1 );
 	m_acceptanceAngleCCWSensor->attach( &acceptanceAngleCCW );
 	SoFieldSensor* m_lengthSensor = new SoFieldSensor(updateInternalValues, this);
-	m_lengthSensor->setPriority( 0 );
+	m_lengthSensor->setPriority( 1 );
 	m_lengthSensor->attach( &length );
 	SoFieldSensor* m_truncationAngleWSensor = new SoFieldSensor(updateInternalValues, this);
-	m_truncationAngleWSensor->setPriority( 0 );
+	m_truncationAngleWSensor->setPriority( 1 );
 	m_truncationAngleWSensor->attach( &truncationAngle );
 	SoFieldSensor* m_truncationOriginSensor = new SoFieldSensor(updateInternalValues, this);
-	m_truncationOriginSensor->setPriority( 0 );
+	m_truncationOriginSensor->setPriority( 1 );
 	m_truncationOriginSensor->attach( &truncationOrigin );
 
 }

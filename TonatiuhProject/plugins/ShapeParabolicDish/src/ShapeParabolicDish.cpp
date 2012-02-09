@@ -76,10 +76,10 @@ ShapeParabolicDish::ShapeParabolicDish()
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
 	SoFieldSensor* dishMinRadiusSensor = new SoFieldSensor( updateMinRadius, this );
-	dishMinRadiusSensor->setPriority( 0 );
+	dishMinRadiusSensor->setPriority( 1 );
 	dishMinRadiusSensor->attach( &dishMinRadius );
 	SoFieldSensor* dishMaxRadiusSensor = new SoFieldSensor( updateMaxRadius, this );
-	dishMaxRadiusSensor->setPriority( 0 );
+	dishMaxRadiusSensor->setPriority( 1 );
 	dishMaxRadiusSensor->attach( &dishMaxRadius );
 }
 

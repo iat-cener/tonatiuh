@@ -71,8 +71,6 @@ ShapeSphericalRectangle::ShapeSphericalRectangle()
 	SO_NODE_ADD_FIELD( radius, (0.75) );
 	SO_NODE_ADD_FIELD( widthX, (1.0) );
 	SO_NODE_ADD_FIELD( widthZ, (1.0) );
-	SO_NODE_ADD_FIELD( widthX, (1.0) );
-	SO_NODE_ADD_FIELD( widthZ, (1.0) );
 
 
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
@@ -82,12 +80,15 @@ ShapeSphericalRectangle::ShapeSphericalRectangle()
 
 
 	m_radiusSensor = new SoFieldSensor(updateRadius, this);
+	m_radiusSensor->setPriority( 1 );
 	m_radiusSensor->attach( &radius );
 
 	m_widthXSensor = new SoFieldSensor(updateWidthX, this);
+	m_widthXSensor->setPriority( 1 );
 	m_widthXSensor->attach( &widthX );
 
 	m_widthZSensor = new SoFieldSensor(updateWidthZ, this);
+	m_widthZSensor->setPriority( 1 );
 	m_widthZSensor->attach( &widthZ );
 }
 

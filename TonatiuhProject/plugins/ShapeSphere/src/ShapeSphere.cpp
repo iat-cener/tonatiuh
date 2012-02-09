@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -59,8 +59,9 @@ void ShapeSphere::initClass()
 }
 
 ShapeSphere::ShapeSphere( )
-:m_lastValidYMax( 0 ),
- m_lastValidYMin( 0 ),
+:m_lastValidRadius( 0.5 ),
+ m_lastValidYMax( 0.5 ),
+ m_lastValidYMin( -0.5 ),
  m_radiusSensor( 0 ),
  m_yMinSensor( 0 ),
  m_yMaxSensor( 0 ),
@@ -71,8 +72,6 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_ADD_FIELD( yMin, (-0.5) );
 	SO_NODE_ADD_FIELD( yMax, (0.5) );
 	SO_NODE_ADD_FIELD( phiMax, ( tgc::TwoPi) );
-	m_lastValidYMax = 0.5;
-	m_lastValidYMin = -0.5;
 
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
@@ -80,16 +79,16 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
 
 	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
-	m_radiusSensor->setPriority( 0 );
+	m_radiusSensor->setPriority( 1 );
 	m_radiusSensor->attach( &radius );
 	SoFieldSensor* m_yMinSensor = new SoFieldSensor(updateYMin, this);
-	m_yMinSensor->setPriority( 0 );
+	m_yMinSensor->setPriority( 1 );
 	m_yMinSensor->attach( &yMin );
 	SoFieldSensor* m_yMaxSensor = new SoFieldSensor(updateYMax, this);
-	m_yMaxSensor->setPriority( 0 );
+	m_yMaxSensor->setPriority( 1 );
 	m_yMaxSensor->attach( &yMax );
 	SoFieldSensor* m_phiMaxSensor = new SoFieldSensor(updatePhiMax, this);
-	m_phiMaxSensor->setPriority( 0 );
+	m_phiMaxSensor->setPriority( 1 );
 	m_phiMaxSensor->attach( &phiMax );
 }
 
@@ -125,6 +124,9 @@ double ShapeSphere::GetVolume() const
 
 BBox ShapeSphere::GetBBox() const
 {
+	std::cout<<"ShapeSphere GetBBox radius: "<<radius.getValue()<<std::endl;
+	std::cout<<"ShapeSphere GetBBox yMin: "<<yMin.getValue()<<std::endl;
+	std::cout<<"ShapeSphere GetBBox yMax: "<<yMax.getValue()<<std::endl;
 	double cosPhiMax = cos( phiMax.getValue() );
    	double sinPhiMax = sin( phiMax.getValue() );
 
@@ -160,6 +162,10 @@ Point3D ShapeSphere::Sample( double u1, double u2 ) const
 
 bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
+
+	std::cout<<"ShapeSphere Intersect radius: "<<radius.getValue()<<std::endl;
+	std::cout<<"ShapeSphere Intersect yMin: "<<yMin.getValue()<<std::endl;
+	std::cout<<"ShapeSphere Intersect yMax: "<<yMax.getValue()<<std::endl;
 	// Compute quadratic ShapeSphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction().lengthSquared();
@@ -291,7 +297,21 @@ void ShapeSphere::updateRadius( void *data, SoSensor* )
 {
 
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
-	if( shapeSphere->radius.getValue() < std::fabs( shapeSphere->yMin.getValue() ) )
+	if( ( shapeSphere->radius.getValue() <= 0.0 ) )
+	{
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The sphere radius must be a positive value." ) );
+		shapeSphere->radius.setValue( shapeSphere->m_lastValidRadius );
+
+	}
+	else if( shapeSphere->radius.getValue() < std::max( std::fabs( shapeSphere->yMin.getValue() ), std::fabs( shapeSphere->yMin.getValue() ) ) )
+	{
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The sphere radius must equal or greater than y value." ) );
+		shapeSphere->radius.setValue( shapeSphere->m_lastValidRadius );
+	}
+	else
+		shapeSphere->m_lastValidRadius = shapeSphere->radius.getValue();
+
+	/*if( shapeSphere->radius.getValue() < std::fabs( shapeSphere->yMin.getValue() ) )
 	{
 		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y min value must take values on the [-radius, yMax) range. ") );
 		shapeSphere->yMin.setValue( -shapeSphere->radius.getValue() );
@@ -304,6 +324,7 @@ void ShapeSphere::updateRadius( void *data, SoSensor* )
 		shapeSphere->yMax.setValue( shapeSphere->radius.getValue() );
 		shapeSphere->m_lastValidYMax = shapeSphere->radius.getValue();
 	}
+	*/
 
 }
 

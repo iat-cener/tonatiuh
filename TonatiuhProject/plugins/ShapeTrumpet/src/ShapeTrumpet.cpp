@@ -107,16 +107,16 @@ ShapeTrumpet::ShapeTrumpet()
 	SetBHyperbola();
 
 	m_apertureSensor = new SoFieldSensor(updateApertureValue, this);
-	m_apertureSensor->setPriority( 0 );
+	m_apertureSensor->setPriority( 1 );
 	m_apertureSensor->attach( &a );
 	m_fHSensor = new SoFieldSensor(updateFocusValue, this);
-	m_fHSensor->setPriority( 0 );
+	m_fHSensor->setPriority( 1 );
 	m_fHSensor->attach( &focusHyperbola );
 	m_heightSensor = new SoFieldSensor(updateHeightValue, this);
-	m_heightSensor->setPriority( 0 );
+	m_heightSensor->setPriority( 1 );
 	m_heightSensor->attach( &hyperbolaHeight );
 	m_truncationSensor = new SoFieldSensor(updateTruncationValue, this);
-	m_truncationSensor->setPriority( 0 );
+	m_truncationSensor->setPriority( 1 );
 	m_truncationSensor->attach( &truncationHeight );
 
 }
