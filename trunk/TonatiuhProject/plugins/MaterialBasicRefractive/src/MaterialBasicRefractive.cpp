@@ -82,26 +82,36 @@ MaterialBasicRefractive::MaterialBasicRefractive()
 	SO_NODE_ADD_FIELD( m_transparency, (0.0) );
 
 	SoFieldSensor* reflectivityFrontSensor = new SoFieldSensor( updateReflectivityFront, this );
+	reflectivityFrontSensor->setPriority( 1 );
 	reflectivityFrontSensor->attach( &reflectivityFront );
 	SoFieldSensor* transmissivityFrontSensor = new SoFieldSensor( updateTransmissivityFront, this );
+	transmissivityFrontSensor->setPriority( 1 );
 	transmissivityFrontSensor->attach( &transmissivityFront );
 
 	SoFieldSensor* reflectivityBackSensor = new SoFieldSensor( updateReflectivityBack, this );
+	reflectivityBackSensor->setPriority( 1 );
 	reflectivityBackSensor->attach( &reflectivityBack );
 	SoFieldSensor* transmissivityBackSensor = new SoFieldSensor( updateTransmissivityBack, this );
+	transmissivityBackSensor->setPriority( 1 );
 	transmissivityBackSensor->attach( &transmissivityBack );
 
 	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
+	m_ambientColorSensor->setPriority( 1 );
 	m_ambientColorSensor->attach( &m_ambientColor );
 	SoFieldSensor* m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
+	m_diffuseColorSensor->setPriority( 1 );
 	m_diffuseColorSensor->attach( &m_diffuseColor );
 	SoFieldSensor* m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
+	m_specularColorSensor->setPriority( 1 );
 	m_specularColorSensor->attach( &m_specularColor );
 	SoFieldSensor* m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
+	m_emissiveColorSensor->setPriority( 1 );
 	m_emissiveColorSensor->attach( &m_emissiveColor );
 	SoFieldSensor* m_shininessSensor = new SoFieldSensor( updateShininess, this );
+	m_shininessSensor->setPriority( 1 );
 	m_shininessSensor->attach( &m_shininess );
 	SoFieldSensor* m_transparencySensor = new SoFieldSensor( updateTransparency, this );
+	m_transparencySensor->setPriority( 1 );
 	m_transparencySensor->attach( &m_transparency );
 }
 

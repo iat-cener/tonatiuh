@@ -86,22 +86,22 @@ ShapeTroughHyperbola::ShapeTroughHyperbola()
 	SetAsymptoticAngle();
 
 	SoFieldSensor* m_apertureSensor = new SoFieldSensor(updateApertureValue, this);
-	m_apertureSensor->setPriority( 0 );
+	m_apertureSensor->setPriority( 1 );
 	m_apertureSensor->attach( &a0 );
 	SoFieldSensor* m_fHSensor = new SoFieldSensor(updateFocusValue, this);
-	m_fHSensor->setPriority( 0 );
+	m_fHSensor->setPriority( 1 );
 	m_fHSensor->attach( &focusHyperbola );
 	SoFieldSensor* lengthSensor1 = new SoFieldSensor(updateLengthValues, this);
-	lengthSensor1->setPriority( 0 );
+	lengthSensor1->setPriority( 1 );
 	lengthSensor1->attach( &zLengthXMin );
 	SoFieldSensor* lengthSensor2 = new SoFieldSensor(updateLengthValues, this);
-	lengthSensor2->setPriority( 0 );
+	lengthSensor2->setPriority( 1 );
 	lengthSensor2->attach( &zLengthXMax );
 	SoFieldSensor* m_heightSensor = new SoFieldSensor(updateHeightValue, this);
-	m_heightSensor->setPriority( 0 );
+	m_heightSensor->setPriority( 1 );
 	m_heightSensor->attach( &hyperbolaHeight );
 	SoFieldSensor* m_truncationSensor = new SoFieldSensor(updateTruncationValue, this);
-	m_truncationSensor->setPriority( 0 );
+	m_truncationSensor->setPriority( 1 );
 	m_truncationSensor->attach( &truncationHeight );
 
 

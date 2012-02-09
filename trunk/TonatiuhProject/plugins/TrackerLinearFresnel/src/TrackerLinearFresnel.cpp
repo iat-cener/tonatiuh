@@ -75,6 +75,7 @@ TrackerLinearFresnel::TrackerLinearFresnel()
 	SO_NODE_SET_SF_ENUM_TYPE( typeOfAimingPoint, AimingPointType );
 	SO_NODE_ADD_FIELD( typeOfAimingPoint, (Absolute) );
 	SoFieldSensor* m_infoDisplayed = new SoFieldSensor( TTrackerForAiming::updateTypeOfAimingPoint, this );
+	m_infoDisplayed->setPriority( 1 );
 	m_infoDisplayed->attach( &typeOfAimingPoint );
 
 	SO_NODE_DEFINE_ENUM_VALUE( Axis, X );

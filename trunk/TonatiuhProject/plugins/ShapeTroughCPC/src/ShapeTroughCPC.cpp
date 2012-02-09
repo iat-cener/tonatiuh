@@ -98,13 +98,13 @@ ShapeTroughCPC::ShapeTroughCPC()
 	m_thetaMin = 2 * m_thetaI;
 
 	m_aSensor = new SoFieldSensor(updateHeightValues, this);
-	m_aSensor->setPriority( 0 );
+	m_aSensor->setPriority( 1 );
 	m_aSensor->attach( &a );
 	m_cMaxSensor = new SoFieldSensor(updateCMaxValues, this);
-	m_cMaxSensor->setPriority( 0 );
+	m_cMaxSensor->setPriority( 1 );
 	m_cMaxSensor->attach( &cMax );
 	m_heightSensor = new SoFieldSensor(updateHeightValues, this);
-	m_heightSensor->setPriority( 0 );
+	m_heightSensor->setPriority( 1 );
 	m_heightSensor->attach( &height );
 
 

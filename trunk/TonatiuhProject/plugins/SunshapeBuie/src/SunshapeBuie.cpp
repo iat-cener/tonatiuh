@@ -59,11 +59,11 @@ SunshapeBuie::SunshapeBuie( )
 	SO_NODE_ADD_FIELD( csr, ( 0.02f ) );
 
 	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCSR, this );
-	irradianceSensor->setPriority( 0 );
+	irradianceSensor->setPriority( 1 );
 	irradianceSensor->attach( &irradiance );
 
 	SoFieldSensor* csrSensor = new SoFieldSensor( updateCSR, this );
-	csrSensor->setPriority( 0 );
+	csrSensor->setPriority( 1 );
 	csrSensor->attach( &csr );
 
 	double csrValue = csr.getValue();

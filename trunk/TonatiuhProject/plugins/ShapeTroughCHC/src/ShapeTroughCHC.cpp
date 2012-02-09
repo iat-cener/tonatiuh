@@ -82,13 +82,13 @@ ShapeTroughCHC::ShapeTroughCHC()
 	SetInternalValues();
 
 	SoFieldSensor* m_r1Sensor = new SoFieldSensor(updateInternalValues, this);
-	m_r1Sensor->setPriority( 0 );
+	m_r1Sensor->setPriority( 1 );
 	m_r1Sensor->attach( &r1 );
 	SoFieldSensor* m_p1Sensor = new SoFieldSensor(updateInternalValues, this);
-	m_p1Sensor->setPriority( 0 );
+	m_p1Sensor->setPriority( 1 );
 	m_p1Sensor->attach( &p1 );
 	SoFieldSensor* m_heightSensor = new SoFieldSensor(updateInternalValues, this);
-	m_heightSensor->setPriority( 0 );
+	m_heightSensor->setPriority( 1 );
 	m_heightSensor->attach( &height );
 
 

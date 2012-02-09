@@ -93,6 +93,7 @@ protected:
    	virtual ~ShapeSphere();
 
 private:
+   	double m_lastValidRadius;
 	double m_lastValidYMax;
 	double m_lastValidYMin;
 
