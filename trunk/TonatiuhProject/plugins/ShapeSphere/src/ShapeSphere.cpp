@@ -124,9 +124,6 @@ double ShapeSphere::GetVolume() const
 
 BBox ShapeSphere::GetBBox() const
 {
-	std::cout<<"ShapeSphere GetBBox radius: "<<radius.getValue()<<std::endl;
-	std::cout<<"ShapeSphere GetBBox yMin: "<<yMin.getValue()<<std::endl;
-	std::cout<<"ShapeSphere GetBBox yMax: "<<yMax.getValue()<<std::endl;
 	double cosPhiMax = cos( phiMax.getValue() );
    	double sinPhiMax = sin( phiMax.getValue() );
 
@@ -163,9 +160,6 @@ Point3D ShapeSphere::Sample( double u1, double u2 ) const
 bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 
-	std::cout<<"ShapeSphere Intersect radius: "<<radius.getValue()<<std::endl;
-	std::cout<<"ShapeSphere Intersect yMin: "<<yMin.getValue()<<std::endl;
-	std::cout<<"ShapeSphere Intersect yMax: "<<yMax.getValue()<<std::endl;
 	// Compute quadratic ShapeSphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction().lengthSquared();
@@ -310,21 +304,6 @@ void ShapeSphere::updateRadius( void *data, SoSensor* )
 	}
 	else
 		shapeSphere->m_lastValidRadius = shapeSphere->radius.getValue();
-
-	/*if( shapeSphere->radius.getValue() < std::fabs( shapeSphere->yMin.getValue() ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y min value must take values on the [-radius, yMax) range. ") );
-		shapeSphere->yMin.setValue( -shapeSphere->radius.getValue() );
-		shapeSphere->m_lastValidYMin = -shapeSphere->radius.getValue();
-	}
-	if( fabs( shapeSphere->yMax.getValue() ) > shapeSphere->radius.getValue() )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y max value must take values on the ( yMin, radius] range. ") );
-
-		shapeSphere->yMax.setValue( shapeSphere->radius.getValue() );
-		shapeSphere->m_lastValidYMax = shapeSphere->radius.getValue();
-	}
-	*/
 
 }
 
