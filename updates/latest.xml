@@ -2,7 +2,7 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.2.4" />
+        <version value="1.2.5" />
     </version>
     <files>
         <os value="win">
@@ -34,8 +34,9 @@
             <file type="replace" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat1.dll" />
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel1.dll" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
-            <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
             <file type="replace" value="bin/release/plugins/TransmissivityDefault/TransmissivityDefault1.dll" />
+            <file type="replace" value="bin/release/libmarblewidget.dll" />
+            <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
         </os>
         <os value="win_64">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive1.dll" />
@@ -66,8 +67,9 @@
             <file type="replace" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat1.dll" />
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel1.dll" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
-            <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
             <file type="replace" value="bin/release/plugins/TransmissivityDefault/TransmissivityDefault1.dll" />
+            <file type="replace" value="bin/release/libmarblewidget.dll" />
+            <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
         </os>
         <os value="mac">
             <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
@@ -98,8 +100,8 @@
             <file type="replace" value="Contents/MacOS/plugins/TrackerHeliostat/libTrackerHeliostat.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/TrackerOneAxis/libTrackerOneAxis.dylib" />
-            <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
             <file type="replace" value="Contents/MacOS/plugins/TransmissivityDefault/libTransmissivityDefault.dylib" />
+            <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
         </os>
         <os value="linux">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
@@ -130,8 +132,9 @@
             <file type="replace" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
-            <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
             <file type="replace" value="bin/release/plugins/TransmissivityDefault/libTransmissivityDefault.so" />
+            <file type="replace" value="bin/release/libmarblewidget.so.12" />
+            <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
         </os>
         <os value="linux_64">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
@@ -162,8 +165,9 @@
             <file type="replace" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
             <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
-            <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
             <file type="replace" value="bin/release/plugins/TransmissivityDefault/libTransmissivityDefault.so" />
+            <file type="replace" value="bin/release/libmarblewidget.so.12" />
+            <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
         </os>
     </files>
 </appname>
