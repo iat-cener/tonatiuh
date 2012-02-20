@@ -429,4 +429,9 @@ tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Ta
 
 }}}
 
+Tonatiuh script is based on ECMAScript specification and has 
+default options implemented. To know more about them, you can find detailed information about by 
+following this link: [http://developer.qt.nokia.com/doc/qt-4.7/ecmascript.html] 
+or better this one: [http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf]
+
 This is the end of the tutorial. If anybody has any doubts or experiences any problem, please report it here or in <a href="http://groups.google.com/group/tonatiuh-raytracer">Tonatiuh discussion forum</a>.
