@@ -103,7 +103,7 @@ void TrackerOneAxis::evaluate()
 	Transform worldToObject = objectToWorld.GetInverse();
 
 
-	Vector3D s = worldToObject( GetGobalSunVect() );
+	Vector3D s = worldToObject( GetGobalSunVector() );
 	Vector3D p( 1.0f, 0.0f, 0.0f);
 
 	Vector3D n;
