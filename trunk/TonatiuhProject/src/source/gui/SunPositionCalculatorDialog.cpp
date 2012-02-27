@@ -176,7 +176,9 @@ void SunPositionCalculatorDialog::CalculateSunPosition()
 	//Calculate sun position
 	cSunCoordinates results;
 	sunpos( myTime, myLocation, &results );
-
+	//update celestial and horizontal coordinates
+	celestialWidget->CoordinatesChanged(results);
+    horizontalWidget->CoordinatesChanged(results);
     emit changeRepresentation(results);
 }
 
