@@ -65,57 +65,6 @@ TEST(Vector3DTests, ConstructorFromPoint){
 	}
 }
 
-TEST(Vector3DTests, ConstructorFromSbVec3f){
-	srand ( time(NULL) );
-
-		// Extension of the testing space
-		double b = maximumCoordinate;
-		double a = -b;
-	    double x0;
-	    double y0;
-	    double z0;
-
-		for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
-
-			x0=float(taf::randomNumber( a, b ));
-			y0=float(taf::randomNumber( a, b ));
-			z0=float(taf::randomNumber( a, b ));
-
-			SbVec3f scaleFactor(x0,y0,z0);
-			Vector3D vector3D(scaleFactor);
-
-
-			EXPECT_FLOAT_EQ(vector3D.x, x0);
-			EXPECT_FLOAT_EQ(vector3D.y, y0);
-			EXPECT_FLOAT_EQ(vector3D.z, z0);
-		}
-}
-
-TEST(Vector3DTests,Vector3DToSbVec3f){
-
-	srand ( time(NULL) );
-
-		// Extension of the testing space
-		double b = maximumCoordinate;
-		double a = -b;
-		double x0;
-	    double y0;
-	    double z0;
-
-		for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
-
-			x0=taf::randomNumber( a, b );
-			y0=taf::randomNumber( a, b );
-			z0=taf::randomNumber( a, b );
-
-			Vector3D vector(x0,y0,z0);
-
-			EXPECT_FLOAT_EQ(vector.ToSbVec3f()[0] , float(x0));
-			EXPECT_FLOAT_EQ(vector.ToSbVec3f()[1] , float(y0));
-			EXPECT_FLOAT_EQ(vector.ToSbVec3f()[2] , float(z0));
-		}
-}
-
 TEST(Vector3DTests,OperatorPlusEqVector){
 	srand ( time(NULL) );
 
