@@ -41,43 +41,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoTransform.h>
 
 #include "RandomDeviate.h"
-#include "tgc.h"
 #include "tgf.h"
 #include "Transform.h"
 
 
-void tgf::SevereError( std::string errorMessage )
-{
-	std::cerr << errorMessage << std::endl;
-	exit(-1);
-}
 
-void tgf::Warning( std::string warningMessage )
-{
-	std::cerr << warningMessage << std::endl;
-}
-
-bool tgf::IsOdd( int number )
-{
-	bool answer = number & 1;
-	return answer;
-}
-
-bool tgf::Quadratic( double A, double B, double C, double *t0, double *t1)
-{
-	// Find discriminant
-	double discrim = B*B - 4.0*A*C;
-	if (discrim < 0.) return false;
-
-	// Compute quadratic root values
-	double q = -0.5;
-	if ( B < 0 ) q *= B - sqrt( discrim );
-	else q *= B + sqrt( discrim ) ;
-	*t0 = q / A;
-	*t1 = C / q;
-	if(*t0 > *t1) std::swap( *t0, *t1 );
-	return true;
-}
 
 double tgf::AlternateBoxMuller( RandomDeviate& rand )
 {

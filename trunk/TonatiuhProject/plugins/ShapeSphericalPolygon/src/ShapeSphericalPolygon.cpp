@@ -44,12 +44,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "gc.h"
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeSphericalPolygon.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
 
 
@@ -143,7 +144,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -156,17 +157,17 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	// Compute ShapeSphere hit position and $\phi$
 	Point3D hitPoint = objectRay( thit );
 	//double phi = atan2( hitPoint.y, hitPoint.x );
-	//if ( phi < 0. ) phi += tgc::TwoPi;
+	//if ( phi < 0. ) phi += gc::TwoPi;
 
 	Vector3D nR = Normalize( Vector3D( hitPoint.x, hitPoint.y, 0.0 ) );
 	double phi = atan2( hitPoint.x, hitPoint.y );
-	if( phi < 0.0 )	phi += tgc::TwoPi;
+	if( phi < 0.0 )	phi += gc::TwoPi;
 
-	double u = phi / tgc::TwoPi;
-	double centralAngle = tgc::TwoPi / polygonSides.getValue();
+	double u = phi / gc::TwoPi;
+	double centralAngle = gc::TwoPi / polygonSides.getValue();
 
 	double part  =  floor( phi / centralAngle );
-	if( fabs( u - 1.0 ) < tgc::Epsilon ) 	part = polygonSides.getValue() - 1;
+	if( fabs( u - 1.0 ) < gc::Epsilon ) 	part = polygonSides.getValue() - 1;
 
 	double t2 = radius.getValue() * cos( 0.5 * centralAngle  )
 							* ( 1 / cos( 0.5 * centralAngle  - phi + centralAngle * part ) );
@@ -185,11 +186,11 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 
 		Vector3D nR = Normalize( Vector3D( hitPoint.x, hitPoint.y, 0.0 ) );
 		phi = atan2( hitPoint.x, hitPoint.y );
-		if( phi < 0.0 )	phi += tgc::TwoPi;
+		if( phi < 0.0 )	phi += gc::TwoPi;
 
-		u = phi / tgc::TwoPi;
+		u = phi / gc::TwoPi;
 		part  =  floor( phi / centralAngle );
-		if( fabs( u - 1.0 ) < tgc::Epsilon ) 	part = polygonSides.getValue() - 1;
+		if( fabs( u - 1.0 ) < gc::Epsilon ) 	part = polygonSides.getValue() - 1;
 
 		t2 = radius.getValue() * cos( 0.5 * centralAngle  )
 										* ( 1 / cos( 0.5 * centralAngle  - phi + centralAngle * part ) );
@@ -206,7 +207,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
 
 	double v = Vector3D( hitPoint).length()/ tPoint.length();
 
@@ -215,18 +216,18 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	double thetaMax =  asin( radius.getValue() / sphereRadius.getValue() ) ;
 
 	// Compute sphere \dpdu and \dpdv
-	Vector3D dpdu( tgc::TwoPi * radius.getValue() * cos( phi ) * sin( theta ),
-					- tgc::TwoPi * radius.getValue() * sin( phi ) *sin( theta ),
+	Vector3D dpdu( gc::TwoPi * radius.getValue() * cos( phi ) * sin( theta ),
+					- gc::TwoPi * radius.getValue() * sin( phi ) *sin( theta ),
 					0.0 );
 	Vector3D dpdv( radius.getValue() * thetaMax * cos( theta ) * sin( phi ),
 					radius.getValue() * thetaMax * cos( phi ) * cos( theta ),
 					radius.getValue() * thetaMax * sin( theta ) );
 
-	Vector3D d2Pduu( -4  * tgc::Pi * tgc::Pi * radius.getValue() * sin( phi ) * sin( theta ),
-					 -4  * tgc::Pi * tgc::Pi * radius.getValue() * cos( phi ) * sin( theta ),
+	Vector3D d2Pduu( -4  * gc::Pi * gc::Pi * radius.getValue() * sin( phi ) * sin( theta ),
+					 -4  * gc::Pi * gc::Pi * radius.getValue() * cos( phi ) * sin( theta ),
 					 0.0 );
-	Vector3D d2Pduv( tgc::TwoPi * radius.getValue() * thetaMax * cos( phi ) * cos( theta ),
-					- tgc::TwoPi * radius.getValue() * thetaMax * sin( phi ) * cos( theta ),
+	Vector3D d2Pduv( gc::TwoPi * radius.getValue() * thetaMax * cos( phi ) * cos( theta ),
+					- gc::TwoPi * radius.getValue() * thetaMax * sin( phi ) * cos( theta ),
 						 0.0 );
 
 	Vector3D d2Pdvv( -radius.getValue() * thetaMax * thetaMax * sin( phi )* sin( theta ),
@@ -279,13 +280,13 @@ Point3D ShapeSphericalPolygon::Sample( double u, double v) const
 
 Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeSphericalPolygon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) ) gf::SevereError( "Function ShapeSphericalPolygon::GetPoint3D called with invalid parameters" );
 
-	double centralAngle = tgc::TwoPi / polygonSides.getValue();
-	double phi = u * tgc::TwoPi;
+	double centralAngle = gc::TwoPi / polygonSides.getValue();
+	double phi = u * gc::TwoPi;
 
 	double part  =  floor( phi / centralAngle );
-	if( fabs( u - 1.0 ) < tgc::Epsilon ) 	part = polygonSides.getValue() - 1;
+	if( fabs( u - 1.0 ) < gc::Epsilon ) 	part = polygonSides.getValue() - 1;
 	//double u1 = ( u - ( part * 1 / polygonSides.getValue() ) )*polygonSides.getValue();
 
 	Point3D aPoint = Point3D( sin( part* centralAngle ), cos(  part* centralAngle ), 0.0  ) * radius.getValue();
@@ -298,7 +299,7 @@ Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 	double x = v * tPoint.x;
 	double y = v * tPoint.y;
 	double z = sphereRadius.getValue();
-	if( fabs( sphereRadius.getValue() *  sphereRadius.getValue() - x  * x  - y * y  ) > tgc::Epsilon )
+	if( fabs( sphereRadius.getValue() *  sphereRadius.getValue() - x  * x  - y * y  ) > gc::Epsilon )
 		z = sphereRadius.getValue() - sqrt( sphereRadius.getValue() *  sphereRadius.getValue()
 												- x  * x  - y * y );
 

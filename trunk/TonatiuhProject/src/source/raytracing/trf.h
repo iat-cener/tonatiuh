@@ -51,13 +51,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RayTracerPhoton.h"
 #include "TPhotonMap.h"
 #include "Ray.h"
+#include "tgf.h"
 #include "TShape.h"
 #include "TSunShape.h"
 #include "Transform.h"
 #include "TSeparatorKit.h"
 #include "TAnalyzerKit.h"
 #include "TShapeKit.h"
-#include "tgf.h"
 
 
 class InstanceNode;

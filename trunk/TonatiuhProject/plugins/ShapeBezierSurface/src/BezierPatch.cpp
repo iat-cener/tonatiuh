@@ -226,7 +226,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 
 	int nIterations = 100;
 	double previousDistance = 0;
-	double currentDistance = tgc::Infinity;
+	double currentDistance = gc::Infinity;
 
 	double tol = 0.000000001;
 	int iteration = 0;
@@ -323,7 +323,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 		if( patches > distances.size() )	patches = distances.size();
 		for( unsigned int i = 0; i < patches; ++i)
 		{
-			if( distances[i] != tgc::Infinity ) buffer1.push_back( distancesMap.value( distances[i] ) );
+			if( distances[i] != gc::Infinity ) buffer1.push_back( distancesMap.value( distances[i] ) );
 
 		}
 		for( unsigned int i = patches; i < distances.size(); ++i)

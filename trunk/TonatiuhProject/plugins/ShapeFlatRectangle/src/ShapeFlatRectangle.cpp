@@ -43,12 +43,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeFlatRectangle.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
 
 
@@ -119,7 +119,7 @@ bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, Different
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
 
 
 	// Find parametric representation of the rectangle hit point
@@ -163,7 +163,7 @@ Point3D ShapeFlatRectangle::Sample( double u, double v ) const
 
 Point3D ShapeFlatRectangle::GetPoint3D (double u, double v) const
 {
-	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function ShapeFlatRectangle::GetPoint3D called with invalid parameters" );
+	if( OutOfRange( u, v ) ) 	gf::SevereError("Function ShapeFlatRectangle::GetPoint3D called with invalid parameters" );
 
 	double x = u * height.getValue() - (height.getValue()/2);
 	double z = (v * width.getValue()) - (width.getValue()/2);

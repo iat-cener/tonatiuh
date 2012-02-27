@@ -44,16 +44,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "gc.h"
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeHyperboloid.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
-
-using tgc::Pi;
-using tgc::TwoPi;
 
 SO_NODE_SOURCE(ShapeHyperboloid);
 
@@ -136,7 +134,7 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -174,13 +172,13 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of hyperbola hit
 	double u = yradius / ( reflectorMaxDiameter.getValue() / 2 );
 	double phi = atan2( hitPoint.z , hitPoint.x );
-	if( phi < 0.0 ) phi = phi + tgc::TwoPi;
-	double v = phi / tgc::TwoPi;
+	if( phi < 0.0 ) phi = phi + gc::TwoPi;
+	double v = phi / gc::TwoPi;
 
 
 	Vector3D dpdu = Dpdu( u, v );
@@ -193,12 +191,12 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 							* pow( 4 *  bConic * bConic + reflectorMaxDiameter.getValue() * reflectorMaxDiameter.getValue() * u * u , 3 / 2.0 ) ),
 					0.0 );
 
-	Vector3D d2Pduv( - reflectorMaxDiameter.getValue() *tgc::Pi * sin( tgc::TwoPi * v ),
+	Vector3D d2Pduv( - reflectorMaxDiameter.getValue() *gc::Pi * sin( gc::TwoPi * v ),
 					0.0,
-					reflectorMaxDiameter.getValue() *tgc::Pi * cos( tgc::TwoPi * v ) );
-	Vector3D d2Pdvv( -2.0 * reflectorMaxDiameter.getValue() * tgc::Pi * tgc::Pi * u * cos( tgc::TwoPi * v),
+					reflectorMaxDiameter.getValue() *gc::Pi * cos( gc::TwoPi * v ) );
+	Vector3D d2Pdvv( -2.0 * reflectorMaxDiameter.getValue() * gc::Pi * gc::Pi * u * cos( gc::TwoPi * v),
 					0.0,
-					-2.0 * reflectorMaxDiameter.getValue() * tgc::Pi * tgc::Pi * u * sin( tgc::TwoPi * v ) );
+					-2.0 * reflectorMaxDiameter.getValue() * gc::Pi * gc::Pi * u * sin( gc::TwoPi * v ) );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct( dpdu, dpdu );
@@ -251,7 +249,8 @@ bool ShapeHyperboloid::OutOfRange( double u, double v ) const
 
 Point3D ShapeHyperboloid::GetPoint3D (double u, double v) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )
+		gf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double cConic = fabs( distanceTwoFocus.getValue() /2 );
 	double aConic = cConic - focusLegth.getValue();
@@ -259,7 +258,7 @@ Point3D ShapeHyperboloid::GetPoint3D (double u, double v) const
 
 
 	double r0 = ( reflectorMaxDiameter.getValue() / 2 ) * u;
-	double phi0 = tgc::TwoPi * v;
+	double phi0 = gc::TwoPi * v;
 
 	double x = cos(phi0 )* r0;
 	double z = sin( phi0 ) * r0;
@@ -397,18 +396,18 @@ Vector3D ShapeHyperboloid::Dpdu( double u, double v ) const
 	double aConic = cConic - focusLegth.getValue();
 	double bConic = sqrt( fabs( cConic * cConic - aConic * aConic ) );
 
-	Vector3D dpdu = Vector3D( 0.5 * reflectorMaxDiameter.getValue() * cos( tgc::TwoPi *  v ),
+	Vector3D dpdu = Vector3D( 0.5 * reflectorMaxDiameter.getValue() * cos( gc::TwoPi *  v ),
 			( pow( aConic, 2 ) * pow( reflectorMaxDiameter.getValue(), 2 ) * u )
 				/ ( 2 * sqrt( pow( aConic, 2 ) * pow( bConic, 2 ) *
 						( 4 * pow( bConic, 2 )  +  ( pow( reflectorMaxDiameter.getValue(), 2 ) * u * u ) ) ) ),
-			0.5 * reflectorMaxDiameter.getValue() * sin( tgc::TwoPi * v ) );
+			0.5 * reflectorMaxDiameter.getValue() * sin( gc::TwoPi * v ) );
 	return dpdu;
 }
 
 Vector3D ShapeHyperboloid::Dpdv( double u, double v ) const
 {
-	Vector3D dpdv = Vector3D( - reflectorMaxDiameter.getValue() * Pi * u * sin( tgc::TwoPi * v ),
+	Vector3D dpdv = Vector3D( - reflectorMaxDiameter.getValue() * gc::Pi * u * sin( gc::TwoPi * v ),
 			0.0,
-			reflectorMaxDiameter.getValue() * Pi * u * cos( tgc::TwoPi * v ) );
+			reflectorMaxDiameter.getValue() * gc::Pi * u * cos( gc::TwoPi * v ) );
 	return dpdv;
 }

@@ -36,8 +36,9 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "gf.h"
+
 #include "CmdLightPositionModified.h"
-#include "tgf.h"
 #include "TLightKit.h"
 
 /**
@@ -48,7 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdLightPositionModified::CmdLightPositionModified( TLightKit* light, double azimuth, double zenith, QUndoCommand* parent )
 :QUndoCommand( "Sun position changed", parent ), lightKit( light ), m_newAzimuth( azimuth ), m_newZenith( zenith )
 {
-	if( light == 0 ) tgf::SevereError( "CmdLinghtPositionModified called with NULL TLightKit" );
+	if( light == 0 ) gf::SevereError( "CmdLinghtPositionModified called with NULL TLightKit" );
 
 	m_oldAzimuth = light->azimuth.getValue();
 	m_oldZenith = light->zenith.getValue();

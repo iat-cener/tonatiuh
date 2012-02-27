@@ -48,13 +48,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "Ray.h"
 #include "ShapeFlatTriangle.h"
-#include "tgf.h"
 #include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeFlatTriangle);
@@ -178,7 +179,7 @@ bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, Different
 	// Now check if the function is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeFlatTriangle::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeFlatTriangle::Intersect(...) called with null pointers" );
 
 	Vector3D dpdu = vAB;
 	Vector3D dpdv = vAC;
@@ -332,7 +333,7 @@ void ShapeFlatTriangle::updateC( void *data, SoSensor * )
 
 Point3D ShapeFlatTriangle::GetPoint3D (double u, double v) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeFlatTriangle::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) ) gf::SevereError( "Function ShapeFlatTriangle::GetPoint3D called with invalid parameters" );
 
 	Point3D v0( a.getValue()[0], a.getValue()[1], a.getValue()[2]);
 	Point3D v1( b.getValue()[0], b.getValue()[1], b.getValue()[2] );

@@ -18,6 +18,7 @@ isEmpty( MARBLEDIR ) {
 
 
 INCLUDEPATH += 	. \
+                $$(TONATIUH_ROOT)/geometry \
 				$$(TONATIUH_ROOT)/src \
 				$$(TONATIUH_ROOT)/src/source \
                 $$(TONATIUH_ROOT)/src/source/analyzer \
@@ -32,12 +33,20 @@ INCLUDEPATH += 	. \
 
 win32 {
 	DEFINES+= COIN_DLL SOQT_DLL
+
+
+}
+
+CONFIG(debug, debug|release) {
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry
+}else{
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry
 }
 
 COMPILER = $$(COMPILER)
 contains( COMPILER, MSVC ) {
 	CONFIG(debug, debug|release) {
-		LIBS += -L$${COINDIR}/lib -lcoin3d -lSoQt1d
+        LIBS += -L$${COINDIR}/lib -lcoin3d -lSoQt1d
 	}
 	else{
 		LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
@@ -45,6 +54,7 @@ contains( COMPILER, MSVC ) {
 }
 else {
 	LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
+
 }
 
 CONFIG(debug, debug|release) {

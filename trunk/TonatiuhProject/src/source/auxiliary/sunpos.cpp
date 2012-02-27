@@ -32,14 +32,14 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
 
 #include "sunpos.h"
-#include "tgc.h"
+#include "gc.h"
 
 using namespace std;
 
@@ -104,7 +104,7 @@ void sunpos(cTime udtTime,cLocation udtLocation, cSunCoordinates *udtSunCoordina
 		dY = cos( dEclipticObliquity ) * dSin_EclipticLongitude;
 		dX = cos( udtSunCoordinates->dEclipticLongitude );
 		udtSunCoordinates->dRightAscension = atan2( dY,dX );
-		if( udtSunCoordinates->dRightAscension < 0.0 ) udtSunCoordinates->dRightAscension = udtSunCoordinates->dRightAscension + tgc::TwoPi;
+		if( udtSunCoordinates->dRightAscension < 0.0 ) udtSunCoordinates->dRightAscension = udtSunCoordinates->dRightAscension + gc::TwoPi;
 		udtSunCoordinates->dDeclination = asin( sin( dEclipticObliquity )*dSin_EclipticLongitude );
 	}
 
@@ -122,10 +122,10 @@ void sunpos(cTime udtTime,cLocation udtLocation, cSunCoordinates *udtSunCoordina
 			- 0.000292222*sin(0.0009242*dElapsedJulianDays+0.9574);
 
 		dLocalMeanSiderealTime = (dGreenwichMeanSiderealTime*15
-			+ udtLocation.dLongitude) * tgc::Degree;
+			+ udtLocation.dLongitude) * gc::Degree;
 
 		udtSunCoordinates->dHourAngle = dLocalMeanSiderealTime - udtSunCoordinates->dRightAscension;
-		dLatitudeInRadians = udtLocation.dLatitude * tgc::Degree;
+		dLatitudeInRadians = udtLocation.dLatitude * gc::Degree;
 		dCos_Latitude = cos( dLatitudeInRadians );
 		dSin_Latitude = sin( dLatitudeInRadians );
 		dCos_HourAngle= cos( udtSunCoordinates->dHourAngle );
@@ -136,13 +136,13 @@ void sunpos(cTime udtTime,cLocation udtLocation, cSunCoordinates *udtSunCoordina
 		dX = tan( udtSunCoordinates->dDeclination )*dCos_Latitude - dSin_Latitude*dCos_HourAngle;
 		udtSunCoordinates->dAzimuth = atan2( dY, dX );
 		if ( udtSunCoordinates->dAzimuth < 0.0 )
-			udtSunCoordinates->dAzimuth = udtSunCoordinates->dAzimuth + tgc::TwoPi;
-		udtSunCoordinates->dAzimuth = udtSunCoordinates->dAzimuth/tgc::Degree;
+			udtSunCoordinates->dAzimuth = udtSunCoordinates->dAzimuth + gc::TwoPi;
+		udtSunCoordinates->dAzimuth = udtSunCoordinates->dAzimuth/gc::Degree;
 		// Parallax Correction
 		dParallax=(dEarthMeanRadius/dAstronomicalUnit)
 			*sin(udtSunCoordinates->dZenithAngle);
 		udtSunCoordinates->dZenithAngle=(udtSunCoordinates->dZenithAngle
-			+ dParallax)/tgc::Degree;
+			+ dParallax)/gc::Degree;
 
 	}
 }

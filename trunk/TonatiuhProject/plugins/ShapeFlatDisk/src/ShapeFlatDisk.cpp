@@ -43,12 +43,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
+#include "gc.h"
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeFlatDisk.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeFlatDisk);
@@ -75,7 +76,7 @@ ShapeFlatDisk::~ShapeFlatDisk()
 
 double ShapeFlatDisk::GetArea() const
 {
-	return ( tgc::Pi * radius.getValue() * radius.getValue() );
+	return ( gc::Pi * radius.getValue() * radius.getValue() );
 }
 
 /*!
@@ -116,19 +117,19 @@ bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGe
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function Sphere::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of the rectangle hit point
 	double phi = atan2( hitPoint.z, hitPoint.x );
-	if ( phi < 0. ) phi += tgc::TwoPi;
+	if ( phi < 0. ) phi += gc::TwoPi;
 	double iradius = sqrt( hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z );
 
-	double u = phi/tgc::TwoPi;
+	double u = phi/gc::TwoPi;
 	double v = iradius/radius.getValue();
 
 	// Compute rectangle \dpdu and \dpdv
-	Vector3D dpdu ( -v * radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
-	Vector3D dpdv ( radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  radius.getValue() * sin( u * tgc::TwoPi ) );
+	Vector3D dpdu ( -v * radius.getValue() * sin( u * gc::TwoPi ) * gc::TwoPi, 0.0, v * radius.getValue() * cos( u * gc::TwoPi ) * gc::TwoPi );
+	Vector3D dpdv ( radius.getValue()* cos( u * gc::TwoPi ), 0.0,  radius.getValue() * sin( u * gc::TwoPi ) );
 
 	NormalVector N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
@@ -159,26 +160,26 @@ bool ShapeFlatDisk::IntersectP( const Ray& objectRay ) const
 
 Point3D ShapeFlatDisk::Sample( double u, double v ) const
 {
-	double x = sqrt( u ) * cos( tgc::TwoPi * v ) * radius.getValue();
-	double z = sqrt( u ) * sin( tgc::TwoPi * v ) * radius.getValue();
+	double x = sqrt( u ) * cos( gc::TwoPi * v ) * radius.getValue();
+	double z = sqrt( u ) * sin( gc::TwoPi * v ) * radius.getValue();
 	return Point3D( x, 0.0, z );
 	//return GetPoint3D( u, v );
 }
 
 Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
 {
-	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
+	if (OutOfRange( u, v ) ) gf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
 
-	return Point3D( v * radius.getValue() * cos( u * tgc::TwoPi ), 0, v * radius.getValue() * sin( u * tgc::TwoPi ) );
+	return Point3D( v * radius.getValue() * cos( u * gc::TwoPi ), 0, v * radius.getValue() * sin( u * gc::TwoPi ) );
 }
 
 NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
 {
-	if (OutOfRange( u, v ) ) tgf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
+	if (OutOfRange( u, v ) ) gf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
 	//return NormalVector( 0, 1, 0 );
 
-	Vector3D dpdu ( -v * radius.getValue() * sin( u * tgc::TwoPi ) * tgc::TwoPi, 0.0, v * radius.getValue() * cos( u * tgc::TwoPi ) * tgc::TwoPi );
-	Vector3D dpdv ( radius.getValue()* cos( u * tgc::TwoPi ), 0.0,  radius.getValue() * sin( u * tgc::TwoPi ) );
+	Vector3D dpdu ( -v * radius.getValue() * sin( u * gc::TwoPi ) * gc::TwoPi, 0.0, v * radius.getValue() * cos( u * gc::TwoPi ) * gc::TwoPi );
+	Vector3D dpdv ( radius.getValue()* cos( u * gc::TwoPi ), 0.0,  radius.getValue() * sin( u * gc::TwoPi ) );
 
 	NormalVector normal = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 	return normal;

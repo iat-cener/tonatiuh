@@ -47,9 +47,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QPluginLoader>
 #include <QStringList>
 
+#include "gf.h"
+
 #include "PluginManager.h"
 #include "RandomDeviateFactory.h"
-#include "tgf.h"
 #include "TMaterialFactory.h"
 #include "TPhotonMapFactory.h"
 #include "TShapeFactory.h"
@@ -182,7 +183,7 @@ void PluginManager::LoadMaterialPlugin( QObject* plugin )
 {
 
 	TMaterialFactory* pTMaterialFactory = qobject_cast<TMaterialFactory* >( plugin );
-	if( !pTMaterialFactory )  tgf::SevereError( "MainWindow::LoadPlugins: Material plug-in not recognized" );
+	if( !pTMaterialFactory )  gf::SevereError( "MainWindow::LoadPlugins: Material plug-in not recognized" );
 	pTMaterialFactory->CreateTMaterial();
 	m_materialFactoryList.push_back( pTMaterialFactory );
 }
@@ -190,7 +191,7 @@ void PluginManager::LoadMaterialPlugin( QObject* plugin )
 void PluginManager::LoadPhotonMapPlugin( QObject* plugin )
 {
 	TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
-	if( !pTPhotonMapFactory ) tgf::SevereError( "MainWindow::LoadPlugins: PhotonMap plug-in not recognized" );;
+	if( !pTPhotonMapFactory ) gf::SevereError( "MainWindow::LoadPlugins: PhotonMap plug-in not recognized" );;
 	m_photonmapFactoryList.push_back( pTPhotonMapFactory );
 }
 
@@ -207,7 +208,7 @@ void PluginManager::LoadRandomDeviatePlugin( QObject* plugin )
 void PluginManager::LoadShapePlugin( QObject* plugin )
 {
 	TShapeFactory* pTShapeFactory = qobject_cast<TShapeFactory* >( plugin );
-	if ( !pTShapeFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Shape plug-in not recognized" );
+	if ( !pTShapeFactory ) gf::SevereError( "MainWindow::LoadPlugins: Shape plug-in not recognized" );
 	//if( pTShapeFactory->IsFlat() )	m_TFlatShapeFactoryList.push_back( pTShapeFactory );
 	pTShapeFactory->CreateTShape();
 	m_shapeFactoryList.push_back( pTShapeFactory );
@@ -216,7 +217,7 @@ void PluginManager::LoadShapePlugin( QObject* plugin )
 void PluginManager::LoadSunshapePlugin( QObject* plugin )
 {
     TSunShapeFactory* pTSunShapeFactory = qobject_cast<TSunShapeFactory* >( plugin );
-    if( !pTSunShapeFactory ) tgf::SevereError( "MainWindow::LoadPlugins: SunShape plug-in not recognized" );     	    	;
+    if( !pTSunShapeFactory ) gf::SevereError( "MainWindow::LoadPlugins: SunShape plug-in not recognized" );     	    	;
    	pTSunShapeFactory->CreateTSunShape( );
    	m_sunshapeFactoryList.push_back( pTSunShapeFactory );
 }
@@ -224,7 +225,7 @@ void PluginManager::LoadSunshapePlugin( QObject* plugin )
 void PluginManager::LoadTrackerPlugin( QObject* plugin )
 {
     TTrackerFactory* pTTrackerFactory = qobject_cast< TTrackerFactory* >( plugin );
-    if( !pTTrackerFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Tracker plug-in not recognized" );
+    if( !pTTrackerFactory ) gf::SevereError( "MainWindow::LoadPlugins: Tracker plug-in not recognized" );
    	pTTrackerFactory->CreateTTracker( );
    	m_trackerFactoryList.push_back( pTTrackerFactory );
 }
@@ -235,7 +236,7 @@ void PluginManager::LoadTrackerPlugin( QObject* plugin )
 void PluginManager::LoadTransmissivityPlugin( QObject* plugin )
 {
 	TTransmissivityFactory* pTTransmissivityFactory = qobject_cast< TTransmissivityFactory* >( plugin );
-    if( !pTTransmissivityFactory ) tgf::SevereError( "MainWindow::LoadPlugins: Transmissivity plug-in not recognized" );
+    if( !pTTransmissivityFactory ) gf::SevereError( "MainWindow::LoadPlugins: Transmissivity plug-in not recognized" );
     pTTransmissivityFactory->CreateTTransmissivity( );
     m_transmissivityFactoryList.push_back( pTTransmissivityFactory );
 }

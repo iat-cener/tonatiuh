@@ -41,11 +41,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 
-#include "tgf.h"
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "InstanceNode.h"
 #include "Ray.h"
+#include "tgf.h"
 #include "TMaterial.h"
 #include "Transform.h"
 #include "TShape.h"

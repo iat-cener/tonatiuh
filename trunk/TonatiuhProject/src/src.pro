@@ -8,6 +8,7 @@ include( ../config.pri )
 TARGET = Tonatiuh   
 
 DEPENDPATH += . \
+                $$(TONATIUH_ROOT)/geometry \
                 $$(TONATIUH_ROOT)/src \
                 $$(TONATIUH_ROOT)/src/source \
                 $$(TONATIUH_ROOT)/src/source/analyzer \

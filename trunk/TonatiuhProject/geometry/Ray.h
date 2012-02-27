@@ -40,18 +40,18 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RAY_H
 #define RAY_H
 
-#include "tgc.h"
+#include "gc.h"
 #include "Point3D.h"
 #include "Vector3D.h"
 
 class Ray
 {
 public:
-    Ray() : mint( tgc::Epsilon ), maxt( tgc::Infinity )
+    Ray() : mint( gc::Epsilon ), maxt( gc::Infinity )
     {
     }
 
-    Ray( const Point3D& orig, const Vector3D& direc, double start = tgc::Epsilon, double end = tgc::Infinity )
+    Ray( const Point3D& orig, const Vector3D& direc, double start = gc::Epsilon, double end = gc::Infinity )
     : origin( orig ), mint( start ), maxt( end )
     {
     	setDirection( direc );
@@ -88,7 +88,7 @@ public:
     {
     	if( this == &ray ) return true;
     	return ( ( origin == ray.origin ) && ( m_direction == ray.m_direction ) &&
-    		     !( fabs( mint - ray.mint) > tgc::Epsilon ) && !( fabs( maxt - ray.maxt) > tgc::Epsilon ) );
+    		     !( fabs( mint - ray.mint) > gc::Epsilon ) && !( fabs( maxt - ray.maxt) > gc::Epsilon ) );
     }
 
     Point3D origin;

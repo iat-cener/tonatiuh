@@ -36,17 +36,15 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
 
+#include "gf.h"
+
 #include "GraphicRoot.h"
 #include "GraphicRootTracker.h"
-#include "tgc.h"
-#include "tgf.h"
 #include "TSceneKit.h"
 
 void selectionFinishCallback( void * userData, SoSelection* selection )
@@ -158,7 +156,7 @@ void GraphicRoot::RemoveGrid()
 		m_pGrid->removeAllChildren();
 		std::cout<<"m_pGrid: "<<m_pGrid->getRefCount()<<std::endl;
 		while( m_pGrid->getRefCount() > 1 ) m_pGrid->unref();
-		if ( m_pGrid->getRefCount() > 1 ) tgf::SevereError( "RemoveGrid: m_pGrid referenced in excess ");
+		if ( m_pGrid->getRefCount() > 1 ) gf::SevereError( "RemoveGrid: m_pGrid referenced in excess ");
 		m_pGrid->unref();
 		m_pGrid = 0;
 	}
@@ -170,7 +168,7 @@ void GraphicRoot::RemoveRays()
 	if( m_pRays )
 	{
 		m_pRays->removeAllChildren();
-		if ( m_pRays->getRefCount() > 1 ) tgf::SevereError( "RemoveRays: m_pRays referenced in excess ");
+		if ( m_pRays->getRefCount() > 1 ) gf::SevereError( "RemoveRays: m_pRays referenced in excess ");
 		m_pRays->unref();
 		m_pRays = 0;
 	}

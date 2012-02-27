@@ -5,6 +5,8 @@
  *      Author: amutuberria
  */
 
+#include "gf.h"
+
 #include "CmdTransmissivityModified.h"
 #include "TSceneKit.h"
 #include "TTransmissivity.h"
@@ -17,7 +19,7 @@ CmdTransmissivityModified::CmdTransmissivityModified( TTransmissivity* newTransm
  m_isPreviousTransmissivity( false ),
  m_scene( scene )
 {
-    if( newTransmissivity == 0 ) tgf::SevereError( "CmdTransmissivityModified called with NULL TTransmissivity " );
+    if( newTransmissivity == 0 ) gf::SevereError( "CmdTransmissivityModified called with NULL TTransmissivity " );
     m_pNewTransmissivity = static_cast< TTransmissivity* >( newTransmissivity->copy( true ) );
     m_pNewTransmissivity->ref();
 

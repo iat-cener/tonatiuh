@@ -36,11 +36,12 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "gf.h"
+
 #include <Inventor/nodekits/SoBaseKit.h>
 #include "CmdInsertSeparatorKit.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "tgf.h"
 #include "TSeparatorKit.h"
 
 /**
@@ -51,10 +52,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertSeparatorKit::CmdInsertSeparatorKit( TSeparatorKit* separatorKit,  const QModelIndex& parentIndex, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("InsertSeparatorKit", parent), m_separatorKit ( separatorKit ), m_coinParent( 0 ), m_pModel( model ), m_row( -1 )
 {
-	if( !m_separatorKit ) tgf::SevereError( "CmdInsertSeparatorKit Null separatorKit." );
+	if( !m_separatorKit ) gf::SevereError( "CmdInsertSeparatorKit Null separatorKit." );
 	m_separatorKit->ref();
 
-	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertSeparatorKit called with invalid ModelIndex." );
+	if( !parentIndex.isValid() ) gf::SevereError( "CmdInsertSeparatorKit called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
 	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
 }

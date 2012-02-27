@@ -32,27 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #ifndef TGC_H_
 #define TGC_H_
 
-#include <cfloat>
-#include <cmath>
 
 namespace tgc
 {
-    const double Pi = 3.1415926535897932385;
-    const double TwoPi = 2.0 * Pi;
-    const double InvPi = 0.31830988618379067154;
-    const double InvTwoPi = 0.15915494309189533577;
-    const double Degree = Pi / 180.0;
-    const double Infinity = HUGE_VAL;
-    const double Epsilon = DBL_EPSILON;
-    const double Ecliptic = 23.5  * Degree;
-    const long unsigned int Max_Photon = 100000000 ;
 
     enum PasteType { Shared, Copied };
 }

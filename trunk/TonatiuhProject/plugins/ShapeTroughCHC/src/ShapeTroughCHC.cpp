@@ -43,19 +43,21 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMap>
 #include <QMessageBox>
 
-#include "BBox.h"
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include "DifferentialGeometry.h"
+
+#include "BBox.h"
+#include "gc.h"
+#include "gf.h"
 #include "Ray.h"
-#include "ShapeTroughCHC.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Transform.h"
 #include "Vector3D.h"
+
+#include "DifferentialGeometry.h"
+#include "ShapeTroughCHC.h"
 
 
 double fPart( double alpha, double x, double r1, double theta, double r, double eccentricity )
@@ -127,14 +129,7 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	double a = ( m_s - height.getValue() )/( cos( m_theta ) * 2 *  m_eccentricity);
 	double b = sqrt( ( m_eccentricity * m_eccentricity - 1 ) *  a * a );
 
-	double angle = -( 0.5 * tgc::Pi ) + m_theta;
-	/*Transform rotation = Rotate( angle, Vector3D( 0.0, 0.0, 1.0 ) );
-	Transform translate = Translate( -r1.getValue() + a * m_eccentricity * sin( m_theta ),
-			- a * m_eccentricity * cos( m_theta ),
-			0.0 );
-
-	Transform hTransform = translate * rotation ;
-	*/
+	double angle = -( 0.5 * gc::Pi ) + m_theta;
 
 	Transform hTransform( cos( angle ), -sin( angle ), 0.0, -r1.getValue() + a * m_eccentricity * sin( m_theta ),
 			sin( angle ), cos( angle ), 0.0, - a * m_eccentricity * cos( m_theta ),
@@ -156,7 +151,7 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -199,7 +194,7 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 
 	// Find parametric representation of CHC concentrator hit
 
-	double sup = m_theta + 0.5* tgc::Pi;
+	double sup = m_theta + 0.5* gc::Pi;
 	double inf = m_theta + m_phi;
 
 	double alpha;
@@ -275,11 +270,11 @@ void ShapeTroughCHC::updateInternalValues( void *data, SoSensor *)
 
 Point3D ShapeTroughCHC::GetPoint3D( double u, double v ) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )	gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
-	double alpha = u * ( ( m_theta + 0.5* tgc::Pi ) - ( m_theta + m_phi ) ) + ( m_theta + m_phi );
+	double alpha = u * ( ( m_theta + 0.5* gc::Pi ) - ( m_theta + m_phi ) ) + ( m_theta + m_phi );
 
-	double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* tgc::Pi ) );
+	double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* gc::Pi ) );
 	double radius  =  r / ( 1 - m_eccentricity * cos ( alpha )  );
 
 	double x = - r1.getValue() + sin( alpha - m_theta ) * radius;
@@ -413,11 +408,11 @@ void ShapeTroughCHC::generatePrimitives(SoAction *action)
 
 Vector3D ShapeTroughCHC::GetDPDU( double u, double v ) const
 {
-	double alphaMax = m_theta + 0.5* tgc::Pi;
+	double alphaMax = m_theta + 0.5* gc::Pi;
 	double alphaMin = m_theta + m_phi;
 	double alpha = u * ( alphaMax - alphaMin ) + alphaMin;
 
-	double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* tgc::Pi ) );
+	double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* gc::Pi ) );
 
 	double x = ( ( alphaMax - alphaMin) * r * cos( alpha - m_theta )
 					/ (1 - m_eccentricity * cos( alpha ) ) )
@@ -440,11 +435,11 @@ Vector3D ShapeTroughCHC::GetDPDU( double u, double v ) const
 
 Vector3D ShapeTroughCHC::GetDPDV( double u, double /* v */ ) const
 {
-   double alphaMax = m_theta + 0.5 * tgc::Pi;
+   double alphaMax = m_theta + 0.5 * gc::Pi;
    double alphaMin = m_theta + m_phi;
    double alpha = u * ( alphaMax - alphaMin ) + alphaMin;
 
-   double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* tgc::Pi ) );
+   double r  =  2 * r1.getValue() *( 1 - m_eccentricity * cos( m_theta + 0.5* gc::Pi ) );
 
    double x = 0.0;
    double y = 0.0;
@@ -463,7 +458,7 @@ Vector3D ShapeTroughCHC::GetDPDV( double u, double /* v */ ) const
 bool ShapeTroughCHC::findRoot( double (*funcion)( double, double, double, double, double, double ), double xCoord, double e, double r1, double theta, double a, double b, double y0, int max, double* alpha )
 {
 
-	double r  =  2 * r1 *( 1 - e * cos( theta + 0.5* tgc::Pi ) );
+	double r  =  2 * r1 *( 1 - e * cos( theta + 0.5* gc::Pi ) );
 
 
 	double y1 = funcion( a, xCoord, r1, theta, r, e );

@@ -48,11 +48,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "BBox.h"
-#include "DifferentialGeometry.h"
+#include "gf.h"
 #include "Ray.h"
-#include "ShapeSphericalRectangle.h"
-#include "tgf.h"
 #include "Vector3D.h"
+
+#include "DifferentialGeometry.h"
+#include "ShapeSphericalRectangle.h"
 
 
 SO_NODE_SOURCE(ShapeSphericalRectangle);
@@ -146,7 +147,7 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) )	return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -180,7 +181,7 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
     // Now check if the function is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeSphericalRectangle::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) )	gf::SevereError( "Function ShapeSphericalRectangle::Intersect(...) called with null pointers" );
 
 ///////////////////////////////////////////////////////////////////////////////////////
 	// Compute possible parabola hit position
@@ -263,7 +264,7 @@ bool ShapeSphericalRectangle::OutOfRange( double u, double v ) const
 
 Point3D ShapeSphericalRectangle::GetPoint3D( double u, double v ) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )	gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 
 	double x = ( u - 0.5 )* widthX.getValue();

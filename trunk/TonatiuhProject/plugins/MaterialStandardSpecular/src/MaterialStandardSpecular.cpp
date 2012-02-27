@@ -40,11 +40,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "gc.h"
+
 #include "DifferentialGeometry.h"
 #include "MaterialStandardSpecular.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
-#include "tgc.h"
 #include "tgf.h"
 #include "Transform.h"
 
@@ -61,7 +62,6 @@ MaterialStandardSpecular::MaterialStandardSpecular()
 	SO_NODE_CONSTRUCTOR( MaterialStandardSpecular );
 	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
 	SO_NODE_ADD_FIELD( m_sigmaSlope, (2.0) );
-	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
 
 	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
@@ -169,7 +169,7 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 		NormalVector errorNormal;
 		if ( m_distribution.getValue() == 0 )
 		{
-			double phi = tgc::TwoPi * rand.RandomDouble();
+			double phi = gc::TwoPi * rand.RandomDouble();
 			double theta = sigmaSlope * rand.RandomDouble();
 
 			errorNormal.x = sin( theta ) * sin( phi ) ;

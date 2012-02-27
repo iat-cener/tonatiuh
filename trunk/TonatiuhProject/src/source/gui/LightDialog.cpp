@@ -38,10 +38,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QMessageBox>
 
+#include "gc.h"
+
 #include "FieldContainerWidget.h"
 #include "LightDialog.h"
-#include "tgc.h"
-#include "tgf.h"
 #include "TLightKit.h"
 #include "TShape.h"
 #include "TShapeFactory.h"
@@ -97,7 +97,7 @@ TLightKit* LightDialog::GetTLightKit()
 	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
 	//if( m_newShape ) lightKit->setPart( "icon", m_newShape );
 
-	lightKit->ChangePosition( azimuthSpin->value()* tgc::Degree, ( 90 - elevationSpin->value() ) * tgc::Degree/*, distanceSpin->value()*/ );
+	lightKit->ChangePosition( azimuthSpin->value()* gc::Degree, ( 90 - elevationSpin->value() ) * gc::Degree );
 	return lightKit;
 }
 
@@ -156,9 +156,8 @@ void LightDialog::SunPositionTab()
 {
 	if( m_currentLightKit )
 	{
-		azimuthSpin->setValue( m_currentLightKit->azimuth.getValue() / tgc::Degree );
-		elevationSpin->setValue( 90 - ( m_currentLightKit->zenith.getValue() / tgc::Degree ) );
-		//distanceSpin->setValue( m_currentLightKit->distance.getValue() );
+		azimuthSpin->setValue( m_currentLightKit->azimuth.getValue() / gc::Degree );
+		elevationSpin->setValue( 90 - ( m_currentLightKit->zenith.getValue() / gc::Degree ) );
 	}
 
 }
@@ -169,7 +168,6 @@ void LightDialog::SunPositionTab()
 void LightDialog::SunshapeTab()
 {
 	SunshapeBox();
-	//ShapeBox();
 }
 
 void LightDialog::SunshapeBox()

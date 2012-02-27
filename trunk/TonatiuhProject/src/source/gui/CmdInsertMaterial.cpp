@@ -36,9 +36,10 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "gf.h"
+
 #include "CmdInsertMaterial.h"
 #include "SceneModel.h"
-#include "tgf.h"
 #include "TMaterial.h"
 #include "TShapeKit.h"
 
@@ -50,8 +51,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertMaterial::CmdInsertMaterial( TShapeKit* shapeKit, TMaterial* material, SceneModel* model, QUndoCommand * parent )
 : QUndoCommand("InsertMaterial", parent), m_shapeKit( shapeKit ),m_material( material ), m_pModel( model ), m_row( -1 )
 {
-	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertMaterial called with NULL TShapeKit" );
-	if( m_material == 0 ) tgf::SevereError( "CmdInsertMaterial called with NULL TMaterial" );
+	if( m_shapeKit == 0 ) gf::SevereError( "CmdInsertMaterial called with NULL TShapeKit" );
+	if( m_material == 0 ) gf::SevereError( "CmdInsertMaterial called with NULL TMaterial" );
 	m_material->ref();
 
 }

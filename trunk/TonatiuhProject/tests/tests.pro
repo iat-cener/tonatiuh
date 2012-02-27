@@ -42,10 +42,10 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/TDefaultTracker.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultTransmissivity.o \
                         $$(TONATIUH_ROOT)/debug/tgf.o \
-                        $$(TONATIUH_ROOT)/debug/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/debug/TLightKit.o \
                         $$(TONATIUH_ROOT)/debug/TLightShape.o \
                         $$(TONATIUH_ROOT)/debug/TMaterial.o \
+                        $$(TONATIUH_ROOT)/debug/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/debug/Transform.o \
                         $$(TONATIUH_ROOT)/debug/trf.o \
                         $$(TONATIUH_ROOT)/debug/TSceneTracker.o \
@@ -94,10 +94,10 @@ else {
                         $$(TONATIUH_ROOT)/release/TDefaultTracker.o \
                         $$(TONATIUH_ROOT)/release/TDefaultTransmissivity.o \
                         $$(TONATIUH_ROOT)/release/tgf.o \
-                        $$(TONATIUH_ROOT)/release/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/release/TLightKit.o \
                         $$(TONATIUH_ROOT)/release/TLightShape.o \
                         $$(TONATIUH_ROOT)/release/TMaterial.o \
+                        $$(TONATIUH_ROOT)/release/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/release/Transform.o \
                         $$(TONATIUH_ROOT)/release/trf.o \
                         $$(TONATIUH_ROOT)/release/TSeparatorKit.o \

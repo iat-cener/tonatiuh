@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -48,10 +48,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoField.h>
 #include <Inventor/nodes/SoNode.h>
 
+#include "gf.h"
+
 #include "CmdModifyParameter.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "tgf.h"
 
 /**
  * CmdModifyParameter creates a new command that represents a scene node parameter value modification. This object saves the \a parameterName parameter value of \a nodeIndex node and the new one
@@ -67,10 +68,10 @@ CmdModifyParameter::CmdModifyParameter(  SoNode* node, QString parameterName, QS
  m_parameterName( parameterName ),
  m_pModel( model )
 {
-	if( !m_coinNode )		tgf::SevereError( "CmdModifyParameter called with invalid node." );
+	if( !m_coinNode )		gf::SevereError( "CmdModifyParameter called with invalid node." );
 
 	SoField* parameterField = m_coinNode->getField( SbName( m_parameterName.toStdString().c_str() ) );
-	if( !parameterField )	tgf::SevereError( "CmdModifyParameter called with invalid parameterName." );
+	if( !parameterField )	gf::SevereError( "CmdModifyParameter called with invalid parameterName." );
 
 	SbString fieldValue;
 	parameterField->get( fieldValue );

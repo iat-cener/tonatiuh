@@ -42,15 +42,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-
 #include <Inventor/sensors/SoFieldSensor.h>
+
+#include "gc.h"
+#include "gf.h"
 
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeParabolicDish.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeParabolicDish);
@@ -68,7 +68,7 @@ ShapeParabolicDish::ShapeParabolicDish()
 	m_lastMinRadius = 0.1;
 	SO_NODE_ADD_FIELD( dishMaxRadius, (0.5f) );
 	m_lastMaxRadius = 0.5;
-	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi) );
+	SO_NODE_ADD_FIELD( phiMax, (gc::TwoPi) );
 
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
@@ -98,16 +98,16 @@ BBox ShapeParabolicDish::GetBBox() const
 	double cosPhiMax = cos( phiMax.getValue() );
 	double sinPhiMax = sin( phiMax.getValue() );
 
-	double xmin = ( phiMax.getValue() >= tgc::Pi  ) ? ( phiMax.getValue() >= 1.5 * tgc::Pi  ) ? -dishMaxRadius.getValue()
+	double xmin = ( phiMax.getValue() >= gc::Pi  ) ? ( phiMax.getValue() >= 1.5 * gc::Pi  ) ? -dishMaxRadius.getValue()
 																								: sinPhiMax* dishMaxRadius.getValue()
 														: 0.0;
-	double xmax = ( phiMax.getValue() >= tgc::Pi / 2 ) ? dishMaxRadius.getValue()
+	double xmax = ( phiMax.getValue() >= gc::Pi / 2 ) ? dishMaxRadius.getValue()
 														: sinPhiMax* dishMaxRadius.getValue();
 
 	double ymin = ( dishMinRadius.getValue() > 0.0 ) ? dishMinRadius.getValue()*dishMinRadius.getValue()/( 4*focusLength.getValue() ) : 0.0;
 	double ymax = dishMaxRadius.getValue()*dishMaxRadius.getValue()/( 4*focusLength.getValue() );
 
-	double zmin = ( phiMax.getValue() > tgc::Pi ) ? -dishMaxRadius.getValue()
+	double zmin = ( phiMax.getValue() > gc::Pi ) ? -dishMaxRadius.getValue()
 													: std::min( dishMinRadius.getValue() * cosPhiMax, dishMaxRadius.getValue() * cosPhiMax );
 	double zmax = dishMaxRadius.getValue();
 
@@ -130,7 +130,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -147,7 +147,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
     double phi;
     if( ( hitPoint.z == 0.0 ) &&( hitPoint.x ==0.0 ) ) phi = 0.0;
     else if( hitPoint.x > 0 ) phi = atan2( hitPoint.x, hitPoint.z );
-    else phi = tgc::TwoPi + atan2( hitPoint.x, hitPoint.z );
+    else phi = gc::TwoPi + atan2( hitPoint.x, hitPoint.z );
 
     // Test intersection against clipping parameters
 	if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius.getValue() || radius > dishMaxRadius.getValue() || phi > pMax )
@@ -160,7 +160,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 			radius = sqrt(hitPoint.x*hitPoint.x + hitPoint.z*hitPoint.z) ;
 		    if( ( hitPoint.z == 0.0 ) &&( hitPoint.x ==0.0 ) ) phi = 0.0;
 		    else if( hitPoint.x > 0 ) phi = atan2( hitPoint.x, hitPoint.z );
-		    else phi = tgc::TwoPi + atan2( hitPoint.x, hitPoint.z );
+		    else phi = gc::TwoPi + atan2( hitPoint.x, hitPoint.z );
 
 			if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius.getValue() || radius > dishMaxRadius.getValue() || phi > pMax ) return false;
 		}
@@ -168,7 +168,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	// Now check if the function is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ParabolicCyl::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ParabolicCyl::Intersect(...) called with null pointers" );
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -247,7 +247,7 @@ Point3D ShapeParabolicDish::Sample( double u, double v ) const
 Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 {
 
-	if ( OutOfRange( u, v ) )	tgf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )	gf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
 
 	double r = v * ( dishMaxRadius.getValue() - dishMinRadius.getValue() ) + dishMinRadius.getValue();
 

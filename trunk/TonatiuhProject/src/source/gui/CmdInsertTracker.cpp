@@ -40,12 +40,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 
-#include <iostream>
+#include "gf.h"
 
 #include "CmdInsertTracker.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "tgf.h"
 #include "TLightKit.h"
 #include "TTracker.h"
 
@@ -57,12 +56,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertTracker::CmdInsertTracker( TTracker* tracker,  const QModelIndex& parentIndex, SoSceneKit* scene, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("Insert Tracker", parent), m_tracker ( tracker ), m_coinParent( 0 ), m_scene( scene ), m_pModel( model ), m_row( 0 )
 {
-	if( !m_tracker ) tgf::SevereError( "CmdInsertTracker Null tracker." );
+	if( !m_tracker ) gf::SevereError( "CmdInsertTracker Null tracker." );
 	m_tracker->ref();
 
-	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertTracker called with invalid ModelIndex." );
+	if( !parentIndex.isValid() ) gf::SevereError( "CmdInsertTracker called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
-	if( !instanceParent->GetNode() ) tgf::SevereError( "CmdInsertTracker called with NULL parent node." );
+	if( !instanceParent->GetNode() ) gf::SevereError( "CmdInsertTracker called with NULL parent node." );
 	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
 }
 

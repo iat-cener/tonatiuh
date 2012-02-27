@@ -46,11 +46,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 
+#include "gf.h"
 
 #include "InstanceNode.h"
 #include "PathWrapper.h"
 #include "SceneModel.h"
-#include "tgf.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
 #include "TSceneTracker.h"
@@ -184,7 +184,6 @@ void SceneModel::SetConcentrator()
 		{
 			TTracker* trackerNode = static_cast< TTracker* >( tracker );
 			trackerNode->SetSceneKit( m_coinScene );
-			//AddInstanceNode( instanceNodeParent, tracker );
 		}
 
 
@@ -663,7 +662,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 			    coinPartList->removeChild( row );
 			}
 
-			if( !coinChild ) tgf::SevereError( "SceneModel::Cut Null coinChild pointer" );
+			if( !coinChild ) gf::SevereError( "SceneModel::Cut Null coinChild pointer" );
 
 		}
 	}
@@ -759,19 +758,19 @@ QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
 QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
 {
 	SoBaseKit* coinNode = static_cast< SoBaseKit* >( coinNodePath.getTail() );
-	if( !coinNode ) tgf::SevereError( "IndexFromPath Null coinNode." );
+	if( !coinNode ) gf::SevereError( "IndexFromPath Null coinNode." );
 
 	if( coinNode->getTypeId().getName().getString() == SbName("TLightKit") ) return index( 0, 0 );
 
 	if ( coinNodePath.getLength() > 1 )
 	{
 		SoBaseKit* coinParent = static_cast< SoBaseKit* >( coinNodePath.getNodeFromTail(1) );
-		if( !coinParent ) tgf::SevereError( "IndexFromPath Null coinParent." );
+		if( !coinParent ) gf::SevereError( "IndexFromPath Null coinParent." );
 
 		if( coinParent->getTypeId().getName() == SbName( "TLightKit") ) return index( 0, 0 );
 
 		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent->getPart( "childList", true ) );
-    	if( !coinPartList ) tgf::SevereError( "IndexFromPath Null coinPartList." );
+    	if( !coinPartList ) gf::SevereError( "IndexFromPath Null coinPartList." );
 
     	int row = coinPartList->findChild(coinNode);
     	if( coinParent->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
@@ -872,7 +871,7 @@ bool SceneModel::Paste( tgc::PasteType type, SoBaseKit& coinParent, SoNode& coin
 	else
 	{
 		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( coinParent.getPart( "childList", true ) );
-		if( !coinPartList ) tgf::SevereError( "SceneModel::Paste Null coinPartList pointer" );
+		if( !coinPartList ) gf::SevereError( "SceneModel::Paste Null coinPartList pointer" );
 		if( coinParent.getPart( "tracker", false ) ) coinPartList->insertChild( coinChild, row -1 );
 		else coinPartList->insertChild( coinChild, row );
 	}
@@ -998,10 +997,10 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 		coinSearch->apply( m_coinRoot );
 
 		SoPath* coinScenePath = coinSearch->getPath( );
-		if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
+		if( !coinScenePath ) gf::SevereError( "PathFromIndex Null coinScenePath." );
 
 		SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
-		if( !nodePath ) tgf::SevereError( "PathFromIndex Null nodePath." );
+		if( !nodePath ) gf::SevereError( "PathFromIndex Null nodePath." );
 
 		nodePath->ref();
 		delete coinSearch;

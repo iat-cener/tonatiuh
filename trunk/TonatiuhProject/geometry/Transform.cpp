@@ -36,7 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "tgc.h"
+#include "gc.h"
 
 #include "BBox.h"
 #include "NormalVector.h"
@@ -192,22 +192,22 @@ Transform Transform::operator*( const Transform& rhs ) const
 bool Transform::operator==( const Transform& tran ) const
 {
 	if( this == &tran ) return true;
-    else return( ( fabs(m_mdir->m[0][0] - tran.m_mdir->m[0][0]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[0][1] - tran.m_mdir->m[0][1]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[0][2] - tran.m_mdir->m[0][2]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[0][3] - tran.m_mdir->m[0][3]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[1][0] - tran.m_mdir->m[1][0]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[1][1] - tran.m_mdir->m[1][1]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[1][2] - tran.m_mdir->m[1][2]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[1][3] - tran.m_mdir->m[1][3]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[2][0] - tran.m_mdir->m[2][0]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[2][1] - tran.m_mdir->m[2][1]) < tgc::Epsilon ) &&
-			     ( fabs(m_mdir->m[2][2] - tran.m_mdir->m[2][2]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[2][3] - tran.m_mdir->m[2][3]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[3][0] - tran.m_mdir->m[3][0]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[3][1] - tran.m_mdir->m[3][1]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[3][2] - tran.m_mdir->m[3][2]) < tgc::Epsilon ) &&
-				 ( fabs(m_mdir->m[3][3] - tran.m_mdir->m[3][3]) < tgc::Epsilon ) );
+    else return( ( fabs(m_mdir->m[0][0] - tran.m_mdir->m[0][0]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[0][1] - tran.m_mdir->m[0][1]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[0][2] - tran.m_mdir->m[0][2]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[0][3] - tran.m_mdir->m[0][3]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][0] - tran.m_mdir->m[1][0]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][1] - tran.m_mdir->m[1][1]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][2] - tran.m_mdir->m[1][2]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[1][3] - tran.m_mdir->m[1][3]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[2][0] - tran.m_mdir->m[2][0]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[2][1] - tran.m_mdir->m[2][1]) < gc::Epsilon ) &&
+			     ( fabs(m_mdir->m[2][2] - tran.m_mdir->m[2][2]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[2][3] - tran.m_mdir->m[2][3]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][0] - tran.m_mdir->m[3][0]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][1] - tran.m_mdir->m[3][1]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][2] - tran.m_mdir->m[3][2]) < gc::Epsilon ) &&
+				 ( fabs(m_mdir->m[3][3] - tran.m_mdir->m[3][3]) < gc::Epsilon ) );
 }
 
 Transform Transform::GetInverse() const

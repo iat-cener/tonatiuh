@@ -43,13 +43,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/fields/SoSFString.h>
 
+#include "Vector3D.h"
+
 #include "TShape.h"
 #include "trt.h"
 
-#include "BezierPatch.h";
+class BezierPatch;
 class SoMFVec3d;
 class SoSensor;
-#include "Vector3D.h"
 
 
 class ShapeBezierSurface : public TShape

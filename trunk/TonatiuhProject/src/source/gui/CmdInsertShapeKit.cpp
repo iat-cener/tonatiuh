@@ -39,11 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 
+#include "gf.h"
+
 #include "CmdInsertShapeKit.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
 #include "TShapeKit.h"
-#include "tgf.h"
 
 /**
  * Creates a new shapekit insert command that adds a \a shapekit node to a node given with the \a parentIndex node in the \a model.
@@ -53,12 +54,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertShapeKit::CmdInsertShapeKit( const QModelIndex& parentIndex, TShapeKit* shapeKit, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("InsertShapeKit", parent), m_coinParent( 0 ), m_shapeKit(shapeKit), m_pModel(model), m_row( -1 )
 {
-    if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertShapeKit called with NULL TShapeKit*" );
+    if( m_shapeKit == 0 ) gf::SevereError( "CmdInsertShapeKit called with NULL TShapeKit*" );
 	m_shapeKit->ref();
 
-	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertShapeKit called with invalid ModelIndex." );
+	if( !parentIndex.isValid() ) gf::SevereError( "CmdInsertShapeKit called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
-	if( !instanceParent->GetNode() ) tgf::SevereError( "CmdInsertShapeKit called with NULL parent node." );
+	if( !instanceParent->GetNode() ) gf::SevereError( "CmdInsertShapeKit called with NULL parent node." );
 	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
 
 }
