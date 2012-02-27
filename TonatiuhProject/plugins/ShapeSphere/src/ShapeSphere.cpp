@@ -44,12 +44,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "gc.h"
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeSphere.h"
-#include "tgc.h"
-#include "tgf.h"
 
 SO_NODE_SOURCE(ShapeSphere);
 
@@ -71,7 +72,7 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_ADD_FIELD( radius, (0.5) );
 	SO_NODE_ADD_FIELD( yMin, (-0.5) );
 	SO_NODE_ADD_FIELD( yMax, (0.5) );
-	SO_NODE_ADD_FIELD( phiMax, ( tgc::TwoPi) );
+	SO_NODE_ADD_FIELD( phiMax, ( gc::TwoPi) );
 
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
@@ -115,11 +116,11 @@ SoNode* ShapeSphere::copy( SbBool copyConnections ) const
 
 double ShapeSphere::GetArea() const
 {
-	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() );
+	return ( 4 * gc::Pi * radius.getValue() * radius.getValue() );
 }
 double ShapeSphere::GetVolume() const
 {
-	return ( 4 * tgc::Pi * radius.getValue() * radius.getValue() * radius.getValue() /3 );
+	return ( 4 * gc::Pi * radius.getValue() * radius.getValue() * radius.getValue() /3 );
 }
 
 BBox ShapeSphere::GetBBox() const
@@ -132,16 +133,16 @@ BBox ShapeSphere::GetBBox() const
    	double maxRadius = ( yMax.getValue() * yMin.getValue() > 0.0 ) ?  std::max( sin(thetaMin) * radius.getValue() , sin(thetaMax) * radius.getValue() )
 																	: radius.getValue();
    	double minRadius = std::min( sin(thetaMin) * radius.getValue(), sin(thetaMax) * radius.getValue() );
-   	double xmin = ( phiMax.getValue() < tgc::Pi  ) ?  0.0
-								: ( phiMax.getValue() < 1.5 * tgc::Pi  ) ? sinPhiMax * maxRadius
+   	double xmin = ( phiMax.getValue() < gc::Pi  ) ?  0.0
+								: ( phiMax.getValue() < 1.5 * gc::Pi  ) ? sinPhiMax * maxRadius
 										: -maxRadius;
-   	double xmax = ( phiMax.getValue() >= tgc::Pi / 2 ) ? maxRadius : sinPhiMax * maxRadius;
+   	double xmax = ( phiMax.getValue() >= gc::Pi / 2 ) ? maxRadius : sinPhiMax * maxRadius;
 
    	double ymin = yMin.getValue();
 	double ymax = yMax.getValue();
 
-	double zmin = ( phiMax.getValue() > tgc::Pi ) ? -maxRadius
-					:( phiMax.getValue() > tgc::Pi / 2 ) ? maxRadius* cosPhiMax : std::min( maxRadius * cosPhiMax, minRadius * cosPhiMax );
+	double zmin = ( phiMax.getValue() > gc::Pi ) ? -maxRadius
+					:( phiMax.getValue() > gc::Pi / 2 ) ? maxRadius* cosPhiMax : std::min( maxRadius * cosPhiMax, minRadius * cosPhiMax );
 	double zmax = maxRadius;
 
 	return BBox( Point3D( xmin, ymin, zmin), Point3D( xmax, ymax, zmax) );
@@ -168,7 +169,7 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -181,7 +182,7 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 	// Compute ShapeSphere hit position and $\phi$
     Point3D hitPoint = objectRay( thit );
 	double phi = atan2( hitPoint.x, hitPoint.z );
-	if ( phi < 0. ) phi += tgc::TwoPi;
+	if ( phi < 0. ) phi += gc::TwoPi;
 
 	// Test intersection against clipping parameters
 	if( (thit - objectRay.mint) < tol || hitPoint.y < yMin.getValue() || hitPoint.y > yMax.getValue() || phi > phiMax.getValue() )
@@ -193,14 +194,14 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 		// Compute ShapeSphere hit position and $\phi$
 		hitPoint = objectRay( thit );
 		phi = atan2( hitPoint.x, hitPoint.z );
-	    if ( phi < 0. ) phi += tgc::TwoPi;
+	    if ( phi < 0. ) phi += gc::TwoPi;
 
 		if ( (thit - objectRay.mint) < tol || hitPoint.y < yMin.getValue() || hitPoint.y > yMax.getValue() || phi > phiMax.getValue() )	return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of ShapeSphere hit
 	double theta = acos( hitPoint.y / radius.getValue() );
@@ -329,14 +330,14 @@ void ShapeSphere::updateYMax( void *data, SoSensor* )
 void ShapeSphere::updatePhiMax( void *data, SoSensor* )
 {
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
-	if( shapeSphere->phiMax.getValue() > tgc::TwoPi )	shapeSphere->phiMax.setValue( tgc::TwoPi );
+	if( shapeSphere->phiMax.getValue() > gc::TwoPi )	shapeSphere->phiMax.setValue( gc::TwoPi );
 	else if ( shapeSphere->phiMax.getValue() < 0.0 )	shapeSphere->phiMax.setValue( 0.0 );
 
 }
 
 Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) ) gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 
 	double thetaMin = acos( yMax.getValue() / radius.getValue() );

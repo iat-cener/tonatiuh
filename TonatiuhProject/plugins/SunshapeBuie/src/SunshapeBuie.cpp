@@ -38,8 +38,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "gc.h"
+
 #include "SunshapeBuie.h"
-#include "tgc.h"
 
 const double SunshapeBuie::m_minCRSValue = 0.000001;
 const double SunshapeBuie::m_maxCRSValue = 0.849;
@@ -94,7 +95,7 @@ SunshapeBuie::~SunshapeBuie()
 //Light Interface
 void SunshapeBuie::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-	double phi = tgc::TwoPi * rand.RandomDouble();
+	double phi = gc::TwoPi * rand.RandomDouble();
     double theta = zenithAngle( rand );
     double sinTheta = sin( theta );
     double cosTheta = cos( theta );

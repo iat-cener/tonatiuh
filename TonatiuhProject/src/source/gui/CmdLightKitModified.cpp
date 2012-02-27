@@ -39,9 +39,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 
+#include "gf.h"
+
 #include "CmdLightKitModified.h"
 #include "SceneModel.h"
-#include "tgf.h"
 #include "TLightKit.h"
 
 /**
@@ -60,7 +61,7 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
   m_scene( scene ),
   m_pModel( &sceneModel )
 {
-    if( newLightKit == 0 ) tgf::SevereError( "CmdLightKitModified called with NULL TLightKit*" );
+    if( newLightKit == 0 ) gf::SevereError( "CmdLightKitModified called with NULL TLightKit*" );
     m_pNewLightKit = static_cast< TLightKit* >( newLightKit->copy( true ) );
     m_pNewLightKit->ref();
 

@@ -32,12 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "gc.h"
+
 #include "SunshapePillbox.h"
-#include "tgc.h"
 
 SO_NODE_SOURCE(SunshapePillbox);
 
@@ -61,7 +62,7 @@ SunshapePillbox::~SunshapePillbox()
 //Light Interface
 void SunshapePillbox::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-	double phi = tgc::TwoPi * rand.RandomDouble();
+	double phi = gc::TwoPi * rand.RandomDouble();
     double theta = asin( sin( thetaMax.getValue() )*sqrt( rand.RandomDouble() ) );
     double sinTheta = sin( theta );
     double cosTheta = cos( theta );

@@ -45,12 +45,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "BBox.h"
-#include "DifferentialGeometry.h"
+#include "gf.h"
 #include "Ray.h"
-#include "ShapeTroughParabola.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
+
+
+#include "DifferentialGeometry.h"
+#include "ShapeTroughParabola.h"
+
 
 
 SO_NODE_SOURCE(ShapeTroughParabola);
@@ -126,7 +128,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -180,7 +182,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ParabolicCyl::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) )	gf::SevereError( "Function ParabolicCyl::Intersect(...) called with null pointers" );
 
 	// Compute definitive parabolic cylinder hit position
 	hitPoint = objectRay( thit );
@@ -261,7 +263,7 @@ void ShapeTroughParabola::updateXMaxValues( void *data, SoSensor *)
 
 Point3D ShapeTroughParabola::GetPoint3D( double u, double v ) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )	gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double xmin = xMin.getValue();
 	double xmax = xMax.getValue();

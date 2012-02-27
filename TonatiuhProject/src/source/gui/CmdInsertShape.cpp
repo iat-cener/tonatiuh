@@ -36,11 +36,12 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "gf.h"
+
 #include "CmdInsertShape.h"
 #include "SceneModel.h"
 #include "TShape.h"
 #include "TShapeKit.h"
-#include "tgf.h"
 
 /**
  * Creates a new shape insert command that adds a \a shape to \a shapekit node in the \a model.
@@ -50,8 +51,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertShape::CmdInsertShape( TShapeKit* shapeKit, TShape* shape, SceneModel* model, QUndoCommand * parent )
 : QUndoCommand("InsertShape", parent), m_shapeKit(shapeKit), m_shape(shape), m_pModel( model ), m_row( -1 )
 {
-	if( m_shapeKit == 0 ) tgf::SevereError( "CmdInsertShape called with NULL TShapeKit*" );
-	if( m_shape == 0 ) tgf::SevereError( "CmdInsertShape called with NULL TShape*" );
+	if( m_shapeKit == 0 ) gf::SevereError( "CmdInsertShape called with NULL TShapeKit*" );
+	if( m_shape == 0 ) gf::SevereError( "CmdInsertShape called with NULL TShape*" );
 	m_shape->ref();
 }
 

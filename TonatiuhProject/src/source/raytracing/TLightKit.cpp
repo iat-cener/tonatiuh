@@ -51,13 +51,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoNodekitCatalog.h>
 
+#include "gc.h"
+
 #include "BBox.h"
 #include "Matrix4x4.h"
 #include "Point3D.h"
 #include "sunpos.h"
 #include "TDefaultSunShape.h"
-#include "tgc.h"
-#include "tgf.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
 #include "Transform.h"
@@ -172,7 +172,7 @@ void TLightKit::Update( BBox box )
 	double back = box.pMax.y +10;
 
 
-	if( -tgc::Infinity  == box.Volume() )
+	if( -gc::Infinity  == box.Volume() )
 	{
 		xMin = 0.0;
 		xMax = 0.0;

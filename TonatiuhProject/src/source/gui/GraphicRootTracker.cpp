@@ -48,9 +48,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 
+#include "gc.h"
+
 #include "NormalVector.h"
 #include "Point3D.h"
-#include "tgc.h"
 #include "GraphicRootTracker.h"
 #include "Transform.h"
 #include "Vector3D.h"
@@ -96,7 +97,7 @@ void GraphicRootTracker::evaluate()
 
 	if (!IsConnected()) return;
 
-	double alpha = tgc::Pi - GetAzimuth();
+	double alpha = gc::Pi - GetAzimuth();
 
 	SbVec3f yAxis( 0.0, 1.0, 0.0 );
 	SbRotation yRotation( yAxis, alpha );
@@ -106,11 +107,5 @@ void GraphicRootTracker::evaluate()
 	SbRotation rotation = xRotation * yRotation;
 
 	SetEngineOutputRotation(rotation);
-
-	/*SO_ENGINE_OUTPUT( outputTranslation, SoSFVec3f, setValue( SbVec3f( 0.0, 0.0, 0.0 ) ) );
-	SO_ENGINE_OUTPUT( outputRotation, SoSFRotation, setValue( rotation ) );
-	SO_ENGINE_OUTPUT( outputScaleFactor, SoSFVec3f, setValue( SbVec3f( 1.0, 1.0, 1.0 ) ) );
-	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( SbRotation() ) );
-	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( SbVec3f( 0.0, 0.0, 0.0 ) ) );*/
 
 }

@@ -42,13 +42,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "gc.h"
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Ray.h"
 #include "ShapeCone.h"
-#include "tgf.h"
-#include "tgc.h"
 
 
 SO_NODE_SOURCE(ShapeCone);
@@ -65,7 +66,7 @@ ShapeCone::ShapeCone(  )
 	SO_NODE_ADD_FIELD( baseRadius, (0.5) );
 	SO_NODE_ADD_FIELD( topRadius, (0.0));
 	SO_NODE_ADD_FIELD( height, (1.0));
-	SO_NODE_ADD_FIELD( phiMax, (tgc::TwoPi ) );
+	SO_NODE_ADD_FIELD( phiMax, (gc::TwoPi ) );
 
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
@@ -97,13 +98,13 @@ BBox ShapeCone::GetBBox() const
 	double maxradius = std::max( baseRadius.getValue(), topRadius.getValue());
 
 
-	double xmin = ( phiMax.getValue() > tgc::Pi ) ?
-						( ( phiMax.getValue() < 1.5*tgc::Pi ) ? maxradius * sinPhiMax : -maxradius ) :
+	double xmin = ( phiMax.getValue() > gc::Pi ) ?
+						( ( phiMax.getValue() < 1.5*gc::Pi ) ? maxradius * sinPhiMax : -maxradius ) :
 						0.0;
-	double xmax = ( phiMax.getValue() < tgc::Pi/2.0 )?  maxradius * sinPhiMax : maxradius;
+	double xmax = ( phiMax.getValue() < gc::Pi/2.0 )?  maxradius * sinPhiMax : maxradius;
 	double ymin = 0.0;
 	double ymax = height.getValue();
-	double zmin = ( phiMax.getValue() >= tgc::Pi ) ? -maxradius : std::min( minradius * cosPhiMax, maxradius * cosPhiMax );
+	double zmin = ( phiMax.getValue() >= gc::Pi ) ? -maxradius : std::min( minradius * cosPhiMax, maxradius * cosPhiMax );
 	double zmax = maxradius;
 
 	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
@@ -138,7 +139,7 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 
 	// Compute intersection distance along ray
@@ -169,7 +170,7 @@ bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeome
 	// Now check if the function is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) )	gf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
 	// Compute definitive ShapeCone hit position and $\phi$
     hitPoint = objectRay( thit );
@@ -250,7 +251,7 @@ Point3D ShapeCone::Sample( double u, double v ) const
 
 Point3D ShapeCone::GetPoint3D (double u, double v) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function ShapeCone::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )	gf::SevereError( "Function ShapeCone::GetPoint3D called with invalid parameters" );
 
 	double phi = u * phiMax.getValue();
 	double iheight = v * height.getValue();

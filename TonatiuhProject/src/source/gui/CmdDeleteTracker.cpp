@@ -39,10 +39,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 
+#include "gf.h"
+
 #include "CmdDeleteTracker.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
-#include "tgf.h"
 #include "TLightKit.h"
 #include "TSeparatorKit.h"
 #include "TTracker.h"
@@ -53,17 +54,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit* scene, SceneModel& model, QUndoCommand* parent )
 : QUndoCommand("Delete", parent), m_tracker( 0 ),  m_coinParent( 0 ),  m_scene( scene ), m_pModel( &model ), m_row( 0 )
 {
-	//if( !m_scene->getPart("lightList[0]", false) )	 tgf::SevereError( "CmdDeleteTracker Null lightKit." );
+	//if( !m_scene->getPart("lightList[0]", false) )	 gf::SevereError( "CmdDeleteTracker Null lightKit." );
 
-	if( !selectedIndex.isValid() ) tgf::SevereError( "CmdDeleteTracker called with invalid ModelIndex." );
+	if( !selectedIndex.isValid() ) gf::SevereError( "CmdDeleteTracker called with invalid ModelIndex." );
 	InstanceNode* instanceSelection = m_pModel->NodeFromIndex( selectedIndex );
 
-	if( !instanceSelection->GetNode() ) tgf::SevereError( "CmdDeleteTracker called with NULL selection node." );
+	if( !instanceSelection->GetNode() ) gf::SevereError( "CmdDeleteTracker called with NULL selection node." );
 	m_coinParent = static_cast< TSeparatorKit* > ( instanceSelection->GetParent()->GetNode() );
-	if( !m_coinParent ) tgf::SevereError( "CmdDeleteTracker called with invalid tracker parent." );
+	if( !m_coinParent ) gf::SevereError( "CmdDeleteTracker called with invalid tracker parent." );
 
 	m_tracker = dynamic_cast<TTracker* > ( m_coinParent->getPart( "tracker", false) );
-	if( !m_tracker ) tgf::SevereError( "CmdDeleteTracker Null tracker." );
+	if( !m_tracker ) gf::SevereError( "CmdDeleteTracker Null tracker." );
 	m_tracker->ref();
 
 	m_row = instanceSelection->GetParent()->children.indexOf( instanceSelection );
@@ -85,7 +86,7 @@ CmdDeleteTracker::~CmdDeleteTracker()
 void CmdDeleteTracker::undo()
 {
 	SoTransform* parentTransform = static_cast< SoTransform* > ( m_coinParent->getPart("transform", true ) );
-	if( !parentTransform ) tgf::SevereError( "CmdInsertTracker Null node transform." );
+	if( !parentTransform ) gf::SevereError( "CmdInsertTracker Null node transform." );
 
 	TLightKit* lightKit = static_cast< TLightKit* >( m_scene->getPart("lightList[0]", false) );
 	if( lightKit )
@@ -95,13 +96,6 @@ void CmdDeleteTracker::undo()
 	}
 
 	m_tracker->ConnectParentTranform(parentTransform);
-
-	/*parentTransform->translation.connectFrom( &m_tracker->outputTranslation );
-	parentTransform->rotation.connectFrom( &m_tracker->outputRotation );
-	parentTransform->scaleFactor.connectFrom( &m_tracker->outputScaleFactor );
-	parentTransform->scaleOrientation.connectFrom( &m_tracker->outputScaleOrientation );
-	parentTransform->center.connectFrom( &m_tracker->outputCenter );*/
-
 	m_pModel->Paste( tgc::Shared, *m_coinParent, *m_tracker, m_row );
 }
 

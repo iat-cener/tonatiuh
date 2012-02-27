@@ -43,10 +43,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "gf.h"
+
 #include "BBox.h"
 #include "NormalVector.h"
 #include "Point3D.h"
-#include "tgf.h"
 #include "TSquare.h"
 
 
@@ -105,11 +106,8 @@ Point3D TSquare::Sample( double u, double v ) const
 
 Point3D TSquare::GetPoint3D (double u, double v) const
 {
-	if ((u < 0.0 && u > 1) && (v < 0.0 && v > 1))
-	{
-
-		tgf::SevereError("Function TSquare::GetPoint3D called with invalid parameters" );
-	}
+	if ((u < 0.0 && u > 1) && (v < 0.0 && v > 1) )
+		gf::SevereError( "Function TSquare::GetPoint3D called with invalid parameters" );
 
 	double x = (u * m_sideLength.getValue()) - (m_sideLength.getValue()/2);
 	double z = v * m_sideLength.getValue() - (m_sideLength.getValue()/2);

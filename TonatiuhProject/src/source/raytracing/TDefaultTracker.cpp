@@ -42,7 +42,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QString>
 
-#include "tgc.h"
+#include "gc.h"
+
 #include "TDefaultTracker.h"
 
 SO_NODEENGINE_SOURCE( TDefaultTracker );
@@ -64,7 +65,7 @@ TDefaultTracker::TDefaultTracker()
 {
 	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
 
-	SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
+	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
 	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();

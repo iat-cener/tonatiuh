@@ -37,76 +37,42 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
-
-#include <QString>
-
-#include <Inventor/SbLinear.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/nodes/SoTransform.h>
+#include <iostream>
+#include <stdlib.h>
 
 #include "gc.h"
+#include "gf.h"
 
-#include "NormalVector.h"
-#include "Point3D.h"
-#include "Transform.h"
-#include "TSceneTracker.h"
-#include "TSceneKit.h"
-#include "Vector3D.h"
 
-SO_NODEENGINE_SOURCE( TSceneTracker );
-
-void TSceneTracker::initClass()
+void gf::SevereError( std::string errorMessage )
 {
-	SO_NODEENGINE_INIT_CLASS( TSceneTracker, TTracker, "TTracker" );
-
+	std::cerr << errorMessage << std::endl;
+	exit(-1);
 }
 
-TSceneTracker::TSceneTracker()
+void gf::Warning( std::string warningMessage )
 {
-	SO_NODEENGINE_CONSTRUCTOR( TSceneTracker );
-
-	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
-
-	//ConstructEngineOutput();
-	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
-
-
+	std::cerr << warningMessage << std::endl;
 }
 
-TSceneTracker::~TSceneTracker()
+bool gf::IsOdd( int number )
 {
+	bool answer = number & 1;
+	return answer;
 }
 
-QString TSceneTracker::getIcon()
+bool gf::Quadratic( double A, double B, double C, double *t0, double *t1)
 {
+	// Find discriminant
+	double discrim = B*B - 4.0*A*C;
+	if (discrim < 0.) return false;
 
-	return QString(":/icons/TSceneTracker.png");
-}
-
-void TSceneTracker::evaluate()
-{
-
-	if (!IsConnected()) return;
-	SetAnglesToScene();
-
-	double alpha = gc::Pi - GetAzimuth();
-
-	SbVec3f yAxis( 0.0, 1.0, 0.0 );
-	SbRotation yRotation( yAxis, -alpha );
-
-	SbVec3f xAxis( 1.0, 0.0, 0.0 );
-	SbRotation xRotation( xAxis, -GetZenith() );
-
-	SbRotation rotation = yRotation * xRotation;
-
-	SetEngineOutputRotation(rotation);
-
+	// Compute quadratic root values
+	double q = -0.5;
+	if ( B < 0 ) q *= B - sqrt( discrim );
+	else q *= B + sqrt( discrim ) ;
+	*t0 = q / A;
+	*t1 = C / q;
+	if(*t0 > *t1) std::swap( *t0, *t1 );
+	return true;
 }

@@ -6,7 +6,9 @@
  */
 
 #include <vector>
+
 #include "Ray.h"
+
 #include <gtest/gtest.h>
 
 static void generateRays( std::vector<Ray>& rays );
@@ -14,8 +16,8 @@ static void generateRays( std::vector<Ray>& rays );
 
 TEST(RayTests, ConstructorDefault) {
   Ray ray;
-  EXPECT_TRUE(ray.mint == tgc::Epsilon);
-  EXPECT_TRUE(ray.maxt == tgc::Infinity);
+  EXPECT_TRUE( ray.mint == gc::Epsilon );
+  EXPECT_TRUE( ray.maxt == gc::Infinity );
 }
 
 TEST(RayTests, ConstructorOriginVectorDefaultts) {
@@ -46,8 +48,8 @@ TEST(RayTests, ConstructorOriginVectorDefaultts) {
 		  EXPECT_TRUE(ray.direction().y == number[index[4]]);
 		  EXPECT_TRUE(ray.direction().z == number[index[5]]);
 
-		  EXPECT_TRUE(ray.mint == tgc::Epsilon);
-		  EXPECT_TRUE(ray.maxt == tgc::Infinity);
+		  EXPECT_TRUE(ray.mint == gc::Epsilon);
+		  EXPECT_TRUE(ray.maxt == gc::Infinity);
 	  }
   }
 }

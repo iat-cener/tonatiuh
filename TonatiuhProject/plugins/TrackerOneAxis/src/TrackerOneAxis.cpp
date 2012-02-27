@@ -48,9 +48,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 
-#include "tgc.h"
-#include "TrackerOneAxis.h"
+#include "gc.h"
 #include "Transform.h"
+
+#include "TrackerOneAxis.h"
 #include "trf.h"
 #include "TSeparatorKit.h"
 #include "TSceneKit.h"
@@ -69,7 +70,7 @@ TrackerOneAxis::TrackerOneAxis()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerOneAxis );
 
 	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( tgc::Pi ) );
+	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
 	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();

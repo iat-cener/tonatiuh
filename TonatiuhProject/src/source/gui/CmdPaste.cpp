@@ -38,10 +38,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
+#include "gf.h"
+
 #include "CmdPaste.h"
 #include "SceneModel.h"
 #include "InstanceNode.h"
-#include "tgf.h"
 
 /**
  * Creates a new paste command that represents a \a type paste of the \a coinClipboard node as a node located with \a parentModelIndex child in the \a model.
@@ -51,10 +52,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  SoNode*& coinClipboard, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Paste", parent), m_pasteType( type ), m_parentInstance( 0 ), m_coinChild( coinClipboard ), m_sceneModel( &sceneModel ), m_oldNodeName( "" ),  m_row( -1 )
 {
-	if( !parentModelIndex.isValid() ) tgf::SevereError( "CmdPaste called with invalid ModelIndex." );
+	if( !parentModelIndex.isValid() ) gf::SevereError( "CmdPaste called with invalid ModelIndex." );
 
 	m_parentInstance = m_sceneModel->NodeFromIndex( parentModelIndex );
-	if( !m_parentInstance-> GetNode() ) tgf::SevereError( "CmdPaste NULL m_coinParent." );
+	if( !m_parentInstance-> GetNode() ) gf::SevereError( "CmdPaste NULL m_coinParent." );
 
 	m_row = m_parentInstance->children.size();
 	m_oldNodeName = QString( coinClipboard->getName().getString() );

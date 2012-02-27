@@ -58,15 +58,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "BBox.h"
-#include "DifferentialGeometry.h"
+#include "gc.h"
+#include "gf.h"
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "Ray.h"
-#include "ShapeTrumpet.h"
-#include "tgc.h"
-#include "tgf.h"
 #include "Vector3D.h"
 
+
+#include "DifferentialGeometry.h"
+#include "ShapeTrumpet.h"
 
 SO_NODE_SOURCE(ShapeTrumpet);
 
@@ -195,7 +196,7 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -239,13 +240,13 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of CPC concentrator hit
 	double u = ( length - rMin  ) / ( rMax - rMin );
 	double phi = atan2( -hitPoint.z, hitPoint.x );
-	if( phi < 0 ) phi += tgc::TwoPi;
-	double v = phi/ tgc::TwoPi;
+	if( phi < 0 ) phi += gc::TwoPi;
+	double v = phi/ gc::TwoPi;
 
 
 	// Compute  \dpdu and \dpdv
@@ -271,12 +272,12 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 										( -1 + ( ( ( -aux1 + u * aux ) * ( -aux1 + u * aux ) )
 												/ ( a0 * a0 ) ) ) ) ) );
 	Vector3D d2Pduu(0 , d2PduuY, 0);
-	Vector3D d2Pduv( - tgc::TwoPi * sin( tgc::TwoPi * v ) * aux,
+	Vector3D d2Pduv( - gc::TwoPi * sin( gc::TwoPi * v ) * aux,
 			0.0,
-			- tgc::TwoPi * cos( tgc::TwoPi * v ) * aux );
-	Vector3D d2Pdvv( - tgc::TwoPi * tgc::TwoPi * cos( tgc::TwoPi * v ) * ( -aux1 + u * aux ),
+			- gc::TwoPi * cos( gc::TwoPi * v ) * aux );
+	Vector3D d2Pdvv( - gc::TwoPi * gc::TwoPi * cos( gc::TwoPi * v ) * ( -aux1 + u * aux ),
 			0.0,
-			tgc::TwoPi * tgc::TwoPi * sin( tgc::TwoPi * v ) * ( -aux1 + u * aux ) );
+			gc::TwoPi * gc::TwoPi * sin( gc::TwoPi * v ) * ( -aux1 + u * aux ) );
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct( dpdu, dpdu );
@@ -322,12 +323,12 @@ bool ShapeTrumpet::IntersectP( const Ray& objectRay ) const
  */
 Point3D ShapeTrumpet::Sample( double u, double v ) const
 {
-	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function ShapeTrumpet::Sample called with invalid parameters" );
+	if( OutOfRange( u, v ) ) 	gf::SevereError("Function ShapeTrumpet::Sample called with invalid parameters" );
 
 	double rmin = sqrt(  a.getValue() * a.getValue() * ( 1 + ( ( truncationHeight.getValue() * truncationHeight.getValue() ) / ( m_bHyperbola * m_bHyperbola ) ) ) );
 	double rmax = sqrt(  a.getValue() * a.getValue() * ( 1 + ( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() ) / ( m_bHyperbola* m_bHyperbola ) ) ) );
 	double r = u * (rmax - rmin) + rmin;
-	double phi = v * tgc::TwoPi;
+	double phi = v * gc::TwoPi;
 	double x = cos( phi ) * r;
 	double y = sqrt( ( ( ( r * r ) / ( a.getValue() * a.getValue() ) ) - 1 ) * m_bHyperbola * m_bHyperbola );
 	double z = -sin( phi ) * r;
@@ -415,7 +416,7 @@ void ShapeTrumpet::updateTruncationValue( void *data, SoSensor *)
  */
 NormalVector ShapeTrumpet::GetNormal( double u, double v ) const
 {
-	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function ShapeTrumpet::GetNormal called with invalid parameters" );
+	if( OutOfRange( u, v ) ) 	gf::SevereError("Function ShapeTrumpet::GetNormal called with invalid parameters" );
 
 	Vector3D dpdu = GetDPDU( u, v );
 	Vector3D dpdv = GetDPDV( u, v );
@@ -561,13 +562,13 @@ Vector3D ShapeTrumpet::GetDPDU( double u, double v ) const
 	double h1 = truncationHeight.getValue();
 	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
 	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
-	double x = 	cos( tgc::TwoPi * v ) * (  aux1 + aux2 );
+	double x = 	cos( gc::TwoPi * v ) * (  aux1 + aux2 );
 
 
 	double y = ( m_bHyperbola * m_bHyperbola * ( aux1 + aux2 ) * ( -aux1 + u * ( aux1 + aux2 ) ) )
 			/ ( a0 * a0 * sqrt( m_bHyperbola * m_bHyperbola * ( -1 + ( ( ( -aux1 + u * ( aux1 + aux2 ) )  * ( -aux1 + u * ( aux1 + aux2 ) ) ) / ( a0 * a0 ) ) ) ) );
 
-	double z = 	-sin( tgc::TwoPi * v ) * (  aux1 + aux2 );
+	double z = 	-sin( gc::TwoPi * v ) * (  aux1 + aux2 );
 
 	return Vector3D( x, y, z );
 }
@@ -583,9 +584,9 @@ Vector3D ShapeTrumpet::GetDPDV ( double u, double v ) const
 	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
 	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
 
-	double x = - tgc::TwoPi * sin( tgc::TwoPi * v ) * ( -aux1 + u * ( aux1 + aux2 ) );
+	double x = - gc::TwoPi * sin( gc::TwoPi * v ) * ( -aux1 + u * ( aux1 + aux2 ) );
 	double y = 0;
-	double z = - tgc::TwoPi * cos( tgc::TwoPi * v ) * ( -aux1 + u * ( aux1 + aux2 ) );
+	double z = - gc::TwoPi * cos( gc::TwoPi * v ) * ( -aux1 + u * ( aux1 + aux2 ) );
 
 	return Vector3D( x, y , z );
 }

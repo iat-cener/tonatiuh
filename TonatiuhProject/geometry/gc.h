@@ -36,59 +36,22 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-/*!
- * \class CmdChangeNodeName
- * \brief CmdChangeNodeName is the command that represents a node name change.
- *
- *CmdChangeNodeName represents a change in a node from the scene. The node can be any one.
- */
+#ifndef GC_H_
+#define GC_H_
 
-#include <QModelIndex>
-#include <QString>
+#include <cfloat>
+#include <cmath>
 
-#include <Inventor/SbName.h>
-#include <Inventor/nodes/SoNode.h>
-
-#include "gf.h"
-
-#include "CmdChangeNodeName.h"
-#include "InstanceNode.h"
-#include "SceneModel.h"
-
-/*!
- * Creates a new CmdChangeNodeName command.
- */
-CmdChangeNodeName::CmdChangeNodeName( const QModelIndex& index, QString newName, SceneModel* model, QUndoCommand* parent )
-: QUndoCommand("Change node name", parent), m_newName ( newName ), m_previousName( "" ), m_pNode( 0 ), m_pModel( model )
+namespace gc
 {
-	if( !index.isValid() ) gf::SevereError( "CmdChangeNodeName called with invalid ModelIndex." );
-	InstanceNode* selectedNodeInstance = m_pModel->NodeFromIndex( index );
-	if( !selectedNodeInstance ) gf::SevereError( "CmdChangeNodeName called with invalid node." );
-	m_pNode = selectedNodeInstance->GetNode();
-
-	m_previousName = QString( m_pNode->getName().getString() );
-
+	const double Pi = 3.1415926535897932385;
+	const double TwoPi = 2.0 * Pi;
+	const double InvPi = 0.31830988618379067154;
+	const double InvTwoPi = 0.15915494309189533577;
+	const double Degree = Pi / 180.0;
+	const double Infinity = HUGE_VAL;
+	const double Epsilon = DBL_EPSILON;
+	const double Ecliptic = 23.5  * Degree;
 }
 
-/*!
- * Destroys command object.
- */
-CmdChangeNodeName::~CmdChangeNodeName()
-{
-}
-
-/*!
- * Changes the node name to the name that the node takes before the command is applied.
- */
-void CmdChangeNodeName::undo()
-{
-	m_pModel->SetNodeName( m_pNode, m_previousName );
-}
-
-/*!
- * Changes the node name to the name defined in the command constructor.
- */
-void CmdChangeNodeName::redo()
-{
-	m_pModel->SetNodeName( m_pNode, m_newName );
-}
+#endif /*GC_H_*/

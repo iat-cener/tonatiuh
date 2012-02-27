@@ -41,15 +41,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "BBox.h"
 #include "Ray.h"
-#include "tgc.h"
+#include "gc.h"
 #include "Vector3D.h"
 #include "Point3D.h"
 
 
 
 BBox::BBox()
-: pMin( tgc::Infinity, tgc::Infinity, tgc::Infinity ),
-  pMax( -tgc::Infinity, -tgc::Infinity, -tgc::Infinity )
+: pMin( gc::Infinity, gc::Infinity, gc::Infinity ),
+  pMax( -gc::Infinity, -gc::Infinity, -gc::Infinity )
 {
 }
 

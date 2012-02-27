@@ -46,12 +46,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <math.h>
 
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "TLightShape.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Transform.h"
 #include "TShapeKit.h"
 #include "Vector3D.h"
@@ -119,7 +119,7 @@ Point3D TLightShape::Sample( double u, double v, int a, int b) const
 
 Point3D TLightShape::GetPoint3D( double u, double v, int h, int w ) const
 {
-	if( OutOfRange( u, v ) ) 	tgf::SevereError("Function TLightShape::GetPoint3D called with invalid parameters" );
+	if( OutOfRange( u, v ) ) 	gf::SevereError("Function TLightShape::GetPoint3D called with invalid parameters" );
 
     //size of cells the sun is divided
 	double width =  (xMax.getValue() - xMin.getValue())/m_widthElements;

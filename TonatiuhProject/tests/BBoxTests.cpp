@@ -43,10 +43,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <time.h>
 #include <stdio.h>
 
-#include "tgc.h"
-#include "TestsAuxiliaryFunctions.h"
 #include "BBox.h"
+#include "gc.h"
 #include "Ray.h"
+
+#include "TestsAuxiliaryFunctions.h"
 
 // Extension of the testing space
 const double maximumCoordinate = 5000000.0;
@@ -54,8 +55,8 @@ const unsigned long int maximumNumberOfTests = 6000000;
 
 TEST( BBoxTests, ConstructorDefault )
 {
-  Point3D plusInfinity( tgc::Infinity, tgc::Infinity, tgc::Infinity );
-  Point3D minusInfinity( -tgc::Infinity, -tgc::Infinity, -tgc::Infinity );
+  Point3D plusInfinity( gc::Infinity, gc::Infinity, gc::Infinity );
+  Point3D minusInfinity( -gc::Infinity, -gc::Infinity, -gc::Infinity );
 
   BBox boundingBox;
 
@@ -188,7 +189,7 @@ TEST( BBoxTests, Expand )
   {
  	  boundingBoxA = taf::randomBox( a, b );
  	  boundingBoxB = boundingBoxA;
-	  delta = taf::randomBBoxNumber( tgc::Epsilon, b );
+	  delta = taf::randomBBoxNumber( gc::Epsilon, b );
 	  boundingBoxB.Expand( delta );
 
 	  relativeError[0] = std::abs( boundingBoxA.pMin.x - boundingBoxB.pMin.x - delta )/delta;
@@ -363,8 +364,8 @@ TEST( BBoxTests, IntersectP )
 		      ( intersectionPoint.y > boundingBox.pMin.y ) && ( intersectionPoint.y < boundingBox.pMax.y ) ) tValidIntersection.push_back(t);
 	  }
 
-	  double expectedtNear = tgc::Infinity;
-	  double expectedtFar = tgc::Infinity;
+	  double expectedtNear = gc::Infinity;
+	  double expectedtFar = gc::Infinity;
       if( tValidIntersection.size() )
       {
     	  expectedIntersection = true;

@@ -42,16 +42,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
+#include "gc.h"
+#include "gf.h"
+
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeCylinder.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
-
-using tgc::Pi;
-using tgc::TwoPi;
 
 SO_NODE_SOURCE(ShapeCylinder);
 
@@ -65,7 +63,7 @@ ShapeCylinder::ShapeCylinder( )
 	SO_NODE_CONSTRUCTOR(ShapeCylinder);
 	SO_NODE_ADD_FIELD( radius, (0.5) );
 	SO_NODE_ADD_FIELD( length, (1.0) );
-	SO_NODE_ADD_FIELD( phiMax, (TwoPi) );
+	SO_NODE_ADD_FIELD( phiMax, (gc::TwoPi) );
 
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
@@ -79,12 +77,12 @@ ShapeCylinder::~ShapeCylinder()
 
 double ShapeCylinder::GetArea() const
 {
-	return (2 * tgc::Pi * radius.getValue() * length.getValue() );
+	return (2 * gc::Pi * radius.getValue() * length.getValue() );
 }
 
 double ShapeCylinder::GetVolume() const
 {
-	return (tgc::Pi * (radius.getValue()*radius.getValue()) * length.getValue() );
+	return (gc::Pi * (radius.getValue()*radius.getValue()) * length.getValue() );
 }
 
 /*!
@@ -95,11 +93,12 @@ BBox ShapeCylinder::GetBBox() const
 	double cosPhiMax = cos( phiMax.getValue() );
 	double sinPhiMax = sin( phiMax.getValue() );
 
-	double xmin = ( phiMax.getValue() >= Pi ) ? -radius.getValue() : radius.getValue() * cosPhiMax;
+	double xmin = ( phiMax.getValue() >= gc::Pi ) ? -radius.getValue() : radius.getValue() * cosPhiMax;
 	double xmax = radius.getValue();
 	double ymin = 0.0;
-	if( phiMax.getValue() > Pi ) ymin = ( phiMax.getValue() < 1.5*Pi ) ? radius.getValue() * sinPhiMax : -radius.getValue();
-	double ymax = ( phiMax.getValue() < Pi/2.0 )? radius.getValue() * sinPhiMax : radius.getValue();
+	if( phiMax.getValue() > gc::Pi )
+		ymin = ( phiMax.getValue() < ( 1.5 * gc::Pi ) ) ? radius.getValue() * sinPhiMax : -radius.getValue();
+	double ymax = ( phiMax.getValue() < ( gc::Pi / 2.0 ) )? radius.getValue() * sinPhiMax : radius.getValue();
 
 	double zmin = 0.0;
 	double zmax = length.getValue();
@@ -122,7 +121,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
-	if( !tgf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
+	if( !gf::Quadratic( A, B, C, &t0, &t1 ) ) return false;
 
 	// Compute intersection distance along ray
 	if( t0 > objectRay.maxt || t1 < objectRay.mint ) return false;
@@ -132,7 +131,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
    //Compute possible cylinder hit position and $\phi
     Point3D hitPoint = objectRay( thit );
 	double phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += TwoPi;
+	if ( phi < 0. ) phi += gc::TwoPi;
 
 	//Evaluate Tolerance
 	double tol = 0.00001;
@@ -154,13 +153,14 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) )
+		gf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
 	// Compute definitive cylinder hit position and $\phi$
     hitPoint = objectRay( thit );
 
 	phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += TwoPi;
+	if ( phi < 0. ) phi += gc::TwoPi;
 
 	// Find parametric representation of Cylinder hit
 	double u = phi / phiMax.getValue();
@@ -233,7 +233,8 @@ bool ShapeCylinder::OutOfRange( double u, double v ) const
 
 Point3D ShapeCylinder::GetPoint3D (double u, double v) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )
+		gf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double phi = u * phiMax.getValue();
 	double ilength = v * length.getValue();

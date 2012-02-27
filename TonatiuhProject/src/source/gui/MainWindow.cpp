@@ -71,6 +71,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 
+#include "gc.h"
+#include "gf.h"
+
 #include "ActionInsertMaterial.h"
 #include "ActionInsertShape.h"
 #include "ActionInsertTracker.h"
@@ -257,10 +260,10 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 	coinSearch->apply( m_graphicsRoot->GetNode() );
 
 	SoPath* coinScenePath = coinSearch->getPath( );
-	if( !coinScenePath ) tgf::SevereError( "PathFromIndex Null coinScenePath." );
+	if( !coinScenePath ) gf::SevereError( "PathFromIndex Null coinScenePath." );
 
 	SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
-	if( !nodePath ) tgf::SevereError( "PathFromIndex Null nodePath." );
+	if( !nodePath ) gf::SevereError( "PathFromIndex Null nodePath." );
 
 
 	nodePath->truncate(nodePath->getLength()-1 );
@@ -914,7 +917,7 @@ void MainWindow::on_actionSunPlane_triggered()
 	coinSearch->apply( m_graphicsRoot->GetNode() );
 
 	SoPath* lightPath = coinSearch->getPath( );
-	if( !lightPath ) tgf::SevereError( "MainWindow Null light path." );
+	if( !lightPath ) gf::SevereError( "MainWindow Null light path." );
 
 	const SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
 	SoGetMatrixAction * getmatrixaction = new SoGetMatrixAction(vpr);
@@ -1106,7 +1109,7 @@ void MainWindow::ChangeSunPosition( double azimuth, double elevation )
 		QMessageBox::warning( this, "Tonatiuh warning", tr( "ChangeSunPosition:: Sun not defined in scene" ) );
 		return;
 	}
-	CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, azimuth* tgc::Degree, ( 90 - elevation ) * tgc::Degree );
+	CmdLightPositionModified* command = new CmdLightPositionModified( lightKit, azimuth* gc::Degree, ( 90 - elevation ) * gc::Degree );
 	m_commandStack->push( command );
 
 	//UpdateLightDimensions();
@@ -2684,7 +2687,7 @@ SoSeparator* MainWindow::CreateGrid( int xDimension, int zDimension, double xSpa
 QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
 {
 	QToolBar* pMaterialsToolBar = new QToolBar( pMaterialsMenu );
-	if (! pMaterialsToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pMaterialsToolBar" );
+	if (! pMaterialsToolBar ) gf::SevereError( "MainWindow::SetupToolBars: NULL pMaterialsToolBar" );
 	pMaterialsToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
 	pMaterialsToolBar->setOrientation( Qt::Horizontal );
 	pMaterialsToolBar->setWindowTitle( QLatin1String( "Materials" ) );
@@ -2698,7 +2701,7 @@ QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
 QToolBar* MainWindow::CreateTrackerTooBar( QMenu* pTrackersMenu )
 {
 	QToolBar* pTrackersToolBar = new QToolBar( pTrackersMenu );
-	if (! pTrackersToolBar ) tgf::SevereError( "MainWindow::SetupToolBars: NULL pTrackersToolBar" );
+	if (! pTrackersToolBar ) gf::SevereError( "MainWindow::SetupToolBars: NULL pTrackersToolBar" );
 	pTrackersToolBar->setObjectName( QString::fromUtf8("materialsToolBar" ) );
 	pTrackersToolBar->setOrientation( Qt::Horizontal );
 	pTrackersToolBar->setWindowTitle( QLatin1String( "Trackers" ) );
@@ -2747,7 +2750,7 @@ bool MainWindow::Delete( QModelIndex index )
 QSplitter* MainWindow::GetHorizontalSplitterPointer()
 {
     QSplitter* pSplitter = findChild< QSplitter* >( "horizontalSplitter" );
-    if( !pSplitter ) tgf::SevereError( "MainWindow::GetSceneModelViewPointer: splitter not found" );
+    if( !pSplitter ) gf::SevereError( "MainWindow::GetSceneModelViewPointer: splitter not found" );
     return pSplitter;
 }
 
@@ -3033,7 +3036,7 @@ void MainWindow::SetupActionsInsertShape()
 			m_shapeToolBar->setOrientation( Qt::Horizontal );
 	    	addToolBar( m_shapeToolBar );
 		}
-		else tgf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
+		else gf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
     }
    	for( int i = 0; i < shapeFactoryList.size(); ++i )
    	{
@@ -3186,7 +3189,7 @@ void MainWindow::SetupGraphcisRoot()
         m_graphicsRoot->AddGrid( CreateGrid( m_gridXElements, m_gridZElements, m_gridXSpacing, m_gridZSpacing ) );
 
     }
-    else tgf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
+    else gf::SevereError( "MainWindow::SetupDocument: Fail to create new document" );
 
 }
 
@@ -3256,7 +3259,7 @@ void MainWindow::SetupGraphicView()
     	    m_graphicView[0]->setModel( m_sceneModel );
     	    m_graphicView[0]->setSelectionModel( m_selectionModel );
         }
-		else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[0] not found" );
+		else gf::SevereError( "MainWindow::InitializeGraphicView: graphicView[0] not found" );
 
 		if ( m_graphicView[1] != NULL )
         {
@@ -3267,7 +3270,7 @@ void MainWindow::SetupGraphicView()
     	    m_focusView=1;
     	    on_action_X_Y_Plane_triggered();
         }
-    	else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[1] not found" );
+    	else gf::SevereError( "MainWindow::InitializeGraphicView: graphicView[1] not found" );
 
 		m_graphicView[2] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView3" );
         if ( m_graphicView[2] != NULL )
@@ -3279,7 +3282,7 @@ void MainWindow::SetupGraphicView()
     	    m_focusView=2;
     	    on_action_Y_Z_Plane_triggered();
         }
-        else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[2] not found" );
+        else gf::SevereError( "MainWindow::InitializeGraphicView: graphicView[2] not found" );
 
         m_graphicView[3] = graphicVerticalSplitter2->findChild< GraphicView* >( "graphicView4" );
         if ( m_graphicView[3] !=  NULL )
@@ -3291,9 +3294,9 @@ void MainWindow::SetupGraphicView()
     	    m_focusView=3;
     	    on_action_X_Z_Plane_triggered();
         }
-	    else tgf::SevereError( "MainWindow::InitializeGraphicView: graphicView[3] not found" );
+	    else gf::SevereError( "MainWindow::InitializeGraphicView: graphicView[3] not found" );
     }
-	else tgf::SevereError( "MainWindow::InitializeGraphicView: verticalSplitter not found" );
+	else gf::SevereError( "MainWindow::InitializeGraphicView: verticalSplitter not found" );
 
 	m_graphicView[1]->hide();
 	m_graphicView[2]->hide();

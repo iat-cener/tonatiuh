@@ -42,9 +42,10 @@
 #include <QSettings>
 #include <QTime>
 
+#include "gc.h"
+
 #include "MapDialog.h"
 #include "SunPositionCalculatorDialog.h"
-#include "tgc.h"
 
 SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
 : QDialog( parent )
@@ -108,7 +109,7 @@ void SunPositionCalculatorDialog::UpdatePosition( QAbstractButton* button )
 		cSunCoordinates results;
 		sunpos( myTime, myLocation, &results );
 
-		emit changeSunLight( results.dAzimuth * tgc::Degree ,results.dZenithAngle * tgc::Degree );
+		emit changeSunLight( results.dAzimuth * gc::Degree ,results.dZenithAngle * gc::Degree );
 	}
 
 }

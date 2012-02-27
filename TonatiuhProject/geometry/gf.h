@@ -36,77 +36,17 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <cmath>
+#ifndef GF_H_
+#define GF_H_
 
-#include <QString>
+#include <string>
 
-#include <Inventor/SbLinear.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/nodes/SoTransform.h>
-
-#include "gc.h"
-
-#include "NormalVector.h"
-#include "Point3D.h"
-#include "Transform.h"
-#include "TSceneTracker.h"
-#include "TSceneKit.h"
-#include "Vector3D.h"
-
-SO_NODEENGINE_SOURCE( TSceneTracker );
-
-void TSceneTracker::initClass()
+namespace gf
 {
-	SO_NODEENGINE_INIT_CLASS( TSceneTracker, TTracker, "TTracker" );
-
+    void SevereError( std::string errorMessage );
+    void Warning( std::string warningMessage );
+    bool IsOdd( int number );
+    bool Quadratic( double A, double B, double C, double* t0, double* t1);
 }
 
-TSceneTracker::TSceneTracker()
-{
-	SO_NODEENGINE_CONSTRUCTOR( TSceneTracker );
-
-	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
-
-	//ConstructEngineOutput();
-	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
-
-
-}
-
-TSceneTracker::~TSceneTracker()
-{
-}
-
-QString TSceneTracker::getIcon()
-{
-
-	return QString(":/icons/TSceneTracker.png");
-}
-
-void TSceneTracker::evaluate()
-{
-
-	if (!IsConnected()) return;
-	SetAnglesToScene();
-
-	double alpha = gc::Pi - GetAzimuth();
-
-	SbVec3f yAxis( 0.0, 1.0, 0.0 );
-	SbRotation yRotation( yAxis, -alpha );
-
-	SbVec3f xAxis( 1.0, 0.0, 0.0 );
-	SbRotation xRotation( xAxis, -GetZenith() );
-
-	SbRotation rotation = yRotation * xRotation;
-
-	SetEngineOutputRotation(rotation);
-
-}
+#endif /*GF_H_*/

@@ -57,11 +57,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <MarbleModel.h>
 #include <NavigationWidget.h>
 
+#include "gc.h"
+
 #include "MapDialog.h"
 #include "MapWidgetInputHandler.h"
-#include "tgc.h"
 
-#include <iostream>
 
 #include <QPainter>
 
@@ -69,7 +69,9 @@ using namespace Marble;
 
 
 MapDialog::MapDialog( QWidget *parent )
-:QDialog( parent ), m_longitude( tgc::Infinity ), m_latitude( tgc::Infinity )
+:QDialog( parent ),
+ m_longitude( gc::Infinity ),
+ m_latitude( gc::Infinity )
 {
 
 	QDir directory( qApp->applicationDirPath() );

@@ -49,13 +49,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "BBox.h"
-#include "DifferentialGeometry.h"
+#include "gc.h"
+#include "gf.h"
 #include "Ray.h"
-#include "ShapeTroughCPC.h"
-#include "tgf.h"
-#include "tgc.h"
 #include "Vector3D.h"
 
+#include "DifferentialGeometry.h"
+#include "ShapeTroughCPC.h"
 
 double fPart( double theta, double a, double thetaI, Ray ray )
 {
@@ -146,7 +146,7 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	QMap< double, double > vectorTr;
 
 	double inf = 2 * m_thetaI;
-	double sup = ( tgc::Pi / 2 ) + m_thetaI;
+	double sup = ( gc::Pi / 2 ) + m_thetaI;
 	double ts11;
 	bool isRoot1 = findRoot( fPart, objectRay, a.getValue(), m_thetaI, inf, sup, 0, 500, &ts11 );
 	if( isRoot1 )
@@ -202,7 +202,7 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 				//Evaluate Tolerance
 			double tol = 0.0001;
 			double theta = vectorTr.value( thit );
-			if( ( fabs( thit ) < tol ) || ( theta > ( tgc::Pi / 2 + m_thetaI )  ) ) valid = false;
+			if( ( fabs( thit ) < tol ) || ( theta > ( gc::Pi / 2 + m_thetaI )  ) ) valid = false;
 			else
 			{
 				if( thit> objectRay.maxt || thit < objectRay.mint ) valid = false;
@@ -232,11 +232,11 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) tgf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
 
 	// Find parametric representation of CPC concentrator hit
-	double u = ( theta - 2 * m_thetaI ) / ( tgc::Pi / 2 - m_thetaI );
+	double u = ( theta - 2 * m_thetaI ) / ( gc::Pi / 2 - m_thetaI );
 
 	double m =  (  ( lengthXMax.getValue()- lengthXMin.getValue() ) / 2 ) /  ( xmax - xmin );
 	double zmax = (lengthXMin.getValue() / 2 ) + m* ( hitPoint.x - xmin );
@@ -244,21 +244,21 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 
 
 	// Compute  \dpdu and \dpdv
-	double dpduX = - 0.5 * a.getValue() * (tgc::Pi - 2 * m_thetaI )* pow( (1 / cos( 0.25 * (-2 + u) * ( tgc::Pi - 2 * m_thetaI  ) ) ), 3 )
-							* sin( 0.25 * u * ( tgc::Pi  - 2 * m_thetaI ) ) * (1 + sin( m_thetaI ) );
+	double dpduX = - 0.5 * a.getValue() * (gc::Pi - 2 * m_thetaI )* pow( (1 / cos( 0.25 * (-2 + u) * ( gc::Pi - 2 * m_thetaI  ) ) ), 3 )
+							* sin( 0.25 * u * ( gc::Pi  - 2 * m_thetaI ) ) * (1 + sin( m_thetaI ) );
 
-	double dpduY = - 0.5 * a.getValue() * (tgc::Pi - 2 * m_thetaI )* pow( (1 / cos( 0.25 * (-2 + u) * ( tgc::Pi - 2 * m_thetaI  ) ) ), 3 )
-								* cos( 0.25 * u * ( tgc::Pi  - 2 * m_thetaI ) ) * (1 + sin( m_thetaI ) );
+	double dpduY = - 0.5 * a.getValue() * (gc::Pi - 2 * m_thetaI )* pow( (1 / cos( 0.25 * (-2 + u) * ( gc::Pi - 2 * m_thetaI  ) ) ), 3 )
+								* cos( 0.25 * u * ( gc::Pi  - 2 * m_thetaI ) ) * (1 + sin( m_thetaI ) );
 
 	Vector3D dpdu(dpduX, dpduY, 0.0);
 	Vector3D dpdv(0.0, 0.0, 1.0);
 
 	// Compute cylinder \dndu and \dndv
-	double dpduuX = 0.125 * a.getValue() * (tgc::Pi - 2 * m_thetaI ) * (tgc::Pi - 2 * m_thetaI ) * pow( (1 / cos( 0.25 * (-2 + u) * ( tgc::Pi - 2 * m_thetaI  ) ) ), 4 )
-								* ( -2 * sin( m_thetaI ) + sin( u * tgc::Pi  / 2  + m_thetaI - u * m_thetaI ) ) * (1 + sin( m_thetaI ) );
+	double dpduuX = 0.125 * a.getValue() * (gc::Pi - 2 * m_thetaI ) * (gc::Pi - 2 * m_thetaI ) * pow( (1 / cos( 0.25 * (-2 + u) * ( gc::Pi - 2 * m_thetaI  ) ) ), 4 )
+								* ( -2 * sin( m_thetaI ) + sin( u * gc::Pi  / 2  + m_thetaI - u * m_thetaI ) ) * (1 + sin( m_thetaI ) );
 
-	double dpduuY = 0.125 * a.getValue() * (tgc::Pi - 2 * m_thetaI ) * (tgc::Pi - 2 * m_thetaI ) * pow( (1 / cos( 0.25 * (-2 + u) * ( tgc::Pi - 2 * m_thetaI  ) ) ), 4 )
-									* ( 2 * cos( m_thetaI ) + cos( u * tgc::Pi  / 2  + m_thetaI - u * m_thetaI ) ) * (1 + sin( m_thetaI ) );
+	double dpduuY = 0.125 * a.getValue() * (gc::Pi - 2 * m_thetaI ) * (gc::Pi - 2 * m_thetaI ) * pow( (1 / cos( 0.25 * (-2 + u) * ( gc::Pi - 2 * m_thetaI  ) ) ), 4 )
+									* ( 2 * cos( m_thetaI ) + cos( u * gc::Pi  / 2  + m_thetaI - u * m_thetaI ) ) * (1 + sin( m_thetaI ) );
 
 	Vector3D d2Pduu(dpduuX , dpduuY, 0);
 
@@ -311,7 +311,7 @@ void ShapeTroughCPC::updateCMaxValues( void *data, SoSensor *)
 	shapeTroughCPC->m_thetaI = asin( 1 / shapeTroughCPC->cMax.getValue() );
 
 	double theta = 2 * shapeTroughCPC->m_thetaI;
-	double theta1 = tgc::Pi/2 + shapeTroughCPC->m_thetaI;
+	double theta1 = gc::Pi/2 + shapeTroughCPC->m_thetaI;
 	double y1 = 0;
 	double theta2 = 2 * shapeTroughCPC->m_thetaI;
 	double y2 = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta - shapeTroughCPC->m_thetaI ) )
@@ -360,7 +360,7 @@ void ShapeTroughCPC::updateHeightValues( void *data, SoSensor *)
 	}
 	else
 	{
-		double theta1 = tgc::Pi/2 + shapeTroughCPC->m_thetaI;
+		double theta1 = gc::Pi/2 + shapeTroughCPC->m_thetaI;
 		double y1 = 0;
 		double theta2 = 2 * shapeTroughCPC->m_thetaI;
 		double y2 = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta - shapeTroughCPC->m_thetaI ) )
@@ -390,14 +390,14 @@ void ShapeTroughCPC::updateHeightValues( void *data, SoSensor *)
 
 Point3D ShapeTroughCPC::GetPoint3D( double u, double v ) const
 {
-	if ( OutOfRange( u, v ) ) tgf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) ) gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 
 	double xMin = a.getValue();
 	double xMax = ( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(m_thetaMin-m_thetaI) )
 			 / ( 1 - cos(m_thetaMin) ) )- a.getValue();
 
-	double theta =  u* ( ( tgc::Pi / 2 + m_thetaI ) - m_thetaMin )+ m_thetaMin;
+	double theta =  u* ( ( gc::Pi / 2 + m_thetaI ) - m_thetaMin )+ m_thetaMin;
 	double x = ( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(theta-m_thetaI) )
 				 / ( 1 - cos(theta) ) )- a.getValue();
 	double y = ( 2 * a.getValue() * (1 + sin(m_thetaI) ) *cos(theta- m_thetaI) )
@@ -415,11 +415,11 @@ Point3D ShapeTroughCPC::GetPoint3D( double u, double v ) const
 
 NormalVector ShapeTroughCPC::GetNormal (double u ,double /* v */) const
 {
-	double dpduX = - 0.5 * a.getValue() * (tgc::Pi + 2 * m_thetaI - 2 * m_thetaMin )* pow( (1 / sin( 0.25 * ( u * ( tgc::Pi + 2 * m_thetaI - 2 * m_thetaMin ) + 2 * m_thetaMin ) ) ), 3 )
-						* sin( 0.25 *( - tgc::Pi * u - 2 * ( -2 + u ) * m_thetaI  + 2 * ( -1 + u ) * m_thetaMin ) ) * (1 + sin( m_thetaI ) );
+	double dpduX = - 0.5 * a.getValue() * (gc::Pi + 2 * m_thetaI - 2 * m_thetaMin )* pow( (1 / sin( 0.25 * ( u * ( gc::Pi + 2 * m_thetaI - 2 * m_thetaMin ) + 2 * m_thetaMin ) ) ), 3 )
+						* sin( 0.25 *( - gc::Pi * u - 2 * ( -2 + u ) * m_thetaI  + 2 * ( -1 + u ) * m_thetaMin ) ) * (1 + sin( m_thetaI ) );
 
-	double dpduY = - 0.5 * a.getValue() * (tgc::Pi + 2 * m_thetaI - 2 * m_thetaMin)* pow( (1 / sin( 0.25 * ( u * ( tgc::Pi + 2 * m_thetaI - 2 * m_thetaMin ) + 2 * m_thetaMin ) ) ), 3 )
-							* cos( 0.25 *( - tgc::Pi * u - 2 * ( -2 + u ) * m_thetaI  + 2 * ( -1 + u ) * m_thetaMin ) ) * (1 + sin( m_thetaI ) );
+	double dpduY = - 0.5 * a.getValue() * (gc::Pi + 2 * m_thetaI - 2 * m_thetaMin)* pow( (1 / sin( 0.25 * ( u * ( gc::Pi + 2 * m_thetaI - 2 * m_thetaMin ) + 2 * m_thetaMin ) ) ), 3 )
+							* cos( 0.25 *( - gc::Pi * u - 2 * ( -2 + u ) * m_thetaI  + 2 * ( -1 + u ) * m_thetaMin ) ) * (1 + sin( m_thetaI ) );
 
 	Vector3D dpdu(dpduX, dpduY, 0.0);
 

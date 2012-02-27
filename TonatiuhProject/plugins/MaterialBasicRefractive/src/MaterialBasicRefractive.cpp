@@ -41,11 +41,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "gc.h"
+
 #include "DifferentialGeometry.h"
 #include "MaterialBasicRefractive.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
-#include "tgc.h"
 #include "tgf.h"
 #include "Transform.h"
 
@@ -213,22 +214,8 @@ void MaterialBasicRefractive::updateTransparency( void* data, SoSensor* )
 }
 
 bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
-//Ray* MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const
 {
-	/*double randomNumber = rand.RandomDouble();
-	if( dg->shapeFrontSide )
-	{
-		if ( randomNumber < reflectivityFront.getValue()  ) return ReflectedRay( incident, dg, rand );
-		else if ( randomNumber < ( reflectivityFront.getValue() + transmissivityFront.getValue() ) ) return RefractedtRay( incident, dg, rand );
-		else return 0;
-	}
-	else
-	{
-		if ( randomNumber < reflectivityBack.getValue()  ) return ReflectedRay( incident, dg, rand );
-		else if ( randomNumber < ( reflectivityBack.getValue() + transmissivityBack.getValue() ) ) return RefractedtRay( incident, dg, rand );
-		else return 0;
 
-	}*/
 	double randomNumber = rand.RandomDouble();
 	if( dg->shapeFrontSide )
 	{
@@ -278,7 +265,7 @@ Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeo
 		NormalVector errorNormal;
 		if ( distribution.getValue() == 0 )
 		{
-			double phi = tgc::TwoPi * rand.RandomDouble();
+			double phi = gc::TwoPi * rand.RandomDouble();
 			double theta = sSlope * rand.RandomDouble();
 
 			errorNormal.x = sin( theta ) * sin( phi ) ;

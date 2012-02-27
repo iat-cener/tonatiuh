@@ -39,11 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 
+#include "gf.h"
+
 #include "CmdInsertAnalyzerKit.h"
 #include "InstanceNode.h"
 #include "SceneModel.h"
 #include "TAnalyzerKit.h"
-#include "tgf.h"
 
 /**
  * Creates a new analyzerkit insert command that adds a \a analyzerkit node to a node given with the \a parentIndex node in the \a model.
@@ -53,12 +54,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 CmdInsertAnalyzerKit::CmdInsertAnalyzerKit( const QModelIndex& parentIndex, TAnalyzerKit* analyzerKit, SceneModel* model, QUndoCommand* parent )
 : QUndoCommand("InsertAnalyzerKit", parent), m_coinParent( 0 ), m_analyzerKit(analyzerKit), m_pModel(model), m_row( -1 )
 {
-    if( m_analyzerKit == 0 ) tgf::SevereError( "CmdInsertAnalyzerKit called with NULL TAnalyzerKit*" );
+    if( m_analyzerKit == 0 ) gf::SevereError( "CmdInsertAnalyzerKit called with NULL TAnalyzerKit*" );
 	m_analyzerKit->ref();
 
-	if( !parentIndex.isValid() ) tgf::SevereError( "CmdInsertAnalyzerKit called with invalid ModelIndex." );
+	if( !parentIndex.isValid() ) gf::SevereError( "CmdInsertAnalyzerKit called with invalid ModelIndex." );
 	InstanceNode* instanceParent = m_pModel->NodeFromIndex( parentIndex );
-	if( !instanceParent->GetNode() ) tgf::SevereError( "CmdInsertAnalyzerKit called with NULL parent node." );
+	if( !instanceParent->GetNode() ) gf::SevereError( "CmdInsertAnalyzerKit called with NULL parent node." );
 	m_coinParent = static_cast< SoBaseKit* > ( instanceParent->GetNode() );
 
 }

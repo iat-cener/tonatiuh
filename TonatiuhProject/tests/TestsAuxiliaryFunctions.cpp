@@ -36,19 +36,20 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+
 #include <stdlib.h>
 #include <time.h>
 
-#include "tgc.h"
-#include "TestsAuxiliaryFunctions.h"
 #include "BBox.h"
 #include "Ray.h"
+
+#include "TestsAuxiliaryFunctions.h"
 
 double taf::randomNumber( double a, double b )
 {
 	return (b-a)*( (rand() / double(RAND_MAX))  ) + a;
 }
-//Esta funcion sirve para calcualr el nº aletorio necesario
+//Esta funcion sirve para calcualr el nï¿½ aletorio necesario
 //para hacer el test de la funcion inverse en la clase Matrix4x4Tests.cpp
 double taf::randomBBoxNumber( double a, double b )
 {
@@ -71,8 +72,8 @@ BBox taf::randomBox( double a, double b )
 
 Vector3D taf::randomDirection( )
 {
-	double azimuth = randomNumber( 0, tgc::TwoPi );
-	double zenithAngle = randomNumber( 0, tgc::Pi );
+	double azimuth = randomNumber( 0, gc::TwoPi );
+	double zenithAngle = randomNumber( 0, gc::Pi );
 	double SinZenithAngle = sin( zenithAngle );
 	double x = SinZenithAngle * cos( azimuth );
 	double y = SinZenithAngle * sin( azimuth );

@@ -242,7 +242,7 @@ int ScriptRayTracer::SetRandomDeviateType( QString typeName )
  */
 void ScriptRayTracer::SetSunAzimtuh( double azimuth )
 {
-	m_sunAzimuth = azimuth * tgc::Degree;
+	m_sunAzimuth = azimuth * gc::Degree;
 	m_sunPosistionChanged = true;
 
 }
@@ -252,7 +252,7 @@ void ScriptRayTracer::SetSunAzimtuh( double azimuth )
  */
 void ScriptRayTracer::SetSunElevation( double elevation )
 {
-	m_sunElevation = elevation * tgc::Degree;
+	m_sunElevation = elevation * gc::Degree;
 	m_sunPosistionChanged = true;
 }
 
@@ -267,7 +267,7 @@ int  ScriptRayTracer::SetSunPositionToScene()
 		if ((coinScene)&& ( coinScene->getPart( "lightList[0]", false ) ))
 		{
 			TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-			if( m_sunPosistionChanged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation/*, m_sunDistance*/ );
+			if( m_sunPosistionChanged )	lightKit->ChangePosition( m_sunAzimuth, gc::Pi/2 - m_sunElevation );
 			return 1;
 		}
 		std::cerr<<"ScriptRayTracer::SetSunPositionToScene() light not found in scene"<<std::endl;
@@ -370,7 +370,7 @@ int ScriptRayTracer::Trace()
 
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return 0;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-	if( m_sunPosistionChanged )	lightKit->ChangePosition( m_sunAzimuth, tgc::Pi/2 - m_sunElevation );
+	if( m_sunPosistionChanged )	lightKit->ChangePosition( m_sunAzimuth, gc::Pi/2 - m_sunElevation );
 	m_sceneModel->UpdateSceneModel();
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return 0;

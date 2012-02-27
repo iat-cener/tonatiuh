@@ -5,14 +5,16 @@
  *      Author: amutuberria
  */
 
+#include <time.h>
+
 #include <Inventor/nodes/SoTransform.h>
 
 #include <gtest/gtest.h>
 
-#include "tgc.h"
+#include "gc.h"
+
 #include "TLightKit.h"
 #include "TestsAuxiliaryFunctions.h"
-#include <time.h>
 
 const unsigned long int maximumNumberOfTests = 1000;
 
@@ -29,10 +31,10 @@ TEST( TLightKitTests, ChangePosition)
 {
 	srand ( time(NULL) );
 	double minA = 0;
-	double maxA = tgc::TwoPi;
+	double maxA = gc::TwoPi;
 
-	double minZ = -tgc::Pi;
-	double maxZ = tgc::Pi;
+	double minZ = -gc::Pi;
+	double maxZ = gc::Pi;
 
 	TLightKit* light = new TLightKit;
 	SoTransform* lightTransform = static_cast< SoTransform* >( light->getPart( "transform", true ) );
