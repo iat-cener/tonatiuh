@@ -109,7 +109,7 @@ void SunPositionCalculatorDialog::UpdatePosition( QAbstractButton* button )
 		cSunCoordinates results;
 		sunpos( myTime, myLocation, &results );
 
-		emit changeSunLight( results.dAzimuth * gc::Degree ,results.dZenithAngle * gc::Degree );
+		emit changeSunLight( results.dAzimuth ,90-results.dZenithAngle );
 	}
 
 }
