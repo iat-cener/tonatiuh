@@ -5,10 +5,12 @@ include( ../../config.pri )
 
 INCLUDEPATH += 	. \
 				src \
-				$$(TONATIUH_ROOT)/src \
+                $$(TONATIUH_ROOT)/src/source/geometry \
+                $$(TONATIUH_ROOT)/src/source/raytracing
 
 # Input
 HEADERS = src/*.h \
+            $$(TONATIUH_ROOT)/src/source/geometry/tgf.h \
             $$(TONATIUH_ROOT)/src/source/raytracing/TDefaultTransmissivity.h \
             $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
             $$(TONATIUH_ROOT)/src/source/raytracing/TSceneKit.h \
@@ -20,6 +22,7 @@ HEADERS = src/*.h \
 
 
 SOURCES = src/*.cpp \
+            $$(TONATIUH_ROOT)/src/source/geometry/tgf.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/TDefaultTransmissivity.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/TSceneKit.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/TTracker.cpp \
