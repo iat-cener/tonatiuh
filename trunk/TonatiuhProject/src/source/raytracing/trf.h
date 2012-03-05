@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QMap>
 #include <QPair>
+#include <QStringList>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -66,7 +67,8 @@ class TPhotonMap;
 
 namespace trf
 {
-	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,QVector< QPair< TShapeKit*, Transform > >* surfacesList, bool insertInSurfaceList );
+	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO, bool insertInSurfaceList );
+	void ComputeFistStageSurfaceList( InstanceNode* instanceNode, QStringList disabledNodesURL, QVector< QPair< TShapeKit*, Transform > >* surfacesList);
 	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList );
 
 	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
@@ -77,13 +79,12 @@ namespace trf
 	Transform GetObjectToWorld(SoPath* nodePath);
 }
 
-
 /**
  * Compute a map with the InstanceNodes of sub-tree with top node \a instanceNode.
  *
  *The map stores for each InstanceNode its BBox and its transform in global coordinates.
  **/
-inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO,QVector< QPair< TShapeKit*, Transform > >* surfacesList, bool insertInSurfaceList )
+inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO, bool insertInSurfaceList )
 {
 
 	if( !instanceNode ) return;
@@ -108,7 +109,7 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 		for( int index = 0; index < instanceNode->children.count() ; ++index )
 		{
 			InstanceNode* childInstance = instanceNode->children[index];
-			ComputeSceneTreeMap(childInstance, nodeWTO, surfacesList, insertChildInSurfaceList );
+			ComputeSceneTreeMap(childInstance, nodeWTO, insertChildInSurfaceList );
 
 			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
 		}
@@ -152,17 +153,40 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 				instanceNode->SetIntersectionTransform( shapeTransform );
 				instanceNode->SetIntersectionBBox( shapeBB );
 
-				if (insertInSurfaceList)
-				{
-					TShapeKit* surface = static_cast< TShapeKit* > ( coinNode );
-					surfacesList->push_back( QPair< TShapeKit*, Transform >( surface, shapeTransform ) );
-				}
 			}
 		}
 
 	}
 }
 
+inline void trf::ComputeFistStageSurfaceList( InstanceNode* instanceNode, QStringList disabledNodesURL, QVector< QPair< TShapeKit*, Transform > >* surfacesList)
+{
+	if( !instanceNode ) return;
+	if( disabledNodesURL.contains( instanceNode->GetNodeURL() ) )	return;
+
+	SoBaseKit* coinNode = static_cast< SoBaseKit* > ( instanceNode->GetNode() );
+	if( !coinNode ) return;
+
+	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		for( int index = 0; index < instanceNode->children.count() ; ++index )
+		{
+			InstanceNode* childInstance = instanceNode->children[index];
+			ComputeFistStageSurfaceList( childInstance, disabledNodesURL, surfacesList );
+		}
+
+	}
+	else if( coinNode->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
+	{
+
+		TShapeKit* surface = static_cast< TShapeKit* > ( coinNode );
+		Transform shapeTransform = instanceNode->GetIntersectionTransform();
+
+		surfacesList->push_back( QPair< TShapeKit*, Transform >( surface, shapeTransform ) );
+
+	}
+
+}
 
 inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList )
 {
@@ -197,7 +221,10 @@ inline Transform trf::GetObjectToWorld(SoPath* nodePath)
 	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
 	getmatrixAction->apply( nodePath );
 
-	return tgf::TransformFromMatrix( getmatrixAction->getMatrix( ) );
+	Transform transform =  tgf::TransformFromMatrix( getmatrixAction->getMatrix( ) );
+	delete getmatrixAction;
+
+	return transform;
 }
 
 #endif /* TRF_H_ */

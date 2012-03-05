@@ -141,7 +141,7 @@ TLightKit::~TLightKit()
  * Azimuth and Zenith are in radians.
  * \sa redo().
  */
-void TLightKit::ChangePosition( double newAzimuth, double newZenith/*, double newDistance*/ )
+void TLightKit::ChangePosition( double newAzimuth, double newZenith )
 {
 	azimuth = newAzimuth;
 	zenith = newZenith;

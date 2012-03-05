@@ -207,7 +207,6 @@ void LightDialog::RemoveNodeFromDisabledNodeList()
 {
 	QListWidgetItem* currentItem = disabledNodeList->currentItem();
 	if( !currentItem )	return;
-	//QString nodeUrl = currentItem->text();
 
 	disabledNodeList->removeItemWidget( currentItem );
 	delete currentItem;
