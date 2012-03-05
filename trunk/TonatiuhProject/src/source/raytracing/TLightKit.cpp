@@ -87,6 +87,7 @@ TLightKit::TLightKit()
 
 	SO_NODE_ADD_FIELD( azimuth, (0.0) );
 	SO_NODE_ADD_FIELD( zenith, (0.0) );
+	SO_NODE_ADD_FIELD( disabledNodes, ("") );
 
 
 	SO_KIT_INIT_INSTANCE();
@@ -136,7 +137,7 @@ TLightKit::~TLightKit()
 }
 
 /*!
- * Changes the light position to \a azimuth, \a zenith, and \a distance from the scene centre.
+ * Changes the light position to \a azimuth and \a zenith from the scene centre.
  * Azimuth and Zenith are in radians.
  * \sa redo().
  */
@@ -144,23 +145,12 @@ void TLightKit::ChangePosition( double newAzimuth, double newZenith/*, double ne
 {
 	azimuth = newAzimuth;
 	zenith = newZenith;
-	/*distance = newDistance;*/
-	//UpdateSunPosition();
 
 }
 
 void TLightKit::Update( BBox box )
 {
 
-	/*double xWidth = SbMax(-box.pMin.x,box.pMax.x) - SbMin(box.pMin.x,-box.pMax.x);
-	double zWidth = SbMax(-box.pMin.z,box.pMax.z) - SbMin(box.pMin.z,-box.pMax.z);
-	double xMax = sqrt(xWidth*xWidth + zWidth*zWidth)/2.0;
-	double xMin = -xMax;
-	double zMin = xMin;
-	double zMax = xMax;
-	if (-box.pMin.y>0) zMax = sqrt(box.pMin.y*box.pMin.y + xMax*xMax);
-	if (-box.pMax.y<0) zMin = -sqrt(box.pMax.y*box.pMax.y + xMin*xMin);
-	*/
 
 	double xMax = box.pMax.x;
 	double xMin = box.pMin.x;
@@ -203,7 +193,7 @@ void TLightKit::Update( BBox box )
 
 }
 
-void TLightKit::ComputeLightSourceArea(int widthDivisions,int heigthDivisions, QVector< QPair< TShapeKit*, Transform > > surfacesList )
+void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions, QVector< QPair< TShapeKit*, Transform > > surfacesList )
 {
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;

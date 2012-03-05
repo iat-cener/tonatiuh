@@ -36,14 +36,18 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <QItemSelectionModel>
 #include <QMessageBox>
 
 #include "gc.h"
 
 #include "FieldContainerWidget.h"
+#include "InstanceNode.h"
 #include "LightDialog.h"
+#include "SceneModel.h"
 #include "TLightKit.h"
 #include "TShape.h"
+#include "TShapeKit.h"
 #include "TShapeFactory.h"
 #include "TSunShapeFactory.h"
 
@@ -54,13 +58,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * aperture and shows the the light parameters defined in the light \a currentLightKit.
  */
 
-LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent )
+LightDialog::LightDialog( SceneModel& sceneModel, TLightKit* currentLightKit, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent )
 :QDialog( parent ),
  m_currentLightKit( currentLightKit ),
- m_currentSunShapeIndex( -1 ), m_newSunShape( 0 )
+ m_currentSceneModel( &sceneModel ),
+ m_currentSunShapeIndex( -1 ),
+ m_newSunShape( 0 ),
+ m_sceneSelectionModel( 0 )
+
 {
 	setupUi( this );
-	connect( sunshapeParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
 
 
 	for( int sunShape = 0; sunShape < (int) sunshapeFactoryList.size(); ++sunShape )
@@ -74,6 +81,8 @@ LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TSunShapeFactory
 		if( currentLightKit->getPart( "tsunshape", false ) )	m_newSunShape = static_cast< TSunShape* >( currentLightKit->getPart( "tsunshape", false )->copy( true ) );
 	}
 
+	SetupSunSizeTab();
+	SetupTriggers();
 	SunPositionTab();
 	SunshapeTab();
 
@@ -85,6 +94,7 @@ LightDialog::LightDialog(  TLightKit* currentLightKit, QVector< TSunShapeFactory
 LightDialog::~LightDialog()
 {
 
+	//modelTreeWidget->clear();
 }
 
 /*!
@@ -95,9 +105,18 @@ TLightKit* LightDialog::GetTLightKit()
 	TLightKit* lightKit = new TLightKit;
 
 	if( m_newSunShape ) lightKit->setPart( "tsunshape", m_newSunShape );
-	//if( m_newShape ) lightKit->setPart( "icon", m_newShape );
 
 	lightKit->ChangePosition( azimuthSpin->value()* gc::Degree, ( 90 - elevationSpin->value() ) * gc::Degree );
+
+	QString disableNodesString("");
+	for( int n = 0; n < disabledNodeList->count(); n++ )
+	{
+		QString nodeUrl = disabledNodeList->item( n )->text();
+
+		disableNodesString += QString( QLatin1String( "%1;" ) ).arg( nodeUrl );
+	}
+	lightKit->disabledNodes.setValue( disableNodesString.toStdString().c_str() );
+
 	return lightKit;
 }
 
@@ -148,6 +167,181 @@ void LightDialog::ChangeSunshape( int index )
 	sunshapeParameters->SetContainer( m_newSunShape, QString() );
 }
 
+/*!
+ * Adds in the tree view selected node to disabled node list.
+ */
+void LightDialog::AddNodeToDisabledNodeList()
+{
+	if( !m_sceneSelectionModel->hasSelection() ) return;
+	if( m_sceneSelectionModel->currentIndex() == modelTreeView->rootIndex() )	return;
+
+	QModelIndex currentIndex = m_sceneSelectionModel->currentIndex();
+	if( !currentIndex.isValid() )	return;
+
+	InstanceNode* currentNodeInstance = m_currentSceneModel->NodeFromIndex( currentIndex );
+	if( !currentNodeInstance )	return;
+
+	disabledNodeList->addItem( currentNodeInstance->GetNodeURL() );
+
+
+	/*QTreeWidgetItem* currentItem = modelTreeWidget->currentItem();
+	if( !currentItem )	return;
+
+	QString nodeUrl = currentItem->data( 0, Qt::UserRole ).toString();
+
+	QModelIndex currentIndex = m_currentSceneModel->IndexFromNodeUrl( nodeUrl );
+	InstanceNode* currentNodeInstance = m_currentSceneModel->NodeFromIndex( currentIndex );
+	if( !currentNodeInstance )	return;
+
+	disabledNodeList->addItem( currentNodeInstance->GetNodeURL() );
+
+	currentItem->setDisabled( true );
+	*/
+
+}
+
+/*!
+ * Removes the selected node in node list from disabled nodes.
+ */
+void LightDialog::RemoveNodeFromDisabledNodeList()
+{
+	QListWidgetItem* currentItem = disabledNodeList->currentItem();
+	if( !currentItem )	return;
+	//QString nodeUrl = currentItem->text();
+
+	disabledNodeList->removeItemWidget( currentItem );
+	delete currentItem;
+
+
+	/*QStringList nodeList = nodeUrl.split( "/", QString::SkipEmptyParts );
+
+	int level = 2;
+	QTreeWidgetItem* parentItem = modelTreeWidget->topLevelItem(  0 );
+
+	while( nodeList.count() > level )
+	{
+		int childIndex = -1;
+		for( int i = 0; i < parentItem->childCount(); i++ )
+		{
+			QString childText = parentItem->child( i )->text( 0 );
+
+			if( childText == nodeList[level] )	childIndex = i;
+		}
+		if( childIndex >= 0 )
+			parentItem = parentItem->child( childIndex );
+		else
+			return;
+
+		level ++;
+	}
+	parentItem->setDisabled( false );*/
+}
+
+/*
+void LightDialog::GenerateNodeTree( QModelIndex parentIndex, QTreeWidgetItem* parentIntem )
+{
+	InstanceNode* parentNodeInstance = m_currentSceneModel->NodeFromIndex( parentIndex );
+	if( parentNodeInstance->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
+		return;
+	for( int c = 0 ; c < parentNodeInstance->children.count(); c++ )
+	{
+		QModelIndex childIndex = parentIndex.child( c, 0 );
+		QString childName = m_currentSceneModel->data( childIndex, Qt::DisplayRole ).toString().split( " " ).last();
+		QTreeWidgetItem* childItem = new QTreeWidgetItem( ( QTreeWidget* ) 0,
+				QStringList( childName ) );
+
+		childItem->setIcon( 0, m_currentSceneModel->data(childIndex, Qt::DecorationRole ).value< QIcon >() );
+		childItem->setData( 0, Qt::UserRole, parentNodeInstance->children[c]->GetNodeURL() );
+		parentIntem->insertChild( c, childItem );
+
+		GenerateNodeTree( childIndex, childItem );
+	}
+
+}
+*/
+
+
+/*!
+ * Initializes the sun size tab models and lists.
+ */
+void LightDialog::SetupSunSizeTab()
+{
+	m_sceneSelectionModel = new QItemSelectionModel( m_currentSceneModel );
+	modelTreeView->setModel( m_currentSceneModel );
+	modelTreeView->setSelectionModel( m_sceneSelectionModel );
+	modelTreeView->setRootIndex( m_currentSceneModel->IndexFromNodeUrl( QString( "//SunNode") ) );
+
+	//modelTreeView->setModel( m_currentSceneModel );
+	//modelTreeView->set( m_currentSceneModel );
+	//m_sceneSelectionModel = new QItemSelectionModel( m_currentSceneModel );
+	//modelTreeView->setSelectionModel( m_sceneSelectionModel );
+	/*modelTreeWidget->setColumnCount( 1 );
+	QList<QTreeWidgetItem *> items;
+	QModelIndex sunNodeIndex = m_currentSceneModel->IndexFromNodeUrl( QString( "//SunNode") );
+	InstanceNode* sunNodeInstance = m_currentSceneModel->NodeFromIndex( sunNodeIndex );
+
+
+	QModelIndex childIndex = sunNodeIndex.child( 0, 0 );
+	QString childName = m_currentSceneModel->data( childIndex, Qt::DisplayRole ).toString().split( " " ).last();
+	QTreeWidgetItem* childItem = new QTreeWidgetItem( ( QTreeWidget* ) 0,
+			QStringList( childName ) );
+	childItem->setIcon( 0, m_currentSceneModel->data(childIndex, Qt::DecorationRole ).value< QIcon >() );
+	childItem->setData( 0, Qt::UserRole, sunNodeInstance->children[0]->GetNodeURL() );
+
+	items.append( childItem );
+
+	GenerateNodeTree( childIndex, childItem );
+
+
+	 modelTreeWidget->insertTopLevelItems( 0, items );
+	 */
+
+	if( !m_currentLightKit )	return;
+	 //Set disabled nodes
+	 QStringList disabledNodes = QString( m_currentLightKit->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
+	 for( int n = 0; n < disabledNodes.count(); n++ )
+	 {
+		 disabledNodeList->addItem( disabledNodes[n] );
+
+		 /*QStringList nodeURLElemetList = disabledNodes[n].split( "/", QString::SkipEmptyParts );
+
+		 int level = 2;
+		 QTreeWidgetItem* parentItem = modelTreeWidget->topLevelItem(  0 );
+
+		while( nodeURLElemetList.count() > level )
+		{
+			int childIndex = -1;
+			for( int i = 0; i < parentItem->childCount(); i++ )
+			{
+				QString childText = parentItem->child( i )->text( 0 );
+
+				if( childText == nodeURLElemetList[level] )	childIndex = i;
+			}
+			if( childIndex >= 0 )
+				parentItem = parentItem->child( childIndex );
+			else
+				continue;
+
+			level ++;
+			}
+			parentItem->setDisabled( true );
+			*/
+	 }
+
+
+}
+
+/*!
+ * Defines slots function for dialog signals.
+ */
+void LightDialog::SetupTriggers()
+{
+	connect( sunshapeParameters, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
+	connect( addNodeButton, SIGNAL( clicked() ), this, SLOT( AddNodeToDisabledNodeList() ) );
+	connect( removeNodeButton, SIGNAL( clicked() ), this, SLOT( RemoveNodeFromDisabledNodeList() ) );
+
+
+}
 
 /*!
  * Updates the sun position tab values to the values of the current light.

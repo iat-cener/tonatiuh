@@ -237,6 +237,7 @@ private:
 	void ShowRaysIn3DView();
     bool StartOver( const QString& fileName );
     QString StrippedName( const QString& fullFileName );
+    void UpdateLightSize();
     void UpdateRecentFileActions();
     void WriteSettings();
 

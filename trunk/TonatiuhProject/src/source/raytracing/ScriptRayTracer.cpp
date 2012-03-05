@@ -387,14 +387,21 @@ int ScriptRayTracer::Trace()
 
 
 	m_sceneModel->PrepareAnalyze();
-	QVector< QPair< TShapeKit*, Transform > > surfacesList;
 
 	//Compute bounding boxes and world to object transforms
-	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList, true );
+	trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), true );
 
 	TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
+	QStringList disabledNodes = QString( light->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
+	QVector< QPair< TShapeKit*, Transform > > surfacesList;
+	trf::ComputeFistStageSurfaceList( rootSeparatorInstance, disabledNodes, &surfacesList );
+	light->ComputeLightSourceArea( m_widthDivisions, m_heightDivisions, surfacesList );
+	if( surfacesList.count() < 1 )
+	{
+		std::cerr<<"There are no surfaces defined for ray tracing"<<std::endl;
+		return 0;
+	}
 
-	light->ComputeLightSourceArea( m_widthDivisions,m_heightDivisions,surfacesList );
 
 	//Check if there is a transmissivity defined
 	TTransmissivity* transmissivity;
