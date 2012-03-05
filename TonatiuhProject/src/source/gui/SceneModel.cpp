@@ -925,7 +925,7 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 void SceneModel::UpdateSceneModel()
 {
 
-	TLightKit* lightKit = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
+	/*TLightKit* lightKit = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
 	if ( !lightKit )	return;
 
 	TSeparatorKit* concentratorRoot = static_cast< TSeparatorKit* >( m_coinScene->getPart( "childList[0]", false ) );
@@ -944,22 +944,14 @@ void SceneModel::UpdateSceneModel()
 		sceneBox.pMax = Point3D( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
 		if( lightKit ) lightKit->Update( sceneBox );
 	}
+	*/
 	emit layoutChanged();
 
 }
 
 void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 {
-	/*if( instanceNode.GetNode()->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		TSeparatorKit* separatorNode = static_cast<TSeparatorKit*>( instanceNode.GetNode() );
-		SoNode* tracker = separatorNode->getPart( "tracker", false );
-		if( tracker )
-		{
-			TTracker* trackerNode = static_cast< TTracker* >( tracker );
-			//trackerNode->SetSceneKit( 0 );
-		}
-	}*/
+
 	while (instanceNode.children.count()>0)
 	{
 		InstanceNode* childInstance = instanceNode.children[instanceNode.children.count()-1];

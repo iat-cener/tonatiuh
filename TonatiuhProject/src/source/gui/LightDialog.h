@@ -48,7 +48,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class QComboBox;
 class QFrame;
 class QGroupBox;
+class QItemSelectionModel;
 class QTabWidget;
+class SceneModel;
 class TLightKit;
 class TShape;
 class TShapeFactory;
@@ -64,7 +66,7 @@ class LightDialog : public QDialog, private Ui::LightDialog
 	Q_OBJECT
 
 public:
-	LightDialog(  TLightKit* currentLightKit, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent = 0 );
+	LightDialog( SceneModel& sceneModel, TLightKit* currentLightKit, QVector< TSunShapeFactory* > sunshapeFactoryList, QWidget* parent = 0 );
 	~LightDialog();
 
 	TLightKit* GetTLightKit();
@@ -75,17 +77,23 @@ public slots:
 
 protected slots:
 	void ChangeSunshape( int index );
+	void AddNodeToDisabledNodeList();
+	void RemoveNodeFromDisabledNodeList();
 
 private:
+	//void GenerateNodeTree( QModelIndex parentIndex, QTreeWidgetItem* parentIntem );
+	void SetupSunSizeTab();
+	void SetupTriggers();
 	void SunPositionTab();
 	void SunshapeTab();
 	void SunshapeBox();
 
 
     TLightKit* m_currentLightKit;
-
+    SceneModel* m_currentSceneModel;
 	int m_currentSunShapeIndex;
     TSunShape* m_newSunShape;
+    QItemSelectionModel* m_sceneSelectionModel;
 
 	QMap< QString, TSunShapeFactory* > m_sunshapeList;
 

@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QVector>
 
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodekits/SoLightKit.h>
 
 
@@ -91,7 +92,6 @@ class TLightKit : public SoLightKit
 {
     SO_KIT_HEADER(TLightKit);
  	SO_KIT_CATALOG_ENTRY_HEADER(iconMaterial);
-    //SO_KIT_CATALOG_ENTRY_HEADER(iconHints);
  	SO_KIT_CATALOG_ENTRY_HEADER(iconTexture);
  	SO_KIT_CATALOG_ENTRY_HEADER(tsunshape);
 
@@ -108,6 +108,7 @@ public:
 
     trt::TONATIUH_REAL azimuth;
     trt::TONATIUH_REAL zenith;
+    SoSFString disabledNodes;
 
 private:
     virtual ~TLightKit();

@@ -243,7 +243,7 @@ void MainWindow::FinishManipulation( )
 	new CmdModifyParameter( nodeTransform, QString( "translation" ), translationValue, m_sceneModel, command );
 	m_commandStack->push( command );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 
 }
@@ -319,7 +319,7 @@ void MainWindow::DefineSunLight()
 
 	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
 
-	LightDialog dialog( currentLight, tSunShapeFactoryList );
+	LightDialog dialog( *m_sceneModel, currentLight, tSunShapeFactoryList );
 	if( dialog.exec() )
 	{
 
@@ -332,7 +332,7 @@ void MainWindow::DefineSunLight()
 		m_commandStack->push( command );
 
 		//UpdateLightDimensions();
-		m_sceneModel->UpdateSceneModel();
+		UpdateLightSize();
 
 		parametersView->UpdateView();
 		m_document->SetDocumentModified( true );
@@ -391,7 +391,7 @@ void MainWindow::DefineSunLight()
 	m_commandStack->push( command );
 
 	//UpdateLightDimensions();
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 
 	parametersView->UpdateView();
 	m_document->SetDocumentModified( true );
@@ -555,7 +555,7 @@ void MainWindow::ItemDragAndDrop( const QModelIndex& newParent, const QModelInde
 		new CmdPaste( tgc::Copied, newParent, coinNode, *m_sceneModel, dragAndDrop );
 		m_commandStack->push( dragAndDrop );
 
-		m_sceneModel->UpdateSceneModel();
+		UpdateLightSize();
 		m_document->SetDocumentModified( true );
 	}
 
@@ -576,7 +576,7 @@ void MainWindow::ItemDragAndDropCopy(const QModelIndex& newParent, const QModelI
 	new CmdPaste( tgc::Shared, newParent, coinNode, *m_sceneModel, dragAndDropCopy );
 	m_commandStack->push( dragAndDropCopy );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 }
 
@@ -625,7 +625,7 @@ void MainWindow::OpenRecentFile()
 void MainWindow::Redo()
 {
     m_commandStack->redo();
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 }
 /*!
  * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
@@ -756,7 +756,7 @@ void MainWindow::SetParameterValue( SoNode* node, QString paramenterName, QStrin
 	CmdModifyParameter* command = new CmdModifyParameter( node, paramenterName, newValue, m_sceneModel );
 	if ( m_commandStack ) m_commandStack->push( command );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 }
 
@@ -870,7 +870,7 @@ void MainWindow::ShowWarning( QString message )
 void MainWindow::Undo()
 {
     m_commandStack->undo();
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 }
 
 //View menu actions
@@ -1113,7 +1113,7 @@ void MainWindow::ChangeSunPosition( double azimuth, double elevation )
 	m_commandStack->push( command );
 
 	//UpdateLightDimensions();
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 
 }
@@ -1247,7 +1247,7 @@ void MainWindow::CreateGroupNode()
 			nodeName = QString( "TSeparatorKit%1").arg( QString::number( count) );
 		}
 		
-		m_sceneModel->UpdateSceneModel();
+		UpdateLightSize();
 		m_document->SetDocumentModified( true );
 
 
@@ -1296,7 +1296,7 @@ void MainWindow::CreateAnalyzerNode()
 			count++;
 			nodeName = QString( "TAnalyzerKit%1").arg( QString::number( count) );
 		}
-		m_sceneModel->UpdateSceneModel();
+		UpdateLightSize();
 		m_document->SetDocumentModified( true );
 	}
 }
@@ -1380,7 +1380,7 @@ void MainWindow::CreateSurfaceNode()
 			count++;
 			nodeName = QString( "TShapeKit%1").arg( QString::number( count) );
 		}
-		m_sceneModel->UpdateSceneModel();
+		UpdateLightSize();
 		m_document->SetDocumentModified( true );
 
 	}
@@ -1432,7 +1432,7 @@ void MainWindow::Cut()
 	CmdCut* command = new CmdCut( m_selectionModel->currentIndex(), m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 }
 
@@ -1469,7 +1469,7 @@ void MainWindow::Cut( QString nodeURL )
 	CmdCut* command = new CmdCut( nodeIndex, m_coinNode_Buffer, m_sceneModel );
 	m_commandStack->push( command );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 }
 
@@ -1661,7 +1661,7 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 	cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
 	m_commandStack->push( cmdInsertSeparatorKit );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 
 }
@@ -1776,20 +1776,26 @@ void MainWindow::Run()
 
 	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface, transmissivity ) )
 	{
-		m_sceneModel->UpdateSceneModel();
+		UpdateLightSize();
 		m_sceneModel->PrepareAnalyze();
-		QVector< QPair< TShapeKit*, Transform > > surfacesList;
 
 		//Compute bounding boxes and world to object transforms
-		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), &surfacesList,true );
+		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), true );
+
+
+
+		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
+		QStringList disabledNodes = QString( light->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
+		QVector< QPair< TShapeKit*, Transform > > surfacesList;
+		trf::ComputeFistStageSurfaceList( rootSeparatorInstance, disabledNodes, &surfacesList );
+		light->ComputeLightSourceArea( m_widthDivisions, m_heightDivisions, surfacesList );
 		if( surfacesList.count() < 1 )
 		{
 			emit Abort( tr( "There are no surfaces defined for ray tracing" ) );
+
+			ShowRaysIn3DView();
 			return;
 		}
-
-		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
-		light->ComputeLightSourceArea( m_widthDivisions,m_heightDivisions,surfacesList );
 
 		QVector< double > raysPerThread;
 		const int maximumValueProgressScale = 100;
@@ -1816,12 +1822,10 @@ void MainWindow::Run()
 		QMutex mutex;
 		QFuture< TPhotonMap* > photonMap;
 		if( transmissivity )
-			//photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 			photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 
 		else
 			photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
-			//photonMap = QtConcurrent::mappedReduced( raysPerPixel, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 
 		futureWatcher.setFuture( photonMap );
 
@@ -2042,7 +2046,7 @@ void MainWindow::SetSunshape( QString sunshapeType )
 	m_commandStack->push( command );
 
 	//UpdateLightDimensions();
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 
 	parametersView->UpdateView();
 	m_document->SetDocumentModified( true );
@@ -2446,7 +2450,7 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
     createMaterial->setText(commandText);
     m_commandStack->push( createMaterial );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
     m_document->SetDocumentModified( true );
 }
 
@@ -2487,7 +2491,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
         createShape->setText( commandText );
         m_commandStack->push( createShape );
 
-    	m_sceneModel->UpdateSceneModel();
+    	UpdateLightSize();
         m_document->SetDocumentModified( true );
     	}
     }
@@ -2524,7 +2528,7 @@ void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 	CmdInsertTracker* command = new CmdInsertTracker( tracker, parentIndex, scene, m_sceneModel );
 	m_commandStack->push( command );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 	}
 	/*En caso de que el valor del nodo padre no sea del tipo TSeparatorKit,
@@ -2738,7 +2742,7 @@ bool MainWindow::Delete( QModelIndex index )
 	}
 
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 
 	return true;
@@ -2803,7 +2807,7 @@ bool MainWindow::Paste( QModelIndex nodeIndex, tgc::PasteType type )
 	CmdPaste* commandPaste = new CmdPaste( type, m_selectionModel->currentIndex(), m_coinNode_Buffer, *m_sceneModel );
 	m_commandStack->push( commandPaste );
 
-	m_sceneModel->UpdateSceneModel();
+	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 	return true;
 
@@ -3517,25 +3521,6 @@ bool MainWindow::StartOver( const QString& fileName )
     ChangeModelScene();
 
 
-   /*if( fileName.isEmpty() )
-    {
-    	m_document->New();
-    	statusbar->showMessage( tr( "New file" ), 2000 );
-    }
-    else
-    {
-    	if( !m_document->ReadFile( fileName ) )
-		{
-			statusBar()->showMessage( tr( "Loading canceled" ), 2000 );
-			return false;
-		}
-       statusbar->showMessage( tr( "File loaded" ), 2000 );
-    }
-
-    SetCurrentFile( fileName );
-
-    ChangeModelScene();*/
-
 	m_sceneModel->DisplayAnalyzeResults();
 
     return true;
@@ -3547,6 +3532,37 @@ bool MainWindow::StartOver( const QString& fileName )
 QString MainWindow::StrippedName( const QString& fullFileName )
 {
 	return QFileInfo( fullFileName ).fileName();
+}
+
+/*!
+ * Computes the new light size to the scene current dimensions.
+ */
+void MainWindow::UpdateLightSize()
+{
+
+	SoSceneKit* coinScene = m_document->GetSceneKit();
+
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+	if ( !lightKit )	return;
+
+	TSeparatorKit* concentratorRoot = static_cast< TSeparatorKit* >( coinScene->getPart( "childList[0]", false ) );
+	if ( !concentratorRoot )	return;
+
+	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
+	concentratorRoot->getBoundingBox( bbAction );
+
+	SbBox3f box = bbAction->getXfBoundingBox().project();
+	delete bbAction;
+
+	BBox sceneBox;
+	if( !box.isEmpty() )
+	{
+		sceneBox.pMin = Point3D( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
+		sceneBox.pMax = Point3D( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+		if( lightKit ) lightKit->Update( sceneBox );
+	}
+
+	m_sceneModel->UpdateSceneModel();
 }
 
 /*!
