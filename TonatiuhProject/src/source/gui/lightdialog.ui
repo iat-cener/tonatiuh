@@ -229,7 +229,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Select the nodes that you don't want to use to compute first stage rays.</string>
+          <string>Select the nodes that you don't want to use to compute first stage rays area.</string>
          </property>
         </widget>
        </item>
