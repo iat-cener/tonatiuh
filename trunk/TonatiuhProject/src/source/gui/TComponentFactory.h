@@ -10,6 +10,7 @@
 
 #include <QtPlugin>
 
+class PluginManager;
 class QString;
 class QIcon;
 class TSeparatorKit;
@@ -20,7 +21,7 @@ public:
     virtual ~TComponentFactory() {}
     virtual QString TComponentName() const  = 0;
     virtual QIcon TComponentIcon() const = 0;
-    virtual TSeparatorKit* CreateTComponent( ) const = 0;
+    virtual TSeparatorKit* CreateTComponent( PluginManager* pPluginManager ) const = 0;
 };
 
 Q_DECLARE_INTERFACE( TComponentFactory, "tonatiuh.TComponentFactory")

@@ -195,10 +195,8 @@ void PluginManager::BuildFileList( QDir directory, QStringList& filesList )
  */
 void PluginManager::LoadComponentPlugin( QObject* plugin )
 {
-
 	TComponentFactory* pTComponentFactory = qobject_cast<TComponentFactory* >( plugin );
 	if( !pTComponentFactory )  gf::SevereError( "MainWindow::LoadPlugins: Component plug-in not recognized" );
-	//pTComponentFactory->CreateTMaterial();
 	m_componentFactoryList.push_back( pTComponentFactory );
 }
 
@@ -276,10 +274,11 @@ void PluginManager::LoadTransmissivityPlugin( QObject* plugin )
 void PluginManager::LoadTonatiuhPlugin( const QString& fileName )
 {
  	QPluginLoader loader( fileName );
-    QObject* plugin = loader.instance();
+ 	QObject* plugin = loader.instance();
     if ( plugin != 0)
     {
     	if( plugin->inherits( "RandomDeviateFactory" ) ) LoadRandomDeviatePlugin( plugin );
+    	if( plugin->inherits( "TComponentFactory" ) ) LoadComponentPlugin( plugin );
     	if( plugin->inherits( "TShapeFactory" ) ) LoadShapePlugin( plugin );
     	if( plugin->inherits( "TSunShapeFactory" ) ) LoadSunshapePlugin( plugin );
     	if( plugin->inherits( "TMaterialFactory" ) ) LoadMaterialPlugin( plugin );

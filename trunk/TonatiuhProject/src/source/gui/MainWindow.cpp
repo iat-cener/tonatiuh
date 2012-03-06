@@ -2430,7 +2430,9 @@ void MainWindow::CreateComponent( TComponentFactory* pTComponentFactory )
 	SoNode* parentNode = parentInstance->GetNode();
 	if( !parentNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
 
-	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent();
+	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent( m_pluginManager );
+	if( !componentRootNode )	return;
+
     QString typeName = pTComponentFactory->TComponentName();
     componentRootNode->setName( typeName.toStdString().c_str() );
 

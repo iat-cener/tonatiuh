@@ -111,7 +111,8 @@ void TrackerHeliostat::evaluate()
 	SoPath* nodePath= m_scene->GetSoPath(this );
 	if( !nodePath ) return;
 
-	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath->copy() );
+	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath );
+	parentPath->ref();
 	parentPath->pop();
 
 	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
@@ -180,6 +181,7 @@ void TrackerHeliostat::evaluate()
 	SoTransform* newTransform = new SoTransform();
 	newTransform->setMatrix( transformMatrix );
 
+	parentPath->unref();
 	SetEngineOutput(newTransform);
 
 }
@@ -191,7 +193,8 @@ void TrackerHeliostat::SwitchAimingPointType()
 	SoPath* nodePath= m_scene->GetSoPath( this );
 	if (!nodePath) return;
 
-	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath->copy() );
+	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
+	parentPath->ref();
 	parentPath->pop();
 
 	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
@@ -208,5 +211,6 @@ void TrackerHeliostat::SwitchAimingPointType()
 
 	aimingPoint.setValue( r.x, r.y, r.z );
 
+	parentPath->unref();
 	m_previousAimingPointType = typeOfAimingPoint.getValue();
 }

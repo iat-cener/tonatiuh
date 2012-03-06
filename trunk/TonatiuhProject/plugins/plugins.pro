@@ -1,7 +1,8 @@
 TEMPLATE = subdirs
 
 
-SUBDIRS =  MaterialBasicRefractive \
+SUBDIRS =  ComponentHeliostatField \
+			MaterialBasicRefractive \
 			MaterialStandardSpecular \
 			PhotonMapDefault \
 			RandomMersenneTwister \
