@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class QDir;
 class QStringList;
 class RandomDeviateFactory;
+class TComponentFactory;
 class TMaterialFactory;
 class TPhotonMapFactory;
 class TShapeFactory;
@@ -60,9 +61,10 @@ public:
     PluginManager();
     ~PluginManager();
 
-    QVector< RandomDeviateFactory* > GetRandomDeviateFactories() const;
+    QVector< TComponentFactory* > GetComponentFactories() const;
     QVector< TMaterialFactory* > GetMaterialFactories() const;
     QVector< TPhotonMapFactory* > GetPhotonMapFactories() const;
+    QVector< RandomDeviateFactory* > GetRandomDeviateFactories() const;
     QVector< TShapeFactory* > GetShapeFactories() const;
     QVector< TSunShapeFactory* > GetSunShapeFactories() const;
     QVector< TTrackerFactory* > GetTrackerFactories() const;
@@ -73,6 +75,7 @@ private:
 	void AddFilesToList( QDir directory, QStringList& filesList );
 	void BuildFileList( QDir directory, QStringList& filesList );
 	void LoadAvailablePlugins( );
+	void LoadComponentPlugin( QObject* plugin );
 	void LoadMaterialPlugin( QObject* plugin );
 	void LoadPhotonMapPlugin( QObject* plugin );
 	void LoadRandomDeviatePlugin( QObject* plugin );
@@ -84,9 +87,10 @@ private:
 	bool ValidDirectoryName( QString& directoryName  );
 
 
-	QVector< RandomDeviateFactory* > m_RandomDeviateFactoryList;
+	QVector< TComponentFactory* > m_componentFactoryList;
 	QVector< TMaterialFactory* > m_materialFactoryList;
 	QVector< TPhotonMapFactory* > m_photonmapFactoryList;
+	QVector< RandomDeviateFactory* > m_randomDeviateFactoryList;
 	QVector< TShapeFactory* > m_shapeFactoryList;
 	QVector< TSunShapeFactory* > m_sunshapeFactoryList;
 	QVector< TTrackerFactory* > m_trackerFactoryList;

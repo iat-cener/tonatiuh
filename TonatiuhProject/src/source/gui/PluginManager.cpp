@@ -51,6 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "PluginManager.h"
 #include "RandomDeviateFactory.h"
+#include "TComponentFactory.h"
 #include "TMaterialFactory.h"
 #include "TPhotonMapFactory.h"
 #include "TShapeFactory.h"
@@ -62,9 +63,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * Creates a new PluginManager object.
  */
 PluginManager::PluginManager()
-:m_RandomDeviateFactoryList( 0 ),
+:m_componentFactoryList( 0 ),
  m_materialFactoryList( 0 ),
  m_photonmapFactoryList( 0 ),
+ m_randomDeviateFactoryList( 0 ),
  m_shapeFactoryList( 0 ),
  m_sunshapeFactoryList( 0 )
 {
@@ -80,13 +82,12 @@ PluginManager::~PluginManager()
 }
 
 /*!
- * Returns available random deviates plugins factory list.
+ * Returns available component plugins factory list.
  */
-QVector< RandomDeviateFactory* > PluginManager::GetRandomDeviateFactories() const
+QVector< TComponentFactory* > PluginManager::GetComponentFactories() const
 {
-	return	m_RandomDeviateFactoryList;
+	return	m_componentFactoryList;
 }
-
 /*!
  * Returns available random deviates plugins factory list.
  */
@@ -102,6 +103,15 @@ QVector< TPhotonMapFactory* > PluginManager::GetPhotonMapFactories() const
 {
 	return	m_photonmapFactoryList;
 }
+
+/*!
+ * Returns available random deviates plugins factory list.
+ */
+QVector< RandomDeviateFactory* > PluginManager::GetRandomDeviateFactories() const
+{
+	return	m_randomDeviateFactoryList;
+}
+
 
 /*!
  * Returns available shape plugins factory list.
@@ -179,6 +189,22 @@ void PluginManager::BuildFileList( QDir directory, QStringList& filesList )
 
 }
 
+
+/*!
+ * Loads the \a plugin as component type.
+ */
+void PluginManager::LoadComponentPlugin( QObject* plugin )
+{
+
+	TComponentFactory* pTComponentFactory = qobject_cast<TComponentFactory* >( plugin );
+	if( !pTComponentFactory )  gf::SevereError( "MainWindow::LoadPlugins: Component plug-in not recognized" );
+	//pTComponentFactory->CreateTMaterial();
+	m_componentFactoryList.push_back( pTComponentFactory );
+}
+
+/*!
+ * Loads the \a plugin as material type.
+ */
 void PluginManager::LoadMaterialPlugin( QObject* plugin )
 {
 
@@ -188,6 +214,9 @@ void PluginManager::LoadMaterialPlugin( QObject* plugin )
 	m_materialFactoryList.push_back( pTMaterialFactory );
 }
 
+/*!
+ * Loads the \a plugin as photon map type.
+ */
 void PluginManager::LoadPhotonMapPlugin( QObject* plugin )
 {
 	TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
@@ -201,7 +230,7 @@ void PluginManager::LoadPhotonMapPlugin( QObject* plugin )
 void PluginManager::LoadRandomDeviatePlugin( QObject* plugin )
 {
 	RandomDeviateFactory* pRamdomDeviateFactory = qobject_cast<RandomDeviateFactory* >( plugin );
-	m_RandomDeviateFactoryList.push_back( pRamdomDeviateFactory );
+	m_randomDeviateFactoryList.push_back( pRamdomDeviateFactory );
 
 }
 
@@ -209,7 +238,6 @@ void PluginManager::LoadShapePlugin( QObject* plugin )
 {
 	TShapeFactory* pTShapeFactory = qobject_cast<TShapeFactory* >( plugin );
 	if ( !pTShapeFactory ) gf::SevereError( "MainWindow::LoadPlugins: Shape plug-in not recognized" );
-	//if( pTShapeFactory->IsFlat() )	m_TFlatShapeFactoryList.push_back( pTShapeFactory );
 	pTShapeFactory->CreateTShape();
 	m_shapeFactoryList.push_back( pTShapeFactory );
 }

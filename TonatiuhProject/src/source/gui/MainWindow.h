@@ -58,6 +58,7 @@ class SoDragger;
 class SoSelection;
 class SoSeparator;
 class SoTransform;;
+class TComponentFactory;
 class TLightShape;
 class TMaterialFactory;
 class TPhotonMap;
@@ -139,6 +140,7 @@ private slots:
 	void ChangeGridSettings();
 	void ChangeNodeName( const QModelIndex& index, const QString& newName);
     void ChangeSelection( const QModelIndex & current );
+	void CreateComponent( TComponentFactory* pTComponentFactory );
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
@@ -219,6 +221,7 @@ private:
     bool SaveFile( const QString& fileName );
     void SetCurrentFile( const QString& fileName );
     void SetupActions();
+   	void SetupActionsInsertComponent();
    	void SetupActionsInsertMaterial();
     void SetupActionsInsertShape();
     void SetupActionsInsertTracker();
