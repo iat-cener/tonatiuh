@@ -36,35 +36,39 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ACTIONINSERTMATERIAL_H_
-#define ACTIONINSERTMATERIAL_H_
-
-#include <QAction>
-
-class TMaterialFactory;
-
-//!  ActionInsertMaterial class is the action to insert material in the scene.
 /*!
-  ActionInsertMaterial is the action added to menu and toolbar for each material plugin.
+* \class ActionInsertComponent
+* \brief The ActionInsertComponent class is the action to insert a component in the scene.
+*
+* The ActionInsertComponent class is the action added to components menu for each component plugin.
+*
 */
 
-class ActionInsertMaterial : public QAction
+#include "ActionInsertComponent.h"
+
+/*!
+ * Creates an action object with \a text and \a parent as parent object.
+ */
+ActionInsertComponent::ActionInsertComponent( const QString& text, QObject* parent, TComponentFactory* pTComponentFactory )
+:QAction( text, parent ),
+ m_pTComponentFactory( pTComponentFactory )
+
 {
-	Q_OBJECT
 
-public:
-	ActionInsertMaterial( const QString& text, QObject* parent, TMaterialFactory* pTMaterialFactory );
-	~ActionInsertMaterial();
+}
 
-signals:
-	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
+/*!
+ * Destroys the action object.
+ */
+ActionInsertComponent::~ActionInsertComponent()
+{
 
-public slots:
-	void OnActionInsertMaterialTriggered();
+}
 
-private:
-	TMaterialFactory* m_pTMaterialFactory;
-
-};
-
-#endif /*ACTIONINSERTMATERIAL_H_*/
+/*!
+ * Emits create component signal.
+ */
+void ActionInsertComponent::OnActionInsertComponentTriggered()
+{
+	emit CreateComponent( m_pTComponentFactory );
+}

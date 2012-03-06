@@ -94,7 +94,6 @@ LightDialog::LightDialog( SceneModel& sceneModel, TLightKit* currentLightKit, QV
 LightDialog::~LightDialog()
 {
 
-	//modelTreeWidget->clear();
 }
 
 /*!
@@ -183,21 +182,6 @@ void LightDialog::AddNodeToDisabledNodeList()
 
 	disabledNodeList->addItem( currentNodeInstance->GetNodeURL() );
 
-
-	/*QTreeWidgetItem* currentItem = modelTreeWidget->currentItem();
-	if( !currentItem )	return;
-
-	QString nodeUrl = currentItem->data( 0, Qt::UserRole ).toString();
-
-	QModelIndex currentIndex = m_currentSceneModel->IndexFromNodeUrl( nodeUrl );
-	InstanceNode* currentNodeInstance = m_currentSceneModel->NodeFromIndex( currentIndex );
-	if( !currentNodeInstance )	return;
-
-	disabledNodeList->addItem( currentNodeInstance->GetNodeURL() );
-
-	currentItem->setDisabled( true );
-	*/
-
 }
 
 /*!
@@ -211,53 +195,7 @@ void LightDialog::RemoveNodeFromDisabledNodeList()
 	disabledNodeList->removeItemWidget( currentItem );
 	delete currentItem;
 
-
-	/*QStringList nodeList = nodeUrl.split( "/", QString::SkipEmptyParts );
-
-	int level = 2;
-	QTreeWidgetItem* parentItem = modelTreeWidget->topLevelItem(  0 );
-
-	while( nodeList.count() > level )
-	{
-		int childIndex = -1;
-		for( int i = 0; i < parentItem->childCount(); i++ )
-		{
-			QString childText = parentItem->child( i )->text( 0 );
-
-			if( childText == nodeList[level] )	childIndex = i;
-		}
-		if( childIndex >= 0 )
-			parentItem = parentItem->child( childIndex );
-		else
-			return;
-
-		level ++;
-	}
-	parentItem->setDisabled( false );*/
 }
-
-/*
-void LightDialog::GenerateNodeTree( QModelIndex parentIndex, QTreeWidgetItem* parentIntem )
-{
-	InstanceNode* parentNodeInstance = m_currentSceneModel->NodeFromIndex( parentIndex );
-	if( parentNodeInstance->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
-		return;
-	for( int c = 0 ; c < parentNodeInstance->children.count(); c++ )
-	{
-		QModelIndex childIndex = parentIndex.child( c, 0 );
-		QString childName = m_currentSceneModel->data( childIndex, Qt::DisplayRole ).toString().split( " " ).last();
-		QTreeWidgetItem* childItem = new QTreeWidgetItem( ( QTreeWidget* ) 0,
-				QStringList( childName ) );
-
-		childItem->setIcon( 0, m_currentSceneModel->data(childIndex, Qt::DecorationRole ).value< QIcon >() );
-		childItem->setData( 0, Qt::UserRole, parentNodeInstance->children[c]->GetNodeURL() );
-		parentIntem->insertChild( c, childItem );
-
-		GenerateNodeTree( childIndex, childItem );
-	}
-
-}
-*/
 
 
 /*!
@@ -270,63 +208,12 @@ void LightDialog::SetupSunSizeTab()
 	modelTreeView->setSelectionModel( m_sceneSelectionModel );
 	modelTreeView->setRootIndex( m_currentSceneModel->IndexFromNodeUrl( QString( "//SunNode") ) );
 
-	//modelTreeView->setModel( m_currentSceneModel );
-	//modelTreeView->set( m_currentSceneModel );
-	//m_sceneSelectionModel = new QItemSelectionModel( m_currentSceneModel );
-	//modelTreeView->setSelectionModel( m_sceneSelectionModel );
-	/*modelTreeWidget->setColumnCount( 1 );
-	QList<QTreeWidgetItem *> items;
-	QModelIndex sunNodeIndex = m_currentSceneModel->IndexFromNodeUrl( QString( "//SunNode") );
-	InstanceNode* sunNodeInstance = m_currentSceneModel->NodeFromIndex( sunNodeIndex );
-
-
-	QModelIndex childIndex = sunNodeIndex.child( 0, 0 );
-	QString childName = m_currentSceneModel->data( childIndex, Qt::DisplayRole ).toString().split( " " ).last();
-	QTreeWidgetItem* childItem = new QTreeWidgetItem( ( QTreeWidget* ) 0,
-			QStringList( childName ) );
-	childItem->setIcon( 0, m_currentSceneModel->data(childIndex, Qt::DecorationRole ).value< QIcon >() );
-	childItem->setData( 0, Qt::UserRole, sunNodeInstance->children[0]->GetNodeURL() );
-
-	items.append( childItem );
-
-	GenerateNodeTree( childIndex, childItem );
-
-
-	 modelTreeWidget->insertTopLevelItems( 0, items );
-	 */
-
 	if( !m_currentLightKit )	return;
-	 //Set disabled nodes
-	 QStringList disabledNodes = QString( m_currentLightKit->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
-	 for( int n = 0; n < disabledNodes.count(); n++ )
-	 {
-		 disabledNodeList->addItem( disabledNodes[n] );
 
-		 /*QStringList nodeURLElemetList = disabledNodes[n].split( "/", QString::SkipEmptyParts );
-
-		 int level = 2;
-		 QTreeWidgetItem* parentItem = modelTreeWidget->topLevelItem(  0 );
-
-		while( nodeURLElemetList.count() > level )
-		{
-			int childIndex = -1;
-			for( int i = 0; i < parentItem->childCount(); i++ )
-			{
-				QString childText = parentItem->child( i )->text( 0 );
-
-				if( childText == nodeURLElemetList[level] )	childIndex = i;
-			}
-			if( childIndex >= 0 )
-				parentItem = parentItem->child( childIndex );
-			else
-				continue;
-
-			level ++;
-			}
-			parentItem->setDisabled( true );
-			*/
-	 }
-
+	//Set disabled nodes
+	QStringList disabledNodes = QString( m_currentLightKit->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
+	for( int n = 0; n < disabledNodes.count(); n++ )
+		disabledNodeList->addItem( disabledNodes[n] );
 
 }
 

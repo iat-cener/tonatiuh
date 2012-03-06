@@ -36,35 +36,30 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef ACTIONINSERTMATERIAL_H_
-#define ACTIONINSERTMATERIAL_H_
+#ifndef ACTIONINSERTCOMPONENT_H_
+#define ACTIONINSERTCOMPONENT_H_
 
 #include <QAction>
 
-class TMaterialFactory;
+class TComponentFactory;
 
-//!  ActionInsertMaterial class is the action to insert material in the scene.
-/*!
-  ActionInsertMaterial is the action added to menu and toolbar for each material plugin.
-*/
-
-class ActionInsertMaterial : public QAction
+class ActionInsertComponent : public QAction
 {
 	Q_OBJECT
 
 public:
-	ActionInsertMaterial( const QString& text, QObject* parent, TMaterialFactory* pTMaterialFactory );
-	~ActionInsertMaterial();
+	ActionInsertComponent( const QString& text, QObject* parent, TComponentFactory* pTComponentFactory );
+	~ActionInsertComponent();
 
 signals:
-	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
+	void CreateComponent( TComponentFactory* pTComponentFactory );
 
 public slots:
-	void OnActionInsertMaterialTriggered();
+	void OnActionInsertComponentTriggered();
 
 private:
-	TMaterialFactory* m_pTMaterialFactory;
+	TComponentFactory* m_pTComponentFactory;
 
 };
 
-#endif /*ACTIONINSERTMATERIAL_H_*/
+#endif /* ACTIONINSERTCOMPONENT_H_ */

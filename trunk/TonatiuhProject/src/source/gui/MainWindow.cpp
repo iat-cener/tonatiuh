@@ -73,7 +73,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "gc.h"
 #include "gf.h"
+#include "Ray.h"
+#include "Transform.h"
 
+#include "ActionInsertComponent.h"
 #include "ActionInsertMaterial.h"
 #include "ActionInsertShape.h"
 #include "ActionInsertTracker.h"
@@ -105,13 +108,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ProgressUpdater.h"
 #include "RandomDeviate.h"
 #include "RandomDeviateFactory.h"
-#include "Ray.h"
 #include "RayTraceDialog.h"
 #include "RayTracer.h"
 #include "RayTracerNoTr.h"
 #include "SceneModel.h"
 #include "ScriptEditorDialog.h"
 #include "SunPositionCalculatorDialog.h"
+#include "TComponentFactory.h"
 #include "TDefaultTracker.h"
 #include "tgf.h"
 #include "TLightKit.h"
@@ -120,7 +123,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TMaterialFactory.h"
 #include "TPhotonMap.h"
 #include "TPhotonMapFactory.h"
-#include "Transform.h"
 #include "TransmissivityDialog.h"
 #include "trf.h"
 #include "TSceneKit.h"
@@ -2413,7 +2415,33 @@ void MainWindow::ChangeSelection( const QModelIndex& current )
 	}
 }
 
+/*!
+ * Creates a componet subtree from the \a pTComponentFactory as current selected node child.
+ *
+ * If the current node is not a group type node, the component subtree will not be created.
+ */
+void MainWindow::CreateComponent( TComponentFactory* pTComponentFactory )
+{
+	QModelIndex parentIndex = ( (! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex() ) ) ?
+								m_sceneModel->index( 0, 0, sceneModelView->rootIndex( )):
+								sceneModelView->currentIndex();
 
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	if( !parentNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
+
+	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent();
+    QString typeName = pTComponentFactory->TComponentName();
+    componentRootNode->setName( typeName.toStdString().c_str() );
+
+    CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRootNode, QPersistentModelIndex(parentIndex), m_sceneModel );
+    QString commandText = QString( "Create Component: %1").arg( pTComponentFactory->TComponentName().toLatin1().constData() );
+    cmdInsertSeparatorKit->setText(commandText);
+    m_commandStack->push( cmdInsertSeparatorKit );
+
+	UpdateLightSize();
+    m_document->SetDocumentModified( true );
+}
 
 
 /*!
@@ -2984,6 +3012,39 @@ void MainWindow::SetupActions()
     }
 }
 
+void MainWindow::SetupActionsInsertComponent()
+{
+	QVector< TComponentFactory* > componentFactoryList = m_pluginManager->GetComponentFactories();
+	if( !( componentFactoryList.size() > 0 ) )	return;
+
+	QMenu* pComponentMenu = menuInsert->findChild< QMenu* >( "menuComponent" );
+	if( !pComponentMenu ) return;
+	if( pComponentMenu->isEmpty() )
+	{
+		//Enable material menu
+		pComponentMenu->setEnabled( true );
+		//m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
+	}
+
+	for( int i = 0; i < componentFactoryList.size(); ++i )
+	{
+		TComponentFactory* pTComponentFactory = componentFactoryList[i];
+
+		ActionInsertComponent* actionInsertComponent = new ActionInsertComponent( pTComponentFactory->TComponentName(), this, pTComponentFactory );
+		actionInsertComponent->setIcon( pTComponentFactory->TComponentIcon() );
+
+	    pComponentMenu->addAction( actionInsertComponent );
+		//m_materialsToolBar->addAction( actionInsertComponent );
+		//m_materialsToolBar->addSeparator();
+	    connect( actionInsertComponent, SIGNAL( triggered() ),
+	    		actionInsertComponent, SLOT( OnActionInsertComponentTriggered() ) );
+		connect( actionInsertComponent, SIGNAL( CreateComponent( TComponentFactory* ) ),
+				                 this, SLOT( CreateComponent( TComponentFactory* ) ) );
+
+	}
+
+}
+
 void MainWindow::SetupActionsInsertMaterial()
 {
 	QVector< TMaterialFactory* > materialsFactoryList = m_pluginManager->GetMaterialFactories();
@@ -3352,6 +3413,7 @@ void MainWindow::SetupPluginsManager()
 	m_pluginManager = new PluginManager;
 	m_pluginManager->LoadAvailablePlugins( PluginDirectory() );
 
+	SetupActionsInsertComponent( );
 	SetupActionsInsertMaterial( );
 	SetupActionsInsertShape();
 	SetupActionsInsertTracker();
