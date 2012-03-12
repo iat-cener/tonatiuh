@@ -121,6 +121,7 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 					if( m_transmissivity && !m_transmissivity->IsTransmitted( ray.maxt, rand ) )
 					{
 						isReflectedRay = false;
+						intersectedSurface = 0;
 						ray.maxt = HUGE_VAL;
 					}
 
