@@ -66,6 +66,7 @@ public:
 private:
      bool m_previousLightKit;
      double m_previousAzimuth;
+     QString m_previousDisbleNodes;
      double m_previousZenith;
      TSunShape* m_pPreviousSunShape;
      TLightKit* m_pNewLightKit;
