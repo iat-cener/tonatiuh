@@ -84,7 +84,7 @@ SetRaysDrawingOptions(double raysFraction, bool drawPhotons) -->Checks between d
 
 SetRaysPerInteraction(int rays) --> Sets the number of desired rays to launch the system.
 
-SetSunShape( QString sunshapeType) -->  Selects the type of sun to simulate the system.
+SetSunshape( QString sunshapeType) -->  Selects the type of sun to simulate the system.
 
 SetSunShapeParameter(QString parameter, QString value) -->Assigns the value to the parameter of the sun.
 
