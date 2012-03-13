@@ -12,12 +12,10 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS = src/*.h \
-                $$(TONATIUH_ROOT)/src/source/gui/PluginManager.h \
-                $$(TONATIUH_ROOT)/src/source/raytracing/TSeparatorKit.h
+                $$(TONATIUH_ROOT)/src/source/gui/PluginManager.h
 
 SOURCES = src/*.cpp  \
-                $$(TONATIUH_ROOT)/src/source/gui/PluginManager.cpp \
-                $$(TONATIUH_ROOT)/src/source/raytracing/TSeparatorKit.cpp
+                $$(TONATIUH_ROOT)/src/source/gui/PluginManager.cpp
 
 FORMS += src/*.ui
 
