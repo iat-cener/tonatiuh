@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TransmissivityDefault : public TTransmissivity
 {
-	SO_NODE_HEADER( TransmissivityDefualt );
+	SO_NODE_HEADER( TransmissivityDefault );
 
 public:
     static void initClass();
