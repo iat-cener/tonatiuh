@@ -55,6 +55,7 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
 : QUndoCommand("Modify LightKit", parent),
   m_previousLightKit( false ),
   m_previousAzimuth( 0 ),
+  m_previousDisbleNodes( "" ),
   m_previousZenith( 0 ),
   m_pPreviousSunShape( 0 ),
   m_pNewLightKit( 0 ),
@@ -73,6 +74,7 @@ CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* sc
     	{
 			m_previousAzimuth = lightKit->azimuth.getValue();
 			m_previousZenith = lightKit->zenith.getValue();
+			m_previousDisbleNodes = QString( lightKit->disabledNodes.getValue().getString() );
 
 			m_pPreviousSunShape = dynamic_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
 			if( m_pPreviousSunShape ) m_pPreviousSunShape->ref();
@@ -103,6 +105,7 @@ void CmdLightKitModified::undo()
     	TLightKit* lightKit = static_cast< TLightKit* > ( m_scene->getPart("lightList[0]", false) );
     	lightKit->setPart("tsunshape", m_pPreviousSunShape );
    		lightKit->ChangePosition( m_previousAzimuth, m_previousZenith );
+   		lightKit->disabledNodes.setValue( m_previousDisbleNodes.toStdString().c_str() );
     }
     else	m_pModel->RemoveLightNode( *m_pNewLightKit );
 }
@@ -126,6 +129,7 @@ void CmdLightKitModified::redo( )
    		lightKit->setPart("tsunshape", sunhape );
 
    		lightKit->ChangePosition( m_pNewLightKit->azimuth.getValue(), m_pNewLightKit->zenith.getValue() );
+   		lightKit->disabledNodes.setValue( m_pNewLightKit->disabledNodes.getValue() );
    	}
 
 }
