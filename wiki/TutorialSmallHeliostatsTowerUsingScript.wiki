@@ -82,7 +82,7 @@ SetRayCastingGrid(int widthDivisions, int heightDivisions) --> Sets the number o
 
 SetRaysDrawingOptions(double raysFraction, bool drawPhotons) -->Checks between display or not the Photons and the percent of rays to draw after running the system.
 
-SetRaysPerInteraction(int rays) --> Sets the number of desired rays to launch the system.
+SetRaysPerIteration(int rays) --> Sets the number of desired rays to launch the system.
 
 SetSunshape( QString sunshapeType) -->  Selects the type of sun to simulate the system.
 
