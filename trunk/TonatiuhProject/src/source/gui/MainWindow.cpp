@@ -857,7 +857,7 @@ void MainWindow::ShowRayTracerOptionsDialog()
 	SetRayCastingGrid( options->GetWidthDivisions(), options->GetHeightDivisions() );
 
 
-	SetIncreasePhtonMap( options->IncreasePhotonMap() );
+	SetIncreasePhotonMap( options->IncreasePhotonMap() );
 
 }
 
@@ -1017,7 +1017,13 @@ void MainWindow::on_actionAbout_triggered()
 			"\nPlease see http://www.gnu.org/licenses/gpl.html for an overview of GPLv3 licensing.\n"
 			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
+
+
 }
+
+
+
+
 /*
 void MainWindow::on_actionHelp_triggered(){
 
@@ -1131,7 +1137,7 @@ void MainWindow::ChangeSunPosition(int year, int month, int day, double hours, d
 			( day < 0 ) || ( day > 31  ) ||
 			( hours < 0 ) || ( hours > 23  ) ||
 			( minutes < 0 ) || ( minutes > 59  ) ||
-			( seconds < 0 ) || ( seconds >= 60  ) ||
+			( seconds < 0 ) || ( seconds > 59  ) ||
 			( longitude < -180. ) || ( longitude > 180.  ) ||
 			( latitude < -90. ) || ( latitude > 90.  ) )
 	{
@@ -1908,7 +1914,7 @@ void MainWindow::SetAimingPointRelative()
 /*!
  * If \a increase is false, starts with a new photon map every ray tracer. Otherwise, the photon map increases.
  */
-void MainWindow::SetIncreasePhtonMap( bool increase )
+void MainWindow::SetIncreasePhotonMap( bool increase )
 {
 	m_increasePhotonMap = increase;
 }
