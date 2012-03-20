@@ -118,7 +118,7 @@ public slots:
     void SelectNode( QString nodeUrl );
 	void SetAimingPointAbsolute();
 	void SetAimingPointRelative();
-    void SetIncreasePhtonMap( bool increase );
+    void SetIncreasePhotonMap( bool increase );
     void SetNodeName( QString nodeName );
     void SetPhotonMapType( QString typeName );
     void SetRandomDeviateType( QString typeName );
