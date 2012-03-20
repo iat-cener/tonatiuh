@@ -94,9 +94,14 @@ QString TrackerOneAxis::getIcon()
 void TrackerOneAxis::evaluate()
 {
 	if (!IsConnected()) return;
+
 	SoPath* nodePath= m_scene->GetSoPath( this );
-	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath->copy() );
+	if (!nodePath) return;
+
+	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
+	parentPath->ref();
 	parentPath->pop();
+
 	if( !parentPath ) return;
 
 	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
@@ -127,5 +132,7 @@ void TrackerOneAxis::evaluate()
 	SoTransform* newTransform = new SoTransform();
 	newTransform->setMatrix( transformMatrix );
 
+
+	parentPath->unref();
 	SetEngineOutput(newTransform);
 }
