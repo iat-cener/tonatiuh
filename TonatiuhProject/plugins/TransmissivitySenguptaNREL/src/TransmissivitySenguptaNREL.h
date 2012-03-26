@@ -36,27 +36,28 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TRANSMISSIVITYMIRVAL_H_
-#define TRANSMISSIVITYMIRVAL_H_
+#ifndef TRANSMISSIVITYSENGUPTANREL_H_
+#define TRANSMISSIVITYSENGUPTANREL_H_
 
 #include "trt.h"
 #include "TTransmissivity.h"
 
 
-class TransmissivityMirval : public TTransmissivity
+class TransmissivitySenguptaNREL : public TTransmissivity
 {
-	SO_NODE_HEADER( TransmissivityMirval );
+	SO_NODE_HEADER( TransmissivitySenguptaNREL );
 
 public:
     static void initClass();
-    TransmissivityMirval();
+    TransmissivitySenguptaNREL();
 
 	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
 
+	trt::TONATIUH_REAL beta;
 
 protected:
-    virtual ~TransmissivityMirval();
+    virtual ~TransmissivitySenguptaNREL();
 
 };
 
-#endif /* TRANSMISSIVITYMIRVAL_H_ */
+#endif /* TRANSMISSIVITYSENGUPTANREL_H_ */

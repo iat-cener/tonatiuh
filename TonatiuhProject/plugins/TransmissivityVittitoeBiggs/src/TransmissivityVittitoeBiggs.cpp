@@ -61,15 +61,12 @@ TransmissivityVittitoeBiggs::~TransmissivityVittitoeBiggs()
 bool TransmissivityVittitoeBiggs::IsTransmitted( double& distance, RandomDeviate& rand ) const
 {
 	double t;
-    if(ClearDay.getValue()){
-
-	t = ( 0.99326 - 0.1046 *( distance / 1000 ) + 0.017 * ( distance / 1000 ) * ( distance / 1000 )
+    if( ClearDay.getValue() )
+    	t = ( 0.99326 - 0.1046 *( distance / 1000 ) + 0.017 * ( distance / 1000 ) * ( distance / 1000 )
 			- 0.002845 * ( distance / 1000 ) * ( distance / 1000 ) * ( distance / 1000 ) );
-	}else{
-
-		t = ( 0.98707 - 0.2748 *( distance / 1000 ) + 0.03394 * ( distance / 1000 ) * ( distance / 1000 ));
-	}
+	else
+		t = ( 0.98707 - 0.2748 *( distance / 1000 ) + 0.03394 * ( distance / 1000 ) * ( distance / 1000 ) );
 
     if( rand.RandomDouble() < t )	return true;
-		return false;
+    return false;
 }

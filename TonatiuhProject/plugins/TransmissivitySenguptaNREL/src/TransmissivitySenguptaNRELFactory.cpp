@@ -32,31 +32,37 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TRANSMISSIVITYMIRVAL_H_
-#define TRANSMISSIVITYMIRVAL_H_
+#include <QIcon>
 
-#include "trt.h"
-#include "TTransmissivity.h"
+#include "TransmissivitySenguptaNRELFactory.h"
+#include "TransmissivitySenguptaNREL.h"
 
 
-class TransmissivityMirval : public TTransmissivity
+QString TransmissivitySenguptaNRELFactory::TTransmissivityName() const
 {
-	SO_NODE_HEADER( TransmissivityMirval );
+	return QString("Sengupta-NREL Transmissivity" );
+}
 
-public:
-    static void initClass();
-    TransmissivityMirval();
+QIcon TransmissivitySenguptaNRELFactory::TTransmissivityIcon() const
+{
+	return QIcon(":/icons/TransmissivitySenguptaNREL.png");
+}
 
-	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
+TransmissivitySenguptaNREL* TransmissivitySenguptaNRELFactory::CreateTTransmissivity( ) const
+{
+	static bool firstTime = true;
+	if ( firstTime )
+	{
+	    // Initialize the new node classes
+		TransmissivitySenguptaNREL::initClass();
+	    firstTime = false;
+	}
+	return new TransmissivitySenguptaNREL;
 
+}
 
-protected:
-    virtual ~TransmissivityMirval();
-
-};
-
-#endif /* TRANSMISSIVITYMIRVAL_H_ */
+Q_EXPORT_PLUGIN2( TransmissivitySenguptaNREL, TransmissivitySenguptaNRELFactory )

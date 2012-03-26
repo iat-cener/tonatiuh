@@ -31,10 +31,11 @@ SUBDIRS =  ComponentHeliostatField \
 			TrackerHeliostat \
             TrackerLinearFresnel \
 			TrackerOneAxis \
+            TransmissivityBallestrin \
+            TransmissivityDefault \
             TransmissivityMirval \
-            TransmissivityNREL \
-			TransmissivityBallestrin \
-            TransmissivityDefault
+            TransmissivitySenguptaNREL \
+            TransmissivityVittitoeBiggs
 
 plugins.target= plugins
 plugins.depends = src

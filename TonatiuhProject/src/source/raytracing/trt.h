@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRT_H_
 #define TRT_H_
 
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFVec2d.h>
@@ -60,7 +61,7 @@ namespace trt
 		typedef SoSFVec2f TONATIUH_REALVECTOR2;
 	#endif
 
-
+	typedef SoSFBool TONATIUH_BOOL;
 };
 
 
