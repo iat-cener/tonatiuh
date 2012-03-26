@@ -31,6 +31,8 @@ SUBDIRS =  ComponentHeliostatField \
 			TrackerHeliostat \
             TrackerLinearFresnel \
 			TrackerOneAxis \
+            TransmissivityMirval \
+            TransmissivityNREL \
 			TransmissivityBallestrin \
             TransmissivityDefault
 
