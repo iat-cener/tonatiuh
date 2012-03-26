@@ -36,27 +36,32 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TRANSMISSIVITYMIRVAL_H_
-#define TRANSMISSIVITYMIRVAL_H_
-
-#include "trt.h"
-#include "TTransmissivity.h"
+#include "TransmissivitySenguptaNREL.h"
+#include <cmath>
 
 
-class TransmissivityMirval : public TTransmissivity
+SO_NODE_SOURCE( TransmissivitySenguptaNREL );
+
+
+void TransmissivitySenguptaNREL::initClass()
 {
-	SO_NODE_HEADER( TransmissivityMirval );
+	SO_NODE_INIT_CLASS( TransmissivitySenguptaNREL, TTransmissivity, "TTransmissivity" );
+}
 
-public:
-    static void initClass();
-    TransmissivityMirval();
+TransmissivitySenguptaNREL::TransmissivitySenguptaNREL( )
+{
+	SO_NODE_CONSTRUCTOR( TransmissivitySenguptaNREL );
+	SO_NODE_ADD_FIELD( beta, ( 0.0 ) );
+}
 
-	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
+TransmissivitySenguptaNREL::~TransmissivitySenguptaNREL()
+{
 
+}
 
-protected:
-    virtual ~TransmissivityMirval();
-
-};
-
-#endif /* TRANSMISSIVITYMIRVAL_H_ */
+bool TransmissivitySenguptaNREL::IsTransmitted( double& distance, RandomDeviate& rand ) const
+{
+	double t = exp( -( 0.299* beta.getValue() + 0.002674 )* distance /( 1000 * 250 ) );
+	if( rand.RandomDouble() < t  )	return true;
+	return false;
+}

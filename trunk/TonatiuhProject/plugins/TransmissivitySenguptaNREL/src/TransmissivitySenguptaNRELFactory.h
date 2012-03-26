@@ -32,31 +32,27 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TRANSMISSIVITYMIRVAL_H_
-#define TRANSMISSIVITYMIRVAL_H_
+#ifndef TRANSMISSIVITYFACTORYSENGUPTANREL_H_
+#define TRANSMISSIVITYFACTORYSENGUPTANREL_H_
 
-#include "trt.h"
-#include "TTransmissivity.h"
+#include "TransmissivitySenguptaNREL.h"
+#include "TTransmissivityFactory.h"
 
+class TransmissivitySenguptaNREL;
 
-class TransmissivityMirval : public TTransmissivity
+class TransmissivitySenguptaNRELFactory : public QObject, public TTransmissivityFactory
 {
-	SO_NODE_HEADER( TransmissivityMirval );
+    Q_OBJECT
+    Q_INTERFACES( TTransmissivityFactory )
 
 public:
-    static void initClass();
-    TransmissivityMirval();
-
-	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
-
-
-protected:
-    virtual ~TransmissivityMirval();
-
+    QString TTransmissivityName() const;
+    QIcon TTransmissivityIcon() const;
+    TransmissivitySenguptaNREL* CreateTTransmissivity( ) const;
 };
 
-#endif /* TRANSMISSIVITYMIRVAL_H_ */
+#endif /* TRANSMISSIVITYFACTORYSENGUPTANREL_H_ */
