@@ -166,7 +166,7 @@ bool MaterialStandardRoughSpecular::OutputRay( const Ray& incident, Differential
 	double sigmaNormal = sigmaSlope.getValue() / 1000;
 	if( sigmaNormal > 0.0 )
 	{
-		Vector3D errorNormal = ComputeErrorVector( sigmaNormal, rand );
+		NormalVector errorNormal = Normalize( NormalVector( ComputeErrorVector( sigmaNormal, rand ) ) );
 		Vector3D r = dg->normal;
 		Vector3D s = Normalize( dg->dpdu );
 		Vector3D t = Normalize( dg->dpdv );
@@ -175,7 +175,7 @@ bool MaterialStandardRoughSpecular::OutputRay( const Ray& incident, Differential
 							t.x, t.y, t.z, 0.0,
 							0.0, 0.0, 0.0, 1.0);
 
-		NormalVector normalDirection = Normalize( NormalVector( trasform.GetInverse()( errorNormal ) ) );
+		normalVector = trasform.GetInverse()( errorNormal );
 	}
 	else
 	{
