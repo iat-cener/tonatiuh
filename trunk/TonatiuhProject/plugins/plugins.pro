@@ -4,6 +4,7 @@ TEMPLATE = subdirs
 SUBDIRS =  ComponentHeliostatField \
 			MaterialBasicRefractive \
 			MaterialStandardSpecular \
+            MaterialStandardRoughSpecular \
 			PhotonMapDefault \
 			RandomMersenneTwister \
 			RandomRngStream \
@@ -30,7 +31,8 @@ SUBDIRS =  ComponentHeliostatField \
 			TrackerHeliostat \
             TrackerLinearFresnel \
 			TrackerOneAxis \
-			TransmissivityDefault
+			TransmissivityBallestrin \
+            TransmissivityDefault
 
 plugins.target= plugins
 plugins.depends = src
