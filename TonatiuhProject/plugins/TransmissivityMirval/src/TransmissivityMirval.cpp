@@ -57,7 +57,7 @@ TransmissivityMirval::~TransmissivityMirval()
 
 }
 
-bool TransmissivityMirval::IsTransmitted( double& distance, RandomDeviate& rand ) const
+bool TransmissivityMirval::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
 	double t;
 	if( distance <= 1.0 )

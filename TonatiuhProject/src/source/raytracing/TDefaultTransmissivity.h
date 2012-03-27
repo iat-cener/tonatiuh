@@ -51,7 +51,7 @@ public:
     static void initClass();
     TDefaultTransmissivity();
 
-	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
+	bool IsTransmitted( double distance, RandomDeviate& rand ) const;
 
 	trt::TONATIUH_REAL constant;
 

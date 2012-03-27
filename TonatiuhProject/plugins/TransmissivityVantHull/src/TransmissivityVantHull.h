@@ -51,7 +51,7 @@ public:
     static void initClass();
     TransmissivityVantHull();
 
-	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
+	bool IsTransmitted( double distance, RandomDeviate& rand ) const;
 
 	trt::TONATIUH_REAL Visibility;
 	trt::TONATIUH_REAL Site_Elevation;

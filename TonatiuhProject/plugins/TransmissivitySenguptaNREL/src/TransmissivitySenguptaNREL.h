@@ -51,7 +51,7 @@ public:
     static void initClass();
     TransmissivitySenguptaNREL();
 
-	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
+	bool IsTransmitted( double distance, RandomDeviate& rand ) const;
 
 	trt::TONATIUH_REAL beta;
 

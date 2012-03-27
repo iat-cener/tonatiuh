@@ -57,7 +57,7 @@ TransmissivityDefault::~TransmissivityDefault()
 
 }
 
-bool TransmissivityDefault::IsTransmitted( double& distance, RandomDeviate& rand ) const
+bool TransmissivityDefault::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
 	if( rand.RandomDouble() < exp( -constant.getValue() * distance  ) )	return true;
 

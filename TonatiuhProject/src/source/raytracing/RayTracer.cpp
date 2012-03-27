@@ -137,7 +137,7 @@ QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracer::operator()( doub
 
 			}
 
-			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+			if( !(rayLength == 0 && ray.maxt == HUGE_VAL ) )
 			{
 				if( ray.maxt == HUGE_VAL  )
 				{

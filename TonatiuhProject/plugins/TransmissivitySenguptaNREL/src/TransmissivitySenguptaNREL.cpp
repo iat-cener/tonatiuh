@@ -59,7 +59,7 @@ TransmissivitySenguptaNREL::~TransmissivitySenguptaNREL()
 
 }
 
-bool TransmissivitySenguptaNREL::IsTransmitted( double& distance, RandomDeviate& rand ) const
+bool TransmissivitySenguptaNREL::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
 	double t = exp( -( 0.299* beta.getValue() + 0.002674 )* distance /( 1000 * 250 ) );
 	if( rand.RandomDouble() < t  )	return true;

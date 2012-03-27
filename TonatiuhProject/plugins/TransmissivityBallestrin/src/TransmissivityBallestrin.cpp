@@ -58,20 +58,21 @@ TransmissivityBallestrin::~TransmissivityBallestrin()
 
 }
 
-bool TransmissivityBallestrin::IsTransmitted( double& distance, RandomDeviate& rand ) const
+bool TransmissivityBallestrin::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
 	double t;
-	if(ClearDay.getValue()){
+	if( ClearDay.getValue() )
+	{
 		t = ( 0.9970456  + -0.1522128 *( distance / 1000 ) + 0.018598 * ( distance / 1000 ) * ( distance / 1000 )
 				-0.0015182 * ( distance / 1000 ) * ( distance / 1000 ) * ( distance / 1000 ) );
-	}else{
+	}
+	else
+	{
 		t = ( 0.9922059 -0.5549083 *( distance / 1000 ) + 0.147887 * ( distance / 1000 ) * ( distance / 1000 )
 				-0.0153718 * ( distance / 1000 ) * ( distance / 1000 ) * ( distance / 1000 ) );
 	}
 
 	if( rand.RandomDouble() < t  )	return true;
-
-
 
 	return false;
 }

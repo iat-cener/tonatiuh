@@ -58,7 +58,7 @@ TransmissivityVittitoeBiggs::~TransmissivityVittitoeBiggs()
 
 }
 
-bool TransmissivityVittitoeBiggs::IsTransmitted( double& distance, RandomDeviate& rand ) const
+bool TransmissivityVittitoeBiggs::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
 	double t;
     if( ClearDay.getValue() )
