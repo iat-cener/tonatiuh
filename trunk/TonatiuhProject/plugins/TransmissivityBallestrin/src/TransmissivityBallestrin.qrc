@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/" >
-        <file>icons/TransmissivityPrueba.png</file>
+        <file>icons/TransmissivityBallestrin.png</file>
     </qresource>
 </RCC>

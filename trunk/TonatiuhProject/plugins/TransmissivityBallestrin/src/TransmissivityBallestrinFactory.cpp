@@ -49,7 +49,7 @@ QString TransmissivityBallestrinFactory::TTransmissivityName() const
 
 QIcon TransmissivityBallestrinFactory::TTransmissivityIcon() const
 {
-	return QIcon(":/icons/TransmissivityPrueba.png");
+	return QIcon(":/icons/TransmissivityBallestrin.png");
 }
 
 TransmissivityBallestrin* TransmissivityBallestrinFactory::CreateTTransmissivity( ) const

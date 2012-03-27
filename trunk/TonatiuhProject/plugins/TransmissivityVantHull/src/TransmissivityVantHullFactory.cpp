@@ -49,7 +49,7 @@ QString TransmissivityVantHullFactory::TTransmissivityName() const
 
 QIcon TransmissivityVantHullFactory::TTransmissivityIcon() const
 {
-	return QIcon(":/icons/TransmissivityPrueba.png");
+	return QIcon(":/icons/TransmissivityVantHull.png");
 }
 
 TransmissivityVantHull* TransmissivityVantHullFactory::CreateTTransmissivity( ) const

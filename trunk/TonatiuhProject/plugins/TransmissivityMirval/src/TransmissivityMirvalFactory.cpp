@@ -49,7 +49,7 @@ QString TransmissivityMirvalFactory::TTransmissivityName() const
 
 QIcon TransmissivityMirvalFactory::TTransmissivityIcon() const
 {
-	return QIcon(":/icons/TransmissivityDefault.png");
+	return QIcon(":/icons/TransmissivityMirval.png");
 }
 
 TransmissivityMirval* TransmissivityMirvalFactory::CreateTTransmissivity( ) const
