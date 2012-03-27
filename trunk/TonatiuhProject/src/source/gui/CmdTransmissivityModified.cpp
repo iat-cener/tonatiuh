@@ -17,11 +17,14 @@
 CmdTransmissivityModified::CmdTransmissivityModified( TTransmissivity* newTransmissivity, TSceneKit* scene, QUndoCommand* parent )
 :QUndoCommand( "Transmissivity changed", parent ),
  m_isPreviousTransmissivity( false ),
+ m_pNewTransmissivity( 0 ),
  m_scene( scene )
 {
-    if( newTransmissivity == 0 ) gf::SevereError( "CmdTransmissivityModified called with NULL TTransmissivity " );
-    m_pNewTransmissivity = static_cast< TTransmissivity* >( newTransmissivity->copy( true ) );
-    m_pNewTransmissivity->ref();
+    if( newTransmissivity )
+    {
+    	m_pNewTransmissivity = static_cast< TTransmissivity* >( newTransmissivity->copy( true ) );
+    	m_pNewTransmissivity->ref();
+    }
 
     if( m_scene->getPart("transmissivity", false ) )
     {
@@ -57,6 +60,7 @@ void CmdTransmissivityModified::undo()
 void CmdTransmissivityModified::redo()
 {
 
-	m_scene->setPart( "transmissivity", m_pNewTransmissivity );
+	if( m_pNewTransmissivity )	m_scene->setPart( "transmissivity", m_pNewTransmissivity );
+	else	m_scene->setPart( "transmissivity", 0 );
 
 }
