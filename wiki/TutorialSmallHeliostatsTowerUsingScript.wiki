@@ -323,7 +323,7 @@ for(i=1;i<=20;++i){
                      
             //Change the translation parameter for the next iteration
 
-            traslation=traslation+5.5;
+            trans=trans+5.5;
          
 }
 
