@@ -49,7 +49,7 @@ QString TransmissivityVittitoeBiggsFactory::TTransmissivityName() const
 
 QIcon TransmissivityVittitoeBiggsFactory::TTransmissivityIcon() const
 {
-	return QIcon(":/icons/TransmissivityDefault.png");
+	return QIcon(":/icons/TransmissivityVittitoeBiggs.png");
 }
 
 TransmissivityVittitoeBiggs* TransmissivityVittitoeBiggsFactory::CreateTTransmissivity( ) const
