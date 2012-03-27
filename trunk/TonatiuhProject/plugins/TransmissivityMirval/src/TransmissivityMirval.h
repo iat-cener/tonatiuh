@@ -51,7 +51,7 @@ public:
     static void initClass();
     TransmissivityMirval();
 
-	bool IsTransmitted( double& distance, RandomDeviate& rand ) const;
+	bool IsTransmitted( double distance, RandomDeviate& rand ) const;
 
 
 protected:

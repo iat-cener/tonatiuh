@@ -40,6 +40,8 @@ CmdTransmissivityModified::CmdTransmissivityModified( TTransmissivity* newTransm
  */
 CmdTransmissivityModified::~CmdTransmissivityModified()
 {
+	//if( m_pNewTransmissivity && m_pNewTransmissivity->getRefCount() > 0 ) 	m_pNewTransmissivity->unref();
+	//if( m_pPreviousTransmissivity && m_pPreviousTransmissivity->getRefCount() > 0 ) m_pPreviousTransmissivity->unref();
 }
 
 /*!

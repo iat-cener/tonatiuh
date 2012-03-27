@@ -36,8 +36,9 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "TransmissivityVantHull.h"
 #include <cmath>
+
+#include "TransmissivityVantHull.h"
 
 SO_NODE_SOURCE( TransmissivityVantHull );
 
@@ -50,7 +51,8 @@ void TransmissivityVantHull::initClass()
 TransmissivityVantHull::TransmissivityVantHull( )
 {
 	SO_NODE_CONSTRUCTOR( TransmissivityVantHull );
-	SO_NODE_ADD_FIELD( Visibility, ( 23 ) );
+
+	SO_NODE_ADD_FIELD( Visibility, ( 23000 ) );
 	SO_NODE_ADD_FIELD( Site_Elevation, ( 0 ) );
 	SO_NODE_ADD_FIELD( Vapor_Density, ( 5.9 ) );
 	SO_NODE_ADD_FIELD( Tower_Heigth, ( 100 ) );
@@ -62,28 +64,33 @@ TransmissivityVantHull::~TransmissivityVantHull()
 
 }
 
-bool TransmissivityVantHull::IsTransmitted( double& distance, RandomDeviate& rand ) const
+bool TransmissivityVantHull::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
-	double beta = 3.912/Visibility.getValue();
-	double A0 = 0.0112 * Site_Elevation.getValue()/1000 + 0.0822;
-	double R0 = 0.00101 * (Vapor_Density.getValue()/1000000000) + 0.0507;
-	double C0 = 0.0105 * (Vapor_Density.getValue()/1000000000) + 0.724;
 
-	double A = A0 * log((beta + 0.0003*(Vapor_Density.getValue())/1000000000)/0.00455);
-	double R = 1-(R0 * pow((beta + 0.0091),-0.5));
-	double C = C0 * pow((beta -0.0037),R);
+	if( distance == HUGE_VAL )	return false;
 
-	double epsilon = double(C * exp(-A*Tower_Heigth.getValue()/1000));
+	double R = distance/ 1000;
+	double beta = 3.912 / ( Visibility.getValue() / 1000 );
+	double h = Site_Elevation.getValue()/1000;
+	double ro =  Vapor_Density.getValue();
+
+	double A0 = 0.0112 * h + 0.0822;
+	double S0 = 0.00101 * ro + 0.0507;
+	double C0 = 0.0105 * ro + 0.724;
+
+	double A = A0 * log( ( beta + 0.0003 * ro ) / 0.00455 );
 
 
-	double epsilon2=double(- (double(epsilon)));
+	double S = 1 - ( S0 * pow( beta + 0.0091, -0.5 ) );
+	double C = C0 * pow( beta - 0.0037, S );
 
-	double t = exp(epsilon2 * pow (distance/1000,R));
+	double e = C * exp( - A * ( Tower_Heigth.getValue() / 1000 ) );
+	if( pow( R, S ) == HUGE_VAL )	return true;
+	double t = exp( - e * pow( R, S ) );
 
 
 	if( rand.RandomDouble() <  t  )	return true;
 
-
-
 	return false;
+
 }
