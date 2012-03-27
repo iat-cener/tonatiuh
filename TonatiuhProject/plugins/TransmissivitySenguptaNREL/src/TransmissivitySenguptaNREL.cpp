@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TransmissivitySenguptaNREL.h"
 #include <cmath>
 
-
 SO_NODE_SOURCE( TransmissivitySenguptaNREL );
 
 
@@ -51,7 +50,7 @@ void TransmissivitySenguptaNREL::initClass()
 TransmissivitySenguptaNREL::TransmissivitySenguptaNREL( )
 {
 	SO_NODE_CONSTRUCTOR( TransmissivitySenguptaNREL );
-	SO_NODE_ADD_FIELD( beta, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( beta, ( 0.155996 ) );
 }
 
 TransmissivitySenguptaNREL::~TransmissivitySenguptaNREL()
@@ -61,7 +60,7 @@ TransmissivitySenguptaNREL::~TransmissivitySenguptaNREL()
 
 bool TransmissivitySenguptaNREL::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
-	double t = exp( -( 0.299* beta.getValue() + 0.002674 )* distance /( 1000 * 250 ) );
+	double t = exp( -( 0.2299* beta.getValue() + 0.002674 )* distance /250 );
 	if( rand.RandomDouble() < t  )	return true;
 	return false;
 }
