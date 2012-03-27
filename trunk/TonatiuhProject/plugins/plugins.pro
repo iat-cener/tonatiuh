@@ -35,6 +35,7 @@ SUBDIRS =  ComponentHeliostatField \
             TransmissivityDefault \
             TransmissivityMirval \
             TransmissivitySenguptaNREL \
+            TransmissivityVantHull \
             TransmissivityVittitoeBiggs
 
 plugins.target= plugins
