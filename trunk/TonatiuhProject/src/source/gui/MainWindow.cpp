@@ -1582,19 +1582,26 @@ int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalC
 	m_lastExportInGlobal = globalCoord;
 
 	QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
-	//std::cout<<"Node to export: "<<nodeUrl.toStdString()<<std::endl;
+
+	if( selectedNodeIndex == sceneModelView->rootIndex() ){
+			emit Abort( tr( "Selected node is not a valid node." ) );
+			return 0;
+		}
 	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
-	//std::cout<<"fileName: "<<fileName.toStdString()<<std::endl;
-	if( !selectedSurface )	return 0;
+
+
+
 
 	int okExport = 0;
 
-	//std::cout<<"Node to export: "<<nodeUrl.toStdString()<<std::endl;
+
 	if( m_lastExportInGlobal )
 		okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
 	else
 		okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
-
+    if(okExport==0){
+    	emit Abort( tr( "Selected node is not a valid node to export." ) );
+    }
 	return okExport;
 
 }
