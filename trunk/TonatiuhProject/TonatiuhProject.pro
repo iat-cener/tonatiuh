@@ -8,15 +8,17 @@ geometry.recurse = geometry
 src.target = src
 src.CONFIG = recursive
 src.recurse = src	
-tests.depends = geometry
+src.depends = geometry
 
 plugins.target = plugins
 plugins.CONFIG = recursive
 plugins.recurse = plugins	
+plugins.depends = geometry
 
 tests.target = tests
 tests.CONFIG = recursive
 tests.recurse = tests
+tests.depends = geometry
 
 QMAKE_EXTRA_TARGETS += src plugins tests
 SUBDIRS = geometry \
