@@ -117,6 +117,8 @@
             <file type="replace" value="Contents/MacOS/plugins/TrackerOneAxis/libTrackerOneAxis.dylib" />
             <file type="replace" value="Contents/MacOS/plugins/TransmissivityDefault/libTransmissivityDefault.dylib" />
             <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
+            <file type="replace" value="Contents/Info.plist"/>
+            <file type="new" value="Contents/MacOS/lib/libmarblewidget.12.dylib" />
             <file type="new" value="Contents/MacOS/plugins/ComponentHeliostatField/libComponentHeliostatField.dylib" />
             <file type="new" value="Contents/MacOS/plugins/MaterialStandardRoughSpecular/libMaterialStandardRoughSpecular.dylib" />
             <file type="new" value="Contents/MacOS/plugins/TransmissivityBallestrin/libTransmissivityBallestrin.dylib" />
@@ -124,7 +126,11 @@
             <file type="new" value="Contents/MacOS/plugins/TransmissivitySenguptaNREL/libTransmissivitySenguptaNREL.dylib" />
             <file type="new" value="Contents/MacOS/plugins/TransmissivityVantHull/libTransmissivityVantHull.dylib" />
             <file type="new" value="Contents/MacOS/plugins/TransmissivityVittitoeBiggs/libTransmissivityVittitoeBiggs.dylib" />
-            <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
+            <file type="new" value="Contents/MacOS/plugins/ComponentHeliostatField/libComponentHeliostatField.dylib" />
+            <file type="new" value="Contents/MacOS/libgeometry.1.0.0.dylib" />
+            <file type="new" value="Contents/MacOS/libgeometry.1.0.dylib" />
+            <file type="new" value="Contents/MacOS/libgeometry.1.dylib" />
+            <file type="new" value="Contents/MacOS/libgeometry.dylib" />
         </os>
         <os value="linux">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
@@ -164,6 +170,9 @@
             <file type="new" value="bin/release/plugins/TransmissivitySenguptaNREL/libTransmissivitySenguptaNREL.so" />
             <file type="new" value="bin/release/plugins/TransmissivityVantHull/libTransmissivityVantHull.so" />
             <file type="new" value="bin/release/plugins/TransmissivityVittitoeBiggs/libTransmissivityVittitoeBiggs.so" />
+            <file type="new" value="bin/release/libgeometry.so.1" />
+            <file type="new" value="bin/release/libgeometry.so.1.0" />
+            <file type="new" value="bin/release/libgeometry.so.1.0.0" />
         </os>
         <os value="linux_64">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
@@ -203,6 +212,8 @@
             <file type="new" value="bin/release/plugins/TransmissivitySenguptaNREL/libTransmissivitySenguptaNREL.so" />
             <file type="new" value="bin/release/plugins/TransmissivityVantHull/libTransmissivityVantHull.so" />
             <file type="new" value="bin/release/plugins/TransmissivityVittitoeBiggs/libTransmissivityVittitoeBiggs.so" />
+            <file type="new" value="bin/release/libgeometry.so.1" />
+            <file type="new" value="bin/release/libgeometry.so.1.0.0" />
         </os>
     </files>
 </appname>
