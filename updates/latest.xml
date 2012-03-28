@@ -2,7 +2,7 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="1.2.5" />
+        <version value="1.2.6" />
     </version>
     <files>
         <os value="win">
@@ -43,6 +43,8 @@
             <file type="new" value="bin/release/plugins/TransmissivitySenguptaNREL/TransmissivitySenguptaNREL1.dll" />
             <file type="new" value="bin/release/plugins/TransmissivityVantHull/TransmissivityVantHull1.dll" />
             <file type="new" value="bin/release/plugins/TransmissivityVittitoeBiggs/TransmissivityVittitoeBiggs1.dll" />
+            <file type="new" value="bin/release/plugins/ComponentHeliostatField/ComponentHeliostatField1.dll" />
+            <file type="new" value="bin/release/geometry.dll" />
         </os>
         <os value="win_64">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive1.dll" />
@@ -82,6 +84,7 @@
             <file type="new" value="bin/release/plugins/TransmissivitySenguptaNREL/TransmissivitySenguptaNREL1.dll" />
             <file type="new" value="bin/release/plugins/TransmissivityVantHull/TransmissivityVantHull1.dll" />
             <file type="new" value="bin/release/plugins/TransmissivityVittitoeBiggs/TransmissivityVittitoeBiggs1.dll" />
+            <file type="new" value="bin/release/geometry.dll" />
         </os>
         <os value="mac">
             <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
@@ -121,6 +124,7 @@
             <file type="new" value="Contents/MacOS/plugins/TransmissivitySenguptaNREL/libTransmissivitySenguptaNREL.dylib" />
             <file type="new" value="Contents/MacOS/plugins/TransmissivityVantHull/libTransmissivityVantHull.dylib" />
             <file type="new" value="Contents/MacOS/plugins/TransmissivityVittitoeBiggs/libTransmissivityVittitoeBiggs.dylib" />
+            <file type="replace" value="Contents/MacOS/Tonatiuh" executable="true"/>
         </os>
         <os value="linux">
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
