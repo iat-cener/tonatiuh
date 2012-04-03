@@ -1149,7 +1149,7 @@ void MainWindow::ChangeSunPosition(int year, int month, int day, double hours, d
 	cLocation myLocation = { longitude , latitude };
 	cSunCoordinates results;
 	sunpos( myTime, myLocation, &results );
-	ChangeSunPosition( results.dAzimuth * gc::Degree, results.dZenithAngle * gc::Degree );
+	ChangeSunPosition( results.dAzimuth , (90-results.dZenithAngle) );
 }
 
 /*!
