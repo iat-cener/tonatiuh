@@ -207,3 +207,4 @@ std::ostream& operator<<( std::ostream& os, const BBox& bbox )
     os << "pMax: " << bbox.pMax << std::endl;
     return os;
 }
+
