@@ -58,7 +58,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "BBox.h"
-#include "gc.h"
 #include "gf.h"
 #include "NormalVector.h"
 #include "Point3D.h"
@@ -106,6 +105,7 @@ ShapeTrumpet::ShapeTrumpet()
 
 
 	SetBHyperbola();
+
 
 	m_apertureSensor = new SoFieldSensor(updateApertureValue, this);
 	m_apertureSensor->setPriority( 1 );
@@ -504,15 +504,16 @@ void ShapeTrumpet::generatePrimitives( SoAction *action )
     int32_t* indices = new int32_t[totalIndices];
     int k = 0;
     for( int irow = 0; irow < (rows-1); ++irow )
-           for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
-           {
-				indices[k] = irow*columns + icolumn;
-				indices[k+1] = indices[k] + 1;
-				indices[k+3] = indices[k] + columns;
-				indices[k+2] = indices[k+3] + 1;
+    	for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
+		{
 
-				k+=4; //Set k to the first point of the next face.
-           }
+			indices[k] = irow * columns + icolumn;
+			indices[k+1] = irow * columns + icolumn + 1;
+			indices[k+2] = irow * columns + icolumn + columns + 1;
+			indices[k+3] = irow * columns + icolumn + columns;
+
+			k+=4; //Set k to the first point of the next face.
+		}
 
     float finalvertex[totalIndices][6];
     for( int ivert = 0; ivert<totalIndices; ++ivert )

@@ -389,101 +389,95 @@ void ShapeSphere::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 
 void ShapeSphere::generatePrimitives(SoAction *action)
 {
-    SoPrimitiveVertex   pv;
+	SoPrimitiveVertex   pv;
+	SoState  *state = action->getState();
 
-    // Access the state from the action.
-    SoState  *state = action->getState();
+	SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) ==
+						  SoTextureCoordinateElement::FUNCTION );
 
-    // See if we have to use a texture coordinate function,
-    // rather than generating explicit texture coordinates.
-    SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) ==
-                          SoTextureCoordinateElement::FUNCTION );
+	const SoTextureCoordinateElement* tce = 0;
+	if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
-    // If we need to generate texture coordinates with a
-    // function, we'll need an SoGLTextureCoordinateElement.
-    // Otherwise, we'll set up the coordinates directly.
-    const SoTextureCoordinateElement* tce = 0;
-    if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
-	const int rows = 100; // Number of points per row
-    const int columns = 100; // Number of points per column
-    const int totalPoints = (rows)*(columns); // Total points in the grid
+	SbVec3f  point;
+	int rows = 100; // Number of points per row
+	int columns = 100; // Number of points per column
+	int totalPoints = rows * columns; // Total points in the grid
 
-    float vertex[totalPoints][6];
+	float vertex[totalPoints][6];
 
-    int h = 0;
-    double ui = 0;
+	int h = 0;
+	double ui = 0;
 	double vj = 0;
 
 	for (int i = 0; i < rows; ++i )
-    {
-    	ui =( 1.0 /(double)(rows-1) ) * i;
+	{
+		ui =( 1.0 /(double)(rows-1) ) * i;
 
-    	for ( int j = 0 ; j < columns ; ++j )
-    	{
+		for ( int j = 0 ; j < columns ; ++j )
+		{
+			vj = ( 1.0 /(double)(columns-1) ) * j;
 
-    		vj = ( 1.0 /(double)(columns-1) ) * j;
+			Point3D point = GetPoint3D(ui, vj);
+			NormalVector normal;
+			if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
+			else	normal = GetNormal(ui, vj);
 
-    		Point3D point = GetPoint3D(ui, vj);
-    		NormalVector normal;
-    		if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
-    		else	normal = GetNormal(ui, vj);
+			vertex[h][0] = point.x;
+			vertex[h][1] = point.y;
+			vertex[h][2] = point.z;
+			vertex[h][3] = normal.x;
+			vertex[h][4] = normal.y;
+			vertex[h][5] = normal.z;
 
-    		vertex[h][0] = point.x;
-    		vertex[h][1] = point.y;
-    		vertex[h][2] = point.z;
-    		vertex[h][3] = normal.x;
-    		vertex[h][4] = normal.y;
-    		vertex[h][5] = normal.z;
+			pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
+			h++; //Increase h to the next point.
 
-    		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
-    		h++; //Increase h to the next point.
+		}
+	}
 
-    	}
-    }
+	const int totalIndices  = (rows-1) * (columns-1) * 4;
+	int32_t* indices = new int32_t[totalIndices];
+	int k = 0;
+	for( int irow = 0; irow < (rows-1); ++irow )
+		for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
+		{
 
-	const int totalIndices  = (rows-1)*(columns-1)*4;
-    int32_t* indices = new int32_t[totalIndices];
-    int k = 0;
-    for( int irow = 0; irow < (rows-1); ++irow )
-           for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
-           {
-           	indices[k] = irow*columns + icolumn;
-        	indices[k+1] = indices[k] + 1;
-        	indices[k+3] = indices[k] + columns;
-        	indices[k+2] = indices[k+3] + 1;
+			indices[k] = irow * columns + icolumn;
+			indices[k+1] = irow * columns + icolumn + 1;
+			indices[k+2] = irow * columns + icolumn + columns + 1;
+			indices[k+3] = irow * columns + icolumn + columns;
 
-        	k+=4; //Set k to the first point of the next face.
-           }
+			k+=4; //Set k to the first point of the next face.
+		}
 
-    float finalvertex[totalIndices][6];
-    for( int ivert = 0; ivert<totalIndices; ++ivert )
-    {
-    	finalvertex[ivert][0] = vertex[indices[ivert]][0];
-    	finalvertex[ivert][1] = vertex[indices[ivert]][1];
-    	finalvertex[ivert][2] = vertex[indices[ivert]][2];
-    	finalvertex[ivert][3] = vertex[indices[ivert]][3];
-    	finalvertex[ivert][4] = vertex[indices[ivert]][4];
-    	finalvertex[ivert][5] = vertex[indices[ivert]][5];
-    }
-    delete[] indices;
 
-    float u = 1;
-    float v = 1;
+	float finalvertex[totalIndices][6];
+	for(int ivert = 0; ivert<totalIndices; ++ivert )
+	{
+		finalvertex[ivert][0] = vertex[indices[ivert]][0];
+		finalvertex[ivert][1] = vertex[indices[ivert]][1];
+		finalvertex[ivert][2] = vertex[indices[ivert]][2];
+		finalvertex[ivert][3] = vertex[indices[ivert]][3];
+		finalvertex[ivert][4] = vertex[indices[ivert]][4];
+		finalvertex[ivert][5] = vertex[indices[ivert]][5];
+	}
+	delete[] indices;
+
+	float u = 1;
+	float v = 1;
 
 	beginShape(action, QUADS );
-    for( int i = 0; i < totalIndices; ++i )
-    {
-    	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
-    	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
+	for( int i = 0; i < totalIndices; ++i )
+	{
+		SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
+		SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
 		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
 
 		pv.setPoint(point);
 		pv.setNormal(normal);
 		pv.setTextureCoords(texCoord);
 		shapeVertex(&pv);
-
-    }
-    endShape();
-
+	}
+	endShape();
 }
