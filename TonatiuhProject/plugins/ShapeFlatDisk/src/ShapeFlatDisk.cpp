@@ -223,7 +223,7 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
    	const int rows = 50; // Number of points per row
-    const int columns = 50; // Number of points per column
+    const int columns = 20; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
     float vertex[totalPoints][6];
@@ -264,16 +264,16 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
 	const int totalIndices  = (rows-1)*(columns-1)*4;
     int32_t* indices = new int32_t[totalIndices];
     int k = 0;
-    for( int irow = 0; irow < (rows-1); ++irow )
-           for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
-           {
-           	indices[k] = irow*columns + icolumn;
-        	indices[k+1] = indices[k] + 1;
-        	indices[k+3] = indices[k] + columns;
-        	indices[k+2] = indices[k+3] + 1;
+	for( int irow = 0; irow < (rows-1); ++irow )
+		for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
+		{
+			indices[k] = irow * columns + icolumn;
+			indices[k+1] = irow * columns + icolumn + 1;
+			indices[k+2] = irow * columns + icolumn + columns + 1;
+			indices[k+3] = irow * columns + icolumn + columns;
 
-        	k+=4; //Set k to the first point of the next face.
-           }
+			k+=4; //Set k to the first point of the next face.
+		}
 
     float finalvertex[totalIndices][6];
     for( int ivert = 0; ivert<totalIndices; ++ivert )
