@@ -405,8 +405,8 @@ Now we have the whole system created.
 
  * Now we need to define the sun. A default sun shape can be created one of the following lines:
 {{{
- tonatiuh.SetSunshape("Buie_sunshape");  //define a Buie_sunshape type
- tonatiuh.SetSunshape("Pillbox_sunshape"); // define a Pillbox_sunshape type
+ tonatiuh.SetSunshape("Buie_Sunshape");  //define a Buie_sunshape type
+ tonatiuh.SetSunshape("Pillbox_Sunshape"); // define a Pillbox_sunshape type
 }}}
 
  * If we want to change the sun azimuth and zenith we have two ways to do it:
