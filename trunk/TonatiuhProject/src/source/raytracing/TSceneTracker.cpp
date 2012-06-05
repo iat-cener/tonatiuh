@@ -88,7 +88,7 @@ TSceneTracker::~TSceneTracker()
 QString TSceneTracker::getIcon()
 {
 
-	return QString(":/icons/TSceneTracker.png");
+	return QLatin1String(":/icons/TSceneTracker.png");
 }
 
 void TSceneTracker::evaluate()
