@@ -59,7 +59,7 @@ TDefaultMaterial::~TDefaultMaterial()
 
 QString TDefaultMaterial::getIcon()
 {
-	return QString(":icons/TMaterial.png");
+	return QLatin1String(":icons/TMaterial.png");
 }
 
 bool TDefaultMaterial::OutputRay( const Ray& /*incident*/, DifferentialGeometry* /*dg*/, RandomDeviate& /*rand*/, Ray* /*outputRay*/  ) const
