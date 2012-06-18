@@ -127,7 +127,7 @@ BBox TCube::GetBBox() const
 
 QString TCube::GetIcon() const
 {
-	return ":/icons/tcube.png";
+	return QLatin1String( ":/icons/tcube.png" );
 }
 
 bool TCube::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGeometry* /*dg*/) const
