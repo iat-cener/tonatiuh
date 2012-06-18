@@ -86,7 +86,7 @@ BBox TSquare::GetBBox() const
 
 QString TSquare::GetIcon() const
 {
-	return ":/icons/icons/node.png";
+	return QLatin1String( ":/icons/icons/node.png" );
 }
 
 bool TSquare::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGeometry* /*dg*/) const
