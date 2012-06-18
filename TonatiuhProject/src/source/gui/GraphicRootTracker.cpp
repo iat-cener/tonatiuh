@@ -89,7 +89,7 @@ GraphicRootTracker::~GraphicRootTracker()
 QString GraphicRootTracker::getIcon()
 {
 
-	return QString(":/icons/GraphicRootTracker.png");
+	return QString( QLatin1String( ":/icons/GraphicRootTracker.png" ) );
 }
 
 void GraphicRootTracker::evaluate()
