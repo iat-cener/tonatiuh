@@ -20,7 +20,6 @@
 #include "trt.h"
 
 class Transform;
-class TShapeKit;
 
 class TLightShape : public SoShape
 {
@@ -42,6 +41,7 @@ public:
 	trt::TONATIUH_REAL zMin;
 	trt::TONATIUH_REAL zMax;
 	trt::TONATIUH_REAL delta;
+
 protected:
 	Point3D GetPoint3D ( double u, double v ,int h,int w) const;
 	bool OutOfRange( double u, double v ) const;
