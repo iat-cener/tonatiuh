@@ -87,7 +87,9 @@ QString InstanceNode::GetNodeURL() const
 {
    QString url;
    if( GetParent() ) url = GetParent()->GetNodeURL();
-   url.append( "/" + QString( m_coinNode->getName().getString() ) );
+   url.append( QLatin1String( "/" ) );
+   const char* nodeName = m_coinNode->getName().getString();
+   url.append( QLatin1String( nodeName  ) );
    return url;
 }
 

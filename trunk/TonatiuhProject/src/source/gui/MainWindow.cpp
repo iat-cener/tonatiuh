@@ -1798,7 +1798,6 @@ void MainWindow::Run()
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), true );
 
 
-
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 		QStringList disabledNodes = QString( light->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
 		QVector< QPair< TShapeKit*, Transform > > surfacesList;

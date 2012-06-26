@@ -32,34 +32,30 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/nodekits/SoAppearanceKit.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoPickStyle.h>
-
-
-#include "DifferentialGeometry.h"
-#include "Ray.h"
-#include "TCube.h"
-#include "TMaterial.h"
-#include "TDefaultMaterial.h"
-#include "TShapeKit.h"
-#include "TShape.h"
-#include "TAnalyzerKit.h"
-#include "TAnalyzerParameter.h"
-#include "TAnalyzerResult.h"
-#include "TAnalyzerLevel.h"
-#include "TAnalyzerResultKit.h"
-#include "BBox.h"
 #include <sstream>
+#include <vector>
+
+#include <QMutex>
+
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoTransform.h>
+
+#include "BBox.h"
+#include "Transform.h"
+
+#include "SceneModel.h"
+#include "TAnalyzerKit.h"
+#include "TAnalyzerLevel.h"
+#include "TAnalyzerParameter.h"
+#include "TAnalyzerResultKit.h"
+#include "TCube.h"
+#include "TDefaultMaterial.h"
 
 SO_KIT_SOURCE(TAnalyzerKit);
 
@@ -84,10 +80,10 @@ TAnalyzerKit::TAnalyzerKit()
 	
 
 	//SO_KIT_CHANGE_ENTRY_TYPE(shape, TShape, TCube);
-	SO_KIT_ADD_CATALOG_ENTRY(parameter, TAnalyzerParameter, FALSE, this, "", TRUE);
-	SO_KIT_ADD_CATALOG_ENTRY(result, TAnalyzerResult, FALSE, this, "", TRUE);
-	SO_KIT_ADD_CATALOG_LIST_ENTRY(levelList, SoGroup, FALSE, this, "" , TAnalyzerLevel, TRUE);
-	SO_KIT_ADD_LIST_ITEM_TYPE(levelList, TAnalyzerLevel);
+	SO_KIT_ADD_CATALOG_ENTRY( parameter, TAnalyzerParameter, FALSE, this, "", TRUE);
+	SO_KIT_ADD_CATALOG_ENTRY( result, TAnalyzerResult, FALSE, this, "", TRUE);
+	SO_KIT_ADD_CATALOG_LIST_ENTRY( levelList, SoGroup, FALSE, this, "" , TAnalyzerLevel, TRUE);
+	SO_KIT_ADD_LIST_ITEM_TYPE( levelList, TAnalyzerLevel );
 
 
 	SO_KIT_INIT_INSTANCE();
@@ -95,6 +91,7 @@ TAnalyzerKit::TAnalyzerKit()
 
 	getPart("parameter",true)->setName("Parameter");
 	getPart("result",true)->setName("Result");
+
 	TDefaultMaterial * material1 = new TDefaultMaterial;
 	//material1->diffuseColor.setValue(1.0, 0.0, 0.0);
 	//material1->transparency.setValue(0.70);
@@ -181,6 +178,33 @@ TAnalyzerKit::TAnalyzerKit()
 TAnalyzerKit::~TAnalyzerKit()
 {
 
+}
+
+/*!
+ *
+ */
+void TAnalyzerKit::DisplayResults()
+{
+	TSeparatorKit * analyzerResultList = GetResultsList();
+	if (analyzerResultList)
+	{
+		SoNodeKitListPart*analyzerResultListChilds = static_cast< SoNodeKitListPart* >( analyzerResultList->getPart( "childList", true ) );
+		TAnalyzerParameter * analyzerParameter = static_cast<TAnalyzerParameter*> (getPart("parameter", false));
+		analyzerParameter->setParent(this);
+		for( int i=0; i<analyzerResultListChilds->getNumChildren();i++)
+		{
+			TAnalyzerResultKit* resultChild = static_cast< TAnalyzerResultKit* >(analyzerResultListChilds->getChild(i) );
+			resultChild->DisplayResult(analyzerParameter->infoDisplayed.getValue(),GetLevelList());
+		}
+	}
+}
+
+/*!
+ * Returns the icon that represents TSeparatorKit nodes.
+ */
+QString TAnalyzerKit::GetIcon() const
+{
+    return QLatin1String(":/icons/AnalyzerKit.png");
 }
 
 SoNodeKitListPart * TAnalyzerKit::GetLevelList()
@@ -304,7 +328,7 @@ void TAnalyzerKit::PrepareCompute( SceneModel* pModel )
 	}
 }
 
-void TAnalyzerKit::FinalizeCompute(double /*raydensity*/, Transform * /*m_transformWTO*/)
+void TAnalyzerKit::FinalizeCompute( double /*raydensity*/, Transform* /*m_transformWTO*/)
 {
 	SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( getPart( "childList", true ) );
 	TShapeKit * mainShapeKit = static_cast< TShapeKit* >( coinPartList->getChild(0) );
@@ -342,22 +366,6 @@ void TAnalyzerKit::UpdateSize(SceneModel * pModel)
 	}
 }
 
-void TAnalyzerKit::DisplayResults()
-{
-	TSeparatorKit * analyzerResultList = GetResultsList();
-	if (analyzerResultList)
-	{
-		SoNodeKitListPart*analyzerResultListChilds = static_cast< SoNodeKitListPart* >( analyzerResultList->getPart( "childList", true ) );
-		TAnalyzerParameter * analyzerParameter = static_cast<TAnalyzerParameter*> (getPart("parameter", false));
-		analyzerParameter->setParent(this);
-		for( int i=0; i<analyzerResultListChilds->getNumChildren();i++)
-		{
-			TAnalyzerResultKit* resultChild = static_cast< TAnalyzerResultKit* >(analyzerResultListChilds->getChild(i) );
-			resultChild->DisplayResult(analyzerParameter->infoDisplayed.getValue(),GetLevelList());
-		}
-	}
-}
-
 void TAnalyzerKit::ResetValues()
 {
 	TSeparatorKit * analyzerResultList = GetResultsList();
@@ -374,11 +382,3 @@ void TAnalyzerKit::ResetValues()
 }
 
 
-/**
- * Returns the icon that represents TSeparatorKit nodes.
- */
-QString TAnalyzerKit::getIcon()
-{
-    return QString(":/icons/AnalyzerKit.png");
-
-}

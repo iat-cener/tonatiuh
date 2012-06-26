@@ -210,11 +210,11 @@ void TAnalyzerResultKit::DisplayResult(int typeOfDisplay, SoNodeKitListPart *lev
 	}
 }
 
-/**
+/*!
  * Returns the icon that represents TSeparatorKit nodes.
  */
 QString TAnalyzerResultKit::getIcon()
 {
-    return QString(":/icons/AnalyzerKit.png");
+    return QLatin1String(":/icons/AnalyzerKit.png");
 
 }

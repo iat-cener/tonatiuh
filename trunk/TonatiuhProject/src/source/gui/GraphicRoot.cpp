@@ -63,6 +63,7 @@ GraphicRoot::GraphicRoot()
  m_pTracker( 0 )
 {
 	m_graphicsRoot = new SoSeparator;
+	m_graphicsRoot->ref();
 
 	SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
 	float gcolor[][3] = { {0.9843f, 0.8862f, 0.6745f},{ 0.7843f, 0.6157f, 0.4785f } };
@@ -79,18 +80,12 @@ GraphicRoot::GraphicRoot()
 	m_graphicsRoot->addChild( m_pSceneSeparator );
 
 	m_pRootTransform = new SoTransform;
+	m_pRootTransform->ref();
 	m_pSceneSeparator->addChild( m_pRootTransform );
 
 	m_pTracker = new GraphicRootTracker;
-	m_pTracker->ref();
-
+	//m_pTracker->ref();
 	m_pTracker->ConnectParentTranform(m_pRootTransform);
-
-	/*m_pRootTransform->translation.connectFrom( &m_pTracker->outputTranslation );
-	m_pRootTransform->rotation.connectFrom( &m_pTracker->outputRotation );
-	m_pRootTransform->scaleFactor.connectFrom( &m_pTracker->outputScaleFactor );
-	m_pRootTransform->scaleOrientation.connectFrom( &m_pTracker->outputScaleOrientation );
-	m_pRootTransform->center.connectFrom( &m_pTracker->outputCenter );*/
 
 	m_pSelectionNode = new SoSelection;
 	m_pSelectionNode->ref();
@@ -104,18 +99,38 @@ GraphicRoot::GraphicRoot()
 
 GraphicRoot::~GraphicRoot()
 {
-	if ( m_pSelectionNode ) m_pSelectionNode->unref();
-	if ( m_pGrid ) m_pGrid->unref();
-	if ( m_pRays ) m_pRays->unref();
-	if( m_pRootTransform ) m_pRootTransform->unref();
-	if( m_pTracker )	m_pTracker->unref();
-	if ( m_graphicsRoot ) m_graphicsRoot->unref();
+
+	if( m_pGrid )
+	{
+		while ( m_pGrid->getRefCount( ) > 1 )	m_pGrid->unref();
+		m_pGrid = 0;
+	}
+	if( m_pRays )
+	{
+		while ( m_pRays->getRefCount( ) > 1 )	m_pRays->unref();
+		m_pRays = 0;
+	}
+	if( m_pSelectionNode)
+	{
+		while ( m_pSelectionNode->getRefCount( ) > 1 )	m_pSelectionNode->unref();
+		m_pSelectionNode = 0;
+	}
+	if( m_pRootTransform)
+	{
+		while ( m_pRootTransform->getRefCount( ) > 1 )	m_pRootTransform->unref();
+		m_pRootTransform = 0;
+	}
+	if( m_graphicsRoot)
+	{
+		while ( m_graphicsRoot->getRefCount( ) > 1 )	m_graphicsRoot->unref();
+		m_graphicsRoot = 0;
+	}
+
 
 }
 
 void GraphicRoot::AddGrid( SoSeparator* grid )
 {
-	//RemoveGrid();
 	m_pGrid = grid;
 	grid->ref();
 }

@@ -339,9 +339,9 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
     	    {
     	    	QString nodeName;
     	    	if ( coinNode->getName() == SbName() )
-    	     		nodeName = QString( coinNode->getTypeId().getName().getString() );
+    	     		nodeName = QLatin1String( coinNode->getTypeId().getName().getString() );
     	    	else
-    	    		nodeName = QString( coinNode->getName().getString() );
+    	    		nodeName = QLatin1String( coinNode->getName().getString() );
 
 
 				SoSearchAction* coinSearch = new SoSearchAction();
@@ -351,9 +351,9 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 
 				int numReferences = coinSearch->getPaths( ).getLength();
 
-				QString references ( " ( " );
+				QString references( QLatin1String( " ( " ) );
 				references += QString::number( numReferences, 10);
-				references += " )  " ;
+				references +=  QLatin1String( " )  ");
 
 				delete coinSearch;
 
@@ -378,12 +378,12 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
         {
 			if( coinNode->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) )
 			{
-				return QIcon(":/icons/lightKit.png");
+				return QIcon( QLatin1String( ":/icons/lightKit.png" ) );
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TAnalyzerKit::getClassTypeId() ) )
 			{
 				TAnalyzerKit* analyzerKit = static_cast<TAnalyzerKit*>( coinNode );
-				return QIcon( analyzerKit->getIcon() );
+				return QIcon( analyzerKit->GetIcon() );
 
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TSeparatorKit::getClassTypeId() ) )
@@ -397,7 +397,7 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 				SoBaseKit* nodeKit = static_cast< SoBaseKit* >( coinNode );
 				TShape* kit = static_cast<TShape*>( nodeKit->getPart( "shape", false ) );
 				if( kit ) return QIcon( kit->GetIcon() );
-				return QIcon( ":/icons/shapeKit.png" );
+				return QIcon( QLatin1String( ":/icons/shapeKit.png" ) );
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(SoShape::getClassTypeId() ) )
 			{
@@ -711,19 +711,17 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 **/
 QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
 {
-	QStringList nodeList = nodeUrl.split( "/", QString::SkipEmptyParts );
+	QStringList nodeList = nodeUrl.split( QLatin1String( "/" ), QString::SkipEmptyParts );
 
-	if( ( nodeList.size() == 1 ) && ( nodeList[0] == "Light" ) )	return index( 0, 0 );
+	if( ( nodeList.size() == 1 ) &&
+			( nodeList[0] == QLatin1String( "Light" ) ) )	return index( 0, 0 );
 
 	if( nodeList.size() > 0 )
 	{
 		QString nodeName = nodeList.last();
 		nodeList.removeLast();
-		/*if(nodeName=="TrackerHeliostat" || nodeName=="TrackerLinearFresnel" || nodeName=="TrackerOneAxis"){
-			nodeName="";
-		}*/
 
-		QString parentNodeURL = QString( "//" ) + nodeList.join( "/" );
+		QString parentNodeURL = QString( QLatin1String( "//" ) ) + nodeList.join( QLatin1String( "/" ) );
 		QModelIndex parentIndex = IndexFromNodeUrl( parentNodeURL );
 		InstanceNode* parentNode = NodeFromIndex( parentIndex );
 
@@ -731,7 +729,7 @@ QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
 		int row = -1;
 		while( child < parentNode->children.count() )
 		{
-			if ( parentNode->children[child]->GetNode()->getName()  == nodeName )
+			if( parentNode->children[child]->GetNode()->getName()  == SbName( nodeName.toStdString().c_str() ) )
 			{
 				row = child;
 				break;

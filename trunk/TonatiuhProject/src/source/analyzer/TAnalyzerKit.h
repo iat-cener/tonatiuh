@@ -32,30 +32,26 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #ifndef TANALYZERKIT_H_
 #define TANALYZERKIT_H_
 
-#include <vector>
+#include <Inventor/fields/SoSFVec3s.h>
 
-#include <QMutex>
-
-#include "TSeparatorKit.h"
 #include "trt.h"
-#include "Transform.h"
-#include "TAnalyzerResult.h"
-#include "TAnalyzerParameter.h"
-#include "TAnalyzerResultKit.h"
-#include "TShape.h"
-#include "TMaterial.h"
-#include "SceneModel.h"
+#include "TSeparatorKit.h"
 
-
+class QMutex;
 class RandomDeviate;
 class Ray;
+class SceneModel;
+class SceneModel;
+class Transform;
+
+//using namespace std;
 
 //!  TAnalyzerKit class groups what is necessary to the shape.
 /*!
@@ -76,18 +72,18 @@ public:
     TAnalyzerKit();
     static void initClass();
 
-    bool IntersectP( const Ray& ray ) const;
-    void Compute(std::vector< std::vector<Ray> >* raysWays, Transform *m_transformWTO, QMutex* mutex);
-    void PrepareCompute(SceneModel * pModel);
-    void FinalizeCompute(double raydensity, Transform *m_transformWTO);
+    //void Compute( vector< vector<Ray> >* raysWays, Transform* m_transformWTO, QMutex* mutex );
     void DisplayResults();
-	void RemoveResult(SceneModel * pModel);
-	void UpdateSize(SceneModel * pModel);
+    QString GetIcon() const;
+    SoNodeKitListPart* GetLevelList();
+    TSeparatorKit* GetResultsList();
+    bool IntersectP( const Ray& ray ) const;
+    void FinalizeCompute( double raydensity, Transform* m_transformWTO );
+    void PrepareCompute( SceneModel * pModel );
+	void RemoveResult( SceneModel* pModel );
     void ResetValues();
-    QString getIcon();
+	void UpdateSize( SceneModel* pModel );
 
-    SoNodeKitListPart * GetLevelList();
-    TSeparatorKit * GetResultsList();
 
 private:
     virtual ~TAnalyzerKit();
