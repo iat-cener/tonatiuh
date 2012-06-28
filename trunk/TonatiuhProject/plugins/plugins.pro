@@ -5,10 +5,12 @@ SUBDIRS =  ComponentHeliostatField \
 			MaterialBasicRefractive \
 			MaterialStandardSpecular \
             MaterialStandardRoughSpecular \
+            MaterialVirtual \
 			PhotonMapDefault \
 			RandomMersenneTwister \
 			RandomRngStream \
             ShapeBezierSurface \
+			ShapeCircularCPC \
 			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \

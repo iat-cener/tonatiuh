@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -63,12 +63,10 @@ public:
 	static void initClass();
 
     QString getIcon();
-	//Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
 
 	trt::TONATIUH_REAL m_reflectivity;
 	trt::TONATIUH_REAL m_sigmaSlope;
-	//trt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
 	SoSFEnum m_distribution;
 
 	SoMFColor  m_ambientColor;
