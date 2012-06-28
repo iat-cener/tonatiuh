@@ -37,6 +37,9 @@
 
 #include "TAnalyzerKit.h"
 #include "TAnalyzerLevel.h"
+#include "TAnalyzerParameter.h"
+#include "TAnalyzerResult.h"
+#include "TAnalyzerResultKit.h"
 #include "TDefaultMaterial.h"
 #include "TDefaultSunShape.h"
 #include "TDefaultTracker.h"

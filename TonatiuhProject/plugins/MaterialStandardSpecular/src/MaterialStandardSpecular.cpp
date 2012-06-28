@@ -105,7 +105,7 @@ MaterialStandardSpecular::~MaterialStandardSpecular()
 
 QString MaterialStandardSpecular::getIcon()
 {
-	return QString(":icons/MaterialStandardSpecular.png");
+	return QLatin1String(":icons/MaterialStandardSpecular.png");
 }
 
 void MaterialStandardSpecular::updateReflectivity( void* data, SoSensor* )
@@ -151,7 +151,6 @@ void MaterialStandardSpecular::updateTransparency( void* data, SoSensor* )
  	material->transparency.setValue( material->m_transparency[0] );
 }
 
-//Ray* MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay ) const
 {
 	double randomNumber = rand.RandomDouble();
@@ -200,8 +199,6 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 	}
 
 	double cosTheta = DotProduct( normalVector, incident.direction() );
-	//reflected->direction = Normalize( incident.direction - 2.0 * normalVector * cosTheta );
-	//return reflected
 	outputRay->setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
 	return true;
 

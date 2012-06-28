@@ -108,7 +108,7 @@ BBox ShapeCylinder::GetBBox() const
 
 QString ShapeCylinder::GetIcon() const
 {
-	return ":/icons/ShapeCylinder.png";
+	return QLatin1String( ":/icons/ShapeCylinder.png" );
 }
 
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const

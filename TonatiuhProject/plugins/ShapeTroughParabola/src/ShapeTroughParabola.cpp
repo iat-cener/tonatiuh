@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
+#include <QObject>
 #include <QMessageBox>
 
 #include <Inventor/SoPrimitiveVertex.h>
@@ -115,7 +116,7 @@ BBox ShapeTroughParabola::GetBBox() const
 
 QString ShapeTroughParabola::GetIcon() const
 {
-	return ":/icons/ShapeTroughParabola.png";
+	return QLatin1String( ":/icons/ShapeTroughParabola.png" );
 }
 
 bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
@@ -246,7 +247,8 @@ void ShapeTroughParabola::updateXMinValues( void *data, SoSensor *)
 	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
 	if( shapeTroughParabola->xMax.getValue() < shapeTroughParabola->xMin.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "xMin must be smaller than xMax. ") );
+		QMessageBox::warning( 0, QLatin1String( "Tonatiuh" ),
+				QObject::tr( "xMin must be smaller than xMax. ") );
 		shapeTroughParabola->xMin.setValue( shapeTroughParabola->xMax.getValue() );
 	}
 }
@@ -256,7 +258,8 @@ void ShapeTroughParabola::updateXMaxValues( void *data, SoSensor *)
 	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
 	if( shapeTroughParabola->xMax.getValue() < shapeTroughParabola->xMin.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "xMax must be larger than xMin. ") );
+		QMessageBox::warning( 0, QLatin1String( "Tonatiuh" ),
+				QObject::tr( "xMax must be larger than xMin. ") );
 		shapeTroughParabola->xMax.setValue( shapeTroughParabola->xMin.getValue()  );
 	}
 }

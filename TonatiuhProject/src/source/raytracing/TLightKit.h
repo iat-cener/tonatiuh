@@ -114,6 +114,7 @@ private:
     virtual ~TLightKit();
     void UpdateSunPosition();
 
+
 };
 
 #endif /*TLIGHTKIT_H_*/

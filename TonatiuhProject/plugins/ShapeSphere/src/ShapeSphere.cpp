@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QMessageBox>
+#include <QObject>
 #include <QString>
 
 #include <Inventor/SoPrimitiveVertex.h>
@@ -150,7 +151,7 @@ BBox ShapeSphere::GetBBox() const
 
 QString ShapeSphere::GetIcon() const
 {
-	return QString( ":/icons/ShapeSphere.png" );
+	return QLatin1String( ":/icons/ShapeSphere.png" );
 }
 
 Point3D ShapeSphere::Sample( double u1, double u2 ) const
@@ -276,7 +277,9 @@ void ShapeSphere::updateYMin( void *data, SoSensor * )
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( shapeSphere->yMin.getValue() >= shapeSphere->yMax.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y min must be smaller than y max value. ") );
+		QMessageBox::warning( 0,
+				QLatin1String( "Tonatiuh" ),
+				QObject::tr( "Sphere y min must be smaller than y max value. ") );
 		shapeSphere->yMin.setValue( shapeSphere->m_lastValidYMin );
 	}
 	else if( shapeSphere->yMin.getValue() < -shapeSphere->radius.getValue() )
@@ -294,13 +297,16 @@ void ShapeSphere::updateRadius( void *data, SoSensor* )
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( ( shapeSphere->radius.getValue() <= 0.0 ) )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The sphere radius must be a positive value." ) );
+		QMessageBox::warning( 0,
+				QLatin1String( "Tonatiuh" ),
+				QObject::tr( "The sphere radius must be a positive value." ) );
 		shapeSphere->radius.setValue( shapeSphere->m_lastValidRadius );
 
 	}
 	else if( shapeSphere->radius.getValue() < std::max( std::fabs( shapeSphere->yMin.getValue() ), std::fabs( shapeSphere->yMin.getValue() ) ) )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The sphere radius must equal or greater than y value." ) );
+		QMessageBox::warning( 0, QLatin1String( "Tonatiuh" ),
+				QObject::tr( "The sphere radius must equal or greater than y value." ) );
 		shapeSphere->radius.setValue( shapeSphere->m_lastValidRadius );
 	}
 	else
@@ -314,7 +320,9 @@ void ShapeSphere::updateYMax( void *data, SoSensor* )
 	ShapeSphere* shapeSphere = (ShapeSphere *) data;
 	if( shapeSphere->yMax.getValue() < shapeSphere->yMin.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y max must be larger than y min value. ") );
+		QMessageBox::warning( 0,
+				QLatin1String( "Tonatiuh" ),
+				QObject::tr( "Sphere y max must be larger than y min value. ") );
 		shapeSphere->yMax.setValue( shapeSphere->m_lastValidYMax );
 	}
 	else if( shapeSphere->yMax.getValue() > shapeSphere->radius.getValue() )
