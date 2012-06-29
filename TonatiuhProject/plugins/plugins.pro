@@ -10,7 +10,6 @@ SUBDIRS =  ComponentHeliostatField \
 			RandomMersenneTwister \
 			RandomRngStream \
             ShapeBezierSurface \
-			ShapeCircularCPC \
 			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \
