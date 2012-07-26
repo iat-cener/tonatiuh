@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 
 #include <QDataStream>
+#include <QTextStream>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -94,10 +95,10 @@ void PhotonMapExportFile::EndExport()
 	QDir exportDirectory( m_exportDirecotryName );
 	QString exportFilename;
 	if( m_oneFile )
-		exportFilename = exportDirectory.absoluteFilePath( QString( QLatin1String("%1_parameters.dat" ) ).arg( m_photonsFilename ) );
+		exportFilename = exportDirectory.absoluteFilePath( QString( QLatin1String("%1_parameters.txt" ) ).arg( m_photonsFilename ) );
 	else
 	{
-		QString newName = QString( QLatin1String( "%1_parameters.dat" ) ).arg( m_photonsFilename );
+		QString newName = QString( QLatin1String( "%1_parameters.txt" ) ).arg( m_photonsFilename );
 		exportFilename = exportDirectory.absoluteFilePath( newName );
 	}
 
@@ -109,7 +110,7 @@ void PhotonMapExportFile::EndExport()
 
 	WriteFileFormat( exportFilename );
 	exportFile.open( QIODevice::Append );
-	QDataStream out( &exportFile );
+	QTextStream out( &exportFile );
 
 	out<<double( m_powerPerPhoton );
 	//Append first file data
@@ -350,7 +351,7 @@ void PhotonMapExportFile::RemoveExistingFiles()
 	{
 		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
 		QFile exportFile( exportFilename );
-		if(!exportFile.remove()) {
+		if(exportFile.exists()&&!exportFile.remove()) {
 				QString message= QString( "Error deleting %1.\nThe file is in use. Please, close it before continuing. \n" ).arg( QString( exportFilename ) );
 				QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
 				RemoveExistingFiles();
@@ -367,7 +368,7 @@ void PhotonMapExportFile::RemoveExistingFiles()
 		for( int i = 0; i< partialFilesList.count(); ++i )
 		{
 			QFile partialFile( partialFilesList[i].absoluteFilePath() );
-			if(!partialFile.remove()) {
+			if(partialFile.exists() && !partialFile.remove()) {
 					QString message= QString( "Error deleting %1.\nThe file is in use. Please, close it before continuing. \n" ).arg( QString( partialFilesList[i].absoluteFilePath() ) );
 					QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
 					RemoveExistingFiles();
@@ -385,41 +386,41 @@ void PhotonMapExportFile::WriteFileFormat( QString exportFilename )
 
 	QFile exportFile( exportFilename );
 	exportFile.open( QIODevice::WriteOnly );
-	QDataStream out( &exportFile );
-	out<<QString( QLatin1String( "\"START PARAMETERS\"" ) );
-	out<<QString( QLatin1String( "\"id\"" ) );
+	QTextStream out( &exportFile );
+	out<<QString( QLatin1String( "START PARAMETERS \n" ) );
+	out<<QString( QLatin1String( "id\n" ) );
 	if( m_saveCoordinates  )
 	{
-		out<<QString( QLatin1String( "\"x\"" ) );
-		out<<QString( QLatin1String( "\"y\"" ) );
-		out<<QString( QLatin1String( "\"z\"" ) );
+		out<<QString( QLatin1String( "x\n" ) );
+		out<<QString( QLatin1String( "y\n" ) );
+		out<<QString( QLatin1String( "z\n" ) );
 	}
-	if(  m_saveSide )	out<<QString( QLatin1String( "\"side\"" ) );
+	if(  m_saveSide )	out<<QString( QLatin1String( "side \n" ) );
 	if( m_savePrevNexID )
 	{
-		out<<QString( QLatin1String( "\"previous ID\"" ) );
-		out<<QString( QLatin1String( "\"next ID\"" ) );
+		out<<QString( QLatin1String( "previous ID \n" ) );
+		out<<QString( QLatin1String( "next ID\n" ) );
 	}
 	if( m_saveSurfaceID )
 	{
-		out<<QString( QLatin1String( "\"surface ID\"" ) );
+		out<<QString( QLatin1String( "surface ID\n" ) );
 	}
 
-	out<<QString( QLatin1String( "\"END PARAMETERS\"" ) );
+	out<<QString( QLatin1String( "END PARAMETERS\n" ) );
 
 
-	out<<QString( QLatin1String( "\"START SURFACES\"" ) );
+	out<<QString( QLatin1String( "START SURFACES\n" ) );
 	if( m_saveSurfaceID )
 	{
 		QMap<QString, unsigned long >::const_iterator s = m_surfaceIdentfier.constBegin();
 		while( s != m_surfaceIdentfier.constEnd() )
 		{
-			out<<QString( QLatin1String( "\"%1 %2\"" ) ).arg( QString::number( s.value() ),
+			out<<QString( QLatin1String( "%1 %2\n" ) ).arg( QString::number( s.value() ),
 					s.key() );
 			++s;
 		 }
 
 	}
 
-	out<<QString( QLatin1String( "\"END SURFACES\"" ) );
+	out<<QString( QLatin1String( "END SURFACES\n" ) );
 }
