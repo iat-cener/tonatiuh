@@ -5,10 +5,11 @@
 SQLite is library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine. 
 Here you will find instructions to install the SQLite library in your computer and make this library available for the development of Tonatiuh. 
 
-
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+In the Tonatiuh development, the  version, Qt-4.7, is used. If this version is not available from the SO software management tool, configure it following the these steps.
+
+Once the Berkeley DB library is installed the next step is to install the Eclipse Integrated Development Environment (IDE). To do it, follow the instructions in the following wiki page: [InstallingAndConfiguringEclipseForLinux Installing and Configuring Eclipse]
+
+
+[InstallingForLinux Linux Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
