@@ -97,7 +97,7 @@
      <x>0</x>
      <y>0</y>
      <width>857</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEdit">
@@ -234,7 +234,6 @@
     </property>
     <addaction name="actionRun"/>
     <addaction name="actionDisplayRays"/>
-    <addaction name="actionExportPhotonMap"/>
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
     <addaction name="actionReset_Analyzer_Values"/>
@@ -319,7 +318,6 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionRun"/>
-   <addaction name="actionExportPhotonMap"/>
   </widget>
   <widget class="QToolBar" name="viewToolBar">
    <property name="windowTitle">

@@ -393,7 +393,7 @@ void MainWindow::DisplayRays( bool display )
 /*!
  * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
  */
-void MainWindow::ExportPhotonMap()
+/*void MainWindow::ExportPhotonMap()
 {
 	if ( m_pPhotonMap == NULL )
 	{
@@ -431,6 +431,7 @@ void MainWindow::ExportPhotonMap()
 	}
 
 }
+*/
 
 /*!
  * Inserts an existing tonatiuh component into the tonatiuh model as a selected node child.
@@ -1490,6 +1491,7 @@ double MainWindow::GetwPhoton(){
 		return double ( inputAperture * irradiance ) / m_raysPerIteration;
 }
 
+/*
 int MainWindow::ExportAllPhotonMap( QString fileName )
 {
 	if ( m_pPhotonMap == NULL )	return 0 ;
@@ -1517,12 +1519,12 @@ int MainWindow::ExportAllPhotonMap( QString fileName )
 	return okExport;
 
 }
-
+*/
 /*!
  * Writes the \a nodeUrl surface photon's data at file \a fileName.
  * If \a globalCoord is true the photon coordinates will be written in scene coordintes. Otherwise, in surface local coordinates.
  */
-int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord )
+/*int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord )
 {
 	if( fileName.isEmpty() )	return 0;
 	if( nodeUrl.isEmpty() )	return 0;
@@ -1573,6 +1575,8 @@ int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalC
 	return okExport;
 
 }
+*/
+
 void MainWindow::SetAimingPointRelativity( bool relative )
 {
 	if( !m_selectionModel->hasSelection() )	return;
@@ -1915,6 +1919,17 @@ void MainWindow::SetAimingPointAbsolute()
 void MainWindow::SetAimingPointRelative()
 {
 	SetAimingPointRelativity( true );
+}
+
+/*!
+ *Sets to export all surfaces photons.
+ */
+void MainWindow::SetExportAllPhotonMap()
+{
+	PhotonMapExport* pExportMode = m_pPhotonMap->GetExportMode();
+	if( !pExportMode )	return;
+
+	pExportMode->SetSaveAllPhotonsEnabled();
 }
 
 /*!
@@ -3560,7 +3575,6 @@ void MainWindow::SetupTriggers()
 	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
 	//connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( RunCompleteRayTracer() ) );
-	connect( actionExportPhotonMap, SIGNAL( triggered() ), this, SLOT( ExportPhotonMap() ) );
 	connect( actionRayTraceOptions, SIGNAL( triggered() ), this, SLOT( ShowRayTracerOptionsDialog() )  );
 	connect( actionReset_Analyzer_Values, SIGNAL( triggered() ), this, SLOT ( ResetAnalyzerValues() ) );
 
