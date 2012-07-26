@@ -1,0 +1,11 @@
+#summary Instructions to install the !SQLite library needed to develop Tonatiuh under Windows XP, Windows Vista or Windows 7.
+
+= Introduction =
+!SQLite is library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.
+
+Here you will find instructions to install the !SQLite library in your computer and make this library available for the development of Tonatiuh.
+
+
+= Details =
+
+Before installing !SQLite, please, verify that the MinGW and MSYS compilation and linking environmentenand are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingMinGWForWindows Installing MinGW and MSYS ].
