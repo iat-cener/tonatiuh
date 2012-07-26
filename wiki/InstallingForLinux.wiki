@@ -17,7 +17,7 @@ To be able to develop Tonatiuh under Linux you need to:
     * [InstallingCoin3DForLinux Installing Coin3D]
     * [InstallingSoQtForLinux Installing SoQt]
     * [InstallingMarbleForLinux Installing Marble]
-    * [InstallingBerkeleyDBForLinux Installing Berkeley DB]
+    * [InstallingSQLiteForLinux Installing SQLite]
 
   * Install and configure the Integrated Development Environment.
     * [InstallingAndConfiguringEclipseForLinux Installing and Configuring Eclipse]
