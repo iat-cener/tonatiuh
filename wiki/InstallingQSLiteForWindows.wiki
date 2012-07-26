@@ -38,6 +38,6 @@ make
 make install
 }}}
 
-The installation process may take some time. Once the Marble library is installed the next step is to install the Eclipse Integrated Development Environment (IDE). To do it, follow the instructions in the following wiki page: [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
+The installation process may take some time. Once the SQLite library is installed the next step is to install the Eclipse Integrated Development Environment (IDE). To do it, follow the instructions in the following wiki page: [InstallingAndConfiguringEclipseForWindows Installing and Configuring Eclipse]
 
 [InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
