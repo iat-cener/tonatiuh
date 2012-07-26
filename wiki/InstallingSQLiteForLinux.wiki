@@ -1,0 +1,14 @@
+#summary Procedure to install SQLite under Linux
+
+= Introduction =
+
+SQLite is library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine. 
+Here you will find instructions to install the SQLite library in your computer and make this library available for the development of Tonatiuh. 
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
