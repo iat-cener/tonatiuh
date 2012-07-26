@@ -60,7 +60,7 @@ class ScriptEditorDialog : public QDialog, private Ui::ScriptEditorDialog
 	Q_OBJECT
 
 public:
-	ScriptEditorDialog( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent = 0 );
+	ScriptEditorDialog( QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent = 0 );
 	~ScriptEditorDialog();
 
 public slots:

@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -98,12 +98,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdTransmissivityModified.h"
 #include "Document.h"
 #include "ExportDialog.h"
+#include "ExportPhotonMapSettingsDialog.h"
 #include "GraphicView.h"
 #include "GraphicRoot.h"
 #include "GridSettingsDialog.h"
 #include "InstanceNode.h"
 #include "LightDialog.h"
 #include "MainWindow.h"
+#include "PhotonMapExport.h"
+#include "PhotonMapExportFactory.h"
+#include "PhotonMapExportSettings.h"
 #include "PluginManager.h"
 #include "ProgressUpdater.h"
 #include "RandomDeviate.h"
@@ -122,7 +126,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TMaterial.h"
 #include "TMaterialFactory.h"
 #include "TPhotonMap.h"
-#include "TPhotonMapFactory.h"
 #include "TransmissivityDialog.h"
 #include "trf.h"
 #include "TSceneKit.h"
@@ -137,7 +140,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTransmissivity.h"
 #include "TTransmissivityFactory.h"
 #include "UpdatesManager.h"
-
+#include "RunOptionsDialog.h"
 
 
 void startManipulator(void *data, SoDragger* dragger )
@@ -163,19 +166,20 @@ MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags 
  m_document( 0 ),
  m_recentFiles( "" ),
  m_recentFileActions( 0 ),
-m_materialsToolBar( 0 ),
-m_photonMapToolBar(0),
+ m_materialsToolBar( 0 ),
+ m_photonMapToolBar(0),
 m_shapeToolBar( 0 ),
 m_trackersToolBar( 0 ),
-m_pluginManager( 0 ),
+m_pPluginManager( 0 ),
 m_updateManager( 0 ),
 m_sceneModel( 0 ),
 m_selectionModel( 0 ),
 m_rand( 0 ),
 m_selectedRandomDeviate( -1 ),
-m_photonMap( 0 ),
-m_selectedPhotonMap( -1 ),
+m_bufferPhotons( 5000000 ),
 m_increasePhotonMap( false ),
+m_pExportModeSettings( 0 ),
+m_pPhotonMap( 0 ),
 m_lastExportFileName( "" ),
 m_lastExportSurfaceUrl( "" ),
 m_lastExportInGlobal( true ),
@@ -184,16 +188,16 @@ m_coinNode_Buffer( 0 ),
 m_manipulators_Buffer( 0 ),
 m_tracedRays( 0 ),
 m_raysPerIteration( 10000 ),
-m_fraction( 1 ),
+m_heightDivisions( 200 ),
+m_widthDivisions( 200 ),
 m_drawPhotons( false ),
+m_drawRays( true ),
 m_gridXElements( 0 ),
 m_gridZElements( 0 ),
 m_gridXSpacing( 0 ),
 m_gridZSpacing( 0 ),
 m_graphicView( 0 ),
-m_focusView( 0 ),
-m_heightDivisions( 200 ),
-m_widthDivisions( 200 )
+m_focusView( 0 )
 {
 	setupUi( this );
     SetupActions();
@@ -216,7 +220,7 @@ m_widthDivisions( 200 )
  */
 MainWindow::~MainWindow()
 {
-    delete m_pluginManager;
+    delete m_pPluginManager;
     delete m_updateManager;
     delete m_sceneModel;
 	delete m_document;
@@ -224,7 +228,7 @@ MainWindow::~MainWindow()
 	delete m_commandView;
 	delete m_rand;
 	delete[] m_recentFileActions;
-	delete m_photonMap;
+	delete m_pPhotonMap;
 }
 
 /*!
@@ -313,13 +317,13 @@ void MainWindow::DefineSunLight()
 	TLightKit* currentLight = 0;
 	if( coinScene->getPart( "lightList[0]", false ) )	currentLight = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
-	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+	QVector< TShapeFactory* > shapeFactoryList = m_pPluginManager->GetShapeFactories();
 
 	QVector< TShapeFactory* > tFlatShapeFactoryList;
 	for( int i = 0; i < shapeFactoryList.size(); ++i  )
 		if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
 
-	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
+	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pPluginManager->GetSunShapeFactories();
 
 	LightDialog dialog( *m_sceneModel, currentLight, tSunShapeFactoryList );
 	if( dialog.exec() )
@@ -407,7 +411,7 @@ void MainWindow::DefineSunLight()
  */
 void MainWindow::DefineTransmissivity()
 {
-	TransmissivityDialog dialog( m_pluginManager->GetTransmissivityFactories() );
+	TransmissivityDialog dialog( m_pPluginManager->GetTransmissivityFactories() );
 
 	TSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene ) return;
@@ -473,7 +477,7 @@ void MainWindow::DisplayRays( bool display )
  */
 void MainWindow::ExportPhotonMap()
 {
-	if ( m_photonMap == NULL )
+	if ( m_pPhotonMap == NULL )
 	{
 		QMessageBox::information( this, "Tonatiuh", "No Photon Map stored", 1 );
 	    return;
@@ -629,6 +633,33 @@ void MainWindow::Redo()
     m_commandStack->redo();
 	UpdateLightSize();
 }
+
+/*!
+ * Runs complete ray tracer. First defines export settings if they are not defined and then runs ray tracer.
+ */
+void MainWindow::RunCompleteRayTracer()
+{
+	InstanceNode* rootSeparatorInstance = 0;
+	InstanceNode* lightInstance = 0;
+	SoTransform* lightTransform = 0;
+	TSunShape* sunShape = 0;
+	TLightShape* raycastingSurface = 0;
+	TTransmissivity* transmissivity = 0;
+
+	QDateTime startTime = QDateTime::currentDateTime();
+	if( !ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface, transmissivity ) )
+	return;
+
+	if( !m_pPhotonMap->GetExportMode() && !SetPhotonMapExportSettings() ) return;
+
+
+	Run();
+
+	QDateTime endTime = QDateTime::currentDateTime();
+	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
+
+}
+
 /*!
  * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
  *
@@ -843,20 +874,19 @@ void MainWindow::ShowMenu( const QModelIndex& index)
  */
 void MainWindow::ShowRayTracerOptionsDialog()
 {
-	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
-	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration, randomDeviateFactoryList, m_fraction,m_widthDivisions,m_heightDivisions, m_drawPhotons, photonmapFactoryList, m_selectedRandomDeviate, m_selectedPhotonMap, m_increasePhotonMap, this );
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pPluginManager->GetRandomDeviateFactories();
+	RayTraceDialog* options = new RayTraceDialog( m_raysPerIteration,
+			randomDeviateFactoryList, m_selectedRandomDeviate,
+			m_widthDivisions,m_heightDivisions,
+			m_drawRays, m_drawPhotons,
+			m_bufferPhotons, m_increasePhotonMap, this );
 	options->exec();
 
 	SetRaysPerIteration( options->GetNumRays() );
 	SetRandomDeviateType( randomDeviateFactoryList[options->GetRandomDeviateFactoryIndex()]->RandomDeviateName() );
-	SetPhotonMapType( photonmapFactoryList[options->GetPhotonMapFactoryIndex()]->TPhotonMapName() );
-
-	SetRaysDrawingOptions( options->GetRaysFactionToDraw(), options->DrawPhotons() );
 	SetRayCastingGrid( options->GetWidthDivisions(), options->GetHeightDivisions() );
-
-
+	SetRaysDrawingOptions( options->DrawRays(), options->DrawPhotons() );
+	SetPhotonMapBufferSize( options->GetPhotonMapBufferSize() );
 	SetIncreasePhotonMap( options->IncreasePhotonMap() );
 
 }
@@ -994,10 +1024,8 @@ void MainWindow::on_action_Y_Z_Plane_triggered()
 
 void MainWindow::on_actionOpenScriptEditor_triggered()
 {
-	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
-	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-	ScriptEditorDialog editor( photonmapFactoryList, randomDeviateFactoryList, this );
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pPluginManager->GetRandomDeviateFactories();
+	ScriptEditorDialog editor(  randomDeviateFactoryList, this );
 	editor.exec();
 }
 
@@ -1150,7 +1178,9 @@ void MainWindow::ChangeSunPosition(int year, int month, int day, double hours, d
 	cSunCoordinates results;
 	sunpos( myTime, myLocation, &results );
 	ChangeSunPosition( results.dAzimuth , (90-results.dZenithAngle) );
+
 }
+
 
 /*!
  * Copies current node to the clipboard.
@@ -1315,7 +1345,7 @@ void MainWindow::CreateAnalyzerNode()
  */
 void MainWindow::CreateMaterial( QString materialType )
 {
-	QVector< TMaterialFactory* > factoryList = m_pluginManager->GetMaterialFactories();
+	QVector< TMaterialFactory* > factoryList = m_pPluginManager->GetMaterialFactories();
 	if( factoryList.size() == 0 )	return;
 
 	QVector< QString > materialNames;
@@ -1340,7 +1370,7 @@ void MainWindow::CreateMaterial( QString materialType )
  */
 void MainWindow::CreateShape( QString shapeType )
 {
-	QVector< TShapeFactory* > factoryList = m_pluginManager->GetShapeFactories();
+	QVector< TShapeFactory* > factoryList = m_pPluginManager->GetShapeFactories();
 	if( factoryList.size() == 0 )	return;
 
 	QVector< QString > shapeNames;
@@ -1406,7 +1436,7 @@ void MainWindow::CreateSurfaceNode()
  */
 void MainWindow::CreateTracker( QString trackerType )
 {
-	QVector< TTrackerFactory* > factoryList = m_pluginManager->GetTrackerFactories();
+	QVector< TTrackerFactory* > factoryList = m_pPluginManager->GetTrackerFactories();
 	if( factoryList.size() == 0 )	return;
 
 	QVector< QString > trackerNames;
@@ -1522,9 +1552,29 @@ void MainWindow::Delete( QString nodeURL )
 /*!
  * Save all photon map data into \a fileName file.
  */
+
+double MainWindow::GetwPhoton(){
+	//Compute photon power
+		TSceneKit* coinScene = m_document->GetSceneKit();
+		if( !coinScene ) return 0;
+		if( !coinScene->getPart( "lightList[0]", false ) ) return 0;
+		TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+
+
+		if( !lightKit->getPart( "tsunshape", false ) ) return 0;
+		TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
+		double irradiance = sunShape->GetIrradiance();
+
+		if( !lightKit->getPart( "icon", false ) ) return 0;
+		TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
+		double inputAperture = raycastingShape->GetValidArea();
+
+		return double ( inputAperture * irradiance ) / m_raysPerIteration;
+}
+
 int MainWindow::ExportAllPhotonMap( QString fileName )
 {
-	if ( m_photonMap == NULL )	return 0 ;
+	if ( m_pPhotonMap == NULL )	return 0 ;
 
 	//Compute photon power
 	TSceneKit* coinScene = m_document->GetSceneKit();
@@ -1544,7 +1594,7 @@ int MainWindow::ExportAllPhotonMap( QString fileName )
 	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
 
 	m_lastExportFileName = fileName;
-	int okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_photonMap );
+	int okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_pPhotonMap, m_saveCoordinates,m_saveSide );
 
 	return okExport;
 
@@ -1558,7 +1608,7 @@ int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalC
 {
 	if( fileName.isEmpty() )	return 0;
 	if( nodeUrl.isEmpty() )	return 0;
-	if ( m_photonMap == NULL )	return 0;
+	if ( m_pPhotonMap == NULL )	return 0;
 
 	//Compute photon power
 	TSceneKit* coinScene = m_document->GetSceneKit();
@@ -1596,9 +1646,9 @@ int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalC
 
 
 	if( m_lastExportInGlobal )
-		okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
+		okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_pPhotonMap, m_saveCoordinates,m_saveSide );
 	else
-		okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_photonMap );
+		okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_pPhotonMap, m_saveCoordinates,m_saveSide );
     if(okExport==0){
     	emit Abort( tr( "Selected node is not a valid node to export." ) );
     }
@@ -1779,9 +1829,6 @@ void MainWindow::PasteLink()
  */
 void MainWindow::Run()
 {
-	QDateTime startTime = QDateTime::currentDateTime();
-
-    // Initialize variables
 	InstanceNode* rootSeparatorInstance = 0;
 	InstanceNode* lightInstance = 0;
 	SoTransform* lightTransform = 0;
@@ -1789,14 +1836,37 @@ void MainWindow::Run()
 	TLightShape* raycastingSurface = 0;
 	TTransmissivity* transmissivity = 0;
 
+	QDateTime startTime = QDateTime::currentDateTime();
 	if( ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface, transmissivity ) )
 	{
+		if( !m_pPhotonMap->GetExportMode() )
+		{
+			if( !m_pExportModeSettings ) return;
+			else
+			{
+
+				PhotonMapExport* pExportMode = CreatePhotonMapExport();
+				if( !pExportMode )	return;
+				m_pPhotonMap->SetExportMode( pExportMode );
+
+			}
+		}
+
+		QVector< InstanceNode* > exportSuraceList;
+		QStringList exportSurfaceURLList = m_pExportModeSettings->exportSurfaceNodeList;
+		for( int s = 0; s < exportSurfaceURLList.count(); s++ )
+		{
+			m_sceneModel->IndexFromNodeUrl( exportSurfaceURLList[s] );
+			InstanceNode* surfaceNode = m_sceneModel->NodeFromIndex( m_sceneModel->IndexFromNodeUrl( exportSurfaceURLList[s] ) );
+			exportSuraceList.push_back( surfaceNode );
+		}
+
+
 		UpdateLightSize();
 		m_sceneModel->PrepareAnalyze();
 
 		//Compute bounding boxes and world to object transforms
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), true );
-
 
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 		QStringList disabledNodes = QString( light->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
@@ -1811,10 +1881,9 @@ void MainWindow::Run()
 			return;
 		}
 
-		QVector< double > raysPerThread;
-		const int maximumValueProgressScale = 100;
+		QVector< long > raysPerThread;
+		int maximumValueProgressScale = 100;
 		unsigned long  t1 = m_raysPerIteration / maximumValueProgressScale;
-
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 			raysPerThread<< t1;
 
@@ -1836,28 +1905,41 @@ void MainWindow::Run()
 		QMutex mutex;
 		QFuture< TPhotonMap* > photonMap;
 		if( transmissivity )
-			photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, transmissivity, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+			 photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance,
+					 	 	 lightInstance, raycastingSurface, sunShape, lightToWorld,
+					 	 	 transmissivity,
+					 	 	 *m_rand,
+					 	 	 &mutex, m_pPhotonMap, exportSuraceList ),
+					 	 trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 
 		else
-			photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracerNoTr(  rootSeparatorInstance, lightInstance, raycastingSurface, sunShape, lightToWorld, *m_rand, &mutex, m_photonMap ), trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+			photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracerNoTr(  rootSeparatorInstance,
+						lightInstance, raycastingSurface, sunShape, lightToWorld,
+						*m_rand,
+						&mutex, m_pPhotonMap, exportSuraceList ),
+					trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
 
 		futureWatcher.setFuture( photonMap );
 
 		// Display the dialog and start the event loop.
 		dialog.exec();
 		futureWatcher.waitForFinished();
-		//m_tracedRays += t1 * validAreasList.count();
-		//m_raysPerIteration=m_tracedRays;
+
 		m_tracedRays += m_raysPerIteration;
 
+		if( exportSuraceList.count() < 1 )
+			ShowRaysIn3DView();
+		else
+		{
+			actionDisplayRays->setEnabled( false );
+			actionDisplayRays->setChecked( false );
+		}
 
 
-
-		QDateTime time2 = QDateTime::currentDateTime();
-		std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
-
-		ShowRaysIn3DView();
-
+		double irradiance = sunShape->GetIrradiance();
+		double inputAperture = raycastingSurface->GetValidArea();
+		double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
+		m_pPhotonMap->EndStore( wPhoton );
 
 	}
 
@@ -1918,6 +2000,30 @@ void MainWindow::SetAimingPointRelative()
 }
 
 /*!
+ * Sets the export photon mode type to \a exportModeType, for photon map.
+ */
+void MainWindow::SetExportPhotonMapType( QString exportModeType )
+{
+	QVector< PhotonMapExportFactory* > factoryList = m_pPluginManager->GetExportPMModeFactories();
+	if( factoryList.size() == 0 )	return;
+
+	QVector< QString > exportPMModeNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		exportPMModeNames<< factoryList[i]->GetName();
+
+	if( exportPMModeNames.indexOf( exportModeType ) < 0 )
+	{
+		emit Abort( tr( "exportModeType: Defined export mode is not valid type.") );
+		return;
+	}
+
+	if( !m_pExportModeSettings )
+		m_pExportModeSettings = new PhotonMapExportSettings;
+
+	m_pExportModeSettings->modeTypeName = exportModeType;
+}
+
+/*!
  * If \a increase is false, starts with a new photon map every ray tracer. Otherwise, the photon map increases.
  */
 void MainWindow::SetIncreasePhotonMap( bool increase )
@@ -1946,24 +2052,11 @@ void MainWindow::SetNodeName( QString nodeName )
 }
 
 /*!
- *Sets the photon map type, \a typeName, for ray tracing.
+ *Sets the number of photons that the photon map can store to \a nPhotons.
  */
-void MainWindow::SetPhotonMapType( QString typeName )
+void MainWindow::SetPhotonMapBufferSize( unsigned int nPhotons )
 {
-	QVector< TPhotonMapFactory* > factoryList = m_pluginManager->GetPhotonMapFactories();
-	if( factoryList.size() == 0 )	return;
-
-	QVector< QString > photonMapNames;
-	for( int i = 0; i < factoryList.size(); i++ )
-		photonMapNames<< factoryList[i]->TPhotonMapName();
-
-	if( photonMapNames.indexOf( typeName ) < 0 )
-	{
-		emit Abort( tr( "SetPhotonMapType: Defined photon map type is not valid type.") );
-		return;
-	}
-	m_selectedPhotonMap = photonMapNames.indexOf( typeName );
-
+	m_bufferPhotons = nPhotons;
 }
 
 /*!
@@ -1971,7 +2064,7 @@ void MainWindow::SetPhotonMapType( QString typeName )
  */
 void MainWindow::SetRandomDeviateType( QString typeName )
 {
-	QVector< RandomDeviateFactory* > factoryList = m_pluginManager->GetRandomDeviateFactories();
+	QVector< RandomDeviateFactory* > factoryList = m_pPluginManager->GetRandomDeviateFactories();
 	if( factoryList.size() == 0 )	return;
 
 	QVector< QString > randomNames;
@@ -2008,9 +2101,9 @@ void MainWindow::SetRayCastingGrid( int widthDivisions, int heightDivisions )
  * Tonatiuh draws the \a raysFaction faction of traced rays. If \a drawPhotons is true all photons are represented.
  *
  */
-void MainWindow::SetRaysDrawingOptions( double raysFaction, bool drawPhotons )
+void MainWindow::SetRaysDrawingOptions(  bool drawRays, bool drawPhotons )
 {
-	m_fraction = raysFaction;
+	m_drawRays = drawRays;
 	m_drawPhotons = drawPhotons;
 }
 
@@ -2037,7 +2130,7 @@ void MainWindow::SetSunshape( QString sunshapeType )
 		lightKit = new TLightKit;
 
 
-	QVector< TSunShapeFactory* > factoryList = m_pluginManager->GetSunShapeFactories();
+	QVector< TSunShapeFactory* > factoryList = m_pPluginManager->GetSunShapeFactories();
 	if( factoryList.size() == 0 )	return;
 
 	QVector< QString > factoryNames;
@@ -2104,7 +2197,7 @@ void MainWindow::SetTransmissivity( QString transmissivityType  )
 		emit Abort( tr( "SetTransmissivity: Error defining transmissivity.") );
 		return;
 	}
-	QVector< TTransmissivityFactory* > transmissivityFactoryList = m_pluginManager->GetTransmissivityFactories();
+	QVector< TTransmissivityFactory* > transmissivityFactoryList = m_pPluginManager->GetTransmissivityFactories();
 	if( transmissivityFactoryList.count() < 1 )
 	{
 		emit Abort( tr( "SetTransmissivity: Error defining transmissivity.") );
@@ -2442,7 +2535,7 @@ void MainWindow::CreateComponent( TComponentFactory* pTComponentFactory )
 	SoNode* parentNode = parentInstance->GetNode();
 	if( !parentNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
 
-	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent( m_pluginManager );
+	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent( m_pPluginManager );
 	if( !componentRootNode )	return;
 
     QString typeName = pTComponentFactory->TComponentName();
@@ -2742,6 +2835,50 @@ QToolBar* MainWindow::CreateMaterialsTooBar( QMenu* pMaterialsMenu )
 }
 
 /*!
+ * Creates a export mode object form export mode settings.
+ */
+PhotonMapExport* MainWindow::CreatePhotonMapExport() const
+{
+	QVector< PhotonMapExportFactory* > factoryList = m_pPluginManager->GetExportPMModeFactories();
+	if( factoryList.size() == 0 )	return 0;
+
+	QVector< QString > exportPMModeNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		exportPMModeNames<< factoryList[i]->GetName();
+
+	int exportModeFactoryIndex = exportPMModeNames.indexOf( m_pExportModeSettings->modeTypeName );
+	if( exportModeFactoryIndex < 0 )	return 0;
+
+	PhotonMapExportFactory* pExportModeFactory = factoryList[exportModeFactoryIndex];
+	if( !pExportModeFactory )	return 0;
+
+	PhotonMapExport* pExportMode = pExportModeFactory->GetExportPhotonMapMode();
+	if( !pExportMode )	return 0;
+
+	pExportMode->SetSaveCoordinatesEnabled( m_pExportModeSettings->exportCoordinates );
+	pExportMode->SetSaveCoordinatesInGlobalSystemEnabled( m_pExportModeSettings->exportInGlobalCoordinates );
+	pExportMode->SetSavePreviousNextPhotonsID( m_pExportModeSettings->exportPreviousNextPhotonID );
+	pExportMode->SetSaveSideEnabled( m_pExportModeSettings->exportIntersectionSurfaceSide );
+    pExportMode->SetSaveSurfacesIDEnabled( m_pExportModeSettings->exportSurfaceID );
+    if( m_pExportModeSettings->exportAllPhotonMap )
+    	pExportMode->SetSaveAllPhotonsEnabled();
+    else
+    	pExportMode->SetSaveSurfacesURLList( m_pExportModeSettings->exportSurfaceNodeList );
+
+    QMap< QString, QString > exportTypeParameters = m_pExportModeSettings->modeTypeParameters;
+    QMap< QString, QString >::const_iterator i = exportTypeParameters.constBegin();
+    while( i != exportTypeParameters.constEnd() )
+    {
+    	pExportMode->SetSaveParameterValue( i.key(), i.value() );
+        ++i;
+    }
+
+    pExportMode->SetSceneModel( *m_sceneModel );
+
+	return pExportMode;
+}
+
+/*!
  * Creates a toolbar for insert trackers actions.
  */
 QToolBar* MainWindow::CreateTrackerTooBar( QMenu* pTrackersMenu )
@@ -2934,9 +3071,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
 	lightTransform = static_cast< SoTransform * >( lightKit->getPart( "transform" ,false ) );
 
 
-	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pluginManager->GetRandomDeviateFactories();
-	QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pPluginManager->GetRandomDeviateFactories();
 	//Check if there is a random generator selected;
 	if( m_selectedRandomDeviate == -1 )
 	{
@@ -2947,25 +3082,20 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
 	//Create the random generator
 	if( !m_rand )	m_rand =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
 
-	//Check if there is a photon map type selected;
-	if( m_selectedPhotonMap == -1 )
-	{
-		if( photonmapFactoryList.size() > 0 ) m_selectedPhotonMap = 0;
-		else	return false;
-	}
 
 	//Create the photon map where photons are going to be stored
 	if( !m_increasePhotonMap )
 	{
-		delete m_photonMap;
-		m_photonMap = 0;
+		delete m_pPhotonMap;
+		m_pPhotonMap = new TPhotonMap();
+		m_pPhotonMap->SetBufferSize( m_bufferPhotons );
+		m_tracedRays = 0;
 	}
 
-	if( !m_photonMap )
+	if( !m_pPhotonMap )
 	{
-		QVector< TPhotonMapFactory* > photonmapFactoryList = m_pluginManager->GetPhotonMapFactories();
-
-		m_photonMap = photonmapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
+		m_pPhotonMap = new TPhotonMap();
+		m_pPhotonMap->SetBufferSize( m_bufferPhotons );
 		m_tracedRays = 0;
 	}
 
@@ -3012,6 +3142,22 @@ void MainWindow::SetCurrentFile( const QString& fileName )
 }
 
 /*!
+ * Defines the settings to save or export and save photon map.
+ */
+bool MainWindow::SetPhotonMapExportSettings()
+{
+	QVector< PhotonMapExportFactory* > exportPhotonMapModeList = m_pPluginManager->GetExportPMModeFactories();
+    ExportPhotonMapSettingsDialog exportSettingsDialog( *m_sceneModel, exportPhotonMapModeList );
+    if( !exportSettingsDialog.exec() ) return false;
+
+    if( m_pExportModeSettings )	delete m_pExportModeSettings;
+
+    m_pExportModeSettings = new PhotonMapExportSettings;
+    *m_pExportModeSettings = exportSettingsDialog.GetExportPhotonMapSettings();
+    return true;
+}
+
+/*!
  * Creates actions form recent files.
  */
 void MainWindow::SetupActions()
@@ -3028,7 +3174,7 @@ void MainWindow::SetupActions()
 
 void MainWindow::SetupActionsInsertComponent()
 {
-	QVector< TComponentFactory* > componentFactoryList = m_pluginManager->GetComponentFactories();
+	QVector< TComponentFactory* > componentFactoryList = m_pPluginManager->GetComponentFactories();
 	if( !( componentFactoryList.size() > 0 ) )	return;
 
 	QMenu* pComponentMenu = menuInsert->findChild< QMenu* >( "menuComponent" );
@@ -3061,7 +3207,7 @@ void MainWindow::SetupActionsInsertComponent()
 
 void MainWindow::SetupActionsInsertMaterial()
 {
-	QVector< TMaterialFactory* > materialsFactoryList = m_pluginManager->GetMaterialFactories();
+	QVector< TMaterialFactory* > materialsFactoryList = m_pPluginManager->GetMaterialFactories();
 	if( !( materialsFactoryList.size() > 0 ) )	return;
 
 	QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
@@ -3097,7 +3243,7 @@ void MainWindow::SetupActionsInsertMaterial()
  */
 void MainWindow::SetupActionsInsertShape()
 {
-	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
+	QVector< TShapeFactory* > shapeFactoryList = m_pPluginManager->GetShapeFactories();
 	if( !( shapeFactoryList.size() > 0 ) )	return;
 
     QMenu* menuShape = menuInsert->findChild< QMenu* >( "menuShape" );
@@ -3133,7 +3279,7 @@ void MainWindow::SetupActionsInsertShape()
 
 void MainWindow::SetupActionsInsertTracker()
 {
-	QVector< TTrackerFactory* > trackerFactoryList = m_pluginManager->GetTrackerFactories();
+	QVector< TTrackerFactory* > trackerFactoryList = m_pPluginManager->GetTrackerFactories();
 	if( !( trackerFactoryList.size() > 0 ) )	return;
 
 	QMenu* pTrackerMenu = menuInsert->findChild< QMenu* >( "menuTracker" );
@@ -3424,8 +3570,8 @@ void MainWindow::SetupParametersView()
  */
 void MainWindow::SetupPluginsManager()
 {
-	m_pluginManager = new PluginManager;
-	m_pluginManager->LoadAvailablePlugins( PluginDirectory() );
+	m_pPluginManager = new PluginManager;
+	m_pPluginManager->LoadAvailablePlugins( PluginDirectory() );
 
 	SetupActionsInsertComponent( );
 	SetupActionsInsertMaterial( );
@@ -3459,6 +3605,7 @@ void MainWindow::SetupTreeView()
  */
 void MainWindow::SetupTriggers()
 {
+
 	//File actions
 	connect( actionNew, SIGNAL( triggered() ), this, SLOT ( New() ) );
 	connect( actionOpen, SIGNAL( triggered() ), this, SLOT ( Open() ) );
@@ -3493,7 +3640,8 @@ void MainWindow::SetupTriggers()
 
 	//Ray trace menu actions
 	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
-	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
+	//connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
+	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( RunCompleteRayTracer() ) );
 	connect( actionExportPhotonMap, SIGNAL( triggered() ), this, SLOT( ExportPhotonMap() ) );
 	connect( actionRayTraceOptions, SIGNAL( triggered() ), this, SLOT( ShowRayTracerOptionsDialog() )  );
 	connect( actionReset_Analyzer_Values, SIGNAL( triggered() ), this, SLOT ( ResetAnalyzerValues() ) );
@@ -3532,8 +3680,7 @@ void MainWindow::ShowRaysIn3DView()
 	actionDisplayRays->setEnabled( false );
 	actionDisplayRays->setChecked( false );
 
-
-	if( m_tracedRays > 0.0 && ( m_fraction > 0.0 || m_drawPhotons ) )
+	if( m_drawRays || m_drawPhotons )
 	{
 		SoSeparator* rays = new SoSeparator;
 		rays->ref();
@@ -3541,13 +3688,15 @@ void MainWindow::ShowRaysIn3DView()
 
 		if( m_drawPhotons )
 		{
-			SoSeparator* points = trf::DrawPhotonMapPoints(*m_photonMap);
+			SoSeparator* points = trf::DrawPhotonMapPoints( *m_pPhotonMap );
 			rays->addChild(points);
 		}
-		if( m_fraction > 0.0 )
+
+		if( m_drawRays )
 		{
-			SoSeparator* currentRays = trf::DrawPhotonMapRays(*m_photonMap, m_tracedRays, m_fraction );
-			if( currentRays )	rays->addChild(currentRays);
+
+			SoSeparator* currentRays = trf::DrawPhotonMapRays( *m_pPhotonMap, m_tracedRays );
+			if( currentRays )	rays->addChild( currentRays );
 
 		}
 		m_graphicsRoot->AddRays( rays );
@@ -3555,6 +3704,8 @@ void MainWindow::ShowRaysIn3DView()
 		actionDisplayRays->setEnabled( true );
 		actionDisplayRays->setChecked( true );
 	}
+
+
 }
 
 /*!

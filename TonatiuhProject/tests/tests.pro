@@ -26,7 +26,6 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/PluginManager.o \
                         $$(TONATIUH_ROOT)/debug/RayTracer.o \
                         $$(TONATIUH_ROOT)/debug/RayTracerNoTr.o \
-                        $$(TONATIUH_ROOT)/debug/RayTracerPhoton.o \
                         $$(TONATIUH_ROOT)/debug/RefCount.o \
                         $$(TONATIUH_ROOT)/debug/SceneModel.o \
                         $$(TONATIUH_ROOT)/debug/ScriptRayTracer.o \
@@ -46,6 +45,7 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/TLightShape.o \
                         $$(TONATIUH_ROOT)/debug/TMaterial.o \
                         $$(TONATIUH_ROOT)/debug/tonatiuh_script.o \
+                        $$(TONATIUH_ROOT)/debug/TPhotonMap.o \
                         $$(TONATIUH_ROOT)/debug/Transform.o \
                         $$(TONATIUH_ROOT)/debug/trf.o \
                         $$(TONATIUH_ROOT)/debug/TSceneTracker.o \
@@ -78,7 +78,6 @@ else {
                         $$(TONATIUH_ROOT)/release/PluginManager.o \
                         $$(TONATIUH_ROOT)/release/RayTracer.o \
                         $$(TONATIUH_ROOT)/release/RayTracerNoTr.o \
-                        $$(TONATIUH_ROOT)/release/RayTracerPhoton.o \
                         $$(TONATIUH_ROOT)/release/RefCount.o \
                         $$(TONATIUH_ROOT)/release/SceneModel.o \
                         $$(TONATIUH_ROOT)/release/ScriptRayTracer.o \
@@ -98,6 +97,7 @@ else {
                         $$(TONATIUH_ROOT)/release/TLightShape.o \
                         $$(TONATIUH_ROOT)/release/TMaterial.o \
                         $$(TONATIUH_ROOT)/release/tonatiuh_script.o \
+                        $$(TONATIUH_ROOT)/release/TPhotonMap.o \
                         $$(TONATIUH_ROOT)/release/Transform.o \
                         $$(TONATIUH_ROOT)/release/trf.o \
                         $$(TONATIUH_ROOT)/release/TSeparatorKit.o \

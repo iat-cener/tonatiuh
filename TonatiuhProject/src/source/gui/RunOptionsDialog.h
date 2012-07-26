@@ -36,46 +36,59 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef EXPORTDIALOG_H_
-#define EXPORTDIALOG_H_
+#ifndef RUNOPTIONSDIALOG_H_
+#define RUNOPTIONSDIALOG_H_
 
 #include <QDialog>
-#include <QItemSelectionModel>
 
-#include "SceneModel.h"
-#include "ui_exportdialog.h"
 
-//!  ExportDialog class is the dialog to define the photon map export mode.
+#include "ui_runoptionsdialog.h"
+
+class SceneModel;
+class ExportDialog;
+
+//!  RunOptionsDialog class is the dialog to define the light parameters.
 /*!
-  ExportDialog sets the photons to export, the coordinates system and the file to save selected information.
+  RunOptionsDialog sets light parameters. The parameters that user can define are light suunshape, light input aperture shape and light position.
 */
-class ExportDialog : public QDialog, private Ui::ExportDialog
+class RunOptionsDialog : public QDialog, private Ui::RunOptionsDialog
 {
 	Q_OBJECT
 
 public:
-	ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl = 0, bool previusInGlobal = true, QString previousFile = 0, QWidget* parent = 0 );
-	ExportDialog( SceneModel& sceneModel, QWidget* parent );
-	~ExportDialog();
+	RunOptionsDialog( SceneModel& sceneModel, QWidget* parent = 0 );
+	~RunOptionsDialog();
 
-	bool ExportAllPhotonMap() const;
-	bool ExportPhotonsInGlobal() const;
+
 	QString GetExportFileName() const;
-	QString GetSelectedSurface() const;
-
+    int GeNumberOfPhotonsPerFile() const;
+	QString GetSurfaceNode() const;
+    QString GetSQLExportFileName() const;
+    bool InOneFile();
+    bool IsDatFileChecked() const;
+    bool IsExportAllPhotonsEnabled() const;
+    bool IsSaveCoordinateEnabled() const;
+    bool IsSavePowerPerPhotonEnabled() const;
+    bool IsSaveSideEnabled() const;
+    bool ExportPhotonsInGlobal();
+    bool isLaunchActive();
 
 public slots:
 	void accept();
+	void reject();
 
 private slots:
-	void SetExportAllPhotons( bool allPhotos );
-	void SetExportSurfacePhotons( bool surfacePhotos );
-	void SelectFile();
-
+	void SelectFileSave();
+	void ChangeSaveOptions();
+	void SQLSelectFile();
+	void SelectSurface();
 
 private:
 	SceneModel* m_exportSceneModel;
-	QItemSelectionModel*  m_exportSelectionModel;
+    QString m_surfaceNodeName;
+    QString m_surfaceExportFileName;
+    bool m_globalCoordinates;
+    bool m_launchRays;
 };
 
-#endif /* EXPORTDIALOG_H_ */
+#endif /*RUNOPTIONSDIALOG_H_*/

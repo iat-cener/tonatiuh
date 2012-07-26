@@ -32,68 +32,27 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 
-#ifndef RAYTRACERNOTR_H_
-#define RAYTRACERNOTR_H_
+#ifndef PHOTONMAPEXPORTPARAMERSWIDGET_H_
+#define PHOTONMAPEXPORTPARAMERSWIDGET_H_
 
-#include <vector>
+#include <QWidget>
 
-#include <QMap>
-#include <QPair>
-#include <QObject>
-#include <QVector>
-
-#include "Transform.h"
-
-
-class InstanceNode;
-class ParallelRandomDeviate;
-struct Photon;
-class RandomDeviate;
-struct RayTracerPhoton;
-class QMutex;
-class QPoint;
-class TPhotonMap;
-class TLightShape;
-class TSunShape;
-//struct PhotonToMemory;
-
-class RayTracerNoTr
+class PhotonMapExportParametersWidget : public QWidget
 {
+	Q_OBJECT
 
 public:
-	RayTracerNoTr( InstanceNode* rootNode,
-		       InstanceNode* lightNode,
-		       TLightShape* lightShape,
-		       TSunShape* const lightSunShape,
-		       Transform lightToWorld,
-		       RandomDeviate& rand,
-		       QMutex* mutex,
-		       TPhotonMap* photonMap,
-		       QVector< InstanceNode* > exportSuraceList );
+	PhotonMapExportParametersWidget( QWidget* parent = 0 );
+	~PhotonMapExportParametersWidget();
 
-	typedef QPair< TPhotonMap*, std::vector <Photon > > result_type;
-	QPair<  TPhotonMap*, std::vector < Photon > > operator()( double numberOfRays );
+	virtual QStringList GetParameterNames() const = 0;
+	virtual QString GetParameterValue( QString parameter ) const = 0;
 
-
-private:
-    QVector< InstanceNode* > m_exportSuraceList;
-	InstanceNode* m_rootNode;
-	InstanceNode* m_lightNode;
-	TLightShape* m_lightShape;
-	const TSunShape* m_lightSunShape;
-	Transform m_lightToWorld;
-	RandomDeviate* m_pRand;
-    QMutex* m_mutex;
-	TPhotonMap* m_photonMap;
-	std::vector< QPair< int, int > >  m_validAreasVector;
-
-	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
 };
 
-
-#endif /* RAYTRACER_H_ */
+#endif /* PHOTONMAPEXPORTPARAMERSWIDGET_H_ */

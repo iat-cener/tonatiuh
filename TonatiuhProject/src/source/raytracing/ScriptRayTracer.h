@@ -54,7 +54,6 @@ class RandomDeviateFactory;
 class QScriptContext;
 class SceneModel;
 class TPhotonMap;
-class TPhotonMapFactory;
 class Transform;
 
 class ScriptRayTracer : public QObject
@@ -62,14 +61,13 @@ class ScriptRayTracer : public QObject
 	Q_OBJECT
 
 public:
-	ScriptRayTracer( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory  );
+	ScriptRayTracer( QVector< RandomDeviateFactory* > listRandomDeviateFactory  );
 	~ScriptRayTracer();
 
 	void Clear();
 
 	QString GetDir();
 
-	bool IsValidPhotonMapType( QString type );
 	bool IsValidRandomGeneratorType( QString type );
 	bool IsValidSurface( QString surfaceName );
 
@@ -88,7 +86,7 @@ public:
 	int SetNumberOfWidthDivisions( int wdivisions );
 	int SetNumberOfHeightDivisions( int hdivisions );
 
-	int SetPhotonMapType( QString typeName );
+	int SetPhotonMapExportMode( QString typeName );
 
 	int SetRandomDeviateType( QString typeName );
 
@@ -112,9 +110,8 @@ private:
 
 	unsigned long m_numberOfRays;
 
-	QVector< TPhotonMapFactory* > m_TPhotonMapFactoryList;
-	int m_selectedPhotonMap;
 	TPhotonMap* m_photonMap;
+	bool m_photonMapToFile;
 
 	QVector< RandomDeviateFactory* > m_RandomDeviateFactoryList;
 	RandomDeviate* m_randomDeviate;

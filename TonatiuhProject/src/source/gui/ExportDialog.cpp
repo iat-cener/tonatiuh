@@ -60,6 +60,7 @@ ExportDialog::ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl, 
 	connect( surfaceMapRadio, SIGNAL( toggled( bool ) ), this, SLOT( SetExportSurfacePhotons( bool ) ) );
 	connect( selectFile, SIGNAL( clicked() ), this, SLOT( SelectFile() ) );
 
+
 	m_exportSelectionModel = new QItemSelectionModel( m_exportSceneModel );
 
 	modelView->setModel( m_exportSceneModel );
@@ -88,6 +89,28 @@ ExportDialog::ExportDialog( SceneModel& sceneModel, QString previousSurfaceUrl, 
 	if( !previousFile.isEmpty() )	fileNameEdit->setText( previousFile );
 }
 
+ExportDialog::ExportDialog( SceneModel& sceneModel, QWidget* parent )
+:QDialog( parent ),
+ m_exportSceneModel( &sceneModel ),
+ m_exportSelectionModel( 0 )
+{
+	setupUi( this );
+	//connect( allMapRadio, SIGNAL( toggled( bool ) ), this, SLOT( SetExportAllPhotons( bool ) ) );
+	connect( surfaceMapRadio, SIGNAL( toggled( bool ) ), this, SLOT( SetExportSurfacePhotons( bool ) ) );
+	connect( selectFile, SIGNAL( clicked() ), this, SLOT( SelectFile() ) );
+
+	m_exportSelectionModel = new QItemSelectionModel( m_exportSceneModel );
+
+	modelView->setModel( m_exportSceneModel );
+	modelView->setSelectionModel( m_exportSelectionModel );
+	modelView->setSelectionMode(QAbstractItemView::SingleSelection);
+	modelView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	modelView->setRootIsDecorated(true);
+
+	allMapRadio->setVisible(false);
+	surfaceMapRadio->setChecked(true);
+	fileWidget->setVisible(false);
+}
 /*!
  * Destroys the file dialog.
  */
@@ -148,12 +171,13 @@ QString ExportDialog::GetSelectedSurface() const
  */
 void ExportDialog::accept()
 {
+	if(allMapRadio->isVisible()){
 	if( fileNameEdit->text().isEmpty() )
-	{
-		QMessageBox::information( this, "Tonatiuh ",  "No file defined to save photon map", 1);
+		{
+			QMessageBox::information( this, "Tonatiuh ",  "No file defined to save photon map", 1);
 			    return;
+		}
 	}
-
 	if( surfaceMapRadio->isChecked () )
 	{
 		if( m_exportSelectionModel->hasSelection() )
@@ -211,5 +235,15 @@ void ExportDialog::SelectFile()
 				currentDir,
 	            tr( "Binary data files (*.dat)" ) );
 
-	if( !fileName.isEmpty() )	fileNameEdit->setText( fileName );
+	if( !fileName.isEmpty() )	{
+				QStringList list = fileName.split(".");
+				if(list.size()<2){
+					fileName.append(".dat");
+				}
+				fileNameEdit->setText( fileName );
+
+			}
+
 }
+
+

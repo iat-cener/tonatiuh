@@ -42,12 +42,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParallelRandomDeviate.h"
 #include "Ray.h"
 #include "RayTracerNoTr.h"
-#include "RayTracerPhoton.h"
 #include "TPhotonMap.h"
 #include "TLightShape.h"
 #include "TSunShape.h"
-//#include "TTransmissivity.h"
-
 RayTracerNoTr::RayTracerNoTr( InstanceNode* rootNode,
 	       InstanceNode* lightNode,
 	       TLightShape* lightShape,
@@ -55,8 +52,10 @@ RayTracerNoTr::RayTracerNoTr( InstanceNode* rootNode,
 	       Transform lightToWorld,
 	       RandomDeviate& rand,
 	       QMutex* mutex,
-	       TPhotonMap* photonMap )
-:m_rootNode( rootNode ),
+	       TPhotonMap* photonMap,
+	       QVector< InstanceNode* > exportSuraceList )
+:m_exportSuraceList( exportSuraceList ),
+m_rootNode( rootNode ),
 m_lightNode( lightNode ),
 m_lightShape( lightShape ),
 m_lightSunShape( lightSunShape ),
@@ -86,141 +85,128 @@ bool RayTracerNoTr::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand )
 }
 
 
-QPair< TPhotonMap*, std::vector< RayTracerPhoton > > RayTracerNoTr::operator()( double numberOfRays )
+QPair< TPhotonMap*, std::vector< Photon > > RayTracerNoTr::operator()( double numberOfRays )
 {
-	std::vector< RayTracerPhoton > photonsVector;
+	std::vector< Photon > photonsVector;
 	ParallelRandomDeviate rand( m_pRand, m_mutex );
 
-	for(  unsigned long  i = 0; i < numberOfRays; ++i )
+	if( m_exportSuraceList.count() < 1 )
 	{
-		std::vector<Ray> currentRaysWay;
-		Ray ray;
-		if( NewPrimitiveRay( &ray, rand ) )
+		for(  unsigned long  i = 0; i < numberOfRays; ++i )
 		{
-			photonsVector.push_back( RayTracerPhoton( ray.origin, 1, 0, m_lightNode ) );
-			int rayLength = 0;
-
-			InstanceNode* intersectedSurface = 0;
-			bool isFront = false;
-			bool isDirectSun = true;
-
-			//Trace the ray
-			bool isReflectedRay = true;
-			while( isReflectedRay )
+			std::vector<Ray> currentRaysWay;
+			Ray ray;
+			if( NewPrimitiveRay( &ray, rand ) )
 			{
-				intersectedSurface = 0;
-				isFront = 0;
-				Ray reflectedRay;
-				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
+				photonsVector.push_back( Photon( ray.origin, 1, 0, m_lightNode ) );
+				int rayLength = 0;
 
-				if (!isDirectSun) currentRaysWay.push_back(ray);
-				if( isReflectedRay )
+				InstanceNode* intersectedSurface = 0;
+				bool isFront = false;
+				bool isDirectSun = true;
+
+				//Trace the ray
+				bool isReflectedRay = true;
+				while( isReflectedRay )
 				{
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+					intersectedSurface = 0;
+					isFront = 0;
+					Ray reflectedRay;
+					isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
 
-					//Prepare node and ray for next iteration
-					ray = reflectedRay;
-					isDirectSun = false;
+					if (!isDirectSun) currentRaysWay.push_back(ray);
+					if( isReflectedRay )
+					{
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+
+						//Prepare node and ray for next iteration
+						ray = reflectedRay;
+						isDirectSun = false;
+					}
+
 				}
 
-			}
-
-			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
-			{
-				if( ray.maxt == HUGE_VAL  )
+				if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
 				{
-					ray.maxt = 0.1;
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
+					if( ray.maxt == HUGE_VAL  )
+					{
+						ray.maxt = 0.1;
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
+					}
+					else
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
 				}
-				else
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize(currentRaysWay.size());
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				currentRaysWay.clear();
+				if (currentRaysWay.size()>0)
+				{
+					currentRaysWay.resize(currentRaysWay.size());
+					m_rootNode->Analyze(&currentRaysWay,m_mutex);
+					currentRaysWay.clear();
+				}
+
 			}
 
 		}
+	}
+	else
+	{
+		for(  unsigned long  i = 0; i < numberOfRays; ++i )
+		{
+			std::vector<Ray> currentRaysWay;
+			Ray ray;
+			if( NewPrimitiveRay( &ray, rand ) )
+			{
+				if( m_exportSuraceList.contains( m_lightNode ) )	photonsVector.push_back( Photon( ray.origin, 1, 0, m_lightNode ) );
+				int rayLength = 0;
 
+				InstanceNode* intersectedSurface = 0;
+				bool isFront = false;
+				bool isDirectSun = true;
+
+				//Trace the ray
+				bool isReflectedRay = true;
+				while( isReflectedRay )
+				{
+					intersectedSurface = 0;
+					isFront = 0;
+					Ray reflectedRay;
+					isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
+
+					if (!isDirectSun) currentRaysWay.push_back(ray);
+					if( isReflectedRay )
+					{
+						if( m_exportSuraceList.contains( intersectedSurface ) )
+							photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+
+						//Prepare node and ray for next iteration
+						ray = reflectedRay;
+						isDirectSun = false;
+					}
+
+				}
+
+				if( m_exportSuraceList.contains( intersectedSurface ) && !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+				{
+					if( ray.maxt == HUGE_VAL  )
+					{
+						ray.maxt = 0.1;
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
+					}
+					else
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+				}
+				if (currentRaysWay.size()>0)
+				{
+					currentRaysWay.resize(currentRaysWay.size());
+					m_rootNode->Analyze(&currentRaysWay,m_mutex);
+					currentRaysWay.clear();
+				}
+
+			}
+
+		}
 	}
 	photonsVector.resize( photonsVector.size() );
+	return QPair< TPhotonMap*, std::vector< Photon > >( m_photonMap, photonsVector );
 
-	return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
-
-/*	std::vector< RayTracerPhoton > photonsVector;
-	ParallelRandomDeviate rand( m_pRand, m_mutex );
-
-	double numberOfRays = pixel.first;
-	QPoint coord = pixel.second;
-
-	int coordA = coord.x();
-	int coordB = coord.y();
-
-    for(  unsigned long  i = 0; i < numberOfRays; ++i )
-    {
-    	std::vector<Ray> currentRaysWay;
-    	Ray ray;
-    	if( NewPrimitiveRay( &ray, rand, coordA, coordB ) )
-    	{
-    		photonsVector.push_back( RayTracerPhoton( ray.origin, 1, 0, m_lightNode ) );
-    		int rayLength = 0;
-
-			InstanceNode* intersectedSurface = 0;
-			bool isFront = false;
-			//bool isDirectSun = true;
-
-			//Trace the ray
-			bool isReflectedRay = true;
-			while( isReflectedRay )
-			{
-				intersectedSurface = 0;
-				isFront = 0;
-				Ray reflectedRay;
-				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
-
-				if( rayLength > 0 )
-				{
-					currentRaysWay.push_back( ray );
-
-
-				}
-				if( isReflectedRay )
-				{
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-
-					//Prepare node and ray for next iteration
-					ray = reflectedRay;
-					//isDirectSun = false;
-				}
-
-			}
-
-			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
-			{
-				if( ray.maxt == HUGE_VAL  )
-				{
-					ray.maxt = 0.1;
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
-				}
-				else
-					photonsVector.push_back( RayTracerPhoton( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-			}
-
-			if( currentRaysWay.size() > 0 )
-			{
-				currentRaysWay.resize( currentRaysWay.size() );
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				currentRaysWay.clear();
-			}
-
-		}
-
-    }
-    photonsVector.resize( photonsVector.size() );
-
-    return QPair< TPhotonMap*, std::vector< RayTracerPhoton > >( m_photonMap, photonsVector );
-*/
 }
 

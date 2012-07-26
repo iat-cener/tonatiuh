@@ -47,10 +47,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tonatiuh_script.h"
 
 /**
- * Creates a dialog to edit scripts and run them. The lists \a listTPhotonMapFactory and \a listRandomDeviateFactory are
- * the photon map types and random generator types that can be defined in the scripts to run Tonatiuh. The dialog explorer shows the directories and scripts files from \a dirName path.
+ * Creates a dialog to edit scripts and run them. The list \a listRandomDeviateFactory is
+ * the random generator types that can be defined in the scripts to run Tonatiuh. The dialog explorer shows the directories and scripts files from \a dirName path.
  */
-ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent )
+ScriptEditorDialog::ScriptEditorDialog( QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent )
 :QDialog( parent ),
  m_currentScritFileName( "" ),
  m_fileModel( 0 ),
@@ -80,7 +80,7 @@ ScriptEditorDialog::ScriptEditorDialog(  QVector< TPhotonMapFactory* > listTPhot
 	QScriptValue tonatiuh = m_interpreter->newQObject( parent );
 	m_interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
 
-	QObject* rayTracer = new ScriptRayTracer( listTPhotonMapFactory, listRandomDeviateFactory );
+	QObject* rayTracer = new ScriptRayTracer( listRandomDeviateFactory );
 	QScriptValue rayTracerValue = m_interpreter->newQObject( rayTracer );
 	m_interpreter->globalObject().setProperty( "rayTracer", rayTracerValue );
 

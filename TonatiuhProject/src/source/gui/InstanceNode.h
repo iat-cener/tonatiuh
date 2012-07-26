@@ -79,7 +79,6 @@ public:
     QString GetNodeURL() const;
     void Print( int level ) const;
 
-    //bool Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode, Ray* outputRay );
     bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, InstanceNode** modelNode, Ray* outputRay );
     void Analyze( std::vector<Ray>* raysWay, QMutex* mutex );
 	template<class T> void RecursivlyApply(void (T::*func)(void));
