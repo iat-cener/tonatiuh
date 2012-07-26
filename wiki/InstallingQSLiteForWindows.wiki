@@ -12,3 +12,6 @@ Before installing SQLite, please, verify that the MinGW and MSYS compilation and
 
 Download the latest release of the SQLite, currently SQLite 3071300. To do it, click on the following [http://www.sqlite.org/download.html link] to go to the "SQLite"  download webpage. Once you reach the webpage, click on the link titled "sqlite-autoconf-_version_.tar.gz
 " at the "Source Code" section. This will start the downloading of the source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer. 
+
+||<a href="http://picasaweb.google.com/lh/photo/3r_TwpwkMdF2hc8h-_Ggq8kjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh4.ggpht.com/_tmEVMS15i5Y/TLCToThqs9I/AAAAAAAAAnY/yWkESmsWGPQ/s400/SoQt_sourcecode.png" height="261" width="400" /></a>||
+|| *Figure 1.* View of the "!SoQt 1.5.0" webpage.|| 
