@@ -140,7 +140,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTransmissivity.h"
 #include "TTransmissivityFactory.h"
 #include "UpdatesManager.h"
-#include "RunOptionsDialog.h"
 
 
 void startManipulator(void *data, SoDragger* dragger )
@@ -349,64 +348,6 @@ void MainWindow::DefineSunLight()
 }
 
 /*!
- *Defines Tonatiuh model light parameters using a script.
- */
-/*void MainWindow::DefineSunLight(int typeOfSun, double irradiance, double angle, double azimuth, double zenith){
-
-	TSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene ) return;
-
-	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
-	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
-
-
-	QVector< TShapeFactory* > shapeFactoryList = m_pluginManager->GetShapeFactories();
-
-	QVector< TShapeFactory* > tFlatShapeFactoryList;
-	for( int i = 0; i < shapeFactoryList.size(); ++i  )
-		if( shapeFactoryList[i]->IsFlat() )	tFlatShapeFactoryList<<shapeFactoryList[i];
-
-	QVector< TSunShapeFactory* > tSunShapeFactoryList = m_pluginManager->GetSunShapeFactories();
-
-	if(typeOfSun>=tSunShapeFactoryList.size()|| typeOfSun<0) return;
-	TSunShape* newSunShape = tSunShapeFactoryList[typeOfSun]->CreateTSunShape();
-	//newSunShape = static_cast< TSunShape* >( lightKit->getPart( "tsunshape", false )->copy( true ) );
-
-	TLightKit* lightKit = new TLightKit;
-	if( newSunShape ) lightKit->setPart( "tsunshape", newSunShape );
-	lightKit->ChangePosition( azimuth* tgc::Degree, ( 90 - zenith ) * tgc::Degree);
-
-	if(irradiance>=0){
-				SoField* parameterField = newSunShape->getField( SbName( QString("irradiance").toStdString().c_str() ) );
-					if( parameterField )
-						parameterField->set(QString::number(irradiance).toStdString().c_str() );
-			}
-	if(typeOfSun==1){
-		SoField* parameterField = newSunShape->getField( SbName(QString("thetaMax").toStdString().c_str() ) );
-			if( parameterField )
-				parameterField->set( QString::number(angle).toStdString().c_str() );
-
-			}
-	else{
-		SoField* parameterField = newSunShape->getField( SbName(QString("csr").toStdString().c_str() ) );
-							if( parameterField )
-								parameterField->set( QString::number(angle).toStdString().c_str() );
-	}
-	CmdLightKitModified* command = new CmdLightKitModified( lightKit, coinScene, *m_sceneModel );
-	m_commandStack->push( command );
-
-	//UpdateLightDimensions();
-	UpdateLightSize();
-
-	parametersView->UpdateView();
-	m_document->SetDocumentModified( true );
-
-	actionCalculateSunPosition->setEnabled( true );
-}
-*/
-
-/*!
  * Opens a dialog to define the scene transmissivity.
  */
 void MainWindow::DefineTransmissivity()
@@ -429,30 +370,7 @@ void MainWindow::DefineTransmissivity()
 
 }
 
-/*!
- * Define the scene transmissivity without opening a dialog.
- */
-/*void MainWindow::DefineTransmissivity(int typeOfTransmissivity, double value){
 
-	TSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene ) return;
-	QVector< TTransmissivityFactory* > tTransmissivityFactoryList = m_pluginManager->GetTransmissivityFactories();
-	if(typeOfTransmissivity>=tTransmissivityFactoryList.size()|| typeOfTransmissivity<-1) return;
-	TTransmissivity* transmissivity;
-	if(typeOfTransmissivity==-1) transmissivity=0;
-	else{
-	transmissivity = tTransmissivityFactoryList[typeOfTransmissivity]->CreateTTransmissivity();
-	SoField* parameterField = transmissivity->getField( SbName( QString("constant").toStdString().c_str() ) );
-		if( parameterField )
-		    parameterField->set(QString::number(value).toStdString().c_str() );
-	}
-	coinScene->setPart( "transmissivity", transmissivity );
-
-
-
-
-}
-*/
 void MainWindow::DisconnectAllTrackers( bool disconnect )
 {
 	if (disconnect) m_sceneModel->DisconnectAllTrackers();
