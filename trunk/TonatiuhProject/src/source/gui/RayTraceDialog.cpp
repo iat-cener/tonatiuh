@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "RandomDeviateFactory.h"
 #include "RayTraceDialog.h"
-#include "TPhotonMapFactory.h"
 
 /**
  * Creates a dialog to ray tracer options with the given \a parent and \a f flags.
@@ -50,7 +49,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * The variables take the default values.
  */
 RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ), m_numRays( 0 ), m_selectedRandomFactory( -1 ), m_fraction( 0.0 ), m_drawPhotons( false ), m_selectedPhotonMapFactory( -1 ), m_increasePhotonMap( false )
+:QDialog ( parent, f ),
+ m_drawPhotons( false ),
+ m_drawRays( false ),
+ m_heightDivisions( 200 ),
+ m_increasePhotonMap( false ),
+ m_numRays( 0 ),
+ m_photonMapBufferSize( 1000000 ),
+ m_selectedRandomFactory( -1 ),
+ m_widthDivisions( 200 )
 {
 	setupUi( this );
 	connect( this, SIGNAL( accepted() ), this, SLOT( saveChanges() ) );
@@ -62,8 +69,21 @@ RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
  *
  * The variables take the values specified by \a numRats, \a faction, \a drawPhotons and \a increasePhotonMap.
  */
-RayTraceDialog::RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > randomFactoryList, double fraction,int widthDivisions, int heightDivisions, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList, int selectedRandomFactory, int selectedPhotonMapFactory, bool increasePhotonMap, QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ), m_numRays( numRays ), m_selectedRandomFactory(selectedRandomFactory), m_fraction( fraction ),m_widthDivisions(widthDivisions),m_heightDivisions(heightDivisions), m_drawPhotons( drawPhotons ), m_selectedPhotonMapFactory( selectedPhotonMapFactory ), m_increasePhotonMap( increasePhotonMap )
+RayTraceDialog::RayTraceDialog( int numRays,
+		QVector< RandomDeviateFactory* > randomFactoryList, int selectedRandomFactory,
+		int widthDivisions, int heightDivisions,
+		bool drawRays, bool drawPhotons,
+		int photonMapSize, bool increasePhotonMap,
+		QWidget * parent, Qt::WindowFlags f )
+:QDialog ( parent, f ),
+ m_drawPhotons( drawPhotons ),
+ m_drawRays( drawRays ),
+ m_heightDivisions( heightDivisions ),
+ m_increasePhotonMap( increasePhotonMap ),
+ m_numRays( numRays ),
+ m_photonMapBufferSize( photonMapSize ),
+ m_selectedRandomFactory( selectedRandomFactory ),
+ m_widthDivisions( widthDivisions )
 {
 	setupUi( this );
 	raysSpinBox->setValue( m_numRays );
@@ -75,18 +95,14 @@ RayTraceDialog::RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > ra
 		m_selectedRandomFactory =0;
 	randomCombo->setCurrentIndex( m_selectedRandomFactory );
 
-	drawSpin->setValue( m_fraction );
+
 	widthDivisionsSpinBox->setValue( m_widthDivisions );
 	heightDivisionsSpinBox->setValue( m_heightDivisions );
-	photonsCheck->setChecked( m_drawPhotons );
 
-	for( int index = 0; index < photonMapFactoryList.size(); ++index )
-	{
-		photonmapTypeCombo->addItem( photonMapFactoryList[index]->TPhotonMapIcon(), photonMapFactoryList[index]->TPhotonMapName() );
-	}
-	if( ( m_selectedPhotonMapFactory < 0  ) & ( photonMapFactoryList.size() > 0 ) ) m_selectedPhotonMapFactory = 0;
-	photonmapTypeCombo->setCurrentIndex( m_selectedPhotonMapFactory );
+	showRaysCheck->setChecked( m_drawRays );
+	showPhotonsCheck->setChecked( m_drawPhotons );
 
+	bufferSizeSpin->setValue( m_photonMapBufferSize );
 	if ( m_increasePhotonMap )
 		increaseMapRadio->setChecked( true );
 	else
@@ -101,48 +117,8 @@ RayTraceDialog::RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > ra
  */
 RayTraceDialog::~RayTraceDialog()
 {
+
 }
-
-/**
- * Returns the number of rays to trace.
- */
-int RayTraceDialog::GetNumRays() const
-{
-	return m_numRays;
-}
-
-/**
- * Returns the fraction of trace rays to draw.
- */
-double RayTraceDialog::GetRaysFactionToDraw() const
-{
-	return m_fraction;
-};
-
-/**
- * Returns the the width divisions applied to the sun shape.
- */
-int RayTraceDialog::GetWidthDivisions() const
-{
-	return m_widthDivisions;
-};
-
-/**
- * Returns the the width divisions applied to the sun shape.
- */
-int RayTraceDialog::GetHeightDivisions() const
-{
-	return m_heightDivisions;
-};
-
-/**
- * Returns the factory to create a new random generator.
- */
-int RayTraceDialog::GetRandomDeviateFactoryIndex() const
-{
-	return m_selectedRandomFactory;
-}
-
 
 /**
  * Returns if the photons are going to be represented.
@@ -152,13 +128,53 @@ bool RayTraceDialog::DrawPhotons() const
 	return m_drawPhotons;
 }
 
-/**
- * Returns the factory to create a new photon map.
+/*!
+ * Returns if the rays are going to be represented.
  */
-int RayTraceDialog::GetPhotonMapFactoryIndex() const
+bool RayTraceDialog::DrawRays() const
 {
-	return m_selectedPhotonMapFactory;
+	return m_drawRays;
 }
+
+/**
+ * Returns the the height divisions applied to the sun shape.
+ */
+int RayTraceDialog::GetHeightDivisions() const
+{
+	return m_heightDivisions;
+};
+
+/**
+ * Returns the number of rays to trace.
+ */
+int RayTraceDialog::GetNumRays() const
+{
+	return m_numRays;
+}
+
+/*!
+ * Returns maximum number of photons that the photonmap buffer can save.
+ */
+int RayTraceDialog::GetPhotonMapBufferSize() const
+{
+	return m_photonMapBufferSize;
+}
+
+/**
+ * Returns the factory to create a new random generator.
+ */
+int RayTraceDialog::GetRandomDeviateFactoryIndex() const
+{
+	return m_selectedRandomFactory;
+}
+
+/**
+ * Returns the the width divisions applied to the sun shape.
+ */
+int RayTraceDialog::GetWidthDivisions() const
+{
+	return m_widthDivisions;
+};
 
 /**
  * Returns if the the tracer use the same photon map used in the previous tracer process.
@@ -184,15 +200,16 @@ void RayTraceDialog::saveChanges()
 {
 	m_numRays = raysSpinBox->value();
 	m_selectedRandomFactory = randomCombo->currentIndex();
-
-	m_fraction = drawSpin->value();
 	m_widthDivisions= widthDivisionsSpinBox->value();
 	m_heightDivisions= heightDivisionsSpinBox->value();
-	m_drawPhotons = photonsCheck->isChecked();
 
-	m_selectedPhotonMapFactory = photonmapTypeCombo->currentIndex();
+	m_drawRays = showRaysCheck->isChecked();
+	m_drawPhotons = showPhotonsCheck->isChecked();
+
+	m_photonMapBufferSize = bufferSizeSpin->value();
 	if( newMapRadio->isChecked() )
 		m_increasePhotonMap = false;
 	else
 		m_increasePhotonMap = true;
 }
+

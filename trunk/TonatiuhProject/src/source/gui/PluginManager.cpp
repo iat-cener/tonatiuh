@@ -46,14 +46,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QDir>
 #include <QPluginLoader>
 #include <QStringList>
+#include <iostream>
 
 #include "gf.h"
 
+#include "PhotonMapExportFactory.h"
 #include "PluginManager.h"
 #include "RandomDeviateFactory.h"
 #include "TComponentFactory.h"
 #include "TMaterialFactory.h"
-#include "TPhotonMapFactory.h"
 #include "TShapeFactory.h"
 #include "TSunShapeFactory.h"
 #include "TTrackerFactory.h"
@@ -64,8 +65,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 PluginManager::PluginManager()
 :m_componentFactoryList( 0 ),
+ m_exportPMModeFactoryList( 0 ),
  m_materialFactoryList( 0 ),
- m_photonmapFactoryList( 0 ),
  m_randomDeviateFactoryList( 0 ),
  m_shapeFactoryList( 0 ),
  m_sunshapeFactoryList( 0 )
@@ -88,20 +89,21 @@ QVector< TComponentFactory* > PluginManager::GetComponentFactories() const
 {
 	return	m_componentFactoryList;
 }
+
+/*!
+ *	Returns available export plugins factory list.
+ */
+QVector< PhotonMapExportFactory* > PluginManager::GetExportPMModeFactories() const
+{
+	return m_exportPMModeFactoryList;
+}
+
 /*!
  * Returns available random deviates plugins factory list.
  */
 QVector< TMaterialFactory* > PluginManager::GetMaterialFactories() const
 {
 	return	m_materialFactoryList;
-}
-
-/*!
- * Returns available photonmap plugins factory list.
- */
-QVector< TPhotonMapFactory* > PluginManager::GetPhotonMapFactories() const
-{
-	return	m_photonmapFactoryList;
 }
 
 /*!
@@ -189,15 +191,24 @@ void PluginManager::BuildFileList( QDir directory, QStringList& filesList )
 
 }
 
-
 /*!
  * Loads the \a plugin as component type.
  */
 void PluginManager::LoadComponentPlugin( QObject* plugin )
 {
 	TComponentFactory* pTComponentFactory = qobject_cast<TComponentFactory* >( plugin );
-	if( !pTComponentFactory )  gf::SevereError( "MainWindow::LoadPlugins: Component plug-in not recognized" );
+	if( !pTComponentFactory )  gf::SevereError( "PluginManager::LoadComponentPlugin: Component plug-in not recognized" );
 	m_componentFactoryList.push_back( pTComponentFactory );
+}
+
+/*!
+ * Loads the \a plugin as component type.
+ */
+void PluginManager::LoadExportPhotonMapModePlugin( QObject* plugin )
+{
+	PhotonMapExportFactory* pPhotonMapExportFactory = qobject_cast< PhotonMapExportFactory* >( plugin );
+	if( !pPhotonMapExportFactory )  gf::SevereError( "PluginManager::LoadExportPhotonMapModePlugin: Component plug-in not recognized" );
+	m_exportPMModeFactoryList.push_back( pPhotonMapExportFactory );
 }
 
 /*!
@@ -210,16 +221,6 @@ void PluginManager::LoadMaterialPlugin( QObject* plugin )
 	if( !pTMaterialFactory )  gf::SevereError( "MainWindow::LoadPlugins: Material plug-in not recognized" );
 	pTMaterialFactory->CreateTMaterial();
 	m_materialFactoryList.push_back( pTMaterialFactory );
-}
-
-/*!
- * Loads the \a plugin as photon map type.
- */
-void PluginManager::LoadPhotonMapPlugin( QObject* plugin )
-{
-	TPhotonMapFactory* pTPhotonMapFactory = qobject_cast<TPhotonMapFactory* >( plugin );
-	if( !pTPhotonMapFactory ) gf::SevereError( "MainWindow::LoadPlugins: PhotonMap plug-in not recognized" );;
-	m_photonmapFactoryList.push_back( pTPhotonMapFactory );
 }
 
 /*!
@@ -277,12 +278,12 @@ void PluginManager::LoadTonatiuhPlugin( const QString& fileName )
  	QObject* plugin = loader.instance();
     if ( plugin != 0)
     {
+    	if( plugin->inherits( "PhotonMapExportFactory" ) ) LoadExportPhotonMapModePlugin( plugin );
     	if( plugin->inherits( "RandomDeviateFactory" ) ) LoadRandomDeviatePlugin( plugin );
     	if( plugin->inherits( "TComponentFactory" ) ) LoadComponentPlugin( plugin );
     	if( plugin->inherits( "TShapeFactory" ) ) LoadShapePlugin( plugin );
     	if( plugin->inherits( "TSunShapeFactory" ) ) LoadSunshapePlugin( plugin );
     	if( plugin->inherits( "TMaterialFactory" ) ) LoadMaterialPlugin( plugin );
-    	if( plugin->inherits( "TPhotonMapFactory" ) ) LoadPhotonMapPlugin( plugin );
     	if( plugin->inherits( "TTrackerFactory" ) ) LoadTrackerPlugin( plugin );
     	if( plugin->inherits( "TTransmissivityFactory" ) ) LoadTransmissivityPlugin( plugin );
 	}

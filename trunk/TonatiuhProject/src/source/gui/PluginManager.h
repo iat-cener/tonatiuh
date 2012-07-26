@@ -43,12 +43,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QVector>
 
+class PhotonMapExportFactory;
 class QDir;
 class QStringList;
 class RandomDeviateFactory;
 class TComponentFactory;
 class TMaterialFactory;
-class TPhotonMapFactory;
 class TShapeFactory;
 class TSunShapeFactory;
 class TTrackerFactory;
@@ -62,8 +62,8 @@ public:
     ~PluginManager();
 
     QVector< TComponentFactory* > GetComponentFactories() const;
+    QVector< PhotonMapExportFactory* > GetExportPMModeFactories() const;
     QVector< TMaterialFactory* > GetMaterialFactories() const;
-    QVector< TPhotonMapFactory* > GetPhotonMapFactories() const;
     QVector< RandomDeviateFactory* > GetRandomDeviateFactories() const;
     QVector< TShapeFactory* > GetShapeFactories() const;
     QVector< TSunShapeFactory* > GetSunShapeFactories() const;
@@ -76,8 +76,8 @@ private:
 	void BuildFileList( QDir directory, QStringList& filesList );
 	void LoadAvailablePlugins( );
 	void LoadComponentPlugin( QObject* plugin );
+	void LoadExportPhotonMapModePlugin( QObject* plugin );
 	void LoadMaterialPlugin( QObject* plugin );
-	void LoadPhotonMapPlugin( QObject* plugin );
 	void LoadRandomDeviatePlugin( QObject* plugin );
 	void LoadShapePlugin( QObject* plugin );
 	void LoadSunshapePlugin( QObject* plugin );
@@ -88,8 +88,8 @@ private:
 
 
 	QVector< TComponentFactory* > m_componentFactoryList;
+	QVector< PhotonMapExportFactory* > m_exportPMModeFactoryList;
 	QVector< TMaterialFactory* > m_materialFactoryList;
-	QVector< TPhotonMapFactory* > m_photonmapFactoryList;
 	QVector< RandomDeviateFactory* > m_randomDeviateFactoryList;
 	QVector< TShapeFactory* > m_shapeFactoryList;
 	QVector< TSunShapeFactory* > m_sunshapeFactoryList;

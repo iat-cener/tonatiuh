@@ -32,68 +32,37 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 
-#ifndef RAYTRACERNOTR_H_
-#define RAYTRACERNOTR_H_
+#ifndef SELECTSURFACEDIALOG_H_
+#define SELECTSURFACEDIALOG_H_
 
-#include <vector>
+#include <QDialog>
 
-#include <QMap>
-#include <QPair>
-#include <QObject>
-#include <QVector>
+#include "ui_selectsurfacedialog.h"
 
-#include "Transform.h"
+class QItemSelectionModel;
+class SceneModel;
 
-
-class InstanceNode;
-class ParallelRandomDeviate;
-struct Photon;
-class RandomDeviate;
-struct RayTracerPhoton;
-class QMutex;
-class QPoint;
-class TPhotonMap;
-class TLightShape;
-class TSunShape;
-//struct PhotonToMemory;
-
-class RayTracerNoTr
+class SelectSurfaceDialog: public QDialog, private Ui::SelectSurfaceDialog
 {
+	Q_OBJECT
 
 public:
-	RayTracerNoTr( InstanceNode* rootNode,
-		       InstanceNode* lightNode,
-		       TLightShape* lightShape,
-		       TSunShape* const lightSunShape,
-		       Transform lightToWorld,
-		       RandomDeviate& rand,
-		       QMutex* mutex,
-		       TPhotonMap* photonMap,
-		       QVector< InstanceNode* > exportSuraceList );
+	SelectSurfaceDialog( SceneModel& sceneModel, QWidget* parent = 0 );
+	~SelectSurfaceDialog();
 
-	typedef QPair< TPhotonMap*, std::vector <Photon > > result_type;
-	QPair<  TPhotonMap*, std::vector < Photon > > operator()( double numberOfRays );
+	QString GetSelectedSurfaceURL() const;
 
+public slots:
+	void accept();
 
 private:
-    QVector< InstanceNode* > m_exportSuraceList;
-	InstanceNode* m_rootNode;
-	InstanceNode* m_lightNode;
-	TLightShape* m_lightShape;
-	const TSunShape* m_lightSunShape;
-	Transform m_lightToWorld;
-	RandomDeviate* m_pRand;
-    QMutex* m_mutex;
-	TPhotonMap* m_photonMap;
-	std::vector< QPair< int, int > >  m_validAreasVector;
-
-	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
+	SceneModel* m_pCurrentSceneModel;
+	QItemSelectionModel*  m_pSelectionModel;
 };
 
-
-#endif /* RAYTRACER_H_ */
+#endif /* SELECTSURFACEDIALOG_H_ */

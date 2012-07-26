@@ -32,68 +32,54 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
-#ifndef RAYTRACERNOTR_H_
-#define RAYTRACERNOTR_H_
+#ifndef PHOTONMAPEXPORT_H_
+#define PHOTONMAPEXPORT_H_
 
 #include <vector>
 
-#include <QMap>
-#include <QPair>
-#include <QObject>
-#include <QVector>
+#include <QStringList>
 
-#include "Transform.h"
+#include "Photon.h"
 
+class SceneModel;
 
-class InstanceNode;
-class ParallelRandomDeviate;
-struct Photon;
-class RandomDeviate;
-struct RayTracerPhoton;
-class QMutex;
-class QPoint;
-class TPhotonMap;
-class TLightShape;
-class TSunShape;
-//struct PhotonToMemory;
-
-class RayTracerNoTr
+class PhotonMapExport
 {
 
 public:
-	RayTracerNoTr( InstanceNode* rootNode,
-		       InstanceNode* lightNode,
-		       TLightShape* lightShape,
-		       TSunShape* const lightSunShape,
-		       Transform lightToWorld,
-		       RandomDeviate& rand,
-		       QMutex* mutex,
-		       TPhotonMap* photonMap,
-		       QVector< InstanceNode* > exportSuraceList );
+	PhotonMapExport();
+	virtual ~PhotonMapExport();
 
-	typedef QPair< TPhotonMap*, std::vector <Photon > > result_type;
-	QPair<  TPhotonMap*, std::vector < Photon > > operator()( double numberOfRays );
+	virtual void EndExport() = 0;
+	virtual void SavePhotonMap( std::vector< std::vector < Photon > > raysLists ) = 0;
+	virtual void SetPowerPerPhoton( double wPhoton ) = 0;
 
+	void SetSaveAllPhotonsEnabled();
+	void SetSaveCoordinatesEnabled( bool enabled );
+	void SetSaveCoordinatesInGlobalSystemEnabled( bool enabled );
+	virtual void SetSaveParameterValue( QString parameterName, QString parameterValue ) = 0;
+	void SetSavePreviousNextPhotonsID( bool enabled );
+	void SetSaveSideEnabled( bool enabled );
+	void SetSaveSurfacesIDEnabled( bool enabled );
+	void SetSaveSurfacesURLList( QStringList surfacesURLList );
+	void SetSceneModel( SceneModel& sceneModel );
+	virtual void StartExport() = 0;
 
-private:
-    QVector< InstanceNode* > m_exportSuraceList;
-	InstanceNode* m_rootNode;
-	InstanceNode* m_lightNode;
-	TLightShape* m_lightShape;
-	const TSunShape* m_lightSunShape;
-	Transform m_lightToWorld;
-	RandomDeviate* m_pRand;
-    QMutex* m_mutex;
-	TPhotonMap* m_photonMap;
-	std::vector< QPair< int, int > >  m_validAreasVector;
+protected:
+	SceneModel* m_pSceneModel;
+	bool m_saveAllPhotonsData;
+	bool m_saveCoordinates;
+	bool m_saveCoordinatesInGlobal;
+	bool m_savePowerPerPhoton;
+	bool m_savePrevNexID;
+	bool m_saveSide;
+	bool m_saveSurfaceID;
+	QStringList m_saveSurfacesURLList;
 
-	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
 };
 
-
-#endif /* RAYTRACER_H_ */
+#endif /* PHOTONMAPEXPORT_H_ */

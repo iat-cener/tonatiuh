@@ -49,6 +49,7 @@ class Document;
 class GraphicRoot;
 class GraphicView;
 class InstanceNode;
+class PhotonMapExport;
 class PluginManager;
 class QDir;
 class QUndoStack;
@@ -62,6 +63,7 @@ class TComponentFactory;
 class TLightShape;
 class TMaterialFactory;
 class TPhotonMap;
+class PhotonToMemory;
 class TShapeFactory;
 class TSunShape;
 class TTrackerFactory;
@@ -69,6 +71,7 @@ class TTransmissivity;
 class UpdatesManager;
 class SoCamera;
 
+struct PhotonMapExportSettings;
 
 //!  Main window class.
 /*!
@@ -118,12 +121,13 @@ public slots:
     void SelectNode( QString nodeUrl );
 	void SetAimingPointAbsolute();
 	void SetAimingPointRelative();
+	void SetExportPhotonMapType( QString exportModeType );
     void SetIncreasePhotonMap( bool increase );
     void SetNodeName( QString nodeName );
-    void SetPhotonMapType( QString typeName );
+    void SetPhotonMapBufferSize( unsigned int nPhotons );
     void SetRandomDeviateType( QString typeName );
     void SetRayCastingGrid( int widthDivisions, int heightDivisions );
-    void SetRaysDrawingOptions( double raysFaction, bool drawPhotons );
+    void SetRaysDrawingOptions( bool drawRays, bool drawPhotons );
     void SetRaysPerIteration( unsigned int rays );
     void SetSunshape( QString sunshapeType );
     void SetSunshapeParameter( QString parameter, QString value );
@@ -155,6 +159,7 @@ private slots:
 	void Open();
 	void OpenRecentFile();
 	void Redo();
+	void RunCompleteRayTracer();
 	bool Save();
     bool SaveAs();
     bool SaveComponent();
@@ -195,13 +200,13 @@ private slots:
 	//Help menu actions
 	void on_actionAbout_triggered();
 	void on_actionCheckForUpdates_triggered();
-	//void on_actionHelp_triggered();
 
 
 private:
     void ChangeModelScene();
 	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
     QToolBar* CreateMaterialsTooBar( QMenu* pMaterialsMenu );
+    PhotonMapExport* CreatePhotonMapExport() const;
     QToolBar* CreateTrackerTooBar( QMenu* pMaterialsMenu );
     bool Delete( QModelIndex index );
    	QSplitter* GetHorizontalSplitterPointer();
@@ -220,6 +225,7 @@ private:
 			                 TTransmissivity*& transmissivity );
     bool SaveFile( const QString& fileName );
     void SetCurrentFile( const QString& fileName );
+    bool SetPhotonMapExportSettings();
     void SetupActions();
    	void SetupActionsInsertComponent();
    	void SetupActionsInsertMaterial();
@@ -243,7 +249,7 @@ private:
     void UpdateLightSize();
     void UpdateRecentFileActions();
     void WriteSettings();
-
+    double GetwPhoton();
 
     enum { m_maxRecentFiles = 7 };
     QUndoStack* m_commandStack;
@@ -257,7 +263,7 @@ private:
     QToolBar* m_shapeToolBar;
     QToolBar* m_trackersToolBar;
 
-    PluginManager* m_pluginManager;
+    PluginManager* m_pPluginManager;
     UpdatesManager* m_updateManager;
 
     SceneModel* m_sceneModel;
@@ -266,9 +272,11 @@ private:
     RandomDeviate* m_rand;
     int m_selectedRandomDeviate;
 
-    TPhotonMap* m_photonMap;
-    int m_selectedPhotonMap;
+
+    unsigned long m_bufferPhotons;
     bool m_increasePhotonMap;
+    PhotonMapExportSettings* m_pExportModeSettings;
+    TPhotonMap* m_pPhotonMap;
 
     QString m_lastExportFileName;
     QString m_lastExportSurfaceUrl;
@@ -277,18 +285,23 @@ private:
     GraphicRoot* m_graphicsRoot;
     SoNode* m_coinNode_Buffer;
     QStringList* m_manipulators_Buffer;
+
     unsigned long m_tracedRays;
     unsigned long m_raysPerIteration;
-    double m_fraction;
+    int m_heightDivisions;
+    int m_widthDivisions;
+
     bool m_drawPhotons;
+    bool m_drawRays;
+
     int m_gridXElements;
     int m_gridZElements;
     double m_gridXSpacing;
     double m_gridZSpacing;
     std::vector<GraphicView*> m_graphicView;
     int m_focusView;
-    int m_heightDivisions;
-    int m_widthDivisions;
+    bool m_saveCoordinates;
+    bool m_saveSide;
 
 };
 

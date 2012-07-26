@@ -61,21 +61,21 @@ class RayTraceDialog: public QDialog, private Ui::RayTraceDialog
 
 public:
 	RayTraceDialog( QWidget * parent = 0, Qt::WindowFlags f = 0 );
-	RayTraceDialog( int numRays, QVector< RandomDeviateFactory* > randomFactoryList,
-				double fraction,int widthDivisions,int heightDivisions, bool drawPhotons, QVector< TPhotonMapFactory* > photonMapFactoryList,
-				int selectedRandomFactory = 0, int selectedPhotonMapFactory = 0, bool increasePhotonMap = false,
+	RayTraceDialog( int numRays,
+			QVector< RandomDeviateFactory* > randomFactoryList, int selectedRandomFactory = 0,
+			int widthDivisions = 200,int heightDivisions = 200,
+			bool drawRays = true, bool drawPhotons = false,
+			int photonMapSize = 1000000, bool increasePhotonMap = false,
 				QWidget * parent = 0, Qt::WindowFlags f = 0 );
     ~RayTraceDialog();
 
-    int GetNumRays() const;
-    int GetRandomDeviateFactoryIndex() const;
-
-    double GetRaysFactionToDraw() const;
-    int GetWidthDivisions() const;
-    int GetHeightDivisions() const;
     bool DrawPhotons() const;
-
-    int GetPhotonMapFactoryIndex() const;
+    bool DrawRays() const;
+    int GetHeightDivisions() const;
+    int GetNumRays() const;
+    int GetPhotonMapBufferSize() const;
+    int GetRandomDeviateFactoryIndex() const;
+    int GetWidthDivisions() const;
     bool IncreasePhotonMap() const;;
 
 public slots:
@@ -83,16 +83,14 @@ public slots:
 	void saveChanges();
 
 private:
-	int m_numRays; /*!< Number of rays to trace. */
-	int m_selectedRandomFactory; /*!< The index of factory selected from TPhotonMapFactory list. */
-
-	double m_fraction; /*!< Faction of traced rays to draw. */
-	int m_widthDivisions; /*number of width divisions in the sun*/
-	int m_heightDivisions; /*number of height divisions in the sun*/
 	bool m_drawPhotons;  /*!<This property holds whether photons are going to be drawn. */
-
-	int m_selectedPhotonMapFactory; /*!< The index of factory selected from TPhotonMapFactory list. */
+	bool m_drawRays;  /*!<This property holds whether rays are going to be drawn. */
+	int m_heightDivisions; /*!<number of height divisions in the sun*/
 	bool m_increasePhotonMap; /*!<This property holds whether traced phtons are going to added to the old photon map. */
+	int m_numRays; /*!< Number of rays to trace. */
+    int m_photonMapBufferSize; /*!< Maximum number of photons int the PhotonMap. */
+	int m_selectedRandomFactory; /*!< The index of factory selected from TPhotonMapFactory list. */
+	int m_widthDivisions; /*number of width divisions in the sun*/
 
 };
 

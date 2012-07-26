@@ -32,68 +32,47 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#ifndef EXPORTPHOTONMAPSETTINGSDIALOG_H_
+#define EXPORTPHOTONMAPSETTINGSDIALOG_H_
 
-#ifndef RAYTRACERNOTR_H_
-#define RAYTRACERNOTR_H_
-
-#include <vector>
-
-#include <QMap>
-#include <QPair>
-#include <QObject>
+#include <QDialog>
 #include <QVector>
 
-#include "Transform.h"
+#include "PhotonMapExportFactory.h"
 
+#include "ui_exportphotonmapsettingsdialog.h"
 
-class InstanceNode;
-class ParallelRandomDeviate;
-struct Photon;
-class RandomDeviate;
-struct RayTracerPhoton;
-class QMutex;
-class QPoint;
-class TPhotonMap;
-class TLightShape;
-class TSunShape;
-//struct PhotonToMemory;
+class PhotonMapExportParametersWidget;
+class SceneModel;
 
-class RayTracerNoTr
+struct PhotonMapExportSettings;
+
+class ExportPhotonMapSettingsDialog: public QDialog, private Ui::ExportPhotonMapSettingsDialog
 {
+	Q_OBJECT
 
 public:
-	RayTracerNoTr( InstanceNode* rootNode,
-		       InstanceNode* lightNode,
-		       TLightShape* lightShape,
-		       TSunShape* const lightSunShape,
-		       Transform lightToWorld,
-		       RandomDeviate& rand,
-		       QMutex* mutex,
-		       TPhotonMap* photonMap,
-		       QVector< InstanceNode* > exportSuraceList );
+	ExportPhotonMapSettingsDialog( SceneModel& currentSceneModel, QVector< PhotonMapExportFactory* > typeList, QWidget* parent = 0 );
+	~ExportPhotonMapSettingsDialog();
 
-	typedef QPair< TPhotonMap*, std::vector <Photon > > result_type;
-	QPair<  TPhotonMap*, std::vector < Photon > > operator()( double numberOfRays );
+	PhotonMapExportSettings GetExportPhotonMapSettings() const;
 
+private slots:
+	void AddSurfaceToExportList();
+	void ChangeCurrentStoreTypeParameters();
+	void DeleteSurfaceFromExportList();
 
 private:
-    QVector< InstanceNode* > m_exportSuraceList;
-	InstanceNode* m_rootNode;
-	InstanceNode* m_lightNode;
-	TLightShape* m_lightShape;
-	const TSunShape* m_lightSunShape;
-	Transform m_lightToWorld;
-	RandomDeviate* m_pRand;
-    QMutex* m_mutex;
-	TPhotonMap* m_photonMap;
-	std::vector< QPair< int, int > >  m_validAreasVector;
+	void SetupTriggers();
 
-	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );
+	SceneModel* m_pCurrentSceneModel;
+	QStringList m_exportSurfaceNodeList;
+	QVector< PhotonMapExportParametersWidget* > parametersWidgetList;
+
 };
 
-
-#endif /* RAYTRACER_H_ */
+#endif /* EXPORTPHOTONMAPSETTINGSDIALOG_H_ */

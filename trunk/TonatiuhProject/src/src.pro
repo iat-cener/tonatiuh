@@ -33,6 +33,7 @@ mac:{
 	ICON = icons/Tonatiuh.icns
 }
 
+
 # Input
 HEADERS += source/analyzer/*.h \
            source/application/*.h \

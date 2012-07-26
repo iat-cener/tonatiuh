@@ -49,7 +49,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoNode.h>
 
 #include "Photon.h"
-#include "RayTracerPhoton.h"
 #include "TPhotonMap.h"
 #include "Ray.h"
 #include "tgf.h"
@@ -61,6 +60,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeKit.h"
 
 
+
 class InstanceNode;
 class RandomDeviate;
 class TPhotonMap;
@@ -69,13 +69,13 @@ namespace trf
 {
 	void ComputeSceneTreeMap( InstanceNode* instanceNode, Transform parentWTO, bool insertInSurfaceList );
 	void ComputeFistStageSurfaceList( InstanceNode* instanceNode, QStringList disabledNodesURL, QVector< QPair< TShapeKit*, Transform > >* surfacesList);
-	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList );
+	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* ,  std::vector < Photon  > > photonsList );
 
-	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap );
-	int ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
-	int ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap );
+	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap, bool saveCoordinate, bool saveSide );
+	int ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap, bool saveCoordinate, bool saveSide  );
+	int ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap,bool saveCoordinate, bool saveSide  );
 	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map);
-	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays, double fraction );
+	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays );
 	Transform GetObjectToWorld(SoPath* nodePath);
 }
 
@@ -188,33 +188,13 @@ inline void trf::ComputeFistStageSurfaceList( InstanceNode* instanceNode, QStrin
 
 }
 
-inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< RayTracerPhoton > > photonsList )
+inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , std::vector< Photon >  > photonsList )
 {
 	if( !photonMap )  photonMap = photonsList.first;
+	photonMap->StoreRays( photonsList.second );
 
-	std::vector< RayTracerPhoton >::iterator it;
-	it = photonsList.second.begin();
-
-	int rayLength;
-	while( it < photonsList.second.end() )
-	{
-		rayLength = 1;
-		Photon* first = new Photon( it->pos, it->shapeFront, 0, 0, 0, it->intersectedSurface );
-		Photon* nextPhoton = first;
-
-		while( (++it)<photonsList.second.end() && ( it->id > 0 ) )
-		{
-			Photon* photon = new Photon( it->pos, it->shapeFront, nextPhoton, 0, 0, it->intersectedSurface );
-
-			nextPhoton->next = photon;
-			nextPhoton = photon;
-
-			rayLength++;
-		}
-		photonMap->StoreRay( first, rayLength );
-	}
-	photonsList.second.clear();
 }
+
 
 inline Transform trf::GetObjectToWorld(SoPath* nodePath)
 {

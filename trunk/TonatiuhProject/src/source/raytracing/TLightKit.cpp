@@ -234,161 +234,6 @@ void TLightKit::Update( BBox box )
 
 void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions, QVector< QPair< TShapeKit*, Transform > > surfacesList )
 {
-/*
-	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
-	if( !shape )	return;
-
-	double width =  shape->xMax.getValue() - shape->xMin.getValue();
-	double height = shape->zMax.getValue() - shape->zMin.getValue();
-
-	std::cout<<"TLightKit::ComputeLightSourceArea 1"<<std::endl;
-	int widthPixeles = widthDivisions;
-	while( ( width / widthPixeles ) < shape->delta.getValue() )	widthPixeles--;
-	double pixelWidth = double( width / widthPixeles );
-	int heightPixeles = heigthDivisions;
-	while( ( height / heightPixeles ) < shape->delta.getValue() )	heightPixeles--;
-	double pixelHeight = height / heightPixeles;
-
-	std::cout<<"TLightKit::ComputeLightSourceArea 1 "<<shape->delta.getValue()<<std::endl;
-	std::cout<<"TLightKit::ComputeLightSourceArea 1 "<<widthPixeles<<" "<<heightPixeles<<std::endl;
-
-	QVector< Polygon >	polygonList;
-	for( int s = 0; s < surfacesList.size(); s++ )
-	{
-		TShapeKit* surfaceKit = surfacesList[s].first;
-		Transform surfaceTransform = surfacesList[s].second;
-		Transform shapeToWorld = surfaceTransform.GetInverse();
-
-		TShape* shapeNode = static_cast< TShape* > ( surfaceKit->getPart( "shape", false ) );
-		if( shapeNode )
-		{
-			BBox shapeBB = shapeNode->GetBBox();
-
-			Point3D p1( shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMin.z );
-			Point3D p2( shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMin.z );
-			Point3D p3( shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMax.z );
-			Point3D p4( shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMax.z );
-			Point3D p5( shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMin.z );
-			Point3D p6( shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMin.z );
-			Point3D p7( shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMax.z );
-			Point3D p8( shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMax.z );
-
-			Point3D tP1 = shapeToWorld( p1 );
-			Point3D tP2 = shapeToWorld( p2 );
-			Point3D tP3 = shapeToWorld( p3 );
-			Point3D tP4 = shapeToWorld( p4 );
-			Point3D tP5 = shapeToWorld( p5 );
-			Point3D tP6 = shapeToWorld( p6 );
-			Point3D tP7 = shapeToWorld( p7 );
-			Point3D tP8 = shapeToWorld( p8 );
-
-
-			QPointF qP1( ( tP1.x - shape->xMin.getValue() ) /pixelWidth, ( tP1.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP2( ( tP2.x - shape->xMin.getValue() ) /pixelWidth, ( tP2.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP3( ( tP3.x - shape->xMin.getValue() ) /pixelWidth, ( tP3.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP4( ( tP4.x - shape->xMin.getValue() ) /pixelWidth, ( tP4.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP5( ( tP5.x - shape->xMin.getValue() ) /pixelWidth, ( tP5.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP6( ( tP6.x - shape->xMin.getValue() ) /pixelWidth, ( tP6.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP7( ( tP7.x - shape->xMin.getValue() ) /pixelWidth, ( tP7.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP8( ( tP8.x - shape->xMin.getValue() ) /pixelWidth, ( tP8.z - shape->zMin.getValue() ) /pixelHeight );
-
-			Polygon polygon1( qP1, qP2, qP3, qP4 );
-			polygonList.push_back( polygon1 );
-
-			Polygon polygon2( qP1, qP2, qP6, qP5 );
-			polygonList.push_back( polygon2 );
-
-			Polygon polygon3( qP1, qP4, qP8, qP5 );
-			polygonList.push_back( polygon3 );
-
-			Polygon polygon4( qP2, qP3, qP7, qP6 );
-			polygonList.push_back( polygon4 );
-
-			Polygon polygon5( qP3, qP4, qP8, qP7 );
-			polygonList.push_back( polygon5 );
-
-			Polygon polygon6( qP5, qP6, qP7, qP8 );
-			polygonList.push_back( polygon6 );
-
-		}
-
-	}
-
-	std::cout<<"TLightKit::ComputeLightSourceArea 2 "<<polygonList.size()<<std::endl;
-
-	int** initialMatrix = new int*[heightPixeles];
-	for( int i = 0; i < heightPixeles; i++ )	initialMatrix[i] = new int[widthPixeles];
-
-	for( int i = 0; i < widthPixeles; i++ )
-	{
-		for( int j = 0; j < heightPixeles; j++ )
-		{
-			bool validArea = false;
-			int p = 0;
-			while( ( p < polygonList.size() ) && !validArea )
-			{
-				if( PixelInPolygon( i, j, polygonList[p] ) )	validArea = true;
-				p++;
-			}
-			if( validArea )	initialMatrix[j][i] = 1;
-			else	initialMatrix[j][i] = 0;
-
-		}
-	}
-
-
-	int** areaMatrix = new int*[heightPixeles];
-	for( int i = 0; i < heightPixeles; i++ )	areaMatrix[i] = new int[widthPixeles];
-
-	//unsigned char bitmap[ widthPixeles * heightPixeles ];
-	unsigned char* bitmap = new unsigned char[ widthPixeles * heightPixeles ];
-
-	std::cout<<"TLightKit::ComputeLightSourceArea 3"<<std::endl;
-	for( int i = 0; i < widthPixeles; i++ )
-	{
-		for( int j = 0; j < heightPixeles; j++ )
-		{
-			//std::cout<<"TLightKit::ComputeLightSourceArea 3.1"<<std::endl;
-			double pixelIntensity = initialMatrix[j][i];
-			if( ( i - 1 ) >= 0 && ( j - 1 ) >= 0 ) pixelIntensity += initialMatrix[ j-1 ][i-1 ];
-			if( ( j - 1 ) >= 0 ) pixelIntensity += initialMatrix[ j-1 ][ i ];
-			if( ( i + 1 ) < widthPixeles && ( j - 1) >= 0 )  pixelIntensity += initialMatrix[ j-1 ][ i+1 ];
-			if( ( i - 1 ) >= 0 )	pixelIntensity += initialMatrix[ j ][ i-1 ];
-			if( ( i + 1 ) < widthPixeles )  pixelIntensity += initialMatrix[ j ][ i+1 ];
-			if( ( i - 1 ) >= 0 && ( j + 1 ) < heightPixeles ) pixelIntensity += initialMatrix[j+1][i-1];
-			if( ( j + 1 ) < heightPixeles ) pixelIntensity += initialMatrix[j+1][i];
-			if( ( i + 1 ) < widthPixeles && ( j + 1 ) < heightPixeles ) pixelIntensity += initialMatrix[j+1][i+1];
-
-			if( pixelIntensity > 0.0 )
-			{
-				areaMatrix[j][i] = 1;
-				bitmap[ i * heightPixeles +  j ] = 0;
-				//std::cout<<"TLightKit::ComputeLightSourceArea 3.2"<<std::endl;
-			}
-			else
-			{
-
-				//std::cout<<"TLightKit::ComputeLightSourceArea 3.3 "<<std::endl;
-				areaMatrix[j][i] = 0;
-				bitmap[ i * heightPixeles +  j ] = 255;
-			}
-
-		}
-	}
-
-	std::cout<<"TLightKit::ComputeLightSourceArea 4"<<std::endl;
-	//for( int i = 0; i < heightPixeles; i++ )	delete[] initialMatrix[i];
-	//delete[] initialMatrix;
-
-	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
-    texture->image.setValue( SbVec2s(  heightPixeles, widthPixeles ), 1, bitmap );
-	delete[] bitmap;
-    texture->wrapS = SoTexture2::CLAMP;
-    texture->wrapT = SoTexture2::CLAMP;
-
-
-    shape->SetLightSourceArea( heightPixeles, widthPixeles, areaMatrix );
-*/
 
 	TLightShape* shape = static_cast< TLightShape* >( this->getPart( "icon", false ) );
 	if( !shape )	return;
@@ -397,26 +242,19 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 	double height = shape->zMax.getValue() - shape->zMin.getValue();
 
 
-	//int pixels = divisions;
 	int widthPixeles = widthDivisions;
 	while( ( width / widthPixeles ) < shape->delta.getValue() )	widthPixeles--;
-	//if( ( width / pixels ) < shape->delta.getValue() ) widthPixeles = ceil( width / shape->delta.getValue() );
 	double pixelWidth = double( width / widthPixeles );
 
 	int heightPixeles = heigthDivisions;
 	while( ( height / heightPixeles ) < shape->delta.getValue() )	heightPixeles--;
-	//if( ( height / pixels ) < shape->delta.getValue() ) heightPixeles = ceil( height / shape->delta.getValue() );
 	double pixelHeight = height / heightPixeles;
-	std::cout<<"TLightKit::ComputeLightSourceArea 1 "<<shape->delta.getValue()<<std::endl;
-	std::cout<<"TLightKit::ComputeLightSourceArea 1 "<<heightPixeles<<" "<<widthPixeles<<std::endl;
 
 
 	QImage* sourceImage = new QImage( widthPixeles, heightPixeles, QImage::Format_RGB32 );
-	//QImage sourceImage( widthPixeles, heightPixeles, QImage::Format_RGB32 );
 	sourceImage->setOffset( QPoint( 0.5, 0.5 ) );
 	sourceImage->fill( Qt::white  );
 
-	std::cout<<"TLightKit::ComputeLightSourceArea "<<sourceImage->isNull()<<std::endl;
 	QPainter painter( sourceImage );
 
 	QBrush brush( Qt::black );

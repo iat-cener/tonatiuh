@@ -25,7 +25,7 @@ TEST(PhotonTests, DefaultConstructor){
 
 		Point3D point=taf::randomPoint(a,b);
 		int side=int(taf::randomNumber(a,b));
-		Photon ph(point,side,0,0,0,0);
+		Photon ph( point, side, 0, 0 );
 		EXPECT_DOUBLE_EQ( ph.id,0 );
 		EXPECT_DOUBLE_EQ( ph.pos.x,point.x );
 		EXPECT_DOUBLE_EQ( ph.pos.y,point.y );
@@ -46,7 +46,7 @@ TEST(PhotonTests, ConstructorFromPhoton){
 	for( unsigned long int i = 0; i < maximumNumberOfTests; i++ ){
 		Point3D point=taf::randomPoint(a,b);
 		double side=taf::randomNumber(a,b);
-		Photon ph(point,side,0,0,0,0);
+		Photon ph( point, side, 0, 0 );
 		Photon result(ph);
 		EXPECT_DOUBLE_EQ( ph.id,result.id );
 		EXPECT_DOUBLE_EQ( ph.pos.x,result.pos.x );

@@ -76,7 +76,7 @@ int tonatiuh_script::init( QScriptEngine* engine )
 	QScriptValue fun_tonatiuh_numdivisions = engine->newFunction( tonatiuh_script::tonatiuh_numdivisions );
 	engine->globalObject().setProperty("tonatiuh_numdivisions", fun_tonatiuh_numdivisions );
 
-	QScriptValue fun_tonatiuh_photon_map = engine->newFunction( tonatiuh_script::tonatiuh_photon_map );
+	QScriptValue fun_tonatiuh_photon_map = engine->newFunction( tonatiuh_script::tonatiuh_photon_map_export_mode );
 	engine->globalObject().setProperty("tonatiuh_photon_map", fun_tonatiuh_photon_map );
 
 	QScriptValue fun_tonatiuh_random_generator = engine->newFunction( tonatiuh_script::tonatiuh_random_generator );
@@ -292,7 +292,7 @@ QScriptValue tonatiuh_script::tonatiuh_numdivisions(QScriptContext* context, QSc
 	return 1;
 }
 
-QScriptValue tonatiuh_script::tonatiuh_photon_map(QScriptContext* context, QScriptEngine* engine )
+QScriptValue tonatiuh_script::tonatiuh_photon_map_export_mode(QScriptContext* context, QScriptEngine* engine )
 {
 	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
@@ -300,10 +300,8 @@ QScriptValue tonatiuh_script::tonatiuh_photon_map(QScriptContext* context, QScri
 	if( context->argumentCount() != 1 )	return context->throwError( "tonatiuh_photon_map: takes exactly one argument." );
 	if( !context->argument( 0 ).isString() )	return context->throwError( "tonatiuh_photon_map: argument is not a string." );
 
-	QString photonMapType = context->argument(0).toString();
-	if( !rayTracer->IsValidPhotonMapType( photonMapType ) )	return context->throwError( "tonatiuh_photon_map: defined photonMap type is not valid." );
-
-	int result = 	rayTracer->SetPhotonMapType( photonMapType );
+	QString photonMapExportType = context->argument(0).toString();
+	int result = 	rayTracer->SetPhotonMapExportMode( photonMapExportType );
 	if( result == 0 )	return context->throwError( "tonatiuh_photon_map: UnknownError." );
 
 	return 1;

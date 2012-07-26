@@ -59,20 +59,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TLightKit.h"
 #include "TLightShape.h"
 #include "TPhotonMap.h"
-#include "TPhotonMapFactory.h"
 #include "trf.h"
 #include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TSunShape.h"
 #include "TTransmissivity.h"
 
-ScriptRayTracer::ScriptRayTracer( QVector< TPhotonMapFactory* > listTPhotonMapFactory, QVector< RandomDeviateFactory* > listRandomDeviateFactory )
+ScriptRayTracer::ScriptRayTracer(  QVector< RandomDeviateFactory* > listRandomDeviateFactory )
 :
 m_document( 0 ),
 m_irradiance( -1 ),
 m_numberOfRays( 0 ),
-m_TPhotonMapFactoryList( listTPhotonMapFactory ),
-m_selectedPhotonMap( -1 ),
 m_photonMap( 0 ),
 m_RandomDeviateFactoryList( listRandomDeviateFactory ),
 m_randomDeviate( 0 ),
@@ -102,7 +99,6 @@ void ScriptRayTracer::Clear()
 	m_document = 0;
 	m_irradiance = -1;
 	m_numberOfRays = 0;
-	m_selectedPhotonMap = -1;
 	delete m_photonMap;
 	m_photonMap = 0;
 	delete m_randomDeviate;
@@ -118,20 +114,6 @@ void ScriptRayTracer::Clear()
 QString ScriptRayTracer::GetDir()
 {
 	return m_dirName;
-}
-
-bool ScriptRayTracer::IsValidPhotonMapType( QString type )
-{
-	if( m_TPhotonMapFactoryList.size() == 0 )	 return 0;
-
-	QVector< QString > photonMapNames;
-	for( int i = 0; i < m_TPhotonMapFactoryList.size(); i++ )
-			photonMapNames<< m_TPhotonMapFactoryList[i]->TPhotonMapName();
-
-	int selectedPhotonMap = photonMapNames.indexOf( type );
-	if( selectedPhotonMap < 0 )	return 0;
-
-	return 1;
 }
 
 
@@ -169,7 +151,7 @@ int ScriptRayTracer::SetDir( QString dir )
 
 int ScriptRayTracer::SetExportAll( QString filename )
 {
-	return trf::ExportAll( filename, m_wPhoton, m_photonMap );
+	return trf::ExportAll( filename, m_wPhoton, m_photonMap,true, true );
 }
 
 int ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates )
@@ -180,8 +162,8 @@ int ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bo
 	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( surfaceIndex );
 	if( !selectedSurface )	return 0;
 
-	if( globalCoordinates )	return trf::ExportSurfaceGlobalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap );
-	else	return trf::ExportSurfaceLocalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap );
+	if( globalCoordinates )	return trf::ExportSurfaceGlobalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap, true, true );
+	else	return trf::ExportSurfaceLocalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap, true, true );
 }
 
 int ScriptRayTracer::SetIrradiance( double irradiance )
@@ -207,15 +189,12 @@ int ScriptRayTracer::SetNumberOfHeightDivisions( int ndivisions )
 	m_heightDivisions = ndivisions;
 	return 1;
 }
-int ScriptRayTracer::SetPhotonMapType( QString typeName )
+
+int ScriptRayTracer::SetPhotonMapExportMode( QString typeName )
 {
-	QVector< QString > photonMapNames;
-
-	for( int i = 0; i < m_TPhotonMapFactoryList.size(); i++ )
-		photonMapNames<< m_TPhotonMapFactoryList[i]->TPhotonMapName();
-
-	m_selectedPhotonMap = photonMapNames.indexOf( typeName );
-	if( m_selectedPhotonMap < 0 )	return 0;
+	if( typeName == QLatin1String( "File" ) ) 	m_photonMapToFile = true;
+	else if( typeName == QLatin1String( "DB" ) ) 	m_photonMapToFile = false;
+	else	return 0;
 
 	return 1;
 }
@@ -321,11 +300,17 @@ int ScriptRayTracer::SetTonatiuhModelFile ( QString filename )
 
 int ScriptRayTracer::Trace()
 {
+	/*
 	m_sceneModel->UpdateSceneModel();
 	delete m_photonMap;
 	m_photonMap = 0;
 
-	if( m_selectedPhotonMap > -1 )	m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
+	m_photonMap = new TPhotonMap;
+	if( m_photonMapToFile )
+	{
+		ExportToFilePhotonMap* pExportMode
+	}
+	//if( m_selectedPhotonMap > -1 )	m_photonMap = m_TPhotonMapFactoryList[m_selectedPhotonMap]->CreateTPhotonMap();
 	if( !m_photonMap )
 	{
 		std::cerr<<"ScriptRayTracer::Trace() no photonMap defined"<<std::endl;
@@ -433,22 +418,16 @@ int ScriptRayTracer::Trace()
 	futureWatcher.setFuture( photonMap );
 	futureWatcher.waitForFinished();
 
-	/*SoSFVec3f scaleVect = lightTransform->scaleFactor;
-	float scalex,scaley,scalez;
-	scaleVect.getValue().getValue(scalex,scaley,scalez);
-	//m_sceneModel->FinalyzeAnalyze(double(m_numberOfRays)/(raycastingSurface->GetArea()*scalex*scalez));
-	m_sceneModel->FinalyzeAnalyze( double(m_numberOfRays) /( raycastingSurface->GetValidArea() ) );
-	*/
-
 
 	if( !m_photonMap ) return 1;
-	if( m_photonMap->StoredPhotons() == 0 )	return 1;
+	//if( m_photonMap->StoredRays() == 0 )	return 1;
 
 	double irradiance  = m_irradiance;
 	if( irradiance < 0 ) irradiance = sunShape->GetIrradiance();
 	m_area = raycastingSurface->GetValidArea();
 	m_wPhoton = ( m_area * irradiance ) / m_numberOfRays;
 
+*/
 	return 1;
 }
 

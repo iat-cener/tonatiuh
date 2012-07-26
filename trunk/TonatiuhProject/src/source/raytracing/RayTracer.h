@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMap>
 #include <QPair>
 #include <QObject>
+#include <QVector>
 
 #include "Transform.h"
 
@@ -72,13 +73,15 @@ public:
 		       TTransmissivity* transmissivity,
 		       RandomDeviate& rand,
 		       QMutex* mutex,
-		       TPhotonMap* photonMap );
+		       TPhotonMap* photonMap,
+		       QVector< InstanceNode* > exportSuraceList );
 
-	typedef QPair< TPhotonMap*, std::vector< RayTracerPhoton > > result_type;
-	QPair< TPhotonMap*, std::vector< RayTracerPhoton > > operator()( double numberOfRays );
+	typedef QPair< TPhotonMap*,  std::vector <Photon  > > result_type;
+	QPair< TPhotonMap*, std::vector <Photon  > > operator()( double numberOfRays );
 
 
 private:
+    QVector< InstanceNode* > m_exportSuraceList;
 	InstanceNode* m_rootNode;
 	InstanceNode* m_lightNode;
 	TLightShape* m_lightShape;
