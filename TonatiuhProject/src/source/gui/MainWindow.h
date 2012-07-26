@@ -107,8 +107,8 @@ public slots:
 	void Cut( QString nodeURL );
 	void Delete();
 	void Delete( QString nodeURL );
-	int ExportAllPhotonMap( QString fileName );
-	int ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord );
+	//int ExportAllPhotonMap( QString fileName );
+	//int ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord );
 	void InsertFileComponent( QString componentFileName = QString( "" ) );
 	void New();
 	void Open( QString fileName );
@@ -121,6 +121,7 @@ public slots:
     void SelectNode( QString nodeUrl );
 	void SetAimingPointAbsolute();
 	void SetAimingPointRelative();
+	void SetExportAllPhotonMap();
 	void SetExportPhotonMapType( QString exportModeType );
     void SetIncreasePhotonMap( bool increase );
     void SetNodeName( QString nodeName );
@@ -152,7 +153,7 @@ private slots:
 	void DefineTransmissivity();
 	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );
-	void ExportPhotonMap();
+	//void ExportPhotonMap();
 	void InsertUserDefinedComponent();
 	void ItemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
 	void ItemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
