@@ -145,7 +145,6 @@ void PhotonMapExportDB::SavePhotonMap( std::vector< std::vector <Photon > > rays
 	int rc = sqlite3_exec( m_pDB, m_sqlTotalInsert.c_str(), 0, 0, &zErrMsg );
 	if( rc!=SQLITE_OK )
 	{
-		std::cout<<"estoy aqui"<<std::endl;
 		std::cout<< "SQL error: "<<zErrMsg<<"\n"<<std::endl;
 		sqlite3_free(zErrMsg);
 	}
@@ -173,7 +172,16 @@ void PhotonMapExportDB::SetDBDirectory( QString filename )
  */
 void PhotonMapExportDB::SetPowerPerPhoton( double wPhoton )
 {
+	std::stringstream w_photon;
+	w_photon << "Insert into wphoton values(" << wPhoton <<");";
+	char* zErrMsg = 0;
 
+	int rc = sqlite3_exec( m_pDB, w_photon.str().c_str(), 0, 0, &zErrMsg );
+	if( rc!=SQLITE_OK )
+	{
+		std::cout<< "SQL error: "<<zErrMsg<<"\n"<<std::endl;
+		sqlite3_free(zErrMsg);
+		}
 
 }
 
@@ -195,10 +203,12 @@ void PhotonMapExportDB::SetSaveParameterValue( QString parameterName, QString pa
  */
 void PhotonMapExportDB::Close()
 {
+
     // Close the db
     try
     {
     	sqlite3_close( m_pDB );
+    	m_isDBOpened=false;
 
     }
     catch(std::exception&e)
@@ -228,6 +238,7 @@ void PhotonMapExportDB::Open()
 {
 	try
 		{
+
 		//std::cout<<m_dbDirectory.append("/").append(m_dbFileName).append(".db").toStdString().c_str()<<std::endl;
 			QDir BDDirectory( m_dbDirectory );
 			QString filename = m_dbFileName;
@@ -235,7 +246,10 @@ void PhotonMapExportDB::Open()
 			QString BDFilename = BDDirectory.absoluteFilePath( filename.append( QLatin1String( ".db" ) ) );
 
 		    char* zErrMsg = 0;
+
 		    int rc = sqlite3_open(BDFilename.toStdString().c_str() , &m_pDB );
+
+		    if(m_exportedPhoton< 1){
 
 		    QString createPhotonsTableCmmd( QLatin1String( "create table Photons (ID bigint," ) );
 		    if( m_saveCoordinates )
@@ -269,6 +283,17 @@ void PhotonMapExportDB::Open()
 				sqlite3_free( zErrMsg );
 			}
 
+			QString createWPhotonTableCmmd( QLatin1String( "create table wphoton (power money);" ) );
+
+			rc = sqlite3_exec( m_pDB, createWPhotonTableCmmd.toStdString().c_str(), 0, 0, &zErrMsg );
+			if( rc!=SQLITE_OK )
+			{
+				QString message( "Error creating wphoton table:\n " );
+				message.append( QString( zErrMsg ) );
+				QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
+				sqlite3_free( zErrMsg );
+			}
+
 			rc = sqlite3_exec( m_pDB, "PRAGMA synchronous=OFF;", 0, 0, &zErrMsg );
 			if( rc!=SQLITE_OK )
 			{
@@ -276,6 +301,7 @@ void PhotonMapExportDB::Open()
 				QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
 				sqlite3_free( zErrMsg );
 			}
+		    }
 			m_sqlTotalInsert="BEGIN;";
 	        m_isDBOpened = true;
 		}
@@ -295,7 +321,7 @@ void PhotonMapExportDB::RemoveExistingFiles()
 	QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".db" ) ) );
 	QFile exportFile( exportFilename );
 
-	if(!exportFile.remove()) {
+	if(exportFile.exists() && !exportFile.remove()) {
 		QString message= QString( "Error deleting database:\n%1\nThe database is in use. Please, close it before continuing. \n" ).arg(exportFilename);
 		QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
 		RemoveExistingFiles();
