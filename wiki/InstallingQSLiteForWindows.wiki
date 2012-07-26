@@ -8,4 +8,4 @@ Here you will find instructions to install the !SQLite library in your computer 
 
 = Details =
 
-Before installing !SQLite, please, verify that the MinGW and MSYS compilation and linking environmentenand are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingMinGWForWindows Installing MinGW and MSYS ].
+Before installing SQLite, please, verify that the MinGW and MSYS compilation and linking environmentenand are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingMinGWForWindows Installing MinGW and MSYS ].
