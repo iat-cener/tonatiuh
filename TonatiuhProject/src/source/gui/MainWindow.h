@@ -107,8 +107,6 @@ public slots:
 	void Cut( QString nodeURL );
 	void Delete();
 	void Delete( QString nodeURL );
-	//int ExportAllPhotonMap( QString fileName );
-	//int ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord );
 	void InsertFileComponent( QString componentFileName = QString( "" ) );
 	void New();
 	void Open( QString fileName );

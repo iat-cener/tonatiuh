@@ -48,9 +48,6 @@ namespace tonatiuh_script
 {
 	int init( QScriptEngine* engine );
 
-	QScriptValue tonatiuh_exportAll(QScriptContext* context, QScriptEngine* engine );
-	QScriptValue tonatiuh_export(QScriptContext* context, QScriptEngine* engine );
-
 	QScriptValue tonatiuh_filename(QScriptContext* context, QScriptEngine* engine );
 
 	QScriptValue tonatiuh_irradiance(QScriptContext* context, QScriptEngine* engine );

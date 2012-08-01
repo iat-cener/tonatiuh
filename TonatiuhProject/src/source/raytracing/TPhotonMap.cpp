@@ -54,11 +54,6 @@ PhotonMapExport* TPhotonMap::GetExportMode( ) const
 	return m_pExportPhotonMap;
 }
 
-std::vector< std::vector<Photon> >TPhotonMap::GetSurfacePhotons(InstanceNode* instance) const
-{
-	return m_photonsInMemory;
-}
-
 /*!
  * Sets the size of the buffer to \a nPhotons.
  */

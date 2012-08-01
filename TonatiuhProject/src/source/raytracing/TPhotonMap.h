@@ -14,7 +14,6 @@ public:
     void EndStore( double wPhoton );
 	std::vector< std::vector<Photon> >GetAllPhotons() const;
 	PhotonMapExport* GetExportMode( ) const;
-	std::vector< std::vector<Photon> >GetSurfacePhotons(InstanceNode* instance) const;
 	void SetBufferSize( unsigned long nPhotons );
 	void SetExportMode( PhotonMapExport* pExportPhotonMap );
 	void StoreRays( std::vector< Photon >& ray );

@@ -76,9 +76,6 @@ public:
 
 	int SetDir( QString dir );
 
-	int SetExportAll( QString filename );
-	int SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates );
-
 	int SetIrradiance( double irradiance );
 
 	int SetNumberOfRays( double nrays );
