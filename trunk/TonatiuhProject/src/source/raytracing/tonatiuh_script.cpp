@@ -58,12 +58,6 @@ int tonatiuh_script::init( QScriptEngine* engine )
 
 	rayTracer->Clear();
 
-	QScriptValue fun_tonatiuh_exportAll = engine->newFunction( tonatiuh_script::tonatiuh_exportAll );
-	engine->globalObject().setProperty("tonatiuh_exportAll", fun_tonatiuh_exportAll );
-
-	QScriptValue fun_tonatiuh_export = engine->newFunction( tonatiuh_script::tonatiuh_export );
-	engine->globalObject().setProperty("tonatiuh_export", fun_tonatiuh_export );
-
 	QScriptValue fun_tonatiuh_filename = engine->newFunction( tonatiuh_script::tonatiuh_filename );
 	engine->globalObject().setProperty("tonatiuh_filename", fun_tonatiuh_filename );
 
@@ -100,94 +94,6 @@ int tonatiuh_script::init( QScriptEngine* engine )
 	QScriptValue fun_tonatiuh_trace = engine->newFunction( tonatiuh_script::tonatiuh_trace );
 	engine->globalObject().setProperty("tonatiuh_trace", fun_tonatiuh_trace );
 
-	return 1;
-}
-
-QScriptValue tonatiuh_script::tonatiuh_exportAll(QScriptContext* context, QScriptEngine* engine )
-{
-	if( context->argumentCount() != 1 )	return context->throwError( "tonatiuh_filename: takes exactly one argument." );
-	if( !context->argument( 0 ).isString() )	return context->throwError( "tonatiuh_filename: argument is not a string." );
-
-	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
-	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
-
-	QString fileName = context->argument(0).toString();
-	if( fileName.isEmpty()  )	return context->throwError( "tonatiuh_exportAll: the export fileName is empty." );
-
-	QFileInfo file(  fileName );
-	if( !file.isAbsolute() )
-	{
-		QString dirName = rayTracer->GetDir();
-		QDir currentDir( dirName );
-		QFileInfo absolutefile( currentDir, fileName );
-		fileName = absolutefile.absoluteFilePath();
-	}
-
-	QFileInfo modelFile( fileName ) ;
-	if( !( modelFile.absoluteDir().exists() ) )
-	{
-		QString message = QString( "tonatiuh_exportAll: The %1 file can not be opened." ).arg( fileName );
-		return context->throwError( QScriptContext::UnknownError, message );
-	}
-
-	int result = rayTracer->SetExportAll( fileName );
-	if( result == 0 )	return context->throwError( "tonatiuh_exportAll: Error." );
-
-	return 1;
-}
-
-QScriptValue tonatiuh_script::tonatiuh_export(QScriptContext* context, QScriptEngine* engine )
-{
-	if( context->argumentCount() < 2 )	return context->throwError( "tonatiuh_export: takes at least two argument." );
-	if( context->argumentCount() > 3 )	return context->throwError( "tonatiuh_export: takes at most three argument." );
-
-	if( !context->argument( 0 ).isString() )	return context->throwError( "tonatiuh_export: argument 1 is not a string." );
-	if( !context->argument( 1 ).isString() )	return context->throwError( "tonatiuh_export: argument 2 is not a string." );
-	if( (context->argumentCount() == 3) && !context->argument( 2 ).isBool() )	return context->throwError( "tonatiuh_export() argument 3 is not a boolean." );
-
-	QScriptValue rayTracerValue = engine->globalObject().property("rayTracer");
-	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
-
-	QString fileName = context->argument(0).toString();
-	if( fileName.isEmpty()  )	return context->throwError( "tonatiuh_export: the export fileName is empty." );
-
-	QFileInfo file(  fileName );
-	if( !file.isAbsolute() )
-	{
-		QString dirName = rayTracer->GetDir();
-		QDir currentDir( dirName );
-		QFileInfo absolutefile( currentDir, fileName );
-		fileName = absolutefile.absoluteFilePath();
-	}
-
-	QFileInfo modelFile( fileName ) ;
-	if( !( modelFile.absoluteDir().exists() ) )
-	{
-		QString message = QString( "tonatiuh_export: The %1 file can not be opened." ).arg( fileName );
-		return context->throwError( QScriptContext::UnknownError, message );
-	}
-
-	QString surfaceName = context->argument(1).toString();
-	QStringList nodeNames =  surfaceName.split( "/",QString::SkipEmptyParts );
-
-	if( nodeNames[0] != "SunNode" )
-	{
-			surfaceName = QString( "//SunNode/" );
-			surfaceName.append( nodeNames.join( QString( "/" ) ) );
-	};
-
-	bool isValidSurface = rayTracer->IsValidSurface( surfaceName );
-	if( !isValidSurface )
-	{
-		QString message = QString( "tonatiuh_export: %1 is not a valid surface to export." ).arg( surfaceName );
-		context->throwError( message );
-	}
-
-	bool coordinates = true;
-	if( context->argumentCount() == 3)	coordinates= context->argument(2).toBool();
-
-	int result = rayTracer->SetExportSurface( fileName, surfaceName, coordinates );
-	if( result == 0 ) return context->throwError( "tonatiuh_export: Error." );
 	return 1;
 }
 

@@ -71,9 +71,6 @@ namespace trf
 	void ComputeFistStageSurfaceList( InstanceNode* instanceNode, QStringList disabledNodesURL, QVector< QPair< TShapeKit*, Transform > >* surfacesList);
 	void CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* ,  std::vector < Photon  > > photonsList );
 
-	int ExportAll( QString fileName , double wPhoton, TPhotonMap* photonMap, bool saveCoordinate, bool saveSide );
-	int ExportSurfaceGlobalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap, bool saveCoordinate, bool saveSide  );
-	int ExportSurfaceLocalCoordinates( QString fileName, InstanceNode* selectedSurface, double wPhoton, TPhotonMap* photonMap,bool saveCoordinate, bool saveSide  );
 	SoSeparator* DrawPhotonMapPoints( const TPhotonMap& map);
 	SoSeparator* DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays );
 	Transform GetObjectToWorld(SoPath* nodePath);

@@ -149,23 +149,6 @@ int ScriptRayTracer::SetDir( QString dir )
 	return 1;
 }
 
-int ScriptRayTracer::SetExportAll( QString filename )
-{
-	return trf::ExportAll( filename, m_wPhoton, m_photonMap,true, true );
-}
-
-int ScriptRayTracer::SetExportSurface( QString filename, QString surfaceName, bool globalCoordinates )
-{
-	if( filename.isEmpty() || surfaceName.isEmpty() )	return 0;
-
-	QModelIndex surfaceIndex = m_sceneModel->IndexFromNodeUrl( surfaceName );
-	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( surfaceIndex );
-	if( !selectedSurface )	return 0;
-
-	if( globalCoordinates )	return trf::ExportSurfaceGlobalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap, true, true );
-	else	return trf::ExportSurfaceLocalCoordinates( filename, selectedSurface, m_wPhoton, m_photonMap, true, true );
-}
-
 int ScriptRayTracer::SetIrradiance( double irradiance )
 {
 	m_irradiance = irradiance;
