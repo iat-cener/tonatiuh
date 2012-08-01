@@ -42,7 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMap>
 #include <QString>
 
-#include <sqlite/sqlite3.h>
+#include <sqlite3.h>
 
 #include "PhotonMapExport.h"
 
