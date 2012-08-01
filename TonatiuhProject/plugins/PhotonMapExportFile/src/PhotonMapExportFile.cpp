@@ -342,7 +342,7 @@ void PhotonMapExportFile::ExportAllPhotonsFiles( std::vector< std::vector <Photo
 				if( m_saveCoordinates && m_saveSide && m_savePrevNexID && m_saveSurfaceID )
 					ExportPhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, i, j );
 				else if( m_saveCoordinates && m_saveSide && !m_savePrevNexID && m_saveSurfaceID )
-					ExportSurfacePhotonsAllData( currentFileName, raysLists, 0, 0, nLists - 1, lastListSize -1 );
+					ExportSurfacePhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, i, j );
 				else
 					ExportAllPhotonsFile( currentFileName, raysLists, indexStartList, indexStartListPhoton, i, j );
 				m_currentFile++;
@@ -374,7 +374,7 @@ void PhotonMapExportFile::ExportAllPhotonsFiles( std::vector< std::vector <Photo
 		if( m_saveCoordinates && m_saveSide && m_savePrevNexID && m_saveSurfaceID )
 			ExportPhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, nLists - 1, lastListSize - 1 );
 		else if( m_saveCoordinates && m_saveSide && !m_savePrevNexID && m_saveSurfaceID )
-			ExportSurfacePhotonsAllData( currentFileName, raysLists, 0, 0, nLists - 1, lastListSize -1 );
+			ExportSurfacePhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, nLists - 1, lastListSize - 1 );
 		else
 			ExportAllPhotonsFile( currentFileName, raysLists, indexStartList, indexStartListPhoton, nLists - 1, lastListSize - 1 );
 	}
