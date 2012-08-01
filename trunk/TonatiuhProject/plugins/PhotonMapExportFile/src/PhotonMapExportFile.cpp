@@ -241,10 +241,33 @@ void PhotonMapExportFile::ExportAllPhotonsFile( QString filename, std::vector< s
 		for( unsigned long j = 0; j <= nPhotonElements; ++j )
 		{
 			Photon photon = raysList[j];
+			QString surfaceURL = "";
+			if( photon.intersectedSurface )
+			{
+				surfaceURL = photon.intersectedSurface->GetNodeURL();
+				if( !m_surfaceIdentfier.contains( surfaceURL ) )
+				{
+					m_surfaceIdentfier.insert( surfaceURL, m_surfaceIdentfier.count() +1 );
+					m_surfaceWorldToObject.insert( surfaceURL, photon.intersectedSurface->GetIntersectionTransform() );
+				}
+			}
+
 			out<<double( ++m_exportedPhotons );
 			if( photon.id < 1 )	previousPhotonID = 0;
 			//else	previousPhotonID = m_exportedPhotons;
-			if( m_saveCoordinates  )	out<<photon.pos.x << photon.pos.y << photon.pos.z;
+			if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon.pos.x << photon.pos.y << photon.pos.z;
+			else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )
+			{
+				if( !surfaceURL.isEmpty() && m_surfaceWorldToObject.contains( surfaceURL ) )
+				{
+					Transform worldToObject = m_surfaceWorldToObject.value( surfaceURL );
+					Point3D localPos = worldToObject( photon.pos );
+					out<<localPos.x << localPos.y << localPos.z;
+				}
+				else
+					out<<photon.pos.x << photon.pos.y << photon.pos.z;
+			}
+
 			if(  m_saveSide )
 			{
     			double side = double( photon.side );
@@ -260,17 +283,14 @@ void PhotonMapExportFile::ExportAllPhotonsFile( QString filename, std::vector< s
 			if( m_saveSurfaceID )
 			{
 				unsigned long urlId = 0;
-				if( photon.intersectedSurface )
+				if( !surfaceURL.isEmpty() && m_surfaceIdentfier.contains( surfaceURL ) )
+					urlId = m_surfaceIdentfier.value( surfaceURL );
+				else
 				{
-					QString surfaceURL = photon.intersectedSurface->GetNodeURL();
-					if( m_surfaceIdentfier.contains( photon.intersectedSurface->GetNodeURL() ) )
-						urlId = m_surfaceIdentfier.value( surfaceURL );
-					else
-					{
-						urlId = m_surfaceIdentfier.count()+ 1;
-						m_surfaceIdentfier.insert( surfaceURL, urlId );
-					}
+					urlId = m_surfaceIdentfier.count()+ 1;
+					m_surfaceIdentfier.insert( surfaceURL, urlId );
 				}
+
 
 				out<<double( urlId );
 			}
@@ -387,7 +407,7 @@ void PhotonMapExportFile::WriteFileFormat( QString exportFilename )
 	QFile exportFile( exportFilename );
 	exportFile.open( QIODevice::WriteOnly );
 	QTextStream out( &exportFile );
-	out<<QString( QLatin1String( "START PARAMETERS \n" ) );
+	out<<QString( QLatin1String( "START PARAMETERS\n" ) );
 	out<<QString( QLatin1String( "id\n" ) );
 	if( m_saveCoordinates  )
 	{
@@ -395,10 +415,10 @@ void PhotonMapExportFile::WriteFileFormat( QString exportFilename )
 		out<<QString( QLatin1String( "y\n" ) );
 		out<<QString( QLatin1String( "z\n" ) );
 	}
-	if(  m_saveSide )	out<<QString( QLatin1String( "side \n" ) );
+	if(  m_saveSide )	out<<QString( QLatin1String( "side\n" ) );
 	if( m_savePrevNexID )
 	{
-		out<<QString( QLatin1String( "previous ID \n" ) );
+		out<<QString( QLatin1String( "previous ID\n" ) );
 		out<<QString( QLatin1String( "next ID\n" ) );
 	}
 	if( m_saveSurfaceID )
