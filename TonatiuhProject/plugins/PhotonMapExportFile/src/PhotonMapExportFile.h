@@ -66,6 +66,12 @@ private:
     		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
     		unsigned long endIndexRaysList, unsigned long endIndexPhotonList );
     void ExportAllPhotonsFiles( std::vector< std::vector <Photon > > raysLists );
+    void ExportPhotonsAllData( QString filename, std::vector< std::vector <Photon > > raysLists,
+    		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
+    		unsigned long endIndexRaysList, unsigned long endIndexPhotonList );
+    void ExportSurfacePhotonsAllData( QString filename, std::vector< std::vector <Photon > > raysLists,
+    		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
+    		unsigned long endIndexRaysList, unsigned long endIndexPhotonList );
 
     void RemoveExistingFiles();
     void WriteFileFormat( QString exportFilename );
