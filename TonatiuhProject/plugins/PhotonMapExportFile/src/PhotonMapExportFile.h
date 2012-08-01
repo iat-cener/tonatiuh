@@ -74,6 +74,7 @@ private:
 	QString m_photonsFilename;
 	double m_powerPerPhoton;
 	QMap< QString, unsigned long > m_surfaceIdentfier;
+	QMap< QString, Transform > m_surfaceWorldToObject;
 	int m_currentFile;
 	QString m_exportDirecotryName;
 	unsigned long m_exportedPhotons;
