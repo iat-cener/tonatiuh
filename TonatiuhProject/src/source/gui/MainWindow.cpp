@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
@@ -1051,6 +1053,15 @@ void MainWindow::ChangeNodeName( const QModelIndex& index, const QString& newNam
 }
 
 /*!
+ * Adds a surface to the export sufaces list.
+ */
+void MainWindow::AddExportSurfaceURL( QString nodeURL )
+{
+	if( !m_pExportModeSettings )	return;
+	m_pExportModeSettings->exportSurfaceNodeList.push_back( nodeURL );
+}
+
+/*!
  * Changes the light position to the position defined by \a azimuth and \a elevation.
  * The parameters are defined in degree.
  */
@@ -1861,6 +1872,8 @@ void MainWindow::Run()
 		double irradiance = sunShape->GetIrradiance();
 		double inputAperture = raycastingSurface->GetValidArea();
 		double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
+
+		std::cout<<"inputAperture: "<<inputAperture<<std::endl;
 		m_pPhotonMap->EndStore( wPhoton );
 
 	}
@@ -1933,6 +1946,38 @@ void MainWindow::SetExportAllPhotonMap()
 }
 
 /*!
+ *If \a enabled is true, sets to export photons coordinates. Otherwise, the photons will not be exported.
+ *If \a global is true, the coordinates will be exported in global coordinate system. Otherwise, into local to surface.
+ */
+void MainWindow::SetExportCoordinates( bool enabled, bool global )
+{
+	if( !m_pExportModeSettings )	return;
+	m_pExportModeSettings->exportCoordinates = enabled;
+	m_pExportModeSettings->exportInGlobalCoordinates = global;
+
+}
+
+/*!
+ * If \a enabled is true, sets to export intersection surface.
+ * Otherwise, the intersection surface will not be exported.
+ */
+void MainWindow::SetExportIntesectionSurface( bool enabled )
+{
+	if( !m_pExportModeSettings )	return;
+	m_pExportModeSettings->exportSurfaceID = enabled;
+}
+
+/*!
+ * If \a enabled is true, sets to export intersection surface side.
+ * Otherwise, the intersection surface side will not be exported.
+ */
+void MainWindow::SetExportIntesectionSurfaceSide( bool enabled )
+{
+	if( !m_pExportModeSettings )	return;
+	m_pExportModeSettings->exportIntersectionSurfaceSide = enabled;
+}
+
+/*!
  * Sets the export photon mode type to \a exportModeType, for photon map.
  */
 void MainWindow::SetExportPhotonMapType( QString exportModeType )
@@ -1954,6 +1999,26 @@ void MainWindow::SetExportPhotonMapType( QString exportModeType )
 		m_pExportModeSettings = new PhotonMapExportSettings;
 
 	m_pExportModeSettings->modeTypeName = exportModeType;
+}
+
+/*!
+ * If \a enabled is true, sets to export for each photon the prevous and next photoan id.
+ * Otherwise, this information will not be exported.
+ */
+void MainWindow::SetExportPreviousNextPhotonID( bool enabled )
+{
+	if( !m_pExportModeSettings )	return;
+	m_pExportModeSettings->exportPreviousNextPhotonID = enabled;
+}
+
+/*!
+ * Sets to selected export type parameter named \a parameterName the value \a parameterValue.
+ */
+void MainWindow::SetExportTypeParameterValue( QString parameterName, QString parameterValue )
+{
+	if( !m_pExportModeSettings )	return;
+	m_pExportModeSettings->AddParameter( parameterName, parameterValue );
+
 }
 
 /*!
