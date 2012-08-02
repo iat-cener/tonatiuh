@@ -93,6 +93,7 @@ signals:
 	void Abort( QString error );
 
 public slots:
+	void AddExportSurfaceURL( QString nodeURL );
 	void ChangeSunPosition( double azimuth, double elevation );
 	void ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude );
 	void Copy();
@@ -120,7 +121,12 @@ public slots:
 	void SetAimingPointAbsolute();
 	void SetAimingPointRelative();
 	void SetExportAllPhotonMap();
+	void SetExportCoordinates( bool enabled, bool global );
+	void SetExportIntesectionSurface( bool enabled );
+	void SetExportIntesectionSurfaceSide( bool enabled );
 	void SetExportPhotonMapType( QString exportModeType );
+	void SetExportPreviousNextPhotonID( bool enabled );
+	void SetExportTypeParameterValue( QString parameterName, QString parameterValue );
     void SetIncreasePhotonMap( bool increase );
     void SetNodeName( QString nodeName );
     void SetPhotonMapBufferSize( unsigned int nPhotons );
