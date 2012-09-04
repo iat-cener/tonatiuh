@@ -41,11 +41,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SCRIPTEDITORDIALOG_H_
 
 #include <QDialog>
+#include <QScriptValue>
+
 #include "ui_scripteditordialog.h"
 
 class FilesModel;
 class QItemSelectionModel;
 class QLineEdit;
+class QScriptContext;
 class QScriptEngine;
 class TPhotonMapFactory;
 class RandomDeviateFactory;
@@ -63,6 +66,8 @@ public:
 	ScriptEditorDialog( QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent = 0 );
 	~ScriptEditorDialog();
 
+	static QScriptValue PrintMessage( QScriptContext* context, QScriptEngine* engine );
+
 public slots:
 	void AbortEvaluation( QString error );
 
@@ -75,7 +80,6 @@ private slots:
 	void RunScript();
 	void SetCurrentFile( QString fileName );
 	void WriteMessage(  QString message );
-
 
 private:
 	QString m_currentScritFileName;

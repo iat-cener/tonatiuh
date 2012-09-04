@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <iostream>
+#include <stdio.h>
 
 #include <QDateTime>
 #include <QScriptEngine>
@@ -80,9 +81,19 @@ ScriptEditorDialog::ScriptEditorDialog( QVector< RandomDeviateFactory* > listRan
 	QScriptValue tonatiuh = m_interpreter->newQObject( parent );
 	m_interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
 
+	QScriptValue logConsoleObject = m_interpreter->newQObject( logWidget );
+	m_interpreter->globalObject().setProperty( "console", logConsoleObject );
+
 	QObject* rayTracer = new ScriptRayTracer( listRandomDeviateFactory );
 	QScriptValue rayTracerValue = m_interpreter->newQObject( rayTracer );
 	m_interpreter->globalObject().setProperty( "rayTracer", rayTracerValue );
+
+	QScriptValue printFunction = m_interpreter->newFunction( ScriptEditorDialog::PrintMessage );
+	m_interpreter->globalObject().setProperty("print", printFunction );
+
+	//m_interpreter->globalObject().setProperty( "print", m_interpreter->newFunction( ScriptEditorDialog::WriteMessage ) );
+
+
 
 	 connect( fileTree, SIGNAL( doubleClicked( const QModelIndex& ) ), this, SLOT( OpenScriptFile( const QModelIndex& ) ) );
 	 connect( codeEditorWidget, SIGNAL( FileOpened( QString ) ), this, SLOT( SetCurrentFile( QString ) ) );
@@ -156,13 +167,13 @@ void  ScriptEditorDialog::RunScript()
 {
 
     QDateTime start=QDateTime::currentDateTime();
-	QString logmessage = QString( "[%1]\t Start running script\n.").arg( start.toString() );
+	QString logmessage = QString( "[%1]\t Start running script.\n").arg( start.toString() );
 	WriteMessage( logmessage );
 
 	int initialized = tonatiuh_script::init( m_interpreter );
 	if( !initialized )
 	{
-		QString logmessage = QString( "[%1]\t Script Execution Error\n.").arg( QDateTime::currentDateTime().toString() );
+		QString logmessage = QString( "[%1]\t Script Execution Error.\n").arg( QDateTime::currentDateTime().toString() );
 		WriteMessage( logmessage );
 		std::cerr<<logmessage.toStdString()<<std::endl;
 
@@ -193,7 +204,7 @@ void  ScriptEditorDialog::RunScript()
 	{
 		QString logmessage = QString( "[%1]\t Script Execution Error. %2\n" ).arg( QDateTime::currentDateTime().toString(), result.toString() );
 		WriteMessage( logmessage );
-		std::cerr<<logmessage.toStdString()<<std::endl;
+		//std::cerr<<logmessage.toStdString()<<std::endl;
 	}
 	else
 	{
@@ -239,7 +250,25 @@ void ScriptEditorDialog::SetCurrentFile( QString fileName )
 /*!
  * Write the \a message at log window.
  */
-void ScriptEditorDialog::WriteMessage(  QString message )
+void ScriptEditorDialog::WriteMessage( QString message )
 {
 	logWidget->appendPlainText( message );
 }
+
+
+QScriptValue ScriptEditorDialog::PrintMessage( QScriptContext* context, QScriptEngine* engine )
+{
+	QScriptValue consoleObject = engine->globalObject().property( "console" );
+	QPlainTextEdit* console = ( QPlainTextEdit* ) consoleObject.toQObject();
+
+
+	if( context->argumentCount() != 1 )	return 0;
+	if( !context->argument( 0 ).isString() )	return 0;
+
+	QString message = context->argument(0).toString();
+	console->insertPlainText( message );
+
+	return 1;
+}
+
+
