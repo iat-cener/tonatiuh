@@ -60,7 +60,6 @@ class QPoint;
 class TPhotonMap;
 class TLightShape;
 class TSunShape;
-//struct PhotonToMemory;
 
 class RayTracerNoTr
 {
@@ -74,13 +73,18 @@ public:
 		       RandomDeviate& rand,
 		       QMutex* mutex,
 		       TPhotonMap* photonMap,
+		       QMutex* mutexPhotonMap,
 		       QVector< InstanceNode* > exportSuraceList );
 
-	typedef QPair< TPhotonMap*, std::vector <Photon > > result_type;
-	QPair<  TPhotonMap*, std::vector < Photon > > operator()( double numberOfRays );
+	typedef void result_type;
+	void operator()( double numberOfRays );
 
 
 private:
+	void RayTracerCreatingAllPhotons(  double numberOfRays  );
+	void RayTracerCreatingLightPhotons(  double numberOfRays  );
+	void RayTracerNotCreatingLightPhotons(  double numberOfRays  );
+
     QVector< InstanceNode* > m_exportSuraceList;
 	InstanceNode* m_rootNode;
 	InstanceNode* m_lightNode;
@@ -90,6 +94,7 @@ private:
 	RandomDeviate* m_pRand;
     QMutex* m_mutex;
 	TPhotonMap* m_photonMap;
+    QMutex* m_pPhotonMapMutex;
 	std::vector< QPair< int, int > >  m_validAreasVector;
 
 	bool NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand );

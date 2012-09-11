@@ -260,7 +260,7 @@ QScriptValue ScriptEditorDialog::PrintMessage( QScriptContext* context, QScriptE
 {
 	QScriptValue consoleObject = engine->globalObject().property( "console" );
 	QPlainTextEdit* console = ( QPlainTextEdit* ) consoleObject.toQObject();
-
+	if( !console )	return 0;
 
 	if( context->argumentCount() != 1 )	return 0;
 	if( !context->argument( 0 ).isString() )	return 0;

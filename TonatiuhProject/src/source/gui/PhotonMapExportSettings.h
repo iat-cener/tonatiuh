@@ -17,7 +17,6 @@ struct PhotonMapExportSettings
 	void AddParameter( QString parameterName, QString parameterValue );
 
 	QString modeTypeName;
-	bool exportAllPhotonMap;
 	bool exportCoordinates;
 	bool exportIntersectionSurfaceSide;
 	bool exportInGlobalCoordinates;

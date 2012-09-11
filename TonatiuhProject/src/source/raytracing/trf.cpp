@@ -63,21 +63,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 SoSeparator* trf::DrawPhotonMapPoints( const TPhotonMap& map )
 {
-	SoSeparator* drawpoints=new SoSeparator;
+
+	SoSeparator* drawpoints = new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
-	std::vector< std::vector< Photon > > photonsList = map.GetAllPhotons();
+	std::vector< Photon* > photonsList = map.GetAllPhotons();
     unsigned int numRays=0;
 
 	for( unsigned int i = 0; i < photonsList.size(); i++)
 	{
-		//std::cout <<"Fila.."<< i << std::endl;
-		for(int j=0;j<photonsList[i].size();j++){
-			//std::cout <<"Fila.."<< i << "hay.."<< photonsList[i].size()<<std::endl;
-			Point3D photon = photonsList[i].at(j).pos;
-			//std::cout <<photon.x << ":::" << photonsList.size() << std::endl;
-			points->point.set1Value( numRays, photon.x, photon.y, photon.z );
-			numRays++;
-		}
+		Point3D photon = photonsList[i]->pos;
+		points->point.set1Value( numRays, photon.x, photon.y, photon.z );
+		numRays++;
 	}
 
 	SoMaterial* myMaterial = new SoMaterial;
@@ -93,85 +89,39 @@ SoSeparator* trf::DrawPhotonMapPoints( const TPhotonMap& map )
 	drawpoints->addChild(pointset);
 
 	return drawpoints;
+
 }
 
-SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long numberOfRays )
+SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long /*numberOfRays*/ )
 {
+
 	SoSeparator* drawrays = new SoSeparator;
 	SoCoordinate3* points = new SoCoordinate3;
 
-	//int drawRays =  (int) (numberOfRays * ( fraction / 100 ) );
-	//int intervalRays = (int) ( numberOfRays / drawRays );
-	//if( drawRays == 0 ) drawRays = 1;
-
 	QVector< int >	rayLengths;
-
-	//unsigned long rayLength = 0;
-	unsigned long numberOfPhoton = 0;
-
-	std::vector< std::vector< Photon > > allRaysLists = map.GetAllPhotons();
+	std::vector< Photon* > allRaysLists = map.GetAllPhotons();
 
 
 	int nRay = 0;
-	for( unsigned int i = 0; i< allRaysLists.size(); i++ )
+	unsigned int photonIndex = 0;
+	while( photonIndex < allRaysLists.size() )
 	{
-		std::vector< Photon > raysList = allRaysLists[i];
-		unsigned int indexPhotonList = 0;
-
-		while( indexPhotonList < raysList.size() )
+		unsigned long rayLength = 0;
+		do
 		{
+			Photon* photon = allRaysLists[photonIndex];
+			Point3D photonPosistion = photon->pos;
+			points->point.set1Value( photonIndex, photonPosistion.x, photonPosistion.y, photonPosistion.z );
+			photonIndex++;
+			rayLength++;
+		}while( photonIndex < allRaysLists.size() && allRaysLists[photonIndex]->id > 0 );
 
-			unsigned long rayLength = 0;
-			do
-			{
-				Photon photon = raysList[indexPhotonList];
-				Point3D photonPosistion = photon.pos;
-				points->point.set1Value( numberOfPhoton, photonPosistion.x, photonPosistion.y, photonPosistion.z );
-				indexPhotonList++;
-				rayLength++;
-				numberOfPhoton++;
-			}while( indexPhotonList < raysList.size() && raysList[indexPhotonList].id > 0 );
 
-/*
-			//unsigned long rayLength = 0;
-			while( indexPhotonList < raysList[i].size()-1 )
-			{
-				rayLength = 0;
-				while ( ( indexPhotonList < raysLists[i].size()-1) && photonsList[i][indexPhotonList+1].id>0 )
-				{
-
-					 Photon* node = &photonsList[i].at(indexPhotonList);
-					 Point3D photon = node->pos;
-
-					 points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
-					 //std::cout <<"NPhoton.."<< numberOfPhoton << "photonx.."<< photon.x << std::endl;
-					 //if( node->next != 0 )   node =node->next;
-					 //else    node = 0;
-
-					 indexPhotonList++;
-					 rayLength++;
-					 numberOfPhoton++;
-				 }
-				 Photon* node = &photonsList[i].at(indexPhotonList);
-				 Point3D photon = node->pos;
-				 //std::cout<<node->id<<std::endl;
-				 points->point.set1Value( numberOfPhoton, photon.x, photon.y, photon.z );
-				 indexPhotonList++;
-				 rayLength++;
-				 numberOfPhoton++;
-				 //std::cout<< photon.x << ":::" <<rayLength<<":::"<< numberOfPhoton <<std::endl;
-				 rayLengths.push_back( rayLength);
-
-		 //}
-		 //else
-			// indexPhotonList=0;
-         //std::cout<<numberOfPhoton<<std::endl;
-*/
-				rayLengths.push_back( rayLength );
-				nRay++;
-		}
+		rayLengths.push_back( rayLength );
+		nRay++;
 
 	}
+
 	SoMaterial* myMaterial = new SoMaterial;
 	myMaterial->diffuseColor.setValue(1.0f, 1.0f, 0.8f);
 	drawrays->addChild( myMaterial );
@@ -188,4 +138,5 @@ SoSeparator* trf::DrawPhotonMapRays( const TPhotonMap& map, unsigned long number
 
 	delete[] lines;
 	return drawrays;
+
 }
