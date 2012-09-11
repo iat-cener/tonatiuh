@@ -1762,6 +1762,7 @@ void MainWindow::PasteLink()
  */
 void MainWindow::Run()
 {
+
 	InstanceNode* rootSeparatorInstance = 0;
 	InstanceNode* lightInstance = 0;
 	SoTransform* lightTransform = 0;
@@ -1824,33 +1825,36 @@ void MainWindow::Run()
 
 
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
+		lightInstance->SetIntersectionTransform( lightToWorld.GetInverse() );
+
 		// Create a progress dialog.
 		QProgressDialog dialog;
 		dialog.setLabelText( QString("Progressing using %1 thread(s)..." ).arg( QThread::idealThreadCount() ) );
 
 		// Create a QFutureWatcher and conncect signals and slots.
-		QFutureWatcher< TPhotonMap* > futureWatcher;
+		QFutureWatcher< void > futureWatcher;
 		QObject::connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
 		QObject::connect(&dialog, SIGNAL(canceled()), &futureWatcher, SLOT(cancel()));
 		QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
 		QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
 		QMutex mutex;
-		QFuture< TPhotonMap* > photonMap;
+		QMutex mutexPhotonMap;
+		QFuture< void > photonMap;
 		if( transmissivity )
-			 photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracer(  rootSeparatorInstance,
-					 	 	 lightInstance, raycastingSurface, sunShape, lightToWorld,
-					 	 	 transmissivity,
-					 	 	 *m_rand,
-					 	 	 &mutex, m_pPhotonMap, exportSuraceList ),
-					 	 trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+			 photonMap = QtConcurrent::map( raysPerThread, RayTracer(  rootSeparatorInstance,
+							 lightInstance, raycastingSurface, sunShape, lightToWorld,
+							 transmissivity,
+							 *m_rand,
+							 &mutex, m_pPhotonMap, &mutexPhotonMap,
+							 exportSuraceList ) );
 
 		else
-			photonMap = QtConcurrent::mappedReduced( raysPerThread, RayTracerNoTr(  rootSeparatorInstance,
+			photonMap = QtConcurrent::map( raysPerThread, RayTracerNoTr(  rootSeparatorInstance,
 						lightInstance, raycastingSurface, sunShape, lightToWorld,
 						*m_rand,
-						&mutex, m_pPhotonMap, exportSuraceList ),
-					trf::CreatePhotonMap, QtConcurrent::UnorderedReduce );
+						&mutex, m_pPhotonMap, &mutexPhotonMap,
+						exportSuraceList ) );
 
 		futureWatcher.setFuture( photonMap );
 
@@ -1873,7 +1877,8 @@ void MainWindow::Run()
 		double inputAperture = raycastingSurface->GetValidArea();
 		double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
 
-		std::cout<<"inputAperture: "<<inputAperture<<std::endl;
+		//QDateTime time2 = QDateTime::currentDateTime();
+		//std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 		m_pPhotonMap->EndStore( wPhoton );
 
 	}
@@ -1939,10 +1944,10 @@ void MainWindow::SetAimingPointRelative()
  */
 void MainWindow::SetExportAllPhotonMap()
 {
-	PhotonMapExport* pExportMode = m_pPhotonMap->GetExportMode();
-	if( !pExportMode )	return;
 
-	pExportMode->SetSaveAllPhotonsEnabled();
+	if( !m_pExportModeSettings )	return;
+	m_pExportModeSettings->exportSurfaceNodeList.clear();
+
 }
 
 /*!
@@ -2858,7 +2863,7 @@ PhotonMapExport* MainWindow::CreatePhotonMapExport() const
 	pExportMode->SetSavePreviousNextPhotonsID( m_pExportModeSettings->exportPreviousNextPhotonID );
 	pExportMode->SetSaveSideEnabled( m_pExportModeSettings->exportIntersectionSurfaceSide );
     pExportMode->SetSaveSurfacesIDEnabled( m_pExportModeSettings->exportSurfaceID );
-    if( m_pExportModeSettings->exportAllPhotonMap )
+    if( m_pExportModeSettings->exportSurfaceNodeList.count() > 0 )
     	pExportMode->SetSaveAllPhotonsEnabled();
     else
     	pExportMode->SetSaveSurfacesURLList( m_pExportModeSettings->exportSurfaceNodeList );

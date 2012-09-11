@@ -55,7 +55,8 @@ public:
 	virtual ~PhotonMapExport();
 
 	virtual void EndExport() = 0;
-	virtual void SavePhotonMap( std::vector< std::vector < Photon > > raysLists ) = 0;
+	//virtual void SavePhotonMap( std::vector< std::vector < Photon > >* raysLists ) = 0;
+	virtual void SavePhotonMap( std::vector < Photon* > raysLists ) = 0;
 	virtual void SetPowerPerPhoton( double wPhoton ) = 0;
 
 	void SetSaveAllPhotonsEnabled();

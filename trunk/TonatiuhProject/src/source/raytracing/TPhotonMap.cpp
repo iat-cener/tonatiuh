@@ -29,10 +29,14 @@ void TPhotonMap::EndStore( double wPhoton )
 	if( m_storedPhotonsInBuffer  > 0 )
 	{
 		if( m_pExportPhotonMap ) m_pExportPhotonMap->SavePhotonMap( m_photonsInMemory );
+
 		m_photonsInMemory.clear();
+    	std::vector< Photon* >( m_photonsInMemory ).swap( m_photonsInMemory );
 		m_storedPhotonsInBuffer = 0;
+
 	}
 	m_pExportPhotonMap->SetPowerPerPhoton( wPhoton );
+
 
 	m_pExportPhotonMap->EndExport();
 }
@@ -40,7 +44,7 @@ void TPhotonMap::EndStore( double wPhoton )
 /*!
  *
  */
-std::vector<std::vector<Photon> > TPhotonMap::GetAllPhotons() const
+std::vector< Photon* > TPhotonMap::GetAllPhotons() const
 {
 	return m_photonsInMemory;
 }
@@ -74,16 +78,17 @@ void TPhotonMap::SetExportMode( PhotonMapExport* pExportPhotonMap )
 void TPhotonMap::StoreRays( std::vector< Photon >& raysList )
 {
 	unsigned int raysListSize = raysList.size();
-
 	if( ( m_storedPhotonsInBuffer > 0 ) && ( ( m_storedPhotonsInBuffer + raysListSize )  > m_bufferSize ) )
 	{
 		if( m_pExportPhotonMap ) m_pExportPhotonMap->SavePhotonMap( m_photonsInMemory );
 		m_photonsInMemory.clear();
-    	std::vector< std::vector< Photon > >( m_photonsInMemory ).swap( m_photonsInMemory );
+    	std::vector< Photon* >( m_photonsInMemory ).swap( m_photonsInMemory );
 		m_storedPhotonsInBuffer = 0;
 	}
-	m_photonsInMemory.reserve( m_photonsInMemory.size()+1 );
-	m_photonsInMemory.push_back( raysList );
+
+	for( unsigned int photon = 0; photon < raysListSize; photon++ )
+		m_photonsInMemory.push_back( new Photon( raysList[photon] ) );
+
 	m_storedPhotonsInBuffer += raysListSize;
 	m_storedAllPhotons += raysListSize;
 }

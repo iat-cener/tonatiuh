@@ -12,7 +12,7 @@ public:
 	~TPhotonMap();
 
     void EndStore( double wPhoton );
-	std::vector< std::vector<Photon> >GetAllPhotons() const;
+	std::vector< Photon* > GetAllPhotons() const;
 	PhotonMapExport* GetExportMode( ) const;
 	void SetBufferSize( unsigned long nPhotons );
 	void SetExportMode( PhotonMapExport* pExportPhotonMap );
@@ -25,7 +25,8 @@ private:
 	const SceneModel* m_pSceneModel;
     unsigned long m_storedPhotonsInBuffer;
     unsigned long m_storedAllPhotons;
-	std::vector< std::vector <Photon > > m_photonsInMemory;
+	//std::vector< std::vector <Photon > > m_photonsInMemory;
+    std::vector< Photon* > m_photonsInMemory;
 
 
 };

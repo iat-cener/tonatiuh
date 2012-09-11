@@ -89,13 +89,16 @@ PhotonMapExportSettings ExportPhotonMapSettingsDialog::GetExportPhotonMapSetting
 {
 	PhotonMapExportSettings settings;
 	settings.modeTypeName = storeTypeCombo->currentText();
-	settings.exportAllPhotonMap = ( exportAllPhotonsRadio->isEnabled() && exportAllPhotonsRadio->isChecked() );
+	//settings.exportAllPhotonMap = ( exportAllPhotonsRadio->isEnabled() && exportAllPhotonsRadio->isChecked() );
 	settings.exportCoordinates = ( coordCheck->isEnabled() && coordCheck->isChecked() );
 	settings.exportIntersectionSurfaceSide =  ( sideBox->isEnabled() && sideBox->isChecked() );
 	settings.exportInGlobalCoordinates =  ( globalCoordinatesRadio->isEnabled() && globalCoordinatesRadio->isChecked() );
 	settings.exportPreviousNextPhotonID = ( nextPreviousCheck->isEnabled() && nextPreviousCheck->isChecked() );
 	settings.exportSurfaceID =  ( surfaceIdenfierCheck->isEnabled() && surfaceIdenfierCheck->isChecked() );
-	settings.exportSurfaceNodeList = m_exportSurfaceNodeList;
+	if( exportAllPhotonsRadio->isEnabled() && exportAllPhotonsRadio->isChecked() )
+		settings.exportSurfaceNodeList.clear();
+	else
+		settings.exportSurfaceNodeList = m_exportSurfaceNodeList;
 
 	PhotonMapExportParametersWidget* exportTypeWidget = parametersWidgetList[storeTypeCombo->currentIndex()];
 	if( !exportTypeWidget )	return settings;
