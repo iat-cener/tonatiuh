@@ -104,8 +104,6 @@ void PhotonMapExportFile::EndExport()
 
 	QString tmpFilename( QLatin1String( "tmpexportpotonmap.dat" ) );
 	QFile exportFile( exportFilename );
-	//exportFile.copy( tmpFilename ) ;
-	//exportFile.remove();
 
 
 	WriteFileFormat( exportFilename );
@@ -113,45 +111,15 @@ void PhotonMapExportFile::EndExport()
 	QTextStream out( &exportFile );
 
 	out<<double( m_powerPerPhoton );
-	//Append first file data
-	/*QFile tmpExportFile( tmpFilename );
-	tmpExportFile.open( QIODevice::ReadOnly );
-	QDataStream in( &tmpExportFile );
 
-	exportFile.open( QIODevice::Append );
-	QDataStream out( &exportFile );
-	std::cout<<"."<<std::endl;
-	out<<double( m_powerPerPhoton );*/
-
-
-	/*while( !in.atEnd() )
-	{
-		double doubleData;
-		in>>doubleData;
-		out<<doubleData;
-	}
-	QDataStream inn( &tmpExportFile );
-	while( !inn.atEnd() )
-		{
-			char* string;
-			inn>>string;
-			std::cout<<string<<"."<<std::endl;
-		}
-	exportFile.close();
-	tmpExportFile.close();
-	tmpExportFile.remove();*/
 
 }
 
 /*!
  * Saves \a raysList photons to file.
  */
-void PhotonMapExportFile::SavePhotonMap( std::vector< std::vector <Photon > > raysLists )
+void PhotonMapExportFile::SavePhotonMap( std::vector< Photon* > raysLists )
 {
-
-	unsigned long nLists = raysLists.size();
-	unsigned long lastListSize = raysLists[nLists-1].size();
-
 	if( m_oneFile )
 	{
 		QDir exportDirectory( m_exportDirecotryName );
@@ -159,15 +127,14 @@ void PhotonMapExportFile::SavePhotonMap( std::vector< std::vector <Photon > > ra
 		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
 
 		if( m_saveCoordinates && m_saveSide && m_savePrevNexID && m_saveSurfaceID )
-			ExportPhotonsAllData( exportFilename, raysLists, 0, 0, nLists - 1, lastListSize -1 );
+			ExportAllPhotonsAllData( exportFilename, raysLists );
 		else if( m_saveCoordinates && m_saveSide && !m_savePrevNexID && m_saveSurfaceID )
-			ExportSurfacePhotonsAllData( exportFilename, raysLists, 0, 0, nLists - 1, lastListSize -1 );
+			ExportAllPhotonsNotNextPrevID( exportFilename, raysLists );
 		else
-			ExportAllPhotonsFile( exportFilename, raysLists, 0, 0, nLists - 1, lastListSize -1 );
+			ExportAllPhotonsSelectedData( exportFilename, raysLists );
 	}
 	else
-		ExportAllPhotonsFiles( raysLists );
-
+		SaveToVariousFiles( raysLists );
 }
 
 /*!
@@ -224,237 +191,109 @@ void PhotonMapExportFile::StartExport()
 }
 
 /*!
- * Exports \a raysLists [\a startIndexRaysList, \a endIndexRaysList ] to [\a endIndexRaysList, \a endIndexPhotonList ] photons data
- * to file \a filename.
+ * Export \a a raysList all data to file \a filename.
  */
-void PhotonMapExportFile::ExportAllPhotonsFile( QString filename, std::vector< std::vector <Photon > > raysLists,
-		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
-		unsigned long endIndexRaysList, unsigned long endIndexPhotonList )
+void PhotonMapExportFile::ExportAllPhotonsAllData( QString filename, std::vector< Photon* > raysLists )
 {
-
 	QFile exportFile( filename );
 	exportFile.open( QIODevice::Append );
 
 	QDataStream out( &exportFile );
 
-
-	double previousPhotonID = 0;
-	for( unsigned long i = startIndexRaysList; i <= endIndexRaysList; ++i )
+	unsigned long nPhotonElements = raysLists.size();
+	if( m_saveCoordinatesInGlobal )
 	{
-		unsigned long startIndex = 0;
-		if( i == startIndexRaysList )	startIndex = startIndexPhotonList;
-
-		std::vector <Photon > raysList = raysLists[i];
-		unsigned long  nPhotonElements = raysList.size() - 1;
-		if( i == endIndexRaysList )	nPhotonElements = endIndexPhotonList;
-		for( unsigned long j = startIndex; j <= nPhotonElements; ++j )
+		double previousPhotonID = 0;
+		for( unsigned long i = 0; i < nPhotonElements; ++i )
 		{
-			Photon photon = raysList[j];
-			QString surfaceURL = "";
-			if( photon.intersectedSurface )
+
+			Photon* photon = raysLists[i];
+			unsigned long urlId = 0;
+			if( photon->intersectedSurface )
 			{
-				surfaceURL = photon.intersectedSurface->GetNodeURL();
-				if( !m_surfaceIdentfier.contains( surfaceURL ) )
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
 				{
-					m_surfaceIdentfier.insert( surfaceURL, m_surfaceIdentfier.count() +1 );
-					m_surfaceWorldToObject.insert( surfaceURL, photon.intersectedSurface->GetIntersectionTransform() );
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					m_surfaceWorldToObject.push_back( photon->intersectedSurface->GetIntersectionTransform() );
 				}
+				else
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) + 1;
 			}
 
 			out<<double( ++m_exportedPhotons );
-			if( photon.id < 1 )	previousPhotonID = 0;
-			//else	previousPhotonID = m_exportedPhotons;
-			if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon.pos.x << photon.pos.y << photon.pos.z;
-			else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )
-			{
-				if( !surfaceURL.isEmpty() && m_surfaceWorldToObject.contains( surfaceURL ) )
-				{
-					Transform worldToObject = m_surfaceWorldToObject.value( surfaceURL );
-					Point3D localPos = worldToObject( photon.pos );
-					out<<localPos.x << localPos.y << localPos.z;
-				}
-				else
-					out<<photon.pos.x << photon.pos.y << photon.pos.z;
-			}
-
-			if(  m_saveSide )
-			{
-    			double side = double( photon.side );
-    		    out<<side;
-			}
-			if( m_savePrevNexID )
-			{
-    		    out<<previousPhotonID;
-    		    if( ( j < nPhotonElements ) && ( raysList[j+1].id > 0  ) )	out<< double( m_exportedPhotons +1 );
-    		    else out <<0.0;
-			}
-			//if( m_saveSurfacesURLList.count() > 0 )
-			if( m_saveSurfaceID )
-			{
-				unsigned long urlId = 0;
-				if( !surfaceURL.isEmpty() && m_surfaceIdentfier.contains( surfaceURL ) )
-					urlId = m_surfaceIdentfier.value( surfaceURL );
-				else
-				{
-					urlId = m_surfaceIdentfier.count()+ 1;
-					m_surfaceIdentfier.insert( surfaceURL, urlId );
-				}
-
-
-				out<<double( urlId );
-			}
-			previousPhotonID = m_exportedPhotons;
-		}
-	}
-	exportFile.close();
-
-}
-
-/*!
- * Exports \a raysLists photons data to files. Each file stores \a m_nPhotonsPerFile photons.
- */
-void PhotonMapExportFile::ExportAllPhotonsFiles( std::vector< std::vector <Photon > > raysLists )
-{
-	unsigned long nLists = raysLists.size();
-	unsigned long lastListSize = raysLists[nLists-1].size();
-
-	QDir exportDirectory( m_exportDirecotryName );
-	//m_allPhotonsFilename
-
-	unsigned long indexStartList = 0;
-	unsigned long indexStartListPhoton = 0;
-
-	unsigned long filePhotons = m_exportedPhotons - ( m_nPhotonsPerFile * ( m_currentFile - 1 ) );
-	for( unsigned long i = 0; i < raysLists.size(); i++ )
-	{
-		std::vector <Photon > currentList = raysLists[i];
-		for( unsigned long j = 0; j < currentList.size(); j++ )
-		{
-			filePhotons++;
-			if( !( filePhotons < m_nPhotonsPerFile ) )
-			{
-				QString newName = QString( QLatin1String( "%1_%2.dat" ) ).arg(
-						m_photonsFilename,
-						QString::number( m_currentFile ) );
-
-				QString currentFileName = exportDirectory.absoluteFilePath( newName );
-
-				if( m_saveCoordinates && m_saveSide && m_savePrevNexID && m_saveSurfaceID )
-					ExportPhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, i, j );
-				else if( m_saveCoordinates && m_saveSide && !m_savePrevNexID && m_saveSurfaceID )
-					ExportSurfacePhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, i, j );
-				else
-					ExportAllPhotonsFile( currentFileName, raysLists, indexStartList, indexStartListPhoton, i, j );
-				m_currentFile++;
-				//m_surfaceIdentfier.insert( m_photonsFilename, m_currentFile );
-				filePhotons = 0;
-
-				indexStartList = i;
-				indexStartListPhoton = j+1;
-				if( indexStartListPhoton == currentList.size() )
-				{
-					indexStartListPhoton = 0;
-					indexStartList++;
-				}
-
-			}
-		}
-
-	}
-
-	if( filePhotons > 0 )
-	{
-		QString newName = QString( QLatin1String( "%1_%2.dat" ) ).arg(
-				m_photonsFilename,
-				QString::number( m_currentFile ) );
-
-		QString currentFileName = exportDirectory.absoluteFilePath( newName );
-
-
-		if( m_saveCoordinates && m_saveSide && m_savePrevNexID && m_saveSurfaceID )
-			ExportPhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, nLists - 1, lastListSize - 1 );
-		else if( m_saveCoordinates && m_saveSide && !m_savePrevNexID && m_saveSurfaceID )
-			ExportSurfacePhotonsAllData( currentFileName, raysLists, indexStartList, indexStartListPhoton, nLists - 1, lastListSize - 1 );
-		else
-			ExportAllPhotonsFile( currentFileName, raysLists, indexStartList, indexStartListPhoton, nLists - 1, lastListSize - 1 );
-	}
-}
-/*!
- * Exports \a raysLists [\a startIndexRaysList, \a endIndexRaysList ] to [\a endIndexRaysList, \a endIndexPhotonList ] photons all data
- * to file \a filename.
- */
-void PhotonMapExportFile::ExportPhotonsAllData( QString filename, std::vector< std::vector <Photon > > raysLists,
-		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
-		unsigned long endIndexRaysList, unsigned long endIndexPhotonList )
-{
-
-	QFile exportFile( filename );
-	exportFile.open( QIODevice::Append );
-
-	QDataStream out( &exportFile );
-
-
-	double previousPhotonID = 0;
-	for( unsigned long i = startIndexRaysList; i <= endIndexRaysList; ++i )
-	{
-		unsigned long startIndex = 0;
-		if( i == startIndexRaysList )	startIndex = startIndexPhotonList;
-
-		std::vector <Photon > raysList = raysLists[i];
-		unsigned long  nPhotonElements = raysList.size() - 1;
-		if( i == endIndexRaysList )	nPhotonElements = endIndexPhotonList;
-		for( unsigned long j = startIndex; j <= nPhotonElements; ++j )
-		{
-			Photon photon = raysList[j];
-			QString surfaceURL = "";
-			if( photon.intersectedSurface )
-			{
-				surfaceURL = photon.intersectedSurface->GetNodeURL();
-				if( !m_surfaceIdentfier.contains( surfaceURL ) )
-				{
-					m_surfaceIdentfier.insert( surfaceURL, m_surfaceIdentfier.count() +1 );
-					m_surfaceWorldToObject.insert( surfaceURL, photon.intersectedSurface->GetIntersectionTransform() );
-				}
-			}
-
-			out<<double( ++m_exportedPhotons );
-			if( photon.id < 1 )	previousPhotonID = 0;
+			if( photon->id < 1 )	previousPhotonID = 0;
 
 
 			//m_saveCoordinates
-			if( m_saveCoordinatesInGlobal )	out<<photon.pos.x << photon.pos.y << photon.pos.z;
-			else
-			{
-				if( !surfaceURL.isEmpty() && m_surfaceWorldToObject.contains( surfaceURL ) )
-				{
-					Transform worldToObject = m_surfaceWorldToObject.value( surfaceURL );
-					Point3D localPos = worldToObject( photon.pos );
-					out<<localPos.x << localPos.y << localPos.z;
-				}
-				else
-					out<<photon.pos.x << photon.pos.y << photon.pos.z;
-			}
+			out<<photon->pos.x << photon->pos.y << photon->pos.z;
 
 			//m_saveSide
-			double side = double( photon.side );
+			double side = double( photon->side );
 			out<<side;
 
 			//m_savePrevNexID
 			out<<previousPhotonID;
-			if( ( j < nPhotonElements ) && ( raysList[j+1].id > 0  ) )	out<< double( m_exportedPhotons +1 );
+			if( ( i < ( nPhotonElements - 1 ) ) && ( raysLists[i+1]->id > 0  ) )
+				out<< double( m_exportedPhotons +1 );
+			else
+				out <<0.0;
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+
+			previousPhotonID = m_exportedPhotons;
+		}
+
+	}
+	else
+	{
+		double previousPhotonID = 0;
+		for( unsigned long i = 0; i < nPhotonElements; ++i )
+		{
+
+			Photon* photon = raysLists[i];
+
+			out<<double( ++m_exportedPhotons );
+			if( photon->id < 1 )	previousPhotonID = 0;
+
+			unsigned long urlId = 0;
+			Transform worldToObject( 1.0, 0.0, 0.0, 0.0,
+					0.0, 1.0, 0.0, 0.0,
+					0.0, 0.0, 1.0, 0.0,
+					0.0, 0.0, 0.0, 1.0 );
+			if( photon->intersectedSurface )
+			{
+
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
+				{
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					worldToObject = photon->intersectedSurface->GetIntersectionTransform();
+					m_surfaceWorldToObject.push_back( worldToObject );
+				}
+				else
+				{
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) ;
+					worldToObject = m_surfaceWorldToObject[urlId];
+					urlId++;
+				}
+			}
+
+			//m_saveCoordinates
+			Point3D localPos = worldToObject( photon->pos );
+			out<<localPos.x << localPos.y << localPos.z;
+
+			//m_saveSide
+			double side = double( photon->side );
+			out<<side;
+
+			//m_savePrevNexID
+			out<<previousPhotonID;
+			if( ( i < ( nPhotonElements - 1 ) ) && ( raysLists[i+1]->id > 0  ) )	out<< double( m_exportedPhotons +1 );
 			else out <<0.0;
 
 			//m_saveSurfaceID
-			unsigned long urlId = 0;
-			if( !surfaceURL.isEmpty() && m_surfaceIdentfier.contains( surfaceURL ) )
-				urlId = m_surfaceIdentfier.value( surfaceURL );
-			else
-			{
-				urlId = m_surfaceIdentfier.count()+ 1;
-				m_surfaceIdentfier.insert( surfaceURL, urlId );
-			}
-
-
 			out<<double( urlId );
 
 			previousPhotonID = m_exportedPhotons;
@@ -463,13 +302,101 @@ void PhotonMapExportFile::ExportPhotonsAllData( QString filename, std::vector< s
 	exportFile.close();
 
 }
+
 /*!
- * Exports \a raysLists [\a startIndexRaysList, \a endIndexRaysList ] to [\a endIndexRaysList, \a endIndexPhotonList ] photons all data (
- * to file \a filename.
+ * Exports \a raysLists photons data except previous and next photon identifier to file \a filename.
  */
-void PhotonMapExportFile::ExportSurfacePhotonsAllData( QString filename, std::vector< std::vector <Photon > > raysLists,
-		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
-		unsigned long endIndexRaysList, unsigned long endIndexPhotonList )
+void PhotonMapExportFile::ExportAllPhotonsNotNextPrevID( QString filename, std::vector< Photon* > raysLists )
+{
+
+	QFile exportFile( filename );
+	exportFile.open( QIODevice::Append );
+
+	QDataStream out( &exportFile );
+	if( m_saveCoordinatesInGlobal )
+	{
+		unsigned long nPhotons = raysLists.size();
+		for( unsigned long i = 0; i < nPhotons; ++i )
+		{
+			Photon* photon = raysLists[i];
+			unsigned long urlId = 0;
+			if( photon->intersectedSurface )
+			{
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
+				{
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					m_surfaceWorldToObject.push_back( photon->intersectedSurface->GetIntersectionTransform() );
+				}
+				else
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) + 1;
+
+			}
+
+			out<<double( ++m_exportedPhotons );
+
+			//m_saveCoordinates
+			out<<photon->pos.x << photon->pos.y << photon->pos.z;
+
+			//m_saveSide
+			out<<double( photon->side );
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+		}
+	}
+	else
+	{
+
+		unsigned long nPhotons = raysLists.size();
+		for( unsigned long i = 0; i < nPhotons; ++i )
+		{
+			Photon* photon = raysLists[i];
+			unsigned long urlId = 0;
+			Transform worldToObject( 1.0, 0.0, 0.0, 0.0,
+							0.0, 1.0, 0.0, 0.0,
+							0.0, 0.0, 1.0, 0.0,
+							0.0, 0.0, 0.0, 1.0 );
+			if( photon->intersectedSurface )
+			{
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
+				{
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					worldToObject = photon->intersectedSurface->GetIntersectionTransform();
+					m_surfaceWorldToObject.push_back( worldToObject );
+				}
+				else
+				{
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) ;
+					worldToObject = m_surfaceWorldToObject[urlId];
+					urlId++;
+				}
+
+			}
+			out<<double( ++m_exportedPhotons );
+
+			//m_saveCoordinates
+			Point3D localPos = worldToObject( photon->pos );
+			out<<localPos.x << localPos.y << localPos.z;
+
+			//m_saveSide
+			out<<double( photon->side );
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+		}
+
+	}
+	exportFile.close();
+
+}
+
+/*!
+ * Exports \a raysLists all photons data to file \a filename.
+ * For each photon only selected parameters will be exported.
+ */
+void PhotonMapExportFile::ExportAllPhotonsSelectedData( QString filename, std::vector< Photon* > raysLists )
 {
 
 	QFile exportFile( filename );
@@ -477,68 +404,347 @@ void PhotonMapExportFile::ExportSurfacePhotonsAllData( QString filename, std::ve
 
 	QDataStream out( &exportFile );
 
-
 	double previousPhotonID = 0;
-	for( unsigned long i = startIndexRaysList; i <= endIndexRaysList; ++i )
+	unsigned long nPhotons = raysLists.size();
+	for( unsigned long i = 0; i < nPhotons; ++i )
 	{
-		unsigned long startIndex = 0;
-		if( i == startIndexRaysList )	startIndex = startIndexPhotonList;
-
-		std::vector <Photon > raysList = raysLists[i];
-		unsigned long  nPhotonElements = raysList.size() - 1;
-		if( i == endIndexRaysList )	nPhotonElements = endIndexPhotonList;
-		for( unsigned long j = startIndex; j <= nPhotonElements; ++j )
+		Photon* photon = raysLists[i];
+		unsigned long urlId = 0;
+		Transform worldToObject( 1.0, 0.0, 0.0, 0.0,
+							0.0, 1.0, 0.0, 0.0,
+							0.0, 0.0, 1.0, 0.0,
+							0.0, 0.0, 0.0, 1.0 );
+		if( photon->intersectedSurface )
 		{
-			Photon photon = raysList[j];
-			QString surfaceURL = "";
-			if( photon.intersectedSurface )
+			if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
 			{
-				surfaceURL = photon.intersectedSurface->GetNodeURL();
-				if( !m_surfaceIdentfier.contains( surfaceURL ) )
+				m_surfaceIdentfier.push_back( photon->intersectedSurface );
+				urlId = m_surfaceIdentfier.size();
+				worldToObject = photon->intersectedSurface->GetIntersectionTransform();
+				m_surfaceWorldToObject.push_back( worldToObject );
+			}
+			else
+			{
+				urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) ;
+				worldToObject = m_surfaceWorldToObject[urlId];
+				urlId++;
+			}
+
+		}
+
+		out<<double( ++m_exportedPhotons );
+		if( photon->id < 1 )	previousPhotonID = 0;
+
+		if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon->pos.x << photon->pos.y << photon->pos.z;
+		else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )
+		{
+			Point3D localPos = worldToObject( photon->pos );
+			out<<localPos.x << localPos.y << localPos.z;
+		}
+
+		if(  m_saveSide )
+		{
+			double side = double( photon->side );
+			out<<side;
+		}
+		if( m_savePrevNexID )
+		{
+			out<<previousPhotonID;
+			if( ( i < nPhotons - 1 ) && ( raysLists[i+1]->id > 0  ) )	out<< double( m_exportedPhotons +1 );
+			else out <<0.0;
+		}
+
+		if( m_saveSurfaceID )
+			out<<double( urlId );
+
+		previousPhotonID = m_exportedPhotons;
+
+	}
+	exportFile.close();
+}
+
+/*!
+ * Exports \a numberOfPhotons photons from \a raysLists to file \a filename starting from [\a startIndexRaysList, \a endIndexRaysList ].
+ */
+void PhotonMapExportFile::ExportSelectedPhotonsAllData( QString filename, std::vector< Photon* > raysLists,
+		unsigned long startIndex, 	unsigned long numberOfPhotons )
+{
+
+	QFile exportFile( filename );
+	exportFile.open( QIODevice::Append );
+
+	QDataStream out( &exportFile );
+
+	unsigned int nPhotonElements = raysLists.size();
+	if( m_saveCoordinatesInGlobal )
+	{
+		double previousPhotonID = 0;
+		unsigned long exportedPhotonsToFile = 0;
+		while( exportedPhotonsToFile < numberOfPhotons )
+		{
+			Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
+			unsigned long urlId = 0;
+			if( photon->intersectedSurface )
+			{
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
 				{
-					m_surfaceIdentfier.insert( surfaceURL, m_surfaceIdentfier.count() +1 );
-					m_surfaceWorldToObject.insert( surfaceURL, photon.intersectedSurface->GetIntersectionTransform() );
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					m_surfaceWorldToObject.push_back( photon->intersectedSurface->GetIntersectionTransform() );
+				}
+				else
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) + 1;
+			}
+
+			out<<double( ++m_exportedPhotons );
+			if( photon->id < 1 )	previousPhotonID = 0;
+
+			//m_saveCoordinates
+			out<<photon->pos.x << photon->pos.y << photon->pos.z;
+
+			//m_saveSide
+			double side = double( photon->side );
+			out<<side;
+
+			//m_savePrevNexID
+			out<<previousPhotonID;
+			if( ( ( startIndex + exportedPhotonsToFile ) < ( nPhotonElements - 1 ) ) && ( raysLists[startIndex + exportedPhotonsToFile + 1]->id > 0  ) )
+				out<< double( m_exportedPhotons +1 );
+			else
+				out <<0.0;
+
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+
+			previousPhotonID = m_exportedPhotons;
+			exportedPhotonsToFile++;
+
+		}
+	}
+	else
+	{
+		double previousPhotonID = 0;
+		unsigned long exportedPhotonsToFile = 0;
+		while( exportedPhotonsToFile < numberOfPhotons )
+		{
+			Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
+			unsigned long urlId = 0;
+			Transform worldToObject( 1.0, 0.0, 0.0, 0.0,
+							0.0, 1.0, 0.0, 0.0,
+							0.0, 0.0, 1.0, 0.0,
+							0.0, 0.0, 0.0, 1.0 );
+			if( photon->intersectedSurface )
+			{
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
+				{
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					worldToObject = photon->intersectedSurface->GetIntersectionTransform();
+					m_surfaceWorldToObject.push_back( worldToObject );
+				}
+				else
+				{
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) ;
+					worldToObject = m_surfaceWorldToObject[urlId];
+					urlId++;
 				}
 			}
 
 			out<<double( ++m_exportedPhotons );
-			if( photon.id < 1 )	previousPhotonID = 0;
-
+			if( photon->id < 1 )	previousPhotonID = 0;
 
 			//m_saveCoordinates
-			if( m_saveCoordinatesInGlobal )	out<<photon.pos.x << photon.pos.y << photon.pos.z;
-			else
-			{
-				if( !surfaceURL.isEmpty() && m_surfaceWorldToObject.contains( surfaceURL ) )
-				{
-					Transform worldToObject = m_surfaceWorldToObject.value( surfaceURL );
-					Point3D localPos = worldToObject( photon.pos );
-					out<<localPos.x << localPos.y << localPos.z;
-				}
-				else
-					out<<photon.pos.x << photon.pos.y << photon.pos.z;
-			}
+			Point3D localPos = worldToObject( photon->pos );
+			out<<localPos.x << localPos.y << localPos.z;
 
 			//m_saveSide
-			double side = double( photon.side );
+			double side = double( photon->side );
 			out<<side;
 
+			//m_savePrevNexID
+			out<<previousPhotonID;
+			if( ( ( startIndex + exportedPhotonsToFile ) < ( nPhotonElements - 1 ) ) && ( raysLists[startIndex + exportedPhotonsToFile + 1]->id > 0  ) )
+				out<< double( m_exportedPhotons +1 );
+			else
+				out <<0.0;
 
 			//m_saveSurfaceID
-			unsigned long urlId = 0;
-			if( !surfaceURL.isEmpty() && m_surfaceIdentfier.contains( surfaceURL ) )
-				urlId = m_surfaceIdentfier.value( surfaceURL );
-			else
-			{
-				urlId = m_surfaceIdentfier.count()+ 1;
-				m_surfaceIdentfier.insert( surfaceURL, urlId );
-			}
-
-
 			out<<double( urlId );
 
 			previousPhotonID = m_exportedPhotons;
+			exportedPhotonsToFile++;
 		}
+
+	}
+	exportFile.close();
+
+}
+
+/*!
+ * Exports \a numberOfPhotons photons from \a raysLists to file \a filename starting from [\a startIndexRaysList, \a endIndexRaysList ].
+ */
+void PhotonMapExportFile::ExportSelectedPhotonsNotNextPrevID( QString filename, std::vector< Photon* > raysLists,
+		unsigned long startIndex, unsigned long numberOfPhotons )
+{
+	QFile exportFile( filename );
+	exportFile.open( QIODevice::Append );
+
+	QDataStream out( &exportFile );
+
+	if( m_saveCoordinatesInGlobal )
+	{
+		unsigned long exportedPhotonsToFile = 0;
+		while( exportedPhotonsToFile < numberOfPhotons )
+		{
+			Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
+			unsigned long urlId = 0;
+			if( photon->intersectedSurface )
+			{
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
+				{
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					m_surfaceWorldToObject.push_back( photon->intersectedSurface->GetIntersectionTransform() );
+				}
+				else
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) + 1;
+			}
+
+			out<<double( ++m_exportedPhotons );
+
+			//m_saveCoordinates
+			out<<photon->pos.x << photon->pos.y << photon->pos.z;
+
+			//m_saveSide
+			double side = double( photon->side );
+			out<<side;
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+
+			exportedPhotonsToFile++;
+		}
+	}
+	else
+	{
+		unsigned long exportedPhotonsToFile = 0;
+		while( exportedPhotonsToFile < numberOfPhotons )
+		{
+			Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
+			unsigned long urlId = 0;
+			Transform worldToObject( 1.0, 0.0, 0.0, 0.0,
+							0.0, 1.0, 0.0, 0.0,
+							0.0, 0.0, 1.0, 0.0,
+							0.0, 0.0, 0.0, 1.0 );
+			if( photon->intersectedSurface )
+			{
+				if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
+				{
+					m_surfaceIdentfier.push_back( photon->intersectedSurface );
+					urlId = m_surfaceIdentfier.size();
+					worldToObject = photon->intersectedSurface->GetIntersectionTransform();
+					m_surfaceWorldToObject.push_back( worldToObject );
+				}
+				else
+				{
+					urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) ;
+					worldToObject = m_surfaceWorldToObject[urlId];
+					urlId++;
+				}
+			}
+
+			out<<double( ++m_exportedPhotons );
+
+			//m_saveCoordinates
+			Point3D localPos = worldToObject( photon->pos );
+			out<<localPos.x << localPos.y << localPos.z;
+
+			//m_saveSide
+			double side = double( photon->side );
+			out<<side;
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+
+			exportedPhotonsToFile++;
+		}
+
+	}
+	exportFile.close();
+
+}
+
+/*!
+ * Exports \a numberOfPhotons photons from \a raysLists to file \a filename starting from [\a startIndexRaysList, \a endIndexRaysList ].
+ *  * For each photon only selected parameters will be exported.
+ */
+void PhotonMapExportFile::ExportSelectedPhotonsSelectedData( QString filename, std::vector< Photon* > raysLists,
+		unsigned long startIndex, 	unsigned long numberOfPhotons )
+{
+
+	QFile exportFile( filename );
+	exportFile.open( QIODevice::Append );
+
+	QDataStream out( &exportFile );
+
+	double previousPhotonID = 0;
+	unsigned long nPhotonElements = raysLists.size();
+	unsigned long exportedPhotonsToFile = 0;
+	while( exportedPhotonsToFile < numberOfPhotons )
+	{
+		Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
+		unsigned long urlId = 0;
+		Transform worldToObject( 1.0, 0.0, 0.0, 0.0,
+						0.0, 1.0, 0.0, 0.0,
+						0.0, 0.0, 1.0, 0.0,
+						0.0, 0.0, 0.0, 1.0 );
+		if( photon->intersectedSurface )
+		{
+			if( !m_surfaceIdentfier.contains( photon->intersectedSurface ) )
+			{
+				m_surfaceIdentfier.push_back( photon->intersectedSurface );
+				urlId = m_surfaceIdentfier.size();
+				worldToObject = photon->intersectedSurface->GetIntersectionTransform();
+				m_surfaceWorldToObject.push_back( worldToObject );
+			}
+			else
+			{
+				urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) ;
+				worldToObject = m_surfaceWorldToObject[urlId];
+				urlId++;
+			}
+		}
+
+		out<<double( ++m_exportedPhotons );
+		if( photon->id < 1 )	previousPhotonID = 0;
+
+		if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon->pos.x << photon->pos.y << photon->pos.z;
+		else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )
+		{
+			Point3D localPos = worldToObject( photon->pos );
+			out<<localPos.x << localPos.y << localPos.z;
+		}
+
+		if(  m_saveSide )
+		{
+			double side = double( photon->side );
+			out<<side;
+		}
+		if( m_savePrevNexID )
+		{
+			out<<previousPhotonID;
+			if( ( ( startIndex + exportedPhotonsToFile ) < nPhotonElements )
+					&& ( raysLists[startIndex + exportedPhotonsToFile + 1]->id > 0  ) )
+				out<< double( m_exportedPhotons +1 );
+			else out <<0.0;
+		}
+
+		if( m_saveSurfaceID )
+			out<<double( urlId );
+
+		previousPhotonID = m_exportedPhotons;
+		exportedPhotonsToFile++;
 	}
 	exportFile.close();
 
@@ -584,6 +790,68 @@ void PhotonMapExportFile::RemoveExistingFiles()
 }
 
 /*!
+ * Exports \a raysLists photons data to files with the same number of photons in each file.
+ * Each file stores \a m_nPhotonsPerFile photons.
+ */
+void PhotonMapExportFile::SaveToVariousFiles( std::vector <Photon* > raysLists )
+{
+
+	QDir exportDirectory( m_exportDirecotryName );
+
+	unsigned long nPhotons = raysLists.size();
+
+	unsigned long startIndex = 0;
+	unsigned long filePhotons = m_exportedPhotons - ( m_nPhotonsPerFile * ( m_currentFile - 1 ) );
+
+	unsigned long nPhotonsToExport = 0;
+	for( unsigned long i = 0; i < nPhotons; i++ )
+	{
+		if( !( filePhotons < m_nPhotonsPerFile ) )
+		{
+			QString newName = QString( QLatin1String( "%1_%2.dat" ) ).arg(
+					m_photonsFilename,
+					QString::number( m_currentFile ) );
+
+			QString currentFileName = exportDirectory.absoluteFilePath( newName );
+
+			if( m_saveCoordinates && m_saveSide && m_savePrevNexID && m_saveSurfaceID )
+				ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+			else if( m_saveCoordinates && m_saveSide && !m_savePrevNexID && m_saveSurfaceID )
+				ExportSelectedPhotonsNotNextPrevID( currentFileName, raysLists, startIndex, nPhotonsToExport );
+			else
+				ExportSelectedPhotonsSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+			m_currentFile++;
+
+			filePhotons = 0;
+			nPhotonsToExport = 0;
+			startIndex = i;
+
+		}
+		filePhotons++;
+		nPhotonsToExport++;
+
+	}
+
+	if( filePhotons > 0 )
+	{
+		QString newName = QString( QLatin1String( "%1_%2.dat" ) ).arg(
+				m_photonsFilename,
+				QString::number( m_currentFile ) );
+
+		QString currentFileName = exportDirectory.absoluteFilePath( newName );
+
+
+		if( m_saveCoordinates && m_saveSide && m_savePrevNexID && m_saveSurfaceID )
+			ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+		else if( m_saveCoordinates && m_saveSide && !m_savePrevNexID && m_saveSurfaceID )
+			ExportSelectedPhotonsNotNextPrevID( currentFileName, raysLists, startIndex, nPhotonsToExport );
+		else
+			ExportSelectedPhotonsSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+	}
+
+}
+
+/*!
  * Writes the file or first file header with the format.
  */
 void PhotonMapExportFile::WriteFileFormat( QString exportFilename )
@@ -615,16 +883,11 @@ void PhotonMapExportFile::WriteFileFormat( QString exportFilename )
 
 
 	out<<QString( QLatin1String( "START SURFACES\n" ) );
-	if( m_saveSurfaceID )
+	for( int s = 0; s < m_surfaceIdentfier.count(); s++ )
 	{
-		QMap<QString, unsigned long >::const_iterator s = m_surfaceIdentfier.constBegin();
-		while( s != m_surfaceIdentfier.constEnd() )
-		{
-			out<<QString( QLatin1String( "%1 %2\n" ) ).arg( QString::number( s.value() ),
-					s.key() );
-			++s;
-		 }
-
+		QString surfaceURL = m_surfaceIdentfier[s]->GetNodeURL();
+		out<<QString( QLatin1String( "%1 %2\n" ) ).arg( QString::number( s+1 ),
+				surfaceURL);
 	}
 
 	out<<QString( QLatin1String( "END SURFACES\n" ) );

@@ -57,7 +57,7 @@ public:
 	static QStringList GetParameterNames();
 
 	void EndExport();
-	void SavePhotonMap( std::vector< std::vector <Photon > > raysLists );
+	void SavePhotonMap( std::vector< Photon* > raysLists );
 	void SetPowerPerPhoton( double wPhoton );
 	void SetSaveParameterValue( QString parameterName, QString parameterValue );
 	void StartExport();

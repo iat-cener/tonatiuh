@@ -6,7 +6,7 @@ SUBDIRS =  ComponentHeliostatField \
 			MaterialStandardSpecular \
             MaterialStandardRoughSpecular \
             MaterialVirtual \
-			PhotonMapExportDB \
+#			PhotonMapExportDB \
 			PhotonMapExportFile \
 			PhotonMapExportNull\
 			RandomMersenneTwister \
