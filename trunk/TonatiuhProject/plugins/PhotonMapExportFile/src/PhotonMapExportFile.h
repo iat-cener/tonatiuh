@@ -57,30 +57,31 @@ public:
 	static QStringList GetParameterNames();
 
 	void EndExport();
-	void SavePhotonMap( std::vector< std::vector <Photon > > raysLists );
+	void SavePhotonMap( std::vector< Photon* > raysLists );
 	void SetPowerPerPhoton( double wPhoton );
 	void SetSaveParameterValue( QString parameterName, QString parameterValue );
 	void StartExport();
 private:
-    void ExportAllPhotonsFile( QString filename, std::vector< std::vector <Photon > > raysLists,
-    		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
-    		unsigned long endIndexRaysList, unsigned long endIndexPhotonList );
-    void ExportAllPhotonsFiles( std::vector< std::vector <Photon > > raysLists );
-    void ExportPhotonsAllData( QString filename, std::vector< std::vector <Photon > > raysLists,
-    		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
-    		unsigned long endIndexRaysList, unsigned long endIndexPhotonList );
-    void ExportSurfacePhotonsAllData( QString filename, std::vector< std::vector <Photon > > raysLists,
-    		unsigned long startIndexRaysList, unsigned long startIndexPhotonList,
-    		unsigned long endIndexRaysList, unsigned long endIndexPhotonList );
+	void ExportAllPhotonsAllData( QString filename, std::vector< Photon* > raysLists );
+	void ExportAllPhotonsNotNextPrevID( QString filename, std::vector< Photon* > raysLists );
+	void ExportAllPhotonsSelectedData( QString filename, std::vector< Photon* > raysLists );
+	void ExportSelectedPhotonsAllData( QString filename, std::vector< Photon* > raysLists,
+			unsigned long startIndex, 	unsigned long numberOfPhotons );
+	void ExportSelectedPhotonsNotNextPrevID( QString filename, std::vector< Photon* > raysLists,
+			unsigned long startIndex, 	unsigned long numberOfPhotons );
+	void ExportSelectedPhotonsSelectedData( QString filename, std::vector <Photon* > raysLists,
+			unsigned long startIndex, 	unsigned long numberOfPhotons );
+
 
     void RemoveExistingFiles();
+    void SaveToVariousFiles( std::vector <Photon* > raysLists );
     void WriteFileFormat( QString exportFilename );
 
 
 	QString m_photonsFilename;
 	double m_powerPerPhoton;
-	QMap< QString, unsigned long > m_surfaceIdentfier;
-	QMap< QString, Transform > m_surfaceWorldToObject;
+	QVector< InstanceNode* > m_surfaceIdentfier;
+	QVector< Transform > m_surfaceWorldToObject;
 	int m_currentFile;
 	QString m_exportDirecotryName;
 	unsigned long m_exportedPhotons;

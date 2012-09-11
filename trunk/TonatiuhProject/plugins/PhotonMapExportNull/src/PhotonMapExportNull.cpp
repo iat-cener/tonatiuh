@@ -74,7 +74,7 @@ void PhotonMapExportNull::EndExport()
 /*!
  * Nothing is done
  */
-void PhotonMapExportNull::SavePhotonMap( std::vector< std::vector <Photon > > raysLists )
+void PhotonMapExportNull::SavePhotonMap( std::vector< Photon* > /*raysLists*/ )
 {
 
 }
@@ -82,7 +82,7 @@ void PhotonMapExportNull::SavePhotonMap( std::vector< std::vector <Photon > > ra
 /*!
  * Nothing is done
  */
-void PhotonMapExportNull::SetPowerPerPhoton( double wPhoton )
+void PhotonMapExportNull::SetPowerPerPhoton( double /*wPhoton*/ )
 {
 
 }
@@ -90,7 +90,7 @@ void PhotonMapExportNull::SetPowerPerPhoton( double wPhoton )
 /*!
  * Nothing is done
  */
-void PhotonMapExportNull::SetSaveParameterValue( QString parameterName, QString parameterValue )
+void PhotonMapExportNull::SetSaveParameterValue( QString /*parameterName*/, QString /*parameterValue*/ )
 {
 
 }
