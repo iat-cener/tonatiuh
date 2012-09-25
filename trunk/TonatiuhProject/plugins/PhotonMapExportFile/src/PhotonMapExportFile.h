@@ -60,7 +60,8 @@ public:
 	void SavePhotonMap( std::vector< Photon* > raysLists );
 	void SetPowerPerPhoton( double wPhoton );
 	void SetSaveParameterValue( QString parameterName, QString parameterValue );
-	void StartExport();
+	bool StartExport();
+
 private:
 	void ExportAllPhotonsAllData( QString filename, std::vector< Photon* > raysLists );
 	void ExportAllPhotonsNotNextPrevID( QString filename, std::vector< Photon* > raysLists );

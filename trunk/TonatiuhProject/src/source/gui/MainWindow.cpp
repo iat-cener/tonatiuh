@@ -1781,7 +1781,7 @@ void MainWindow::Run()
 
 				PhotonMapExport* pExportMode = CreatePhotonMapExport();
 				if( !pExportMode )	return;
-				m_pPhotonMap->SetExportMode( pExportMode );
+				if( !m_pPhotonMap->SetExportMode( pExportMode )  ) return;
 
 			}
 		}

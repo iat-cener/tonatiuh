@@ -55,7 +55,6 @@ public:
 	virtual ~PhotonMapExport();
 
 	virtual void EndExport() = 0;
-	//virtual void SavePhotonMap( std::vector< std::vector < Photon > >* raysLists ) = 0;
 	virtual void SavePhotonMap( std::vector < Photon* > raysLists ) = 0;
 	virtual void SetPowerPerPhoton( double wPhoton ) = 0;
 
@@ -68,7 +67,7 @@ public:
 	void SetSaveSurfacesIDEnabled( bool enabled );
 	void SetSaveSurfacesURLList( QStringList surfacesURLList );
 	void SetSceneModel( SceneModel& sceneModel );
-	virtual void StartExport() = 0;
+	virtual bool StartExport() = 0;
 
 protected:
 	SceneModel* m_pSceneModel;

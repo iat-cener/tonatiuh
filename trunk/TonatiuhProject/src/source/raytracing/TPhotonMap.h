@@ -15,7 +15,7 @@ public:
 	std::vector< Photon* > GetAllPhotons() const;
 	PhotonMapExport* GetExportMode( ) const;
 	void SetBufferSize( unsigned long nPhotons );
-	void SetExportMode( PhotonMapExport* pExportPhotonMap );
+	bool SetExportMode( PhotonMapExport* pExportPhotonMap );
 	void StoreRays( std::vector< Photon >& ray );
 
 

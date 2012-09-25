@@ -55,17 +55,20 @@ public:
 
 	void EndExport();
 	static QStringList GetParameterNames();
-	void SavePhotonMap( std::vector< std::vector <Photon > > raysLists );
-	void SetDBFileName( QString filename );
-	void SetDBDirectory( QString filename );
+	void SavePhotonMap( std::vector< Photon* > raysLists );
 	void SetPowerPerPhoton( double wPhoton );
 	void SetSaveParameterValue( QString parameterName, QString parameterValue );
-	void StartExport();
+	bool StartExport();
 
 private:
-    void Close();
+    bool Close();
     void InsertSurface( InstanceNode* instance );
-	void Open();
+	bool Open();
+	void SaveAllData( std::vector< Photon* > raysLists );
+	void SaveNotNextPrevID( std::vector< Photon* > raysLists );
+	void SaveSelectedData( std::vector< Photon* > raysLists );
+	void SetDBDirectory( QString path );
+	void SetDBFileName( QString filename );
 	void RemoveExistingFiles();
 
 	QString m_dbFileName;
@@ -73,8 +76,13 @@ private:
 	unsigned long m_exportedPhoton;
 	bool m_isDBOpened;
     sqlite3* m_pDB;
-    QMap< InstanceNode*,  int > m_surfaceURL_ID;
+	QVector< InstanceNode* > m_surfaceIdentfier;
+	QVector< Transform > m_surfaceWorldToObject;
+
+    //QMap< InstanceNode*,  int > m_surfaceURL_ID;
     std::string m_sqlTotalInsert;
+
+
 
 };
 
