@@ -147,7 +147,10 @@ void ExportPhotonMapSettingsDialog::ChangeCurrentStoreTypeParameters()
  */
 void ExportPhotonMapSettingsDialog::DeleteSurfaceFromExportList()
 {
+	if( !surfacesListWidget->currentItem() )	return;
 	int currentSurfaceIndex = m_exportSurfaceNodeList.indexOf( surfacesListWidget->currentItem()->text() );
+	std::cout<<"currentSurfaceIndex: "<<currentSurfaceIndex<<std::endl;
+	if( currentSurfaceIndex < 0 ) 	return;
 	m_exportSurfaceNodeList.removeAt( currentSurfaceIndex );
 	delete surfacesListWidget->item( currentSurfaceIndex );
 }

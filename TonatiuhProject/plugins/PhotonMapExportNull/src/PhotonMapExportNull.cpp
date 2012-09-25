@@ -98,7 +98,7 @@ void PhotonMapExportNull::SetSaveParameterValue( QString /*parameterName*/, QStr
 /*!
  * Nothing is done
  */
-void PhotonMapExportNull::StartExport()
+bool PhotonMapExportNull::StartExport()
 {
-
+	return 1;
 }

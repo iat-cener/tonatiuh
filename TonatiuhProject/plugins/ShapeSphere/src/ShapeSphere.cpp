@@ -408,8 +408,8 @@ void ShapeSphere::generatePrimitives(SoAction *action)
 
 
 	SbVec3f  point;
-	int rows = 100; // Number of points per row
-	int columns = 100; // Number of points per column
+	int rows = 10; // Number of points per row
+	int columns = 10; // Number of points per column
 	int totalPoints = rows * columns; // Total points in the grid
 
 	float vertex[totalPoints][6];

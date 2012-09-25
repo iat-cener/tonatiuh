@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "PhotonMapExportDBParametersWidget.h"
 #include "PhotonMapExportDB.h"
@@ -79,7 +80,13 @@ QString PhotonMapExportDBParametersWidget::GetParameterValue( QString parameter 
 
 void PhotonMapExportDBParametersWidget::SelectSaveDirectory()
 {
-	QString directoryToExport = QFileDialog::getExistingDirectory ( this, tr( "Save Direcotry" ) );
+
+	QSettings settings( QLatin1String( "NREL UTB CENER" ), QLatin1String( "Tonatiuh" ) );
+	QString lastUsedDirectory = settings.value( QLatin1String( "PhotonMapExportDBParametersWidget.directoryToExport" ),
+			QLatin1String( "." ) ).toString();
+
+
+	QString directoryToExport = QFileDialog::getExistingDirectory ( this, tr( "Save Direcotry" ), lastUsedDirectory );
 	if( directoryToExport.isEmpty() )	return;
 
 
@@ -87,10 +94,11 @@ void PhotonMapExportDBParametersWidget::SelectSaveDirectory()
 	if( !dirToExport.exists() )
 	{
 		QMessageBox::information( this, QLatin1String( "Tonatiuh" ), tr( "Selected directory is not is not  valid." ), 1 );
-			return;
+		return;
 
 	}
 
+	settings.setValue( QLatin1String( "PhotonMapExportDBParametersWidget.directoryToExport" ), directoryToExport );
 	saveDirectoryDBLine->setText( directoryToExport );
 }
 

@@ -111,8 +111,6 @@ void PhotonMapExportFile::EndExport()
 	QTextStream out( &exportFile );
 
 	out<<double( m_powerPerPhoton );
-
-
 }
 
 /*!
@@ -183,11 +181,11 @@ void PhotonMapExportFile::SetSaveParameterValue( QString parameterName, QString 
 /*!
  * Deletes the files that can be uset to export.
  */
-void PhotonMapExportFile::StartExport()
+bool PhotonMapExportFile::StartExport()
 {
 
 	if( m_exportedPhotons < 1  )	RemoveExistingFiles();
-
+	return 1;
 }
 
 /*!

@@ -69,10 +69,14 @@ void TPhotonMap::SetBufferSize( unsigned long nPhotons )
 /*!
  *Sets the photonmap export mode.
  */
-void TPhotonMap::SetExportMode( PhotonMapExport* pExportPhotonMap )
+bool TPhotonMap::SetExportMode( PhotonMapExport* pExportPhotonMap )
 {
+	if( !pExportPhotonMap )	return 0;
 	m_pExportPhotonMap = pExportPhotonMap;
-	m_pExportPhotonMap->StartExport();
+
+	if( !m_pExportPhotonMap->StartExport() ) return 0;
+
+	return 1;
 }
 
 void TPhotonMap::StoreRays( std::vector< Photon >& raysList )
