@@ -75,14 +75,10 @@ private:
 	QString m_dbDirectory;
 	unsigned long m_exportedPhoton;
 	bool m_isDBOpened;
+	bool m_isWPhoton;
     sqlite3* m_pDB;
 	QVector< InstanceNode* > m_surfaceIdentfier;
 	QVector< Transform > m_surfaceWorldToObject;
-
-    //QMap< InstanceNode*,  int > m_surfaceURL_ID;
-    std::string m_sqlTotalInsert;
-
-
 
 };
 
