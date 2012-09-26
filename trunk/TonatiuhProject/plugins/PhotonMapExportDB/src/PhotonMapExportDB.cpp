@@ -52,14 +52,14 @@ PhotonMapExportDB::PhotonMapExportDB()
 :PhotonMapExport(),
  m_exportedPhoton( 0 ),
  m_isDBOpened( false ),
- m_pDB( 0 ),
- m_sqlTotalInsert( "" )
+ m_isWPhoton( false ),
+ m_pDB( 0 )
 {
 
 }
 
 /*!
- *Destorys export object
+ *Destroys export object
  */
 PhotonMapExportDB::~PhotonMapExportDB()
 {
@@ -117,16 +117,28 @@ void PhotonMapExportDB::SavePhotonMap( std::vector< Photon* > raysLists )
  */
 void PhotonMapExportDB::SetPowerPerPhoton( double wPhoton )
 {
-	std::stringstream w_photon;
-	w_photon << "Insert into wphoton values(" << wPhoton <<");";
+	QString wPhotonQuery;
+	if( m_isWPhoton )
+	{
+		wPhotonQuery = QString( "UPDATE WPhoton SET power = %1;" ).arg( QString::number( wPhoton ) );
+	}
+	else
+	{
+		wPhotonQuery = QString( "INSERT INTO WPhoton VALUES( %1 );" ).arg( QString::number( wPhoton ) );
+		m_isWPhoton = true;
+	}
+
 	char* zErrMsg = 0;
 
-	int rc = sqlite3_exec( m_pDB, w_photon.str().c_str(), 0, 0, &zErrMsg );
-	if( rc!=SQLITE_OK )
+	int rc = sqlite3_exec( m_pDB, wPhotonQuery.toStdString().c_str(), 0, 0, &zErrMsg );
+	if( rc != SQLITE_OK )
 	{
-		std::cout<< "SQL error: "<<zErrMsg<<"\n"<<std::endl;
+
+		QString message = QString( "SQL error: %1 .\n" ).arg( QString( zErrMsg ) );
+		QMessageBox::warning( 0, QLatin1String( "Tonatiuh" ), message );
 		sqlite3_free(zErrMsg);
-		}
+
+	}
 
 }
 
@@ -184,7 +196,8 @@ void PhotonMapExportDB::InsertSurface( InstanceNode* instance )
 	surfaces << "Insert into Surfaces values("
 			<< surfaceID << ",'"
 			<< surfaceURL.toStdString().c_str() <<"');";
-	m_sqlTotalInsert += surfaces.str();
+	char* sErrMsg = 0;
+	sqlite3_exec( m_pDB, surfaces.str().c_str(), 0, 0, &sErrMsg );
 
 }
 
@@ -193,7 +206,6 @@ void PhotonMapExportDB::InsertSurface( InstanceNode* instance )
  */
 bool PhotonMapExportDB::Open()
 {
-	std::cout<<"PhotonMapExportDB::Open"<<std::endl;
 	try
 	{
 		QDir dbDirectory( m_dbDirectory );
@@ -201,10 +213,7 @@ bool PhotonMapExportDB::Open()
 
 		QString dbFilename = dbDirectory.absoluteFilePath( filename.append( QLatin1String( ".db" ) ) );
 
-		std::cout<<"PhotonMapExportDB::Open "<<dbFilename.toStdString()<<std::endl;
-
 		char* zErrMsg = 0;
-
 		int rc = sqlite3_open( dbFilename.toStdString().c_str() , &m_pDB );
 		if( rc != SQLITE_OK )
 		{
@@ -213,9 +222,8 @@ bool PhotonMapExportDB::Open()
 			QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
 			return 0;
 		}
-		std::cout<<"PhotonMapExportDB::Open "<<rc<<std::endl;
 
-		if( m_exportedPhoton< 1)
+		if( m_exportedPhoton < 1)
 		{
 
 			QString createPhotonsTableCmmd( QLatin1String( "CREATE TABLE Photons (id INTEGER PRIMARY KEY" ) );
@@ -283,7 +291,9 @@ bool PhotonMapExportDB::Open()
 				return 0;
 			}
 		}
-		m_sqlTotalInsert="BEGIN;";
+		else
+			m_isWPhoton = true;
+
 		m_isDBOpened = true;
 	}
 	catch( std::exception &e )
@@ -304,13 +314,13 @@ void PhotonMapExportDB::RemoveExistingFiles()
 	QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".db" ) ) );
 	QFile exportFile( exportFilename );
 
-	if(exportFile.exists() && !exportFile.remove()) {
-		QString message= QString( "Error deleting database:\n%1\nThe database is in use. Please, close it before continuing. \n" ).arg(exportFilename);
+	if(exportFile.exists() && !exportFile.remove() )
+	{
+		QString message= QString( "Error deleting database:%1.\n"
+				"The database is in use. Please, close it before continuing. \n" ).arg( exportFilename );
 		QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
 		RemoveExistingFiles();
 	}
-
-
 }
 
 /*!
@@ -319,6 +329,15 @@ void PhotonMapExportDB::RemoveExistingFiles()
 void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 {
 
+	const char* tail = 0;
+	sqlite3_stmt* stmt;
+	char insertSQL[256] ="\0";
+	sprintf( insertSQL, "INSERT INTO Photons VALUES( @id, @x, @y, @z, @side, @prev, @next, @surfaceID )" );
+	sqlite3_prepare_v2( m_pDB, insertSQL, 256, &stmt, &tail );
+
+	char* sErrMsg = 0;
+	sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
+
 	unsigned long nPhotonElements = raysLists.size();
 	double previousPhotonID = 0;
 
@@ -326,24 +345,36 @@ void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 	{
 		for( unsigned int i = 0; i < raysLists.size(); i++ )
 		{
-			std::stringstream ss;
 			Photon* photon = raysLists[i];
 			if( photon->id < 1 )	previousPhotonID = 0;
 
+			sqlite3_bind_text( stmt, 1, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+
 			//m_saveCoordinates
-			ss << "INSERT INTO Photons values("<< (++m_exportedPhoton );
-			ss <<"," << photon->pos.x <<"," << photon->pos.y <<"," << photon->pos.z;
+			Point3D photonPos =  photon->pos;
+			sqlite3_bind_text( stmt, 2, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 3, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 4, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveSide
-			ss << ","<< photon->side;
+			sqlite3_bind_text( stmt, 5, QString::number( photon->side ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_savePrevNexID
-			ss <<"," << previousPhotonID;
-
+			sqlite3_bind_text( stmt, 6, QString::number( previousPhotonID ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			int nextPhotonID = 0;
 			if( ( i < ( nPhotonElements - 1 ) ) && ( raysLists[i+1]->id > 0  ) )
 				nextPhotonID = m_exportedPhoton +1;
-			ss <<"," << nextPhotonID;
+			sqlite3_bind_text( stmt, 7, QString::number( nextPhotonID ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+
+
+			const char* tail = 0;
+			sqlite3_stmt* stmt;
+			char insertSQL[256] ="\0";
+			sprintf( insertSQL, "INSERT INTO Photons VALUES( @id, @x, @y, @z, @side, @prev, @next, @surfaceID )" );
+			sqlite3_prepare_v2( m_pDB, insertSQL, 256, &stmt, &tail );
+
+			char* sErrMsg = 0;
+			sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
 
 			//m_saveSurfaceID
 			unsigned long urlId = 0;
@@ -355,9 +386,13 @@ void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 				urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) + 1;
 
 			}
-			ss<<"," << urlId <<");";
+			sqlite3_bind_text( stmt, 8, QString::number( urlId ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
-			m_sqlTotalInsert += ss.str();
+
+			sqlite3_step( stmt );
+			sqlite3_clear_bindings( stmt );
+			sqlite3_reset( stmt );
+
 			previousPhotonID = m_exportedPhoton;
 		}
 	}
@@ -385,42 +420,43 @@ void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 				urlId++;
 			}
 
-			ss << "Insert into photons values("<< (++m_exportedPhoton );
+
+			sqlite3_bind_text( stmt, 1, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveCoordinates
-			Point3D localPos = worldToObject( photon->pos );
-			ss <<"," << localPos.x <<"," << localPos.y <<"," << localPos.z;
+			Point3D photonPos = worldToObject(  photon->pos );
+			sqlite3_bind_text( stmt, 2, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 3, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 4, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveSide
-			ss << ","<< photon->side;
+			sqlite3_bind_text( stmt, 5, QString::number( photon->side ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_savePrevNexID
-			ss <<"," << previousPhotonID;
-
+			sqlite3_bind_text( stmt, 6, QString::number( previousPhotonID ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			int nextPhotonID = 0;
 			if( ( i < ( nPhotonElements - 1 ) ) && ( raysLists[i+1]->id > 0  ) )
 				nextPhotonID = m_exportedPhoton +1;
-			ss <<"," << nextPhotonID;
+			sqlite3_bind_text( stmt, 7, QString::number( nextPhotonID ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveSurfaceID
-			ss<<"," << urlId <<");";
+			sqlite3_bind_text( stmt, 8, QString::number( urlId ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
-			m_sqlTotalInsert += ss.str();
+
+			sqlite3_step( stmt );
+			sqlite3_clear_bindings( stmt );
+			sqlite3_reset( stmt );
 			previousPhotonID = m_exportedPhoton;
 		}
 	}
+	int rc = sqlite3_exec( m_pDB, "END TRANSACTION", 0, 0, &sErrMsg );
 
-	char* zErrMsg = 0;
-	m_sqlTotalInsert.append( "COMMIT;" );
-
-	int rc = sqlite3_exec( m_pDB, m_sqlTotalInsert.c_str(), 0, 0, &zErrMsg );
-	if( rc!=SQLITE_OK )
+	sqlite3_finalize( stmt );
+	if( rc != SQLITE_OK )
 	{
-		std::cout<< "SQL error: "<<zErrMsg<<"\n"<<std::endl;
-		sqlite3_free(zErrMsg);
+		std::cout<< "SQL error: "<<sErrMsg<<"\n"<<std::endl;
+		sqlite3_free( sErrMsg );
 	}
-	m_sqlTotalInsert.clear();
-	m_sqlTotalInsert = "BEGIN;";
 }
 
 /*!
@@ -429,22 +465,35 @@ void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 void PhotonMapExportDB::SaveNotNextPrevID( std::vector< Photon* > raysLists )
 {
 
+	const char* tail = 0;
+	sqlite3_stmt* stmt;
+	char insertSQL[256] ="\0";
+	sprintf( insertSQL, "INSERT INTO Photons VALUES( @id, @x, @y, @z, @side, @surfaceID )" );
+	sqlite3_prepare_v2( m_pDB, insertSQL, 256, &stmt, &tail );
+
+	char* sErrMsg = 0;
+	sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
+
 	unsigned long nPhotonElements = raysLists.size();
 
 	if( m_saveCoordinatesInGlobal )
 	{
+
 		for( unsigned int i = 0; i < nPhotonElements; i++ )
 		{
-			std::stringstream ss;
 			Photon* photon = raysLists[i];
 
-			ss << "INSERT INTO Photons VALUES("<< (++m_exportedPhoton );
+
+			sqlite3_bind_text( stmt, 1, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveCoordinates
-			ss <<"," << photon->pos.x <<"," << photon->pos.y <<"," << photon->pos.z;
+			Point3D photonPos =  photon->pos;
+			sqlite3_bind_text( stmt, 2, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 3, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 4, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveSide
-			ss << ","<< photon->side;
+			sqlite3_bind_text( stmt, 5, QString::number( photon->side ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveSurfaceID
 			unsigned long urlId = 0;
@@ -456,9 +505,12 @@ void PhotonMapExportDB::SaveNotNextPrevID( std::vector< Photon* > raysLists )
 				urlId = m_surfaceIdentfier.indexOf( photon->intersectedSurface ) + 1;
 
 			}
-			ss<<"," << urlId <<");";
+			sqlite3_bind_text( stmt, 6, QString::number( urlId ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
-			m_sqlTotalInsert += ss.str();
+
+			sqlite3_step( stmt );
+			sqlite3_clear_bindings( stmt );
+			sqlite3_reset( stmt );
 		}
 	}
 	else
@@ -484,33 +536,36 @@ void PhotonMapExportDB::SaveNotNextPrevID( std::vector< Photon* > raysLists )
 				urlId++;
 			}
 
-			ss << "INSERT INTO Photons VALUES("<< (++m_exportedPhoton );
+			sqlite3_bind_text( stmt, 1, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveCoordinates
 			Point3D localPos = worldToObject( photon->pos );
-			ss <<"," << localPos.x <<"," << localPos.y <<"," << localPos.z;
+			sqlite3_bind_text( stmt, 2, QString::number( localPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 3, QString::number( localPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, 4, QString::number( localPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveSide
-			ss << ","<< photon->side;
+			sqlite3_bind_text( stmt, 5, QString::number( photon->side ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveSurfaceID
-			ss<<"," << urlId <<");";
+			sqlite3_bind_text( stmt, 6, QString::number( urlId ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
-			m_sqlTotalInsert += ss.str();
+
+			sqlite3_step( stmt );
+			sqlite3_clear_bindings( stmt );
+			sqlite3_reset( stmt );
+
+
 		}
 	}
+	int rc = sqlite3_exec( m_pDB, "END TRANSACTION", 0, 0, &sErrMsg );
 
-	char* zErrMsg = 0;
-	m_sqlTotalInsert.append( "COMMIT;" );
-
-	int rc = sqlite3_exec( m_pDB, m_sqlTotalInsert.c_str(), 0, 0, &zErrMsg );
-	if( rc!=SQLITE_OK )
+	sqlite3_finalize( stmt );
+	if( rc != SQLITE_OK )
 	{
-		std::cout<< "SQL error: "<<zErrMsg<<"\n"<<std::endl;
-		sqlite3_free(zErrMsg);
+		std::cout<< "SQL error: "<<sErrMsg<<"\n"<<std::endl;
+		sqlite3_free( sErrMsg );
 	}
-	m_sqlTotalInsert.clear();
-	m_sqlTotalInsert = "BEGIN;";
 }
 
 /*!
@@ -519,12 +574,29 @@ void PhotonMapExportDB::SaveNotNextPrevID( std::vector< Photon* > raysLists )
 void PhotonMapExportDB::SaveSelectedData( std::vector< Photon* > raysLists )
 {
 
+
+	const char* tail = 0;
+	sqlite3_stmt* stmt;
+	QString insertCommand( "INSERT INTO Photons VALUES( @id" );
+
+	if( m_saveCoordinates )	insertCommand.append( ", @x, @y, @z" );
+	if( m_saveSide )	insertCommand.append( ", @side" );
+	if( m_savePrevNexID )	insertCommand.append( ", @prev, @next" );
+	if( m_saveSurfaceID )	insertCommand.append( ", @surfaceID" );
+	insertCommand.append( ")" );
+
+	sqlite3_prepare_v2( m_pDB, insertCommand.toStdString().c_str(), 256, &stmt, &tail );
+
+	char* sErrMsg = 0;
+	sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
+
 	unsigned long nPhotonElements = raysLists.size();
 	double previousPhotonID = 0;
 
+
 	for( unsigned int i = 0; i < raysLists.size(); i++ )
 	{
-		std::stringstream ss;
+		int parameterIndex = 0;
 		Photon* photon = raysLists[i];
 		if( photon->id < 1 )	previousPhotonID = 0;
 
@@ -544,47 +616,57 @@ void PhotonMapExportDB::SaveSelectedData( std::vector< Photon* > raysLists )
 			urlId++;
 		}
 
-		ss << "INSERT INTO Photons VALUES("<< (++m_exportedPhoton );
+		sqlite3_bind_text( stmt, ++parameterIndex, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 		if( m_saveCoordinates && m_saveCoordinatesInGlobal )
-			ss <<"," << photon->pos.x <<"," << photon->pos.y <<"," << photon->pos.z;
+		{
+			Point3D photonPos =  photon->pos;
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+
+		}
 		else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )
 		{
-			Point3D localPos = worldToObject( photon->pos );
-			ss <<"," << localPos.x <<"," << localPos.y <<"," << localPos.z;
+			Point3D photonPos = worldToObject( photon->pos );
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 		}
 
-		if( m_saveSide )	ss << ","<< photon->side;
+		if( m_saveSide )
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photon->side ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 		if( m_savePrevNexID )
 		{
-			ss <<"," << previousPhotonID;
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( previousPhotonID ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
+
 			int nextPhotonID = 0;
 			if( ( i < ( nPhotonElements - 1 ) ) && ( raysLists[i+1]->id > 0  ) )
 				nextPhotonID = m_exportedPhoton +1;
-
-			ss <<"," << nextPhotonID;
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( nextPhotonID ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 		}
 
-		if( m_saveSurfaceID )	ss<<"," << urlId;
+		if( m_saveSurfaceID )
+			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( urlId ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
-		ss<<" );";
+		sqlite3_bind_text( stmt, 1, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
-		m_sqlTotalInsert += ss.str();
+		sqlite3_step( stmt );
+		sqlite3_clear_bindings( stmt );
+		sqlite3_reset( stmt );
+
 		previousPhotonID = m_exportedPhoton;
 	}
 
-	char* zErrMsg = 0;
-	m_sqlTotalInsert.append( "COMMIT;" );
+	int rc = sqlite3_exec( m_pDB, "END TRANSACTION", 0, 0, &sErrMsg );
 
-	int rc = sqlite3_exec( m_pDB, m_sqlTotalInsert.c_str(), 0, 0, &zErrMsg );
-	if( rc!=SQLITE_OK )
+	sqlite3_finalize( stmt );
+	if( rc != SQLITE_OK )
 	{
-		std::cout<< "SQL error: "<<zErrMsg<<"\n"<<std::endl;
-		sqlite3_free(zErrMsg);
+		std::cout<< "SQL error: "<<sErrMsg<<"\n"<<std::endl;
+		sqlite3_free( sErrMsg );
 	}
-	m_sqlTotalInsert.clear();
-	m_sqlTotalInsert = "BEGIN;";
 }
 
 
