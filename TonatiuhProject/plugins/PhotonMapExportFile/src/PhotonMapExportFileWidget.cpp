@@ -12,7 +12,7 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
+QSettings
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "PhotonMapExportFile.h"
 #include "PhotonMapExportFileWidget.h"
@@ -101,19 +102,26 @@ QString PhotonMapExportFileWidget::GetParameterValue( QString parameter ) const
  */
 void PhotonMapExportFileWidget::SelectSaveDirectory()
 {
-	QString directoryToExport = QFileDialog::getExistingDirectory ( this, tr( "Save Directory" ) );
+	QSettings settings( QLatin1String( "NREL UTB CENER" ), QLatin1String( "Tonatiuh" ) );
+	QString lastUsedDirectory = settings.value( QLatin1String( "PhotonMapExportFileWidget.directoryToExport" ),
+			QLatin1String( "." ) ).toString();
+
+
+	QString directoryToExport = QFileDialog::getExistingDirectory ( this, tr( "Save Direcotry" ), lastUsedDirectory );
 	if( directoryToExport.isEmpty() )	return;
 
 
 	QDir dirToExport( directoryToExport );
 	if( !dirToExport.exists() )
 	{
-		QMessageBox::information( this, QLatin1String( "Tonatiuh" ), tr( "Selected directory is not is not  valid." ), 1 );
-			return;
+		QMessageBox::information( this, QLatin1String( "Tonatiuh" ), tr( "Selected directory is not is not valid." ), 1 );
+		return;
 
 	}
 
+	settings.setValue( QLatin1String( "PhotonMapExportFileWidget.directoryToExport" ), directoryToExport );
 	saveDirectoryLine->setText( directoryToExport );
+
 }
 
 /*!
