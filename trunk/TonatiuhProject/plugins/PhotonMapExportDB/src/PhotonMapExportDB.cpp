@@ -366,16 +366,6 @@ void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 				nextPhotonID = m_exportedPhoton +1;
 			sqlite3_bind_text( stmt, 7, QString::number( nextPhotonID ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
-
-			const char* tail = 0;
-			sqlite3_stmt* stmt;
-			char insertSQL[256] ="\0";
-			sprintf( insertSQL, "INSERT INTO Photons VALUES( @id, @x, @y, @z, @side, @prev, @next, @surfaceID )" );
-			sqlite3_prepare_v2( m_pDB, insertSQL, 256, &stmt, &tail );
-
-			char* sErrMsg = 0;
-			sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
-
 			//m_saveSurfaceID
 			unsigned long urlId = 0;
 			if( photon->intersectedSurface )
