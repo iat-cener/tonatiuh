@@ -138,6 +138,7 @@ void RayTracer::RayTracerCreatingAllPhotons( double numberOfRays  )
 
 					if( m_transmissivity && !m_transmissivity->IsTransmitted( ray.maxt, rand ) )
 					{
+						++rayLength;
 						isReflectedRay = false;
 						intersectedSurface = 0;
 						ray.maxt = HUGE_VAL;
@@ -157,6 +158,7 @@ void RayTracer::RayTracerCreatingAllPhotons( double numberOfRays  )
 
 			if( !(rayLength == 0 && ray.maxt == HUGE_VAL ) )
 			{
+
 				if( ray.maxt == HUGE_VAL  )
 				{
 					ray.maxt = 0.1;
@@ -220,6 +222,7 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
 
 					if( m_transmissivity && !m_transmissivity->IsTransmitted( ray.maxt, rand ) )
 					{
+						++rayLength;
 						isReflectedRay = false;
 						intersectedSurface = 0;
 						ray.maxt = HUGE_VAL;
@@ -228,8 +231,9 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
 				}
 				if( isReflectedRay )
 				{
+					++rayLength;
 					if( m_exportSuraceList.contains( intersectedSurface ) )
-						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, rayLength, intersectedSurface) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
@@ -271,6 +275,7 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
  */
 void RayTracer::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 {
+	// std::cout<<"RayTracer::RayTracerNotCreatingLightPhotons"<<std::endl;
 
 	std::vector< Photon > photonsVector;
 	ParallelRandomDeviate rand( m_pRand, m_mutex );
@@ -298,19 +303,21 @@ void RayTracer::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 				if( rayLength > 0 )
 				{
 					currentRaysWay.push_back( ray );
-
 					if( m_transmissivity && !m_transmissivity->IsTransmitted( ray.maxt, rand ) )
 					{
+						++rayLength;
 						isReflectedRay = false;
 						intersectedSurface = 0;
 						ray.maxt = HUGE_VAL;
 					}
 
+
 				}
 				if( isReflectedRay )
 				{
+					++rayLength;
 					if( m_exportSuraceList.contains( intersectedSurface ) )
-						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, rayLength, intersectedSurface) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
