@@ -4,9 +4,7 @@
 
 A scene consists of one or more nodes hierarchically oredered.  To create scenes, the nodes are added as children of grouping nodes.
 
-<a href="https://picasaweb.google.com/lh/photo/7fQEZquqdmkb04TyqtIJB-hPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh4.googleusercontent.com/-CuUiZ8vAoKw/ULXFSnjAAiI/AAAAAAAAAL4/duY64hNAazU/s144/TreeView.png" />
-
-[http://tonatiuh.googlecode.com/svn/wiki/images/userguide/TonatiuhScene.png]
+<a href="https://picasaweb.google.com/lh/photo/jtG7cObFSFi7fZZf_8LSW-hPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh4.googleusercontent.com/-CuUiZ8vAoKw/ULXFSnjAAiI/AAAAAAAAAL4/duY64hNAazU/s288/TreeView.png" />
 
 
 = Type of Nodes =
