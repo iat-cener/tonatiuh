@@ -48,7 +48,6 @@ These nodes change the parent node parameters automatically when a scene light p
 
 Light node groups the information about the sun light. Light is defined as:
  * Sunshape
- * Shape
  * Position
 
 This information will be the ray tracer input.
