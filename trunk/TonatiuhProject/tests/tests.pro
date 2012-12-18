@@ -22,6 +22,7 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/ParallelRandomDeviate.o \
                         $$(TONATIUH_ROOT)/debug/PathWrapper.o \
                         $$(TONATIUH_ROOT)/debug/Photon.o \
+                        $$(TONATIUH_ROOT)/debug/PhotonMapExport.o \
                         $$(TONATIUH_ROOT)/debug/Point3D.o \
                         $$(TONATIUH_ROOT)/debug/PluginManager.o \
                         $$(TONATIUH_ROOT)/debug/RayTracer.o \
@@ -74,6 +75,7 @@ else {
                         $$(TONATIUH_ROOT)/release/ParallelRandomDeviate.o \
                         $$(TONATIUH_ROOT)/release/PathWrapper.o \
                         $$(TONATIUH_ROOT)/release/Photon.o \
+                        $$(TONATIUH_ROOT)/release/PhotonMapExport.o \
                         $$(TONATIUH_ROOT)/release/Point3D.o \
                         $$(TONATIUH_ROOT)/release/PluginManager.o \
                         $$(TONATIUH_ROOT)/release/RayTracer.o \
