@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <QIcon>
 #include <QObject>
 #include <QMessageBox>
@@ -138,7 +140,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 	//Evaluate Tolerance
 	double tol = 0.00001;
-	if( (thit - objectRay.mint) < tol ) return false;
+	//if( (thit - objectRay.mint) < tol ) return false;
 
 	// Compute parabolic cylinder hit position
     Point3D hitPoint = objectRay( thit );
@@ -158,7 +160,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 	if( ( xmin * xmax ) > 0 ) ymin = std::min( y1, y2 );
 	double ymax = std::max( y1, y2 );
 
-	if( hitPoint.z < z1 ||
+	if( ( thit - objectRay.mint) < tol ||
+		hitPoint.z < z1 ||
 		hitPoint.z > z2 ||
 		hitPoint.y > ymax || hitPoint.y < ymin ||
 		hitPoint.x > xmax || hitPoint.x < xmin )
@@ -173,7 +176,8 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 		z1 = ( ( zmax - lengthXMin.getValue() ) / 2 ) + ( (lengthXMin.getValue() - lengthXMax.getValue() ) / ( 2 * ( xmax - xmin ) ) ) * ( hitPoint.x - xmin );
 		z2 = ( ( zmax + lengthXMin.getValue() ) / 2 )  + ( ( (lengthXMax.getValue() - lengthXMin.getValue() ) / ( 2 * ( xmax - xmin ) ) )  * ( hitPoint.x - xmin ) );
 
-		if( hitPoint.z < z1 ||
+		if( ( thit - objectRay.mint) < tol ||
+			hitPoint.z < z1 ||
 			hitPoint.z > z2 ||
 			hitPoint.y > ymax || hitPoint.y < ymin ||
 			hitPoint.x > xmax || hitPoint.x < xmin)
@@ -229,6 +233,7 @@ bool ShapeTroughParabola::Intersect(const Ray& objectRay, double *tHit, Differen
 
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
+
 	return true;
 }
 

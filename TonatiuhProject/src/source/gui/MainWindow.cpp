@@ -1802,6 +1802,11 @@ void MainWindow::Run()
 		//Compute bounding boxes and world to object transforms
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), true );
 
+		/*std::cout<<
+				rootSeparatorInstance->GetIntersectionTransform()<<std::endl;
+				*/
+		m_pPhotonMap->SetConcentratorToWorld( rootSeparatorInstance->GetIntersectionTransform() );
+
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
 		QStringList disabledNodes = QString( light->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
 		QVector< QPair< TShapeKit*, Transform > > surfacesList;

@@ -63,6 +63,14 @@ PhotonMapExport::~PhotonMapExport()
 }
 
 /*!
+ * Sets the transformation to change from concentrator coordinates to world coordinates.
+ */
+void PhotonMapExport::SetConcentratorToWorld( Transform concentratorToWorld )
+{
+	m_concentratorToWorld = concentratorToWorld;
+}
+
+/*!
  * Sets to store all photons selected data.
  */
 void PhotonMapExport::SetSaveAllPhotonsEnabled()

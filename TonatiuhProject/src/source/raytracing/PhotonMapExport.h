@@ -56,6 +56,7 @@ public:
 
 	virtual void EndExport() = 0;
 	virtual void SavePhotonMap( std::vector < Photon* > raysLists ) = 0;
+	void SetConcentratorToWorld( Transform concentratorToWorld );
 	virtual void SetPowerPerPhoton( double wPhoton ) = 0;
 
 	void SetSaveAllPhotonsEnabled();
@@ -70,6 +71,7 @@ public:
 	virtual bool StartExport() = 0;
 
 protected:
+    Transform m_concentratorToWorld;
 	SceneModel* m_pSceneModel;
 	bool m_saveAllPhotonsData;
 	bool m_saveCoordinates;
