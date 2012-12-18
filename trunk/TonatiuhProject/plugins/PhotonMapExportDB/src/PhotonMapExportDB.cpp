@@ -351,7 +351,7 @@ void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 			sqlite3_bind_text( stmt, 1, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveCoordinates
-			Point3D photonPos =  photon->pos;
+			Point3D photonPos =  m_concentratorToWorld( photon->pos );
 			sqlite3_bind_text( stmt, 2, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			sqlite3_bind_text( stmt, 3, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			sqlite3_bind_text( stmt, 4, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
@@ -477,7 +477,7 @@ void PhotonMapExportDB::SaveNotNextPrevID( std::vector< Photon* > raysLists )
 			sqlite3_bind_text( stmt, 1, QString::number(++m_exportedPhoton ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 
 			//m_saveCoordinates
-			Point3D photonPos =  photon->pos;
+			Point3D photonPos =  m_concentratorToWorld( photon->pos );
 			sqlite3_bind_text( stmt, 2, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			sqlite3_bind_text( stmt, 3, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			sqlite3_bind_text( stmt, 4, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
@@ -610,7 +610,7 @@ void PhotonMapExportDB::SaveSelectedData( std::vector< Photon* > raysLists )
 
 		if( m_saveCoordinates && m_saveCoordinatesInGlobal )
 		{
-			Point3D photonPos =  photon->pos;
+			Point3D photonPos =  m_concentratorToWorld( photon->pos );
 			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.x ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.y ).toStdString().c_str(), -1, SQLITE_TRANSIENT );
 			sqlite3_bind_text( stmt, ++parameterIndex, QString::number( photonPos.z ).toStdString().c_str(), -1, SQLITE_TRANSIENT );

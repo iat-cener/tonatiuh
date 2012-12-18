@@ -224,7 +224,8 @@ void PhotonMapExportFile::ExportAllPhotonsAllData( QString filename, std::vector
 
 
 			//m_saveCoordinates
-			out<<photon->pos.x << photon->pos.y << photon->pos.z;
+			Point3D scenePos = m_concentratorToWorld( photon->pos );
+			out<<scenePos.x << scenePos.y << scenePos.z;
 
 			//m_saveSide
 			double side = double( photon->side );
@@ -334,7 +335,9 @@ void PhotonMapExportFile::ExportAllPhotonsNotNextPrevID( QString filename, std::
 			out<<double( ++m_exportedPhotons );
 
 			//m_saveCoordinates
-			out<<photon->pos.x << photon->pos.y << photon->pos.z;
+			Point3D scenePos = m_concentratorToWorld( photon->pos );
+			out<<scenePos.x << scenePos.y << scenePos.z;
+			//out<<photon->pos.x << photon->pos.y << photon->pos.z;
 
 			//m_saveSide
 			out<<double( photon->side );
@@ -498,7 +501,9 @@ void PhotonMapExportFile::ExportSelectedPhotonsAllData( QString filename, std::v
 			if( photon->id < 1 )	previousPhotonID = 0;
 
 			//m_saveCoordinates
-			out<<photon->pos.x << photon->pos.y << photon->pos.z;
+			Point3D scenePos = m_concentratorToWorld( photon->pos );
+			out<<scenePos.x << scenePos.y << scenePos.z;
+			//out<<photon->pos.x << photon->pos.y << photon->pos.z;
 
 			//m_saveSide
 			double side = double( photon->side );
@@ -612,7 +617,9 @@ void PhotonMapExportFile::ExportSelectedPhotonsNotNextPrevID( QString filename, 
 			out<<double( ++m_exportedPhotons );
 
 			//m_saveCoordinates
-			out<<photon->pos.x << photon->pos.y << photon->pos.z;
+			Point3D scenePos = m_concentratorToWorld( photon->pos );
+			out<<scenePos.x << scenePos.y << scenePos.z;
+			//out<<photon->pos.x << photon->pos.y << photon->pos.z;
 
 			//m_saveSide
 			double side = double( photon->side );
@@ -717,7 +724,13 @@ void PhotonMapExportFile::ExportSelectedPhotonsSelectedData( QString filename, s
 		out<<double( ++m_exportedPhotons );
 		if( photon->id < 1 )	previousPhotonID = 0;
 
-		if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon->pos.x << photon->pos.y << photon->pos.z;
+		if( m_saveCoordinates && m_saveCoordinatesInGlobal )
+		{
+
+			Point3D scenePos = m_concentratorToWorld( photon->pos );
+			out<<scenePos.x << scenePos.y << scenePos.z;
+			//out<<photon->pos.x << photon->pos.y << photon->pos.z;
+		}
 		else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )
 		{
 			Point3D localPos = worldToObject( photon->pos );

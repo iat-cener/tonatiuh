@@ -67,12 +67,22 @@ void TPhotonMap::SetBufferSize( unsigned long nPhotons )
 }
 
 /*!
+ * Sets the transformation to change from concentrator coordinates to world coordinates.
+ */
+void TPhotonMap::SetConcentratorToWorld( Transform concentratorToWorld )
+{
+	m_concentratorToWorld = concentratorToWorld;
+	if( m_pExportPhotonMap ) 	m_pExportPhotonMap->SetConcentratorToWorld( m_concentratorToWorld );
+}
+
+/*!
  *Sets the photonmap export mode.
  */
 bool TPhotonMap::SetExportMode( PhotonMapExport* pExportPhotonMap )
 {
 	if( !pExportPhotonMap )	return 0;
 	m_pExportPhotonMap = pExportPhotonMap;
+	m_pExportPhotonMap->SetConcentratorToWorld( m_concentratorToWorld );
 
 	if( !m_pExportPhotonMap->StartExport() ) return 0;
 

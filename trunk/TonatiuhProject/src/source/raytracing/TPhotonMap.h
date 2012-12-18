@@ -15,17 +15,18 @@ public:
 	std::vector< Photon* > GetAllPhotons() const;
 	PhotonMapExport* GetExportMode( ) const;
 	void SetBufferSize( unsigned long nPhotons );
+	void SetConcentratorToWorld( Transform concentratorToWorld );
 	bool SetExportMode( PhotonMapExport* pExportPhotonMap );
 	void StoreRays( std::vector< Photon >& ray );
 
 
 private:
     unsigned long m_bufferSize;
+    Transform m_concentratorToWorld;
     PhotonMapExport* m_pExportPhotonMap;
 	const SceneModel* m_pSceneModel;
     unsigned long m_storedPhotonsInBuffer;
     unsigned long m_storedAllPhotons;
-	//std::vector< std::vector <Photon > > m_photonsInMemory;
     std::vector< Photon* > m_photonsInMemory;
 
 
