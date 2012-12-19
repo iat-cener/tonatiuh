@@ -8,20 +8,12 @@ This tutorial is going to be an introduction to tonatiuh script tool, which will
 = Main functions =
 
 Those are the functions to develop a system by scripting. They are explained following an alphabetic order:
- * _ChangeSunPosition(double azimuth, double elevation)_: Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
-
-{{{
-ChangeSunPosition(double azimuth, double elevation) --> 
-Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
-
-ChangeSunPosition(int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude ) --> 
-Sets the sun azimuth and sun elevation to the position the sun should be at the date and geographical position defined.
-
-Copy()-->Copy the selected node.
-
-Copy(QString nodeURL)-->Copy the nodeURL defined.
-
-CreateGroupNode() --> Creates a separator node.
+ * _!AddExportSurfaceURL( QString nodeURL )_: Adds the surface with the URL _nodeURL_ to the export surfaces list. The _nodeURL_ is the tree nodes names starting form the root ("\\SunNode\ROOTNODENAME ", where ROOTNODENAME is the name of the root node in the scene ) to the surface node ( the node that contains the surface shape and material).
+ * _!ChangeSunPosition(double azimuth, double elevation)_: Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
+ * _!ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude )_: Changes the sun position to the position defined for a location ( latitude and _longitude_ in degrees) and for the time in UT. 	
+ * _!Copy()_: Copies the selected node.
+ * _!Copy(QString nodeURL)_: Copies the node defined by _nodeURL_.
+ * _!CreateGroupNode()_: Creates a separator node.
 
 CreateAnalyzerNode() --> Creates an analyzer node.
 
