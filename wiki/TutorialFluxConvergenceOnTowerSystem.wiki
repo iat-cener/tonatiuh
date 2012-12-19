@@ -264,8 +264,7 @@ DistributeDefinitions["Global`"]
 simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulationsFiles] ;
 }}}
 *Note:This only will work if the computer has more than one core. If it not your case, you will not be able to use this step.
-
-   * For each simulation, calculate the power per photon. The power per photon is the same in all the files of this simulation because there are the same number of rays traced on each cells that the sun is divided. So we can calculate the power per photon as we show bellow:
+ * For each simulation, calculate the power per photon. The power per photon is the same in all the files of this simulation because there are the same number of rays traced on each cells that the sun is divided. So we can calculate the power per photon as we show bellow:
 {{{
 fileList = FileNames[directoryList[[1]] <> "*_*.dat", directoryList];
 powerPerPhoton = ReadTonatiuhResults[fileList[[1]]][[1]]
@@ -359,7 +358,6 @@ Export["TargetMaximumFlux.png", flux]
 
 ||<a href="https://picasaweb.google.com/lh/photo/uGqpzkO7CY2ihd4kWs0k4Q?full-exif=true?"><img src="https://lh6.googleusercontent.com/-yJF0v4fzogg/Tsp64ge5API/AAAAAAAABAw/Y0rU0Ga_Esc/s912/TargetMaximumFlux.png" height="140" width="600" /></a>||
 || *Figure 6.* Graphical representationof the Maximum Flux.||
-
 
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results. If there are any problem or something is wrong either in this tutorial or in Tonatiuh, please, type your discussion at the <a href=http://code.google.com/p/tonatiuh/issues/list> issues tab </a> or better adding it to <a href=http://groups.google.com/group/tonatiuh-raytracer>Tonatiuh users group forum. </a> 
