@@ -1,4 +1,4 @@
-#summary How to model a tower system with 500 one-facet small heliostats.
+#summary How to model a tower system with 500 one-facet small heliostats into Tonatiuh v2
 
 = Introduction =
 This tutorial explains:
