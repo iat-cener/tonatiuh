@@ -16,8 +16,10 @@ The links to the available tutorials are listed below. To go to the wiki page of
 
  * [TutorialSmallHeliostatsTower How to model a tower system with 500 small one-facet heliostats.]
 
- * How to analyze the maximum flux convergence on a tower system with one heliostat.
+ * How to analyze the maximum flux convergence on a tower system with one heliostat:
   * [TutorialFluxConvergenceOnTowerSystem  Tonatiuh Version 1]
   * Tonatiuh Version 2
 
- * [TutorialSmallHeliostatsTowerUsingScript How to model a tower system with 500 small one-facet heliostats using the scripting tool.]
+ * How to model a tower system with 500 small one-facet heliostats using the scripting tool:
+  * [TutorialSmallHeliostatsTowerUsingScript Tonatiuh Version 1.]
+  * Tonatiuh Version 2
