@@ -52,7 +52,7 @@ scaleOrientation   0 0 1 0
 center             0 0 0 
 }}}
 
- * Select the new node and add a new TSeparatorKit as a child. Rename it to "TargetRotaionNode" and change the parameters to:
+ * Select the new node and add a new TSeparatorKit as a child. Rename it to "!TargetRotationNode" and change the parameters to:
 {{{
 translation        0 0 0
 rotation           0 1 0  3.1415927
@@ -82,7 +82,7 @@ translation    282.85 0 -282.85
 
  * Select "Heliostat" and add a new TSeparatorKit. Rename it to "!HeliostatTrackerNode".
 
- * Select the last node created and add a "!Heliostat_tracker" tracker. In the transform options,change the aimingPoint to:
+ * Select the last node created and add a "heliostat_tracker" tracker. In the transform options,change the aimingPoint to:
  {{{
 aimingPoint   0 100 0
  }}}
