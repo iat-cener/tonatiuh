@@ -80,9 +80,9 @@ By this moment, the tower of the system has been created. Now we need to create 
 translation    282.85 0 -282.85
  }}}
 
- * Select "Heliostat" and add a new TSeparatorKit. Rename it to "!HeliostatSurface".
+ * Select "Heliostat" and add a new TSeparatorKit. Rename it to "!HeliostatTrackerNode".
 
- * Select the last node created and add a Traker (the last icon on the rigth icon bar). In the transform options,change the aimingPoint to:
+ * Select the last node created and add a "!Heliostat_tracker" tracker. In the transform options,change the aimingPoint to:
  {{{
 aimingPoint   0 100 0
  }}}
