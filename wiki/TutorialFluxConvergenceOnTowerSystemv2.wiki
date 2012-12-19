@@ -134,7 +134,6 @@ tonatiuh.SetPhotonMapBufferSize( 5000000 );
 //number of interactions 
 for( var i = 0; i < 250; ++i ){  
 
-
 	/*Define export parameters*/
 	//The simulation will be saved into a binary file 
 	tonatiuh.SetExportPhotonMapType("Binary_file");
@@ -159,8 +158,6 @@ for( var i = 0; i < 250; ++i ){
 
 	//Increments the photon map for tunned iterations.
 	tonatiuh.SetIncreasePhotonMap( false );
-
-
 
         tonatiuh.Run();
 }
@@ -269,8 +266,26 @@ nIterations = Length[parametersFile];
 {{{
 parametersFile = FileNames["TargetData*_parameters.txt"][[1]];
 parameters = ReadTonatiuhParametersFile[parametersFile]
+nParametersPerPhoton = Length[parameters[[1]]];
 }}}
- * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with:
+ * At this moment, we know what parameters are saved for each photon and the position of the need parameters. In this example there are five parameters for each photon and the 'x' and 'z' coordinates are in the second and forth position. To take this information only we define a new function:
+{{{
+transform01[{id_, x_, y_, z_, side_}] := {x, z}
+}}}
+ * Using this function and the function to read binary files, we are to create a new function that creates a grid and count the photons in each cell:
+{{{
+BinsMatrix[filename_] := Module[{photonList, xzList, photonCounts},
+  photonList = 
+   Partition[ReadTonatiuhResults[filename], nParametersPerPhoton];
+  xzList = Map[transform01, photonList];
+  photonCounts = 
+   BinCounts[
+    xzList, {-absorberWidth/2, absorberWidth/2, 
+     elementWidth}, {-absorberLength/2, absorberLength/2, 
+     elementLength}];
+  photonCounts]
+}}}
+We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with:
 {{{
 SetDirectory[NotebookDirectory[]]
 }}}
