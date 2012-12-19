@@ -338,7 +338,7 @@ Export["TargetMFlux_error.png", rel]
 }}}
 
 ||<a href="https://picasaweb.google.com/lh/photo/NRTamUJ3Bli2n3ZNFrQVrw?full-exif=true?"><img src="https://lh4.googleusercontent.com/-kvECkvg7Xrg/Tsp64jlXCdI/AAAAAAAABA0/NTrN20idqZo/s912/TargetMFlux_error.png" height="140" width="600" /></a>||
-|| *Figure 5.* Relative error graphical output.The red vertical line <BR> determines the last element which has a relative error >|0.5%| ||
+|| *Figure 4.* Relative error graphical output.The red vertical line <BR> determines the last element which has a relative error >|0.5%| ||
 
 Another interesting result might be how the flux is going. To know that. 
  * First we are going to compute the flux in the target for every iteration:
@@ -366,7 +366,7 @@ fluxMax =
 }}}
 
 ||<a href="https://picasaweb.google.com/lh/photo/uGqpzkO7CY2ihd4kWs0k4Q?full-exif=true?"><img src="https://lh6.googleusercontent.com/-yJF0v4fzogg/Tsp64ge5API/AAAAAAAABAw/Y0rU0Ga_Esc/s912/TargetMaximumFlux.png" height="140" width="600" /></a>||
-|| *Figure 6.* Graphical representationof the Maximum Flux.||
+|| *Figure 5.* Graphical representationof the Maximum Flux.||
 
  * Finally, we use the last iteration flux to represent graphically the flux at the target:
 {{{
@@ -388,7 +388,7 @@ tonatiuh3D =
   ImageSize -> {400, 400}]
 }}}
 ||<a href="https://picasaweb.google.com/lh/photo/wCUuCooUVM0oE2-7q2h6VA?full-exif=true?"><img src="https://lh4.googleusercontent.com/-HacP8YPkuSI/Tsp5yNUhr7I/AAAAAAAABAk/3anJI0Br_mQ/s500/100Simulation_bins3D.jpg" height="240" width="450" /></a>||
-|| *Figure 4.* Example of a flux distribution on the target.||
+|| *Figure 6.* Example of a flux distribution on the target.||
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results. If there are any problem or something is wrong either in this tutorial or in Tonatiuh, please, type your discussion at the <a href=http://code.google.com/p/tonatiuh/issues/list> issues tab </a> or better adding it to <a href=http://groups.google.com/group/tonatiuh-raytracer>Tonatiuh users group forum. </a> 
 
