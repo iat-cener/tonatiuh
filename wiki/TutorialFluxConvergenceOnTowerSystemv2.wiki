@@ -82,12 +82,12 @@ translation    282.85 0 -282.85
 
  * Select "Heliostat" and add a new TSeparatorKit. Rename it to "!HeliostatTrackerNode".
 
- * Select the last node created and add a "heliostat_tracker" tracker. In the transform options,change the aimingPoint to:
+ * Select the last node created and add a "Heliostat_tracker" tracker. In the transform options,change the aimingPoint to:
  {{{
 aimingPoint   0 100 0
  }}}
  The main property of this element is to make the heliostat change the position  while the sun is moving. Doing that, we can project more rays from the sun to the target.
- * Select the "!HeliostatSurface" node and add a TShapeKit node.
+ * Select the "!HeliostatTracker" node, add a TShapeKit node and call it "!HeliostatSurface".
  * Now, add a "!Flat_Rectangle" shape and a "!Specular_Standar_Material" as a child on the previous TShapeKit.
  * Select the "!Standar_Specular_Material" and change the m_reflectivity to 1.
  * We want a square flat which surface of with a surface of 60 m<sup>2</sup>. So we have to set it values to:
