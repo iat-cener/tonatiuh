@@ -253,6 +253,23 @@ ReadTonatiuhParametersFile[filename_] :=
     {parameters, surfaces, powerPerPhoton}
     ]
 }}}
+ * Then, we define the fuction to read the photons data from binary files:
+{{{
+ReadTonatiuhResults[filename_] :=   
+  BinaryReadList[ filename, "Real64", ByteOrdering -> +1];
+}}}
+
+After defining the needed functions we are going to start reading the files:
+ * Find the binary files and compute the number of iterations runned:
+{{{
+binaryDataFiles = FileNames["TargetData*.dat"];
+nIterations = Length[parametersFile];
+}}}
+ * The number of saved parameters per photon and the power per photon is the same for all the iterations. For this reason, we are going to read only once:
+{{{
+parametersFile = FileNames["TargetData*_parameters.txt"][[1]];
+parameters = ReadTonatiuhParametersFile[parametersFile]
+}}}
  * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with:
 {{{
 SetDirectory[NotebookDirectory[]]
