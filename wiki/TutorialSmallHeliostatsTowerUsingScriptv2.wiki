@@ -1,4 +1,4 @@
-#summary How to model a tower system with 500 one-facet small heliostats using the Tonatiuh script tool.
+#summary How to model a tower system with 500 one-facet small heliostats using the Tonatiuh script tool. Valid for Tonatiuh 2.0.0.
 
 = Introduction =
 
@@ -8,6 +8,7 @@ This tutorial is going to be an introduction to tonatiuh script tool, which will
 = Main functions =
 
 Those are the functions to develop a system by scripting. They are explained following an alphabetic order:
+ * _ChangeSunPosition(double azimuth, double elevation)_: Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
 
 {{{
 ChangeSunPosition(double azimuth, double elevation) --> 
