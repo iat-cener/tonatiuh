@@ -287,17 +287,25 @@ BinsMatrix[filename_] := Module[{photonList, xzList, photonCounts},
 }}}
  * The next step is create the grid for each binary file:
 {{{
+bins = Map[BinsMatrix[#] &, binaryDataFiles];
 bins = Table[
    BinsMatrix[binaryDataFiles[[i]]], {i, 1, Length[binaryDataFiles]}];
 }}}
-To make it easier, in case you have lots of photon map files, you can do a parallel simulation. Instead of the last step, we have to use the following ones:
-{{{
-LaunchKernels[2]
-DistributeDefinitions["Global`"]
-simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulationsFiles] ;
-}}}
+ To make it easier, in case you have lots of photon map files, you can do a parallel simulation. Instead of the last step, we have to use the following ones:
+ {{{
+ LaunchKernels[2]
+ DistributeDefinitions["Global`"]
+ bins = ParallelMap[BinsMatrix[#] &, binaryDataFiles] ;
+ CloseKernels[];
+ }}}
 *Note:This only will work if the computer has more than one core. If it not your case, you will not be able to use this step.
 
+The following steps are to compute the power target for every iteration and the relative error:
+ * Compute the power per photon for each iteration. In our simulation, we have started with new photon map and, therefore, the power per photon is the same in all the files. So we can calculate the power per photon as we show bellow:
+{{{
+powerPerPhoton = 
+  Table[parameters[[3]]/i, {i, 1, Length[binaryDataFiles]}];
+}}}
    * For each simulationBinFiles, calculate the power per photon. The power per photon is the same in all the files of this simulation because there are the same number of rays traced on each cells that the sun is divided. So we can calculate the power per photon as we show bellow:
 {{{
 fileList = FileNames[directoryList[[1]] <> "*_*.dat", directoryList];
