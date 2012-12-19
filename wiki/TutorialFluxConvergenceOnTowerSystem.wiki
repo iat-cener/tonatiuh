@@ -174,12 +174,6 @@ absorberArea = absorberLength*absorberWidth
 widthDivisions = 50;
 lengthDivisions = 50;
 }}}
- * After the definion of the target dimension and target division, the divisions area can be computed.
-{{{
-elementWidth = absorberWidth/widthDivisions (*meters*);
-elementLength = absorberLength/lengthDivisions (*meters*);
-elementArea = elementWidth*elementLength (*meters square*);
-}}}
  * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with:
 {{{
 SetDirectory[NotebookDirectory[]]
