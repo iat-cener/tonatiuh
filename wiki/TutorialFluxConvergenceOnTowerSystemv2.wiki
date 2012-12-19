@@ -109,17 +109,16 @@ If we have done all steps successfully, we are about to run the system.
 
 
 
-
 == Running the system ==
 
 The main purpose of Tonatiuh is to get information about how rays can reach the target. We can simulate the rays in two ways: 
  * The easiest one consists of pressing the run button in the icon bar. You only obtain one photon map for each interaction. To export the photon map press Ray Trace, export photonMap. You can define the options to run Tonatiuh in that way by clicking on Ray trace --> Ray trace Options. Here, you can set the number of rays per interaction, you can choose between two types of random generators or set the number of divisions you want to divide the sun. Althougth you will get better results, the computation and the time will be higher. Otherwise, the improvement on the results will be better depending on the field we were using.
 
 
- * The other, is using the script editor. Please, select Automation -->script editor. This will display a new window. A basic script can be like this:
+ * The other, is using the script editor.Please, select Automation -->script editor. This will display a new window. A basic script can be like this:
 {{{
 //load a file
-tonatiuh.Open( "HeliostatSunSevilla.tnh" ); 
+tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
 
 /*Define ray tracing options*/
 //Number of rays to trace into each iteration
@@ -133,33 +132,38 @@ tonatiuh.SetRaysDrawingOptions( 0, false );
 //Buffer size
 tonatiuh.SetPhotonMapBufferSize( 5000000 );
 
-/*Define export parameters*/
-//The simulation will be saved into a binary file 
-tonatiuh.SetExportPhotonMapType("Binary_file");
-//The coordinates will be saved into target local coordinates
-tonatiuh.SetExportCoordinates( true, false );
-//The intersection surface will not saved because only target photons will be saved.
-tonatiuh. SetExportIntesectionSurface( false );
-//The surface side will also be saved
-tonatiuh.SetExportIntesectionSurfaceSide( true );
-//Previous and next data in not needed
-tonatiuh.SetExportPreviousNextPhotonID( false );
-//Target surface photons will be saved.
-var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotaionNode/TargetSurface";
-tonatiuh.AddExportSurfaceURL( targetSurface );
-//Define the directory to binary files, the files names and the size in photons for the files.
-var exportDir = "XXX";
-tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir );
-var fileNames = "TargetData";
-tonatiuh.SetExportTypeParameterValue( "ExportFile",  fileNames.concat( version ) );
-tonatiuh.SetExportTypeParameterValue( "FileSize",  "500000" );
-
-//Increments the photon map for tunned iterations.
-tonatiuh.SetIncreasePhotonMap( true );
-
 //number of interactions 
 for( var i = 0; i < 250; ++i ){  
-        tonatiuh.Run(); 
+
+
+	/*Define export parameters*/
+	//The simulation will be saved into a binary file 
+	tonatiuh.SetExportPhotonMapType("Binary_file");
+	//The coordinates will be saved into target local coordinates
+	tonatiuh.SetExportCoordinates( true, false );
+	//The intersection surface will not saved because only target photons will be saved.
+	tonatiuh. SetExportIntesectionSurface( false );
+	//The surface side will also be saved
+	tonatiuh.SetExportIntesectionSurfaceSide( true );
+	//Previous and next data in not needed
+	tonatiuh.SetExportPreviousNextPhotonID( false );
+	//Target surface photons will be saved.
+	var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotaionNode/TargetSurface";
+	tonatiuh.AddExportSurfaceURL( targetSurface );
+	//Define the directory to binary files, the files names and the size in photons for the files.
+	var exportDir = "C:/Documents and Settings/amutuberria/Desktop/Tutorial3";
+	tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir );
+	var fileNames = "TargetData";
+	var iteration = i.toString();
+	tonatiuh.SetExportTypeParameterValue( "ExportFile",  fileNames.concat( iteration )  );
+	tonatiuh.SetExportTypeParameterValue( "FileSize",  "-1" );
+
+	//Increments the photon map for tunned iterations.
+	tonatiuh.SetIncreasePhotonMap( false );
+
+
+
+        tonatiuh.Run();
 }
 }}}
 
@@ -173,7 +177,7 @@ for( var i = 0; i < 250; ++i ){
 Tonatiuh doesn't provide a photon map results analizer so it's necessary to use an external aplication such as Mathematica and R. The output photon map is saved in a .dat extension in a seven-tuple for each photon.
 
 == Data post-processing with Mathematica ==
- We use mathematica to know when photon maps converge. When we compare the convergence two by two, we get the relative error. If this error reaches a value lower than 0.5% in at least 5 cases, we will admit the result.
+We use mathematica to know when photon maps converge. When we compare the convergence two by two, we get the relative error. If this error reaches a value lower than 0.5% in at least 5 cases, we will admit the result.
 
    === How to create a post-proccess script using Mathematica ===
 
@@ -193,6 +197,12 @@ absorberArea = absorberLength*absorberWidth
 {{{
 widthDivisions = 50;
 lengthDivisions = 50;
+}}}
+ * After the definion of the target dimension and target division, the divisions area can be computed.
+{{{
+elementWidth = absorberWidth/widthDivisions (*meters*);
+elementLength = absorberLength/lengthDivisions (*meters*);
+elementArea = elementWidth*elementLength (*meters square*);
 }}}
  * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with:
 {{{
@@ -385,4 +395,4 @@ Export["TargetMaximumFlux.png", flux]
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results. If there are any problem or something is wrong either in this tutorial or in Tonatiuh, please, type your discussion at the <a href=http://code.google.com/p/tonatiuh/issues/list> issues tab </a> or better adding it to <a href=http://groups.google.com/group/tonatiuh-raytracer>Tonatiuh users group forum. </a> 
 
-[Tutorials Tutorials]
+[Tutorails Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
