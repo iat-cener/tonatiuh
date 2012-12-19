@@ -147,7 +147,7 @@ tonatiuh.SetExportPreviousNextPhotonID( false );
 var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotation/TargetSurface";
 tonatiuh.AddExportSurfaceURL( targetSurface );
 //Define the directory to binary files, the files names and the size in photons for the files.
-var exportDir = "/home/amutuberria/Escritorio/";
+var exportDir = "XXX";
 tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir );
 var fileNames = "TargetData_";
 tonatiuh.SetExportTypeParameterValue( "ExportFile",  fileNames.concat( version ) );
@@ -158,7 +158,7 @@ tonatiuh.SetIncreasePhotonMap( true );
 
 //number of interactions 
 for( var i = 0; i < 250; ++i ){  
-        tonatiuh.Run(); ); 
+        tonatiuh.Run(); 
 }
 }}}
 
