@@ -324,7 +324,7 @@ errorFluxMax =
  Table[100*(targetPower[[i]] - targetPower[[i - 1]])/
     targetPower[[i ]], {i, 2, Length[targetPower]}]
 }}}
-*The simulation will be a success if the relative error result is lower than 0.5 in, at least, 5 consecutive cases.
+* The simulation will be a success if the relative error result is lower than 0.5 in, at least, 5 consecutive cases.*
 
  * We can plot and get a graphical file of the results of the relative error by typing:
 {{{
