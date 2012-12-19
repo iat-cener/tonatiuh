@@ -8,28 +8,32 @@ This tutorial is going to be an introduction to tonatiuh script tool, which will
 = Main functions =
 
 Those are the functions to develop a system by scripting. They are explained following an alphabetic order:
- * _!AddExportSurfaceURL( QString nodeURL )_: Adds the surface with the URL _nodeURL_ to the export surfaces list. The _nodeURL_ is the tree nodes names starting form the root ("\\SunNode\ROOTNODENAME ", where ROOTNODENAME is the name of the root node in the scene ) to the surface node ( the node that contains the surface shape and material).
- * _!ChangeSunPosition(double azimuth, double elevation)_: Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
- * _!ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude )_: Changes the sun position to the position defined for a location ( latitude and _longitude_ in degrees) and for the time in UT. 	
- * _!Copy()_: Copies the selected node.
- * _!Copy(QString nodeURL)_: Copies the node defined by _nodeURL_.
- * _!CreateGroupNode()_: Creates a separator node.
+ * *AddExportSurfaceURL( QString nodeURL )* : Adds the surface with the URL _nodeURL_ to the export surfaces list. The _nodeURL_ is the tree nodes names starting form the root ("\\!SunNode\ROOTNODENAME ", where ROOTNODENAME is the name of the root node in the scene ) to the surface node ( the node that contains the surface shape and material).
 
-CreateAnalyzerNode() --> Creates an analyzer node.
+ * *!ChangeSunPosition(double azimuth, double elevation)*: Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
 
-CreateMaterial() --> Creates a material surface.
+ * *!ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude )*: Changes the sun position to the position defined for a location ( latitude and _longitude_ in degrees) and for the time in UT. 	
+ * *Copy()*: Copies the selected node to the clipboard.
 
-CreateShape(QString shapeType) --> Creates a new shape.
+ * *Copy( QString nodeURL )*: Copies the node defined by _nodeURL_ to the clipboard.
 
-CreateSurfaceNode() --> Creates a TShapeKit node.
+ * *!CreateGroupNode()*: Creates a separator node as a child of current selected node.
 
-CreateTracker(QString trackerType) --> Creates a new tracker.
+ * *!CreateAnalyzerNode()*: Creates an analyzer node as a child of current selected node.
 
-Cut() --> Cuts the selected node.
+ * *!CreateMaterial( QString materialType )*: Creates material node of type _materialType_ as a child of current selected node.
 
-Cut(QString nodeURL) --> Cuts the node defined as nodeURL.
+ * _!CreateShape( QString shapeType )_: Creates a new shape node of type _shapeType_ as a child of current selected node.
 
-Delele() --> The node selected is deleted.
+ * *!CreateSurfaceNode()*: Creates a Surface node as a child of current selected node.
+
+ * *!CreateTracker( QString trackerType )*: Creates a new tracker of type _trackerType_ as child of the current selected node.
+
+ * *Cut()*: Cuts the selected node and saves it at the clipboard.
+
+ * *Cut( QString nodeURL )*: Cuts the node defined as _nodeURL_ and saves it at the clipboard.
+
+ * *Delele()*: Deletes selected node.
 
 Delete( QString nodeURL) --> Deletes the node defined as nodeURL.
 
