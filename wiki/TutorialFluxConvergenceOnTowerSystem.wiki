@@ -118,26 +118,51 @@ The main purpose of Tonatiuh is to get information about how rays can reach the 
 {{{
 //load a file
 tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
-//number of rays to simulate
-tonatiuh_numrays( 2000000  ); 
-//Sun divisions. 
-tonatiuh_numdivisions(300,300);
 
-//type of phton map
-tonatiuh_photon_map("PhotonMapDefault"); 
-//type of random
-tonatiuh_random_generator("Mersenne Twister"); 
-//patch of the target
-var concentratorSurface = "//RootNode/Tower/Target/Target/Target"; 
-//output folder/name of file to export. create the folder previously
-var concentratorFileName = "folder/filename"; 
+/*Define ray tracing options*/
+//Number of rays to trace into each iteration
+tonatiuh.SetRaysPerIteration( 2000000  );
+//Sun divisions.  
+tonatiuh.SetRayCastingGrid( 300,300 );
+//type of random 
+tonatiuh.SetRandomDeviateType("Mersenne Twister");
+//Draw options
+tonatiuh.SetRaysDrawingOptions( 0, false );
+//Buffer size
+tonatiuh.SetPhotonMapBufferSize( 5000000 );
 
-//number of interactions
-for( var i = 1; i <= 250; ++i ){ 
-	tonatiuh_trace(); //simulate the system
-	var s = i.toString();
-//export the photon map data
-	tonatiuh_export(  concentratorFileName.concat( "_", s, ".dat" ),  concentratorSurface, false );
+//number of interactions 
+for( var i = 0; i < 250; ++i ){  
+
+
+	/*Define export parameters*/
+	//The simulation will be saved into a binary file 
+	tonatiuh.SetExportPhotonMapType("Binary_file");
+	//The coordinates will be saved into target local coordinates
+	tonatiuh.SetExportCoordinates( true, false );
+	//The intersection surface will not saved because only target photons will be saved.
+	tonatiuh. SetExportIntesectionSurface( false );
+	//The surface side will also be saved
+	tonatiuh.SetExportIntesectionSurfaceSide( true );
+	//Previous and next data in not needed
+	tonatiuh.SetExportPreviousNextPhotonID( false );
+	//Target surface photons will be saved.
+	var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotaionNode/TargetSurface";
+	tonatiuh.AddExportSurfaceURL( targetSurface );
+	//Define the directory to binary files, the files names and the size in photons for the files.
+	var exportDir = "C:/Documents and Settings/amutuberria/Desktop/Tutorial3";
+	tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir );
+	var fileNames = "TargetData";
+	var iteration = i.toString();
+	tonatiuh.SetExportTypeParameterValue( "ExportFile",  fileNames.concat( iteration )  );
+	tonatiuh.SetExportTypeParameterValue( "FileSize",  "-1" );
+
+	//Increments the photon map for tunned iterations.
+	tonatiuh.SetIncreasePhotonMap( false );
+
+
+
+        tonatiuh.Run();
 }
 }}}
 
