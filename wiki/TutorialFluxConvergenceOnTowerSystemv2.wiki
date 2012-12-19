@@ -204,7 +204,7 @@ elementLength = absorberLength/lengthDivisions (*meters*);
 elementArea = elementWidth*elementLength (*meters square*);
 }}}
 Now, we are going to define some functions to read files data:
- * The following function reads the parameters file:
+ * The following function reads the names of the parameters in the parameters file:
 {{{
 ReadParameters[filename_] := 
  Module[{parametersFileData, parametersStartIndex, parametersEndIndex,
@@ -221,6 +221,37 @@ ReadParameters[filename_] :=
    parameters = {};
    ];
   parameters]
+}}}
+ * The function to read the list of surfaces and its identifiers is the following: 
+{{{
+ReadSurfaces[filename_] := 
+ Module[{parametersFileData, surfacesStartIndex, surfacesEndIndex, 
+   surfaces},  parametersFileData = ReadList[filename, String];
+  surfacesStartIndex = 
+   Flatten[Position[parametersFileData, "START SURFACES"]][[1]];
+  surfacesEndIndex = 
+   Flatten[Position[parametersFileData, "END SURFACES"]][[1]];
+  If[(surfacesStartIndex - surfacesEndIndex) > 1, 
+   surfaces = 
+    Take[parametersFileData, {surfacesStartIndex + 1, 
+      surfacesEndIndex - 1}],
+   surfaces = {};
+   ];
+    surfaces]
+}}}
+ * Now, we are going to define a function to read the parameters names, surfaces list and the power per photon from the parameters file:
+{{{
+ReadTonatiuhParametersFile[filename_] := 
+  Module[{parametersFileData, parameters, nParameters, surfaces, 
+   data, powerPerPhoton,
+       photonsList},
+  parametersFileData = ReadList[filename, String];
+    parameters = ReadParameters[filename];
+    nParameters = Length[parameters];
+    surfaces = Sort[ReadSurfaces[filename], #1[[1]] < #2[[1]] &];
+    powerPerPhoton = ToExpression[ Last[parametersFileData]];
+    {parameters, surfaces, powerPerPhoton}
+    ]
 }}}
  * We have to set the workspace of mathematica in the directory we have the data. First create the Notebook in this directory and set the directory with:
 {{{
