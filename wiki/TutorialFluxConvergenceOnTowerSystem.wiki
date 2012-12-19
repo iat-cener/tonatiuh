@@ -101,7 +101,7 @@ activeSide    FRONT
 
 Now we have to define the sun. Without it, we will not be able to simulate the system. Only following two steps the sun will be created correctly:
  * First, click on "Sun Light" --> "Define !SunLight". In this case, choose a !Pillbox_SunShape and click "OK".
- * Finally,we want to set the sun is Sevilla at 11 A.M. Click on "!SunLigth" -->"Sun position Calculator". As we are assumming the simulation is done in summer, the local hour in Sevilla is two more hours than UTC system which is the standard used in Tonatiuh. So we have to set the time at 9.00 UTC. To see the coodinates of Sevilla, press the "Select" button inside the box called "Position Coordinates".Once Sevilla is found, right click and select "Set Home Location". Press "Ok" to change the coordinates.
+ * Finally,we want to set the sun is Sevilla at 11 A.M. Click on "!SunLigth" -->"Sun position Calculator". As we are assumming the simulation is done in summer, the local hour in Sevilla is two more hours than UTC system which is the standard used in Tonatiuh. So we have to set the time at 9.00 UTC. To see the coodinates of Sevilla, press the "Select" button inside the box called "Position Coordinates".Once Sevilla is found, right click and select "Set Home Location". Press "Ok" to change the coordinates. Click "Apply" into calculator dialog before closing this dialog.
 
 If we have done all steps successfully, we are about to run the system.
 
