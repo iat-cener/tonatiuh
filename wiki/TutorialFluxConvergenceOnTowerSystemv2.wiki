@@ -119,6 +119,19 @@ The main purpose of Tonatiuh is to get information about how rays can reach the 
 //load a file
 tonatiuh.Open( "HeliostatSunSevilla.tnh" ); 
 
+/*Define ray tracing options*/
+//Number of rays to trace into each iteration
+tonatiuh.SetRaysPerIteration( 2000000  );
+//Sun divisions.  
+tonatiuh.SetRayCastingGrid( 300,300 );
+//type of random 
+tonatiuh.SetRandomDeviateType("Mersenne Twister");
+//Draw options
+tonatiuh.SetRaysDrawingOptions( 0, false );
+//Buffer size
+tonatiuh.SetPhotonMapBufferSize( 5000000 );
+
+
 /*Define export parameters*/
 //The simulation will be saved into a binary file 
 tonatiuh.SetExportPhotonMapType("Binary_file");
@@ -130,13 +143,10 @@ tonatiuh. SetExportIntesectionSurface( false );
 tonatiuh.SetExportIntesectionSurfaceSide( true );
 //Previous and next data in not needed
 tonatiuh.SetExportPreviousNextPhotonID( false );
-
 //Target surface photons will be saved.
 var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotation/TargetSurface";
 tonatiuh.AddExportSurfaceURL( targetSurface );
-
 //Define the directory to binary files, the files names and the size in photons for the files.
-
 var exportDir = "/home/amutuberria/Escritorio/";
 tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir );
 var fileNames = "TargetData_";
