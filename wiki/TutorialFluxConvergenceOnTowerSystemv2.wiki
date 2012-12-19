@@ -60,7 +60,7 @@ scaleFactor        1 1 1
 scaleOrientation   0 0 1 0 
 center             0 0 0 
 }}}
- * Add a new TShapeKit as a child of the last node created. Now add a new shape as a child. In this example, the shape must be a "!Flat_Rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
+ * Add a new TShapeKit as a child of the last node created, called "!TargetSurface". Now add a new shape as a child. In this example, the shape must be a "!Flat_Rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
  * Set those parameters on the "!Flat_Rectangle" options:
  {{{
 width        20
@@ -114,10 +114,10 @@ The main purpose of Tonatiuh is to get information about how rays can reach the 
  * The easiest one consists of pressing the run button in the icon bar. You only obtain one photon map for each interaction. To export the photon map press Ray Trace, export photonMap. You can define the options to run Tonatiuh in that way by clicking on Ray trace --> Ray trace Options. Here, you can set the number of rays per interaction, you can choose between two types of random generators or set the number of divisions you want to divide the sun. Althougth you will get better results, the computation and the time will be higher. Otherwise, the improvement on the results will be better depending on the field we were using.
 
 
- * The other, is using the script editor.Please, select Automation -->script editor. This will display a new window. A basic script can be like this:
+ * The other, is using the script editor. Please, select Automation -->script editor. This will display a new window. A basic script can be like this:
 {{{
 //load a file
-tonatiuh_filename( "HeliostatSunSevilla.tnh" ); 
+tonatiuh.Open( "HeliostatSunSevilla.tnh" ); 
 //number of rays to simulate
 tonatiuh_numrays( 2000000  ); 
 //Sun divisions. 
