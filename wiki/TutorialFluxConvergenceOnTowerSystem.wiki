@@ -60,7 +60,7 @@ scaleFactor        1 1 1
 scaleOrientation   0 0 1 0 
 center             0 0 0 
 }}}
- * Add a new TShapeKit as a child of the last node created. Now add a new shape as a child. In this example, the shape must be a "!Flat_Rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
+ * Add a new TShapeKit as a child of the last node created, called "TargetSurface". Now add a new shape as a child. In this example, the shape must be a "!Flat_Rectangle". If we have created it properly, it should be visible on the 3D scene viewer.
  * Set those parameters on the "!Flat_Rectangle" options:
  {{{
 width        20
