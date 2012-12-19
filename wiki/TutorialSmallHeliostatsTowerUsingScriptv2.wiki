@@ -58,9 +58,9 @@ Those are the functions to develop a system by scripting. They are explained fol
 
  * *!SelectNode( QString nodeURL )*: Selects the _nodeURL_.
 
- * *!SetAimingPointAbsolute()*: Sets the _AimingPoint_ parameter value to _Absolute_ value.
+ * *!SetAimingPointAbsolute()*: Sets the _!AimingPoint_ parameter value to _Absolute_ value.
 
- * *!SetAimingPointRelative()*: Sets the _AimingPoint_ parameter value to _Relative_ value.
+ * *!SetAimingPointRelative()*: Sets the _!AimingPoint_ parameter value to _Relative_ value.
  
  * *!SetExportAllPhotonMap()*: Sets to save all intersection photons.
 
@@ -71,8 +71,18 @@ Those are the functions to develop a system by scripting. They are explained fol
  * *!SetExportIntesectionSurfaceSide( bool enabled )*: If _enabled_ is _true_ the side of the surface where ray has been intersected. Otherwise, this information will not be saved.
  
  * *!SetExportPhotonMapType( QString exportModeType )*: Sets the export photon type to _exportModeType_. Currently the _SQL_Database_, _Binary_file_ and _Not export_ are available.
-	void SetExportPreviousNextPhotonID( bool enabled );
-	void SetExportTypeParameterValue( QString parameterName, QString parameterValue );
+
+* *!SetExportPreviousNextPhotonID( bool enabled )*:  If _enabled_ is _true_ the photon previous and next photons ID will be saved. Otherwise, this information will not be saved.
+
+ * *!SetExportTypeParameterValue( QString parameterName, QString parameterValue )*: Sets to current selected export type parameter called _parameterName_ the value _parameterValue_.
+  * For _Binary_file_ the parameters are:
+   * "ExportDirectory": the directory path to store binary files.
+   * "ExportFile": the binary files root name.
+   * "FileSize": the maximum photons that can be stored into a file. Use "-1" to save into a one file.
+  * For _QSL_Database_ the parameters are:
+   * "ExportDirectory": the path of directory where the DB will be stored.
+   * "DBFilename": The file name for the database.
+
 
  * *!SetIncreasePhotonMap( bool increase )*:  --> Decides whether increase the photonMap or not.
 
