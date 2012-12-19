@@ -2,7 +2,7 @@
 
 = Introduction =
 
- * The main aim of this tutorial is explain how to analyze the tonatiuh output data to stimate the flux distribution on the target. Basically, we want to know when Tonatiuh converges. The convergence is how many rays we have to display with tonatiuh to get a stable !FluxMax and relative !FluxMax error. This tutorial has been updated to the Tonatiuh lastest version. The release 1.2.3 is the latest update of Tonatiuh. If you have an older version, please, upload it either by clicking on on Help-->Check for updates in Tonatiuh or by visiting <a href=http://code.google.com/p/tonatiuh/downloads/list> tonatiuh downloads site </a>.
+ * The main aim of this tutorial is explain how to analyze the tonatiuh output data to stimate the flux distribution on the target. Basically, we want to know when Tonatiuh converges. The convergence is how many rays we have to display with tonatiuh to get a stable !FluxMax and relative !FluxMax error. This tutorial has been updated to the Tonatiuh lastest version. The release 2.0.0 is the latest update of Tonatiuh. If you have an older version, please, upload it either by clicking on on Help-->Check for updates in Tonatiuh or by visiting <a href=http://code.google.com/p/tonatiuh/downloads/list> tonatiuh downloads site </a>.
 
 = Characteristics of the system =
 
@@ -362,3 +362,5 @@ Export["TargetMaximumFlux.png", flux]
 
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results. If there are any problem or something is wrong either in this tutorial or in Tonatiuh, please, type your discussion at the <a href=http://code.google.com/p/tonatiuh/issues/list> issues tab </a> or better adding it to <a href=http://groups.google.com/group/tonatiuh-raytracer>Tonatiuh users group forum. </a> 
+
+[Tutorials Tutorials]
