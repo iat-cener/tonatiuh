@@ -145,14 +145,14 @@ tonatiuh.SetExportIntesectionSurfaceSide( true );
 //Previous and next data in not needed
 tonatiuh.SetExportPreviousNextPhotonID( false );
 //Target surface photons will be saved.
-var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotationNode/TargetSurface";
+var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotaionNode/TargetSurface";
 tonatiuh.AddExportSurfaceURL( targetSurface );
 //Define the directory to binary files, the files names and the size in photons for the files.
 var exportDir = "XXX";
 tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir );
-var fileNames = "TargetData_";
+var fileNames = "TargetData";
 tonatiuh.SetExportTypeParameterValue( "ExportFile",  fileNames.concat( version ) );
-tonatiuh.SetExportTypeParameterValue( "FileSize",  "50" );
+tonatiuh.SetExportTypeParameterValue( "FileSize",  "500000" );
 
 //Increments the photon map for tunned iterations.
 tonatiuh.SetIncreasePhotonMap( true );
