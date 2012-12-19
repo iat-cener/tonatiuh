@@ -13,6 +13,7 @@ Those are the functions to develop a system by scripting. They are explained fol
  * *!ChangeSunPosition(double azimuth, double elevation)*: Sets the sun azimuth and sun elevation to those new values. The sun will be automatically  updated.
 
  * *!ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude )*: Changes the sun position to the position defined for a location ( latitude and _longitude_ in degrees) and for the time in UT. 	
+
  * *Copy()*: Copies the selected node to the clipboard.
 
  * *Copy( QString nodeURL )*: Copies the node defined by _nodeURL_ to the clipboard.
@@ -35,39 +36,45 @@ Those are the functions to develop a system by scripting. They are explained fol
 
  * *Delele()*: Deletes selected node.
 
-Delete( QString nodeURL) --> Deletes the node defined as nodeURL.
+ * *Delete( QString nodeURL )*: Deletes the node defined as _nodeURL_ and the childreon of this node form the scene.
 
-ExportAllPhotonMap(QString fileName) --> saves all PhotonMap in fileName.
+ * *!InsertFileComponent( QString componentFileName )*: Inserts as a child of the selected node the Tonatiuh component saved at the file _componentFileName _.
 
-ExportPhotonMap(QString fileName, QString nodeURL, bool globalCoord) -->
-Saves the nodeURL photonMap in global or relative coordinates into the fileName file.
+ * *New()*: Opens an empty Tonatiuh scene.
 
-InsertFileComponent(QString fileName) --> insert a component previously saved in fileName.
+ * *Open( QString fileName )*: Opens the _fileName_ file.
 
-New() --> Opens a new window.
+ * *Paste( QString nodeURL, QString pasteType )*: Pastes the node allocated on the clipboard as a child of _nodeURL_. The second argument, _pasteType_, indicates the type of paste, _Shared_ or _Copied_.
+ 
+ * *!PasteCopy()*: Pastes the node allocated on the clipboard as a new child of the selected node.
 
-Open(QString fileName) --> Opens the fileName file.
+ * *!PasteLink()*: Pastes the node allocated on the clipboard as a child of the selected node. Instead a new node, this function creates a new pointer to the physical node.
 
-Paste(QString nodeURL, QString pasteType) --> Paste the node allocated on the clipboard as a child of nodeURL. pasteType is to indicate the type of paste
-between Shared or Copied.
+ * *Run()*: Runs the ray tracer for the current scene.
 
-PasteCopy() --> Pastes the node allocated on the clipboard as a new child of the selected node.
+ * *!ResetAnalyzerValues()*: Resets analyzer values.
 
-PasteLink() --> Pastes the node allocated on the clipboard as a new child of the selected node.Instead a new node, this function creates a new pointer to the physical node.
+ * *!SaveAs( QString fileName )*: Saves the current system into _fileName_.
 
-Run() --> Runs tonatiuh system.
+ * *!SelectNode( QString nodeURL )*: Selects the _nodeURL_.
 
-ResetAnalyzerValues() --> Resets analyzer values.
+ * *!SetAimingPointAbsolute()*: Sets the _AimingPoint_ parameter value to _Absolute_ value.
 
-SaveAs(QString fileName)  --> Saves the current system into fileName.
+ * *!SetAimingPointRelative()*: Sets the _AimingPoint_ parameter value to _Relative_ value.
+ 
+ * *!SetExportAllPhotonMap()*: Sets to save all intersection photons.
 
-SelectNode(QString nodeURL) --> Selects the nodeURL.
+ * *!SetExportCoordinates( bool enabled, bool global )*: If _enabled_ is _false_ the photons coordintates will not be saved into simulations results. Otherwise, the coordinates will be saved into scene coordiantes if _global_ is true or in local coordinates relative to ntersection surface.
 
-SetAimingPointAbsolute() --> AimingPoint set to Absolute value.
+ * *!SetExportIntesectionSurface( bool enabled )*: If _enabled_ is _true_ the intersection surface will be saved for all photons. Otherwise, this information will not be saved.
 
-SetAimingPointRelative() --> AimingPoint set to Relative value.
+ * *!SetExportIntesectionSurfaceSide( bool enabled )*: If _enabled_ is _true_ the side of the surface where ray has been intersected. Otherwise, this information will not be saved.
+ 
+ * *!SetExportPhotonMapType( QString exportModeType )*: Sets the export photon type to _exportModeType_. Currently the _SQL_Database_, _Binary_file_ and _Not export_ are available.
+	void SetExportPreviousNextPhotonID( bool enabled );
+	void SetExportTypeParameterValue( QString parameterName, QString parameterValue );
 
-SetIncreasePhotonMap(bool increase) --> Decides whether increase the photonMap or not.
+ * *!SetIncreasePhotonMap( bool increase )*:  --> Decides whether increase the photonMap or not.
 
 SetNodeName(QString nodeName) --> Changes the selected node name to nodeName.
 
