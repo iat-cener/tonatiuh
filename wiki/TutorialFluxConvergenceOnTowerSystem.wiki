@@ -265,14 +265,13 @@ simulationsBinsFiles = ParallelMap[PositionFluxMatrix[#[[1]], #[[2]]] &, simulat
 }}}
 *Note:This only will work if the computer has more than one core. If it not your case, you will not be able to use this step.
 
-   * For each simulationBinFiles, calculate the power per photon. The power per photon is the same in all the files of this simulation because there are the same number of rays traced on each cells that the sun is divided. So we can calculate the power per photon as we show bellow:
+   * For each simulation, calculate the power per photon. The power per photon is the same in all the files of this simulation because there are the same number of rays traced on each cells that the sun is divided. So we can calculate the power per photon as we show bellow:
 {{{
 fileList = FileNames[directoryList[[1]] <> "*_*.dat", directoryList];
 powerPerPhoton = ReadTonatiuhResults[fileList[[1]]][[1]]
 wPhotons = Table[powerPerphoton/i, {i, 1, Length[simulationsBinsFiles]}] // N ;
 }}}
  * With those lines you can get a result and some graphics about how the flux distribution is going on:
-
 {{{
 results = Table[fluxAnalysis[{simulationsBinsFiles[[i]],wPhotons[[i]]}],{i, 1, Length[simulationsBinsFiles]}];
 }}} 
