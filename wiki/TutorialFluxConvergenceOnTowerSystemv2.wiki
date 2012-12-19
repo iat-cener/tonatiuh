@@ -46,16 +46,16 @@ activeSide     OUTSIDE
  * Now, it is time to create the target. Select the node "Tower" and create a new TSeparator. Rename it to "Target". Change it transform values to:
 {{{
 translation        0 100 0
-rotation           0 1 0 1.5707964
+rotation           -1 0 0 1.5707964
 scaleFactor        1 1 1 
 scaleOrientation   0 0 1 0 
 center             0 0 0 
 }}}
 
- * Select the new node and add a new TSeparatorKit as a child. Rename it to "target" and change the parameters to:
+ * Select the new node and add a new TSeparatorKit as a child. Rename it to "TargetRotaionNode" and change the parameters to:
 {{{
 translation        0 0 0
-rotation           0 0 -1 1.5707964
+rotation           0 1 0  3.1415927
 scaleFactor        1 1 1 
 scaleOrientation   0 0 1 0 
 center             0 0 0 
