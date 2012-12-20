@@ -1,7 +1,7 @@
 #summary This page defines the elements that defines the enviroment in which the system is defined.
 
 = Introduction =
-In the simulation of a solar concentration system behaviour there are some factor that can alterate system behaviour that are not related with the system design. 
+In the simulation of a solar concentration system behaviour there are some factor that are not related with the system design and can alterate simulation results. 
 
 Tonatiuh has implemented different models for the sun and the transmissivity to analyze this effects.
 
