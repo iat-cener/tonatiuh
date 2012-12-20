@@ -135,51 +135,87 @@ The tower is the element in which surface will be fixed the target frame. It wil
 To build it, click Automation-->Script Editor to open the script editor window and, please,type:
 
 {{{
-///Star with an empty system
-tonatiuh.New();
-
-//Select the RootNode 
-tonatiuh.SelectNode("//SunNode/RootNode"); 
+//Star with an empty system 
+tonatiuh.New(); 
  
-//Creates a new TSeparatorKit 
-tonatiuh.CreateGroupNode(); 
+//Select the RootNode  
+tonatiuh.SelectNode("//SunNode/RootNode");  
+  
+//Creates a new TSeparatorKit  
+tonatiuh.CreateGroupNode();  
+  
+//Select it  
+tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");  
+  
+//Change the default name to Tower 
+tonatiuh.SetNodeName("Tower");  
+tonatiuh.SelectNode( "//SunNode/RootNode/Tower" ); 
  
-//Select it 
-tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1"); 
+//Creates a new TSeparatorKit to Base node. 
+tonatiuh.CreateGroupNode();  
+tonatiuh.SelectNode( "//SunNode/RootNode/Tower/TSeparatorKit1" ); 
+tonatiuh.SetNodeName( "Base" ); 
  
-//Change the default name to Tower
-tonatiuh.SetNodeName("Tower"); 
-tonatiuh.SelectNode( "//SunNode/RootNode/Tower" );
-
-//Creates a new TSeparatorKit to Base node.
-tonatiuh.CreateGroupNode(); 
-tonatiuh.SetNodeName( "Base" );
-
-//Change in Tower the values of the "translation" parameter to "0 120 8" 
-tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","translation","0 120 8"); 
+//Change in Tower the values of the "translation" parameter to "0 120 8"  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","translation","0 120 8");  
+//Set Base values of "rotation" parameter to "1 0 0 1.5707964"  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","rotation","1 0 0 1.5707964");  
+//Set Base scale values. 
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Base", "scaleFactor", "1 0.5 1");  
+  
+//Create a SurfaceNode as a child of "Base"  
+tonatiuh.CreateSurfaceNode();  
  
-//Set Base values of "rotation" parameter to "1 0 0 1.5707964" 
-tonatiuh.SetValue("//SunNode/RootNode/Tower","rotation","1 0 0 1.5707964"); 
-//Set Base scale values.
-tonatiuh.SetValue("//SunNode/RootNode/Tower", "scaleFactor", "1 0.5 1"); 
+//Select the last node created and rename it to "TowerBaseSurface" 
+tonatiuh.SelectNode("//SunNode/RootNode/Tower/Base/TShapeKit1"); 
+tonatiuh.SetNodeName("TowerBaseSurface"); 
  
-//Create a SurfaceNode as a child of "Base" 
-tonatiuh.CreateSurfaceNode(); 
-
-//Select the last node created and rename it to "Tower_shapekit"
-tonatiuh.SelectNode("//SunNode/RootNode/Tower/Base/TShapeKit1");
-tonatiuh.SetNodeName("TowerBaseSurface");
-
-//Creates a cone shape as a child of Tower_shapeKit.
-tonatiuh.CreateShape( "Cylinder");
-
-//Creates a variable with the route to avoid typing it  the whole time
-var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cylinder";
-
-//Change some cylinder properties
-tonatiuh.SetValue( baseSurfaceNode, "raidus", "15" );
+//Creates a cone shape as a child of TowerBaseSurface. 
+tonatiuh.CreateShape( "Cylinder"); 
+ 
+//Creates a variable with the route to avoid typing it  the whole time 
+var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cylinder"; 
+ 
+//Change some cylinder properties 
+tonatiuh.SetValue( baseSurfaceNode, "radius", "15" ); 
 tonatiuh.SetValue( baseSurfaceNode, "length", "120");
 
+//Select Tower node to create the target
+tonatiuh.SelectNode( "//SunNode/RootNode/Tower" ); 
+tonatiuh.CreateGroupNode();  
+tonatiuh.SelectNode( "//SunNode/RootNode/Tower/TSeparatorKit1" ); 
+tonatiuh.SetNodeName( "Target" ); 
+ 
+//Change in Target node "translation" parameter values to "0 100 0"  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","translation","0 100 0");  
+//Set Target values of "rotation" parameter to "-1 0 0 1.5707964 "  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","rotation","-1 0 0 1.5707964 ");  
+
+
+//Select Target node to create a rotation node
+tonatiuh.SelectNode( "//SunNode/RootNode/Tower/Target" ); 
+tonatiuh.CreateGroupNode();  
+tonatiuh.SelectNode( "//SunNode/RootNode/Tower/Target/TSeparatorKit1" ); 
+tonatiuh.SetNodeName( "TargetRotationNode" ); 
+ 
+//Set "TargetRotationNode" values of "rotation" parameter to " 0 1 0  3.1415927"  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Target/TargetRotationNode","rotation"," 0 1 0  3.1415927");  
+
+//Now, create target surface node
+tonatiuh.CreateSurfaceNode();  
+//Select the last node created and rename it to "TargetSurface"
+tonatiuh.SelectNode("//SunNode/RootNode/Tower/Target/TargetRotationNode/TShapeKit1"); 
+tonatiuh.SetNodeName("TargetSurface"); 
+
+//Add the shape and material to the surface
+tonatiuh.CreateShape( "Flat_Rectangle"); 
+tonatiuh.CreateMaterial( "Specular_Standard_Material" ); 
+
+
+//Change some cylinder properties 
+var targetShapeceNode = "//SunNode/RootNode/Tower/Target/TargetRotationNode/TargetSurface/Flat_Rectangle"; 
+tonatiuh.SetValue( targetShapeceNode, "width", "20" ); 
+tonatiuh.SetValue( targetShapeceNode, "height", "20");
 }}}
 
 As soon as those lines were typed, please, click Run button and the tower will be created. 
