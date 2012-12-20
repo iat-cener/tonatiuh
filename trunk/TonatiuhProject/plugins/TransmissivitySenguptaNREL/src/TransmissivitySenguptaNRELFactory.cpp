@@ -44,12 +44,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString TransmissivitySenguptaNRELFactory::TTransmissivityName() const
 {
-	return QString("Sengupta-NREL Transmissivity" );
+	return QString( "Sengupta-NREL Transmissivity" );
 }
 
 QIcon TransmissivitySenguptaNRELFactory::TTransmissivityIcon() const
 {
-	return QIcon(":/icons/TransmissivitySenguptaNREL.png");
+	return QIcon( ":/icons/TransmissivitySenguptaNREL.png" );
 }
 
 TransmissivitySenguptaNREL* TransmissivitySenguptaNRELFactory::CreateTTransmissivity( ) const

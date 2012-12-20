@@ -1085,7 +1085,7 @@ void MainWindow::ChangeSunPosition( double azimuth, double elevation )
 }
 
 /*!
- * Sets the sun position for the localitation given by \a latitude and \a longitude coordinates.
+ * Sets the sun position for the location given by \a latitude and \a longitude coordinates in degrees.
  * Latitude is positive for North and positive longitude for east.
  * The time  defined by \a year, \a month and \a day, \a hours, \a minustes and \a seconds is ut time.
  */
