@@ -44,14 +44,14 @@ Now, we can use this shapes into Tonatiuh:
  * Parabolic dish
  * Parabolic rectangle
  * Sphere
- * Spherical Polygon
- * ShapeSphericalRectangle
- * ShapeTroughAsymmetricCPC
- * ShapeTroughCHC
- * ShapeTroughCPC
- * ShapeTroughHyperbola
- * ShapeTroughParabola
- * ShapeTrumpet
+ * Spherical polygon
+ * Spherical rectangle
+ * Trough asymmetric CPC
+ * Trough CHC
+ * Trough CPC
+ * Trough hyperbola
+ * Trough Parabola
+ * Trumpet
 
 == Material node ==
 
