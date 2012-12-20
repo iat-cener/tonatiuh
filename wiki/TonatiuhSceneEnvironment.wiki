@@ -23,8 +23,8 @@ Tonatiuh has the following models implemented:
  * "Ballestrin Transmissivity" 
  * "Mirval Transmissivity" 
  * "Sengupta-NREL Transmissivity" 
- * "VantHull Transmissivity" 
- * "VittitoeBiggs Transmissivity" 
+ * "!VantHull Transmissivity" 
+ * "!VittitoeBiggs Transmissivity" 
 
 
 [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
