@@ -114,4 +114,5 @@ Those are the functions to develop a system by scripting. They are explained fol
 
  * *!SetValue( QString nodeURL,QString parameter, QString value)*: Sets to parameter with the name _parameter_ of the node _nodeURL_, the value defined into _value_.
 
+In the Tutorials section there is an example of how use this functions to create a tower system a simulate it. Go to [TutorialSmallHeliostatsTowerUsingScriptv2 Smal heliostats Tower using script].
 [UsersGuide User Guide]| [http://code.google.com/p/tonatiuh/w/list Wiki Home]
