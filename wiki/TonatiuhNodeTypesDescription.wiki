@@ -11,7 +11,7 @@ A scene consists of one or more nodes hierarchically oredered.  To create scenes
 
 A node is each of the elements of the scene containing the data and methods to define the geometries, properties, ... of the scene.
 
-== TSeparatorKit node [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/separatorKit.png]==
+== Group node [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/separatorKit.png]==
 Is a node that groups other nodes of the scene. This type of node can group nodes of the same type or TShapeKit type nodes. 
 
 The user can define the following paramenters to this group node:
@@ -24,8 +24,8 @@ The user can define the following paramenters to this group node:
  
 The parameters are applied so that the the center parameter affects first,followed by the scale orientation, the scaling factor, the rotation, and the translation.
 
-== TShapeKit node [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/shapeKit.png]==
-Is also a group node. It croups the nodes that define a surface properties. TShapeKit can contain a shape node and a material node.
+== Surface node [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/shapeKit.png]==
+Is also a group node. It croups the nodes that define a surface properties. Surface nodes can contain a shape node and a material node.
 
 
 == Shape node ==
@@ -40,7 +40,7 @@ Material nodes defines surfaces propersties and appearance characteristics as am
 Material nodes always are leaf nodes in the scene.
 
 == Tracker node ==
-Tracker nodes are TSeparatorKit nodes children. In a TSeparatorKit node only can be one tracker node child.
+Tracker nodes are _Group nodes_ children. In a _Group node_ only can be one tracker node child.
 
 These nodes change the parent node parameters automatically when a scene light position changes. If you define a TSeparatorKit node parameter value manually and this node has a tracker child, when the light position changes this value will be removed.
 
