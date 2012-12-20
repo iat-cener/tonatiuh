@@ -362,4 +362,4 @@ Export["TargetMaximumFlux.png", flux]
 
 This is a basic tonatiuh data proccessing. You can look into Mathematica to get other results. If there are any problem or something is wrong either in this tutorial or in Tonatiuh, please, type your discussion at the <a href=http://code.google.com/p/tonatiuh/issues/list> issues tab </a> or better adding it to <a href=http://groups.google.com/group/tonatiuh-raytracer>Tonatiuh users group forum. </a> 
 
-[Tutorails Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
