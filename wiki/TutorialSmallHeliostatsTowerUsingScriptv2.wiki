@@ -199,7 +199,6 @@ tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","translation","0 130 74.25")
 //Set Target values of "rotation" parameter to "-1 0 0 1.5707964 "  
 tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","rotation","-1 0 0 1.5707964 ");  
 
-
 //Select Target node to create a rotation node
 tonatiuh.SelectNode( "//SunNode/RootNode/Tower/Target" ); 
 tonatiuh.CreateGroupNode();  
@@ -219,8 +218,7 @@ tonatiuh.SetNodeName("TargetSurface");
 tonatiuh.CreateShape( "Flat_Rectangle"); 
 tonatiuh.CreateMaterial( "Specular_Standard_Material" ); 
 
-
-//Change some cylinder properties 
+//Change target parameters values 
 var targetShapeceNode = "//SunNode/RootNode/Tower/Target/TargetRotationNode/TargetSurface/Flat_Rectangle"; 
 tonatiuh.SetValue( targetShapeceNode, "width", "10" ); 
 tonatiuh.SetValue( targetShapeceNode, "height", "10");
@@ -229,99 +227,105 @@ tonatiuh.SetValue( targetShapeceNode, "height", "10");
 == Modeling the heliostats field ==
 
 Once the tower and the target are created, it is time to create the heliostats field. We want to create a 20 rows x 25 columns shape of heliostats. In this case, the centers of the facets of two adjacent heliostats located in a row, or column, is 5.5 meters. 
-
+All the heliostats has the same geometry and, therefore, we are going to use the same heliostat surface for all the heliostats. We are going to create only one and create a link to this heliostat for the rest.
 
 {{{
+//Creates a node for heliostat field
+
 //Create a variable with the path
 var rootnode="//SunNode/RootNode";
-
-//Select the RootNode and create a new TSeparatorKit node.
-
 tonatiuh.SelectNode(rootnode);
 tonatiuh.CreateGroupNode();
 
 //Select it and rename to HeliostatField_Frame
-
 tonatiuh.SelectNode(rootnode.concat("/TSeparatorKit1"));
-tonatiuh.SetNodeName("HeliostatField_Frame");
-var helFramePath=rootnode.concat("/HeliostatField_Frame");
+tonatiuh.SetNodeName("HeliostatField");
+var fieldPath = rootnode.concat("/HeliostatField");
 
-//trans represents the z_position of the heliostasts
-//this first one is in z=-52.3 and they  are separated 5.5 meters
+//zCoord represents the z coordinate of the heliostat positions.
+//The first heliostat row is at z=-52.3 and row are separated 5.5 meters.
 
-var trans=-52.3;
+var zCoord=-52.3;
+var rGap = 5.5;
+
 //We are going to create 20 rows
+for( r=1; r<=20; ++r){
 
-for(i=1;i<=20;++i){
+	//Create a group node for the row
+	tonatiuh.SelectNode( fieldPath );
+	tonatiuh.CreateGroupNode();
+	tonatiuh.SelectNode( fieldPath.concat("/TSeparatorKit1") );
+	var rowName = "Row".concat(r);
+	tonatiuh.SetNodeName( rowName  );
+	var rowPath = fieldPath.concat("/",rowName);
 
-          //Create a new TSeparatorKitNode
+	//set the value of translation to the row
+	var rowZ = zCoord + ( r-1 ) * rGap;
+	tonatiuh.SetValue(  rowPath ,"translation","0 0".concat(" ",rowZ ) );
 
-          tonatiuh.SelectNode(helFramePath);
-          tonatiuh.CreateGroupNode();
-          tonatiuh.SelectNode(helFramePath.concat("/TSeparatorKit1"));
+	//xCoord represents the x coordinate of the heliostat positions.
+	//The first heliostat is at x=-66 and heliostats are separated 5.5 meters.
+	var xCoord=-66;
+	var hGap = 5.5;
+ 
+	for( h=1;h<= 25; ++h){
 
-          //set the value of translaation to the heliostat
+		//Create a new GroupNode for the heliostat.
+		tonatiuh.SelectNode( rowPath  );
+		tonatiuh.CreateGroupNode();
+		tonatiuh.SelectNode( rowPath.concat( "/TSeparatorKit1" ) );
+		var heliostatName = "Heliostat".concat( h );
+		var heliostatPath = rowPath.concat( "/", heliostatName );
+		tonatiuh.SetNodeName( heliostatName );
+		
+		//set the value of translation to the helisotat
+		var heliostatX = xCoord + ( h-1 ) * hGap ;
+		tonatiuh.SetValue( heliostatPath , "translation", heliostatX.toString().concat(" 0 0" ) );
 
-          tonatiuh.SetValue(helFramePath.concat("/TSeparatorKit1"),"translation","0 0".concat(" ",trans));
+		//Create a new groupNode for the tracker and rename it
+		tonatiuh.CreateGroupNode();
+		tonatiuh.SelectNode( heliostatPath.concat( "/TSeparatorKit1" ) );
+		tonatiuh.SetNodeName("HeliostatTrackerNode" );
+		
+		var heliostatTrackerPath = heliostatPath.concat( "/HeliostatTrackerNode" );
+		tonatiuh.SelectNode( heliostatTrackerPath  );
 
-          //Change the node name to Row0i_Frame. i goes from 0 to 20
-          //The first node will be called Row01_Frame and the last one Row020_Frame
+		//Create a tracker as a child of Heliostat and set the amimingPoint to "0 130 74.25"
+		tonatiuh.CreateTracker("Heliostat_tracker");
+		tonatiuh.SetValue( heliostatTrackerPath.concat("/Heliostat_tracker"), "aimingPoint", "0 130 74.25" ); 
 
-          tonatiuh.SetNodeName("Row0".concat("",i).concat("_Frame"));
+		//All the heliostatat has the same geometry. For this reasom we are going to create only one and copy it for all helisotats
+		if( r == 1 && h == 1)
+		{
+			//Create a tShapeKitNode which will contain the shape and the material of the heliostat 
+ 			tonatiuh.CreateSurfaceNode(); 
+			tonatiuh.SelectNode( heliostatTrackerPath.concat( "/TShapeKit1") ); 
+			tonatiuh.SetNodeName( "HeliostatSurface");
+			var heliostatSurfacePath = heliostatTrackerPath.concat( "/HeliostatSurface" );
 
-          
-          //Select the node created create a group node as a child and rename it to Row
+			//Create the shape. It's going to be a "Spherical_rectangle" 
+			tonatiuh.CreateShape("Spherical_rectangle"); 
+			tonatiuh.SetValue( heliostatSurfacePath.concat("/Spherical_rectangle"), "radius", "300" ); 
+			tonatiuh.SetValue( heliostatSurfacePath.concat("/Spherical_rectangle"), "widthX", "5"); 
+			tonatiuh.SetValue( heliostatSurfacePath.concat("/Spherical_rectangle"), "widthZ", "5"); 
+			tonatiuh.SetValue( heliostatSurfacePath.concat("/Spherical_rectangle"), "activeSide","INSIDE"); 
+			
+			//Create the material. It's going to be a "Specular_Standard_Material" 
+			tonatiuh.CreateMaterial("Specular_Standard_Material"); 
 
-          var row=helFramePath.concat("/Row0".concat("",i).concat("_Frame"));
-          tonatiuh.SelectNode(row);
-          tonatiuh.CreateGroupNode();
-          tonatiuh.SelectNode(row.concat("/TSeparatorKit1"));
-          tonatiuh.SetNodeName("Row");
+			//Set the material properties. 
+			tonatiuh.SetValue( heliostatSurfacePath.concat( "/Specular_Standard_Material" ), "m_reflectivity", "1" ); 
 
-          //for each row, we have to create the tree to alocate 25 heliostats
+			//Copy the node just created 
+ 			tonatiuh.Copy(); 
+		}
+		else{
+			 tonatiuh.PasteLink(); 
+		}	
+                   
+	}
 
-          var NewRow=row.concat("/Row");
-
-          //translation represents the x_position of the heliostasts
-          //this first one is in x=-66 and they  are separated 5.5 meters
-
-          var translationRow=-66;
-          for(j=1;j<=25;++j){
-
-                            //Create a new GroupNode and change the translation value
-                            tonatiuh.SelectNode(NewRow);
-                            tonatiuh.CreateGroupNode();
-                            tonatiuh.SelectNode(NewRow.concat("/TSeparatorKit1"));
-                            tonatiuh.SetValue(NewRow.concat("/TSeparatorKit1"),"translation","".concat("",translationRow).concat(" 0 0"));
-                            
-                            //Change the  translation parameter for the next iteration
-
-                            translationRow=translationRow+5.5;
-                            tonatiuh.SetNodeName("Heliostat".concat("",j).concat("_Frame"));
-	                   var helRow=NewRow.concat("/Heliostat".concat("",j).concat("_Frame"));
-                            
-                            //Create a new groupNode and rename it to Heliostat
-
-                            tonatiuh.SelectNode(helRow);
-                            tonatiuh.CreateGroupNode();
-                            tonatiuh.SelectNode(helRow.concat("/TSeparatorKit1"));
-	                   tonatiuh.SetNodeName("Heliostat");
-                            tonatiuh.SelectNode(helRow.concat("/Heliostat"));
-
-                            //Create a tracker as a child of Heliostat and set the amimingPoint to "0 130 74.25"
-
-                            tonatiuh.CreateTracker("Heliostat_tracker");
-                            tonatiuh.SetValue(helRow.concat("/Heliostat/Heliostat_tracker"),"aimingPoint","0 130 74.25");
-                           
-
-                      }
-                     
-            //Change the translation parameter for the next iteration
-
-            trans=trans+5.5;
-         
 }
-
 }}}
 
 == Inserting the shape and  material ==
