@@ -127,7 +127,7 @@ Pressing the buttom Run will ejecute it.
 
 = Script Example =
 
-To explain more in detail the script funcionality we are going to develop <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystemv2> this tutorial </a>
+To explain more in detail the script funcionality we are going to develop <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystemv2> this tutorial </a> using above functions.
 
 == Modeling the tower ==
 
@@ -135,6 +135,9 @@ The tower is the element in which surface will be fixed the target frame. It wil
 To build it, click Automation-->Script Editor to open the script editor window and, please,type:
 
 {{{
+///Star with an empty system
+tonatiuh.New();
+
 //Select the RootNode 
 tonatiuh.SelectNode("//SunNode/RootNode"); 
  
@@ -146,37 +149,36 @@ tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");
  
 //Change the default name to Tower
 tonatiuh.SetNodeName("Tower"); 
- 
+tonatiuh.SelectNode( "//SunNode/RootNode/Tower" );
+
+//Creates a new TSeparatorKit to Base node.
+tonatiuh.CreateGroupNode(); 
+tonatiuh.SetNodeName( "Base" );
+
 //Change in Tower the values of the "translation" parameter to "0 120 8" 
-tonatiuh.SetValue("//SunNode/RootNode/Tower","translation","0 120 8"); 
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","translation","0 120 8"); 
  
-//Set Tower values of "rotation" parameter to "1 0 0 1.5707964" 
+//Set Base values of "rotation" parameter to "1 0 0 1.5707964" 
 tonatiuh.SetValue("//SunNode/RootNode/Tower","rotation","1 0 0 1.5707964"); 
+//Set Base scale values.
+tonatiuh.SetValue("//SunNode/RootNode/Tower", "scaleFactor", "1 0.5 1"); 
  
-//Create a SurfaceNode as a child of "Tower" 
+//Create a SurfaceNode as a child of "Base" 
 tonatiuh.CreateSurfaceNode(); 
 
-//Create a SurfaceNode as a child of "Tower_Frame"
-
-tonatiuh.CreateSurfaceNode();
-
 //Select the last node created and rename it to "Tower_shapekit"
-tonatiuh.SelectNode("//SunNode/RootNode/Tower_Frame/TShapeKit1");
-tonatiuh.SetNodeName("Tower_shapeKit");
+tonatiuh.SelectNode("//SunNode/RootNode/Tower/Base/TShapeKit1");
+tonatiuh.SetNodeName("TowerBaseSurface");
 
 //Creates a cone shape as a child of Tower_shapeKit.
+tonatiuh.CreateShape( "Cylinder");
 
-tonatiuh.CreateShape("Cone");
 //Creates a variable with the route to avoid typing it  the whole time
+var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cylinder";
 
-var tower_shapeKitCone= "//SunNode/RootNode/Tower_Frame/Tower_shapeKit/Cone";
-
-//Change some cone properties such as baseRadius, topRadius, height and activeSide
-
-tonatiuh.SetValue(tower_shapeKitCone,"baseRadius","3");
-tonatiuh.SetValue(tower_shapeKitCone,"topRadius","2");
-tonatiuh.SetValue(tower_shapeKitCone,"height","130");
-tonatiuh.SetValue(tower_shapeKitCone,"activeSide","OUTSIDE");
+//Change some cylinder properties
+tonatiuh.SetValue( baseSurfaceNode, "raidus", "15" );
+tonatiuh.SetValue( baseSurfaceNode, "length", "120");
 
 }}}
 
