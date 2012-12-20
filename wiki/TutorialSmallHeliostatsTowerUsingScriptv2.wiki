@@ -127,11 +127,11 @@ Pressing the buttom Run will ejecute it.
 
 = Script Example =
 
-To explain more in detail the script funcionality we are going to develop <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystemv2> this tutorial </a> using above functions.
+To explain more in detail the script funcionality we are going to develop <a href=http://code.google.com/p/tonatiuh/wiki/http://code.google.com/p/tonatiuh/wiki/TutorialSmallHeliostatsTower> this tutorial </a> using above functions.
 
 == Modeling the tower ==
 
-The tower is the element in which surface will be fixed the target frame. It will have 120 meters height. 
+The tower is the element in which surface will be fixed the target frame. It will have 130 meters height. 
 To build it, click Automation-->Script Editor to open the script editor window and, please,type:
 
 {{{
@@ -156,12 +156,8 @@ tonatiuh.CreateGroupNode();
 tonatiuh.SelectNode( "//SunNode/RootNode/Tower/TSeparatorKit1" ); 
 tonatiuh.SetNodeName( "Base" ); 
  
-//Change in Tower the values of the "translation" parameter to "0 120 8"  
-tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","translation","0 120 8");  
-//Set Base values of "rotation" parameter to "1 0 0 1.5707964"  
-tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","rotation","1 0 0 1.5707964");  
-//Set Base scale values. 
-tonatiuh.SetValue("//SunNode/RootNode/Tower/Base", "scaleFactor", "1 0.5 1");  
+//Change in Tower the values of the "translation" parameter to "0 0 76.35"  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","translation","0 0 76.35");  
   
 //Create a SurfaceNode as a child of "Base"  
 tonatiuh.CreateSurfaceNode();  
@@ -171,14 +167,15 @@ tonatiuh.SelectNode("//SunNode/RootNode/Tower/Base/TShapeKit1");
 tonatiuh.SetNodeName("TowerBaseSurface"); 
  
 //Creates a cone shape as a child of TowerBaseSurface. 
-tonatiuh.CreateShape( "Cylinder" ); 
+tonatiuh.CreateShape( "Cone" ); 
  
 //Creates a variable with the route to avoid typing it  the whole time 
 var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cylinder"; 
  
-//Change some cylinder properties 
-tonatiuh.SetValue( baseSurfaceNode, "radius", "15" ); 
-tonatiuh.SetValue( baseSurfaceNode, "length", "120");
+//Change some cone properties 
+tonatiuh.SetValue( baseSurfaceNode, "baseRadius", "3" ); 
+tonatiuh.SetValue( baseSurfaceNode, "toRadius", "2" ); 
+tonatiuh.SetValue( baseSurfaceNode, "length", "135");
 }}}
 
 As soon as those lines were typed, please, click Run button and the tower will be created. 
@@ -197,8 +194,8 @@ tonatiuh.CreateGroupNode();
 tonatiuh.SelectNode( "//SunNode/RootNode/Tower/TSeparatorKit1" ); 
 tonatiuh.SetNodeName( "Target" ); 
  
-//Change in Target node "translation" parameter values to "0 100 0"  
-tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","translation","0 100 0");  
+//Change in Target node "translation" parameter values to "0 130 0"  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","translation","0 130 0");  
 //Set Target values of "rotation" parameter to "-1 0 0 1.5707964 "  
 tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","rotation","-1 0 0 1.5707964 ");  
 
@@ -224,8 +221,8 @@ tonatiuh.CreateMaterial( "Specular_Standard_Material" );
 
 //Change some cylinder properties 
 var targetShapeceNode = "//SunNode/RootNode/Tower/Target/TargetRotationNode/TargetSurface/Flat_Rectangle"; 
-tonatiuh.SetValue( targetShapeceNode, "width", "20" ); 
-tonatiuh.SetValue( targetShapeceNode, "height", "20");
+tonatiuh.SetValue( targetShapeceNode, "width", "10" ); 
+tonatiuh.SetValue( targetShapeceNode, "height", "10");
 }}}
 
 == Modeling the heliostats field ==
