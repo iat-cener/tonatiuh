@@ -114,14 +114,15 @@ Those are the functions to develop a system by scripting. They are explained fol
  * *!SetTransmissivityParameter( QString parameter, QString value )*: Assings the value into _value_ to the _parameter_ into the current defined transmissivity.
 
  * *!SetValue( QString nodeURL,QString parameter, QString value)*: Sets to parameter with the name _parameter_ of the node _nodeURL_, the value defined into _value_.
+
 = How to use the functions =
 
 Once the script editor window is opened, you can use a function only by typing tonatiuh and then, the name of the function to use. For example:
 
+{{{
 tonatiuh.New(); //Creates a new file
-
 tonatiuh.!CreateShape("Cone"); //Creates a cone.
-
+}}}
 Pressing the buttom Run will ejecute it.
 
 = Script Example =
@@ -134,22 +135,16 @@ The tower is the element in which surface will be fixed the target frame. It wil
 To build it, click Automation-->Script Editor to open the script editor window and, please,type:
 
 {{{
-
 //Select the RootNode
-
-
 tonatiuh.SelectNode("//SunNode/RootNode");
 
 //Creates a new TSeparatorKit
-
 tonatiuh.CreateGroupNode();
 
 //Select it
-
 tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");
 
 //Change the default name to Tower_Frame
-
 tonatiuh.SetNodeName("Tower_Frame");
 
 //Change in Tower_Frame the values of the "translation" parameter to "0 0 76.35"
