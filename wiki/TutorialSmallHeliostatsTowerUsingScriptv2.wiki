@@ -318,10 +318,8 @@ for( r=1; r<=20; ++r){
         }
         else{
             tonatiuh.PasteLink(); 
-        }	
-                   
+        }	             
     }
-
 }
 }}}
 Now we have the whole system created.
@@ -337,16 +335,22 @@ Now we have the whole system created.
  tonatiuh.SetSunshape("Buie_Sunshape");  //define a Buie_sunshape type
  tonatiuh.SetSunshape("Pillbox_Sunshape"); // define a Pillbox_sunshape type
 }}}
-
+ In the tutorial a Pillbox sunshape is used. So, we are goin to define the sunshape and its parameters:
+{{{
+tonatiuh.SetSunshape( "Pillbox_Sunshape" );
+tonatiuh.SetSunshapeParameter( "irradiance", "920" );
+tonatiuh.SetSunshapeParameter( "thetaMax", "0.00465" );
  * If we want to change the sun azimuth and zenith we have two ways to do it:
-
 {{{
 tonatiuh.ChangeSunPosition(123,25); //Set the azimuth to 123 and zenith to 25
 
-tonatiuh.ChangeSunPosition(2010,12,11,10,0,0,35.5,-5.23); 
+tonatiuh.ChangeSunPosition(2010, 12, 11, 10, 0, 0, 35.5, -5.23 ); 
 //this function calculates the azimuth and zenith in the place 
 //which coordinates are (35.5,-5.23) and date is 11/12/2010 at 10:00:00AM.
 }}}
+ In the turorial the sun is positioned to azimuth 0º and elevation 90º:
+{{{
+tonatiuh.ChangeSunPosition( 0, 90 );
 
  * There are two functions to export Tonatiuh data, or we export all photon map or only a certain part.
 {{{
