@@ -7,7 +7,7 @@ This tutorial is going to be an introduction to tonatiuh script tool, which will
 
 = Main functions =
 
-The list of functions available for the scripting is defined in the [TonatiuhScriptFunctionsv2 Script functions paget].
+The list of functions available for the scripting is defined in the [TonatiuhScriptFunctionsv2 Script functions page].
 
 = How to use the functions =
 
