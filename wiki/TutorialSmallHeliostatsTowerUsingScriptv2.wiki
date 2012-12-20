@@ -171,7 +171,7 @@ tonatiuh.SelectNode("//SunNode/RootNode/Tower/Base/TShapeKit1");
 tonatiuh.SetNodeName("TowerBaseSurface"); 
  
 //Creates a cone shape as a child of TowerBaseSurface. 
-tonatiuh.CreateShape( "Cylinder"); 
+tonatiuh.CreateShape( "Cylinder" ); 
  
 //Creates a variable with the route to avoid typing it  the whole time 
 var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cylinder"; 
@@ -179,7 +179,18 @@ var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cylinder";
 //Change some cylinder properties 
 tonatiuh.SetValue( baseSurfaceNode, "radius", "15" ); 
 tonatiuh.SetValue( baseSurfaceNode, "length", "120");
+}}}
 
+As soon as those lines were typed, please, click Run button and the tower will be created. 
+=== Note:=== 
+*I recommend NOT to copy this code directly on the script window of Tonatiuh because it ommits the "intro" command. It would be better save it in a file with a .tnhs extension such as tower.tnhs and, then, open it through the script editor.
+
+== Modeling the receiver ==
+
+Now, continue modeling, in that case, with the receiver. This shape will receive the whole rays reflected on the heliostats field. (The field will be created later). It will be a 20m x 20 m square.
+So the following piece of code will create it:
+
+{{{
 //Select Tower node to create the target
 tonatiuh.SelectNode( "//SunNode/RootNode/Tower" ); 
 tonatiuh.CreateGroupNode();  
@@ -211,74 +222,10 @@ tonatiuh.SetNodeName("TargetSurface");
 tonatiuh.CreateShape( "Flat_Rectangle"); 
 tonatiuh.CreateMaterial( "Specular_Standard_Material" ); 
 
-
 //Change some cylinder properties 
 var targetShapeceNode = "//SunNode/RootNode/Tower/Target/TargetRotationNode/TargetSurface/Flat_Rectangle"; 
 tonatiuh.SetValue( targetShapeceNode, "width", "20" ); 
 tonatiuh.SetValue( targetShapeceNode, "height", "20");
-}}}
-
-As soon as those lines were typed, please, click Run button and the tower will be created. 
-=== Note:=== 
-*I recommend NOT to copy this code directly on the script window of Tonatiuh because it ommits the "intro" command. It would be better save it in a file with a .tnhs extension such as tower.tnhs and, then, open it through the script editor.
-
-== Modeling the receiver ==
-
-Now, continue modeling, in that case, with the receiver. This shape will receive the whole rays reflected on the heliostats field. (The field will be created later). It will be a 10m x 10 m square.
-So the following piece of code will create it:
-
-{{{
-//Create the target
-//Select the RootNode
-
-tonatiuh.SelectNode("//SunNode/RootNode");
-
-//Creates a new TSepatatorKit node, select it and rename it to Target_Frame
-
-tonatiuh.CreateGroupNode();
-tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");
-tonatiuh.SetNodeName("Target_Frame");
-
-//Create a variable to save the node tree path
-
-var Target_FramePath="//SunNode/RootNode/Target_Frame"
-
-tonatiuh.SetValue("//SunNode/RootNode/Target_Frame","translation","0 130 74.25");
-
-tonatiuh.SetValue(Target_FramePath,"rotation"," -1 0 0 1.5707964 ");
-
-//Creates a TShapeKit node
-tonatiuh.CreateSurfaceNode();
-
-//Select the TShapeKitNode and rename it to Target_shapeKit
-
-tonatiuh.SelectNode(Target_FramePath.concat("/TShapeKit1"));
-tonatiuh.SetNodeName("Target_shapeKit");
-
-//Add a to Target_shapekit a flat_Rectangle and a "Specular_Standard_Material"
-
-tonatiuh.CreateShape("Flat_Rectangle");
-tonatiuh.CreateMaterial("Specular_Standard_Material");
-
-var Target_shapekitpath= "//SunNode/RootNode/Target_Frame/Target_shapeKit";
-
-//Set the parameter width,height and activeSide
-
-tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"width","10");
-
-tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"height","10");
-
-tonatiuh.SetValue(Target_shapekitpath.concat("/Flat_Rectangle"),"activeSide","FRONT");
-
-//Set some options to the material. 
-//The most important option is to set the reflectiviy to 0 to avoid rays reflected from the target
-
-tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_reflectivity","0");
-tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_distribution","PILLBOX");
-tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_ambientColor","0 0 0");
-tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_diffuseColor","0 0 0");
-tonatiuh.SetValue(Target_shapekitpath.concat("/Specular_Standard_Material"),"m_shininess","0.2");
-
 }}}
 
 == Modeling the heliostats field ==
