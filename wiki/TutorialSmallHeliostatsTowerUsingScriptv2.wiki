@@ -157,7 +157,7 @@ tonatiuh.SelectNode( "//SunNode/RootNode/Tower/TSeparatorKit1" );
 tonatiuh.SetNodeName( "Base" ); 
  
 //Change in Tower the values of the "translation" parameter to "0 0 76.35"  
-tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","translation","0 0 76.35");  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Base","translation","0 0 76.35"); 
   
 //Create a SurfaceNode as a child of "Base"  
 tonatiuh.CreateSurfaceNode();  
@@ -167,15 +167,15 @@ tonatiuh.SelectNode("//SunNode/RootNode/Tower/Base/TShapeKit1");
 tonatiuh.SetNodeName("TowerBaseSurface"); 
  
 //Creates a cone shape as a child of TowerBaseSurface. 
-tonatiuh.CreateShape( "Cone" ); 
+tonatiuh.CreateShape( "Cone" );
  
 //Creates a variable with the route to avoid typing it  the whole time 
-var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cylinder"; 
+var baseSurfaceNode = "//SunNode/RootNode/Tower/Base/TowerBaseSurface/Cone"; 
  
-//Change some cone properties 
+//Change some cylinder properties 
 tonatiuh.SetValue( baseSurfaceNode, "baseRadius", "3" ); 
-tonatiuh.SetValue( baseSurfaceNode, "toRadius", "2" ); 
-tonatiuh.SetValue( baseSurfaceNode, "length", "135");
+tonatiuh.SetValue( baseSurfaceNode, "topRadius", "2" ); 
+tonatiuh.SetValue( baseSurfaceNode, "height", "135");
 }}}
 
 As soon as those lines were typed, please, click Run button and the tower will be created. 
@@ -194,8 +194,8 @@ tonatiuh.CreateGroupNode();
 tonatiuh.SelectNode( "//SunNode/RootNode/Tower/TSeparatorKit1" ); 
 tonatiuh.SetNodeName( "Target" ); 
  
-//Change in Target node "translation" parameter values to "0 130 0"  
-tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","translation","0 130 0");  
+//Change in Target node "translation" parameter values to "0 130 74.25"  
+tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","translation","0 130 74.25");  
 //Set Target values of "rotation" parameter to "-1 0 0 1.5707964 "  
 tonatiuh.SetValue("//SunNode/RootNode/Tower/Target","rotation","-1 0 0 1.5707964 ");  
 
@@ -218,6 +218,7 @@ tonatiuh.SetNodeName("TargetSurface");
 //Add the shape and material to the surface
 tonatiuh.CreateShape( "Flat_Rectangle"); 
 tonatiuh.CreateMaterial( "Specular_Standard_Material" ); 
+
 
 //Change some cylinder properties 
 var targetShapeceNode = "//SunNode/RootNode/Tower/Target/TargetRotationNode/TargetSurface/Flat_Rectangle"; 
