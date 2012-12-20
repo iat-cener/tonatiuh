@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString TransmissivityMirvalFactory::TTransmissivityName() const
 {
-	return QString("Mirval Transmissivity" );
+	return QString( "Mirval Transmissivity" );
 }
 
 QIcon TransmissivityMirvalFactory::TTransmissivityIcon() const

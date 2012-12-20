@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString TransmissivityBallestrinFactory::TTransmissivityName() const
 {
-	return QString("Ballestrin Transmissivity" );
+	return QString( "Ballestrin Transmissivity" );
 }
 
 QIcon TransmissivityBallestrinFactory::TTransmissivityIcon() const

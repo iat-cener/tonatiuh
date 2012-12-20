@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString TransmissivityVittitoeBiggsFactory::TTransmissivityName() const
 {
-	return QString("VittitoeBiggs Transmissivity " );
+	return QString( "VittitoeBiggs Transmissivity" );
 }
 
 QIcon TransmissivityVittitoeBiggsFactory::TTransmissivityIcon() const

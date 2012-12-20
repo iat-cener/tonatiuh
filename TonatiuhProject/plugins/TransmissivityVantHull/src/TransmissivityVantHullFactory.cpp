@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 QString TransmissivityVantHullFactory::TTransmissivityName() const
 {
-	return QString("VantHull Transmissivity" );
+	return QString( "VantHull Transmissivity" );
 }
 
 QIcon TransmissivityVantHullFactory::TTransmissivityIcon() const
