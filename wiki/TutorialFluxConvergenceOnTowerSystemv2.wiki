@@ -17,7 +17,7 @@ The system we want to simulate consists of:
 
 =General aspects of the system =
 
-The system we are going to simulate is made up of a flat square of 15 x 15 meters located on the top of a cylindric tower of 150 meters heigth.
+The system we are going to simulate is made up of a flat square of 20 x 20 meters located on the top of a cylindric tower of 150 meters heigth.
 400 meters away of the tower, we are going to create a flat square with a surface of 60 m<sup>2</sup> . This flate rectangle, called Heliostat, is going to with an inclination of 45º compared to the North.
 We are asumming that the solar concentrating system is placed in Sevilla, Spain at 11.00 A.M.
  
