@@ -3,7 +3,7 @@
 = Introduction =
 In the simulation of a solar concentration system behaviour there are some factor that are not related with the system design and can alterate simulation results. 
 
-Tonatiuh has implemented different models for the sun and the transmissivity to analyze this effects.
+Tonatiuh has implemented different models for the sun and the transmissivity to analyze this effects. To define the sun and the transmissivity use the "Environment" menu.
 
 ==Sun==
 A system performace is different for a different moments. Furthemore, it is difficult to have a model of the sun. For this reason, differents sunshapes can be used to define the sun for the simulations.
