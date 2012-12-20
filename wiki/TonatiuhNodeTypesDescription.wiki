@@ -44,12 +44,4 @@ Tracker nodes are _Group nodes_ children. In a _Group node_ only can be one trac
 
 These nodes change the parent node parameters automatically when a scene light position changes. If you define a TSeparatorKit node parameter value manually and this node has a tracker child, when the light position changes this value will be removed.
 
-== Light [http://tonatiuh.googlecode.com/svn/wiki/images/userguide/lightKit.png]==
-
-Light node groups the information about the sun light. Light is defined as:
- * Sunshape
- * Position
-
-This information will be the ray tracer input.
-
 [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
