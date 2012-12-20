@@ -245,19 +245,55 @@ tonatiuh.ChangeSunPosition(2010, 12, 11, 10, 0, 0, 35.5, -5.23 );
 //this function calculates the azimuth and zenith in the place 
 //which coordinates are (35.5,-5.23) and date is 11/12/2010 at 10:00:00AM.
 }}}
+
  In the turorial the sun is positioned to azimuth 0º and elevation 90º:
+ {{{
+ tonatiuh.ChangeSunPosition( 0, 90 );
+ }}}
+  
+ * Next, we are going to use some of the functions to configure a simulation. This simulation traces 2000000 rays and saves target data to binary file.
 {{{
-tonatiuh.ChangeSunPosition( 0, 90 );
-
- * There are two functions to export Tonatiuh data, or we export all photon map or only a certain part.
-{{{
-tonatiuh.ExportAllPhotonMap("exportAll.dat"); 
-//export the photon in a file called exportAll.dat
-
-tonatiuh.ExportAllPhotonMap("exportNode.dat","//SunNode/RootNode/Target_frame/Target_shapeKit",true); 
-//export the photon map of the node Target_ShapeKit to the file exportNode.dat
-
+/*Define ray tracing options*/ 
+//Number of rays to trace into each iteration 
+tonatiuh.SetRaysPerIteration( 2000000  ); 
+//Sun divisions.   
+tonatiuh.SetRayCastingGrid( 300,300 ); 
+//type of random  
+tonatiuh.SetRandomDeviateType("Mersenne Twister"); 
+//Draw options 
+tonatiuh.SetRaysDrawingOptions( 0, false ); 
+//Buffer size 
+tonatiuh.SetPhotonMapBufferSize( 5000000 ); 
+ 
+/*Define export parameters*/
+//The simulation will be saved into a binary file  
+tonatiuh.SetExportPhotonMapType("Binary_file"); 
+//The coordinates will be saved into target local coordinates 
+tonatiuh.SetExportCoordinates( true, false ); 
+//The intersection surface will not saved because only target photons will be saved.
+tonatiuh. SetExportIntesectionSurface( false ); 
+//The surface side will also be saved 
+tonatiuh.SetExportIntesectionSurfaceSide( true );
+//Previous and next data in not needed
+tonatiuh.SetExportPreviousNextPhotonID( false );
+//Target surface photons will be saved.
+var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotaionNode/TargetSurface"; 
+tonatiuh.AddExportSurfaceURL( targetSurface ); 
+//Define the directory to binary files, the files names and the size in photons for the files. 
+var exportDir = "XXX"; 
+tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir ); 
+var fileNames = "TargetData"; 
+var iteration = i.toString(); 
+tonatiuh.SetExportTypeParameterValue( "ExportFile",  fileNames.concat( iteration )  ); 
+tonatiuh.SetExportTypeParameterValue( "FileSize",  "-1" ); 
+ 
+//Increments the photon map for tunned iterations. 
+tonatiuh.SetIncreasePhotonMap( false ); 
+ 
+tonatiuh.Run(); 
 }}}
+
+After run this script the tower system will be created and simulated for defined sun position. As result of the simulation the target photons data will be saved into binary files.
 
 Tonatiuh script is based on ECMAScript specification and has 
 default options implemented. To know more about them, you can find detailed information about by 
