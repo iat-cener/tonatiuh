@@ -149,7 +149,7 @@ for( var i = 0; i < 250; ++i ){
 	var targetSurface = "//SunNode/RootNode/Tower/Target/TargetRotaionNode/TargetSurface";
 	tonatiuh.AddExportSurfaceURL( targetSurface );
 	//Define the directory to binary files, the files names and the size in photons for the files.
-	var exportDir = "C:/Documents and Settings/amutuberria/Desktop/Tutorial3";
+	var exportDir = "XXXX";
 	tonatiuh.SetExportTypeParameterValue( "ExportDirectory",  exportDir );
 	var fileNames = "TargetData";
 	var iteration = i.toString();
