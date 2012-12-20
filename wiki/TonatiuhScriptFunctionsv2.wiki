@@ -113,3 +113,5 @@ Those are the functions to develop a system by scripting. They are explained fol
  * *!SetTransmissivityParameter( QString parameter, QString value )*: Assings the value into _value_ to the _parameter_ into the current defined transmissivity.
 
  * *!SetValue( QString nodeURL,QString parameter, QString value)*: Sets to parameter with the name _parameter_ of the node _nodeURL_, the value defined into _value_.
+
+[UsersGuide User Guide]| [http://code.google.com/p/tonatiuh/w/list Wiki Home]
