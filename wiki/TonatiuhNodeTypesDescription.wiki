@@ -33,6 +33,26 @@ Is a node that defines a surface geometry. Node parameters depend on the selecte
 
 Shape nodes always are leaf nodes in the scene.
 
+Now, we can use this shapes into Tonatiuh:
+ * Bezier Surface
+ * Cone
+ * Cylinder
+ * Flat disk
+ * Flat rectangle
+ * Flat triangle
+ * Hyperboloid
+ * Parabolic dish
+ * Parabolic rectangle
+ * Sphere
+ * Spherical Polygon
+ * ShapeSphericalRectangle
+ * ShapeTroughAsymmetricCPC
+ * ShapeTroughCHC
+ * ShapeTroughCPC
+ * ShapeTroughHyperbola
+ * ShapeTroughParabola
+ * ShapeTrumpet
+
 == Material node ==
 
 Material nodes defines surfaces propersties and appearance characteristics as ambient color, diffuse color, specular color, emissive color, shininess, and transparency.
