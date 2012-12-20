@@ -9,5 +9,4 @@ This guide provide instructions for getting started with Tonatiuh.
  * [TonatiuhNodeTypesDescription Type of Nodes]
  * [TonatiuhScriptFunctionsv2 Script fucntions]
 
-
 [http://code.google.com/p/tonatiuh/w/list Wiki Home]
