@@ -97,19 +97,19 @@ Those are the functions to develop a system by scripting. They are explained fol
 
  * *!SetRaysPerIteration( unsigned int rays )*: Sets the number of rays to trace per each ray trace execution.
 
- * *!SetSunshape( QString sunshapeType )*: Sets the sunshape type to _sunshapeType if it is valid type. Currently _"!Buie_Sunshape"_ and _"!Pillbox_Sunshape"_.
+ * *!SetSunshape( QString sunshapeType )*: Sets the sunshape type to _sunshapeType_ if it is valid type. Currently _"!Buie_Sunshape"_ and _"!Pillbox_Sunshape"_.
 
     * *!SetRaysDrawingOptions( double raysFraction, bool drawPhotons)*: cks between display or not the Photons and the percent of rays to draw after running the system.
 
  * *!SetSunShapeParameter( QString parameter, QString value )*: Assigns the _value_ to the sun parameter _parameter_.
 
  * *!SetTransmissivity( QString transmissivityType )*: Sets the scene transmissivity to _transmissivityType_. The following types are available currently:
-  * "Default Transmissivity"
+  * _"Default Transmissivity"_
   * _"Ballestrin Transmissivity"_
   * _"Mirval Transmissivity"_
-  * _"Sengupta-NREL Transmissivity_
-  * "VantHull Transmissivity"
-  * "VittitoeBiggs Transmissivity"
+  * _"Sengupta-NREL Transmissivity"_
+  * _"!VantHull Transmissivity"_
+  * _"!VittitoeBiggs Transmissivity"_
 
  * *!SetTransmissivityParameter( QString parameter, QString value )*: Assings the value into _value_ to the _parameter_ into the current defined transmissivity.
 
