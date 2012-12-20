@@ -186,7 +186,9 @@ for( r=1; r<=20; ++r){
         tonatiuh.CreateTracker("Heliostat_tracker");
         tonatiuh.SetValue( heliostatTrackerPath.concat("/Heliostat_tracker"), "aimingPoint", "0 130 74.25" ); 
 
-        //All the heliostatat has the same geometry. For this reasom we are going to create only one and copy it for all helisotats
+        //All the heliostatat has the same geometry. 
+        //For this reason, we are going to create only one 
+        //and copy it for all helisotats.
         if( r == 1 && h == 1){
             //Create a tShapeKitNode which will contain the shape and the material of the heliostat 
             tonatiuh.CreateSurfaceNode(); 
@@ -205,7 +207,7 @@ for( r=1; r<=20; ++r){
             tonatiuh.CreateMaterial("Specular_Standard_Material"); 
 
             //Set the material properties. 
-			tonatiuh.SetValue( heliostatSurfacePath.concat( "/Specular_Standard_Material" ), "m_reflectivity", "1" ); 
+            tonatiuh.SetValue( heliostatSurfacePath.concat( "/Specular_Standard_Material" ), "m_reflectivity", "1" ); 
 
             //Copy the node just created 
             tonatiuh.Copy(); 
@@ -234,6 +236,7 @@ Now we have the whole system created.
 tonatiuh.SetSunshape( "Pillbox_Sunshape" );
 tonatiuh.SetSunshapeParameter( "irradiance", "920" );
 tonatiuh.SetSunshapeParameter( "thetaMax", "0.00465" );
+}}}
  * If we want to change the sun azimuth and zenith we have two ways to do it:
 {{{
 tonatiuh.ChangeSunPosition(123,25); //Set the azimuth to 123 and zenith to 25
