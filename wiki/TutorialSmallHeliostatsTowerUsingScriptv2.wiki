@@ -83,8 +83,7 @@ Those are the functions to develop a system by scripting. They are explained fol
    * "!ExportDirectory": the path of directory where the DB will be stored.
    * "DBFilename": The file name for the database.
 
-
- * *!SetIncreasePhotonMap( bool increase )*:  --> Decides whether increase the photonMap or not.
+ * *!SetIncreasePhotonMap( bool increase )*: Decides whether increase the photonMap or not for consecutive ray tracer executions.
 
 SetNodeName(QString nodeName) --> Changes the selected node name to nodeName.
 
