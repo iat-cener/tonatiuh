@@ -103,7 +103,13 @@ Those are the functions to develop a system by scripting. They are explained fol
 
  * *!SetSunShapeParameter( QString parameter, QString value )*: Assigns the _value_ to the sun parameter _parameter_.
 
-SetTransmissivity(QString transmissivityType) --> Set the transmissivityType transmissivity to the system.
+ * *!SetTransmissivity( QString transmissivityType )*: Sets the scene transmissivity to _transmissivityType_. The following types are available currently:
+  * "Default Transmissivity"
+  * _"Ballestrin Transmissivity"_
+  * _"Mirval Transmissivity"_
+  * _"Sengupta-NREL Transmissivity_
+  * "VantHull Transmissivity"
+  * "VittitoeBiggs Transmissivity"
 
  * *!SetTransmissivityParameter( QString parameter, QString value )*: Assings the value into _value_ to the _parameter_ into the current defined transmissivity.
 
