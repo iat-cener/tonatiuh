@@ -127,33 +127,34 @@ Pressing the buttom Run will ejecute it.
 
 = Script Example =
 
-To explain more in detail the script funcionality we are going to develop <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystem> this tutorial </a>
+To explain more in detail the script funcionality we are going to develop <a href=http://code.google.com/p/tonatiuh/wiki/TutorialFluxConvergenceOnTowerSystemv2> this tutorial </a>
 
 == Modeling the tower ==
 
-The tower is the element in which surface will be fixed the target frame. It will have 130 meters height. 
+The tower is the element in which surface will be fixed the target frame. It will have 120 meters height. 
 To build it, click Automation-->Script Editor to open the script editor window and, please,type:
 
 {{{
-//Select the RootNode
-tonatiuh.SelectNode("//SunNode/RootNode");
-
-//Creates a new TSeparatorKit
-tonatiuh.CreateGroupNode();
-
-//Select it
-tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1");
-
-//Change the default name to Tower_Frame
-tonatiuh.SetNodeName("Tower_Frame");
-
-//Change in Tower_Frame the values of the "translation" parameter to "0 0 76.35"
-
-tonatiuh.SetValue("//SunNode/RootNode/Tower_Frame","translation","0 0 76.35");
-
-//Set Tower_Frame values of "rotation" parameter to "0 0 1 0"
-
-tonatiuh.SetValue("//SunNode/RootNode/Tower_Frame","rotation"," 0 0 1 0");
+//Select the RootNode 
+tonatiuh.SelectNode("//SunNode/RootNode"); 
+ 
+//Creates a new TSeparatorKit 
+tonatiuh.CreateGroupNode(); 
+ 
+//Select it 
+tonatiuh.SelectNode("//SunNode/RootNode/TSeparatorKit1"); 
+ 
+//Change the default name to Tower
+tonatiuh.SetNodeName("Tower"); 
+ 
+//Change in Tower the values of the "translation" parameter to "0 120 8" 
+tonatiuh.SetValue("//SunNode/RootNode/Tower","translation","0 120 8"); 
+ 
+//Set Tower values of "rotation" parameter to "1 0 0 1.5707964" 
+tonatiuh.SetValue("//SunNode/RootNode/Tower","rotation","1 0 0 1.5707964"); 
+ 
+//Create a SurfaceNode as a child of "Tower" 
+tonatiuh.CreateSurfaceNode(); 
 
 //Create a SurfaceNode as a child of "Tower_Frame"
 
