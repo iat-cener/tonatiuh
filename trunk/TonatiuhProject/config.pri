@@ -137,3 +137,5 @@ else{
 
 
 QMAKE_CLEAN += *.rc *.aps object_script*    
+QMAKE_DISTCLEAN += -r   $$(TONATIUH_ROOT)/bin/debug/
+QMAKE_DISTCLEAN += -r   $$(TONATIUH_ROOT)/bin/release/
