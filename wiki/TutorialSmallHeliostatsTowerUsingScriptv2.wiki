@@ -70,16 +70,16 @@ Those are the functions to develop a system by scripting. They are explained fol
 
  * *!SetExportIntesectionSurfaceSide( bool enabled )*: If _enabled_ is _true_ the side of the surface where ray has been intersected. Otherwise, this information will not be saved.
  
- * *!SetExportPhotonMapType( QString exportModeType )*: Sets the export photon type to _exportModeType_. Currently the _SQL_Database_, _Binary_file_ and _Not export_ are available.
+ * *!SetExportPhotonMapType( QString exportModeType )*: Sets the export photon type to _exportModeType_. Currently the _"SQL_Database"_, _"Binary_file"_ and _"Not export"_ are available.
 
  * *SetExportPreviousNextPhotonID( bool enabled )*:  If _enabled_ is _true_ the photon previous and next photons ID will be saved. Otherwise, this information will not be saved.
 
  * *!SetExportTypeParameterValue( QString parameterName, QString parameterValue )*: Sets to current selected export type parameter called _parameterName_ the value _parameterValue_.
-  * For _Binary_file_ the parameters are:
+  * For _"Binary_file"_ the parameters are:
    * "!ExportDirectory": the directory path to store binary files.
    * "!ExportFile": the binary files root name.
    * "!FileSize": the maximum photons that can be stored into a file. Use "-1" to save into a one file.
-  * For _QSL_Database_ the parameters are:
+  * For _"QSL_Database"_ the parameters are:
    * "!ExportDirectory": the path of directory where the DB will be stored.
    * "DBFilename": The file name for the database.
 
@@ -89,28 +89,25 @@ Those are the functions to develop a system by scripting. They are explained fol
 
  * *!SetPhotonMapBufferSize( unsigned int nPhotons )*: Sets to _nPhoton_ the maximum number of photons that the photon map can store.
  
- * *!SetRandomDeviateType( QString typeName )*: Sets the type of random number generator to _typeName_. Current Tonatiuh version has available "Mersenne Twister" and "Rng Stream" generators.
+ * *!SetRandomDeviateType( QString typeName )*: Sets the type of random number generator to _typeName_. Current Tonatiuh version has available _"Mersenne Twister"_ and _"Rng Stream"_ generators.
 
-SetRayCastingGrid(int widthDivisions, int heightDivisions) --> Sets the number of sun divisions.
+ * *!SetRayCastingGrid(int widthDivisions, int heightDivisions)*: Sets the number of sun divisions.
 
-SetRaysDrawingOptions(double raysFraction, bool drawPhotons) -->Checks between display or not the Photons and the percent of rays to draw after running the system.
+ * *!SetRaysDrawingOptions( bool drawRays, bool drawPhotons )*: Sets to draw rays and photons after simulations.
 
-SetRaysPerIteration(int rays) --> Sets the number of desired rays to launch the system.
+ * *!SetRaysPerIteration( unsigned int rays )*: Sets the number of rays to trace per each ray trace execution.
 
-SetSunshape( QString sunshapeType) -->  Selects the type of sun to simulate the system.
+ * *!SetSunshape( QString sunshapeType )*: Sets the sunshape type to _sunshapeType if it is valid type. Currently _"!Buie_Sunshape"_ and _"!Pillbox_Sunshape"_.
 
-SetSunShapeParameter(QString parameter, QString value) -->Assigns the value to the parameter of the sun.
+    * *!SetRaysDrawingOptions( double raysFraction, bool drawPhotons)*: cks between display or not the Photons and the percent of rays to draw after running the system.
+
+ * *!SetSunShapeParameter( QString parameter, QString value )*: Assigns the _value_ to the sun parameter _parameter_.
 
 SetTransmissivity(QString transmissivityType) --> Set the transmissivityType transmissivity to the system.
 
-SetTransmissivityParameter(QString parameter, QString value) --> Assigns the value to the parameter of the transmissivity.
+ * *!SetTransmissivityParameter( QString parameter, QString value )*: Assings the value into _value_ to the _parameter_ into the current defined transmissivity.
 
-SetValue(QString nodeURL,QString parameter, QString value) --> Set to nodeURL, the value to the parameter.
-
-
-}}}
-
-
+ * *!SetValue( QString nodeURL,QString parameter, QString value)*: Sets to parameter with the name _parameter_ of the node _nodeURL_, the value defined into _value_.
 = How to use the functions =
 
 Once the script editor window is opened, you can use a function only by typing tonatiuh and then, the name of the function to use. For example:
