@@ -333,7 +333,7 @@ void PhotonMapExportDB::SaveAllData( std::vector< Photon* > raysLists )
 	sqlite3_stmt* stmt;
 	char insertSQL[256] ="\0";
 	sprintf( insertSQL, "INSERT INTO Photons VALUES( @id, @x, @y, @z, @side, @prev, @next, @surfaceID )" );
-	sqlite3_prepare_v2( m_pDB, insertSQL, 256, &stmt, &tail );
+	sqlite3_prepare( m_pDB, insertSQL, 256, &stmt, &tail );
 
 	char* sErrMsg = 0;
 	sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
@@ -459,7 +459,7 @@ void PhotonMapExportDB::SaveNotNextPrevID( std::vector< Photon* > raysLists )
 	sqlite3_stmt* stmt;
 	char insertSQL[256] ="\0";
 	sprintf( insertSQL, "INSERT INTO Photons VALUES( @id, @x, @y, @z, @side, @surfaceID )" );
-	sqlite3_prepare_v2( m_pDB, insertSQL, 256, &stmt, &tail );
+	sqlite3_prepare( m_pDB, insertSQL, 256, &stmt, &tail );
 
 	char* sErrMsg = 0;
 	sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
@@ -575,7 +575,7 @@ void PhotonMapExportDB::SaveSelectedData( std::vector< Photon* > raysLists )
 	if( m_saveSurfaceID )	insertCommand.append( ", @surfaceID" );
 	insertCommand.append( ")" );
 
-	sqlite3_prepare_v2( m_pDB, insertCommand.toStdString().c_str(), 256, &stmt, &tail );
+	sqlite3_prepare( m_pDB, insertCommand.toStdString().c_str(), 256, &stmt, &tail );
 
 	char* sErrMsg = 0;
 	sqlite3_exec( m_pDB, "BEGIN TRANSACTION", 0, 0, &sErrMsg );
