@@ -208,15 +208,16 @@
             <file type="new" value="Contents/MacOS/libgeometry.dylib" />
         </os>
         <os value="linux">
+            <file type="replace" value="bin/release/plugins/ComponentHeliostatField/libComponentHeliostatField.so" />
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardRoughSpecular/libMaterialStandardRoughSpecular.so" />
             <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/libMaterialStandardSpecular.so" />
-            <file type="replace" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
             <file type="replace" value="bin/release/plugins/RandomMersenneTwister/libRandomMersenneTwister.so" />
             <file type="replace" value="bin/release/plugins/RandomRngStream/libRandomRngStream.so" />
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
             <file type="replace" value="bin/release/plugins/ShapeCone/libShapeCone.so" />
             <file type="replace" value="bin/release/plugins/ShapeCylinder/libShapeCylinder.so" />
-            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/libShapeFlatDisk.so" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/libShapeFlatDisk.so"/>
             <file type="replace" value="bin/release/plugins/ShapeFlatRectangle/libShapeFlatRectangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/libShapeFlatTriangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeHyperboloid/libShapeHyperboloid.so" />
@@ -224,7 +225,7 @@
             <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/libShapeParabolicRectangle1.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphere/libShapeSphere.so" />
             <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/libShapeSphericalPolygon.so" />
-            <file type="replace" value="bin/release/plugins/ShapeShapeSphericalRectangle/libShapeSphericalRectangle.so" />
+            <file type="replace" value="bin/release/plugins/ShapeShapeSphericalRectangle/libSShapeSphericalRectangle.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughAsymmetricCPC/libShapeTroughAsymmetricCPC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCHC/libShapeTroughCHC.so" />
             <file type="replace" value="bin/release/plugins/ShapeTroughCPC/libShapeTroughCPC.so" />
@@ -234,20 +235,25 @@
             <file type="replace" value="bin/release/plugins/SunshapeBuie/libSunshapeBuie.so" />
             <file type="replace" value="bin/release/plugins/SunshapePillbox/libSunshapePillbox.so" />
             <file type="replace" value="bin/release/plugins/TrackerHeliostat/libTrackerHeliostat.so" />
-            <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
             <file type="replace" value="bin/release/plugins/TrackerOneAxis/libTrackerOneAxis.so" />
+            <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/libTrackerLinearFresnel.so" />
+            <file type="replace" value="bin/release/plugins/TransmissivityBallestrin/libTransmissivityBallestrin.so" />
             <file type="replace" value="bin/release/plugins/TransmissivityDefault/libTransmissivityDefault.so" />
+            <file type="replace" value="bin/release/plugins/TransmissivityMirval/libTransmissivityMirval.so" />
+            <file type="replace" value="bin/release/plugins/TransmissivitySenguptaNREL/libTransmissivitySenguptaNREL.so" />
+            <file type="replace" value="bin/release/plugins/TransmissivityVantHull/libTransmissivityVantHull.so" />
+            <file type="replace" value="bin/release/plugins/TransmissivityVittitoeBiggs/libTransmissivityVittitoeBiggs.so" />
+            <file type="replace" value="bin/release/libgeometry.so" />
+            <file type="replace" value="bin/release/libgeometry.so.1" />
+            <file type="replace" value="bin/release/libgeometry.so.1.0" />
+            <file type="replace" value="bin/release/libgeometry.so.1.0.0" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
-            <file type="new" value="bin/release/plugins/ComponentHeliostatField/libComponentHeliostatField.so" />
-            <file type="new" value="bin/release/plugins/MaterialStandardRoughSpecular/libMaterialStandardRoughSpecular.so" />
-            <file type="new" value="bin/release/plugins/TransmissivityBallestrin/libTransmissivityBallestrin.so" />
-            <file type="new" value="bin/release/plugins/TransmissivityMirval/libTransmissivityMirval.so" />
-            <file type="new" value="bin/release/plugins/TransmissivitySenguptaNREL/libTransmissivitySenguptaNREL.so" />
-            <file type="new" value="bin/release/plugins/TransmissivityVantHull/libTransmissivityVantHull.so" />
-            <file type="new" value="bin/release/plugins/TransmissivityVittitoeBiggs/libTransmissivityVittitoeBiggs.so" />
-            <file type="new" value="bin/release/libgeometry.so.1" />
-            <file type="new" value="bin/release/libgeometry.so.1.0" />
-            <file type="new" value="bin/release/libgeometry.so.1.0.0" />
+            <file type="new" value="bin/release/plugins/MaterialVirtual/libMaterialVirtual.so" />
+            <file type="new" value="bin/release/plugins/PhotonMapExportDB/libPhotonMapExportDB.so" />
+            <file type="new" value="bin/release/plugins/PhotonMapExportFile/libPhotonMapExportFile.so" />
+            <file type="new" value="bin/release/plugins/PhotonMapExportNull/libPhotonMapExportNull.so" />
+            <file type="new" value="bin/release/libsqlite3.so" />
+            <file type="remove" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
         </os>
         <os value="linux_64">
             <file type="replace" value="bin/release/plugins/ComponentHeliostatField/libComponentHeliostatField.so" />
