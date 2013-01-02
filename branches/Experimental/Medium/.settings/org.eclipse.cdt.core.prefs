@@ -1,3 +1,0 @@
-#Wed May 12 08:43:29 CEST 2010
-eclipse.preferences.version=1
-environment/project/0.2114984358=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<environment append\="true" appendContributed\="true">\r\n<variable delimiter\=";" name\="TONATIUH_ROOT" operation\="append" value\="C\:\\eclipse\\workspace\\TonatiuhProject"/>\r\n<variable delimiter\=";" name\="PATH" operation\="replace" value\="C\:\\sdeNew\\MinGW\\bin;C\:\\sdeNew\\msys\\usr\\qt\\bin"/>\r\n<variable delimiter\=";" name\="TDE_ROOT" operation\="replace" value\="C\:\\sdeNew\\msys\\usr"/>\r\n</environment>\r\n
