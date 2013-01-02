@@ -294,7 +294,6 @@
             <file type="new" value="bin/release/plugins/PhotonMapExportNull/libPhotonMapExportNull.so" />
             <file type="new" value="bin/release/libsqlite3.so.0.8.6" />
             <file type="remove" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
-            <file type="remove" value="bin/release/plugins/PhotonMapDefault" />
         </os>
     </files>
 </appname>
