@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+
+        <file>icons/ShapeCylinder.png</file>
+    </qresource>
+</RCC>

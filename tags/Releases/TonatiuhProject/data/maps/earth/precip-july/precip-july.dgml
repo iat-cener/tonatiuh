@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgml xmlns="http://edu.kde.org/marble/dgml/2.0">
+    <document>
+        <head>
+            <name>Precipitation (July)</name>
+            <target>earth</target>
+            <theme>precip-july</theme>
+            <icon pixmap="precip-july-preview.png"/>
+    
+            <!-- describes whether the map theme item will be hidden (e.g.
+                for a clouds layer): -->
+            <visible> true </visible>
+        
+            <!-- The description allows for rich text of course: -->
+	    <description><![CDATA[A map which shows the average precipitation (rain/snow/hail/etc) in July.]]></description>
+    
+            <zoom>
+                <minimum>   900  </minimum>
+                <maximum>  2100  </maximum>
+    
+                <!-- describes whether you can zoom trough the levels
+                    continuously -->
+                <discrete> false </discrete> 
+            </zoom>
+        </head>
+        
+            <!-- Now we create the layer structure that gets handled by the
+    layer management class -->
+        
+        <map bgcolor="#000000">
+            <canvas/>
+            <!-- In this place one could e.g. insert a sky plugin -->
+            <target/>
+        
+            <!-- This layer creates the elevation model -->
+            <layer name="precip-july" backend="texture" role="dem">
+                <texture name="precip-july_data"><!-- type="texture"-->
+                    <sourcedir format="JPG"> earth/precip-july </sourcedir>
+                    <installmap> precip-july.jpg </installmap>
+                    <storageLayout maximumTileLevel="1"/>
+                </texture>
+            </layer>
+                    
+            <!-- This layer provides the colorization -->
+            <layer name="colorme" backend="filter">
+                <filter name="texturecolorizer" type="colorize">
+                    <dem>srtm</dem>
+                    <coastline>mwdbii</coastline>
+                    <!-- If these don't get defined the default palettes get
+                    used -->
+                    <palette type="sea">precipcolors.leg</palette>
+                    <palette type="land">precipcolors.leg</palette>
+                </filter>
+            </layer>
+        
+            <layer name="mwdbii" backend="vector" role="polyline">
+                <vector name="pcoast" feature="coast">
+                    <sourcefile format="PNT"> earth/mwdbii/PCOAST.PNT </sourcefile>
+                    <pen color="#555753" />
+                </vector>
+                <vector name="pdiffborder" feature="border" connect="borders">
+                    <sourcefile format="PNT"> earth/mwdbii/PDIFFBORDER.PNT </sourcefile>
+                    <pen color="#555753" />
+                </vector>
+                <vector name="pusa48" feature="border" connect="borders">
+                    <sourcefile format="PNT"> earth/mwdbii/PUSA48.DIFF.PNT </sourcefile>
+                    <pen color="#555753" />
+                </vector>
+                <vector name="international dateline" feature="border">
+                    <sourcefile format="PNT"> earth/mwdbii/DATELINE.PNT </sourcefile>
+                    <pen color="#000000" />
+                </vector>
+                <vector name="rivers" feature="river" connect="waterbodies">
+                    <sourcefile format="PNT"> earth/mwdbii/RIVER.PNT </sourcefile>
+                    <pen color="#637bff" />
+                </vector>
+            </layer>
+        
+            <layer name="standardplaces" backend="geodata">
+                <geodata name="cityplacemarks">
+                    <sourcefile format="KML">cityplacemarks.kml</sourcefile>
+                    <pick>placemark</pick> <!-- picks certain features from a
+                                            file -->
+                </geodata>
+                <geodata name="baseplacemarks">
+                    <sourcefile format="KML">baseplacemarks.kml</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+                <geodata name="elevplacemarks">
+                    <sourcefile format="KML">elevplacemarks.kml</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+                <geodata name="observatoryplacemarks">
+                    <sourcefile format="KML">observatoryplacemarks.kml</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+                <geodata name="otherplacemarks">
+                    <sourcefile
+                    format="KML">otherplacemarks.kml</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+                <geodata name="boundaryplacemarks">
+                    <sourcefile format="KML">boundaryplacemarks</sourcefile>
+                    <pick>placemark</pick>
+                </geodata>
+            </layer>
+        </map>
+
+        <settings>
+-            <group name="Places">
+                <property name="places">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="cities">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="terrain">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="otherplaces">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+            </group>
+
+            <group name="Boundaries">
+                <property name="borders">
+                    <value>true</value>
+                    <available>true</available>
+                </property>
+                <property name="international-boundaries">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+                <property name="state-boundaries">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+            </group>
+            <group name="Water Bodies">
+                <property name="coastlines">
+                    <available>true</available>
+                    <value>true</value>
+                </property>
+                <property name="waterbodies">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+                <property name="lakes">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+                <property name="rivers">
+                    <available>false</available>
+                    <value>false</value>
+                </property>
+            </group>
+            <group name="Surface">
+                <property name="ice">
+                    <value>false</value>
+                    <available>false</available>
+                </property>
+                <property name="relief">
+                    <value>false</value>
+                    <available>false</available>
+                </property>
+            </group>
+
+            <property name="coordinate-grid">
+                <value>true</value>
+                <available>true</available>
+            </property>
+            <property name="overviewmap">
+                <value>true</value>
+                <available>true</available>
+            </property>
+            <property name="compass">
+                <value>true</value>
+                <available>true</available>
+            </property>
+            <property name="scalebar">
+                <value>true</value>
+                <available>true</available>
+            </property>
+        </settings>
+        
+        <!-- At last we define some legend properties -->
+        
+        <legend>
+            <section name="terrain" checkable="true" connect="terrain" spacing="12">
+                <heading>Terrain</heading>
+
+                <item name="mountain">
+                    <icon pixmap="bitmaps/mountain_1.png"/>
+                    <text>Mountain</text>
+                </item>
+                <item name="volcano">
+                    <icon pixmap="bitmaps/volcano_1.png"/>
+                    <text>Volcano</text>
+                </item>
+            </section>
+
+            <section name="otherplaces" checkable="true" connect="otherplaces" spacing="12">
+                <heading>Places of Interest</heading>
+
+                <item name="geographic-pole">
+                    <icon pixmap="bitmaps/pole_1.png"/>
+                    <text>Geographic Pole</text>
+                </item>
+                <item name="magnetic-pole">
+                    <icon pixmap="bitmaps/pole_2.png"/>
+                    <text>Magnetic Pole</text>
+                </item>
+                <item name="airport">
+                    <icon pixmap="bitmaps/airport.png"/>
+                    <text>Airport</text>
+                </item>
+                <item name="shipwreck">
+                    <icon pixmap="bitmaps/shipwreck.png"/>
+                    <text>Shipwreck</text>
+                </item>
+                <item name="observatory">
+                    <icon pixmap="bitmaps/observatory.png"/>
+                    <text>Astronomical Observatory</text>
+                </item>
+            </section>
+
+            <section name="borders" checkable="true" connect="borders" spacing="12">
+                <heading>Boundaries</heading>
+
+                <item name="international-boundary">
+                    <icon color="#f29b68" pixmap="bitmaps/border_1.png"/>
+                    <text>International</text>
+                </item>
+                <item name="state">
+                    <icon color="#f29b68" pixmap="bitmaps/border_2.png"/>
+                    <text>State</text>
+                </item>
+            </section>
+    
+            <section name="waterbodies" checkable="true" connect="waterbodies" spacing="12">
+                <heading>Water Bodies</heading>
+
+                <item name="lake">
+                    <icon color="#d0dff1" pixmap="bitmaps/lake.png"/>
+                    <text>Lake</text>
+                </item>
+                <item name="river">
+                    <icon color="#637bff" pixmap="bitmaps/river.png"/>
+                    <text>River</text>
+                </item>
+            </section>
+    
+            <section name="precipitation" checkable="false" spacing="12">
+                <heading>Precipitation</heading>
+
+                <item name="precip0">
+                    <icon color="#f1edc8"/>
+                    <text>0 mm</text>
+                </item>
+                <item name="precip10">
+                    <icon color="#ddc98a"/>
+                    <text>10 mm</text>
+                </item>
+                <item name="precip40">
+                    <icon color="#bac596"/>
+                    <text>40 mm</text>
+                </item>
+                <item name="precip63">
+                    <icon color="#a4caa1"/>
+                    <text>63 mm</text>
+                </item>
+                <item name="precip89">
+                    <icon color="#bfd5ee"/>
+                    <text>89 mm</text>
+                </item>
+                <item name="precip127">
+                    <icon color="#a3c3e6"/>
+                    <text>127 mm</text>
+                </item>
+                <item name="precip256">
+                    <icon color="#89b0da"/>
+                    <text>256 mm</text>
+                </item>
+                <item name="precip512">
+                    <icon color="#6b99c9"/>
+                    <text>512 mm</text>
+                </item>
+                <item name="precip1024">
+                    <icon color="#5182b4"/>
+                    <text>1024 mm or more</text>
+                </item>
+            </section>
+
+            <section name="coordinate-grid" checkable="true" connect="coordinate-grid" spacing="12">
+                <heading>Coordinate Grid</heading>
+            </section>
+        </legend>
+    </document>
+</dgml>

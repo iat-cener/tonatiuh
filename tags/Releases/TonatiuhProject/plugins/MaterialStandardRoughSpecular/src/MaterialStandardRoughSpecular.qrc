@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>icons/MaterialStandardRoughSpecular.png</file>
+    </qresource>
+</RCC>
