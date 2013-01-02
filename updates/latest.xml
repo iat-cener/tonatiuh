@@ -290,10 +290,11 @@
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
             <file type="new" value="bin/release/plugins/MaterialVirtual/libMaterialVirtual.so" />
             <file type="new" value="bin/release/plugins/PhotonMapExportDB/libPhotonMapExportDB.so" />
-            <file type="new" value="bin/release/plugins/PhotonMapExportFilelibPhotonMapExportFile.so" />
+            <file type="new" value="bin/release/plugins/PhotonMapExportFile/libPhotonMapExportFile.so" />
             <file type="new" value="bin/release/plugins/PhotonMapExportNull/libPhotonMapExportNull.so" />
             <file type="new" value="bin/release/libsqlite3.so.0.8.6" />
             <file type="remove" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
+            <file type="remove" value="bin/release/plugins/PhotonMapDefault" />
         </os>
     </files>
 </appname>
