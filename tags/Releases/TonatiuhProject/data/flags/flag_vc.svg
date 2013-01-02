@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" x="0.0000000" y="0.0000000" width="450.00000" height="300.00000" id="svg1">
+  <defs id="defs3"/>
+  
+  <rect width="90.000000" height="60.000000" x="125.00000" y="617.36218" transform="matrix(5.000000,0.000000,0.000000,5.000000,-625.0000,-3086.811)" fill="#0072c6" fill-opacity="1.0000000" fill-rule="evenodd" stroke="none" stroke-width="1.000pt" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1.0000000"/>
+  <rect width="67.500000" height="60.000000" x="147.50000" y="617.36218" transform="matrix(5.000000,0.000000,0.000000,5.000000,-625.0000,-3086.811)" fill="#fcd116" fill-opacity="1.0000000" fill-rule="evenodd" stroke="none" stroke-width="1.000pt" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1.0000000"/>
+  <rect width="22.500000" height="60.000000" x="192.50000" y="617.36218" transform="matrix(5.000000,0.000000,0.000000,5.000000,-625.0000,-3086.811)" fill="#009e60" fill-opacity="1.0000000" fill-rule="evenodd" stroke="none" stroke-width="1.000pt" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1.0000000"/>
+  <path d="M 165.0,659.8 L 170.0,669.8 L 175.0,659.8 L 170.0,649.8 L 165.0,659.8 z " transform="matrix(5.000000,0.000000,0.000000,5.000000,-625.0000,-3086.811)" fill="#009e60" fill-opacity="1.0000000" fill-rule="evenodd" stroke="none" stroke-width="1.000pt" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1.0000000"/>
+  <path d="M 171.2,647.3 L 176.2,657.3 L 181.2,647.3 L 176.2,637.3 L 171.2,647.3 z " transform="matrix(5.000000,0.000000,0.000000,5.000000,-625.0000,-3086.811)" fill="#009e60" fill-opacity="1.0000000" fill-rule="evenodd" stroke="none" stroke-width="1.000pt" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1.0000000"/>
+  <path d="M 158.7,647.3 L 163.7,657.3 L 168.7,647.3 L 163.7,637.3 L 158.7,647.3 z " transform="matrix(5.000000,0.000000,0.000000,5.000000,-625.0000,-3086.811)" fill="#009e60" fill-opacity="1.0000000" fill-rule="evenodd" stroke="none" stroke-width="1.000pt" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1.0000000"/>
+</svg>

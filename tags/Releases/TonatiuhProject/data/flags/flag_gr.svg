@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="810" height="540" viewBox="0 0 27 18" id="svg2">
+  
+  
+  <defs id="defs11"/>
+  <desc id="desc4">Flag of Greece</desc>
+  <path d="M 0,2.4980018e-16 L 27,2.4980018e-16 L 27,18 L 0,18 L 0,2.4980018e-16 z " fill="#101f8a"/>
+  <path d="M 4,0 L 6,0 L 6,4 L 10,4 L 10,6 L 6,6 L 6,10 L 27,10 L 27,12 L 0,12 L 0,10 L 4,10 L 4,6 L 0,6 L 0,4 L 4,4 L 4,0 z " fill="#ffffff"/>
+  <path d="M 10,2 L 27,2 L 27,4 L 10,4 L 10,2 z " fill="#ffffff"/>
+  <path d="M 10,6 L 27,6 L 27,8 L 10,8 L 10,6 z " fill="#ffffff"/>
+  <path d="M 0,14 L 27,14 L 27,16 L 0,16 L 0,14 z " fill="#ffffff"/>
+</svg>
