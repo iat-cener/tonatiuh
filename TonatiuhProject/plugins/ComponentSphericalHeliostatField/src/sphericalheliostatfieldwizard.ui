@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SphericalHeliostatFieldWizard</class>
+ <widget class="QWizard" name="SphericalHeliostatFieldWizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>395</width>
+    <height>399</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Heliostat Field Wizard</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <property name="wizardStyle">
+   <enum>QWizard::ModernStyle</enum>
+  </property>
+  <widget class="QWizardPage" name="introductionPage">
+   <property name="title">
+    <string>Introduction</string>
+   </property>
+   <property name="subTitle">
+    <string/>
+   </property>
+   <attribute name="pageId">
+    <string notr="true">1</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>This wizard will help you creating a new heliostat field. You need a file with the heliostat rotation point coordinates and a Tonatiuh component file with the heliostat definition.</string>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="heliostatPage">
+   <property name="title">
+    <string>Heliostats Definition</string>
+   </property>
+   <property name="subTitle">
+    <string>Please define the heliostats coordinates and the heliostat type.</string>
+   </property>
+   <attribute name="pageId">
+    <string notr="true">2</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="8" column="1">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="1" colspan="2">
+     <widget class="QLineEdit" name="heliostatCoordinatesLine"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="aimingLabel">
+      <property name="text">
+       <string>Heliostats aiming point:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="aimingXLabel">
+      <property name="text">
+       <string>x:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QDoubleSpinBox" name="aimingXSpin">
+      <property name="maximum">
+       <double>999999999.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="openCoordFileButton">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLabel" name="aimingYLabel">
+      <property name="text">
+       <string>y:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLabel" name="aimingZLabel">
+      <property name="text">
+       <string>z:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QDoubleSpinBox" name="aimingYSpin">
+      <property name="maximum">
+       <double>999999999.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QDoubleSpinBox" name="aimingZSpin">
+      <property name="maximum">
+       <double>999999999.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="3">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Heliostats coordinates and radius:</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="ComponentSphericalHeliostatField.qrc"/>
+ </resources>
+ <connections/>
+</ui>
