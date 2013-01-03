@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier GQUrlarcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -107,6 +107,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "LightDialog.h"
 #include "MainWindow.h"
+#include "NetworkConnectionsDialog.h"
 #include "PhotonMapExport.h"
 #include "PhotonMapExportFactory.h"
 #include "PhotonMapExportSettings.h"
@@ -729,9 +730,45 @@ void MainWindow::SetSunPositionCalculatorEnabled( int enabled )
  * The most recently executed command is always selected.
  * When a different command is selected the model returns to the state after selected command was applied.
  */
-void MainWindow:: ShowCommandView()
+void MainWindow::ShowCommandView()
 {
     m_commandView->show();
+}
+
+/*!
+ * Shows a dialog to define network connections settings.
+ */
+void MainWindow::ShowNetworkConnectionsDialog()
+{
+	NetworkConnectionsDialog dialog;
+	if( !m_updateManager->IsProxyEnabled() )
+		dialog.SetProxyDisabled();
+	else
+	{
+		if( m_updateManager->IsSystemProxy() )
+			dialog.SetSystemProxyConfiguration();
+		else
+		{
+			dialog.SetManualProxyConfiguration();
+			dialog.SetProxyHttpHost( m_updateManager->GetProxyHostName() );
+			dialog.SetProxyHttpPort( m_updateManager->GetPorxyPort() );
+		}
+	}
+
+	if( dialog.exec() )
+	{
+		if( !dialog.IsProxyEnabled() )
+			m_updateManager->SetProxyEnabled( false );
+		else
+		{
+			m_updateManager->SetProxyEnabled( true );
+			if( dialog.IsSystemProxyEnabled() ) m_updateManager->SetSystemProxyConfiguration();
+			else
+				m_updateManager->SetManualProxyConfiguration( dialog.GetHostName(), dialog.GetPort() );
+
+		}
+
+	}
 }
 
 /*!
@@ -3030,7 +3067,17 @@ void MainWindow::ReadSettings()
     if( settings.value( "windowMaximized", true ).toBool() )	setWindowState( windowState() ^ Qt::WindowMaximized );
     if( settings.value( "windowFullScreen", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowFullScreen );
     if( settings.value( "windowActive", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowActive );
+
     m_recentFiles = settings.value( "recentFiles" ).toStringList();
+
+    m_updateManager->SetProxyEnabled( settings.value( QLatin1String( "UpdatesManager.IsProxy" ), true ).toBool() );
+    if( settings.value( QLatin1String( "UpdatesManager.SystemProxy" ), true ).toBool() )
+    	m_updateManager->SetSystemProxyConfiguration();
+    else
+    	m_updateManager->SetManualProxyConfiguration( settings.value( QLatin1String( "UpdatesManager.ProxyHostName" ),
+    			QLatin1String( "" ) ).toString(),
+    			settings.value( QLatin1String( "UpdatesManager.ProxyPort" ), 0 ).toInt() );
+
     UpdateRecentFileActions();
 
 }
@@ -3658,6 +3705,9 @@ void MainWindow::SetupTriggers()
 	connect( actionGridSettings, SIGNAL( triggered() ), this, SLOT( ChangeGridSettings() )  );
 	connect( actionBackground, SIGNAL( triggered() ), this, SLOT( ShowBackground() )  );
 
+	//Help menu actions
+	connect( actionNetworkConnections, SIGNAL( triggered() ), this, SLOT( ShowNetworkConnectionsDialog() ) );
+
 }
 
 /*!
@@ -3846,4 +3896,9 @@ void MainWindow::WriteSettings()
 	else	settings.setValue( "windowActive", false );
 
     settings.setValue( "recentFiles", m_recentFiles );
+
+    settings.setValue( QLatin1String( "UpdatesManager.IsProxy" ), m_updateManager->IsProxyEnabled() );
+    settings.setValue( QLatin1String( "UpdatesManager.SystemProxy" ), m_updateManager->IsSystemProxy() );
+    settings.setValue( QLatin1String( "UpdatesManager.ProxyHostName" ), m_updateManager->GetProxyHostName() );
+    settings.setValue( QLatin1String( "UpdatesManager.ProxyPort" ), m_updateManager->GetPorxyPort() );
 }
