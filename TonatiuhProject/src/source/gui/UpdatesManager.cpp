@@ -115,12 +115,16 @@ void UpdatesManager::CheckForUpdates()
     // schedule the request
     m_httpRequestAborted = false;
 
+    /*
     if( m_proxyEnabled  )
     {
     	int port = m_proxyPort;
     	QString hostname = m_proxyHostName;
     	if( m_systemProxyEnabled )
     	{
+
+
+
     		QString urlEnv = QProcessEnvironment::systemEnvironment().value( "http_proxy" );
     		if (!urlEnv.isEmpty() )
     		{
@@ -136,6 +140,7 @@ void UpdatesManager::CheckForUpdates()
     	proxy.setPort( port );
        	m_networkAccessManager->setProxy( proxy );
     }
+    */
     m_reply = m_networkAccessManager->get( QNetworkRequest( url ) );
     connect( m_reply, SIGNAL( finished() ), this, SLOT( CheckLastUpdate() ) );
     connect( m_reply, SIGNAL( readyRead() ), this, SLOT( Read() ) );
@@ -190,6 +195,11 @@ void UpdatesManager::SetManualProxyConfiguration( QString name, int port)
 	m_systemProxyEnabled = false;
 	m_proxyHostName = name;
 	m_proxyPort = port;
+   	QNetworkProxy proxy;
+   	proxy.setType( QNetworkProxy::HttpCachingProxy );
+   	proxy.setHostName( m_proxyHostName );
+   	proxy.setPort( m_proxyPort );
+    QNetworkProxy::setApplicationProxy( proxy );
 }
 
 /*!
@@ -208,6 +218,11 @@ void UpdatesManager::SetSystemProxyConfiguration()
 {
 	m_proxyEnabled = true;
 	m_systemProxyEnabled = true;
+
+	 QNetworkProxyQuery npq( QUrl( QLatin1String( "http://http://code.google.com/p/tonatiuh/" ) ) );
+	 QList< QNetworkProxy > listOfProxies = QNetworkProxyFactory::systemProxyForQuery( npq );
+	 if (listOfProxies.size() > 0 && listOfProxies[0].type() != QNetworkProxy::NoProxy)
+		 QNetworkProxy::setApplicationProxy( listOfProxies[0] );
 }
 
 /*!
@@ -519,7 +534,7 @@ void UpdatesManager::DownloadFile( QString urlPath, QString saveFileName  )
 
 	m_fileRequestAborted = false ;
 
-    if( m_proxyEnabled  )
+ /*   if( m_proxyEnabled  )
     {
     	int port = m_proxyPort;
     	QString hostname = m_proxyHostName;
@@ -540,6 +555,7 @@ void UpdatesManager::DownloadFile( QString urlPath, QString saveFileName  )
     	proxy.setPort( port );
        	m_networkAccessManager->setProxy( proxy );
     }
+    */
 	m_fileReply = m_networkAccessManager->get( QNetworkRequest( url ) );
 	connect( m_fileReply, SIGNAL( finished() ), this, SLOT( FileDownloadComplete() ) );
 	connect( m_fileReply, SIGNAL( readyRead() ), this, SLOT( ReadFile() ) );
