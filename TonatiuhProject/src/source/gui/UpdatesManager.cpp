@@ -219,7 +219,7 @@ void UpdatesManager::SetSystemProxyConfiguration()
 	m_proxyEnabled = true;
 	m_systemProxyEnabled = true;
 
-	 QNetworkProxyQuery npq( QUrl( QLatin1String( "http://http://code.google.com/p/tonatiuh/" ) ) );
+	 QNetworkProxyQuery npq( QUrl( QLatin1String( "http://code.google.com/p/tonatiuh/" ) ) );
 	 QList< QNetworkProxy > listOfProxies = QNetworkProxyFactory::systemProxyForQuery( npq );
 	 if (listOfProxies.size() > 0 && listOfProxies[0].type() != QNetworkProxy::NoProxy)
 		 QNetworkProxy::setApplicationProxy( listOfProxies[0] );
@@ -534,28 +534,6 @@ void UpdatesManager::DownloadFile( QString urlPath, QString saveFileName  )
 
 	m_fileRequestAborted = false ;
 
- /*   if( m_proxyEnabled  )
-    {
-    	int port = m_proxyPort;
-    	QString hostname = m_proxyHostName;
-    	if( m_systemProxyEnabled )
-    	{
-    		QString urlEnv = QProcessEnvironment::systemEnvironment().value( "http_proxy" );
-    		if (!urlEnv.isEmpty() )
-    		{
-    			QUrl url = QUrl(urlEnv, QUrl::TolerantMode);
-    			hostname = url.host();
-    			port = url.port();
-    		}
-
-    	}
-    	QNetworkProxy proxy;
-    	proxy.setType( QNetworkProxy::HttpCachingProxy );
-    	proxy.setHostName( hostname );
-    	proxy.setPort( port );
-       	m_networkAccessManager->setProxy( proxy );
-    }
-    */
 	m_fileReply = m_networkAccessManager->get( QNetworkRequest( url ) );
 	connect( m_fileReply, SIGNAL( finished() ), this, SLOT( FileDownloadComplete() ) );
 	connect( m_fileReply, SIGNAL( readyRead() ), this, SLOT( ReadFile() ) );
