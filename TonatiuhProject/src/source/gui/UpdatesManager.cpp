@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimene
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include <QApplication>
 #include <QAuthenticator>
 #include <QBuffer>
@@ -50,6 +52,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QProcessEnvironment>
 #include <QSslError>
 #include <QUrl>
 
@@ -58,6 +61,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 UpdatesManager::UpdatesManager( QString currentVersion )
 :QObject(),
  m_networkAccessManager( new QNetworkAccessManager() ),
+ m_proxyEnabled( false ),
+ m_proxyHostName( QLatin1String( "" ) ),
+ m_proxyPort( -1 ),
+ m_systemProxyEnabled( false ),
  m_reply( 0 ),
  m_httpRequestAborted( false ),
  m_osType( QLatin1String( "" ) ),
@@ -103,16 +110,104 @@ UpdatesManager::~UpdatesManager()
  */
 void UpdatesManager::CheckForUpdates()
 {
-	//Esta direcci�n no es v�lida, solo para probar
 	QUrl url( QLatin1String( "http://tonatiuh.googlecode.com/svn/updates/latest.xml" ) );
 
     // schedule the request
     m_httpRequestAborted = false;
 
+    if( m_proxyEnabled  )
+    {
+    	int port = m_proxyPort;
+    	QString hostname = m_proxyHostName;
+    	if( m_systemProxyEnabled )
+    	{
+    		QString urlEnv = QProcessEnvironment::systemEnvironment().value( "http_proxy" );
+    		if (!urlEnv.isEmpty() )
+    		{
+    			QUrl url = QUrl(urlEnv, QUrl::TolerantMode);
+    			hostname = url.host();
+    			port = url.port();
+    		}
+
+    	}
+    	QNetworkProxy proxy;
+    	proxy.setType( QNetworkProxy::HttpCachingProxy );
+    	proxy.setHostName( hostname );
+    	proxy.setPort( port );
+       	m_networkAccessManager->setProxy( proxy );
+    }
     m_reply = m_networkAccessManager->get( QNetworkRequest( url ) );
     connect( m_reply, SIGNAL( finished() ), this, SLOT( CheckLastUpdate() ) );
     connect( m_reply, SIGNAL( readyRead() ), this, SLOT( Read() ) );
 
+}
+
+/*!
+ * If the user defined proxy use is enabled returns the host name defined for the proxy.
+ * Otherwise, returns an empty hostname.
+ */
+QString UpdatesManager::GetProxyHostName() const
+{
+	if( m_proxyEnabled && !m_systemProxyEnabled ) return m_proxyHostName;
+	return QString();
+}
+
+
+/*!
+ * If the proxy use is enabled returns the port defined for the proxy.
+ * Otherwise, returns -1.
+ */
+int UpdatesManager::GetPorxyPort() const
+{
+	if( m_proxyEnabled && !m_systemProxyEnabled  )	return m_proxyPort;
+	return -1;
+}
+
+/*!
+ * Returns true if the proxy is enabled for connections.
+ */
+bool UpdatesManager::IsProxyEnabled() const
+{
+	return m_proxyEnabled;
+}
+
+/*!
+ * Returns true if the configuration for the proxy
+ * is defined at the system.
+ */
+bool UpdatesManager::IsSystemProxy() const
+{
+	return m_systemProxyEnabled;
+}
+
+/*!
+ * Sets to user defined proxy for connections.
+ * Configure the proxy with the \a name for the host name and \a port number.
+ */
+void UpdatesManager::SetManualProxyConfiguration( QString name, int port)
+{
+	m_proxyEnabled = true;
+	m_systemProxyEnabled = false;
+	m_proxyHostName = name;
+	m_proxyPort = port;
+}
+
+/*!
+ * If \a enabled is true, sets proxy enabled for network connections.
+ * Otherwise, sets the proxy will not be used.
+ */
+void UpdatesManager::SetProxyEnabled( bool enabled )
+{
+	m_proxyEnabled = enabled;
+}
+
+/*!
+ * Sets to enabled the use of the system proxy configuration.
+ */
+void UpdatesManager::SetSystemProxyConfiguration()
+{
+	m_proxyEnabled = true;
+	m_systemProxyEnabled = true;
 }
 
 /*!
@@ -423,6 +518,28 @@ void UpdatesManager::DownloadFile( QString urlPath, QString saveFileName  )
 	}
 
 	m_fileRequestAborted = false ;
+
+    if( m_proxyEnabled  )
+    {
+    	int port = m_proxyPort;
+    	QString hostname = m_proxyHostName;
+    	if( m_systemProxyEnabled )
+    	{
+    		QString urlEnv = QProcessEnvironment::systemEnvironment().value( "http_proxy" );
+    		if (!urlEnv.isEmpty() )
+    		{
+    			QUrl url = QUrl(urlEnv, QUrl::TolerantMode);
+    			hostname = url.host();
+    			port = url.port();
+    		}
+
+    	}
+    	QNetworkProxy proxy;
+    	proxy.setType( QNetworkProxy::HttpCachingProxy );
+    	proxy.setHostName( hostname );
+    	proxy.setPort( port );
+       	m_networkAccessManager->setProxy( proxy );
+    }
 	m_fileReply = m_networkAccessManager->get( QNetworkRequest( url ) );
 	connect( m_fileReply, SIGNAL( finished() ), this, SLOT( FileDownloadComplete() ) );
 	connect( m_fileReply, SIGNAL( readyRead() ), this, SLOT( ReadFile() ) );

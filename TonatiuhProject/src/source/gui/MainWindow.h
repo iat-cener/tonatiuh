@@ -173,6 +173,7 @@ private slots:
     void SetSunPositionCalculatorEnabled( int enabled );
 	void ShowBackground();
 	void ShowCommandView();
+	void ShowNetworkConnectionsDialog();
 	void ShowGrid();
     void ShowMenu( const QModelIndex& index );
     void ShowRayTracerOptionsDialog();

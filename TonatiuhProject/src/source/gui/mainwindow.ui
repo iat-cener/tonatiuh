@@ -97,7 +97,7 @@
      <x>0</x>
      <y>0</y>
      <width>857</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEdit">
@@ -242,6 +242,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionNetworkConnections"/>
     <addaction name="actionCheckForUpdates"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
@@ -750,6 +751,11 @@
   <action name="actionDefineTransmissivity">
    <property name="text">
     <string>Define Transmissivity...</string>
+   </property>
+  </action>
+  <action name="actionNetworkConnections">
+   <property name="text">
+    <string>Network Connections...</string>
    </property>
   </action>
  </widget>

@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QBuffer>
 #include <QObject>
 #include <QMap>
+#include <QNetworkProxy>
 #include <QVector>
 
 class QAuthenticator;
@@ -65,13 +66,20 @@ public:
 	~UpdatesManager();
 
 	void CheckForUpdates();
+	QString GetProxyHostName() const;
+	int GetPorxyPort() const;
+	bool IsProxyEnabled() const;
+	bool IsSystemProxy() const;
+	void SetManualProxyConfiguration( QString name, int port);
+	void SetProxyEnabled( bool enabled );
+	void SetSystemProxyConfiguration();
 
 public slots:
 	void CheckLastUpdate( );
 	void FileDownloadComplete();
 	void Read();
 	void ReadFile();
-   void UpdateDownload( int fileIndex );
+	void UpdateDownload( int fileIndex );
 
 private:
 	void DeleteDirOldFiles( QString dirName );
@@ -80,6 +88,10 @@ private:
 	void RemoveDir( QString dirName );
 
     QNetworkAccessManager* m_networkAccessManager;
+    bool m_proxyEnabled;
+    QString m_proxyHostName;
+    int m_proxyPort;
+    bool m_systemProxyEnabled;
     QNetworkReply* m_reply;
     bool m_httpRequestAborted;
 
