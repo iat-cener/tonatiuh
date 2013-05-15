@@ -179,8 +179,12 @@
             <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.so" />
             <file type="replace" value="bin/release/plugins/MaterialStandardRoughSpecular/libMaterialStandardRoughSpecular.so" />
             <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/libMaterialStandardSpecular.so" />
+            <file type="replace" value="bin/release/plugins/MaterialVirtual/libMaterialVirtual.so" />
             <file type="replace" value="bin/release/plugins/RandomMersenneTwister/libRandomMersenneTwister.so" />
             <file type="replace" value="bin/release/plugins/RandomRngStream/libRandomRngStream.so" />
+            <file type="replace" value="bin/release/plugins/PhotonMapExportDB/libPhotonMapExportDB.so" />
+            <file type="replace" value="bin/release/plugins/PhotonMapExportFile/libPhotonMapExportFile.so" />
+            <file type="replace" value="bin/release/plugins/PhotonMapExportNull/libPhotonMapExportNull.so" />
             <file type="replace" value="bin/release/plugins/ShapeBezierSurface/libShapeBezierSurface.so" />
             <file type="replace" value="bin/release/plugins/ShapeCone/libShapeCone.so" />
             <file type="replace" value="bin/release/plugins/ShapeCylinder/libShapeCylinder.so" />
@@ -215,12 +219,6 @@
             <file type="replace" value="bin/release/libgeometry.so.1.0" />
             <file type="replace" value="bin/release/libgeometry.so.1.0.0" />
             <file type="replace" value="bin/release/Tonatiuh" executable="true"/>
-            <file type="new" value="bin/release/plugins/MaterialVirtual/libMaterialVirtual.so" />
-            <file type="new" value="bin/release/plugins/PhotonMapExportDB/libPhotonMapExportDB.so" />
-            <file type="new" value="bin/release/plugins/PhotonMapExportFile/libPhotonMapExportFile.so" />
-            <file type="new" value="bin/release/plugins/PhotonMapExportNull/libPhotonMapExportNull.so" />
-            <file type="new" value="bin/release/libsqlite3.so" />
-            <file type="remove" value="bin/release/plugins/PhotonMapDefault/libPhotonMapDefault.so" />
         </os>
         <os value="linux_64">
             <file type="replace" value="bin/release/plugins/ComponentHeliostatField/libComponentHeliostatField.so" />
