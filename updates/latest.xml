@@ -2,7 +2,7 @@
 <!DOCTYPE XML>
 <appname>
     <version>
-        <version value="2.0.0" />
+        <version value="2.0.1" />
     </version>
     <files>
         <os value="win">
@@ -49,84 +49,47 @@
             <file type="replace" value="bin/release/geometry.dll" />
         </os>
         <os value="win_64">
-            <file type="remove" value="bin/release/plugins/ComponentHeliostatField/ComponentHeliostatField1.dll" />
-            <file type="remove" value="bin/release/plugins/MaterialStandardRoughSpecular/MaterialStandardRoughSpecular1.dll" />
-            <file type="remove" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive1.dll" />
-            <file type="remove" value="bin/release/plugins/MaterialStandardSpecular/MaterialStandardSpecular1.dll" />
-            <file type="remove" value="bin/release/plugins/PhotonMapDefault/PhotonMapDefault1.dll" />
-            <file type="remove" value="bin/release/plugins/RandomMersenneTwister/RandomMersenneTwister1.dylib" />
-            <file type="remove" value="bin/release/plugins/RandomRngStream/RandomRngStream1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeCone/ShapeCone1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeCylinder/ShapeCylinder1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeFlatDisk/ShapeFlatDisk1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeFlatRectangle/ShapeFlatRectangle1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle1.dll" />
-    		<file type="remove" value="bin/release/plugins/ShapeHyperboloid/ShapeHyperboloid1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeParabolicDish/ShapeParabolicDish1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeSphere/ShapeSphere1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeSphericalRectangle/ShapeSpheSergio Garayalde [quitar]ricalRectangle1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeTroughAsymmetricCPC/ShapeTroughAsymmetricCPC1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeTroughParabola/ShapeTroughParabola1.dll" />
-            <file type="remove" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet1.dll" />
-			<file type="remove" value="bin/release/plugins/SunshapeBuie/SunshapeBuie1.dll" />
-            <file type="remove" value="bin/release/plugins/SunshapePillbox/SunshapePillbox1.dll" />
-            <file type="remove" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat1.dll" />
-            <file type="remove" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel1.dll" />
-            <file type="remove" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis1.dll" />
-            <file type="remove" value="bin/release/plugins/TransmissivityBallestrin/TransmissivityBallestrin1.dll" />
-            <file type="remove" value="bin/release/plugins/TransmissivityDefault/TransmissivityDefault1.dll" />
-            <file type="remove" value="bin/release/plugins/TransmissivityMirval/TransmissivityMirval1.dll" />
-            <file type="remove" value="bin/release/plugins/TransmissivitySenguptaNREL/TransmissivitySenguptaNREL1.dll" />
-            <file type="remove" value="bin/release/plugins/TransmissivityVantHull/TransmissivityVantHull1.dll" />
-            <file type="remove" value="bin/release/plugins/TransmissivityVittitoeBiggs/TransmissivityVittitoeBiggs1.dll" />
+            <file type="replace" value="bin/release/plugins/ComponentHeliostatField/ComponentHeliostatField2.dll" />
+            <file type="replace" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive2.dll" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardRoughSpecular/MaterialStandardRoughSpecular2.dll" />
+            <file type="replace" value="bin/release/plugins/MaterialStandardSpecular/MaterialStandardSpecular2.dll" />
+            <file type="replace" value="bin/release/plugins/MaterialVirtual/MaterialVirtual2.dll" />
+            <file type="replace" value="bin/release/plugins/PhotonMapExportDB/PhotonMapExportDB2.dll" />
+            <file type="replace" value="bin/release/plugins/PhotonMapExportFile/PhotonMapExportFile2.dll" />
+            <file type="replace" value="bin/release/plugins/PhotonMapExportNull/PhotonMapExportNull2.dll" />
+            <file type="replace" value="bin/release/plugins/RandomMersenneTwister/RandomMersenneTwister2.dylib" />
+            <file type="replace" value="bin/release/plugins/RandomRngStream/RandomRngStream2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeCone/ShapeCone2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeCylinder/ShapeCylinder2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatDisk/ShapeFlatDisk2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatRectangle/ShapeFlatRectangle2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle2.dll" />
+    		<file type="replace" value="bin/release/plugins/ShapeHyperboloid/ShapeHyperboloid2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicDish/ShapeParabolicDish2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphere/ShapeSphere2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeSphericalRectangle/ShapeSphericalRectangle2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughAsymmetricCPC/ShapeTroughAsymmetricCPC2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTroughParabola/ShapeTroughParabola2.dll" />
+            <file type="replace" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet2.dll" />
+			<file type="replace" value="bin/release/plugins/SunshapeBuie/SunshapeBuie2.dll" />
+            <file type="replace" value="bin/release/plugins/SunshapePillbox/SunshapePillbox2.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat2.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel2.dll" />
+            <file type="replace" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis2.dll" />
+            <file type="replace" value="bin/release/plugins/TransmissivityBallestrin/TransmissivityBallestrin2.dll" />
+            <file type="replace" value="bin/release/plugins/TransmissivityDefault/TransmissivityDefault2.dll" />
+            <file type="replace" value="bin/release/plugins/TransmissivityMirval/TransmissivityMirval2.dll" />
+            <file type="replace" value="bin/release/plugins/TransmissivitySenguptaNREL/TransmissivitySenguptaNREL2.dll" />
+            <file type="replace" value="bin/release/plugins/TransmissivityVantHull/TransmissivityVantHull2.dll" />
+            <file type="replace" value="bin/release/plugins/TransmissivityVittitoeBiggs/TransmissivityVittitoeBiggs2.dll" />
             <file type="replace" value="bin/release/Tonatiuh.exe" executable="true" />
             <file type="replace" value="bin/release/geometry.dll" />
-            <file type="new" value="bin/release/plugins/ComponentHeliostatField/ComponentHeliostatField2.dll" />
-            <file type="new" value="bin/release/plugins/MaterialBasicRefractive/MaterialBasicRefractive2.dll" />
-            <file type="new" value="bin/release/plugins/MaterialStandardRoughSpecular/MaterialStandardRoughSpecular2.dll" />
-            <file type="new" value="bin/release/plugins/MaterialStandardSpecular/MaterialStandardSpecular2.dll" />
-            <file type="new" value="bin/release/plugins/MaterialVirtual/MaterialVirtual2.dll" />
-            <file type="new" value="bin/release/plugins/PhotonMapExportDB/PhotonMapExportDB2.dll" />
-            <file type="new" value="bin/release/plugins/PhotonMapExportFile/PhotonMapExportFile2.dll" />
-            <file type="new" value="bin/release/plugins/PhotonMapExportNull/PhotonMapExportNull2.dll" />
-            <file type="new" value="bin/release/plugins/RandomMersenneTwister/RandomMersenneTwister2.dylib" />
-            <file type="new" value="bin/release/plugins/RandomRngStream/RandomRngStream2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeBezierSurface/ShapeBezierSurface2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeCone/ShapeCone2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeCylinder/ShapeCylinder2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeFlatDisk/ShapeFlatDisk2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeFlatRectangle/ShapeFlatRectangle2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeFlatTriangle/ShapeFlatTriangle2.dll" />
-    		<file type="new" value="bin/release/plugins/ShapeHyperboloid/ShapeHyperboloid2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeParabolicDish/ShapeParabolicDish2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeParabolicRectangle/ShapeParabolicRectangle2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeSphere/ShapeSphere2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeSphericalPolygon/ShapeSphericalPolygon2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeSphericalRectangle/ShapeSphericalRectangle2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTroughAsymmetricCPC/ShapeTroughAsymmetricCPC2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTroughCHC/ShapeTroughCHC2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTroughCPC/ShapeTroughCPC2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTroughHyperbola/ShapeTroughHyperbola2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTroughParabola/ShapeTroughParabola2.dll" />
-            <file type="new" value="bin/release/plugins/ShapeTrumpet/ShapeTrumpet2.dll" />
-			<file type="new" value="bin/release/plugins/SunshapeBuie/SunshapeBuie2.dll" />
-            <file type="new" value="bin/release/plugins/SunshapePillbox/SunshapePillbox2.dll" />
-            <file type="new" value="bin/release/plugins/TrackerHeliostat/TrackerHeliostat2.dll" />
-            <file type="new" value="bin/release/plugins/TrackerLinearFresnel/TrackerLinearFresnel2.dll" />
-            <file type="new" value="bin/release/plugins/TrackerOneAxis/TrackerOneAxis2.dll" />
-            <file type="new" value="bin/release/plugins/TransmissivityBallestrin/TransmissivityBallestrin2.dll" />
-            <file type="new" value="bin/release/plugins/TransmissivityDefault/TransmissivityDefault2.dll" />
-            <file type="new" value="bin/release/plugins/TransmissivityMirval/TransmissivityMirval2.dll" />
-            <file type="new" value="bin/release/plugins/TransmissivitySenguptaNREL/TransmissivitySenguptaNREL2.dll" />
-            <file type="new" value="bin/release/plugins/TransmissivityVantHull/TransmissivityVantHull2.dll" />
-            <file type="new" value="bin/release/plugins/TransmissivityVittitoeBiggs/TransmissivityVittitoeBiggs2.dll" />
-            <file type="new" value="bin/release/libsqlite3-0.dll" />
         </os>
         <os value="mac">
             <file type="replace" value="Contents/MacOS/plugins/MaterialBasicRefractive/libMaterialBasicRefractive.dylib" />
