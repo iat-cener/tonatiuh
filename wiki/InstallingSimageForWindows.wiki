@@ -13,7 +13,7 @@ Since the simage library binary installers for Windows, available at the Coin 3D
 
 Download the latest realese of the Simage source package, currently simage-1.7.0. To do it, click on the following [https://bitbucket.org/Coin3D/coin/downloads link] to go to the "Downloads" webpage of the Coin3D website. Once you reach the webpage, click on the link entitled _"simage-1.7.0.tar.gz"_ (see Figure 1). This will start the downloading of the simage source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer.
 
-||<a href="https://plus.google.com/photos/100251272352990958135/albums/5362380659945338161/5892949347792701474?banner=pwa&pid=5892949347792701474&oid=100251272352990958135feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TK-kOAPXjZI/AAAAAAAAAmQ/YfNdlO1VcvM/s400/Simage_sourcecode.png" height="297" width="400" /></a>||
+||<a href="https://plus.google.com/photos/100251272352990958135/albums/5362380659945338161/5892949347792701474?banner=pwa&pid=5892949347792701474&oid=100251272352990958135feat=embedwebsite"><img src="https://lh3.googleusercontent.com/-VJR4ua_06sg/Ucf2NaqNyCI/AAAAAAAAD2E/TjonggbaCuU/w856-h685-no/Simage_Download.PNG" height="297" width="400" /></a>||
 || *Figure 1.* View of the "simage 1.7.0" webpage.||
 
 Once the simage source code package is on your PC, place it into the user directory under your MSYS folder. This will typically be _C:\sde\MinGW\msys\1.0\home\username_.
