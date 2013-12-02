@@ -17,13 +17,11 @@ Download the latest version of the MinGW installer. To do it, click on the follo
 Once the MinGW installer is in your PC, left-click twice upon it to execute it. 
 
 During the execution of the installer do the following:
-  * Select _"Use pre-packaged repository catalogues"_. 
-  * Check the _"I accept the agreement"_ and click the _"Next"_ button.
   * Enter _"C:\sde\MinGW"_ as the destination location.
+  * Select _"Use pre-packaged repository catalogues"_. 
   * Select the following components to install: 
-    * _"C++ Compiler"_, 
-    * _"MSYS Basic System"_ and 
-    * _"MinGW Developer !ToolKit"_.
+    * _"The GNU C++ Compiler"_, 
+    * _"A Basic MSYS Installation"_
 
 After the installation is completed, open a MSYS shell console at _"C:\sde\MinGW\msys\1.0\msys.bat"_ and type:
 {{{
