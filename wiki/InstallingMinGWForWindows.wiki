@@ -18,7 +18,8 @@ Once the MinGW installer is in your PC, left-click twice upon it to execute it.
 
 During the execution of the installer do the following:
   * Enter _"C:\sde\MinGW"_ as the destination location.
-  * Select the following components to install: 
+  * Select the following components to install:  
+    * _"A Basic MinGW Installation"_
     * _"The GNU C++ Compiler"_, 
     * _"A Basic MSYS Installation"_
 
