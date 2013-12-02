@@ -8,7 +8,7 @@ Here you will find instructions to install the Marble library in your computer a
 
 = Details =
 
-To compile Marble you need CMake -a cross-platform make. To obtain it follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.7-win32-x86.exe"_, which is the CMake binary installer for Windows (see Figure 1). This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
+To compile Marble you need CMake -a cross-platform make. To obtain it follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.12.1-win32-x86.exe"_, which is the CMake binary installer for Windows (see Figure 1). This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
 
 ||<a href="http://picasaweb.google.com/lh/photo/5Iue-oDOBsZN6zeEpmRBQMkjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh5.ggpht.com/_tmEVMS15i5Y/TLDLa3oJp1I/AAAAAAAAAn4/mZPF8osxLas/s400/CMake_installer.png" height="338" width="400" /></a>||
 || *Figure 1.* View of the "CMake" webpage.||
@@ -17,7 +17,7 @@ Now, you need to download the latest stable version of the Marble source code wh
 
 After downloading the marble source code, using the MSYS shell navigate to the marble directory just created in your computer and type:
 {{{
-export QTDIR=/c/sde/Qt/Desktop/Qt/4.7.4/mingw
+export QTDIR=/c/sde/Qt/Desktop/Qt/version/mingw
 export PATH=$QTDIR/bin:$PATH:/c/sde/CMake/bin
 }}}
 
