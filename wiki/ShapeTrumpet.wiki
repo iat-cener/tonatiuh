@@ -11,3 +11,6 @@ The trumpet is rotational hyperbolic concentrator. The hyperbola is rotated arou
 <td align="center" >*Figure 1.* Trumpet shape parameters.</td>
 </tr>
 </table>
+
+
+[TypeOfNodes Type of Nodes] | [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
