@@ -1,0 +1,18 @@
+#summary One-sentence summary of this page.
+
+= Trough Asymmetric CPC =
+
+||<a href="https://picasaweb.google.com/lh/photo/wxy0SQyzDXgMBFL2GLgEBdMTjNZETYmyPJy0liipFm0?feat=embedwebsite"><img src="https://lh4.googleusercontent.com/-GZGSwlLoE7A/Up8W3yN9IaI/AAAAAAAAAT0/7H_b7cx6juE/s640/TroughAsymmetricCPC.png" height="387" width="640" /></a>||
+||  *Figure 1.* Trough Asymmetric CPC view.||
+
+
+== Parameters==
+
+The parameter used to define the shape are:
+  * rInt: Absorber tube radius.
+  * rExt: Vacuum tube external radius.
+  * acceptanceAngleCW (θccw): Acceptance angle in clockwise direction (respect to the axis of the CPC).
+  * acceptanceAngleCCW (θccw): Acceptance angle in counterclockwise direction (respect to the axis of the CPC).
+  * truncationAngle: (talpha) truncation plane inclination respect to the horizontal axis.
+  * truncationOrigin (t0): truncation plane origin height.
+  * length: shape length in the z direction.
