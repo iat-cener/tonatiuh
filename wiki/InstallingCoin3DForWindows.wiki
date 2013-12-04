@@ -29,7 +29,7 @@ This will create a directory called _Coin-3.1.3_ in your user directory. Using t
 
 To build the library in release mode type:
 {{{
-export QTDIR=/c:/sde/Qt/Desktop/Qt/4.7.4/mingw
+export QTDIR=/c:/sde/Qt/version/mingw
 export COINDIR=/usr/local
 export INCLUDE=/usr/local/include:/c:/sde/MinGW/include
 ./configure --disable-msvc --enable-debug=no --enable-symbols=no
