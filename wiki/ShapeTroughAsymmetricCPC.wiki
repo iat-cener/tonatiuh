@@ -21,12 +21,12 @@ Here you can find the parameters definition for the Trough Asymmetric CPC concen
 
 The parameter used to define the shape are:
   * _*rInt*_: Absorber tube radius.
-  * rExt: Vacuum tube external radius.
-  * acceptanceAngleCW (θccw): Acceptance angle in clockwise direction (respect to the axis of the CPC).
-  * acceptanceAngleCCW (θccw): Acceptance angle in counterclockwise direction (respect to the axis of the CPC).
-  * truncationAngle: (talpha) truncation plane inclination respect to the horizontal axis.
-  * truncationOrigin (t0): truncation plane origin height.
-  * length: shape length in the z direction.
+  * _*rExt*_: Vacuum tube external radius.
+  * _*acceptanceAngleCW (θccw)*_: Acceptance angle in clockwise direction (respect to the axis of the CPC).
+  * _*acceptanceAngleCCW (θccw)*_: Acceptance angle in counterclockwise direction (respect to the axis of the CPC).
+  * _*truncationAngle (talpha)*_: Truncation plane inclination respect to the horizontal axis.
+  * _*truncationOrigin (t0)*_: Truncation plane origin height.
+  * _*length*_: Shape length in the z direction.
 
 
 
