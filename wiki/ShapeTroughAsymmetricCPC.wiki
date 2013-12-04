@@ -43,3 +43,5 @@ The following images show the scheme to identify this parameters:
 <td align="center" colspan="2">*Figure 2.* Trough Asymmetric CPC scheme.</td>
 </tr>
 </table>
+
+[TonatiuhNodeTypesDescription  Type of Nodes] | [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
