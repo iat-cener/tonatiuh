@@ -16,3 +16,7 @@ The parameter used to define the shape are:
   * truncationAngle: (talpha) truncation plane inclination respect to the horizontal axis.
   * truncationOrigin (t0): truncation plane origin height.
   * length: shape length in the z direction.
+
+The following images show the scheme to identify this parameters.
+||<a href="https://picasaweb.google.com/lh/photo/N8FHxMo-j51HdTKlzgxUUtMTjNZETYmyPJy0liipFm0?feat=embedwebsite"><img src="https://lh5.googleusercontent.com/-uu-fGgpLfAc/Up8YfOG1eLI/AAAAAAAAAUE/Kit5gbIqqdI/s400/SchemaAsymmetricCPC1.png" height="269" width="400" /></a>||
+|| *Figure 2.* Trough Asymmetric CPC scheme.||
