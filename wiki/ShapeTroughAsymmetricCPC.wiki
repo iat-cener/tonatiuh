@@ -20,7 +20,7 @@ Here you can find the parameters definition for the Trough Asymmetric CPC concen
 == Parameters==
 
 The parameter used to define the shape are:
-  * rInt: Absorber tube radius.
+  * _*rInt*_: Absorber tube radius.
   * rExt: Vacuum tube external radius.
   * acceptanceAngleCW (θccw): Acceptance angle in clockwise direction (respect to the axis of the CPC).
   * acceptanceAngleCCW (θccw): Acceptance angle in counterclockwise direction (respect to the axis of the CPC).
