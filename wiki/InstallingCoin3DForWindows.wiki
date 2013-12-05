@@ -40,6 +40,22 @@ This will start the configuration process. Depending on your computer, this proc
 ||<a href="http://picasaweb.google.com/lh/photo/WYeLOhf48chNSykrpIxVWMkjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLB670Ev2zI/AAAAAAAAAnE/J0_F_CRcPiw/s400/Coin_config_final_screen.png" height="323" width="400" /></a>||
 || *Figure 2.* MSYS shell messages shown when the configuration process ends.||
 
+To compile the code without errors, it is necessary to do some changes in the code:
+  * File _"src/base/dict.h"_, line 31: comment the code.
+{{{
+//#include <cstdlib>
+}}}
+  * File _"src/fonts/freetype:cpp"_: comment line 121
+{{{
+//#include <math.h>
+}}}
+  * File _"src/fonts/glyph.h"_, line 40: Add
+{{{ 
+#include <cstdlib>
+}}}
+
+
+
 Now, you can install the Coin3D library by typing:
 {{{
 make 
