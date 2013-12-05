@@ -8,7 +8,7 @@ Here you will find instructions to install the !SQLite library in your computer 
 
 = Details =
 
-Before installing SQLite, please, verify that the MinGW and MSYS compilation and linking environmentenand are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingMinGWForWindows Installing MinGW and MSYS].
+Before installing SQLite, please, verify that the MinGW and MSYS compilation and linking environment are already properly installed in your computer. If they are not, install them first by following the corresponding procedures to [InstallingMinGWForWindows Installing MinGW and MSYS].
 
 Download the latest release of the SQLite, currently SQLite 3071300. To do it, click on the following [http://www.sqlite.org/download.html link] to go to the "SQLite"  download webpage. Once you reach the webpage, click on the link titled "sqlite-autoconf-_version_.tar.gz
 " at the "Source Code" section. This will start the downloading of the source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer. 
