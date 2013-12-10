@@ -8,12 +8,24 @@ Here you will find instructions to install the Marble library in your computer a
 
 = Details =
 
+==CMake==
 To compile Marble you need CMake -a cross-platform make. To obtain it follow this [http://www.cmake.org/cmake/resources/software.html link] to go to the CMake webpage. Once you reach de webpage, click on the link titled _"cmake-2.8.12.1-win32-x86.exe"_, which is the CMake binary installer for Windows (see Figure 1). This will start the downloading of the CMake installer. When prompted, select the appropriate option to store the excutable file in your computer. Then, left-click twice on the installer and install CMake at the folder _"C:\sde\CMake"_.
 
 ||<a href="https://picasaweb.google.com/lh/photo/iTHC8hGDk8Nj-ypClgbkFNMTjNZETYmyPJy0liipFm0?feat=embedwebsite"><img src="https://lh5.googleusercontent.com/-eSKy-5rJv-w/UqAll_6x0WI/AAAAAAAAAUs/eeLavPXob04/s400/CMakeDownload.png" height="287" width="400" /></a>||
 || *Figure 1.* View of the "CMake" webpage.||
 
-Now, you need to download the latest stable version of the Marble source code which is marble-1.2.0. To do it, download a compressed archive of the source code from Marble download web page at this [http://edu.kde.org/marble/download.php link].
+
+==Git==
+
+To download the marble source code, you need to install _Git_ control version software. You can download it for windows from the following [http://git-scm.com/downloads link]. After the download process is finished install it.
+
+== Marble==
+Now, you need to download the latest stable version of the [http://marble.kde.org/install.php Marble] source code. Click the following 
+[https://projects.kde.org/projects/kde/kdeedu/marble/repository link] to go to the repository. But to start the download process execute Git and select _"Clone Existing Repository"_. In the dialog define:
+  * Source Location: _"git://anongit.kde.org/marble"_
+  * Target Directory: _"C:/sde/MinGW/msys/1.0/home/username"_
+
+Click _"Clone"_ to start the code download process.
 
 After downloading the marble source code, using the MSYS shell navigate to the marble directory just created in your computer and type:
 {{{
