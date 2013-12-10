@@ -23,7 +23,7 @@ Now, go to the Windows menu and select _"Open Perspective"_, and then _"SVN Repo
 ||<a href="http://picasaweb.google.com/lh/photo/fw2cK0HZ88Y1EQSL_D9zZA?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TLOuJyX0CgI/AAAAAAAAArs/LhHIVthMIGo/s400/Marble_svn_connectors.png" height="288" width="400" /></a>||
 || *Figure 3.* Eclipse's Subversive SVN Connectors selection dialog.||
 
-Select the SVN Connector titled _"SVN Kit 1.3.5"_ and follow the instructions of the subsequent dialogs, clicking on their _"Next"_ button, and accepting the licence agreements you are presented, until the installation process starts.
+Select the SVN Connector titled _"SVN Kit version"_ and follow the instructions of the subsequent dialogs, clicking on their _"Next"_ button, and accepting the licence agreements you are presented, until the installation process starts.
 
 During the installation of the connector and related software you will get a _"Security Warning"_ from Eclipse, stating that _"you are installing software that contains unsigned content"_ and asking you if you want to continue with the installation. Say yes, by clicking on the security warning dialog's _"OK"_ button.
 
