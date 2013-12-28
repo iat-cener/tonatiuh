@@ -6,7 +6,7 @@ This tutorial explains how to use Tonatiuh release 2.0.1 to model a parabolic di
 
 = Modelling the parabolic dish with Tonatiuh =
 
-== The concentrating system to be modelled ==
+== The concentrating system to model == 
 
 The parabolic dish we are going to model is composed of a parabolic dish mirror and a flat disk receiver located in the focal plane of the mirror and centred at the focal point.
 
@@ -24,7 +24,9 @@ Such a parabolic dish, which has an f-Number (ratio of the focal length to the d
 
 == Modelling the concentrating system with Tonatiuh 2.0.1 ==
 
-After starting Tonatiuh, do the following:
+=== Creating the Group Node tree structure ===
+
+After starting Tonatiuh release 2.0.1, do the following:
 
   # Add a Group Node to the !RootNode and label it "!ConcentratingSystem".
   # Add a Group Node to the "!ConcentratingSystem" Group Node and label it "!ParabolicDish".
