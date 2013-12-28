@@ -24,11 +24,14 @@ Such a parabolic dish, which has an f-Number (ratio of the focal length to the d
 
 == Modelling the concentrating system with Tonatiuh 2.0.1 ==
 
-After staring Tonatiuh do the following:
+After starting Tonatiuh, do the following:
 
   # Add a Group Node to the RootNode and label it "ConcentratingSystem".
   # Add a Group Node to the "ConcentratingSystem" Group Node and label it "ParabolicDish".
   # Add a second Group Node to the "ConcentratingSystem" Group Node and label it "Receiver".
+
+After doing this, Tonatiuh's user interface should look like Figure 1.
+
   # Click on the "ParabolicDish" Group Node to select it. Add to it a Surface Node and keep the automatic label "TShapeKit1" provided by Tonatiuh.
   # Click on the just created "TShapeKit1" Surface Node and add to it:
     * A "Parabolic_Dish" node.
