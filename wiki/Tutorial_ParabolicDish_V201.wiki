@@ -6,15 +6,23 @@ This tutorial explains how to use Tonatiuh release 2.0.1 to model a parabolic di
 
 = Modelling the parabolic dish with Tonatiuh =
 
-The parabolic dish we want to model is composed of a parabolic dish mirror and a flat disk receiver located in the focal plane of the mirror and centred at the focal point. For simplicity we are going to assume that the mirror is a perfect specular mirror of ideal paraboloid geometry and the receiver is a perfect absorber.
+== The system to be modelled ==
 
-We are going to assume the following values for the parameters defining the geometry of dish and the receiver:
+The parabolic dish we are going to model is composed of a parabolic dish mirror and a flat disk receiver located in the focal plane of the mirror and centred at the focal point.
+
+For simplicity, we are going to assume that the mirror is a perfect specular mirror of ideal paraboloidal shape and the receiver is a perfect absorber of ideal flat disk shape.
+
+We are going to use the following values for the parameters defining the geometry of dish and the receiver:
 
   # Parabolic mirror
     * Radius = 5 meters
     * Focal length = 6.0454798 meters
   # Flat disk receiver
     * Radius = 0.06 meters
+
+Such a parabolic dish, which has an f-Number (ratio of the focal length to the dish diameter) of 0.60454798, achieves the maximum geometric concentration ratio for a parabolic dish.
+
+
 
 
     
