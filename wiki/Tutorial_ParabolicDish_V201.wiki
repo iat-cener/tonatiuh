@@ -26,7 +26,7 @@ Such a parabolic dish, which has an f-Number (ratio of the focal length to the d
 
 After starting Tonatiuh, do the following:
 
-  # Add a Group Node to the RootNode and label it "!ConcentratingSystem".
+  # Add a Group Node to the !RootNode and label it "!ConcentratingSystem".
   # Add a Group Node to the "!ConcentratingSystem" Group Node and label it "!ParabolicDish".
   # Add a second Group Node to the "!ConcentratingSystem" Group Node and label it "!Receiver".
 
