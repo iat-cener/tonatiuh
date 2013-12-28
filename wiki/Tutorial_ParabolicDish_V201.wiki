@@ -32,6 +32,8 @@ After starting Tonatiuh, do the following:
 
 After doing this, Tonatiuh's user interface should look like Figure 1.
 
+https://lh3.googleusercontent.com/-tt0_mGfueDI/Ur8wSe08dnI/AAAAAAAAE5g/L9tUnJ6fN1Y/w1117-h698-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture01.JPG
+
   # Click on the "ParabolicDish" Group Node to select it. Add to it a Surface Node and keep the automatic label "TShapeKit1" provided by Tonatiuh.
   # Click on the just created "TShapeKit1" Surface Node and add to it:
     * A "Parabolic_Dish" node.
