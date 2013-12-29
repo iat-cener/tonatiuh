@@ -63,3 +63,7 @@ Obviously, we have to change the values assigned to some of the above listed var
   * Change the minimum radius "!dishMinRadius" to 0. meters.
   * Change the maximum radius "!dishMaxRadius" to 5 meters.
   * Change the  active side for representation purposes "!activeSide" to INSIDE.
+
+After doing this, Tonatiuh's user interface should look like this:
+
+https://lh3.googleusercontent.com/-pqokBTgdvzw/Ur91Wx6lAHI/AAAAAAAAE6U/IHHTJ3psXCw/w1118-h601-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture03.JPG
