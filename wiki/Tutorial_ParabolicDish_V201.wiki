@@ -74,3 +74,7 @@ Although, we have modelled the geometry of the parabolic dish, we still have to 
   * m_sigmaSlope = 0 (default value 2)
 
 By setting the reflectivity to 1 and the sigma slope to 0 we are telling Tonatiuh that the mirror should be modelled as an ideal specular reflective mirror that follows exactly Descarte's law of reflection.
+
+=== Modelling the flat disk receiver ===
+
+TO BE CONTINUED...
