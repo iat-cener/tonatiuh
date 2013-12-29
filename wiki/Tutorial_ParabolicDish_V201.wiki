@@ -36,7 +36,7 @@ After doing this, Tonatiuh's user interface should look like this:
 
 https://lh3.googleusercontent.com/-tt0_mGfueDI/Ur8wSe08dnI/AAAAAAAAE5g/L9tUnJ6fN1Y/w1117-h698-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture01.JPG
 
-The 3D-window located to the left of Tonatiuh's Graphics User Interface (GUI) does not show any surfaces, since we have not defined them yet. The Symbolic window located to the right of Tonatiuh's GUI shows the Group Node tree structure we have just created. In this tree structure, the Group Nodes represent three-dimensional reference frames. Each one of these reference frames can be translated and rotated with respect to the reference frame of their parents. The dimensions along the axes of each reference frame can be independently scaled. By default Tonatiuh creates the Group Note with the x-z plane as the horizontal plane and with the y-axis as the vertical axis, positive upwards. Since we have not changed the default parameters, the three reference frames created with the three Group Nodes just defined ("!ConcentratingSystem", "!ParabolicDish", "Receiver") are all coincident with the world reference frame represented by the Group Node "!RootNode".
+The 3D pane view located to the left of Tonatiuh's Graphics User Interface (GUI) does not show any surfaces, since we have not defined them yet. The Symbolic pane view located to the right of Tonatiuh's GUI shows the Group Node tree structure we have just created. In this tree structure, the Group Nodes represent three-dimensional reference frames. Each one of these reference frames can be translated and rotated with respect to the reference frame of their parents. The dimensions along the axes of each reference frame can be independently scaled. By default Tonatiuh creates the Group Note with the x-z plane as the horizontal plane and with the y-axis as the vertical axis, positive upwards. Since we have not changed the default parameters, the three reference frames created with the three Group Nodes just defined ("!ConcentratingSystem", "!ParabolicDish", "Receiver") are all coincident with the world reference frame represented by the Group Node "!RootNode".
 
 === Modelling the parabolic dish ===
 
@@ -45,7 +45,21 @@ The 3D-window located to the left of Tonatiuh's Graphics User Interface (GUI) do
     * A "Parabolic_Dish" node.
     * A "Specular_Standard_Material" node.
 
-After doing this, Tonatiuh's user interface should look like this:
+After doing this, if you select within the "View" menu the option "Edit Mode" and set up the four 3D-Windows of the 3D pane view appropiately, Tonatiuh's user interface should look like this:
 
 https://lh4.googleusercontent.com/-oPSZUatZbKI/Ur9uYW4CZ2I/AAAAAAAAE6E/oaRBUlX0AQU/w1118-h603-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture02.JPG
-    
+
+As Tonatiuh's GUI shows, we have managed to create a parabolic dish. However, the parabolic dish that we have created is not the parabolic dish we wanted to model. The reason for this is that we have not changed the default values that Tonatiuh assigns to any newly created parabolic dish. This default values are:
+
+  * A focal length "!focusLength" of 0.125 meters.
+  * A minimum radius "!dishMinRadius" of 0.1 meters.
+  * A maximum radius "!dishMaxRadius" of 0.5 meters.
+  * A maximum rotational angle "phiMax" of 2 Pi.
+  * An active side for representation purposes "!activeSide" of OUTSIDE.
+
+Obviously, we have to change the values assigned to some of the above listed variables to model the parabolic dish we are interested in. The changes that we need to carry out are the following:
+
+  * Change the focal length "!focusLength" to 6.0454798 meters.
+  * Change the minimum radius "!dishMinRadius" to 0. meters.
+  * Change the maximum radius "!dishMaxRadius" to 5 meters.
+  * Change the  active side for representation purposes "!activeSide" to INSIDE.
