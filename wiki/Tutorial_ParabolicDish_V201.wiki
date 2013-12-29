@@ -68,4 +68,9 @@ After doing this, Tonatiuh's user interface should look like this:
 
 https://lh3.googleusercontent.com/-pqokBTgdvzw/Ur91Wx6lAHI/AAAAAAAAE6U/IHHTJ3psXCw/w1118-h601-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture03.JPG
 
-TO BE CONTINUED...
+Although, we have modelled the geometry of the parabolic dish, we still have to model its physical properties. To do this, we select the "Specular_Standard_Material" node and change the values of the following variables from their default values to the following ones:
+
+  * m_reflectivity = 1 (default value 0)
+  * m_sigmaSlope = 0 (default value 2)
+
+By setting the reflectivity to 1 and the sigma slope to 0 we are telling Tonatiuh that the mirror should be modelled as an ideal specular reflective mirror that follows exactly Descarte's law of reflection.
