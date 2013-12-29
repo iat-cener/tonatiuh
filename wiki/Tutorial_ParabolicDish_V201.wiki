@@ -67,3 +67,5 @@ Obviously, we have to change the values assigned to some of the above listed var
 After doing this, Tonatiuh's user interface should look like this:
 
 https://lh3.googleusercontent.com/-pqokBTgdvzw/Ur91Wx6lAHI/AAAAAAAAE6U/IHHTJ3psXCw/w1118-h601-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture03.JPG
+
+TO BE CONTINUED...
