@@ -45,7 +45,7 @@ The 3D pane view located to the left of Tonatiuh's Graphics User Interface (GUI)
     * A "!Parabolic_Dish" node.
     * A "!Specular_Standard_Material" node.
 
-After doing this, if you select within the "View" menu the option "Edit Mode" and set up the four 3D-Windows of the 3D pane view appropiately, Tonatiuh's user interface should look like this:
+After doing this, if you select within the "View" menu the option "Edit Mode" and set up the four 3D-Windows of the 3D pane view appropriately, Tonatiuh's user interface should look like this:
 
 https://lh4.googleusercontent.com/-oPSZUatZbKI/Ur9uYW4CZ2I/AAAAAAAAE6E/oaRBUlX0AQU/w1118-h603-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture02.JPG
 
@@ -78,11 +78,10 @@ By setting the reflectivity to 1 and the sigma slope to 0 we are telling Tonatiu
 === Modelling the flat disk receiver ===
 
   # Click on the "Receiver" Group Node to select it and change the value of the translation variable from "0 0 0" to "0 6.0454798 0" in order to translate the flat disk's reference frame in the vertical y-direction and place its origin at the focal point of the mirror.
-  # Add to the "Receiver" Group Node a Surface Node and keep the automatic label "!TShapeKit1" provided by Tonatiuh.
-  # Click on the just created "!TShapeKit1" Surface Node and add to it:
+  # Add to the "Receiver" Group Node a Surface Node and keep the automatic label "TShapeKit1" provided by Tonatiuh.
+  # Click on the just created "TShapeKit1" Surface Node and add to it:
     * A "!Flat_Disk" node.
     * A "!Specular_Standard_Material" node.
   # Select the "!Flat_Disk" node and change the "radius" from 0.5 meters (default) to 0.06 meters, and the "activeSide" from "FRONT" to "BACK".
-  # Select the "!Specular_Standard_Material" node.
 
-After doing this, if you select within the "View" menu the option "Edit Mode" and set up the four 3D-Windows of the 3D pane view appropiately, Tonatiuh's user interface should look like this:
+After doing this, if you select within the "View" menu the option "Edit Mode" and set up the four 3D-Windows of the 3D pane view appropriately, Tonatiuh's user interface should look like this:
