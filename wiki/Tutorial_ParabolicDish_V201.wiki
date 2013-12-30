@@ -4,9 +4,7 @@
 
 This tutorial explains how to use Tonatiuh release 2.0.1 to model a parabolic dish and simulate its optical behaviour. It also explains how to use Mathematica to process the output from Tonatiuh to estimate the concentrated solar flux distribution at the focal plane of the parabolic dish and related parameters, such as the maximum radius of such distribution, i.e., the size of the solar radiation spot at the focal plane.
 
-= Modelling the parabolic dish with Tonatiuh =
-
-== The concentrating system to model == 
+= The concentrating system to model = 
 
 The parabolic dish we are going to model is composed of a parabolic dish mirror and a flat disk receiver located in the focal plane of the mirror and centred at the focal point.
 
@@ -22,9 +20,9 @@ We are going to use the following values for the parameters defining the geometr
 
 Such a parabolic dish, which has an f-Number (ratio of the focal length to the dish diameter) of 0.60454798, achieves the maximum geometric concentration ratio for a parabolic dish.
 
-== Modelling the concentrating system with Tonatiuh 2.0.1 ==
+= Modelling the concentrating system with Tonatiuh 2.0.1 =
 
-=== Creating the Group Node tree structure ===
+== Creating the Group Node tree structure ==
 
 After starting Tonatiuh release 2.0.1, do the following:
 
@@ -38,7 +36,7 @@ https://lh3.googleusercontent.com/-tt0_mGfueDI/Ur8wSe08dnI/AAAAAAAAE5g/L9tUnJ6fN
 
 The 3D pane view located to the left of Tonatiuh's Graphics User Interface (GUI) does not show any surfaces, since we have not defined them yet. The Symbolic pane view located to the right of Tonatiuh's GUI shows the Group Node tree structure we have just created. In this tree structure, the Group Nodes represent three-dimensional reference frames. Each one of these reference frames can be translated and rotated with respect to the reference frame of their parents. The dimensions along the axes of each reference frame can be independently scaled. By default Tonatiuh creates the Group Note with the x-z plane as the horizontal plane and with the y-axis as the vertical axis, positive upwards. Since we have not changed the default parameters, the three reference frames created with the three Group Nodes just defined ("!ConcentratingSystem", "!ParabolicDish", "Receiver") are all coincident with the world reference frame represented by the Group Node "!RootNode".
 
-=== Modelling the parabolic dish ===
+== Modelling the parabolic dish ==
 
   # Click on the "!ParabolicDish" Group Node to select it. Add to it a Surface Node and keep the automatic label "!TShapeKit1" provided by Tonatiuh.
   # Click on the just created "!TShapeKit1" Surface Node and add to it:
@@ -75,7 +73,7 @@ Although, we have modelled the geometry of the parabolic dish, we still have to 
 
 By setting the reflectivity to 1 and the sigma slope to 0 we are telling Tonatiuh that the mirror should be modelled as an ideal specular reflective mirror that follows exactly Descarte's law of reflection.
 
-=== Modelling the flat disk receiver ===
+== Modelling the flat disk receiver ==
 
   # Click on the "Receiver" Group Node to select it and change the value of the translation variable from "0 0 0" to "0 6.0454798 0" in order to translate the flat disk's reference frame in the vertical y-direction and place its origin at the focal point of the mirror.
   # Add to the "Receiver" Group Node a Surface Node and keep the automatic label "TShapeKit1" provided by Tonatiuh.
