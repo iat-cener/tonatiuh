@@ -55,7 +55,7 @@ As Tonatiuh's GUI shows, we have managed to create a parabolic dish. However, th
   * A minimum radius "dishMinRadius" of 0.1 meters.
   * A maximum radius "dishMaxRadius" of 0.5 meters.
   * A maximum rotational angle "phiMax" of 2 Pi.
-  * An active side for representation purposes "activeSide" of OUTSIDE.
+  * An active side for representation purposes "activeSide" of "OUTSIDE".
 
 Obviously, we have to change the values assigned to some of the above listed variables to model the parabolic dish we are interested in. The changes that we need to carry out are the following:
 
