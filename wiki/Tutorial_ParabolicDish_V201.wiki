@@ -77,12 +77,8 @@ By setting the reflectivity to 1 and the sigma slope to 0 we are telling Tonatiu
 
 === Modelling the flat disk receiver ===
 
-  # Click on the "!Receiver" Group Node to select it. Change the value of the following variable:
-
-    * translation = 0 6.0454798 0 (default value 0 0 0)
-
+  # Click on the "!Receiver" Group Node to select it and change the value of the translation variable from "0 0 0" to "0 6.0454798 0" in order to translate the flat disk's reference frame in the vertical y-direction and place its horizontal x-z plane at the focal plane of parabolic dish mirror and its origin at the focal point of the mirror.
   # Add to the "!Receiver" Group Node a Surface Node and keep the automatic label "!TShapeKit1" provided by Tonatiuh.
-
   # Click on the just created "!TShapeKit1" Surface Node and add to it:
     * A "Flat_Disk" node.
     * A "Specular_Standard_Material" node.
