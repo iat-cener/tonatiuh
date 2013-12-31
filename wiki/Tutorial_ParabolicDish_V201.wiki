@@ -88,7 +88,7 @@ https://lh6.googleusercontent.com/-ajjNpeVy6pA/UsIDNqmJI6I/AAAAAAAAE6o/i5mDgtOdA
 
 = Modelling the direct solar radiation =
 
-  # From Tonatiuh's menu bar select "!Environment>Sun Light>Define SunLight" in order to make the program to display the "Define SunLight" dialog. 
+  # From Tonatiuh's menu bar select "Environment>Sun Light>Define !SunLight" in order to make the program to display the "Define SunLight" dialog. 
   # In the "Sun Shape" tab of that dialogue, select "Pillbox_Sunshape" as the "Sunshape Type".
   # Accept the default values provided by the program for the direct solar irradiance (1000 W/m2) and for the maximums half angle subtended by the direct solar radiation, "thetaMax" (0.00465 radians or 16 minutes of arc) and click "OK".
 
