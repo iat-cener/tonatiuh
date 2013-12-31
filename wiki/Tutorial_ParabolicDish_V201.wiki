@@ -20,7 +20,7 @@ We are going to use the following values for the parameters defining the geometr
 
 Such a parabolic dish, which has an f-Number (ratio of the focal length to the dish diameter) of 0.60454798, achieves the maximum geometric concentration ratio for a parabolic dish.
 
-= Modelling the concentrating system with Tonatiuh 2.0.1 =
+= Modelling the concentrating system =
 
 == Creating the Group Node tree structure ==
 
@@ -85,3 +85,9 @@ By setting the reflectivity to 1 and the sigma slope to 0 we are telling Tonatiu
 After doing this, if you select within the "View" menu the option "Edit Mode" and set up the four 3D-Windows of the 3D pane view appropriately, Tonatiuh's user interface should look like this:
 
 https://lh6.googleusercontent.com/-ajjNpeVy6pA/UsIDNqmJI6I/AAAAAAAAE6o/i5mDgtOdAE8/w1118-h600-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture04.JPG
+
+= Modelling the direct solar radiation =
+
+  # From Tonatiuh's menu bar select "Environment>Sun Light>Define SunLight" in order to make the program to display the "Define SunLight" dialog. 
+
+  # In the "Sun Shape" tab of that dialogue, select "Pillbox_Sunshape" as the "Sunshape Type" and click "OK".
