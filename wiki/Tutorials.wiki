@@ -12,7 +12,8 @@ The links to the available tutorials are listed below. To go to the wiki page of
 
 === List of tutorials ===
 
- * [TutorialFluxOnParabolicDishFocalPlane How to analyze the flux distribution on the focal plane of an ideal parabolic dish.]
+ * How to analyze the flux distribution on the focal plane of an ideal parabolic dish:
+  * [Tutorial_ParabolicDish_V201 Tonatiuh 2.0.1]
 
  * [TutorialSmallHeliostatsTower How to model a tower system with 500 small one-facet heliostats.]
 
