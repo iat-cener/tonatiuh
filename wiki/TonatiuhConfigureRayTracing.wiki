@@ -1,0 +1,23 @@
+#summary One-sentence summary of this page.
+
+= Configuring the ray tracer =
+
+
+Add your content here.
+
+
+==Settings==
+
+==Draw==
+The draw option are the parameters that define how de simulation results will be showed in the 3D view.
+  * _*Show rays*_: Check this option to show the path of the simulated rays.
+  * _*Show photons*_: A photon is the data associated with an ray intersection with a scene surface. Check this option to show the photons intersection positions.
+
+In the simulation can be selected to create only photons of one surfaces intersections. If this functionality is used, the draw options are not used and after the simulation the rays and the photons will not be drawn. 
+
+==PhotonMap==
+
+The photon map is the structure that stores the photons in memory. This structure can be configured as following:
+
+  * Buffer size: maximum number of photons to store in the photon map.
+  * Construction: This option defines if in consecutive simulations  must start with an empty structure or continue adding (*Increase photon map* ) photons to the photon map created in the previous simulation.
