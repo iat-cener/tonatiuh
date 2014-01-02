@@ -9,7 +9,7 @@ This guide provide instructions for getting started with Tonatiuh.
  * [TonatiuhNodeTypesDescription Type of Nodes]
  * [TonatiuhSceneEnvironment System Environment]
  * [TonatiuhConfigureRayTracing Configuring the ray tracer]
- * [TonatiuhScriptFunctionsv2 Script fucntions]
+ * [TonatiuhScriptFunctionsv2 Script functions]
  * [Tutorials Tutorials]
 
 [http://code.google.com/p/tonatiuh/w/list Wiki Home]
