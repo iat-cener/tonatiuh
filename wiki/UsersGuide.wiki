@@ -10,5 +10,6 @@ This guide provide instructions for getting started with Tonatiuh.
  * [TonatiuhSceneEnvironment System Environment]
  * [TonatiuhConfigureRayTracing Configuring the ray tracer]
  * [TonatiuhScriptFunctionsv2 Script fucntions]
+ * [Tutorials Tutorials]
 
 [http://code.google.com/p/tonatiuh/w/list Wiki Home]
