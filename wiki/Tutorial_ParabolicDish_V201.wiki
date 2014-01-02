@@ -95,3 +95,6 @@ https://lh6.googleusercontent.com/-ajjNpeVy6pA/UsIDNqmJI6I/AAAAAAAAE6o/i5mDgtOdA
 We do not need to change the azimuth and elevation of the sun vector, because by default the azimuth is considered 0 degrees and the elevation 90 degrees, that is, the sun vector, by default, is defined in the y-direction pointing upwards and, therefore, aligned with the optical axis of the parabolic mirror we just modelled.
 
 TO BE CONTINUED...
+
+
+[Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
