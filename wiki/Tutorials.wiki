@@ -24,3 +24,6 @@ The links to the available tutorials are listed below. To go to the wiki page of
  * How to model a tower system with 500 small one-facet heliostats using the scripting tool:
   * [TutorialSmallHeliostatsTowerUsingScript Tonatiuh 1.2.6]
   * [TutorialSmallHeliostatsTowerUsingScriptv2 Tonatiuh 2.0.0]
+
+
+[UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
