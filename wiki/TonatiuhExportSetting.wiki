@@ -1,0 +1,27 @@
+#summary This page shows the parameters available to define the data to save in the simulations.
+
+= Phton Map Export Settings=
+
+Tonatiuh generates a large amount of information when a simulation is executed. However, the user may not need all this information and consequently some of the information can be discarded. Tonatiuh, before start a simulation, asks what data the user want to save for the analysis.
+
+<table>
+<tr>
+<td align="center">
+<a href="https://picasaweb.google.com/lh/photo/ePHGFGVq3Mb9qjJtIxV6XdMTjNZETYmyPJy0liipFm0?feat=embedwebsite"><img src="https://lh6.googleusercontent.com/-AdNRZ4lRVCs/UsWFLSdXtII/AAAAAAAAAXo/WCj8e_XUpxY/s640/ExportSettingsDialog.png" height="640" width="635" /></a>
+</td>
+</tr>
+<tr>
+<td align="center">
+*Figure 1. *Export Settings dialog.</td>
+</tr>
+</table>
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+[UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
