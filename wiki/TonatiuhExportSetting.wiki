@@ -7,7 +7,7 @@ Tonatiuh generates a large amount of information when a simulation is executed. 
 <table>
 <tr>
 <td align="center">
-<a href="https://picasaweb.google.com/lh/photo/ePHGFGVq3Mb9qjJtIxV6XdMTjNZETYmyPJy0liipFm0?feat=embedwebsite"><img src="https://lh6.googleusercontent.com/-AdNRZ4lRVCs/UsWFLSdXtII/AAAAAAAAAXo/WCj8e_XUpxY/s640/ExportSettingsDialog.png" height="640" width="635" /></a>
+<a href="https://picasaweb.google.com/lh/photo/ePHGFGVq3Mb9qjJtIxV6XdMTjNZETYmyPJy0liipFm0?feat=embedwebsite"><img src="https://lh6.googleusercontent.com/-AdNRZ4lRVCs/UsWFLSdXtII/AAAAAAAAAXo/WCj8e_XUpxY/s400/ExportSettingsDialog.png" height="400" width="397" /></a>
 </td>
 </tr>
 <tr>
@@ -17,11 +17,13 @@ Tonatiuh generates a large amount of information when a simulation is executed. 
 </table>
 
 
-= Details =
+= Parameters =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+==Type of store ==
+
+First the user must define the type of store for the photon map. Tonatiuh v2.0.1 has three ways to save simulation data.
+
+  * _*QSL_Database*_: The data is stored into a database in which the information is accessible using SQL statements. In this database three tables are created:
+    * Photons: this table saves all the information about photons. Information related to each photon depends on the parameters that the user wants to save.
 
 [UsersGuide User's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
