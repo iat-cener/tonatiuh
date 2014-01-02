@@ -3,7 +3,20 @@
 = Configuring the ray tracer =
 The ray tracing is the technique that Tonatiuh uses to simulate analyze de solar concentration systems. The rays are generated in a light source, the sun for Tonatiuh, and then these rays intersection with system surfaces are calculated. 
 
-Before execute the ray tracer, some parameters can be configured in the following dialog, available from the menu _"Ray Trace">"Ray Trace Options ..."_
+Before execute the ray tracer, some parameters can be configured in the following dialog, available from the menu _"Ray Trace">"Ray Trace Options ..."_:
+
+
+<table>
+<tr>
+<td align="center">
+<a href="https://picasaweb.google.com/lh/photo/6JLKm9S_ArOZjnCzynrZydMTjNZETYmyPJy0liipFm0?feat=embedwebsite"><img src="https://lh5.googleusercontent.com/-0qEqJwmbWx8/UsV3L0HIR0I/AAAAAAAAAVg/a0xV_WaTie0/s800/RayTracingOptions.png" height="544" width="358" /></a>
+</td>
+</tr>
+<tr>
+<td align="center">
+*Figure 1.*Ray Tracer Options dialog.</td>
+</tr>
+</table>
 
 
 ==Settings==
