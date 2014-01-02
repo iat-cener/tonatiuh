@@ -10,7 +10,7 @@ Before execute the ray tracer, some parameters can be configured in the followin
 The first parameters to configure are related with the ray generation:
   * _*Number of rays*_: The number of rays to simulate.
   * _*Random Generator*_: Random number generator algorithm.
-  * _*With divisions* and *Height divisions*: A grid is defined in the sun plane for generate rays for the cell of this grid that are enabled (a cell is enabled if a ray with origin in the cell can intersect with a surface). The divisions define de number of cells for each dimension for the grid.
+  * _*With divisions* and *Height divisions*_: A grid is defined in the sun plane for generate rays for the cell of this grid that are enabled (a cell is enabled if a ray with origin in the cell can intersect with a surface). The divisions define de number of cells for each dimension for the grid.
 
 
 ==Draw==
