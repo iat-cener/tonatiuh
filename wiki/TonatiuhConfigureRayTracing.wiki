@@ -14,7 +14,7 @@ Before execute the ray tracer, some parameters can be configured in the followin
 </tr>
 <tr>
 <td align="center">
-*Figure 1.*Ray Tracer Options dialog.</td>
+*Figure 1. *Ray Tracer Options dialog.</td>
 </tr>
 </table>
 
