@@ -100,7 +100,7 @@ Once we have modelled the solar concentrating system and the incoming direct sol
 
 To specify how many rays we want to generate, and other ray tracing options we go to the main menu bar and select "Ray Trace>Ray Trace Options" in order to make the program to display the "Ray Trace Options" pop up dialogue, shown in the Figure below.
 
-https://lh6.googleusercontent.com/-4i6Kv9XSIjs/UskKxo3GvZI/AAAAAAAAE7A/OinR-NEoliA/w1598-h860-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture05.JPG
+https://lh5.googleusercontent.com/-3GWf9q98T8w/Uskv-2OMaiI/AAAAAAAAE7o/ZqPYuYaVuOg/w360-h550-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture05.JPG
 
 TO BE CONTINUED...
 
