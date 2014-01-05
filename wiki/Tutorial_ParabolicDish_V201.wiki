@@ -102,6 +102,6 @@ To specify how many rays we want to generate, and other ray tracing options we g
 
 https://lh5.googleusercontent.com/-3GWf9q98T8w/Uskv-2OMaiI/AAAAAAAAE7o/ZqPYuYaVuOg/w360-h550-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture05.JPG
 
-TO BE CONTINUED...
+In this dialog let us just modify the number of rays to be traced by Tonatiuh from the default value of 10000 to 75 million rays.
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
