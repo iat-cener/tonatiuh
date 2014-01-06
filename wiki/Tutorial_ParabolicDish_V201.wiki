@@ -220,6 +220,51 @@ Out[5]= {"Receiver_10.dat", "Receiver_11.dat", "Receiver_12.dat", \
 "Receiver_9.dat"}
 }}} 
 
+=== Initialization of variables ===
+
+To estimate the flux in the back surface of the receiver flat disk the following variables must be defined and initialized:
+
+{{{
+Initialization of variables
+
+In[7]:= numberOfFiles = Length[file]
+
+Out[7]= 58
+
+In[8]:= rReceiver = 0.06 (* m *)
+
+Out[8]= 0.06
+
+In[9]:= powerPerPhoton = 0.00137342 (* W/m2 *)
+
+Out[9]= 0.00137342
+
+In[10]:= nElements = 100
+
+Out[10]= 100
+
+In[11]:= ds = 2  rReceiver/nElements
+
+Out[11]= 0.0012
+
+In[12]:= elementArea = ds * ds
+
+Out[12]= 1.44*10^-6
+
+In[13]:= totalPhotonsCounts = ConstantArray[0, {nElements, nElements}];
+
+In[14]:= totalNumberOfPhotons = 0
+
+Out[14]= 0
+
+In[15]:= rMax = 0.
+
+Out[15]= 0.
+
+In[16]:= conversionFactor = powerPerPhoton/(elementArea*1000000)   (* MW/m2 *)
+
+Out[16]= 0.000953764
+}}}
 
 TO BE CONTINUED...
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
