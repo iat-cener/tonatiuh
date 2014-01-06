@@ -185,16 +185,19 @@ Because of the geometry of the concentrating system we are simulating and the re
 
 Since we are interested in estimating the solar flux distribution in the side of the flat disk receiver that is facing the parabolic dish mirror, we need to differentiate the photons that are impinging on the front surface of the flat disk receiver from those which are impinging on the back surface of the receiver. To do this, we just need to check the value of the sideID in the 5-tuple set of data providing the information of a given photon.
 
-To facilitate the filtering of the photons that are impinging on the wrong side of the receiver flat disk we define in Mathematica a trivial function that gets as an input the 5-tuple of a photon and return True if the photon is in the correct side of the receiver and False otherwise. This function is defined as follows:
+To facilitate the filtering of the photons that are impinging on the wrong side of the receiver flat disk we define in Mathematica a trivial function that gets as an input the 5-tuple of a photon and the reference ID of the receiver side, refDide (1 = FRONT, 0 = BACK) and return True if the photon is in the correct side of the receiver and False otherwise. This function is defined as follows:
 
 {{{
 side[{photonID_, x_, y_, z_, sideID_}, refSide_] := sideID == refSide
 }}}
 
+=== Determine the list of Tonatiuh's binary data files to be processed ===
 
+Since we told Tonatiuh to use as the "core" of the binary data files filenames "Receiver", we can get the complete list of binary data files to be processed with the following Mathematica statement:
 
- 
- 
+{{{
+file = FileNames["Receiver_*.dat"]
+}}} 
 
 
 TO BE CONTINUED...
