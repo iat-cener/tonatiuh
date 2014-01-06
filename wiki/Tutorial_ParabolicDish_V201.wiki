@@ -106,8 +106,17 @@ In this dialogue let us just modify the number of rays to be traced by Tonatiuh 
 
 Once this is done, let us run the ray tracer by selecting on the main menu the option "Ray trace>run". This will trigger the display by Tonatiuh of the "Photon Map Export Settings" dialogue.
 
+In this dialogue, change the values of the following options from their default values to the ones indicated below:
 
-TO BE CONTINUED...
+  * Store type = Binary_file
+  * Directory name = [The directory you want to store the results]
+  * File name = Receiver
+  * Select photons to store = Export surfaces
+  * Select photons information to store:
+    * Coordinates
+    * Local Coordinates
+
+
 
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
