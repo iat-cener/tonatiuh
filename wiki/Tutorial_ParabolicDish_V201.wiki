@@ -149,6 +149,10 @@ END SURFACES
 0.00137342
 }}}
 
+The above information is essential to process the binary data files correctly. 
 
+  * The information contained within the "START PARAMETERS" and "END PARAMETERS" labels, specify how the photon information on the binary data files is structured. 
+  * The information contained within the "START SURFACES" and "END SURFACES" labels, specify the path of each of the ShapeKits associated with the surfaces we exported. In our case, we just exported one surface -the flat disk receiver. In fact, saying that we exported a surface is a lose way of talking. What we actually exported are the photons impinging on either side of the surface.
+  * Finally, the real number at the end of the file, just after the "END SURFACES" label, indicates the power per photon in Watts, to be considered when estimating concentrated solar fluxes and power values.
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
