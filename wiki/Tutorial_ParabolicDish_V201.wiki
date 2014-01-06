@@ -122,7 +122,7 @@ Once we have finished selecting and entering the appropriate values in the "Phot
 
 https://lh5.googleusercontent.com/-7-bNSG2PtSI/UsofJD5171I/AAAAAAAAE8I/ccDk4pgCnZc/w665-h674-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture06.JPG
 
-Now, to run the program we just need to click on the "OK" button of the "Photon Map Export Settings" dialog. How much time Tonatiuh will need to trace the 75 million rays depends on the characteristics of the computer in which we are running Tonatiuh. In the computer that I used to develop this tutorial, which is a Dell laptop with an Intel Core i5.3360M at 2.8 GHz with 4 GB of RAM, running a 32/bit Windows 7 Enterprise operating system, it took Tonatiuh around 4 minutes to trace the 75 million rays and store the information on disk. 
+Now, to run the program we just need to click on the "OK" button of the "Photon Map Export Settings" dialog. How much time Tonatiuh will need to trace the 75 million rays depends on the characteristics of the computer in which we are running Tonatiuh. In the computer that I used to develop this tutorial, which is a 4-cores Dell laptop with an Intel Core i5.3360M at 2.8 GHz with 4 GB of RAM, running a 32/bit Windows 7 Enterprise operating system, it took Tonatiuh around 4 minutes to trace the 75 million rays and store the information on disk. 
 
 
 
