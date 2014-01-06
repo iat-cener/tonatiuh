@@ -120,8 +120,8 @@ Since we have selected "Export surfaces" as the option of "Select photons to sto
 
 Once we have finished selecting and entering the appropriate values in the "Photon Map Export Settings" dialog, the content of such dialog should look like the Figure below:
 
+https://lh5.googleusercontent.com/-7-bNSG2PtSI/UsofJD5171I/AAAAAAAAE8I/ccDk4pgCnZc/w665-h674-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture06.JPG
 
-
-
+Now, to run the program we just need to click on the "Ok" button of the "Photon Map Export Settings" dialog.
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
