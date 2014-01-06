@@ -130,7 +130,24 @@ https://lh4.googleusercontent.com/-rZrzgBByruo/Usoqs2g4o-I/AAAAAAAAE8c/CIT_cXMgz
 
 = Post-processing Tonatiuh's output =
 
-TO BE CONTINUED...
+After carrying out the ray tracing of the 75 million rays, Tonatiuh stored the information about the photons that it has traced in a series of binary files. Since we established as the core name of the files "Receiver", Tonatiuh generated 58 files, starting in the file "Receiver_1.dat" and ending in the file "Receiver_58.dat". As we established when selecting the options for the ray tracing, all of these files, but the last one, contain information about 10 million photons. 
+
+In addition to the 58 binary data files, with information about the different photons incident on the flat disk receiver, Tonatiuh also generated a file entitled "Receiver_parameter.txt" with the following content:
+
+{{{
+START PARAMETERS
+id
+x
+y
+z
+side
+surface ID
+END PARAMETERS
+START SURFACES
+1 //SunNode/RootNode/ConcentratingSystem/Receiver/TShapeKit1
+END SURFACES
+0.00137342
+}}}
 
 
 
