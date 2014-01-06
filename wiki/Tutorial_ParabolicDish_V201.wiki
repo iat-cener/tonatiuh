@@ -196,7 +196,28 @@ side[{photonID_, x_, y_, z_, sideID_}, refSide_] := sideID == refSide
 Since we told Tonatiuh to use as the "core" of the binary data files filenames "Receiver", we can get the complete list of binary data files to be processed with the following Mathematica statement:
 
 {{{
-file = FileNames["Receiver_*.dat"]
+In[5]:= file = FileNames["Receiver_*.dat"]
+
+Out[5]= {"Receiver_10.dat", "Receiver_11.dat", "Receiver_12.dat", \
+"Receiver_13.dat", "Receiver_14.dat", "Receiver_15.dat", \
+"Receiver_16.dat", "Receiver_17.dat", "Receiver_18.dat", \
+"Receiver_19.dat", "Receiver_1.dat", "Receiver_20.dat", \
+"Receiver_21.dat", "Receiver_22.dat", "Receiver_23.dat", \
+"Receiver_24.dat", "Receiver_25.dat", "Receiver_26.dat", \
+"Receiver_27.dat", "Receiver_28.dat", "Receiver_29.dat", \
+"Receiver_2.dat", "Receiver_30.dat", "Receiver_31.dat", \
+"Receiver_32.dat", "Receiver_33.dat", "Receiver_34.dat", \
+"Receiver_35.dat", "Receiver_36.dat", "Receiver_37.dat", \
+"Receiver_38.dat", "Receiver_39.dat", "Receiver_3.dat", \
+"Receiver_40.dat", "Receiver_41.dat", "Receiver_42.dat", \
+"Receiver_43.dat", "Receiver_44.dat", "Receiver_45.dat", \
+"Receiver_46.dat", "Receiver_47.dat", "Receiver_48.dat", \
+"Receiver_49.dat", "Receiver_4.dat", "Receiver_50.dat", \
+"Receiver_51.dat", "Receiver_52.dat", "Receiver_53.dat", \
+"Receiver_54.dat", "Receiver_55.dat", "Receiver_56.dat", \
+"Receiver_57.dat", "Receiver_58.dat", "Receiver_5.dat", \
+"Receiver_6.dat", "Receiver_7.dat", "Receiver_8.dat", \
+"Receiver_9.dat"}
 }}} 
 
 
