@@ -227,43 +227,62 @@ To estimate the flux in the back surface of the receiver flat disk the following
 {{{
 Initialization of variables
 
-In[7]:= numberOfFiles = Length[file]
+numberOfFiles = 
+ Length[file] (* Number of Tonatiuh's binary data files to be processed *)
 
-Out[7]= 58
+58
 
-In[8]:= rReceiver = 0.06 (* m *)
+rReceiver = 0.06 (* m *) (* Radius in meters of the flat disk receiver in \
+meters as defined for Tonatiuh in the corresponding geometry definition file *)
 
-Out[8]= 0.06
+0.06
 
-In[9]:= powerPerPhoton = 0.00137342 (* W/m2 *)
+powerPerPhoton = 0.00137342 (* W/m2 *) (* 
+  Power per photon in Watts indicated in Tonatiuh' s output file \
+"Receiver_parameters.txt")
 
-Out[9]= 0.00137342
+0.00137342
 
-In[10]:= nElements = 100
+nElements = 100 (* Number of elements in which we want to divide each side of \
+the circunscribing square about the flat disk receiver *) 
 
-Out[10]= 100
+100
 
-In[11]:= ds = 2  rReceiver/nElements
+ds = (2  rReceiver)/nElements (* m *) (* 
+  Length in meters of the sides of the elements in wich we are dividing the \
+circunscribing square about the flat disk receiver *) 
 
-Out[11]= 0.0012
+0.0012
 
-In[12]:= elementArea = ds * ds
+elementArea = 
+ ds * ds (* m^2 *) (* 
+  Area of the square elements in wich we are dividing the circunscribing \
+square about the flat disk receiver *)  
 
-Out[12]= 1.44*10^-6
+1.44*10^-6
 
-In[13]:= totalPhotonsCounts = ConstantArray[0, {nElements, nElements}];
+totalPhotonsCounts = 
+ ConstantArray[
+  0, {nElements, 
+   nElements}]; (* Array of nElements by nElements with all the elements \
+initialized to zero *)
 
-In[14]:= totalNumberOfPhotons = 0
+totalNumberOfPhotons = 0 (* Total number of photons reaching the back side of \
+the flat disk receiver *)
 
-Out[14]= 0
+0
 
-In[15]:= rMax = 0.
+rMin = 0. (* Radius in meters of the minimum circle that will contain all \
+photons impinging on the back side of the flat disk receiver *)
 
-Out[15]= 0.
+0.
 
-In[16]:= conversionFactor = powerPerPhoton/(elementArea*1000000)   (* MW/m2 *)
+conversionFactor = 
+ powerPerPhoton/(elementArea*1000000)   (* MW/m2 *) (* 
+  factor to convert number of photons within a given element of area into \
+solar flux intensity *)
 
-Out[16]= 0.000953764
+0.000953764
 }}}
 
 TO BE CONTINUED...
