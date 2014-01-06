@@ -115,12 +115,13 @@ In this dialogue, change the values of the following options from their default 
   * Select photons information to store:
     * Coordinates
     * Local Coordinates
+    * Surface identifier = No (unselected) 
 
 Since we have selected "Export surfaces" as the option of "Select photons to store" we need to specify which surfaces we are interested in. In our case, we are just interested in exporting the photons incident upon the flat disk receiver. Thus, we need to add that surface to the list of "Export surfaces". We do this by clicking on the "Add" button and selecting the appropriate surface in the "Select Surface Dialog" that will pop up. Actually, what we need to select is the "TShapeKit1" node that is the parent of the "Flat_disk" surface.
 
 Once we have finished selecting and entering the appropriate values in the "Photon Map Export Settings" dialog, the content of such dialog should look like the Figure below:
 
-https://lh5.googleusercontent.com/-7-bNSG2PtSI/UsofJD5171I/AAAAAAAAE8I/ccDk4pgCnZc/w665-h674-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture06.JPG
+https://lh4.googleusercontent.com/-G6Z6Vn7QqIo/UspGqGvSPDI/AAAAAAAAE80/Ew6cgp_EUhI/w665-h669-no/Tutorial_ParabolicDish_V201_TonatiuhScreenCapture06.JPG
 
 Now, to run the program we just need to click on the "OK" button of the "Photon Map Export Settings" dialog. How much time Tonatiuh will need to trace the 75 million rays depends on the characteristics of the computer in which we are running Tonatiuh. In principle, Tonatiuh should be able to detect the number of cores you have on your computer system and parallelize the ray tracing accordingly. When carrying out the ray tracing, Tonatiuh will display a dialog informing the user of the number threads it is using and degree of completion of the ray tracing activity, as shown in the Figure below.
 
@@ -141,7 +142,6 @@ x
 y
 z
 side
-surface ID
 END PARAMETERS
 START SURFACES
 1 //SunNode/RootNode/ConcentratingSystem/Receiver/TShapeKit1
@@ -154,5 +154,13 @@ The above information is essential to process the binary data files correctly.
   * The information contained within the "START PARAMETERS" and "END PARAMETERS" labels, specify how the photon information on the binary data files is structured. 
   * The information contained within the "START SURFACES" and "END SURFACES" labels, specify the path of each of the !ShapeKits associated with the surfaces we exported. In our case, we just exported one surface -the flat disk receiver. In fact, saying that we exported a surface is a lose way of talking. What we actually exported are the photons impinging on either side of the surface.
   * Finally, the real number at the end of the file, just after the "END SURFACES" label, indicates the power per photon in Watts, to be considered when estimating concentrated solar fluxes and power values.
+
+According to the information provided in the "Receiver_parameter.txt" file, the 58 binary data files contains of the order of 10 million of 5-tuples, with each 5-tuple providing the following information about a photon impinging on the disk flat receiver:
+
+  * The photon id.
+  * The x-coordinate of the photon.
+  * The y-coordinate of the photon.
+  * The z-coordinate of the photon.
+  * The side of the surface in which the photon is impinging (0 if is in the back side, and 1 if is in the front side)
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
