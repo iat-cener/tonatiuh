@@ -179,7 +179,21 @@ One way to do this is to set up the working directory of our Mathematica noteboo
 SetDirectory[NotebookDirectory[]]
 }}}
 
+=== Defining an auxiliary function to determine if a photon is impinging in the correct side of the receiver flat disk ===
 
+Because of the geometry of the concentrating system we are simulating and the relative position of the Sun with respect to it, it is evident that a small portion of the photons from the Sun will directly hit the flat disk receiver in its front surface, while the majority of the photons will first hit the parabolic dish mirror and after being reflected in it will hit the back surface of the flat disk receiver.
+
+Since we are interested in estimating the solar flux distribution in the side of the flat disk receiver that is facing the parabolic dish mirror, we need to differentiate the photons that are impinging on the front surface of the flat disk receiver from those which are impinging on the back surface of the receiver. To do this, we just need to check the value of the sideID in the 5-tuple set of data providing the information of a given photon.
+
+To facilitate the filtering of the photons that are impinging on the wrong side of the receiver flat disk we define a trivial function that gets as an input the 5-tuple of a photon and return True if the photon is in the correct side of the receiver and False otherwise. This function is defined as follows:
+
+{{{
+side[{photonID_, x_, y_, z_, sideID_}, refSide_] := sideID == refSide
+}}}
+
+
+
+ 
  
 
 
