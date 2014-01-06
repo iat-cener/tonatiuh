@@ -163,4 +163,7 @@ According to the information provided in the "Receiver_parameter.txt" file, the 
   * The z-coordinate of the photon.
   * The side of the surface in which the photon is impinging (0 if is in the back side, and 1 if is in the front side)
 
+Since we selected "Local Coordinates" in the "Photon Map Export Settings" before ray tracing with Tonatiuh, the x, y, and z coordinates of the photons are given in the local coordinate reference frame of the flat disk receiver. In this reference frame the flat disk receiver is located on the x - z plane, with its "FRONT" side looking upwards in the direction of the positive y-coordinates. The centre of the flat disk receiver is located at the origin of the local reference frame. Since the photons are impinging on the flat disk receiver and this is located in the x-z plane of the local reference system, their y-coordinates should be zero. Due to numerical errors, it may be the case that these coordinates are not exactly zero, but should be very close to zero.
+
+TO BE CONTINUED...
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
