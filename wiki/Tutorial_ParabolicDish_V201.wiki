@@ -169,6 +169,18 @@ Since we selected "Local Coordinates" in the "Photon Map Export Settings" before
 
 == Estimating the solar flux distribution at the receiver with Mathematica ==
 
+=== Telling Mathematica where to look for Tonatiuh's results data files ===
+
+To process Tonatiuh's results binary data files with Mathematica the first thing we need to do is to specify Mathematica the directory where the data files are located.
+
+One way to do this is to set up the working directory of our Mathematica notebook file as the directory where Tonatiuh's binary data files are located, and one way to do this is to locate our Mathematica notebook in that directory, and instruct Mathematic to consider as its working directory the directory where the notebook is located. This is done, with the following instruction:
+
+{{{
+SetDirectory[NotebookDirectory[]]
+}}}
+
+
+ 
 
 
 TO BE CONTINUED...
