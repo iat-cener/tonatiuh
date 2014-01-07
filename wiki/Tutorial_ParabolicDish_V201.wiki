@@ -233,31 +233,31 @@ In[62]:= numberOfFiles = Length[file]
 
 Out[62]= 58
 
-"Radius in meters of the flat disk receiver in meters as defined for Tonatiuh in the corresponding geometry definition file"
+"Radius of the flat disk receiver"
 
 In[63]:= rReceiver = 0.06 (* m *) 
 
 Out[63]= 0.06
 
-"Power per photon in Watts indicated in Tonatiuh's output file "Receiver_parameters.txt""
+"Power per photon as indicated in Tonatiuh's output file "Receiver_parameters.txt""
 
 In[64]:= powerPerPhoton = 0.00137342 (* W/m2 *) 
 
 Out[64]= 0.00137342
 
-"Number of elements in which we want to divide each side of the circunscribing square about the flat disk receiver"
+"Number of elements in which we want to divide each side of the circumscribing square about the disk receiver"
 
 In[65]:= nElements = 100 
 
 Out[65]= 100
 
-"Length in meters of the sides of the elements in which we are dividing the circunscribing square about the flat disk receiver"
+"Length of the sides of the elements in which we are dividing the circumscribing square about the disk receiver"
 
 In[66]:= ds = (2  rReceiver)/nElements (* m *) 
 
 Out[66]= 0.0012
 
-"Area of the square elements in which we are dividing the circunscribing square about the flat disk receiver"
+"Area of the square elements in which we are dividing the circumscribing square about the disk receiver"
 
 In[67]:= elementArea = ds * ds (* m^2 *) 
 
@@ -273,7 +273,7 @@ In[69]:= totalNumberOfPhotons = 0
 
 Out[69]= 0
 
-"Radius in meters of the minimum circle that will contain all photons impinging on the back side of the flat disk receiver"
+"Radius in meters of the minimum circle that contains all photons impinging on the back side of the receiver"
 
 In[70]:= rMin = 0. 
 
