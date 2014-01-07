@@ -294,5 +294,30 @@ Once the above variables have been properly defined and initialized, we are read
   * The minimum radius of the circle that contains all of the photons impinging on the back side of the receiver, i.e. the radius of the spot of concentrating sunlight on the receiver.
   * The total power incident on the back side of the receiver.
 
+The Mathematica code to carry out the processing of the binary data files is the following:
+
+{{{
+For[i = 1, i <= numberOfFiles, ++i,
+ fileRawData = BinaryReadList[file[[i]], "Real64", ByteOrdering -> +1];
+ filePhotonSet = 
+  Partition[fileRawData[[1 ;; Length[fileRawData]]], 5]; 
+ Clear[fileRawData];
+ fileValidPhoton = 
+  Select[filePhotonSet, 
+    side[#, 0] &] /. {photonID_, x_, y_, z_, sideID_} -> {x, z} ; 
+ Clear[filePhotonSet];
+ rMin = Max[rMin, Sqrt[Max[fileValidPhoton /. {x_, z_} -> x*x + z*z]]];
+ Print["Iteration # ", i, ". Processing file: ", file[[i]], " rMin= ",
+   rMin, " "];
+ fileNumberOfValidPhotons = Length[fileValidPhoton];
+ totalNumberOfPhotons = 
+  totalNumberOfPhotons + fileNumberOfValidPhotons;
+ filePhotonCounts = 
+  BinCounts[
+   fileValidPhoton, {-rReceiver, rReceiver, ds}, {-rReceiver, 
+    rReceiver, ds}]; Clear[fileValidPhoton];
+ totalPhotonsCounts = totalPhotonsCounts + filePhotonCounts; 
+ Clear[filePhotonCounts]]
+{{{
 TO BE CONTINUED...
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
