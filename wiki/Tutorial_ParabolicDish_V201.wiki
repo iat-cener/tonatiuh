@@ -349,6 +349,14 @@ fileValidPhoton =
 }}}
 
 As before, since the content of "filePhotonSet" is not longer needed, we erase the variable using the {{{Clear[filePhotonSet]}}} Mathematica statement.
+
+Once we have the (x,z) coordinates of all the photons contained in the binary file that we are processing, we calculate the distance of each photon from the centre of the disk, obtain the greatest distance of them all, and update rMin accordingly (i.e., if the distance stored in rMin is smaller than the largest distance we have encountered processing the file, we replace rMin with the new largest distance. However, if that is not the case, we keep the original value of rMin). This updating of rMin is achieved by the following Mathematica statement:
+
+{{{
+rMin = Max[rMin, Sqrt[Max[fileValidPhoton /. {x_, z_} -> x*x + z*z]]];
+}}}
+
+
  
 TO BE CONTINUED...
 
