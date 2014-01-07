@@ -365,7 +365,7 @@ Print["Iteration # ", i, ". Processing file: ", file[[i]], " rMin= ",
 
 Then, we update the variable totalNumberOfPhotons adding to it the number of valid photons contained in the binary file being processed. This is done by the following Mathematica statement:
 
-}}}
+{{{
 totalNumberOfPhotons = totalNumberOfPhotons + Length[fileValidPhoton];
 }}}
  
