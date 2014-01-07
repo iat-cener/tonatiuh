@@ -225,9 +225,9 @@ Out[5]= {"Receiver_10.dat", "Receiver_11.dat", "Receiver_12.dat", \
 To estimate the flux in the back surface of the receiver flat disk the following variables must be defined and initialized:
 
 {{{
-Initialization of variables
+"Initialization of variables"
 
-Number of Tonatiuh's binary data files to be processed
+"Number of Tonatiuh's binary data files to be processed"
 
 In[62]:= numberOfFiles = Length[file] 
 
