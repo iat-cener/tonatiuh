@@ -322,7 +322,7 @@ For[i = 1, i <= numberOfFiles, ++i,
 
 The For loop runs from i = 1 to i = numberOfFiles, which ensures the processing of all binary data files output by Tonatiuh. For every binary data file, the first thing that is done is to read the file as a list of long double numbers ("Real64") and storing the list of double numbers in the variable named "fileRawData". This is done by the following Mathematica statement:
 
-}}}
+{{{
 fileRawData = BinaryReadList[file[[i]], "Real64", ByteOrdering -> +1];
 }}}
 
