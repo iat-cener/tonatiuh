@@ -286,5 +286,13 @@ In[71]:= conversionFactor = powerPerPhoton/(elementArea*1000000)   (* MW/m2 *)
 Out[71]= 0.000953764
 }}}
 
+=== Binary data files processing loop ===
+
+Once the above variables have been properly defined and initialized, we are ready to process all Tonatiuh's results binary data files in order to estimate:
+
+  * The flux distribution at the back side of the flat disk receiver,
+  * The minimum radius of the circle that contains all of the photons impinging on the back side of the receiver, i.e. the radius of the spot of concentrating sunlight on the receiver.
+  * The total power incident on the back side of the receiver.
+
 TO BE CONTINUED...
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
