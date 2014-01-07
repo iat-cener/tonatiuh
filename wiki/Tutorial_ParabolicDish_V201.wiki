@@ -328,6 +328,11 @@ fileRawData = BinaryReadList[file[[i]], "Real64", ByteOrdering -> +1];
 
 By providing the option {{{ByteOrdering -> +1}}} we are assuming that the ordering of the bytes in the binary representation of the numbers follow the "big endian" convention.
 
+Once we got the raw list of long double numbers stored in the data file, the next step is to structure that raw list of numbers into 5-tuples, since we know that for every photon Tonatiuh is providing in the binary file the PhotonID, the three (x, y, z) local coordinates, and the SideID, indicating if the photon is impinging on the front or on the back of the surface. This is done by the following Mathematica statement:
+
+{{{
+filePhotonSet = Partition[fileRawData[[1 ;; Length[fileRawData]]], 5];
+}}}
 
 TO BE CONTINUED...
 
