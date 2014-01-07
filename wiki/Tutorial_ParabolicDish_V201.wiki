@@ -368,7 +368,17 @@ Then, we update the variable totalNumberOfPhotons adding to it the number of val
 {{{
 totalNumberOfPhotons = totalNumberOfPhotons + Length[fileValidPhoton];
 }}}
- 
+
+Finally, we update the (nElements x nElements) array named "totalPhotonsCounts" containing the number of photons per element of area with the additional number of photons per element or area obtained from processing the current binary file. This updating is achieved by the following Mathematica statement, which represents a matrix or array addition:
+
+{{{
+totalPhotonsCounts = 
+  totalPhotonsCounts + 
+   BinCounts[
+    fileValidPhoton, {-rReceiver, rReceiver, ds}, {-rReceiver, 
+     rReceiver, ds}];
+}}}
+
 TO BE CONTINUED...
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
