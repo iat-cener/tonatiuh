@@ -347,7 +347,8 @@ fileValidPhoton =
   Select[filePhotonSet, 
     side[#, 0] &] /. {photonID_, x_, y_, z_, sideID_} -> {x, z} ;
 }}}
- 
+
+As before, since the content of "filePhotonSet" is not longer needed, we erase the variable using the {{{Clear[filePhotonSet]}}} Mathematica statement.
  
 TO BE CONTINUED...
 
