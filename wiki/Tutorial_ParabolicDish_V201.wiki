@@ -379,6 +379,8 @@ totalPhotonsCounts =
      rReceiver, ds}];
 }}}
 
+Once this is done, we erase the content of the fileValidPhoton variable to save memory, using the {{{Clear[fileValidPhoton]}}} statement, and go back to the beginning of the For loop to process a new Tonatiuh binary data output file.
+
 TO BE CONTINUED...
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
