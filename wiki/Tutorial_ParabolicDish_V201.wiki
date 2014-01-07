@@ -356,11 +356,17 @@ Once we have the (x,z) coordinates of all the photons contained in the binary fi
 rMin = Max[rMin, Sqrt[Max[fileValidPhoton /. {x_, z_} -> x*x + z*z]]];
 }}}
 
-Since, the processing of all the binary data files may take long, in order to provide some feedback to the user of the file, for every file we process we print the iteration number, the name of the file being processed, and the current value or rMin. This is done by the following Mathematica statement:
+Since, the processing of all the binary data files may take long, to provide some feedback to the user, for every file processed in the loop we print the loop iteration number, the name of the file, and the value of rMin. This is done by the following Mathematica statement:
 
 {{{
 Print["Iteration # ", i, ". Processing file: ", file[[i]], " rMin= ", 
   rMin, " "];
+}}}
+
+Then, we update the variable totalNumberOfPhotons adding to it the number of valid photons contained in the binary file being processed. This is done by the following Mathematica statement:
+
+}}}
+totalNumberOfPhotons = totalNumberOfPhotons + Length[fileValidPhoton];
 }}}
  
 TO BE CONTINUED...
