@@ -326,6 +326,8 @@ The For loop runs from i = 1 to i = numberOfFiles, which ensures the processing 
 fileRawData = BinaryReadList[file[[i]], "Real64", ByteOrdering -> +1];
 }}}
 
+By providing the option {{{ByteOrdering -> +1}}} we are assuming that the ordering of the bytes in the binary representation of the numbers follow the "big endian" convention.
+
 
 TO BE CONTINUED...
 
