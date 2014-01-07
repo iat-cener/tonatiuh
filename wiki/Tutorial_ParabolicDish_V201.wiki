@@ -334,11 +334,21 @@ Once we got the raw list of long double numbers stored in the data file, the nex
 filePhotonSet = Partition[fileRawData[[1 ;; Length[fileRawData]]], 5];
 }}}
 
-Once we have partition into 5-tuples the initial list of long doubles stored in the "fileRawData" variable and have stored it in the variable "filePhotonSet", we no longer need the raw list stored in "fileRawData". Thus, in order to save memory we erase the variable "fileRawData" using the following Mathematica statement:
+Once we have partitioned into 5-tuples the initial list of long doubles stored in the "fileRawData" variable and stored it in the variable "filePhotonSet", we no longer need the raw list stored in "fileRawData". Thus, in order to save memory we erase the content of "fileRawData" using the following Mathematica statement:
+
 {{{
 Clear[fileRawData];
 }}}
 
+Now, from the 5-tuples associated to the photons impinging on any side of the flat disk receiver we need to select only those that are impinging on the back of the receiver, which is the side of the receiver looking towards the parabolic dish mirror and receiving the concentrated solar radiation reflected by it. Furthermore, from those valid photons, we just need to know their (x,z) coordinates, since their y-coordinate, which is the coordinate in the normal direction to the plane of the flat disk must be zero. The selection of the appropriate photons and the transformation of the 5-tuples in 2-tuples or pair of (x, z) coordinates is achieved by the following Mathematica statement, which stores the pairs of (x,z) coordinates of the valid photons on the variable named "fileValidPhoton":
+
+{{{
+fileValidPhoton = 
+  Select[filePhotonSet, 
+    side[#, 0] &] /. {photonID_, x_, y_, z_, sideID_} -> {x, z} ;
+}}}
+ 
+ 
 TO BE CONTINUED...
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
