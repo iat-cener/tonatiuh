@@ -227,62 +227,63 @@ To estimate the flux in the back surface of the receiver flat disk the following
 {{{
 Initialization of variables
 
-In[52]:= numberOfFiles = 
- Length[file] (* Number of Tonatiuh's binary data files to be processed *)
+Number of Tonatiuh's binary data files to be processed
 
-Out[52]= 58
+In[62]:= numberOfFiles = Length[file] 
+
+Out[62]= 58
 
 Radius in meters of the flat disk receiver in meters as defined for Tonatiuh in the corresponding geometry definition file
 
-In[53]:= rReceiver = 0.06 (* m *) 
+In[63]:= rReceiver = 0.06 (* m *) 
 
-Out[53]= 0.06
+Out[63]= 0.06
 
  Power per photon in Watts indicated in Tonatiuh's output file "Receiver_parameters.txt"
 
-In[54]:= powerPerPhoton = 0.00137342 (* W/m2 *) 
+In[64]:= powerPerPhoton = 0.00137342 (* W/m2 *) 
 
-Out[54]= 0.00137342
+Out[64]= 0.00137342
 
 Number of elements in which we want to divide each side of the circunscribing square about the flat disk receiver
 
-In[55]:= nElements = 100 
+In[65]:= nElements = 100 
 
-Out[55]= 100
+Out[65]= 100
 
 Length in meters of the sides of the elements in wich we are dividing the circunscribing square about the flat disk receiver
 
-In[56]:= ds = (2  rReceiver)/nElements (* m *) 
+In[66]:= ds = (2  rReceiver)/nElements (* m *) 
 
-Out[56]= 0.0012
+Out[66]= 0.0012
 
 Area of the square elements in wich we are dividing the circunscribing square about the flat disk receiver
 
-In[57]:= elementArea = ds * ds (* m^2 *) 
+In[67]:= elementArea = ds * ds (* m^2 *) 
 
-Out[57]= 1.44*10^-6
+Out[67]= 1.44*10^-6
 
 Array of nElements by nElements with all the elements initialized to zero
 
-In[58]:= totalPhotonsCounts = ConstantArray[0, {nElements, nElements}]; 
+In[68]:= totalPhotonsCounts = ConstantArray[0, {nElements, nElements}]; 
 
 Total number of photons reaching the back side of the flat disk receiver
 
-In[59]:= totalNumberOfPhotons = 0
+In[69]:= totalNumberOfPhotons = 0
 
-Out[59]= 0
+Out[69]= 0
 
 Radius in meters of the minimum circle that will contain all photons impinging on the back side of the flat disk receiver
 
-In[60]:= rMin = 0. 
+In[70]:= rMin = 0. 
 
-Out[60]= 0.
+Out[70]= 0.
 
 Factor to convert number of photons within a given element of area into solar flux intensity
 
-In[61]:= conversionFactor = powerPerPhoton/(elementArea*1000000)   (* MW/m2 *) 
+In[71]:= conversionFactor = powerPerPhoton/(elementArea*1000000)   (* MW/m2 *) 
 
-Out[61]= 0.000953764
+Out[71]= 0.000953764
 }}}
 
 TO BE CONTINUED...
