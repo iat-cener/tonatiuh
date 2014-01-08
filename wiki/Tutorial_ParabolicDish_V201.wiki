@@ -402,13 +402,19 @@ The division by 1000 is used to provide the figure in kilo Watts rather than in 
 
 === Estimation of the concentrated solar flux distribution at the receiver ===
 
-The flux distribution at the receiver is estimated by multiplying by the value stored in the variable "conversionFactor" each one of the elements of the array containing the number of photons impinging upon the corresponding elements of area in which we have divided the circumscribing square about the flat disk receiver. 
-
-This is done with the following Mathematica statement:
+The flux distribution at the receiver is estimated by multiplying by the value stored in the variable "conversionFactor" each one of the elements of the array containing the number of photons impinging upon the corresponding elements of area in which we have divided the circumscribing square about the flat disk receiver. This is done with the following Mathematica statement:
 
 {{{
 fluxDistribution = conversionFactor * totalPhotonsCounts;
 }}}
 
+This flux can be graphically represented in Mathematica in many forms,such as a ListContourPLot or ListPlot3D.
+
+The Mathematica statement to represent the flux as a ListCountourPlot is the following:
+
+{{{
+ListContourPlot[fluxDistribution, Contours -> 10, 
+ DataRange -> {{-0.06, 0.06}, {-0.06, 0.06}}]
+}}}
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
