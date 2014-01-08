@@ -129,9 +129,7 @@ https://lh4.googleusercontent.com/-rZrzgBByruo/Usoqs2g4o-I/AAAAAAAAE8c/CIT_cXMgz
 
  In the computer I used to develop this tutorial (a Dell laptop with an Intel Core i5.3360M at 2.8 GHz and 4 GB of RAM, running a 32/bit Windows 7 Enterprise operating system) it took Tonatiuh around 4 minutes to trace the 75 million rays and store the related information on disk.
 
-= Post-processing Tonatiuh's output =
-
-== Structure and content of Tonatiuh's results ==
+= Structure and content of Tonatiuh's results =
 
 After carrying out the ray tracing of the 75 million rays, Tonatiuh stored the information about the photons that it has traced in a series of binary files. Since we established as the core name of the files "Receiver", Tonatiuh generated 58 files, starting in the file "Receiver_1.dat" and ending in the file "Receiver_58.dat". As we established when selecting the options for the ray tracing, all of these files, but the last one, contain information about 10 million photons. 
 
@@ -166,6 +164,8 @@ According to the information provided in the "Receiver_parameter.txt" file, the 
   * The side of the surface in which the photon is impinging (0 if is in the back side, and 1 if is in the front side)
 
 Since we selected "Local Coordinates" in the "Photon Map Export Settings" before ray tracing with Tonatiuh, the x, y, and z coordinates of the photons are given in the local coordinate reference frame of the flat disk receiver. In this reference frame, the flat disk receiver is located on the x - z plane with its "FRONT" side looking upwards in the direction of the positive y-coordinates. The centre of the flat disk receiver is located at the origin of the local reference frame. Since the photons are impinging on the flat disk receiver and this is located in the x-z plane of the local reference system, the y-coordinates of all the impinging photons should be zero. Due to numerical errors, it may be the case that these coordinates are not exactly zero. However, if they are not exactly zero, they should be extremely close to zero.
+
+= Post-processing Tonatiuh's output =
 
 == Estimating the solar flux distribution at the receiver with Mathematica ==
 
