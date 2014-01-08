@@ -394,6 +394,8 @@ The power at the receiver is estimated by multiplying the total number of photon
 {{{
 estimatedPowerAtReceiver = 
  powerPerPhoton totalNumberOfPhotons/1000 (* kW *)
+
+78.5262
 }}}
 
 The division by 1000 is used to provide the figure in kilo Watts rather than in Watts.
