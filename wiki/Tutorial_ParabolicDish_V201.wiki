@@ -408,13 +408,18 @@ The flux distribution at the receiver is estimated by multiplying by the value s
 fluxDistribution = conversionFactor * totalPhotonsCounts;
 }}}
 
-This flux can be graphically represented in Mathematica in many forms,such as a ListContourPLot or ListPlot3D.
+This flux can be graphically represented in Mathematica in many forms,such as a !ListContourPLot or !ListPlot3D.
 
-The Mathematica statement to represent the flux as a ListCountourPlot is the following:
+The Mathematica statement to represent the flux as a !ListCountourPlot is the following:
 
 {{{
 ListContourPlot[fluxDistribution, Contours -> 10, 
  DataRange -> {{-0.06, 0.06}, {-0.06, 0.06}}]
 }}}
+
+The graphics produced by Mathematica as a result of executing the previous statement is the following:
+
+https://lh3.googleusercontent.com/-TYt6ARXREpM/Usym3q2iWdI/AAAAAAAAE9I/T9vZcLHwUcE/w424-h357-no/Tutorial_ParabolicDish_V201_MathematicaScreenCapture01.JPG
+
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
