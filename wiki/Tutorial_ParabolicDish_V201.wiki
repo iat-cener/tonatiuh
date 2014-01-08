@@ -387,6 +387,16 @@ At the exit of the binary data files processing loop:
   * The "!totalPhotonCoutns" 100 x 100 array stores in each of its elements the number of photons which impinged in the corresponding area elements of the circumscribing square about the disk receiver.
   * The "rMin" variable stores the maximum distance from the centre of the flat disk receiver of any of the photons impinging on the back side of the receiver, which is the minimum radius of the circle around the centre of the receiver that enclosed all the incoming photons.  
 
-TO BE CONTINUED...
+=== Estimation of the power at the receiver ===
+
+The power at the receiver is estimated by multiplying the total number of photons reaching the back side of the receiver by the total power per photon. This is done with the following Mathematica statement:
+
+{{{
+estimatedPowerAtReceiver = 
+ powerPerPhoton totalNumberOfPhotons/1000 (* kW *)
+}}}
+
+The division by 1000 is used to provide the figure in kilo Watts rather than in Watts.
+
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
