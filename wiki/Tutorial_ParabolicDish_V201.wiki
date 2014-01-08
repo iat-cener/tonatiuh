@@ -392,13 +392,16 @@ At the exit of the binary data files processing loop:
 The power at the receiver is estimated by multiplying the total number of photons reaching the back side of the receiver by the total power per photon. This is done with the following Mathematica statement:
 
 {{{
-estimatedPowerAtReceiver = 
+In[18]:= estimatedPowerAtReceiver = 
  powerPerPhoton totalNumberOfPhotons/1000 (* kW *)
 
-78.5262
+Out[18]= 78.5262
 }}}
 
 The division by 1000 is used to provide the figure in kilo Watts rather than in Watts.
+
+=== Estimation of the concentrated solar flux distribution at the receiver ===
+
 
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
