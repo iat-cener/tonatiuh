@@ -381,6 +381,12 @@ totalPhotonsCounts =
 
 Once this is done, we erase the content of the fileValidPhoton variable to save memory, using the {{{Clear[fileValidPhoton]}}} statement, and go back to the beginning of the For loop to process a new Tonatiuh binary data output file.
 
+At the exit of the binary data files processing loop:
+
+  * The "!totalNumberOfPhotons" variable stores the total number of photons that impinged on the back side of the flat disk receiver out of the 75 millions traced by Tonatiuh.
+  * The "!totalPhotonCoutns" 100 x 100 array stores in each of its elements the number of photons which impinged in the corresponding area elements of the circumscribing square about the disk receiver.
+  * The "rMin" variable stores the maximum distance from the centre of the flat disk receiver of any of the photons impinging on the back side of the receiver, which is the minimum radius of the circle around the centre of the receiver that enclosed all the incoming photons.  
+
 TO BE CONTINUED...
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
