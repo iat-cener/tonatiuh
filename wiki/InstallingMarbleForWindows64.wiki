@@ -96,8 +96,15 @@ make
 make install
 }}}
 
+
+Copy to lib folder:
+{{{
+cp src/lib/marble/libmarblewidget.dll.a /usr/local/lib
+}}}
+
 Move Marble library and executable to bin folder.
 {{{
+cd /usr/local
 mv *.dll bin
 mv *.exe bin
 }}}
