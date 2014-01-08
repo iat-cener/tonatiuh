@@ -410,7 +410,7 @@ fluxDistribution = conversionFactor * totalPhotonsCounts;
 
 This flux can be graphically represented in Mathematica in many forms,such as a !ListContourPLot or !ListPlot3D.
 
-The Mathematica statement to represent the flux as a !ListCountourPlot is the following:
+To represent the flux as a !ListCountourPlot we can use the following Mathematica statement:
 
 {{{
 ListContourPlot[fluxDistribution, Contours -> 10, 
@@ -421,5 +421,15 @@ The graphics produced by Mathematica as a result of executing the previous state
 
 https://lh3.googleusercontent.com/-TYt6ARXREpM/Usym3q2iWdI/AAAAAAAAE9I/T9vZcLHwUcE/w424-h357-no/Tutorial_ParabolicDish_V201_MathematicaScreenCapture01.JPG
 
+To represent the flux as a !ListPlot3D we can use the following Mathematica statement:
+
+{{{
+ListPlot3D[fluxDistribution, InterpolationOrder -> 1, Mesh -> None, 
+ DataRange -> {{-0.06, 0.06}, {-0.06, 0.06}}]
+}}}
+
+The graphics produced by Mathematica as a result of executing the previous statement is the following:
+
+https://lh5.googleusercontent.com/-tmi8W0C2A2Y/UsyuNJUtjqI/AAAAAAAAE9c/Vg4rWyKpzs8/w438-h290-no/Tutorial_ParabolicDish_V201_MathematicaScreenCapture02.JPG
 
 [Tutorials Tutorials] | | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
