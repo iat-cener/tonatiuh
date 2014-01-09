@@ -19,16 +19,6 @@ Finally we have to download google test library sources. Downlaod them from the 
 
 Once the sources file is on your PC, place it into the user directory under your MSYS folder and extract the archive. This will typically be _"C:\sde\MinGW\msys\1.0\home\username"_. Open an MSYS shell console and navigate to your MSYS user directory.
 
-To avoid compilation errors, go to _"C:\sde\MinGW\msys\1.0\home\username\gtest-version\include\gtest\internal\gtest-port.h"_ file and insert
-{{{
-#define GTEST_HAS_PTHREAD 0
-}}}
-
-before line 144:
-{{{
-#ifndef GTEST_HAS_PTHREAD
-}}}
-
 For build the library type:
 {{{
 export PATH=$PATH:/c/sde/CMake/bin:/c/sde/Python-2.7
