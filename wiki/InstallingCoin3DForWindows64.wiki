@@ -87,7 +87,7 @@ Then, edit libtool file to create Coin3D shared library correctly. Open _libtool
 +$EGREP -e 'file format pe-x86-64' >/dev/null ; then
 }}}
 
-After doing this change, another error may also occur .To solve it go to _"libtool"_ file at line 4587: 
+After doing this change, another error may also occur _"../libtool: eval: line 4587: unexpected EOF while looking for matching `''"_. To solve it go to _"libtool"_ file at line 4587: 
 {{{
 -eval cmd=\"$cmd\"
 +eval cmd="$cmd"
