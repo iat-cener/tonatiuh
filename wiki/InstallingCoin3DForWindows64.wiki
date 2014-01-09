@@ -25,39 +25,46 @@ tar -zxvf Coin-3.1.3.tar.gz
 }}}
 
 This will create a directory called _Coin-3.1.3_ in your user directory. To solve some compilation errors, change the following:
-  * File _"include/Inventor/SbBasic.h"_ (line 26):
+  * File _"include/Inventor/!SbBasic.h"_ (line 26):
   {{{
   +#include <Inventor/C/errors/debugerror.h>
  }}}
 
-  * File include/Inventor/C/glue/spidermonkey.h (line 50):
+  * File _"include/Inventor/C/glue/spidermonkey.h"_ (line 50):
   {{{
   -typedef long jsword 
   +typedef long long jsword
   }}}
  
-  * File src/threads/thread.cppn (line 157):
+  * File _"src/threads/thread.cpp"_ (line 157):
   {{{
   -return (unsigned long) val;
   +return (unsigned long long) val;
   }}}
   
-  * File src/threads/thread_win32.icc (line 32):
+  * File _"src/threads/thread_win32.icc"_ (line 32):
   {{{
   -return (DWORD) thread->func(thread->closure);
   +return (unsigned long long) thread->func(thread->closure);
   }}}
 
-  * File src/vrml97/JS_VRMLClasses.cpp (lines 667, 683, 1427, 1437 ):
+  * File _"src/vrml97/JS_VRMLClasses.cpp"_ (lines 667, 683, 1427, 1437 ):
   {{{
   -unsigned long 
   +unsigned long long
   }}}
 
-  * File src/foreignfiles/SoSTLFileKit.cpp (lines 600, 601, 602, 604):
+  * File _"src/fonts/freetype.cpp"_ (line 35):
   {{{
-  long
-  long long
+  +#include <cstdlib>
+  +#include <cmath>
+  }}}
+
+
+  * File _"src/foreignfiles/SoSTLFileKit.cpp"_ (lines 600, 601, 602, 604):
+  {{{
+  -long
+  +long long
   }}}
 
 
@@ -78,6 +85,14 @@ Then, edit libtool file to create Coin3D shared library correctly. Open _libtool
 {{{
 -$EGREP -e 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
 +$EGREP -e 'file format pe-x86-64' >/dev/null ; then
+}}}
+
+After doing this change, another error may also occur .To solve it go to _"libtool"_ file at line 4587: 
+{{{
+-eval cmd=\"$cmd\"
++eval cmd="$cmd"
+-$show "$cmd"
++eval $show "$cmd"
 }}}
 
 Now, you can install the Coin3D library by typing:
