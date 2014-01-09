@@ -38,7 +38,6 @@ export QMAKESPEC=$QTDIR/mkspecs/win32-g++
 
 The configure command for the last Qt version is:
 {{{
-siguiente:
 ./configure --disable-msvc --enable-debug=no --enable-symbols=no --enable-pkgconfig=no CPPFLAGS="-I/c/sde/Qt/Qt5.1.1/5.1.1/mingw48_32/include/QtCore -I/c/sde/Qt/Qt5.1.1/5.1.1/mingw48_32/include/QtGui -I/c/sde/Qt/Qt5.1.1/5.1.1/mingw48_32/include/QtWidgets -I/c/sde/Qt/Qt5.1.1/5.1.1/mingw48_32/include/QtOpenGL " LDFLAGS="-L/c/sde/qt/Qt5.1.1/5.1.1/mingw48_32/lib" CONFIG_QTLIBS="-lQt5Core -lQt5Gui -lQt5Widgets -lQt5OpenGL"
 }}}
 
