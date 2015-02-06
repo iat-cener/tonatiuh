@@ -116,6 +116,7 @@ public slots:
 	void PasteLink();
 	void Run();
 	void ResetAnalyzerValues();
+	bool Save();
 	void SaveAs( QString fileName );
     void SelectNode( QString nodeUrl );
 	void SetAimingPointAbsolute();
@@ -165,7 +166,6 @@ private slots:
 	void OpenRecentFile();
 	void Redo();
 	void RunCompleteRayTracer();
-	bool Save();
     bool SaveAs();
     bool SaveComponent();
     void SelectionFinish( SoSelection* selection );

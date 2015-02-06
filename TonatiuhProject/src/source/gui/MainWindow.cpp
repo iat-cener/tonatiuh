@@ -1939,7 +1939,7 @@ void MainWindow::SaveAs( QString fileName )
 		emit Abort( tr( "SaveAs: There is no file defined.") );
 		return;
 	}
-	QFileInfo fileInfo;
+	QFileInfo fileInfo (fileName );
 	if( fileInfo.completeSuffix() != QLatin1String( "tnh" ) )
 	{
 		emit Abort( tr( "SaveAs: The file defined is not a tonatiuh file. The suffix must be tnh.") );
