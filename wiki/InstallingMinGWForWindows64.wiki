@@ -8,25 +8,15 @@ Here you will find instructions to carry out this first and important step towar
 
 = Details =
 
-== Installing the Mingw-w64 == 
+== Installing the Mingw == 
 
-Download the latest version of the MinGW-w64 binaries. To do it, click on the following [http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Automated%20Builds/ link] to go to the MinGW-w64 automated builds download webpage at !SourceForge. Once you reach the webpage, click on the file for last version of mingw. This will start the downloading of the MinGW-w64. When prompted if to open or to store the file in your computer, select the appropriate option to store file on your computer. 
+Download the latest version of the MinGW for 64 bits. To do it, click on the following [http://sourceforge.net/projects/mingwbuilds/files/host-windows/releases/4.8.1/32-bit/threads-posix/dwarf/x32-4.8.1-release-posix-dwarf-rev5.7z/download link]. This is the recommended package for Qt compilation. When prompted if to open or to store the file in your computer, select the appropriate option to store file on your computer. 
 
 
-Once the MinGW installer is in your PC, right-click upon it to extract its content. Move or copy the "MinGW" folder into the folder "C:\sde\".
+Once the MinGW is in your PC, right-click upon it to extract its content. Move or copy the "MinGW" folder into the folder "C:\sde\".
 
 == Installing the MSYS == 
-Now, to download MSYS Environment go to the following [http://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/MSYS%20%2832-bit%29/ link] and click for the last MSYS version binary. After the download is finished, extract it to  "C:\sde\MinGW".
-
-== Configuring MSYS to use with MinGW == 
-
-After the installation is completed, open a MSYS shell console at _"C:\sde\MinGW\msys\1.0\msys.bat"_ and type:
-{{{
-sh /postinstall/pi.sh
-}}}
-  * Type _"y"_ to continue with the installation.
-  * Type _"y"_ to say that MinGW is installed.
-  * Enter _"c:/sde/MinGW"_ as the MinGW installation location.
+Now, to download MSYS Environment go to the following [http://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/msys+7za+wget+svn+git+mercurial+cvs-rev11.7z/download link] to download the version recommended by Qt. After the download is finished, extract it to  "C:\sde\mingw64".
 
 By instructing the MSYS and MinGW installer to create the directory _"C:\sde\MinGW"_ and to use it as the installation location, we are assuming that you will follow our suggestion of installing all the tools and libraries related to the Tonatiuh development environment under the same root folder, which we are defining as "C:\sde\". This has the advantage that once the Tonatiuh development environment is succesfully create in a computer, it can be replicated into other computers just by copying into these computers the root folder of the Tonatiuh development environment with all its subfolders and content.
 
