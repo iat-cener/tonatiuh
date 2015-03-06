@@ -6,16 +6,15 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 COMPILER = $$(COMPILER)
 contains( COMPILER, MSVC ) {
 	COINDIR = $$(COINDIR)
-	MARBLEDIR = $$(MARBLEDIR)
 }
 
 isEmpty( COINDIR ) {
 	COINDIR = $$(TDE_ROOT)/local
 }
-isEmpty( MARBLEDIR ) {
-	MARBLEDIR = $$(TDE_ROOT)/local
-}
 
+greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += widgets
+} 
 
 INCLUDEPATH += 	. \
                 $$(TONATIUH_ROOT)/geometry \
@@ -28,8 +27,7 @@ INCLUDEPATH += 	. \
                 $$(TONATIUH_ROOT)/src/source/gui \
                 $$(TONATIUH_ROOT)/src/source/raytracing \
                 $$(TONATIUH_ROOT)/src/source/statistics \
-			    $${COINDIR}/include \
-			    $${MARBLEDIR}/include/marble
+			    $${COINDIR}/include 
 
 win32 {
 	DEFINES+= COIN_DLL SOQT_DLL
@@ -120,19 +118,6 @@ else{
 		RCC_DIR  = $$(TONATIUH_ROOT)/release
 	}
 
-	INCLUDEPATH += $${MARBLEDIR}/include/marble
-
-	contains( COMPILER, MSVC ) {
-		CONFIG(debug, debug|release) {
-			LIBS += -L$${MARBLEDIR}/lib -lmarblewidgetd
-		}
-		else {
-			LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
-		}
-	}
-	else {
-		LIBS += -L$${MARBLEDIR}/lib -lmarblewidget
-	}
 }
 
 
