@@ -59,5 +59,7 @@ RandomMersenneTwister* RandomMersenneTwisterFactory::CreateRandomDeviate( ) cons
 	return new RandomMersenneTwister( seed );
 	//return new RandomMersenneTwister( 123 );
 }
-
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(RandomMersenneTwister, RandomMersenneTwisterFactory )
+#endif
+

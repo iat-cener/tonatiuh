@@ -48,6 +48,9 @@ class PhotonMapExportDBFactory: public QObject, public PhotonMapExportFactory
 {
     Q_OBJECT
     Q_INTERFACES(PhotonMapExportFactory)
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.PhotonMapExportFactory")
+#endif
 
 public:
    	QString GetName() const;

@@ -67,8 +67,8 @@ PhotonMapExportParametersWidget* PhotonMapExportNullFactory::GetExportPhotonMapM
 	return 0;
 }
 
-
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2( PhotonMapExportNull, PhotonMapExportNullFactory )
-
+#endif
 
 

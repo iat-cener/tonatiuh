@@ -142,4 +142,6 @@ bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, QVector< Po
 	 return true;
 }
 
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(ShapeBezierSurface, ShapeBezierSurfaceFactory)
+#endif
