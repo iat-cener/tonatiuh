@@ -55,5 +55,6 @@ TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* 
 	ComponentHeliostatField component( pPluginManager );
 	return component.CreateField();
 }
-
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(ComponentHeliostatField, ComponentHeliostatFieldFactory)
+#endif
