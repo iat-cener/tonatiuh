@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, IÃ±aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -47,7 +47,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QDomElement>
 #include <QFile>
 #include <QFileInfo>
-#include <QHttp>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -322,7 +321,7 @@ void UpdatesManager::CheckLastUpdate()
  */
 void UpdatesManager::Read()
 {
-	m_lastUpdateData.append( QString::fromAscii( m_reply->readAll() ) );
+	m_lastUpdateData.append( QString::fromLatin1( m_reply->readAll() ) );
 }
 
 
