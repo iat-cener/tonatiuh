@@ -50,7 +50,6 @@ class ShapeConeFactory: public QObject, public TShapeFactory
     Q_PLUGIN_METADATA(IID "tonatiuh.TShapeFactory")
 #endif
 
-
 public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;

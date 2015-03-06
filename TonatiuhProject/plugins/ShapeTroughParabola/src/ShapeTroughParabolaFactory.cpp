@@ -61,5 +61,7 @@ ShapeTroughParabola* ShapeTroughParabolaFactory::CreateTShape( ) const
 	}
 	return new ShapeTroughParabola;
 }
-
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(ShapeTroughParabola, ShapeTroughParabolaFactory )
+#endif
+

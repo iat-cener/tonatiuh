@@ -62,5 +62,7 @@ ShapeTrumpet* ShapeTrumpetFactory::CreateTShape() const
 	return new ShapeTrumpet;
 
 }
-
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(ShapeTrumpet, ShapeTrumpetFactory )
+#endif
+

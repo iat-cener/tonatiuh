@@ -60,4 +60,6 @@ ShapeFlatDisk* ShapeFlatDiskFactory::CreateTShape( ) const
 	return new ShapeFlatDisk;
 }
 
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(ShapeFlatDisk, ShapeFlatDiskFactory)
+#endif
