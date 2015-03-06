@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QApplication>
 #include <QLineEdit>
+#include <QMimeData>
 #include <QMouseEvent>
 
 #include <Inventor/nodekits/SoBaseKit.h>
