@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QApplication>
+#include <QDrag>
 #include <QLineEdit>
 #include <QMimeData>
 #include <QMouseEvent>
