@@ -64,5 +64,7 @@ TrackerHeliostat* TrackerHeliostatFactory::CreateTTracker( ) const
 	return new TrackerHeliostat;
 
 }
-
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(TrackerHeliostat, TrackerHeliostatFactory)
+#endif
+
