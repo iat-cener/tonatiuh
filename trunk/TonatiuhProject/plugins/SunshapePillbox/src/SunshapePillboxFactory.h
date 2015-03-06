@@ -49,6 +49,9 @@ class SunshapePillboxFactory: public QObject, public TSunShapeFactory
 {
     Q_OBJECT
     Q_INTERFACES(TSunShapeFactory)
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.TSunShapeFactory")
+#endif
     
 public:
    	QString TSunShapeName() const;
