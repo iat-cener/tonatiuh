@@ -70,6 +70,8 @@ PhotonMapExportDBParametersWidget* PhotonMapExportDBFactory::GetExportPhotonMapM
 	return new PhotonMapExportDBParametersWidget();
 }
 
-
+#if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2( PhotonMapExportDB, PhotonMapExportDBFactory )
+#endif
+
 

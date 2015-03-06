@@ -46,6 +46,9 @@ class RandomRngStreamFactory : public QObject, public RandomDeviateFactory
 {
 	Q_OBJECT
 	Q_INTERFACES(RandomDeviateFactory)
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.RandomDeviateFactory")
+#endif
 
 public:
 	QString RandomDeviateName() const;
