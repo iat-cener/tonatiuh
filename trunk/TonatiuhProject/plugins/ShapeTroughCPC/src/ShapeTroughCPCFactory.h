@@ -46,6 +46,10 @@ class ShapeTroughCPCFactory: public QObject, public TShapeFactory
 {
     Q_OBJECT
     Q_INTERFACES(TShapeFactory)
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.TShapeFactory")
+#endif
+
     
 public:
    	QString TShapeName() const;
