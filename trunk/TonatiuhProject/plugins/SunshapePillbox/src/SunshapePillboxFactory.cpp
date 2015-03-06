@@ -63,6 +63,5 @@ SunshapePillbox* SunshapePillboxFactory::CreateTSunShape( ) const
 	return pill;
 }
 #if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(SunshapePillbox, SunshapePillboxFactory)
-
+Q_EXPORT_PLUGIN2(SunshapeBuie, SunshapeBuieFactory)
 #endif
