@@ -3,7 +3,7 @@ CONFIG       += plugin debug_and_release
 
 include( ../../config.pri )
 
-				
+	
 INCLUDEPATH += . \
 				src \
                 $$(TONATIUH_ROOT)/plugins \

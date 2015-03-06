@@ -8,6 +8,9 @@
 class MaterialVirtualFactory: public QObject, public TMaterialFactory
 {
     Q_OBJECT
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.TMaterialFactory")
+#endif
     Q_INTERFACES(TMaterialFactory)
 
 public:
