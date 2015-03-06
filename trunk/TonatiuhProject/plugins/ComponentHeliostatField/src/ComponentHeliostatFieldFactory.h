@@ -47,6 +47,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class ComponentHeliostatFieldFactory: public QObject, public TComponentFactory
 {
     Q_OBJECT
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.TComponentFactory")
+#endif
     Q_INTERFACES(TComponentFactory)
 
 public:
@@ -54,5 +57,6 @@ public:
    	QIcon TComponentIcon() const;
    	TSeparatorKit* CreateTComponent( PluginManager* pPluginManager ) const;
 };
+
 
 #endif /* COMPONENTHELIOSTATFIELDFACTORY_H_ */
