@@ -36,4 +36,4 @@ cp lib*.a /usr/local/lib
 }}}
 
 
-[InstallingForWindows64 Windows Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
+[InstallingForWindows64 Windows 64 bit Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
