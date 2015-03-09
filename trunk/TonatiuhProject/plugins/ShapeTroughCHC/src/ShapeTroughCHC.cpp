@@ -329,7 +329,7 @@ void ShapeTroughCHC::generatePrimitives(SoAction *action)
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
 	const int rows = 20; // Number of points per row
-    const int columns = 10; // Number of points per column
+    const int columns = 3; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
     float vertex[totalPoints][6];
@@ -362,48 +362,55 @@ void ShapeTroughCHC::generatePrimitives(SoAction *action)
     	}
     }
 
-	const int totalIndices  = (rows-1)*(columns-1)*4;
-    int32_t* indices = new int32_t[totalIndices];
-    int k = 0;
-    for( int irow = 0; irow < (rows-1); ++irow )
-           for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
-           {
-				indices[k] = irow*columns + icolumn;
-				indices[k+1] = indices[k] + 1;
-				indices[k+3] = indices[k] + columns;
-				indices[k+2] = indices[k+3] + 1;
-
-				k+=4; //Set k to the first point of the next face.
-           }
-
-    float finalvertex[totalIndices][6];
-    for( int ivert = 0; ivert<totalIndices; ++ivert )
-    {
-    	finalvertex[ivert][0] = vertex[indices[ivert]][0];
-    	finalvertex[ivert][1] = vertex[indices[ivert]][1];
-    	finalvertex[ivert][2] = vertex[indices[ivert]][2];
-    	finalvertex[ivert][3] = vertex[indices[ivert]][3];
-    	finalvertex[ivert][4] = vertex[indices[ivert]][4];
-    	finalvertex[ivert][5] = vertex[indices[ivert]][5];
-    }
-    delete[] indices;
-
     float u = 1;
     float v = 1;
+    beginShape(action, QUADS );
+	for( int irow = 0; irow < (rows-1); ++irow )
+	{
+		for( int icolumn = 0; icolumn < (columns-1); ++icolumn )
+		{
+			int index0 = irow*columns + icolumn;
+			SbVec3f  point0( vertex[index0][0], vertex[index0][1],  vertex[index0][2] );
+			SbVec3f normal0(vertex[index0][3], vertex[index0][4], vertex[index0][5] );
+			SbVec4f texCoord0 = useTexFunc ? tce->get(point0, normal0): SbVec4f( u,v, 0.0, 1.0 );
+			pv.setPoint(point0);
+			pv.setNormal(normal0);
+			pv.setTextureCoords(texCoord0);
+			shapeVertex(&pv);
 
-	beginShape(action, QUADS);
-    for( int i = 0; i < totalIndices; ++i )
-    {
-    	SbVec3f  point( finalvertex[i][0], finalvertex[i][1],  finalvertex[i][2] );
-    	SbVec3f normal(finalvertex[i][3],finalvertex[i][4], finalvertex[i][5] );
-		SbVec4f texCoord = useTexFunc ? tce->get(point, normal): SbVec4f( u,v, 0.0, 1.0 );
+			int index1 = index0 + 1;
+			SbVec3f  point1( vertex[index1][0], vertex[index1][1],  vertex[index1][2] );
+			SbVec3f normal1(vertex[index1][3], vertex[index1][4], vertex[index1][5] );
+			SbVec4f texCoord1 = useTexFunc ? tce->get(point1, normal1): SbVec4f( u,v, 0.0, 1.0 );
+			pv.setPoint(point1);
+			pv.setNormal(normal1);
+			pv.setTextureCoords(texCoord1);
+			shapeVertex(&pv);
 
-		pv.setPoint(point);
-		pv.setNormal(normal);
-		pv.setTextureCoords(texCoord);
-		shapeVertex(&pv);
-    }
-    endShape();
+			int index3 = index0 + columns;
+			int index2 = index3 + 1;
+
+			SbVec3f  point2( vertex[index2][0], vertex[index2][1],  vertex[index2][2] );
+			SbVec3f normal2(vertex[index2][3], vertex[index2][4], vertex[index2][5] );
+			SbVec4f texCoord2 = useTexFunc ? tce->get(point2, normal2): SbVec4f( u,v, 0.0, 1.0 );
+			pv.setPoint(point2);
+			pv.setNormal(normal2);
+			pv.setTextureCoords(texCoord2);
+			shapeVertex(&pv);
+
+			SbVec3f  point3( vertex[index3][0], vertex[index3][1],  vertex[index3][2] );
+			SbVec3f normal3(vertex[index3][3], vertex[index3][4], vertex[index3][5] );
+			SbVec4f texCoord3 = useTexFunc ? tce->get(point3, normal3): SbVec4f( u,v, 0.0, 1.0 );
+			pv.setPoint(point3);
+			pv.setNormal(normal3);
+			pv.setTextureCoords(texCoord3);
+			shapeVertex(&pv);
+
+		}
+	}
+
+	endShape();
+
 }
 
 Vector3D ShapeTroughCHC::GetDPDU( double u, double v ) const
