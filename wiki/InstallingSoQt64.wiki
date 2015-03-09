@@ -45,7 +45,7 @@ To solve some compilation errors, change the following:
    -$EGREP -e 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
    +$EGREP -e 'file format pe-x86-64' >/dev/null ; then
    }}}
-File src/Inventor/Qt/devices/6DOFEvents.cpp (lines 136, 137 ): 
+   * File src/Inventor/Qt/devices/6DOFEvents.cpp (lines 136, 137 ): 
   {{{
   -return TRUE;
   +return true;
@@ -57,19 +57,16 @@ File src/Inventor/Qt/devices/6DOFEvents.cpp (lines 136, 137 ):
   +#include <QMenu>
   }}}
   * File src/Inventor/Qt/SoQtGLWidget.cpp
-  **(line 46)
-  {{{
-  - #include <QtGui/QColormap>
-  +#include <QColormap>
-  }}}
-  **((line 871)
-  {{{
-  -SbString w = obj->objectName().toAscii().constData();
-  +SbString w = obj->objectName().toLatin1().constData();
-  }}}
-	+SbString w = obj->objectName().toAscii().constData();
-	+SbString w = obj->objectName().toLatin1().constData();
-
+    **(line 46)
+    {{{
+    -#include <QtGui/QColormap>
+    +#include <QColormap>
+    }}}
+    **(line 871)
+    {{{
+    -SbString w = obj->objectName().toAscii().constData();
+    +SbString w = obj->objectName().toLatin1().constData();
+    }}}
   * File src/Inventor/Qt/!SoQtComponent.cpp (lines 135, 182):
   {{{
   -unsigned long 
