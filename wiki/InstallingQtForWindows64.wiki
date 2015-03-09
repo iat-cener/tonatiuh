@@ -9,6 +9,39 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 = Details =
 
+To build and install Qt library, first, we must install perl, python. The OpenSSL and ICU libraries must be build before to be able compile Qt sources.
+
+== Perl==
+Qt recommends the Strawberry Perl version for MinGW 64-bit. Download the latest version from the following [http://strawberryperl.com/releases.html link] and select the 64-bit ZIP version. Copy downloaded file to "C:\sde" and extract the files to "C:\sde\perl".
+
+==Python==
+
+Download Python for 64-bit from the following [https://www.python.org/ftp/python/2.7.9/python-2.7.9.amd64.msi link]. Once the download process is finished intall Python into "C:\sde\python".
+
+==Building OpenSSL==
+Next step for build Qt is build OpenSSL for MinGW 64-bit. Download sources latest stable edition (current version "openssl-1.0.1e.tar.gz" ) of OpenSSL from the OpenSSL website at [https://www.openssl.org/source/ link]  to "C:\sde\qt\qt5_deps\openssl-1.0.1e.tar.gz. 
+
+Once the sources are downloaded go to this folder and extract files. For that, use msys console (run "C:\sde64\mingw64\msys\msys.bat" ):
+{{{
+tar -xzvf openssl-1.0.1e.tar.gz
+cd openssl-1.0.1e
+}}}
+
+To start compiling and building OpenSSL execute following commands in the shell:
+{{{
+export PATH=/c/sde/mingw64/bin:$PATH 
+unset MAKE_COMMAND MAKEFLAGS  
+
+CROSS_COMPILE="x86_64-w64-mingw32-" ./configure --prefix=/c/Qt/qt5_deps/openssl-1.0.1e/dist no-idea no-mdc2 no-rc5 shared mingw64  
+}}}
+
+Once configuration process has finished execute the commands below to buid the library and install it:
+{{{
+make depend && make && make install  
+cp /c/sde64/qt-everywhere-opensource-src-5.4.1/qt5_deps/openssl-1.0.1e/dist/bin/*.dll /c/sde64/qt-everywhere-opensource-src-5.4.1/qtbase/bin
+}
+
+
 Download the latest libraries sources of the Qt . To do it, click on the following [http://qt.nokia.com/downloads link]. Once you reach the webpage, go to the _"Qt library"_ section and click on the link to download the source code in the format that you like (see Figure 1). 
 
 ||<a href="https://picasaweb.google.com/lh/photo/8IzJ_7ReDW5DFQfjs78__uhPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh3.googleusercontent.com/-uiaozxTLwWE/Th1fxWZY_TI/AAAAAAAAAKE/4d-Ndz5Qoyc/s400/QtSources.png" height="297" width="400" /></a>||
