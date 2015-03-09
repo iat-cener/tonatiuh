@@ -38,7 +38,7 @@ In the _"Candidates for conversion"_ section of the dialog, verify that the fold
 
 === Define environment variables ===
 
-Once Tonatiuh is set up as a C++ project within Eclipse, you need to defining several environment variables which are needed by qmake to properly process the many Tonatiuh qt project files (_*.pro_) which are necessary to build Tonatiuh.
+Once Tonatiuh is set up as a C++ project within Eclipse, you need to defining several environment variables which are needed by qmake to properly process the many Tonatiuh qt project files (_`*`.pro_) which are necessary to build Tonatiuh.
 
 On the C/C++ Eclipse perspective, right-click on the _"!TonatiuhProject"_ folder to display the pop-up menu. Go to the bottom of the menu and click on _"Properties"_. This will display the _"Properties for !TonatiuhProject"_ dialog. There, on the tree-view at the left, click on the _"C/C++ Build"_ Item to expand it, and then click on the _"Environment"_ sub-item. This will display the _"Environment"_ form-view to the right of the tree-view of the _"Properties for !TonatiuhProject"_ dialog. 
 
