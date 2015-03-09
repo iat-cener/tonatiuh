@@ -32,7 +32,7 @@ And within the _"Associated editors"_ window, associate this file types with the
 On the Eclipse main menu select _"Window"_ and within it _"Preferences"_ to display the pop-up dialog _Preferences"_. In the left tree-like view of the preferences dialog select "C/C++\New CDT Project Wizar\Makefile Project" (see Figure 2). In the dialog's _"Makefile Project"_ right view, do the following:
 
   * Under the _"Binary Parsers"_ tab, select only _"PE Windows Parser"_
-  * Under the _"Builder Settings"_ tab, uncheck the _"Use default build command"_ and set the build command to _"C:\sde\MinGW\bin\mingw32-make.exe"_
+  * Under the _"Builder Settings"_ tab, uncheck the _"Use default build command"_ and set the build command to _"C:\sde\mingw64\bin\mingw32-make.exe"_
 
 ||<a href="http://picasaweb.google.com/lh/photo/qcP4koY_v8m1recaTgl1eQ?feat=embedwebsite"><img src="http://lh6.ggpht.com/_tmEVMS15i5Y/TLOVL9VbXOI/AAAAAAAAArE/fXot1OOJ3M4/s400/Eclipse_makefile_project.png" height="300" width="400" /></a>||
 || *Figure 2.* View of the Eclipse IDE and the _"Preferences\Makefile Project"_ dialog.||
