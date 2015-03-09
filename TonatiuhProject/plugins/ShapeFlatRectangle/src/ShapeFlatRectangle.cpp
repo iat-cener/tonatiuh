@@ -202,6 +202,7 @@ void ShapeFlatRectangle::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center )
 
 void ShapeFlatRectangle::generatePrimitives(SoAction *action)
 {
+
     SoPrimitiveVertex   pv;
 
     SoState  *state = action->getState();
@@ -213,8 +214,9 @@ void ShapeFlatRectangle::generatePrimitives(SoAction *action)
     if( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
 
-	const int rows = 10; // Number of points per row
-    const int columns = 10; // Number of points per column
+	SbVec3f  point;
+	const int rows = 2; // Number of points per row
+    const int columns = 2; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
     float vertex[totalPoints][6];
@@ -248,6 +250,7 @@ void ShapeFlatRectangle::generatePrimitives(SoAction *action)
     		h++; //Increase h to the next point.
     	}
     }
+
 
 	const int totalIndices  = (rows-1)*(columns-1)*4;
     int32_t* indices = new int32_t[totalIndices];
@@ -292,4 +295,5 @@ void ShapeFlatRectangle::generatePrimitives(SoAction *action)
 		shapeVertex(&pv);
     }
     endShape();
+
 }
