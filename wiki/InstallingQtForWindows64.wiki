@@ -14,14 +14,17 @@ To build and install Qt library, first, we must install perl, python. The OpenSS
 ==Download Qt code==
 Download the latest libraries sources of the Qt . To do it, click on the following [http://download.qt-project.org/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.gz link]. 
 
-Once the source code package is on your PC, extract the file to _"C:\sde"_ directory. Then, rename folder to "qt", so the code will be in "C:\sde\qt"
+Once the source code package is on your PC, extract the file to _"C:\sde"_ directory. Then, rename folder to "qt", so the code will be in _"C:\sde\qt"_.
 
 == Perl==
-Qt recommends the Strawberry Perl version for MinGW 64-bit. Download the latest version from the following [http://strawberryperl.com/releases.html link] and select the 64-bit ZIP version. Copy downloaded file to "C:\sde" and extract the files to "C:\sde\perl".
+Qt recommends the Strawberry Perl version for MinGW 64-bit. Download the latest version from the following [http://strawberryperl.com/releases.html link] and select the 64-bit ZIP version. Copy downloaded file to _"C:\sde"_ and extract the files to _"C:\sde\perl"_.
 
 ==Python==
 
-Download Python for 64-bit from the following [https://www.python.org/ftp/python/2.7.9/python-2.7.9.amd64.msi link]. Once the download process is finished intall Python into "C:\sde\python".
+Download Python for 64-bit from the following [https://www.python.org/ftp/python/2.7.9/python-2.7.9.amd64.msi link]. Once the download process is finished intall Python into _"C:\sde\python"_.
+
+==Ruby==
+The third language environment needed to build Qt is Ruby. Download the latest version from the following [http://rubyinstaller.org/downloads/ link] and select the 64-bit 7-zip version ([http://dl.bintray.com/oneclick/rubyinstaller/ruby-2.2.1-x64-mingw32.7z "Ruby 2.2.1 (x64)"]). Copy downloaded file to _"C:\sde"_ and extract the files to _"C:\sde\ruby"_.
 
 ==Building OpenSSL==
 Next step for build Qt is build OpenSSL for MinGW 64-bit. Download sources latest stable edition (current version "openssl-1.0.1e.tar.gz" ) of OpenSSL from the OpenSSL website at [https://www.openssl.org/source/ link]  to "C:\sde\qt\qt5_deps\openssl-1.0.1e.tar.gz. 
@@ -47,7 +50,7 @@ cp /c/sde/qt/qt5_deps/openssl-1.0.1e/dist/bin/*.dll /c/sde/qt/qtbase/bin
 }}}
 
 ==Building ICU==
-The ICU library is also required to build Qt.  Download ICU sources("icu4c-52_1-src.zip" )from [http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.zip "ICU website"] to "C:\sde\qt\qt5_deps\".
+The ICU library is also required to build Qt.  Download ICU sources("icu4c-52_1-src.zip") from [http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.zip "ICU website"] to "C:\sde\qt\qt5_deps\".
 
 In order to build and install the library open MSYS console ( run "C:\sde\mingw64\msys\msys.bat") and execute the following commands:
 {{{
