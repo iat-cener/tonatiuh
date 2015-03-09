@@ -11,7 +11,7 @@ Here you will find the instructions to install the simage library in your comput
 
 Since the simage library binary installers for Windows, available at the Coin 3D website, are only valid for Visual C++ and we need to use the MinGW C++ compiler in order to be able to use the open source version of the Qt libraries, we need to build the simage library from the source code.
 
-Download the latest realese of the Simage source package, currently simage-1.7.0. To do it, click on the following [http://www.coin3d.org/lib/plonesoftwarecenter_view link] to go to the "simage 1.7.0" webpage of the Coin website. Once you reach the webpage, click on the link titled _"Get simage 1.7.0 for all platforms"_ (see Figure 1). This will start the downloading of the simage source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer.
+Download the latest realese of the Simage source package, currently simage-1.7.0. To do it, click on the following [https://bitbucket.org/Coin3D/coin/downloads link] to go to the "simage 1.7.0" webpage of the Coin website. Once you reach the webpage, click on the link titled _"Get simage 1.7.0 for all platforms"_ (see Figure 1). This will start the downloading of the simage source package. When prompted if to open or to store the file in your computer, select the appropriate option to store the file in your computer.
 
 ||<a href="http://picasaweb.google.com/lh/photo/OKxlezrM1MlVCjjDSjTCX8kjYPHGJOebwiJHbWK4XiY?feat=embedwebsite"><img src="http://lh3.ggpht.com/_tmEVMS15i5Y/TK-kOAPXjZI/AAAAAAAAAmQ/YfNdlO1VcvM/s400/Simage_sourcecode.png" height="297" width="400" /></a>||
 || *Figure 1.* View of the "simage 1.7.0" webpage.||
