@@ -29,6 +29,13 @@ During the installation of the connector and related software you will get a _"S
 
 At the end of the software installation process you will be asked to restart Eclipse, please, do so by clicking on the _"Restart Now"_ button.
 
+Once this is done, any time you will upload a file to a Subversion repository, the corresponding mime-type will automatically be set for that file. 
+ 
+Now, if you are a member of Tonatiuh's software development team, please, go to the wikipage [Upload_to_Repository] for instructions on how to check out Tonatiuh's source files, how to update your local copy of the Tonatiuh, and how to commit code changes to Tonatiuh's SVN repository at Googlecode. 
+ 
+If you are not a member of Tonatiuh's software developement team, but you are, however, interested in downloading a copy of the most current version of the Tonatiuh's source code, please, go to the wikipage [Anonymous_Download] for instructions on how to carry out an anounymous download of the Tonatiuh code. 
+
+
 [http://code.google.com/p/tonatiuh/wiki/InstallingForWindows Windows Configuration] | [http://code.google.com/p/tonatiuh/wiki/InstallingForWindows64 Windows 64 bit Configuration] | 
 [InstallingForLinux Linux Configuration] | 
 [InstallingForMac Mac Configuration] | 
