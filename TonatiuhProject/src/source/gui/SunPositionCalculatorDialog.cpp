@@ -44,7 +44,6 @@
 
 #include "gc.h"
 
-#include "MapDialog.h"
 #include "SunPositionCalculatorDialog.h"
 
 SunPositionCalculatorDialog::SunPositionCalculatorDialog( QWidget* parent )
@@ -139,20 +138,7 @@ void SunPositionCalculatorDialog::ChangeSunTimeZone( int /*timeZone*/ )
 	CalculateSunPosition();
 }
 
-void SunPositionCalculatorDialog::on_selectButton_clicked()
-{
-	MapDialog marbleDialog;
-	marbleDialog.SetHomePosition( longitudeSpin->value(), latitudeSpin->value() );
-	if( marbleDialog.exec() )
-	{
-		double longitude;
-		double latitude;
-		marbleDialog.GetHomePosition( longitude, latitude );
 
-    	longitudeSpin->setValue( longitude );
-    	latitudeSpin->setValue( latitude );
-    }
-}
 void SunPositionCalculatorDialog::CalculateSunPosition()
 {
 

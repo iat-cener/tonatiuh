@@ -187,6 +187,12 @@
             </item>
             <item row="1" column="2">
              <widget class="QSpinBox" name="zoneSpin">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>100</width>
@@ -280,18 +286,21 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="selectButton">
-              <property name="minimumSize">
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
                <size>
-                <width>100</width>
-                <height>25</height>
+                <width>40</width>
+                <height>20</height>
                </size>
               </property>
-              <property name="text">
-               <string>Select</string>
-              </property>
-             </widget>
+             </spacer>
             </item>
            </layout>
           </widget>
