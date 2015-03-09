@@ -67,7 +67,6 @@ private slots:
 	void ChangeLatitude( double latitude );
 	void ChangeSunTime( QTime time );
 	void ChangeSunTimeZone( int timeZone );
-	void on_selectButton_clicked();
 
 signals:
 	void changeRepresentation( cSunCoordinates results );
