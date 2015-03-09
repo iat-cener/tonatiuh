@@ -24,7 +24,7 @@ Qt recommends the Strawberry Perl version for MinGW 64-bit. Download the latest 
 Download Python for 64-bit from the following [https://www.python.org/ftp/python/2.7.9/python-2.7.9.amd64.msi link]. Once the download process is finished intall Python into _"C:\sde\python"_.
 
 ==Ruby==
-The third language environment needed to build Qt is Ruby. Download the latest version from the following [http://rubyinstaller.org/downloads/ link] and select the 64-bit 7-zip version ([http://dl.bintray.com/oneclick/rubyinstaller/ruby-2.2.1-x64-mingw32.7z "Ruby 2.2.1 (x64)"]). Copy downloaded file to _"C:\sde"_ and extract the files to _"C:\sde\ruby"_.
+The third language environment needed to build Qt is Ruby. Download the latest version from the following [http://rubyinstaller.org/downloads/ link] and select the 64-bit 7-zip version (currently [http://dl.bintray.com/oneclick/rubyinstaller/ruby-2.2.1-x64-mingw32.7z "Ruby 2.2.1 (x64)"]). Copy downloaded file to _"C:\sde"_ and extract the files to _"C:\sde\ruby"_.
 
 ==Building OpenSSL==
 Next step for build Qt is build OpenSSL for MinGW 64-bit. Download sources latest stable edition (current version "openssl-1.0.1e.tar.gz" ) of OpenSSL from the OpenSSL website at [https://www.openssl.org/source/ link]  to "C:\sde\qt\qt5_deps\openssl-1.0.1e.tar.gz. 
@@ -65,22 +65,33 @@ cd icu/Source
 cp /c/sde/qt/qt5_deps/icu/dist/lib/icu*.dll  /c/sde/qt/qtbase/bin/
 }}}
 
+==Building Qt==
+Once OpenSLL and ICU libraries have been build successfully. The Qt build process can start.
 
-
-Download the latest libraries sources of the Qt . To do it, click on the following [http://qt.nokia.com/downloads link]. Once you reach the webpage, go to the _"Qt library"_ section and click on the link to download the source code in the format that you like (see Figure 1). 
-
-||<a href="https://picasaweb.google.com/lh/photo/8IzJ_7ReDW5DFQfjs78__uhPzBptKnN6WXkW8rDyw9U?feat=directlink"><img src="https://lh3.googleusercontent.com/-uiaozxTLwWE/Th1fxWZY_TI/AAAAAAAAAKE/4d-Ndz5Qoyc/s400/QtSources.png" height="297" width="400" /></a>||
-|| *Figure 1.* View of the "Qt Download" webpage.||
-
-Once the source code package is on your PC, extract the file to _"C:\sde"_ directory.
-
-Then, open a MSYS shell and navigate _"C:\sde"_ directory and type:
+In order to avoid configuration errors, before start with the configuration a new file named ".gitignore" must be created in Qt folder, _"C:\sde\qt"_ with the following content:
 {{{
-cd qt-version
-configure.exe -qt-style-windowsxp -qt-style-windowsvista -platform win32-g++ -phonon -debug-and-release 
-make
+Makefile
+.qmake.cache
+.qmake.super
 }}}
 
-The installation process may take several hours. Once the Qt libraries and development tools are installed, the next step is to install the Simage library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows64 Simage] 
+Copy this folder also in _"C:\sde\qt\qtbase"_. Now, the configuration process can be started. Open Windows command prompt (Cmd-shell) and type:
+{{{
+cd C:\sde\qt
+set INCLUDE=C:\sde\qt\qt5_deps\icu\dist\include;C:\sde\qt\qt5_deps\openssl-1.0.1e\dist\include
+set LIB=C:\sde\qt\qt5_deps\icu\dist\lib;C:\sde\qt\qt5_deps\openssl-1.0.1e\dist\lib
+set QMAKESPEC=
+set QTDIR=
+set MAKE_COMMAND=
+set PATH=%CD%\qtbase\bin;%CD%\gnuwin32\bin;C:\sde\mingw64\bin;C:\sde\strawberry\perl\bin;C:\sde\python;C:\sde\ruby\bin;C:\sde\qt\qt5_deps\icu\dist\lib;C:\sde\qt\qt5_deps\openssl-1.0.1e\dist\bin;C:\Program Files (x86)\Git\cmd;%SystemRoot%\System32
+configure -debug-and-release -opensource -confirm-license -platform win32-g++ -developer-build -c++11 -icu -opengl desktop -openssl -plugin-sql-odbc -qt-style-windowsxp -qt-style-windowsvista -nomake examples -nomake tests
+}}}
+After qt configuration is finished, to build and install qt libraries typing: 
+{{{
+mingw32-make
+mingw32-make install
+}}}
+
+The build process may take several hours. Once the Qt libraries and development tools are installed, the next step is to install the Simage library. To do it, follow the instructions in the following wiki page: [InstallingSimageForWindows64 Simage] 
 
 [InstallingForWindows64 Windows 64 Bit Configuration] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
