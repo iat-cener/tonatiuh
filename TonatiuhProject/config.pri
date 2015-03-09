@@ -75,7 +75,6 @@ else{
 	
 }
 
-
 contains( CONFIG, plugin ){  
 	
 	CONFIG(debug, debug|release) {
