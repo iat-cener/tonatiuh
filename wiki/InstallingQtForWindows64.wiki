@@ -11,6 +11,11 @@ Here you will find instructions to install the Qt libraries in your computer and
 
 To build and install Qt library, first, we must install perl, python. The OpenSSL and ICU libraries must be build before to be able compile Qt sources.
 
+==Download Qt code==
+Download the latest libraries sources of the Qt . To do it, click on the following [http://download.qt-project.org/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.gz link]. 
+
+Once the source code package is on your PC, extract the file to _"C:\sde"_ directory.
+
 == Perl==
 Qt recommends the Strawberry Perl version for MinGW 64-bit. Download the latest version from the following [http://strawberryperl.com/releases.html link] and select the 64-bit ZIP version. Copy downloaded file to "C:\sde" and extract the files to "C:\sde\perl".
 
