@@ -95,6 +95,7 @@ void SceneModel::SetCoinRoot( SoSeparator& coinRoot )
  */
 void SceneModel::SetCoinScene( TSceneKit& coinScene )
 {
+	beginResetModel();
 	if( m_instanceRoot )	Clear();
 	m_mapCoinQt.clear();
 	m_coinScene = 0;
@@ -103,7 +104,7 @@ void SceneModel::SetCoinScene( TSceneKit& coinScene )
     SetRoot();
     SetLight();
     SetConcentrator();
-    reset();
+	endResetModel();
 }
 
 /*!
