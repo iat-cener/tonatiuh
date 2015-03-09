@@ -31,7 +31,7 @@ To be able to develop Tonatiuh under Windows 64 Bit you need to:
     * [InstallingDoxygenForWindows Installing Doxygen]
 
   * Install the Unit Testing and Continuous Integration infrastructure.
-    * [InstallingGoogleTestForWindows Install GoogleTest]
+    * [InstallingGoogleTestForWindows64 Install GoogleTest]
  
  
 
