@@ -48,6 +48,10 @@ class TransmissivityATMParametersFactory : public QObject, public TTransmissivit
 {
     Q_OBJECT
     Q_INTERFACES( TTransmissivityFactory )
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.TTransmissivityFactory")
+#endif
+
 
 public:
     QString TTransmissivityName() const;
