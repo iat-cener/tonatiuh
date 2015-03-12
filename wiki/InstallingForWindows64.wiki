@@ -20,6 +20,7 @@ To be able to develop Tonatiuh under Windows 64 Bit you need to:
     * [InstallingSoQt64 Installing SoQt]
     * [InstallingMarbleForWindows64 Installing Marble ]
     * [InstallingSQLiteForWindows64 Installing SQLite]
+    * [InstallingGoogleTestForWindows64 Install GoogleTest]
 
   * Install and configure the Integrated Development Environment.
     * [InstallingAndConfiguringEclipseForWindows64 Installing and Configuring Eclipse]
@@ -29,10 +30,6 @@ To be able to develop Tonatiuh under Windows 64 Bit you need to:
 
   * Install Doxygen and configure it.
     * [InstallingDoxygenForWindows Installing Doxygen]
-
-  * Install the Unit Testing and Continuous Integration infrastructure.
-    * [InstallingGoogleTestForWindows64 Install GoogleTest]
- 
  
 
 [http://code.google.com/p/tonatiuh/wiki/DevelopersGuide Developer's Guide] | [http://code.google.com/p/tonatiuh/w/list Wiki Home]
