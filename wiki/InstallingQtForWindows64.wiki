@@ -38,7 +38,7 @@ cd openssl-1.0.1e
 To start compiling and building OpenSSL execute following commands in the shell:
 {{{
 export PATH=/c/sde/mingw64/bin:$PATH 
-unset MAKE_COMMAND MAKEFLAGS  
+unset MAKE_COMMAND_MAKEFLAGS  
 
 CROSS_COMPILE="x86_64-w64-mingw32-" ./configure --prefix=/c/sde/qt/qt5_deps/openssl-1.0.1e/dist no-idea no-mdc2 no-rc5 shared mingw64  
 }}}
