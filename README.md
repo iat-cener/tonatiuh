@@ -60,7 +60,7 @@ Tonatiuh does not provide means for post-processing and representing the results
 At [CENER](http://www.cener.com/es/index.asp) we use either Mathematica or R applications for post-processing of Tonatiuh's output binary files, in order to transform raw photon data into flux distributions estimates, and to present those fluxes estimates as graphs.
 
 A typical Mathematica snippet for reading a Tonatiuh output file could be:
-```
+``` mathematica
 (* Function to Read Tonatiuh's binary output file *)
 ReadTonatiuhResults[filename_] := BinaryReadList[ filename, "Real64",  ByteOrdering -> +1];
 
@@ -78,7 +78,7 @@ numberOfPhotons = Length[photonMap]
 ....
 ```
 A typical R snippet for reading a Tonatiuh output file could be:
-```
+``` r
 #Open binary data file.
 fileName<- file("filePath/fileName.dat", "rb")
 
