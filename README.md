@@ -39,7 +39,7 @@ A pervasive plugin architecture which allos the user to:
   * (planned) Add new spectrum models.
 ## Requirements ##
 As any other ambitious open source program, Tonatiuh uses and leverages on several existing open source libraries, and tools. The principal open source resources used by Tonatiuh are:
-  * Nokia QT for the Graphic User Interface (GUI).
+  * Digia Qt for the Graphic User Interface (GUI).
   * Coin3D Toolkit for 3D Graphics Visualization.
   * Marble generic geographical map widget and framework.
   * CPPUnit for testing the code.
