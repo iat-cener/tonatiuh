@@ -66,6 +66,7 @@ public:
 	ScriptEditorDialog( QVector< RandomDeviateFactory* > listRandomDeviateFactory, QWidget* parent = 0 );
 	~ScriptEditorDialog();
 
+	static QScriptValue ImportExtension(QScriptContext *context, QScriptEngine *engine);
 	static QScriptValue PrintMessage( QScriptContext* context, QScriptEngine* engine );
 
 public slots:

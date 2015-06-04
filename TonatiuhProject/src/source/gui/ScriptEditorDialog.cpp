@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ScriptRayTracer.h"
 #include "tonatiuh_script.h"
 
+
 /**
  * Creates a dialog to edit scripts and run them. The list \a listRandomDeviateFactory is
  * the random generator types that can be defined in the scripts to run Tonatiuh. The dialog explorer shows the directories and scripts files from \a dirName path.
@@ -74,9 +75,16 @@ ScriptEditorDialog::ScriptEditorDialog( QVector< RandomDeviateFactory* > listRan
     fileTree->setModel( m_fileModel );
 
 
+
+
+
+    QString pluginsDirectory= QApplication::applicationDirPath() + QDir::separator() + "plugins";
+    QCoreApplication::addLibraryPath(pluginsDirectory );
+
+
   	//Init QtScript environment
 	m_interpreter = new QScriptEngine;
-	m_interpreter->importExtension( "qt.core" );
+
 
 	QScriptValue tonatiuh = m_interpreter->newQObject( parent );
 	m_interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
@@ -92,6 +100,11 @@ ScriptEditorDialog::ScriptEditorDialog( QVector< RandomDeviateFactory* > listRan
 	m_interpreter->globalObject().setProperty("print", printFunction );
 
 	//m_interpreter->globalObject().setProperty( "print", m_interpreter->newFunction( ScriptEditorDialog::WriteMessage ) );
+
+
+	QScriptValue import = m_interpreter->newFunction(ScriptEditorDialog::ImportExtension);
+	m_interpreter->globalObject().setProperty("Import", import, QScriptValue::ReadOnly);
+
 
 
 
@@ -272,3 +285,22 @@ QScriptValue ScriptEditorDialog::PrintMessage( QScriptContext* context, QScriptE
 }
 
 
+QScriptValue ScriptEditorDialog::ImportExtension(QScriptContext *context, QScriptEngine *engine)
+{
+	if (context->argumentCount() != 1)
+		return QScriptValue();
+
+	const QString name = context->argument(0).toString();
+
+	if (!engine->importExtension(name).isUndefined())
+	{
+		QScriptValue consoleObject = engine->globalObject().property( "console" );
+		QPlainTextEdit* console = ( QPlainTextEdit* ) consoleObject.toQObject();
+		if( !console )	return 0;
+
+		QString message = QString("Warning! %1 not found!").arg(name);
+		console->insertPlainText( message );
+	}
+
+	return QScriptValue();
+}
