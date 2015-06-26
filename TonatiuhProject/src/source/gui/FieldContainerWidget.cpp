@@ -55,6 +55,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParametersDelegate.h"
 #include "ParametersItem.h"
 #include "ParametersModel.h"
+#include "Vector2ContainerEditor.h"
+#include "trt.h"
 
 /*!
  * Creates an empty widget.
@@ -148,13 +150,19 @@ void FieldContainerWidget::currentChanged( const QModelIndex& current, const QMo
 
 void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::EndEditHint hint )
 {
-QString newValue;
+	QString newValue;
 	SoField* field = m_pModel->ModelItem( m_currentIndex )->GetField();
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
 	{
 		QComboBox* combo = qobject_cast<QComboBox *>(editor);
 		newValue = combo->currentText( );
 	}
+	else if( field->getTypeId().isDerivedFrom( trt::TONATIUH_CONTAINERREALVECTOR2::getClassTypeId() ) )
+	{
+		Vector2ContainerEditor* tableEditor = qobject_cast<Vector2ContainerEditor *>(editor);
+		newValue = tableEditor->GetText( );
+	}
+
 	else
 	{
 		QLineEdit* textEdit = qobject_cast<QLineEdit *>(editor);

@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
+#include <iostream>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QModelIndex>
@@ -46,6 +47,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParametersItem.h"
 #include "ParametersDelegate.h"
 #include "ParametersModel.h"
+#include "Vector2ContainerEditor.h"
+#include "trt.h"
 
 ParametersDelegate::ParametersDelegate(  QObject* parent)
  : QItemDelegate(parent)
@@ -75,6 +78,13 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 		}
 		return editor;
 	}
+	else if( field->getTypeId().isDerivedFrom( trt::TONATIUH_CONTAINERREALVECTOR2::getClassTypeId() ) )
+	{
+
+		Vector2ContainerEditor* editor = new Vector2ContainerEditor(parent);
+		return editor;
+	}
+
 	else
 	{
 		QLineEdit* editor = new QLineEdit(parent);
@@ -97,6 +107,13 @@ void ParametersDelegate::setEditorData(QWidget *editor,
 		QComboBox* combo = static_cast<QComboBox *>(editor);
 		combo->setCurrentIndex( selectedIndex );
 
+	}
+	else if( field->getTypeId().isDerivedFrom( trt::TONATIUH_CONTAINERREALVECTOR2::getClassTypeId() ) )
+	{
+		QString value = index.model()->data(index, Qt::DisplayRole).toString();
+
+		Vector2ContainerEditor* tableEditor = static_cast<Vector2ContainerEditor *>(editor);
+		tableEditor->SetText(value);
 	}
 	else
 	{
