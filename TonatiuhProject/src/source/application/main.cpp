@@ -36,10 +36,13 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+
 #include <QApplication>
 #include <QDir>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QSplashScreen>
+#include <QTime>
 
 #include <Inventor/Qt/SoQt.h>
 
@@ -135,19 +138,51 @@ int main( int argc, char ** argv )
 	MainWindow* mw;
 	splash->showMessage( QObject::tr("Setting up the main window..."), topRight, Qt::black );
 
+    int exit;
    	if( argc > 1 )
    	{
    		QString tonatiuhFile = argv[1];
-   	   	mw = new MainWindow( tonatiuhFile );
+
+    	QFileInfo fileInfo( tonatiuhFile );
+    	if( fileInfo.completeSuffix() == QLatin1String( "tnhs") )
+    	{
+
+       		mw = new MainWindow("");
+       		mw->show();
+       	    splash->finish( mw );
+       	    delete splash;
+    	    //exit = a.exec();
+       		QTime dieTime = QTime::currentTime().addMSecs( 100 );
+       	    while( QTime::currentTime() < dieTime )
+       	    {
+       	        QCoreApplication::processEvents( QEventLoop::AllEvents, 100 );
+       	    }
+       		mw->ExecuteScriptFile( tonatiuhFile );
+
+       		mw->close();
+       		exit = 0;
+    	}
+    	else
+    	{
+    		mw = new MainWindow( tonatiuhFile );
+
+       		mw->show();
+       	    splash->finish( mw );
+       	    delete splash;
+    	    exit = a.exec();
+    	}
    	}
    	else
+   	{
    		mw = new MainWindow("");
+   		mw->show();
+   	    splash->finish( mw );
+   	    delete splash;
+	    exit = a.exec();
 
-	mw->show();
-    splash->finish( mw );
-    delete splash;
+   	}
 
-    int exit = a.exec();
+
     delete mw;
 
 	return exit;

@@ -22,6 +22,7 @@ public:
     virtual QString TComponentName() const  = 0;
     virtual QIcon TComponentIcon() const = 0;
     virtual TSeparatorKit* CreateTComponent( PluginManager* pPluginManager ) const = 0;
+    virtual TSeparatorKit* CreateTComponent( PluginManager* pPluginManager, int numberofParameters, QVector< QVariant > parametersList ) const = 0;
 };
 
 Q_DECLARE_INTERFACE( TComponentFactory, "tonatiuh.TComponentFactory")

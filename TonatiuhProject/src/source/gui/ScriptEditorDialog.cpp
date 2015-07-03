@@ -48,6 +48,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "tonatiuh_script.h"
 
 
+ Q_DECLARE_METATYPE(QVector<QVariant>)
+
 /**
  * Creates a dialog to edit scripts and run them. The list \a listRandomDeviateFactory is
  * the random generator types that can be defined in the scripts to run Tonatiuh. The dialog explorer shows the directories and scripts files from \a dirName path.
@@ -84,7 +86,7 @@ ScriptEditorDialog::ScriptEditorDialog( QVector< RandomDeviateFactory* > listRan
 
   	//Init QtScript environment
 	m_interpreter = new QScriptEngine;
-
+	qScriptRegisterSequenceMetaType<QVector<QVariant> >(m_interpreter);
 
 	QScriptValue tonatiuh = m_interpreter->newQObject( parent );
 	m_interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
@@ -128,6 +130,18 @@ ScriptEditorDialog::~ScriptEditorDialog()
 	delete m_fileModel;
 	delete m_interpreter;
 }
+
+void ScriptEditorDialog::ExecuteScript( QString tonatiuhScriptFile )
+{
+	 if( !tonatiuhScriptFile.isEmpty() )
+	 {
+		 codeEditorWidget->OpenScriptFile( tonatiuhScriptFile );
+		 SetCurrentFile( tonatiuhScriptFile );
+		 RunScript();
+		 Close( true);
+	 }
+}
+
 
 void ScriptEditorDialog::AbortEvaluation( QString error )
 {

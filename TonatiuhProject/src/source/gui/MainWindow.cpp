@@ -214,7 +214,10 @@ m_focusView( 0 )
 
 	ReadSettings();
 
-    if( !tonatiuhFile.isEmpty() )	StartOver( tonatiuhFile );
+    if( !tonatiuhFile.isEmpty() )
+    {
+   		StartOver( tonatiuhFile );
+    }
 }
 
 /*!
@@ -255,6 +258,23 @@ void MainWindow::FinishManipulation( )
 	m_document->SetDocumentModified( true );
 
 }
+
+void MainWindow::ExecuteScriptFile( QString tonatiuhScriptFile )
+{
+	//New();
+
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pPluginManager->GetRandomDeviateFactories();
+	ScriptEditorDialog editor(  randomDeviateFactoryList, this );
+	editor.show();
+
+	editor.ExecuteScript( tonatiuhScriptFile );
+
+	editor.close();
+
+	close();
+
+}
+
 
 /*!
  * Starts manipulating current selected node with \a dragger.
@@ -1305,6 +1325,53 @@ void MainWindow::CreateAnalyzerNode()
 		m_document->SetDocumentModified( true );
 	}
 }
+
+/*!
+ * Creates a \a componentType component node with the name \a nodeName.
+ */
+void MainWindow::CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVector< QVariant > parametersList )
+{
+	QModelIndex parentIndex = ( (! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex() ) ) ?
+								m_sceneModel->index( 0, 0, sceneModelView->rootIndex( )):
+								sceneModelView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	if( !parentNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
+
+	QVector< TComponentFactory* > factoryList = m_pPluginManager->GetComponentFactories();
+	if( factoryList.size() == 0 )	return;
+
+	QVector< QString > componentNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		componentNames<< factoryList[i]->TComponentName();
+
+	int selectedCompoent = componentNames.indexOf( componentType );
+	if( selectedCompoent < 0 )
+	{
+		emit Abort( tr( "CreateComponentNode: Selected component type is not valid." ) );
+		return;
+	}
+    m_document->SetDocumentModified( true );
+
+    TComponentFactory* pTComponentFactory = factoryList[selectedCompoent];
+
+
+	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent( m_pPluginManager, numberofParameters, parametersList );
+	if( !componentRootNode )	return;
+
+    QString typeName = pTComponentFactory->TComponentName();
+    componentRootNode->setName( nodeName.toStdString().c_str() );
+
+    CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRootNode, QPersistentModelIndex(parentIndex), m_sceneModel );
+    QString commandText = QString( "Create Component: %1").arg( pTComponentFactory->TComponentName().toLatin1().constData() );
+    cmdInsertSeparatorKit->setText(commandText);
+    m_commandStack->push( cmdInsertSeparatorKit );
+
+	UpdateLightSize();
+    m_document->SetDocumentModified( true );
+}
+
 /*!
  * Creates a \a materialType material node from the as current selected node child.
  *
@@ -1868,6 +1935,22 @@ void MainWindow::Run()
 
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 		lightInstance->SetIntersectionTransform( lightToWorld.GetInverse() );
+
+		/*
+		QMutex mutex;
+		QMutex mutexPhotonMap;
+		RayTracer rayTrace(  rootSeparatorInstance,
+									 lightInstance, raycastingSurface, sunShape, lightToWorld,
+									 transmissivity,
+									 *m_rand,
+									 &mutex, m_pPhotonMap, &mutexPhotonMap,
+									 exportSuraceList );
+		for( int cpu = 0; cpu < raysPerThread.count(); cpu++ )
+			rayTrace( raysPerThread[cpu] );
+			//rayTrace( 1 );
+
+		*/
+
 
 		// Create a progress dialog.
 		QProgressDialog dialog;

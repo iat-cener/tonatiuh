@@ -89,6 +89,7 @@ public:
 
     void FinishManipulation( );
     void StartManipulation( SoDragger* dragger );
+    void ExecuteScriptFile( QString tonatiuhScriptFile );
 signals:
 	void Abort( QString error );
 
@@ -100,6 +101,7 @@ public slots:
 	void Copy( QString nodeURL );
 	void CreateGroupNode();
 	void CreateAnalyzerNode();
+	void CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVector< QVariant > parametersList );
 	void CreateMaterial( QString materialType );
 	void CreateShape( QString shapeType );
 	void CreateSurfaceNode();
