@@ -314,7 +314,7 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 			QPointF polygon5[4] = { qP3, qP4, qP8, qP7 };
 			QPointF polygon6[4] = { qP5, qP6, qP7, qP8 };
 
-
+			/*
 			painter.drawPoint(qP1);
 			painter.drawPoint(qP2);
 			painter.drawPoint(qP3);
@@ -323,13 +323,20 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 			painter.drawPoint(qP6);
 			painter.drawPoint(qP7);
 			painter.drawPoint(qP8);
+			*/
 
 			painter.drawPolygon( polygon1, 4 );
+			painter.drawPolyline( polygon1, 4 );
 			painter.drawPolygon( polygon2, 4 );
+			painter.drawPolyline( polygon2, 4 );
 			painter.drawPolygon( polygon3, 4 );
+			painter.drawPolyline( polygon3, 4 );
 			painter.drawPolygon( polygon4, 4 );
+			painter.drawPolyline( polygon4, 4 );
 			painter.drawPolygon( polygon5, 4 );
+			painter.drawPolyline( polygon5, 4 );
 			painter.drawPolygon( polygon6, 4 );
+			painter.drawPolyline( polygon6, 4 );
 		}
 
 	}
