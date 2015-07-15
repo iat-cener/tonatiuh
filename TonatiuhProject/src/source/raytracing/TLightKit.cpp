@@ -260,8 +260,13 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 	QBrush brush( Qt::black );
 	painter.setBrush( brush );
 
-	QPen pen( Qt::black, Qt::NoPen );
+	QPen pen( Qt::black );
 	painter.setPen( pen );
+
+	//painter.setRenderHint(   QPainter::Antialiasing);
+
+	//QPen pen( Qt::black, Qt::NoPen );
+	//painter.setPen( pen );
 
 	for( int s = 0; s < surfacesList.size(); s++ )
 	{
@@ -293,14 +298,14 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 			Point3D tP7 = shapeToWorld( p7 );
 			Point3D tP8 = shapeToWorld( p8 );
 
-			QPointF qP1( ( tP1.x - shape->xMin.getValue() ) /pixelWidth, ( tP1.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP2( ( tP2.x - shape->xMin.getValue() ) /pixelWidth, ( tP2.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP3( ( tP3.x - shape->xMin.getValue() ) /pixelWidth, ( tP3.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP4( ( tP4.x - shape->xMin.getValue() ) /pixelWidth, ( tP4.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP5( ( tP5.x - shape->xMin.getValue() ) /pixelWidth, ( tP5.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP6( ( tP6.x - shape->xMin.getValue() ) /pixelWidth, ( tP6.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP7( ( tP7.x - shape->xMin.getValue() ) /pixelWidth, ( tP7.z - shape->zMin.getValue() ) /pixelHeight );
-			QPointF qP8( ( tP8.x - shape->xMin.getValue() ) /pixelWidth, ( tP8.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP1( ( tP1.x - shape->xMin.getValue() ) /pixelWidth, ( tP1.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP2( ( tP2.x - shape->xMin.getValue() ) /pixelWidth, ( tP2.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP3( ( tP3.x - shape->xMin.getValue() ) /pixelWidth, ( tP3.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP4( ( tP4.x - shape->xMin.getValue() ) /pixelWidth, ( tP4.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP5( ( tP5.x - shape->xMin.getValue() ) /pixelWidth, ( tP5.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP6( ( tP6.x - shape->xMin.getValue() ) /pixelWidth, ( tP6.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP7( ( tP7.x - shape->xMin.getValue() ) /pixelWidth, ( tP7.z - shape->zMin.getValue() ) /pixelHeight );
+			QPoint qP8( ( tP8.x - shape->xMin.getValue() ) /pixelWidth, ( tP8.z - shape->zMin.getValue() ) /pixelHeight );
 
 			QPointF polygon1[4] = { qP1, qP2, qP3, qP4 };
 			QPointF polygon2[4] = { qP1, qP2, qP6, qP5 };
@@ -308,6 +313,17 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 			QPointF polygon4[4] = { qP2, qP3, qP7, qP6 };
 			QPointF polygon5[4] = { qP3, qP4, qP8, qP7 };
 			QPointF polygon6[4] = { qP5, qP6, qP7, qP8 };
+
+
+			painter.drawPoint(qP1);
+			painter.drawPoint(qP2);
+			painter.drawPoint(qP3);
+			painter.drawPoint(qP4);
+			painter.drawPoint(qP5);
+			painter.drawPoint(qP6);
+			painter.drawPoint(qP7);
+			painter.drawPoint(qP8);
+
 			painter.drawPolygon( polygon1, 4 );
 			painter.drawPolygon( polygon2, 4 );
 			painter.drawPolygon( polygon3, 4 );
@@ -334,6 +350,7 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 	{
 		for( int j = 0; j < heightPixeles; j++ )
 		{
+
 			double pixelIntensity = ( sourceImage->pixel( i, j ) == black ) ? 1: 0;
 			if( ( i - 1 ) >= 0 && ( j - 1 ) >= 0 ) pixelIntensity += ( sourceImage->pixel( i - 1, j - 1 ) == black ) ? 1: 0;
 			if( ( j - 1 ) >= 0 ) pixelIntensity += ( sourceImage->pixel( i, j - 1 ) == black ) ? 1: 0;
@@ -357,6 +374,21 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 
 		}
 	}
+	/*
+	for( int j = 0; j < heightPixeles; j++ )
+	{
+		for( int i = 0; i < widthPixeles; i++ )
+		{
+
+
+			std::cout<<areaMatrix[j][i] <<"\t";
+
+		}
+		std::cout<<std::endl;
+	}
+	*/
+
+
 
 	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );
     texture->image.setValue( SbVec2s(  heightPixeles, widthPixeles ), 1, bitmap );
