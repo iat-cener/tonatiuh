@@ -45,61 +45,7 @@ As any other ambitious open source program, Tonatiuh uses and leverages on sever
   * CPPUnit for testing the code.
 All these tools are used for developing Tonatiuh within the Eclipse IDE in a standard development environment used by the entire developing team.
 ## Tonatiuh's output files format ##
-Tonatiuh’s output file is a binary file whose format is independent of the host computer's operating system. The file stores real values one after the other in a block, with no spaces, separators, carriage returns, or line feeds separating the values.
-The binary format used to store the values is [Real64](http://en.wikipedia.org/wiki/Double_precision_floating-point_format#IEEE_754_double_precision_binary_floating-point_format:_binary64) with [big-endian byte ordering](http://en.wikipedia.org/wiki/Endianness#Big-endian). The first value stored in the file is the power per photon in watts (W). This real value is then followed by seven-tuples of real values, one per photon .
-Every seven-tuple holds the following values in the specific order given:
-  * PhotonID
-  * x-coordinate
-  * y-coordinate
-  * z-coordinate
-  * surface side ( 0 if is back side , 1 if is front side )
-  * Previous PhotonID (0 if the photon is the first of a given ray)
-  * Next PhotonID (0 is the photon is the last of a given ray)
-Tonatiuh does not provide means for post-processing and representing the results of the ray tracing it carries out.
-
-At [CENER](http://www.cener.com/es/index.asp) we use either Mathematica or R applications for post-processing of Tonatiuh's output binary files, in order to transform raw photon data into flux distributions estimates, and to present those fluxes estimates as graphs.
-
-A typical Mathematica snippet for reading a Tonatiuh output file could be:
-``` mathematica
-(* Function to Read Tonatiuh's binary output file *)
-ReadTonatiuhResults[filename_] := BinaryReadList[ filename, "Real64",  ByteOrdering -> +1];
-
-(* Read Tonatiuh's ouput file and store content in fileData *)
-rawData = ReadTonatiuhResults["fileName.dat"];
-
-(* Store the power per photon in powerPerPhoton *)
-powerPerPhoton = rawData[[1]]
- 
-(* Create a matrix storing all the photon seven-tuples at a row per seven-tuple *) 
-photonMap = Partition[fileData[[2;;Length[fileData]]],7];
-
-numberOfPhotons = Length[photonMap]
- 
-....
-```
-A typical R snippet for reading a Tonatiuh output file could be:
-``` r
-#Open binary data file.
-fileName<- file("filePath/fileName.dat", "rb")
-
-#Store the power per photon in poerPerPhoton variable.
-powerPerPhoton <- readBin(fileName, what="numeric", n=1, endian="big")
-
-#Create a vector with photons all the information.
-endOfFile<-FALSE
-photonData<-vector( mode="numeric")
-while( !endOfFile )
-{
-   photon<-readBin(fileName, what="numeric", n=7, endian="big")
-   if( length( photon ) < 7 ) endOfFile = TRUE else photonData<-append( photonData, photon )
-}
-#Close the data file.
-close(fileName)
-
-#Compute the number of photons in the vector. all the photon sextuples at a row per #sextuple 
-nPhotons<-length( photonData ) / 7
-photonMap<-matrix(  photonData , nrow= nPhotons, ncol=7, byrow=TRUE )
-
+From version 2.0.1 the format of the outputs of simulations has been changed to be more flexible for post-processing. You can find a description of the format [Tonatiuh's output files format] (Output files format).
 ...
 ```
 <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'><img src='http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png' alt='Creative Commons License' /></a><br />This work is licensed under a <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'>Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License</a>.
