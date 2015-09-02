@@ -46,6 +46,6 @@ As any other ambitious open source program, Tonatiuh uses and leverages on sever
 All these tools are used for developing Tonatiuh within the Eclipse IDE in a standard development environment used by the entire developing team.
 ## Tonatiuh's output files format ##
 From version 2.0.1 the format of the outputs of simulations has been changed to be more flexible for post-processing. You can find a description of the format [Tonatiuh's output files format] (Output files format).
-...
-```
+
+
 <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'><img src='http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png' alt='Creative Commons License' /></a><br />This work is licensed under a <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'>Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License</a>.
