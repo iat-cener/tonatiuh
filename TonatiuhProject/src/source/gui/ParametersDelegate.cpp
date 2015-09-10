@@ -36,19 +36,19 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
-#include <iostream>
+
 #include <QComboBox>
 #include <QLineEdit>
 #include <QModelIndex>
 #include <QString>
 
+#include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSFEnum.h> 
 
+#include "ContainerEditor.h"
 #include "ParametersItem.h"
 #include "ParametersDelegate.h"
 #include "ParametersModel.h"
-#include "Vector2ContainerEditor.h"
-#include "trt.h"
 
 ParametersDelegate::ParametersDelegate(  QObject* parent)
  : QItemDelegate(parent)
@@ -61,7 +61,7 @@ ParametersDelegate::~ParametersDelegate()
 	
 }
 
-QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem& /*option*/, const QModelIndex &index) const
+QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem& option, const QModelIndex &index) const
 {
 	const ParametersModel* model = static_cast< const ParametersModel* >( index.model() );
 	SoField* field = model->ModelItem( index )->GetField();
@@ -78,10 +78,12 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 		}
 		return editor;
 	}
-	else if( field->getTypeId().isDerivedFrom( trt::TONATIUH_CONTAINERREALVECTOR2::getClassTypeId() ) )
+	else if( field->getTypeId().isDerivedFrom( SoMField::getClassTypeId() ) )
 	{
+		ContainerEditor* editor = new ContainerEditor( parent );
+	     editor->setGeometry(option.rect);
 
-		Vector2ContainerEditor* editor = new Vector2ContainerEditor(parent);
+	     connect( editor, SIGNAL( editingFinished( )  ), this, SLOT( CloseEditor() ));
 		return editor;
 	}
 
@@ -100,7 +102,7 @@ void ParametersDelegate::setEditorData(QWidget *editor,
 	
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
 	{
-;
+
 		SoSFEnum* enumField = static_cast< SoSFEnum* >( field );
 		int selectedIndex = enumField->getValue();
 		
@@ -108,13 +110,15 @@ void ParametersDelegate::setEditorData(QWidget *editor,
 		combo->setCurrentIndex( selectedIndex );
 
 	}
-	else if( field->getTypeId().isDerivedFrom( trt::TONATIUH_CONTAINERREALVECTOR2::getClassTypeId() ) )
+	else if( field->getTypeId().isDerivedFrom( SoMField::getClassTypeId() ) )
 	{
 		QString value = index.model()->data(index, Qt::DisplayRole).toString();
+		ContainerEditor* containerEdit = static_cast< ContainerEditor *>(editor);
 
-		Vector2ContainerEditor* tableEditor = static_cast<Vector2ContainerEditor *>(editor);
-		tableEditor->SetText(value);
+		containerEdit->SetData( value );
+
 	}
+
 	else
 	{
 		QString value = index.model()->data(index, Qt::DisplayRole).toString();
@@ -123,5 +127,10 @@ void ParametersDelegate::setEditorData(QWidget *editor,
 		textEdit->setText(value);
 	}
 
-    	
+}
+
+void ParametersDelegate::CloseEditor()
+{
+    QWidget *editor = qobject_cast<QWidget *>(sender());
+    emit closeEditor(editor);
 }

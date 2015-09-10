@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-
 #include <QComboBox>
 #include <QLineEdit>
 #include <QTreeView>
@@ -51,12 +49,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/nodes/SoNode.h>
 
+#include "ContainerEditor.h"
 #include "FieldContainerWidget.h"
 #include "ParametersDelegate.h"
 #include "ParametersItem.h"
 #include "ParametersModel.h"
-#include "Vector2ContainerEditor.h"
-#include "trt.h"
 
 /*!
  * Creates an empty widget.
@@ -157,12 +154,13 @@ void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::
 		QComboBox* combo = qobject_cast<QComboBox *>(editor);
 		newValue = combo->currentText( );
 	}
-	else if( field->getTypeId().isDerivedFrom( trt::TONATIUH_CONTAINERREALVECTOR2::getClassTypeId() ) )
-	{
-		Vector2ContainerEditor* tableEditor = qobject_cast<Vector2ContainerEditor *>(editor);
-		newValue = tableEditor->GetText( );
-	}
 
+	else if( field->getTypeId().isDerivedFrom( SoMField::getClassTypeId() ) )
+	{
+		ContainerEditor* containerEditor = qobject_cast<ContainerEditor *>(editor);
+		newValue = containerEditor->GetData( );
+
+	}
 	else
 	{
 		QLineEdit* textEdit = qobject_cast<QLineEdit *>(editor);
@@ -172,7 +170,7 @@ void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::
 	m_pFieldContainer->getFieldName( field, fieldName );
 	QString parameterName( fieldName.getString() );
 
-	emit valueModificated( m_pFieldContainer, parameterName, newValue );
+	if( !newValue.isEmpty() ) 	emit valueModificated( m_pFieldContainer, parameterName, newValue );
 	QTreeView::closeEditor( editor, hint );
 
 }
