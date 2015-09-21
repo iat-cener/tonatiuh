@@ -4,7 +4,7 @@
 ## First workshop on Tonatiuh ##
 
 First TONATIUH workshop, with title “An introduction to TONATIUH”, has been successfully delivered by Amaia Mutuberria, Senior researcher of CENER Solar Thermal Energy Department.
-The course was organized within the activities that are being performed in WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837.the EU, Call FP7-ENERGY-2013-IRP).
+The course was organized within the activities that are being performed in WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
 
 The workshop was online and took place on 16th and 17th of September, 3 hours course per day. It was a success with a mass participation: more than 20 attenders of 10 different countries.
 
