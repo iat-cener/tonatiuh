@@ -158,7 +158,7 @@ int main( int argc, char ** argv )
        	        QCoreApplication::processEvents( QEventLoop::AllEvents, 100 );
        	    }
        		mw->ExecuteScriptFile( tonatiuhFile );
-
+       		mw->Clear();
        		mw->close();
        		exit = 0;
     	}

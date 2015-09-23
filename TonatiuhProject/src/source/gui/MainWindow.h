@@ -97,6 +97,7 @@ public slots:
 	void AddExportSurfaceURL( QString nodeURL );
 	void ChangeSunPosition( double azimuth, double elevation );
 	void ChangeSunPosition( int year, int month, int day, double hours, double minutes, double seconds, double latitude, double longitude );
+	void Clear();
 	void Copy();
 	void Copy( QString nodeURL );
 	void CreateGroupNode();
@@ -119,6 +120,7 @@ public slots:
 	void Run();
 	void ResetAnalyzerValues();
 	bool Save();
+	void SaveComponent( QString componentFileName  );
 	void SaveAs( QString fileName );
     void SelectNode( QString nodeUrl );
 	void SetAimingPointAbsolute();
@@ -160,7 +162,6 @@ private slots:
 	void DefineTransmissivity();
 	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );
-	//void ExportPhotonMap();
 	void InsertUserDefinedComponent();
 	void ItemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
 	void ItemDragAndDropCopy(const QModelIndex& newParent, const QModelIndex& node);
@@ -175,7 +176,7 @@ private slots:
     void SetSunPositionCalculatorEnabled( int enabled );
 	void ShowBackground();
 	void ShowCommandView();
-	void ShowNetworkConnectionsDialog();
+	//void ShowNetworkConnectionsDialog();
 	void ShowGrid();
     void ShowMenu( const QModelIndex& index );
     void ShowRayTracerOptionsDialog();
@@ -207,7 +208,7 @@ private slots:
 
 	//Help menu actions
 	void on_actionAbout_triggered();
-	void on_actionCheckForUpdates_triggered();
+	//void on_actionCheckForUpdates_triggered();
 
 
 private:
@@ -250,7 +251,7 @@ private:
    	void SetupTreeView();
    	void SetupTriggers();
     void SetupViews();
-   	void SetupUpdateManager();
+   	//void SetupUpdateManager();
 	void ShowRaysIn3DView();
     bool StartOver( const QString& fileName );
     QString StrippedName( const QString& fullFileName );
@@ -272,7 +273,7 @@ private:
     QToolBar* m_trackersToolBar;
 
     PluginManager* m_pPluginManager;
-    UpdatesManager* m_updateManager;
+    //UpdatesManager* m_updateManager;
 
     SceneModel* m_sceneModel;
     QItemSelectionModel* m_selectionModel;

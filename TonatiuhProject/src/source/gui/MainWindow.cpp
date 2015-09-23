@@ -173,7 +173,7 @@ MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags 
 m_shapeToolBar( 0 ),
 m_trackersToolBar( 0 ),
 m_pPluginManager( 0 ),
-m_updateManager( 0 ),
+//m_updateManager( 0 ),
 m_sceneModel( 0 ),
 m_selectionModel( 0 ),
 m_rand( 0 ),
@@ -208,7 +208,7 @@ m_focusView( 0 )
     SetupGraphcisRoot();
     SetupModels();
     SetupViews();
-	SetupUpdateManager();
+	//SetupUpdateManager();
 	SetupPluginsManager();
 	SetupTriggers();
 
@@ -226,7 +226,7 @@ m_focusView( 0 )
 MainWindow::~MainWindow()
 {
     delete m_pPluginManager;
-    delete m_updateManager;
+    //delete m_updateManager;
     delete m_sceneModel;
 	delete m_document;
 	delete m_commandStack;
@@ -269,10 +269,7 @@ void MainWindow::ExecuteScriptFile( QString tonatiuhScriptFile )
 
 	editor.ExecuteScript( tonatiuhScriptFile );
 
-	editor.close();
-
-	close();
-
+	editor.done( 0 );
 }
 
 
@@ -473,11 +470,17 @@ void MainWindow::InsertUserDefinedComponent()
 
 	if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) ) return;
 
+	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
+	QString openDirectory = settings.value( "componentOpenDirectory", QString( "." ) ).toString();
+
 	QString fileName = QFileDialog::getOpenFileName( this,
-			                               tr( "Open Tonatiuh document" ), ".",
+			                               tr( "Open Tonatiuh document" ), openDirectory,
 			                               tr( "Tonatiuh component (*.tcmp)" ) );
 
-	if ( fileName.isEmpty() ) return;
+	if( fileName.isEmpty() ) return;
+
+	QFileInfo file( fileName );
+	settings.setValue( "componentOpenDirectory", file.absolutePath() );
 
 	InsertFileComponent( fileName );
 }
@@ -613,6 +616,50 @@ bool MainWindow::Save()
 {
 	if ( m_currentFile.isEmpty() ) return SaveAs();
 	else return SaveFile( m_currentFile );
+}
+
+
+/*!
+ * Saves current selected node as a component in the files named \a componentFileName.
+ */
+void MainWindow::SaveComponent( QString componentFileName  )
+{
+	 if( !m_selectionModel->hasSelection() ) return;
+	 if( m_selectionModel->currentIndex() == sceneModelView->rootIndex() ) return;
+
+	 QModelIndex componentIndex = sceneModelView->currentIndex();
+	 SoNode* coinNode = m_sceneModel->NodeFromIndex( componentIndex )->GetNode();
+
+	 if ( !coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	 {
+		 QMessageBox::warning( 0, tr( "Tonatiuh" ),
+	                                  tr( "Selected node in not valid  for component node" ) );
+		 return;
+	 }
+
+	 TSeparatorKit* componentRoot = dynamic_cast< TSeparatorKit* > ( coinNode );
+	 if( !componentRoot ) return;
+
+	 if( componentFileName.isEmpty() ) return;
+
+	 QFileInfo componentFile( componentFileName );
+	 if( componentFile.completeSuffix().compare( "tcmp" ) )	componentFileName.append( ".tcmp" );
+
+	 SoWriteAction SceneOuput;
+	 if ( !SceneOuput.getOutput()->openFile( componentFileName.toLatin1().constData() ) )
+	 {
+		 QMessageBox::warning( 0, tr( "Tonatiuh" ),
+	                              tr( "Cannot open file %1. " )
+	                            .arg( componentFileName ));
+		 return;
+	 }
+
+	 QApplication::setOverrideCursor( Qt::WaitCursor );
+	 SceneOuput.getOutput()->setBinary( false );
+	 SceneOuput.apply( componentRoot );
+	 SceneOuput.getOutput()->closeFile();
+	 QApplication::restoreOverrideCursor();
+	 return;
 }
 
 /*!
@@ -755,9 +802,10 @@ void MainWindow::ShowCommandView()
     m_commandView->show();
 }
 
-/*!
+/*
+/*
  * Shows a dialog to define network connections settings.
- */
+
 void MainWindow::ShowNetworkConnectionsDialog()
 {
 	NetworkConnectionsDialog dialog;
@@ -790,6 +838,7 @@ void MainWindow::ShowNetworkConnectionsDialog()
 
 	}
 }
+*/
 
 /*!
  * Shows selected node right menu.
@@ -1007,14 +1056,15 @@ void MainWindow::on_actionOpenScriptEditor_triggered()
 	editor.exec();
 }
 
-/*!
+/*
  * Checks for Stephanie's updates and installs them.
- */
+
 void MainWindow::on_actionCheckForUpdates_triggered()
 {
 	m_updateManager->CheckForUpdates( );
 }
 
+*/
 void MainWindow::on_actionAbout_triggered()
 {
 	QString appVersion = qApp->applicationVersion();
@@ -1168,6 +1218,13 @@ void MainWindow::ChangeSunPosition(int year, int month, int day, double hours, d
 
 }
 
+/*!
+ * Clears current design in Tonatiuh without verify if the changes have been saved.
+ */
+void MainWindow::Clear()
+{
+	StartOver( "" );
+}
 
 /*!
  * Copies current node to the clipboard.
@@ -3144,6 +3201,7 @@ void MainWindow::ReadSettings()
     move( rect.topLeft() );
     resize( rect.size() );
 
+
     setWindowState( Qt::WindowNoState );
     if( settings.value( "windowNoState", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowNoState );
     if( settings.value( "windowMinimized", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowMinimized );
@@ -3151,16 +3209,19 @@ void MainWindow::ReadSettings()
     if( settings.value( "windowFullScreen", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowFullScreen );
     if( settings.value( "windowActive", false ).toBool() )	setWindowState( windowState() ^ Qt::WindowActive );
 
+
     m_recentFiles = settings.value( "recentFiles" ).toStringList();
 
-    m_updateManager->SetProxyEnabled( settings.value( QLatin1String( "UpdatesManager.IsProxy" ), true ).toBool() );
-    if( settings.value( QLatin1String( "UpdatesManager.SystemProxy" ), true ).toBool() )
+  /*  m_updateManager->SetProxyEnabled( settings.value( QLatin1String( "UpdatesManager.IsProxy" ), false ).toBool() );
+    if( settings.value( QLatin1String( "UpdatesManager.SystemProxy" ), false ).toBool() )
     	m_updateManager->SetSystemProxyConfiguration();
     else
     	m_updateManager->SetManualProxyConfiguration( settings.value( QLatin1String( "UpdatesManager.ProxyHostName" ),
     			QLatin1String( "" ) ).toString(),
     			settings.value( QLatin1String( "UpdatesManager.ProxyPort" ), 0 ).toInt() );
 
+	std::cout<<"MainWindow::ReadSettings 4"<<std::endl;
+	*/
     UpdateRecentFileActions();
 
 }
@@ -3793,14 +3854,14 @@ void MainWindow::SetupTriggers()
 
 }
 
-/*!
+/*
  * Initializates tonatiuh update manager.
- */
 void MainWindow::SetupUpdateManager()
 {
 	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
 }
 
+ */
 /*!
  * Starts MainWindow views.
  */
@@ -3980,8 +4041,10 @@ void MainWindow::WriteSettings()
 
     settings.setValue( "recentFiles", m_recentFiles );
 
+    /*
     settings.setValue( QLatin1String( "UpdatesManager.IsProxy" ), m_updateManager->IsProxyEnabled() );
     settings.setValue( QLatin1String( "UpdatesManager.SystemProxy" ), m_updateManager->IsSystemProxy() );
     settings.setValue( QLatin1String( "UpdatesManager.ProxyHostName" ), m_updateManager->GetProxyHostName() );
     settings.setValue( QLatin1String( "UpdatesManager.ProxyPort" ), m_updateManager->GetPorxyPort() );
+    */
 }
