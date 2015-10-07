@@ -39,6 +39,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 #include <QDoubleValidator>
 #include <QItemDelegate>
 #include <QPlainTextEdit>
+#include <QLineEdit>
 #include <QWidget>
 
 #include "ui_containerviewer.h"
@@ -46,7 +47,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 /***************************************************************
  * CustomPlainTextEdit
  ***************************************************************/
-class CustomPlainTextEdit: public QPlainTextEdit
+class CustomPlainTextEdit: public QLineEdit //QPlainTextEdit
 {
 	Q_OBJECT
 public:

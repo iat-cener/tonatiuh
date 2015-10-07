@@ -46,7 +46,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
  * Creates an editor object
  */
 CustomPlainTextEdit::CustomPlainTextEdit( QWidget* parent )
-:QPlainTextEdit( parent )
+:QLineEdit( parent )
 {
 }
 
@@ -64,7 +64,7 @@ CustomPlainTextEdit::~CustomPlainTextEdit()
 void CustomPlainTextEdit::focusOutEvent(QFocusEvent*  event )
 {
 	emit editingFinished( );
-	QPlainTextEdit::focusOutEvent( event );
+	QLineEdit::focusOutEvent( event );
 
 
 }
@@ -128,7 +128,8 @@ ContainerEditor::~ContainerEditor()
  */
 QString ContainerEditor::GetData( ) const
 {
-	return ( valuesEdit->toPlainText() );
+	//return ( valuesEdit->toPlainText() );
+	return ( valuesEdit->text() );
 }
 
 
@@ -137,7 +138,8 @@ QString ContainerEditor::GetData( ) const
  */
 void ContainerEditor::SetData( QString value )
 {
-	valuesEdit->setPlainText( value );
+	//valuesEdit->setPlainText( value );
+	valuesEdit->setText( value );
 }
 
 /*
@@ -166,13 +168,15 @@ void ContainerEditor::CloseEditor()
 void ContainerEditor::OpenContainerViewer()
 {
 	ContainerViewer viewer;
-	if( !viewer.SetData( valuesEdit->toPlainText() ) )
+	//if( !viewer.SetData( valuesEdit->toPlainText() ) )
+	if( !viewer.SetData( valuesEdit->text() ) )
 		return;
 	if( viewer.exec() )
 	{
-		valuesEdit->setPlainText( viewer.GetData( ) ) ;
-		valuesEdit->setFocus( Qt::ActiveWindowFocusReason );
+		//valuesEdit->setPlainText( viewer.GetData( ) ) ;
+		valuesEdit->setText( viewer.GetData( ) ) ;
 	}
+	valuesEdit->setFocus( Qt::ActiveWindowFocusReason );
 }
 
 
