@@ -632,6 +632,7 @@ void MainWindow::RunFluxAnalysisRayTracer()
 
 	FluxAnalysisDialog dialog( *m_sceneModel );
 	dialog.exec();
+
 }
 
 

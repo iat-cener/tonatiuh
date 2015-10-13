@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QMessageBox>
 
 #include "InstanceNode.h"
+#include "NodesFilterModel.h"
 #include "SceneModel.h"
 #include "SceneModelView.h"
 #include "SelectSurfaceDialog.h"
@@ -48,23 +49,54 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 /*!
  *Creates a dialog object to select a surface from the \a currentSceneModel.
  */
-SelectSurfaceDialog::SelectSurfaceDialog( SceneModel& currentSceneModel, QWidget* parent )
+SelectSurfaceDialog::SelectSurfaceDialog( SceneModel& currentSceneModel, bool enableLight , QWidget* parent )
 :QDialog( parent ),
+ m_isLightVisible( enableLight ),
  m_pCurrentSceneModel( &currentSceneModel ),
+ m_pNodeFilterModel( 0 ),
  m_pSelectionModel( 0 )
 {
 	setupUi( this );
 
+	if( !enableLight  )
+	{
+		lightRadio->setVisible( false );
+		sceneRadio->setVisible( false );
+	}
 
-	m_pSelectionModel = new QItemSelectionModel( m_pCurrentSceneModel );
+	//m_pSelectionModel = new QItemSelectionModel( m_pCurrentSceneModel );
+	//sceneModelView->setModel( m_pCurrentSceneModel );
+	//QModelIndex viewRootNodeIndex = currentSceneModel.IndexFromNodeUrl( QString( "//SunNode" ) );
+	//m_pSelectionModel = new QItemSelectionModel( m_pCurrentSceneModel );
 
-	sceneModelView->setModel( m_pCurrentSceneModel );
+	m_pNodeFilterModel = new NodesFilterModel( this );
+	m_pNodeFilterModel->AddNodeType( QLatin1String( "TSeparatorKit" ) );
+	m_pNodeFilterModel->AddNodeType( QLatin1String( "TShapeKit" ) );
+	m_pNodeFilterModel->setSourceModel(m_pCurrentSceneModel);
+    sceneModelView->setModel(m_pNodeFilterModel);
+
+    //m_pSelectionModel = new QItemSelectionModel( m_pNodeFilterModel );
+
+/*
 	QModelIndex viewRootNodeIndex = currentSceneModel.IndexFromNodeUrl( QString( "//SunNode" ) );
 	sceneModelView->setRootIndex( viewRootNodeIndex );
 	sceneModelView->setSelectionModel( m_pSelectionModel );
 	sceneModelView->setSelectionMode( QAbstractItemView::SingleSelection );
 	sceneModelView->setSelectionBehavior( QAbstractItemView::SelectRows );
 	sceneModelView->setRootIsDecorated( true );
+*/
+
+	QModelIndex viewRootNodeIndex = currentSceneModel.IndexFromNodeUrl( QString( "//SunNode" ) );
+	sceneModelView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	//sceneModelView->horizontalHeader()->setStretchLastSection(true);
+	//sceneModelView->verticalHeader()->hide();
+	sceneModelView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	sceneModelView->setSelectionMode(QAbstractItemView::SingleSelection);
+	sceneModelView->setRootIsDecorated( true );
+	sceneModelView->setRootIndex( viewRootNodeIndex );
+
+
+
 }
 
 /*!
@@ -72,7 +104,8 @@ SelectSurfaceDialog::SelectSurfaceDialog( SceneModel& currentSceneModel, QWidget
  */
 SelectSurfaceDialog::~SelectSurfaceDialog()
 {
-
+	delete m_pNodeFilterModel;
+	//delete m_pSelectionModel;
 }
 
 /*!
@@ -80,9 +113,15 @@ SelectSurfaceDialog::~SelectSurfaceDialog()
  */
 void SelectSurfaceDialog::accept()
 {
-	if( sceneRadio->isChecked() && m_pSelectionModel->hasSelection() )
+
+	QItemSelectionModel* selectionModel = sceneModelView->selectionModel();
+	if( sceneRadio->isChecked() && selectionModel->hasSelection() )
 	{
-		InstanceNode* selectedNode = m_pCurrentSceneModel->NodeFromIndex( m_pSelectionModel->currentIndex() );
+
+		QModelIndex selectedIndex = selectionModel->currentIndex();
+		QModelIndex currentIndex = m_pNodeFilterModel->mapToSource(selectedIndex);
+
+		InstanceNode* selectedNode = m_pCurrentSceneModel->NodeFromIndex( currentIndex );
 		if( !selectedNode->GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 		{
 			QMessageBox::information( this, QLatin1String( "Tonatiuh" ), tr( "Selected node is not surface node" ), 1 );
@@ -90,6 +129,7 @@ void SelectSurfaceDialog::accept()
 		}
 
 	}
+
 
 	QDialog::accept();
 }
@@ -100,15 +140,19 @@ void SelectSurfaceDialog::accept()
  */
 QString SelectSurfaceDialog::GetSelectedSurfaceURL() const
 {
-	if( lightRadio->isChecked() )
+	if(  m_isLightVisible  && lightRadio->isChecked() )
 		return QLatin1String( "//Light" );
-	QModelIndex currentIndex = m_pSelectionModel->currentIndex();
+
+	QItemSelectionModel* selectionModel = sceneModelView->selectionModel();
+
+	QModelIndex selectedIndex = selectionModel->currentIndex();
+	QModelIndex currentIndex = m_pNodeFilterModel->mapToSource(selectedIndex);
 	if( !currentIndex.isValid() )	return QString();
 
 	InstanceNode* currentNode = m_pCurrentSceneModel->NodeFromIndex( currentIndex );
 	if( !currentNode )	return QString();
 
-	return currentNode->GetNodeURL();
+	return ( currentNode->GetNodeURL() ) ;
 }
 
 

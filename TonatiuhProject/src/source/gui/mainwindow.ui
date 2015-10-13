@@ -233,6 +233,7 @@
      <string>&amp;Ray Trace</string>
     </property>
     <addaction name="actionRun"/>
+    <addaction name="actionRunFluxAnalysis"/>
     <addaction name="actionDisplayRays"/>
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
@@ -316,6 +317,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionRun"/>
+   <addaction name="actionRunFluxAnalysis"/>
   </widget>
   <widget class="QToolBar" name="viewToolBar">
    <property name="windowTitle">
@@ -346,7 +348,6 @@
    </attribute>
    <addaction name="actionNode"/>
    <addaction name="actionSurfaceNode"/>
-   <addaction name="actionAnalyzerNode"/>
   </widget>
   <action name="actionNew">
    <property name="icon">
@@ -753,6 +754,15 @@
   <action name="actionNetworkConnections">
    <property name="text">
     <string>Network Connections...</string>
+   </property>
+  </action>
+  <action name="actionRunFluxAnalysis">
+   <property name="icon">
+    <iconset resource="../../tonatiuh.qrc">
+     <normaloff>:/icons/fluxdistribution.png</normaloff>:/icons/fluxdistribution.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run Flux Analysis ...</string>
    </property>
   </action>
  </widget>

@@ -117,7 +117,7 @@ PhotonMapExportSettings ExportPhotonMapSettingsDialog::GetExportPhotonMapSetting
  */
 void ExportPhotonMapSettingsDialog::AddSurfaceToExportList()
 {
-	SelectSurfaceDialog selectSurfaceDialog( *m_pCurrentSceneModel );
+	SelectSurfaceDialog selectSurfaceDialog( *m_pCurrentSceneModel, true );
 	if( !selectSurfaceDialog.exec( ) )	return;
 
 	QString selectedSurfaceURL = selectSurfaceDialog.GetSelectedSurfaceURL();
