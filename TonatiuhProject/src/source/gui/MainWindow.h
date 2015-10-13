@@ -169,6 +169,7 @@ private slots:
 	void OpenRecentFile();
 	void Redo();
 	void RunCompleteRayTracer();
+	void RunFluxAnalysisRayTracer();
     bool SaveAs();
     bool SaveComponent();
     void SelectionFinish( SoSelection* selection );

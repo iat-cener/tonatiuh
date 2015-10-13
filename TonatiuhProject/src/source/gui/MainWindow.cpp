@@ -101,6 +101,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Document.h"
 #include "ExportDialog.h"
 #include "ExportPhotonMapSettingsDialog.h"
+#include "FluxAnalysisDialog.h"
 #include "GraphicView.h"
 #include "GraphicRoot.h"
 #include "GridSettingsDialog.h"
@@ -365,6 +366,12 @@ void MainWindow::DefineSunLight()
 		actionCalculateSunPosition->setEnabled( true );
 
 	}
+
+
+
+	actionDisplayRays->setEnabled( false );
+	actionDisplayRays->setChecked( false );
+
 }
 
 /*!
@@ -604,6 +611,29 @@ void MainWindow::RunCompleteRayTracer()
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 
 }
+
+
+
+/*!
+ * Runs the ray tracer for the analysis of the surface. A dialog will be opened to set the surface and flux calculation parameters.
+ */
+void MainWindow::RunFluxAnalysisRayTracer()
+{
+	InstanceNode* rootSeparatorInstance = 0;
+	InstanceNode* lightInstance = 0;
+	SoTransform* lightTransform = 0;
+	TSunShape* sunShape = 0;
+	TLightShape* raycastingSurface = 0;
+	TTransmissivity* transmissivity = 0;
+
+	QDateTime startTime = QDateTime::currentDateTime();
+	if( !ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface, transmissivity ) )
+	return;
+
+	FluxAnalysisDialog dialog( *m_sceneModel );
+	dialog.exec();
+}
+
 
 /*!
  * Returns \a true if the tonatiuh model is correctly saved in the current file. Otherwise, returns \a false.
@@ -1189,6 +1219,10 @@ void MainWindow::ChangeSunPosition( double azimuth, double elevation )
 	UpdateLightSize();
 	m_document->SetDocumentModified( true );
 
+
+	actionDisplayRays->setEnabled( false );
+	actionDisplayRays->setChecked( false );
+
 }
 
 /*!
@@ -1215,6 +1249,11 @@ void MainWindow::ChangeSunPosition(int year, int month, int day, double hours, d
 	cSunCoordinates results;
 	sunpos( myTime, myLocation, &results );
 	ChangeSunPosition( results.dAzimuth , (90-results.dZenithAngle) );
+
+
+	actionDisplayRays->setEnabled( false );
+	actionDisplayRays->setChecked( false );
+
 
 }
 
@@ -1412,13 +1451,37 @@ void MainWindow::CreateComponentNode( QString componentType, QString nodeName, i
     m_document->SetDocumentModified( true );
 
     TComponentFactory* pTComponentFactory = factoryList[selectedCompoent];
+    if( !pTComponentFactory ) return;
 
+    //CreateComponent( pTComponentFactory );
 
 	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent( m_pPluginManager, numberofParameters, parametersList );
 	if( !componentRootNode )	return;
 
+
     QString typeName = pTComponentFactory->TComponentName();
     componentRootNode->setName( nodeName.toStdString().c_str() );
+
+	TSceneKit* scene = m_document->GetSceneKit();
+	TLightKit* lightKit = static_cast< TLightKit* >( scene->getPart("lightList[0]", false) );
+	if( lightKit )
+	{
+
+		SoSearchAction* tracersSearch = new SoSearchAction();
+		tracersSearch->setType( TTracker::getClassTypeId() );
+		tracersSearch->setInterest( SoSearchAction::ALL);
+		tracersSearch->apply( componentRootNode );
+		SoPathList& trackersPath = tracersSearch->getPaths();
+
+		for( int index = 0; index <trackersPath.getLength(); ++index )
+		{
+			SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
+			TTracker* tracker = static_cast< TTracker* >( trackerPath->getTail() );
+			tracker->SetAzimuthAngle( &lightKit->azimuth );
+			tracker->SetZenithAngle( &lightKit->zenith );
+		}
+	}
+
 
     CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRootNode, QPersistentModelIndex(parentIndex), m_sceneModel );
     QString commandText = QString( "Create Component: %1").arg( pTComponentFactory->TComponentName().toLatin1().constData() );
@@ -1427,6 +1490,7 @@ void MainWindow::CreateComponentNode( QString componentType, QString nodeName, i
 
 	UpdateLightSize();
     m_document->SetDocumentModified( true );
+
 }
 
 /*!
@@ -1815,8 +1879,28 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 		return;
 	}
 
-	TSeparatorKit* componentRoot = static_cast< TSeparatorKit* >( componentSeparator->getChild(0) );
-	CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRoot, QPersistentModelIndex(parentIndex), m_sceneModel );
+	TSeparatorKit* componentRootNode = static_cast< TSeparatorKit* >( componentSeparator->getChild(0) );
+	TSceneKit* scene = m_document->GetSceneKit();
+	TLightKit* lightKit = static_cast< TLightKit* >( scene->getPart("lightList[0]", false) );
+	if( lightKit )
+	{
+
+		SoSearchAction* tracersSearch = new SoSearchAction();
+		tracersSearch->setType( TTracker::getClassTypeId() );
+		tracersSearch->setInterest( SoSearchAction::ALL);
+		tracersSearch->apply( componentRootNode );
+		SoPathList& trackersPath = tracersSearch->getPaths();
+
+		for( int index = 0; index <trackersPath.getLength(); ++index )
+		{
+			SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
+			TTracker* tracker = static_cast< TTracker* >( trackerPath->getTail() );
+			tracker->SetAzimuthAngle( &lightKit->azimuth );
+			tracker->SetZenithAngle( &lightKit->zenith );
+		}
+	}
+
+	CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRootNode, QPersistentModelIndex(parentIndex), m_sceneModel );
 	cmdInsertSeparatorKit->setText( "Insert SeparatorKit node" );
 	m_commandStack->push( cmdInsertSeparatorKit );
 
@@ -2726,6 +2810,28 @@ void MainWindow::CreateComponent( TComponentFactory* pTComponentFactory )
     QString typeName = pTComponentFactory->TComponentName();
     componentRootNode->setName( typeName.toStdString().c_str() );
 
+	TSceneKit* scene = m_document->GetSceneKit();
+	TLightKit* lightKit = static_cast< TLightKit* >( scene->getPart("lightList[0]", false) );
+	if( lightKit )
+	{
+
+		SoSearchAction* tracersSearch = new SoSearchAction();
+		tracersSearch->setType( TTracker::getClassTypeId() );
+		tracersSearch->setInterest( SoSearchAction::ALL);
+		tracersSearch->apply( componentRootNode );
+		SoPathList& trackersPath = tracersSearch->getPaths();
+
+		for( int index = 0; index <trackersPath.getLength(); ++index )
+		{
+			SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
+			TTracker* tracker = static_cast< TTracker* >( trackerPath->getTail() );
+			tracker->SetAzimuthAngle( &lightKit->azimuth );
+			tracker->SetZenithAngle( &lightKit->zenith );
+		}
+	}
+
+
+
     CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRootNode, QPersistentModelIndex(parentIndex), m_sceneModel );
     QString commandText = QString( "Create Component: %1").arg( pTComponentFactory->TComponentName().toLatin1().constData() );
     cmdInsertSeparatorKit->setText(commandText);
@@ -2937,6 +3043,8 @@ void MainWindow::CalculateSunPosition()
 	connect( &sunposDialog, SIGNAL( changeSunLight( double, double ) ) , this, SLOT( ChangeSunPosition( double, double ) ) );
 
 	sunposDialog.exec();
+
+
 #endif /* NO_MARBLE*/
 
 }
@@ -3839,8 +3947,8 @@ void MainWindow::SetupTriggers()
 
 	//Ray trace menu actions
 	connect( actionDisplayRays, SIGNAL( toggled( bool ) ), this, SLOT ( DisplayRays( bool ) ) );
-	//connect( actionRun, SIGNAL( triggered() ), this, SLOT ( Run() ) );
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( RunCompleteRayTracer() ) );
+	connect( actionRunFluxAnalysis, SIGNAL( triggered() ), this, SLOT ( RunFluxAnalysisRayTracer() ) );
 	connect( actionRayTraceOptions, SIGNAL( triggered() ), this, SLOT( ShowRayTracerOptionsDialog() )  );
 	connect( actionReset_Analyzer_Values, SIGNAL( triggered() ), this, SLOT ( ResetAnalyzerValues() ) );
 
