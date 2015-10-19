@@ -57,6 +57,7 @@ public:
 	~ComponentHeliostatField();
 
 	TSeparatorKit* CreateField();
+	TSeparatorKit* CreateField( QVector< QVariant >  argumentList );
 
 private:
 	void CreateHeliostatZones( std::vector< Point3D >  heliostatCenterList,

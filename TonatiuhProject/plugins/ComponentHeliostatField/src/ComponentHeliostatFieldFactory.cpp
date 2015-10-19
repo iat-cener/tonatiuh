@@ -37,6 +37,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
+#include <QVariant>
+#include <QVector>
+#include <QMessageBox>
 
 #include "ComponentHeliostatFieldFactory.h"
 
@@ -55,6 +58,28 @@ TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* 
 	ComponentHeliostatField component( pPluginManager );
 	return component.CreateField();
 }
+
+TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* pPluginManager, int numberofParameters, QVector< QVariant > parametersList ) const
+{
+
+	if( numberofParameters != 5 )
+	{
+
+        QMessageBox::warning( 0, QString( "Heliostat Field Layoaut" ),
+        		QString( "The number of arguments is not valid:\n"
+        				"\t- Heliostat coordinates filename"
+        				"\t- Heliostat component filename"
+        				"\t- aiming point x"
+        				"\t- aiming point y"
+        				"\t- aiming point z" ) );
+
+		return 0;
+	}
+
+	ComponentHeliostatField component( pPluginManager );
+	return component.CreateField( parametersList );
+}
+
 #if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(ComponentHeliostatField, ComponentHeliostatFieldFactory)
 #endif

@@ -180,6 +180,12 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 }
 
 
+TSeparatorKit* ComponentHeliostatField::CreateField( QVector< QVariant >  argumentList )
+{
+	return 0;
+}
+
+
 void ComponentHeliostatField::CreateHeliostatZones( std::vector< Point3D >  heliostatCenterList, TSeparatorKit* parentNode,
 		TTrackerFactory* heliostatTrackerFactory,
 		Point3D aimingPoint,

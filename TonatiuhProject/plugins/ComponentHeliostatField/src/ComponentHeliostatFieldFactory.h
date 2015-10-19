@@ -56,6 +56,7 @@ public:
    	QString TComponentName() const;
    	QIcon TComponentIcon() const;
    	TSeparatorKit* CreateTComponent( PluginManager* pPluginManager ) const;
+   	TSeparatorKit* CreateTComponent( PluginManager* pPluginManager, int numberofParameters, QVector< QVariant > parametersList ) const;
 };
 
 
