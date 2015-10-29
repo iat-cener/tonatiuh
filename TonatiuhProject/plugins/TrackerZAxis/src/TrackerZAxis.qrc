@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>icons/TrackerZAxis.png</file>
+    </qresource>
+</RCC>

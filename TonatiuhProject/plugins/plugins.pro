@@ -34,6 +34,7 @@ SUBDIRS =  ComponentHeliostatField \
 			TrackerHeliostat \
             TrackerLinearFresnel \
 			TrackerOneAxis \
+			TrackerZAxis \
             TransmissivityATMParameters \
             TransmissivityBallestrin \
             TransmissivityDefault \

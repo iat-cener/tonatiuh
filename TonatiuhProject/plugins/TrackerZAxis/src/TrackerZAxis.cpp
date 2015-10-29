@@ -51,23 +51,23 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "gc.h"
 #include "Transform.h"
 
-#include "TrackerOneAxis.h"
+#include "TrackerZAxis.h"
 #include "trf.h"
 #include "TSeparatorKit.h"
 #include "TSceneKit.h"
 
-SO_NODEENGINE_SOURCE( TrackerOneAxis );
+SO_NODEENGINE_SOURCE( TrackerZAxis );
 
-void TrackerOneAxis::initClass()
+void TrackerZAxis::initClass()
 {
 	//TTracker::initClass();
-	SO_NODEENGINE_INIT_CLASS( TrackerOneAxis, TTracker, "TTracker" );
+	SO_NODEENGINE_INIT_CLASS( TrackerZAxis, TTracker, "TTracker" );
 
 }
 
-TrackerOneAxis::TrackerOneAxis()
+TrackerZAxis::TrackerZAxis()
 {
-	SO_NODEENGINE_CONSTRUCTOR( TrackerOneAxis );
+	SO_NODEENGINE_CONSTRUCTOR( TrackerZAxis );
 
 	// Define input fields and their default values
 	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
@@ -82,16 +82,16 @@ TrackerOneAxis::TrackerOneAxis()
 
 }
 
-TrackerOneAxis::~TrackerOneAxis()
+TrackerZAxis::~TrackerZAxis()
 {
 }
 
-QString TrackerOneAxis::getIcon()
+QString TrackerZAxis::getIcon()
 {
-	return QString(":/icons/TrackerOneAxis.png");
+	return QString(":/icons/TrackerZAxis.png");
 }
 
-void TrackerOneAxis::evaluate()
+void TrackerZAxis::evaluate()
 {
 	if (!IsConnected()) return;
 
@@ -109,7 +109,7 @@ void TrackerOneAxis::evaluate()
 
 
 	Vector3D s = worldToObject( GetGobalSunVector() );
-	Vector3D p( 1.0f, 0.0f, 0.0f);
+	Vector3D p( 0.0f, 0.0f, 1.0f);
 
 	Vector3D n;
 	Vector3D t;
