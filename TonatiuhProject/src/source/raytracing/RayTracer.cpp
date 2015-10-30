@@ -76,7 +76,9 @@ m_transmissivity( transmissivity )
 //generating the ray
 bool RayTracer::NewPrimitiveRay( Ray* ray, ParallelRandomDeviate& rand )
 {
+	if( m_validAreasVector.size() < 1 )	return false;
 	int area = int ( rand.RandomDouble() * m_validAreasVector.size() );
+
 	QPair< int, int > areaIndex = m_validAreasVector[area] ;
 
 	//generating the photon
