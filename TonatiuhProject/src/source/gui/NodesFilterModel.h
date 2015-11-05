@@ -9,6 +9,7 @@
 #define NODESFILTERMODEL_H_
 
 #include <QSortFilterProxyModel>
+#include <QVector>
 
 
 class NodesFilterModel : public QSortFilterProxyModel
@@ -21,7 +22,7 @@ public:
     void AddNodeType( QString nodeType );
 
 protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 
 private:

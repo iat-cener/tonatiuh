@@ -58,7 +58,7 @@ signals:
 	void editingFinished( );
 
 protected:
-    void focusOutEvent(QFocusEvent* event) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent* event);
 };
 
 
@@ -83,7 +83,7 @@ signals:
 
 
 protected:
-    void focusOutEvent(QFocusEvent* event) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent* event);
 
 protected slots:
 		void CloseEditor();
@@ -134,14 +134,14 @@ public:
     ~DoubleValuesDelegate();
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const Q_DECL_OVERRIDE;
+                          const QModelIndex &index) const;
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const Q_DECL_OVERRIDE;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model,
-                      const QModelIndex &index) const Q_DECL_OVERRIDE;
+                      const QModelIndex &index) const;
 
     void updateEditorGeometry(QWidget *editor,
-        const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
+        const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 };
 

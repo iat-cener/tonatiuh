@@ -80,7 +80,7 @@ ContainerEditor::ContainerEditor( QWidget* parent )
 {
 	//setupUi(this );
 
-	 setObjectName( QStringLiteral( "ContainerEditor" ) );
+	 setObjectName( QLatin1String( "ContainerEditor" ) );
 	 resize(879, 192);
 
 	 QSizePolicy sizePolicy( QSizePolicy::Minimum, QSizePolicy::MinimumExpanding) ;
@@ -94,11 +94,11 @@ ContainerEditor::ContainerEditor( QWidget* parent )
 
 	 horizontalLayout = new QHBoxLayout( this );
 	 horizontalLayout->setSpacing(0);
-	 horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+	 horizontalLayout->setObjectName(QLatin1String("horizontalLayout"));
 	 horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
 	 valuesEdit = new CustomPlainTextEdit(this);
-	 valuesEdit->setObjectName(QStringLiteral("valuesEdit"));
+	 valuesEdit->setObjectName(QLatin1String("valuesEdit"));
 	 valuesEdit->setMouseTracking(false);
 	 valuesEdit->setFocusPolicy(Qt::WheelFocus);
 
@@ -106,7 +106,7 @@ ContainerEditor::ContainerEditor( QWidget* parent )
 	 horizontalLayout->addWidget(valuesEdit);
 
 	 editButton = new QPushButton(this);
-	 editButton->setObjectName(QStringLiteral("editButton"));
+	 editButton->setObjectName(QLatin1String("editButton"));
 	 editButton->setFocusPolicy(Qt::StrongFocus);
 	 editButton->setText( QLatin1String( "...") );
 	 horizontalLayout->addWidget(editButton);
