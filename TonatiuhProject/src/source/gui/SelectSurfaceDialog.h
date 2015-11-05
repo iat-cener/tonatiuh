@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ui_selectsurfacedialog.h"
 
 class NodesFilterModel;
-class QItemSelectionModel;
+//class QItemSelectionModel;
 class SceneModel;
 
 class SelectSurfaceDialog: public QDialog, private Ui::SelectSurfaceDialog
@@ -56,6 +56,8 @@ public:
 	SelectSurfaceDialog( SceneModel& sceneModel, bool enableLight = true, QWidget* parent = 0 );
 	~SelectSurfaceDialog();
 
+	void SetShapeTypeFilters( QVector< QString >  shapeTypeFilters );
+
 	QString GetSelectedSurfaceURL() const;
 
 public slots:
@@ -65,7 +67,6 @@ private:
 	bool m_isLightVisible;
 	SceneModel* m_pCurrentSceneModel;
 	NodesFilterModel* m_pNodeFilterModel;
-	QItemSelectionModel*  m_pSelectionModel;
 };
 
 #endif /* SELECTSURFACEDIALOG_H_ */

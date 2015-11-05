@@ -10,6 +10,7 @@
 #include "SceneModel.h"
 #include "TSeparatorKit.h"
 #include "TShapeKit.h"
+#include "TShape.h"
 
 
 
@@ -22,13 +23,23 @@ NodesFilterModel::NodesFilterModel(QObject *parent )
 
  }
 
+
 /*!
  * Adds new node type to de filter.
  */
-void NodesFilterModel::AddNodeType( QString nodeType )
+void NodesFilterModel::AddShapeTypeFilter( QString shapeType )
 {
-	if( !m_nodetypeList.contains( nodeType ) )
-		m_nodetypeList.push_back( nodeType );
+	if( !m_shapeTypeList.contains( shapeType ) )
+		m_shapeTypeList.push_back( shapeType );
+}
+
+/*!
+ * Sets the shape filters to \a  shapeTypeFilters. Previously defined shape filters will be removed.
+ */
+void NodesFilterModel::SetShapeTypeFilters( QVector< QString >  shapeTypeFilters )
+{
+	m_shapeTypeList.clear();
+	m_shapeTypeList = shapeTypeFilters;
 }
 
 
@@ -48,9 +59,17 @@ bool NodesFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
 	if( !node )		return false;
 
 
-	if( m_nodetypeList.contains( node->getTypeId().getName().getString() ) )
+	if( node->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )	return ( true );
+	if( node->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
 	{
-		return ( true );
+		if( m_shapeTypeList.count() < 1 )	return ( true );
+
+		TShapeKit* shapeKit = static_cast< TShapeKit* >( node );
+		if(!shapeKit)	return ( false );
+		TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
+
+		if( shape  &&  m_shapeTypeList.contains( shape->getTypeId().getName().getString() ) )
+			return ( true );
 	}
 
 

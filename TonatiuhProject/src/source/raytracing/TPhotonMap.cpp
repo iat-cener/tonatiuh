@@ -52,10 +52,8 @@ void TPhotonMap::EndStore( double wPhoton )
 		m_storedPhotonsInBuffer = 0;
 
 	}
-	m_pExportPhotonMap->SetPowerPerPhoton( wPhoton );
-
-
-	m_pExportPhotonMap->EndExport();
+	if( m_pExportPhotonMap )	m_pExportPhotonMap->SetPowerPerPhoton( wPhoton );
+	if( m_pExportPhotonMap )	m_pExportPhotonMap->EndExport();
 }
 
 /*!

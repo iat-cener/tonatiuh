@@ -63,7 +63,7 @@ SceneModelView::SceneModelView( QWidget *parent )
 	m_iteimsDelegate = new NodeNameDelegate( );
 	setItemDelegate( m_iteimsDelegate );
 
-    setAcceptDrops(true);
+    //setAcceptDrops(true);
 
 	connect( this, SIGNAL( collapsed( const QModelIndex& ) ),
 			this, SLOT ( resizeViewToContents ( const QModelIndex& ) ) );

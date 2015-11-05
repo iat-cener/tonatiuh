@@ -19,14 +19,15 @@ class NodesFilterModel : public QSortFilterProxyModel
 public:
     NodesFilterModel(QObject *parent = 0);
 
-    void AddNodeType( QString nodeType );
+    void AddShapeTypeFilter( QString shapeType );
+	void SetShapeTypeFilters( QVector< QString >  shapeTypeFilters );
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 
 private:
-    QVector< QString > m_nodetypeList;
+    QVector< QString > m_shapeTypeList;
 
 };
 

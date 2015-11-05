@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFVec2d.h>
 #include <Inventor/fields/SoMFVec2f.h>
+#include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFVec2d.h>
@@ -55,17 +56,22 @@ namespace trt
 	#if unix//( defined(Q_WS_X11) || defined(Q_WS_MAC) )
 		typedef SoSFDouble TONATIUH_REAL;
 		typedef SoMFVec2d TONATIUH_CONTAINERREALVECTOR2;
+		typedef SoMFVec3d TONATIUH_CONTAINERREALVECTOR3;
 		typedef SoSFVec3d TONATIUH_REALVECTOR3;
 		typedef SoSFVec2d TONATIUH_REALVECTOR2;
 
 	#else
 		typedef SoSFFloat TONATIUH_REAL;
 		typedef SoMFVec2f TONATIUH_CONTAINERREALVECTOR2;
+		typedef SoMFVec3f TONATIUH_CONTAINERREALVECTOR3;
 		typedef SoSFVec3f TONATIUH_REALVECTOR3;
 		typedef SoSFVec2f TONATIUH_REALVECTOR2;
 	#endif
 
 	typedef SoSFBool TONATIUH_BOOL;
+
+
+
 };
 
 

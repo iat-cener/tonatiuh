@@ -619,18 +619,29 @@ void MainWindow::RunCompleteRayTracer()
  */
 void MainWindow::RunFluxAnalysisRayTracer()
 {
-	InstanceNode* rootSeparatorInstance = 0;
-	InstanceNode* lightInstance = 0;
-	SoTransform* lightTransform = 0;
-	TSunShape* sunShape = 0;
-	TLightShape* raycastingSurface = 0;
-	TTransmissivity* transmissivity = 0;
 
-	QDateTime startTime = QDateTime::currentDateTime();
-	if( !ReadyForRaytracing( rootSeparatorInstance, lightInstance, lightTransform, sunShape, raycastingSurface, transmissivity ) )
-	return;
 
-	FluxAnalysisDialog dialog( *m_sceneModel );
+	TSceneKit* coinScene = m_document->GetSceneKit();
+	if ( !coinScene )  return;
+
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+	if ( !lightKit )  return;
+
+	InstanceNode*  rootSeparatorInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+	if ( !rootSeparatorInstance )  return;
+
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pPluginManager->GetRandomDeviateFactories();
+	//Check if there is a random generator selected;
+	if( m_selectedRandomDeviate == -1 )
+	{
+		if( randomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
+		else	return;
+	}
+
+	//Create the random generator
+	RandomDeviate* 	pRandomDeviate =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
+
+	FluxAnalysisDialog dialog( coinScene, *m_sceneModel, rootSeparatorInstance, m_widthDivisions, m_heightDivisions, pRandomDeviate );
 	dialog.exec();
 
 }
@@ -3154,6 +3165,8 @@ PhotonMapExport* MainWindow::CreatePhotonMapExport() const
 	pExportMode->SetSavePreviousNextPhotonsID( m_pExportModeSettings->exportPreviousNextPhotonID );
 	pExportMode->SetSaveSideEnabled( m_pExportModeSettings->exportIntersectionSurfaceSide );
     pExportMode->SetSaveSurfacesIDEnabled( m_pExportModeSettings->exportSurfaceID );
+
+
     if( m_pExportModeSettings->exportSurfaceNodeList.count() > 0 )
     	pExportMode->SetSaveAllPhotonsEnabled();
     else

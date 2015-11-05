@@ -53,8 +53,7 @@ SelectSurfaceDialog::SelectSurfaceDialog( SceneModel& currentSceneModel, bool en
 :QDialog( parent ),
  m_isLightVisible( enableLight ),
  m_pCurrentSceneModel( &currentSceneModel ),
- m_pNodeFilterModel( 0 ),
- m_pSelectionModel( 0 )
+ m_pNodeFilterModel( 0 )
 {
 	setupUi( this );
 
@@ -64,32 +63,13 @@ SelectSurfaceDialog::SelectSurfaceDialog( SceneModel& currentSceneModel, bool en
 		sceneRadio->setVisible( false );
 	}
 
-	//m_pSelectionModel = new QItemSelectionModel( m_pCurrentSceneModel );
-	//sceneModelView->setModel( m_pCurrentSceneModel );
-	//QModelIndex viewRootNodeIndex = currentSceneModel.IndexFromNodeUrl( QString( "//SunNode" ) );
-	//m_pSelectionModel = new QItemSelectionModel( m_pCurrentSceneModel );
-
 	m_pNodeFilterModel = new NodesFilterModel( this );
-	m_pNodeFilterModel->AddNodeType( QLatin1String( "TSeparatorKit" ) );
-	m_pNodeFilterModel->AddNodeType( QLatin1String( "TShapeKit" ) );
 	m_pNodeFilterModel->setSourceModel(m_pCurrentSceneModel);
     sceneModelView->setModel(m_pNodeFilterModel);
 
-    //m_pSelectionModel = new QItemSelectionModel( m_pNodeFilterModel );
-
-/*
-	QModelIndex viewRootNodeIndex = currentSceneModel.IndexFromNodeUrl( QString( "//SunNode" ) );
-	sceneModelView->setRootIndex( viewRootNodeIndex );
-	sceneModelView->setSelectionModel( m_pSelectionModel );
-	sceneModelView->setSelectionMode( QAbstractItemView::SingleSelection );
-	sceneModelView->setSelectionBehavior( QAbstractItemView::SelectRows );
-	sceneModelView->setRootIsDecorated( true );
-*/
 
 	QModelIndex viewRootNodeIndex = currentSceneModel.IndexFromNodeUrl( QString( "//SunNode" ) );
 	sceneModelView->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//sceneModelView->horizontalHeader()->setStretchLastSection(true);
-	//sceneModelView->verticalHeader()->hide();
 	sceneModelView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	sceneModelView->setSelectionMode(QAbstractItemView::SingleSelection);
 	sceneModelView->setRootIsDecorated( true );
@@ -105,8 +85,14 @@ SelectSurfaceDialog::SelectSurfaceDialog( SceneModel& currentSceneModel, bool en
 SelectSurfaceDialog::~SelectSurfaceDialog()
 {
 	delete m_pNodeFilterModel;
-	//delete m_pSelectionModel;
 }
+
+
+void SelectSurfaceDialog::SetShapeTypeFilters( QVector< QString >  shapeTypeFilters )
+{
+	m_pNodeFilterModel->SetShapeTypeFilters( shapeTypeFilters );
+}
+
 
 /*!
  * Checks if the selected node is valid node before close dialog.
