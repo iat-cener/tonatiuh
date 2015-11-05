@@ -2,7 +2,9 @@ TEMPLATE = subdirs
 
 
 SUBDIRS =  ComponentHeliostatField \
+			MaterialAngleDependentSpecular \
 			MaterialBasicRefractive \
+			MaterialOneSideSpecular \
 			MaterialStandardSpecular \
             MaterialStandardRoughSpecular \
             MaterialVirtual \
@@ -12,6 +14,7 @@ SUBDIRS =  ComponentHeliostatField \
 			RandomMersenneTwister \
 			RandomRngStream \
             ShapeBezierSurface \
+			ShapeCAD \
 			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \
