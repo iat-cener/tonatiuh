@@ -15,6 +15,7 @@
 #include <Inventor/fields/SoFieldContainer.h>
 
 #include "gc.h"
+#include "trt.h"
 
 #include "DifferentialGeometry.h"
 #include "MaterialAngleDependentSpecular.h"
@@ -165,9 +166,8 @@ void MaterialAngleDependentSpecular::updateReflectivityFront( void* data, SoSens
 	material->m_frontReflectivityValue.clear();
 	for( int i = 0; i < numberOfValues; i++ )
 	{
-		SbVec2f  vect2 = material->reflectivityFrontValues[i];
-		material->m_frontReflectivityIncidenceAngle.push_back( vect2[0] );
-		material->m_frontReflectivityValue.push_back( vect2[1] );
+		material->m_frontReflectivityIncidenceAngle.push_back( material->reflectivityFrontValues[i][0] );
+		material->m_frontReflectivityValue.push_back( material->reflectivityFrontValues[i][1] );
 	}
 }
 
@@ -184,9 +184,8 @@ void MaterialAngleDependentSpecular::updateReflectivityBack( void* data, SoSenso
 	material->m_backReflectivityValue.clear();
 	for( int i = 0; i < numberOfValues; i++ )
 	{
-		SbVec2f  vect2 = material->reflectivityBackValues[i];
-		material->m_backReflectivityIncidenceAngle.push_back( vect2[0] );
-		material->m_backReflectivityValue.push_back( vect2[1] );
+		material->m_backReflectivityIncidenceAngle.push_back( material->reflectivityBackValues[i][0] );
+		material->m_backReflectivityValue.push_back( material->reflectivityBackValues[i][1] );
 	}
 }
 

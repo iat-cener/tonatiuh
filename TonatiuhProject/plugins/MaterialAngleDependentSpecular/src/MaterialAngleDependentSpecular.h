@@ -8,6 +8,7 @@
 #ifndef MATERIALANGLEDEPENDENTSPECULAR_H_
 #define MATERIALANGLEDEPENDENTSPECULAR_H_
 
+#include <vector>
 
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFDouble.h>
