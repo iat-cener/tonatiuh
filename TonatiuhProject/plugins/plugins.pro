@@ -4,7 +4,6 @@ TEMPLATE = subdirs
 SUBDIRS =  ComponentHeliostatField \
 			MaterialAngleDependentSpecular \
 			MaterialBasicRefractive \
-			MaterialOneSideSpecular \
 			MaterialStandardSpecular \
             MaterialStandardRoughSpecular \
             MaterialVirtual \
