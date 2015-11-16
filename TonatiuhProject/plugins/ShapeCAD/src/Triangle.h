@@ -12,6 +12,7 @@
 #include "BBox.h"
 #include "NormalVector.h"
 #include "Point3D.h"
+#include "Vector3D.h"
 
 class DifferentialGeometry;
 class Ray;
@@ -40,6 +41,12 @@ private:
 	Point3D m_v1;
 	Point3D m_v2;
 	Point3D m_v3;
+
+
+	Vector3D m_vB;
+	Vector3D m_vC;
+	Vector3D m_vW1;
+
 
 };
 

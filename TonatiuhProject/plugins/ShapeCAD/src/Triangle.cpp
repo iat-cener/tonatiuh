@@ -20,7 +20,10 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
  m_normal ( normal ),
  m_v1( v1 ),
  m_v2 ( v2 ),
- m_v3( v3 )
+ m_v3( v3 ),
+ m_vB( Vector3D() ),
+ m_vC( Vector3D() ),
+ m_vW1( Vector3D() )
 {
 
 	double xMin = gc::Infinity;
@@ -42,7 +45,7 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
 	double yMax = - gc::Infinity;
 	if( m_v1.y > yMax )	yMax = m_v1.y;
 	if( m_v2.y > yMax )	yMax = m_v2.y;
-	if( m_v3.y > yMin )	yMax = m_v3.y;
+	if( m_v3.y > yMax )	yMax = m_v3.y;
 	double zMax = - gc::Infinity;
 	if( m_v1.z > zMax )	zMax = m_v1.z;
 	if( m_v2.z > zMax )	zMax = m_v2.z;
@@ -54,6 +57,12 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
 	m_centoid = Point3D( m_bbox.pMin.x + 0.5 * ( m_bbox.pMax.x - m_bbox.pMin.x  ),
 			m_bbox.pMin.y + 0.5 * ( m_bbox.pMax.y - m_bbox.pMin.y  ),
 			m_bbox.pMin.z + 0.5 * ( m_bbox.pMax.z - m_bbox.pMin.z  ) );
+
+
+	 m_vB = Vector3D( m_v1 - m_v3 );
+	 m_vC = Vector3D( m_v2 - m_v3 );
+	 m_vW1 = CrossProduct( m_vB, m_vC );
+
 }
 
 
@@ -63,7 +72,136 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
 bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 
-	Vector3D vAB = Vector3D( m_v2 - m_v1 );
+	//Jimenez algorithm
+	double t0;
+	double t1;
+	if( !m_bbox.IntersectP(objectRay, &t0, &t1 ) )	return ( false );
+
+	//std::cout<<"m_bbox pMin:"<<m_bbox.pMin<<" "<<m_bbox.pMax<<std::endl;
+	//std::cout<<"vetex: "<<m_v1<<" "<<m_v2<<" "<<m_v3<<std::endl;
+
+	//Evaluate Tolerance
+	double tol = 0.000001;
+	t0 -= tol;
+	t1 += tol;
+	Point3D Q1 = objectRay( t0 );
+	Point3D Q2 = objectRay( t1 );
+
+	//std::cout<<"t0: "<<t0<<" Q1: "<<Q1<<std::endl;
+	//std::cout<<"t1: "<<t1<<" Q2: "<<Q2<<std::endl;
+
+	Vector3D vA = Vector3D( Q1 - m_v3 );
+	double w = DotProduct( vA, m_vW1 );
+
+	Vector3D vD = Vector3D( Q2 - m_v3 );
+	double s = DotProduct( vD, m_vW1 );
+
+
+
+	//std::cout<<"w: "<<w<<" s: "<<" "<<s<<std::endl;
+
+	if( w > tol )
+	{
+		if( s > tol ) return ( false );
+		Vector3D vW2 = CrossProduct( vA, vD );
+		double t = DotProduct( vW2, m_vC );
+		if( t < -tol ) return ( false );
+		double u = DotProduct( - vW2, m_vB );
+		if( u < -tol ) 	return ( false );
+		if( w < ( s + t + u ) ) 	return ( false );
+	}
+	else if ( w < -tol )
+	{
+
+		if(  s < -tol ) 	return ( false );
+		Vector3D vW2 = CrossProduct( vA, vD );
+		double t = DotProduct( vW2, m_vC );
+		if( t > tol ) return ( false );
+		double u = DotProduct( - vW2, m_vB );
+		if( u > tol ) 	return ( false );
+		if( w > ( s + t + u ) ) 	return ( false );
+	}
+	else // w == 0, swap( Q1, Q2 )
+	{
+
+		Vector3D vW2 = CrossProduct( vD, vA );
+		double t = DotProduct( vW2, m_vC );
+		if( s > tol )
+		{
+			if( t < -tol ) return ( false );
+			double u = DotProduct( - vW2, m_vB);
+			if( u < -tol ) 	return ( false );
+			if( -s < ( t + u ) ) 	return ( false );
+		}
+		else if( s < - tol )
+		{
+			if( t > tol ) return ( false );
+			double u = DotProduct( - vW2, m_vB );
+			if( u > tol ) 	return ( false );
+			if( -s  > ( t + u ) ) 	return ( false );
+
+		}
+		else
+			return ( false );
+	}
+
+
+	double t_param = ( DotProduct( Normalize( m_vW1 ), vA )  /  DotProduct( Normalize( m_vW1 ),  Vector3D( Q1 - Q2 ) ) );
+	double thit = t0 + t_param * Distance( Q1, Q2 );
+
+
+	if( thit > *tHit ) return false;
+	if( (thit - objectRay.mint) < tol ) return false;
+
+
+	Point3D hitPoint = objectRay( thit );
+	//std::cout<<"thit: "<<thit<<" hitPoint: "<<hitPoint<<std::endl;
+
+
+	Vector3D dpdu = Normalize( m_vB );
+	Vector3D dpdv = Normalize( m_vC );
+
+	// Compute ShapeCone \dndu and \dndv
+	Vector3D d2Pduu( 0.0, 0.0, 0.0 );
+	Vector3D d2Pduv( 0.0, 0.0, 0.0 );
+	Vector3D d2Pdvv( 0.0, 0.0, 0.0 );
+
+	// Compute coefficients for fundamental forms
+	double E = DotProduct( dpdu, dpdu );
+	double F = DotProduct( dpdu, dpdv );
+	double G = DotProduct( dpdv, dpdv );
+
+	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
+
+
+	double e = DotProduct( N, d2Pduu );
+	double f = DotProduct( N, d2Pduv );
+	double g = DotProduct( N, d2Pdvv );
+
+	// Compute \dndu and \dndv from fundamental form coefficients
+	double invEGF2 = 1.0 / (E*G - F*F);
+	Vector3D dndu = (f*F - e*G) * invEGF2 * dpdu +
+			        (e*F - f*E) * invEGF2 * dpdv;
+	Vector3D dndv = (g*F - f*G) * invEGF2 * dpdu +
+	                (f*F - g*E) * invEGF2 * dpdv;
+
+	// Initialize _DifferentialGeometry_ from parametric information
+	*dg = DifferentialGeometry( hitPoint ,
+		                        dpdu,
+								dpdv,
+		                        dndu,
+								dndv,
+		                        -1, -1, 0 );
+
+	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
+
+    // Update _tHit_ for quadric intersection
+    *tHit = thit;
+
+	return true;
+
+	//
+	/*Vector3D vAB = Vector3D( m_v2 - m_v1 );
 	Vector3D vAC = Vector3D( m_v3 - m_v1 );
 
 	Vector3D vN = CrossProduct( vAB, vAC );
@@ -79,27 +217,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 
 	Point3D hitPoint = objectRay( thit );
 
-	/*// is hitPoint inside triangle?
-	//double uu, uv, vv, wu, wv, D;
-	double uu = DotProduct( vAB, vAB );
-	double uv = DotProduct( vAB, vAC );
-	double vv = DotProduct( vAC, vAC );
-	Vector3D  w = Vector3D( hitPoint ) - Vector3D( m_v1 );
-	double wu = DotProduct( w, vAB );
-	double wv = DotProduct( w, vAC );
-	double D = uv * uv - uu * vv;
-	std::cout<<"uu: "<<uu<<"\tvv: "<<vv<<std::endl;
-
-	// get and test parametric coords
-	double u = (uv * wv - vv * wu) / D;
-	std::cout<<"u: "<<u<<std::endl;
-	if( u < 0.0 || u > 1.0 )	return false;
-
-	double v = ( uv * wu - uu * wv ) / D;
-	std::cout<<"v: "<<v<<std::endl;
-	std::cout<<"( u + v): "<<( u + v)<<std::endl;
-	if( v < 0.0 || ( u + v) > 1.0)	return false;
-	*/
+	// is hitPoint inside triangle?
 	Vector3D  v2 = Vector3D( hitPoint ) - Vector3D( m_v1 );
 
 	double dot00 = DotProduct( vAC, vAC );
@@ -113,7 +231,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	if( u < 0.0 || u > 1.0 )	return false;
 
 	double v = ( dot00 * dot12 - dot01 * dot02 ) / D;
-	if( v < 0.0 || v > 1.0 || ( u + v) > 1.0)	return false;
+	if( v < 0.0 || ( u + v) > 1.0)	return false;
 
 
 	// Now check if the function is being called from IntersectP,
@@ -162,4 +280,5 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
     *tHit = thit;
 
 	return true;
+	*/
 }
