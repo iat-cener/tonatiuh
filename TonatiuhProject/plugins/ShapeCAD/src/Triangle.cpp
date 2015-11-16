@@ -113,7 +113,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	if( u < 0.0 || u > 1.0 )	return false;
 
 	double v = ( dot00 * dot12 - dot01 * dot02 ) / D;
-	if( v < 0.0 || ( u + v) > 1.0)	return false;
+	if( v < 0.0 || v > 1.0 || ( u + v) > 1.0)	return false;
 
 
 	// Now check if the function is being called from IntersectP,
