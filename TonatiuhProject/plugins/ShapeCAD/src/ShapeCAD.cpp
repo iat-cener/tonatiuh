@@ -103,7 +103,7 @@ QString ShapeCAD::GetIcon() const
 
 bool ShapeCAD::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	BBox bbox = GetBBox();
+		BBox bbox = GetBBox();
 
 	double t0;
 	double t1;

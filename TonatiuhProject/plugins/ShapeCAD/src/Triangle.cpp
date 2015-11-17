@@ -77,18 +77,13 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	double t1;
 	if( !m_bbox.IntersectP(objectRay, &t0, &t1 ) )	return ( false );
 
-	//std::cout<<"m_bbox pMin:"<<m_bbox.pMin<<" "<<m_bbox.pMax<<std::endl;
-	//std::cout<<"vetex: "<<m_v1<<" "<<m_v2<<" "<<m_v3<<std::endl;
 
 	//Evaluate Tolerance
-	double tol = 0.000001;
-	t0 -= tol;
-	t1 += tol;
+	t0 -= 0.1;
+	t1 += 0.1;
 	Point3D Q1 = objectRay( t0 );
 	Point3D Q2 = objectRay( t1 );
 
-	//std::cout<<"t0: "<<t0<<" Q1: "<<Q1<<std::endl;
-	//std::cout<<"t1: "<<t1<<" Q2: "<<Q2<<std::endl;
 
 	Vector3D vA = Vector3D( Q1 - m_v3 );
 	double w = DotProduct( vA, m_vW1 );
@@ -96,10 +91,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	Vector3D vD = Vector3D( Q2 - m_v3 );
 	double s = DotProduct( vD, m_vW1 );
 
-
-
-	//std::cout<<"w: "<<w<<" s: "<<" "<<s<<std::endl;
-
+	double tol = 0.000001;
 	if( w > tol )
 	{
 		if( s > tol ) return ( false );
@@ -155,7 +147,6 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 
 
 	Point3D hitPoint = objectRay( thit );
-	//std::cout<<"thit: "<<thit<<" hitPoint: "<<hitPoint<<std::endl;
 
 
 	Vector3D dpdu = Normalize( m_vB );
