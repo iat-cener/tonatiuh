@@ -105,6 +105,7 @@ public slots:
 	void CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVector< QVariant > parametersList );
 	void CreateMaterial( QString materialType );
 	void CreateShape( QString shapeType );
+	void CreateShape( QString shapeType, int numberOfParameters, QVector< QVariant > parametersList );
 	void CreateSurfaceNode();
 	void CreateTracker( QString trackerType );
 	void Cut();
@@ -157,6 +158,7 @@ private slots:
 	void CreateComponent( TComponentFactory* pTComponentFactory );
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
+    void CreateShape( TShapeFactory* pTShapeFactory, int numberOfParameters, QVector< QVariant > parametersList );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
 	void DefineTransmissivity();

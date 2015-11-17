@@ -1554,6 +1554,33 @@ void MainWindow::CreateShape( QString shapeType )
 	CreateShape( factoryList[ selectedShape ] );
 }
 
+
+/*!
+ * Creates a \a shapeType shape node from the as current selected node child with the parameters defined in \a parametersList. \a numberOfParameters is the
+ * number of parametners in the vector \a numberOfParameters
+ *
+ * If the current node is not a valid parent node or \a shapeType is not a valid type, the shape node will not be created.
+ *
+ */
+void MainWindow::CreateShape( QString shapeType, int numberOfParameters, QVector< QVariant > parametersList )
+{
+	QVector< TShapeFactory* > factoryList = m_pPluginManager->GetShapeFactories();
+	if( factoryList.size() == 0 )	return;
+
+	QVector< QString > shapeNames;
+	for( int i = 0; i < factoryList.size(); i++ )
+		shapeNames<< factoryList[i]->TShapeName();
+
+	int selectedShape = shapeNames.indexOf( shapeType );
+	if( selectedShape < 0 )
+	{
+		emit Abort( tr( "CreateShape: Selected shape type is not valid." ) );
+		return ;
+	}
+
+	CreateShape( factoryList[ selectedShape ], numberOfParameters, parametersList );
+}
+
 /*!
  * Creates a surface node as selected node child.
  */
@@ -2933,6 +2960,49 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
         m_document->SetDocumentModified( true );
     	}
     }
+}
+
+/*!
+ * Creates a shape node from the \a pTShapeFactory as current selected node child.
+ *
+ * If the current node is not a surface type node, the shape node will not be created.
+ */
+/*!
+ * Creates a shape node from the \a pTTrackerFactory as current selected node child.
+ *
+ */
+void MainWindow::CreateShape( TShapeFactory* pTShapeFactory, int numberofParameters, QVector< QVariant > parametersList )
+{
+	QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
+									m_sceneModel->index (0,0,sceneModelView->rootIndex()) : sceneModelView->currentIndex();
+
+	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
+	SoNode* parentNode = parentInstance->GetNode();
+	if( !parentNode->getTypeId().isDerivedFrom( SoShapeKit::getClassTypeId() ) ) return;
+
+	TShapeKit* shapeKit = static_cast< TShapeKit* >( parentNode );
+	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
+
+	if (shape)
+	{
+		QMessageBox::information( this, "Tonatiuh Action",
+							  "This TShapeKit already contains a shape", 1);
+	}
+	else
+	{
+		shape = pTShapeFactory->CreateTShape( numberofParameters, parametersList );
+		/*Hay que comprobar si shape es nulo para no crear una superficie a partir de nulo que probacara el cierre de la aplicacion.*/
+		if(shape!=0){
+		shape->setName( pTShapeFactory->TShapeName().toStdString().c_str() );
+		CmdInsertShape* createShape = new CmdInsertShape( shapeKit, shape, m_sceneModel );
+		QString commandText = QString( "Create Shape: %1" ).arg( pTShapeFactory->TShapeName().toLatin1().constData());
+		createShape->setText( commandText );
+		m_commandStack->push( createShape );
+
+		UpdateLightSize();
+		m_document->SetDocumentModified( true );
+		}
+	}
 }
 
 
