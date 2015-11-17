@@ -24,6 +24,7 @@ public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeCAD* CreateTShape( ) const;
+   	ShapeCAD* CreateTShape( int numberofParameters, QVector< QVariant > parametersList ) const;
    	bool IsFlat() { return false; }
 
 private:

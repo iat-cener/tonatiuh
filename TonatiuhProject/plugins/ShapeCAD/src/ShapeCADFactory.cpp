@@ -54,7 +54,35 @@ ShapeCAD* ShapeCADFactory::CreateTShape( ) const
 	if( fileName.isEmpty() )	return ( 0 );
 
 	QFileInfo shapecadFileInfo( fileName );
+	if( !shapecadFileInfo.exists() )	return ( 0 );
 	settings.setValue( QLatin1String("ShapeCAD.dirname"), shapecadFileInfo.absolutePath() );
+
+	std::vector< Triangle* > facetList;
+	bool readOK = ReadSTLFile( fileName, &facetList );
+	if( !readOK )
+	{
+		for( unsigned int f = 0; f < facetList.size(); f++ )
+			delete facetList[f];
+		facetList.clear();
+		return ( 0 );
+	}
+
+	ShapeCAD* newShape = new ShapeCAD;
+	newShape->SetFacetList( facetList );
+
+	return ( newShape );
+}
+
+ShapeCAD* ShapeCADFactory::CreateTShape( int numberOfParameters, QVector< QVariant > parametersList ) const
+{
+
+	if( numberOfParameters !=  1 )	return ( 0 );
+
+	QString fileName = parametersList[0].toString();
+	if( fileName.isEmpty() )	return( 0 );
+
+	QFileInfo shapecadFileInfo( fileName );
+	if( !shapecadFileInfo.exists() )	return ( 0 );
 
 	std::vector< Triangle* > facetList;
 	bool readOK = ReadSTLFile( fileName, &facetList );
