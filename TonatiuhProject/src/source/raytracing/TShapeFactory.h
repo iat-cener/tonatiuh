@@ -40,6 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSHAPEFACTORY_H_
 
 #include <QtPlugin>
+#include <QVector>
+#include <QVariant>
 
 class QString;
 class QIcon;
@@ -52,6 +54,10 @@ public:
     virtual QString TShapeName() const  = 0;
     virtual QIcon TShapeIcon() const = 0;
     virtual TShape* CreateTShape( ) const = 0;
+    virtual TShape* CreateTShape( int /*numberofParameters*/, QVector< QVariant > /*parametersList*/ ) const
+    {
+    	return ( CreateTShape() );
+    }
     virtual bool IsFlat() = 0;
 };
 
