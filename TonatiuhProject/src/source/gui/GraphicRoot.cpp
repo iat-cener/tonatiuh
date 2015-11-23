@@ -66,7 +66,9 @@ GraphicRoot::GraphicRoot()
 	m_graphicsRoot->ref();
 
 	SoVRMLBackground* vrmlBackground = new SoVRMLBackground;
-	float gcolor[][3] = { {0.9843f, 0.8862f, 0.6745f},{ 0.7843f, 0.6157f, 0.4785f } };
+	//float gcolor[][3] = { {0.9843f, 0.8862f, 0.6745f},{ 0.7843f, 0.6157f, 0.4785f } };
+	float gcolor[][3] = { {0.7, 0.42, 0.15f},{ 0.7f, 0.42f, 0.15f } };
+
 	float gangle= 1.570f;
 	vrmlBackground->groundColor.setValues( 0, 6, gcolor );
 	vrmlBackground->groundAngle.setValue( gangle );
@@ -220,7 +222,8 @@ void GraphicRoot::ShowBackground( bool view )
 
 	if( view )
 	{
-		float gcolor[][3] = { {0.9843f, 0.8862f, 0.6745f}, {0.7843f, 0.6157f, 0.4785f} };
+		//float gcolor[][3] = { {0.9843f, 0.8862f, 0.6745f}, {0.7843f, 0.6157f, 0.4785f} };
+		float gcolor[][3] = { {0.7, 0.42, 0.15f},{ 0.7f, 0.42f, 0.15f } };
 		float gangle= 1.570f;
 
 		vrmlBackground->groundColor.setValues( 0, 6, gcolor );
