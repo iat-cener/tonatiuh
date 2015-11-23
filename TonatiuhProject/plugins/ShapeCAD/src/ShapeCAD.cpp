@@ -40,6 +40,7 @@ void ShapeCAD::initClass()
 }
 
 ShapeCAD::ShapeCAD(  )
+: m_pBVH( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeCAD);
 	SO_NODE_ADD_FIELD( v1VertexList, (0, 0, 0 ) );
@@ -64,6 +65,8 @@ ShapeCAD::ShapeCAD(  )
 
 ShapeCAD::~ShapeCAD()
 {
+	delete m_pBVH;
+
 
 	if( m_pTriangleList.size() > 0 )
 	{
@@ -92,7 +95,11 @@ double ShapeCAD::GetArea() const
 BBox ShapeCAD::GetBBox() const
 {
 
-	return BBox( Point3D( m_xMin, m_yMin, m_zMin ), Point3D( m_xMax, m_yMax, m_zMax ) );
+	//return BBox( Point3D( m_xMin, m_yMin, m_zMin ), Point3D( m_xMax, m_yMax, m_zMax ) );
+	if( m_pBVH )
+		return ( m_pBVH->GetBBox() );
+
+	return ( BBox( ) );
 }
 
 
@@ -103,7 +110,8 @@ QString ShapeCAD::GetIcon() const
 
 bool ShapeCAD::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-		BBox bbox = GetBBox();
+	/*
+	BBox bbox = GetBBox();
 
 	double t0;
 	double t1;
@@ -145,6 +153,27 @@ bool ShapeCAD::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 
 
 	return ( true );
+	*/
+	double tHitShape= objectRay.maxt;
+	DifferentialGeometry dgShape;
+
+
+	//Ray ray ( Point3D( -0.05, 11, 0.05), Vector3D( 0, -1, 0));
+	//std::cout<<"ShapeCAD::Intersect objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
+	if( !m_pBVH )	return ( false );
+
+	if ( !m_pBVH->Intersect( objectRay, &tHitShape, &dgShape ) )	return ( false );
+
+	if( ( tHit == 0 ) && ( dg == 0 ) )	return ( true );
+	if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeCAD::Intersect(...) called with null pointers" );
+
+
+	*tHit = tHitShape;
+	*dg = dgShape;
+	dg->pShape = this;
+
+	return ( true );
+
 
 }
 
@@ -179,7 +208,7 @@ bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 
 	m_pTriangleList = triangleList;
 
-
+	/*
 	m_xMin = gc::Infinity;
 	m_yMin = gc::Infinity;
 	m_zMin = gc::Infinity;
@@ -187,6 +216,7 @@ bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 	m_xMax = - gc::Infinity;
 	m_yMax = - gc::Infinity;
 	m_zMax = - gc::Infinity;
+	*/
 
 	for( unsigned int f = 0; f < triangleList.size(); f++ )
 	{
@@ -201,7 +231,7 @@ bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 		v3VertexList.set1Value( f, v3.x, v3.y, v3.z);
 		normalVertexList.set1Value( f, facet->GetNormal().x, facet->GetNormal().y, facet->GetNormal().z);
 
-
+		/*
 		if( v1.x < m_xMin ) m_xMin = v1.x;
 		if( v2.x < m_xMin ) m_xMin = v2.x;
 		if( v3.x < m_xMin ) m_xMin = v3.x;
@@ -225,11 +255,17 @@ bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 		if( v1.z > m_zMax ) m_zMax = v1.z;
 		if( v2.z > m_zMax ) m_zMax = v2.z;
 		if( v3.z > m_zMax ) m_zMax = v3.z;
+		*/
 
 	}
 
+	if( m_pBVH )
+	{
+		delete m_pBVH;
+		m_pBVH = 0;
+	}
 
-	//std::cout<<m_pTriangleList.size()<<std::endl;
+	m_pBVH = new BVH( &m_pTriangleList, 1 );
 
 
 	m_v1Sensor->setPriority( 0 );
@@ -340,6 +376,12 @@ void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 	}
 	shapeCAD->m_pTriangleList.clear();
 
+	if( shapeCAD->m_pBVH )
+	{
+		delete shapeCAD->m_pBVH;
+		shapeCAD->m_pBVH = 0;
+	}
+
 
 	int v1Size = shapeCAD->v1VertexList.getNum();
 	if( ( v1Size > 0 ) &&
@@ -347,6 +389,7 @@ void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 			( shapeCAD->v3VertexList.getNum() == v1Size ) &&
 			( shapeCAD->normalVertexList.getNum() == v1Size )  )
 	{
+		/*
 		shapeCAD->m_xMin = gc::Infinity;
 		shapeCAD->m_yMin = gc::Infinity;
 		shapeCAD->m_zMin = gc::Infinity;
@@ -354,6 +397,7 @@ void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 		shapeCAD->m_xMax = - gc::Infinity;
 		shapeCAD->m_yMax = - gc::Infinity;
 		shapeCAD->m_zMax = - gc::Infinity;
+		*/
 
 		for(  int f = 0; f < v1Size; f++ )
 		{
@@ -364,7 +408,7 @@ void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 			Triangle* triangle = new Triangle( v1, v2, v3, normal );
 			shapeCAD->m_pTriangleList.push_back( triangle );
 
-
+			/*
 			if( v1.x < shapeCAD->m_xMin )	shapeCAD->m_xMin = v1.x;
 			if( v2.x < shapeCAD->m_xMin )	shapeCAD->m_xMin = v2.x;
 			if( v3.x < shapeCAD->m_xMin )	shapeCAD->m_xMin = v3.x;
@@ -388,8 +432,9 @@ void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 			if( v1.z > shapeCAD->m_zMax )	shapeCAD->m_zMax = v1.z;
 			if( v2.z > shapeCAD->m_zMax )	shapeCAD->m_zMax = v2.z;
 			if( v3.z > shapeCAD->m_zMax )	shapeCAD->m_zMax = v3.z;
-
+			*/
 		}
+		shapeCAD->m_pBVH = new BVH( &shapeCAD->m_pTriangleList, 1);
 	}
 }
 

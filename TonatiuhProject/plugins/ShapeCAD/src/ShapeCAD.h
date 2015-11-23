@@ -12,6 +12,7 @@
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BVH.h"
 #include "Point3D.h"
 #include "NormalVector.h"
 #include "trt.h"
@@ -88,15 +89,17 @@ private:
 	SoFieldSensor* m_v3Sensor;
 	SoFieldSensor* m_normalSensor;
 
-
+/*
 	double m_xMin;
 	double m_xMax;
 	double m_yMin;
 	double m_yMax;
 	double m_zMin;
 	double m_zMax;
+	*/
 
 
+	BVH* m_pBVH;
 
 };
 

@@ -83,7 +83,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	double det = DotProduct( m_vE1, pVector );
 	double inv_det = 1/det;
 
-	std::cout<<"det: "<<det<<std::endl;
+	//std::cout<<"det: "<<det<<std::endl;
 
 	//Vector3D tVector = Vector3D( objectRay.origin ) – Vector3D(m_v1) ;
 	Vector3D tVector = Vector3D( objectRay.origin - m_v1 );
