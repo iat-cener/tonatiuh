@@ -21,8 +21,8 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
  m_v1( v1 ),
  m_v2 ( v2 ),
  m_v3( v3 ),
- m_vB( Vector3D() ),
- m_vC( Vector3D() ),
+ m_vE1( Vector3D() ),
+ m_vE2( Vector3D() ),
  m_vW1( Vector3D() )
 {
 
@@ -59,9 +59,14 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
 			m_bbox.pMin.z + 0.5 * ( m_bbox.pMax.z - m_bbox.pMin.z  ) );
 
 
+	/*
 	 m_vB = Vector3D( m_v1 - m_v3 );
 	 m_vC = Vector3D( m_v2 - m_v3 );
 	 m_vW1 = CrossProduct( m_vB, m_vC );
+	 */
+	 m_vE1 = Vector3D( m_v2 - m_v1 );
+	 m_vE2 = Vector3D( m_v3 - m_v1 );
+	 m_vW1 = CrossProduct( m_vE1, m_vE2 );
 
 }
 
@@ -72,7 +77,52 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
 bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
 
-	//Jimenez algorithm
+	//e1 = B - A
+	//e2 = C - A
+	Vector3D pVector = CrossProduct( objectRay.direction(), m_vE2 );
+	double det = DotProduct( m_vE1, pVector );
+	double inv_det = 1/det;
+
+	std::cout<<"det: "<<det<<std::endl;
+
+	//Vector3D tVector = Vector3D( objectRay.origin ) – Vector3D(m_v1) ;
+	Vector3D tVector = Vector3D( objectRay.origin - m_v1 );
+	Vector3D qVec = CrossProduct( tVector ,  m_vE1 );
+	double thit;
+	double tol = 0.000001;
+	if (det > tol)
+	{
+		double u = DotProduct(  tVector,pVector );
+		if (u < 0 || u > det )	return ( false );
+
+		double v = DotProduct( objectRay.direction(), qVec );
+		if (v < 0 || ( v + u ) > det) return ( false );
+
+		double t = DotProduct( m_vE2, qVec );
+		thit  =  t * inv_det;
+		u *= inv_det;
+		v *= inv_det;
+	}
+	else if (det < - tol)
+	{
+
+		double u = DotProduct( tVector, pVector ) * inv_det;
+		if (u < 0.0 || u > 1.0)	return ( false );
+
+		double v = DotProduct( objectRay.direction(), qVec )  * inv_det;
+		if (v < 0.0 || ( ( v+u ) > 1.0 ) ) 	return ( false );
+
+
+		double t = DotProduct( m_vE2, qVec ) * inv_det;
+		thit  =  t;
+	}
+	else
+		return ( false );
+
+
+	//return intersection == true , t, P
+
+	/*//Jimenez algorithm
 	double t0;
 	double t1;
 	if( !m_bbox.IntersectP(objectRay, &t0, &t1 ) )	return ( false );
@@ -140,6 +190,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 
 	double t_param = ( DotProduct( Normalize( m_vW1 ), vA )  /  DotProduct( Normalize( m_vW1 ),  Vector3D( Q1 - Q2 ) ) );
 	double thit = t0 + t_param * Distance( Q1, Q2 );
+	*/
 
 
 	if( thit > *tHit ) return false;
@@ -149,8 +200,8 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	Point3D hitPoint = objectRay( thit );
 
 
-	Vector3D dpdu = Normalize( m_vB );
-	Vector3D dpdv = Normalize( m_vC );
+	Vector3D dpdu = Normalize( m_vE1 );
+	Vector3D dpdv = Normalize( m_vE2 );
 
 	// Compute ShapeCone \dndu and \dndv
 	Vector3D d2Pduu( 0.0, 0.0, 0.0 );

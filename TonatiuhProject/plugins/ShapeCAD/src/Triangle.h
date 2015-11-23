@@ -43,8 +43,8 @@ private:
 	Point3D m_v3;
 
 
-	Vector3D m_vB;
-	Vector3D m_vC;
+	Vector3D m_vE1;
+	Vector3D m_vE2;
 	Vector3D m_vW1;
 
 
