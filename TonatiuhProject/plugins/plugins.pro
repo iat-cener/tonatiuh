@@ -1,8 +1,7 @@
 TEMPLATE = subdirs
 
 
-SUBDIRS =  ComponentHeliostatField \
-			MaterialAngleDependentSpecular \
+SUBDIRS = ComponentHeliostatField \
 			MaterialBasicRefractive \
 			MaterialStandardSpecular \
             MaterialStandardRoughSpecular \
