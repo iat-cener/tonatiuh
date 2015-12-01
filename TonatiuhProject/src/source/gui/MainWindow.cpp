@@ -4042,7 +4042,7 @@ void MainWindow::SetupTriggers()
 	connect( actionBackground, SIGNAL( triggered() ), this, SLOT( ShowBackground() )  );
 
 	//Help menu actions
-	connect( actionNetworkConnections, SIGNAL( triggered() ), this, SLOT( ShowNetworkConnectionsDialog() ) );
+	//connect( actionNetworkConnections, SIGNAL( triggered() ), this, SLOT( ShowNetworkConnectionsDialog() ) );
 
 }
 
