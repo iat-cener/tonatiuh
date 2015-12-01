@@ -18,6 +18,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "TMaterial.h"
+#include "MFVec2.h"
 #include "trt.h"
 
 class SoSensor;
@@ -40,9 +41,9 @@ public:
 	//int	getFields(SoFieldList & fields) const;
 
     SoSFBool reflectivityFront;
-    trt::TONATIUH_CONTAINERREALVECTOR2 reflectivityFrontValues;
+    MFVec2 reflectivityFrontValues;
     SoSFBool reflectivityBack;
-    trt::TONATIUH_CONTAINERREALVECTOR2 reflectivityBackValues;
+    MFVec2 reflectivityBackValues;
 
 	trt::TONATIUH_REAL sigmaSlope;
 	SoSFEnum distribution;

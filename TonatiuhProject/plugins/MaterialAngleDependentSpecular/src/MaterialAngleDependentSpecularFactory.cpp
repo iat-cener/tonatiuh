@@ -5,7 +5,8 @@
  *      Author: amutuberria
  */
 
-
+#include "MFVec2.h"
+#include "UserMField.h"
 
 #include <QIcon>
 
@@ -26,6 +27,9 @@ MaterialAngleDependentSpecular* MaterialAngleDependentSpecularFactory::CreateTMa
 	static bool firstTime = true;
 	if ( firstTime )
 	{
+
+		//UserMField::initClass();
+		MFVec2::initClass();
 		MaterialAngleDependentSpecular::initClass();
 	    firstTime = false;
 	}

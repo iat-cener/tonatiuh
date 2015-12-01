@@ -46,10 +46,11 @@ MaterialAngleDependentSpecular::MaterialAngleDependentSpecular()
 
 	SO_NODE_ADD_FIELD(reflectivityFront, (TRUE) );
 	SO_NODE_ADD_FIELD(reflectivityFrontValues, (0.0f, 0.0f) );
+	reflectivityFrontValues.SetNames( QObject::tr("Angle [rad]" ), QObject::tr( "Reflectivity[0-1]" ) );
 
 	SO_NODE_ADD_FIELD(reflectivityBack, (TRUE) );
 	SO_NODE_ADD_FIELD(reflectivityBackValues, (0.0f, 0.0f) );
-
+	reflectivityBackValues.SetNames( QObject::tr("Angle [rad]" ), QObject::tr( "Reflectivity[0-1]" ) );
 
 
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
@@ -66,17 +67,12 @@ MaterialAngleDependentSpecular::MaterialAngleDependentSpecular()
 	SO_NODE_ADD_FIELD( shininessValue, (0.2f) );
 	SO_NODE_ADD_FIELD( transparencyValue, (0.0) );
 
-	//m_reflectivityFrontSensor = new SoFieldSensor(  updateReflectivityFront,  this );
-	//m_reflectivityFrontSensor->setPriority( 1 );
-	//m_reflectivityFrontSensor->attach( &reflectivityFront );
+
 
 	m_reflectivityFrontValuesSensor = new SoFieldSensor(  updateReflectivityFront,  this );
 	m_reflectivityFrontValuesSensor->setPriority( 1 );
 	m_reflectivityFrontValuesSensor->attach( &reflectivityFrontValues );
 
-	//m_reflectivityBackSensor = new SoFieldSensor(  updateReflectivityBack,  this );
-	//m_reflectivityBackSensor->setPriority( 1 );
-	//m_reflectivityBackSensor->attach( &reflectivityBack );
 
 	m_reflectivityBackValuesSensor = new SoFieldSensor(  updateReflectivityBack,  this );
 	m_reflectivityBackValuesSensor->setPriority( 1 );
@@ -128,10 +124,25 @@ QString MaterialAngleDependentSpecular::getIcon()
 // New function OutputPropertyValue (JMQ)
 double MaterialAngleDependentSpecular::OutputPropertyValue( std::vector< double > incidenceAnglesList,  std::vector< double > valuesList, double incidenceAngle ) const
 {
-
-
 	// Size incidenceAnglesList vector
 	int m = incidenceAnglesList.size();
+
+	//Classify element's incident Angle lowest to biggest
+	for (int i = 0; i < (m - 1); i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			if (incidenceAnglesList[j] < incidenceAnglesList[i])
+			{
+				double aux1 = incidenceAnglesList[j];
+				double aux2 = valuesList[j];
+				incidenceAnglesList[j] = incidenceAnglesList[i];
+				valuesList[j] = valuesList[i];
+				incidenceAnglesList[i] = aux1;
+				valuesList[i] = aux2;
+			}
+		}
+	}
 
 
 	//Incidence angle can not be higher than 0.5 * Pi
@@ -160,6 +171,10 @@ void MaterialAngleDependentSpecular::updateReflectivityFront( void* data, SoSens
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
 
+	std::vector< double > oldFrontReflectivityIncidenceAngle = material->m_frontReflectivityIncidenceAngle;
+	std::vector< double > oldFrontReflectivityValue = material->m_frontReflectivityValue;
+
+
 	int numberOfValues = material->reflectivityFrontValues.getNum();
 
 	material->m_frontReflectivityIncidenceAngle.clear();
@@ -178,6 +193,9 @@ void MaterialAngleDependentSpecular::updateReflectivityBack( void* data, SoSenso
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
 
+
+	//std::vector< double > m_backReflectivityIncidenceAngle;
+	//std::vector< double > m_backReflectivityValue;
 	int numberOfValues = material->reflectivityBackValues.getNum();
 
 	material->m_backReflectivityIncidenceAngle.clear();
