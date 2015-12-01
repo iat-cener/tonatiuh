@@ -29,6 +29,7 @@ SOURCES = src/*.cpp \
 RESOURCES += src/MaterialAngleDependentSpecular.qrc
 
 TARGET        = MaterialAngleDependentSpecular
+FORMS += src/*.ui
  
 CONFIG(debug, debug|release) {
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/MaterialAngleDependentSpecular	

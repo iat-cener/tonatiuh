@@ -33,6 +33,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 #include <QLineEdit>
 #include <QMessageBox>
+#include <iostream>
 
 #include "ContainerEditor.h"
 #include "gc.h"
@@ -307,9 +308,10 @@ void ContainerViewer::AddNewRow()
 
 void ContainerViewer::CloseViewer()
 {
-	if( OkToContinue() )	accept();
-
-	reject();
+	if( OkToContinue() )
+	{
+		QDialog::accept();
+	}
 }
 
 /*!
