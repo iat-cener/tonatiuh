@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "GraphicRootTracker.h"
 #include "MainWindow.h"
+//#include "MFVec2.h"
 #include "TAnalyzerKit.h"
 #include "TAnalyzerLevel.h"
 #include "TAnalyzerParameter.h"
@@ -67,6 +68,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSquare.h"
 #include "TTrackerForAiming.h"
 #include "TTransmissivity.h"
+#include "UserMField.h"
+#include "UserSField.h"
 
 /*!
   \mainpage
@@ -109,6 +112,9 @@ int main( int argc, char ** argv )
 
 	SoQt::init( (QWidget *) NULL );
 
+	//MFVec2::initClass();
+	UserMField::initClass();
+	UserSField::initClass();
 	TSceneKit::initClass();
 	TMaterial::initClass();
 	TDefaultMaterial::initClass();

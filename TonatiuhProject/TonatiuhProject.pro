@@ -5,6 +5,10 @@ geometry.CONFIG = recursive
 geometry.recurse = geometry   
 
 
+fields.target = fields
+fields.CONFIG = recursive
+fields.recurse = fields   
+
 src.target = src
 src.CONFIG = recursive
 src.recurse = src	
@@ -22,7 +26,8 @@ tests.depends = geometry
 
 QMAKE_EXTRA_TARGETS += src plugins tests
 SUBDIRS = geometry \
-src \
+		fields \
+		src \
           plugins \
           tests
             

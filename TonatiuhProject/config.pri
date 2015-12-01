@@ -17,6 +17,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 } 
 
 INCLUDEPATH += 	. \
+                $$(TONATIUH_ROOT)/fields \
                 $$(TONATIUH_ROOT)/geometry \
 				$$(TONATIUH_ROOT)/src \
 				$$(TONATIUH_ROOT)/src/source \
@@ -36,9 +37,9 @@ win32 {
 }
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lfields
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lfields
 }
 
 COMPILER = $$(COMPILER)

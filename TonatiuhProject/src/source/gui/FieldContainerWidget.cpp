@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+
+#include <iostream>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QTreeView>
@@ -49,11 +51,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/nodes/SoNode.h>
 
-#include "ContainerEditor.h"
 #include "FieldContainerWidget.h"
+#include "FieldEditor.h"
 #include "ParametersDelegate.h"
 #include "ParametersItem.h"
 #include "ParametersModel.h"
+#include "UserMField.h"
+#include "UserSField.h"
 
 /*!
  * Creates an empty widget.
@@ -155,10 +159,17 @@ void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::
 		newValue = combo->currentText( );
 	}
 
-	else if( field->getTypeId().isDerivedFrom( SoMField::getClassTypeId() ) )
+	else if( field->getTypeId().isDerivedFrom( UserSField::getClassTypeId() ) )
 	{
-		ContainerEditor* containerEditor = qobject_cast<ContainerEditor *>(editor);
-		newValue = containerEditor->GetData( );
+		FieldEditor* fieldEdit = static_cast< FieldEditor *>(editor);
+		newValue = fieldEdit->GetData( );
+
+	}
+
+	else if( field->getTypeId().isDerivedFrom( UserMField::getClassTypeId() ) )
+	{
+		FieldEditor* fieldEdit = static_cast< FieldEditor *>(editor);
+		newValue = fieldEdit->GetData( );
 
 	}
 	else

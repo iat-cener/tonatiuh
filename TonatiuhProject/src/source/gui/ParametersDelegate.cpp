@@ -36,19 +36,21 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
+#include <iostream>
 
 #include <QComboBox>
 #include <QLineEdit>
 #include <QModelIndex>
 #include <QString>
 
-#include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSFEnum.h> 
 
-#include "ContainerEditor.h"
 #include "ParametersItem.h"
 #include "ParametersDelegate.h"
 #include "ParametersModel.h"
+#include "FieldEditor.h"
+#include "UserSField.h"
+#include "UserMField.h"
 
 ParametersDelegate::ParametersDelegate(  QObject* parent)
  : QItemDelegate(parent)
@@ -65,7 +67,7 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 {
 	const ParametersModel* model = static_cast< const ParametersModel* >( index.model() );
 	SoField* field = model->ModelItem( index )->GetField();
-	
+
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
 	{
 		QComboBox* editor = new QComboBox( parent );
@@ -78,17 +80,33 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 		}
 		return editor;
 	}
-	else if( field->getTypeId().isDerivedFrom( SoMField::getClassTypeId() ) )
+	else if( field->getTypeId().isDerivedFrom( UserSField::getClassTypeId() ) )
 	{
-		ContainerEditor* editor = new ContainerEditor( parent );
-	     editor->setGeometry(option.rect);
+		std::cout<<"UserSField"<<std::endl;
+		UserSField* mField = static_cast< UserSField* >(field);
 
-	     connect( editor, SIGNAL( editingFinished( )  ), this, SLOT( CloseEditor() ));
-		return editor;
+		FieldEditor* fieldEdit = mField->GetEditor();
+		fieldEdit->setGeometry(option.rect);
+		fieldEdit->setParent(parent);
+
+		connect( fieldEdit, SIGNAL( editingFinished( )  ), this, SLOT( CloseEditor() ));
+		return fieldEdit;
 	}
+	else if( field->getTypeId().isDerivedFrom( UserMField::getClassTypeId() ) )
+	{
+		std::cout<<"UserMField"<<std::endl;
+		UserMField* mField = static_cast< UserMField* >(field);
 
+		FieldEditor* fieldEdit = mField->GetEditor();
+		fieldEdit->setGeometry(option.rect);
+		fieldEdit->setParent(parent);
+
+		connect( fieldEdit, SIGNAL( editingFinished( )  ), this, SLOT( CloseEditor() ));
+		return fieldEdit;
+	}
 	else
 	{
+		std::cout<<"createEditor else"<<std::endl;
 		QLineEdit* editor = new QLineEdit(parent);
 		return editor;
 	}
@@ -110,17 +128,26 @@ void ParametersDelegate::setEditorData(QWidget *editor,
 		combo->setCurrentIndex( selectedIndex );
 
 	}
-	else if( field->getTypeId().isDerivedFrom( SoMField::getClassTypeId() ) )
+	else if( field->getTypeId().isDerivedFrom( UserSField::getClassTypeId() ) )
 	{
-		QString value = index.model()->data(index, Qt::DisplayRole).toString();
-		ContainerEditor* containerEdit = static_cast< ContainerEditor *>(editor);
 
-		containerEdit->SetData( value );
+		FieldEditor* fieldEdit = static_cast< FieldEditor *>(editor);
+
+		QString value = index.model()->data(index, Qt::DisplayRole).toString();
+		fieldEdit->SetData( value );
 
 	}
+	else if( field->getTypeId().isDerivedFrom( UserMField::getClassTypeId() ) )
+	{
 
+		FieldEditor* fieldEdit = static_cast< FieldEditor *>(editor);
+
+		QString value = index.model()->data(index, Qt::DisplayRole).toString();
+		fieldEdit->SetData( value );
+	}
 	else
 	{
+		std::cout<<"setEditorData else"<<std::endl;
 		QString value = index.model()->data(index, Qt::DisplayRole).toString();
 			
 		QLineEdit  *textEdit = static_cast<QLineEdit *>(editor);
