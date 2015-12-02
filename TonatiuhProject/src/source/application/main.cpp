@@ -239,9 +239,5 @@ int main( int argc, char ** argv )
 
    	}
 
-
-   	std::cout<<"error"<<std::endl;
-
-
 	return exit;
 }
