@@ -190,6 +190,7 @@ void ContainerEditor::OpenContainerViewer()
 
 
 
+
 /***************************************************************
  * ContainerViewer
  ***************************************************************/
@@ -207,6 +208,7 @@ ContainerViewer::ContainerViewer( QWidget* parent)
 	connect( addButton, SIGNAL( clicked() ), this, SLOT( AddNewRow() ) );
 	connect( deleteButton, SIGNAL( clicked() ), this, SLOT( DeleteSelectedRow() ) );
 	connect( buttonBox, SIGNAL( accepted() ), this, SLOT( CloseViewer() ) );
+	connect( helpButton, SIGNAL( clicked()), this, SLOT(HelpMenu() ) );
 }
 
 ContainerViewer::~ContainerViewer()
@@ -382,7 +384,7 @@ bool ContainerViewer::OkToContinue()
 				lastAngle = angle;
 			}
 
-			if( c == 0 )
+			if( c == 1 )
 			{
 				double reflectivity = itemData.toDouble();
 
@@ -400,6 +402,19 @@ bool ContainerViewer::OkToContinue()
 
 	return ( true );
 }
+
+
+void ContainerViewer::HelpMenu()
+{
+	QString message = QString( tr("Angles values\n"
+			"\t- must be defined between [0,0.5*pi]\n"
+			"\t- must be defined in increasing order\n"
+			"\t- cannot be repeated\n\n"
+			"Reflectivity values\n"
+			"\t- must be defined between [0,1]" ) );
+	QMessageBox::information( this,  QLatin1String( "Tonatiuh" ), message );
+}
+
 
 /**************************************************************
  * DoubleValuesDelegate

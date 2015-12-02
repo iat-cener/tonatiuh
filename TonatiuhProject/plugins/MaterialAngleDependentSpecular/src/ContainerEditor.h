@@ -122,6 +122,7 @@ public slots:
 	void AddNewRow();
 	void CloseViewer();
 	void DeleteSelectedRow();
+	void HelpMenu();
 
 protected:
 	bool OkToContinue();
