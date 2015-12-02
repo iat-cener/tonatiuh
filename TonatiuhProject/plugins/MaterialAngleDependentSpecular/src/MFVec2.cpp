@@ -50,7 +50,7 @@
 
 	void MFVec2::set1Value(int idx, double x, double y)
 	{
-		MFVec2->set1Value(idx, SbVec2d(x, y));
+		this->set1Value(idx, SbVec2d(x, y));
 	}
 
 
