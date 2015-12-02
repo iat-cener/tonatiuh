@@ -175,6 +175,7 @@ int main( int argc, char ** argv )
     		testDirectory.cd( "." );
 
     		QScriptEngine* interpreter = new QScriptEngine;
+    		qScriptRegisterSequenceMetaType<QVector<QVariant> >(interpreter);
 
     		QScriptValue tonatiuh = interpreter->newQObject( new MainWindow( QLatin1String("") ) );
     		interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
