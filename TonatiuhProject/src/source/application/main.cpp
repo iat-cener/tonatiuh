@@ -193,8 +193,6 @@ int main( int argc, char ** argv )
     		QString program = in.readAll();
     		scriptFile.close();
 
-    	   	std::cout<<"error 1"<<std::endl;
-
 
     		QScriptSyntaxCheckResult checkResult = interpreter->checkSyntax( program );
     		if( checkResult.state() != QScriptSyntaxCheckResult::Valid )
@@ -205,7 +203,6 @@ int main( int argc, char ** argv )
     			return -1;
     		}
 
-    	   	std::cout<<"error 2"<<std::endl;
     		QScriptValue result = interpreter->evaluate( program );
     		if( result.isError () )
     		{
