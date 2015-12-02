@@ -98,6 +98,8 @@ The Tonatiuh project aims to create an open source, cutting-edge, accurate, and 
   application specific Coin3D extension subclasses, and the application loop.
 */
 
+ Q_DECLARE_METATYPE(QVector<QVariant>)
+
 int main( int argc, char ** argv )
 {
 	QApplication::setColorSpec( QApplication::CustomColor );
