@@ -82,7 +82,6 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 	}
 	else if( field->getTypeId().isDerivedFrom( UserSField::getClassTypeId() ) )
 	{
-		std::cout<<"UserSField"<<std::endl;
 		UserSField* mField = static_cast< UserSField* >(field);
 
 		FieldEditor* fieldEdit = mField->GetEditor();
@@ -94,7 +93,6 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 	}
 	else if( field->getTypeId().isDerivedFrom( UserMField::getClassTypeId() ) )
 	{
-		std::cout<<"UserMField"<<std::endl;
 		UserMField* mField = static_cast< UserMField* >(field);
 
 		FieldEditor* fieldEdit = mField->GetEditor();
@@ -106,7 +104,6 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 	}
 	else
 	{
-		std::cout<<"createEditor else"<<std::endl;
 		QLineEdit* editor = new QLineEdit(parent);
 		return editor;
 	}
