@@ -133,7 +133,7 @@ bool MaterialOneSideSpecular::OutputRay( const Ray& incident, DifferentialGeomet
 	if ( randomNumber >= reflectivity.getValue()  ) return false;//return 0;
 
 	//Compute reflected ray (local coordinates )
-
+	outputRay->origin = dg->point;
 
 	NormalVector normalVector;
 	double sSlope = sigmaSlope.getValue() / 1000;
