@@ -147,7 +147,7 @@ void MaterialBasicRefractive::updateTransmissivityFront( void* data, SoSensor* )
    	if( ( material->reflectivityFront.getValue() + material->transmissivityFront.getValue() ) > 1.0 )
    	{
    		material->transmissivityFront = 0.0;
-   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityFront") );
+   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for TransmissivityFront") );
    	}
 }
 
@@ -172,7 +172,7 @@ void MaterialBasicRefractive::updateTransmissivityBack( void* data, SoSensor* )
    	if( ( material->reflectivityBack.getValue() + material->transmissivityBack.getValue() ) > 1.0 )
    	{
    		material->transmissivityBack = 0.0;
-   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityBack") );
+   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for TransmissivityBack") );
    	}
 
 }
