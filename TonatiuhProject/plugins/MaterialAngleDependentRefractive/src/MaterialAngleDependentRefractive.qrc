@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>icons/MaterialAngleDependentRefractive.png</file>
+    </qresource>
+</RCC>
