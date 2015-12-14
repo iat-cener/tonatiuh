@@ -46,7 +46,7 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 		int widthDivisions, int heightDivisions,
 		RandomDeviate* randomDeviate,  QWidget* parent  )
 :QDialog( parent),
- m_currentSurfaceURL( "" ),
+ m_currentSurfaceURL( "---" ),
  m_pCurrentScene( currentScene ),
  m_pCurrentSceneModel( &currentSceneModel ),
  m_pPhotonMap( 0 ),
@@ -89,6 +89,8 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	connect( hSectorYCoordSpin, SIGNAL( valueChanged( double ) ), this, SLOT( UpdateSectorPlots() ) );
 	connect( gridWidthSpin, SIGNAL( valueChanged( int ) ), this, SLOT( UpdateAnalysis() ) );
 	connect( gridHeightSpin, SIGNAL( valueChanged( int ) ), this, SLOT( UpdateAnalysis() ) );
+	connect( selectFileButton, SIGNAL( clicked() ), this, SLOT( SelectExportFile() ) );
+	connect( exportButton, SIGNAL( clicked() ) , this, SLOT( ExportData() ) );
 
 
 	// configure axis rect:
@@ -167,14 +169,12 @@ void FluxAnalysisDialog::ChangeCurrentSurface()
 			if( instanceNode && instanceNode != 0 )
 			{
 
-				ClearCurrentAnalysis();
 				UpdateSurfaceSides( selectedSurfaceURL );
 				return;
 			}
 		}
 		QMessageBox::warning( this, tr( "Tonatiuh" ),
 									 tr( "The surface url defined for is not valid." ) );
-		ClearCurrentAnalysis();
 		UpdateSurfaceSides( QLatin1String( "---" ) );
 	}
 
@@ -191,6 +191,74 @@ void FluxAnalysisDialog::ChangeCurrentSurfaceSide()
 
 
 }
+
+void FluxAnalysisDialog::ExportData()
+{
+	if ( m_pPhotonMap == 0 || !m_pPhotonMap )
+		{
+			QString message = QString( tr( "Nothing available to export, first run the simulation" ) );
+			QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
+			return;
+		}
+
+	if ( fileDirEdit->text().isEmpty() )
+	{
+		QString message = QString( tr( "Directory not valid" ) );
+		QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
+		return;
+	}
+
+	if ( fileNameEdit->text().isEmpty() )
+	{
+		QString message = QString( tr( "File name not valid" ) );
+		QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
+		return;
+	}
+
+	QString exportDirectory( fileDirEdit->text() );
+	QString storeType = storeTypeCombo->currentText();
+	QString exportFileName = fileNameEdit->text();
+
+	if ( storeType == "ASCII" )
+	{
+		QFile exportFile( exportDirectory + "/" + exportFileName + ".txt" );
+		exportFile.open( QIODevice::WriteOnly );
+		QTextStream out( &exportFile );
+
+		double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
+		double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
+		double areaCell = widthCell * heightCell;
+
+		for ( int i = 0; i<m_heightDivisions; i++)
+		{
+			for (int j = 0; j<m_widthDivisions; j++ )
+			{
+				out<< m_photonCounts[i][j] * m_wPhoton / areaCell << " ";
+			}
+		out<< "\n" ;
+		}
+		exportFile.close();
+	}
+	else if ( storeType == "IMAGE.JPG" )
+	{
+		QFile exportFile( exportDirectory + "/" + exportFileName + ".jpg" );
+		exportFile.open( QIODevice::WriteOnly );
+		contourPlotWidget->saveJpg( exportFile.fileName(), 0, 0, 1.0, -1 ); //(QString &  fileName, int  width = 0, int  height = 0, double  scale = 1.0, int  quality = -1  )
+		exportFile.close();
+	}
+	else if ( storeType == "IMAGE.PNG" )
+	{
+		QFile exportFile( exportDirectory + "/" + exportFileName + ".png" );
+		exportFile.open( QIODevice::WriteOnly );
+		contourPlotWidget->savePng( exportFile.fileName(), 0, 0, 1.0, -1 ); //(QString &  fileName, int  width = 0, int  height = 0, double  scale = 1.0, int  quality = -1  )
+		exportFile.close();
+	}
+
+	QString message = QString( tr( "Export done successfully" ) );
+	QMessageBox::information( this,  QLatin1String( "Tonatiuh" ), message );
+
+}
+
 
 /*!
  * Runs flux analysis for current defined surface.
@@ -213,9 +281,12 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 		m_photonCounts = 0;
 	}
 
-
-	if( m_currentSurfaceURL == QLatin1String( "---" ) )	return;
-
+	if( m_currentSurfaceURL == QLatin1String( "---" ) )
+		{
+			QString message = QString( tr( "Select a surface" ) );
+			QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
+			return;
+		}
 
 	//Check if there is a scene
 	if ( !m_pCurrentScene )  return;
@@ -389,6 +460,14 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 }
 
 
+
+void FluxAnalysisDialog::SelectExportFile()
+{
+	QString path = QFileDialog::getExistingDirectory(this, "Choose a directory to save");
+	fileDirEdit->setText( path );
+}
+
+
 /*!
  * Opens a dialog to select a surface from the system.
  * If the selected surface is ok
@@ -551,11 +630,6 @@ void FluxAnalysisDialog::ClearCurrentAnalysis()
 	//Delete previous colormap, scale
 	contourPlotWidget->clearPlottables();
 	contourPlotWidget->replot();
-
-	verticalSectorPlot->clearPlottables();
-	verticalSectorPlot->replot();
-	horizontaSectorPlot->clearPlottables();
-	horizontaSectorPlot->replot();
 
 	totalPowerValue->setText( QString::number(  0.0 )  );
 
@@ -789,7 +863,7 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 
 		}
 	}
-	double standarDeviation = sqrt( 1/ (m_widthDivisions * m_heightDivisions ) * E );
+	double standarDeviation = sqrt( E / (m_widthDivisions * m_heightDivisions )  );
 	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
 	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
 
@@ -1006,7 +1080,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 
 		}
 	}
-	double standarDeviation = sqrt( 1/ (m_widthDivisions * m_heightDivisions ) * E );
+	double standarDeviation = sqrt( E / (m_widthDivisions * m_heightDivisions ) );
 	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
 	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
 
@@ -1227,7 +1301,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 
 		}
 	}
-	double standarDeviation = sqrt( 1/ (m_widthDivisions * m_heightDivisions ) * E );
+	double standarDeviation = sqrt( E / (m_widthDivisions * m_heightDivisions ) );
 	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
 	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
 }
@@ -1240,6 +1314,7 @@ void FluxAnalysisDialog::UpdateSurfaceSides( QString selectedSurfaceURL )
 
 	if(m_currentSurfaceURL == selectedSurfaceURL )	return;
 
+	ClearCurrentAnalysis();
 
 	m_currentSurfaceURL = selectedSurfaceURL;
 	sidesCombo->clear();
@@ -1273,4 +1348,3 @@ void FluxAnalysisDialog::UpdateSurfaceSides( QString selectedSurfaceURL )
 	}
 
 }
-

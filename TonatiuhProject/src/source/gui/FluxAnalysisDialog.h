@@ -36,7 +36,9 @@ protected:
 private slots:
 	void ChangeCurrentSurface();
 	void ChangeCurrentSurfaceSide();
+	void ExportData();
 	void RunFluxAnalysis();
+	void SelectExportFile();
 	void SelectSurface();
 	void UpdateAnalysis( );
 	void UpdateSectorPlots();
