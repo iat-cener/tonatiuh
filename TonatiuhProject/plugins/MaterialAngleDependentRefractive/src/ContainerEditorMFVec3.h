@@ -32,8 +32,8 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 ***************************************************************************/
 
 
-#ifndef CONTAINEREDITOR_H_
-#define CONTAINEREDITOR_H_
+#ifndef CONTAINEREDITORMFVEC3_H_
+#define CONTAINEREDITORMFVEC3_H_
 
 #include <QDialog>
 #include <QDoubleValidator>
@@ -44,12 +44,12 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 #include "FieldEditor.h"
 
-#include "ui_containerviewer.h"
+#include "ui_containerviewermfvec3.h"
 
 /***************************************************************
  * CustomPlainTextEdit
  ***************************************************************/
-class CustomPlainTextEdit: public QLineEdit //QPlainTextEdit
+class CustomPlainTextEdit: public QLineEdit
 {
 	Q_OBJECT
 public:
@@ -68,13 +68,13 @@ protected:
  * ContainerEditor
  ***************************************************************/
 
-class ContainerEditor: public FieldEditor
+class ContainerEditorMFVec3: public FieldEditor
 {
 	Q_OBJECT
 
 public:
-	ContainerEditor( QWidget* parent = 0 );
-	~ContainerEditor();
+	ContainerEditorMFVec3( QWidget* parent = 0 );
+	~ContainerEditorMFVec3();
 
 
 	QString GetData( ) const;
@@ -105,13 +105,13 @@ private:
  ***************************************************************/
 
 class DoubleValuesDelegate;
-class ContainerViewer: public QDialog, private Ui::ContainerViewer
+class ContainerViewerMFVec3: public QDialog, private Ui::ContainerViewerMFVec3
 {
 	Q_OBJECT
 
 public:
-	ContainerViewer( QWidget* parent = 0 );
-	~ContainerViewer();
+	ContainerViewerMFVec3( QWidget* parent = 0 );
+	~ContainerViewerMFVec3();
 
 public:
 	QString GetData( ) const;
@@ -156,4 +156,4 @@ public:
 };
 
 
-#endif /* CONTAINEREDITOR_H_ */
+#endif /* CONTAINEREDITORMFVEC3_H_ */

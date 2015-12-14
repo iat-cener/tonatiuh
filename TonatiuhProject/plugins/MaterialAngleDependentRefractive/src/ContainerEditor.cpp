@@ -35,7 +35,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 #include <QMessageBox>
 #include <iostream>
 
-#include "ContainerEditor.h"
+#include "ContainerEditorMFVec3.h"
 #include "gc.h"
 
 
@@ -71,15 +71,14 @@ void CustomPlainTextEdit::focusOutEvent(QFocusEvent*  event )
 }
 
 /***************************************************************
- *  ContainerEditor
+ *  ContainerEditorMFVec3
  ***************************************************************/
 /*!
  * Creates an editor object
  */
-ContainerEditor::ContainerEditor( QWidget* parent )
+ContainerEditorMFVec3::ContainerEditorMFVec3( QWidget* parent )
 :FieldEditor( parent )
 {
-	//setupUi(this );
 
 	 setObjectName( QLatin1String( "ContainerEditor" ) );
 	 resize(879, 192);
@@ -87,8 +86,6 @@ ContainerEditor::ContainerEditor( QWidget* parent )
 	 QSizePolicy sizePolicy( QSizePolicy::Minimum, QSizePolicy::MinimumExpanding) ;
 	 sizePolicy.setHorizontalStretch( 0 );
 	 sizePolicy.setVerticalStretch( 0 );
-	// QSizePolicy currentSizePolicy = sizePolicy();
-	 //sizePolicy.setHeightForWidth(sizePolicy().hasHeightForWidth());
 	 setMouseTracking(false);
 	 setSizePolicy(sizePolicy);
      setFocusPolicy(Qt::NoFocus);
@@ -119,7 +116,7 @@ ContainerEditor::ContainerEditor( QWidget* parent )
 /*!
  * Destroys object
  */
-ContainerEditor::~ContainerEditor()
+ContainerEditorMFVec3::~ContainerEditorMFVec3()
 {
 	delete m_horizontalLayout;
 	//delete m_editButton;
@@ -128,7 +125,7 @@ ContainerEditor::~ContainerEditor()
 /*!
  * Return current value in the editor.
  */
-QString ContainerEditor::GetData( ) const
+QString ContainerEditorMFVec3::GetData( ) const
 {
 	return ( m_valuesEdit->text() );
 }
@@ -137,7 +134,7 @@ QString ContainerEditor::GetData( ) const
 /*!
  * Set defaults values in the editor.
  */
-void ContainerEditor::SetData( QString value )
+void ContainerEditorMFVec3::SetData( QString value )
 {
 	m_valuesEdit->setText( value );
 }
@@ -146,7 +143,7 @@ void ContainerEditor::SetData( QString value )
 /*!
  * Set headers laber to the editor.
  */
-void ContainerEditor::SetTitles( QStringList titles )
+void ContainerEditorMFVec3::SetTitles( QStringList titles )
 {
 	m_titlesList = titles;
 }
@@ -154,7 +151,7 @@ void ContainerEditor::SetTitles( QStringList titles )
 /*
  * Closes editor if the elements of the editor are not active.
  */
-void ContainerEditor::focusOutEvent(QFocusEvent*  event )
+void ContainerEditorMFVec3::focusOutEvent(QFocusEvent*  event )
 {
 	QWidget::focusOutEvent( event );
 	CloseEditor();
@@ -163,7 +160,7 @@ void ContainerEditor::focusOutEvent(QFocusEvent*  event )
 /*!
  * Emits an editing finished signal if the edition is finished and the
  */
-void ContainerEditor::CloseEditor()
+void ContainerEditorMFVec3::CloseEditor()
 {
 	if( !hasFocus() && !m_editButton->hasFocus() && !m_valuesEdit->hasFocus()  )
 	{
@@ -174,10 +171,9 @@ void ContainerEditor::CloseEditor()
 /*!
  * Opens a table viewer width the values in the container.
  */
-void ContainerEditor::OpenContainerViewer()
+void ContainerEditorMFVec3::OpenContainerViewer()
 {
-	ContainerViewer viewer;
-	//if( !viewer.SetData( valuesEdit->toPlainText() ) )
+	ContainerViewerMFVec3 viewer;
 	if( !viewer.SetData( m_valuesEdit->text() ) )
 		return;
 	if( m_titlesList.count() > 0 ) 	viewer.SetTitles( m_titlesList );
@@ -192,13 +188,13 @@ void ContainerEditor::OpenContainerViewer()
 
 
 /***************************************************************
- * ContainerViewer
+ * ContainerViewerMFVec3
  ***************************************************************/
 
 /*!
  * Creates an dialog object
  */
-ContainerViewer::ContainerViewer( QWidget* parent)
+ContainerViewerMFVec3::ContainerViewerMFVec3( QWidget* parent)
  :QDialog( parent )
 {
 	setupUi( this );
@@ -211,7 +207,7 @@ ContainerViewer::ContainerViewer( QWidget* parent)
 	connect( helpButton, SIGNAL( clicked()), this, SLOT(HelpMenu() ) );
 }
 
-ContainerViewer::~ContainerViewer()
+ContainerViewerMFVec3::~ContainerViewerMFVec3()
 {
 	delete m_delegate;
 }
@@ -220,7 +216,7 @@ ContainerViewer::~ContainerViewer()
 /*!
  * Return current values in the editor.
  */
-QString ContainerViewer::GetData( ) const
+QString ContainerViewerMFVec3::GetData( ) const
 {
 	int rows = variableValuesTable->rowCount();
 	int columns = variableValuesTable->columnCount();
@@ -251,7 +247,7 @@ QString ContainerViewer::GetData( ) const
 /*!
  * Sets the values in the string into the table.
  */
-bool ContainerViewer::SetData( QString value )
+bool ContainerViewerMFVec3::SetData( QString value )
 {
 	QStringList values = value.split( QRegExp( "[\\[\\]]" ), QString::SkipEmptyParts );
 	if( values.count() < 1 || values.count() > 1 )	return false;
@@ -285,7 +281,7 @@ bool ContainerViewer::SetData( QString value )
 }
 
 
-void ContainerViewer::SetTitles( QStringList titles )
+void ContainerViewerMFVec3::SetTitles( QStringList titles )
 {
 	variableValuesTable->setHorizontalHeaderLabels( titles );
 }
@@ -294,7 +290,7 @@ void ContainerViewer::SetTitles( QStringList titles )
 /*!
  * Adds an empty row to the end of the table.
  */
-void ContainerViewer::AddNewRow()
+void ContainerViewerMFVec3::AddNewRow()
 {
 	int rows = variableValuesTable->rowCount();
 	int columns = variableValuesTable->columnCount();
@@ -308,7 +304,7 @@ void ContainerViewer::AddNewRow()
 }
 
 
-void ContainerViewer::CloseViewer()
+void ContainerViewerMFVec3::CloseViewer()
 {
 	if( OkToContinue() )
 	{
@@ -319,7 +315,7 @@ void ContainerViewer::CloseViewer()
 /*!
  * Delete selected row.
  */
-void ContainerViewer::DeleteSelectedRow()
+void ContainerViewerMFVec3::DeleteSelectedRow()
 {
 
 	int res = QMessageBox::question( this, QLatin1String( "Tonatiuh" ),
@@ -336,7 +332,7 @@ void ContainerViewer::DeleteSelectedRow()
 /*!
  * Verifies if the table values are well defined.
  */
-bool ContainerViewer::OkToContinue()
+bool ContainerViewerMFVec3::OkToContinue()
 {
 	int rows = variableValuesTable->rowCount();
 	int columns = variableValuesTable->columnCount();
@@ -429,7 +425,7 @@ bool ContainerViewer::OkToContinue()
 }
 
 
-void ContainerViewer::HelpMenu()
+void ContainerViewerMFVec3::HelpMenu()
 {
 	QString message = QString( tr("Angles values\n"
 			"\t- must be defined between [0,0.5*pi]\n"
