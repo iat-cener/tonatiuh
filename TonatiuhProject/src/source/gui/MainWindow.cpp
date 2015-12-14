@@ -844,7 +844,7 @@ void MainWindow::ShowCommandView()
     m_commandView->show();
 }
 
-/*
+
 /*
  * Shows a dialog to define network connections settings.
 

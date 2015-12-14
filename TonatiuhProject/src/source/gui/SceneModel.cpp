@@ -221,9 +221,6 @@ void SceneModel::GenerateInstanceTree( InstanceNode& instanceNodeParent )
 			{
 				GenerateTShapeKitSubTree( instanceNodeParent, parentNode  );
 			}
-			/*else if( parentNode->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
-			{
-			}*/
 			else
 			{
 				GenerateTSeparatorKitSubTree( instanceNodeParent, parentNode  );

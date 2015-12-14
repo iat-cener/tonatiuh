@@ -167,12 +167,14 @@ void FluxAnalysisDialog::ChangeCurrentSurface()
 			if( instanceNode && instanceNode != 0 )
 			{
 
+				ClearCurrentAnalysis();
 				UpdateSurfaceSides( selectedSurfaceURL );
 				return;
 			}
 		}
 		QMessageBox::warning( this, tr( "Tonatiuh" ),
 									 tr( "The surface url defined for is not valid." ) );
+		ClearCurrentAnalysis();
 		UpdateSurfaceSides( QLatin1String( "---" ) );
 	}
 
@@ -549,6 +551,11 @@ void FluxAnalysisDialog::ClearCurrentAnalysis()
 	//Delete previous colormap, scale
 	contourPlotWidget->clearPlottables();
 	contourPlotWidget->replot();
+
+	verticalSectorPlot->clearPlottables();
+	verticalSectorPlot->replot();
+	horizontaSectorPlot->clearPlottables();
+	horizontaSectorPlot->replot();
 
 	totalPowerValue->setText( QString::number(  0.0 )  );
 
@@ -1233,7 +1240,6 @@ void FluxAnalysisDialog::UpdateSurfaceSides( QString selectedSurfaceURL )
 
 	if(m_currentSurfaceURL == selectedSurfaceURL )	return;
 
-	ClearCurrentAnalysis();
 
 	m_currentSurfaceURL = selectedSurfaceURL;
 	sidesCombo->clear();

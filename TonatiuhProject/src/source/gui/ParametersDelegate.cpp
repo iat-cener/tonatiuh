@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
-#include <iostream>
 
 #include <QComboBox>
 #include <QLineEdit>
@@ -144,7 +143,6 @@ void ParametersDelegate::setEditorData(QWidget *editor,
 	}
 	else
 	{
-		std::cout<<"setEditorData else"<<std::endl;
 		QString value = index.model()->data(index, Qt::DisplayRole).toString();
 			
 		QLineEdit  *textEdit = static_cast<QLineEdit *>(editor);
