@@ -344,7 +344,7 @@ bool ContainerViewerMFVec2::OkToContinue()
 			QString itemData = variableValuesTable->item( r,c )->text();
 			if( itemData.isEmpty() )
 			{
-					QString message = QString( tr( "Defines values are not valid. "
+					QString message = QString( tr( "Defined values are not valid. "
 							"Empty value defined at cell [%1,%2]." )).arg( QString::number( r ), QString::number( c ) );
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ),
 							message );
@@ -357,7 +357,7 @@ bool ContainerViewerMFVec2::OkToContinue()
 
 				if( angle < 0.0  || angle > 0.5 * gc::Pi )
 				{
-					QString message = QString( tr( "Defines values are not valid. Angle values must be defined between [0,0.5*pi]" ) );
+					QString message = QString( tr( "Defined values are not valid. Angle values must be defined between [0,0.5*pi]" ) );
 
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
@@ -365,13 +365,13 @@ bool ContainerViewerMFVec2::OkToContinue()
 
 				if( angle == lastAngle )
 				{
-					QString message = QString( tr( "Defines values are not valid. Angle values cannot be repeated." ) );
+					QString message = QString( tr( "Defined values are not valid. Angle values cannot be repeated." ) );
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
 				}
 				if( angle <= lastAngle )
 				{
-					QString message = QString( tr( "Defines values are not valid. Angle values must be defined in increasing order." ) );
+					QString message = QString( tr( "Defined values are not valid. Angle values must be defined in increasing order." ) );
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
 
@@ -385,7 +385,7 @@ bool ContainerViewerMFVec2::OkToContinue()
 
 				if( reflectivity < 0.0  || reflectivity > 1 )
 				{
-					QString message = QString( tr( "Defines values are not valid. Reflectivity values must be defined between [0,1]" ) );
+					QString message = QString( tr( "Defined values are not valid. Reflectivity values must be defined between [0,1]" ) );
 
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
