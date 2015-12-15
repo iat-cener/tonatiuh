@@ -14,7 +14,7 @@
 
 #include <Inventor/fields/SoSubField.h>
 
-#include "ContainerEditor.h"
+#include "ContainerEditorMFVec2.h"
 #include "FieldEditor.h"
 #include "UserMField.h"
 
@@ -43,7 +43,7 @@
 
 		FieldEditor* GetEditor() const
 		{
-			ContainerEditor* editor = new ContainerEditor();
+			ContainerEditorMFVec2* editor = new ContainerEditorMFVec2();
 			editor->SetTitles( GetNames() );
 			return (editor) ;
 		}
@@ -78,7 +78,7 @@
 
 		FieldEditor* GetEditor() const
 		{
-			ContainerEditor* editor = new ContainerEditor();
+			ContainerEditorMFVec2* editor = new ContainerEditorMFVec2();
 			editor->SetTitles( GetNames() );
 			return (editor) ;
 		}

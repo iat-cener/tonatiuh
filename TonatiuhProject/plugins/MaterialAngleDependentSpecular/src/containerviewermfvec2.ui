@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ContainerViewer</class>
- <widget class="QDialog" name="ContainerViewer">
+ <class>ContainerViewerMFVec2</class>
+ <widget class="QDialog" name="ContainerViewerMFVec2">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -62,7 +62,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ContainerViewer</receiver>
+   <receiver>ContainerViewerMFVec2</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

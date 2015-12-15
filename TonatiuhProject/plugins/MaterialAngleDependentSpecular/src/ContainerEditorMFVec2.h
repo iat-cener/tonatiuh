@@ -32,8 +32,8 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 ***************************************************************************/
 
 
-#ifndef CONTAINEREDITOR_H_
-#define CONTAINEREDITOR_H_
+#ifndef CONTAINEREDITORMFVEC2_H_
+#define CONTAINEREDITORMFVEC2_H_
 
 #include <QDialog>
 #include <QDoubleValidator>
@@ -44,12 +44,12 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 #include "FieldEditor.h"
 
-#include "ui_containerviewer.h"
+#include "ui_containerviewermfvec2.h"
 
 /***************************************************************
  * CustomPlainTextEdit
  ***************************************************************/
-class CustomPlainTextEdit: public QLineEdit //QPlainTextEdit
+class CustomPlainTextEdit: public QLineEdit
 {
 	Q_OBJECT
 public:
@@ -65,16 +65,16 @@ protected:
 
 
 /***************************************************************
- * ContainerEditor
+ * ContainerEditorMFVec2
  ***************************************************************/
 
-class ContainerEditor: public FieldEditor
+class ContainerEditorMFVec2: public FieldEditor
 {
 	Q_OBJECT
 
 public:
-	ContainerEditor( QWidget* parent = 0 );
-	~ContainerEditor();
+	ContainerEditorMFVec2( QWidget* parent = 0 );
+	~ContainerEditorMFVec2();
 
 
 	QString GetData( ) const;
@@ -101,17 +101,17 @@ private:
 
 
 /***************************************************************
- * ContainerViewer
+ * ContainerViewerMFVec2
  ***************************************************************/
 
 class DoubleValuesDelegate;
-class ContainerViewer: public QDialog, private Ui::ContainerViewer
+class ContainerViewerMFVec2: public QDialog, private Ui::ContainerViewerMFVec2
 {
 	Q_OBJECT
 
 public:
-	ContainerViewer( QWidget* parent = 0 );
-	~ContainerViewer();
+	ContainerViewerMFVec2( QWidget* parent = 0 );
+	~ContainerViewerMFVec2();
 
 public:
 	QString GetData( ) const;
@@ -130,6 +130,7 @@ protected:
 private:
 	DoubleValuesDelegate* m_delegate;
 };
+
 
 /***************************************************************
  * DoubleValuesDelegate
@@ -156,4 +157,4 @@ public:
 };
 
 
-#endif /* CONTAINEREDITOR_H_ */
+#endif /* CONTAINEREDITORMFVEC2_H_ */
