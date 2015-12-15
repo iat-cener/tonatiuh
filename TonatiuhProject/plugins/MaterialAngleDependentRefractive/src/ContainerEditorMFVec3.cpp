@@ -358,7 +358,7 @@ bool ContainerViewerMFVec3::OkToContinue()
 
 				if( angle < 0.0  || angle > 0.5 * gc::Pi )
 				{
-					QString message = QString( tr( "Defines values are not valid. Angle values must be defined between [0,0.5*pi]" ) );
+					QString message = QString( tr( "Defined values are not valid. Angle values must be defined between [0,0.5*pi]" ) );
 
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
@@ -366,13 +366,13 @@ bool ContainerViewerMFVec3::OkToContinue()
 
 				if( angle == lastAngle )
 				{
-					QString message = QString( tr( "Defines values are not valid. Angle values cannot be repeated." ) );
+					QString message = QString( tr( "Defined values are not valid. Angle values cannot be repeated." ) );
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
 				}
 				if( angle <= lastAngle )
 				{
-					QString message = QString( tr( "Defines values are not valid. Angle values must be defined in increasing order." ) );
+					QString message = QString( tr( "Defined values are not valid. Angle values must be defined in increasing order." ) );
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
 
@@ -386,7 +386,7 @@ bool ContainerViewerMFVec3::OkToContinue()
 
 				if( reflectivity < 0.0  || reflectivity > 1 )
 				{
-					QString message = QString( tr( "Defines values are not valid. Reflectivity values must be defined between [0,1]" ) );
+					QString message = QString( tr( "Defined values are not valid. Reflectivity values must be defined between [0,1]" ) );
 
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
@@ -399,7 +399,7 @@ bool ContainerViewerMFVec3::OkToContinue()
 
 				if( transmissivity < 0.0  || transmissivity > 1 )
 				{
-					QString message = QString( tr( "Defines values are not valid. Transmissivity values must be defined between [0,1]" ) );
+					QString message = QString( tr( "Defined values are not valid. Transmissivity values must be between [0,1]" ) );
 
 					QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 					return ( false );
@@ -413,7 +413,7 @@ bool ContainerViewerMFVec3::OkToContinue()
 		double transmissivity =itemDataT.toDouble();
 		if( reflectivity + transmissivity < 0.0  || reflectivity + transmissivity > 1 )
 						{
-							QString message = QString( tr( "Defines values are not valid. The sum between transmissivity and reflectivity values  must be defined between [0,1]" ) );
+							QString message = QString( tr( "Defined values are not valid. The sum between transmissivity and reflectivity values for each angle must be between [0,1]" ) );
 
 							QMessageBox::warning( this,  QLatin1String( "Tonatiuh" ), message );
 							return ( false );
@@ -431,8 +431,9 @@ void ContainerViewerMFVec3::HelpMenu()
 			"\t- must be defined between [0,0.5*pi]\n"
 			"\t- must be defined in increasing order\n"
 			"\t- cannot be repeated\n\n"
-			"Reflectivity values\n"
-			"\t- must be defined between [0,1]" ) );
+			"Reflectivity/Transmissivity values\n"
+			"\t- must be defined between [0,1]\n\n"
+			"The sum between transmissivity and reflectivity values for each angle must be defined between [0,1]") );
 	QMessageBox::information( this,  QLatin1String( "Tonatiuh" ), message );
 }
 
