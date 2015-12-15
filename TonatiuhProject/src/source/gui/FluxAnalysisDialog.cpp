@@ -682,13 +682,21 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	int widthDivisionsError = m_widthDivisions-2;
 	int heightDivisionsError = m_heightDivisions-2;
 
-	int photonCountsError[heightDivisionsError][widthDivisionsError];
+	/*int photonCountsError[heightDivisionsError][widthDivisionsError];
 	for( int h = 0; h < heightDivisionsError; h++ )
 	{
 		for( int w = 0; w < widthDivisionsError; w++ )
 			photonCountsError[h][w] = 0;
-	}
+	}*/
 
+	std::vector< std::vector<int> > photonCountsError;
+	photonCountsError.resize(heightDivisionsError);
+	for(int i = 0 ; i < heightDivisionsError ; ++i)
+		{
+			photonCountsError[i].resize(widthDivisionsError);
+			for(int j=0; j < widthDivisionsError; j++)
+				photonCountsError[i][j]=0;
+		}
 
 	int activeSideID = 1;
 	if( sidesCombo->currentText() == QLatin1String( "INSIDE" ) )
@@ -901,13 +909,21 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	int widthDivisionsError = m_widthDivisions-2;
 	int heightDivisionsError = m_heightDivisions-2;
 
-	int photonCountsError[heightDivisionsError][widthDivisionsError];
+	/*int photonCountsError[heightDivisionsError][widthDivisionsError];
 	for( int h = 0; h < heightDivisionsError; h++ )
 	{
 		for( int w = 0; w < widthDivisionsError; w++ )
 			photonCountsError[h][w] = 0;
-	}
+	}*/
 
+	std::vector< std::vector<int> > photonCountsError;
+	photonCountsError.resize(heightDivisionsError);
+		for(int i = 0 ; i < heightDivisionsError ; ++i)
+		{
+			photonCountsError[i].resize(widthDivisionsError);
+			for(int j=0; j < widthDivisionsError; j++)
+			    photonCountsError[i][j]=0;
+		}
 
 	int activeSideID = 1;
 	if( sidesCombo->currentText() == QLatin1String( "BACK" ) )
@@ -1123,12 +1139,21 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 	int widthDivisionsError = m_widthDivisions-2;
 	int heightDivisionsError = m_heightDivisions-2;
 
-	int photonCountsError[heightDivisionsError][widthDivisionsError];
+	/*int photonCountsError[heightDivisionsError][widthDivisionsError];
 	for( int h = 0; h < heightDivisionsError; h++ )
 	{
 		for( int w = 0; w < widthDivisionsError; w++ )
 			photonCountsError[h][w] = 0;
-	}
+	}*/
+
+	std::vector< std::vector<int> > photonCountsError;
+	photonCountsError.resize(heightDivisionsError);
+		for(int i = 0 ; i < heightDivisionsError ; ++i)
+		{
+			photonCountsError[i].resize(widthDivisionsError);
+			for(int j=0; j < widthDivisionsError; j++)
+				photonCountsError[i][j]=0;
+		}
 
 	int activeSideID = 1;
 	if( sidesCombo->currentText() == QLatin1String( "BACK" ) )
