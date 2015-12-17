@@ -1,6 +1,21 @@
 ![http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif](http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif)
 # News #
 
+## Tonatiuh release 2.1.0 is now available!##
+This is a minor relase of Tonatiuh. It introduces some modification to the tool to allow users to execute the application from a shell or other tools using a Tonatiuh scripting file.
+
+In addition to the changes related to scripting, new plugins have been included in this Tonatiuh version:
+
+•ShapeCAD: this plugin add the capability to import surface geometries from CAD files. Current version of the plugins only read STL files. The plug-in has been developed in activities that are being performed in subtask 12.2.2 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
+
+
+•TrackerZAxis: new one axis tracker plug-in for Z axis rotations.
+
+
+•MaterialOneSideSpecular
+
+
+
 ## First workshop on Tonatiuh ##
 
 First TONATIUH workshop, with title “An introduction to TONATIUH”, has been successfully delivered by Amaia Mutuberria, Senior researcher of CENER Solar Thermal Energy Department.
