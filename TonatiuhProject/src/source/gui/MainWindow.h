@@ -217,7 +217,6 @@ private slots:
 private:
     void ChangeModelScene();
 	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
-    QToolBar* CreateMaterialsTooBar( QMenu* pMaterialsMenu );
     PhotonMapExport* CreatePhotonMapExport() const;
     QToolBar* CreateTrackerTooBar( QMenu* pMaterialsMenu );
     bool Delete( QModelIndex index );
@@ -269,10 +268,6 @@ private:
     Document* m_document;
     QStringList m_recentFiles;
     QAction** m_recentFileActions;//[m_maxRecentFiles];
-    QToolBar* m_materialsToolBar;
-    QToolBar* m_photonMapToolBar;
-    QToolBar* m_shapeToolBar;
-    QToolBar* m_trackersToolBar;
 
     PluginManager* m_pPluginManager;
 
