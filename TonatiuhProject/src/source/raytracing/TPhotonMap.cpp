@@ -8,6 +8,7 @@
 TPhotonMap::TPhotonMap()
 :m_bufferSize( 0 ),
  m_pExportPhotonMap( 0 ),
+ m_pSceneModel( 0 ),
  m_storedPhotonsInBuffer( 0 ),
  m_storedAllPhotons( 0 )
 {

@@ -108,11 +108,6 @@ SbBool  TSeparatorKit::setPart(const SbName& partname, SoNode* from )
     	{
         	TTracker* trackerNode = static_cast< TTracker* >( from );
 			trackerNode->ConnectParentTranform(parentTransform);
-        	/*parentTransform->translation.connectFrom( &trackerNode->outputTranslation );
-        	parentTransform->rotation.connectFrom( &trackerNode->outputRotation );
-        	parentTransform->scaleFactor.connectFrom( &trackerNode->outputScaleFactor );
-        	parentTransform->scaleOrientation.connectFrom( &trackerNode->outputScaleOrientation );
-        	parentTransform->center.connectFrom( &trackerNode->outputCenter );*/
     	}
     }
 
