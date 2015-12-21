@@ -21,8 +21,7 @@ DEPENDPATH += . \
               
  
               
-QT += xml opengl svg  script network
-
+QT += xml opengl svg  script 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += concurrent printsupport 
 } 
