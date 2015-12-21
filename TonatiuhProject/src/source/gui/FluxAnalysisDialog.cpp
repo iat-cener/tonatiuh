@@ -7,6 +7,7 @@
 
 #include <cmath>
 
+#include <QFileDialog>
 #include <QFutureWatcher>
 #include <QMessageBox>
 #include <QMutex>
