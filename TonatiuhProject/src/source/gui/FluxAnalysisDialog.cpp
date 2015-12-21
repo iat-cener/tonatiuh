@@ -60,9 +60,9 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
  m_xmax( 0.0 ),
  m_ymin( 0.0 ),
  m_ymax( 0.0 ),
+ m_photonCounts(0),
  m_heightDivisions( 0 ),
- m_widthDivisions( 0 ),
- m_photonCounts(0)
+ m_widthDivisions( 0 )
 {
 	setupUi( this );
 
