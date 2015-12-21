@@ -233,11 +233,11 @@ SoSeparator* HorizontalWidget::Ejes() const
   	ejes->addChild(myMaterial);
 
 	float p[6][3]={{0.0, 0.0, 0.0},
-	 				{sphereRadio+20, 0.0, 0.0},
+	 				{ float( sphereRadio+20 ), 0.0, 0.0},
 					{0.0, 0.0, 0.0},
-					{0.0, sphereRadio+20, 0.0},
+					{0.0, float( sphereRadio+20 ), 0.0},
 					{0.0, 0.0, 0.0},
-					{0.0, 0.0, sphereRadio+20}};
+					{0.0, 0.0, float( sphereRadio+20 )}};
 
   	SoCoordinate3* coord3 = new SoCoordinate3;
   	coord3->point.setValues(0, 6, p);
