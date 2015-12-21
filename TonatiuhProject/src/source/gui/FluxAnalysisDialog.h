@@ -8,7 +8,13 @@
 #ifndef FLUXANALYSISDIALOG_H_
 #define FLUXANALYSISDIALOG_H_
 
+#include <functional>
+
 #include <QDialog>
+
+#include "Point3D.h"
+#include "Transform.h"
+
 
 #include "TPhotonMap.h"
 
@@ -45,9 +51,7 @@ private slots:
 
 private:
 	void ClearCurrentAnalysis();
-	void FluxAnalysisCylinder(  InstanceNode* node );
-	void FluxAnalysisFlatRectangle(  InstanceNode* node  );
-	void FluxAnalysisFlatDisk( InstanceNode* node );
+	void FluxAnalysis( int activeSideID,  std::function< Point3D( Point3D, std::vector<double>)  > transformFunction, std::vector<double> parametersList, Transform wTO );
 	void UpdateSurfaceSides( QString selectedSurfaceURL );
 
 

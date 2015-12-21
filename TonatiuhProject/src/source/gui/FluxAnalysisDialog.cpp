@@ -77,8 +77,6 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	contourPlotWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.34 );
 	sectorsWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.34 );
 	statisticalWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.25 );
-	//exportWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.03 );
-
 
 
 	connect( selectButton, SIGNAL( clicked() ), this, SLOT( SelectSurface() ) );
@@ -148,7 +146,6 @@ void  FluxAnalysisDialog::resizeEvent(QResizeEvent* /*event*/)
 	contourPlotWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.34 );
 	sectorsWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.34 );
 	statisticalWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.25 );
-	//exportWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.03 );
 
 }
 
@@ -404,6 +401,7 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	QObject::connect(&futureWatcher, SIGNAL(progressRangeChanged(int, int)), &dialog, SLOT(setRange(int, int)));
 	QObject::connect(&futureWatcher, SIGNAL(progressValueChanged(int)), &dialog, SLOT(setValue(int)));
 
+
 	QMutex mutex;
 	QMutex mutexPhotonMap;
 	QFuture< void > photonMap;
@@ -427,6 +425,7 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	dialog.exec();
 	futureWatcher.waitForFinished();
 
+
 	m_tracedRays += raysPerIteration;
 
 	double irradiance = sunShape->GetIrradiance();
@@ -434,12 +433,13 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	m_wPhoton = double ( inputAperture * irradiance ) / m_tracedRays;
 
 
-
+	/*
 	TShapeKit* shapeKit = static_cast< TShapeKit* > ( surfaceNode->GetNode() );
 	if( !shapeKit || shapeKit == 0 )	return;
 
 	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
 	if( !shape || shape == 0 )	return;
+
 
 	if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeFlatRectangle" ) )
 	{
@@ -447,12 +447,15 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	}
 	else if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeFlatDisk" ) )
 	{
-		FluxAnalysisFlatDisk( surfaceNode);
+
+		FluxAnalysisFlatDisk( instanceNode );
 	}
 	else if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeCylinder" ) )
 	{
 		FluxAnalysisCylinder( surfaceNode );
 	}
+	*/
+	UpdateAnalysis();
 
 	appendCheck->setEnabled( true );
 
@@ -514,17 +517,114 @@ void FluxAnalysisDialog::UpdateAnalysis(  )
 	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
 	if( !shape || shape == 0 )	return;
 
+
+	Transform worldToObject = instanceNode->GetIntersectionTransform();
+
 	if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeFlatRectangle" ) )
 	{
-		FluxAnalysisFlatRectangle( instanceNode );
+		//FluxAnalysisFlatRectangle( instanceNode );
+		trt::TONATIUH_REAL* widthField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "width" ) );
+		double surfaceWidth = widthField->getValue();
+
+		trt::TONATIUH_REAL* heightField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "height" ) );
+		double surfaceHeight= heightField->getValue();
+
+		int activeSideID = 1;
+		if( sidesCombo->currentText() == QLatin1String( "BACK" ) )
+			activeSideID = 0;
+
+
+		m_xmin = -0.5 * surfaceHeight;
+		m_ymin = -0.5 * surfaceWidth;
+
+		m_xmax = 0.5 * surfaceHeight;
+		m_ymax = 0.5 * surfaceWidth;
+
+		std::function< Point3D (Point3D, std::vector<double> ) > transformFunction = [] (Point3D pInLocal, std::vector<double> /*parameters*/  )
+				{
+					return ( Point3D( pInLocal.x, pInLocal.z, 0.0 ) );
+				};
+
+		std::vector<double> emptyList;
+		FluxAnalysis( activeSideID, transformFunction, emptyList, worldToObject );
+
+
 	}
 	else if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeFlatDisk" ) )
 	{
-		FluxAnalysisFlatDisk( instanceNode );
+		//FluxAnalysisFlatDisk( instanceNode );
+		int activeSideID = 1;
+		if( sidesCombo->currentText() == QLatin1String( "BACK" ) )
+			activeSideID = 0;
+
+		trt::TONATIUH_REAL* radiusField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "radius" ) );
+		double radius = radiusField->getValue();
+
+		m_xmin = -radius;
+		m_ymin = -radius;
+		m_xmax = radius;
+		m_ymax = radius;
+
+
+		std::function< Point3D (Point3D, std::vector<double>) > transformFunction = [] (Point3D pInLocal, std::vector<double> /*parameters*/  )
+				{
+					return ( Point3D( pInLocal.x, pInLocal.z, 0.0 ) );
+				};
+
+
+		std::vector<double> emptyList;
+		FluxAnalysis( activeSideID, transformFunction, emptyList, worldToObject );
+
 	}
 	else if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeCylinder" ) )
 	{
-		FluxAnalysisCylinder( instanceNode );
+
+		//FluxAnalysisCylinder( instanceNode );
+
+		trt::TONATIUH_REAL* radiusField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "radius" ) );
+		double radius = radiusField->getValue();
+
+		trt::TONATIUH_REAL* lengthField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "length" ) );
+		double length = lengthField->getValue();
+
+		trt::TONATIUH_REAL* phiMaxField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "phiMax" ) );
+		double phiMax = phiMaxField->getValue();
+
+		int activeSideID = 1;
+		if( sidesCombo->currentText() == QLatin1String( "INSIDE" ) )
+			activeSideID = 0;
+
+
+		m_xmin = 0.0;
+		m_ymin = 0.0;
+		m_xmax = phiMax  * radius;
+		m_ymax = length;
+
+		/*
+		Point3D photonLocalCoord = worldToObject( photon->pos );
+					double phi  = atan2( photonLocalCoord.y, photonLocalCoord.x );
+					if( phi < 0.0 ) phi += 2* gc::Pi;
+					double arcLength = phi * radius;
+					//std::cout<<"m_xmax: "<<m_xmax <<"arcLength: "<<arcLength<<std::endl;
+					int xbin = floor( ( arcLength - m_xmin)/(m_xmax - m_xmin) * m_widthDivisions) ;
+					int ybin = floor( (photonLocalCoord.z - m_ymin)/(m_ymax - m_ymin) * m_heightDivisions);
+*/
+
+		std::function< Point3D (Point3D, std::vector<double> ) > transformFunction = [] (Point3D pInLocal, std::vector<double> parameters )
+				{
+					double radius = parameters[0];
+					double phi  = atan2( pInLocal.y, pInLocal.x );
+					if( phi < 0.0 ) phi += 2* gc::Pi;
+					double arcLength = phi * radius;
+
+					return ( Point3D( arcLength, pInLocal.z, 0.0 ) );
+				};
+
+		std::vector<double> parametersList;
+		parametersList.push_back( radius );
+
+		FluxAnalysis( activeSideID, transformFunction, parametersList, worldToObject );
+
 	}
 
 }
@@ -644,33 +744,13 @@ void FluxAnalysisDialog::ClearCurrentAnalysis()
 
 }
 
-void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
+
+void FluxAnalysisDialog::FluxAnalysis( int activeSideID, std::function< Point3D( Point3D, std::vector<double>  ) > transformFunction, std::vector<double> parametersList, Transform wTO )
 {
-
-	if( !node )	return;
-	TShapeKit* surfaceNode = static_cast< TShapeKit* > ( node->GetNode() );
-	if( !surfaceNode )	return;
-
-	TShape* shape = static_cast< TShape* >( surfaceNode->getPart( "shape", false ) );
-	if( !shape || shape == 0 )	return;
-
-
-	if( shape->getTypeId().getName().getString() != QLatin1String( "ShapeCylinder" ) )	return;
-
-	trt::TONATIUH_REAL* radiusField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "radius" ) );
-	double radius = radiusField->getValue();
-
-	trt::TONATIUH_REAL* lengthField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "length" ) );
-	double length = lengthField->getValue();
-
-	trt::TONATIUH_REAL* phiMaxField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "phiMax" ) );
-	double phiMax = phiMaxField->getValue();
-
-
 	m_widthDivisions = gridWidthSpin->value();
 	m_heightDivisions = gridHeightSpin->value();
 
-	//int photonCounts[heightDivisions][widthDivisions];
+
 	m_photonCounts = new int*[m_heightDivisions];
 	for( int h = 0; h < m_heightDivisions; h++ )
 	{
@@ -679,35 +759,21 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 			m_photonCounts[h][w] = 0;
 	}
 
+
 	int widthDivisionsError = m_widthDivisions-2;
 	int heightDivisionsError = m_heightDivisions-2;
 
-	/*int photonCountsError[heightDivisionsError][widthDivisionsError];
-	for( int h = 0; h < heightDivisionsError; h++ )
-	{
-		for( int w = 0; w < widthDivisionsError; w++ )
-			photonCountsError[h][w] = 0;
-	}*/
+
 
 	std::vector< std::vector<int> > photonCountsError;
 	photonCountsError.resize(heightDivisionsError);
 	for(int i = 0 ; i < heightDivisionsError ; ++i)
-		{
-			photonCountsError[i].resize(widthDivisionsError);
-			for(int j=0; j < widthDivisionsError; j++)
-				photonCountsError[i][j]=0;
-		}
+	{
+		photonCountsError[i].resize(widthDivisionsError);
+		for(int j=0; j < widthDivisionsError; j++)
+			photonCountsError[i][j]=0;
+	}
 
-	int activeSideID = 1;
-	if( sidesCombo->currentText() == QLatin1String( "INSIDE" ) )
-		activeSideID = 0;
-
-	Transform worldToObject = node->GetIntersectionTransform();
-
-	m_xmin = 0.0;
-	m_ymin = 0.0;
-	m_xmax = phiMax  * radius;
-	m_ymax = length;
 
 	double maximumPhotons = 0;
 	int maximumPhotonsXCoord = 0;
@@ -720,13 +786,10 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 		Photon* photon = photonList[p];
 		if( photon->side == activeSideID )
 		{
-			Point3D photonLocalCoord = worldToObject( photon->pos );
-			double phi  = atan2( photonLocalCoord.y, photonLocalCoord.x );
-			if( phi < 0.0 ) phi += 2* gc::Pi;
-			double arcLength = phi * radius;
-			//std::cout<<"m_xmax: "<<m_xmax <<"arcLength: "<<arcLength<<std::endl;
-			int xbin = floor( ( arcLength - m_xmin)/(m_xmax - m_xmin) * m_widthDivisions) ;
-			int ybin = floor( (photonLocalCoord.z - m_ymin)/(m_ymax - m_ymin) * m_heightDivisions);
+			Point3D photonLocalCoord = transformFunction( wTO( photon->pos ), parametersList );
+
+			int xbin = floor( ( photonLocalCoord.x - m_xmin)/(m_xmax - m_xmin) * m_widthDivisions);
+			int ybin = floor( (photonLocalCoord.y - m_ymin)/(m_ymax - m_ymin) * m_heightDivisions);
 			m_photonCounts[ybin][xbin] += 1;
 			if( maximumPhotons < m_photonCounts[ybin][xbin] )
 			{
@@ -735,242 +798,16 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 				maximumPhotonsYCoord = ybin;
 			}
 
-			int xbinE = floor( ( arcLength - m_xmin)/(m_xmax-m_xmin) * widthDivisionsError) ;
-			int ybinE = floor( (photonLocalCoord.z - m_ymin)/(m_ymax-m_ymin) * heightDivisionsError);
+
+			int xbinE = floor( ( photonLocalCoord.x - m_xmin)/(m_xmax-m_xmin) * widthDivisionsError) ;
+			int ybinE = floor( (photonLocalCoord.y - m_ymin)/(m_ymax-m_ymin) * heightDivisionsError);
 			photonCountsError[ybinE][xbinE] += 1;
 			if( maximumPhotonsError < photonCountsError[ybinE][xbinE] )
-			{
 				maximumPhotonsError = photonCountsError[ybinE][xbinE];
-			}
 
 
 		}
 	}
-
-
-	double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
-	double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
-	double areaCell = widthCell * heightCell;
-	m_maximumFlux = ( maximumPhotons * m_wPhoton) / areaCell;
-
-	//Delete previous colormap, scale
-	contourPlotWidget->clearPlottables();
-	contourPlotWidget->clearItems();
-
-	// Create a QCPColorMap object to draw flux distribution
-	QCPColorMap* colorMap = new QCPColorMap(contourPlotWidget->xAxis, contourPlotWidget->yAxis);
-	contourPlotWidget->addPlottable(colorMap);
-
-	int nx = m_widthDivisions;
-	int ny = m_heightDivisions;
-	colorMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
-	colorMap->data()->setRange(QCPRange(m_xmin, m_xmax), QCPRange(m_ymin, m_ymax)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
-
-	// assign flux data
-	//Calculate total flux, minimum flux, average flux
-	double totalFlux = 0.0;
-	double minimumFlux = gc::Infinity;
-	double gravityX = 0.0;
-	double gravityY = 0.0;
-	for (int xIndex=0; xIndex< nx; ++xIndex)
-	{
-		for (int yIndex=0; yIndex<ny; ++yIndex)
-		{
-			double cellFlux = m_photonCounts[yIndex][xIndex] * m_wPhoton / areaCell;
-			colorMap->data()->setCell(xIndex, yIndex, cellFlux );
-			totalFlux += cellFlux;
-			if( minimumFlux > cellFlux )	minimumFlux = cellFlux;
-
-			gravityX += cellFlux * ( m_xmin + ( xIndex+ 0.5 ) * widthCell  );
-			gravityY += cellFlux * ( m_ymin + ( yIndex+ 0.5 ) * heightCell  );
-
-		}
-	}
-	double averageFlux = totalFlux / (m_widthDivisions * m_heightDivisions );
-	gravityX /= totalFlux;
-	gravityY /= totalFlux;
-
-	// Create a vertical and horizontal line for sectors
-	QCPItemLine* tickVLine  =new QCPItemLine( contourPlotWidget );
-	hSectorXCoordSpin->setMinimum( m_xmin );
-	hSectorXCoordSpin->setMaximum( m_xmax );
-	hSectorXCoordSpin->setSingleStep( (m_xmax-m_xmin ) /10 );
-	hSectorXCoordSpin->setValue(0 );
-
-	contourPlotWidget->addItem( tickVLine );
-	tickVLine->start->setCoords( 0, m_ymin - 1);
-	tickVLine->end->setCoords( 0, m_ymax + 1);
-	tickVLine->setPen( QPen( QColor( 137, 140, 140), 1 ) );
-
-	QCPItemLine* tickHLine = new QCPItemLine( contourPlotWidget );
-	hSectorYCoordSpin->setMinimum( m_ymin );
-	hSectorYCoordSpin->setMaximum( m_ymax );
-	hSectorYCoordSpin->setSingleStep( (m_ymax-m_ymin ) /10 );
-	hSectorYCoordSpin->setValue( 0  );
-
-	contourPlotWidget->addItem( tickHLine );
-	tickHLine->start->setCoords(m_xmin -1 ,  0 );
-	tickHLine->end->setCoords( m_xmax + 1, 0 );
-	tickHLine->setPen( QPen( QColor(137, 140, 140), 1));
-
-
-	// add a color scale:
-	QCPColorScale* colorScale = new QCPColorScale(contourPlotWidget);
-	contourPlotWidget->plotLayout()->addElement(1, 1, colorScale); // add it to the right of the main axis rect
-
-	colorScale->setType( QCPAxis::atRight ); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
-	colorMap->setColorScale( colorScale ); // associate the color map with the color scale
-	//colorScale->axis()->setLabel("Flux");
-
-
-	// set the  contour plot color
-	colorMap->setGradient(QCPColorGradient::gpSpectrum);
-
-	// rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
-	colorMap->rescaleDataRange();
-
-	// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
-	QCPMarginGroup* marginGroup = new QCPMarginGroup(contourPlotWidget);
-	contourPlotWidget->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
-	colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
-
-
-	// rescale axes and update plot view
-	contourPlotWidget->rescaleAxes();
-	contourPlotWidget->replot();
-
-
-
-	//Sectors plots
-
-	UpdateSectorPlots();
-
-
-
-	//Statistical data
-	totalPowerValue->setText( QString::number(  photonList.size() * m_wPhoton)  );
-
-	minimumFluxValue->setText(QString::number( minimumFlux )  );
-	averageFluxValue->setText(QString::number( averageFlux )  );
-	maximumFluxValue->setText(QString::number( m_maximumFlux ) );
-
-	maxCoordinatesValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( m_xmin + ( maximumPhotonsXCoord + 0.5 ) * widthCell ),
-			QString::number( m_ymin + ( maximumPhotonsYCoord + 0.5 ) * heightCell  ) ) );
-
-	double maximumFluxError = ( maximumPhotonsError * m_wPhoton) / ( ( (m_xmax-m_xmin) / widthDivisionsError ) * ( (m_ymax-m_ymin) / heightDivisionsError ) ) ;
-
-	errorValue->setText( QString::number(  fabs( m_maximumFlux - maximumFluxError )/ m_maximumFlux )  );
-
-	double E=0;
-	for (int xIndex=0; xIndex< nx; ++xIndex)
-	{
-		for (int yIndex=0; yIndex<ny; ++yIndex)
-		{
-			double cellFlux = m_photonCounts[yIndex][xIndex] * m_wPhoton / areaCell;
-			E += ( cellFlux - averageFlux )*(cellFlux - averageFlux);
-
-		}
-	}
-	double standarDeviation = sqrt( E / (m_widthDivisions * m_heightDivisions )  );
-	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
-	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
-
-
-}
-
-/*
- * Executes the flux analysis for the surface \a node that is a flat disk surface.
- */
-void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
-{
-	if( !node )	return;
-	TShapeKit* surfaceNode = static_cast< TShapeKit* > ( node->GetNode() );
-	if( !surfaceNode )	return;
-
-	TShape* shape = static_cast< TShape* >( surfaceNode->getPart( "shape", false ) );
-	if( !shape || shape == 0 )	return;
-
-	trt::TONATIUH_REAL* radiusField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "radius" ) );
-	double radius = radiusField->getValue();
-
-
-	m_widthDivisions = gridWidthSpin->value();
-	m_heightDivisions = gridHeightSpin->value();
-
-	//int photonCounts[heightDivisions][widthDivisions];
-	m_photonCounts = new int*[m_heightDivisions];
-	for( int h = 0; h < m_heightDivisions; h++ )
-	{
-		m_photonCounts[h] = new int[m_widthDivisions];
-		for( int w = 0; w < m_widthDivisions; w++ )
-			m_photonCounts[h][w] = 0;
-	}
-
-	int widthDivisionsError = m_widthDivisions-2;
-	int heightDivisionsError = m_heightDivisions-2;
-
-	/*int photonCountsError[heightDivisionsError][widthDivisionsError];
-	for( int h = 0; h < heightDivisionsError; h++ )
-	{
-		for( int w = 0; w < widthDivisionsError; w++ )
-			photonCountsError[h][w] = 0;
-	}*/
-
-	std::vector< std::vector<int> > photonCountsError;
-	photonCountsError.resize(heightDivisionsError);
-		for(int i = 0 ; i < heightDivisionsError ; ++i)
-		{
-			photonCountsError[i].resize(widthDivisionsError);
-			for(int j=0; j < widthDivisionsError; j++)
-			    photonCountsError[i][j]=0;
-		}
-
-	int activeSideID = 1;
-	if( sidesCombo->currentText() == QLatin1String( "BACK" ) )
-		activeSideID = 0;
-
-	Transform worldToObject = node->GetIntersectionTransform();
-
-
-	m_xmin = -radius;
-	m_ymin = -radius;
-	m_xmax = radius;
-	m_ymax = radius;
-
-	double maximumPhotons = 0;
-	int maximumPhotonsXCoord = 0;
-	int maximumPhotonsYCoord = 0;
-	double maximumPhotonsError = 0;
-
-	std::vector< Photon* > photonList = m_pPhotonMap->GetAllPhotons();
-	for( unsigned int p = 0; p < photonList.size(); p++ )
-	{
-		Photon* photon = photonList[p];
-		if( photon->side == activeSideID )
-		{
-			Point3D photonLocalCoord = worldToObject( photon->pos );
-			int xbin = floor( (photonLocalCoord.x - m_xmin)/(m_xmax - m_xmin) * m_widthDivisions) ;
-			int ybin = floor( (photonLocalCoord.z - m_ymin)/(m_ymax - m_ymin) * m_heightDivisions);
-			m_photonCounts[ybin][xbin] += 1;
-			if( maximumPhotons < m_photonCounts[ybin][xbin] )
-			{
-				maximumPhotons = m_photonCounts[ybin][xbin];
-				maximumPhotonsXCoord = xbin;
-				maximumPhotonsYCoord = ybin;
-			}
-
-			int xbinE = floor( (photonLocalCoord.x - m_xmin)/(m_xmax-m_xmin) * widthDivisionsError) ;
-			int ybinE = floor( (photonLocalCoord.z - m_ymin)/(m_ymax-m_ymin) * heightDivisionsError);
-			photonCountsError[ybinE][xbinE] += 1;
-			if( maximumPhotonsError < photonCountsError[ybinE][xbinE] )
-			{
-				maximumPhotonsError = photonCountsError[ybinE][xbinE];
-			}
-
-
-		}
-	}
-
 
 	double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
 	double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
@@ -1100,235 +937,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
 	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
 
-}
 
-
-/*
- * Executes the flux analysis for the surface \a node that is a flat rectangle surface.
- */
-void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
-{
-
-	if( !node )	return;
-
-	TShapeKit* surfaceNode = static_cast< TShapeKit* > ( node->GetNode() );
-	if( !surfaceNode )	return;
-
-	TShape* shape = static_cast< TShape* >( surfaceNode->getPart( "shape", false ) );
-	if( !shape || shape == 0 )	return;
-
-	if( shape->getTypeId().getName().getString() != QLatin1String( "ShapeFlatRectangle" ) )	return;
-
-	trt::TONATIUH_REAL* widthField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "width" ) );
-	double surfaceWidth = widthField->getValue();
-
-	trt::TONATIUH_REAL* heightField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "height" ) );
-	double surfaceHeight= heightField->getValue();
-
-	m_widthDivisions = gridWidthSpin->value();
-	m_heightDivisions = gridHeightSpin->value();
-
-	m_photonCounts = new int*[m_heightDivisions];
-	for( int h = 0; h < m_heightDivisions; h++ )
-	{
-		m_photonCounts[h] = new int[m_widthDivisions];
-		for( int w = 0; w < m_widthDivisions; w++ )
-			m_photonCounts[h][w] = 0;
-	}
-
-	int widthDivisionsError = m_widthDivisions-2;
-	int heightDivisionsError = m_heightDivisions-2;
-
-	/*int photonCountsError[heightDivisionsError][widthDivisionsError];
-	for( int h = 0; h < heightDivisionsError; h++ )
-	{
-		for( int w = 0; w < widthDivisionsError; w++ )
-			photonCountsError[h][w] = 0;
-	}*/
-
-	std::vector< std::vector<int> > photonCountsError;
-	photonCountsError.resize(heightDivisionsError);
-		for(int i = 0 ; i < heightDivisionsError ; ++i)
-		{
-			photonCountsError[i].resize(widthDivisionsError);
-			for(int j=0; j < widthDivisionsError; j++)
-				photonCountsError[i][j]=0;
-		}
-
-	int activeSideID = 1;
-	if( sidesCombo->currentText() == QLatin1String( "BACK" ) )
-		activeSideID = 0;
-
-	Transform worldToObject = node->GetIntersectionTransform();
-
-	m_xmin = -0.5 * surfaceHeight;
-	m_ymin = -0.5 * surfaceWidth;
-
-	m_xmax = 0.5 * surfaceHeight;
-	m_ymax = 0.5 * surfaceWidth;
-
-	double maximumPhotons = 0;
-	int maximumPhotonsXCoord = 0;
-	int maximumPhotonsYCoord = 0;
-	double maximumPhotonsError = 0;
-
-	std::vector< Photon* > photonList = m_pPhotonMap->GetAllPhotons();
-	for( unsigned int p = 0; p < photonList.size(); p++ )
-	{
-		Photon* photon = photonList[p];
-		if( photon->side == activeSideID )
-		{
-			Point3D photonLocalCoord = worldToObject( photon->pos );
-			int xbin = floor( (photonLocalCoord.x - m_xmin)/(m_xmax - m_xmin) * m_widthDivisions) ;
-			int ybin = floor( (photonLocalCoord.z - m_ymin)/(m_ymax - m_ymin) * m_heightDivisions);
-
-			m_photonCounts[ybin][xbin] += 1;
-			if( maximumPhotons < m_photonCounts[ybin][xbin] )
-			{
-				maximumPhotons = m_photonCounts[ybin][xbin];
-				maximumPhotonsXCoord = xbin;
-				maximumPhotonsYCoord = ybin;
-			}
-
-			int xbinE = floor( (photonLocalCoord.x - m_xmin)/(m_xmax-m_xmin) * widthDivisionsError) ;
-			int ybinE = floor( (photonLocalCoord.z - m_ymin)/(m_ymax-m_ymin) * heightDivisionsError);
-			photonCountsError[ybinE][xbinE] += 1;
-			if( maximumPhotonsError < photonCountsError[ybinE][xbinE] )
-			{
-				maximumPhotonsError = photonCountsError[ybinE][xbinE];
-			}
-
-
-		}
-	}
-
-
-	double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
-	double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
-	double areaCell = widthCell * heightCell;
-	m_maximumFlux = ( maximumPhotons * m_wPhoton) / areaCell;
-
-	//Delete previous colormap, scale
-	contourPlotWidget->clearPlottables();
-	contourPlotWidget->clearItems();
-
-	// Create a QCPColorMap object to draw flux distribution
-	QCPColorMap* colorMap = new QCPColorMap(contourPlotWidget->xAxis, contourPlotWidget->yAxis);
-	contourPlotWidget->addPlottable(colorMap);
-
-	int nx = m_widthDivisions;
-	int ny = m_heightDivisions;
-	colorMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
-	colorMap->data()->setRange(QCPRange(m_xmin, m_xmax), QCPRange(m_ymin, m_ymax)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
-
-	// assign flux data
-	//Calculate total flux, minimum flux, average flux
-	double totalFlux = 0.0;
-	double minimumFlux = gc::Infinity;
-	double gravityX = 0.0;
-	double gravityY = 0.0;
-	for (int xIndex=0; xIndex< nx; ++xIndex)
-	{
-		for (int yIndex=0; yIndex<ny; ++yIndex)
-		{
-			double cellFlux = m_photonCounts[yIndex][xIndex] * m_wPhoton / areaCell;
-			colorMap->data()->setCell(xIndex, yIndex, cellFlux );
-			totalFlux += cellFlux;
-			if( minimumFlux > cellFlux )	minimumFlux = cellFlux;
-
-			gravityX += cellFlux * ( m_xmin + ( xIndex+ 0.5 ) * widthCell  );
-			gravityY += cellFlux * ( m_ymin + ( yIndex+ 0.5 ) * heightCell  );
-
-		}
-	}
-	double averageFlux = totalFlux / (m_widthDivisions * m_heightDivisions );
-	gravityX /= totalFlux;
-	gravityY /= totalFlux;
-
-	// Create a vertical and horizontal line for sectors
-
-	hSectorXCoordSpin->setMinimum( m_xmin );
-	hSectorXCoordSpin->setMaximum( m_xmax );
-	hSectorXCoordSpin->setSingleStep( (m_xmax-m_xmin ) /10 );
-	hSectorXCoordSpin->setValue( 0.0 );
-
-	hSectorYCoordSpin->setMinimum( m_ymin );
-	hSectorYCoordSpin->setMaximum( m_ymax );
-	hSectorYCoordSpin->setSingleStep( (m_ymax-m_ymin ) /10 );
-	hSectorYCoordSpin->setValue( 0.0 );
-
-	QCPItemLine* tickVLine  =new QCPItemLine( contourPlotWidget );
-	contourPlotWidget->addItem( tickVLine );
-	tickVLine->start->setCoords( 0, m_ymin - 1);
-	tickVLine->end->setCoords( 0, m_ymax + 1);
-	tickVLine->setPen( QPen( QColor( 137, 140, 140), 1 ) );
-
-	QCPItemLine* tickHLine = new QCPItemLine( contourPlotWidget );
-	contourPlotWidget->addItem( tickHLine );
-	tickHLine->start->setCoords(m_xmin -1 ,  0 );
-	tickHLine->end->setCoords( m_xmax + 1, 0 );
-	tickHLine->setPen( QPen( QColor(137, 140, 140), 1));
-
-
-	// add a color scale:
-	QCPColorScale* colorScale = new QCPColorScale(contourPlotWidget);
-	contourPlotWidget->plotLayout()->addElement(1, 1, colorScale); // add it to the right of the main axis rect
-
-	colorScale->setType( QCPAxis::atRight ); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
-	colorMap->setColorScale( colorScale ); // associate the color map with the color scale
-	//colorScale->axis()->setLabel("Flux");
-
-
-	// set the  contour plot color
-	colorMap->setGradient(QCPColorGradient::gpSpectrum);
-
-	// rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
-	colorMap->rescaleDataRange();
-
-	// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
-	QCPMarginGroup* marginGroup = new QCPMarginGroup(contourPlotWidget);
-	contourPlotWidget->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
-	colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
-
-
-	// rescale axes and update plot view
-	contourPlotWidget->rescaleAxes();
-	contourPlotWidget->replot();
-
-
-
-	//Sectors plots
-	UpdateSectorPlots();
-
-
-
-	//Statistical data
-	totalPowerValue->setText( QString::number(  photonList.size() * m_wPhoton)  );
-
-	minimumFluxValue->setText(QString::number( minimumFlux )  );
-	averageFluxValue->setText(QString::number( averageFlux )  );
-	maximumFluxValue->setText(QString::number( m_maximumFlux ) );
-
-	maxCoordinatesValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( m_xmin + ( maximumPhotonsXCoord + 0.5 ) * widthCell ),
-			QString::number( m_ymin + ( maximumPhotonsYCoord + 0.5 ) * heightCell  ) ) );
-
-	double maximumFluxError = ( maximumPhotonsError * m_wPhoton) / ( ( (m_xmax-m_xmin) / widthDivisionsError ) * ( (m_ymax-m_ymin) / heightDivisionsError ) ) ;
-
-	errorValue->setText( QString::number(  fabs( m_maximumFlux - maximumFluxError )/ m_maximumFlux )  );
-
-	double E=0;
-	for (int xIndex=0; xIndex< nx; ++xIndex)
-	{
-		for (int yIndex=0; yIndex<ny; ++yIndex)
-		{
-			double cellFlux = m_photonCounts[yIndex][xIndex] * m_wPhoton / areaCell;
-			E += ( cellFlux - averageFlux )*(cellFlux - averageFlux);
-
-		}
-	}
-	double standarDeviation = sqrt( E / (m_widthDivisions * m_heightDivisions ) );
-	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
-	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
 }
 
 /*!
