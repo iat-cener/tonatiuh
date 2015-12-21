@@ -296,7 +296,7 @@ SoSeparator* CelestialWidget::Ejes() const
 	drawstyle->lineWidth = 2;
 	eje->addChild( drawstyle );
 
-	float p[2][3]={ {0.0, -sphereRadio-40, 0.0}, {0.0, sphereRadio+40, 0.0} };
+	float p[2][3]={ {0.0, float( -sphereRadio-40 ), 0.0}, {0.0, float( sphereRadio+40 ), 0.0} };
 
 	SoCoordinate3* coord3 = new SoCoordinate3;
 	coord3->point.setValues(0, 2, p);
