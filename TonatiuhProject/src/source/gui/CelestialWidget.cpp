@@ -315,7 +315,7 @@ SoSeparator* CelestialWidget::Ejes() const
 	norte->addChild( norteMaterial );
 
 	SoTransform* norteTransf = new SoTransform;
-	norteTransf->translation.setValue( SbVec3f( 0.0, sphereRadio+30, 0.0 ) );
+	norteTransf->translation.setValue( SbVec3f( 0.0, float( sphereRadio+30 ), 0.0 ) );
 	norte->addChild( norteTransf );
 
 	SoText2* northText= new SoText2();
