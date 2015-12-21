@@ -180,7 +180,7 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 }
 
 
-TSeparatorKit* ComponentHeliostatField::CreateField( QVector< QVariant >  argumentList )
+TSeparatorKit* ComponentHeliostatField::CreateField( QVector< QVariant >  /*argumentList*/ )
 {
 	return 0;
 }
