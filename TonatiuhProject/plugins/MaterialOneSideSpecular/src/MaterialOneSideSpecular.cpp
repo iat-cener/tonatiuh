@@ -28,6 +28,7 @@ void MaterialOneSideSpecular::initClass()
 }
 
 MaterialOneSideSpecular::MaterialOneSideSpecular()
+:m_sigmaOpt( 0 )
 {
 	SO_NODE_CONSTRUCTOR( MaterialOneSideSpecular );
 

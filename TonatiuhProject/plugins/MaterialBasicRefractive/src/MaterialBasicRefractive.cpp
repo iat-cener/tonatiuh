@@ -59,6 +59,7 @@ void MaterialBasicRefractive::initClass()
 }
 
 MaterialBasicRefractive::MaterialBasicRefractive()
+:m_sigmaOpt( 0 )
 {
 	SO_NODE_CONSTRUCTOR( MaterialBasicRefractive );
 	SO_NODE_ADD_FIELD( reflectivityFront, (0.0) );

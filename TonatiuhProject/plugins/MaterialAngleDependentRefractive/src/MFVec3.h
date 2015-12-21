@@ -55,7 +55,7 @@
 		FieldEditor* m_pEditor;
 	};
 
-#else if
+#else
 
 	#include <Inventor/SbVec3f.h>
 	class MFVec3 : public UserMField

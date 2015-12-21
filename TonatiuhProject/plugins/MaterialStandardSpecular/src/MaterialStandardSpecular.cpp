@@ -58,6 +58,7 @@ void MaterialStandardSpecular::initClass()
 }
 
 MaterialStandardSpecular::MaterialStandardSpecular()
+:m_sigmaOpt( 0 )
 {
 	SO_NODE_CONSTRUCTOR( MaterialStandardSpecular );
 	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
@@ -157,8 +158,6 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 	if ( randomNumber >= m_reflectivity.getValue()  ) return false;//return 0;
 
 	//Compute reflected ray (local coordinates )
-	//Ray* reflected = new Ray();
-	//reflected.origin = dg->point;
 	outputRay->origin = dg->point;
 
 	NormalVector normalVector;
