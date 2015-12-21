@@ -21,12 +21,12 @@ HEADERS = src/*.h  \
 			$$(TONATIUH_ROOT)/src/source/geometry/*.h \  
             $$(TONATIUH_ROOT)/src/source/gui/InstanceNode.h \
 			$$(TONATIUH_ROOT)/src/source/gui/PathWrapper.h \
+            $$(TONATIUH_ROOT)/src/source/gui/PhotonMapExport.h \
             $$(TONATIUH_ROOT)/src/source/gui/PhotonMapExportFactory.h \
             $$(TONATIUH_ROOT)/src/source/gui/PhotonMapExportParametersWidget.h\
 			$$(TONATIUH_ROOT)/src/source/gui/SceneModel.h \
 			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \
             $$(TONATIUH_ROOT)/src/source/raytracing/Photon.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/PhotonMapExport.h \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TCube.h \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TDefaultMaterial.h\
 			$$(TONATIUH_ROOT)/src/source/raytracing/TDefaultSunShape.h \
@@ -52,10 +52,10 @@ SOURCES = src/*.cpp  \
 			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
             $$(TONATIUH_ROOT)/src/source/gui/InstanceNode.cpp \
 			$$(TONATIUH_ROOT)/src/source/gui/PathWrapper.cpp \
+            $$(TONATIUH_ROOT)/src/source/gui/PhotonMapExport.cpp \
             $$(TONATIUH_ROOT)/src/source/gui/PhotonMapExportParametersWidget.cpp \
 			$$(TONATIUH_ROOT)/src/source/gui/SceneModel.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/Photon.cpp \
-            $$(TONATIUH_ROOT)/src/source/raytracing/PhotonMapExport.cpp \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TCube.cpp \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TDefaultMaterial.cpp \
 			$$(TONATIUH_ROOT)/src/source/raytracing/TDefaultSunShape.cpp \
