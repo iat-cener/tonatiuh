@@ -233,6 +233,7 @@
      <string>&amp;Ray Trace</string>
     </property>
     <addaction name="actionRun"/>
+    <addaction name="actionRunFluxAnalysis"/>
     <addaction name="actionDisplayRays"/>
     <addaction name="separator"/>
     <addaction name="actionRayTraceOptions"/>
@@ -316,6 +317,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionRun"/>
+   <addaction name="actionRunFluxAnalysis"/>
   </widget>
   <widget class="QToolBar" name="viewToolBar">
    <property name="windowTitle">

@@ -152,6 +152,12 @@ int main( int argc, char ** argv )
 
 	splash->showMessage( QObject::tr("Setting up the main window..."), topRight, Qt::black );
 
+
+	QDir pluginsDirectory( qApp->applicationDirPath() );
+	pluginsDirectory.cd( "plugins" );
+	PluginManager pluginManager;
+	pluginManager.LoadAvailablePlugins( pluginsDirectory );
+
     int exit;
    	if( argc > 1 )
    	{
@@ -160,13 +166,6 @@ int main( int argc, char ** argv )
     	QFileInfo fileInfo( tonatiuhFile );
     	if( fileInfo.completeSuffix() == QLatin1String( "tnhs") )
     	{
-
-    		QDir pluginsDirectory( qApp->applicationDirPath() );
-    		pluginsDirectory.cd( "plugins" );
-
-    		PluginManager pluginManager;
-    		pluginManager.LoadAvailablePlugins( pluginsDirectory );
-
 
     		QString fileName( argv[1] );
     		QFileInfo fileInfo( fileName );
@@ -177,7 +176,10 @@ int main( int argc, char ** argv )
     		QScriptEngine* interpreter = new QScriptEngine;
     		qScriptRegisterSequenceMetaType<QVector<QVariant> >(interpreter);
 
-    		QScriptValue tonatiuh = interpreter->newQObject( new MainWindow( QLatin1String("") ) );
+
+    		MainWindow* mw = new MainWindow( QLatin1String("") );
+    		mw->SetPluginManager( &pluginManager );
+    		QScriptValue tonatiuh = interpreter->newQObject( mw );
     		interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
 
 
@@ -214,12 +216,16 @@ int main( int argc, char ** argv )
 
     		}
 
+       		delete mw;
+       		delete interpreter;
     		exit = 0;
     	}
     	else
     	{
 
     		MainWindow* mw = new MainWindow( tonatiuhFile );
+    		mw->SetPluginManager( &pluginManager );
+
 
        		mw->show();
        	    splash->finish( mw );
@@ -231,6 +237,7 @@ int main( int argc, char ** argv )
    	else
    	{
    		MainWindow* mw = new MainWindow("");
+		mw->SetPluginManager( &pluginManager );
    		mw->show();
    	    splash->finish( mw );
    	    delete splash;

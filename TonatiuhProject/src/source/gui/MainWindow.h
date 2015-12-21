@@ -68,7 +68,6 @@ class TShapeFactory;
 class TSunShape;
 class TTrackerFactory;
 class TTransmissivity;
-class UpdatesManager;
 class SoCamera;
 
 struct PhotonMapExportSettings;
@@ -90,6 +89,8 @@ public:
     void FinishManipulation( );
     void StartManipulation( SoDragger* dragger );
     void ExecuteScriptFile( QString tonatiuhScriptFile );
+    void SetPluginManager( PluginManager* pluginManager );
+
 signals:
 	void Abort( QString error );
 
@@ -179,7 +180,6 @@ private slots:
     void SetSunPositionCalculatorEnabled( int enabled );
 	void ShowBackground();
 	void ShowCommandView();
-	//void ShowNetworkConnectionsDialog();
 	void ShowGrid();
     void ShowMenu( const QModelIndex& index );
     void ShowRayTracerOptionsDialog();
@@ -254,7 +254,6 @@ private:
    	void SetupTreeView();
    	void SetupTriggers();
     void SetupViews();
-   	//void SetupUpdateManager();
 	void ShowRaysIn3DView();
     bool StartOver( const QString& fileName );
     QString StrippedName( const QString& fullFileName );
@@ -276,7 +275,6 @@ private:
     QToolBar* m_trackersToolBar;
 
     PluginManager* m_pPluginManager;
-    //UpdatesManager* m_updateManager;
 
     SceneModel* m_sceneModel;
     QItemSelectionModel* m_selectionModel;

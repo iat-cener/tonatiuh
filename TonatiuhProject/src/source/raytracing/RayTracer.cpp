@@ -149,7 +149,7 @@ void RayTracer::RayTracerCreatingAllPhotons( double numberOfRays  )
 				}
 				if( isReflectedRay )
 				{
-					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface, 1 ) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
@@ -235,7 +235,7 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
 				{
 					++rayLength;
 					if( m_exportSuraceList.contains( intersectedSurface ) )
-						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, rayLength, intersectedSurface) );
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, rayLength, intersectedSurface, 1) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
@@ -319,7 +319,7 @@ void RayTracer::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 				{
 					++rayLength;
 					if( m_exportSuraceList.contains( intersectedSurface ) )
-						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, rayLength, intersectedSurface) );
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, rayLength, intersectedSurface, 1) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;

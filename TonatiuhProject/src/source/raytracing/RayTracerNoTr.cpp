@@ -134,7 +134,7 @@ void RayTracerNoTr::RayTracerCreatingAllPhotons(  double numberOfRays  )
 				if (!isDirectSun) currentRaysWay.push_back(ray);
 				if( isReflectedRay )
 				{
-					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface, 1) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
@@ -151,7 +151,7 @@ void RayTracerNoTr::RayTracerCreatingAllPhotons(  double numberOfRays  )
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), 0, ++rayLength, intersectedSurface) );
 				}
 				else
-					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface, 1 ) );
 			}
 			if (currentRaysWay.size()>0)
 			{
@@ -208,7 +208,7 @@ void RayTracerNoTr::RayTracerCreatingLightPhotons(  double numberOfRays  )
 				if( isReflectedRay )
 				{
 					if( m_exportSuraceList.contains( intersectedSurface ) )
-						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface, 1 ) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
@@ -279,7 +279,7 @@ void RayTracerNoTr::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 				if( isReflectedRay )
 				{
 					if( m_exportSuraceList.contains( intersectedSurface ) )
-						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
+						photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface, 1) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
@@ -309,7 +309,6 @@ void RayTracerNoTr::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 
 	}
 	photonsVector.resize( photonsVector.size() );
-	//return QPair< TPhotonMap*, std::vector< Photon > >( m_photonMap, photonsVector );
 
 	m_pPhotonMapMutex->lock();
 	m_photonMap->StoreRays( photonsVector );

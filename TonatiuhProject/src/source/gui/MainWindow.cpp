@@ -143,7 +143,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTrackerFactory.h"
 #include "TTransmissivity.h"
 #include "TTransmissivityFactory.h"
-#include "UpdatesManager.h"
 
 
 void startManipulator(void *data, SoDragger* dragger )
@@ -174,7 +173,6 @@ MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags 
 m_shapeToolBar( 0 ),
 m_trackersToolBar( 0 ),
 m_pPluginManager( 0 ),
-//m_updateManager( 0 ),
 m_sceneModel( 0 ),
 m_selectionModel( 0 ),
 m_rand( 0 ),
@@ -202,6 +200,7 @@ m_gridZSpacing( 0 ),
 m_graphicView( 0 ),
 m_focusView( 0 )
 {
+
 	setupUi( this );
     SetupActions();
     SetupMenus();
@@ -209,7 +208,6 @@ m_focusView( 0 )
     SetupGraphcisRoot();
     SetupModels();
     SetupViews();
-	//SetupUpdateManager();
 	SetupPluginsManager();
 	SetupTriggers();
 
@@ -226,8 +224,7 @@ m_focusView( 0 )
  */
 MainWindow::~MainWindow()
 {
-    delete m_pPluginManager;
-    //delete m_updateManager;
+	//delete m_pPluginManager;
     delete m_sceneModel;
 	delete m_document;
 	delete m_commandStack;
@@ -273,6 +270,13 @@ void MainWindow::ExecuteScriptFile( QString tonatiuhScriptFile )
 	editor.done( 0 );
 }
 
+void MainWindow::SetPluginManager( PluginManager* pluginManager )
+{
+
+	m_pPluginManager = pluginManager;
+	if( m_pPluginManager )	SetupPluginsManager();
+
+}
 
 /*!
  * Starts manipulating current selected node with \a dragger.
@@ -416,49 +420,6 @@ void MainWindow::DisplayRays( bool display )
 	else if( !display )
 		if ( m_pRays->getRefCount( ) > 0 )	m_graphicsRoot->removeChild( 0 );*/
 }
-
-/*!
- * Writes the photons stored at the photon map at user defined file. Creates a dialog to define the export paramenters.
- */
-/*void MainWindow::ExportPhotonMap()
-{
-	if ( m_pPhotonMap == NULL )
-	{
-		QMessageBox::information( this, "Tonatiuh", "No Photon Map stored", 1 );
-	    return;
-	}
-
-	ExportDialog exportDialog( *m_sceneModel, m_lastExportSurfaceUrl, m_lastExportInGlobal, m_lastExportFileName, this );
-	if( !exportDialog.exec() ) return;
-
-	QString fileName = exportDialog.GetExportFileName();
-	if( fileName.isEmpty() )
-	{
-		QMessageBox::information( this, "Tonatiuh", "No file defined to save Photon Map", 1 );
-		return;
-	}
-
-	int okExport;
-	if( exportDialog.ExportAllPhotonMap() )	okExport = ExportAllPhotonMap( fileName );
-	else
-	{
-		QString nodeURL = exportDialog.GetSelectedSurface();
-		if( nodeURL.isEmpty() )
-		{
-			QMessageBox::warning( this, "Tonatiuh", "Selected node in not a valid export node." );
-			return;
-		}
-		okExport = ExportPhotonMap( fileName, nodeURL, exportDialog.ExportPhotonsInGlobal() );
-
-	}
-	if( !okExport )
-	{
-		QMessageBox::warning( this, "Tonatiuh", "An unexpected error has occurred exporting photon map to a file." );
-		return;
-	}
-
-}
-*/
 
 /*!
  * Inserts an existing tonatiuh component into the tonatiuh model as a selected node child.
@@ -844,44 +805,6 @@ void MainWindow::ShowCommandView()
     m_commandView->show();
 }
 
-
-/*
- * Shows a dialog to define network connections settings.
-
-void MainWindow::ShowNetworkConnectionsDialog()
-{
-	NetworkConnectionsDialog dialog;
-	if( !m_updateManager->IsProxyEnabled() )
-		dialog.SetProxyDisabled();
-	else
-	{
-		if( m_updateManager->IsSystemProxy() )
-			dialog.SetSystemProxyConfiguration();
-		else
-		{
-			dialog.SetManualProxyConfiguration();
-			dialog.SetProxyHttpHost( m_updateManager->GetProxyHostName() );
-			dialog.SetProxyHttpPort( m_updateManager->GetPorxyPort() );
-		}
-	}
-
-	if( dialog.exec() )
-	{
-		if( !dialog.IsProxyEnabled() )
-			m_updateManager->SetProxyEnabled( false );
-		else
-		{
-			m_updateManager->SetProxyEnabled( true );
-			if( dialog.IsSystemProxyEnabled() ) m_updateManager->SetSystemProxyConfiguration();
-			else
-				m_updateManager->SetManualProxyConfiguration( dialog.GetHostName(), dialog.GetPort() );
-
-		}
-
-	}
-}
-*/
-
 /*!
  * Shows selected node right menu.
  */
@@ -1119,14 +1042,6 @@ void MainWindow::on_actionAbout_triggered()
 
 }
 
-
-
-
-/*
-void MainWindow::on_actionHelp_triggered(){
-
-}
-*/
 
 /*!
  * Changes the number of the grid cells and grid cell dimensions.
@@ -1385,7 +1300,6 @@ void MainWindow::CreateGroupNode()
 
 
 	}
-	//emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
 
 }
 
@@ -1617,8 +1531,6 @@ void MainWindow::CreateSurfaceNode()
 
 	}
 
-	//emit Abort( tr( "CreateSurfaceNode: Selected node is not valid as surface node parent." ) );
-
 }
 
 
@@ -1766,91 +1678,6 @@ double MainWindow::GetwPhoton(){
 		return double ( inputAperture * irradiance ) / m_raysPerIteration;
 }
 
-/*
-int MainWindow::ExportAllPhotonMap( QString fileName )
-{
-	if ( m_pPhotonMap == NULL )	return 0 ;
-
-	//Compute photon power
-	TSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene ) return 0;
-	if( !coinScene->getPart( "lightList[0]", false ) ) return 0;
-	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-
-
-	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
-	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->GetIrradiance();
-
-	if( !lightKit->getPart( "icon", false ) ) return 0;
-	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
-	double inputAperture = raycastingShape->GetValidArea();
-
-	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
-
-	m_lastExportFileName = fileName;
-	int okExport = trf::ExportAll( m_lastExportFileName, wPhoton, m_pPhotonMap, m_saveCoordinates,m_saveSide );
-
-	return okExport;
-
-}
-*/
-/*!
- * Writes the \a nodeUrl surface photon's data at file \a fileName.
- * If \a globalCoord is true the photon coordinates will be written in scene coordintes. Otherwise, in surface local coordinates.
- */
-/*int MainWindow::ExportPhotonMap( QString fileName, QString nodeUrl, bool globalCoord )
-{
-	if( fileName.isEmpty() )	return 0;
-	if( nodeUrl.isEmpty() )	return 0;
-	if ( m_pPhotonMap == NULL )	return 0;
-
-	//Compute photon power
-	TSceneKit* coinScene = m_document->GetSceneKit();
-	if( !coinScene ) return 0;
-	if( !coinScene->getPart( "lightList[0]", false ) ) return 0;
-	TLightKit*lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
-
-
-	if( !lightKit->getPart( "tsunshape", false ) ) return 0;
-	TSunShape* sunShape = static_cast< TSunShape * >( lightKit->getPart( "tsunshape", false ) );
-	double irradiance = sunShape->GetIrradiance();
-
-	if( !lightKit->getPart( "icon", false ) ) return 0;
-	TLightShape* raycastingShape = static_cast< TLightShape * >( lightKit->getPart( "icon", false ) );
-	double inputAperture = raycastingShape->GetValidArea();
-
-	double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
-
-	m_lastExportFileName = fileName;
-	m_lastExportSurfaceUrl = nodeUrl;
-	m_lastExportInGlobal = globalCoord;
-
-	QModelIndex selectedNodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
-
-	if( selectedNodeIndex == sceneModelView->rootIndex() ){
-			emit Abort( tr( "Selected node is not a valid node." ) );
-			return 0;
-		}
-	InstanceNode* selectedSurface = m_sceneModel->NodeFromIndex( selectedNodeIndex );
-
-
-
-
-	int okExport = 0;
-
-
-	if( m_lastExportInGlobal )
-		okExport = trf::ExportSurfaceGlobalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_pPhotonMap, m_saveCoordinates,m_saveSide );
-	else
-		okExport = trf::ExportSurfaceLocalCoordinates( m_lastExportFileName, selectedSurface, wPhoton, m_pPhotonMap, m_saveCoordinates,m_saveSide );
-    if(okExport==0){
-    	emit Abort( tr( "Selected node is not a valid node to export." ) );
-    }
-	return okExport;
-
-}
-*/
 
 void MainWindow::SetAimingPointRelativity( bool relative )
 {
@@ -2086,9 +1913,6 @@ void MainWindow::Run()
 		//Compute bounding boxes and world to object transforms
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), true );
 
-		/*std::cout<<
-				rootSeparatorInstance->GetIntersectionTransform()<<std::endl;
-				*/
 		m_pPhotonMap->SetConcentratorToWorld( rootSeparatorInstance->GetIntersectionTransform() );
 
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
@@ -2116,20 +1940,6 @@ void MainWindow::Run()
 		Transform lightToWorld = tgf::TransformFromSoTransform( lightTransform );
 		lightInstance->SetIntersectionTransform( lightToWorld.GetInverse() );
 
-		/*
-		QMutex mutex;
-		QMutex mutexPhotonMap;
-		RayTracer rayTrace(  rootSeparatorInstance,
-									 lightInstance, raycastingSurface, sunShape, lightToWorld,
-									 transmissivity,
-									 *m_rand,
-									 &mutex, m_pPhotonMap, &mutexPhotonMap,
-									 exportSuraceList );
-		for( int cpu = 0; cpu < raysPerThread.count(); cpu++ )
-			rayTrace( raysPerThread[cpu] );
-			//rayTrace( 1 );
-
-		*/
 
 
 		// Create a progress dialog.
@@ -2439,6 +2249,7 @@ void MainWindow::SetSunshape( QString sunshapeType )
 
 
 	QVector< TSunShapeFactory* > factoryList = m_pPluginManager->GetSunShapeFactories();
+
 	if( factoryList.size() == 0 )	return;
 
 	QVector< QString > factoryNames;
@@ -3404,16 +3215,6 @@ void MainWindow::ReadSettings()
 
     m_recentFiles = settings.value( "recentFiles" ).toStringList();
 
-  /*  m_updateManager->SetProxyEnabled( settings.value( QLatin1String( "UpdatesManager.IsProxy" ), false ).toBool() );
-    if( settings.value( QLatin1String( "UpdatesManager.SystemProxy" ), false ).toBool() )
-    	m_updateManager->SetSystemProxyConfiguration();
-    else
-    	m_updateManager->SetManualProxyConfiguration( settings.value( QLatin1String( "UpdatesManager.ProxyHostName" ),
-    			QLatin1String( "" ) ).toString(),
-    			settings.value( QLatin1String( "UpdatesManager.ProxyPort" ), 0 ).toInt() );
-
-	std::cout<<"MainWindow::ReadSettings 4"<<std::endl;
-	*/
     UpdateRecentFileActions();
 
 }
@@ -3565,8 +3366,6 @@ void MainWindow::SetupActions()
 
 void MainWindow::SetupActionsInsertComponent()
 {
-	QVector< TComponentFactory* > componentFactoryList = m_pPluginManager->GetComponentFactories();
-	if( !( componentFactoryList.size() > 0 ) )	return;
 
 	QMenu* pComponentMenu = menuInsert->findChild< QMenu* >( "menuComponent" );
 	if( !pComponentMenu ) return;
@@ -3574,8 +3373,11 @@ void MainWindow::SetupActionsInsertComponent()
 	{
 		//Enable material menu
 		pComponentMenu->setEnabled( true );
-		//m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
 	}
+
+	if( !m_pPluginManager )	return;
+	QVector< TComponentFactory* > componentFactoryList = m_pPluginManager->GetComponentFactories();
+	if( !( componentFactoryList.size() > 0 ) )	return;
 
 	for( int i = 0; i < componentFactoryList.size(); ++i )
 	{
@@ -3598,8 +3400,6 @@ void MainWindow::SetupActionsInsertComponent()
 
 void MainWindow::SetupActionsInsertMaterial()
 {
-	QVector< TMaterialFactory* > materialsFactoryList = m_pPluginManager->GetMaterialFactories();
-	if( !( materialsFactoryList.size() > 0 ) )	return;
 
 	QMenu* pMaterialsMenu = menuInsert->findChild< QMenu* >( "menuMaterial" );
 	if( !pMaterialsMenu ) return;
@@ -3609,6 +3409,12 @@ void MainWindow::SetupActionsInsertMaterial()
 		pMaterialsMenu->setEnabled( true );
 		m_materialsToolBar = CreateMaterialsTooBar( pMaterialsMenu );
 	}
+
+	if( !m_pPluginManager )	return;
+
+	QVector< TMaterialFactory* > materialsFactoryList = m_pPluginManager->GetMaterialFactories();
+	if( !( materialsFactoryList.size() > 0 ) )	return;
+
 
 	for( int i = 0; i < materialsFactoryList.size(); ++i )
 	{
@@ -3634,8 +3440,6 @@ void MainWindow::SetupActionsInsertMaterial()
  */
 void MainWindow::SetupActionsInsertShape()
 {
-	QVector< TShapeFactory* > shapeFactoryList = m_pPluginManager->GetShapeFactories();
-	if( !( shapeFactoryList.size() > 0 ) )	return;
 
     QMenu* menuShape = menuInsert->findChild< QMenu* >( "menuShape" );
     if( !menuShape ) return;
@@ -3654,6 +3458,12 @@ void MainWindow::SetupActionsInsertShape()
 		}
 		else gf::SevereError( "MainWindow::SetupToolBars: NULL m_trackersToolBar" );
     }
+
+
+	if( !m_pPluginManager )	return;
+	QVector< TShapeFactory* > shapeFactoryList = m_pPluginManager->GetShapeFactories();
+	if( !( shapeFactoryList.size() > 0 ) )	return;
+
    	for( int i = 0; i < shapeFactoryList.size(); ++i )
    	{
    		TShapeFactory* pTShapeFactory = shapeFactoryList[i];
@@ -3670,8 +3480,6 @@ void MainWindow::SetupActionsInsertShape()
 
 void MainWindow::SetupActionsInsertTracker()
 {
-	QVector< TTrackerFactory* > trackerFactoryList = m_pPluginManager->GetTrackerFactories();
-	if( !( trackerFactoryList.size() > 0 ) )	return;
 
 	QMenu* pTrackerMenu = menuInsert->findChild< QMenu* >( "menuTracker" );
 	if( !pTrackerMenu ) return;
@@ -3683,6 +3491,10 @@ void MainWindow::SetupActionsInsertTracker()
 		//Create a new toolbar for trackers
 		m_trackersToolBar = CreateTrackerTooBar( pTrackerMenu );
 	}
+
+	if( !m_pPluginManager )	return;
+	QVector< TTrackerFactory* > trackerFactoryList = m_pPluginManager->GetTrackerFactories();
+	if( !( trackerFactoryList.size() > 0 ) )	return;
 
 	for( int i = 0; i < trackerFactoryList.size(); ++i )
 	{
@@ -3961,8 +3773,9 @@ void MainWindow::SetupParametersView()
  */
 void MainWindow::SetupPluginsManager()
 {
-	m_pPluginManager = new PluginManager;
-	m_pPluginManager->LoadAvailablePlugins( PluginDirectory() );
+	//m_pPluginManager = new PluginManager;
+	//m_pPluginManager->LoadAvailablePlugins( PluginDirectory() );
+
 
 	SetupActionsInsertComponent( );
 	SetupActionsInsertMaterial( );
@@ -4041,19 +3854,10 @@ void MainWindow::SetupTriggers()
 	connect( actionGridSettings, SIGNAL( triggered() ), this, SLOT( ChangeGridSettings() )  );
 	connect( actionBackground, SIGNAL( triggered() ), this, SLOT( ShowBackground() )  );
 
-	//Help menu actions
-	//connect( actionNetworkConnections, SIGNAL( triggered() ), this, SLOT( ShowNetworkConnectionsDialog() ) );
 
 }
 
-/*
- * Initializates tonatiuh update manager.
-void MainWindow::SetupUpdateManager()
-{
-	m_updateManager = new UpdatesManager( qApp->applicationVersion() );
-}
 
- */
 /*!
  * Starts MainWindow views.
  */
@@ -4179,10 +3983,12 @@ void MainWindow::UpdateLightSize()
 	{
 		sceneBox.pMin = Point3D( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
 		sceneBox.pMax = Point3D( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
+
 		if( lightKit ) lightKit->Update( sceneBox );
 	}
 
 	m_sceneModel->UpdateSceneModel();
+
 }
 
 /*!
@@ -4233,10 +4039,4 @@ void MainWindow::WriteSettings()
 
     settings.setValue( "recentFiles", m_recentFiles );
 
-    /*
-    settings.setValue( QLatin1String( "UpdatesManager.IsProxy" ), m_updateManager->IsProxyEnabled() );
-    settings.setValue( QLatin1String( "UpdatesManager.SystemProxy" ), m_updateManager->IsSystemProxy() );
-    settings.setValue( QLatin1String( "UpdatesManager.ProxyHostName" ), m_updateManager->GetProxyHostName() );
-    settings.setValue( QLatin1String( "UpdatesManager.ProxyPort" ), m_updateManager->GetPorxyPort() );
-    */
 }
