@@ -1,4 +1,4 @@
-VERSION = 2.1.0
+VERSION = 2.1.1
 
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
@@ -56,6 +56,9 @@ else {
 
 }
 
+
+QMAKE_CXXFLAGS += -std=c++11
+		 
 CONFIG(debug, debug|release) {
     QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
     QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage
@@ -72,6 +75,7 @@ else{
     	QMAKE_CFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
 		QMAKE_CXXFLAGS_RELEASE -= -O2
 		QMAKE_CXXFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
+		
 	}
 	
 }
