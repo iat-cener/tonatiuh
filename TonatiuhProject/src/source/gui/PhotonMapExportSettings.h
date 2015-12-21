@@ -20,7 +20,8 @@ struct PhotonMapExportSettings
 	bool exportCoordinates;
 	bool exportIntersectionSurfaceSide;
 	bool exportInGlobalCoordinates;
-	bool exportPreviousNextPhotonID;
+	bool exportPreviousNextPhotonID;;
+	bool exportAbsorption;
 	bool exportSurfaceID;
 	QStringList exportSurfaceNodeList;
 	QMap< QString, QString > modeTypeParameters;

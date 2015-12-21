@@ -57,6 +57,8 @@ class QIcon;
 class PhotonMapExportFactory
 {
 public:
+	virtual ~PhotonMapExportFactory() {}
+
     virtual QString GetName() const  = 0;
     virtual QIcon GetIcon() const = 0;
     virtual PhotonMapExport* GetExportPhotonMapMode() const = 0;
