@@ -114,7 +114,7 @@ void PhotonMapExportFileWidget::SelectSaveDirectory()
 	QDir dirToExport( directoryToExport );
 	if( !dirToExport.exists() )
 	{
-		QMessageBox::information( this, QLatin1String( "Tonatiuh" ), tr( "Selected directory is not is not valid." ), 1 );
+		QMessageBox::information( this, QLatin1String( "Tonatiuh" ), tr( "Selected directory is not valid." ), 1 );
 		return;
 
 	}
