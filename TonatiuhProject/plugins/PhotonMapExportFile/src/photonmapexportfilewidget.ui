@@ -14,7 +14,16 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="mainLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
     <number>10</number>
    </property>
    <property name="spacing">
@@ -46,7 +55,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="direcotryLabel">
      <property name="text">
-      <string>Direcotry name:</string>
+      <string>Directory name:</string>
      </property>
     </widget>
    </item>
