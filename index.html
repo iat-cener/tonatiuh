@@ -37,21 +37,17 @@
 <a id="news" class="anchor" href="#news" aria-hidden="true"><span class="octicon octicon-link"></span></a>News</h1>
 
 <h2>
-<a id="tonatiuh-release-201-is-now-available" class="anchor" href="#tonatiuh-release-201-is-now-available" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tonatiuh release 2.0.1 is now available!</h2>
+<a id="tonatiuh-release-210-is-now-available" class="anchor" href="#tonatiuh-release-210-is-now-available" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tonatiuh release 2.1.0 is now available!</h2>
 
-<p>This a major release of the program. It introduces major modifications on the usage of Tonatiuh from previous versions of the program. In this new release, the user must decide what ray tracing results to save and how to save them before starting the ray tracing. The results saving options are:</p>
 
+
+
+<p>This is a minor relase of Tonatiuh. It introduces some modification to the tool to allow users to execute the application from a shell or other tools using a Tonatiuh scripting file. In addition to the changes related to scripting, new plugins have been included in this Tonatiuh version:</p>
 <ul>
-<li>
-<em>Not export.</em> Selecting this option instructs Tonatiuh not to save any ray tracing results. This option could be of interest to verify that an optical system has been properly modelled before using the program to trace a large number of rays.</li>
-<li>
-<em>Binary data files.</em> Selecting this option instructs Tonatiuh to save the ray tracing results into one or several binary files. The format of the binary files vary depending on the information the user wants to store from every photon. The specific format of the binary files produce by Tonatiuh is detailed in an associated ASCII file.</li>
-<li>
-<em>SQL Database.</em> Selecting this option instructs Tonatiuh to save the ray tracing results in a SQL Database. Different database's tables are use to store different pieces of information. The table entitled "Surfaces" stores the basic identification information of the surfaces the photons are intersecting. The table entitled "Photons" stores the intersection-related information of each photon intersecting the concentrating geometry. Finally, the table entitled "WPhoton" stores the power associated to each photon.</li>
+<li>ShapeCAD: this plugin add the capability to import surface geometries from CAD files. Current version of the plugins only read STL files. The plug-in has been developed in activities that are being performed in subtask 12.2.2 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).</li>
+<li>TrackerZAxis: new one axis tracker plug-in for Z axis rotations.</li>
+<li>MaterialOneSideSpecular: a new material plug-in. Using this material the surface will be specular in the selected side. The other side will absorb all rays</li>
 </ul>
-
-<p>A wiki page will be created in the Wiki section of this website to explain in detail how to use the new features of Tonatiuh version 2.0.1. It is recommended not to switch to this version until obtaining a good understanding of how this new features work.</p>
-
 <h1>
 <a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h1>
 
