@@ -6,15 +6,13 @@ This is a minor relase of Tonatiuh. It introduces some modification to the tool 
 
 In addition to the changes related to scripting, new plugins have been included in this Tonatiuh version:
 
-•ShapeCAD: this plugin add the capability to import surface geometries from CAD files. Current version of the plugins only read STL files. The plug-in has been developed in activities that are being performed in subtask 12.2.2 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
+• ShapeCAD: this plugin add the capability to import surface geometries from CAD files. Current version of the plugins only read STL files. The plug-in has been developed in activities that are being performed in subtask 12.2.2 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
 
 
-•TrackerZAxis: new one axis tracker plug-in for Z axis rotations.
+• TrackerZAxis: new one axis tracker plug-in for Z axis rotations.
 
 
-•MaterialOneSideSpecular
-
-
+• MaterialOneSideSpecular: a new material plug-in. Using this material the surface will be specular in the selected side. The other side will absorb all rays.
 
 ## First workshop on Tonatiuh ##
 
