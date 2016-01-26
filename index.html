@@ -99,67 +99,15 @@ A pervasive plugin architecture which allos the user to:</li>
 As any other ambitious open source program, Tonatiuh uses and leverages on several existing open source libraries, and tools. The principal open source resources used by Tonatiuh are:</li>
 <li>Nokia QT for the Graphic User Interface (GUI).</li>
 <li>Coin3D Toolkit for 3D Graphics Visualization.</li>
-<li>Marble generic geographical map widget and framework.</li>
 <li>CPPUnit for testing the code.
 All these tools are used for developing Tonatiuh within the Eclipse IDE in a standard development environment used by the entire developing team.
-## Tonatiuh's output files format ##
-Tonatiuh’s output file is a binary file whose format is independent of the host computer's operating system. The file stores real values one after the other in a block, with no spaces, separators, carriage returns, or line feeds separating the values.
-The binary format used to store the values is <a href="http://en.wikipedia.org/wiki/Double_precision_floating-point_format#IEEE_754_double_precision_binary_floating-point_format:_binary64">Real64</a> with <a href="http://en.wikipedia.org/wiki/Endianness#Big-endian">big-endian byte ordering</a>. The first value stored in the file is the power per photon in watts (W). This real value is then followed by seven-tuples of real values, one per photon .
-Every seven-tuple holds the following values in the specific order given:</li>
-<li>PhotonID</li>
-<li>x-coordinate</li>
-<li>y-coordinate</li>
-<li>z-coordinate</li>
-<li>surface side ( 0 if is back side , 1 if is front side )</li>
-<li>Previous PhotonID (0 if the photon is the first of a given ray)</li>
-<li>Next PhotonID (0 is the photon is the last of a given ray)
-Tonatiuh does not provide means for post-processing and representing the results of the ray tracing it carries out.</li>
-</ul>
 
-<p>At <a href="http://www.cener.com/es/index.asp">CENER</a> we use either Mathematica or R applications for post-processing of Tonatiuh's output binary files, in order to transform raw photon data into flux distributions estimates, and to present those fluxes estimates as graphs.</p>
+<h2>
+<a id="outputFromat" class="anchor" href="#outputFromat" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tonatiuh's output files format</h2>
 
-<p>A typical Mathematica snippet for reading a Tonatiuh output file could be:</p>
+<p></p>From version 2.0.1 the format of the outputs of simulations has been changed to be more flexible for post-processing. You can find a description of the format Tonatiuh's output files format.
 
-<div class="highlight highlight-mathematica"><pre><span class="pl-c">(* Function to Read Tonatiuh's binary output file *)</span>
-<span class="pl-en">ReadTonatiuhResults</span>[<span class="pl-v">filename_</span>] <span class="pl-k">:=</span> <span class="pl-en">BinaryReadList</span>[ <span class="pl-v">filename</span>, <span class="pl-s">"Real64"</span>,  <span class="pl-v">ByteOrdering</span> <span class="pl-k">-&gt;</span> <span class="pl-k">+</span><span class="pl-c1">1</span>]<span class="pl-k">;</span>
 
-<span class="pl-c">(* Read Tonatiuh's ouput file and store content in fileData *)</span>
-<span class="pl-v">rawData</span> <span class="pl-k">=</span> <span class="pl-en">ReadTonatiuhResults</span>[<span class="pl-s">"fileName.dat"</span>]<span class="pl-k">;</span>
-
-<span class="pl-c">(* Store the power per photon in powerPerPhoton *)</span>
-<span class="pl-v">powerPerPhoton</span> <span class="pl-k">=</span> <span class="pl-v">rawData</span>[[<span class="pl-c1">1</span>]]
-
-<span class="pl-c">(* Create a matrix storing all the photon seven-tuples at a row per seven-tuple *)</span> 
-<span class="pl-v">photonMap</span> <span class="pl-k">=</span> <span class="pl-en">Partition</span>[<span class="pl-v">fileData</span>[[<span class="pl-c1">2</span><span class="pl-k">;;</span><span class="pl-en">Length</span>[<span class="pl-v">fileData</span>]]],<span class="pl-c1">7</span>]<span class="pl-k">;</span>
-
-<span class="pl-v">numberOfPhotons</span> <span class="pl-k">=</span> <span class="pl-en">Length</span>[<span class="pl-v">photonMap</span>]
-
-<span class="pl-k">...</span>.</pre></div>
-
-<p>A typical R snippet for reading a Tonatiuh output file could be:</p>
-
-<div class="highlight highlight-r"><pre><span class="pl-c">#Open binary data file.</span>
-<span class="pl-smi">fileName</span><span class="pl-k">&lt;-</span> file(<span class="pl-s"><span class="pl-pds">"</span>filePath/fileName.dat<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>rb<span class="pl-pds">"</span></span>)
-
-<span class="pl-c">#Store the power per photon in poerPerPhoton variable.</span>
-<span class="pl-smi">powerPerPhoton</span> <span class="pl-k">&lt;-</span> readBin(<span class="pl-smi">fileName</span>, <span class="pl-v">what</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>numeric<span class="pl-pds">"</span></span>, <span class="pl-v">n</span><span class="pl-k">=</span><span class="pl-c1">1</span>, <span class="pl-v">endian</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>big<span class="pl-pds">"</span></span>)
-
-<span class="pl-c">#Create a vector with photons all the information.</span>
-<span class="pl-smi">endOfFile</span><span class="pl-k">&lt;-</span><span class="pl-c1">FALSE</span>
-<span class="pl-smi">photonData</span><span class="pl-k">&lt;-</span>vector( <span class="pl-v">mode</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>numeric<span class="pl-pds">"</span></span>)
-<span class="pl-k">while</span>( <span class="pl-k">!</span><span class="pl-smi">endOfFile</span> )
-{
-   <span class="pl-smi">photon</span><span class="pl-k">&lt;-</span>readBin(<span class="pl-smi">fileName</span>, <span class="pl-v">what</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>numeric<span class="pl-pds">"</span></span>, <span class="pl-v">n</span><span class="pl-k">=</span><span class="pl-c1">7</span>, <span class="pl-v">endian</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>big<span class="pl-pds">"</span></span>)
-   <span class="pl-k">if</span>( length( <span class="pl-smi">photon</span> ) <span class="pl-k">&lt;</span> <span class="pl-c1">7</span> ) <span class="pl-v">endOfFile</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span> <span class="pl-k">else</span> <span class="pl-smi">photonData</span><span class="pl-k">&lt;-</span>append( <span class="pl-smi">photonData</span>, <span class="pl-smi">photon</span> )
-}
-<span class="pl-c">#Close the data file.</span>
-close(<span class="pl-smi">fileName</span>)
-
-<span class="pl-c">#Compute the number of photons in the vector. all the photon sextuples at a row per #sextuple </span>
-<span class="pl-smi">nPhotons</span><span class="pl-k">&lt;-</span>length( <span class="pl-smi">photonData</span> ) <span class="pl-k">/</span> <span class="pl-c1">7</span>
-<span class="pl-smi">photonMap</span><span class="pl-k">&lt;-</span><span class="pl-k">matrix</span>(  <span class="pl-smi">photonData</span> , <span class="pl-v">nrow</span><span class="pl-k">=</span> <span class="pl-smi">nPhotons</span>, <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">7</span>, <span class="pl-v">byrow</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span> )
-
-<span class="pl-k">...</span></pre></div>
 
 <p><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" alt="Creative Commons License"></a><br>This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License</a>.</p>
       </section>
