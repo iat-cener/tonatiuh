@@ -341,7 +341,7 @@ void ShapeSphericalRectangle::updateWidthZ(void *data, SoSensor *)
 	ShapeSphericalRectangle* shapeSphericalRectangle = (ShapeSphericalRectangle *) data;
 	if( ( 2 * shapeSphericalRectangle->radius.getValue()  ) < shapeSphericalRectangle->widthZ.getValue() )
 	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere wiwidthZthX must take values on the (0, 2 *radius] range. ") );
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere widthZ must take values on the (0, 2 *radius] range. ") );
 		shapeSphericalRectangle->widthZ.setValue( shapeSphericalRectangle->radius.getValue() * 2 );
 	}
 
