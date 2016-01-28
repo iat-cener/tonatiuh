@@ -443,7 +443,7 @@
              <string>Export Settings</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_8">
-             <item row="2" column="1">
+             <item row="3" column="1">
               <widget class="QLabel" name="directoryLabel">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -478,7 +478,7 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
+             <item row="4" column="1">
               <widget class="QLabel" name="fileNameLabel">
                <property name="minimumSize">
                 <size>
@@ -491,52 +491,7 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="0" rowspan="7" colspan="5">
-              <widget class="QWidget" name="widget" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_5">
-                <item>
-                 <spacer name="horizontalSpacer_12">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>196</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="exportButton">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Export</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_13">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>196</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="3" column="4">
+             <item row="4" column="4">
               <spacer name="horizontalSpacer_11">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -615,7 +570,7 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="4">
+             <item row="3" column="4">
               <widget class="QPushButton" name="selectFileButton">
                <property name="minimumSize">
                 <size>
@@ -631,6 +586,19 @@
                  <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
                </property>
               </widget>
+             </item>
+             <item row="3" column="2" colspan="2">
+              <widget class="QLineEdit" name="fileDirEdit">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2" colspan="2">
+              <widget class="QLineEdit" name="fileNameEdit"/>
              </item>
              <item row="1" column="3">
               <spacer name="horizontalSpacer_15">
@@ -648,18 +616,57 @@
                </property>
               </spacer>
              </item>
-             <item row="2" column="2" colspan="2">
-              <widget class="QLineEdit" name="fileDirEdit">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>25</height>
-                </size>
-               </property>
+             <item row="7" column="0" rowspan="7" colspan="5">
+              <widget class="QWidget" name="widget" native="true">
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <spacer name="horizontalSpacer_12">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>196</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="exportButton">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Export</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_13">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>196</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
               </widget>
              </item>
-             <item row="3" column="2" colspan="2">
-              <widget class="QLineEdit" name="fileNameEdit"/>
+             <item row="2" column="2">
+              <widget class="QCheckBox" name="saveCoordsCheckBox">
+               <property name="text">
+                <string>Save coordinates of the grid</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>

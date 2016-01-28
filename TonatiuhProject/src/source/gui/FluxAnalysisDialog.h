@@ -42,6 +42,7 @@ private slots:
 	void SelectSurface();
 	void UpdateAnalysis( );
 	void UpdateSectorPlots();
+	void SaveCoordsExport();
 
 private:
 	void ClearCurrentAnalysis();

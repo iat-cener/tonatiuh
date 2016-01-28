@@ -90,6 +90,7 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	connect( gridHeightSpin, SIGNAL( valueChanged( int ) ), this, SLOT( UpdateAnalysis() ) );
 	connect( selectFileButton, SIGNAL( clicked() ), this, SLOT( SelectExportFile() ) );
 	connect( exportButton, SIGNAL( clicked() ) , this, SLOT( ExportData() ) );
+	connect( storeTypeCombo, SIGNAL( currentIndexChanged( int )), this, SLOT( SaveCoordsExport() ) );
 
 
 	// configure axis rect:
@@ -190,6 +191,19 @@ void FluxAnalysisDialog::ChangeCurrentSurfaceSide()
 
 }
 
+
+void FluxAnalysisDialog::SaveCoordsExport()
+{
+	if ( storeTypeCombo->currentText() == "IMAGE.PNG" || storeTypeCombo->currentText() == "IMAGE.JPG" )
+		{
+			saveCoordsCheckBox->setChecked( false );
+			saveCoordsCheckBox->setDisabled( true );
+		}
+	else saveCoordsCheckBox->setEnabled( true );
+}
+
+
+
 void FluxAnalysisDialog::ExportData()
 {
 	if ( m_pPhotonMap == 0 || !m_pPhotonMap )
@@ -219,23 +233,47 @@ void FluxAnalysisDialog::ExportData()
 
 	if ( storeType == "ASCII" )
 	{
-		QFile exportFile( exportDirectory + "/" + exportFileName + ".txt" );
-		exportFile.open( QIODevice::WriteOnly );
-		QTextStream out( &exportFile );
-
-		double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
-		double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
-		double areaCell = widthCell * heightCell;
-
-		for ( int i = 0; i<m_heightDivisions; i++)
-		{
-			for (int j = 0; j<m_widthDivisions; j++ )
+		if ( saveCoordsCheckBox->isChecked() )
 			{
-				out<< m_photonCounts[i][j] * m_wPhoton / areaCell << " ";
+				QFile exportFile( exportDirectory + "/" + exportFileName + ".txt" );
+				exportFile.open( QIODevice::WriteOnly );
+				QTextStream out( &exportFile );
+
+				double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
+				double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
+				double areaCell = widthCell * heightCell;
+
+				out<<"x(m) y(m) Flux(W/m2)"<<"\n";
+
+				for ( int i = 0; i<m_heightDivisions; i++)
+				{
+					for (int j = 0; j<m_widthDivisions; j++ )
+					{
+						out<< m_xmin + widthCell/2 + j * widthCell  << " " << m_ymin + heightCell/2 + i * heightCell << " " << m_photonCounts[i][j] * m_wPhoton / areaCell << "\n";
+					}
+				}
+				exportFile.close();
 			}
-		out<< "\n" ;
-		}
-		exportFile.close();
+		else
+			{
+				QFile exportFile( exportDirectory + "/" + exportFileName + ".txt" );
+				exportFile.open( QIODevice::WriteOnly );
+				QTextStream out( &exportFile );
+
+				double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
+				double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
+				double areaCell = widthCell * heightCell;
+
+				for ( int i = 0; i<m_heightDivisions; i++)
+				{
+					for (int j = 0; j<m_widthDivisions; j++ )
+					{
+						out<< m_photonCounts[m_heightDivisions-1-i][j] * m_wPhoton / areaCell << " ";
+					}
+				out<< "\n" ;
+				}
+				exportFile.close();
+			}
 	}
 	else if ( storeType == "IMAGE.JPG" )
 	{
