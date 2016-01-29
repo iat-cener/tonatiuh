@@ -20,9 +20,9 @@
 
 	SbBool MFVec3::read1Value(SoInput * in, int idx)
 	{
-	    in->read(this->values[idx][0]) &&
+	   return ( in->read(this->values[idx][0]) &&
 	    in->read(this->values[idx][1]) &&
-	    in->read(this->values[idx][2]);
+	    in->read(this->values[idx][2]) );
 	}
 
 	void MFVec3::write1Value(SoOutput * out, int idx) const
@@ -54,7 +54,7 @@
 
 	void MFVec3::set1Value(int idx, double x, double y, double z)
 	{
-		MFVec3->set1Value(idx, SbVec3d(x, y, z));
+		this->set1Value(idx, SbVec3d(x, y, z));
 	}
 
 
