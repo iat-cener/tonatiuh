@@ -617,8 +617,23 @@
               </spacer>
              </item>
              <item row="7" column="0" rowspan="7" colspan="5">
-              <widget class="QWidget" name="widget" native="true">
+              <widget class="QWidget" name="exportButtonWidget" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item>
                  <spacer name="horizontalSpacer_12">
                   <property name="orientation">
