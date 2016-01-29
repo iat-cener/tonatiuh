@@ -53,6 +53,7 @@ void TTracker::initClass()
 }
 
 TTracker::TTracker()
+:m_scene( 0 )
 {
 }
 

@@ -9,6 +9,7 @@
 
 #include <QFileDialog>
 #include <QFutureWatcher>
+#include <QIntValidator>
 #include <QMessageBox>
 #include <QMutex>
 #include <QPair>
@@ -63,7 +64,10 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
  m_ymax( 0.0 ),
  m_photonCounts(0),
  m_heightDivisions( 0 ),
- m_widthDivisions( 0 )
+ m_widthDivisions( 0 ),
+ m_pGridWidthVal( 0 ),
+ m_pGridHeightVal( 0 ),
+ m_pNOfRays ( 0 )
 {
 	setupUi( this );
 
@@ -80,14 +84,22 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	statisticalWidget->resize( resultsWidgetSize.width(), resultsWidgetSizeHeight * 0.25 );
 
 
+	m_pGridWidthVal = new QIntValidator(2, 999999999, this);
+	gridWidthLine->setValidator( m_pGridWidthVal );
+	m_pGridHeightVal = new QIntValidator(2, 999999999, this);
+	gridHeightLine->setValidator( m_pGridHeightVal );
+
+	m_pNOfRays = new QIntValidator(1, 999999999, this);
+
+
 	connect( selectButton, SIGNAL( clicked() ), this, SLOT( SelectSurface() ) );
 	connect( sidesCombo, SIGNAL( currentIndexChanged( int ) ), this, SLOT( ChangeCurrentSurfaceSide() ) );
 	connect( surfaceEdit, SIGNAL( editingFinished() ), this, SLOT( ChangeCurrentSurface() ) );
 	connect( runButton, SIGNAL( clicked()  ), this, SLOT( RunFluxAnalysis() ) );
 	connect( hSectorXCoordSpin, SIGNAL( valueChanged( double ) ), this, SLOT( UpdateSectorPlots() ) );
 	connect( hSectorYCoordSpin, SIGNAL( valueChanged( double ) ), this, SLOT( UpdateSectorPlots() ) );
-	connect( gridWidthSpin, SIGNAL( valueChanged( int ) ), this, SLOT( UpdateAnalysis() ) );
-	connect( gridHeightSpin, SIGNAL( valueChanged( int ) ), this, SLOT( UpdateAnalysis() ) );
+	connect( gridWidthLine, SIGNAL( editingFinished() ), this, SLOT( UpdateAnalysis() ) );
+	connect( gridHeightLine, SIGNAL( editingFinished( ) ), this, SLOT( UpdateAnalysis() ) );
 	connect( selectFileButton, SIGNAL( clicked() ), this, SLOT( SelectExportFile() ) );
 	connect( exportButton, SIGNAL( clicked() ) , this, SLOT( ExportData() ) );
 	connect( storeTypeCombo, SIGNAL( currentIndexChanged( int )), this, SLOT( SaveCoordsExport() ) );
@@ -134,6 +146,10 @@ FluxAnalysisDialog::~FluxAnalysisDialog()
 
 		delete[] m_photonCounts;
 	}
+
+
+	 delete m_pGridWidthVal;
+	 delete m_pGridHeightVal;
 }
 
 /*!
@@ -231,60 +247,64 @@ void FluxAnalysisDialog::ExportData()
 	QString storeType = storeTypeCombo->currentText();
 	QString exportFileName = fileNameEdit->text();
 
-	if ( storeType == "ASCII" )
+	QFileInfo exportFileInfo( exportFileName );
+	if ( storeType == QLatin1String( "ASCII" ) )
 	{
+		if( exportFileInfo.completeSuffix().compare( "txt" ) )	exportFileName.append( ".txt" );
+
+		QFile exportFile( exportDirectory + "/" + exportFileName  );
+		exportFile.open( QIODevice::WriteOnly );
+		QTextStream out( &exportFile );
+
 		if ( saveCoordsCheckBox->isChecked() )
-			{
-				QFile exportFile( exportDirectory + "/" + exportFileName + ".txt" );
-				exportFile.open( QIODevice::WriteOnly );
-				QTextStream out( &exportFile );
+		{
 
 				double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
 				double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
 				double areaCell = widthCell * heightCell;
 
-				out<<"x(m) y(m) Flux(W/m2)"<<"\n";
+				out<<"x(m)\ty(m)\tFlux(W/m2)"<<"\n";
 
 				for ( int i = 0; i<m_heightDivisions; i++)
 				{
 					for (int j = 0; j<m_widthDivisions; j++ )
 					{
-						out<< m_xmin + widthCell/2 + j * widthCell  << " " << m_ymin + heightCell/2 + i * heightCell << " " << m_photonCounts[i][j] * m_wPhoton / areaCell << "\n";
+						out<< m_xmin + widthCell/2 + j * widthCell  << "\t" << m_ymin + heightCell/2 + i * heightCell <<  "\t" << m_photonCounts[i][j] * m_wPhoton / areaCell << "\n";
 					}
 				}
-				exportFile.close();
-			}
+		}
 		else
+		{
+			double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
+			double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
+			double areaCell = widthCell * heightCell;
+
+
+			for ( int i = 0; i<m_heightDivisions; i++)
 			{
-				QFile exportFile( exportDirectory + "/" + exportFileName + ".txt" );
-				exportFile.open( QIODevice::WriteOnly );
-				QTextStream out( &exportFile );
-
-				double widthCell = (m_xmax-m_xmin) / m_widthDivisions;
-				double heightCell = (m_ymax-m_ymin) / m_heightDivisions;
-				double areaCell = widthCell * heightCell;
-
-				for ( int i = 0; i<m_heightDivisions; i++)
+				for (int j = 0; j<m_widthDivisions; j++ )
 				{
-					for (int j = 0; j<m_widthDivisions; j++ )
-					{
-						out<< m_photonCounts[m_heightDivisions-1-i][j] * m_wPhoton / areaCell << " ";
-					}
-				out<< "\n" ;
+					out<< m_photonCounts[m_heightDivisions-1-i][j] * m_wPhoton / areaCell << "\t";
 				}
-				exportFile.close();
+				out<<"\n" ;
 			}
+		}
+		exportFile.close();
 	}
-	else if ( storeType == "IMAGE.JPG" )
+	else if ( storeType == QLatin1String( "IMAGE.JPG" ) )
 	{
-		QFile exportFile( exportDirectory + "/" + exportFileName + ".jpg" );
+
+		if( exportFileInfo.completeSuffix().compare( "jpg" ) )	exportFileName.append( ".jpg" );
+
+		QFile exportFile( exportDirectory + "/" + exportFileName );
 		exportFile.open( QIODevice::WriteOnly );
 		contourPlotWidget->saveJpg( exportFile.fileName(), 0, 0, 1.0, -1 ); //(QString &  fileName, int  width = 0, int  height = 0, double  scale = 1.0, int  quality = -1  )
 		exportFile.close();
 	}
 	else if ( storeType == "IMAGE.PNG" )
 	{
-		QFile exportFile( exportDirectory + "/" + exportFileName + ".png" );
+		if( exportFileInfo.completeSuffix().compare( "png" ) )	exportFileName.append( ".png" );
+		QFile exportFile( exportDirectory + "/" + exportFileName );
 		exportFile.open( QIODevice::WriteOnly );
 		contourPlotWidget->savePng( exportFile.fileName(), 0, 0, 1.0, -1 ); //(QString &  fileName, int  width = 0, int  height = 0, double  scale = 1.0, int  quality = -1  )
 		exportFile.close();
@@ -301,6 +321,18 @@ void FluxAnalysisDialog::ExportData()
  */
 void FluxAnalysisDialog::RunFluxAnalysis()
 {
+
+
+	QString nOfRays = nRaysLine->text();
+	int pos = 0;
+	if( m_pNOfRays->validate( nOfRays, pos ) != QValidator::Acceptable )
+	{
+
+
+		QMessageBox::warning( this, QLatin1String( "Tonatiuh" ),
+									 tr( "The number of rays to trace must be a positive value." ) );
+		return;
+	}
 
 	if( m_photonCounts )
 	{
@@ -418,7 +450,10 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 
 	QVector< long > raysPerThread;
 	int maximumValueProgressScale = 100;
-	unsigned long raysPerIteration = nRaysSpin->value();
+
+
+	unsigned long raysPerIteration = nOfRays.toInt();
+
 	unsigned long  t1 = raysPerIteration/ maximumValueProgressScale;
 	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 		raysPerThread<< t1;
@@ -470,6 +505,8 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	double inputAperture = raycastingSurface->GetValidArea();
 	m_wPhoton = double ( inputAperture * irradiance ) / m_tracedRays;
 
+	UpdateAnalysis();
+	/*
 	TShapeKit* shapeKit = static_cast< TShapeKit* > ( surfaceNode->GetNode() );
 	if( !shapeKit || shapeKit == 0 )	return;
 
@@ -488,6 +525,7 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	{
 		FluxAnalysisCylinder( surfaceNode );
 	}
+	*/
 
 	appendCheck->setEnabled( true );
 
@@ -533,6 +571,22 @@ void FluxAnalysisDialog::SelectSurface()
  */
 void FluxAnalysisDialog::UpdateAnalysis(  )
 {
+	int pos = 0;
+	QString  withValue = gridWidthLine->text();
+	QValidator::State  widthState = m_pGridWidthVal->validate( withValue, pos );
+
+	QString  heightValue = gridHeightLine->text();
+	QValidator::State  heightSate = m_pGridHeightVal->validate( heightValue, pos );
+
+	if( ( widthState != QValidator::Acceptable ) || ( heightSate != QValidator::Acceptable ) )
+	{
+
+		QMessageBox::warning( this, QLatin1String( "Tonatiuh" ),
+									 tr( "The gird divisions size must be greater than 2." ) );
+
+		return;
+	}
+
 
 	if( !m_pPhotonMap || m_pPhotonMap == 0 )	return;
 
@@ -699,9 +753,20 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	trt::TONATIUH_REAL* phiMaxField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "phiMax" ) );
 	double phiMax = phiMaxField->getValue();
 
+	if( m_photonCounts  )
+	{
+		for( int h = 0; h < m_heightDivisions; h++ )
+		{
+			delete[] m_photonCounts[h];
+		}
 
-	m_widthDivisions = gridWidthSpin->value();
-	m_heightDivisions = gridHeightSpin->value();
+		delete[] m_photonCounts ;
+	}
+
+	//m_widthDivisions = gridWidthSpin->value();
+	m_widthDivisions = gridWidthLine->text().toInt();
+	//m_heightDivisions = gridHeightSpin->value();
+	m_heightDivisions = gridHeightLine->text().toInt();
 
 	m_photonCounts = new int*[m_heightDivisions];
 	for( int h = 0; h < m_heightDivisions; h++ )
@@ -711,14 +776,15 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 			m_photonCounts[h][w] = 0;
 	}
 
-	int widthDivisionsError = m_widthDivisions-2;
-	int heightDivisionsError = m_heightDivisions-2;
+	int widthDivisionsError = m_widthDivisions-1;
+	int heightDivisionsError = m_heightDivisions-1;
 
-	int photonCountsError[heightDivisionsError][widthDivisionsError];
-	for( int h = 0; h < heightDivisionsError; h++ )
+	int** photonCountsError = new int*[heightDivisionsError];
+	for(int i = 0; i < heightDivisionsError; ++i)
 	{
+		photonCountsError[i] = new int[widthDivisionsError];
 		for( int w = 0; w < widthDivisionsError; w++ )
-			photonCountsError[h][w] = 0;
+			photonCountsError[i][w] = 0;
 	}
 
 
@@ -894,6 +960,15 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
 	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
 
+	if( photonCountsError  )
+	{
+		for( int h = 0; h < heightDivisionsError; h++ )
+		{
+			delete[] photonCountsError[h];
+		}
+
+		delete[] photonCountsError ;
+	}
 
 }
 
@@ -912,9 +987,20 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	trt::TONATIUH_REAL* radiusField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "radius" ) );
 	double radius = radiusField->getValue();
 
+	if( m_photonCounts  )
+	{
+		for( int h = 0; h < m_heightDivisions; h++ )
+		{
+			delete[] m_photonCounts[h];
+		}
 
-	m_widthDivisions = gridWidthSpin->value();
-	m_heightDivisions = gridHeightSpin->value();
+		delete[] m_photonCounts ;
+	}
+
+	//m_widthDivisions = gridWidthSpin->value();
+	m_widthDivisions = gridWidthLine->text().toInt();
+	//m_heightDivisions = gridHeightSpin->value();
+	m_heightDivisions = gridHeightLine->text().toInt();
 
 	m_photonCounts = new int*[m_heightDivisions];
 	for( int h = 0; h < m_heightDivisions; h++ )
@@ -924,14 +1010,15 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 			m_photonCounts[h][w] = 0;
 	}
 
-	int widthDivisionsError = m_widthDivisions-2;
-	int heightDivisionsError = m_heightDivisions-2;
+	int widthDivisionsError = m_widthDivisions-1;
+	int heightDivisionsError = m_heightDivisions-1;
 
-	int photonCountsError[heightDivisionsError][widthDivisionsError];
-	for( int h = 0; h < heightDivisionsError; h++ )
+	int** photonCountsError = new int*[heightDivisionsError];
+	for(int i = 0; i < heightDivisionsError; ++i)
 	{
+		photonCountsError[i] = new int[widthDivisionsError];
 		for( int w = 0; w < widthDivisionsError; w++ )
-			photonCountsError[h][w] = 0;
+			photonCountsError[i][w] = 0;
 	}
 
 
@@ -1106,6 +1193,17 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	double standarDeviation = sqrt( E / (m_widthDivisions * m_heightDivisions ) );
 	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
 	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
+
+
+	if( photonCountsError  )
+	{
+		for( int h = 0; h < heightDivisionsError; h++ )
+		{
+			delete[] photonCountsError[h];
+		}
+
+		delete[] photonCountsError ;
+	}
 }
 
 
@@ -1131,8 +1229,20 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 	trt::TONATIUH_REAL* heightField = static_cast< trt::TONATIUH_REAL* > ( shape->getField( "height" ) );
 	double surfaceHeight= heightField->getValue();
 
-	m_widthDivisions = gridWidthSpin->value();
-	m_heightDivisions = gridHeightSpin->value();
+	if( m_photonCounts  )
+	{
+		for( int h = 0; h < m_heightDivisions; h++ )
+		{
+			delete[] m_photonCounts[h];
+		}
+
+		delete[] m_photonCounts ;
+	}
+
+	//m_widthDivisions = gridWidthSpin->value();
+	m_widthDivisions = gridWidthLine->text().toInt();
+	//m_heightDivisions = gridHeightSpin->value();
+	m_heightDivisions = gridHeightLine->text().toInt();
 
 	m_photonCounts = new int*[m_heightDivisions];
 	for( int h = 0; h < m_heightDivisions; h++ )
@@ -1142,14 +1252,15 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 			m_photonCounts[h][w] = 0;
 	}
 
-	int widthDivisionsError = m_widthDivisions-2;
-	int heightDivisionsError = m_heightDivisions-2;
+	int widthDivisionsError = m_widthDivisions-1;
+	int heightDivisionsError = m_heightDivisions-1;
 
-	int photonCountsError[heightDivisionsError][widthDivisionsError];
-	for( int h = 0; h < heightDivisionsError; h++ )
+	int** photonCountsError = new int*[heightDivisionsError];
+	for(int i = 0; i < heightDivisionsError; ++i)
 	{
+		photonCountsError[i] = new int[widthDivisionsError];
 		for( int w = 0; w < widthDivisionsError; w++ )
-			photonCountsError[h][w] = 0;
+			photonCountsError[i][w] = 0;
 	}
 
 	int activeSideID = 1;
@@ -1324,6 +1435,16 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 	double standarDeviation = sqrt( E / (m_widthDivisions * m_heightDivisions ) );
 	uniformityValue->setText(QString::number( standarDeviation /averageFlux )  );
 	centroidValue->setText( QString( QLatin1String( "%1 ; %2")).arg( QString::number( gravityX ), QString::number( gravityY ) ) );
+
+	if( photonCountsError  )
+	{
+		for( int h = 0; h < heightDivisionsError; h++ )
+		{
+			delete[] photonCountsError[h];
+		}
+
+		delete[] photonCountsError ;
+	}
 }
 
 /*!

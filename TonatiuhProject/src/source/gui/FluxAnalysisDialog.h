@@ -16,6 +16,7 @@
 
 class InstanceNode;
 class SceneModel;
+class QIntValidator;
 class RandomDeviate;
 class TSceneKit;
 
@@ -73,6 +74,11 @@ private:
 	int m_heightDivisions;
 	int m_widthDivisions;
 	double m_maximumFlux;
+
+	QIntValidator* m_pGridWidthVal;
+	QIntValidator* m_pGridHeightVal;
+	QIntValidator* m_pNOfRays;
+
 
 };
 
