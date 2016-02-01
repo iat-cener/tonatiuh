@@ -2,7 +2,7 @@
 # News #
 
 ## Tonatiuh release 2.2.0 is now available!##
-This is a minor relase of Tonatiuh. It introduces a new tool inside Tonatiuh to analyse the flux distribution. Besides two new materials have been implemented. The e new functionalities indroduced to the tool that have been developed in activities that are being performed in subtask 12.2.1 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837):
+This is a minor relase of Tonatiuh. It introduces a new tool inside Tonatiuh to analyse the flux distribution. Besides two new materials have been implemented. The e new functionalities indroduced to the tool that have been developed in activities that are being performed in subtask 12.2.1 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
 
 Details about the new functionalities:
 
