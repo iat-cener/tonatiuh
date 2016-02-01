@@ -1,18 +1,15 @@
 ![http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif](http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif)
 # News #
 
-## Tonatiuh release 2.1.0 is now available!##
-This is a minor relase of Tonatiuh. It introduces some modification to the tool to allow users to execute the application from a shell or other tools using a Tonatiuh scripting file.
+## Tonatiuh release 2.2.0 is now available!##
+This is a minor relase of Tonatiuh. It introduces a new tool inside Tonatiuh to analyse the flux distribution. Besides two new materials have been implemented. The e new functionalities indroduced to the tool that have been developed in activities that are being performed in subtask 12.2.1 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837):
 
-In addition to the changes related to scripting, new plugins have been included in this Tonatiuh version:
+Details about the new functionalities:
 
-• ShapeCAD: this plugin add the capability to import surface geometries from CAD files. Current version of the plugins only read STL files. The plug-in has been developed in activities that are being performed in subtask 12.2.2 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
+Flux Distribution: this tool add the capability to analyse the flux distribution in a selected surface. Current version only works in some surfaces: cylinder, flat disk and flat rectangle.
 
+Angle-Dependent_Refractive_Material and Angle-Dependent_Specular_Material: a new specular and refractive material that include angle dependency for the optic properties.
 
-• TrackerZAxis: new one axis tracker plug-in for Z axis rotations.
-
-
-• MaterialOneSideSpecular: a new material plug-in. Using this material the surface will be specular in the selected side. The other side will absorb all rays.
 
 ## First workshop on Tonatiuh ##
 
