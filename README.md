@@ -6,7 +6,7 @@ This is a minor relase of Tonatiuh. It introduces a new tool inside Tonatiuh to 
 
 Details about the new functionalities:
 
-  * Flux Distribution: this tool add the capability to analyse the flux distribution in a selected surface. Current version only works in some surfaces: cylinder, flat disk and flat rectangle. Read the about how to use this utility in the following  [link] (Flux Distribution Tool).
+  * Flux Distribution: this tool add the capability to analyse the flux distribution in a selected surface. Current version only works in some surfaces: cylinder, flat disk and flat rectangle. Read the about how to use this utility in the following  [link] (https://github.com/iat-cener/tonatiuh/wiki/Flux%20Distribution%20Tool).
 
   * Angle-Dependent_Refractive_Material and Angle-Dependent_Specular_Material: a new specular and refractive material that include angle dependency for the optic properties.
 
