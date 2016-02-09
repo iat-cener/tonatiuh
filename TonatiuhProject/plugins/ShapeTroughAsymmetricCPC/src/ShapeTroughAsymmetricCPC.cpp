@@ -153,7 +153,7 @@ bool ShapeTroughAsymmetricCPC::Intersect(const Ray& objectRay, double *tHit, Dif
 	std::sort( tHits.begin(), tHits.end() );
 
 	//For each tHit check tolerance and ray limits.
-	double tol = 0.000001;
+	double tol = 0.00001;
 	unsigned int i = 0;
 	bool valid = false;
 	Point3D hitPoint;
