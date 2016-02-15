@@ -329,10 +329,8 @@ Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGe
 
 
 	double cosTheta = DotProduct( -incident.direction(), s );
-	double disc = ( cosTheta * cosTheta )
-				+ ( ( n2 / n1 ) * ( n2 / n1 ) ) - 1;
-
-
+/*
+	double disc = ( cosTheta * cosTheta ) * ( ( n2 / n1 ) * ( n2 / n1 ) ) - 1;
 	if( n1 > n2 )
 	{
 		if( disc > 0 )refracted->setDirection( ( n1 / n2 ) * ( incident.direction() + ( cosTheta - sqrt( disc ) )* s ) );
@@ -341,5 +339,17 @@ Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGe
 	}
 	else
 		refracted->setDirection( ( n1 / n2 ) * ( incident.direction() + ( cosTheta - sqrt( disc ) )* s ) );
+	*/
+
+	double sin2Theta = ( n1/ n2 ) * ( n1/ n2 ) * (1 - cosTheta) * ( 1 - cosTheta );
+	if( n1 > n2 )
+	{
+		if( sin2Theta < 1.0 ) refracted->setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
+		else
+			refracted->setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
+	}
+	else
+		refracted->setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
+
 	return refracted;
 }
