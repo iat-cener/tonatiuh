@@ -372,51 +372,10 @@ void BVH::BuildRecursive(int left_index, int right_index, BVHNode* node, int dep
 			dimension1 = 2;
 		}
 
-		/*
-		if( left_index == 22 && right_index == 44 )
-		{
-			std::cout<<"\t"<<left_index<<"\t"<<right_index<<std::endl;
 
-			std::cout<<"Before sort"<<std::endl;
-			for( unsigned int t = 0; t < right_index; t++ )
-			{
-				Point3D v1 = m_triangleList->at(t)->GetVertex1();
-				Point3D v2 = m_triangleList->at(t)->GetVertex2();
-				Point3D v3 = m_triangleList->at(t)->GetVertex3();
-				Point3D centroid = m_triangleList->at(t)->GetCentroid();
-
-				std::cout<<v1.x<<"\t"<<v1.y<<"\t"<<v1.z<<"\t"
-						<<v2.x<<"\t"<<v2.y<<"\t"<<v2.z<<"\t"
-						<<v3.x<<"\t"<<v3.y<<"\t"<<v3.z<<"\t"
-						<<centroid.x<<"\t"<<centroid.y<<"\t"<<centroid.z
-						<<std::endl;
-			}
-		}
-		*/
 
 		SortTrinaglesList( left_index, right_index, dimension1 );
 
-		/*
-		if( left_index == 22 && right_index == 44 )
-		{
-			std::cout<<"\t"<<left_index<<"\t"<<right_index<<std::endl;
-
-			std::cout<<"After sort"<<std::endl;
-			for( unsigned int t = 0; t < right_index; t++ )
-			{
-				Point3D v1 = m_triangleList->at(t)->GetVertex1();
-				Point3D v2 = m_triangleList->at(t)->GetVertex2();
-				Point3D v3 = m_triangleList->at(t)->GetVertex3();
-				Point3D centroid = m_triangleList->at(t)->GetCentroid();
-
-				std::cout<<v1.x<<"\t"<<v1.y<<"\t"<<v1.z<<"\t"
-						<<v2.x<<"\t"<<v2.y<<"\t"<<v2.z<<"\t"
-						<<v3.x<<"\t"<<v3.y<<"\t"<<v3.z<<"\t"
-						<<centroid.x<<"\t"<<centroid.y<<"\t"<<centroid.z
-						<<std::endl;
-			}
-		}
-	*/
 
 		BBox leftBBox;
 		int splitIndex = right_index;
