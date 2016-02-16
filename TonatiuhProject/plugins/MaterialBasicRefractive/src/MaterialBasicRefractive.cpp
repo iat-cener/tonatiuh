@@ -341,11 +341,11 @@ Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGe
 		refracted->setDirection( ( n1 / n2 ) * ( incident.direction() + ( cosTheta - sqrt( disc ) )* s ) );
 	*/
 
-	double sin2Theta = ( n1/ n2 ) * ( n1/ n2 ) * (1 - cosTheta) * ( 1 - cosTheta );
+	double sin2Theta = ( n1/ n2 ) * ( n1/ n2 )  * ( 1 - cosTheta  * cosTheta );
 	if( n1 > n2 )
 	{
 		if( sin2Theta < 1.0 ) refracted->setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
-		else
+		else //Total Internal Reflection
 			refracted->setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
 	}
 	else
