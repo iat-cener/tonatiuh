@@ -371,10 +371,21 @@ void ShapeSphericalRectangle::generatePrimitives(SoAction *action)
     const SoTextureCoordinateElement* tce = 0;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
+    const int sNumOfRows = 30;
+    const int sNumOfColumns = 30;
 
-    SbVec3f  point;
- 	const int rows = 15; // Number of points per row
-    const int columns = 15; // Number of points per column
+    float complexity = this->getComplexityValue(action);
+
+ 	int rows = sNumOfRows * complexity; // Number of points per row
+    int columns = sNumOfColumns * complexity; // Number of points per column
+
+
+    if (rows < 3) rows = 3;
+    if (columns < 4) columns = 4;
+    if (columns > 128) columns = 128;
+
+ 	//const int rows = 15; // Number of points per row
+    //const int columns = 15; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
     float vertex[totalPoints][6];
