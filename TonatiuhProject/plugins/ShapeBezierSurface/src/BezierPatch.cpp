@@ -160,6 +160,7 @@ void BezierPatch::GLRender (SoGLRenderAction* action)
 
 bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
+	//Generate planes u, v perpendicular between themself which intersection is the ray, and plane w perpendicular to the ray which contains the objectRay.origin
 	Vector3D t;
 	if( fabs(objectRay.direction().x )< fabs(objectRay.direction().y ) )
 	{
@@ -173,7 +174,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	}
 	Vector3D nu = CrossProduct( t, objectRay.direction() );
 	Vector3D nv = CrossProduct( nu, objectRay.direction() );
-
+	Vector3D nw = Normalize( objectRay.direction()) ;
 
 	double au = nu[0];
 	double av = nv[0];
@@ -183,6 +184,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	double cv = nv[2];
 	double du = DotProduct( -nu, Vector3D( objectRay.origin ) );
 	double dv = DotProduct( -nv, Vector3D( objectRay.origin ) );
+	double dw = DotProduct( -nw, Vector3D( objectRay.origin ) );
 
 	SoMFVec3d p;
 	p.set1Value( 0, SbVec3d( m_controlPoints[0] ) );
@@ -284,6 +286,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 				if( ( pu1 * pu2 < 0 )  )	intersectsU = true;
 				if(  pv1 * pv2 < 0 )	intersectsV = true;
 			}
+
 			//Compute patch center and distance to patch center point
 			if( intersectsU && intersectsV )
 			{
@@ -296,7 +299,25 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 								+ iPatch->operator[]( 3 ) +  3 * iPatch->operator[]( 7 )
 								+ 3 * iPatch->operator[]( 11 ) + iPatch->operator[]( 15 ) );
 				Point3D center( vCenter[0], vCenter[1], vCenter[2] );
-				if( DotProduct( Vector3D( center - objectRay.origin ), objectRay.direction() ) >= 0 )
+
+				//Projection in w plane of the more external patch vertex
+				SbVec3d vVertex1 = iPatch->operator[]( 0 );
+				Point3D vertex1( vVertex1[0] , vVertex1[1], vVertex1[2] );
+				Point3D proyVertex1 = vertex1 - nw * fabs( DotProduct( Vector3D( vertex1 ), nw ) + dw);
+				SbVec3d vVertex2 = iPatch->operator[]( 3 );
+				Point3D vertex2( vVertex2[0], vVertex2[1], vVertex2[2] );
+				Point3D proyVertex2 = vertex2 - nw * fabs( DotProduct( Vector3D( vertex2 ), nw ) + dw);
+				SbVec3d vVertex3 = iPatch->operator[]( 12 );
+				Point3D vertex3( vVertex3[0], vVertex3[1], vVertex3[2] );
+				Point3D proyVertex3 = vertex3 - nw * fabs( DotProduct( Vector3D( vertex3 ), nw ) + dw);
+				SbVec3d vVertex4 = iPatch->operator[]( 15 );
+				Point3D vertex4( vVertex4[0], vVertex4[1], vVertex4[2] );
+				Point3D proyVertex4 = vertex4 - nw * fabs( DotProduct( Vector3D( vertex4 ), nw ) + dw);
+
+				//Determine if the objectRay.origin is inside the patch or not
+				if( DotProduct( CrossProduct( Vector3D( proyVertex2 - proyVertex1 ), Vector3D( objectRay.origin - proyVertex1 ) ), CrossProduct( Vector3D( proyVertex3 - proyVertex1 ), Vector3D( objectRay.origin - proyVertex1 ) ) ) < 0 &&
+						DotProduct( CrossProduct( Vector3D( proyVertex2 - proyVertex4 ), Vector3D( objectRay.origin - proyVertex4 ) ), CrossProduct( Vector3D( proyVertex3 - proyVertex4 ), Vector3D( objectRay.origin - proyVertex4 ) ) ) < 0 )
+				//if( DotProduct( Vector3D( center - objectRay.origin ), objectRay.direction() ) >= 0 )
 				{
 					SoMFVec3d* intersectedPatch = new SoMFVec3d;
 					intersectedPatch->copyFrom( *iPatch );
@@ -311,7 +332,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 		}
 
 		std::vector< double > distances = QVector< double >::fromList( distancesMap.keys() ).toStdVector();
-		std::sort( distances.begin(), distances.end() );
+		//std::sort( distances.begin(), distances.end() );
 
 		for (int i = 0; i < buffer1.size(); ++i)
 		{
