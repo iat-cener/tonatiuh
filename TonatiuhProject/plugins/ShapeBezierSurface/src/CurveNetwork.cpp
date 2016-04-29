@@ -34,98 +34,96 @@ void CurveNetwork::AddVCurve( Curve* curve )
 	m_vCurveList.push_back( curve );
 }
 
-QVector< BezierPatch* > CurveNetwork::GetSurface()
+std::vector< BezierPatch* > CurveNetwork::GetSurface()
 {
 
 	int uPatches = m_vCurveList.size() - 1;
 	int vPatches = m_uCurveList.size() - 1;
 
-	QVector< Point3D > uPoints;
-	QVector< Point3D > vPoints;
+	std::vector< Point3D > uPoints;
+	std::vector< Point3D > vPoints;
 
-	for( int u = 0; u < m_uCurveList.size(); u++ )
+	for( unsigned int u = 0; u < m_uCurveList.size(); u++ )
 	{
-		QPair< QVector<Point3D>, QVector< double> > uBezier = KnotInsertion( m_uCurveList[u]->GetKnots(), m_uCurveList[u]->GetControlPoints() );
-		QVector<Point3D> controlPoints = uBezier.first;
-		uPoints<<uBezier.first;
+		QPair< std::vector<Point3D>, std::vector< double> > uBezier = KnotInsertion( m_uCurveList[u]->GetKnots(), m_uCurveList[u]->GetControlPoints() );
+		std::vector<Point3D> controlPoints = uBezier.first;
+		//uPoints.push_back( uBezier.first );
+
+		for( unsigned int p = 0; p < controlPoints.size(); p++ )
+			uPoints.push_back( controlPoints[p] );
 	}
 
-	for( int v = 0; v < m_vCurveList.size(); v++ )
+	for( unsigned int v = 0; v < m_vCurveList.size(); v++ )
 	{
-		QPair< QVector<Point3D>, QVector< double> > vBezier = KnotInsertion( m_vCurveList[v]->GetKnots(), m_vCurveList[v]->GetControlPoints() );
-		QVector<Point3D> controlPoints = vBezier.first;
-		vPoints<<vBezier.first;
+		QPair< std::vector<Point3D>, std::vector< double> > vBezier = KnotInsertion( m_vCurveList[v]->GetKnots(), m_vCurveList[v]->GetControlPoints() );
+		std::vector<Point3D> controlPoints = vBezier.first;
+		//vPoints.push_back( vBezier.first );
+
+		for( unsigned int p = 0; p < controlPoints.size(); p++ )
+			vPoints.push_back( controlPoints[p] );
 	}
 
-	QVector< BezierPatch* > surfacePatches;
+	std::vector< BezierPatch* > surfacePatches;
 
 	for( int u = 0; u < uPatches; u++ )
 	{
 		for( int v = 0; v < vPatches; v++ )
 		{
-			QVector< Point3D > boundedPoints;
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u ];
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 1 ];
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 3 ];
-			boundedPoints<< vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 2 ];
-			boundedPoints<< vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 1 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u + 3 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u + 1 ];
-			boundedPoints<< uPoints[ v * ( 4 * uPatches ) + 4 * u ];
-			boundedPoints<< vPoints[ u * ( 4 * vPatches ) + 4 * v + 1 ];
-			boundedPoints<< vPoints[ u * ( 4 * vPatches ) + 4 * v + 2 ];
-			/*boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v ];
-			boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v + 1];
-			boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v + 2 ];
-			boundedPoints<< uPoints[ u * ( 4 * vPatches ) + 4 * v + 3 ];
-			boundedPoints<< vPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 1 ];
-			boundedPoints<< vPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< uPoints[ ( u + 1 )  * ( 4 * vPatches ) + 4 * v + 3];
-			boundedPoints<< uPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 2];
-			boundedPoints<< uPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 1 ];
-			boundedPoints<< uPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v ];
-			boundedPoints<< vPoints[ v * ( 4 * uPatches ) + 4 * u + 2 ];
-			boundedPoints<< vPoints[ v * ( 4 * uPatches ) + 4 * u + 1 ];*/
+			std::vector< Point3D > boundedPoints;
+			boundedPoints.push_back(  uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u ] );
+			boundedPoints.push_back( uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 1 ] );
+			boundedPoints.push_back( uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 2 ] );
+			boundedPoints.push_back( uPoints[ ( v + 1 ) * ( 4 * uPatches ) + 4 * u + 3 ] );
+			boundedPoints.push_back( vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 2 ] );
+			boundedPoints.push_back( vPoints[ ( u + 1 ) * ( 4 * vPatches ) + 4 * v + 1 ] );
+			boundedPoints.push_back( uPoints[ v * ( 4 * uPatches ) + 4 * u + 3 ] );
+			boundedPoints.push_back(  uPoints[ v * ( 4 * uPatches ) + 4 * u + 2 ] );
+			boundedPoints.push_back(  uPoints[ v * ( 4 * uPatches ) + 4 * u + 1 ] );
+			boundedPoints.push_back(  uPoints[ v * ( 4 * uPatches ) + 4 * u ] );
+			boundedPoints.push_back(  vPoints[ u * ( 4 * vPatches ) + 4 * v + 1 ] );
+			boundedPoints.push_back(  vPoints[ u * ( 4 * vPatches ) + 4 * v + 2 ] );
 
 			BezierPatch* patch = new BezierPatch;
 			patch->SetControlPoints( boundedPoints );
-			surfacePatches<<patch;
+			surfacePatches.push_back( patch );
 		}
 	}
 	return surfacePatches;
 }
 
-QPair< QVector<Point3D>, QVector< double> > CurveNetwork::KnotInsertion( QVector< double> knots, QVector< Point3D> control )
+QPair< std::vector<Point3D>, std::vector< double> > CurveNetwork::KnotInsertion( std::vector< double> knots, std::vector< Point3D> control )
 {
 	bool isBezier = false;
 
 	 while( !isBezier )
 	 {
 		 int j = knots.size()-1;
-		 while( ( j > 0 ) && ( ( knots[j] == knots[ j +1 ] ) || ( knots.count(  knots[j] ) == m_order ) )  )j--;
+		 //while( ( j > 0 ) && ( ( knots[j] == knots[ j +1 ] ) || ( knots.count(  knots[j] ) == m_order ) )  )j--;
+
+		  while( ( j > 0 ) && ( ( knots[j] == knots[ j +1 ] ) || ( std::count (knots.begin(), knots.end(), knots[j]) == m_order ) )  ) j--;
 
 		 if( j == 0 ) isBezier = true;
 		 else
 		 {
 			 control = InsertKnot( j, m_order, knots, control );
 			 double knotValue = knots[j];
-			 knots.insert( j, knotValue );
+			 //knots.insert( j, knotValue );
+
+			 knots.insert( knots.begin()+j, knotValue );
 		 }
 
 	 }
 
-	QPair< QVector<Point3D>, QVector< double> > curve;
+	QPair< std::vector<Point3D>, std::vector< double> > curve;
 	curve.first = control;
 	curve.second = knots;
 	return curve;
 }
 
-QVector<Point3D> CurveNetwork::InsertKnot( int j, int k, QVector< double> knots, QVector< Point3D> curveControlPoints )
+std::vector<Point3D> CurveNetwork::InsertKnot( int j, int k, std::vector< double> knots, std::vector< Point3D> curveControlPoints )
 {
 	int n = curveControlPoints.size()-1;
-	QVector< Point3D > newControlPoints( n+2 );
+	std::vector< Point3D > newControlPoints( n+2 );
 
 	newControlPoints[0] = curveControlPoints[0];
 	for( int i = 1; i <= n; i++ )

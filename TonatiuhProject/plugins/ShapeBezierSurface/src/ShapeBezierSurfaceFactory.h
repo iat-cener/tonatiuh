@@ -59,7 +59,7 @@ public:
 
 private:
    	bool IsValidInputDataFile( QString fileName ) const;
-   	bool ReadInputDataFile( QString fileName, QVector< Point3D >* inputData, int* nUCurves, int* nVCurves ) const;
+   	bool ReadInputDataFile( QString fileName, std::vector< Point3D >* inputData, int* nUCurves, int* nVCurves ) const;
 
 };
 

@@ -39,16 +39,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEBEZIERPATCH_H_
 #define SHAPEBEZIERPATCH_H_
 
-#include <QVector>
-
-#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "Vector3D.h"
-
 #include "TShape.h"
 #include "trt.h"
 
 class BezierPatch;
+class BVHPatch;
 class SoMFVec3d;
 class SoSensor;
 
@@ -67,31 +66,35 @@ public:
 	BBox GetBBox() const;
 	QString GetIcon() const;
 
-	bool IntersectP( const Ray& objectRay ) const;
+	bool IntersectP( const Ray& worldRay ) const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
 
 	Point3D Sample( double u, double v ) const;
 
-	void DefineSurfacePatches( QVector< Point3D > inputData, int nUCurves, int nVCurves );
+	bool DefineSurfacePatches( std::vector< Point3D > inputData, int nUCurves, int nVCurves );
 
-	void GLRender(SoGLRenderAction *action);
+	//void GLRender(SoGLRenderAction *action);
 
-	SoSFString inputDataFile;
 
 protected:
 	void computeBBox( SoAction *action, SbBox3f &box, SbVec3f &center);
 	void generatePrimitives(SoAction *action);
 
-	static void updateInputDataFile(void *data, SoSensor *);
+	static void updatePatchesList(void *data, SoSensor *);
 
 	virtual ~ShapeBezierSurface();
 
 private:
-   	bool IsValidInputDataFile( QString fileName ) const;
-   	bool ReadInputDataFile( QString fileName, QVector< Point3D >* inputData, int* nUCurves, int* nVCurves ) const;
+	trt::TONATIUH_CONTAINERREALVECTOR3 m_pointsList;
+	SoSFInt32 m_nOfUCurves;
+	SoSFInt32 m_nOfVCurves;
+	std::vector< BezierPatch* > m_surfacesVector;
 
-	QVector< BezierPatch* > m_surfacesVector;
-    QString lastValidInputFile;
+	SoFieldSensor* m_pPointsSensor;
+	SoFieldSensor* m_pUSensor;
+	SoFieldSensor* m_pVSensor;
+
+	BVHPatch* m_pBVH;
 };
 
 #endif /* SHAPEBEZIERPATCH_H_ */

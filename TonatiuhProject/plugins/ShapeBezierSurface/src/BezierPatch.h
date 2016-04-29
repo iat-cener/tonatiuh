@@ -39,58 +39,51 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef BEZIERPATCH_H_
 #define BEZIERPATCH_H_
 
-#include <Inventor/fields/SoMFVec3f.h>
-#include <Inventor/nodes/SoNurbsSurface.h>
+#include <vector>
 
-#include "TShape.h"
-
-struct BBox;
 #include "Point3D.h"
 #include "Vector3D.h"
-class SoMFVec3d;
 
-class BezierPatch : public SoNurbsSurface
+#include "BBox.h"
+#include "TShape.h"
+
+
+class BezierPatch //: public SoNurbsSurface
 {
-	SO_NODE_HEADER(BezierPatch);
 
 public:
 	BezierPatch();
+    ~BezierPatch();
 
-    static void initClass();
-
-    BBox GetComputeBBox();
-    SoMFVec3f GetControlPoints( );
-    void SetControlPoints( QVector< Point3D > boundedPoints );
-
-    void GeneratePrimitives( SoAction *action );
-    void GLRender (SoGLRenderAction* action);
-
-    bool IntersectP( const Ray& objectRay ) const;
-    bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
-
-protected:
-	Point3D GetPoint3D (double u, double v) const;
+	BBox GetBBox() const { return ( m_bbox ); } ;
+	Point3D GetCentroid() const { return ( m_centoid ); };
 	NormalVector GetNormal( double u, double v ) const;
+	Point3D GetPoint3D (double u, double v) const;
 
-    void computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/ );
-	void generatePrimitives( SoAction *action );
+	void GeneratePrimitives( SoAction *action );
+    bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
+    void SetControlPoints( std::vector< Point3D > boundedPoints );
 
-    virtual ~BezierPatch();
 
 private:
-	QVector< Vector3D > CornerDerivates( QVector< Point3D > boundedPoints );
+    std::vector< Vector3D > CornerDerivates( std::vector< Point3D > boundedPoints );
+	Vector3D DPDU( double u, double v, std::vector< Vector3D >* controlPoint = 0 ) const;
+	Vector3D DPDV( double u, double v, std::vector< Vector3D >* controlPoint = 0 ) const;
 
-	Vector3D DPDU( double u, double v, SoMFVec3d& controlPoints  ) const;
-	Vector3D DPDV( double u, double v, SoMFVec3d& controlPoints  ) const;
-	Vector3D D2PDUU( double u, double v, SoMFVec3d& controlPoints ) const;
-	Vector3D D2PDUV( double u, double v, SoMFVec3d& controlPoints  ) const;
-	Vector3D D2PDVV( double u, double v, SoMFVec3d& controlPoints  ) const;
+	Vector3D D2PDUU( double u, double v, std::vector< Vector3D >* controlPoint ) const;
+	Vector3D D2PDUV( double u, double v, std::vector< Vector3D >* controlPoint  ) const;
+	Vector3D D2PDVV( double u, double v, std::vector< Vector3D >* controlPoint  ) const;
 
-	void HullSplitU( const SoMFVec3d& p, SoMFVec3d* q, SoMFVec3d* r ) const;
-	void HullSplitV( const SoMFVec3d& p, SoMFVec3d* q, SoMFVec3d* r) const;
+	void SplitIPatch( std::vector< Vector3D > p, std::vector< std::vector< Vector3D > >* iPatches ) const;
 
-	int m_order;
-    SoMFVec3f m_controlPoints;
+	void HullSplitU( std::vector< Vector3D > p, std::vector< Vector3D >* q, std::vector< Vector3D >* r ) const;
+	void HullSplitV( std::vector< Vector3D > p, std::vector< Vector3D >* q, std::vector< Vector3D >* r) const;
+
+
+private:
+	BBox m_bbox;
+	Point3D m_centoid;
+	std::vector< Point3D > m_controlPoints;
 };
 
 #endif /* BEZIERPATCH_H_ */

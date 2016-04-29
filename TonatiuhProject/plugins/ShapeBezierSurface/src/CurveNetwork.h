@@ -8,8 +8,9 @@
 #ifndef CURVENETWORK_H_
 #define CURVENETWORK_H_
 
+#include <vector>
+
 #include <QVarLengthArray>
-#include <QVector>
 
 #include "Curve.h"
 #include "Point3D.h"
@@ -26,14 +27,14 @@ public:
 	void AddUCurve( Curve* curve );
 	void AddVCurve( Curve* curve );
 
-	QVector< BezierPatch* > GetSurface();
-	QPair< QVector<Point3D>, QVector< double> >  KnotInsertion( QVector< double> knots, QVector< Point3D> curveControlPoints );
+	std::vector< BezierPatch* > GetSurface();
+	QPair< std::vector<Point3D>, std::vector< double> >  KnotInsertion( std::vector< double> knots, std::vector< Point3D> curveControlPoints );
 
 private:
-	QVector<Point3D> InsertKnot( int j, int k, QVector< double> knots, QVector< Point3D> curve );
+	std::vector<Point3D> InsertKnot( int j, int k, std::vector< double> knots, std::vector< Point3D> curve );
 
 	int m_order;
-	QVector< Curve* >  m_uCurveList;
-	QVector< Curve* >  m_vCurveList;
+	std::vector< Curve* >  m_uCurveList;
+	std::vector< Curve* >  m_vCurveList;
 };
 #endif /* CURVENETWORK_H_ */

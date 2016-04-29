@@ -62,7 +62,6 @@ ShapeBezierSurface* ShapeBezierSurfaceFactory::CreateTShape( ) const
 	static bool firstTime = true;
 	if ( firstTime )
 	{
-		BezierPatch::initClass();
 	    ShapeBezierSurface::initClass();
 	    firstTime = false;
 	}
@@ -77,11 +76,11 @@ ShapeBezierSurface* ShapeBezierSurfaceFactory::CreateTShape( ) const
 			return 0;
 		}
 
-		QVector< Point3D > fileData;
+		std::vector< Point3D > pointsListData;
 		int nUCurves;
 		int nVCurves;
 
-		bool validData = ReadInputDataFile( fileName, &fileData, &nUCurves, &nVCurves );
+		bool validData = ReadInputDataFile( fileName, &pointsListData, &nUCurves, &nVCurves );
 		if( !validData )
 		{
 			QMessageBox::warning( 0, "Error", "Invalid data in file error" );
@@ -89,8 +88,7 @@ ShapeBezierSurface* ShapeBezierSurfaceFactory::CreateTShape( ) const
 		}
 
 		ShapeBezierSurface* shape = new ShapeBezierSurface;
-		shape->inputDataFile.setValue( fileName.toStdString().c_str() );
-		shape->DefineSurfacePatches( fileData, nUCurves, nVCurves );
+		shape->DefineSurfacePatches( pointsListData, nUCurves, nVCurves );
 
 		return shape;
 	}
@@ -109,9 +107,9 @@ bool ShapeBezierSurfaceFactory::IsValidInputDataFile( QString fileName ) const
 	return true;
 }
 
-bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, QVector< Point3D >* inputData, int* nUCurves, int* nVCurves  ) const
+bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, std::vector< Point3D >* inputData, int* nUCurves, int* nVCurves  ) const
 {
-	QVector< Point3D > surfaceData;
+	std::vector< Point3D > surfaceData;
 
 	QFile inputfile( fileName );
 	if( !inputfile.open( QIODevice::ReadOnly ) ) return false;
@@ -130,7 +128,7 @@ bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, QVector< Po
 		else if( vCurves == 0 )	vCurves = nPoints;
 
 		for( int j = 0; j < nPoints; j++)
-			surfaceData<<Point3D( curveData[ 3 * j].toDouble(),curveData[ 3* j +1  ].toDouble(),curveData[ 3* j + 2 ].toDouble() );
+			surfaceData.push_back( Point3D( curveData[ 3 * j].toDouble(),curveData[ 3* j +1  ].toDouble(),curveData[ 3* j + 2 ].toDouble() ) );
 	 }
 
 	 inputfile.close();

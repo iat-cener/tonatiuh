@@ -11,7 +11,7 @@
 #include "Point3D.h"
 #include "Vector3D.h"
 
-Curve::Curve( QVector< Point3D> curvePoints, QVector< double> knots )
+Curve::Curve( std::vector< Point3D> curvePoints, std::vector< double> knots )
 :m_controlPointsList( curvePoints.size()+2 ), m_knotList( knots )
 {
 	Interpolate_BSpline( curvePoints );
@@ -22,17 +22,17 @@ Curve::~Curve()
 
 }
 
-QVector< Point3D > Curve::GetControlPoints() const
+std::vector< Point3D > Curve::GetControlPoints() const
 {
-	return m_controlPointsList;
+	return ( m_controlPointsList );
 }
 
-QVector< double > Curve::GetKnots() const
+std::vector< double > Curve::GetKnots() const
 {
 	return m_knotList;
 }
 
-void Curve::Interpolate_BSpline( QVector< Point3D> curvePoints )
+void Curve::Interpolate_BSpline( std::vector< Point3D> curvePoints )
 {
 
 	int nData = curvePoints.size();
@@ -67,27 +67,23 @@ void Curve::Interpolate_BSpline( QVector< Point3D> curvePoints )
 		gamma[i] /= ( t4 - t2 );
 	}
 
-	QVector<Point3D> x = TriDiag( alpha, beta, gamma, curvePoints );
+	std::vector<Point3D> x = TriDiag( alpha, beta, gamma, curvePoints );
 
 	//m_controlPointsList
 	m_controlPointsList.clear();
 	m_controlPointsList.push_back( x[0] );
-	for( int j = 0; j < x.size() ; j++)
+	for( unsigned int j = 0; j < x.size() ; j++)
 		m_controlPointsList.push_back( x[j] );
 
 	m_controlPointsList.push_back( x[x.size()-1] );
 
-
-	/*std::cout<<"---m_controlPointsList---"<<std::endl;
-	for( int i = 0; i < m_controlPointsList.size() ; i++ )
-		std::cout<<"m_controlPointsList: "<<m_controlPointsList[i]<<std::endl;*/
 
 	delete alpha;
 	delete beta;
 	delete gamma;
 }
 
-QVector<Point3D> Curve::TriDiag( double* a, double* b, double* c, QVector< Point3D> curvePoints  )
+std::vector<Point3D> Curve::TriDiag( double* a, double* b, double* c, std::vector< Point3D> curvePoints  )
 {
 	int n = curvePoints.size();
 
@@ -125,12 +121,12 @@ QVector<Point3D> Curve::TriDiag( double* a, double* b, double* c, QVector< Point
 		x[j].z = delta[j].z + ( -1 * gamma[j] * x[j+1].z );
 	}
 
-	QVector<Point3D> control( n );
+	std::vector<Point3D> control( n );
 	for( int j = 0; j < n ; j++)
 	{
 		Point3D point = x[j];
 		control[j] = point;
 	}
 
-	return control;
+	return ( control );
 }
