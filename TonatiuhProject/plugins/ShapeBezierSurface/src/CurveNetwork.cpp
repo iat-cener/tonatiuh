@@ -5,6 +5,9 @@
  *      Author: amutuberria
  */
 
+ 
+#include <algorithm>
+
 #include <QPair>
 #include <QVarLengthArray>
 
@@ -46,9 +49,8 @@ std::vector< BezierPatch* > CurveNetwork::GetSurface()
 	for( unsigned int u = 0; u < m_uCurveList.size(); u++ )
 	{
 		QPair< std::vector<Point3D>, std::vector< double> > uBezier = KnotInsertion( m_uCurveList[u]->GetKnots(), m_uCurveList[u]->GetControlPoints() );
+		
 		std::vector<Point3D> controlPoints = uBezier.first;
-		//uPoints.push_back( uBezier.first );
-
 		for( unsigned int p = 0; p < controlPoints.size(); p++ )
 			uPoints.push_back( controlPoints[p] );
 	}
@@ -56,9 +58,8 @@ std::vector< BezierPatch* > CurveNetwork::GetSurface()
 	for( unsigned int v = 0; v < m_vCurveList.size(); v++ )
 	{
 		QPair< std::vector<Point3D>, std::vector< double> > vBezier = KnotInsertion( m_vCurveList[v]->GetKnots(), m_vCurveList[v]->GetControlPoints() );
+		
 		std::vector<Point3D> controlPoints = vBezier.first;
-		//vPoints.push_back( vBezier.first );
-
 		for( unsigned int p = 0; p < controlPoints.size(); p++ )
 			vPoints.push_back( controlPoints[p] );
 	}
@@ -98,8 +99,6 @@ QPair< std::vector<Point3D>, std::vector< double> > CurveNetwork::KnotInsertion(
 	 while( !isBezier )
 	 {
 		 int j = knots.size()-1;
-		 //while( ( j > 0 ) && ( ( knots[j] == knots[ j +1 ] ) || ( knots.count(  knots[j] ) == m_order ) )  )j--;
-
 		  while( ( j > 0 ) && ( ( knots[j] == knots[ j +1 ] ) || ( std::count (knots.begin(), knots.end(), knots[j]) == m_order ) )  ) j--;
 
 		 if( j == 0 ) isBezier = true;
@@ -107,7 +106,6 @@ QPair< std::vector<Point3D>, std::vector< double> > CurveNetwork::KnotInsertion(
 		 {
 			 control = InsertKnot( j, m_order, knots, control );
 			 double knotValue = knots[j];
-			 //knots.insert( j, knotValue );
 
 			 knots.insert( knots.begin()+j, knotValue );
 		 }
@@ -133,7 +131,6 @@ std::vector<Point3D> CurveNetwork::InsertKnot( int j, int k, std::vector< double
 		else if( i > j ) a = 0;
 		else
 			a = ( knots[j] - knots[i] ) / ( knots[i+k] - knots[i] );
-		//newControlPoints[i] = ( 1 - a ) * curveControlPoints[i-1] + ( a * curveControlPoints[i] );
 		newControlPoints[i].x = ( 1 - a ) * curveControlPoints[i-1].x + ( a * curveControlPoints[i].x );
 		newControlPoints[i].y = ( 1 - a ) * curveControlPoints[i-1].y + ( a * curveControlPoints[i].y );
 		newControlPoints[i].z = ( 1 - a ) * curveControlPoints[i-1].z + ( a * curveControlPoints[i].z );
