@@ -716,6 +716,16 @@ void FluxAnalysisDialog::ClearCurrentAnalysis()
 
 	//Delete previous colormap, scale
 	contourPlotWidget->clearPlottables();
+	//see how many elements there are
+	int elementCount = contourPlotWidget->plotLayout()->elementCount();
+	//loop over the elements
+	for(int i = 0; i < elementCount; i++){
+	   //test to see if any of the layout elements are of QCPColorScale type
+	    if(qobject_cast<QCPColorScale*>(contourPlotWidget->plotLayout()->elementAt(i)))
+	    	contourPlotWidget->plotLayout()->removeAt(i);
+	    //collapse the empty elements
+	  contourPlotWidget->plotLayout()->simplify();
+	}
 	contourPlotWidget->replot();
 
 	totalPowerValue->setText( QString::number(  0.0 )  );
@@ -847,6 +857,17 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	contourPlotWidget->clearPlottables();
 	contourPlotWidget->clearItems();
 
+	//see how many elements there are
+	int elementCount = contourPlotWidget->plotLayout()->elementCount();
+	//loop over the elements
+	for(int i = 0; i < elementCount; i++){
+	   //test to see if any of the layout elements are of QCPColorScale type
+	    if(qobject_cast<QCPColorScale*>(contourPlotWidget->plotLayout()->elementAt(i)))
+	    	contourPlotWidget->plotLayout()->removeAt(i);
+	    //collapse the empty elements
+	  contourPlotWidget->plotLayout()->simplify();
+	}
+
 	// Create a QCPColorMap object to draw flux distribution
 	QCPColorMap* colorMap = new QCPColorMap(contourPlotWidget->xAxis, contourPlotWidget->yAxis);
 	contourPlotWidget->addPlottable(colorMap);
@@ -916,6 +937,10 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 
 	// rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
 	colorMap->rescaleDataRange();
+
+	// forbid to drag and zoom the colorscale
+	colorScale->setRangeZoom(false);
+	colorScale->setRangeDrag(false);
 
 	// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
 	QCPMarginGroup* marginGroup = new QCPMarginGroup(contourPlotWidget);
@@ -1078,6 +1103,16 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	contourPlotWidget->clearPlottables();
 	contourPlotWidget->clearItems();
 
+	//see how many elements there are
+	int elementCount = contourPlotWidget->plotLayout()->elementCount();
+	//loop over the elements
+	for(int i = 0; i < elementCount; i++){
+	   //test to see if any of the layout elements are of QCPColorScale type
+	    if(qobject_cast<QCPColorScale*>(contourPlotWidget->plotLayout()->elementAt(i)))
+	    	contourPlotWidget->plotLayout()->removeAt(i);
+	    //collapse the empty elements
+	  contourPlotWidget->plotLayout()->simplify();
+	}
 
 	// Create a QCPColorMap object to draw flux distribution
 	QCPColorMap* colorMap = new QCPColorMap(contourPlotWidget->xAxis, contourPlotWidget->yAxis);
@@ -1144,12 +1179,15 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	colorMap->setColorScale( colorScale ); // associate the color map with the color scale
 	//colorScale->axis()->setLabel("Flux");
 
-
 	// set the  contour plot color
 	colorMap->setGradient(QCPColorGradient::gpSpectrum);
 
 	// rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
 	colorMap->rescaleDataRange();
+
+	// forbid to drag and zoom the colorscale
+	colorScale->setRangeZoom(false);
+	colorScale->setRangeDrag(false);
 
 	// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
 	QCPMarginGroup* marginGroup = new QCPMarginGroup(contourPlotWidget);
@@ -1160,8 +1198,6 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	// rescale axes and update plot view
 	contourPlotWidget->rescaleAxes();
 	contourPlotWidget->replot();
-
-
 
 	//Sectors plots
 	UpdateSectorPlots();
@@ -1320,6 +1356,17 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 	contourPlotWidget->clearPlottables();
 	contourPlotWidget->clearItems();
 
+	//see how many elements there are
+	int elementCount = contourPlotWidget->plotLayout()->elementCount();
+	//loop over the elements
+	for(int i = 0; i < elementCount; i++){
+	   //test to see if any of the layout elements are of QCPColorScale type
+	    if(qobject_cast<QCPColorScale*>(contourPlotWidget->plotLayout()->elementAt(i)))
+	    	contourPlotWidget->plotLayout()->removeAt(i);
+	    //collapse the empty elements
+	  contourPlotWidget->plotLayout()->simplify();
+	}
+
 	// Create a QCPColorMap object to draw flux distribution
 	QCPColorMap* colorMap = new QCPColorMap(contourPlotWidget->xAxis, contourPlotWidget->yAxis);
 	contourPlotWidget->addPlottable(colorMap);
@@ -1386,12 +1433,15 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 	colorMap->setColorScale( colorScale ); // associate the color map with the color scale
 	//colorScale->axis()->setLabel("Flux");
 
-
 	// set the  contour plot color
 	colorMap->setGradient(QCPColorGradient::gpSpectrum);
 
 	// rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
 	colorMap->rescaleDataRange();
+
+	// forbid to drag and zoom the colorscale
+	colorScale->setRangeZoom(false);
+	colorScale->setRangeDrag(false);
 
 	// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
 	QCPMarginGroup* marginGroup = new QCPMarginGroup(contourPlotWidget);
