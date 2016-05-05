@@ -1,16 +1,16 @@
 ![http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif](http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif)
 # News #
 
-## Tonatiuh release 2.2.0 is now available!##
-This is a minor relase of Tonatiuh. It introduces a new tool inside Tonatiuh to analyse the flux distribution. Besides two new materials have been implemented. The e new functionalities indroduced to the tool that have been developed in activities that are being performed in subtask 12.2.1 WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
+## Tonatiuh release 2.2.1 is now available!##
 
-Details about the new functionalities:
+This minor release fixes some bugs reltaed with some of the plug-ins:
 
-  * Flux Distribution: this tool add the capability to analyse the flux distribution in a selected surface. Current version only works in some surfaces: cylinder, flat disk and flat rectangle. Read the about how to use this utility in the following  [link] (https://github.com/iat-cener/tonatiuh/wiki/Flux%20Distribution%20Tool).
-
-  * Angle-Dependent_Refractive_Material and Angle-Dependent_Specular_Material: a new specular and refractive material that include angle dependency for the optic properties.
-
-
+  * ShapeBezierSurface: the intersection routine has been changed because in the old version some rays cross the surface without finding a intersection point. The plug-in have also changed to save the surface points for next uses without the need of saving the input data file.
+  
+  * Refractive materials: a bug has been fixed in the refraction equations related to the "Total internal reflection".
+  
+  * Flux Analysis Tool: fixed a bug, the range of the color scale did not change after running the first simulation. Moreover, it could be zoomed and dragged, now it is static.
+ 
 ## First workshop on Tonatiuh ##
 
 First TONATIUH workshop, with title “An introduction to TONATIUH”, has been successfully delivered by Amaia Mutuberria, Senior researcher of CENER Solar Thermal Energy Department.
