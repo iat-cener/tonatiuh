@@ -3,7 +3,7 @@
 
 ## Tonatiuh release 2.2.1 is now available!##
 
-This minor release fixes some bugs reltaed with some of the plug-ins:
+This minor release fixes some bugs related with some of the plug-ins:
 
   * ShapeBezierSurface: the intersection routine has been changed because in the old version some rays cross the surface without finding a intersection point. The plug-in have also changed to save the surface points for next uses without the need of saving the input data file.
   
@@ -11,6 +11,8 @@ This minor release fixes some bugs reltaed with some of the plug-ins:
   
   * Flux Analysis Tool: fixed a bug, the range of the color scale did not change after running the first simulation. Moreover, it could be zoomed and dragged, now it is static.
  
+Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.1
+
 ## First workshop on Tonatiuh ##
 
 First TONATIUH workshop, with title “An introduction to TONATIUH”, has been successfully delivered by Amaia Mutuberria, Senior researcher of CENER Solar Thermal Energy Department.
