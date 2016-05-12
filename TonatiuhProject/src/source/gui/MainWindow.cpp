@@ -1032,7 +1032,7 @@ void MainWindow::on_actionAbout_triggered()
 	QString aboutMessage("Tonatiuh\n"
 			"Version: "+ appVersion + "\n"
 			"\nPlease see http://www.gnu.org/licenses/gpl.html for an overview of GPLv3 licensing.\n"
-			"\nSee http://code.google.com/p/tonatiuh/ for more information.");
+			"\nSee http://iat-cener.github.io/tonatiuh/ for more information.");
 	QMessageBox::about( this, QString( "About Toantiuh" ), aboutMessage );
 
 
