@@ -110,7 +110,7 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	contourPlotWidget->axisRect()->setupFullAxesBox(true);
 
 	contourPlotWidget->plotLayout()->insertRow(0);
-	contourPlotWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(contourPlotWidget, "Flux Distribution"));
+	contourPlotWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(contourPlotWidget, "Incident Flux Distribution"));
 	contourPlotWidget->xAxis->setLabel("X (unit length)");
 	contourPlotWidget->yAxis->setLabel("Y (unit length)");
 
