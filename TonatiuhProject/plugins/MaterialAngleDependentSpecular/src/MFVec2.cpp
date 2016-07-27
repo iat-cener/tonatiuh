@@ -14,7 +14,7 @@
 	{
 		// This macro takes the name of the class and the name of the
 		// parent class
-			SO_MFIELD_INIT_CLASS(MFVec2, SoMField);
+			SO_MFIELD_INIT_CLASS(MFVec2, UserMField);
 	}
 
 
