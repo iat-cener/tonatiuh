@@ -118,7 +118,7 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	}
 	Vector3D nu = CrossProduct( t, objectRay.direction() );
 	Vector3D nv = CrossProduct( nu, objectRay.direction() );
-	Vector3D nw = Normalize( objectRay.direction()) ;
+	Vector3D nw = objectRay.direction() ;
 
 	double au = nu.x;
 	double av = nv.x;
@@ -191,19 +191,19 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 				//Projection in w plane of the more external patch vertex
 				//Vector3D vVertex1 = iPatch[0];
 				//Point3D vertex1( vVertex1[0] , vVertex1[1], vVertex1[2] );
-				Vector3D proyVertex1 = iPatch[0] - nw * fabs( DotProduct( Vector3D( iPatch[0] ), nw ) + dw);
+				Vector3D proyVertex1 = iPatch[0] - nw * ( DotProduct( Vector3D( iPatch[0] ), nw ) + dw);
 
 				//Vector3D vVertex2 = iPatch->operator[]( 3 );
 				//Point3D vertex2( vVertex2[0], vVertex2[1], vVertex2[2] );
-				Vector3D proyVertex2 = iPatch[3] - nw * fabs( DotProduct( Vector3D( iPatch[3]  ), nw ) + dw);
+				Vector3D proyVertex2 = iPatch[3] - nw * ( DotProduct( Vector3D( iPatch[3]  ), nw ) + dw);
 
 				//Vector3D vVertex3 = iPatch->operator[]( 12 );
 				//Point3D vertex3( vVertex3[0], vVertex3[1], vVertex3[2] );
-				Vector3D proyVertex3 = iPatch[12] - nw * fabs( DotProduct( Vector3D( iPatch[12] ), nw ) + dw);
+				Vector3D proyVertex3 = iPatch[12] - nw * ( DotProduct( Vector3D( iPatch[12] ), nw ) + dw);
 
 				//Vector3D vVertex4 = iPatch->operator[]( 15 );
 				//Point3D vertex4( vVertex4[0], vVertex4[1], vVertex4[2] );
-				Vector3D proyVertex4 = iPatch[15] - nw * fabs( DotProduct( Vector3D( iPatch[15] ), nw ) + dw);
+				Vector3D proyVertex4 = iPatch[15] - nw * ( DotProduct( Vector3D( iPatch[15] ), nw ) + dw);
 
 				//Determine if the objectRay.origin is inside the patch or not
 				if( DotProduct( CrossProduct( Vector3D( proyVertex2 - proyVertex1 ), Vector3D( objectRay.origin - proyVertex1 ) ), CrossProduct( Vector3D( proyVertex3 - proyVertex1 ), Vector3D( objectRay.origin - proyVertex1 ) ) ) < 0 &&
