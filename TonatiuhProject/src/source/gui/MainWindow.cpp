@@ -89,7 +89,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdDeleteTracker.h"
 #include "CmdInsertMaterial.h"
 #include "CmdInsertSeparatorKit.h"
-#include "CmdInsertAnalyzerKit.h"
 #include "CmdInsertShape.h"
 #include "CmdInsertShapeKit.h"
 #include "CmdInsertTracker.h"
@@ -134,8 +133,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trf.h"
 #include "TSceneKit.h"
 #include "TSeparatorKit.h"
-#include "TAnalyzerKit.h"
-#include "TAnalyzerResult.h"
 #include "TShapeFactory.h"
 #include "TShapeKit.h"
 #include "TSunShapeFactory.h"
@@ -824,7 +821,7 @@ void MainWindow::ShowMenu( const QModelIndex& index)
 		popupmenu.addAction( actionDelete );
 	}
 
-	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) && !(type.isDerivedFrom( TAnalyzerKit::getClassTypeId() )))
+	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		QMenu * trackersMenu = popupmenu.addMenu("Trackers" );
 		trackersMenu->addAction( actionSetAimingPointRelative);
@@ -1269,12 +1266,6 @@ void MainWindow::CreateGroupNode()
 		return;
 	}
 
-	if ( coinNode->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
-	{
-		emit Abort( tr( "CreateGroupNode: Error creating new group node." ) );
-		return;
-	}
-
 	if ( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
 		TSeparatorKit* separatorKit = new TSeparatorKit();
@@ -1302,47 +1293,6 @@ void MainWindow::CreateGroupNode()
 /*!
  * Creates a new analyzer node as a selected node child.
  */
-void MainWindow::CreateAnalyzerNode()
-{
-	QModelIndex parentIndex;
-	if (( ! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex()))
-		parentIndex = m_sceneModel->index (0,0, sceneModelView->rootIndex());
-	else
-		parentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* parentInstance = m_sceneModel->NodeFromIndex( parentIndex );
-	if( !parentInstance )
-	{
-		emit Abort( tr( "CreateAnalyzerNode: No parent node for analyzer node." ) );
-		return;
-	}
-
-
-	SoNode* selectedCoinNode = parentInstance->GetNode();
-	if( !selectedCoinNode )
-	{
-		emit Abort( tr( "CreateAnalyzerNode: There is no node selected for analyzer node." ) );
-		return;
-	}
-
-	if ( selectedCoinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		TAnalyzerKit* analyzerKit = new TAnalyzerKit;
-
-		CmdInsertAnalyzerKit* insertAnalyzerKit = new CmdInsertAnalyzerKit( parentIndex, analyzerKit, m_sceneModel );
-		m_commandStack->push( insertAnalyzerKit );
-
-		int count = 1;
-		QString nodeName = QString( "TAnalyzerKit%1").arg( QString::number( count) );
-		while ( !m_sceneModel->SetNodeName( analyzerKit, nodeName ) )
-		{
-			count++;
-			nodeName = QString( "TAnalyzerKit%1").arg( QString::number( count) );
-		}
-		UpdateLightSize();
-		m_document->SetDocumentModified( true );
-	}
-}
 
 /*!
  * Creates a \a componentType component node with the name \a nodeName.
@@ -1904,7 +1854,6 @@ void MainWindow::Run()
 
 
 		UpdateLightSize();
-		m_sceneModel->PrepareAnalyze();
 
 		//Compute bounding boxes and world to object transforms
 		trf::ComputeSceneTreeMap( rootSeparatorInstance, Transform( new Matrix4x4 ), true );
@@ -2016,12 +1965,6 @@ void MainWindow::SaveAs( QString fileName )
 	}
 	SaveFile( fileName );
 
-}
-
-
-void MainWindow::ResetAnalyzerValues()
-{
-	m_sceneModel->ResetAnalyzeValues();
 }
 
 /*!
@@ -3941,10 +3884,6 @@ bool MainWindow::StartOver( const QString& fileName )
 	}
 
     ChangeModelScene();
-
-
-	m_sceneModel->DisplayAnalyzeResults();
-
     return true;
 }
 

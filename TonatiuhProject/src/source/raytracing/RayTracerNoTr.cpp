@@ -111,7 +111,6 @@ void RayTracerNoTr::RayTracerCreatingAllPhotons(  double numberOfRays  )
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		std::vector<Ray> currentRaysWay;
 		Ray ray;
 		if( NewPrimitiveRay( &ray, rand ) )
 		{
@@ -120,7 +119,6 @@ void RayTracerNoTr::RayTracerCreatingAllPhotons(  double numberOfRays  )
 
 			InstanceNode* intersectedSurface = 0;
 			bool isFront = false;
-			bool isDirectSun = true;
 
 			//Trace the ray
 			bool isReflectedRay = true;
@@ -131,14 +129,12 @@ void RayTracerNoTr::RayTracerCreatingAllPhotons(  double numberOfRays  )
 				Ray reflectedRay;
 				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
 
-				if (!isDirectSun) currentRaysWay.push_back(ray);
 				if( isReflectedRay )
 				{
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface, 1) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
-					isDirectSun = false;
 				}
 
 			}
@@ -153,19 +149,12 @@ void RayTracerNoTr::RayTracerCreatingAllPhotons(  double numberOfRays  )
 				else
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface, 1 ) );
 			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize(currentRaysWay.size());
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				currentRaysWay.clear();
-			}
 
 		}
 
 	}
 
 	photonsVector.resize( photonsVector.size() );
-	//return QPair< TPhotonMap*, std::vector< Photon > >( m_photonMap, photonsVector );
 
 	m_pPhotonMapMutex->lock();
 	m_photonMap->StoreRays( photonsVector );
@@ -184,7 +173,6 @@ void RayTracerNoTr::RayTracerCreatingLightPhotons(  double numberOfRays  )
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		std::vector<Ray> currentRaysWay;
 		Ray ray;
 		if( NewPrimitiveRay( &ray, rand ) )
 		{
@@ -193,7 +181,6 @@ void RayTracerNoTr::RayTracerCreatingLightPhotons(  double numberOfRays  )
 
 			InstanceNode* intersectedSurface = 0;
 			bool isFront = false;
-			bool isDirectSun = true;
 
 			//Trace the ray
 			bool isReflectedRay = true;
@@ -204,7 +191,6 @@ void RayTracerNoTr::RayTracerCreatingLightPhotons(  double numberOfRays  )
 				Ray reflectedRay;
 				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
 
-				if (!isDirectSun) currentRaysWay.push_back(ray);
 				if( isReflectedRay )
 				{
 					if( m_exportSuraceList.contains( intersectedSurface ) )
@@ -212,7 +198,6 @@ void RayTracerNoTr::RayTracerCreatingLightPhotons(  double numberOfRays  )
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
-					isDirectSun = false;
 				}
 
 			}
@@ -226,12 +211,6 @@ void RayTracerNoTr::RayTracerCreatingLightPhotons(  double numberOfRays  )
 				}
 				else
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize(currentRaysWay.size());
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				currentRaysWay.clear();
 			}
 
 		}
@@ -256,7 +235,6 @@ void RayTracerNoTr::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		std::vector<Ray> currentRaysWay;
 		Ray ray;
 		if( NewPrimitiveRay( &ray, rand ) )
 		{
@@ -264,7 +242,6 @@ void RayTracerNoTr::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 
 			InstanceNode* intersectedSurface = 0;
 			bool isFront = false;
-			bool isDirectSun = true;
 
 			//Trace the ray
 			bool isReflectedRay = true;
@@ -275,7 +252,6 @@ void RayTracerNoTr::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 				Ray reflectedRay;
 				isReflectedRay = m_rootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
 
-				if (!isDirectSun) currentRaysWay.push_back(ray);
 				if( isReflectedRay )
 				{
 					if( m_exportSuraceList.contains( intersectedSurface ) )
@@ -283,7 +259,6 @@ void RayTracerNoTr::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
-					isDirectSun = false;
 				}
 
 			}
@@ -297,12 +272,6 @@ void RayTracerNoTr::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 				}
 				else
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize(currentRaysWay.size());
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				currentRaysWay.clear();
 			}
 
 		}

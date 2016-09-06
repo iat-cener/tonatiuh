@@ -48,12 +48,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "GraphicRootTracker.h"
 #include "MainWindow.h"
-//#include "MFVec2.h"
-#include "TAnalyzerKit.h"
-#include "TAnalyzerLevel.h"
-#include "TAnalyzerParameter.h"
-#include "TAnalyzerResult.h"
-#include "TAnalyzerResultKit.h"
 #include "TCube.h"
 #include "TDefaultMaterial.h"
 #include "TDefaultSunShape.h"
@@ -121,7 +115,6 @@ int main( int argc, char ** argv )
 
 	SoQt::init( (QWidget *) NULL );
 
-	//MFVec2::initClass();
 	UserMField::initClass();
 	UserSField::initClass();
 	TSceneKit::initClass();
@@ -132,11 +125,6 @@ int main( int argc, char ** argv )
 	TCube::initClass();
 	TLightShape::initClass();
 	TShapeKit::initClass();
-	TAnalyzerKit::initClass();
-	TAnalyzerResultKit::initClass();
-	TAnalyzerParameter::initClass();
-	TAnalyzerResult::initClass();
-	TAnalyzerLevel::initClass();
 	TSquare::initClass();
 	TLightKit::initClass();
 	TSunShape::initClass();

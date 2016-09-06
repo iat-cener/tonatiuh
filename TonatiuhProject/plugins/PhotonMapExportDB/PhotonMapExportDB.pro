@@ -13,12 +13,7 @@ LIBS +=-L$$(TDE_ROOT)/local/lib -lsqlite3
 
 # Input
 HEADERS = src/*.h  \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerKit.h \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerLevel.h \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerParameter.h \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerResult.h \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerResultKit.h \
-			$$(TONATIUH_ROOT)/src/source/geometry/*.h \  
+           $$(TONATIUH_ROOT)/src/source/geometry/*.h \  
             $$(TONATIUH_ROOT)/src/source/gui/InstanceNode.h \
 			$$(TONATIUH_ROOT)/src/source/gui/PathWrapper.h \
             $$(TONATIUH_ROOT)/src/source/gui/PhotonMapExport.h \
@@ -43,12 +38,7 @@ HEADERS = src/*.h  \
             $$(TONATIUH_ROOT)/src/source/raytracing/TTrackerForAiming.h
 
 SOURCES = src/*.cpp  \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerKit.cpp \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerLevel.cpp \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerParameter.cpp \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerResult.cpp \
-            $$(TONATIUH_ROOT)/src/source/analyzer/TAnalyzerResultKit.cpp \
-			$$(TONATIUH_ROOT)/src/source/geometry/*.cpp \  
+           	$$(TONATIUH_ROOT)/src/source/geometry/*.cpp \  
 			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
             $$(TONATIUH_ROOT)/src/source/gui/InstanceNode.cpp \
 			$$(TONATIUH_ROOT)/src/source/gui/PathWrapper.cpp \

@@ -115,7 +115,6 @@ void RayTracer::RayTracerCreatingAllPhotons( double numberOfRays  )
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		std::vector<Ray> currentRaysWay;
 		Ray ray;
 		if( NewPrimitiveRay( &ray, rand ) )
 		{
@@ -136,8 +135,6 @@ void RayTracer::RayTracerCreatingAllPhotons( double numberOfRays  )
 
 				if( rayLength > 0 )
 				{
-					currentRaysWay.push_back( ray );
-
 					if( m_transmissivity && !m_transmissivity->IsTransmitted( ray.maxt, rand ) )
 					{
 						++rayLength;
@@ -169,12 +166,6 @@ void RayTracer::RayTracerCreatingAllPhotons( double numberOfRays  )
 				else
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
 			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize( currentRaysWay.size() );
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				//currentRaysWay.clear();
-			}
 
 		}
 
@@ -199,7 +190,6 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		std::vector<Ray> currentRaysWay;
 		Ray ray;
 		if( NewPrimitiveRay( &ray, rand ) )
 		{
@@ -220,8 +210,6 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
 
 				if( rayLength > 0 )
 				{
-					currentRaysWay.push_back( ray );
-
 					if( m_transmissivity && !m_transmissivity->IsTransmitted( ray.maxt, rand ) )
 					{
 						++rayLength;
@@ -252,12 +240,6 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
 				}
 				else
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize(currentRaysWay.size());
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				//currentRaysWay.clear();
 			}
 
 		}
@@ -284,7 +266,6 @@ void RayTracer::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 
 	for(  unsigned long  i = 0; i < numberOfRays; ++i )
 	{
-		std::vector<Ray> currentRaysWay;
 		Ray ray;
 		if( NewPrimitiveRay( &ray, rand ) )
 		{
@@ -304,7 +285,6 @@ void RayTracer::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 
 				if( rayLength > 0 )
 				{
-					currentRaysWay.push_back( ray );
 					if( m_transmissivity && !m_transmissivity->IsTransmitted( ray.maxt, rand ) )
 					{
 						++rayLength;
@@ -336,12 +316,6 @@ void RayTracer::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 				}
 				else
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), isFront, ++rayLength, intersectedSurface) );
-			}
-			if (currentRaysWay.size()>0)
-			{
-				currentRaysWay.resize(currentRaysWay.size());
-				m_rootNode->Analyze(&currentRaysWay,m_mutex);
-				//currentRaysWay.clear();
 			}
 
 		}

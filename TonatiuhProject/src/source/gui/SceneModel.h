@@ -95,11 +95,6 @@ public:
 	void RemoveCoinNode( int row, SoBaseKit& coinParent );
 	void RemoveLightNode( TLightKit& coinLight );
 
-	void PrepareAnalyze(  );
-	void FinalyzeAnalyze( double raydensity );
-	void DisplayAnalyzeResults(  );
-	void ResetAnalyzeValues(  );
-
 	bool SetNodeName( SoNode* coinChild, QString newName );
 
 	void UpdateSceneModel();

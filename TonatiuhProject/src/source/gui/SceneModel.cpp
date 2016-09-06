@@ -56,8 +56,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSceneTracker.h"
 #include "TSceneKit.h"
 #include "TSeparatorKit.h"
-#include "TAnalyzerKit.h"
-#include "TAnalyzerLevel.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 #include "TTracker.h"
@@ -284,8 +282,7 @@ InstanceNode* SceneModel::NodeFromIndex( const QModelIndex& modelIndex ) const
 int SceneModel::rowCount( const QModelIndex& parentModelIndex ) const
 {
 	InstanceNode* instanceParent = NodeFromIndex( parentModelIndex );
-	if( instanceParent->GetNode()->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) ) return 0; //used to mask AnalyzerTree in tree node
-    return ( instanceParent ) ? ( instanceParent->children.count() ) : 0;
+	return ( instanceParent ) ? ( instanceParent->children.count() ) : 0;
 }
 
 int SceneModel::columnCount( const QModelIndex& ) const
@@ -377,12 +374,6 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 			if( coinNode->getTypeId().isDerivedFrom( TLightKit::getClassTypeId() ) )
 			{
 				return QIcon( QLatin1String( ":/icons/lightKit.png" ) );
-			}
-			else if( coinNode->getTypeId().isDerivedFrom(TAnalyzerKit::getClassTypeId() ) )
-			{
-				TAnalyzerKit* analyzerKit = static_cast<TAnalyzerKit*>( coinNode );
-				return QIcon( analyzerKit->GetIcon() );
-
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TSeparatorKit::getClassTypeId() ) )
 			{
@@ -540,28 +531,6 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 		instanceList.removeAt( instanceList.indexOf( instanceNode ) );
 	}
 	emit layoutChanged();
-}
-
-
-
-void SceneModel::PrepareAnalyze(  )
-{
-	m_instanceRoot->PrepareAnalyze(this);
-}
-
-void SceneModel::DisplayAnalyzeResults(  )
-{
-	m_instanceRoot->DisplayAnalyzeResults();
-}
-
-void SceneModel::ResetAnalyzeValues(  )
-{
-	m_instanceRoot->ResetAnalyzeValues();
-}
-void SceneModel::FinalyzeAnalyze( double raydensity )
-{
-	m_instanceRoot->FinalyzeAnalyze(raydensity,NULL);
-	DisplayAnalyzeResults();
 }
 
 void SceneModel::RemoveLightNode( TLightKit& coinLight )

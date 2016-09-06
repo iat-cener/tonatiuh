@@ -31,11 +31,6 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/SceneModel.o \
                         $$(TONATIUH_ROOT)/debug/ScriptRayTracer.o \
                         $$(TONATIUH_ROOT)/debug/sunpos.o \
-                        $$(TONATIUH_ROOT)/debug/TAnalyzerKit.o \
-                        $$(TONATIUH_ROOT)/debug/TAnalyzerLevel.o \
-                        $$(TONATIUH_ROOT)/debug/TAnalyzerResult.o \
-                        $$(TONATIUH_ROOT)/debug/TAnalyzerParameter.o \
-                        $$(TONATIUH_ROOT)/debug/TAnalyzerResultKit.o \
                         $$(TONATIUH_ROOT)/debug/TCube.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultSunShape.o \
@@ -84,11 +79,6 @@ else {
                         $$(TONATIUH_ROOT)/release/SceneModel.o \
                         $$(TONATIUH_ROOT)/release/ScriptRayTracer.o \
                         $$(TONATIUH_ROOT)/release/sunpos.o \
-                        $$(TONATIUH_ROOT)/release/TAnalyzerKit.o \
-                        $$(TONATIUH_ROOT)/release/TAnalyzerLevel.o \
-                        $$(TONATIUH_ROOT)/release/TAnalyzerParameter.o \
-                        $$(TONATIUH_ROOT)/release/TAnalyzerResult.o \
-                        $$(TONATIUH_ROOT)/release/TAnalyzerResultKit.o \
                         $$(TONATIUH_ROOT)/release/TCube.o \
                         $$(TONATIUH_ROOT)/release/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/release/TDefaultSunShape.o \

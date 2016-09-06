@@ -56,7 +56,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunShape.h"
 #include "Transform.h"
 #include "TSeparatorKit.h"
-#include "TAnalyzerKit.h"
 #include "TShapeKit.h"
 
 
@@ -99,10 +98,6 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 		instanceNode->SetIntersectionTransform( nodeWTO );
 
 		bool insertChildInSurfaceList=insertInSurfaceList;
-		if( coinNode->getTypeId().isDerivedFrom( TAnalyzerKit::getClassTypeId() ) )
-		{
-			insertChildInSurfaceList = false;
-		}
 		for( int index = 0; index < instanceNode->children.count() ; ++index )
 		{
 			InstanceNode* childInstance = instanceNode->children[index];

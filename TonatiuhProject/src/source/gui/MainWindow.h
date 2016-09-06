@@ -102,7 +102,6 @@ public slots:
 	void Copy();
 	void Copy( QString nodeURL );
 	void CreateGroupNode();
-	void CreateAnalyzerNode();
 	void CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVector< QVariant > parametersList );
 	void CreateMaterial( QString materialType );
 	void CreateShape( QString shapeType );
@@ -120,7 +119,6 @@ public slots:
 	void PasteCopy();
 	void PasteLink();
 	void Run();
-	void ResetAnalyzerValues();
 	bool Save();
 	void SaveComponent( QString componentFileName  );
 	void SaveAs( QString fileName );

@@ -11,7 +11,6 @@ DEPENDPATH += . \
                 $$(TONATIUH_ROOT)/geometry \
                 $$(TONATIUH_ROOT)/src \
                 $$(TONATIUH_ROOT)/src/source \
-                $$(TONATIUH_ROOT)/src/source/analyzer \
                 $$(TONATIUH_ROOT)/src/source/application \
                 $$(TONATIUH_ROOT)/src/source/auxiliary \
                 $$(TONATIUH_ROOT)/src/source/geometry \
@@ -37,16 +36,14 @@ mac:{
 
 
 # Input
-HEADERS += source/analyzer/*.h \
-           source/application/*.h \
+HEADERS += source/application/*.h \
            source/auxiliary/*.h \
            source/geometry/*.h \
            source/gui/*.h \
            source/raytracing/*.h \
            source/statistics/*.h 
 FORMS += source/gui/*.ui
-SOURCES += source/analyzer/*.cpp \
-           source/application/*.cpp \
+SOURCES += source/application/*.cpp \
            source/auxiliary/*.cpp \
            source/geometry/*.cpp \
            source/gui/*.cpp \
