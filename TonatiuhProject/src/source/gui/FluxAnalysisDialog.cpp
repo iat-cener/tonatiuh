@@ -67,7 +67,8 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
  m_widthDivisions( 0 ),
  m_pGridWidthVal( 0 ),
  m_pGridHeightVal( 0 ),
- m_pNOfRays ( 0 )
+ m_pNOfRays ( 0 ),
+ m_fluxLabelString( QString( "Flux((unit power)/(unit length)^2)"))
 {
 	setupUi( this );
 
@@ -100,6 +101,8 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	connect( hSectorYCoordSpin, SIGNAL( valueChanged( double ) ), this, SLOT( UpdateSectorPlots() ) );
 	connect( gridWidthLine, SIGNAL( editingFinished() ), this, SLOT( UpdateAnalysis() ) );
 	connect( gridHeightLine, SIGNAL( editingFinished( ) ), this, SLOT( UpdateAnalysis() ) );
+	connect( lengthUnitLine, SIGNAL( editingFinished( ) ), this, SLOT( UpdateLabelsUnits() ) );
+	connect( powerUnitLine, SIGNAL( editingFinished( ) ), this, SLOT( UpdateLabelsUnits() ) );
 	connect( selectFileButton, SIGNAL( clicked() ), this, SLOT( SelectExportFile() ) );
 	connect( exportButton, SIGNAL( clicked() ) , this, SLOT( ExportData() ) );
 	connect( storeTypeCombo, SIGNAL( currentIndexChanged( int )), this, SLOT( SaveCoordsExport() ) );
@@ -118,14 +121,14 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	horizontaSectorPlot->plotLayout()->insertRow(0);
 	horizontaSectorPlot->plotLayout()->addElement(0, 0, new QCPPlotTitle(horizontaSectorPlot, "Horizontal Sector"));
 	// give the axes some labels:
-	horizontaSectorPlot->xAxis->setLabel("");
-	horizontaSectorPlot->yAxis->setLabel("Flux");
+	horizontaSectorPlot->xAxis->setLabel("Y (unit length)");
+	horizontaSectorPlot->yAxis->setLabel("Flux ( (unit power) / (unit length)^2 )");
 
 	verticalSectorPlot->plotLayout()->insertRow(0);
 	verticalSectorPlot->plotLayout()->addElement(0, 0, new QCPPlotTitle(verticalSectorPlot, "Vertical Sector"));
 	// give the axes some labels:
-	verticalSectorPlot->xAxis->setLabel("");
-	verticalSectorPlot->yAxis->setLabel("Flux");
+	verticalSectorPlot->xAxis->setLabel("X (unit length)");
+	verticalSectorPlot->yAxis->setLabel("Flux ( (unit power) / (unit length)^2 )");
 
 }
 
@@ -682,6 +685,37 @@ void FluxAnalysisDialog::UpdateSectorPlots()
 
 }
 
+void FluxAnalysisDialog::UpdateLabelsUnits()
+{
+	QString lengthUnitString = lengthUnitLine->text();
+	if( lengthUnitString.isEmpty() ) lengthUnitString = QString( "(unit length)" );
+
+	QString powerUnitString = powerUnitLine->text();
+	if( powerUnitString.isEmpty() ) powerUnitString = QString( "(unit power)" );
+
+	contourPlotWidget->xAxis->setLabel( QString( "X (%1)" ).arg(lengthUnitString) );
+	contourPlotWidget->yAxis->setLabel( QString( "Y (%1)" ).arg(lengthUnitString) );
+
+	horizontaSectorPlot->xAxis->setLabel( QString( "Y (%1)" ).arg(lengthUnitString) );
+	verticalSectorPlot->xAxis->setLabel( QString( "X (%1)" ).arg(lengthUnitString) );
+
+	horizontaSectorPlot->yAxis->setLabel(QString( "Flux(%1/%2^2)" ).arg(powerUnitString, lengthUnitString) );
+	verticalSectorPlot->yAxis->setLabel(QString( "Flux(%1/%2^2)" ).arg(powerUnitString, lengthUnitString) );
+
+	 m_fluxLabelString = QString( "Flux(%1/%2^2)" ).arg(powerUnitString, lengthUnitString);
+
+	 QCPColorMap* colorMapPlot = qobject_cast<QCPColorMap*>( contourPlotWidget->plottable() );
+	 colorMapPlot->colorScale()->axis()->setLabel( m_fluxLabelString );
+
+
+	contourPlotWidget->replot();
+	horizontaSectorPlot->replot();
+	verticalSectorPlot->replot();
+
+
+}
+
+
 /*!
  * Clear current results and simulation.
  */
@@ -885,7 +919,6 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	hSectorXCoordSpin->setMinimum( m_xmin );
 	hSectorXCoordSpin->setMaximum( m_xmax );
 	hSectorXCoordSpin->setSingleStep( (m_xmax-m_xmin ) /10 );
-	//hSectorXCoordSpin->setValue(0 );
 	contourPlotWidget->addItem( tickVLine );
 
 
@@ -897,7 +930,6 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	hSectorYCoordSpin->setMinimum( m_ymin );
 	hSectorYCoordSpin->setMaximum( m_ymax );
 	hSectorYCoordSpin->setSingleStep( (m_ymax-m_ymin ) /10 );
-	//hSectorYCoordSpin->setValue( 0  );
 	contourPlotWidget->addItem( tickHLine );
 
 	tickHLine->start->setCoords(m_xmin -1 ,  0 );
@@ -911,6 +943,7 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 
 	colorScale->setType( QCPAxis::atRight ); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
 	colorMap->setColorScale( colorScale ); // associate the color map with the color scale
+	colorScale->axis()->setLabel( m_fluxLabelString );
 
 	// set the  contour plot color
 	colorMap->setGradient(QCPColorGradient::gpSpectrum);
@@ -1155,7 +1188,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 
 	colorScale->setType( QCPAxis::atRight ); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
 	colorMap->setColorScale( colorScale ); // associate the color map with the color scale
-	//colorScale->axis()->setLabel("Flux");
+	colorScale->axis()->setLabel( m_fluxLabelString );
 
 	// set the  contour plot color
 	colorMap->setGradient(QCPColorGradient::gpSpectrum);
@@ -1406,7 +1439,8 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 
 	colorScale->setType( QCPAxis::atRight ); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
 	colorMap->setColorScale( colorScale ); // associate the color map with the color scale
-	//colorScale->axis()->setLabel("Flux");
+	colorScale->axis()->setLabel( m_fluxLabelString );
+	//colorScale->axis()->setType (QCPAxis::atTop);
 
 	// set the  contour plot color
 	colorMap->setGradient(QCPColorGradient::gpSpectrum);

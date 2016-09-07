@@ -43,6 +43,7 @@ private slots:
 	void SelectSurface();
 	void UpdateAnalysis( );
 	void UpdateSectorPlots();
+	void UpdateLabelsUnits();
 	void SaveCoordsExport();
 
 private:
@@ -78,6 +79,9 @@ private:
 	QIntValidator* m_pGridWidthVal;
 	QIntValidator* m_pGridHeightVal;
 	QIntValidator* m_pNOfRays;
+
+	//Labels
+	QString m_fluxLabelString;
 
 
 };
