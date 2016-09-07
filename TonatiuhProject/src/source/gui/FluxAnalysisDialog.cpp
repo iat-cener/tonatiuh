@@ -506,27 +506,6 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	m_wPhoton = double ( inputAperture * irradiance ) / m_tracedRays;
 
 	UpdateAnalysis();
-	/*
-	TShapeKit* shapeKit = static_cast< TShapeKit* > ( surfaceNode->GetNode() );
-	if( !shapeKit || shapeKit == 0 )	return;
-
-	TShape* shape = static_cast< TShape* >( shapeKit->getPart( "shape", false ) );
-	if( !shape || shape == 0 )	return;
-
-	if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeFlatRectangle" ) )
-	{
-		FluxAnalysisFlatRectangle( surfaceNode );
-	}
-	else if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeFlatDisk" ) )
-	{
-		FluxAnalysisFlatDisk( surfaceNode);
-	}
-	else if( shape->getTypeId().getName().getString() == QLatin1String( "ShapeCylinder" ) )
-	{
-		FluxAnalysisCylinder( surfaceNode );
-	}
-	*/
-
 	appendCheck->setEnabled( true );
 
 
@@ -625,6 +604,7 @@ void FluxAnalysisDialog::UpdateAnalysis(  )
 void FluxAnalysisDialog::UpdateSectorPlots()
 {
 
+
 	if( !m_pPhotonMap )	return;
 
 	QCPItemLine* tickVLine  = ( QCPItemLine* ) contourPlotWidget->item( 0 );
@@ -698,6 +678,7 @@ void FluxAnalysisDialog::UpdateSectorPlots()
 	horizontaSectorPlot->xAxis->setRange( m_xmin, m_xmax );
 	horizontaSectorPlot->yAxis->setRange(0, 1.2 *m_maximumFlux);
 	horizontaSectorPlot->replot();
+
 
 }
 
@@ -773,9 +754,7 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 		delete[] m_photonCounts ;
 	}
 
-	//m_widthDivisions = gridWidthSpin->value();
 	m_widthDivisions = gridWidthLine->text().toInt();
-	//m_heightDivisions = gridHeightSpin->value();
 	m_heightDivisions = gridHeightLine->text().toInt();
 
 	m_photonCounts = new int*[m_heightDivisions];
@@ -902,13 +881,14 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	gravityY /= totalFlux;
 
 	// Create a vertical and horizontal line for sectors
-	QCPItemLine* tickVLine  =new QCPItemLine( contourPlotWidget );
+	QCPItemLine* tickVLine  =new  QCPItemLine( contourPlotWidget );
 	hSectorXCoordSpin->setMinimum( m_xmin );
 	hSectorXCoordSpin->setMaximum( m_xmax );
 	hSectorXCoordSpin->setSingleStep( (m_xmax-m_xmin ) /10 );
-	hSectorXCoordSpin->setValue(0 );
-
+	//hSectorXCoordSpin->setValue(0 );
 	contourPlotWidget->addItem( tickVLine );
+
+
 	tickVLine->start->setCoords( 0, m_ymin - 1);
 	tickVLine->end->setCoords( 0, m_ymax + 1);
 	tickVLine->setPen( QPen( QColor( 137, 140, 140), 1 ) );
@@ -917,9 +897,9 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 	hSectorYCoordSpin->setMinimum( m_ymin );
 	hSectorYCoordSpin->setMaximum( m_ymax );
 	hSectorYCoordSpin->setSingleStep( (m_ymax-m_ymin ) /10 );
-	hSectorYCoordSpin->setValue( 0  );
-
+	//hSectorYCoordSpin->setValue( 0  );
 	contourPlotWidget->addItem( tickHLine );
+
 	tickHLine->start->setCoords(m_xmin -1 ,  0 );
 	tickHLine->end->setCoords( m_xmax + 1, 0 );
 	tickHLine->setPen( QPen( QColor(137, 140, 140), 1));
@@ -1022,9 +1002,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 		delete[] m_photonCounts ;
 	}
 
-	//m_widthDivisions = gridWidthSpin->value();
 	m_widthDivisions = gridWidthLine->text().toInt();
-	//m_heightDivisions = gridHeightSpin->value();
 	m_heightDivisions = gridHeightLine->text().toInt();
 
 	m_photonCounts = new int*[m_heightDivisions];
@@ -1151,12 +1129,12 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	hSectorXCoordSpin->setMinimum( m_xmin );
 	hSectorXCoordSpin->setMaximum( m_xmax );
 	hSectorXCoordSpin->setSingleStep( (m_xmax-m_xmin ) /10 );
-	hSectorXCoordSpin->setValue( 0.0 );
+	//hSectorXCoordSpin->setValue( 0.0 );
 
 	hSectorYCoordSpin->setMinimum( m_ymin );
 	hSectorYCoordSpin->setMaximum( m_ymax );
 	hSectorYCoordSpin->setSingleStep( (m_ymax-m_ymin ) /10 );
-	hSectorYCoordSpin->setValue( 0.0 );
+	//hSectorYCoordSpin->setValue( 0.0 );
 
 	QCPItemLine* tickVLine  =new QCPItemLine( contourPlotWidget );
 	contourPlotWidget->addItem( tickVLine );
@@ -1275,9 +1253,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 		delete[] m_photonCounts ;
 	}
 
-	//m_widthDivisions = gridWidthSpin->value();
 	m_widthDivisions = gridWidthLine->text().toInt();
-	//m_heightDivisions = gridHeightSpin->value();
 	m_heightDivisions = gridHeightLine->text().toInt();
 
 	m_photonCounts = new int*[m_heightDivisions];
@@ -1401,16 +1377,15 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 	gravityY /= totalFlux;
 
 	// Create a vertical and horizontal line for sectors
-
 	hSectorXCoordSpin->setMinimum( m_xmin );
 	hSectorXCoordSpin->setMaximum( m_xmax );
 	hSectorXCoordSpin->setSingleStep( (m_xmax-m_xmin ) /10 );
-	hSectorXCoordSpin->setValue( 0.0 );
+	//hSectorXCoordSpin->setValue( 0.0 );
 
 	hSectorYCoordSpin->setMinimum( m_ymin );
 	hSectorYCoordSpin->setMaximum( m_ymax );
 	hSectorYCoordSpin->setSingleStep( (m_ymax-m_ymin ) /10 );
-	hSectorYCoordSpin->setValue( 0.0 );
+	//hSectorYCoordSpin->setValue( 0.0 );
 
 	QCPItemLine* tickVLine  =new QCPItemLine( contourPlotWidget );
 	contourPlotWidget->addItem( tickVLine );
