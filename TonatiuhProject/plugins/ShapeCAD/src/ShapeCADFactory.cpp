@@ -247,8 +247,13 @@ bool ShapeCADFactory::ReadSTLFile( QString filename, std::vector< Triangle* >* f
 		int counter = 0 ; // must be set equal to 0 not as  int counter; because it gives weird no.
 
 		int spc_ind[3] ;
-		float N_vec[no_of_facet_Normals] ;       // (one-dim) array for Normal vectors of facets
-		float Coord_vec [no_of_facet_xyzCrds] ;  // (one-dim) array for Vertex coords of facets
+		//float N_vec[no_of_facet_Normals] ;       // (one-dim) array for Normal vectors of facets
+		std::vector<float> N_vec;
+		for (int i=0; i<no_of_facet_Normals; i++) N_vec.push_back(0);
+		//float Coord_vec [no_of_facet_xyzCrds] ;  // (one-dim) array for Vertex coords of facets
+		std::vector<float> Coord_vec;
+		for (int i=0; i<no_of_facet_xyzCrds; i++) Coord_vec.push_back(0);
+
 		// Defining Facet normal vectors N_i, N_j and N_k set as float number:
 		//float N_i[no_of_facets];
 		//float N_j[no_of_facets];
@@ -380,6 +385,9 @@ bool ShapeCADFactory::ReadSTLFile( QString filename, std::vector< Triangle* >* f
 			Triangle* facet = new Triangle( v1, v2, v3, normal );
 		  	facetList->push_back( facet );
 		}
+
+		N_vec.clear();
+		Coord_vec.clear();
 	}
 
 
