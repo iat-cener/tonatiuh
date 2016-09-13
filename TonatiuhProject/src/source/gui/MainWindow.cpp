@@ -1750,7 +1750,7 @@ void MainWindow::Open( QString fileName )
 	}
 
 	QFileInfo file( fileName );
-	if( !file.exists() )
+	if( !file.exists() || !file.isFile() || file.suffix()!=QString("tnh") )
 	{
 		QMessageBox::warning( this, QLatin1String( "Tonatiuh" ),
 				tr( "Open: Cannot open file:\n%1." ).arg( fileName ) );
