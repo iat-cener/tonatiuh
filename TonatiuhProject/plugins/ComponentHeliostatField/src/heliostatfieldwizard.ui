@@ -45,7 +45,7 @@
     <item>
      <widget class="QLabel" name="labelIntr1">
       <property name="text">
-       <string>This wizard will help the user creating a new heliostat field. The coordinates of the heliostats can be read from a file or introduced manually, the heliostat model can be loaded as a component (.tcmp) or creating a new design defined by the user, finally, the aiming strategy can be read from a file or introduced manually (one aiming point per heliostsat), the whole heliostat field can aim at a point or a specific strategy for a cylindrical receivers (aiming at the equator of the cylinder). </string>
+       <string>This wizard helps the user in the process of creating a new heliostat field. The coordinates of the heliostats can be read from a file or introduced manually, the heliostat model can be loaded as a component (.tcmp) or creating a new design defined by the user, finally, the aiming strategy can be read from a file or introduced manually (one aiming point per heliostat), the whole heliostat field can aim at a point or a specific strategy for a cylindrical receivers (aiming at the equator of the cylinder). </string>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
@@ -251,7 +251,7 @@ The argument list must contain the following:
        <string/>
       </property>
       <property name="icon">
-       <iconset resource="../../../sde64/workspace/TonatiuhProject/src/tonatiuh.qrc">
+       <iconset>
         <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
       </property>
      </widget>
@@ -262,7 +262,7 @@ The argument list must contain the following:
        <string/>
       </property>
       <property name="icon">
-       <iconset resource="../../../sde64/workspace/TonatiuhProject/src/tonatiuh.qrc">
+       <iconset>
         <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
       </property>
      </widget>
@@ -273,7 +273,7 @@ The argument list must contain the following:
        <string/>
       </property>
       <property name="icon">
-       <iconset resource="../../../sde64/workspace/TonatiuhProject/src/tonatiuh.qrc">
+       <iconset>
         <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
       </property>
      </widget>
