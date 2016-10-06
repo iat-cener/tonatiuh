@@ -127,8 +127,8 @@ public slots:
 	void SetAimingPointRelative();
 	void SetExportAllPhotonMap();
 	void SetExportCoordinates( bool enabled, bool global );
-	void SetExportIntesectionSurface( bool enabled );
-	void SetExportIntesectionSurfaceSide( bool enabled );
+	void SetExportIntersectionSurface( bool enabled );
+	void SetExportIntersectionSurfaceSide( bool enabled );
 	void SetExportPhotonMapType( QString exportModeType );
 	void SetExportPreviousNextPhotonID( bool enabled );
 	void SetExportTypeParameterValue( QString parameterName, QString parameterValue );

@@ -2020,7 +2020,7 @@ void MainWindow::SetExportCoordinates( bool enabled, bool global )
  * If \a enabled is true, sets to export intersection surface.
  * Otherwise, the intersection surface will not be exported.
  */
-void MainWindow::SetExportIntesectionSurface( bool enabled )
+void MainWindow::SetExportIntersectionSurface( bool enabled )
 {
 	if( !m_pExportModeSettings )	return;
 	m_pExportModeSettings->exportSurfaceID = enabled;
@@ -2030,7 +2030,7 @@ void MainWindow::SetExportIntesectionSurface( bool enabled )
  * If \a enabled is true, sets to export intersection surface side.
  * Otherwise, the intersection surface side will not be exported.
  */
-void MainWindow::SetExportIntesectionSurfaceSide( bool enabled )
+void MainWindow::SetExportIntersectionSurfaceSide( bool enabled )
 {
 	if( !m_pExportModeSettings )	return;
 	m_pExportModeSettings->exportIntersectionSurfaceSide = enabled;
