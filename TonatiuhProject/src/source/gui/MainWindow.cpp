@@ -3773,7 +3773,6 @@ void MainWindow::SetupTriggers()
 
 	//Insert actions
 	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
-	connect( actionAnalyzerNode, SIGNAL( triggered() ), this, SLOT ( CreateAnalyzerNode() ) );
 	connect( actionSurfaceNode, SIGNAL( triggered() ), this, SLOT ( CreateSurfaceNode() ) );
 	connect( actionUserComponent, SIGNAL( triggered() ), this, SLOT ( InsertUserDefinedComponent() ) );
 
@@ -3788,7 +3787,6 @@ void MainWindow::SetupTriggers()
 	connect( actionRun, SIGNAL( triggered() ), this, SLOT ( RunCompleteRayTracer() ) );
 	connect( actionRunFluxAnalysis, SIGNAL( triggered() ), this, SLOT ( RunFluxAnalysisRayTracer() ) );
 	connect( actionRayTraceOptions, SIGNAL( triggered() ), this, SLOT( ShowRayTracerOptionsDialog() )  );
-	connect( actionReset_Analyzer_Values, SIGNAL( triggered() ), this, SLOT ( ResetAnalyzerValues() ) );
 
 	//View Menu actions
 	connect( actionGrid, SIGNAL( triggered() ), this, SLOT( ShowGrid() )  );
