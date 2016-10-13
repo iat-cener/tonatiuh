@@ -1,17 +1,21 @@
 ![http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif](http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif)
 # News #
 
-## Tonatiuh release 2.2.1 is now available!##
+## Tonatiuh release 2.2.2 is now available!##
 
-This minor release fixes some bugs related with some of the plug-ins:
+This minor release fixes some bugs:
+ - New changes and some bugs fixed in the Flux Analysis Tool:
+  - The range of the color scale did not change after running the first simulation
+  - The color scale could be zoomed and dragged, now it is static
+  - Add units labels
+ - Fixed some bugs in the intersection routine of the Bezier Surfaces
+ - Fixed some bugs importing CAD surface with long list of triangles
+ - Fixed some spelling mistakes in some functions for scripting
+ - Re-design the tool for creating fast heliostat fields. More information following the wiki link https://github.com/iat-cener/tonatiuh/wiki/Heliostat%20Field%20Wizard
+ - Cleaning code
 
-  * ShapeBezierSurface: the intersection routine has been changed because in the old version some rays cross the surface without finding a intersection point. The plug-in have also changed to save the surface points for next uses without the need of saving the input data file.
-  
-  * Refractive materials: a bug has been fixed in the refraction equations related to the "Total internal reflection".
-  
-  * Flux Analysis Tool: fixed a bug, the range of the color scale did not change after running the first simulation. Moreover, it could be zoomed and dragged, now it is static.
  
-Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.1
+Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.2
 
 ## First workshop on Tonatiuh ##
 
