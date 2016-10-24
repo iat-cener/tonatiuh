@@ -971,7 +971,7 @@ void FluxAnalysisDialog::FluxAnalysisCylinder( InstanceNode* node )
 
 
 	//Statistical data
-	totalPowerValue->setText( QString::number(  photonList.size() * m_wPhoton)  );
+	totalPowerValue->setText( QString::number( totalFlux * areaCell ) );
 
 	minimumFluxValue->setText(QString::number( minimumFlux )  );
 	averageFluxValue->setText(QString::number( averageFlux )  );
@@ -1214,7 +1214,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatDisk( InstanceNode* node  )
 	UpdateSectorPlots();
 
 	//Statistical data
-	totalPowerValue->setText( QString::number(  photonList.size() * m_wPhoton)  );
+	totalPowerValue->setText( QString::number(  totalFlux * areaCell )  );
 
 	minimumFluxValue->setText(QString::number( minimumFlux )  );
 	averageFluxValue->setText(QString::number( averageFlux )  );
@@ -1468,7 +1468,7 @@ void FluxAnalysisDialog::FluxAnalysisFlatRectangle( InstanceNode* node )
 
 
 	//Statistical data
-	totalPowerValue->setText( QString::number(  photonList.size() * m_wPhoton)  );
+	totalPowerValue->setText( QString::number(  totalFlux * areaCell )  );
 
 	minimumFluxValue->setText(QString::number( minimumFlux )  );
 	averageFluxValue->setText(QString::number( averageFlux )  );
