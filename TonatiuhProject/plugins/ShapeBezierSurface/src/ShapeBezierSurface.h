@@ -95,6 +95,8 @@ private:
 	SoFieldSensor* m_pVSensor;
 
 	BVHPatch* m_pBVH;
+
+	double m_tol;
 };
 
 #endif /* SHAPEBEZIERPATCH_H_ */

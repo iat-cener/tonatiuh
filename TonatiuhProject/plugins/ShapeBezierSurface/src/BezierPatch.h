@@ -84,6 +84,8 @@ private:
 	BBox m_bbox;
 	Point3D m_centoid;
 	std::vector< Point3D > m_controlPoints;
+
+	int m_nIterations;
 };
 
 #endif /* BEZIERPATCH_H_ */

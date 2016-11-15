@@ -70,13 +70,16 @@ void ShapeBezierSurface::initClass()
 }
 
 ShapeBezierSurface::ShapeBezierSurface( )
-:m_pBVH( 0 )
+:m_pBVH( 0 ),
+ m_tol( 0.00001 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeBezierSurface);
 
 	SO_NODE_ADD_FIELD( m_pointsList, (0, 0, 0 ) );
 	SO_NODE_ADD_FIELD( m_nOfUCurves, ( 0 ) );
 	SO_NODE_ADD_FIELD( m_nOfVCurves, (0  ) );
+
+
 
 	m_pPointsSensor = new SoFieldSensor(updatePatchesList, this);
 	m_pPointsSensor->setPriority( 0 );
@@ -216,6 +219,12 @@ bool ShapeBezierSurface::DefineSurfacePatches( std::vector< Point3D > inputData,
 
 	m_pBVH = new BVHPatch( &m_surfacesVector, 1 );
 
+	BBox bbox = m_pBVH->GetBBox();
+	double minDistance = std::min( std::min( bbox.pMax.x-bbox.pMin.x, bbox.pMax.y-bbox.pMin.y ), bbox.pMax.z-bbox.pMin.z );
+	//std::cout<<"ShapeBezierSurface::DefineSurfacePatches minDistance: "<<minDistance<<std::endl;
+	m_tol = std::min( 0.0001, minDistance * 0.0001 );
+
+
 
 	m_pPointsSensor->setPriority( 0 );
 	m_pPointsSensor->attach( &m_pointsList );
@@ -234,19 +243,32 @@ bool ShapeBezierSurface::DefineSurfacePatches( std::vector< Point3D > inputData,
 
 bool ShapeBezierSurface::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
+
+
+	//Ray objectRay = Ray( Point3D(10.0947, 0.189145, 3.26332), Vector3D( -0.99982, -0.0186818, 0.00321852) );
+	//std::cout<<"ShapeBezierSurface::Intersect 1 objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
+
 	double tHitShape= objectRay.maxt;
 	DifferentialGeometry dgShape;
 
-
-	//Ray ray ( Point3D( -0.05, 11, 0.05), Vector3D( 0, -1, 0));
-	//std::cout<<"ShapeCAD::Intersect objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
 	if( !m_pBVH )	return ( false );
-
 	if ( !m_pBVH->Intersect( objectRay, &tHitShape, &dgShape ) )	return ( false );
+
+
+	//std::cout<<"ShapeBezierSurface::Intersect 1 tol: "<<m_tol<<std::endl;
+	if( tHitShape < m_tol  ) 	return ( false );
 
 	if( ( tHit == 0 ) && ( dg == 0 ) )	return ( true );
 	if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeCAD::Intersect(...) called with null pointers" );
 
+	/*if( tHitShape< 1 )
+	{
+			std::cout<<"ShapeBezierSurface::Intersect 1 objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
+			std::cout<<"ShapeBezierSurface::Intersect 1 tHitShape: "<<tHitShape<<" point: "<<objectRay(tHitShape) <<std::endl;
+	}
+	*/
+
+	//std::cout<<"ShapeBezierSurface::Intersect 1 tHitShape: "<<tHitShape<<" point: "<<objectRay(tHitShape) <<std::endl;
 
 	*tHit = tHitShape;
 	*dg = dgShape;
@@ -430,6 +452,8 @@ void ShapeBezierSurface::updatePatchesList( void *data, SoSensor* )
 
 	int nUCurves = shapeBezier->m_nOfUCurves.getValue();
 	int nVCurves = shapeBezier->m_nOfVCurves.getValue();
+
+
 	if( ( pointsSize > 0 ) &&
 			( nUCurves > 0 ) &&
 			( nVCurves > 0 )   )
@@ -495,6 +519,10 @@ void ShapeBezierSurface::updatePatchesList( void *data, SoSensor* )
 
 
 		shapeBezier->m_pBVH = new BVHPatch( &(shapeBezier->m_surfacesVector), 1);
+
+		BBox bbox = shapeBezier->m_pBVH->GetBBox();
+		double minDistance = std::min( std::min( bbox.pMax.x-bbox.pMin.x, bbox.pMax.y-bbox.pMin.y ), bbox.pMax.z-bbox.pMin.z );
+		shapeBezier->m_tol = std::min( 0.0001, minDistance * 0.0001 );
 	}
 
 
