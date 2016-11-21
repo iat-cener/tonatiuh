@@ -23,7 +23,8 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
  m_v3( v3 ),
  m_vE1( Vector3D() ),
  m_vE2( Vector3D() ),
- m_vW1( Vector3D() )
+ m_vW1( Vector3D() ),
+ m_tol( 0.000001 )
 {
 
 	double xMin = gc::Infinity;
@@ -68,6 +69,7 @@ Triangle::Triangle( Point3D v1, Point3D v2, Point3D v3, NormalVector normal )
 	 m_vE2 = Vector3D( m_v3 - m_v1 );
 	 m_vW1 = CrossProduct( m_vE1, m_vE2 );
 
+	 m_tol = m_vE1.length()*m_vE2.length()/1000000;
 }
 
 
@@ -89,8 +91,8 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	Vector3D tVector = Vector3D( objectRay.origin - m_v1 );
 	Vector3D qVec = CrossProduct( tVector ,  m_vE1 );
 	double thit;
-	double tol = 0.000001;
-	if (det > tol)
+	//double tol = 0.000001;
+	if (det > m_tol)
 	{
 		double u = DotProduct(  tVector,pVector );
 		if (u < 0 || u > det )	return ( false );
@@ -103,7 +105,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 		u *= inv_det;
 		v *= inv_det;
 	}
-	else if (det < - tol)
+	else if (det < - m_tol)
 	{
 
 		double u = DotProduct( tVector, pVector ) * inv_det;
@@ -194,7 +196,7 @@ bool Triangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 
 
 	if( thit > *tHit ) return false;
-	if( (thit - objectRay.mint) < tol ) return false;
+	if( (thit - objectRay.mint) < m_tol ) return false;
 
 
 	Point3D hitPoint = objectRay( thit );

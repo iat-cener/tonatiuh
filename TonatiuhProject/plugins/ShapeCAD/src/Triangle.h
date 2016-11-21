@@ -47,7 +47,7 @@ private:
 	Vector3D m_vE2;
 	Vector3D m_vW1;
 
-
+	double m_tol;
 };
 
 
