@@ -324,7 +324,7 @@ void FluxAnalysisDialog::ExportData()
  */
 void FluxAnalysisDialog::RunFluxAnalysis()
 {
-
+	QDateTime startTime = QDateTime::currentDateTime();
 
 	QString nOfRays = nRaysLine->text();
 	int pos = 0;
@@ -511,7 +511,8 @@ void FluxAnalysisDialog::RunFluxAnalysis()
 	UpdateAnalysis();
 	appendCheck->setEnabled( true );
 
-
+	QDateTime endTime = QDateTime::currentDateTime();
+	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 }
 
 
@@ -705,8 +706,14 @@ void FluxAnalysisDialog::UpdateLabelsUnits()
 	 m_fluxLabelString = QString( "Flux(%1/%2^2)" ).arg(powerUnitString, lengthUnitString);
 
 	 QCPColorMap* colorMapPlot = qobject_cast<QCPColorMap*>( contourPlotWidget->plottable() );
-	 colorMapPlot->colorScale()->axis()->setLabel( m_fluxLabelString );
 
+	//see how many elements there are
+	int elementCount = contourPlotWidget->plotLayout()->elementCount();
+	//loop over the elements
+	for(int i = 0; i < elementCount; i++)
+	   //test to see if any of the layout elements are of QCPColorScale type
+		if(qobject_cast<QCPColorScale*>(contourPlotWidget->plotLayout()->elementAt(i)))
+			colorMapPlot->colorScale()->axis()->setLabel( m_fluxLabelString );
 
 	contourPlotWidget->replot();
 	horizontaSectorPlot->replot();
