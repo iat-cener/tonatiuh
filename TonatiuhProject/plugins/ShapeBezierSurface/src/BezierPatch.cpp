@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 #include <map>
 
-
 //#include <QMap>
 //#include <QVector>
 
@@ -103,32 +102,8 @@ void BezierPatch::GeneratePrimitives( SoAction* /*action*/ )
 	//SoNurbsSurface::generatePrimitives( action );
 }
 
-bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
+bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg, double bezierTol ) const
 {
-
-	/*
-	std::cout<<"BezierPatch::Intersect"<<std::endl;
-
-	std::cout<<"m_controlPoints: "<<m_controlPoints[0]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[1]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[2]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[3]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[4]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[5]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[6]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[7]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[8]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[9]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[10]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[11]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[12]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[13]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[14]<<std::endl;
-	std::cout<<"\t: "<<m_controlPoints[15]<<std::endl;
-*/
-
-
-
 	//Generate planes u, v perpendicular between themself which intersection is the ray, and plane w perpendicular to the ray which contains the objectRay.origin
 	Vector3D t;
 	if( fabs(objectRay.direction().x )< fabs(objectRay.direction().y ) )
@@ -143,13 +118,11 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	}
 
 	//Nu and Nv are planes mutually perpendicular and contains ray direction
-	Vector3D nu = CrossProduct( t, objectRay.direction() );
-	Vector3D nv = CrossProduct( nu, objectRay.direction() );
+	Vector3D nu = Normalize( CrossProduct( t, objectRay.direction() ) );
+	Vector3D nv = Normalize( CrossProduct( nu, objectRay.direction() ) );
 
 	//Nw is a plane perpendicural to contains ray direction
-	Vector3D nw = objectRay.direction() ;
-
-
+	Vector3D nw = Normalize( objectRay.direction() );
 
 	//The planes contains the ray origin .	Anx rox + Bny roy + Cmn roz + D == 0
 	double au = nu.x;
@@ -162,41 +135,35 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 	double dv = DotProduct( -nv, Vector3D( objectRay.origin ) );
 	double dw = DotProduct( -nw, Vector3D( objectRay.origin ) );
 
-
 	std::vector< std::vector< Vector3D > > buffer1;
 	std::vector< Vector3D > cPCopy;// = m_controlPoints;
 	for( unsigned int p = 0; p < m_controlPoints.size(); p++ )
 		cPCopy.push_back( Vector3D( m_controlPoints[p] ) );
 	SplitIPatch( cPCopy, &buffer1 );
 
-	double previousDistance = 0;
-	double currentDistance = gc::Infinity;
+	std::vector < double > previousDistance;
+	std::vector < double > currentDistance;
+	double error = gc::Infinity;
 
-	double tol = 0.0000001;
+	double tol = 0.0000000001; //tolerance for the intersection rutine
 	double lengthBB =  Distance( m_bbox.pMin, m_bbox.pMax ) ;
 	int nIterations = ceil( log( 1 /  ( tol/ lengthBB ) ) * log( 2 ) )+1;
 
-	//std::cout<<"BezierPatch::Intersect nIterations: "<<nIterations<<std::endl;
-
-	//int nIterations = 100;
 	int iteration = 0;
 
-	while( ( iteration < nIterations ) && ( fabs( previousDistance - currentDistance ) > tol ) )
+	while( ( iteration < nIterations ) && ( error > tol ) )
 	{
-
 		//Split a subpatch in 4 pieces
 		std::vector< std::vector< Vector3D > > buffer2;
 		for( unsigned int patch = 0; patch < buffer1.size(); patch++ )
 		{
 			SplitIPatch( buffer1[patch], &buffer2 );
 		}
-
+		buffer1.clear();
 
 		//Hull clasification
-		std::map< double, std::vector< Vector3D > > distancesMap;
 		for( unsigned int patch = 0; patch< buffer2.size(); patch++ )
 		{
-
 			std::vector< Vector3D > iPatch = buffer2[patch];
 			double pu1, pu2, pv1, pv2;
 
@@ -209,7 +176,6 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 			for( int i = 0; i < 16; i++ )
 			{
 				Point3D iPoint = Point3D( iPatch[ i ] );
-				//SbVec3d iPoint = iPatch->operator[]( i );
 				pu1 = pu2;
 				pu2 = au * iPoint[0] + bu * iPoint[1] + cu * iPoint[2] + du;
 				pv1 = pv2;
@@ -221,97 +187,84 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 			//Compute patch center and distance to patch center point
 			if( intersectsU && intersectsV )
 			{
-				Point3D center = Point3D( ( 1 / 64.0 ) * ( iPatch[0] +  3 * iPatch[4]
-								+ 3 * iPatch[8] + iPatch[12]
-								+ 3 * iPatch[1] +  9 * iPatch[5]
-								+ 9 * iPatch[9] +  3 * iPatch[13]
-								+ 3 * iPatch[2] +  9 * iPatch[6]
-								+ 9 * iPatch[10] +  3 * iPatch[14]
-								+ iPatch[3] +  3 * iPatch[7]
-								+ 3 * iPatch[11] + iPatch[15] ) );
-
 				//Projection in w plane of the more external patch vertex
-				//Vector3D vVertex1 = iPatch[0];
-				//Point3D vertex1( vVertex1[0] , vVertex1[1], vVertex1[2] );
 				Vector3D proyVertex1 = iPatch[0] - nw * ( DotProduct( Vector3D( iPatch[0] ), nw ) + dw);
-
-				//Vector3D vVertex2 = iPatch->operator[]( 3 );
-				//Point3D vertex2( vVertex2[0], vVertex2[1], vVertex2[2] );
 				Vector3D proyVertex2 = iPatch[3] - nw * ( DotProduct( Vector3D( iPatch[3]  ), nw ) + dw);
-
-				//Vector3D vVertex3 = iPatch->operator[]( 12 );
-				//Point3D vertex3( vVertex3[0], vVertex3[1], vVertex3[2] );
 				Vector3D proyVertex3 = iPatch[12] - nw * ( DotProduct( Vector3D( iPatch[12] ), nw ) + dw);
-
-				//Vector3D vVertex4 = iPatch->operator[]( 15 );
-				//Point3D vertex4( vVertex4[0], vVertex4[1], vVertex4[2] );
 				Vector3D proyVertex4 = iPatch[15] - nw * ( DotProduct( Vector3D( iPatch[15] ), nw ) + dw);
 
 				//Determine if the objectRay.origin is inside the patch or not
 				if( DotProduct( CrossProduct( Vector3D( proyVertex2 - proyVertex1 ), Vector3D( objectRay.origin - proyVertex1 ) ), CrossProduct( Vector3D( proyVertex3 - proyVertex1 ), Vector3D( objectRay.origin - proyVertex1 ) ) ) < 0 &&
 						DotProduct( CrossProduct( Vector3D( proyVertex2 - proyVertex4 ), Vector3D( objectRay.origin - proyVertex4 ) ), CrossProduct( Vector3D( proyVertex3 - proyVertex4 ), Vector3D( objectRay.origin - proyVertex4 ) ) ) < 0 )
 				{
-					distancesMap.insert( std::pair< double, std::vector< Vector3D > > ( Distance( center, objectRay.origin ),iPatch ) );
+					buffer1.push_back( iPatch );
+					Point3D center = Point3D( ( 1 / 64.0 ) * ( iPatch[0] +  3 * iPatch[4]
+													+ 3 * iPatch[8] + iPatch[12]
+													+ 3 * iPatch[1] +  9 * iPatch[5]
+													+ 9 * iPatch[9] +  3 * iPatch[13]
+													+ 3 * iPatch[2] +  9 * iPatch[6]
+													+ 9 * iPatch[10] +  3 * iPatch[14]
+													+ iPatch[3] +  3 * iPatch[7]
+													+ 3 * iPatch[11] + iPatch[15] ) );
+					currentDistance.push_back( Distance( center, objectRay.origin ) );
 
-					//std::cout<<"patch: "<<patch<<std::endl;
+					if( iteration == 0 ) previousDistance.push_back( gc::Infinity );
 				}
 			}
-
 		}
-		buffer2.clear();
-		buffer1.clear();
 
-		std::vector< double > distances;
-		for( std::map< double,std::vector< Vector3D > >::iterator it = distancesMap.begin(); it != distancesMap.end(); ++it)
-			distances.push_back( it->first );
+		if( buffer1.size() == 0 ) return ( false );
 
-
-		std::sort( distances.begin(), distances.end() );
-
-		unsigned int patches = distances.size();
-		//std::cout<<"patches: "<<patches<<std::endl;
-		for( unsigned int i = 0; i < patches; ++i)
+		if ( currentDistance.size() == previousDistance.size() )
 		{
-			if( distances[i] != gc::Infinity ) buffer1.push_back( distancesMap[distances[i]] );
+			std::vector< double > errorList;
+			for( unsigned e = 0; e < currentDistance.size(); e++ )
+				errorList.push_back( fabs( previousDistance[e] - currentDistance[e] ) );
 
+			error = *std::max_element( errorList.begin(), errorList.end() );
+			previousDistance = currentDistance;
+			currentDistance.clear();
+			errorList.clear();
 		}
+		else return ( false );
+		buffer2.clear();
 
-		if( buffer1.size() == 0 )	return false;
-
-		previousDistance = currentDistance;
-		currentDistance = distances[0];
-
-
-		//std::cout<<"\t iteration: "<<iteration<<"\t dist: "<<fabs( previousDistance - currentDistance )<<std::endl;
 		iteration++;
 	}
 
-	std::vector< Vector3D > iPatch = buffer1[0];
-
-	// Now check if the fucntion is being called from IntersectP,
+	// Now check if the function is being called from IntersectP,
 		// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) )	return ( true );
 
-	Point3D intersectionPoint = Point3D( ( 1 / 64.0 ) * ( iPatch[0]  +  3 * iPatch[4]
-				+ 3 * iPatch[8] + iPatch[12]
-				+ 3 * iPatch[1] +  9 * iPatch[5]
-				+ 9 * iPatch[9] +  3 * iPatch[13]
-				+ 3 * iPatch[2] +  9 * iPatch[6 ]
-				+ 9 * iPatch[10] +  3 * iPatch[14]
-				+ iPatch[3] +  3 * iPatch[7]
-				+ 3 * iPatch[11] + iPatch[15] ) );
+	std::vector < double > distances;
+	for( unsigned int a = 0; a < previousDistance.size(); a++ )
+	{
+		double thitRay;
+		if( objectRay.direction().x != 0 ) thitRay = ( objectRay( previousDistance[a] ).x - objectRay.origin.x ) / objectRay.direction().x;
+		else if ( objectRay.direction().y != 0 ) thitRay = ( objectRay( previousDistance[a] ).y - objectRay.origin.y ) / objectRay.direction().y;
+		else	thitRay = ( objectRay( previousDistance[a] ).z - objectRay.origin.z ) / objectRay.direction().z;
+		distances.push_back( thitRay );
+	}
+	previousDistance.clear();
 
-	//std::cout<<"\tintersectionPoint: "<<intersectionPoint <<std::endl;
+	std::map< double, std::vector< Vector3D > > distancesMap;
+	for( unsigned int i = 0; i < buffer1.size(); i++ )
+		distancesMap.insert( std::pair< double, std::vector< Vector3D > > ( distances[i], buffer1[i] ) );
 
-	double thit;
-	if( objectRay.direction().x != 0 ) thit = ( intersectionPoint.x - objectRay.origin.x ) / objectRay.direction().x;
-	else if ( objectRay.direction().y != 0 ) thit = ( intersectionPoint.y - objectRay.origin.y ) / objectRay.direction().y;
-	else	thit = ( intersectionPoint.z - objectRay.origin.z ) / objectRay.direction().z;
+	std::sort( distances.begin(), distances.end() );
 
-	//std::cout<<"\tthit: "<<thit <<std::endl;
-	if( thit < tol ) return false;
-	if( ( thit > objectRay.maxt ) || ( (thit - objectRay.mint) < tol ) )	return ( false );
+	std::vector < double > thitList;
+	for( unsigned int i = 0; i < distances.size(); ++i)
+		if( ( distances[i] < objectRay.maxt ) && ( distances[i] > bezierTol ) ) thitList.push_back( distances[i] );
 
+	if( thitList.size() == 0 ) return ( false );
+
+	std::vector< Vector3D > iPatch = distancesMap[ thitList[0] ];
+	double thit = thitList[0];
+
+	buffer1.clear();
+	distances.clear();
+	distancesMap.clear();
 
 	Vector3D dpdu = DPDU( 0.5, 0.5, &iPatch);
 	Vector3D dpdv = DPDV( 0.5, 0.5, &iPatch);
@@ -338,15 +291,14 @@ bool BezierPatch::Intersect(const Ray& objectRay, double* tHit, DifferentialGeom
 					(f*F - g*E) * invEGF2 * dpdv;
 
 // Initialize _DifferentialGeometry_ from parametric information
-	*dg = DifferentialGeometry( intersectionPoint,
+	*dg = DifferentialGeometry( objectRay( thit ) ,
 								dpdu,
 								dpdv,
 								dndu,
 								dndv,
 								0.5, 0.5, 0 );
 	*tHit = thit;
-	buffer1.clear();
-
+	thitList.clear();
 	return ( true );
 
 }
@@ -392,8 +344,6 @@ void BezierPatch::SetControlPoints( std::vector< Point3D > boundedPoints )
 	m_controlPoints.push_back( p32 );
 	Point3D p33  = boundedPoints[6]; //p33
 	m_controlPoints.push_back( p33 );
-
-
 
 	m_bbox = BBox();
 	int nControlPoints = m_controlPoints.size();

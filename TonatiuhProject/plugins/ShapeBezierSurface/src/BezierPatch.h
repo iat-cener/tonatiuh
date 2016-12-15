@@ -61,7 +61,7 @@ public:
 	Point3D GetPoint3D (double u, double v) const;
 
 	void GeneratePrimitives( SoAction *action );
-    bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
+    bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, double bezierTol ) const;
     void SetControlPoints( std::vector< Point3D > boundedPoints );
 
 

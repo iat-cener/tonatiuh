@@ -38,13 +38,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <iostream>
 #include <algorithm>
-
 #include <QFileDialog>
 #include <QTextStream>
 
 #include <Inventor/sensors/SoFieldSensor.h>
-
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
@@ -221,7 +218,6 @@ bool ShapeBezierSurface::DefineSurfacePatches( std::vector< Point3D > inputData,
 
 	BBox bbox = m_pBVH->GetBBox();
 	double minDistance = std::min( std::min( bbox.pMax.x-bbox.pMin.x, bbox.pMax.y-bbox.pMin.y ), bbox.pMax.z-bbox.pMin.z );
-	//std::cout<<"ShapeBezierSurface::DefineSurfacePatches minDistance: "<<minDistance<<std::endl;
 	m_tol = std::min( 0.0001, minDistance * 0.0001 );
 
 
@@ -243,32 +239,14 @@ bool ShapeBezierSurface::DefineSurfacePatches( std::vector< Point3D > inputData,
 
 bool ShapeBezierSurface::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
-
-
-	//Ray objectRay = Ray( Point3D(10.0947, 0.189145, 3.26332), Vector3D( -0.99982, -0.0186818, 0.00321852) );
-	//std::cout<<"ShapeBezierSurface::Intersect 1 objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
-
-	double tHitShape= objectRay.maxt;
+	double tHitShape= objectRay.maxt; //Inf
 	DifferentialGeometry dgShape;
 
 	if( !m_pBVH )	return ( false );
-	if ( !m_pBVH->Intersect( objectRay, &tHitShape, &dgShape ) )	return ( false );
-
-
-	//std::cout<<"ShapeBezierSurface::Intersect 1 tol: "<<m_tol<<std::endl;
-	if( tHitShape < m_tol  ) 	return ( false );
+	if ( !m_pBVH->Intersect( objectRay, &tHitShape, &dgShape, m_tol ) )	return ( false );
 
 	if( ( tHit == 0 ) && ( dg == 0 ) )	return ( true );
 	if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeCAD::Intersect(...) called with null pointers" );
-
-	/*if( tHitShape< 1 )
-	{
-			std::cout<<"ShapeBezierSurface::Intersect 1 objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
-			std::cout<<"ShapeBezierSurface::Intersect 1 tHitShape: "<<tHitShape<<" point: "<<objectRay(tHitShape) <<std::endl;
-	}
-	*/
-
-	//std::cout<<"ShapeBezierSurface::Intersect 1 tHitShape: "<<tHitShape<<" point: "<<objectRay(tHitShape) <<std::endl;
 
 	*tHit = tHitShape;
 	*dg = dgShape;
@@ -313,13 +291,6 @@ void ShapeBezierSurface::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 
 void ShapeBezierSurface::generatePrimitives(SoAction *action)
 {
-
-	//std::cout<<"ShapeBezierSurface::generatePrimitives"<<std::endl;
-
-	//for( unsigned int i = 0; i < m_surfacesVector.size(); ++i )
-	//m_surfacesVector[i]->GeneratePrimitives( action);
-	//std::cout<<"END ShapeBezierSurface::generatePrimitives"<<std::endl;
-
 	 SoPrimitiveVertex   pv;
 	    SoState  *state = action->getState();
 
@@ -345,7 +316,7 @@ void ShapeBezierSurface::generatePrimitives(SoAction *action)
 
 		beginShape(action, QUADS );
 
-		//for( unsigned int p = 0; p < m_surfacesVector.size(); p++ )
+
 		for( unsigned int p = 0; p < m_surfacesVector.size(); p++ )
 		{
 			const int totalPoints = (rows)*(columns); // Total points in the grid

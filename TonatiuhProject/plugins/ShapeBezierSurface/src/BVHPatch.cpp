@@ -116,16 +116,16 @@ BBox BVHPatch::GetBBox() const
 	return BBox();
 }
 
-bool BVHPatch::Intersect(const Ray& objectRay , double* tHit, DifferentialGeometry* dg ) const
+bool BVHPatch::Intersect(const Ray& objectRay , double* tHit, DifferentialGeometry* dg, double bezierTol ) const
 {
-
 	if( ! m_rootNode )
 		return ( false );
 
 	if( !m_rootNode->GetBoundingBox().IntersectP( objectRay ) )	return ( false );
 
 	double tHitBVH = objectRay.maxt;
-	if(!Intersect(m_rootNode, objectRay, &tHitBVH, dg ) )	return ( false );
+	if(!Intersect(m_rootNode, objectRay, &tHitBVH, dg, bezierTol ) )	return ( false );
+
 	if( tHitBVH < *tHit )
 	{
 		*tHit = tHitBVH;
@@ -136,7 +136,7 @@ bool BVHPatch::Intersect(const Ray& objectRay , double* tHit, DifferentialGeomet
 }
 
 
-bool BVHPatch::Intersect(BVHPatchNode* node, const Ray& objectRay, double *tHit, DifferentialGeometry *dg ) const
+bool BVHPatch::Intersect(BVHPatchNode* node, const Ray& objectRay, double *tHit, DifferentialGeometry *dg, double bezierTol ) const
 {
 
 	double tHitNode = *tHit;
@@ -183,7 +183,7 @@ bool BVHPatch::Intersect(BVHPatchNode* node, const Ray& objectRay, double *tHit,
 		{
 			double thit1 = tHitNode;
 			DifferentialGeometry dg1;
-			bool isIntersection1 = Intersect( firstNode, objectRay, &thit1, &dg1 );
+			bool isIntersection1 = Intersect( firstNode, objectRay, &thit1, &dg1, bezierTol );
 
 			if( isIntersection1 && thit1 < tHitNode )
 			{
@@ -202,7 +202,7 @@ bool BVHPatch::Intersect(BVHPatchNode* node, const Ray& objectRay, double *tHit,
 			double thit2 = tHitNode;
 			DifferentialGeometry dg2;
 
-			bool isIntersection2 = Intersect( rightNode, objectRay, &thit2, &dg2 );
+			bool isIntersection2 = Intersect( rightNode, objectRay, &thit2, &dg2, bezierTol );
 
 			if( isIntersection2 && thit2 < tHitNode )
 			{
@@ -230,7 +230,7 @@ bool BVHPatch::Intersect(BVHPatchNode* node, const Ray& objectRay, double *tHit,
 				DifferentialGeometry dgT;
 
 
-				bool isIntersectionT = patch->Intersect( objectRay, &thitT, &dgT );
+				bool isIntersectionT = patch->Intersect( objectRay, &thitT, &dgT, bezierTol );
 
 				if( isIntersectionT && thitT < tHitNode )
 				{

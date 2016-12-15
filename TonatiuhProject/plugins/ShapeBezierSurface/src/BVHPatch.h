@@ -64,8 +64,8 @@ public:
 	~BVHPatch();
 
 	BBox GetBBox() const;
-	bool Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg ) const;
-	bool Intersect(BVHPatchNode* node, const Ray& objectRay, double *tHit, DifferentialGeometry *dg ) const;
+	bool Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg, double bezierTol ) const;
+	bool Intersect(BVHPatchNode* node, const Ray& objectRay, double *tHit, DifferentialGeometry *dg, double bezierTol ) const;
 
 private:
 	void Build();
