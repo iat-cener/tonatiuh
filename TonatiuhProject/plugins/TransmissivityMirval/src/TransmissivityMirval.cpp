@@ -60,11 +60,10 @@ TransmissivityMirval::~TransmissivityMirval()
 bool TransmissivityMirval::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
 	double t;
-	if( distance <= 1.0 )
-	t = ( 0.99321 - 0.1176 *( distance / 1000 ) +0.0197 * ( distance / 1000 ) * ( distance / 1000 ))/100;
-	else{
+	if( distance/1000 <= 1.0 )
+		t = ( 0.99321 - 0.1176 *( distance / 1000 ) +0.0197 * ( distance / 1000 ) * ( distance / 1000 ));
+	else
 		t= exp (-0.1106 * distance/1000);
-	}
 
 	if( rand.RandomDouble() < t  )	return true;
 	return false;
