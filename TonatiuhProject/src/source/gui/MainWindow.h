@@ -119,6 +119,7 @@ public slots:
 	void PasteCopy();
 	void PasteLink();
 	void Run();
+	void RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsigned long nOfRays, int heightDivisions, int widthDivisions, QString directory, QString fileName, bool saveCoords );
 	bool Save();
 	void SaveComponent( QString componentFileName  );
 	void SaveAs( QString fileName );

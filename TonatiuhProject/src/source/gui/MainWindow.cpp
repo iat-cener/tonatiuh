@@ -100,6 +100,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Document.h"
 #include "ExportDialog.h"
 #include "ExportPhotonMapSettingsDialog.h"
+#include "FluxAnalysis.h"
 #include "FluxAnalysisDialog.h"
 #include "GraphicView.h"
 #include "GraphicRoot.h"
@@ -1945,6 +1946,45 @@ void MainWindow::Run()
 
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
+}
+
+/*
+ * Run flux analysis
+ */
+void MainWindow::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsigned long nOfRays, int heightDivisions, int widthDivisions, QString directory, QString fileName, bool saveCoords )
+{
+	TSceneKit* coinScene = m_document->GetSceneKit();
+	if ( !coinScene )  return;
+
+	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
+	if ( !lightKit )  return;
+
+	InstanceNode*  rootSeparatorInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+	if ( !rootSeparatorInstance )  return;
+
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = m_pPluginManager->GetRandomDeviateFactories();
+	//Check if there is a random generator selected;
+	if( m_selectedRandomDeviate == -1 )
+	{
+		if( randomDeviateFactoryList.size() > 0 ) m_selectedRandomDeviate = 0;
+		else	return;
+	}
+
+	//Create the random generator
+	if( !m_rand )	m_rand =  randomDeviateFactoryList[m_selectedRandomDeviate]->CreateRandomDeviate();
+
+	FluxAnalysis fluxAnalysis( coinScene, *m_sceneModel, rootSeparatorInstance, m_widthDivisions, m_heightDivisions, m_rand );
+
+	fluxAnalysis.RunFluxAnalysis( nodeURL, surfaceSide, nOfRays, false, heightDivisions, widthDivisions );
+
+	int** photonCounts = fluxAnalysis.photonCountsValue();
+	if( !photonCounts || photonCounts == 0 )
+	{
+		emit Abort( tr( "RunFluxAnalysis: Some parameter is not correctly defined.") );
+		return;
+	}
+
+	fluxAnalysis.ExportAnalysis( directory, fileName, saveCoords );
 }
 
 /*!

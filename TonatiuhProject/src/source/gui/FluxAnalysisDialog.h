@@ -19,6 +19,7 @@ class SceneModel;
 class QIntValidator;
 class RandomDeviate;
 class TSceneKit;
+class FluxAnalysis;
 
 
 class FluxAnalysisDialog: public QDialog, private Ui::FluxAnalysisDialog
@@ -27,54 +28,38 @@ class FluxAnalysisDialog: public QDialog, private Ui::FluxAnalysisDialog
 
 public:
 	FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& currentSceneModel, InstanceNode* rootSeparatorInstance,
-			int widthDivisions, int heightDivisions,
+			int sunWidthDivisions, int sunHeightDivisions,
 			RandomDeviate* randomDeviate, QWidget* parent = 0 );
 	~FluxAnalysisDialog();
 
 protected:
-	void resizeEvent(QResizeEvent* event);
+	void resizeEvent( QResizeEvent* event );
 
 private slots:
 	void ChangeCurrentSurface();
 	void ChangeCurrentSurfaceSide();
 	void ExportData();
-	void RunFluxAnalysis();
+	void Run();
+	void UpdateAnalysis();
+	void UpdateSectorPlotSlot();
 	void SelectExportFile();
 	void SelectSurface();
-	void UpdateAnalysis( );
-	void UpdateSectorPlots();
 	void UpdateLabelsUnits();
 	void SaveCoordsExport();
 
 private:
+	void UpdateStatistics( double totalEnergy, double minimumFlux, double averageFlux, double maximumFlux,
+			double maxXCoord, double maxYCoord, double error, double uniformity, double gravityX, double gravityY );
+	void UpdateFluxMapPlot( int** photonCounts, double wPhoton, int widthDivisions, int heightDivisions, double xmin, double ymin, double xmax, double ymax );
+	void CreateSectorPlots( double xmin, double ymin, double xmax, double ymax );
+	void UpdateSectorPlots( int** photonCounts, double wPhoton, int widthDivisions, int heightDivisions, double xmin, double ymin, double xmax, double ymax, double maximumFlux );
 	void ClearCurrentAnalysis();
-	void FluxAnalysisCylinder(  InstanceNode* node );
-	void FluxAnalysisFlatRectangle(  InstanceNode* node  );
-	void FluxAnalysisFlatDisk( InstanceNode* node );
 	void UpdateSurfaceSides( QString selectedSurfaceURL );
 
-
-private:
+	FluxAnalysis* m_fluxAnalysis;
 	QString m_currentSurfaceURL;
-	TSceneKit* m_pCurrentScene;
-	SceneModel* m_pCurrentSceneModel;
-	TPhotonMap* m_pPhotonMap;
-	RandomDeviate* m_pRandomDeviate;
-	InstanceNode* m_pRootSeparatorInstance;
-	int m_sunHeightDivisions;
-	int m_sunWidthDivisions;
-	unsigned long m_tracedRays;
-	double m_wPhoton;
 
-	//Current analysis
-	double m_xmin;
-	double m_xmax;
-	double m_ymin;
-	double m_ymax;
-	int** m_photonCounts;
-	int m_heightDivisions;
-	int m_widthDivisions;
-	double m_maximumFlux;
+	SceneModel* m_pCurrentSceneModel;
 
 	QIntValidator* m_pGridWidthVal;
 	QIntValidator* m_pGridHeightVal;
@@ -82,8 +67,6 @@ private:
 
 	//Labels
 	QString m_fluxLabelString;
-
-
 };
 
 
