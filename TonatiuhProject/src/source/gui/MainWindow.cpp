@@ -1953,7 +1953,7 @@ void MainWindow::Run()
  * The map will be calculated with the parameters \a nOfRays, \a heightDivisions and \a heightDivisions.
  * The results will save in a file \a directory \a QString fileName, the coordinates of the cells depending on the variable \a saveCoord.
  */
-void MainWindow::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsigned long nOfRays, int heightDivisions, int widthDivisions, QString directory, QString fileName, bool saveCoords )
+void MainWindow::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsigned int nOfRays, int heightDivisions, int widthDivisions, QString directory, QString fileName, bool saveCoords )
 {
 	TSceneKit* coinScene = m_document->GetSceneKit();
 	if ( !coinScene )  return;
