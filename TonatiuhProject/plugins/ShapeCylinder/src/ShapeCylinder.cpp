@@ -148,6 +148,7 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 
 		hitPoint = objectRay( thit );
 		phi = atan2( hitPoint.y, hitPoint.x );
+		if ( phi < 0. ) phi += gc::TwoPi;
 		if ( (thit - objectRay.mint) < tol  || hitPoint.z < zmin || hitPoint.z > zmax || phi > phiMax.getValue() ) return false;
 	}
 	// Now check if the fucntion is being called from IntersectP,
@@ -156,11 +157,6 @@ bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	else if( ( tHit == 0 ) || ( dg == 0 ) )
 		gf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
-	// Compute definitive cylinder hit position and $\phi$
-    hitPoint = objectRay( thit );
-
-	phi = atan2( hitPoint.y, hitPoint.x );
-	if ( phi < 0. ) phi += gc::TwoPi;
 
 	// Find parametric representation of Cylinder hit
 	double u = phi / phiMax.getValue();
