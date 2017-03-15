@@ -186,6 +186,18 @@ void FluxAnalysis::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsign
 {
 	m_surfaceURL = nodeURL;
 	m_surfaceSide = surfaceSide;
+
+	//Delete a photonCounts
+	if( m_photonCounts && m_photonCounts != 0 )
+	{
+		for( int h = 0; h < m_heightDivisions; h++ )
+		{
+			delete[] m_photonCounts[h];
+		}
+
+		delete[] m_photonCounts;
+	}
+	m_photonCounts = 0;
 	m_heightDivisions = heightDivisions;
 	m_widthDivisions = widthDivisions;
 
@@ -330,17 +342,6 @@ void FluxAnalysis::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsign
 	double inputAperture = raycastingSurface->GetValidArea();
 	m_wPhoton = double ( inputAperture * irradiance ) / m_tracedRays;
 
-	//Delete a photonCounts
-	if( m_photonCounts )
-	{
-		for( int h = 0; h < m_heightDivisions; h++ )
-		{
-			delete[] m_photonCounts[h];
-		}
-
-		delete[] m_photonCounts;
-	}
-
 	UpdatePhotonCounts();
 }
 
@@ -350,7 +351,7 @@ void FluxAnalysis::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsign
 void FluxAnalysis::UpdatePhotonCounts( int heightDivisions, int widthDivisions )
 {
 	//Delete a photonCounts
-	if( m_photonCounts )
+	if( m_photonCounts && (m_photonCounts != 0) )
 	{
 		for( int h = 0; h < m_heightDivisions; h++ )
 		{
