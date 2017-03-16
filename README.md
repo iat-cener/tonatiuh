@@ -1,21 +1,20 @@
 ![http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif](http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif)
 # News #
 
-## Tonatiuh release 2.2.2 is now available!##
+## Tonatiuh release 2.2.3 is now available! ##
 
 This minor release fixes some bugs:
- - New changes and some bugs fixed in the Flux Analysis Tool:
-  - The range of the color scale did not change after running the first simulation
-  - The color scale could be zoomed and dragged, now it is static
-  - Add units labels
- - Fixed some bugs in the intersection routine of the Bezier Surfaces
- - Fixed some bugs importing CAD surface with long list of triangles
- - Fixed some spelling mistakes in some functions for scripting
- - Re-design the tool for creating fast heliostat fields. More information following the wiki link https://github.com/iat-cener/tonatiuh/wiki/Heliostat%20Field%20Wizard
- - Cleaning code
+ This minor release fixes some bugs:
+- New function for the scripting to calculate the flux distribution for one surface. Go to the page [Script functions](https://github.com/iat-cener/tonatiuh/wiki/Script-functions) to see details of the function.
+- Fixed some bugs in the Flux Analysis Tool.
+- Fixed some bugs in Bezier Surfaces instersection.
+- Fixed some bugs in ShapeCAD instersection algorithm.
+- Fixed some bugs in Cylinder surface.
+- Fixed some bugs in MIRVAL transmisivity model.
+- Cleaning code
 
  
-Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.2
+Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.3
 
 ## First workshop on Tonatiuh ##
 
