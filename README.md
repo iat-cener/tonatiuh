@@ -4,7 +4,6 @@
 ## Tonatiuh release 2.2.3 is now available! ##
 
 This minor release fixes some bugs:
- This minor release fixes some bugs:
 - New function for the scripting to calculate the flux distribution for one surface. Go to the page [Script functions](https://github.com/iat-cener/tonatiuh/wiki/Script-functions) to see details of the function.
 - Fixed some bugs in the Flux Analysis Tool.
 - Fixed some bugs in Bezier Surfaces instersection.
@@ -69,5 +68,13 @@ All these tools are used for developing Tonatiuh within the Eclipse IDE in a sta
 
 From version 2.0.1 the format of the outputs of simulations has been changed to be more flexible for post-processing. You can find a description of the format [Tonatiuh's output files format] (Output files format).
 
+## Citing Tonatiuh ##
 
+These are some of the most relevant references:
+ * Blanco, M., Mutuberria, A., Monreal, A., & Albert, R. (2011). Results of the empirical validation of Tonatiuh at Mini-Pegase CNRS-PROMES facility. Proc SolarPACES.
+ * Blanco, M. J., Mutuberria, A., & Martinez, D. (2010). Experimental validation of Tonatiuh using the Plataforma Solar de Almería secondary concentrator test campaign data. In 16th annual SolarPACES symposium.
+ * Blanco, M. J., Mutuberria, A., Garcia, P., Gastesi, R., & Martin, V. (2009). Preliminary validation of Tonatiuh SOLARPACES Symposium. Berlin, Germany.
+ * Blanco, M. J., Amieva, J. M., & Mancillas, A. (2005, January). The Tonatiuh Software Development Project: An open source approach to the simulation of solar concentrating systems. In ASME 2005 International Mechanical Engineering Congress and Exposition (pp. 157-164). American Society of Mechanical Engineers.
+ 
+ 
 <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'><img src='http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png' alt='Creative Commons License' /></a><br />This work is licensed under a <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'>Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License</a>.
