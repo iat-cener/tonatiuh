@@ -66,7 +66,7 @@ All these tools are used for developing Tonatiuh within the Eclipse IDE in a sta
 
 ## Tonatiuh's output files format ##
 
-From version 2.0.1 the format of the outputs of simulations has been changed to be more flexible for post-processing. You can find a description of the format [Tonatiuh's output files format] (https://github.com/iat-cener/tonatiuh/wiki/Output-files-format).
+From version 2.0.1 the format of the outputs of simulations has been changed to be more flexible for post-processing. You can find a description of the format [Tonatiuh's output files format](https://github.com/iat-cener/tonatiuh/wiki/Output-files-format) .
 
 ## Citing Tonatiuh ##
 
