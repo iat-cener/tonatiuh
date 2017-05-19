@@ -222,12 +222,12 @@ bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeomet
 	{
 		if ( randomNumber < reflectivityFront.getValue()  )
 		{
-			*outputRay = *ReflectedRay( incident, dg, rand );
+			*outputRay = ReflectedRay( incident, dg, rand );
 			return true;
 		}
 		else if ( randomNumber < ( reflectivityFront.getValue() + transmissivityFront.getValue() ) )
 		{
-			*outputRay = *RefractedtRay( incident, dg, rand );
+			*outputRay = RefractedtRay( incident, dg, rand );
 			return true;
 		}
 		else return false;
@@ -236,12 +236,12 @@ bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeomet
 	{
 		if ( randomNumber < reflectivityBack.getValue()  )
 		{
-			*outputRay = *ReflectedRay( incident, dg, rand );
+			*outputRay = ReflectedRay( incident, dg, rand );
 			return true;
 		}
 		else if ( randomNumber < ( reflectivityBack.getValue() + transmissivityBack.getValue() ) )
 		{
-			*outputRay = *RefractedtRay( incident, dg, rand );
+			*outputRay = RefractedtRay( incident, dg, rand );
 			return true;
 		}
 		else return false;
@@ -249,7 +249,7 @@ bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeomet
 	}
 }
 
-Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
+Ray MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
 	NormalVector dgNormal;
 	if( dg->shapeFrontSide )	dgNormal = dg->normal;
@@ -257,8 +257,8 @@ Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeo
 
 
 	//Compute reflected ray (local coordinates )
-	Ray* reflected = new Ray();
-	reflected->origin = dg->point;
+	Ray reflected;
+	reflected.origin = dg->point;
 
 	NormalVector normalVector;
 	double sSlope = sigmaSlope.getValue() / 1000;
@@ -298,12 +298,12 @@ Ray* MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeo
 	}
 
 	double cosTheta = DotProduct( normalVector, incident.direction() );
-	reflected->setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
+	reflected.setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
 	return reflected;
 
 }
 
-Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& /* rand */  ) const
+Ray MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& /* rand */  ) const
 {
 
 	NormalVector s;
@@ -324,8 +324,8 @@ Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGe
 	}
 
 	//Compute refracted ray (local coordinates )
-	Ray* refracted = new Ray();
-	refracted->origin = dg->point;
+	Ray refracted;
+	refracted.origin = dg->point;
 
 
 	double cosTheta = DotProduct( -incident.direction(), s );
@@ -344,12 +344,12 @@ Ray* MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGe
 	double sin2Theta = ( n1/ n2 ) * ( n1/ n2 )  * ( 1 - cosTheta  * cosTheta );
 	if( n1 > n2 )
 	{
-		if( sin2Theta < 1.0 ) refracted->setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
+		if( sin2Theta < 1.0 ) refracted.setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
 		else //Total Internal Reflection
-			refracted->setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
+			refracted.setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
 	}
 	else
-		refracted->setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
+		refracted.setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
 
 	return refracted;
 }

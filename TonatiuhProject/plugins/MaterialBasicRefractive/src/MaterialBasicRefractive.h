@@ -98,8 +98,8 @@ protected:
 	static void updateShininess( void* data, SoSensor* );
 	static void updateTransparency( void* data, SoSensor* );
 
-	Ray* ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
-	Ray* RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
+	Ray ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
+	Ray RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 
 };
 
