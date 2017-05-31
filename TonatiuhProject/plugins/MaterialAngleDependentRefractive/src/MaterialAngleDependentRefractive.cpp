@@ -253,12 +253,12 @@ bool MaterialAngleDependentRefractive::OutputRay( const Ray& incident, Different
 	{
 		if ( randomNumber < reflectivity )
 		{
-			*outputRay = *ReflectedRay( incident, dg, rand );
+			*outputRay = ReflectedRay( incident, dg, rand );
 			return true;
 		}
 		else if ( randomNumber < ( reflectivity + transmissivity ) )
 		{
-			*outputRay = *RefractedtRay( incident, dg, rand );
+			*outputRay = RefractedtRay( incident, dg, rand );
 			return true;
 		}
 		else return false;
@@ -267,12 +267,12 @@ bool MaterialAngleDependentRefractive::OutputRay( const Ray& incident, Different
 	{
 		if ( randomNumber < reflectivity  )
 		{
-			*outputRay = *ReflectedRay( incident, dg, rand );
+			*outputRay = ReflectedRay( incident, dg, rand );
 			return true;
 		}
 		else if ( randomNumber < ( reflectivity + transmissivity ) )
 		{
-			*outputRay = *RefractedtRay( incident, dg, rand );
+			*outputRay = RefractedtRay( incident, dg, rand );
 			return true;
 		}
 		else return false;
@@ -280,15 +280,16 @@ bool MaterialAngleDependentRefractive::OutputRay( const Ray& incident, Different
 	}
 }
 
-Ray* MaterialAngleDependentRefractive::ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
+Ray MaterialAngleDependentRefractive::ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
 {
 	NormalVector dgNormal;
 
 	if( dg->shapeFrontSide )	dgNormal = dg->normal;
 	else	dgNormal = - dg->normal;
+
 	//Compute reflected ray (local coordinates )
-	Ray* reflected = new Ray();
-	reflected->origin = dg->point;
+	Ray reflected;
+	reflected.origin = dg->point;
 
 	NormalVector normalVector;
 	double sSlope = sigmaSlope.getValue() / 1000;
@@ -328,12 +329,12 @@ Ray* MaterialAngleDependentRefractive::ReflectedRay( const Ray& incident, Differ
 	}
 
 	double cosTheta = DotProduct( normalVector, incident.direction() );
-	reflected->setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
+	reflected.setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
 	return reflected;
 
 }
 
-Ray* MaterialAngleDependentRefractive::RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& /* rand */  ) const
+Ray MaterialAngleDependentRefractive::RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& /* rand */  ) const
 {
 	NormalVector s;
 	double n1;
@@ -353,31 +354,20 @@ Ray* MaterialAngleDependentRefractive::RefractedtRay( const Ray& incident, Diffe
 	}
 
 	//Compute refracted ray (local coordinates )
-	Ray* refracted = new Ray();
-	refracted->origin = dg->point;
+	Ray refracted;
+	refracted.origin = dg->point;
 
 	double cosTheta = DotProduct( -incident.direction(), s );
-	/*double disc = ( cosTheta * cosTheta )
-				+ ( ( n2 / n1 ) * ( n2 / n1 ) ) - 1;
 
-	if( n1 > n2 )
-	{
-		if( disc > 0 )refracted->setDirection( ( n1 / n2 ) * ( incident.direction() + ( cosTheta - sqrt( disc ) )* s ) );
-		else
-			refracted->setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
-	}
-	else
-		refracted->setDirection( ( n1 / n2 ) * ( incident.direction() + ( cosTheta - sqrt( disc ) )* s ) );
-	*/
 	double sin2Theta = ( n1/ n2 ) * ( n1/ n2 )  * ( 1 - cosTheta  * cosTheta );
 	if( n1 > n2 )
 	{
-		if( sin2Theta < 1.0 ) refracted->setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
+		if( sin2Theta < 1.0 ) refracted.setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
 		else //Total Internal Reflection
-			refracted->setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
+			refracted.setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
 	}
 	else
-		refracted->setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
+		refracted.setDirection( Normalize( ( n1/ n2 ) * incident.direction() + ( ( n1/ n2 ) * cosTheta -  sqrt(1 - sin2Theta ) ) * s ) );
 
 	return refracted;
 
