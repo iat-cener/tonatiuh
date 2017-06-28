@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+
+        <file>icons/TrackerParabolicDish.png</file>
+    </qresource>
+</RCC>

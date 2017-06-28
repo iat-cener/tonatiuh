@@ -19,220 +19,402 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Acknowledgments:
 
-The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
-then Chair of the Department of Engineering of the University of Texas at
-Brownsville. From May 2004 to July 2008, it was supported by the Department
-of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
-the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
-During 2007, NREL also contributed to the validation of Tonatiuh under the
-framework of the Memorandum of Understanding signed with the Spanish
-National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
-Since June 2006, the development of Tonatiuh is being led by the CENER, under the
-direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
+The development of Tonatiuh was started on 2004 by Dr. Manuel Blanco,
+at the time Chair of the Department of Engineering of the University of Texas
+at Brownsville. From May 2004 to August 2008 Tonatiuh's development was
+supported by the Department of Energy (DOE) and the National Renewable
+Energy Laboratory (NREL) under the Minority Research Associate (MURA)
+Program Subcontract ACQ-4-33623-06. During 2007, NREL also contributed to
+the validation of Tonatiuh under the framework of the Memorandum of
+Understanding signed with the Spanish National Renewable Energy Centre (CENER)
+on February, 20, 2007 (MOU#NREL-07-117). Since June 2006, the development of
+Tonatiuh is being led by CENER, under the direction of Dr. Blanco, now
+Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+#include <memory>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <QApplication>
 #include <QDir>
-#include <QFileInfo>
-#include <QMessageBox>
-#include <QSplashScreen>
-#include <QTime>
-
-#include <Inventor/Qt/SoQt.h>
-
-#include "GraphicRootTracker.h"
-#include "MainWindow.h"
-#include "TCube.h"
-#include "TDefaultMaterial.h"
-#include "TDefaultSunShape.h"
-#include "TDefaultTracker.h"
-#include "TDefaultTransmissivity.h"
-#include "TLightKit.h"
-#include "TLightShape.h"
-#include "TSceneKit.h"
-#include "TSceneTracker.h"
-#include "TSeparatorKit.h"
-#include "TShapeKit.h"
-#include "TSquare.h"
-#include "TTrackerForAiming.h"
-#include "TTransmissivity.h"
-#include "UserMField.h"
-#include "UserSField.h"
-
-
-#include <QScriptEngine>
+#include <QFile>
 #include <QTextStream>
+#include <QVariant>
+
+#include "gc.h"
 #include "PluginManager.h"
-#include "ScriptRayTracer.h"
-#include "tonatiuh_script.h"
+#include "RandomDeviateFactory.h"
+#include "RayCasting.h"
+#include "TCuboid.h"
+#include "TGroupNode.h"
+#include "TGroupNode.h"
+#include "TMaterial.h"
+#include "TMaterialFactory.h"
+#include "TNodesDatabase.h"
+#include "TNodesDocument.h"
+#include "TParameterList.h"
+#include "TPhotonMap.h"
+#include "TSceneNode.h"
+#include "TShapeFactory.h"
+#include "TShapeFactory.h"
+#include "TSunshapeFactory.h"
+#include "TSunNode.h"
+#include "TSurfaceNode.h"
+#include "TTrackerFactory.h"
 
-/*!
-  \mainpage
-The Tonatiuh project aims to create an open source, cutting-edge, accurate, and easy to use Monte Carlo ray tracer for the optical simulation of solar concentrating systems. It intends to advance the state-of-the-art of the simulation tools available for the design and analysis of solar concentrating systems, and to make those tools freely available to anyone interested in using and improving them. Some of the most relevant design goals of Tonatiuh are:
-<ol>
-  <li>To develop a robust theoretical foundation that will facilitate the optical simulation of almost any type of solar concentrating systems.</li>
-  <li>To exhibit a clean and flexible software architecture, that will allow the user to adapt, expand, increase, and modify its functionalities with ease.</li>
-  <li>To achieve operating system independence at source level, and run on all major platforms with none, or minor, modifications to its source code.</li>
-  <li>To provide the users with an advanced and easy-of-use Graphic User Interface (GUI).</li>
-  </ol>
 
- <b>IMPORTANT NOTE: the online documentation for the Tonatiuh is still a work-in-progress.</b>
-*/
-
-
-//!  Application entry point.
-/*!
-  Tonatiuh's main() function. It starts SoQt and Coin3D. It also initializes the
-  application specific Coin3D extension subclasses, and the application loop.
-*/
-
- Q_DECLARE_METATYPE(QVector<QVariant>)
-
-int main( int argc, char ** argv )
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-	QApplication::setColorSpec( QApplication::CustomColor );
+    QByteArray localMsg = msg.toLocal8Bit();
+    switch (type) {
+    case QtDebugMsg:
+        fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtInfoMsg:
+        fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        abort();
+    }
+}
+
+/*
+void ChildrenBranch( TNode* branch )
+{
+	std::cout<<"ChildrenBranch "<<std::endl;
+
+	if( !branch  ) return;
+	std::cout<<"\t"<<branch->GetName().toStdString()<<" "<<branch->GetReferences()<<std::endl;
+
+	if( const TNodesList* listNode = branch->as<TNodesList>() )
+	{
+		int numberOfChildren = listNode->Count();
+		for( int l = 0; l < numberOfChildren; l++ )
+		{
+			if( listNode->Item( l ) && listNode->Item( l ) != 0 )
+				ChildrenBranch( listNode->Item( l ) );
+		}
+	}
+
+
+	if( const TContainerNode* containerNode = branch->as<TContainerNode>() )
+	{
+		int numberOfParts = containerNode->NumberOfParts();
+		QStringList partNamesList = containerNode->GetPartNames();
+		for( int p = 0; p < numberOfParts; p++ )	ChildrenBranch( containerNode->GetPart( partNamesList[p] )  );
+	}
+
+}
+*/
+
+int main ( int argc, char** argv )
+{
+	qInstallMessageHandler(myMessageOutput);
 
     QApplication a( argc, argv );
 	a.setApplicationVersion( APP_VERSION );
 
-    QSplashScreen* splash = new QSplashScreen;
-    splash->setPixmap( QPixmap(":/icons/tonatiuhsplash.png") );
-    splash->show();
-
-    Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
-
-    splash->showMessage(QObject::tr("Loading libraries..."), topRight, Qt::black);
-
-
-    QApplication::addLibraryPath( QApplication::applicationDirPath()
-	        + QDir::separator() + "marble" );
-
-	SoQt::init( (QWidget *) NULL );
-
-	UserMField::initClass();
-	UserSField::initClass();
-	TSceneKit::initClass();
-	TMaterial::initClass();
-	TDefaultMaterial::initClass();
-	TSeparatorKit::initClass();
-	TShape::initClass();
-	TCube::initClass();
-	TLightShape::initClass();
-	TShapeKit::initClass();
-	TSquare::initClass();
-	TLightKit::initClass();
-	TSunShape::initClass();
-	TDefaultSunShape::initClass();
-	TTracker::initClass();
-	TTrackerForAiming::initClass();
-	TDefaultTracker::initClass();
-	TSceneTracker::initClass();
-	GraphicRootTracker::initClass();
-	TTransmissivity::initClass();
-	TDefaultTransmissivity::initClass();
-
-
-	splash->showMessage( QObject::tr("Setting up the main window..."), topRight, Qt::black );
+	std::cout<<"Tonatiuh 3.0"<<std::endl;
+	TNodesDatabase::Init();
 
 
 	QDir pluginsDirectory( qApp->applicationDirPath() );
 	pluginsDirectory.cd( "plugins" );
 	PluginManager pluginManager;
-	pluginManager.LoadAvailablePlugins( pluginsDirectory );
+	QString err;
+	pluginManager.LoadAvailablePlugins( pluginsDirectory, &err );
+	if( !err.isEmpty() )
+	{
+		std::cerr<<err.toStdString()<<std::endl;
+	}
+	QVector< TMaterialFactory* > materialFactoryList =  pluginManager.GetMaterialFactories();
+	QVector< TShapeFactory* > shapeFactoryList =  pluginManager.GetShapeFactories();
+	QVector< TSunshapeFactory* > sunshapeFactoryList = pluginManager.GetSunshapeFactories();
+	QVector< TTrackerFactory* > trackerFactoryList = pluginManager.GetTrackerFactories();
+	QVector< RandomDeviateFactory* > randomDeviateFactoryList = pluginManager.GetRandomDeviateFactories();
 
-    int exit;
-   	if( argc > 1 )
-   	{
-   		QString tonatiuhFile = argv[1];
+	/*
 
-    	QFileInfo fileInfo( tonatiuhFile );
-    	if( fileInfo.completeSuffix() == QLatin1String( "tnhs") )
-    	{
+	TSceneNode* tonatiuhScene = new TSceneNode;
+	std::cout<<"tonatiuhScene"<<std::endl;
 
-    		QString fileName( argv[1] );
-    		QFileInfo fileInfo( fileName );
+	//Sun
+	double azimuthRad = 180 * gc::Degree;
+	TSunNode* sunNode = new TSunNode();
+	tonatiuhScene->SetPart( QLatin1String( "light" ),  sunNode );
+	sunNode->SetParameterValue( QString( "azimuth" ),  QString( "%1" ).arg( QString::number(azimuthRad) ) );
 
-    		QDir testDirectory( fileInfo.absolutePath() );
-    		testDirectory.cd( "." );
-
-    		QScriptEngine* interpreter = new QScriptEngine;
-    		qScriptRegisterSequenceMetaType<QVector<QVariant> >(interpreter);
-
-
-    		MainWindow* mw = new MainWindow( QLatin1String("") );
-    		mw->SetPluginManager( &pluginManager );
-    		QScriptValue tonatiuh = interpreter->newQObject( mw );
-    		interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
-
-
-    		QFile scriptFile( fileName );
-    		if( !scriptFile.open( QIODevice::ReadOnly) )
-    		{
-    			QString errorMessage = QString( "Cannot open file %1." ).arg( fileName );
-    			std::cerr<<errorMessage.toStdString()<<std::endl;
-    		}
+	TSunshape* sunshapeNode = sunshapeFactoryList[0]->CreateTSunshape();
+	sunshapeNode->SetName( "sunshapeModel");
+	sunNode->SetPart( QLatin1String( "sunshape" ),  sunshapeNode );
 
 
-    		QTextStream in( &scriptFile );
-    		QString program = in.readAll();
-    		scriptFile.close();
+	//Parabolic dish
+	std::cout<<"rootNode"<<std::endl;
+	TGroupNode* rootNode = new TGroupNode();
+	rootNode->SetName( "Eurodish_field");
+	tonatiuhScene->SetPart( QLatin1String( "childrenList" ),  rootNode );
+	std::cout<<"rootNode: "<<rootNode->GetName().toStdString()<<std::endl;
 
 
-    		QScriptSyntaxCheckResult checkResult = interpreter->checkSyntax( program );
-    		if( checkResult.state() != QScriptSyntaxCheckResult::Valid )
-    		{
-    			QString errorMessage = QString( "Script Syntaxis Error.\n"
-    					"Line: %1. %2" ).arg( QString::number( checkResult.errorLineNumber() ), checkResult.errorMessage () );
-    			std::cerr<<errorMessage.toStdString()<<std::endl;
-    			return -1;
-    		}
-
-    		QScriptValue result = interpreter->evaluate( program );
-    		if( result.isError () )
-    		{
-    			QScriptValue lineNumber = result.property( "lineNumber");
-
-    			QString errorMessage = QString( "Script Execution Error.\nLine %1. %2" ).arg( QString::number( lineNumber.toNumber() ), result.toString() );
-    			std::cerr<<errorMessage.toStdString()<<std::endl;
-    			return -1;
-
-    		}
-
-       		delete mw;
-       		delete interpreter;
-    		exit = 0;
-    	}
-    	else
-    	{
-
-    		MainWindow* mw = new MainWindow( tonatiuhFile );
-    		mw->SetPluginManager( &pluginManager );
+	//Concentrator 1
+	TGroupNode* concentrator1Node = new TGroupNode();
+	concentrator1Node->SetName( "Concentrator_1");
+	concentrator1Node->SetParameterValue( QString( "translation" ),  "-5 0 0" );
+	std::cout<<"concentratorNode: "<<concentrator1Node->GetName().toStdString()<<std::endl;
+	//double rotationAngle = 0.5 * gc::Pi;
+	//concentrator1Node->SetParameterValue( QString( "rotation" ),  QString( "0 0 -1 %1" ).arg( QString::number(rotationAngle) ) );
+	if( !qobject_cast< TNodesList* >  ( rootNode->GetPart("childrenList" ))->InsertItem( concentrator1Node ) )
+	{
+		std::cout<<"Error adding concentrator 1 to root node"<<std::endl;
+		return -1;
+	}
 
 
-       		mw->show();
-       	    splash->finish( mw );
-       	    delete splash;
-    	    exit = a.exec();
-       		delete mw;
-    	}
-   	}
-   	else
-   	{
-   		MainWindow* mw = new MainWindow("");
-		mw->SetPluginManager( &pluginManager );
-   		mw->show();
-   	    splash->finish( mw );
-   	    delete splash;
-	    exit = a.exec();
-   		delete mw;
+	TTrackerNode* c1ParabolicDishTracker = trackerFactoryList[0]->CreateTTrackerNode();
+	c1ParabolicDishTracker->SetName( "Tracker_Concentrator_1");
+	qobject_cast< TNodesList* >  ( concentrator1Node->GetPart("childrenList" ))->InsertItem( c1ParabolicDishTracker );
 
-   	}
 
-	return exit;
+	std::cout<<"TSurfaceNode"<<std::endl;
+	TSurfaceNode* concentratorSurfaceNode = new TSurfaceNode();
+	concentratorSurfaceNode->SetName( "ConcentratorSurface");
+	qobject_cast< TNodesList* >  ( c1ParabolicDishTracker->GetPart("childrenList" ))->InsertItem( concentratorSurfaceNode );
+
+
+	TShape* concentratorShape = shapeFactoryList[2]->CreateTShape();
+	concentratorShape->SetName( "ConcentratorGeometry");
+	concentratorShape->SetParameterValue( QString( "focusLength" ), 4.520 );
+	concentratorShape->SetParameterValue( QString( "dishMinRadius" ),  0.0 );
+	concentratorShape->SetParameterValue( QString( "dishMaxRadius" ),  4.25 );
+	concentratorSurfaceNode->SetPart( QLatin1String( "shape" ),  concentratorShape );
+
+
+	if( materialFactoryList.count() > 0 )
+	{
+		TMaterial* concentratorMaterial = materialFactoryList[0]->CreateTMaterial();
+		concentratorMaterial->SetParameterValue( QLatin1String("reflectivity"), 0.925 );
+		concentratorMaterial->SetParameterValue( QLatin1String("sigmaSlope"), 4.4270 );
+		concentratorMaterial->SetParameterValue( QLatin1String("distribution"), QLatin1String( "PILLBOX" ) );
+		concentratorSurfaceNode->SetPart( QLatin1String( "material" ),  concentratorMaterial );
+	}
+
+	//Receiver
+	std::cout<<"Receiver"<<std::endl;
+	TGroupNode* receiverNode = new TGroupNode();
+	//receiverNode->SetParent( rootNode );
+	std::cout<<"\treceiverNode: "<<receiverNode->GetName().toStdString()<<std::endl;
+	receiverNode->SetName( "Receiver ");
+
+	QString translationValue = receiverNode->GetParameterValue( QString( "translation" ) ).toString();
+	receiverNode->SetParameterValue( QString( "translation" ),  "0 4.52 0" );
+	//receiverNode->SetParameterValue( QString( "rotation" ),  QString( "0 0 -1 %1" ).arg( QString::number(rotationAngle ) ) );
+	translationValue = receiverNode->GetParameterValue( QString( "translation" ) ).toString();
+	qobject_cast< TNodesList* >  ( c1ParabolicDishTracker->GetPart("childrenList" ))->InsertItem( receiverNode );
+
+	std::cout<<"TSurfaceNode"<<std::endl;
+	TSurfaceNode* receiverSurfaceNode = new TSurfaceNode();
+	std::cout<<"\treceiverSurfaceNode: "<<receiverSurfaceNode->GetName().toStdString()<<std::endl;
+	receiverSurfaceNode->SetName( "ReceiverSurface");
+	qobject_cast< TNodesList* >  ( receiverNode->GetPart("childrenList" ))->InsertItem( receiverSurfaceNode );
+
+
+	TShape* receiverShape = shapeFactoryList[0]->CreateTShape();
+	std::cout<<"\treceiverShape: "<<receiverShape->GetName().toStdString()<<std::endl;
+	receiverShape->SetName( "ReceiverGeometry");
+	receiverShape->SetParameterValue( QString( "radius" ),  0.30 );
+	receiverSurfaceNode->SetPart( QLatin1String( "shape" ),  receiverShape );
+	std::cout<<"\treceiverShape: "<<receiverShape->GetName().toStdString()<<std::endl;
+
+	if( materialFactoryList.count() > 0 )
+	{
+		TMaterial* receiverMaterial = materialFactoryList[0]->CreateTMaterial();
+		receiverMaterial->SetParameterValue( QLatin1String("reflectivity"), 0.0 );
+		receiverSurfaceNode->SetPart( QLatin1String( "material" ),  receiverMaterial );
+	}
+
+	//Concentrator 2
+	TGroupNode* concentrator2Node = new TGroupNode();
+	concentrator2Node->SetName( "Concentrator2");
+	concentrator2Node->SetParameterValue( QString( "translation" ),  QString( "5 0 0" ) );
+	if( !qobject_cast< TNodesList* >  ( rootNode->GetPart("childrenList" ) )->InsertItem( concentrator2Node ) )
+	{
+		std::cout<<"Error adding concentrator 2 to root node"<<std::endl;
+		return -1;
+	}
+
+
+	TTrackerNode* c2ParabolicDishTracker = trackerFactoryList[0]->CreateTTrackerNode();
+	c2ParabolicDishTracker->SetName( "Tracker_Concentrator_2");
+	qobject_cast< TNodesList* >  ( concentrator2Node->GetPart("childrenList" ))->InsertItem( c2ParabolicDishTracker );
+
+	if( !qobject_cast< TNodesList* >  ( c2ParabolicDishTracker->GetPart("childrenList" ))->InsertItem( concentratorSurfaceNode ))
+	{
+		std::cout<<"Error adding tracker node to concentrator 2"<<std::endl;
+		return -1;
+	}
+
+
+	TNodesDocument saveDocument;
+	saveDocument.SetRootNode( tonatiuhScene );
+	if( !saveDocument.Write( QString("C:/Users/amutuberria/Desktop/PruebaTonatiuh_tracker.tnh") )  )
+	{
+		std::cout<<"Error during writing file"<<std::endl;
+		return -1;
+	}
+
+	std::cout<<"OK"<<std::endl;
+	//Codigo para si se eliminan los nodos
+	std::cout<<"Removing scene node"<<std::endl;
+	tonatiuhScene->RemoveReference();
+	std::cout<<"Removed scene node"<<std::endl;
+	tonatiuhScene = 0;
+	*/
+
+	TNodesDocument readDocument;
+	bool okRead = readDocument.Read( argv[1] );
+	if( !okRead  )
+	{
+		std::cout<<"Error reading file"<<std::endl;
+		return -1;
+	}
+
+
+
+	TSceneNode* sceneNode = readDocument.GetRootNode()->as<TSceneNode>();
+	if( !sceneNode || sceneNode == 0 )
+	{
+		std::cout<<"Error reading file"<<std::endl;
+		return -2;
+	}
+
+
+	//Reference count
+	//std::cout<<"sceneNode "<<sceneNode->GetName().toStdString()<<std::endl;
+	//ChildrenBranch(sceneNode);
+
+
+	/*
+	//Codigo para verificar el orden de para aplicar las transformaciones
+	Transform translation = Translate( 0,200,0 );
+	Transform rotation = Rotate( 15 * gc::Degree, Vector3D( 1,0,0) );
+	Transform scale = Scale( 0.5, 1, 1);
+
+	Transform transformOTW = translation * rotation * scale;
+	std::cout<<"p: "<<transformOTW(Point3D( 0, 0, 0 ) )<<std::endl;
+	*/
+
+
+
+	//Change sun position
+	std::cout<<"Change sun position:"<<std::endl;
+	TSunNode* sun = sceneNode->GetPart( QLatin1String( "light" ) )->as<TSunNode>();
+	TParameterList* sunParametersList = sun->GetParameters();
+	if( sunParametersList )
+	{
+		std::cout<<"\tCurrent values:"<<std::endl;
+		QStringList parametersNameList = sunParametersList->GetParametersNames();
+		if( parametersNameList.count() != sunParametersList->NumberOfParameters() )
+			return (false);
+		for( int p = 0; p < sunParametersList->NumberOfParameters(); p++ )
+		{
+
+			QString parameterName = parametersNameList[p];
+			QVariant parameterValue = sunParametersList->Get( parametersNameList[p] );
+			std::cout<<"\t\t"<<parameterName.toStdString()<<": "<<parameterValue.toDouble()<<std::endl;
+		}
+
+	}
+
+	std::cout<<"\tChanging sun position..."<<std::endl;
+	sun->ChangeSunPosition( 180*gc::Degree, 37.5*gc::Degree );
+	//sun->ChangeSunPosition( 180*gc::Degree, 0.0*gc::Degree );
+	if( sunParametersList )
+	{
+
+		std::cout<<"\tNew values:"<<std::endl;
+		QStringList parametersNameList = sunParametersList->GetParametersNames();
+		if( parametersNameList.count() != sunParametersList->NumberOfParameters() )
+			return (false);
+		for( int p = 0; p < sunParametersList->NumberOfParameters(); p++ )
+		{
+
+			QString parameterName = parametersNameList[p];
+			QVariant parameterValue = sunParametersList->Get( parametersNameList[p] );
+			std::cout<<"\t\t"<<parameterName.toStdString()<<": "<<parameterValue.toDouble()<<std::endl;
+		}
+
+	}
+
+
+	//Create the random generator
+	RandomDeviate* pRand = 0;
+	if( !pRand && randomDeviateFactoryList.count() < 1 )
+		return ( -3 );
+	pRand =  randomDeviateFactoryList[0]->CreateRandomDeviate();
+
+	std::cout<<"pRand"<<std::endl;
+
+	TPhotonMap* pPhotonMap = new TPhotonMap;
+	std::cout<<"pPhotonMap"<<std::endl;
+
+	RayCasting raytracer;
+	std::cout<<"raytracer"<<std::endl;
+	if( !raytracer.SetScene( sceneNode ) )
+	{
+
+		std::cout<<"ERROR in the scene"<<std::endl;
+		return ( -4 );
+	}
+
+	std::cout<<"raytracer raytracer.SetRandomNumberGenerator( pRand )"<<std::endl;
+	raytracer.SetRandomNumberGenerator( pRand );
+	raytracer.SetPhotonMap( pPhotonMap );
+	raytracer.Run( 10000000 );
+
+	std::cout<<"END main"<<std::endl;
+
+
+
+	QFile simulationsFile( argv[2] );
+	if( !simulationsFile.open( QIODevice::WriteOnly ) )
+	{
+		return ( -4 );
+	}
+	QTextStream out( &simulationsFile );
+
+	std::vector< Photon* > photonsList = pPhotonMap->GetAllPhotons();
+	for( unsigned int p = 0; p < photonsList.size(); p++ )
+	{
+		out<<photonsList[p]->pos.x<<"\t";
+		out<<photonsList[p]->pos.y<<"\t";
+		out<<photonsList[p]->pos.z<<"\n";
+	}
+	simulationsFile.close();
+
+
+	//Codigo para si se eliminan los nodos
+	std::cout<<"Removing scene node"<<std::endl;
+	sceneNode->RemoveReference();
+	std::cout<<"Removed scene node"<<std::endl;
+	sceneNode = 0;
+
+	return ( 0 );
 }
+
+
+
