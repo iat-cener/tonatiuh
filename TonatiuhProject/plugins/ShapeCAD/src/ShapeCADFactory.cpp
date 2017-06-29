@@ -164,7 +164,6 @@ bool ShapeCADFactory::ReadSTLFile( QString filename, std::vector< Triangle* >* f
 	checkifasciiRead.close();
 
 
-    //std::cout << " isfacet: " << isfacet << " issolid: " << issolid << std::endl ;
 	 // ENTER IF STATEMENT TO RUN BINARY OR ASCII READ MODE
 	if (isfacet == 0 || issolid == 0) // if this condition is met then file is binary stl
 	{

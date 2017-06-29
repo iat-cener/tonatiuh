@@ -1938,8 +1938,6 @@ void MainWindow::Run()
 		double inputAperture = raycastingSurface->GetValidArea();
 		double wPhoton = ( inputAperture * irradiance ) / m_tracedRays;
 
-		//QDateTime time2 = QDateTime::currentDateTime();
-		//std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 		m_pPhotonMap->EndStore( wPhoton );
 
 	}

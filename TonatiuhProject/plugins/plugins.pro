@@ -36,6 +36,7 @@ SUBDIRS = ComponentHeliostatField \
             SunshapeBuie \
 			SunshapePillbox \
 			TrackerHeliostat \
+			TrackerHeliostatWithOffsets \
             TrackerLinearFresnel \
 			TrackerOneAxis \
 			TrackerZAxis \

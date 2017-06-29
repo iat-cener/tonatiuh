@@ -124,28 +124,6 @@ BVH::BVH( std::vector< Triangle*>* triangleList, int leafSize )
 
 	Build();
 
-	/*
-	if( m_rootNode )
-	{
-
-		for( unsigned int t = 0; t < m_triangleList->size(); t++ )
-		{
-			Point3D v1 = m_triangleList->at(t)->GetVertex1();
-			Point3D v2 = m_triangleList->at(t)->GetVertex2();
-			Point3D v3 = m_triangleList->at(t)->GetVertex3();
-			Point3D centroid = m_triangleList->at(t)->GetCentroid();
-
-			std::cout<<v1.x<<"\t"<<v1.y<<"\t"<<v1.z<<"\t"
-					<<v2.x<<"\t"<<v2.y<<"\t"<<v2.z<<"\t"
-					<<v3.x<<"\t"<<v3.y<<"\t"<<v3.z<<"\t"
-					<<centroid.x<<"\t"<<centroid.y<<"\t"<<centroid.z
-					<<std::endl;
-		}
-
-	}
-	*/
-
-
 }
 
 /*!
@@ -168,7 +146,6 @@ BBox BVH::GetBBox() const
 
 bool BVH::Intersect(const Ray& objectRay , double* tHit, DifferentialGeometry* dg ) const
 {
-	//std::cout<<"objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
 
 	if( ! m_rootNode )
 		return ( false );
@@ -192,7 +169,6 @@ bool BVH::Intersect(BVHNode* node, const Ray& objectRay, double *tHit, Different
 
 	double tHitNode = *tHit;
 
-	//std::cout<<"node: "<<node->GetBoundingBox()<<std::endl;
 	if( !node->IsLeaf() )
 	{
 
@@ -210,12 +186,9 @@ bool BVH::Intersect(BVHNode* node, const Ray& objectRay, double *tHit, Different
 		if( leftNode )
 		{
 			intersectedL = leftNode->GetBoundingBox().IntersectP( objectRay, &tL0, &tL1 );
-			//std::cout<<"left : "<<leftNode->GetBoundingBox()<<" intersectedL: "<<intersectedL<<" tL0: "<<tL0<<std::endl;
 			if( intersectedL && tL0 <= tHitNode )
 			{
 				firstNode = leftNode;
-
-				//std::cout<<"\t left intersect tL0: "<<tL0;
 			}
 		}
 
@@ -225,22 +198,11 @@ bool BVH::Intersect(BVHNode* node, const Ray& objectRay, double *tHit, Different
 		if( rightNode )
 		{
 			intersectedR = rightNode->GetBoundingBox().IntersectP( objectRay, &tR0, &tR1 );
-			//std::cout<<"right : "<<rightNode->GetBoundingBox()<<" intersectedR: "<<intersectedR<<" tR0: "<<tR0<<std::endl;
 			if( intersectedR && tR0 <= tHitNode )
 			{
 				secondNode = rightNode;
-				//std::cout<<"\t right intersect tR0: "<<tR0<<std::endl;
 			}
 		}
-
-
-		/*if( intersectedL && intersectedR && tR0 < tL0 )
-		{
-			BVHNode* aux = firstNode;
-			firstNode = secondNode;
-			secondNode = aux;
-		}
-		*/
 
 		bool isIntersection = false;
 
@@ -259,8 +221,6 @@ bool BVH::Intersect(BVHNode* node, const Ray& objectRay, double *tHit, Different
 
 				isIntersection = true;
 
-				//std::cout<<"\t firstNode tHitNode: "<<tHitNode<<std::endl;
-
 			}
 		}
 
@@ -278,7 +238,6 @@ bool BVH::Intersect(BVHNode* node, const Ray& objectRay, double *tHit, Different
 				*tHit = thit2;
 				*dg = dg2;
 				isIntersection = true;
-				//std::cout<<"\t secondNode tHitNode: "<<tHitNode<<std::endl;
 			}
 		}
 
@@ -286,10 +245,8 @@ bool BVH::Intersect(BVHNode* node, const Ray& objectRay, double *tHit, Different
 	}
 	else
 	{
-		//std::cout<<"\t leaf node"<<std::endl;
 		bool isIntersection = false;
 		int left_index = node->GetIndex();
-		//std::cout<<"\t left_index: "<<left_index<<" node->GetNumberOfTriangles(): "<<node->GetNumberOfTriangles()<<std::endl;
 		for( int f = 0; f < node->GetNumberOfTriangles(); f++ )
 		{
 			int tIndex = left_index + f;
@@ -302,28 +259,14 @@ bool BVH::Intersect(BVHNode* node, const Ray& objectRay, double *tHit, Different
 				Point3D v2 = triangle->GetVertex2();
 				Point3D v3 = triangle->GetVertex3();
 
-				/*
-				std::cout<<"\t\t--"<<tIndex<<"\t"<<v1.x<<"\t"<<v1.y<<"\t"<<v1.z<<"\t"
-						<<v2.x<<"\t"<<v2.y<<"\t"<<v2.z<<"\t"
-						<<v3.x<<"\t"<<v3.y<<"\t"<<v3.z
-						<<std::endl;
-				*/
-
 				double thitT = tHitNode;
 				DifferentialGeometry dgT;
 
 
 				bool isIntersectionT = triangle->Intersect( objectRay, &thitT, &dgT );
-				/*std::cout<<"\t\t--isIntersectionT: "<<isIntersectionT
-						<<"\t objectRay.maxt: "<<objectRay.maxt
-						<<"\t tHitNode: "<<tHitNode
-						<<"\t thitT: "<<thitT
-										<<std::endl;
-				*/
 				if( isIntersectionT && thitT < tHitNode )
 				{
 					tHitNode = thitT;
-					//std::cout<<"\t\t--"<<tHitNode <<std::endl;
 					*tHit = thitT;
 					*dg = dgT;
 					isIntersection = true;
@@ -372,7 +315,6 @@ void BVH::BuildRecursive(int left_index, int right_index, BVHNode* node, int dep
 	if( ( right_index - left_index ) <= m_leafSize )
 	{
 		node->MakeLeaf( left_index, right_index - left_index );
-		//std::cout<<"leaf: "<<left_index<<std::endl;
 		m_nLeafs++;
 	}
 	else
@@ -434,9 +376,6 @@ void BVH::BuildRecursive(int left_index, int right_index, BVHNode* node, int dep
 
 		}
 
-
-
-		//std::cout<<" --splitIndex: "<<splitIndex<<std::endl;
 		if( ( splitIndex == right_index ) || ( splitIndex == left_index ) )
 		{
 
@@ -447,49 +386,6 @@ void BVH::BuildRecursive(int left_index, int right_index, BVHNode* node, int dep
 				Triangle* triangle = m_triangleList->at( f );
 				leftBBox = Union ( leftBBox, triangle->GetBBox( ) );
 			}
-
-
-			/*std::cout<<" --splitIndex: "<<splitIndex<<" dimension2: "<<dimension2<<std::endl;
-			SortTrinaglesList( left_index, right_index, dimension2 );
-			leftBBox = BBox( );
-
-			int splitIndex = right_index;
-			for ( int f = left_index; f < right_index; f++ )
-			{
-
-				Triangle* triangle = m_triangleList->at( f);
-
-				if( ( dimension2 == 0 ) && ( triangle->GetCentroid().x > dMean2 ) )
-				{
-					splitIndex = f;
-					break;
-				}
-				else if( ( dimension2 == 1 ) && ( triangle->GetCentroid().y > dMean2 ) )
-				{
-					splitIndex = f;
-					break;
-				}
-				else if( ( dimension2 == 2 ) && (triangle->GetCentroid().z > dMean2 ) )
-				{
-					splitIndex = f;
-					break;
-				}
-				leftBBox = Union ( leftBBox, triangle->GetBBox( ) );
-
-			}
-			if( ( splitIndex == right_index ) || ( splitIndex == left_index ) )
-			{
-
-				splitIndex  = left_index + 0.5 * ( right_index -left_index ) ;
-				leftBBox = BBox( );
-				for ( int f = left_index; f < splitIndex; f++ )
-				{
-					Triangle* triangle = m_triangleList->at( f );
-					leftBBox = Union ( leftBBox, triangle->GetBBox( ) );
-				}
-			}
-			*/
-
 		}
 
 
@@ -500,8 +396,6 @@ void BVH::BuildRecursive(int left_index, int right_index, BVHNode* node, int dep
 			rightBBox = Union ( rightBBox, triangle->GetBBox( ) );
 		}
 
-		//std::cout<<"\t"<<left_index<<"\t"<<splitIndex<<"\t"<<right_index<<std::endl;
-		//if( left_index == 22 ) std::cout<<"\t"<<left_index<<"\t"<<splitIndex<<"\t"<<right_index<<" leftBBox: "<<leftBBox<<" rightBBox: "<<rightBBox<<std::endl;
 
 		BVHNode* leftNode = new BVHNode;
 		leftNode->SetBoundingBox( leftBBox );
@@ -513,10 +407,6 @@ void BVH::BuildRecursive(int left_index, int right_index, BVHNode* node, int dep
 		node->SetRightNode( rightNode );
 		m_nNodes++;
 
-		//for( int i = 0; i < depth; i++ )
-		//		std::cout<<"\t";
-
-		//std::cout<<left_index<<"\t"<<splitIndex<<"\t"<<right_index<<std::endl;
 		BuildRecursive( left_index, splitIndex, leftNode, depth +1 );
 		BuildRecursive( splitIndex, right_index, rightNode, depth +1 );
 	}

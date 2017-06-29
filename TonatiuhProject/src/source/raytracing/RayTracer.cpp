@@ -259,8 +259,6 @@ void RayTracer::RayTracerCreatingLightPhotons(  double numberOfRays  )
  */
 void RayTracer::RayTracerNotCreatingLightPhotons(  double numberOfRays  )
 {
-	// std::cout<<"RayTracer::RayTracerNotCreatingLightPhotons"<<std::endl;
-
 	std::vector< Photon > photonsVector;
 	ParallelRandomDeviate rand( m_pRand, m_mutex );
 

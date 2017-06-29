@@ -375,20 +375,6 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 
 		}
 	}
-	/*
-	for( int j = 0; j < heightPixeles; j++ )
-	{
-		for( int i = 0; i < widthPixeles; i++ )
-		{
-
-
-			std::cout<<areaMatrix[j][i] <<"\t";
-
-		}
-		std::cout<<std::endl;
-	}
-	*/
-
 
 
 	SoTexture2* texture = static_cast< SoTexture2* >( getPart( "iconTexture", true ) );

@@ -141,56 +141,10 @@ QString ShapeCAD::GetIcon() const
 
 bool ShapeCAD::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-	/*
-	BBox bbox = GetBBox();
-
-	double t0;
-	double t1;
-	if( !bbox.IntersectP(objectRay, &t0, &t1 ) )	return ( false );
-
-	Point3D bBoxPoint = objectRay( t0 );
-
-	std::vector< Triangle* > sortedTrianglesList = m_pTriangleList;
-	std::sort( sortedTrianglesList.begin(), sortedTrianglesList.end(), Sorter( bBoxPoint ) );
-
-
-	double thit= objectRay.maxt;
-	DifferentialGeometry dgShape;
-	bool isIntersection = false;
-
-	for( unsigned int t = 0; t < sortedTrianglesList.size(); t++ )
-	{
-
-		double tHitTriangle = objectRay.maxt;
-		DifferentialGeometry dgTriangle;
-		bool isTriangleIntersection = sortedTrianglesList[t]->Intersect( objectRay, &tHitTriangle, &dgTriangle );
-		if( isTriangleIntersection && tHitTriangle < thit )
-		{
-			thit = tHitTriangle;
-			dgShape = dgTriangle;
-			isIntersection = true;
-
-		}
-
-	}
-
-	if( !isIntersection )	return ( false );
-	if( ( tHit == 0 ) && ( dg == 0 ) )	return ( true );
-	if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeCAD::Intersect(...) called with null pointers" );
-
-	*tHit = thit;
-	*dg = dgShape;
-	dg->pShape = this;
-
-
-	return ( true );
-	*/
 	double tHitShape= objectRay.maxt;
 	DifferentialGeometry dgShape;
 
 
-	//Ray ray ( Point3D( -0.05, 11, 0.05), Vector3D( 0, -1, 0));
-	//std::cout<<"ShapeCAD::Intersect objectRay: "<<objectRay.origin<<"\t "<<objectRay.direction()<<std::endl;
 	if( !m_pBVH )	return ( false );
 
 	if ( !m_pBVH->Intersect( objectRay, &tHitShape, &dgShape ) )	return ( false );
@@ -239,15 +193,6 @@ bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 
 	m_pTriangleList = triangleList;
 
-	/*
-	m_xMin = gc::Infinity;
-	m_yMin = gc::Infinity;
-	m_zMin = gc::Infinity;
-
-	m_xMax = - gc::Infinity;
-	m_yMax = - gc::Infinity;
-	m_zMax = - gc::Infinity;
-	*/
 
 	for( unsigned int f = 0; f < triangleList.size(); f++ )
 	{
@@ -261,32 +206,6 @@ bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 		v2VertexList.set1Value( f, v2.x, v2.y, v2.z);
 		v3VertexList.set1Value( f, v3.x, v3.y, v3.z);
 		normalVertexList.set1Value( f, facet->GetNormal().x, facet->GetNormal().y, facet->GetNormal().z);
-
-		/*
-		if( v1.x < m_xMin ) m_xMin = v1.x;
-		if( v2.x < m_xMin ) m_xMin = v2.x;
-		if( v3.x < m_xMin ) m_xMin = v3.x;
-
-		if( v1.y < m_yMin ) m_yMin = v1.y;
-		if( v2.y < m_yMin ) m_yMin = v2.y;
-		if( v3.y < m_yMin ) m_yMin = v3.y;
-
-		if( v1.z < m_zMin ) m_zMin = v1.z;
-		if( v2.z < m_zMin ) m_zMin = v2.z;
-		if( v3.z < m_zMin ) m_zMin = v3.z;
-
-		if( v1.x > m_xMax ) m_xMax = v1.x;
-		if( v2.x > m_xMax ) m_xMax = v2.x;
-		if( v3.x > m_xMax ) m_xMax = v3.x;
-
-		if( v1.y > m_yMax ) m_yMax = v1.y;
-		if( v2.y > m_yMax ) m_yMax = v2.y;
-		if( v3.y > m_yMax ) m_yMax = v3.y;
-
-		if( v1.z > m_zMax ) m_zMax = v1.z;
-		if( v2.z > m_zMax ) m_zMax = v2.z;
-		if( v3.z > m_zMax ) m_zMax = v3.z;
-		*/
 
 	}
 

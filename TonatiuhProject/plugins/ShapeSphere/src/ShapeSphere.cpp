@@ -36,6 +36,9 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+
+#include <iostream>
+
 #include <QMessageBox>
 #include <QObject>
 #include <QString>
@@ -408,8 +411,8 @@ void ShapeSphere::generatePrimitives(SoAction *action)
 
 
 	SbVec3f  point;
-	int rows = 20; // Number of points per row
-	int columns = 20; // Number of points per column
+	int rows = 50; // Number of points per row
+	int columns = 50; // Number of points per column
 	int totalPoints = rows * columns; // Total points in the grid
 
 	float vertex[totalPoints][6];
