@@ -96,8 +96,8 @@ TSunNode::~TSunNode()
  */
 void TSunNode::ChangeSunPosition( double azimuth, double zenith )
 {
-	m_parametersList->Set( m_azimuthLabel, azimuth );
-	m_parametersList->Set( m_zenithLabel, zenith );
+	m_parametersList->SetValue( m_azimuthLabel, azimuth );
+	m_parametersList->SetValue( m_zenithLabel, zenith );
 
 	emit SunpositonChanged( azimuth, zenith );
 

@@ -85,14 +85,15 @@ TNode::~TNode()
 TNode* TNode::Copy() const
 {
 	TNode* node = new TNode();
-	TParameterList* parametersList = node->GetParameters();
+	TParameterList* parametersList = node->m_parametersList;
 
 	QStringList parameterNames = m_parametersList->GetParametersNames();
 
 	for( int p = 0; p < parameterNames.count(); p++ )
 	{
-		QVariant parameterValue = m_parametersList->Get( parameterNames[p] );
-		parametersList->Append(parameterNames[p], parameterValue );
+		QVariant parameterValue = m_parametersList->GetValue( parameterNames[p] );
+		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
+		parametersList->Append(parameterNames[p], parameterValue, parameterVisibility );
 	}
 
 	return ( node );
@@ -115,11 +116,17 @@ QString TNode::GetName() const
 }
 
 /*!
- * Returns the node parameter list
+ * Returns the list of the parameters accesible exteranlly to the node.
  */
-TParameterList* TNode::GetParameters() const
+QStringList TNode::GetVisibleParametersName() const
 {
-	return ( m_parametersList );
+	QStringList allParametersNames = m_parametersList->GetParametersNames();
+	for( int i = 0; i < allParametersNames.count(); i++ )
+	{
+		if( !m_parametersList->GetVisibility( allParametersNames[i] ) )
+			allParametersNames.removeAt( i );
+	}
+	return ( allParametersNames );
 }
 
 /*!
@@ -128,8 +135,9 @@ TParameterList* TNode::GetParameters() const
 QVariant TNode::GetParameterValue( QString name ) const
 {
 	if(!m_parametersList )	return( QVariant() );
-
-	return (m_parametersList->Get( name ) );
+	if( !m_parametersList->Contains( name ) || !m_parametersList->GetVisibility( name ) )
+		return( QVariant() );
+	return (m_parametersList->GetValue( name ) );
 }
 
 /*!
@@ -172,23 +180,14 @@ void TNode::SetName( QString name )
 }
 
 /*!
- * Sets the parent node to \a parent.
- */
-/*
-void TNode::SetParent( TNode* parent )
-{
-	setParent( parent );
-}
-*/
-
-/*!
  * Sets to the parameter \a name the \a value.
  */
 bool TNode::SetParameterValue( const QString& name, QVariant value )
 {
 	if( !m_parametersList )	return ( false );
-	if( !m_parametersList->Contains( name ) )	return ( false );
-	m_parametersList->Set( name, value );
+	if( !m_parametersList->Contains( name ) || !m_parametersList->GetVisibility( name ) )
+		return ( false );
+	m_parametersList->SetValue( name, value );
 
 	return (true);
 }

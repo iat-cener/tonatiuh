@@ -55,7 +55,6 @@ public:
 	static void Init();
 
 	ShapeFlatDisk( );
-	~ShapeFlatDisk();
 
 	QString GetIcon();
 	BBox GetBondingBox() const;
@@ -63,11 +62,12 @@ public:
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;
 	void Draw() const;
 
+protected:
+	~ShapeFlatDisk();
+
 private:
 	static TNodeType m_nodeType;
 };
-
-Q_DECLARE_METATYPE(ShapeFlatDisk*)
 
 
 #endif /*SHAPEFLATDISK_H_*/

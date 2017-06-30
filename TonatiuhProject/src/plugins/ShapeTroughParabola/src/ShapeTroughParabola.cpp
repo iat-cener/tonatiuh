@@ -103,11 +103,11 @@ QString ShapeTroughParabola::GetIcon()
 BBox ShapeTroughParabola::GetBondingBox() const
 {
 
-	double focusLength = m_parametersList->Get( QLatin1String("focusLength") ).toDouble();
-	double xmin = m_parametersList->Get( QLatin1String("xMin") ).toDouble();
-	double xmax = m_parametersList->Get( QLatin1String("xMax") ).toDouble();
-	double lengthXMin = m_parametersList->Get( QLatin1String("lengthXMin") ).toDouble();
-	double lengthXMax = m_parametersList->Get( QLatin1String("lengthXMax") ).toDouble();
+	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
+	double xmin = m_parametersList->GetValue( QLatin1String("xMin") ).toDouble();
+	double xmax = m_parametersList->GetValue( QLatin1String("xMax") ).toDouble();
+	double lengthXMin = m_parametersList->GetValue( QLatin1String("lengthXMin") ).toDouble();
+	double lengthXMax = m_parametersList->GetValue( QLatin1String("lengthXMax") ).toDouble();
 
 	double y1 = ( xmin * xmin ) / ( 4 * focusLength );
 	double y2 = ( xmax * xmax ) / ( 4 * focusLength );
@@ -140,11 +140,11 @@ TNodeType ShapeTroughParabola::GetType() const
 bool ShapeTroughParabola::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
 
-	double focusLength = m_parametersList->Get( QLatin1String("focusLength") ).toDouble();
-	double xmin = m_parametersList->Get( QLatin1String("xMin") ).toDouble();
-	double xmax = m_parametersList->Get( QLatin1String("xMax") ).toDouble();
-	double lengthXMin = m_parametersList->Get( QLatin1String("lengthXMin") ).toDouble();
-	double lengthXMax = m_parametersList->Get( QLatin1String("lengthXMax") ).toDouble();
+	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
+	double xmin = m_parametersList->GetValue( QLatin1String("xMin") ).toDouble();
+	double xmax = m_parametersList->GetValue( QLatin1String("xMax") ).toDouble();
+	double lengthXMin = m_parametersList->GetValue( QLatin1String("lengthXMin") ).toDouble();
+	double lengthXMax = m_parametersList->GetValue( QLatin1String("lengthXMax") ).toDouble();
 
 
 	// Compute quadratic parabolic cylinder coefficients

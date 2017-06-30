@@ -102,9 +102,9 @@ QString ShapeSphericalRectangle::GetIcon()
 BBox ShapeSphericalRectangle::GetBondingBox() const
 {
 
-	double radius = m_parametersList->Get( QLatin1String("radius") ).toDouble();
-	double widthX = m_parametersList->Get( QLatin1String("widthX") ).toDouble();
-	double widthZ = m_parametersList->Get( QLatin1String("widthZ") ).toDouble();
+	double radius = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
+	double widthX = m_parametersList->GetValue( QLatin1String("widthX") ).toDouble();
+	double widthZ = m_parametersList->GetValue( QLatin1String("widthZ") ).toDouble();
 
 	double xmin = -widthX/2;
 	double xmax = widthX/2;
@@ -132,9 +132,9 @@ TNodeType ShapeSphericalRectangle::GetType() const
  */
 bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double r = m_parametersList->Get( QLatin1String("radius") ).toDouble();
-	double wX = m_parametersList->Get( QLatin1String("widthX") ).toDouble();
-	double wZ = m_parametersList->Get( QLatin1String("widthZ") ).toDouble();
+	double r = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
+	double wX = m_parametersList->GetValue( QLatin1String("widthX") ).toDouble();
+	double wZ = m_parametersList->GetValue( QLatin1String("widthZ") ).toDouble();
 
 	// Compute quadratic ShapeSphere coefficients
 	double A =   objectRay.direction().x * objectRay.direction().x

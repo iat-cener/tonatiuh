@@ -114,9 +114,9 @@ TNodeType MaterialStandardSpecular::GetType() const
 bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {
 
-	double reflectivity = m_parametersList->Get( QLatin1String( "reflectivity" ) ).toDouble();
-	double sigmaSlopeMRAD = m_parametersList->Get( QLatin1String( "sigmaSlope" ) ).toDouble();
-	QString distribution = m_parametersList->Get( QLatin1String( "distribution" ) ).toString();
+	double reflectivity = m_parametersList->GetValue( QLatin1String( "reflectivity" ) ).toDouble();
+	double sigmaSlopeMRAD = m_parametersList->GetValue( QLatin1String( "sigmaSlope" ) ).toDouble();
+	QString distribution = m_parametersList->GetValue( QLatin1String( "distribution" ) ).toString();
 
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= reflectivity  ) return ( false );

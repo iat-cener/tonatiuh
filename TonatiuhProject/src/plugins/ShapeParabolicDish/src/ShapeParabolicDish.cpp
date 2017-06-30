@@ -103,10 +103,10 @@ QString ShapeParabolicDish::GetIcon()
  */
 BBox ShapeParabolicDish::GetBondingBox() const
 {
-	double phiMax = m_parametersList->Get( QLatin1String("phiMax") ).toDouble();
-	double dishMaxRadius = m_parametersList->Get( QLatin1String("dishMaxRadius") ).toDouble();
-	double dishMinRadius = m_parametersList->Get( QLatin1String("dishMinRadius") ).toDouble();
-	double focusLength = m_parametersList->Get( QLatin1String("focusLength") ).toDouble();
+	double phiMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
+	double dishMaxRadius = m_parametersList->GetValue( QLatin1String("dishMaxRadius") ).toDouble();
+	double dishMinRadius = m_parametersList->GetValue( QLatin1String("dishMinRadius") ).toDouble();
+	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -141,11 +141,10 @@ TNodeType ShapeParabolicDish::GetType() const
 bool ShapeParabolicDish::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
 
-	double pMax = m_parametersList->Get( QLatin1String("phiMax") ).toDouble();
-	//double phiMax = m_parametersList->Get( QLatin1String("phiMax") ).toDouble();
-	double dishMaxRadius = m_parametersList->Get( QLatin1String("dishMaxRadius") ).toDouble();
-	double dishMinRadius = m_parametersList->Get( QLatin1String("dishMinRadius") ).toDouble();
-	double focusLength = m_parametersList->Get( QLatin1String("focusLength") ).toDouble();
+	double pMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
+	double dishMaxRadius = m_parametersList->GetValue( QLatin1String("dishMaxRadius") ).toDouble();
+	double dishMinRadius = m_parametersList->GetValue( QLatin1String("dishMinRadius") ).toDouble();
+	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
 
 
 	double A = objectRay.direction().x*objectRay.direction().x + objectRay.direction().z * objectRay.direction().z;

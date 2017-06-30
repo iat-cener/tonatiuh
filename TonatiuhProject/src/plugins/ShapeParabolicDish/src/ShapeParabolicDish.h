@@ -43,6 +43,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 
 
+//!  ShapeTroughParabola is the class to represent a surface of circular paraboloid geometry.
+/*!
+  ShapeTroughParabola class provides the methods for a parabolic dish surface. The parameters to define the surface are:
+  * - focusLength: the focal length of the parabola.
+  * - dishMinRadius: minimum distance from parabola central axis to be represented.
+  * - dishMaxRadius: maxim distance form the parabola central axis to be represented.
+  * - phiMax: section of the circular surface to be represented.
+*/
+
 class ShapeParabolicDish : public TShape
 {
 	Q_OBJECT
@@ -68,8 +77,5 @@ protected:
 private:
 	static TNodeType m_nodeType;
 };
-
-Q_DECLARE_METATYPE(ShapeParabolicDish*)
-
 
 #endif /*SHAPEPARABOLICDISH_H_*/

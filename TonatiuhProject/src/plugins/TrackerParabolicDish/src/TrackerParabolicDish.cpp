@@ -85,7 +85,7 @@ TrackerParabolicDish::TrackerParabolicDish()
 
 
 	//Transformation
-	m_parametersList->Append( QLatin1String("node_transformation"), transformationValue );
+	m_parametersList->Append( QLatin1String("node_transformation"), transformationValue, false );
 
 }
 
@@ -104,7 +104,7 @@ TrackerParabolicDish::~TrackerParabolicDish()
  */
 Transform TrackerParabolicDish::GetTrasformation( ) const
 {
-	QString transformationValue = m_parametersList->Get( QLatin1String("node_transformation") ).toString();
+	QString transformationValue = m_parametersList->GetValue( QLatin1String("node_transformation") ).toString();
 
 	QStringList transformationValues = transformationValue.split( QRegExp("[\\s+,\\[\\]]"), QString::SkipEmptyParts );
 	double nodeTransformationMatrix[4][4];
@@ -163,5 +163,5 @@ void TrackerParabolicDish::UpdateTrackerTransform( Vector3D sunVector, Transform
 		transformationValue += QLatin1String( " ]\n" );
 	}
 
-	m_parametersList->Set( QLatin1String("node_transformation") , transformationValue );
+	m_parametersList->SetValue( QLatin1String("node_transformation") , transformationValue );
 }

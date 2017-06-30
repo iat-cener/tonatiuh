@@ -70,6 +70,9 @@ QIcon TrackerParabolicDishFactory::TTrackerNodeIcon() const
 	return ( QIcon( ":/icons/TrackerParabolicDish.png" ) );
 }
 
+/*!
+ * Creates a new tracker object.
+ */
 TrackerParabolicDish* TrackerParabolicDishFactory::CreateTTrackerNode( ) const
 {
 	return ( new TrackerParabolicDish );

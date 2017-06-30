@@ -60,11 +60,12 @@ public:
 	static void Init();
 
 	TrackerParabolicDish();
-	virtual ~TrackerParabolicDish();
+	~TrackerParabolicDish();
 
 	Transform GetTrasformation() const;
 	TNodeType GetType() const;
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
+
 
 private:
 	static TNodeType m_nodeType;

@@ -87,7 +87,7 @@ SunshapePillbox::~SunshapePillbox()
  */
 void SunshapePillbox::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-	double thetaMax = m_parametersList->Get( QLatin1String("thetaMax") ).toDouble();
+	double thetaMax = m_parametersList->GetValue( QLatin1String("thetaMax") ).toDouble();
 
 	double phi = gc::TwoPi * rand.RandomDouble();
     double theta = asin( sin( thetaMax )*sqrt( rand.RandomDouble() ) );
@@ -107,7 +107,7 @@ void SunshapePillbox::GenerateRayDirection( Vector3D& direction, RandomDeviate& 
 double SunshapePillbox::GetIrradiance() const
 {
 
-	return ( m_parametersList->Get( QLatin1String("irradiance") ).toDouble() );
+	return ( m_parametersList->GetValue( QLatin1String("irradiance") ).toDouble() );
 }
 
 /*!
@@ -116,7 +116,7 @@ double SunshapePillbox::GetIrradiance() const
 double SunshapePillbox::GetThetaMax() const
 {
 
-	return ( m_parametersList->Get( QLatin1String("thetaMax") ).toDouble() );
+	return ( m_parametersList->GetValue( QLatin1String("thetaMax") ).toDouble() );
 }
 
 /*!

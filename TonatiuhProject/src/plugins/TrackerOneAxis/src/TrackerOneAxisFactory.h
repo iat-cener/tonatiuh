@@ -32,42 +32,34 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
- 
-#ifndef TSHAPEFACTORY_H_
-#define TSHAPEFACTORY_H_
 
-#include <QtPlugin>
-#include <QVector>
-#include <QVariant>
+#ifndef TRACKERONEAXISFACTORY_H_
+#define TRACKERONEAXISFACTORY_H_
 
+#include "TrackerOneAxis.h"
+#include "TTrackerFactory.h"
 
-//!  TShapeFactory is the base class for creating TShapeNode objects.
+//!  TrackerOneAxisFactory is the class for creating TrackerOneAxis objects.
 /*!
-  TShapeFactory class is a factory class to control the creation of  TShapeNode subclasses instances.
+  TrackerOneAxisFactory class is a factory class to create instances of TrackerOneAxis.
 */
 
-class QString;
-class QIcon;
-class TShape;
-
-class TShapeFactory
+class TrackerOneAxisFactory : public QObject, public TTrackerFactory
 {
+    Q_OBJECT
+    Q_INTERFACES(TTrackerFactory)
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.TTrackerFactory")
+#endif
+    
 public:
-    virtual ~TShapeFactory() {}
-    virtual void Init() const  = 0;
-    virtual QString TShapeName() const  = 0;
-    virtual QIcon TShapeIcon() const = 0;
-    virtual TShape* CreateTShape( ) const = 0;
-    virtual TShape* CreateTShape( int /*numberofParameters*/, QVector< QVariant > /*parametersList*/ ) const
-    {
-    	return ( CreateTShape() );
-    }
-    virtual bool IsFlat() = 0;
+    void Init() const;
+   	QString TTrackerNodeName() const;
+   	QIcon TTrackerNodeIcon() const;
+   	TrackerOneAxis* CreateTTrackerNode( ) const;
 };
 
-Q_DECLARE_INTERFACE( TShapeFactory, "tonatiuh.TShapeFactory")
-
-#endif /*TSHAPEFACTORY_H_*/
+#endif /*TRACKERONEAXISFACTORY_H_*/

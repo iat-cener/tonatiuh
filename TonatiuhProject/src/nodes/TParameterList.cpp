@@ -28,31 +28,35 @@ TParameterList::~TParameterList()
 /*!
  * Appends the given parameter. This function does not overwrites any existing ones.
  */
-void TParameterList::Append(const TParameterList* list)
+/*void TParameterList::Append(const TParameterList* list)
 {
-	Append(list->m_parametersList);
+	Append( list->m_parametersList );
+	list->m_parametersVisibilityList = m_parametersVisibilityList;
 }
+*/
 
 
 /*!
  * Appends the given parameters, not overwriting any existing ones.
  */
-void TParameterList::Append(const QHash<QString, QVariant>& list)
+/*void TParameterList::Append(const QHash<QString, QVariant>& list)
 {
 	foreach( const QString& k, list.keys() )
 			Append(k, list[k]);
 }
+*/
 
 /*!
  * Appends the parameter defined with the \a key and its \a value to the list.
  */
-void TParameterList::Append(const QString& key, const QVariant& value)
+void TParameterList::Append(const QString& key, const QVariant& value, bool visibility )
 {
 	if( m_parametersList.contains( key ) )
 		return;
 
 	m_parametersList[key] = value;
-	setProperty( key.toLatin1(), value );
+	m_parametersVisibilityList[key] = visibility;
+	//setProperty( key.toLatin1(), value );
 }
 
 /*!
@@ -69,20 +73,33 @@ bool TParameterList::Contains(const QString& name) const
 /*!
  * Returns the value of the parameter \a name. If a parameter with defined name is not defined in the list, an empty string is returned.
  */
-QVariant TParameterList::Get(const QString& name) const
+QVariant TParameterList::GetValue(const QString& name) const
 {
-  return ( Get(name, QVariant() ) );
+  return ( GetValue(name, QVariant() ) );
 }
 
 /*!
  * Returns the value of the parameter \a name. If there is not a parameter with the name defined \a defaultValue is returned.
  */
-QVariant TParameterList::Get(const QString& name, const QVariant& defaultValue) const
+QVariant TParameterList::GetValue(const QString& name, const QVariant& defaultValue) const
 {
 	if( Contains(name) )
 		return ( m_parametersList.value(name) );
   else
     return ( defaultValue );
+}
+
+/*!
+ * Returns if true if the parameter could be used externally to the node.
+ * Otherwise return false.
+ */
+bool TParameterList::GetVisibility(const QString& name) const
+{
+	if( Contains(name) )
+		return ( m_parametersVisibilityList.value(name) );
+  else
+    return ( false );
+
 }
 
 /*!
@@ -107,7 +124,7 @@ int TParameterList::NumberOfParameters() const
 /*!
  * Sets to the parameter \a name the \a value.
  */
-void TParameterList::Set(const QString& name, QVariant value )
+void TParameterList::SetValue(const QString& name, QVariant value )
 {
 	if( Contains(name) )
 		m_parametersList[name] = value;

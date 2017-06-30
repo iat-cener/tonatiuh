@@ -97,8 +97,8 @@ QString ShapeFlatRectangle::GetIcon()
 BBox ShapeFlatRectangle::GetBondingBox() const
 {
 
-	double width = m_parametersList->Get( QLatin1String("width") ).toDouble();
-	double height = m_parametersList->Get( QLatin1String("height") ).toDouble();
+	double width = m_parametersList->GetValue( QLatin1String("width") ).toDouble();
+	double height = m_parametersList->GetValue( QLatin1String("height") ).toDouble();
 
 	Point3D min = Point3D( -height/2, 0.0, -width/2);
 	Point3D max = Point3D( height/2, 0.0, width/2);
@@ -119,8 +119,8 @@ TNodeType ShapeFlatRectangle::GetType() const
  */
 bool ShapeFlatRectangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double width = m_parametersList->Get( QLatin1String("width") ).toDouble();
-	double height = m_parametersList->Get( QLatin1String("height") ).toDouble();
+	double width = m_parametersList->GetValue( QLatin1String("width") ).toDouble();
+	double height = m_parametersList->GetValue( QLatin1String("height") ).toDouble();
 
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction().y == 0 ) ) return ( false );

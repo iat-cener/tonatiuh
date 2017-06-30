@@ -32,37 +32,53 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SHAPEFLATDISKFACTORY_H_
-#define SHAPEFLATDISKFACTORY_H_
-
-#include "ShapeFlatDisk.h"
-#include "TShapeFactory.h"
+#include <QIcon>
+#include "ShapeCylinder.h"
+#include "ShapeCylinderFactory.h"
 
 
-//!  ShapeFlatDiskFactory is the base class for creating ShapeCylinder objects.
 /*!
-  ShapeFlatDiskFactory class is a factory class to control the creation of  ShapeFlatDisk instances. All the objects of type ShapeCylinder will be created using this factory.
-*/
-
-
-class ShapeFlatDiskFactory: public QObject, public TShapeFactory
+ * Initializes shape type.
+ */
+void ShapeCylinderFactory::Init() const
 {
-    Q_OBJECT
-    Q_INTERFACES(TShapeFactory)
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.TShapeFactory")
+	static bool firstTime = true;
+	if ( firstTime )
+	{
+		ShapeCylinder::Init();
+	    firstTime = false;
+	}
+}
+
+/*!
+ * Returns shape type name.
+ */
+QString ShapeCylinderFactory::TShapeName() const
+{
+	return QString("Cylinder");
+}
+
+/*!
+ * Returns shape icon.
+ */
+QIcon ShapeCylinderFactory::TShapeIcon() const
+{
+	return QIcon( ":/icons/ShapeCylinder.png" );
+}
+
+/*!
+ * Returns a flat disk geometry object.
+ */
+ShapeCylinder* ShapeCylinderFactory::CreateTShape( ) const
+{
+	return ( new ShapeCylinder );
+}
+
+#if QT_VERSION < 0x050000 // pre Qt 5
+	Q_EXPORT_PLUGIN2(ShapeCylinder, ShapeCylinderFactory)
 #endif
 
-public:
-    void Init() const;
-    QString TShapeName() const;
-   	QIcon TShapeIcon() const;
-   	ShapeFlatDisk* CreateTShape( ) const;
-   	bool IsFlat() { return true; }
-};
-
-#endif /*ShapeFlatDiskFactory_H_*/

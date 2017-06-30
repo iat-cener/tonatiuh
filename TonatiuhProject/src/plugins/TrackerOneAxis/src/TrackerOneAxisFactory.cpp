@@ -36,48 +36,48 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SHAPESPHERICALRECTANGLE_H_
-#define SHAPESPHERICALRECTANGLE_H_
+#include <QIcon>
 
-#include "TNodeType.h"
-#include "TShape.h"
+#include "TrackerOneAxisFactory.h"
 
-//!  ShapeSphericalRectangle class is the the representation of a spherical cap in the scene.
 /*!
-  ShapeSphericalRectangle class provides the abstraction for the application of a spherical cap surface geometry and the intersection calculation with a ray.
-  The parameters to define the surface are:
-  * - radius: distance from the center of the cylinder to its edge.
-  * - widthX: length of the cap in the x axis.
-  * - widthZ: ength of the cap in the z axis.
-*/
-
-class ShapeSphericalRectangle : public TShape
+ * Initializes tracker type.
+ */
+void TrackerOneAxisFactory::Init() const
 {
-	Q_OBJECT
 
-private:
-	Q_DISABLE_COPY(ShapeSphericalRectangle)
+	static bool firstTime = true;
+	if ( firstTime )
+	{
+		TrackerOneAxis::Init();
+	    firstTime = false;
+	}
+}
 
-public:
-	static void* CreateInstance();
-	static void Init();
+/*!
+ * Returns tracker type name.
+ */
+QString TrackerOneAxisFactory::TTrackerNodeName() const
+{
+	return QString("One Axis tracker");
+}
 
-	ShapeSphericalRectangle();
+/*!
+ * Returns tracker icon.
+ */
+QIcon TrackerOneAxisFactory::TTrackerNodeIcon() const
+{
+	return QIcon(":/icons/TrackerOneAxis.png");
+}
 
+/*!
+ * Creates a new tracker object.
+ */
+TrackerOneAxis* TrackerOneAxisFactory::CreateTTrackerNode( ) const
+{
+	return ( new TrackerOneAxis );
+}
 
-	QString GetIcon();
-	BBox GetBondingBox() const;
-	TNodeType GetType() const;
-	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;
-	void Draw() const;
-
-protected:
-	~ShapeSphericalRectangle();
-
-private:
-	static TNodeType m_nodeType;
-};
-
-
-
-#endif /*SHAPESPHERICALRECTANGLE_H_*/
+#if QT_VERSION < 0x050000 // pre Qt 5
+	Q_EXPORT_PLUGIN2(TrackerOneAxis, TrackerOneAxisFactory)
+#endif

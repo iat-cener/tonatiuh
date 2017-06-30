@@ -108,20 +108,20 @@ TGroupNode::~TGroupNode()
  */
 Transform TGroupNode::GetTrasformation() const
 {
-	TParameterList* parametersList = GetParameters();
-	if( !parametersList || parametersList->NumberOfParameters() == 0 )	return ( Transform() );
+	QStringList parametersList = GetVisibleParametersName();
+	if( parametersList.count() < 1 )	return ( Transform() );
 
-	QStringList translationValues = parametersList->Get( m_translationName ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
+	QStringList translationValues = m_parametersList->GetValue( m_translationName ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
 	if( translationValues.count() != 3 ) 	return ( Transform() );
 	Transform translation = Translate( translationValues[0].toDouble(), translationValues[1].toDouble(), translationValues[2].toDouble()  );
 
-	QStringList rotationValues = parametersList->Get( m_rotationName ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
+	QStringList rotationValues = m_parametersList->GetValue( m_rotationName ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
 	if( rotationValues.count() != 4 ) return ( Transform() );
 	Vector3D rotationAxis( rotationValues[0].toDouble(), rotationValues[1].toDouble(), rotationValues[2].toDouble());
 	if( fabs( 1.0 - rotationAxis.length() ) > gc::Epsilon  )	return ( Transform() );
 	Transform rotation = Rotate( rotationValues[3].toDouble(), rotationAxis   );
 
-	QStringList scaleValues = parametersList->Get( m_scaleFactorName).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
+	QStringList scaleValues = m_parametersList->GetValue( m_scaleFactorName).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
 	if( scaleValues.count() != 3 ) return ( Transform() );
 	Transform scale = Scale( scaleValues[0].toDouble(), scaleValues[1].toDouble(), scaleValues[2].toDouble() );
 

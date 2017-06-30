@@ -58,11 +58,6 @@ class TNode : public QObject
 {
 	Q_OBJECT
 
-	Q_PROPERTY(const TNodeType type READ GetType )
-	//Q_PROPERTY(QString  name READ GetName WRITE SETNAME )
-	//Q_PROPERTY(bool enabled READ enabled)
-	//Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
-
 private:
 	Q_DISABLE_COPY(TNode)
 
@@ -77,7 +72,7 @@ public:
 
 	int GetID() const;
 	QString GetName() const;
-	TParameterList* GetParameters() const;
+	QStringList GetVisibleParametersName() const;
 	QVariant GetParameterValue( QString name ) const;
 	int GetReferences() const;
 	virtual TNodeType GetType() const;

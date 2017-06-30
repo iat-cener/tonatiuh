@@ -36,33 +36,32 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SHAPEFLATRECTANGLE_H_
-#define SHAPEFLATRECTANGLE_H_
+#ifndef SHAPECYLINDER_H_
+#define SHAPECYLINDER_H_
 
-#include "TNodeType.h"
 #include "TShape.h"
 
-//!  ShapeFlatRectangle class is the the representation of a flat rectangular surface in the scene.
+//!  ShapeCylinder class is the the representation of a cylinder in the scene.
 /*!
-  ShapeFlatRectangle class provides the abstraction for the application of a rectangular flat geometry and the intersection calculation with a ray.
+  ShapeCylinder class provides the abstraction for the application of a cylinder surface geometry and the cylinder intersection calculation with a ray.
   The parameters to define the surface are:
-  * - height: length of the cap in the x axis.
-  * - width: length of the cap in the z axis.
+  * - radius: distance from the center of the cylinder to its edge.
+  * - length: length of the cylinder.
+  * - phi: section of the cylinder starting form x-axis.
 */
 
-class ShapeFlatRectangle : public TShape
+class ShapeCylinder : public TShape
 {
 	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeFlatRectangle)
+	Q_DISABLE_COPY(ShapeCylinder)
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
-	ShapeFlatRectangle( );
-	~ShapeFlatRectangle( );
+	ShapeCylinder( );
 
 	QString GetIcon();
 	BBox GetBondingBox() const;
@@ -70,10 +69,11 @@ public:
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;
 	void Draw() const;
 
+protected:
+	~ShapeCylinder();
+
 private:
 	static TNodeType m_nodeType;
 };
 
-Q_DECLARE_METATYPE(ShapeFlatRectangle*)
-
-#endif /*SHAPEFLATRECTANGLE_H_*/
+#endif /*SHAPECYLINDER_H_*/

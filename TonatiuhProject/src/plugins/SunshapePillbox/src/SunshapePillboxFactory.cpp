@@ -70,6 +70,9 @@ QIcon SunshapePillboxFactory::TSunshapeIcon() const
 	return ( QIcon( ":/icons/SunshapePillbox.png" ) );
 }
 
+/*!
+ * Creates a new sunshaope object.
+ */
 SunshapePillbox* SunshapePillboxFactory::CreateTSunshape( ) const
 {
 	return ( new SunshapePillbox );

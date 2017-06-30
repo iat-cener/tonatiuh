@@ -147,8 +147,8 @@ int main ( int argc, char** argv )
 	QVector< TTrackerFactory* > trackerFactoryList = pluginManager.GetTrackerFactories();
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = pluginManager.GetRandomDeviateFactories();
 
-	/*
 
+	/*
 	TSceneNode* tonatiuhScene = new TSceneNode;
 	std::cout<<"tonatiuhScene"<<std::endl;
 
@@ -271,7 +271,7 @@ int main ( int argc, char** argv )
 
 	TNodesDocument saveDocument;
 	saveDocument.SetRootNode( tonatiuhScene );
-	if( !saveDocument.Write( QString("C:/Users/amutuberria/Desktop/PruebaTonatiuh_tracker.tnh") )  )
+	if( !saveDocument.Write( argv[1] )  )
 	{
 		std::cout<<"Error during writing file"<<std::endl;
 		return -1;
@@ -323,42 +323,20 @@ int main ( int argc, char** argv )
 	//Change sun position
 	std::cout<<"Change sun position:"<<std::endl;
 	TSunNode* sun = sceneNode->GetPart( QLatin1String( "light" ) )->as<TSunNode>();
-	TParameterList* sunParametersList = sun->GetParameters();
-	if( sunParametersList )
-	{
-		std::cout<<"\tCurrent values:"<<std::endl;
-		QStringList parametersNameList = sunParametersList->GetParametersNames();
-		if( parametersNameList.count() != sunParametersList->NumberOfParameters() )
-			return (false);
-		for( int p = 0; p < sunParametersList->NumberOfParameters(); p++ )
-		{
+	std::cout<<"\tCurrent values:"<<std::endl;
+	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
+	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
 
-			QString parameterName = parametersNameList[p];
-			QVariant parameterValue = sunParametersList->Get( parametersNameList[p] );
-			std::cout<<"\t\t"<<parameterName.toStdString()<<": "<<parameterValue.toDouble()<<std::endl;
-		}
-
-	}
 
 	std::cout<<"\tChanging sun position..."<<std::endl;
 	sun->ChangeSunPosition( 180*gc::Degree, 37.5*gc::Degree );
 	//sun->ChangeSunPosition( 180*gc::Degree, 0.0*gc::Degree );
-	if( sunParametersList )
-	{
 
-		std::cout<<"\tNew values:"<<std::endl;
-		QStringList parametersNameList = sunParametersList->GetParametersNames();
-		if( parametersNameList.count() != sunParametersList->NumberOfParameters() )
-			return (false);
-		for( int p = 0; p < sunParametersList->NumberOfParameters(); p++ )
-		{
 
-			QString parameterName = parametersNameList[p];
-			QVariant parameterValue = sunParametersList->Get( parametersNameList[p] );
-			std::cout<<"\t\t"<<parameterName.toStdString()<<": "<<parameterValue.toDouble()<<std::endl;
-		}
+	std::cout<<"\tNew values:"<<std::endl;
+	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
+	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
 
-	}
 
 
 	//Create the random generator
@@ -393,6 +371,7 @@ int main ( int argc, char** argv )
 	QFile simulationsFile( argv[2] );
 	if( !simulationsFile.open( QIODevice::WriteOnly ) )
 	{
+		std::cout<<"Cannot open file to save results: '"<< argv[2]<<std::endl;
 		return ( -4 );
 	}
 	QTextStream out( &simulationsFile );

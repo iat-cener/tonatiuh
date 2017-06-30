@@ -1,6 +1,7 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
+
 include( $$(TONATIUH_ROOT)/config.pri )
 
 INCLUDEPATH += . \
@@ -13,14 +14,13 @@ HEADERS = src/*.h
 
 SOURCES = src/*.cpp  
 
-RESOURCES += src/TrackerParabolicDish.qrc	
+RESOURCES += src/TrackerOneAxis.qrc
 
-TARGET        = TrackerParabolicDish
+TARGET        = TrackerOneAxis
 
 CONFIG(debug, debug|release) {
-	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/TrackerParabolicDish	
-	
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/TrackerOneAxis	
 }
 else { 
-	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/TrackerParabolicDish
+	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/TrackerOneAxis
 }

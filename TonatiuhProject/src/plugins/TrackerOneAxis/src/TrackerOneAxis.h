@@ -32,42 +32,43 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
-#ifndef TSHAPEFACTORY_H_
-#define TSHAPEFACTORY_H_
+#ifndef TRACKERONEAXIS_H_
+#define TRACKERONEAXIS_H_
 
-#include <QtPlugin>
-#include <QVector>
-#include <QVariant>
+#include "TNodeType.h"
+#include "TTrackerNode.h"
 
+//!  TrackerOneAxis is the class for solar one-axis trackers.
 
-//!  TShapeFactory is the base class for creating TShapeNode objects.
 /*!
-  TShapeFactory class is a factory class to control the creation of  TShapeNode subclasses instances.
+  TrackerOneAxis class provides a structure to one axis tracker node.
+  This node is a group node which geometric to rotation around the user defined axis is applied so the plane perpendicular to the defined axis contains the sun vector.
+  Parameters:
+   - axis: rotation axis. Default: x
 */
 
-class QString;
-class QIcon;
-class TShape;
-
-class TShapeFactory
+class TrackerOneAxis : public TTrackerNode
 {
+	Q_OBJECT
+
 public:
-    virtual ~TShapeFactory() {}
-    virtual void Init() const  = 0;
-    virtual QString TShapeName() const  = 0;
-    virtual QIcon TShapeIcon() const = 0;
-    virtual TShape* CreateTShape( ) const = 0;
-    virtual TShape* CreateTShape( int /*numberofParameters*/, QVector< QVariant > /*parametersList*/ ) const
-    {
-    	return ( CreateTShape() );
-    }
-    virtual bool IsFlat() = 0;
+	static void* CreateInstance();
+	static void Init();
+
+	TrackerOneAxis();
+	~TrackerOneAxis();
+
+	Transform GetTrasformation() const;
+	TNodeType GetType() const;
+	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
+
+private:
+	static TNodeType m_nodeType;
 };
 
-Q_DECLARE_INTERFACE( TShapeFactory, "tonatiuh.TShapeFactory")
 
-#endif /*TSHAPEFACTORY_H_*/
+#endif /*TRACKERONEAXIS_H_*/

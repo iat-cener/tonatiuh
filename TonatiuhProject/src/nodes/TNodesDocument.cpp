@@ -414,20 +414,13 @@ bool TNodesDocument::WriteNode( QDomElement parent, const TNode* node, QList< in
 	if( writtenNodes->contains( nodeID ) )	return ( true );
 
 
-	TParameterList* parametersList = node->GetParameters();
-	if( parametersList )
+	QStringList parametersList = node->GetVisibleParametersName();
+	for( int p = 0; p < parametersList.count(); p++ )
 	{
-		QStringList parametersNameList = parametersList->GetParametersNames();
-		if( parametersNameList.count() != parametersList->NumberOfParameters() )
-			return (false);
-		for( int p = 0; p < parametersList->NumberOfParameters(); p++ )
-		{
 
-			QString parameterName = parametersNameList[p];
-			QVariant parameterValue = parametersList->Get( parametersNameList[p] );
-			el.setAttribute( parameterName, parameterValue.toString() );
-		}
-
+		QString parameterName = parametersList[p];
+		QVariant parameterValue = node->GetParameterValue( parameterName);
+		el.setAttribute( parameterName, parameterValue.toString() );
 	}
 	writtenNodes->append( nodeID );
 
@@ -464,20 +457,13 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 
 	if( writtenNodes->contains( nodeID ) )	return ( true );
 
-	TParameterList* parametersList = containerNode->GetParameters();
-	if( parametersList )
+	QStringList parametersList = containerNode->GetVisibleParametersName();
+	for( int p = 0; p < parametersList.count(); p++ )
 	{
-		QStringList parametersNameList = parametersList->GetParametersNames();
-		if( parametersNameList.count() != parametersList->NumberOfParameters() )
-			return (false);
-		for( int p = 0; p < parametersList->NumberOfParameters(); p++ )
-		{
 
-			QString parameterName = parametersNameList[p];
-			QVariant parameterValue = parametersList->Get( parametersNameList[p] );
-			el.setAttribute( parameterName, parameterValue.toString() );
-		}
-
+		QString parameterName = parametersList[p];
+		QVariant parameterValue = containerNode->GetParameterValue( parameterName);
+		el.setAttribute( parameterName, parameterValue.toString() );
 	}
 	writtenNodes->append( nodeID );
 
@@ -505,4 +491,3 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 
 	return ( true );
 }
-

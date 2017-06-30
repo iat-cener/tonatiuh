@@ -32,24 +32,23 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SHAPEFLATDISKFACTORY_H_
-#define SHAPEFLATDISKFACTORY_H_
+#ifndef SHAPECYLINDERFACTORY_H_
+#define SHAPECYLINDERFACTORY_H_
 
-#include "ShapeFlatDisk.h"
+#include "ShapeCylinder.h"
 #include "TShapeFactory.h"
 
 
-//!  ShapeFlatDiskFactory is the base class for creating ShapeCylinder objects.
+//!  ShapeCylinderFactory is the base class for creating ShapeCylinder objects.
 /*!
-  ShapeFlatDiskFactory class is a factory class to control the creation of  ShapeFlatDisk instances. All the objects of type ShapeCylinder will be created using this factory.
+  ShapeCylinderFactory class is a factory class to control the creation of  ShapeCylinder instances. All the objects of type ShapeCylinder will be created using this factory.
 */
 
-
-class ShapeFlatDiskFactory: public QObject, public TShapeFactory
+class ShapeCylinderFactory: public QObject, public TShapeFactory
 {
     Q_OBJECT
     Q_INTERFACES(TShapeFactory)
@@ -59,10 +58,10 @@ class ShapeFlatDiskFactory: public QObject, public TShapeFactory
 
 public:
     void Init() const;
-    QString TShapeName() const;
+   	QString TShapeName() const;
    	QIcon TShapeIcon() const;
-   	ShapeFlatDisk* CreateTShape( ) const;
-   	bool IsFlat() { return true; }
+   	ShapeCylinder* CreateTShape( ) const;
+   	bool IsFlat() { return false; }
 };
 
-#endif /*ShapeFlatDiskFactory_H_*/
+#endif /*SHAPECYLINDERFACTORY_H_*/
