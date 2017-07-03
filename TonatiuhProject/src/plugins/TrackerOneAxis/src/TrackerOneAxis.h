@@ -60,11 +60,13 @@ public:
 	static void Init();
 
 	TrackerOneAxis();
-	~TrackerOneAxis();
 
 	Transform GetTrasformation() const;
 	TNodeType GetType() const;
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
+
+protected:
+	~TrackerOneAxis();
 
 private:
 	static TNodeType m_nodeType;
