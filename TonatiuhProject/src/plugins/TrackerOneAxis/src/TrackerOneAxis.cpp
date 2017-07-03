@@ -72,6 +72,9 @@ void TrackerOneAxis::Init()
 TrackerOneAxis::TrackerOneAxis()
 :TTrackerNode()
 {
+	//Default object name is the name of the type
+	setObjectName(GetType().GetName());
+
 	QString transformationValue( QLatin1String("") );
 	for (int i = 0; i < 4; ++i)
 	{
