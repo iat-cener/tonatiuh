@@ -211,12 +211,12 @@ bool RayCasting::SetScene( TSceneNode* scene, QStringList notFirstStageNodesURL 
 			double pixelIntensity = areaMatrix[i][j];
 			if( ( i - 1 ) >= 0 && ( j - 1 ) >= 0 ) pixelIntensity += areaMatrix[i-1][j-1];
 			if( ( j - 1 ) >= 0 ) pixelIntensity += areaMatrix[i][j-1];
-			if( ( i + 1 ) < widthDivisions && ( j - 1) >= 0 )  pixelIntensity += areaMatrix[i+1][j-1];
+			if( ( i + 1 ) < heigthDivisions && ( j - 1) >= 0 )  pixelIntensity += areaMatrix[i+1][j-1];
 			if( ( i - 1 ) >= 0 )	pixelIntensity +=  areaMatrix[i-1][j];
-			if( ( i + 1 ) < widthDivisions )  pixelIntensity +=  areaMatrix[i+1][j];
-			if( ( i - 1 ) >= 0 && ( j + 1 ) < heigthDivisions ) pixelIntensity +=  areaMatrix[i-1][j+1];
-			if( ( j + 1 ) < heigthDivisions ) pixelIntensity +=  areaMatrix[i][j+1];
-			if( ( i + 1 ) < widthDivisions && ( j + 1 ) < heigthDivisions ) pixelIntensity +=  areaMatrix[i+1][j+1];
+			if( ( i + 1 ) < heigthDivisions )  pixelIntensity +=  areaMatrix[i+1][j];
+			if( ( i - 1 ) >= 0 && ( j + 1 ) < widthDivisions ) pixelIntensity +=  areaMatrix[i-1][j+1];
+			if( ( j + 1 ) < widthDivisions ) pixelIntensity +=  areaMatrix[i][j+1];
+			if( ( i + 1 ) < heigthDivisions && ( j + 1 ) < widthDivisions ) pixelIntensity +=  areaMatrix[i+1][j+1];
 
 			if( pixelIntensity > 0.0 )
 				m_lightOriginShape.validSunAreasVector.push_back( std::pair<int,int>(i,j) );
