@@ -57,7 +57,7 @@ void* TrackerOneAxis::CreateInstance( )
 }
 
 /*!
- * Initializes TrackerParabolicDish type.
+ * Initializes TrackerOneAxis type.
  */
 void TrackerOneAxis::Init()
 {
