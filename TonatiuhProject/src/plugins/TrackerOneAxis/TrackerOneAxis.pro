@@ -1,7 +1,6 @@
 TEMPLATE      = lib
 CONFIG       += plugin debug_and_release
 
-
 include( $$(TONATIUH_ROOT)/config.pri )
 
 INCLUDEPATH += . \
