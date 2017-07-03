@@ -69,7 +69,7 @@ ShapeCylinder::ShapeCylinder()
 {
 	setObjectName(GetType().GetName());
 
-	//Translation
+	//Parameters
 	m_parametersList->Append( QLatin1String("radius"), 0.5 );
 	m_parametersList->Append( QLatin1String("length"), 1.0 );
 	m_parametersList->Append( QLatin1String("phiMax"), gc::TwoPi );

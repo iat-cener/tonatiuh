@@ -4,6 +4,7 @@ TEMPLATE = subdirs
 SUBDIRS = MaterialStandardSpecular \
 			RandomMersenneTwister \
 			RandomRngStream \
+			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \
 			ShapeFlatRectangle \

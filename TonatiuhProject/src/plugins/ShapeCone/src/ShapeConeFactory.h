@@ -32,52 +32,38 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-#include "ShapeCylinderFactory.h"
+#ifndef SHAPECONEFACTORY_H_
+#define SHAPECONEFACTORY_H_
+
+#include "TShapeFactory.h"
+#include "ShapeCone.h"
 
 
+
+//!  ShapeConeFactory is the base class for creating ShapeCone objects.
 /*!
- * Initializes shape type.
- */
-void ShapeCylinderFactory::Init() const
-{
-	static bool firstTime = true;
-	if ( firstTime )
-	{
-		ShapeCylinder::Init();
-	    firstTime = false;
-	}
-}
+  ShapeConeFactory class is a factory class to control the creation of ShapeCone instances. All the objects of type ShapeCone will be created using this factory.
+*/
 
-/*!
- * Returns shape type name.
- */
-QString ShapeCylinderFactory::TShapeName() const
-{
-	return QString("Cylinder");
-}
 
-/*!
- * Returns shape icon.
- */
-QIcon ShapeCylinderFactory::TShapeIcon() const
+class ShapeConeFactory: public QObject, public TShapeFactory
 {
-	return QIcon( ":/icons/ShapeCylinder.png" );
-}
-
-/*!
- * Returns a flat disk geometry object.
- */
-ShapeCylinder* ShapeCylinderFactory::CreateTShape( ) const
-{
-	return ( new ShapeCylinder );
-}
-
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(ShapeCylinder, ShapeCylinderFactory)
+    Q_OBJECT
+    Q_INTERFACES(TShapeFactory)
+#if QT_VERSION >= 0x050000 // pre Qt 5
+    Q_PLUGIN_METADATA(IID "tonatiuh.TShapeFactory")
 #endif
 
+public:
+    void Init() const;
+   	QString TShapeName() const;
+   	QIcon TShapeIcon() const;
+   	ShapeCone* CreateTShape( ) const;
+   	bool IsFlat() { return false; }
+};
+
+#endif /*SHAPECONEFACTORY_H_*/
