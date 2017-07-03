@@ -36,16 +36,15 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
-
 #include <cmath>
 
 #include "gc.h"
+#include "Vector3D.h"
+#include "Transform.h"
+
+
 #include "TParameterList.h"
 #include "TrackerOneAxis.h"
-#include "Transform.h"
-#include "Vector3D.h"
-
 
 TNodeType TrackerOneAxis::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -102,7 +101,6 @@ TrackerOneAxis::TrackerOneAxis()
  */
 TrackerOneAxis::~TrackerOneAxis()
 {
-	setObjectName( GetType().GetName());
 
 }
 
