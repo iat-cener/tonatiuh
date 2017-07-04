@@ -119,7 +119,19 @@ int TParameterList::NumberOfParameters() const
 	return ( m_parametersList.count() );
 }
 
+/*!
+ * Removes the parameter with the name \a name from the parameter list.
+ * Return false if the list does not contains a parameter with defined name or the parameter cannot be removed.
+ */
+bool TParameterList::RemoveParameter( const QString& name )
+{
+	if( !Contains( name ) )
+			return ( false );
 
+	if( ( m_parametersList.remove( name ) > 0 ) && ( m_parametersVisibilityList.remove( name ) ) )
+			return ( true );
+	return ( false );
+}
 
 /*!
  * Sets to the parameter \a name the \a value.

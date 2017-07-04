@@ -34,6 +34,8 @@ public:
 
 	int NumberOfParameters() const;
 
+	bool RemoveParameter( const QString& name );
+
 	void SetValue(const QString& name, QVariant value );
 
 protected:

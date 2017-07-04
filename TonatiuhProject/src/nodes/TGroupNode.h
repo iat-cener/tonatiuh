@@ -75,10 +75,12 @@ public:
 protected:
 	virtual ~TGroupNode();
 
-private:
+protected:
 	QString m_rotationName;
 	QString m_scaleFactorName;
 	QString m_translationName;
+
+private:
 	static TNodeType m_nodeType;
 };
 

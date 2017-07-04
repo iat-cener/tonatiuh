@@ -37,6 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "TParameterList.h"
 #include "TTrackerNode.h"
 
 /******************************
@@ -62,6 +63,10 @@ TTrackerNode::TTrackerNode()
 {
 
 	setObjectName(GetType().GetName());
+
+	m_parametersList->RemoveParameter(  m_rotationName );
+	m_parametersList->RemoveParameter(  m_scaleFactorName );
+	m_parametersList->RemoveParameter(  m_translationName );
 
 
 }
