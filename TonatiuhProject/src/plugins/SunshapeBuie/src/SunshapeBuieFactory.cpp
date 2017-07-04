@@ -32,41 +32,52 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SHAPEPARABOLICDISH_H_
-#define SHAPEPARABOLICDISH_H_
+#include <QIcon>
 
+#include "SunshapeBuieFactory.h"
 
-#include "TNodeType.h"
-#include "TSunshape.h"
-
-
-class SunshapePillbox : public TSunshape
+/*!
+ * Initializes sunshape type.
+ */
+void SunshapeBuieFactory::Init() const
 {
-	Q_OBJECT
 
-private:
-	Q_DISABLE_COPY(SunshapePillbox)
+	static bool firstTime = true;
+	if ( firstTime )
+	{
+		SunshapeBuie::Init();
+	    firstTime = false;
+	}
+}
 
-public:
-	static void* CreateInstance();
-	static void Init();
+/*!
+ * Returns sunshape type name.
+ */
+QString SunshapeBuieFactory::TSunshapeName() const
+{
+	return QString( "Buie_Sunshape" );
+}
 
-	SunshapePillbox( );
-	~SunshapePillbox();
+/*!
+ * Returns sunshape icon.
+ */
+QIcon SunshapeBuieFactory::TSunshapeIcon() const
+{
+	return QIcon( ":/icons/SunshapeBuie.png" );
+}
 
-	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
-	double GetIrradiance() const;
-    double GetThetaMax() const;
-	TNodeType GetType() const;
+/*!
+ * Creates a new sunshaope object.
+ */
+SunshapeBuie* SunshapeBuieFactory::CreateTSunshape( ) const
+{
+	return ( new SunshapeBuie );
+}
+#if QT_VERSION < 0x050000 // pre Qt 5
+	Q_EXPORT_PLUGIN2(SunshapeBuie, SunshapeBuieFactory)
+#endif
 
-private:
-	static TNodeType m_nodeType;
-};
-
-//Q_DECLARE_METATYPE(SunshapePillbox*)
-
-#endif /* SUNSHAPEPILLBOX_H_ */

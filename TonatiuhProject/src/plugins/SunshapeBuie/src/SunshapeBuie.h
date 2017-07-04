@@ -32,41 +32,61 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SHAPEPARABOLICDISH_H_
-#define SHAPEPARABOLICDISH_H_
-
+#ifndef SUNSHAPEBUIE_H_
+#define SUNSHAPEBUIE_H_
 
 #include "TNodeType.h"
 #include "TSunshape.h"
 
-
-class SunshapePillbox : public TSunshape
+class SunshapeBuie : public TSunshape
 {
 	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(SunshapePillbox)
+	Q_DISABLE_COPY(SunshapeBuie)
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
-	SunshapePillbox( );
-	~SunshapePillbox();
+	SunshapeBuie( );
 
 	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
 	double GetIrradiance() const;
     double GetThetaMax() const;
 	TNodeType GetType() const;
 
+protected:
+	~SunshapeBuie();
+
+	double PDFTheta( double theta ) const;
+	double Phi( double theta ) const;
+	double PhiCircumSolarRegion( double theta ) const;
+	double PhiSolarDisk( double theta ) const;
+	void UpdateState( double csrValue );
+	double ZenithAngle( RandomDeviate& rand ) const;
+
 private:
 	static TNodeType m_nodeType;
+
+	 const double m_thetaCS;
+	 const double m_thetaSD;
+	 const double m_integralA;
+	 double m_alpha;
+	 double m_deltaThetaCSSD;
+	 double m_etokTimes1000toGamma;
+	 double m_gamma;
+	 double m_heightRectangle1;
+	 double m_heightRectangle2;
+	 double m_probabilityRectangle1;
+
+	 static const double m_minCRSValue;// = 0.001;
+	 static const double m_maxCRSValue;// = 0.8;
 };
 
-//Q_DECLARE_METATYPE(SunshapePillbox*)
 
-#endif /* SUNSHAPEPILLBOX_H_ */
+#endif /* SUNSHAPEBUIE_H_ */

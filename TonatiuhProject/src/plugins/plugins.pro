@@ -11,6 +11,8 @@ SUBDIRS = MaterialStandardSpecular \
 			ShapeParabolicDish \
 			ShapeSphericalRectangle \
 			ShapeTroughParabola \
+			SunshapeBuie \
 			SunshapePillbox \
+			TrackerHeliostat \
 			TrackerOneAxis \
 			TrackerParabolicDish
