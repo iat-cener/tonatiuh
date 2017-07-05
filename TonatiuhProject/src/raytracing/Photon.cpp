@@ -39,19 +39,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Photon.h"
 
 Photon::Photon( )
-:id( -1 ), pos( Point3D()), intersectedSurfaceURL( QLatin1String("") ), side(-1 ), isAbsorbed( -1 )
+:id( -1 ), posWorld( Point3D()), posLocal( Point3D()), intersectedSurfaceURL( QLatin1String("") ), side(-1 ), isAbsorbed( -1 )
 {
 
 }
 
 Photon::Photon( const Photon& photon )
-:id( photon.id ), pos( photon.pos ), intersectedSurfaceURL( photon.intersectedSurfaceURL ), side( photon.side ), isAbsorbed( photon.isAbsorbed )
+:id( photon.id ), posWorld( photon.posWorld ), posLocal( photon.posLocal ), intersectedSurfaceURL( photon.intersectedSurfaceURL ), side( photon.side ), isAbsorbed( photon.isAbsorbed )
 {
 
 }
 
-Photon::Photon(  Point3D pos, int side, double id, QString intersectedSurfaceURL, int absorbedPhoton )
-:id(id), pos(pos), intersectedSurfaceURL( intersectedSurfaceURL ), side( side ), isAbsorbed( absorbedPhoton)
+Photon::Photon( Point3D posW, Point3D posL, int side, double id, QString intersectedSurfaceURL, int absorbedPhoton )
+:id(id), posWorld(posW), posLocal( posL ), intersectedSurfaceURL( intersectedSurfaceURL ), side( side ), isAbsorbed( absorbedPhoton)
 {
 
 }

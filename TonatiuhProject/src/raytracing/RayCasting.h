@@ -65,9 +65,8 @@ struct RayCastingNode
 
 	//Computes the intersection of the ray with node.
 	//Returns true if there is an ouput ray.
-	bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, QString* intersectedNodeURL, Ray* outputRay )
+	bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, RayCastingNode** intersectedNode, Ray* outputRay )
 	{
-
 		//Check if the ray intersects with the BoundingBox
 	   if( !boundingBox.IntersectP(ray) ) return ( false );
 
@@ -81,14 +80,16 @@ struct RayCastingNode
 	    	  QString intersectedChild;
 	    	  Ray childOutputRay;
 	    	  bool childShapeFront = true;
-	    	  bool isChildOutputRay = childrenList[index]->Intersect( ray, rand, &childShapeFront, &intersectedChild, &childOutputRay );
+		      RayCastingNode* childIntersectedNode = 0;
+
+	    	  bool isChildOutputRay = childrenList[index]->Intersect( ray, rand, &childShapeFront, &childIntersectedNode, &childOutputRay );
 
 	    	  if( ray.maxt < t )
 	    	  {
 	    		  t = ray.maxt;
-	    		  *intersectedNodeURL = intersectedChild;
-	    		  *isShapeFront = childShapeFront;
 
+	    		  *isShapeFront = childShapeFront;
+	    		  *intersectedNode = childIntersectedNode;
 	    		  *outputRay = childOutputRay;
 	    		  isOutputRay = isChildOutputRay;
 
@@ -114,7 +115,7 @@ struct RayCastingNode
 				 if( !tshape->Intersect( childCoordinatesRay, &thit, &dg, &shapeFront ) )	return ( false );
 
 				 ray.maxt = thit;
-				 *intersectedNodeURL = nodeURL;
+				 *intersectedNode = this;
 				 *isShapeFront = shapeFront;
 
 				 if( tmaterial )

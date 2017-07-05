@@ -46,18 +46,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 //!  Photon is the structure that stores the information of the rays intersections in the surface .
 /*!
-  Photon structure provides the information about the ray intersection: intersection point (into global or local to surface coordinates system), the surface url where the intersection has been, surface side or if the ray has been absorbed or not.
+  Photon structure provides the information about the ray intersection: intersection point (into global and local to surface coordinates system), the surface url where the intersection has been, surface side or if the ray has been absorbed or not.
 */
 
 struct Photon
 {
 	Photon( );
 	Photon( const Photon& photon );
-	Photon( Point3D pos, int side, double id = 0, QString intersectedSurfaceURL = QLatin1String( "" ), int absorbedPhoton = 0 );
+	Photon( Point3D posW,  Point3D posL, int side, double id = 0, QString intersectedSurfaceURL = QLatin1String( "" ), int absorbedPhoton = 0 );
 	~Photon();
 
 	double id;
-	Point3D pos; //global or local
+	Point3D posWorld; //global
+	Point3D posLocal; //local
 	QString intersectedSurfaceURL;
 	int side;
 	int isAbsorbed;
