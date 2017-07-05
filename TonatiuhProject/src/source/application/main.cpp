@@ -379,9 +379,12 @@ int main ( int argc, char** argv )
 	std::vector< Photon* > photonsList = pPhotonMap->GetAllPhotons();
 	for( unsigned int p = 0; p < photonsList.size(); p++ )
 	{
-		out<<photonsList[p]->pos.x<<"\t";
-		out<<photonsList[p]->pos.y<<"\t";
-		out<<photonsList[p]->pos.z<<"\n";
+		out<<photonsList[p]->posWorld.x<<"\t";
+		out<<photonsList[p]->posWorld.y<<"\t";
+		out<<photonsList[p]->posWorld.z<<"\n";
+
+		//if( p < 50 )
+		//	std::cout<<photonsList[p]->intersectedSurfaceURL.toStdString()  <<std::endl;
 	}
 	simulationsFile.close();
 
