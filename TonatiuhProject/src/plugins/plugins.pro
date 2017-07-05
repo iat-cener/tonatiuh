@@ -4,6 +4,7 @@ TEMPLATE = subdirs
 SUBDIRS = MaterialStandardSpecular \
 			RandomMersenneTwister \
 			RandomRngStream \
+			SaveBinaryFile \
 			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+
+        <file>icons/SaveBinaryFile.png</file>
+    </qresource>
+</RCC>
