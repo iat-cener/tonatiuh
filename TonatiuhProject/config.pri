@@ -6,6 +6,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 INCLUDEPATH += 	. \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
+               $$(TONATIUH_ROOT)/src/raytracing \
                $$(TONATIUH_ROOT)/src/statistics
 
 
