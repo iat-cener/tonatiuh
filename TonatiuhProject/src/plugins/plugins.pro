@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 
 
 SUBDIRS = MaterialStandardSpecular \
+			MaterialVirtual \
 			RandomMersenneTwister \
 			RandomRngStream \
 			SaveBinaryFile \
