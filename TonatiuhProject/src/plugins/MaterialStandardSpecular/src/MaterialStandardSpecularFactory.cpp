@@ -61,7 +61,6 @@ QString MaterialStandardSpecularFactory::TMaterialName() const
 	return QString("Specular_Standard_Material");
 }
 
-
 /*!
  * Returns material type icon.
  */

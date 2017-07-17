@@ -70,6 +70,10 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	 QString m_axisLabel;
+	 QString m_xAxisLabel;
+	 QString m_yAxisLabel;
+	 QString m_zAxisLabel;
 };
 
 

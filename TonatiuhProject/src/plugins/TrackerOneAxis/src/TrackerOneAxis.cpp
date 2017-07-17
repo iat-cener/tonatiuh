@@ -42,7 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Vector3D.h"
 #include "Transform.h"
 
-
+#include "TParameterEnumerator.h"
 #include "TParameterList.h"
 #include "TrackerOneAxis.h"
 
@@ -69,7 +69,11 @@ void TrackerOneAxis::Init()
  * Creates a tracker object.
  */
 TrackerOneAxis::TrackerOneAxis()
-:TTrackerNode()
+:TTrackerNode(),
+ m_axisLabel( QLatin1String( "axis" ) ),
+ m_xAxisLabel( QLatin1String( "X" ) ),
+ m_yAxisLabel( QLatin1String( "Y" ) ),
+ m_zAxisLabel( QLatin1String( "Z" ) )
 {
 	//Default object name is the name of the type
 	setObjectName(GetType().GetName());
@@ -89,7 +93,13 @@ TrackerOneAxis::TrackerOneAxis()
 
 
 	// Define input fields and their default values
-	m_parametersList->Append( QLatin1String( "axis" ), QLatin1String( "X" ) );
+	TParameterEnumerator* axisEnumerator = new TParameterEnumerator;
+	axisEnumerator->AddValue( m_xAxisLabel, true );
+	axisEnumerator->AddValue( m_yAxisLabel, false );
+	axisEnumerator->AddValue( m_zAxisLabel, false );
+	QVariant axisParameter;
+	axisParameter.setValue( axisEnumerator);
+	m_parametersList->Append( m_axisLabel, axisParameter );
 
 	//Transformation
 	m_parametersList->Append( QLatin1String("node_transformation"), transformationValue, false );
@@ -101,7 +111,9 @@ TrackerOneAxis::TrackerOneAxis()
  */
 TrackerOneAxis::~TrackerOneAxis()
 {
-
+	TParameterEnumerator* axisEnumerator = m_parametersList->GetValue( m_axisLabel ).value<TParameterEnumerator*>();
+	delete axisEnumerator;
+	axisEnumerator = 0;
 }
 
 /*!
@@ -135,7 +147,8 @@ TNodeType TrackerOneAxis::GetType() const
 void TrackerOneAxis::UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 )
 {
 
-	if( m_parametersList->GetValue( QLatin1String("axis") ).toString() == QLatin1String( "X" ) )
+	TParameterEnumerator* axisEnumerator = m_parametersList->GetValue( m_axisLabel ).value<TParameterEnumerator*>();
+	if(axisEnumerator->GetSelectedName() == m_xAxisLabel )
 	{
 		Vector3D s = Normalize( parentWT0( sunVector ) );
 		Vector3D p( 1.0f, 0.0f, 0.0f);
@@ -179,11 +192,11 @@ void TrackerOneAxis::UpdateTrackerTransform( Vector3D sunVector, Transform paren
 
 		m_parametersList->SetValue( QLatin1String("node_transformation") , transformationValue );
 	}
-	else if( m_parametersList->GetValue( QLatin1String("axis") ).toString() == QLatin1String( "Y" ) )
+	else if(axisEnumerator->GetSelectedName() == m_yAxisLabel )
 	{
 		//NOT IMPLEMENTED YET
 	}
-	else if( m_parametersList->GetValue( QLatin1String("axis") ).toString() == QLatin1String( "Z" ) )
+	else if(axisEnumerator->GetSelectedName() == m_zAxisLabel )
 	{
 		//NOT IMPLEMENTED YET
 	}

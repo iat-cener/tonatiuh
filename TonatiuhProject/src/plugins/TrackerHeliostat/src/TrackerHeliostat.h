@@ -56,19 +56,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class TrackerHeliostat : public TTrackerNode
 {
 	Q_OBJECT
-    Q_ENUMS( AimingPointType )
-    Q_ENUMS( Rotations )
-    //Q_PROPERTY( AimingPointType aimingPointType READ GetAimingPointType WRITE SetAimingPointType )
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TrackerHeliostat();
-
-
-    enum AimingPointType { Absolute, Relative };
-    enum Rotations { YX, YZ, XZ, ZX };
 
 	Transform GetTrasformation() const;
 	TNodeType GetType() const;
@@ -80,10 +73,15 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	QString m_aimingPointLabel;
+	QString m_aimingPointTypeLabel;
+	QString m_absoluteAimingLabel;
+	QString m_relativeAimingLabel;
+	QString m_rotationTypeLabel;
+	QString m_yxRotationLabel;
+	QString m_yzRotationLabel;
+	QString m_xzRotationLabel;
+	QString m_zxRotationLabel;
 };
-
-
-Q_DECLARE_METATYPE(TrackerHeliostat::AimingPointType );
-Q_DECLARE_METATYPE(TrackerHeliostat::Rotations );
 
 #endif /* TRACKERHELIOSTAT_H_ */

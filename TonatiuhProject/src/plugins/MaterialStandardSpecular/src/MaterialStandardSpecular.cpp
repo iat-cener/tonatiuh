@@ -39,11 +39,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "DifferentialGeometry.h"
 #include "MaterialStandardSpecular.h"
+
 #include "NormalVector.h"
 #include "RandomDeviate.h"
 #include "sf.h"
-#include "TParameterList.h"
 #include "Transform.h"
+
+#include "TParameterEnumerator.h"
+#include "TParameterList.h"
 
 TNodeType MaterialStandardSpecular::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -69,27 +72,33 @@ void MaterialStandardSpecular::Init()
  */
 MaterialStandardSpecular::MaterialStandardSpecular()
 :TMaterial()
-//,
- //m_nodeType(TNodeType::FromName( QLatin1String( "MaterialStandardSpecular" ) ) )
 {
 	setObjectName(GetType().GetName());
 
 	//Translation
 	m_parametersList->Append( QLatin1String("reflectivity"), 0.0 );
 	m_parametersList->Append( QLatin1String("sigmaSlope"), 2.0 );
-	m_parametersList->Append( QLatin1String("distribution"), QLatin1String( "PILLBOX" ) );
+
+	TParameterEnumerator*  distributionEnumerator = new TParameterEnumerator;
+	distributionEnumerator->AddValue( "PILLBOX", true );
+	distributionEnumerator->AddValue( "NORMAL", false );
+
+	QVariant distributionParameter;
+	distributionParameter.setValue( distributionEnumerator);
+	m_parametersList->Append( QLatin1String("distribution"), distributionParameter );
 
 	m_parametersList->Append( QLatin1String("color"), QLatin1String( "0.2 0.2 0.2" ) );
 	m_parametersList->Append( QLatin1String("transparency"), 0.0 );
 }
-
 
 /*!
  * Destructor.
  */
 MaterialStandardSpecular::~MaterialStandardSpecular()
 {
-
+	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( QLatin1String("distribution") ).value<TParameterEnumerator*>();
+	delete typeOfDistribution;
+	typeOfDistribution = 0;
 }
 
 /*!
@@ -116,7 +125,7 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 
 	double reflectivity = m_parametersList->GetValue( QLatin1String( "reflectivity" ) ).toDouble();
 	double sigmaSlopeMRAD = m_parametersList->GetValue( QLatin1String( "sigmaSlope" ) ).toDouble();
-	QString distribution = m_parametersList->GetValue( QLatin1String( "distribution" ) ).toString();
+	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( QLatin1String("distribution") ).value<TParameterEnumerator*>();
 
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= reflectivity  ) return ( false );
@@ -129,7 +138,7 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 	if( sigmaSlope > 0.0 )
 	{
 		NormalVector errorNormal;
-		if( distribution == QLatin1String( "PILLBOX" )  )
+		if( typeOfDistribution->GetSelectedName() == QLatin1String( "PILLBOX" ) )
 		{
 			double phi = gc::TwoPi * rand.RandomDouble();
 			double theta = sigmaSlope * rand.RandomDouble();
@@ -138,7 +147,7 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 			errorNormal.y = cos( theta );
 			errorNormal.z = sin( theta ) * cos( phi );
 		 }
-		 else if ( distribution== QLatin1String( "NORMAL" )  )
+		 else if( typeOfDistribution->GetSelectedName() == QLatin1String( "NORMAL" ) )
 		 {
 			 errorNormal.x = sigmaSlope * sf::AlternateBoxMuller( rand );
 			 errorNormal.y = 1.0;

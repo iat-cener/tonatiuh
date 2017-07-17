@@ -44,7 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 #include "Vector3D.h"
 
-
+#include "TParameterEnumerator.h"
 #include "TParameterList.h"
 #include "TrackerHeliostat.h"
 
@@ -71,7 +71,16 @@ void TrackerHeliostat::Init()
  * Creates a tracker object.
  */
 TrackerHeliostat::TrackerHeliostat()
-:TTrackerNode()
+:TTrackerNode(),
+ m_aimingPointLabel( QLatin1String( "aimingPoint" ) ),
+ m_aimingPointTypeLabel( QLatin1String( "typeOfAimingPoint" ) ),
+ m_absoluteAimingLabel( QLatin1String( "Absolute" ) ),
+ m_relativeAimingLabel( QLatin1String( "Relative" ) ),
+ m_rotationTypeLabel( QLatin1String( "typeOfRotation" ) ),
+ m_yxRotationLabel( QLatin1String( "YX" ) ),
+ m_yzRotationLabel( QLatin1String( "YZ" ) ),
+ m_xzRotationLabel( QLatin1String( "XZ" ) ),
+ m_zxRotationLabel( QLatin1String( "ZX" ) )
 {
 	//Default object name is the name of the type
 	setObjectName(GetType().GetName());
@@ -91,14 +100,26 @@ TrackerHeliostat::TrackerHeliostat()
 
 
 	// Define input fields and their default values
-	m_parametersList->Append( QLatin1String( "aimingPoint" ), QLatin1String( "0 0 0" ) );
-	m_parametersList->Append( QLatin1String( "typeOfAimingPoint" ), AimingPointType::Absolute );
-	m_parametersList->Append( QLatin1String( "typeOfRotation" ), Rotations::YX  );
+	m_parametersList->Append( m_aimingPointLabel, QLatin1String( "0 0 0" ) );
+
+	TParameterEnumerator* typeOfAimingPointEnumerator = new TParameterEnumerator;
+	typeOfAimingPointEnumerator->AddValue( m_absoluteAimingLabel, true );
+	typeOfAimingPointEnumerator->AddValue( m_relativeAimingLabel, false );
+	QVariant typeOfAimingPointParameter;
+	typeOfAimingPointParameter.setValue( typeOfAimingPointEnumerator);
+	m_parametersList->Append( m_aimingPointTypeLabel, typeOfAimingPointParameter );
+
+	TParameterEnumerator* typeOfRotationEnumerator = new TParameterEnumerator;
+	typeOfRotationEnumerator->AddValue( m_yxRotationLabel, true );
+	typeOfRotationEnumerator->AddValue( m_yzRotationLabel, false );
+	typeOfRotationEnumerator->AddValue( m_xzRotationLabel, false );
+	typeOfRotationEnumerator->AddValue( m_zxRotationLabel, false );
+	QVariant typeOfRotationParameter;
+	typeOfRotationParameter.setValue( typeOfRotationEnumerator);
+	m_parametersList->Append( m_rotationTypeLabel, typeOfRotationParameter  );
 
 	//Transformation
 	m_parametersList->Append( QLatin1String("node_transformation"), transformationValue, false );
-
-
 }
 
 /*!
@@ -106,6 +127,13 @@ TrackerHeliostat::TrackerHeliostat()
  */
 TrackerHeliostat::~TrackerHeliostat()
 {
+	TParameterEnumerator* typeOfAimingPointEnumerator = m_parametersList->GetValue( m_aimingPointTypeLabel ).value<TParameterEnumerator*>();
+	delete typeOfAimingPointEnumerator;
+	typeOfAimingPointEnumerator = 0;
+
+	TParameterEnumerator* typeOfRotationEnumerator = m_parametersList->GetValue( m_rotationTypeLabel ).value<TParameterEnumerator*>();
+	delete typeOfRotationEnumerator;
+	typeOfRotationEnumerator = 0;
 
 }
 
@@ -146,14 +174,14 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	if( i.length() == 0.0f ) return;
 	i = Normalize(i);
 
-	QStringList aimingPointValues = m_parametersList->GetValue( QLatin1String( "aimingPoint" ) ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
+	QStringList aimingPointValues = m_parametersList->GetValue( m_aimingPointLabel ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
 	if( aimingPointValues.count() != 3 ) 	return;
 	Point3D focus( aimingPointValues[0].toDouble(), aimingPointValues[1].toDouble(), aimingPointValues[2].toDouble()  );
 
 
+	TParameterEnumerator* typeOfAimingPoint = m_parametersList->GetValue( m_aimingPointTypeLabel ).value<TParameterEnumerator*>();
 	Vector3D r;
-	AimingPointType typeOfAimingPoint = m_parametersList->GetValue( QLatin1String("typeOfAimingPoint") ).value<AimingPointType>();
-	if (typeOfAimingPoint == AimingPointType::Absolute ) //Absolute
+	if (typeOfAimingPoint->GetSelectedName( ) == m_absoluteAimingLabel ) //Absolute
 	{
 		r = Vector3D( parentWT0( focus ) );
 	}
@@ -168,14 +196,13 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	if( n.length() == 0.0f ) return;
 	n = Normalize( n );
 
-	Rotations typeOfRotation = m_parametersList->GetValue( QLatin1String("typeOfRotation") ).value<Rotations>();
+	TParameterEnumerator* typeOfRotation = m_parametersList->GetValue( m_rotationTypeLabel ).value<TParameterEnumerator*>();
 
 	Vector3D Axe1;
-
-	if ((typeOfRotation == Rotations::YX ) || (typeOfRotation == Rotations::YZ ))// YX or YZ
+	if ((typeOfRotation->GetSelectedName( ) == m_yxRotationLabel ) || (typeOfRotation->GetSelectedName( ) == m_yzRotationLabel ))// YX or YZ
 		Axe1 = Vector3D( 0.0f, 1.0f, 0.0f );
 
-	else if (typeOfRotation == Rotations::XZ ) // XZ
+	else if (typeOfRotation->GetSelectedName( ) == m_xzRotationLabel ) // XZ
 		Axe1 = Vector3D( 1.0f, 0.0f, 0.0f );
 
 	else // ZX
@@ -191,7 +218,7 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	p = Normalize(p);
 
 	Matrix4x4 transformMatrix;
-	if ((typeOfRotation == Rotations::YX ) || (typeOfRotation == Rotations::ZX ))// YX ou  ZX
+	if ((typeOfRotation->GetSelectedName( )  == m_yxRotationLabel ) || (typeOfRotation->GetSelectedName( )  == m_zxRotationLabel ))// YX ou  ZX
 	{
 		 transformMatrix = Matrix4x4( t[0], n[0], p[0], 0.0,
 					t[1], n[1], p[1], 0.0,
