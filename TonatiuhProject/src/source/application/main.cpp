@@ -147,8 +147,8 @@ int main ( int argc, char** argv )
 	QVector< TTrackerFactory* > trackerFactoryList = pluginManager.GetTrackerFactories();
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = pluginManager.GetRandomDeviateFactories();
 
-
 	/*
+
 	TSceneNode* tonatiuhScene = new TSceneNode;
 	std::cout<<"tonatiuhScene"<<std::endl;
 
@@ -209,7 +209,8 @@ int main ( int argc, char** argv )
 		TMaterial* concentratorMaterial = materialFactoryList[0]->CreateTMaterial();
 		concentratorMaterial->SetParameterValue( QLatin1String("reflectivity"), 0.925 );
 		concentratorMaterial->SetParameterValue( QLatin1String("sigmaSlope"), 4.4270 );
-		concentratorMaterial->SetParameterValue( QLatin1String("distribution"), QLatin1String( "PILLBOX" ) );
+		//concentratorMaterial->SetParameterValue( QLatin1String("distribution"), QLatin1String( "PILLBOX" ) );
+		//concentratorMaterial->SetParameterValue( QLatin1String("distribution"), QLatin1String( "PILLBOX" ));
 		concentratorSurfaceNode->SetPart( QLatin1String( "material" ),  concentratorMaterial );
 	}
 
@@ -285,6 +286,7 @@ int main ( int argc, char** argv )
 	tonatiuhScene = 0;
 	*/
 
+
 	TNodesDocument readDocument;
 	bool okRead = readDocument.Read( argv[1] );
 	if( !okRead  )
@@ -294,7 +296,6 @@ int main ( int argc, char** argv )
 	}
 
 
-
 	TSceneNode* sceneNode = readDocument.GetRootNode()->as<TSceneNode>();
 	if( !sceneNode || sceneNode == 0 )
 	{
@@ -302,6 +303,18 @@ int main ( int argc, char** argv )
 		return -2;
 	}
 
+	/*
+	TNodesDocument saveDocument2;
+	saveDocument2.SetRootNode( sceneNode );
+	if( !saveDocument2.Write( argv[1] )  )
+	{
+		std::cout<<"Error during writing file"<<std::endl;
+		return -1;
+	}
+	*/
+
+
+	/*
 
 	//Reference count
 	//std::cout<<"sceneNode "<<sceneNode->GetName().toStdString()<<std::endl;
@@ -329,7 +342,7 @@ int main ( int argc, char** argv )
 
 
 	std::cout<<"\tChanging sun position..."<<std::endl;
-	sun->ChangeSunPosition( 180*gc::Degree, 37.5*gc::Degree );
+	sun->ChangeSunPosition( 180*gc::Degree, 0*gc::Degree );
 	//sun->ChangeSunPosition( 180*gc::Degree, 0.0*gc::Degree );
 
 
@@ -394,6 +407,7 @@ int main ( int argc, char** argv )
 	sceneNode->RemoveReference();
 	std::cout<<"Removed scene node"<<std::endl;
 	sceneNode = 0;
+
 
 	return ( 0 );
 }

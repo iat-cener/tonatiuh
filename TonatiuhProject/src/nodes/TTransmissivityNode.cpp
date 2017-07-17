@@ -37,94 +37,41 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "TSunNode.h"
-#include "TParameterList.h"
+#include "TTransmissivityNode.h"
 
-/******************************
- * TSunNode
- ******************************/
-
-TNodeType TSunNode::m_nodeType = TNodeType::CreateEmptyType();
-
+TNodeType TTransmissivityNode::m_nodeType = TNodeType::CreateEmptyType();
 
 /*!
- * Creates a new instance of the class type corresponding object.
+ * Initializes TTransmissivityNode type.
  */
-void* TSunNode::CreateInstance( )
+void TTransmissivityNode::Init()
 {
-  return ( new TSunNode() );
-}
-
-
-/*!
- * Initializes TGroupNode type.
- */
-void TSunNode::Init()
-{
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), QString( "SunNode" ), &TSunNode::CreateInstance );
+	TTransmissivityNode::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), QString( "TransmissivityNode" ) );
 }
 
 /*!
- * TGroupNode : public TNode
+ * Constructor
  */
-TSunNode::TSunNode()
-:TContainerNode(),
- m_azimuthLabel( QLatin1String("azimuth") ),
- m_zenithLabel( QLatin1String("zenith") )
+TTransmissivityNode::TTransmissivityNode()
+:TNode()
 {
 	setObjectName(GetType().GetName());
-
-	//Parts
-	AppendPart( QLatin1String( "sunshape" ), TNodeType::FromName( "Sunshape" ) , 0 );
-
-
-	//Transormation
-	m_parametersList->Append( m_azimuthLabel, 0.0);
-	m_parametersList->Append( m_zenithLabel, 0.0 );
 }
+
 
 /*!
- * Destructor.
+ * Destroys object.
  */
-TSunNode::~TSunNode()
+TTransmissivityNode::~TTransmissivityNode()
 {
-	SetPart( "sunshape", 0 );
-}
-
-/*
- * Changes the sun node position to the coordinates defined by the angles \a azimuth and zenith. These angles are in radians.
- */
-void TSunNode::ChangeSunPosition( double azimuth, double zenith )
-{
-	m_parametersList->SetValue( m_azimuthLabel, QVariant( azimuth ) );
-	m_parametersList->SetValue( m_zenithLabel, zenith );
-
-	emit SunpositonChanged( azimuth, zenith );
 
 }
-
-/*!
- * Returns azimuth value in radians.
- */
-double TSunNode::GetAzimuth() const
-{
-	return ( GetParameterValue( QLatin1String ("azimuth") ).toDouble() );
-}
-
-/*!
- * Returns zenith angle value in radians.
- */
-double TSunNode::GetZenith() const
-{
-	return( GetParameterValue( QLatin1String ("zenith") ).toDouble() );
-}
-
 
 /*!
  * Returns the type of node.
  */
-TNodeType TSunNode::GetType() const
+TNodeType TTransmissivityNode::GetType() const
 {
-	return ( TSunNode::m_nodeType );
+	return ( TTransmissivityNode::m_nodeType );
 }
 

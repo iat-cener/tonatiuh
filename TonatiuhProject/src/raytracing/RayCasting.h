@@ -64,9 +64,10 @@ struct RayCastingNode
 	std::vector< RayCastingNode* > childrenList;
 
 	//Computes the intersection of the ray with node.
-	//Returns true if there is an ouput ray.
+	//Returns true if there is an output ray.
 	bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, RayCastingNode** intersectedNode, Ray* outputRay )
 	{
+
 		//Check if the ray intersects with the BoundingBox
 	   if( !boundingBox.IntersectP(ray) ) return ( false );
 
@@ -99,9 +100,9 @@ struct RayCastingNode
 	      return isOutputRay;
 
 	   }
-		else
-		{
-			Ray childCoordinatesRay( wtoTransformation( ray ) );
+	   else
+	   {
+		   Ray childCoordinatesRay( wtoTransformation( ray ) );
 
 			TShape* tshape = surfaceNode->GetPart( "shape" )->as<TShape>();
 			TMaterial* tmaterial = surfaceNode->GetPart( "material" )->as<TMaterial>();

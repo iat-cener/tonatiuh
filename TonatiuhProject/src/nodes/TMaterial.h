@@ -78,8 +78,4 @@ private:
 	static TNodeType m_nodeType;
 };
 
-Q_DECLARE_METATYPE(TMaterial*)
-
-
-
 #endif /* TMATERIAL_H_ */

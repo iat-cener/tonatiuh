@@ -74,13 +74,15 @@ void TSceneNode::Init()
 TSceneNode::TSceneNode()
 :TContainerNode(),
  m_childrenListName( QLatin1String( "childrenList" ) ),
- m_lightName( QLatin1String( "light" ) )
+ m_lightName( QLatin1String( "light" ) ),
+ m_transmisivityName( QLatin1String( "transmisivity" ) )
 {
 	setObjectName(GetType().GetName());
 
 	//Parts
 
 	AppendPart( m_lightName, TNodeType::FromName( "SunNode" ) , 0  );
+	AppendPart( m_transmisivityName, TNodeType::FromName( "TransmisivitNode" ) , 0  );
 	AppendPart( m_childrenListName, TNodeType::FromName( "GroupNode" ) , 0  );
 }
 

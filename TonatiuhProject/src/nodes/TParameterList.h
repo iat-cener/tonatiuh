@@ -36,7 +36,7 @@ public:
 
 	bool RemoveParameter( const QString& name );
 
-	void SetValue(const QString& name, QVariant value );
+	bool SetValue(const QString& name, const QVariant& value );
 
 protected:
 	QHash< QString, QVariant > m_parametersList;

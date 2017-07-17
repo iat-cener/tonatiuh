@@ -37,94 +37,31 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "TSunNode.h"
-#include "TParameterList.h"
+#ifndef TPARAMETER_H_
+#define TPARAMETER_H_
 
-/******************************
- * TSunNode
- ******************************/
+#include <QVariant>
+#include <QMetaType>
 
-TNodeType TSunNode::m_nodeType = TNodeType::CreateEmptyType();
-
-
+//!  TParameter class is the base class for all Tonatiuh parameter types.
 /*!
- * Creates a new instance of the class type corresponding object.
- */
-void* TSunNode::CreateInstance( )
+ * TParameter is the abstraction of the new types of parameters. All the new types of parameters in Tonatiuh must be inherited by this class.
+*/
+
+/** Base class of all Tonatiuh nodes: TNode */
+class TParameter: public QObject
 {
-  return ( new TSunNode() );
-}
+	Q_OBJECT
+	Q_DISABLE_COPY(TParameter)
 
+public:
+	TParameter();
+	virtual ~TParameter();
 
-/*!
- * Initializes TGroupNode type.
- */
-void TSunNode::Init()
-{
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), QString( "SunNode" ), &TSunNode::CreateInstance );
-}
+	virtual bool SetValue( QVariant value ) = 0;
+	virtual QString ToString() const = 0;
+};
 
-/*!
- * TGroupNode : public TNode
- */
-TSunNode::TSunNode()
-:TContainerNode(),
- m_azimuthLabel( QLatin1String("azimuth") ),
- m_zenithLabel( QLatin1String("zenith") )
-{
-	setObjectName(GetType().GetName());
+Q_DECLARE_METATYPE( TParameter* )
 
-	//Parts
-	AppendPart( QLatin1String( "sunshape" ), TNodeType::FromName( "Sunshape" ) , 0 );
-
-
-	//Transormation
-	m_parametersList->Append( m_azimuthLabel, 0.0);
-	m_parametersList->Append( m_zenithLabel, 0.0 );
-}
-
-/*!
- * Destructor.
- */
-TSunNode::~TSunNode()
-{
-	SetPart( "sunshape", 0 );
-}
-
-/*
- * Changes the sun node position to the coordinates defined by the angles \a azimuth and zenith. These angles are in radians.
- */
-void TSunNode::ChangeSunPosition( double azimuth, double zenith )
-{
-	m_parametersList->SetValue( m_azimuthLabel, QVariant( azimuth ) );
-	m_parametersList->SetValue( m_zenithLabel, zenith );
-
-	emit SunpositonChanged( azimuth, zenith );
-
-}
-
-/*!
- * Returns azimuth value in radians.
- */
-double TSunNode::GetAzimuth() const
-{
-	return ( GetParameterValue( QLatin1String ("azimuth") ).toDouble() );
-}
-
-/*!
- * Returns zenith angle value in radians.
- */
-double TSunNode::GetZenith() const
-{
-	return( GetParameterValue( QLatin1String ("zenith") ).toDouble() );
-}
-
-
-/*!
- * Returns the type of node.
- */
-TNodeType TSunNode::GetType() const
-{
-	return ( TSunNode::m_nodeType );
-}
-
+#endif /* TPARAMETER_H_ */

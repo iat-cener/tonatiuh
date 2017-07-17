@@ -129,6 +129,22 @@ Transform TGroupNode::GetTrasformation() const
 	Transform transformOTW = translation*rotation*scale;
 
 	return ( transformOTW );
+
+	/*
+	Transform translation = Translate( tx, ty, tz  );
+
+	Vector3D rotationAxis( rx, ry, rz );
+	if( fabs( 1.0 - rotationAxis.length() ) > gc::Epsilon  )	return ( Transform() );
+	Transform rotation = Rotate( rphi, rotationAxis );
+
+
+	Transform scale = Scale(sx, sy, sz );
+
+	//First scaled, the rotated and finally is translated
+	Transform transformOTW = translation*rotation*scale;
+
+	return ( transformOTW );
+	*/
 }
 
 /*!

@@ -78,6 +78,8 @@ protected slots:
 private:
 	QString m_childrenListName;
 	QString m_lightName;
+	QString m_transmisivityName;
+
 	static TNodeType m_nodeType;
 };
 

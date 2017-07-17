@@ -84,12 +84,11 @@ bool RayTracer::Run( unsigned long numberOfRays )
 	if( ( t1 * maximumValueProgressScale ) < numberOfRays )	raysPerThread<< ( numberOfRays-( t1* maximumValueProgressScale) );
 
 	// Create a QFutureWatcher and conncect signals and slots.
+	//QThreadPool::globalInstance()->setMaxThreadCount(1);
 	QFutureWatcher< void > futureWatcher;
 	QFuture< void > raytracingResult = QtConcurrent::map( raysPerThread,
 			[this] (unsigned long nRays ) { RunRaytracer( nRays ); } );
 
-
-	//QFuture< void > raytracingResult = QtConcurrent::map( raysPerThread, [this] (unsigned long nRays ) { RunRaytracer(nRays, &mutex/*, &mutexPhotonMap*/ );} );
 
 
 	futureWatcher.setFuture( raytracingResult );

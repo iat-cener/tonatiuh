@@ -91,7 +91,6 @@ bool RayCasting::SetScene( TSceneNode* scene, QStringList notFirstStageNodesURL 
 		return (false);
 	}
 
-
 	double azimuthRad = m_pSunNode->GetAzimuth();
 	double zenithRad =  m_pSunNode->GetZenith();
 
@@ -281,7 +280,7 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 				{
 					ray.maxt = 0.1;
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), (ray)( ray.maxt ),
-							0, ++rayLength, intersectedSurface->nodeURL) );
+							0, ++rayLength, QString(), 0 ) );
 				}
 				else
 				{

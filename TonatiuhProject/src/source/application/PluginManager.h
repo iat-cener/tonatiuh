@@ -51,6 +51,7 @@ class TMaterialFactory;
 class TShapeFactory;
 class TSunshapeFactory;
 class TTrackerFactory;
+class TTransmissivityFactory;
 
 class PluginManager
 {
@@ -64,6 +65,7 @@ public:
     QVector< TShapeFactory* > GetShapeFactories() const;
     QVector< TSunshapeFactory* > GetSunshapeFactories() const;
     QVector< TTrackerFactory* > GetTrackerFactories() const;
+    QVector< TTransmissivityFactory* > GetTransmissivityFactories() const;
 	void LoadAvailablePlugins( QDir pluginsDirectory, QString* error );
 
 private:
@@ -76,6 +78,7 @@ private:
 	void LoadSunshapePlugin( QObject* plugin, QString* error );
 	void LoadTonatiuhPlugin( const QString& fileName, QString* error );
 	void LoadTrackerPlugin( QObject* plugin, QString* error );
+	void LoadTransmissivityPlugin( QObject* plugin, QString* error );
 	bool ValidDirectoryName( QString& directoryName  );
 
 	QVector< TMaterialFactory* > m_materialFactoryList;
@@ -83,6 +86,7 @@ private:
 	QVector< TShapeFactory* > m_shapeFactoryList;
 	QVector< TSunshapeFactory* > m_sunshapeFactoryList;
 	QVector< TTrackerFactory* > m_trackerFactoryList;
+	QVector< TTransmissivityFactory* > m_transmissivityFactoryList;
 };
 
 #endif /* PLUGINMANAGER_H_ */

@@ -57,7 +57,7 @@ void TNode::Init()
  */
 TNode::TNode()
 : QObject(),
-  m_parametersList( 0 ),
+  //m_parametersList( 0 ),
   m_id( 0 ),
   m_referenceCount( 0 )
 {
@@ -75,8 +75,8 @@ TNode::TNode()
  */
 TNode::~TNode()
 {
-	delete m_parametersList;
-	m_parametersList = 0;
+	//delete m_parametersList;
+	//m_parametersList = 0;
 }
 
 /*!
@@ -85,6 +85,20 @@ TNode::~TNode()
 TNode* TNode::Copy() const
 {
 	TNode* node = new TNode();
+
+	/*
+	const QMetaObject* metaobject = metaObject();
+	int count = metaobject->propertyCount();
+
+	for( int p = 0; p < count; ++p)
+	{
+		QMetaProperty mproperty = metaobject->property( p );
+		//const char *name = mproperty.name();
+	    QVariant value = property( mproperty.name() );
+	    node->setProperty( mproperty.name(), value );
+	}
+	*/
+
 	TParameterList* parametersList = node->m_parametersList;
 
 	QStringList parameterNames = m_parametersList->GetParametersNames();
@@ -95,6 +109,7 @@ TNode* TNode::Copy() const
 		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
 		parametersList->Append(parameterNames[p], parameterValue, parameterVisibility );
 	}
+
 
 	return ( node );
 }
@@ -127,6 +142,20 @@ QStringList TNode::GetVisibleParametersName() const
 			allParametersNames.removeAt( i );
 	}
 	return ( allParametersNames );
+
+	/*
+	QStringList allParametersNames;
+
+	const QMetaObject* metaobject = metaObject();
+	int count = metaobject->propertyCount();
+	for( int p = 0; p < count; ++p)
+	{
+		QMetaProperty mproperty = metaobject->property( p );
+		allParametersNames<<mproperty.name();
+	}
+
+	return ( allParametersNames );
+	*/
 }
 
 /*!
@@ -134,10 +163,19 @@ QStringList TNode::GetVisibleParametersName() const
  */
 QVariant TNode::GetParameterValue( QString name ) const
 {
+
 	if(!m_parametersList )	return( QVariant() );
 	if( !m_parametersList->Contains( name ) || !m_parametersList->GetVisibility( name ) )
 		return( QVariant() );
 	return (m_parametersList->GetValue( name ) );
+
+
+	/*
+	const char* nameChar = name.toLatin1().data();
+    QVariant value = property( nameChar );
+
+	return ( value );
+	*/
 }
 
 /*!
@@ -182,12 +220,19 @@ void TNode::SetName( QString name )
 /*!
  * Sets to the parameter \a name the \a value.
  */
-bool TNode::SetParameterValue( const QString& name, QVariant value )
+bool TNode::SetParameterValue( const QString& name, const QVariant& value )
 {
+
 	if( !m_parametersList )	return ( false );
 	if( !m_parametersList->Contains( name ) || !m_parametersList->GetVisibility( name ) )
 		return ( false );
-	m_parametersList->SetValue( name, value );
+	if( !m_parametersList->SetValue( name, value ) ) 	return ( false );
+
+	return (true);
+
+
+
+    //setProperty( name.toLatin1().data(), value );
 
 	return (true);
 }

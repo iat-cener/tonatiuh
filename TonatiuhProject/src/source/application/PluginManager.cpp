@@ -53,6 +53,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeFactory.h"
 #include "TSunshapeFactory.h"
 #include "TTrackerFactory.h"
+#include "TTransmissivityFactory.h"
 
 /*!
  * Creates a new PluginManager object.
@@ -109,6 +110,14 @@ QVector< TSunshapeFactory* > PluginManager::GetSunshapeFactories() const
 QVector< TTrackerFactory* > PluginManager::GetTrackerFactories() const
 {
 	return ( m_trackerFactoryList );
+}
+
+/*!
+ * Returns available transmissivity plugins factory list.
+ */
+QVector< TTransmissivityFactory* > PluginManager::GetTransmissivityFactories() const
+{
+	return ( m_transmissivityFactoryList );
 }
 
 /*!
@@ -230,8 +239,10 @@ void PluginManager::LoadTonatiuhPlugin( const QString& fileName, QString* error 
     	if( plugin->inherits( "TShapeFactory" ) ) LoadShapePlugin( plugin, error );
     	if( plugin->inherits( "TSunshapeFactory" ) ) LoadSunshapePlugin( plugin, error );
     	if( plugin->inherits( "TTrackerFactory" ) ) LoadTrackerPlugin( plugin, error );
+    	if( plugin->inherits( "TTransmissivityFactory" ) ) LoadTransmissivityPlugin( plugin, error );
 	}
 }
+
 /*!
  * Loads the \a plugin as tracker type.
  */
@@ -240,13 +251,27 @@ void PluginManager::LoadTrackerPlugin( QObject* plugin, QString* error )
 	TTrackerFactory* pTTrackerFactory = qobject_cast<TTrackerFactory* >( plugin );
 	if ( !pTTrackerFactory )
 	{
-		*error = QString("LoadPlugins: Sunshape plug-in not recognized" );
+		*error = QString("LoadPlugins: Tracker plug-in not recognized" );
 		return;
 	}
 	pTTrackerFactory->Init();
 	m_trackerFactoryList.push_back( pTTrackerFactory );
 }
 
+/*!
+ * Loads the \a plugin as transmissivity type.
+ */
+void PluginManager::LoadTransmissivityPlugin( QObject* plugin, QString* error )
+{
+	TTransmissivityFactory* pTTransmissivityFactory = qobject_cast< TTransmissivityFactory* >( plugin );
+	if ( !pTTransmissivityFactory )
+	{
+		*error = QString("LoadPlugins: Transmissivity plug-in not recognized" );
+		return;
+	}
+	pTTransmissivityFactory->Init();
+	m_transmissivityFactoryList.push_back( pTTransmissivityFactory );
+}
 
 /*!
  * Checks if the \a directoryName is a valid directory name.

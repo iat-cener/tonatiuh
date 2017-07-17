@@ -36,7 +36,9 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 
+#include <QDataStream>
 #include <QDebug>
 #include <QDomDocument>
 #include <QDomElement>
@@ -47,6 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TNode.h"
 #include "TNodesDocument.h"
 #include "TNodesList.h"
+#include "TParameter.h"
 #include "TParameterList.h"
 
 /*!
@@ -215,7 +218,7 @@ TNode* TNodesDocument::CreateNodeObject( QDomElement node, QString* errMsg )
 	TNode* objectNode = (TNode*) nodeType.NodeFromType();
 	if( !objectNode || objectNode == 0 )
 	{
-		*errMsg = QString( "TNodesDocument: error creating %1 node object." ).arg( node.tagName() );
+		*errMsg = QString( "TNodesDocument::CreateNodeObject. Error creating '%1' node object." ).arg( node.tagName() );
 	    return ( 0 );
 	}
 
@@ -225,8 +228,12 @@ TNode* TNodesDocument::CreateNodeObject( QDomElement node, QString* errMsg )
 	for( int att = 0; att < nodeAttributes.length(); att++ )
 	{
 		QString attributeName = nodeAttributes.item( att ).nodeName();
-		if( ( attributeName != QLatin1String( "type" ) ) && ( attributeName != QLatin1String( "name" ) ) )
-			objectNode->SetParameterValue( attributeName, node.attribute( attributeName ) );
+		if( ( attributeName != QLatin1String( "type" ) ) && ( attributeName != QLatin1String( "name" ) )  && ( attributeName != QLatin1String( "id" ) ))
+			if( !objectNode->SetParameterValue( attributeName, node.attribute( attributeName ) ) )
+			{
+				*errMsg = QString( "TNodesDocument::CreateNodeObject. Error defining the attribute '%2' of node '%1'." ).arg( node.tagName(), attributeName );
+			    return ( 0 );
+			}
 	}
 
     return ( objectNode );
@@ -336,12 +343,10 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 
 }
 
-
 /*!
  * Reads the children of the list \a node and insert into \a listNode.
  * Returns true if there is not errors during read process, otherwise returns false and a message in \a errMsg.
  */
-
 bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap< int, TNode* >* readNodes, QString* errMsg  )
 {
 	QDomNodeList partChilds = node.childNodes();
@@ -361,7 +366,7 @@ bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap<
 				//nodeObject->IncreaseReference();
 				if( !ok )
 				{
-					*errMsg = QString( "The node %1 cannot be added as a child of %2." ).arg( itemNode.tagName(), listNode->GetName() );
+					*errMsg = QString( "TNodesDocument::ReadNodeList. The node %1 cannot be added as a child of %2." ).arg( itemNode.tagName(), listNode->GetName() );
 					return ( false );
 				}
 				return ( true );
@@ -378,7 +383,7 @@ bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap<
 				//nodeObject->IncreaseReference();
 				if( !ok )
 				{
-					*errMsg = QString( "The node %1 cannot be added as a child of %2." ).arg( itemNode.tagName(), listNode->GetName() );
+					*errMsg = QString( "TNodesDocument::ReadNodeList. The node %1 cannot be added as a child of %2." ).arg( itemNode.tagName(), listNode->GetName() );
 					return ( false );
 				}
 
@@ -419,8 +424,16 @@ bool TNodesDocument::WriteNode( QDomElement parent, const TNode* node, QList< in
 	{
 
 		QString parameterName = parametersList[p];
-		QVariant parameterValue = node->GetParameterValue( parameterName);
-		el.setAttribute( parameterName, parameterValue.toString() );
+		QVariant parameterValue = node->GetParameterValue( parameterName );
+
+		int typeID = parameterValue.type();
+		if( QMetaType::User == typeID )
+		{
+			TParameter* parameter = parameterValue.value<TParameter*>();
+			el.setAttribute( parameterName, parameter->ToString()  );
+		}
+		else
+			el.setAttribute( parameterName,  parameterValue.toString() );
 	}
 	writtenNodes->append( nodeID );
 
@@ -463,7 +476,12 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 
 		QString parameterName = parametersList[p];
 		QVariant parameterValue = containerNode->GetParameterValue( parameterName);
-		el.setAttribute( parameterName, parameterValue.toString() );
+		int typeID = parameterValue.type();
+		if( QMetaType::User == typeID )
+		{
+			TParameter* parameter = parameterValue.value<TParameter*>();
+			el.setAttribute( parameterName, parameter->ToString()  );
+		}
 	}
 	writtenNodes->append( nodeID );
 

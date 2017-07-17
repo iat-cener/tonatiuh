@@ -80,7 +80,7 @@ public:
 	void RemoveReference();
 
 	void SetName( QString name );
-	bool SetParameterValue( const QString& name, QVariant value );
+	bool SetParameterValue( const QString& name, const QVariant& value );
 
 
 protected:

@@ -37,94 +37,73 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "TSunNode.h"
-#include "TParameterList.h"
-
-/******************************
- * TSunNode
- ******************************/
-
-TNodeType TSunNode::m_nodeType = TNodeType::CreateEmptyType();
-
+#include "TParameterEnumerator.h"
 
 /*!
- * Creates a new instance of the class type corresponding object.
+ * Creates an empty enumerator type
  */
-void* TSunNode::CreateInstance( )
+TParameterEnumerator::TParameterEnumerator()
+:TParameter(),
+ m_selectedIndex( -1 )
 {
-  return ( new TSunNode() );
-}
-
-
-/*!
- * Initializes TGroupNode type.
- */
-void TSunNode::Init()
-{
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), QString( "SunNode" ), &TSunNode::CreateInstance );
-}
-
-/*!
- * TGroupNode : public TNode
- */
-TSunNode::TSunNode()
-:TContainerNode(),
- m_azimuthLabel( QLatin1String("azimuth") ),
- m_zenithLabel( QLatin1String("zenith") )
-{
-	setObjectName(GetType().GetName());
-
-	//Parts
-	AppendPart( QLatin1String( "sunshape" ), TNodeType::FromName( "Sunshape" ) , 0 );
-
-
-	//Transormation
-	m_parametersList->Append( m_azimuthLabel, 0.0);
-	m_parametersList->Append( m_zenithLabel, 0.0 );
-}
-
-/*!
- * Destructor.
- */
-TSunNode::~TSunNode()
-{
-	SetPart( "sunshape", 0 );
-}
-
-/*
- * Changes the sun node position to the coordinates defined by the angles \a azimuth and zenith. These angles are in radians.
- */
-void TSunNode::ChangeSunPosition( double azimuth, double zenith )
-{
-	m_parametersList->SetValue( m_azimuthLabel, QVariant( azimuth ) );
-	m_parametersList->SetValue( m_zenithLabel, zenith );
-
-	emit SunpositonChanged( azimuth, zenith );
 
 }
 
 /*!
- * Returns azimuth value in radians.
+ * Destroys the enumerator object.
  */
-double TSunNode::GetAzimuth() const
+TParameterEnumerator::~TParameterEnumerator()
 {
-	return ( GetParameterValue( QLatin1String ("azimuth") ).toDouble() );
+	m_nameList.clear();
+	m_selectedIndex = -1;
 }
 
 /*!
- * Returns zenith angle value in radians.
+ * Adds a new element to the enumerator list with the given \a name.
+ * If \a isDefault is true, the current element with be the selected element by defualt.
  */
-double TSunNode::GetZenith() const
+void TParameterEnumerator::AddValue( QString name, bool iDefault )
 {
-	return( GetParameterValue( QLatin1String ("zenith") ).toDouble() );
-}
+	if( !m_nameList.contains( name ) )
+		m_nameList.push_back( name );
 
+	if( iDefault )
+		m_selectedIndex = m_nameList.indexOf( name );
+}
 
 /*!
- * Returns the type of node.
+ * Get the index of selected element.
  */
-TNodeType TSunNode::GetType() const
+/*int TParameterEnumerator::GetSelectedIndex( ) const
 {
-	return ( TSunNode::m_nodeType );
+	return ( m_selectedIndex );
+}*/
+
+/*!
+ * Gives the name of the selected element.
+ */
+QString TParameterEnumerator::GetSelectedName() const
+{
+	return ( m_nameList[m_selectedIndex] );
 }
 
+/*!
+ * Sets the selected element to the element with the given name in \a value
+ * Returns false if the name of the value is not in the current enumerator list.
+ */
+bool TParameterEnumerator::SetValue( QVariant value )
+{
+	if( !m_nameList.contains( value.toString() ) )
+		return ( false );
+
+	m_selectedIndex = m_nameList.indexOf( value.toString() );
+	return ( true );
+}
+
+/*!
+ * Returns the name of the selected value.
+ */
+QString TParameterEnumerator::ToString() const
+{
+	return ( GetSelectedName() );
+}

@@ -62,6 +62,11 @@ class Vector3D;
 class TGroupNode : public TContainerNode
 {
 	Q_OBJECT
+	/*
+	Q_PROPERTY( QString translation )
+	Q_PROPERTY( QString rotation )
+	Q_PROPERTY( QString scaleFactor )
+	*/
 
 public:
 	static void* CreateInstance();
@@ -82,6 +87,19 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+
+	/*
+	double tx;
+	double ty;
+	double tz;
+	double rx;
+	double ry;
+	double rz;
+	double rphi;
+	double sx;
+	double sy;
+	double sz;
+	*/
 };
 
 
