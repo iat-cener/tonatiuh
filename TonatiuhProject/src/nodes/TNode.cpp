@@ -229,10 +229,4 @@ bool TNode::SetParameterValue( const QString& name, const QVariant& value )
 	if( !m_parametersList->SetValue( name, value ) ) 	return ( false );
 
 	return (true);
-
-
-
-    //setProperty( name.toLatin1().data(), value );
-
-	return (true);
 }
