@@ -63,7 +63,6 @@ public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeCone* CreateTShape( ) const;
-   	bool IsFlat() { return false; }
 };
 
 #endif /*SHAPECONEFACTORY_H_*/

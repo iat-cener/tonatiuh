@@ -61,7 +61,6 @@ public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeCylinder* CreateTShape( ) const;
-   	bool IsFlat() { return false; }
 };
 
 #endif /*SHAPECYLINDERFACTORY_H_*/

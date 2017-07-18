@@ -48,7 +48,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   ShapeFlatDiskFactory class is a factory class to control the creation of  ShapeFlatDisk instances. All the objects of type ShapeCylinder will be created using this factory.
 */
 
-
 class ShapeFlatDiskFactory: public QObject, public TShapeFactory
 {
     Q_OBJECT
@@ -62,7 +61,6 @@ public:
     QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeFlatDisk* CreateTShape( ) const;
-   	bool IsFlat() { return true; }
 };
 
 #endif /*ShapeFlatDiskFactory_H_*/

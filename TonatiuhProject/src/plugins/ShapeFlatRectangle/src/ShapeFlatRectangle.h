@@ -62,7 +62,6 @@ public:
 	static void Init();
 
 	ShapeFlatRectangle( );
-	~ShapeFlatRectangle( );
 
 	QString GetIcon();
 	BBox GetBondingBox() const;
@@ -70,10 +69,11 @@ public:
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;
 	void Draw() const;
 
+protected:
+	~ShapeFlatRectangle( );
+
 private:
 	static TNodeType m_nodeType;
 };
-
-Q_DECLARE_METATYPE(ShapeFlatRectangle*)
 
 #endif /*SHAPEFLATRECTANGLE_H_*/

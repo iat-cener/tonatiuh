@@ -56,7 +56,6 @@ public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeFlatRectangle* CreateTShape( ) const;	
-   	bool IsFlat() { return true; } 
 };
 
 #endif /*SHAPEFLATRECTANGULEFACTORY_H_*/

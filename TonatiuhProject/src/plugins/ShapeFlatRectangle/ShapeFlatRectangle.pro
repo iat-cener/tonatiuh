@@ -14,8 +14,8 @@ HEADERS = src/*.h
 SOURCES = src/*.cpp  
            	
 RESOURCES += src/ShapeFlatRectangle.qrc		
-TARGET        = ShapeFlatRectangle
 
+TARGET        = ShapeFlatRectangle
 
 CONFIG(debug, debug|release) {
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeFlatRectangle	

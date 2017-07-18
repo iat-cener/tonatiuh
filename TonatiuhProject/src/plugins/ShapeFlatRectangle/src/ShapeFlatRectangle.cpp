@@ -64,8 +64,7 @@ void ShapeFlatRectangle::Init()
  * Creates ShapeFlatRectangle object
  */
 ShapeFlatRectangle::ShapeFlatRectangle()
-:TShape()//,
- //m_nodeType(TNodeType::FromName( QLatin1String( "ShapeFlatRectangle" ) ) )
+:TShape()
 {
 	setObjectName(GetType().GetName());
 
