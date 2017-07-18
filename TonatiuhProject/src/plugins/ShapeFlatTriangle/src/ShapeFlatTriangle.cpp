@@ -89,7 +89,6 @@ ShapeFlatTriangle::ShapeFlatTriangle(  )
  */
 ShapeFlatTriangle::~ShapeFlatTriangle()
 {
-
 	TParameterPoint3D* aPoint = m_parametersList->GetValue( QLatin1String("a") ).value<TParameterPoint3D*>();
 	delete aPoint;
 	aPoint = 0;

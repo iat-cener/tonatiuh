@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TParameterEnumerator.h"
 #include "TParameterList.h"
+#include "TParameterPoint3D.h"
 #include "TrackerHeliostat.h"
 
 TNodeType TrackerHeliostat::m_nodeType = TNodeType::CreateEmptyType();
@@ -100,7 +101,11 @@ TrackerHeliostat::TrackerHeliostat()
 
 
 	// Define input fields and their default values
-	m_parametersList->Append( m_aimingPointLabel, QLatin1String( "0 0 0" ) );
+
+	QVariant aimingPointParameter;
+	aimingPointParameter.setValue( new TParameterPoint3D( Point3D( 0.0, 0.0, 0.0 ) ) );
+	m_parametersList->Append( m_aimingPointLabel, aimingPointParameter );
+
 
 	TParameterEnumerator* typeOfAimingPointEnumerator = new TParameterEnumerator;
 	typeOfAimingPointEnumerator->AddValue( m_absoluteAimingLabel, true );
@@ -127,6 +132,10 @@ TrackerHeliostat::TrackerHeliostat()
  */
 TrackerHeliostat::~TrackerHeliostat()
 {
+	TParameterPoint3D* aPoint = m_parametersList->GetValue( m_aimingPointLabel ).value<TParameterPoint3D*>();
+	delete aPoint;
+	aPoint = 0;
+
 	TParameterEnumerator* typeOfAimingPointEnumerator = m_parametersList->GetValue( m_aimingPointTypeLabel ).value<TParameterEnumerator*>();
 	delete typeOfAimingPointEnumerator;
 	typeOfAimingPointEnumerator = 0;
@@ -134,7 +143,6 @@ TrackerHeliostat::~TrackerHeliostat()
 	TParameterEnumerator* typeOfRotationEnumerator = m_parametersList->GetValue( m_rotationTypeLabel ).value<TParameterEnumerator*>();
 	delete typeOfRotationEnumerator;
 	typeOfRotationEnumerator = 0;
-
 }
 
 
@@ -174,10 +182,7 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	if( i.length() == 0.0f ) return;
 	i = Normalize(i);
 
-	QStringList aimingPointValues = m_parametersList->GetValue( m_aimingPointLabel ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( aimingPointValues.count() != 3 ) 	return;
-	Point3D focus( aimingPointValues[0].toDouble(), aimingPointValues[1].toDouble(), aimingPointValues[2].toDouble()  );
-
+	Point3D focus = m_parametersList->GetValue( m_aimingPointLabel ).value<TParameterPoint3D*>()->GetPoint3D();
 
 	TParameterEnumerator* typeOfAimingPoint = m_parametersList->GetValue( m_aimingPointTypeLabel ).value<TParameterEnumerator*>();
 	Vector3D r;
