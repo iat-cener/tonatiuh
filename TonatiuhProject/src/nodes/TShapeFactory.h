@@ -65,7 +65,6 @@ public:
     {
     	return ( CreateTShape() );
     }
-    virtual bool IsFlat() = 0;
 };
 
 Q_DECLARE_INTERFACE( TShapeFactory, "tonatiuh.TShapeFactory")
