@@ -32,29 +32,35 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SHAPESPHERICALRECTANGLEFACTORY_H_
-#define SHAPESPHERICALRECTANGLEFACTORY_H_
+#ifndef SHAPEFLATTRIANGLEFACTORY_H_
+#define SHAPEFLATTRIANGLEFACTORY_H_
 
-#include "ShapeSphericalRectangle.h"
 #include "TShapeFactory.h"
+#include "ShapeFlatTriangle.h"
 
-class ShapeSphericalRectangleFactory: public QObject, public TShapeFactory
+
+//!  ShapeFlatTriangleFactory is the base class for creating ShapeFlatTriangle objects.
+/*!
+  ShapeFlatTriangleFactory class is a factory class to control the creation of  ShapeFlatTriangle instances. All the objects of type ShapeFlatTriangle will be created using this factory.
+*/
+
+class ShapeFlatTriangleFactory: public QObject, public TShapeFactory
 {
     Q_OBJECT
     Q_INTERFACES(TShapeFactory)
 #if QT_VERSION >= 0x050000 // pre Qt 5
     Q_PLUGIN_METADATA(IID "tonatiuh.TShapeFactory")
 #endif
-    
+
 public:
     void Init() const;
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
-   	ShapeSphericalRectangle* CreateTShape( ) const;
+   	ShapeFlatTriangle* CreateTShape( ) const;
 };
 
-#endif /*SHAPESPHERICALRECTANGLEFACTORY_H_*/
+#endif /*SHAPEFLATTRIANGLEFACTORY_H_*/

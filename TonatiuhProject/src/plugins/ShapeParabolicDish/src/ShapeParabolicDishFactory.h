@@ -55,7 +55,6 @@ public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeParabolicDish* CreateTShape( ) const;
-   	bool IsFlat() {return false;}
 };
 
 #endif /*SHAPEPARABOLICDISHFACTORY_H_*/

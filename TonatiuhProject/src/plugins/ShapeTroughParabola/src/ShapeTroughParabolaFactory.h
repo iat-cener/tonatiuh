@@ -57,7 +57,6 @@ public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeTroughParabola* CreateTShape() const;	 
-   	bool IsFlat() { return false; }
 };
 
 #endif /*SHAPETROUGHPARABOLAFACTORY_H_*/
