@@ -482,6 +482,8 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 			TParameter* parameter = parameterValue.value<TParameter*>();
 			el.setAttribute( parameterName, parameter->ToString()  );
 		}
+		else
+			el.setAttribute( parameterName,  parameterValue.toString() );
 	}
 	writtenNodes->append( nodeID );
 

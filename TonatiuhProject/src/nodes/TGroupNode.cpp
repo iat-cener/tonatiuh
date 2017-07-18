@@ -89,7 +89,7 @@ TGroupNode::TGroupNode()
 
 
 	//Transformation
-	m_parametersList->Append( m_translationName, QLatin1String ("0 0 0"));
+	m_parametersList->Append( m_translationName, QLatin1String ("0 0 0"), true );
 	m_parametersList->Append( m_rotationName, QLatin1String ("0 0 1 0"));
 	m_parametersList->Append( m_scaleFactorName, QLatin1String ("1 1 1"));
 }

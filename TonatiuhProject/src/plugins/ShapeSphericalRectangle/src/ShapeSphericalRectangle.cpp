@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "DifferentialGeometry.h"
 #include "gc.h"
 #include "gf.h"
 

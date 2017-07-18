@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "gc.h"
 
+#include "RandomDeviate.h"
 #include "SunshapePillbox.h"
 #include "TParameterList.h"
 

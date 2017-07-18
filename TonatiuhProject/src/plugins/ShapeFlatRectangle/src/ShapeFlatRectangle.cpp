@@ -36,7 +36,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-//#include "NormalVector.h"
+#include "DifferentialGeometry.h"
+
 #include "ShapeFlatRectangle.h"
 #include "TParameterList.h"
 

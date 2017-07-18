@@ -41,11 +41,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSHAPE_H_
 
 #include "BBox.h"
-#include "DifferentialGeometry.h"
 
 #include "Ray.h"
 #include "TNode.h"
 #include "TNodeType.h"
+
+class DifferentialGeometry;
 
 //!  TShape class is the base class to describe surfaces geometry.
 /*!
@@ -76,7 +77,5 @@ protected:
 private:
 	static TNodeType m_nodeType;
 };
-
-Q_DECLARE_METATYPE(TShape*)
 
 #endif /* TSHAPE_H_ */

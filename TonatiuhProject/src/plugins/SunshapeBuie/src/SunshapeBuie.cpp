@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "gc.h"
 
+#include "RandomDeviate.h"
 #include "SunshapeBuie.h"
 #include "TParameterList.h"
 

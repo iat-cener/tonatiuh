@@ -46,8 +46,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TNodeType.h"
 
 #include "Vector3D.h"
-#include "RandomDeviate.h"
 
+class RandomDeviate;
 
 //!  TSunshapeNode is base class to model the solar radiation.
 /*!

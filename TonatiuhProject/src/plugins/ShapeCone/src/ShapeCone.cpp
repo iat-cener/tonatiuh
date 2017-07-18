@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "DifferentialGeometry.h"
+#include "NormalVector.h"
 #include "gf.h"
 
 #include "ShapeCone.h"
