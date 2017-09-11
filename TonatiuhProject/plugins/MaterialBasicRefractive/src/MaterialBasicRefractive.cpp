@@ -71,10 +71,10 @@ MaterialBasicRefractive::MaterialBasicRefractive()
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
 	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
 
-	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
+	//SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
-	SO_NODE_ADD_FIELD( distribution, (PILLBOX) );
+	SO_NODE_ADD_FIELD( distribution, (NORMAL) );
 
 	SO_NODE_ADD_FIELD( m_ambientColor, (0.2f, 0.2f, 0.2f) );
 	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8f, 0.8f, 0.8f) );

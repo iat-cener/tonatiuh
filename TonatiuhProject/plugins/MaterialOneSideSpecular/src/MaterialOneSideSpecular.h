@@ -26,7 +26,7 @@ class MaterialOneSideSpecular : public TMaterial
 
 public:
 	enum Distribution {
-		PILLBOX = 0,
+		//PILLBOX = 0,
 		NORMAL = 1,
 	   };
 

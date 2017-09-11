@@ -64,10 +64,10 @@ MaterialStandardSpecular::MaterialStandardSpecular()
 	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
 	SO_NODE_ADD_FIELD( m_sigmaSlope, (2.0) );
 
-	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
+	//SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE(m_distribution, Distribution);
-	SO_NODE_ADD_FIELD( m_distribution, (PILLBOX) );
+	SO_NODE_ADD_FIELD( m_distribution, (NORMAL) );
 
 	SO_NODE_ADD_FIELD( m_ambientColor, (0.2f, 0.2f, 0.2f) );
 	SO_NODE_ADD_FIELD( m_diffuseColor, (0.8f, 0.8f, 0.8f) );

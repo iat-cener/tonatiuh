@@ -56,10 +56,10 @@ MaterialAngleDependentRefractive::MaterialAngleDependentRefractive()
 
 
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
-	SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
+	//SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
-	SO_NODE_ADD_FIELD( distribution, (PILLBOX) );
+	SO_NODE_ADD_FIELD( distribution, (NORMAL) );
 
 
 	SO_NODE_ADD_FIELD( ambient_Color, (0.2f, 0.2f, 0.2f) );
