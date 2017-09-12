@@ -159,11 +159,6 @@ void TrackerHeliostat::evaluate()
 	if (p.length() == 0.0f) return;
 	p = Normalize(p);
 
-	std::cout<<i<<std::endl;
-	std::cout<<r<<std::endl;
-	std::cout<<n<<std::endl;
-	std::cout<<t<<std::endl;
-	std::cout<<p<<std::endl;
 	SbMatrix transformMatrix;
 	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 3 ))// YX ou  ZX
 	{
