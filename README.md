@@ -5,7 +5,7 @@
 
 In this release some bugs have been solved. The most relevant one is a bugs in ShapeCAD instersection algorithm only visible in some operating systems. In addition, Pillbox distribution function removed from material errors in order to avoid some simulations errors by using this distribution function
  
-Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.4
+Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/v2.2.4
 
 ## First workshop on Tonatiuh ##
 
