@@ -1,19 +1,11 @@
 ![http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif](http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif)
 # News #
 
-## Tonatiuh release 2.2.3 is now available! ##
+## Tonatiuh release 2.2.4 is now available! ##
 
-This minor release fixes some bugs:
-- New function for the scripting to calculate the flux distribution for one surface. Go to the page [Script functions](https://github.com/iat-cener/tonatiuh/wiki/Script-functions) to see details of the function.
-- Fixed some bugs in the Flux Analysis Tool.
-- Fixed some bugs in Bezier Surfaces instersection.
-- Fixed some bugs in ShapeCAD instersection algorithm.
-- Fixed some bugs in Cylinder surface.
-- Fixed some bugs in MIRVAL transmisivity model.
-- Cleaning code
-
+In this release some bugs have been solved. The most relevant one is a bugs in ShapeCAD instersection algorithm only visible in some operating systems. In addition, Pillbox distribution function removed from material errors in order to avoid some simulations errors by using this distribution function
  
-Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.3
+Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/2.2.4
 
 ## First workshop on Tonatiuh ##
 
