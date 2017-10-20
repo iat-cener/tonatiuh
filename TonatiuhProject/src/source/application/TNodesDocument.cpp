@@ -164,6 +164,7 @@ void TNodesDocument::SetRootNode( TNode* node )
  */
 bool TNodesDocument::Write( std::string filename ) const
 {
+	std::cout<<"START TNodesDocument::Write"<<std::endl;
 	QFile tonatiuhFile( filename.c_str() );
 	if( !tonatiuhFile.open( QIODevice::WriteOnly ) )	return (false);
 
@@ -202,6 +203,7 @@ bool TNodesDocument::Write( std::string filename ) const
 		return (false);
 
 
+	std::cout<<"END TNodesDocument::Write"<<std::endl;
 	return (true);
 
 }
@@ -478,7 +480,6 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 	std::vector<std::string> parametersList = containerNode->GetVisibleParametersName();
 	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
-
 		std::string parameterName = parametersList[p];
 		QVariant parameterValue = containerNode->GetParameterValue( parameterName );
 		int typeID = parameterValue.type();
@@ -496,7 +497,6 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 	std::vector<std::string> partNamesList = containerNode->GetPartNames();
 	for( int p = 0; p < numberOfParts; p++ )
 	{
-
 		TNode* partNode = containerNode->GetPart( partNamesList[p] );
 		if( partNode )
 		{
@@ -513,6 +513,5 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 		}
 
 	}
-
 	return ( true );
 }

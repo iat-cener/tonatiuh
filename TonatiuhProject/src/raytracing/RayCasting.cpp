@@ -72,7 +72,6 @@ RayCasting::~RayCasting()
  */
 bool RayCasting::SetScene( TSceneNode* scene, std::vector< std::string > notFirstStageNodesURL )
 {
-	std::cout<<"START RayCasting::SetScene"<<std::endl;
 
 	if( !scene )	return ( false );
 	m_pSunNode = scene->GetPart( "light" )->as<TSunNode>();
@@ -80,22 +79,17 @@ bool RayCasting::SetScene( TSceneNode* scene, std::vector< std::string > notFirs
 	TGroupNode* childrenRoot = scene->GetPart( "childrenList" )->as<TGroupNode>();
 	if( !childrenRoot )	return ( false );
 
-
-	std::cout<<"\t RayCasting::SetScene"<<std::endl;
 	m_sceneRootNode = new RayCastingNode;
 	Transform parentWT0(1, 0, 0, 0,
 						0, 1, 0, 0,
 						0, 0, 1, 0,
 						0, 0, 0, 1 );
-	std::cout<<"\t RayCasting::SetScene parentWT0"<<parentWT0<<std::endl;
 
-	std::cout<<"\t RayCasting::SetScene CreateRayTracerNodesTree"<<std::endl;
 	if( !CreateRayTracerNodesTree( childrenRoot, m_sceneRootNode, parentWT0, "\\\\SunNode" ) )
 	{
 		RemoveRayTracerNodesTree( m_sceneRootNode );
 		return (false);
 	}
-	std::cout<<"\t RayCasting::SetScene azimuthRad"<<std::endl;
 
 	double azimuthRad = m_pSunNode->GetAzimuth();
 	double zenithRad =  m_pSunNode->GetZenith();
@@ -233,7 +227,6 @@ bool RayCasting::SetScene( TSceneNode* scene, std::vector< std::string > notFirs
 		delete[] areaMatrix[i];
 	delete[] areaMatrix;
 
-	std::cout<<"END RayCasting::SetScene"<<std::endl;
 	return ( true );
 }
 
@@ -384,7 +377,6 @@ bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode*
 		rTRNode->boundingBox = rTRNode->otwTransformation( shape->GetBondingBox() );
 	}
 
-	std::cout<<"END RayCasting::CreateRayTracerNodesTree"<<std::endl;
 	return ( true );
 }
 

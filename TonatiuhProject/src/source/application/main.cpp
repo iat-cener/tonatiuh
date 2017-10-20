@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <memory>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 
 #include <QApplication>
 #include <QDateTime>
@@ -115,12 +116,21 @@ int main ( int argc, char** argv )
 		std::cerr<<err.toStdString()<<std::endl;
 	}
 	QVector< TMaterialFactory* > materialFactoryList =  pluginManager.GetMaterialFactories();
+	std::vector< std::string > materialFactoryName;
+	for( int p = 0; p < materialFactoryList.count(); p++ )
+		materialFactoryName.push_back( materialFactoryList[p]->TMaterialName() );
 	QVector< TShapeFactory* > shapeFactoryList =  pluginManager.GetShapeFactories();
+	std::vector< std::string > shapeFactoryName;
+	for( int p = 0; p < shapeFactoryList.count(); p++ )
+		shapeFactoryName.push_back( shapeFactoryList[p]->TShapeName() );
 	QVector< TSunshapeFactory* > sunshapeFactoryList = pluginManager.GetSunshapeFactories();
 	QVector< TTrackerFactory* > trackerFactoryList = pluginManager.GetTrackerFactories();
+	std::vector< std::string > trackerFactoryName;
+	for( int p = 0; p < trackerFactoryList.count(); p++ )
+		trackerFactoryName.push_back( trackerFactoryList[p]->TTrackerNodeName() );
 	QVector< RandomDeviateFactory* > randomDeviateFactoryList = pluginManager.GetRandomDeviateFactories();
 
-	/*
+
 
 	TSceneNode* tonatiuhScene = new TSceneNode;
 	std::cout<<"tonatiuhScene"<<std::endl;
@@ -128,121 +138,135 @@ int main ( int argc, char** argv )
 	//Sun
 	double azimuthRad = 180 * gc::Degree;
 	TSunNode* sunNode = new TSunNode();
-	tonatiuhScene->SetPart( QLatin1String( "light" ),  sunNode );
-	sunNode->SetParameterValue( QString( "azimuth" ),  QString( "%1" ).arg( QString::number(azimuthRad) ) );
+	tonatiuhScene->SetPart( "light",  sunNode );
+	sunNode->SetParameterValue( "azimuth",  QString( "%1" ).arg( QString::number(azimuthRad) ) );
 
 	TSunshape* sunshapeNode = sunshapeFactoryList[0]->CreateTSunshape();
 	sunshapeNode->SetName( "sunshapeModel");
-	sunNode->SetPart( QLatin1String( "sunshape" ),  sunshapeNode );
+	sunNode->SetPart( "sunshape",  sunshapeNode );
 
 
 	//Parabolic dish
 	std::cout<<"rootNode"<<std::endl;
 	TGroupNode* rootNode = new TGroupNode();
 	rootNode->SetName( "Eurodish_field");
-	tonatiuhScene->SetPart( QLatin1String( "childrenList" ),  rootNode );
-	std::cout<<"rootNode: "<<rootNode->GetName().toStdString()<<std::endl;
+	tonatiuhScene->SetPart( "childrenList",  rootNode );
+	std::cout<<"rootNode: "<<rootNode->GetName()<<std::endl;
 
 
 	//Concentrator 1
 	TGroupNode* concentrator1Node = new TGroupNode();
 	concentrator1Node->SetName( "Concentrator_1");
-	concentrator1Node->SetParameterValue( QString( "translation" ),  "-5 0 0" );
-	std::cout<<"concentratorNode: "<<concentrator1Node->GetName().toStdString()<<std::endl;
-	//double rotationAngle = 0.5 * gc::Pi;
-	//concentrator1Node->SetParameterValue( QString( "rotation" ),  QString( "0 0 -1 %1" ).arg( QString::number(rotationAngle) ) );
-	if( !qobject_cast< TNodesList* >  ( rootNode->GetPart("childrenList" ))->InsertItem( concentrator1Node ) )
+	concentrator1Node->SetParameterValue( "translation",  "-5 0 0" );
+	std::cout<<"concentratorNode: "<<concentrator1Node->GetName()<<std::endl;
+	if( !( rootNode->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( concentrator1Node ) )
 	{
-		std::cout<<"Error adding concentrator 1 to root node"<<std::endl;
+		std::cout<<"Error adding concentrator 1 to root node."<<std::endl;
 		return -1;
 	}
 
-
-	TTrackerNode* c1ParabolicDishTracker = trackerFactoryList[0]->CreateTTrackerNode();
+	int trackerFactoryIndex = std::distance( trackerFactoryName.begin(), std::find(trackerFactoryName.begin(), trackerFactoryName.end(), "One Axis tracker" ) );
+	if( trackerFactoryIndex >= trackerFactoryList.size() )
+	{
+		std::cout<<"Error defining concentrator tracker type."<<std::endl;
+		return -1;
+	}
+	TTrackerNode* c1ParabolicDishTracker = trackerFactoryList[trackerFactoryIndex]->CreateTTrackerNode();
 	c1ParabolicDishTracker->SetName( "Tracker_Concentrator_1");
-	qobject_cast< TNodesList* >  ( concentrator1Node->GetPart("childrenList" ))->InsertItem( c1ParabolicDishTracker );
+	( concentrator1Node->GetPart("childrenList" )->as< TNodesList>())->InsertItem( c1ParabolicDishTracker );
+
 
 
 	std::cout<<"TSurfaceNode"<<std::endl;
 	TSurfaceNode* concentratorSurfaceNode = new TSurfaceNode();
 	concentratorSurfaceNode->SetName( "ConcentratorSurface");
-	qobject_cast< TNodesList* >  ( c1ParabolicDishTracker->GetPart("childrenList" ))->InsertItem( concentratorSurfaceNode );
+	( c1ParabolicDishTracker->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( concentratorSurfaceNode );
 
+	int concentratorShapeFactoryIndex = std::distance( shapeFactoryName.begin(), std::find(shapeFactoryName.begin(), shapeFactoryName.end(), "Parabolic_dish" ) );
+	if( concentratorShapeFactoryIndex >= shapeFactoryList.size() )
+	{
+		std::cout<<"Error defining concentrator shape."<<std::endl;
+		return -1;
+	}
 
-	TShape* concentratorShape = shapeFactoryList[2]->CreateTShape();
+	TShape* concentratorShape = shapeFactoryList[concentratorShapeFactoryIndex]->CreateTShape();
 	concentratorShape->SetName( "ConcentratorGeometry");
-	concentratorShape->SetParameterValue( QString( "focusLength" ), 4.520 );
-	concentratorShape->SetParameterValue( QString( "dishMinRadius" ),  0.0 );
-	concentratorShape->SetParameterValue( QString( "dishMaxRadius" ),  4.25 );
-	concentratorSurfaceNode->SetPart( QLatin1String( "shape" ),  concentratorShape );
+	concentratorShape->SetParameterValue( "focusLength", 4.520 );
+	concentratorShape->SetParameterValue( "dishMinRadius",  0.0 );
+	concentratorShape->SetParameterValue( "dishMaxRadius",  4.25 );
+	concentratorSurfaceNode->SetPart( "shape",  concentratorShape );
 
+	int concentratorMaterialIndex = std::distance( materialFactoryName.begin(), std::find(materialFactoryName.begin(), materialFactoryName.end(), "Specular_Standard_Material" ) );
+	if( concentratorMaterialIndex >= materialFactoryList.size() )
+	{
+		std::cout<<"Error defining concentrator material."<<std::endl;
+		return -1;
+	}
 
 	if( materialFactoryList.count() > 0 )
 	{
-		TMaterial* concentratorMaterial = materialFactoryList[0]->CreateTMaterial();
-		concentratorMaterial->SetParameterValue( QLatin1String("reflectivity"), 0.925 );
-		concentratorMaterial->SetParameterValue( QLatin1String("sigmaSlope"), 4.4270 );
-		//concentratorMaterial->SetParameterValue( QLatin1String("distribution"), QLatin1String( "PILLBOX" ) );
-		//concentratorMaterial->SetParameterValue( QLatin1String("distribution"), QLatin1String( "PILLBOX" ));
-		concentratorSurfaceNode->SetPart( QLatin1String( "material" ),  concentratorMaterial );
+		TMaterial* concentratorMaterial = materialFactoryList[concentratorMaterialIndex]->CreateTMaterial();
+		concentratorMaterial->SetParameterValue( "reflectivity", 0.925 );
+		concentratorMaterial->SetParameterValue( "sigmaSlope", 4.4270 );
+		concentratorSurfaceNode->SetPart( "material",  concentratorMaterial );
 	}
 
 	//Receiver
 	std::cout<<"Receiver"<<std::endl;
 	TGroupNode* receiverNode = new TGroupNode();
-	//receiverNode->SetParent( rootNode );
-	std::cout<<"\treceiverNode: "<<receiverNode->GetName().toStdString()<<std::endl;
+	std::cout<<"\treceiverNode: "<<receiverNode->GetName()<<std::endl;
 	receiverNode->SetName( "Receiver ");
 
-	QString translationValue = receiverNode->GetParameterValue( QString( "translation" ) ).toString();
-	receiverNode->SetParameterValue( QString( "translation" ),  "0 4.52 0" );
-	//receiverNode->SetParameterValue( QString( "rotation" ),  QString( "0 0 -1 %1" ).arg( QString::number(rotationAngle ) ) );
-	translationValue = receiverNode->GetParameterValue( QString( "translation" ) ).toString();
-	qobject_cast< TNodesList* >  ( c1ParabolicDishTracker->GetPart("childrenList" ))->InsertItem( receiverNode );
+	QString translationValue = receiverNode->GetParameterValue( "translation" ).toString();
+	receiverNode->SetParameterValue( "translation",  "0 4.52 0" );
+	translationValue = receiverNode->GetParameterValue( "translation" ).toString();
+	( c1ParabolicDishTracker->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( receiverNode );
 
 	std::cout<<"TSurfaceNode"<<std::endl;
 	TSurfaceNode* receiverSurfaceNode = new TSurfaceNode();
-	std::cout<<"\treceiverSurfaceNode: "<<receiverSurfaceNode->GetName().toStdString()<<std::endl;
-	receiverSurfaceNode->SetName( "ReceiverSurface");
-	qobject_cast< TNodesList* >  ( receiverNode->GetPart("childrenList" ))->InsertItem( receiverSurfaceNode );
+	std::cout<<"\treceiverSurfaceNode: "<<receiverSurfaceNode->GetName()<<std::endl;
+	receiverSurfaceNode->SetName( "ReceiverSurface" );
+	( receiverNode->GetPart("childrenList" )->as< TNodesList >() )->InsertItem( receiverSurfaceNode );
 
 
-	TShape* receiverShape = shapeFactoryList[0]->CreateTShape();
-	std::cout<<"\treceiverShape: "<<receiverShape->GetName().toStdString()<<std::endl;
+
+	int receiverShapeIndex =distance( shapeFactoryName.begin(), find(shapeFactoryName.begin(), shapeFactoryName.end(), "Flat_disk" ) );
+	TShape* receiverShape = shapeFactoryList[receiverShapeIndex]->CreateTShape();
+	std::cout<<"\treceiverShape: "<<receiverShape->GetName()<<std::endl;
 	receiverShape->SetName( "ReceiverGeometry");
-	receiverShape->SetParameterValue( QString( "radius" ),  0.30 );
-	receiverSurfaceNode->SetPart( QLatin1String( "shape" ),  receiverShape );
-	std::cout<<"\treceiverShape: "<<receiverShape->GetName().toStdString()<<std::endl;
+	receiverShape->SetParameterValue( "radius",  0.30 );
+	receiverSurfaceNode->SetPart( "shape",  receiverShape );
 
 	if( materialFactoryList.count() > 0 )
 	{
-		TMaterial* receiverMaterial = materialFactoryList[0]->CreateTMaterial();
-		receiverMaterial->SetParameterValue( QLatin1String("reflectivity"), 0.0 );
-		receiverSurfaceNode->SetPart( QLatin1String( "material" ),  receiverMaterial );
+		TMaterial* receiverMaterial = materialFactoryList[concentratorMaterialIndex]->CreateTMaterial();
+		receiverMaterial->SetName( "ReceiverMaterial");
+		std::cout<<"\treceiverMaterial: "<<receiverMaterial->GetName()<<std::endl;
+		receiverMaterial->SetParameterValue( "reflectivity", 0.0 );
+		receiverSurfaceNode->SetPart( "material",  receiverMaterial );
 	}
 
 	//Concentrator 2
+	std::cout<<"Concentrator 2"<<std::endl;
 	TGroupNode* concentrator2Node = new TGroupNode();
 	concentrator2Node->SetName( "Concentrator2");
-	concentrator2Node->SetParameterValue( QString( "translation" ),  QString( "5 0 0" ) );
-	if( !qobject_cast< TNodesList* >  ( rootNode->GetPart("childrenList" ) )->InsertItem( concentrator2Node ) )
+	concentrator2Node->SetParameterValue( "translation",  QString( "5 0 0" ) );
+	if( !( rootNode->GetPart("childrenList" )->as< TNodesList >() )->InsertItem( concentrator2Node ) )
 	{
 		std::cout<<"Error adding concentrator 2 to root node"<<std::endl;
 		return -1;
 	}
 
-
-	TTrackerNode* c2ParabolicDishTracker = trackerFactoryList[0]->CreateTTrackerNode();
+	std::cout<<"\tConcentrator2 tracker"<<std::endl;
+	TTrackerNode* c2ParabolicDishTracker = trackerFactoryList[trackerFactoryIndex]->CreateTTrackerNode();
 	c2ParabolicDishTracker->SetName( "Tracker_Concentrator_2");
-	qobject_cast< TNodesList* >  ( concentrator2Node->GetPart("childrenList" ))->InsertItem( c2ParabolicDishTracker );
-
-	if( !qobject_cast< TNodesList* >  ( c2ParabolicDishTracker->GetPart("childrenList" ))->InsertItem( concentratorSurfaceNode ))
+	if( !( c2ParabolicDishTracker->GetPart("childrenList" )->as< TNodesList >() )->InsertItem( concentratorSurfaceNode ) )
 	{
 		std::cout<<"Error adding tracker node to concentrator 2"<<std::endl;
 		return -1;
 	}
 
-
+	std::cout<<"TNodesDocument saveDocument"<<std::endl;
 	TNodesDocument saveDocument;
 	saveDocument.SetRootNode( tonatiuhScene );
 	if( !saveDocument.Write( argv[1] )  )
@@ -257,7 +281,7 @@ int main ( int argc, char** argv )
 	tonatiuhScene->RemoveReference();
 	std::cout<<"Removed scene node"<<std::endl;
 	tonatiuhScene = 0;
-	*/
+
 
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
 
@@ -351,7 +375,6 @@ int main ( int argc, char** argv )
 		return ( -4 );
 	}
 
-	std::cout<<"raytracer raytracer.SetRandomNumberGenerator( pRand )"<<std::endl;
 	raytracer.SetRandomNumberGenerator( pRand );
 	raytracer.SetPhotonMap( pPhotonMap );
 	raytracer.Run( 10000000 );

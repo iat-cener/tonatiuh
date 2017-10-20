@@ -48,17 +48,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * TParameter is the abstraction of the new types of parameters. All the new types of parameters in Tonatiuh must be inherited by this class.
 */
 
-/** Base class of all Tonatiuh nodes: TNode */
+/** Base class of all Tonatiuh parameters: TParameter
+ * TParameter must be a QObject to work as a QVariant*/
 class TParameter: public QObject
 {
 	Q_OBJECT
 
 private:
 	TParameter(const TParameter& node) = delete;
-/*
-	Q_OBJECT
-	Q_DISABLE_COPY(TParameter)
-*/
+
 public:
 	TParameter();
 	virtual ~TParameter();

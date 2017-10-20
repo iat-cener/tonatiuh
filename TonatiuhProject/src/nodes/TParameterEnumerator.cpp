@@ -37,6 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
 #include "TParameterEnumerator.h"
 
 /*!
@@ -64,12 +65,11 @@ TParameterEnumerator::~TParameterEnumerator()
  */
 void TParameterEnumerator::AddValue( std::string name, bool iDefault )
 {
-	std::vector<std::string>::iterator it = std::find( m_nameList.begin(), m_nameList.end(), name  );
-	if( it == m_nameList.end() )
+	if( std::find( m_nameList.begin(), m_nameList.end(), name  ) == m_nameList.end() )
 		m_nameList.push_back( name );
 
 	if( iDefault )
-		m_selectedIndex = distance( m_nameList.begin(),it );
+		m_selectedIndex = distance( m_nameList.begin(), std::find( m_nameList.begin(), m_nameList.end(), name  ) );
 
 }
 
