@@ -11,9 +11,9 @@ INCLUDEPATH += 	. \
 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry  -lnodes
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry   -lnodes
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes
 }
 
 		 
