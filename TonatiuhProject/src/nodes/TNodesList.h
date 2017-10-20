@@ -56,10 +56,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TNodesList : public TNode
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(TNodesList)
+	TNodesList(const TNodesList& node) = delete;
 
 public:
 	static void Init();
@@ -67,6 +66,8 @@ public:
 	TNodesList();
 
 	void AddValidNodeType( TNodeType type );
+	virtual TNodesList* Copy() const;
+	virtual std::string GetIcon() const;
 	virtual TNodeType GetType() const;
 
 	TNode* Item( int index ) const;
@@ -85,8 +86,5 @@ protected:
 private:
 	static TNodeType m_nodeType;
 };
-
-
-
 
 #endif /* TNODESLIST_H_ */

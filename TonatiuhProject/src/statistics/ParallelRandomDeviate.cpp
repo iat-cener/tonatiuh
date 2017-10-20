@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "ParallelRandomDeviate.h"
 
-ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand,  QMutex* mutex, unsigned long arraySize, QObject* parent )
+ParallelRandomDeviate::ParallelRandomDeviate( RandomDeviate* rand,  std::mutex* mutex, unsigned long arraySize, QObject* parent )
 :QObject( parent ),RandomDeviate( arraySize ),
 m_pRand( rand ),
 m_mutex( mutex )

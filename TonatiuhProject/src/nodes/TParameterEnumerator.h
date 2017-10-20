@@ -40,10 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TPARAMETERENUMERATOR_H_
 #define TPARAMETERENUMERATOR_H_
 
-#include <iostream>
-
-#include <QString>
-#include <QStringList>
+#include <string>
+#include <vector>
 
 #include <QMetaType>
 
@@ -57,25 +55,31 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class TParameterEnumerator: public TParameter
 {
 	Q_OBJECT
+
+private:
+	TParameterEnumerator(const TParameterEnumerator& node) = delete;
+	/*
+	Q_OBJECT
 	Q_DISABLE_COPY(TParameterEnumerator)
+	*/
 
 public:
 	TParameterEnumerator();
 	~TParameterEnumerator();
 
-	void AddValue( QString name, bool iDefault = true );
+	void AddValue( std::string name, bool iDefault = true );
 
 	//int GetSelectedIndex( ) const;
-	QString GetSelectedName() const;
+	std::string GetSelectedName() const;
 
 
 	bool SetValue( QVariant value );
-	QString ToString() const;
+	std::string ToString() const;
 
 private:
 
 	int m_selectedIndex;
-	QStringList m_nameList;
+	std::vector<std::string> m_nameList;
 };
 
 Q_DECLARE_METATYPE(TParameterEnumerator*)

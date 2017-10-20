@@ -37,15 +37,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-#include <QString>
 #include <QTime>
 
 #include "RandomMersenneTwister.h"
 #include "RandomMersenneTwisterFactory.h"
 
-QString RandomMersenneTwisterFactory::RandomDeviateName() const
+std::string RandomMersenneTwisterFactory::RandomDeviateName() const
 {
-	return QString( "Mersenne Twister" );
+	return ( "Mersenne Twister" );
 }
 
 QIcon  RandomMersenneTwisterFactory::RandomDeviateIcon() const

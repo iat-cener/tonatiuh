@@ -8,39 +8,42 @@
 #ifndef TPARAMETERLIST_H_
 #define TPARAMETERLIST_H_
 
-#include <QHash>
-#include <QString>
+#include <map>
+#include <string>
+
 #include <QVariant>
 
 
-class TParameterList: public QObject
+class TParameterList
 {
-	Q_OBJECT
+private:
+	TParameterList( const TParameterList& node) = delete;
+//	Q_OBJECT
 
 public:
 	TParameterList();
 	~TParameterList();
 
-	void Append( const QString& key, const QVariant& value, bool visible = true );
+	void Append( const std::string& key, const QVariant& value, bool visible = true );
 
 	// Testing
-	bool Contains(const QString& name) const;
+	bool Contains(const std::string& name) const;
 
 	// Query Values
-	QVariant GetValue(const QString& name) const;
-	QVariant GetValue(const QString& name, const QVariant& defaultValue) const;
-	bool GetVisibility(const QString& name) const;
-	QStringList GetParametersNames() const;
+	QVariant GetValue(const std::string& name) const;
+	QVariant GetValue(const std::string& name, const QVariant& defaultValue) const;
+	bool GetVisibility(const std::string& name) const;
+	std::vector< std::string > GetParametersNames() const;
 
 	int NumberOfParameters() const;
 
-	bool RemoveParameter( const QString& name );
+	bool RemoveParameter( const std::string& name );
 
-	bool SetValue(const QString& name, const QVariant& value );
+	bool SetValue(const std::string& name, const QVariant& value );
 
 protected:
-	QHash< QString, QVariant > m_parametersList;
-	QHash< QString, bool > m_parametersVisibilityList;
+	std::map< std::string, QVariant > m_parametersList;
+	std::map< std::string, bool > m_parametersVisibilityList;
 };
 
 #endif /* TPARAMETERLIST_H_ */

@@ -62,13 +62,15 @@ TParameterEnumerator::~TParameterEnumerator()
  * Adds a new element to the enumerator list with the given \a name.
  * If \a isDefault is true, the current element with be the selected element by defualt.
  */
-void TParameterEnumerator::AddValue( QString name, bool iDefault )
+void TParameterEnumerator::AddValue( std::string name, bool iDefault )
 {
-	if( !m_nameList.contains( name ) )
+	std::vector<std::string>::iterator it = std::find( m_nameList.begin(), m_nameList.end(), name  );
+	if( it == m_nameList.end() )
 		m_nameList.push_back( name );
 
 	if( iDefault )
-		m_selectedIndex = m_nameList.indexOf( name );
+		m_selectedIndex = distance( m_nameList.begin(),it );
+
 }
 
 /*!
@@ -82,7 +84,7 @@ void TParameterEnumerator::AddValue( QString name, bool iDefault )
 /*!
  * Gives the name of the selected element.
  */
-QString TParameterEnumerator::GetSelectedName() const
+std::string TParameterEnumerator::GetSelectedName() const
 {
 	return ( m_nameList[m_selectedIndex] );
 }
@@ -93,17 +95,19 @@ QString TParameterEnumerator::GetSelectedName() const
  */
 bool TParameterEnumerator::SetValue( QVariant value )
 {
-	if( !m_nameList.contains( value.toString() ) )
+	std::vector<std::string>::iterator it = std::find( m_nameList.begin(), m_nameList.end(), value.toString().toStdString()  );
+	if( it == m_nameList.end() )
 		return ( false );
 
-	m_selectedIndex = m_nameList.indexOf( value.toString() );
+
+	m_selectedIndex = distance( m_nameList.begin(),it );
 	return ( true );
 }
 
 /*!
  * Returns the name of the selected value.
  */
-QString TParameterEnumerator::ToString() const
+std::string TParameterEnumerator::ToString() const
 {
 	return ( GetSelectedName() );
 }

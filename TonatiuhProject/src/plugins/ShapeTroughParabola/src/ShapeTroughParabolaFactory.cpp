@@ -55,9 +55,9 @@ void ShapeTroughParabolaFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeTroughParabolaFactory::TShapeName() const
+std::string ShapeTroughParabolaFactory::TShapeName() const
 {
-	return QString("Trough_Parabola" );
+	return ( "Trough_Parabola" );
 }
 
 /*!

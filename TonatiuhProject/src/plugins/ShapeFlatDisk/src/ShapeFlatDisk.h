@@ -45,10 +45,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class ShapeFlatDisk : public TShape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeFlatDisk)
+	ShapeFlatDisk(const ShapeFlatDisk& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -56,7 +55,7 @@ public:
 
 	ShapeFlatDisk( );
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

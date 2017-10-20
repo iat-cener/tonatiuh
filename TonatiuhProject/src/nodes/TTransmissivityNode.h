@@ -52,16 +52,22 @@ class RandomDeviate;
 
 class TTransmissivityNode: public TNode
 {
+
+private:
+	TTransmissivityNode(const TTransmissivityNode& node) = delete;
+/*
 	Q_OBJECT
 
 private:
 	Q_DISABLE_COPY(TTransmissivityNode)
+*/
 
 public:
 	static void Init();
 
 	TTransmissivityNode();
 
+	virtual std::string GetIcon() const = 0;
 	virtual TNodeType GetType() const;
 	virtual bool IsTransmitted( double distance, RandomDeviate& rand ) const = 0;
 

@@ -59,7 +59,7 @@ void* ShapeCylinder::CreateInstance( )
  */
 void ShapeCylinder::Init()
 {
-	ShapeCylinder::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeCylinder" ), &ShapeCylinder::CreateInstance );
+	ShapeCylinder::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeCylinder", &ShapeCylinder::CreateInstance );
 }
 
 /*!
@@ -68,12 +68,13 @@ void ShapeCylinder::Init()
 ShapeCylinder::ShapeCylinder()
 :TShape()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Parameters
-	m_parametersList->Append( QLatin1String("radius"), 0.5 );
-	m_parametersList->Append( QLatin1String("length"), 1.0 );
-	m_parametersList->Append( QLatin1String("phiMax"), gc::TwoPi );
+	m_parametersList->Append( "radius", 0.5 );
+	m_parametersList->Append( "length", 1.0 );
+	m_parametersList->Append( "phiMax", gc::TwoPi );
 }
 
 /*!
@@ -87,10 +88,10 @@ ShapeCylinder::~ShapeCylinder()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeCylinder::GetIcon()
+std::string ShapeCylinder::GetIcon() const
 {
 
-	return QLatin1String( ":/icons/ShapeCylinder.png" );
+	return ":/icons/ShapeCylinder.png";
 }
 
 
@@ -99,9 +100,9 @@ QString ShapeCylinder::GetIcon()
  */
 BBox ShapeCylinder::GetBondingBox() const
 {
-	double radius = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
-	double phiMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
-	double length = m_parametersList->GetValue( QLatin1String("length") ).toDouble();
+	double radius = m_parametersList->GetValue( "radius" ).toDouble();
+	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
+	double length = m_parametersList->GetValue( "length" ).toDouble();
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -135,9 +136,9 @@ TNodeType ShapeCylinder::GetType() const
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
 
-	double radius = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
-	double phiMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
-	double length = m_parametersList->GetValue( QLatin1String("length") ).toDouble();
+	double radius = m_parametersList->GetValue( "radius" ).toDouble();
+	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
+	double length = m_parametersList->GetValue( "length" ).toDouble();
 
 	// Compute quadratic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );

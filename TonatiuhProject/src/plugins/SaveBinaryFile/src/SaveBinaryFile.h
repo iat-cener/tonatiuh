@@ -45,13 +45,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   SaveFile is an I/O device that provides the base functionality for writing simulation data to a files, the specific file format depends on the SaveFile derived class used.
 */
 
+#include <string>
 #include <vector>
 
-#include <QString>
 
 #include "SaveFile.h"
 
 class Photon;
+class QString;
 
 class SaveBinaryFile : public SaveFile
 {
@@ -63,7 +64,7 @@ public:
 	void EndSave();
 	void SavePhotonMap( std::vector < Photon* > raysLists );
 	void SetPowerPerPhoton( double wPhoton );
-	void SetSaveParameterValue( QString parameterName, QString parameterValue );
+	void SetSaveParameterValue( std::string parameterName, std::string parameterValue );
 	bool StartSave();
 
 private:
@@ -86,10 +87,10 @@ private:
 private:
 
 	int m_currentFileID;
-	QString m_exportDirecotryName;
+	std::string m_exportDirecotryName;
 	unsigned long m_exportedPhotons;
 	unsigned long m_nPhotonsPerFile;
-	QString m_photonsFilename;
+	std::string m_photonsFilename;
 	double m_powerPerPhoton;
 	bool m_oneFile;
 

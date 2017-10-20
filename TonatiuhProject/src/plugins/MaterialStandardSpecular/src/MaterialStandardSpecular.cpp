@@ -64,7 +64,7 @@ void* MaterialStandardSpecular::CreateInstance( )
 void MaterialStandardSpecular::Init()
 {
 
-	MaterialStandardSpecular::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Material" ), QString( "MaterialStandardSpecular" ), &MaterialStandardSpecular::CreateInstance );
+	MaterialStandardSpecular::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Material" ), "MaterialStandardSpecular", &MaterialStandardSpecular::CreateInstance );
 }
 
 /*!
@@ -73,11 +73,13 @@ void MaterialStandardSpecular::Init()
 MaterialStandardSpecular::MaterialStandardSpecular()
 :TMaterial()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
+
 
 	//Translation
-	m_parametersList->Append( QLatin1String("reflectivity"), 0.0 );
-	m_parametersList->Append( QLatin1String("sigmaSlope"), 2.0 );
+	m_parametersList->Append( "reflectivity", 0.0 );
+	m_parametersList->Append( "sigmaSlope", 2.0 );
 
 	TParameterEnumerator*  distributionEnumerator = new TParameterEnumerator;
 	distributionEnumerator->AddValue( "PILLBOX", true );
@@ -85,10 +87,10 @@ MaterialStandardSpecular::MaterialStandardSpecular()
 
 	QVariant distributionParameter;
 	distributionParameter.setValue( distributionEnumerator);
-	m_parametersList->Append( QLatin1String("distribution"), distributionParameter );
+	m_parametersList->Append( "distribution", distributionParameter );
 
-	m_parametersList->Append( QLatin1String("color"), QLatin1String( "0.2 0.2 0.2" ) );
-	m_parametersList->Append( QLatin1String("transparency"), 0.0 );
+	m_parametersList->Append( "color", "0.2 0.2 0.2" );
+	m_parametersList->Append( "transparency", 0.0 );
 }
 
 /*!
@@ -96,7 +98,7 @@ MaterialStandardSpecular::MaterialStandardSpecular()
  */
 MaterialStandardSpecular::~MaterialStandardSpecular()
 {
-	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( QLatin1String("distribution") ).value<TParameterEnumerator*>();
+	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( "distribution" ).value<TParameterEnumerator*>();
 	delete typeOfDistribution;
 	typeOfDistribution = 0;
 }
@@ -104,9 +106,9 @@ MaterialStandardSpecular::~MaterialStandardSpecular()
 /*!
  * Returns the material icon filename.
  */
-QString MaterialStandardSpecular::GetIcon()
+std::string MaterialStandardSpecular::GetIcon()
 {
-	return ( QLatin1String(":icons/MaterialStandardSpecular.png") );
+	return ( ":icons/MaterialStandardSpecular.png" );
 }
 
 /*!
@@ -123,9 +125,9 @@ TNodeType MaterialStandardSpecular::GetType() const
 bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {
 
-	double reflectivity = m_parametersList->GetValue( QLatin1String( "reflectivity" ) ).toDouble();
-	double sigmaSlopeMRAD = m_parametersList->GetValue( QLatin1String( "sigmaSlope" ) ).toDouble();
-	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( QLatin1String("distribution") ).value<TParameterEnumerator*>();
+	double reflectivity = m_parametersList->GetValue( "reflectivity" ).toDouble();
+	double sigmaSlopeMRAD = m_parametersList->GetValue(  "sigmaSlope" ).toDouble();
+	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( "distribution" ).value<TParameterEnumerator*>();
 
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= reflectivity  ) return ( false );
@@ -138,7 +140,8 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 	if( sigmaSlope > 0.0 )
 	{
 		NormalVector errorNormal;
-		if( typeOfDistribution->GetSelectedName() == QLatin1String( "PILLBOX" ) )
+		std::string typeOfDistributionValue = typeOfDistribution->GetSelectedName();
+		if( typeOfDistributionValue == "PILLBOX" )
 		{
 			double phi = gc::TwoPi * rand.RandomDouble();
 			double theta = sigmaSlope * rand.RandomDouble();
@@ -146,14 +149,14 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 			errorNormal.x = sin( theta ) * sin( phi ) ;
 			errorNormal.y = cos( theta );
 			errorNormal.z = sin( theta ) * cos( phi );
-		 }
-		 else if( typeOfDistribution->GetSelectedName() == QLatin1String( "NORMAL" ) )
-		 {
-			 errorNormal.x = sigmaSlope * sf::AlternateBoxMuller( rand );
-			 errorNormal.y = 1.0;
-			 errorNormal.z = sigmaSlope * sf::AlternateBoxMuller( rand );
+		}
+		else if( typeOfDistributionValue == "NORMAL" )
+		{
+			errorNormal.x = sigmaSlope * sf::AlternateBoxMuller( rand );
+			errorNormal.y = 1.0;
+			errorNormal.z = sigmaSlope * sf::AlternateBoxMuller( rand );
+		}
 
-		 }
 		Vector3D r = dg->normal;
 		Vector3D s = Normalize( dg->dpdu );
 		Vector3D t = Normalize( dg->dpdv );

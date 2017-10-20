@@ -59,20 +59,19 @@ void* ShapeFlatDisk::CreateInstance( )
  */
 void ShapeFlatDisk::Init()
 {
-	ShapeFlatDisk::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeFlatDisk" ), &ShapeFlatDisk::CreateInstance );
+	ShapeFlatDisk::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeFlatDisk", &ShapeFlatDisk::CreateInstance );
 }
 
 /*!
  * ShapeFlatDisk : public TShape
  */
 ShapeFlatDisk::ShapeFlatDisk()
-:TShape()//,
- //m_nodeType(TNodeType::FromName( QLatin1String( "ShapeFlatDisk" ) ) )
+:TShape()
 {
-	setObjectName(GetType().GetName());
+	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( QLatin1String("radius"), 0.5 );
+	m_parametersList->Append( "radius", 0.5 );
 }
 
 /*!
@@ -86,10 +85,9 @@ ShapeFlatDisk::~ShapeFlatDisk()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeFlatDisk::GetIcon()
+std::string ShapeFlatDisk::GetIcon() const
 {
-
-	return QLatin1String( ":/icons/ShapeFlatDisk.png" );
+	return ( ":/icons/ShapeFlatDisk.png" );
 }
 
 
@@ -99,7 +97,7 @@ QString ShapeFlatDisk::GetIcon()
 BBox ShapeFlatDisk::GetBondingBox() const
 {
 
-	double radius = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
+	double radius = m_parametersList->GetValue( "radius" ).toDouble();
 	Point3D min = Point3D( -radius, 0.0, -radius );
 	Point3D max = Point3D( radius, 0.0, radius );
 
@@ -123,7 +121,7 @@ bool ShapeFlatDisk::Intersect( const Ray& objectRay, double* tHit, DifferentialG
 	//return ( false );
 
 
-	double radius = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
+	double radius = m_parametersList->GetValue( "radius" ).toDouble();
 
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction().y == 0 ) ) return false;

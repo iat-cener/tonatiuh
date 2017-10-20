@@ -55,7 +55,7 @@ void* TCuboid::CreateInstance( )
  */
 void TCuboid::Init()
 {
-	TCuboid::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "Cuboid" ), &TCuboid::CreateInstance );
+	TCuboid::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "Cuboid", &TCuboid::CreateInstance );
 }
 
 /*!
@@ -67,7 +67,8 @@ TCuboid::TCuboid()
  m_height( 1 ),
  m_width( 1 )
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 }
 
 
@@ -79,10 +80,12 @@ TCuboid::~TCuboid()
 
 }
 
-
-QString TCuboid::GetIcon()
+/*!
+ * Returns icon file name
+ */
+std::string  TCuboid::GetIcon() const
 {
-	return ( QLatin1String( ":/icons/tcuboid.png" ) );
+	return ( ":/icons/tcuboid.png" );
 }
 
 

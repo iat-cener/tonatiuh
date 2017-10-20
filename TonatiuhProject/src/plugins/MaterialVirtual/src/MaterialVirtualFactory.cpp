@@ -56,9 +56,9 @@ void MaterialVirtualFactory::Init() const
 /*!
  * Returns material type name.
  */
-QString MaterialVirtualFactory::TMaterialName() const
+std::string MaterialVirtualFactory::TMaterialName() const
 {
-	return QString("Virtual_Material");
+	return ( "Virtual_Material" );
 }
 
 /*!

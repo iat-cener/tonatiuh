@@ -56,9 +56,9 @@ void ShapeFlatDiskFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeFlatDiskFactory::TShapeName() const
+std::string ShapeFlatDiskFactory::TShapeName() const
 {
-	return QString("Flat_disk");
+	return "Flat_disk";
 }
 
 /*!

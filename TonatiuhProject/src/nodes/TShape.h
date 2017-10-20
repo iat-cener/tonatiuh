@@ -55,17 +55,21 @@ class DifferentialGeometry;
 
 class TShape: public TNode
 {
-	Q_OBJECT
+
+private:
+	TShape(const TShape& node) = delete;
+/*
 
 private:
 	Q_DISABLE_COPY(TShape)
+*/
 
 public:
 	static void Init();
 
 	TShape();
 
-	virtual QString GetIcon() = 0;
+	virtual std::string GetIcon() const = 0;
 	virtual BBox GetBondingBox() const = 0;
 	virtual TNodeType GetType() const;
 	virtual bool Intersect( const Ray& objectRay, double *tHit, DifferentialGeometry *dg, bool* isShapeFront ) const = 0;

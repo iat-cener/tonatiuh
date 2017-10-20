@@ -61,7 +61,9 @@ class Vector3D;
 
 class TGroupNode : public TContainerNode
 {
-	Q_OBJECT
+	//Q_OBJECT
+private:
+	TGroupNode(const TGroupNode& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -69,6 +71,7 @@ public:
 
 	TGroupNode();
 
+	virtual std::string GetIcon() const;
 	virtual Transform GetTrasformation() const;
 	virtual TNodeType GetType() const;
 
@@ -76,14 +79,13 @@ protected:
 	virtual ~TGroupNode();
 
 protected:
-	QString m_rotationName;
-	QString m_scaleFactorName;
-	QString m_translationName;
+	std::string m_rotationName;
+	std::string m_scaleFactorName;
+	std::string m_translationName;
 
 private:
 	static TNodeType m_nodeType;
 };
-
 
 
 #endif /* TGROUPNODE_H_ */

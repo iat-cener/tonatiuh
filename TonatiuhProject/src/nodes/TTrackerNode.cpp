@@ -51,7 +51,7 @@ TNodeType TTrackerNode::m_nodeType = TNodeType::CreateEmptyType();
  */
 void TTrackerNode::Init()
 {
-	TTrackerNode::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "GroupNode" ), QString( "Tracker" ) );
+	TTrackerNode::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "GroupNode" ), "Tracker" );
 
 }
 
@@ -61,14 +61,12 @@ void TTrackerNode::Init()
 TTrackerNode::TTrackerNode()
 :TGroupNode()
 {
-
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	m_parametersList->RemoveParameter(  m_rotationName );
 	m_parametersList->RemoveParameter(  m_scaleFactorName );
 	m_parametersList->RemoveParameter(  m_translationName );
-
-
 }
 
 /*!
@@ -78,37 +76,6 @@ TTrackerNode::~TTrackerNode()
 {
 
 }
-
-
-/*!
- * Returns the object to world transformation for the parameters defined for this node.
- */
-/*
-Transform TTrackerNode::GetTrasformation() const
-{
-	TParameterList* parametersList = GetParameters();
-	if( !parametersList || parametersList->NumberOfParameters() == 0 )	return ( Transform() );
-
-	QStringList translationValues = parametersList->Get( QLatin1String("translation") ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( translationValues.count() != 3 ) 	return ( Transform() );
-	Transform translation = Translate( translationValues[0].toDouble(), translationValues[1].toDouble(), translationValues[2].toDouble()  );
-
-	QStringList rotationValues = parametersList->Get( QLatin1String("rotation") ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( rotationValues.count() != 4 ) return ( Transform() );
-	Vector3D rotationAxis( rotationValues[0].toDouble(), rotationValues[1].toDouble(), rotationValues[2].toDouble());
-	if( fabs( 1.0 - rotationAxis.length() ) > gc::Epsilon  )	return ( Transform() );
-	Transform rotation = Rotate( rotationValues[3].toDouble(), rotationAxis   );
-
-	QStringList scaleValues = parametersList->Get( QLatin1String("scale") ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( scaleValues.count() != 3 ) return ( Transform() );
-	Transform scale = Scale( scaleValues[0].toDouble(), scaleValues[1].toDouble(), scaleValues[2].toDouble() );
-
-	//First scaled, the rotated and finally is translated
-	Transform transformOTW = translation*rotation*scale;
-
-	return ( transformOTW );
-}
-*/
 
 /*!
  * Returns the type of node.

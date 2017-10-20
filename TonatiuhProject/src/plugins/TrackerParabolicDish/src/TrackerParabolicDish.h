@@ -53,7 +53,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TrackerParabolicDish : public TTrackerNode
 {
-	Q_OBJECT
+
+private:
+	TrackerParabolicDish(const TrackerParabolicDish& node) = delete;
+
 
 public:
 	static void* CreateInstance();
@@ -62,6 +65,7 @@ public:
 	TrackerParabolicDish();
 	~TrackerParabolicDish();
 
+	std::string GetIcon() const;
 	Transform GetTrasformation() const;
 	TNodeType GetType() const;
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );

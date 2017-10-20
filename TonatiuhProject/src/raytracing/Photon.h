@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PHOTON_H_
 #define PHOTON_H_
 
-#include <QString>
+#include <string>
 
 #include "Point3D.h"
 
@@ -53,13 +53,13 @@ struct Photon
 {
 	Photon( );
 	Photon( const Photon& photon );
-	Photon( Point3D posW,  Point3D posL, int side, double id = 0, QString intersectedSurfaceURL = QLatin1String( "" ), int absorbedPhoton = 0 );
+	Photon( Point3D posW,  Point3D posL, int side, double id = 0, std::string intersectedSurfaceURL = std::string( "" ), int absorbedPhoton = 0 );
 	~Photon();
 
 	double id;
 	Point3D posWorld; //global
 	Point3D posLocal; //local
-	QString intersectedSurfaceURL;
+	std::string intersectedSurfaceURL;
 	int side;
 	int isAbsorbed;
 

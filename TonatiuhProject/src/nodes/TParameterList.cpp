@@ -59,22 +59,21 @@ TParameterList::~TParameterList()
 /*!
  * Appends the parameter defined with the \a key and its \a value to the list.
  */
-void TParameterList::Append(const QString& key, const QVariant& value, bool visibility )
+void TParameterList::Append(const std::string& key, const QVariant& value, bool visibility )
 {
-	if( m_parametersList.contains( key ) )
+	if( m_parametersList.find( key ) != m_parametersList.end() )
 		return;
 
 	m_parametersList[key] = value;
 	m_parametersVisibilityList[key] = visibility;
-	//setProperty( key.toLatin1(), value );
 }
 
 /*!
  * Returns true if there is a parameter with the \a name in the list. Otherwise, returns false.
  */
-bool TParameterList::Contains(const QString& name) const
+bool TParameterList::Contains(const std::string& name) const
 {
-	if( m_parametersList.contains( name ) )
+	if( m_parametersList.find( name ) != m_parametersList.end()  )
 		return ( true );
 
     return ( false );
@@ -83,7 +82,7 @@ bool TParameterList::Contains(const QString& name) const
 /*!
  * Returns the value of the parameter \a name. If a parameter with defined name is not defined in the list, an empty string is returned.
  */
-QVariant TParameterList::GetValue(const QString& name) const
+QVariant TParameterList::GetValue(const std::string& name) const
 {
   return ( GetValue(name, QVariant() ) );
 }
@@ -91,10 +90,10 @@ QVariant TParameterList::GetValue(const QString& name) const
 /*!
  * Returns the value of the parameter \a name. If there is not a parameter with the name defined \a defaultValue is returned.
  */
-QVariant TParameterList::GetValue(const QString& name, const QVariant& defaultValue) const
+QVariant TParameterList::GetValue(const std::string& name, const QVariant& defaultValue) const
 {
 	if( Contains(name) )
-		return ( m_parametersList.value(name) );
+		return ( m_parametersList.at( name ) );
   else
     return ( defaultValue );
 }
@@ -103,10 +102,10 @@ QVariant TParameterList::GetValue(const QString& name, const QVariant& defaultVa
  * Returns if true if the parameter could be used externally to the node.
  * Otherwise return false.
  */
-bool TParameterList::GetVisibility(const QString& name) const
+bool TParameterList::GetVisibility(const std::string& name) const
 {
 	if( Contains(name) )
-		return ( m_parametersVisibilityList.value(name) );
+		return ( m_parametersVisibilityList.at( name ) );
   else
     return ( false );
 
@@ -115,9 +114,14 @@ bool TParameterList::GetVisibility(const QString& name) const
 /*!
  * Returns a list with the name of the parameters.
  */
-QStringList TParameterList::GetParametersNames() const
+std::vector<std::string > TParameterList::GetParametersNames() const
 {
-	return ( m_parametersList.keys() );
+	std::vector<std::string> keys_list;
+	for( auto const& element: m_parametersList )
+		keys_list.push_back( element.first );
+
+
+	return ( keys_list );
 }
 
 
@@ -126,19 +130,19 @@ QStringList TParameterList::GetParametersNames() const
  */
 int TParameterList::NumberOfParameters() const
 {
-	return ( m_parametersList.count() );
+	return ( m_parametersList.size() );
 }
 
 /*!
  * Removes the parameter with the name \a name from the parameter list.
  * Return false if the list does not contains a parameter with defined name or the parameter cannot be removed.
  */
-bool TParameterList::RemoveParameter( const QString& name )
+bool TParameterList::RemoveParameter( const std::string& name )
 {
 	if( !Contains( name ) )
 			return ( false );
 
-	if( ( m_parametersList.remove( name ) > 0 ) && ( m_parametersVisibilityList.remove( name ) ) )
+	if( ( m_parametersList.erase( name ) > 0 ) && ( m_parametersVisibilityList.erase( name ) ) )
 			return ( true );
 	return ( false );
 }
@@ -147,17 +151,19 @@ bool TParameterList::RemoveParameter( const QString& name )
  * Sets to the parameter \a name the \a value.
  */
 
-bool TParameterList::SetValue(const QString& name, const QVariant& value )
+bool TParameterList::SetValue(const std::string& name, const QVariant& value )
 {
 	if( !Contains(name) )	return ( false );
+
 
 	int typeID = m_parametersList[name].type();
 	if( QMetaType::User == typeID )
 	{
 		TParameter* variantType = m_parametersList[name].value<TParameter*>();
-		if( !variantType->SetValue( value ) ) return ( false );
+		if( !variantType || !variantType->SetValue( value ) ) return ( false );
 	}
 	else
 		m_parametersList[name] = value;
+
 	return ( true );
 }

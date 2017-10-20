@@ -54,10 +54,11 @@ class DifferentialGeometry;
 
 class TCuboid : public TShape
 {
-	Q_OBJECT
+	//Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(TCuboid)
+	TCuboid(const TCuboid& node) = delete;
+	//Q_DISABLE_COPY(TCuboid)
 
 public:
 	static void* CreateInstance();
@@ -65,7 +66,7 @@ public:
 
 	TCuboid();
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

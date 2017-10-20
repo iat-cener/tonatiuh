@@ -59,7 +59,7 @@ void* ShapeFlatTriangle::CreateInstance( )
  */
 void ShapeFlatTriangle::Init()
 {
-	ShapeFlatTriangle::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeFlatTriangle" ), &ShapeFlatTriangle::CreateInstance );
+	ShapeFlatTriangle::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeFlatTriangle", &ShapeFlatTriangle::CreateInstance );
 }
 
 /*!
@@ -68,20 +68,21 @@ void ShapeFlatTriangle::Init()
 ShapeFlatTriangle::ShapeFlatTriangle(  )
 :TShape()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Parameters
 	QVariant aParameter;
 	aParameter.setValue( new TParameterPoint3D( Point3D( -0.5, 0.0, 0.0 ) ) );
-	m_parametersList->Append( QLatin1String("a"), aParameter );
+	m_parametersList->Append( "a", aParameter );
 
 	QVariant bParameter;
 	bParameter.setValue( new TParameterPoint3D( Point3D( 0.5, 0.0, 0.0 ) ) );
-	m_parametersList->Append( QLatin1String("b"), bParameter );
+	m_parametersList->Append( "b", bParameter );
 
 	QVariant cParameter;
 	cParameter.setValue( new TParameterPoint3D( Point3D( 0.0, 1.0, 0.0 ) ) );
-	m_parametersList->Append( QLatin1String("c"), cParameter );
+	m_parametersList->Append( "c", cParameter );
 }
 
 /*!
@@ -89,15 +90,15 @@ ShapeFlatTriangle::ShapeFlatTriangle(  )
  */
 ShapeFlatTriangle::~ShapeFlatTriangle()
 {
-	TParameterPoint3D* aPoint = m_parametersList->GetValue( QLatin1String("a") ).value<TParameterPoint3D*>();
+	TParameterPoint3D* aPoint = m_parametersList->GetValue( "a" ).value<TParameterPoint3D*>();
 	delete aPoint;
 	aPoint = 0;
 
-	TParameterPoint3D* bPoint = m_parametersList->GetValue( QLatin1String("b") ).value<TParameterPoint3D*>();
+	TParameterPoint3D* bPoint = m_parametersList->GetValue( "b" ).value<TParameterPoint3D*>();
 	delete bPoint;
 	bPoint = 0;
 
-	TParameterPoint3D* cPoint = m_parametersList->GetValue( QLatin1String("c") ).value<TParameterPoint3D*>();
+	TParameterPoint3D* cPoint = m_parametersList->GetValue( "c" ).value<TParameterPoint3D*>();
 	delete cPoint;
 	cPoint = 0;
 
@@ -106,10 +107,10 @@ ShapeFlatTriangle::~ShapeFlatTriangle()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeFlatTriangle::GetIcon()
+std::string ShapeFlatTriangle::GetIcon() const
 {
 
-	return QLatin1String( ":/icons/ShapeFlatTriangle.png" );
+	return ( ":/icons/ShapeFlatTriangle.png" );
 }
 
 
@@ -119,9 +120,9 @@ QString ShapeFlatTriangle::GetIcon()
 BBox ShapeFlatTriangle::GetBondingBox() const
 {
 
-	Point3D aPoint = m_parametersList->GetValue( QLatin1String("a") ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D bPoint = m_parametersList->GetValue( QLatin1String("b") ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D cPoint = m_parametersList->GetValue( QLatin1String("c") ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D aPoint = m_parametersList->GetValue( "a" ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D bPoint = m_parametersList->GetValue( "b" ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D cPoint = m_parametersList->GetValue( "c" ).value<TParameterPoint3D*>()->GetPoint3D();
 
 	double xmin = std::min( aPoint.x, std::min( bPoint.x, cPoint.x ) );
 	double xmax = std::max( aPoint.x, std::max( bPoint.x, cPoint.x ) );
@@ -148,9 +149,9 @@ TNodeType ShapeFlatTriangle::GetType() const
 bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
 
-	Point3D aPoint = m_parametersList->GetValue( QLatin1String("a") ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D bPoint = m_parametersList->GetValue( QLatin1String("b") ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D cPoint = m_parametersList->GetValue( QLatin1String("c") ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D aPoint = m_parametersList->GetValue( "a" ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D bPoint = m_parametersList->GetValue( "b" ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D cPoint = m_parametersList->GetValue( "c" ).value<TParameterPoint3D*>()->GetPoint3D();
 
 
 	Vector3D vAB = Vector3D( bPoint - aPoint );

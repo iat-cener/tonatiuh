@@ -10,6 +10,7 @@ SUBDIRS = MaterialStandardSpecular \
 			ShapeCylinder \
 			ShapeFlatDisk \
 			ShapeFlatRectangle \
+			ShapeFlatTriangle \
 			ShapeParabolicDish \
 			ShapeSphericalRectangle \
 			ShapeTroughParabola \

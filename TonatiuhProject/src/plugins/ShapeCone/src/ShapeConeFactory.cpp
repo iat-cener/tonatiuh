@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QString>
 #include <QIcon>
 
 #include "ShapeConeFactory.h"
@@ -57,9 +56,9 @@ void ShapeConeFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeConeFactory::TShapeName() const
+std::string ShapeConeFactory::TShapeName() const
 {
-	return QString("Cone");
+	return ( "Cone" );
 }
 
 /*!

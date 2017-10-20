@@ -52,7 +52,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TSurfaceNode : public TContainerNode
 {
+
+private:
+	TSurfaceNode(const TSurfaceNode& node) = delete;
+/*
 	Q_OBJECT
+*/
 
 public:
 	static void* CreateInstance();

@@ -35,14 +35,15 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+
 #ifndef TSUNSHAPEFACTORY_H_
 #define TSUNSHAPEFACTORY_H_
 
+#include <vector>
+
 #include <QtPlugin>
-#include <QVector>
 #include <QVariant>
 
-class QString;
 class QIcon;
 class TSunshape;
 
@@ -57,7 +58,7 @@ class TSunshapeFactory
 public:
     virtual ~TSunshapeFactory() {}
     virtual void Init() const  = 0;
-    virtual QString TSunshapeName() const  = 0;
+    virtual std::string TSunshapeName() const  = 0;
     virtual QIcon TSunshapeIcon() const = 0;
     virtual TSunshape* CreateTSunshape( ) const = 0;
 

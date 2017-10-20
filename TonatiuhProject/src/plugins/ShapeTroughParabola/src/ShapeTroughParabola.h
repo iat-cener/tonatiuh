@@ -53,10 +53,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 */
 class ShapeTroughParabola : public TShape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeTroughParabola)
+	ShapeTroughParabola(const ShapeTroughParabola& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -65,7 +64,7 @@ public:
 	ShapeTroughParabola();
 
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

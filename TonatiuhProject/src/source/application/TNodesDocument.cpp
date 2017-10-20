@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <iostream>
 
 #include <QDataStream>
-#include <QDebug>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QFile>
@@ -81,9 +80,10 @@ TNode* TNodesDocument::GetRootNode() const
  * Reads the content of the file \a filename and set to the document.
  * Returns true if successful; otherwise returns false.
  */
-bool TNodesDocument::Read( QString filename )
+bool TNodesDocument::Read( std::string filename )
 {
-	QFile tonatiuhFile( filename );
+
+	QFile tonatiuhFile( filename.c_str() );
 	if( !tonatiuhFile.open( QIODevice::ReadOnly ) )	return (false);
 
 
@@ -92,20 +92,20 @@ bool TNodesDocument::Read( QString filename )
 	QDomDocument xmlDocument;
 	if( xmlDocument.setContent(&tonatiuhFile, &errMsg, &errLine) == false)
 	{
-		qWarning() << "TNodesDocument: Error in line " << errLine << "\n" << errMsg;
-	    return ( false );
-	  }
+		std::cerr<< "TNodesDocument: Error in line " << errLine << "\n" << errMsg.toStdString()<<std::endl;
+		return ( false );
+	}
 
 	QDomElement docummentRootElement = xmlDocument.documentElement();
 	if( docummentRootElement.tagName() !=  QLatin1String( "Tonatiuh" ) )
 	{
-		qWarning() << "TNodesDocument: The file is not compatible with this version of Tonatiuh\n";
+		std::cerr<< "TNodesDocument: The file is not compatible with this version of Tonatiuh\n";
 	    return ( false );
 	}
 
 	if( !docummentRootElement.hasChildNodes() )
 	{
-		qWarning() << "TNodesDocument: The file is not compatible with this version of Tonatiuh\n";
+		std::cerr<< "TNodesDocument: The file is not compatible with this version of Tonatiuh\n";
 	    return ( false );
 
 	}
@@ -113,25 +113,23 @@ bool TNodesDocument::Read( QString filename )
 	QDomNodeList docChilds = docummentRootElement.childNodes();
 	if( docChilds.size() != 1 )
 	{
-		qWarning() << "TNodesDocument: The file is not compatible with this version of Tonatiuh\n";
+		std::cerr<< "TNodesDocument: The file is not compatible with this version of Tonatiuh\n";
 	    return ( false );
 	}
-
 	QDomElement rootElement = docChilds.at(0).toElement();
 
 
-	QString rootErrMsg;
+	std::string rootErrMsg;
 	m_pRootNode = CreateNodeObject( rootElement, &rootErrMsg );
-	if( !m_pRootNode || m_pRootNode == 0 || !rootErrMsg.isEmpty() )
+	if( !m_pRootNode || m_pRootNode == 0 || !rootErrMsg.empty() )
 	{
-		qWarning() << "TNodesDocument: error creating root node object. ";
-		qWarning() << rootErrMsg;
+		std::cerr<< "TNodesDocument: error creating root node object. ";
+		std::cerr<< rootErrMsg;
 	    return ( false );
 	}
 	m_pRootNode->IncreaseReference();
 
-
-	QString readErrMsg;
+	std::string readErrMsg;
 	QDomNodeList rootChilds = rootElement.childNodes();
 	if( rootChilds.size() < 1 )		return ( false );
 
@@ -142,7 +140,7 @@ bool TNodesDocument::Read( QString filename )
 		QDomElement childNode = rootChilds.at(c).toElement();
 		if( !ReadNode( childNode, m_pRootNode, &readNodes, &readErrMsg ) )
 		{
-			qWarning() << readErrMsg;
+			std::cerr<< readErrMsg;
 			return ( false );
 		}
 
@@ -164,9 +162,9 @@ void TNodesDocument::SetRootNode( TNode* node )
  * Writes to the file \a filename the information related to the node defined in the document.
  * Returns true if successful; otherwise returns false.
  */
-bool TNodesDocument::Write( QString filename ) const
+bool TNodesDocument::Write( std::string filename ) const
 {
-	QFile tonatiuhFile( filename );
+	QFile tonatiuhFile( filename.c_str() );
 	if( !tonatiuhFile.open( QIODevice::WriteOnly ) )	return (false);
 
 	QDomDocument xmlDocument;
@@ -211,27 +209,30 @@ bool TNodesDocument::Write( QString filename ) const
 /*!
  * Reads the content of the node \a node and sets inside of the \a parentNode.
  */
-TNode* TNodesDocument::CreateNodeObject( QDomElement node, QString* errMsg )
+TNode* TNodesDocument::CreateNodeObject( QDomElement node, std::string* errMsg )
 {
-	TNodeType nodeType = TNodeType::FromName( node.attribute( QLatin1String( "type" ) ) );
+
+	TNodeType nodeType = TNodeType::FromName( node.attribute( "type" ).toStdString() );
 
 	TNode* objectNode = (TNode*) nodeType.NodeFromType();
 	if( !objectNode || objectNode == 0 )
 	{
-		*errMsg = QString( "TNodesDocument::CreateNodeObject. Error creating '%1' node object." ).arg( node.tagName() );
+		*errMsg = std::string( "TNodesDocument::CreateNodeObject. Error creating '" ) +  node.tagName().toStdString() +
+				std::string(  "' node object." );
 	    return ( 0 );
 	}
 
-
-	objectNode->SetName( node.tagName() );
+	objectNode->SetName( node.tagName().toStdString() );
 	QDomNamedNodeMap nodeAttributes = node.attributes();
 	for( int att = 0; att < nodeAttributes.length(); att++ )
 	{
-		QString attributeName = nodeAttributes.item( att ).nodeName();
-		if( ( attributeName != QLatin1String( "type" ) ) && ( attributeName != QLatin1String( "name" ) )  && ( attributeName != QLatin1String( "id" ) ))
-			if( !objectNode->SetParameterValue( attributeName, node.attribute( attributeName ) ) )
+		std::string attributeName = nodeAttributes.item( att ).nodeName().toStdString();
+		if( ( attributeName != "type" ) && ( attributeName != "name" )  && ( attributeName != "id" ))
+			if( !objectNode->SetParameterValue( attributeName, node.attribute( attributeName.c_str() ) ) )
 			{
-				*errMsg = QString( "TNodesDocument::CreateNodeObject. Error defining the attribute '%2' of node '%1'." ).arg( node.tagName(), attributeName );
+				*errMsg= std::string("TNodesDocument::CreateNodeObject. Error defining the attribute '" ) + node.tagName().toStdString() +
+						std::string( "' of node '" ) + attributeName + std::string( "'." );
+
 			    return ( 0 );
 			}
 	}
@@ -239,9 +240,8 @@ TNode* TNodesDocument::CreateNodeObject( QDomElement node, QString* errMsg )
     return ( objectNode );
 }
 
-bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, TNode* >* readNodes, QString* errMsg )
+bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, TNode* >* readNodes, std::string* errMsg )
 {
-
 
 	if( node.hasAttribute( QLatin1String( "type" ) ) &&  node.hasAttribute( QLatin1String( "id" ) ) )  //node
 	{
@@ -276,7 +276,7 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 	}
 	else if( !node.hasAttributes() )	//part name. This node has not attributes
 	{
-		QString partName = node.tagName();
+		std::string partName = node.tagName().toStdString();
 		TContainerNode* parentContainer = parentNode->as<TContainerNode>();
 		if( !parentContainer || parentContainer == 0 )
 		{
@@ -287,20 +287,20 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 		if( nodeChilds.size() < 1 )		return ( true );
 		if( nodeChilds.size() > 1 )
 		{
-			*errMsg = QString( "TNodesDocument::ReadNode. More than one node defined for the container %1 node.").arg( partName );
+			*errMsg = std::string("TNodesDocument::ReadNode. More than one node defined for the container ") + partName +
+					std::string( " node." );
 			return ( false );
 		}
 		QDomElement partNode = nodeChilds.at(0).toElement();
-		TNodeType partType = TNodeType::FromName( partNode.attribute( QLatin1String( "type" ) ) );
-		if( partType.IsDerivedFrom( TNodeType::FromName( QLatin1String( "NodesList" ) ) ) )
+		TNodeType partType = TNodeType::FromName( partNode.attribute( "type" ).toStdString() );
+		if( partType.IsDerivedFrom( TNodeType::FromName( "NodesList" ) ) )
 		{
 			TNodesList* listNode = parentContainer->GetPart( partName )->as<TNodesList>();
-			if( !ReadNodeList( partNode, listNode, readNodes, errMsg ) )	return (false);
+			if( !listNode  || !ReadNodeList( partNode, listNode, readNodes, errMsg ) )	return (false);
 
 		}
 		else
 		{
-
 			int nodeID  = partNode.attribute( QLatin1String( "id" ) ).toInt();
 			if( readNodes->contains( nodeID ) )
 			{
@@ -314,7 +314,6 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 			}
 			else
 			{
-
 				TNode* nodeObject = CreateNodeObject( partNode, errMsg );
 				if( !nodeObject || nodeObject == 0 )	return ( false );
 				readNodes->insert( nodeID, nodeObject );
@@ -331,8 +330,6 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 
 				}
 			}
-
-
 		}
 
 		return (true);
@@ -347,18 +344,22 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
  * Reads the children of the list \a node and insert into \a listNode.
  * Returns true if there is not errors during read process, otherwise returns false and a message in \a errMsg.
  */
-bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap< int, TNode* >* readNodes, QString* errMsg  )
+bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap< int, TNode* >* readNodes, std::string* errMsg  )
 {
+
 	QDomNodeList partChilds = node.childNodes();
 	if( partChilds.size() < 1 )		return ( true );
 	for( int c = 0; c < partChilds.size(); c++ )
 	{
+
 		QDomElement itemNode = partChilds.at(c).toElement();
 		if( itemNode.hasAttribute( QLatin1String( "type" ) ) ) //node
 		{
+
 			int nodeID  = itemNode.attribute( QLatin1String( "id" ) ).toInt();
 			if( readNodes->contains( nodeID ) )
 			{
+
 				TNode* nodeObject = readNodes->value( nodeID );
 				if( !nodeObject || nodeObject == 0 )	return ( false );
 
@@ -366,7 +367,10 @@ bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap<
 				//nodeObject->IncreaseReference();
 				if( !ok )
 				{
-					*errMsg = QString( "TNodesDocument::ReadNodeList. The node %1 cannot be added as a child of %2." ).arg( itemNode.tagName(), listNode->GetName() );
+					*errMsg = std::string( "TNodesDocument::ReadNodeList. The node ") + itemNode.tagName().toStdString() +
+							std::string( " cannot be added as a child of " ) + listNode->GetName() +
+							std::string( "." ) ;
+
 					return ( false );
 				}
 				return ( true );
@@ -377,16 +381,17 @@ bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap<
 				if( !nodeObject || nodeObject == 0 )	return ( false );
 
 				readNodes->insert( nodeID, nodeObject );
-
-
 				bool ok = listNode->InsertItem( nodeObject );
+
 				//nodeObject->IncreaseReference();
 				if( !ok )
 				{
-					*errMsg = QString( "TNodesDocument::ReadNodeList. The node %1 cannot be added as a child of %2." ).arg( itemNode.tagName(), listNode->GetName() );
+					*errMsg = std::string( "TNodesDocument::ReadNodeList. The node ") + itemNode.tagName().toStdString() +
+							std::string( " cannot be added as a child of " ) + listNode->GetName() +
+							std::string( "." ) ;
+
 					return ( false );
 				}
-
 				QDomNodeList children = itemNode.childNodes();
 				if( children.size() < 1 ) return ( true );
 
@@ -411,29 +416,29 @@ bool TNodesDocument::WriteNode( QDomElement parent, const TNode* node, QList< in
 
 	int nodeID = node->GetID();
 
-	QDomElement el = parent.ownerDocument().createElement(node->GetName());
-	el.setAttribute( QLatin1String( "type" ), node->GetType().GetName() );
-	el.setAttribute( QLatin1String( "id" ), nodeID);
+	QDomElement el = parent.ownerDocument().createElement( node->GetName().c_str() );
+	el.setAttribute( "type", node->GetType().GetName().c_str() );
+	el.setAttribute(  "id", nodeID );
 	parent.appendChild(el);
 
 	if( writtenNodes->contains( nodeID ) )	return ( true );
 
 
-	QStringList parametersList = node->GetVisibleParametersName();
-	for( int p = 0; p < parametersList.count(); p++ )
+	std::vector< std::string > parametersList = node->GetVisibleParametersName();
+	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
 
-		QString parameterName = parametersList[p];
+		std::string  parameterName = parametersList[p];
 		QVariant parameterValue = node->GetParameterValue( parameterName );
 
 		int typeID = parameterValue.type();
 		if( QMetaType::User == typeID )
 		{
 			TParameter* parameter = parameterValue.value<TParameter*>();
-			el.setAttribute( parameterName, parameter->ToString()  );
+			el.setAttribute( parameterName.c_str(), parameter->ToString().c_str()  );
 		}
 		else
-			el.setAttribute( parameterName,  parameterValue.toString() );
+			el.setAttribute( parameterName.c_str(),  parameterValue.toString() );
 	}
 	writtenNodes->append( nodeID );
 
@@ -463,39 +468,39 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 
 	int nodeID = containerNode->GetID();
 
-	QDomElement el = parent.ownerDocument().createElement(containerNode->GetName());
-	el.setAttribute( QLatin1String( "type" ), containerNode->GetType().GetName() );
-	el.setAttribute( QLatin1String( "id" ), nodeID );
+	QDomElement el = parent.ownerDocument().createElement(containerNode->GetName().c_str() );
+	el.setAttribute( "type", containerNode->GetType().GetName().c_str() );
+	el.setAttribute( "id", nodeID );
 	parent.appendChild(el);
 
 	if( writtenNodes->contains( nodeID ) )	return ( true );
 
-	QStringList parametersList = containerNode->GetVisibleParametersName();
-	for( int p = 0; p < parametersList.count(); p++ )
+	std::vector<std::string> parametersList = containerNode->GetVisibleParametersName();
+	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
 
-		QString parameterName = parametersList[p];
-		QVariant parameterValue = containerNode->GetParameterValue( parameterName);
+		std::string parameterName = parametersList[p];
+		QVariant parameterValue = containerNode->GetParameterValue( parameterName );
 		int typeID = parameterValue.type();
 		if( QMetaType::User == typeID )
 		{
 			TParameter* parameter = parameterValue.value<TParameter*>();
-			el.setAttribute( parameterName, parameter->ToString()  );
+			el.setAttribute( parameterName.c_str(), parameter->ToString().c_str()  );
 		}
 		else
-			el.setAttribute( parameterName,  parameterValue.toString() );
+			el.setAttribute( parameterName.c_str(),  parameterValue.toString().toStdString().c_str() );
 	}
 	writtenNodes->append( nodeID );
 
 	int numberOfParts = containerNode->NumberOfParts();
-	QStringList partNamesList = containerNode->GetPartNames();
+	std::vector<std::string> partNamesList = containerNode->GetPartNames();
 	for( int p = 0; p < numberOfParts; p++ )
 	{
 
 		TNode* partNode = containerNode->GetPart( partNamesList[p] );
 		if( partNode )
 		{
-			QDomElement partElement = el.ownerDocument().createElement(partNamesList[p]);
+			QDomElement partElement = el.ownerDocument().createElement( partNamesList[p].c_str() );
 			el.appendChild(partElement);
 
 			if( const TContainerNode* partContainer = partNode->as<TContainerNode>() )

@@ -57,9 +57,9 @@ void SunshapePillboxFactory::Init() const
 /*!
  * Returns sunshape type name.
  */
-QString SunshapePillboxFactory::TSunshapeName() const
+std::string SunshapePillboxFactory::TSunshapeName() const
 {
-	return ( QString( "Pillbox_Sunshape" ) );
+	return ( "Pillbox_Sunshape" );
 }
 
 /*!

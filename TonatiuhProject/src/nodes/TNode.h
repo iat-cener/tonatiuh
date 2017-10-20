@@ -40,8 +40,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TNODE_H_
 #define TNODE_H_
 
-#include <QObject>
-#include <QMetaType>
+
+//#include <QObject>
+//#include <QMetaType>
+
+#include <string>
+
+#include <QVariant>
 
 #include "TNodeType.h"
 
@@ -54,12 +59,12 @@ class TParameterList;
 */
 
 /** Base class of all Tonatiuh nodes: TNode */
-class TNode : public QObject
+class TNode// : public QObject
 {
-	Q_OBJECT
+	//Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(TNode)
+	TNode(const TNode& node) = delete;
 
 public:
 	static void Init();
@@ -71,16 +76,18 @@ public:
 	virtual TNode* Copy() const;
 
 	int GetID() const;
-	QString GetName() const;
-	QStringList GetVisibleParametersName() const;
-	QVariant GetParameterValue( QString name ) const;
+	std::string GetName() const;
+	virtual std::string GetIcon() const;
+	QVariant GetParameterValue( std::string  name ) const;
 	int GetReferences() const;
 	virtual TNodeType GetType() const;
+	std::vector<std::string> GetVisibleParametersName() const;
+
 	void IncreaseReference();
 	void RemoveReference();
 
-	void SetName( QString name );
-	bool SetParameterValue( const QString& name, const QVariant& value );
+	void SetName( std::string name );
+	bool SetParameterValue( const std::string & name, const QVariant& value );
 
 
 protected:
@@ -88,19 +95,21 @@ protected:
 	virtual ~TNode();
 
 private:
+
 	int m_id;
+	std::string m_name;
 	int m_referenceCount;
 	static TNodeType m_nodeType;
 
 };
 
-Q_DECLARE_METATYPE(TNode*)
+//Q_DECLARE_METATYPE(TNode*)
 
 
 template<class T>
 const T* TNode::as() const
 {
-  const T* t = qobject_cast<const T*>(this);
+  const T* t = dynamic_cast<const T*>(this);
   return t;
 }
 
@@ -108,7 +117,7 @@ const T* TNode::as() const
 template<class T>
 T* TNode::as()
 {
-  T* t = qobject_cast<T*>(this);
+  T* t = dynamic_cast<T*>(this);
   return t;
 }
 

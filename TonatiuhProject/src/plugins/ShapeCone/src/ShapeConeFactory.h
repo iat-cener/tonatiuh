@@ -60,7 +60,7 @@ class ShapeConeFactory: public QObject, public TShapeFactory
 
 public:
     void Init() const;
-   	QString TShapeName() const;
+    std::string TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeCone* CreateTShape( ) const;
 };

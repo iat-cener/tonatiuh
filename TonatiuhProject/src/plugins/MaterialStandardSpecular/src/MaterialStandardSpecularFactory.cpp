@@ -56,9 +56,9 @@ void MaterialStandardSpecularFactory::Init() const
 /*!
  * Returns material type name.
  */
-QString MaterialStandardSpecularFactory::TMaterialName() const
+std::string MaterialStandardSpecularFactory::TMaterialName() const
 {
-	return QString("Specular_Standard_Material");
+	return std::string("Specular_Standard_Material");
 }
 
 /*!

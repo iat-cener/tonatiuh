@@ -52,7 +52,7 @@ class SaveBinaryFileFactory : public QObject, public SaveFileFactory
 #endif
 
 public:
-	QString SaveFileName() const;
+	std::string SaveFileName() const;
 	QIcon SaveFileIcon() const;
 	SaveBinaryFile* CreateSaveFile( ) const;
 

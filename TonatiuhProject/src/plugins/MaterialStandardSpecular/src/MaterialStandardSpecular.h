@@ -39,8 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MATERIALSTANDARDSPECULAR_H_
 #define MATERIALSTANDARDSPECULAR_H_
 
-#include <QString>
-
 #include "TMaterial.h"
 #include "TParameterList.h"
 
@@ -56,12 +54,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class MaterialStandardSpecular : public TMaterial
 {
+
+private:
+	MaterialStandardSpecular(const MaterialStandardSpecular& node) = delete;
+/*
 	Q_OBJECT
-    //Q_ENUMS( Distribution )
-	//Q_PROPERTY( Distribution dist READ Value WRITE SetDistributionValue )
 
 private:
 	Q_DISABLE_COPY(MaterialStandardSpecular)
+*/
 
 public:
 	static void* CreateInstance();
@@ -69,36 +70,10 @@ public:
 
 	MaterialStandardSpecular( );
 
-
-	//enum Distribution { PILLBOX = 0, NORMAL = 1, };
-	//enum Distribution { PILLBOX, NORMAL, };
-
-    QString GetIcon();
+    std::string GetIcon();
 	TNodeType GetType() const;
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay ) const;
 
-	/*
-	void SetDistributionValue( Distribution dist)
-	{
-		m_parametersList->SetValue( QLatin1String("distribution"), dist );
-	}
-	Distribution Value() const
-	{
-		return 	( m_parametersList->GetValue( QLatin1String("distribution") ).value<Distribution>() );
-	}
-	*/
-/*
-	trt::TONATIUH_REAL m_reflectivity;
-	trt::TONATIUH_REAL m_sigmaSlope;
-	SoSFEnum m_distribution;
-
-	SoMFColor  m_ambientColor;
-	SoMFColor  m_diffuseColor;
-	SoMFColor  m_specularColor;
-	SoMFColor  m_emissiveColor;
-	SoMFFloat m_shininess;
-	SoMFFloat m_transparency ;
-	*/
 
 protected:
    	virtual ~MaterialStandardSpecular();
@@ -107,7 +82,5 @@ private:
 	static TNodeType m_nodeType;
 
 };
-
-//Q_DECLARE_METATYPE( MaterialStandardSpecular::Distribution );
 
 #endif /*MATERIALSTANDARDSPECULAR_H_*/

@@ -41,11 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RAYTRACER_H_
 #define RAYTRACER_H_
 
+#include <mutex>
 #include <vector>
 #include <utility>
 
-
-#include <QMutex>
 
 #include "TPhotonMap.h"
 #include "Transform.h"
@@ -91,7 +90,7 @@ public:
 	bool Run( unsigned long numberOfRays );
 	void SetPhotonMap( TPhotonMap* photonMap  = 0 );
 	void SetRandomNumberGenerator( RandomDeviate* randomNumberGenerator = 0 );
-	virtual bool SetScene( TSceneNode* scene  = 0, QStringList notFirstStageNodesURL = QStringList() );
+	virtual bool SetScene( TSceneNode* scene  = 0, std::vector<std::string > notFirstStageNodesURL = std::vector<std::string >() );
 
 protected:
 	bool NewRay( Ray* ray, ParallelRandomDeviate& rand );
@@ -99,8 +98,8 @@ protected:
 
 protected:
 	RandomDeviate* m_pRandomNumberGenerator;
-	QMutex m_randomMutex;
-	QMutex m_mutexPhotonMap;
+	std::mutex m_randomMutex;
+
 
 	TPhotonMap* m_pPhotonMap;
 	TSunNode* m_pSunNode;

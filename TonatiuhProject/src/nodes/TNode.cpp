@@ -56,9 +56,9 @@ void TNode::Init()
  * The initial reference count will be set to zero.
  */
 TNode::TNode()
-: QObject(),
-  //m_parametersList( 0 ),
+: //QObject(),
   m_id( 0 ),
+  m_name( GetType().GetName().c_str() ),
   m_referenceCount( 0 )
 {
 
@@ -66,7 +66,7 @@ TNode::TNode()
 	m_id = nodeIndex;
 	nodeIndex++;
 
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
 	m_parametersList = new TParameterList;
 }
 
@@ -75,8 +75,7 @@ TNode::TNode()
  */
 TNode::~TNode()
 {
-	//delete m_parametersList;
-	//m_parametersList = 0;
+
 }
 
 /*!
@@ -86,24 +85,10 @@ TNode* TNode::Copy() const
 {
 	TNode* node = new TNode();
 
-	/*
-	const QMetaObject* metaobject = metaObject();
-	int count = metaobject->propertyCount();
-
-	for( int p = 0; p < count; ++p)
-	{
-		QMetaProperty mproperty = metaobject->property( p );
-		//const char *name = mproperty.name();
-	    QVariant value = property( mproperty.name() );
-	    node->setProperty( mproperty.name(), value );
-	}
-	*/
-
 	TParameterList* parametersList = node->m_parametersList;
 
-	QStringList parameterNames = m_parametersList->GetParametersNames();
-
-	for( int p = 0; p < parameterNames.count(); p++ )
+	std::vector< std::string > parameterNames = m_parametersList->GetParametersNames();
+	for( unsigned int p = 0; p < parameterNames.size(); p++ )
 	{
 		QVariant parameterValue = m_parametersList->GetValue( parameterNames[p] );
 		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
@@ -125,43 +110,23 @@ int TNode::GetID() const
 /*!
  * Returns node object name.
  */
-QString TNode::GetName() const
+std::string TNode::GetName() const
 {
-	return ( objectName() );
+	return ( m_name );
 }
 
 /*!
- * Returns the list of the parameters accesible exteranlly to the node.
+ * Returns icon file name
  */
-QStringList TNode::GetVisibleParametersName() const
+std::string TNode::GetIcon() const
 {
-	QStringList allParametersNames = m_parametersList->GetParametersNames();
-	for( int i = 0; i < allParametersNames.count(); i++ )
-	{
-		if( !m_parametersList->GetVisibility( allParametersNames[i] ) )
-			allParametersNames.removeAt( i );
-	}
-	return ( allParametersNames );
-
-	/*
-	QStringList allParametersNames;
-
-	const QMetaObject* metaobject = metaObject();
-	int count = metaobject->propertyCount();
-	for( int p = 0; p < count; ++p)
-	{
-		QMetaProperty mproperty = metaobject->property( p );
-		allParametersNames<<mproperty.name();
-	}
-
-	return ( allParametersNames );
-	*/
+	return ( ":/icons/tnode.png" );
 }
 
 /*!
  * Returns the value of the parameter \a name.
  */
-QVariant TNode::GetParameterValue( QString name ) const
+QVariant TNode::GetParameterValue( std::string name ) const
 {
 
 	if(!m_parametersList )	return( QVariant() );
@@ -169,13 +134,6 @@ QVariant TNode::GetParameterValue( QString name ) const
 		return( QVariant() );
 	return (m_parametersList->GetValue( name ) );
 
-
-	/*
-	const char* nameChar = name.toLatin1().data();
-    QVariant value = property( nameChar );
-
-	return ( value );
-	*/
 }
 
 /*!
@@ -192,6 +150,24 @@ int TNode::GetReferences() const
 TNodeType TNode::GetType() const
 {
 	return ( TNode::m_nodeType );
+}
+
+/*!
+ * Returns the list of the parameters accesible exteranlly to the node.
+ */
+std::vector<std::string> TNode::GetVisibleParametersName() const
+{
+	std::vector< std::string > allParametersNames = m_parametersList->GetParametersNames();
+
+	//Remove the no visible parameters starting from the end to avoid the changes in the indexes
+	int nParameters = allParametersNames.size();
+	for( int i = nParameters -1; i >=0; i-- )
+	{
+		if( !m_parametersList->GetVisibility( allParametersNames[i] ) )
+			allParametersNames.erase( allParametersNames.begin() + i );
+	}
+	return ( allParametersNames );
+
 }
 
 /*!
@@ -212,15 +188,15 @@ void TNode::RemoveReference()
 /*!
  * Sets \a name to the node object.
  */
-void TNode::SetName( QString name )
+void TNode::SetName( std::string name )
 {
-	setObjectName(name);
+	m_name = name;
 }
 
 /*!
  * Sets to the parameter \a name the \a value.
  */
-bool TNode::SetParameterValue( const QString& name, const QVariant& value )
+bool TNode::SetParameterValue( const std::string& name, const QVariant& value )
 {
 
 	if( !m_parametersList )	return ( false );

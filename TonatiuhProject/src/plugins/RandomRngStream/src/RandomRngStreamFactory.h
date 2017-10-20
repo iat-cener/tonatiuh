@@ -51,7 +51,7 @@ class RandomRngStreamFactory : public QObject, public RandomDeviateFactory
 #endif
 
 public:
-	QString RandomDeviateName() const;
+	std::string RandomDeviateName() const;
 	QIcon RandomDeviateIcon() const;
 	RandomRngStream* CreateRandomDeviate( ) const;
 

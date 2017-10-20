@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QString>
 
 #include "DifferentialGeometry.h"
 #include "Ray.h"
@@ -59,7 +58,7 @@ void* MaterialVirtual::CreateInstance( )
 void MaterialVirtual::Init()
 {
 
-	MaterialVirtual::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Material" ), QString( "MaterialVirtual" ), &MaterialVirtual::CreateInstance );
+	MaterialVirtual::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Material" ), "MaterialVirtual", &MaterialVirtual::CreateInstance );
 }
 
 /*!
@@ -68,7 +67,8 @@ void MaterialVirtual::Init()
 MaterialVirtual::MaterialVirtual()
 :TMaterial()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 }
 
@@ -83,9 +83,9 @@ MaterialVirtual::~MaterialVirtual()
 /*!
  * Returns the material icon filename.
  */
-QString MaterialVirtual::GetIcon()
+std::string MaterialVirtual::GetIcon()
 {
-	return ( QString(":icons/MaterialVirtual.png") );
+	return ( ":icons/MaterialVirtual.png" );
 }
 
 /*!

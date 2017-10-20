@@ -61,7 +61,7 @@ void* TSunNode::CreateInstance( )
  */
 void TSunNode::Init()
 {
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), QString( "SunNode" ), &TSunNode::CreateInstance );
+	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), "SunNode", &TSunNode::CreateInstance );
 }
 
 /*!
@@ -69,13 +69,14 @@ void TSunNode::Init()
  */
 TSunNode::TSunNode()
 :TContainerNode(),
- m_azimuthLabel( QLatin1String("azimuth") ),
- m_zenithLabel( QLatin1String("zenith") )
+ m_azimuthLabel( "azimuth" ),
+ m_zenithLabel( "zenith" )
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 
 	//Parts
-	AppendPart( QLatin1String( "sunshape" ), TNodeType::FromName( "Sunshape" ) , 0 );
+	AppendPart( "sunshape", TNodeType::FromName( "Sunshape" ) , 0 );
 
 
 	//Transormation
@@ -99,7 +100,7 @@ void TSunNode::ChangeSunPosition( double azimuth, double zenith )
 	m_parametersList->SetValue( m_azimuthLabel, QVariant( azimuth ) );
 	m_parametersList->SetValue( m_zenithLabel, zenith );
 
-	emit SunpositonChanged( azimuth, zenith );
+	//emit SunpositonChanged( azimuth, zenith );
 
 }
 
@@ -108,7 +109,15 @@ void TSunNode::ChangeSunPosition( double azimuth, double zenith )
  */
 double TSunNode::GetAzimuth() const
 {
-	return ( GetParameterValue( QLatin1String ("azimuth") ).toDouble() );
+	return ( GetParameterValue( m_azimuthLabel ).toDouble() );
+}
+
+/*!
+ * Returns icon file name
+ */
+std::string TSunNode::GetIcon() const
+{
+	return ( ":/icons/tsunnode.png" );
 }
 
 /*!
@@ -116,7 +125,7 @@ double TSunNode::GetAzimuth() const
  */
 double TSunNode::GetZenith() const
 {
-	return( GetParameterValue( QLatin1String ("zenith") ).toDouble() );
+	return( GetParameterValue( m_zenithLabel ).toDouble() );
 }
 
 

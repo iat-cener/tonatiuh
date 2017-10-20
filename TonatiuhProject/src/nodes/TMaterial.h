@@ -54,17 +54,22 @@ class Ray;
 
 class TMaterial: public TNode
 {
+
+private:
+	TMaterial(const TMaterial& node) = delete;
+/*
 	Q_OBJECT
 
 private:
 	Q_DISABLE_COPY(TMaterial)
+	*/
 
 public:
 	static void Init();
 
 	TMaterial();
 
-	virtual QString GetIcon() = 0;
+	virtual std::string GetIcon() = 0;
 	virtual TNodeType GetType() const;
 
 	virtual bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const = 0;

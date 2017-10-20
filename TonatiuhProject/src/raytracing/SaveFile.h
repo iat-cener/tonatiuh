@@ -45,9 +45,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   SaveFile is an I/O device that provides the base functionality for writing simulation data to a files, the specific file format depends on the SaveFile derived class used.
 */
 
+#include <string>
 #include <vector>
-
-#include <QStringList>
 
 
 class Photon;
@@ -65,7 +64,7 @@ public:
 	 m_savePrevNextID( true ),
 	 m_saveSide( true ),
 	 m_saveSurfaceID( true ),
-	 m_saveSurfacesURLList( QStringList() )
+	 m_saveSurfacesURLList()
 	{
 
 	}
@@ -154,7 +153,7 @@ public:
 	 * Only the photons related to intersections in the surfaced defined in \a surfacesURLList will be saved.
 	 * If \a surfacesURLList is an empty list all the photons will be saved.
 	 */
-	void SetSaveSurfacesURLList( QStringList surfacesURLList )
+	void SetSaveSurfacesURLList( std::vector<std::string> surfacesURLList )
 	{
 		m_saveSurfacesURLList = surfacesURLList;
 	}
@@ -162,7 +161,7 @@ public:
 	/*!
 	 * Sets current SaveFile parameters.
 	 */
-	virtual void SetSaveParameterValue( QString parameterName, QString parameterValue ) = 0;
+	virtual void SetSaveParameterValue( std::string parameterName, std::string parameterValue ) = 0;
 
 	/*!
 	 * Starts save process.
@@ -171,17 +170,12 @@ public:
 
 
 protected:
-	//QString m_photonsFilename;
-    //Transform m_concentratorToWorld;
-	//SceneModel* m_pSceneModel;
-	//bool m_saveAllPhotonsData;
 	bool m_saveCoordinates;
 	bool m_saveCoordinatesInGlobal;
-	//bool m_savePowerPerPhoton;
 	bool m_savePrevNextID;
 	bool m_saveSide;
 	bool m_saveSurfaceID;
-	QStringList m_saveSurfacesURLList;
+	std::vector<std::string> m_saveSurfacesURLList;
 
 
 };

@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "TNodesList.h"
+#include "TParameterList.h"
 
 TNodeType TNodesList::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -46,7 +47,7 @@ TNodeType TNodesList::m_nodeType = TNodeType::CreateEmptyType();
  */
 void TNodesList::Init()
 {
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), QString( "NodesList" ) );
+	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "NodesList" );
 }
 
 /*!
@@ -55,7 +56,8 @@ void TNodesList::Init()
 TNodesList::TNodesList()
 :TNode()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 }
 
 /*!
@@ -84,6 +86,47 @@ void TNodesList::AddValidNodeType( TNodeType type )
 
 	m_validNodeTypesList.push_back( type );
 }
+
+/*!
+ * Creates a container node objecte as a copy of this node.
+ */
+TNodesList* TNodesList::Copy() const
+{
+	TNodesList* nodeList = new TNodesList();
+	if( nodeList == 0 )	return ( 0  );
+
+	std::vector< TNode* > m_children;
+	std::vector< TNodeType > m_validNodeTypesList;
+
+
+	for( unsigned int i = 0; i < m_validNodeTypesList.size(); i++ )
+		nodeList->AddValidNodeType( m_validNodeTypesList[i] );
+
+	for( unsigned int i = 0; i < m_children.size(); i++ )
+		nodeList->InsertItem( m_children[i]->Copy() );
+
+
+
+	TParameterList* parametersList = nodeList->m_parametersList;
+	std::vector< std::string > parameterNames = m_parametersList->GetParametersNames();
+	for( unsigned int p = 0; p < parameterNames.size(); p++ )
+	{
+		QVariant parameterValue = m_parametersList->GetValue( parameterNames[p] );
+		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
+		parametersList->Append(parameterNames[p], parameterValue, parameterVisibility );
+	}
+
+	return ( nodeList );
+}
+
+/*!
+ * Returns icon file name
+ */
+std::string TNodesList::GetIcon() const
+{
+	return ( ":/icons/tnodelist.png" );
+}
+
 
 /*!
  * Returns the type of node.

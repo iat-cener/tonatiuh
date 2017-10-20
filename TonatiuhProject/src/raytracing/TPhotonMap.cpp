@@ -1,3 +1,5 @@
+#include <mutex>
+
 #include "TPhotonMap.h"
 
 /*!
@@ -60,6 +62,8 @@ void TPhotonMap::SetBufferSize( unsigned long nPhotons )
 
 void TPhotonMap::StoreRays( std::vector< Photon >& raysList )
 {
+	m_mutexPhotonMap.lock();
+
 	unsigned int raysListSize = raysList.size();
 	if( ( m_storedPhotonsInBuffer > 0 ) && ( ( m_storedPhotonsInBuffer + raysListSize )  > m_bufferSize ) )
 	{
@@ -72,7 +76,7 @@ void TPhotonMap::StoreRays( std::vector< Photon >& raysList )
 			m_photonsInMemory[i] = 0;
 		}
 		m_photonsInMemory.clear();
-    	std::vector< Photon* >( m_photonsInMemory ).swap( m_photonsInMemory );
+		std::vector< Photon* >( m_photonsInMemory ).swap( m_photonsInMemory );
 		m_storedPhotonsInBuffer = 0;
 	}
 
@@ -81,6 +85,9 @@ void TPhotonMap::StoreRays( std::vector< Photon >& raysList )
 
 	m_storedPhotonsInBuffer += raysListSize;
 	m_storedAllPhotons += raysListSize;
+
+	m_mutexPhotonMap.unlock();
+
 }
 
 

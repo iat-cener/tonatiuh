@@ -40,8 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TPARAMETERPOINT3D_H_
 #define TPARAMETERPOINT3D_H_
 
-#include <QString>
-
 #include <QMetaType>
 
 #include "Point3D.h"
@@ -55,7 +53,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class TParameterPoint3D: public TParameter
 {
 	Q_OBJECT
+private:
+	TParameterPoint3D( const TParameterPoint3D& node ) = delete;
+/*
+	Q_OBJECT
 	Q_DISABLE_COPY(TParameterPoint3D)
+*/
 
 public:
 	TParameterPoint3D();
@@ -65,7 +68,7 @@ public:
 	Point3D GetPoint3D( ) const;
 
 	bool SetValue( QVariant value );
-	QString ToString() const;
+	std::string ToString() const;
 
 private:
 	Point3D m_pointCoordinates;

@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QString>
 #include <QIcon>
 
 #include "ShapeFlatTriangleFactory.h"
@@ -57,9 +56,9 @@ void ShapeFlatTriangleFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeFlatTriangleFactory::TShapeName() const
+std::string ShapeFlatTriangleFactory::TShapeName() const
 {
-	return QString("Flat_Triangle");
+	return ( "Flat_Triangle" );
 }
 
 /*!

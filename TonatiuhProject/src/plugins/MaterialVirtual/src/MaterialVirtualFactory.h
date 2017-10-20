@@ -59,7 +59,7 @@ class MaterialVirtualFactory: public QObject, public TMaterialFactory
 
 public:
     void Init() const;
-   	QString TMaterialName() const;
+    std::string TMaterialName() const;
    	QIcon TMaterialIcon() const;
    	MaterialVirtual* CreateTMaterial( ) const;
 };

@@ -56,9 +56,9 @@ void ShapeParabolicDishFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeParabolicDishFactory::TShapeName() const
+std::string ShapeParabolicDishFactory::TShapeName() const
 {
-	return QString("Parabolic_dish");
+	return ( "Parabolic_dish" );
 }
 
 /*!

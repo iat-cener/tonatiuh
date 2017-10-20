@@ -39,9 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TNODETYPE_H_
 #define TNODETYPE_H_
 
+#include <string>
 #include <vector>
 
-class QString;
 struct TTypeData;
 
 
@@ -52,13 +52,13 @@ class  TNodeType
 public:
 	typedef void* (*ConstructorMethod)();
 
-	static bool Contains(const QString& name);
+	static bool Contains(const std::string& name);
 	static const TNodeType CreateEmptyType();
-	static const TNodeType CreateType(const TNodeType parent, const QString name,
+	static const TNodeType CreateType(const TNodeType parent, const std::string name,
 	        const ConstructorMethod method = 0 );
-	static TNodeType FromName( const QString name );
+	static TNodeType FromName( const std::string name );
 
-	QString GetName() const;
+	std::string GetName() const;
 	const TNodeType GetParent() const;
 
 	static void Init();

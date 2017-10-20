@@ -48,15 +48,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   The parameters to define the surface are:
   * - radius: distance from the center of the cylinder to its edge.
   * - widthX: length of the cap in the x axis.
-  * - widthZ: ength of the cap in the z axis.
+  * - widthZ: length of the cap in the z axis.
 */
 
 class ShapeSphericalRectangle : public TShape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeSphericalRectangle)
+	ShapeSphericalRectangle(const ShapeSphericalRectangle& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -65,7 +64,7 @@ public:
 	ShapeSphericalRectangle();
 
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TNodesList.h"
 #include "Transform.h"
 #include "TSceneNode.h"
+#include "TSunNode.h"
 #include "TTrackerNode.h"
 #include "Vector3D.h"
 
@@ -65,7 +66,7 @@ void* TSceneNode::CreateInstance( )
  */
 void TSceneNode::Init()
 {
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), QString( "SceneNode" ), &TSceneNode::CreateInstance );
+	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), "SceneNode", &TSceneNode::CreateInstance );
 }
 
 /*!
@@ -73,14 +74,14 @@ void TSceneNode::Init()
  */
 TSceneNode::TSceneNode()
 :TContainerNode(),
- m_childrenListName( QLatin1String( "childrenList" ) ),
- m_lightName( QLatin1String( "light" ) ),
- m_transmisivityName( QLatin1String( "transmisivity" ) )
+ m_childrenListName( "childrenList" ),
+ m_lightName( "light" ),
+ m_transmisivityName( "transmisivity" )
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 
 	//Parts
-
 	AppendPart( m_lightName, TNodeType::FromName( "SunNode" ) , 0  );
 	AppendPart( m_transmisivityName, TNodeType::FromName( "TransmisivitNode" ) , 0  );
 	AppendPart( m_childrenListName, TNodeType::FromName( "GroupNode" ) , 0  );
@@ -96,20 +97,44 @@ TSceneNode::~TSceneNode()
 }
 
 
+/*
+ * If sun node is defined in the scene, changes the sun node position to the coordinates defined by the angles \a azimuth and zenith. These angles are in radians.
+ * Updates the sun and the trackers.
+ */
+void TSceneNode::ChangeSunPosition( double azimuth, double zenith )
+{
+	TSunNode* sunNode = m_partsList[m_lightName]->as<TSunNode>();
+	if( !sunNode )	return;
+
+	sunNode->ChangeSunPosition( azimuth, zenith );
+	UpdateTrackers( azimuth, zenith );
+
+}
+
+/*!
+ * Returns icon file name
+ */
+std::string TSceneNode::GetIcon() const
+{
+	return ( ":/icons/tscenenode.png" );
+}
+
+/*!
+ * Returns the type of node.
+ */
+TNodeType TSceneNode::GetType() const
+{
+	return ( TSceneNode::m_nodeType );
+}
+
 /*!
  * Replaces the node of the part \a name with \a node. If the part does not exit, false is returned.
  * The previous node of the part is not destroyed.
  *
  */
-bool TSceneNode::SetPart( const QString name, TNode* node  )
+bool TSceneNode::SetPart( const std::string name, TNode* node  )
 {
-	if( name == m_lightName && m_partsList[m_lightName] )
-		disconnect( m_partsList[m_lightName], SIGNAL( SunpositonChanged( double, double ) ), this, SLOT( UpdateTrackers( double, double ) ) );
-
 	if( !TContainerNode::SetPart( name, node  ) ) return ( false );
-	if( node && name == m_lightName )
-		connect( node, SIGNAL( SunpositonChanged( double, double ) ), this, SLOT( UpdateTrackers( double, double ) ) );
-
 	return ( true );
 }
 
@@ -120,9 +145,9 @@ void TSceneNode::UpdateTrackersTransform( TNode* branch, Vector3D sunVector, Tra
 {
 	if( !branch )	return;
 
-	if( branch->as<TTrackerNode>() )
+	if( TTrackerNode* trackerNode = branch->as<TTrackerNode>() )
 	{
-		branch->as<TTrackerNode>()->UpdateTrackerTransform( sunVector, parentWT0 );
+		trackerNode->UpdateTrackerTransform( sunVector, parentWT0 );
 		return;
 	}
 
@@ -153,21 +178,16 @@ void TSceneNode::UpdateTrackers( double azimuth, double zenith )
 			cos( zenith ),
 			-sin( zenith ) * cos( azimuth ) );
 
+
 	Transform sceneOTW( 1, 0, 0, 0,
 			0, 1, 0, 0,
 			0, 0, 1, 0,
 			0, 0, 0, 1 );
 
+
 	TNode* childrenRootNode = GetPart( m_childrenListName );
 	if( !childrenRootNode )	return;
 
 	UpdateTrackersTransform( childrenRootNode, sunVector, sceneOTW );
-}
 
-/*!
- * Returns the type of node.
- */
-TNodeType TSceneNode::GetType() const
-{
-	return ( TSceneNode::m_nodeType );
 }

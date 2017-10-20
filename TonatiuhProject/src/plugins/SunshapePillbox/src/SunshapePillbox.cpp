@@ -59,7 +59,7 @@ void* SunshapePillbox::CreateInstance( )
  */
 void SunshapePillbox::Init()
 {
-	SunshapePillbox::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Sunshape" ), QString( "SunshapePillbox" ), &SunshapePillbox::CreateInstance );
+	SunshapePillbox::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Sunshape" ), "SunshapePillbox", &SunshapePillbox::CreateInstance );
 }
 
 /*!
@@ -68,11 +68,12 @@ void SunshapePillbox::Init()
 SunshapePillbox::SunshapePillbox()
 :TSunshape()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( QLatin1String("irradiance"), 1000.0 );
-	m_parametersList->Append( QLatin1String("thetaMax"), 0.00465 );
+	m_parametersList->Append( "irradiance", 1000.0 );
+	m_parametersList->Append( "thetaMax", 0.00465 );
 }
 
 /*!
@@ -88,7 +89,7 @@ SunshapePillbox::~SunshapePillbox()
  */
 void SunshapePillbox::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-	double thetaMax = m_parametersList->GetValue( QLatin1String("thetaMax") ).toDouble();
+	double thetaMax = m_parametersList->GetValue( "thetaMax" ).toDouble();
 
 	double phi = gc::TwoPi * rand.RandomDouble();
     double theta = asin( sin( thetaMax )*sqrt( rand.RandomDouble() ) );
@@ -103,12 +104,20 @@ void SunshapePillbox::GenerateRayDirection( Vector3D& direction, RandomDeviate& 
 }
 
 /*!
+ * Returns the filename that stores the shape icon.
+ */
+std::string SunshapePillbox::GetIcon() const
+{
+	return ( ":/icons/SunshapePillbox.png" );
+}
+
+/*!
  * Returns irradiance value.
  */
 double SunshapePillbox::GetIrradiance() const
 {
 
-	return ( m_parametersList->GetValue( QLatin1String("irradiance") ).toDouble() );
+	return ( m_parametersList->GetValue( "irradiance" ).toDouble() );
 }
 
 /*!
@@ -117,7 +126,7 @@ double SunshapePillbox::GetIrradiance() const
 double SunshapePillbox::GetThetaMax() const
 {
 
-	return ( m_parametersList->GetValue( QLatin1String("thetaMax") ).toDouble() );
+	return ( m_parametersList->GetValue( "thetaMax" ).toDouble() );
 }
 
 /*!

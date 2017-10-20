@@ -52,14 +52,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class TParameter: public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(TParameter)
 
+private:
+	TParameter(const TParameter& node) = delete;
+/*
+	Q_OBJECT
+	Q_DISABLE_COPY(TParameter)
+*/
 public:
 	TParameter();
 	virtual ~TParameter();
 
 	virtual bool SetValue( QVariant value ) = 0;
-	virtual QString ToString() const = 0;
+	virtual std::string ToString() const = 0;
 };
 
 Q_DECLARE_METATYPE( TParameter* )

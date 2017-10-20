@@ -37,10 +37,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <cmath>
+#include <sstream>
 
 #include "gc.h"
 #include "Vector3D.h"
 #include "Transform.h"
+
+#include "tf.h"
 
 #include "TParameterEnumerator.h"
 #include "TParameterList.h"
@@ -62,7 +65,7 @@ void* TrackerOneAxis::CreateInstance( )
 void TrackerOneAxis::Init()
 {
 
-	TrackerOneAxis::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Tracker" ), QString( "TrackerOneAxis" ), &TrackerOneAxis::CreateInstance );
+	TrackerOneAxis::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Tracker" ), "TrackerOneAxis", &TrackerOneAxis::CreateInstance );
 }
 
 /*!
@@ -70,27 +73,27 @@ void TrackerOneAxis::Init()
  */
 TrackerOneAxis::TrackerOneAxis()
 :TTrackerNode(),
- m_axisLabel( QLatin1String( "axis" ) ),
- m_xAxisLabel( QLatin1String( "X" ) ),
- m_yAxisLabel( QLatin1String( "Y" ) ),
- m_zAxisLabel( QLatin1String( "Z" ) )
+ m_axisLabel( "axis" ),
+ m_xAxisLabel( "X" ),
+ m_yAxisLabel( "Y" ),
+ m_zAxisLabel( "Z" )
 {
 	//Default object name is the name of the type
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
-	QString transformationValue( QLatin1String("") );
+	std::string transformationValue( "" );
 	for (int i = 0; i < 4; ++i)
 	{
-		transformationValue += QLatin1String( "[ " );
+		transformationValue +=  std::string( "[ " );
 		for (int j = 0; j < 4; ++j)
 		{
-			if ( i == j )	transformationValue += QLatin1String( "1.0" );
-			else	transformationValue += QLatin1String( "0.0" );
-			if (j != 3) transformationValue += QLatin1String( ", ");
+			if ( i == j )	transformationValue += std::string( "1.0" );
+			else	transformationValue += std::string( "0.0" );
+			if (j != 3) transformationValue += std::string( ", ");
 		}
-		transformationValue += QLatin1String( " ] " );
+		transformationValue += std::string( " ] " );
 	}
-
 
 	// Define input fields and their default values
 	TParameterEnumerator* axisEnumerator = new TParameterEnumerator;
@@ -102,7 +105,7 @@ TrackerOneAxis::TrackerOneAxis()
 	m_parametersList->Append( m_axisLabel, axisParameter );
 
 	//Transformation
-	m_parametersList->Append( QLatin1String("node_transformation"), transformationValue, false );
+	m_parametersList->Append( "node_transformation", transformationValue.c_str(), false );
 
 }
 
@@ -117,18 +120,27 @@ TrackerOneAxis::~TrackerOneAxis()
 }
 
 /*!
+ * Returns the filename that stores the shape icon.
+ */
+std::string TrackerOneAxis::GetIcon() const
+{
+	return ( ":/icons/TrackerOneAxis.png" );
+}
+
+/*!
  * Returns  the object to world transformation for the given \a sunVector. The sun vector is given in global coordinates.
  * The local y axis is parallel to the sun vector.
  */
 Transform TrackerOneAxis::GetTrasformation( ) const
 {
-	QString transformationValue = m_parametersList->GetValue( QLatin1String("node_transformation") ).toString();
+	std::string transformationValue = m_parametersList->GetValue( "node_transformation" ).toString().toStdString();
+	std::vector< std::string > transformationValues = tf::StringSplit( transformationValue,
+			"[\\s+,\\[\\]]" );
 
-	QStringList transformationValues = transformationValue.split( QRegExp("[\\s+,\\[\\]]"), QString::SkipEmptyParts );
 	double nodeTransformationMatrix[4][4];
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
-			nodeTransformationMatrix[i][j] = transformationValues[i*4+j].toDouble();
+			nodeTransformationMatrix[i][j] = stod( transformationValues[i*4+j] ) ;
 
 	return ( Transform( nodeTransformationMatrix ) );
 }
@@ -146,7 +158,6 @@ TNodeType TrackerOneAxis::GetType() const
  */
 void TrackerOneAxis::UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 )
 {
-
 	TParameterEnumerator* axisEnumerator = m_parametersList->GetValue( m_axisLabel ).value<TParameterEnumerator*>();
 	if(axisEnumerator->GetSelectedName() == m_xAxisLabel )
 	{
@@ -173,24 +184,26 @@ void TrackerOneAxis::UpdateTrackerTransform( Vector3D sunVector, Transform paren
 											t[2], n[2], p[2], 0.0,
 											0.0, 0.0, 0.0, 1.0 );
 
-
-
-
-		QString transformationValue( QLatin1String("") );
+		std::string transformationValue( "" );
 		for (int i = 0; i < 4; ++i)
 		{
-			transformationValue += QLatin1String( "[ " );
+			transformationValue += std::string( "[ " );
 			for (int j = 0; j < 4; ++j)
 			{
 
-				if( fabs( nodeTransformation.m[i][j] ) < gc::Epsilon ) transformationValue += QLatin1String( "0.0" );
-				else	 transformationValue += QString::number( nodeTransformation.m[i][j] );
-				if (j != 3) transformationValue += QLatin1String( ", ");
+				if( fabs( nodeTransformation.m[i][j] ) < gc::Epsilon ) transformationValue += std::string( "0.0" );
+				else
+				{
+					std::ostringstream double_convert;
+					double_convert << nodeTransformation.m[i][j];
+					transformationValue += double_convert.str();
+				}
+				if (j != 3) transformationValue += std::string( ", ");
 			}
-			transformationValue += QLatin1String( " ]\n" );
+			transformationValue += std::string( " ]\n" );
 		}
 
-		m_parametersList->SetValue( QLatin1String("node_transformation") , transformationValue );
+		m_parametersList->SetValue( "node_transformation" , transformationValue.c_str() );
 	}
 	else if(axisEnumerator->GetSelectedName() == m_yAxisLabel )
 	{
@@ -200,6 +213,5 @@ void TrackerOneAxis::UpdateTrackerTransform( Vector3D sunVector, Transform paren
 	{
 		//NOT IMPLEMENTED YET
 	}
-
 
 }

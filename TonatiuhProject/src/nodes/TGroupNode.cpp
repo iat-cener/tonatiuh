@@ -40,6 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "gc.h"
 #include "Vector3D.h"
+
+#include "tf.h"
+
 #include "TGroupNode.h"
 #include "TNodesList.h"
 #include "TParameterList.h"
@@ -51,7 +54,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 TNodeType TGroupNode::m_nodeType = TNodeType::CreateEmptyType();
 
-
 /*!
  * Creates a new instance of the class type corresponding object.
  */
@@ -60,13 +62,12 @@ void* TGroupNode::CreateInstance( )
   return ( new TGroupNode() );
 }
 
-
 /*!
  * Initializes TGroupNode type.
  */
 void TGroupNode::Init()
 {
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), QString( "GroupNode" ), &TGroupNode::CreateInstance );
+	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), "GroupNode", &TGroupNode::CreateInstance );
 }
 
 /*!
@@ -74,24 +75,23 @@ void TGroupNode::Init()
  */
 TGroupNode::TGroupNode()
 :TContainerNode(),
- m_rotationName( QLatin1String("rotation") ),
- m_scaleFactorName( QLatin1String("scaleFactor") ),
- m_translationName( QLatin1String("translation") )
+ m_rotationName( "rotation"),
+ m_scaleFactorName( "scaleFactor" ),
+ m_translationName( "translation" )
 {
-	setObjectName(GetType().GetName());
+	SetName(GetType().GetName() );
 
 	//Parts
 	TNodesList* childrenListNode = new TNodesList();
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "GroupNode") ) ;
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "SurfaceNode") ) ;
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "TrackerNode") ) ;
-	AppendPart( QLatin1String( "childrenList" ), TNodeType::FromName( "NodesList" ) , childrenListNode );
-
+	AppendPart( "childrenList", TNodeType::FromName( "NodesList" ) , childrenListNode );
 
 	//Transformation
-	m_parametersList->Append( m_translationName, QLatin1String ("0 0 0"), true );
-	m_parametersList->Append( m_rotationName, QLatin1String ("0 0 1 0"));
-	m_parametersList->Append( m_scaleFactorName, QLatin1String ("1 1 1"));
+	m_parametersList->Append( m_translationName, "0 0 0", true );
+	m_parametersList->Append( m_rotationName, "0 0 1 0" );
+	m_parametersList->Append( m_scaleFactorName, "1 1 1" );
 }
 
 /*!
@@ -99,8 +99,15 @@ TGroupNode::TGroupNode()
  */
 TGroupNode::~TGroupNode()
 {
-
 	SetPart( "childrenList", 0 );
+}
+
+/*!
+ * Returns icon file name
+ */
+std::string TGroupNode::GetIcon() const
+{
+	return ( ":/icons/tgroupnode.png" );
 }
 
 /*!
@@ -108,22 +115,23 @@ TGroupNode::~TGroupNode()
  */
 Transform TGroupNode::GetTrasformation() const
 {
-	QStringList parametersList = GetVisibleParametersName();
-	if( parametersList.count() < 1 )	return ( Transform() );
+	std::vector<std::string> parametersList = GetVisibleParametersName();
+	if( parametersList.empty() )	return ( Transform() );
 
-	QStringList translationValues = m_parametersList->GetValue( m_translationName ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( translationValues.count() != 3 ) 	return ( Transform() );
-	Transform translation = Translate( translationValues[0].toDouble(), translationValues[1].toDouble(), translationValues[2].toDouble()  );
 
-	QStringList rotationValues = m_parametersList->GetValue( m_rotationName ).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( rotationValues.count() != 4 ) return ( Transform() );
-	Vector3D rotationAxis( rotationValues[0].toDouble(), rotationValues[1].toDouble(), rotationValues[2].toDouble());
+	std::vector< std::string > translationValues = tf::StringSplit( m_parametersList->GetValue( m_translationName ).toString().toStdString(), "\\s+" );
+	if( translationValues.size() != 3 ) 	return ( Transform() );
+	Transform translation = Translate( stod( translationValues[0] ), stod( translationValues[1] ), stod( translationValues[2] )  );
+
+	std::vector< std::string >  rotationValues = tf::StringSplit( m_parametersList->GetValue( m_rotationName ).toString().toStdString(), "\\s+" );
+	if( rotationValues.size() != 4 ) return ( Transform() );
+	Vector3D rotationAxis( stod( rotationValues[0] ), stod( rotationValues[1] ), stod( rotationValues[2] ) );
 	if( fabs( 1.0 - rotationAxis.length() ) > gc::Epsilon  )	return ( Transform() );
-	Transform rotation = Rotate( rotationValues[3].toDouble(), rotationAxis   );
+	Transform rotation = Rotate( stod( rotationValues[3] ), rotationAxis   );
 
-	QStringList scaleValues = m_parametersList->GetValue( m_scaleFactorName).toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( scaleValues.count() != 3 ) return ( Transform() );
-	Transform scale = Scale( scaleValues[0].toDouble(), scaleValues[1].toDouble(), scaleValues[2].toDouble() );
+	std::vector< std::string >  scaleValues = tf::StringSplit( m_parametersList->GetValue( m_scaleFactorName).toString().toStdString(), "\\s+" );
+	if( scaleValues.size() != 3 ) return ( Transform() );
+	Transform scale = Scale( stod( scaleValues[0] ), stod( scaleValues[1] ), stod( scaleValues[2] ) );
 
 	//First scaled, the rotated and finally is translated
 	Transform transformOTW = translation*rotation*scale;

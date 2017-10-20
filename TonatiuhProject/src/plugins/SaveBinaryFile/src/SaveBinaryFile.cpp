@@ -36,9 +36,13 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <stdlib.h>     /* strtoul */
+
 #include <QDataStream>
 #include <QDir>
+#include <QString>
 #include <QTextStream>
+
 
 #include "Photon.h"
 #include "SaveBinaryFile.h"
@@ -49,10 +53,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 SaveBinaryFile::SaveBinaryFile()
 :SaveFile(),
  m_currentFileID( 1 ),
- m_exportDirecotryName( QLatin1String("") ),
+ m_exportDirecotryName( std::string("") ),
 m_exportedPhotons( 0 ),
 m_nPhotonsPerFile( -1 ),
-m_photonsFilename( QLatin1String("") ),
+m_photonsFilename( std::string("") ),
 m_powerPerPhoton ( -1 ),
 m_oneFile(true)
 {
@@ -73,13 +77,13 @@ SaveBinaryFile::~SaveBinaryFile()
 void SaveBinaryFile::EndSave()
 {
 
-	QDir exportDirectory( m_photonsFilename );
+	QDir exportDirectory( m_exportDirecotryName.c_str() );
 	QString exportFilename;
 	if( m_oneFile )
-		exportFilename = exportDirectory.absoluteFilePath( QString( QLatin1String("%1_parameters.txt" ) ).arg( m_photonsFilename ) );
+		exportFilename = exportDirectory.absoluteFilePath( QString( QLatin1String("%1_parameters.txt" ) ).arg( m_photonsFilename.c_str() ) );
 	else
 	{
-		QString newName = QString( QLatin1String( "%1_parameters.txt" ) ).arg( m_photonsFilename );
+		QString newName = QString( QLatin1String( "%1_parameters.txt" ) ).arg( m_photonsFilename.c_str() );
 		exportFilename = exportDirectory.absoluteFilePath( newName );
 	}
 
@@ -101,8 +105,8 @@ void SaveBinaryFile::SavePhotonMap( std::vector < Photon* > raysLists )
 {
 	if( m_oneFile )
 	{
-		QDir exportDirectory( m_exportDirecotryName );
-		QString filename = m_photonsFilename;
+		QDir exportDirectory( m_exportDirecotryName.c_str() );
+		QString filename( m_photonsFilename.c_str() );
 		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
 
 		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
@@ -128,28 +132,31 @@ void SaveBinaryFile::SetPowerPerPhoton( double wPhoton )
 /*!
  * Sets the parameters to define the binary files to save.
  */
-void SaveBinaryFile::SetSaveParameterValue( QString parameterName, QString parameterValue )
+void SaveBinaryFile::SetSaveParameterValue( std::string parameterName, std::string parameterValue )
 {
 	//Directory name
-	if( parameterName == QLatin1String( "ExportDirectory" ) )
+
+	if (parameterName.compare( "ExportDirectory" ) == 0)
 		m_exportDirecotryName = parameterValue;
 
 	//File name
-	else if( parameterName == QLatin1String( "ExportFile" ) )
+	else if (parameterName.compare( "ExportFile" ) == 0)
 	{
 		m_photonsFilename = parameterValue;
 
 	}
 
 	//Maximum number of photons that a file can store.
-	else if( parameterName == QLatin1String( "FileSize" ) )
+	else if (parameterName.compare( "FileSize" ) == 0)
 	{
-		if( parameterValue.toDouble() < 0 )	m_oneFile = true;
+
+		unsigned long photonsPerFile = strtoul( parameterValue.c_str(), NULL, 0 );
+		if( photonsPerFile < 1 )	m_oneFile = true;
 		else
 		{
 
 			m_oneFile = false;
-			m_nPhotonsPerFile = ( unsigned long ) parameterValue.toDouble();
+			m_nPhotonsPerFile = photonsPerFile;
 		}
 
 	}
@@ -182,15 +189,22 @@ void SaveBinaryFile::ExportAllPhotonsAllData( QString filename, std::vector< Pho
 
 		Photon* photon = raysLists[i];
 		unsigned long urlId = 0;
-		if( !photon->intersectedSurfaceURL.isEmpty() )
+		if( !photon->intersectedSurfaceURL.empty() )
 		{
-			if( !m_saveSurfacesURLList.contains( photon->intersectedSurfaceURL ) )
+			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon->intersectedSurfaceURL );
+			if (it == m_saveSurfacesURLList.end())
 			{
+				// url is not in vector
 				m_saveSurfacesURLList.push_back( photon->intersectedSurfaceURL );
 				urlId = m_saveSurfacesURLList.size();
+
+			} else
+			{
+				//urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
+				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
 			}
-			else
-				urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
+
+
 		}
 
 		out<<double( ++m_exportedPhotons );
@@ -239,17 +253,22 @@ void SaveBinaryFile::ExportAllPhotonsNotNextPrevID( QString filename, std::vecto
 	{
 		Photon* photon = raysLists[i];
 		unsigned long urlId = 0;
-		if( !photon->intersectedSurfaceURL.isEmpty() )
+		if( !photon->intersectedSurfaceURL.empty() )
 		{
-			if( !m_saveSurfacesURLList.contains( photon->intersectedSurfaceURL ) )
+			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon->intersectedSurfaceURL );
+			if (it == m_saveSurfacesURLList.end())
 			{
+				// url is not in vector
 				m_saveSurfacesURLList.push_back( photon->intersectedSurfaceURL );
 				urlId = m_saveSurfacesURLList.size();
-			}
-			else
-				urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
 
+			} else
+			{
+				//urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
+				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
+			}
 		}
+
 
 		out<<double( ++m_exportedPhotons );
 
@@ -288,19 +307,20 @@ void SaveBinaryFile::ExportAllPhotonsSelectedData( QString filename, std::vector
 	{
 		Photon* photon = raysLists[i];
 		unsigned long urlId = 0;
-		if( !photon->intersectedSurfaceURL.isEmpty() )
+		if( !photon->intersectedSurfaceURL.empty() )
 		{
-			if( !m_saveSurfacesURLList.contains( photon->intersectedSurfaceURL ) )
+			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon->intersectedSurfaceURL );
+			if (it == m_saveSurfacesURLList.end())
 			{
+				// url is not in vector
 				m_saveSurfacesURLList.push_back( photon->intersectedSurfaceURL );
 				urlId = m_saveSurfacesURLList.size();
-			}
-			else
-			{
-				urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) ;
-				urlId++;
-			}
 
+			} else
+			{
+				//urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
+				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
+			}
 		}
 
 		out<<double( ++m_exportedPhotons );
@@ -350,15 +370,20 @@ void SaveBinaryFile::ExportSelectedPhotonsAllData( QString filename, std::vector
 	{
 		Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
 		unsigned long urlId = 0;
-		if( !photon->intersectedSurfaceURL.isEmpty() )
+		if( !photon->intersectedSurfaceURL.empty() )
 		{
-			if( !m_saveSurfacesURLList.contains( photon->intersectedSurfaceURL ) )
+			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon->intersectedSurfaceURL );
+			if (it == m_saveSurfacesURLList.end())
 			{
+				// url is not in vector
 				m_saveSurfacesURLList.push_back( photon->intersectedSurfaceURL );
 				urlId = m_saveSurfacesURLList.size();
+
+			} else
+			{
+				//urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
+				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
 			}
-			else
-				urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
 		}
 
 		out<<double( ++m_exportedPhotons );
@@ -412,15 +437,20 @@ void SaveBinaryFile::ExportSelectedPhotonsNotNextPrevID( QString filename, std::
 	{
 		Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
 		unsigned long urlId = 0;
-		if( !photon->intersectedSurfaceURL.isEmpty() )
+		if( !photon->intersectedSurfaceURL.empty() )
 		{
-			if( !m_saveSurfacesURLList.contains( photon->intersectedSurfaceURL ) )
+			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon->intersectedSurfaceURL );
+			if (it == m_saveSurfacesURLList.end())
 			{
+				// url is not in vector
 				m_saveSurfacesURLList.push_back( photon->intersectedSurfaceURL );
 				urlId = m_saveSurfacesURLList.size();
+
+			} else
+			{
+				//urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
+				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
 			}
-			else
-				urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
 		}
 
 		out<<double( ++m_exportedPhotons );
@@ -465,18 +495,19 @@ void SaveBinaryFile::ExportSelectedPhotonsSelectedData( QString filename, std::v
 	{
 		Photon* photon = raysLists[startIndex + exportedPhotonsToFile];
 		unsigned long urlId = 0;
-
-		if( !photon->intersectedSurfaceURL.isEmpty() )
+		if( !photon->intersectedSurfaceURL.empty() )
 		{
-			if( !m_saveSurfacesURLList.contains( photon->intersectedSurfaceURL ) )
+			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon->intersectedSurfaceURL );
+			if (it == m_saveSurfacesURLList.end())
 			{
+				// url is not in vector
 				m_saveSurfacesURLList.push_back( photon->intersectedSurfaceURL );
 				urlId = m_saveSurfacesURLList.size();
-			}
-			else
+
+			} else
 			{
-				urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) ;
-				urlId++;
+				//urlId = m_saveSurfacesURLList.indexOf( photon->intersectedSurfaceURL ) + 1;
+				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
 			}
 		}
 
@@ -517,8 +548,8 @@ void SaveBinaryFile::ExportSelectedPhotonsSelectedData( QString filename, std::v
 void SaveBinaryFile::RemoveExistingFiles()
 {
 
-	QDir exportDirectory( m_exportDirecotryName );
-	QString filename = m_photonsFilename;
+	QDir exportDirectory( m_exportDirecotryName.c_str() );
+	QString filename( m_photonsFilename.c_str() );
 	if( m_oneFile )
 	{
 		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
@@ -560,7 +591,7 @@ void SaveBinaryFile::RemoveExistingFiles()
 void SaveBinaryFile::SaveToVariousFiles( std::vector <Photon* > raysLists )
 {
 
-	QDir exportDirectory( m_exportDirecotryName );
+	QDir exportDirectory( m_exportDirecotryName.c_str() );
 
 	unsigned long nPhotons = raysLists.size();
 
@@ -572,11 +603,9 @@ void SaveBinaryFile::SaveToVariousFiles( std::vector <Photon* > raysLists )
 	{
 		if( !( filePhotons < m_nPhotonsPerFile ) )
 		{
-			QString newName = QString( QLatin1String( "%1_%2.dat" ) ).arg(
-					m_photonsFilename,
-					QString::number( m_currentFileID ) );
+			std::string newName = m_photonsFilename + std::string( "_" ) + std::to_string(m_currentFileID) + std::string( ".dat" );
 
-			QString currentFileName = exportDirectory.absoluteFilePath( newName );
+			QString currentFileName = exportDirectory.absoluteFilePath( newName.c_str() );
 
 			if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
 				ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
@@ -598,12 +627,9 @@ void SaveBinaryFile::SaveToVariousFiles( std::vector <Photon* > raysLists )
 
 	if( filePhotons > 0 )
 	{
-		QString newName = QString( QLatin1String( "%1_%2.dat" ) ).arg(
-				m_photonsFilename,
-				QString::number( m_currentFileID ) );
+		std::string newName = m_photonsFilename + std::string( "_" ) + std::to_string(m_currentFileID) + std::string( ".dat" );
 
-		QString currentFileName = exportDirectory.absoluteFilePath( newName );
-
+		QString currentFileName = exportDirectory.absoluteFilePath( newName.c_str() );
 
 		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
 			ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
@@ -647,9 +673,9 @@ void SaveBinaryFile::WriteFileFormat( QString exportFilename )
 
 
 	out<<QString( QLatin1String( "START SURFACES\n" ) );
-	for( int s = 0; s < m_saveSurfacesURLList.count(); s++ )
+	for( unsigned int s = 0; s < m_saveSurfacesURLList.size(); s++ )
 	{
-		QString surfaceURL = m_saveSurfacesURLList[s];
+		QString surfaceURL( m_saveSurfacesURLList[s].c_str() );
 		out<<QString( QLatin1String( "%1 %2\n" ) ).arg( QString::number( s+1 ),
 				surfaceURL);
 	}

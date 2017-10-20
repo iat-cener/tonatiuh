@@ -55,7 +55,7 @@ class TGroupNode;
 
 struct RayCastingNode
 {
-	QString nodeURL;
+	std::string nodeURL;
 	BBox boundingBox; //world coordinates
 	Transform wtoTransformation;
 	Transform otwTransformation;
@@ -78,7 +78,6 @@ struct RayCastingNode
 	      double t = ray.maxt;
 	      for( unsigned int index = 0; index < childrenList.size(); ++index )
 	      {
-	    	  QString intersectedChild;
 	    	  Ray childOutputRay;
 	    	  bool childShapeFront = true;
 		      RayCastingNode* childIntersectedNode = 0;
@@ -146,13 +145,13 @@ public:
 	RayCasting( );
 	~RayCasting();
 
-	bool SetScene( TSceneNode* scene  = 0, QStringList notFirstStageNodesURL = QStringList() );
+	bool SetScene( TSceneNode* scene  = 0, std::vector< std::string > notFirstStageNodesURL = std::vector< std::string >() );
 
 protected:
 	void RunRaytracer( unsigned long numberOfRays );
 
 private:
-	bool CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode* rTRNode, Transform parentWT0, QString parentURL );
+	bool CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode* rTRNode, Transform parentWT0, std::string parentURL );
 	void RemoveRayTracerNodesTree( RayCastingNode* rTParentNode );
 
 private:

@@ -40,8 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TCONTAINERNODE_H_
 #define TCONTAINERNODE_H_
 
-#include <QHash>
-#include <QStringList>
+#include <map>
+#include <string>
+
 
 #include "TNode.h"
 
@@ -52,41 +53,43 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TContainerNode : public TNode
 {
-	Q_OBJECT
+	//Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(TContainerNode)
+	TContainerNode(const TContainerNode& node) = delete;
+	//Q_DISABLE_COPY(TContainerNode)
 
 public:
-	static void* CreateInstance();
+	//static void* CreateInstance();
 	static void Init();
 
 	TContainerNode();
 
+	bool Contains(const std::string & name) const;
 	virtual TContainerNode* Copy() const;
+	virtual std::string GetIcon() const;
+	TNode* GetPart( const std::string name ) const;
+	std::vector<std::string> GetPartNames() const;
 	virtual TNodeType GetType() const;
 
-	bool Contains(const QString& name) const;
-	TNode* GetPart( const QString name ) const;
-	QStringList GetPartNames() const;
 	int NumberOfParts() const;
-	virtual bool SetPart( const QString name, TNode* node  );
+	virtual bool SetPart( const std::string name, TNode* node  );
 
 
 protected:
 	virtual ~TContainerNode();
 
-	void AppendPart( const QString name, TNodeType type, TNode* defaultNode );
-	void RevomePart( const QString name );
+	void AppendPart( const std::string name, TNodeType type, TNode* defaultNode );
+	void RevomePart( const std::string name );
 
-	QHash< QString, TNodeType > m_partsTypeList;
-	QHash< QString, TNode* > m_partsList;
+	std::map< std::string, TNodeType > m_partsTypeList;
+	std::map< std::string, TNode* > m_partsList;
 
 private:
 	static TNodeType m_nodeType;
 };
 
-Q_DECLARE_METATYPE(TContainerNode*)
+//Q_DECLARE_METATYPE(TContainerNode*)
 
 
 #endif /* TCONTAINERNODE_H_ */

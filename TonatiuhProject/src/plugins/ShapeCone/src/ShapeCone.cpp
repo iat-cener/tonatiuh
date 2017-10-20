@@ -58,7 +58,7 @@ void* ShapeCone::CreateInstance( )
  */
 void ShapeCone::Init()
 {
-	ShapeCone::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeCone" ), &ShapeCone::CreateInstance );
+	ShapeCone::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeCone", &ShapeCone::CreateInstance );
 }
 
 /*!
@@ -67,13 +67,14 @@ void ShapeCone::Init()
 ShapeCone::ShapeCone(  )
 :TShape()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Parameters
-	m_parametersList->Append( QLatin1String("baseRadius"), 0.5 );
-	m_parametersList->Append( QLatin1String("topRadius"), 0.0 );
-	m_parametersList->Append( QLatin1String("height"), 1.0 );
-	m_parametersList->Append( QLatin1String("phiMax"), gc::TwoPi );
+	m_parametersList->Append( "baseRadius", 0.5 );
+	m_parametersList->Append( "topRadius", 0.0 );
+	m_parametersList->Append( "height", 1.0 );
+	m_parametersList->Append( "phiMax", gc::TwoPi );
 
 }
 
@@ -88,10 +89,10 @@ ShapeCone::~ShapeCone()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeCone::GetIcon()
+std::string ShapeCone::GetIcon() const
 {
 
-	return QLatin1String( ":/icons/ShapeCone.png" );
+	return ( ":/icons/ShapeCone.png" );
 }
 
 
@@ -100,10 +101,10 @@ QString ShapeCone::GetIcon()
  */
 BBox ShapeCone::GetBondingBox() const
 {
-	double baseRadius = m_parametersList->GetValue( QLatin1String("baseRadius") ).toDouble();
-	double topRadius = m_parametersList->GetValue( QLatin1String("topRadius") ).toDouble();
-	double height = m_parametersList->GetValue( QLatin1String("height") ).toDouble();
-	double phiMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
+	double baseRadius = m_parametersList->GetValue( "baseRadius" ).toDouble();
+	double topRadius = m_parametersList->GetValue( "topRadius" ).toDouble();
+	double height = m_parametersList->GetValue( "height" ).toDouble();
+	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -137,10 +138,10 @@ TNodeType ShapeCone::GetType() const
  */
 bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double baseRadius = m_parametersList->GetValue( QLatin1String("baseRadius") ).toDouble();
-	double topRadius = m_parametersList->GetValue( QLatin1String("topRadius") ).toDouble();
-	double height = m_parametersList->GetValue( QLatin1String("height") ).toDouble();
-	double phiMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
+	double baseRadius = m_parametersList->GetValue( "baseRadius" ).toDouble();
+	double topRadius = m_parametersList->GetValue( "topRadius" ).toDouble();
+	double height = m_parametersList->GetValue( "height" ).toDouble();
+	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
 
 
 	// Compute quadratic ShapeCone coefficients

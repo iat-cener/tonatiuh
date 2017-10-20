@@ -52,7 +52,7 @@ class SunshapePillboxFactory: public QObject, public TSunshapeFactory
 
 public:
     void Init() const;
-   	QString TSunshapeName() const;
+    std::string TSunshapeName() const;
    	QIcon TSunshapeIcon() const;
    	SunshapePillbox* CreateTSunshape( ) const;
 };

@@ -39,11 +39,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TMATERIALFACTORY_H_
 #define TMATERIALFACTORY_H_
 
+
+#include <vector>
+
 #include <QtPlugin>
-#include <QVector>
 #include <QVariant>
 
-class QString;
+
 class QIcon;
 class TMaterial;
 
@@ -52,10 +54,10 @@ class TMaterialFactory
 public:
     virtual ~TMaterialFactory() {}
     virtual void Init() const  = 0;
-    virtual QString TMaterialName() const  = 0;
+    virtual std::string TMaterialName() const  = 0;
     virtual QIcon TMaterialIcon() const = 0;
     virtual TMaterial* CreateTMaterial( ) const = 0;
-    virtual TMaterial* CreateTMaterial( int /*numberofParameters*/, QVector< QVariant > /*parametersList*/ ) const
+    virtual TMaterial* CreateTMaterial( int /*numberofParameters*/, std::vector< QVariant > /*parametersList*/ ) const
     {
     	return ( CreateTMaterial() );
     }

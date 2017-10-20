@@ -56,13 +56,19 @@ class RandomDeviate;
 
 class TSunshape : public TNode
 {
+
+private:
+	TSunshape(const TSunshape& node) = delete;
+/*
 	Q_OBJECT
+*/
 
 public:
 	static void Init();
 
 	TSunshape();
 
+	virtual std::string GetIcon() const = 0;
 	virtual void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;
 	virtual double GetIrradiance() const = 0;
     virtual double GetThetaMax() const = 0;
@@ -74,10 +80,6 @@ protected:
 private:
 	static TNodeType m_nodeType;
 };
-
-
-Q_DECLARE_METATYPE(TSunshape*)
-
 
 
 #endif /* TSUNSHAPE_H_ */

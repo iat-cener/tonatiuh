@@ -57,7 +57,12 @@ class Vector3D;
 
 class TSceneNode : public TContainerNode
 {
+
+private:
+	TSceneNode(const TSceneNode& node) = delete;
+/*
 	Q_OBJECT
+*/
 
 public:
 	static void* CreateInstance();
@@ -65,20 +70,22 @@ public:
 
 	TSceneNode();
 
+	void ChangeSunPosition( double azimuth, double zenith );
+
+	virtual std::string GetIcon() const;
 	TNodeType GetType() const;
-	bool SetPart( const QString name, TNode* node  );
+	bool SetPart( const std::string name, TNode* node  );
+
 
 protected:
 	virtual ~TSceneNode();
 	void UpdateTrackersTransform( TNode* branch, Vector3D sunVector, Transform parentWT0 );
-
-protected slots:
 	void UpdateTrackers( double azimuth, double zenith );
 
 private:
-	QString m_childrenListName;
-	QString m_lightName;
-	QString m_transmisivityName;
+	std::string m_childrenListName;
+	std::string m_lightName;
+	std::string m_transmisivityName;
 
 	static TNodeType m_nodeType;
 };

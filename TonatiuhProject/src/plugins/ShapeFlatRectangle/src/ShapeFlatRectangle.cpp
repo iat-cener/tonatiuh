@@ -57,7 +57,7 @@ void* ShapeFlatRectangle::CreateInstance( )
  */
 void ShapeFlatRectangle::Init()
 {
-	ShapeFlatRectangle::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeFlatRectangle" ), &ShapeFlatRectangle::CreateInstance );
+	ShapeFlatRectangle::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeFlatRectangle", &ShapeFlatRectangle::CreateInstance );
 }
 
 /*!
@@ -66,11 +66,12 @@ void ShapeFlatRectangle::Init()
 ShapeFlatRectangle::ShapeFlatRectangle()
 :TShape()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Parameters
-	m_parametersList->Append( QLatin1String("width"), 1.0 );
-	m_parametersList->Append( QLatin1String("height"), 1.0 );
+	m_parametersList->Append( "width", 1.0 );
+	m_parametersList->Append( "height", 1.0 );
 }
 
 /*!
@@ -84,10 +85,10 @@ ShapeFlatRectangle::~ShapeFlatRectangle()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeFlatRectangle::GetIcon()
+std::string ShapeFlatRectangle::GetIcon() const
 {
 
-	return QLatin1String( ":/icons/ShapeFlatRectangle.png" );
+	return ( ":/icons/ShapeFlatRectangle.png" );
 }
 
 
@@ -97,8 +98,8 @@ QString ShapeFlatRectangle::GetIcon()
 BBox ShapeFlatRectangle::GetBondingBox() const
 {
 
-	double width = m_parametersList->GetValue( QLatin1String("width") ).toDouble();
-	double height = m_parametersList->GetValue( QLatin1String("height") ).toDouble();
+	double width = m_parametersList->GetValue( "width" ).toDouble();
+	double height = m_parametersList->GetValue( "height" ).toDouble();
 
 	Point3D min = Point3D( -height/2, 0.0, -width/2);
 	Point3D max = Point3D( height/2, 0.0, width/2);
@@ -119,8 +120,8 @@ TNodeType ShapeFlatRectangle::GetType() const
  */
 bool ShapeFlatRectangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double width = m_parametersList->GetValue( QLatin1String("width") ).toDouble();
-	double height = m_parametersList->GetValue( QLatin1String("height") ).toDouble();
+	double width = m_parametersList->GetValue( "width" ).toDouble();
+	double height = m_parametersList->GetValue( "height" ).toDouble();
 
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction().y == 0 ) ) return ( false );

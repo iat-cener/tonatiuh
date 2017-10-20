@@ -44,10 +44,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class SunshapeBuie : public TSunshape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(SunshapeBuie)
+	SunshapeBuie(const SunshapeBuie& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -56,6 +55,7 @@ public:
 	SunshapeBuie( );
 
 	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
+	std::string GetIcon() const;
 	double GetIrradiance() const;
     double GetThetaMax() const;
 	TNodeType GetType() const;

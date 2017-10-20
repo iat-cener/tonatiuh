@@ -57,9 +57,9 @@ void TrackerParabolicDishFactory::Init() const
 /*!
  * Returns tracker type name.
  */
-QString TrackerParabolicDishFactory::TTrackerNodeName() const
+std::string TrackerParabolicDishFactory::TTrackerNodeName() const
 {
-	return ( QString( "Tracker_ParabolicDish" ) );
+	return ( "Tracker_ParabolicDish" );
 }
 
 /*!

@@ -56,9 +56,9 @@ void ShapeCylinderFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeCylinderFactory::TShapeName() const
+std::string ShapeCylinderFactory::TShapeName() const
 {
-	return QString("Cylinder");
+	return "Cylinder";
 }
 
 /*!

@@ -59,7 +59,7 @@ void* TSurfaceNode::CreateInstance( )
 void TSurfaceNode::Init()
 {
 
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), QString( "SurfaceNode" ), &TSurfaceNode::CreateInstance );
+	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "ContainerNode" ), "SurfaceNode", &TSurfaceNode::CreateInstance );
 }
 
 /*!
@@ -69,11 +69,12 @@ TSurfaceNode::TSurfaceNode()
 :TContainerNode()
 {
 
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 
 	//Parts
-	AppendPart( QLatin1String( "shape" ), TNodeType::FromName( "Shape" ) , 0 );
-	AppendPart( QLatin1String( "material" ), TNodeType::FromName( "Material" ) , 0 );
+	AppendPart( "shape", TNodeType::FromName( "Shape" ) , 0 );
+	AppendPart( "material", TNodeType::FromName( "Material" ) , 0 );
 
 }
 

@@ -57,9 +57,9 @@ void ShapeFlatRectangleFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeFlatRectangleFactory::TShapeName() const
+std::string ShapeFlatRectangleFactory::TShapeName() const
 {
-	return QString("Flat_Rectangle");
+	return ( "Flat_Rectangle" );
 }
 
 /*!

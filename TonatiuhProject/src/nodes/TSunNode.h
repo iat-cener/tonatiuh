@@ -58,29 +58,33 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TSunNode : public TContainerNode
 {
+
+private:
+	TSunNode(const TSunNode& node) = delete;
+/*
 	Q_OBJECT
+*/
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TSunNode();
-
 	void ChangeSunPosition( double azimuth, double zenith );
+
 	double GetAzimuth() const;
+	virtual std::string GetIcon() const;
 	double GetZenith() const;
 	TNodeType GetType() const;
 
-signals:
-	void SunpositonChanged( double azimuth, double zenith );
 
 protected:
 	virtual ~TSunNode();
 
 private:
 	static TNodeType m_nodeType;
-	QString m_azimuthLabel;
-	QString m_zenithLabel;
+	std::string m_azimuthLabel;
+	std::string m_zenithLabel;
 };
 
 //Q_DECLARE_METATYPE(TSunNode*)

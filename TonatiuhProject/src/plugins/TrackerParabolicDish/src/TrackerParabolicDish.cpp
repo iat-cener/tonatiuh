@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <cmath>
 
 #include "gc.h"
+#include "tf.h"
 #include "TParameterList.h"
 #include "TrackerParabolicDish.h"
 #include "Transform.h"
@@ -61,7 +62,7 @@ void* TrackerParabolicDish::CreateInstance( )
 void TrackerParabolicDish::Init()
 {
 
-	TrackerParabolicDish::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Tracker" ), QString( "TrackerParabolicDish" ), &TrackerParabolicDish::CreateInstance );
+	TrackerParabolicDish::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Tracker" ),  "TrackerParabolicDish", &TrackerParabolicDish::CreateInstance );
 }
 
 /*!
@@ -71,24 +72,24 @@ TrackerParabolicDish::TrackerParabolicDish()
 :TTrackerNode()
 {
 	//Default object name is the name of the type
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
-	QString transformationValue( QLatin1String("") );
+	std::string transformationValue( "" );
 	for (int i = 0; i < 4; ++i)
 	{
-		transformationValue += QLatin1String( "[ " );
+		transformationValue +=  std::string( "[ " );
 		for (int j = 0; j < 4; ++j)
 		{
-			if ( i == j )	transformationValue += QLatin1String( "1.0" );
-			else	transformationValue += QLatin1String( "0.0" );
-			if (j != 3) transformationValue += QLatin1String( ", ");
+			if ( i == j )	transformationValue += std::string( "1.0" );
+			else	transformationValue += std::string( "0.0" );
+			if (j != 3) transformationValue += std::string( ", ");
 		}
-		transformationValue += QLatin1String( " ] " );
+		transformationValue += std::string( " ] " );
 	}
 
-
 	//Transformation
-	m_parametersList->Append( QLatin1String("node_transformation"), transformationValue, false );
+	m_parametersList->Append( "node_transformation", transformationValue.c_str(), false );
 
 }
 
@@ -97,8 +98,16 @@ TrackerParabolicDish::TrackerParabolicDish()
  */
 TrackerParabolicDish::~TrackerParabolicDish()
 {
-	setObjectName(GetType().GetName());
+	SetName( GetType().GetName() );
 
+}
+
+/*!
+ * Returns the filename that stores the shape icon.
+ */
+std::string TrackerParabolicDish::GetIcon() const
+{
+	return ( ":/icons/TrackerParabolicDish.png" );
 }
 
 /*!
@@ -107,13 +116,14 @@ TrackerParabolicDish::~TrackerParabolicDish()
  */
 Transform TrackerParabolicDish::GetTrasformation( ) const
 {
-	QString transformationValue = m_parametersList->GetValue( QLatin1String("node_transformation") ).toString();
+	std::string transformationValue = m_parametersList->GetValue( "node_transformation" ).toString().toStdString();
+	std::vector< std::string > transformationValues = tf::StringSplit( transformationValue,
+			"[\\s+,\\[\\]]" );
 
-	QStringList transformationValues = transformationValue.split( QRegExp("[\\s+,\\[\\]]"), QString::SkipEmptyParts );
 	double nodeTransformationMatrix[4][4];
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
-			nodeTransformationMatrix[i][j] = transformationValues[i*4+j].toDouble();
+			nodeTransformationMatrix[i][j] = stod( transformationValues[i*4+j] ) ;
 
 	return ( Transform( nodeTransformationMatrix ) );
 }
@@ -151,20 +161,24 @@ void TrackerParabolicDish::UpdateTrackerTransform( Vector3D sunVector, Transform
 											0.0, 0.0, 0.0, 1.0 );
 	}
 
-
-	QString transformationValue( QLatin1String("") );
+	std::string transformationValue( "" );
 	for (int i = 0; i < 4; ++i)
 	{
-		transformationValue += QLatin1String( "[ " );
+		transformationValue += std::string( "[ " );
 		for (int j = 0; j < 4; ++j)
 		{
 
-			if( fabs( nodeTransformation.m[i][j] ) < gc::Epsilon ) transformationValue += QLatin1String( "0.0" );
-			else	 transformationValue += QString::number( nodeTransformation.m[i][j] );
-			if (j != 3) transformationValue += QLatin1String( ", ");
+			if( fabs( nodeTransformation.m[i][j] ) < gc::Epsilon ) transformationValue += std::string( "0.0" );
+			else
+			{
+				std::ostringstream double_convert;
+				double_convert << nodeTransformation.m[i][j];
+				transformationValue += double_convert.str();
+			}
+			if (j != 3) transformationValue += std::string( ", ");
 		}
-		transformationValue += QLatin1String( " ]\n" );
+		transformationValue += std::string( " ]\n" );
 	}
 
-	m_parametersList->SetValue( QLatin1String("node_transformation") , transformationValue );
+	m_parametersList->SetValue( "node_transformation" , transformationValue.c_str() );
 }

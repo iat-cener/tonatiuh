@@ -43,7 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 #include <QtPlugin>
-#include <QVector>
 #include <QVariant>
 
 class TTrackerNode;
@@ -59,7 +58,7 @@ class TTrackerFactory
 public:
     virtual ~TTrackerFactory() {}
     virtual void Init() const  = 0;
-    virtual QString TTrackerNodeName() const  = 0;
+    virtual std::string TTrackerNodeName() const  = 0;
     virtual QIcon TTrackerNodeIcon() const = 0;
     virtual TTrackerNode* CreateTTrackerNode( ) const = 0;
 

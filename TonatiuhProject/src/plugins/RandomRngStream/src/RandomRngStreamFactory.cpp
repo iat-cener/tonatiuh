@@ -37,14 +37,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-#include <QString>
 #include <QTime>
 
 #include "RandomRngStreamFactory.h"
 
-QString RandomRngStreamFactory::RandomDeviateName() const
+std::string RandomRngStreamFactory::RandomDeviateName() const
 {
-	return QString( "Rng Stream" );
+	return ( "Rng Stream" );
 }
 
 QIcon  RandomRngStreamFactory::RandomDeviateIcon() const

@@ -60,7 +60,7 @@ void* ShapeTroughParabola::CreateInstance( )
  */
 void ShapeTroughParabola::Init()
 {
-	ShapeTroughParabola::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeTroughParabola" ), &ShapeTroughParabola::CreateInstance );
+	ShapeTroughParabola::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeTroughParabola", &ShapeTroughParabola::CreateInstance );
 }
 
 /*!
@@ -70,14 +70,15 @@ void ShapeTroughParabola::Init()
 ShapeTroughParabola::ShapeTroughParabola()
 :TShape()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( QLatin1String("focusLength"), 0.125);
-	m_parametersList->Append( QLatin1String("xMin" ), -0.5 );
-	m_parametersList->Append( QLatin1String("xMax" ), 0.5 );
-	m_parametersList->Append( QLatin1String("lengthXMin" ), 1.0 );
-	m_parametersList->Append( QLatin1String("lengthXMax" ), 1.0 );
+	m_parametersList->Append( "focusLength", 0.125);
+	m_parametersList->Append( "xMin", -0.5 );
+	m_parametersList->Append( "xMax", 0.5 );
+	m_parametersList->Append( "lengthXMin", 1.0 );
+	m_parametersList->Append( "lengthXMax", 1.0 );
 }
 
 /*!
@@ -92,9 +93,9 @@ ShapeTroughParabola::~ShapeTroughParabola()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeTroughParabola::GetIcon()
+std::string ShapeTroughParabola::GetIcon() const
 {
-	return ( QLatin1String( ":/icons/ShapeTroughParabola.png" ) );
+	return ( ":/icons/ShapeTroughParabola.png" );
 }
 
 /*!
@@ -103,11 +104,11 @@ QString ShapeTroughParabola::GetIcon()
 BBox ShapeTroughParabola::GetBondingBox() const
 {
 
-	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
-	double xmin = m_parametersList->GetValue( QLatin1String("xMin") ).toDouble();
-	double xmax = m_parametersList->GetValue( QLatin1String("xMax") ).toDouble();
-	double lengthXMin = m_parametersList->GetValue( QLatin1String("lengthXMin") ).toDouble();
-	double lengthXMax = m_parametersList->GetValue( QLatin1String("lengthXMax") ).toDouble();
+	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
+	double xmin = m_parametersList->GetValue( "xMin" ).toDouble();
+	double xmax = m_parametersList->GetValue( "xMax" ).toDouble();
+	double lengthXMin = m_parametersList->GetValue( "lengthXMin" ).toDouble();
+	double lengthXMax = m_parametersList->GetValue( "lengthXMax" ).toDouble();
 
 	double y1 = ( xmin * xmin ) / ( 4 * focusLength );
 	double y2 = ( xmax * xmax ) / ( 4 * focusLength );
@@ -140,11 +141,11 @@ TNodeType ShapeTroughParabola::GetType() const
 bool ShapeTroughParabola::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
 
-	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
-	double xmin = m_parametersList->GetValue( QLatin1String("xMin") ).toDouble();
-	double xmax = m_parametersList->GetValue( QLatin1String("xMax") ).toDouble();
-	double lengthXMin = m_parametersList->GetValue( QLatin1String("lengthXMin") ).toDouble();
-	double lengthXMax = m_parametersList->GetValue( QLatin1String("lengthXMax") ).toDouble();
+	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
+	double xmin = m_parametersList->GetValue( "xMin" ).toDouble();
+	double xmax = m_parametersList->GetValue( "xMax" ).toDouble();
+	double lengthXMin = m_parametersList->GetValue( "lengthXMin" ).toDouble();
+	double lengthXMax = m_parametersList->GetValue( "lengthXMax" ).toDouble();
 
 
 	// Compute quadratic parabolic cylinder coefficients
@@ -282,7 +283,7 @@ void ShapeTroughParabola::updateXMinValues( void *data, SoSensor *)
 	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
 	if( shapeTroughParabola->xMax.getValue() < shapeTroughParabola->xMin.getValue() )
 	{
-		QMessageBox::warning( 0, QLatin1String( "Tonatiuh" ),
+		QMessageBox::warning( 0,  "Tonatiuh" ),
 				QObject::tr( "xMin must be smaller than xMax. ") );
 		shapeTroughParabola->xMin.setValue( shapeTroughParabola->xMax.getValue() );
 	}
@@ -293,7 +294,7 @@ void ShapeTroughParabola::updateXMaxValues( void *data, SoSensor *)
 	ShapeTroughParabola* shapeTroughParabola = (ShapeTroughParabola *) data;
 	if( shapeTroughParabola->xMax.getValue() < shapeTroughParabola->xMin.getValue() )
 	{
-		QMessageBox::warning( 0, QLatin1String( "Tonatiuh" ),
+		QMessageBox::warning( 0,  "Tonatiuh" ),
 				QObject::tr( "xMax must be larger than xMin. ") );
 		shapeTroughParabola->xMax.setValue( shapeTroughParabola->xMin.getValue()  );
 	}

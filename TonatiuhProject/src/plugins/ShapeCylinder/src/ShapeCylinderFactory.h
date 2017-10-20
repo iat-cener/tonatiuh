@@ -58,7 +58,7 @@ class ShapeCylinderFactory: public QObject, public TShapeFactory
 
 public:
     void Init() const;
-   	QString TShapeName() const;
+    std::string TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeCylinder* CreateTShape( ) const;
 };

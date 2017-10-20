@@ -39,6 +39,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRACKERHELIOSTAT_H_
 #define TRACKERHELIOSTAT_H_
 
+#include <string>
+
 #include "TNodeType.h"
 #include "TTrackerNode.h"
 
@@ -55,7 +57,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TrackerHeliostat : public TTrackerNode
 {
-	Q_OBJECT
+
+private:
+	TrackerHeliostat(const TrackerHeliostat& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -63,6 +67,7 @@ public:
 
 	TrackerHeliostat();
 
+	std::string GetIcon() const;
 	Transform GetTrasformation() const;
 	TNodeType GetType() const;
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
@@ -73,15 +78,15 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
-	QString m_aimingPointLabel;
-	QString m_aimingPointTypeLabel;
-	QString m_absoluteAimingLabel;
-	QString m_relativeAimingLabel;
-	QString m_rotationTypeLabel;
-	QString m_yxRotationLabel;
-	QString m_yzRotationLabel;
-	QString m_xzRotationLabel;
-	QString m_zxRotationLabel;
+	std::string m_aimingPointLabel;
+	std::string m_aimingPointTypeLabel;
+	std::string m_absoluteAimingLabel;
+	std::string m_relativeAimingLabel;
+	std::string m_rotationTypeLabel;
+	std::string m_yxRotationLabel;
+	std::string m_yzRotationLabel;
+	std::string m_xzRotationLabel;
+	std::string m_zxRotationLabel;
 };
 
 #endif /* TRACKERHELIOSTAT_H_ */

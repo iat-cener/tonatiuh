@@ -60,7 +60,7 @@ void* ShapeParabolicDish::CreateInstance( )
  */
 void ShapeParabolicDish::Init()
 {
-	ShapeParabolicDish::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeParabolicDish" ), &ShapeParabolicDish::CreateInstance );
+	ShapeParabolicDish::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeParabolicDish", &ShapeParabolicDish::CreateInstance );
 }
 
 /*!
@@ -68,16 +68,15 @@ void ShapeParabolicDish::Init()
  */
 ShapeParabolicDish::ShapeParabolicDish()
 :TShape()
-//,
-// m_nodeType(TNodeType::FromName( QLatin1String( "ShapeParabolicDish" ) ) )
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( QLatin1String("focusLength"), 0.125 );
-	m_parametersList->Append( QLatin1String("dishMinRadius"), 0.1 );
-	m_parametersList->Append( QLatin1String("dishMaxRadius"), 0.5 );
-	m_parametersList->Append( QLatin1String("phiMax"), gc::TwoPi );
+	m_parametersList->Append( "focusLength", 0.125 );
+	m_parametersList->Append( "dishMinRadius", 0.1 );
+	m_parametersList->Append( "dishMaxRadius", 0.5 );
+	m_parametersList->Append( "phiMax", gc::TwoPi );
 
 }
 
@@ -92,10 +91,10 @@ ShapeParabolicDish::~ShapeParabolicDish()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeParabolicDish::GetIcon()
+std::string ShapeParabolicDish::GetIcon() const
 {
 
-	return QLatin1String( ":/icons/ShapeParabolicDish.png" );
+	return ( ":/icons/ShapeParabolicDish.png" );
 }
 
 
@@ -104,10 +103,10 @@ QString ShapeParabolicDish::GetIcon()
  */
 BBox ShapeParabolicDish::GetBondingBox() const
 {
-	double phiMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
-	double dishMaxRadius = m_parametersList->GetValue( QLatin1String("dishMaxRadius") ).toDouble();
-	double dishMinRadius = m_parametersList->GetValue( QLatin1String("dishMinRadius") ).toDouble();
-	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
+	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
+	double dishMaxRadius = m_parametersList->GetValue( "dishMaxRadius" ).toDouble();
+	double dishMinRadius = m_parametersList->GetValue( "dishMinRadius" ).toDouble();
+	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -142,10 +141,10 @@ TNodeType ShapeParabolicDish::GetType() const
 bool ShapeParabolicDish::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
 
-	double pMax = m_parametersList->GetValue( QLatin1String("phiMax") ).toDouble();
-	double dishMaxRadius = m_parametersList->GetValue( QLatin1String("dishMaxRadius") ).toDouble();
-	double dishMinRadius = m_parametersList->GetValue( QLatin1String("dishMinRadius") ).toDouble();
-	double focusLength = m_parametersList->GetValue( QLatin1String("focusLength") ).toDouble();
+	double pMax = m_parametersList->GetValue( "phiMax" ).toDouble();
+	double dishMaxRadius = m_parametersList->GetValue( "dishMaxRadius" ).toDouble();
+	double dishMinRadius = m_parametersList->GetValue( "dishMinRadius" ).toDouble();
+	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
 
 
 	double A = objectRay.direction().x*objectRay.direction().x + objectRay.direction().z * objectRay.direction().z;

@@ -37,16 +37,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-#include <QString>
 
 #include "SaveBinaryFileFactory.h"
 
 /*!
  * Returns the name of the factory
  */
-QString SaveBinaryFileFactory::SaveFileName() const
+std::string SaveBinaryFileFactory::SaveFileName() const
 {
-	return QString( "Binary_file" );
+	return ( "Binary_file" );
 }
 
 /*!

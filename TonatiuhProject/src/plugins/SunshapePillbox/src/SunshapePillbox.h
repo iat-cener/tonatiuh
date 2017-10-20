@@ -46,10 +46,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class SunshapePillbox : public TSunshape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(SunshapePillbox)
+	SunshapePillbox(const SunshapePillbox& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -59,6 +58,7 @@ public:
 	~SunshapePillbox();
 
 	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
+	std::string GetIcon() const;
 	double GetIrradiance() const;
     double GetThetaMax() const;
 	TNodeType GetType() const;

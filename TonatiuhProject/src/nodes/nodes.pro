@@ -17,13 +17,13 @@ else {
 	RCC_DIR  = $$(TONATIUH_ROOT)/release
 }
 
-
-QT += xml
-	
+QT +=core	
+QT -=gui	
 
 TARGET = nodes   
 
 INCLUDEPATH += 	. \
+               $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/statistics
@@ -36,9 +36,11 @@ CONFIG(debug, debug|release) {
 }
 
 # Input
-HEADERS += *.h 
+HEADERS += *.h \
+		$$(TONATIUH_ROOT)/src/auxiliary/*.h
 
-SOURCES += *.cpp 
+SOURCES += *.cpp \
+		$$(TONATIUH_ROOT)/src/auxiliary/*.cpp
           
  
 

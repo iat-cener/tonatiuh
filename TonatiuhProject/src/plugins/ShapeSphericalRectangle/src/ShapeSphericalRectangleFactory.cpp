@@ -55,9 +55,9 @@ void ShapeSphericalRectangleFactory::Init() const
 /*!
  * Returns shape type name.
  */
-QString ShapeSphericalRectangleFactory::TShapeName() const
+std::string ShapeSphericalRectangleFactory::TShapeName() const
 {
-	return QString( "Spherical_rectangle" );
+	return ( "Spherical_rectangle" );
 }
 
 /*!

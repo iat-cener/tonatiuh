@@ -47,7 +47,7 @@ TNodeType TMaterial::m_nodeType = TNodeType::CreateEmptyType();
  */
 void TMaterial::Init()
 {
-	TMaterial::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), QString( "Material" ) );
+	TMaterial::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "Material" );
 }
 
 /*!
@@ -56,7 +56,8 @@ void TMaterial::Init()
 TMaterial::TMaterial()
 :TNode()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 }
 
 

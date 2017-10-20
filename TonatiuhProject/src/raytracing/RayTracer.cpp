@@ -37,9 +37,9 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QtConcurrent>
-#include <QDateTime>
-#include <QFutureWatcher>
+#include <thread>
+#include <vector>
+
 
 #include "ParallelRandomDeviate.h"
 #include "Ray.h"
@@ -73,8 +73,21 @@ bool RayTracer::Run( unsigned long numberOfRays )
 {
 	if( !m_pSunNode || !m_pPhotonMap  || !m_pRandomNumberGenerator )	return ( false );
 
-	QDateTime startTime = QDateTime::currentDateTime();
+	int maximumValueProgressScale = 100;
+	unsigned long nRaysPerThread = numberOfRays / maximumValueProgressScale;
 
+	std::vector< std::thread> threadsList;
+	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
+		threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, nRaysPerThread ) );
+
+
+	if( ( nRaysPerThread * maximumValueProgressScale ) < numberOfRays )
+		threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, ( numberOfRays-( nRaysPerThread* maximumValueProgressScale ) ) ) );
+
+
+	for( auto& th : threadsList )
+		th.join();
+	/*
 	QVector< long > raysPerThread;
 	int maximumValueProgressScale = 100;
 	unsigned long  t1 = numberOfRays / maximumValueProgressScale;
@@ -95,9 +108,8 @@ bool RayTracer::Run( unsigned long numberOfRays )
 
 	// Display the dialog and start the event loop.
 	futureWatcher.waitForFinished();
+	*/
 
-	QDateTime endTime = QDateTime::currentDateTime();
-	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 
 	return ( true );
 
@@ -125,7 +137,7 @@ void RayTracer::SetRandomNumberGenerator( RandomDeviate* randomNumberGenerator )
  * Set the scene to simulate for the ray tracer.
  * Returns true if the scene is valid.
  */
-bool RayTracer::SetScene( TSceneNode* scene, QStringList /*firstStageNodesURL*/ )
+bool RayTracer::SetScene( TSceneNode* scene, std::vector<std::string > /*firstStageNodesURL*/ )
 {
 	if( !scene )	return false;
 	m_pSunNode = scene->GetPart( "light" )->as<TSunNode>();
@@ -157,7 +169,7 @@ bool RayTracer::NewRay( Ray* ray, ParallelRandomDeviate& rand )
 
 	//generating the ray direction
 	Vector3D direction;
-	TSunshape* sunshape = m_pSunNode->GetPart( QLatin1String( "sunshape" ) )->as<TSunshape>();
+	TSunshape* sunshape = m_pSunNode->GetPart( "sunshape" )->as<TSunshape>();
 	sunshape->GenerateRayDirection( direction, rand );
 
 	//generatin the ray

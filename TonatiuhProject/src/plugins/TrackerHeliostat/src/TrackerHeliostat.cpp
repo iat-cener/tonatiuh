@@ -32,17 +32,19 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
 #include <cmath>
+#include <sstream>
 
 #include "gc.h"
 #include "Point3D.h"
 #include "Transform.h"
 #include "Vector3D.h"
+
+#include "tf.h"
 
 #include "TParameterEnumerator.h"
 #include "TParameterList.h"
@@ -65,7 +67,7 @@ void* TrackerHeliostat::CreateInstance( )
 void TrackerHeliostat::Init()
 {
 
-	TrackerHeliostat::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Tracker" ), QString( "TrackerHeliostat" ), &TrackerHeliostat::CreateInstance );
+	TrackerHeliostat::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Tracker" ), "TrackerHeliostat", &TrackerHeliostat::CreateInstance );
 }
 
 /*!
@@ -73,30 +75,31 @@ void TrackerHeliostat::Init()
  */
 TrackerHeliostat::TrackerHeliostat()
 :TTrackerNode(),
- m_aimingPointLabel( QLatin1String( "aimingPoint" ) ),
- m_aimingPointTypeLabel( QLatin1String( "typeOfAimingPoint" ) ),
- m_absoluteAimingLabel( QLatin1String( "Absolute" ) ),
- m_relativeAimingLabel( QLatin1String( "Relative" ) ),
- m_rotationTypeLabel( QLatin1String( "typeOfRotation" ) ),
- m_yxRotationLabel( QLatin1String( "YX" ) ),
- m_yzRotationLabel( QLatin1String( "YZ" ) ),
- m_xzRotationLabel( QLatin1String( "XZ" ) ),
- m_zxRotationLabel( QLatin1String( "ZX" ) )
+ m_aimingPointLabel(  "aimingPoint" ),
+ m_aimingPointTypeLabel(  "typeOfAimingPoint" ),
+ m_absoluteAimingLabel(  "Absolute" ),
+ m_relativeAimingLabel(  "Relative" ),
+ m_rotationTypeLabel(  "typeOfRotation" ),
+ m_yxRotationLabel( "YX" ),
+ m_yzRotationLabel( "YZ" ),
+ m_xzRotationLabel( "XZ" ),
+ m_zxRotationLabel( "ZX" )
 {
 	//Default object name is the name of the type
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
-	QString transformationValue( QLatin1String("") );
+	std::string transformationValue( "" );
 	for (int i = 0; i < 4; ++i)
 	{
-		transformationValue += QLatin1String( "[ " );
+		transformationValue +=  std::string( "[ " );
 		for (int j = 0; j < 4; ++j)
 		{
-			if ( i == j )	transformationValue += QLatin1String( "1.0" );
-			else	transformationValue += QLatin1String( "0.0" );
-			if (j != 3) transformationValue += QLatin1String( ", ");
+			if ( i == j )	transformationValue += std::string( "1.0" );
+			else	transformationValue += std::string( "0.0" );
+			if (j != 3) transformationValue += std::string( ", ");
 		}
-		transformationValue += QLatin1String( " ] " );
+		transformationValue += std::string( " ] " );
 	}
 
 
@@ -124,7 +127,7 @@ TrackerHeliostat::TrackerHeliostat()
 	m_parametersList->Append( m_rotationTypeLabel, typeOfRotationParameter  );
 
 	//Transformation
-	m_parametersList->Append( QLatin1String("node_transformation"), transformationValue, false );
+	m_parametersList->Append( "node_transformation", transformationValue.c_str(), false );
 }
 
 /*!
@@ -145,6 +148,13 @@ TrackerHeliostat::~TrackerHeliostat()
 	typeOfRotationEnumerator = 0;
 }
 
+/*!
+ * Returns the filename that stores the shape icon.
+ */
+std::string TrackerHeliostat::GetIcon() const
+{
+	return ( ":/icons/TrackerHeliostat.png" );
+}
 
 /*!
  * Returns  the object to world transformation for the given \a sunVector. The sun vector is given in global coordinates.
@@ -152,13 +162,14 @@ TrackerHeliostat::~TrackerHeliostat()
  */
 Transform TrackerHeliostat::GetTrasformation( ) const
 {
-	QString transformationValue = m_parametersList->GetValue( QLatin1String("node_transformation") ).toString();
+	std::string transformationValue = m_parametersList->GetValue( "node_transformation" ).toString().toStdString();
+	std::vector< std::string > transformationValues = tf::StringSplit( transformationValue,
+			"[\\s+,\\[\\]]" );
 
-	QStringList transformationValues = transformationValue.split( QRegExp("[\\s+,\\[\\]]"), QString::SkipEmptyParts );
 	double nodeTransformationMatrix[4][4];
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
-			nodeTransformationMatrix[i][j] = transformationValues[i*4+j].toDouble();
+			nodeTransformationMatrix[i][j] = stod( transformationValues[i*4+j] ) ;
 
 	return ( Transform( nodeTransformationMatrix ) );
 }
@@ -241,53 +252,25 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	}
 
 
-	QString transformationValue( QLatin1String("") );
+	std::string transformationValue( "" );
 	for (int i = 0; i < 4; ++i)
 	{
-		transformationValue += QLatin1String( "[ " );
+		transformationValue +=  std::string( "[ " );
 		for (int j = 0; j < 4; ++j)
 		{
 
-			if( fabs( transformMatrix.m[i][j] ) < gc::Epsilon ) transformationValue += QLatin1String( "0.0" );
-			else	 transformationValue += QString::number( transformMatrix.m[i][j] );
-			if (j != 3) transformationValue += QLatin1String( ", ");
+			if( fabs( transformMatrix.m[i][j] ) < gc::Epsilon ) transformationValue +=  std::string( "0.0" );
+			else
+			{
+				std::ostringstream double_convert;
+				double_convert << transformMatrix.m[i][j];
+				transformationValue += double_convert.str();
+			}
+
+			if (j != 3) transformationValue +=   std::string( ", ");
 		}
-		transformationValue += QLatin1String( " ]\n" );
+		transformationValue +=   std::string( " ]\n" );
 	}
 
-	m_parametersList->SetValue( QLatin1String("node_transformation") , transformationValue );
+	m_parametersList->SetValue( "node_transformation", transformationValue.c_str() );
 }
-
-/*
-
-void TrackerHeliostat::SwitchAimingPointType()
-{
-	if( m_previousAimingPointType == typeOfAimingPoint.getValue() )	return;
-
-	SoPath* nodePath= m_scene->GetSoPath( this );
-	if (!nodePath) return;
-
-	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
-	parentPath->ref();
-	parentPath->pop();
-
-	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
-
-	Point3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
-	Point3D r;
-	if (typeOfAimingPoint.getValue() == 1)
-	{
-		Transform worldToObject = objectToWorld.GetInverse();
-		r = worldToObject( focus );
-	}
-	else
-		r = objectToWorld( focus );
-
-	aimingPoint.setValue( r.x, r.y, r.z );
-
-	parentPath->unref();
-	m_previousAimingPointType = typeOfAimingPoint.getValue();
-}
-*/
-
-

@@ -39,6 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TContainerNode.h"
 #include "TNodeType.h"
+#include "TParameterList.h"
 
 
 TNodeType TContainerNode::m_nodeType = TNodeType::CreateEmptyType();
@@ -47,17 +48,20 @@ TNodeType TContainerNode::m_nodeType = TNodeType::CreateEmptyType();
 /*!
   Creates a new instance of the class type corresponding object.
 */
+/*
 void* TContainerNode::CreateInstance( )
 {
   return ( new TContainerNode() );
 }
+*/
 
 /*!
  * Initializes TGroupNode type.
  */
 void TContainerNode::Init()
 {
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), QString( "ContainerNode" ), &TContainerNode::CreateInstance );
+	//m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "ContainerNode", &TContainerNode::CreateInstance );
+	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "ContainerNode" );
 }
 
 /*!
@@ -67,7 +71,8 @@ void TContainerNode::Init()
 TContainerNode::TContainerNode()
 :TNode()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 
 }
 
@@ -82,6 +87,16 @@ TContainerNode::~TContainerNode()
 }
 
 /*!
+ * Returns true if exists a part with the \a name.
+ */
+bool TContainerNode::Contains(const std::string& name) const
+{
+	if( m_partsList.find( name ) != m_partsList.end() )
+		return ( true );
+	return ( false);
+}
+
+/*!
  * Creates a container node objecte as a copy of this node.
  */
 TContainerNode* TContainerNode::Copy() const
@@ -89,18 +104,35 @@ TContainerNode* TContainerNode::Copy() const
 	TContainerNode* containerNode = new TContainerNode();
 	if( containerNode == 0 )	return ( 0  );
 
-	QHashIterator<QString, TNodeType > i( containerNode->m_partsTypeList );
-	while( i.hasNext() )
+	for (std::map<std::string, TNodeType>::iterator it = containerNode->m_partsTypeList.begin(); it!=containerNode->m_partsTypeList.end(); ++it)
 	{
-	    i.next();
-	    QString partName = i.key();
-	    TNodeType partType = i.value();
-	    TNode* partNode = containerNode->m_partsList[partName];
+		std::string partName = it->first;
+		TNodeType partType = it->second;
+		TNode* partNode = containerNode->m_partsList[partName];
 
     	containerNode->AppendPart( partName, partType, partNode->Copy() );
 	}
 
+	TParameterList* parametersList = containerNode->m_parametersList;
+
+	std::vector< std::string > parameterNames = m_parametersList->GetParametersNames();
+	for( unsigned int p = 0; p < parameterNames.size(); p++ )
+	{
+		QVariant parameterValue = m_parametersList->GetValue( parameterNames[p] );
+		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
+		parametersList->Append(parameterNames[p], parameterValue, parameterVisibility );
+	}
+
+
 	return ( containerNode );
+}
+
+/*!
+ * Returns icon file name
+ */
+std::string TContainerNode::GetIcon() const
+{
+	return ( ":/icons/tcontainernode.png" );
 }
 
 /*!
@@ -111,34 +143,27 @@ TNodeType TContainerNode::GetType() const
 	return ( TContainerNode::m_nodeType );
 }
 
-
-/*!
- * Returns true if exists a part with the \a name.
- */
-bool TContainerNode::Contains(const QString& name) const
-{
-
-	if( m_partsList.contains( name ) ) return ( true );
-	return ( false);
-}
-
 /*!
  * Returns the node related to the part \a name.
  * If the part does not exit, null value is returned.
  */
-TNode* TContainerNode::GetPart( const QString name ) const
+TNode* TContainerNode::GetPart( const std::string name ) const
 {
-	if( !m_partsList.contains( name ) ) return ( 0 );
+	if( m_partsList.count( name ) < 1 ) return ( 0 );
 
-	return ( m_partsList.value( name ) );
+	return ( m_partsList.at(name) );
 }
 
 /*!
  * Returns a list with the part names
  */
-QStringList TContainerNode::GetPartNames() const
+std::vector<std::string> TContainerNode::GetPartNames() const
 {
-	return ( m_partsList.keys() );
+	std::vector<std::string> keys_list;
+	for( auto const& element : m_partsList)
+		keys_list.push_back( element.first );
+
+	return ( keys_list );
 }
 
 /*!
@@ -146,21 +171,21 @@ QStringList TContainerNode::GetPartNames() const
  */
 int TContainerNode::NumberOfParts() const
 {
-	return ( m_partsList.count() );
+	return ( m_partsList.size() );
 }
 
 /*!
  * Replaces the node of the part \a name with \a node. If the part does not exit, false is returned.
  * The previous node of the part is not destroyed.
  */
-bool TContainerNode::SetPart( const QString name, TNode* node )
+bool TContainerNode::SetPart( const std::string name, TNode* node )
 {
-	if( !m_partsList.contains( name ) ) return ( false );
+	if( m_partsList.find( name ) == m_partsList.end() ) return ( false );
 	if( m_partsList[name] )	m_partsList[name]->RemoveReference();
 	m_partsList[name] = 0;
 
 	if( !node ) return ( true );
-	if( !node->GetType().IsDerivedFrom( m_partsTypeList.value( name ) ) ) return (false);
+	if( !node->GetType().IsDerivedFrom( m_partsTypeList[name] ) ) return (false);
 	m_partsList[name] = node;
 	node->IncreaseReference();
 
@@ -172,9 +197,9 @@ bool TContainerNode::SetPart( const QString name, TNode* node )
  * Adds a new part of \a type to the container defined with \a name. The default node for this part is \a defaultNode.
  * If there is a part with the \a name, the part is not included.
  */
-void TContainerNode::AppendPart( const QString name, TNodeType type, TNode* defaultNode )
+void TContainerNode::AppendPart( const std::string name, TNodeType type, TNode* defaultNode )
 {
-	if( m_partsList.contains( name ) ) return;
+	if( m_partsList.find( name ) != m_partsList.end() ) return;
 
 	m_partsList[name] = defaultNode;
 	if( defaultNode ) defaultNode->IncreaseReference();
@@ -186,18 +211,18 @@ void TContainerNode::AppendPart( const QString name, TNodeType type, TNode* defa
 /*!
  * Removes the part \a name from the node.
  */
-void TContainerNode::RevomePart( const QString name )
+void TContainerNode::RevomePart( const std::string name )
 {
-	//Removes from the part list the name of the parte and the type of node.
-	if( m_partsTypeList.contains( name ) )
+	//Removes from the part list the name of the part and the type of node.
+	if(  m_partsTypeList.find( name ) != m_partsTypeList.end() )
 	{
-		m_partsTypeList.remove( name );
+		m_partsTypeList.erase( name );
 	}
 
 	//If a node object is defined for the part to remove, the node reference must be removed also.
-	if( m_partsList.contains( name ) )
+	if( m_partsList.find( name ) != m_partsList.end() )
 	{
-		m_partsList.remove( name );
+		m_partsList.erase( name );
 		m_partsList[name]->RemoveReference();
 	}
 

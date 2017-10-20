@@ -52,10 +52,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class ShapeFlatRectangle : public TShape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeFlatRectangle)
+	ShapeFlatRectangle(const ShapeFlatRectangle& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -63,7 +62,7 @@ public:
 
 	ShapeFlatRectangle( );
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

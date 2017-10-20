@@ -54,10 +54,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class ShapeParabolicDish : public TShape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeParabolicDish)
+	ShapeParabolicDish(const ShapeParabolicDish& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -65,7 +64,7 @@ public:
 
 	ShapeParabolicDish( );
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

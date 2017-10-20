@@ -52,7 +52,7 @@ class RandomMersenneTwisterFactory : public QObject, public RandomDeviateFactory
 
 
 public:
-	QString RandomDeviateName() const;
+	std::string RandomDeviateName() const;
 	QIcon RandomDeviateIcon() const;
 	RandomMersenneTwister* CreateRandomDeviate( ) const;
 

@@ -53,7 +53,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TrackerOneAxis : public TTrackerNode
 {
-	Q_OBJECT
+
+private:
+	TrackerOneAxis(const TrackerOneAxis& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -61,6 +63,7 @@ public:
 
 	TrackerOneAxis();
 
+	std::string GetIcon() const;
 	Transform GetTrasformation() const;
 	TNodeType GetType() const;
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
@@ -70,10 +73,10 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
-	 QString m_axisLabel;
-	 QString m_xAxisLabel;
-	 QString m_yAxisLabel;
-	 QString m_zAxisLabel;
+	std::string m_axisLabel;
+	std::string m_xAxisLabel;
+	std::string m_yAxisLabel;
+	std::string m_zAxisLabel;
 };
 
 

@@ -57,9 +57,9 @@ void TrackerHeliostatFactory::Init() const
 /*!
  * Returns tracker type name.
  */
-QString TrackerHeliostatFactory::TTrackerNodeName() const
+std::string TrackerHeliostatFactory::TTrackerNodeName() const
 {
-	return QString("Heliostat_tracker");
+	return ( "Heliostat_tracker" );
 }
 
 /*!

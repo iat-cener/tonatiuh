@@ -52,14 +52,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TTrackerNode : public TGroupNode
 {
-	Q_OBJECT
 
+private:
+	TTrackerNode(const TTrackerNode& node) = delete;
+/*
+	Q_OBJECT
+*/
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TTrackerNode();
 
+	virtual std::string GetIcon() const = 0;
 	virtual Transform GetTrasformation() const = 0;
 	virtual TNodeType GetType() const;
 	virtual void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 ) = 0;

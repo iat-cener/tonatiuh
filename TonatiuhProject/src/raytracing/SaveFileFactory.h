@@ -40,10 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define SAVEFILEFACTORY_H_
 
 #include <QtPlugin>
-#include <QVector>
 #include <QVariant>
 
-class QString;
 class QIcon;
 class SaveFile;
 
@@ -51,7 +49,7 @@ class SaveFileFactory
 {
 public:
     virtual ~SaveFileFactory() {}
-    virtual QString SaveFileName() const  = 0;
+    virtual std::string  SaveFileName() const  = 0;
     virtual QIcon SaveFileIcon() const = 0;
     virtual SaveFile* CreateSaveFile( ) const = 0;
 

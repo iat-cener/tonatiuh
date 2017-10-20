@@ -60,14 +60,14 @@ public:
 	~TNodesDocument();
 
 	TNode*  GetRootNode() const;
-	bool Read( QString filename );
+	bool Read( std::string filename );
 	void SetRootNode( TNode* node ) ;
-	bool Write( QString filename ) const;
+	bool Write( std::string filename ) const;
 
 protected:
-	TNode* CreateNodeObject( QDomElement node, QString* errMsg );
-	bool ReadNode( QDomElement node, TNode* parentNode, QMap< int, TNode* >* readNodes, QString* errMsg );
-	bool ReadNodeList( QDomElement node, TNodesList* listNode, QMap< int, TNode* >* readNodes, QString* errMsg  );
+	TNode* CreateNodeObject( QDomElement node, std::string* errMsg );
+	bool ReadNode( QDomElement node, TNode* parentNode, QMap< int, TNode* >* readNodes, std::string* errMsg );
+	bool ReadNodeList( QDomElement node, TNodesList* listNode, QMap< int, TNode* >* readNodes, std::string* errMsg  );
 	bool WriteNode( QDomElement parent, const TNode* node, QList< int >* writtenNodes ) const;
 	bool WriteConatinerNode( QDomElement parent, const TContainerNode* containerNode, QList< int >* writtenNodes ) const;
 

@@ -70,8 +70,10 @@ RayCasting::~RayCasting()
  * Set the scene to simulate for the ray tracer.
  * Returns true if the scene is valid.
  */
-bool RayCasting::SetScene( TSceneNode* scene, QStringList notFirstStageNodesURL )
+bool RayCasting::SetScene( TSceneNode* scene, std::vector< std::string > notFirstStageNodesURL )
 {
+	std::cout<<"START RayCasting::SetScene"<<std::endl;
+
 	if( !scene )	return ( false );
 	m_pSunNode = scene->GetPart( "light" )->as<TSunNode>();
 
@@ -79,17 +81,21 @@ bool RayCasting::SetScene( TSceneNode* scene, QStringList notFirstStageNodesURL 
 	if( !childrenRoot )	return ( false );
 
 
+	std::cout<<"\t RayCasting::SetScene"<<std::endl;
 	m_sceneRootNode = new RayCastingNode;
 	Transform parentWT0(1, 0, 0, 0,
 						0, 1, 0, 0,
 						0, 0, 1, 0,
 						0, 0, 0, 1 );
+	std::cout<<"\t RayCasting::SetScene parentWT0"<<parentWT0<<std::endl;
 
-	if( !CreateRayTracerNodesTree( childrenRoot, m_sceneRootNode, parentWT0, QLatin1String( "\\\\SunNode" ) ) )
+	std::cout<<"\t RayCasting::SetScene CreateRayTracerNodesTree"<<std::endl;
+	if( !CreateRayTracerNodesTree( childrenRoot, m_sceneRootNode, parentWT0, "\\\\SunNode" ) )
 	{
 		RemoveRayTracerNodesTree( m_sceneRootNode );
 		return (false);
 	}
+	std::cout<<"\t RayCasting::SetScene azimuthRad"<<std::endl;
 
 	double azimuthRad = m_pSunNode->GetAzimuth();
 	double zenithRad =  m_pSunNode->GetZenith();
@@ -127,7 +133,7 @@ bool RayCasting::SetScene( TSceneNode* scene, QStringList notFirstStageNodesURL 
 		distMax = 0.0;
 	}
 
-	TSunshape* sunshape = m_pSunNode->GetPart( QLatin1String( "sunshape" ) )->as<TSunshape>();
+	TSunshape* sunshape = m_pSunNode->GetPart( "sunshape" )->as<TSunshape>();
 	if( !sunshape )	return ( false );
 
 	double thetaMax = sunshape->GetThetaMax();
@@ -162,7 +168,8 @@ bool RayCasting::SetScene( TSceneNode* scene, QStringList notFirstStageNodesURL 
 
 	for( unsigned int s = 0; s < m_surfacesNodeList.size(); s++ )
 	{
-		if( notFirstStageNodesURL.count() < 1 || !notFirstStageNodesURL.contains(  m_surfacesNodeList[s]->nodeURL ) )
+		if( notFirstStageNodesURL.empty() < 1 || std::find(notFirstStageNodesURL.begin(), notFirstStageNodesURL.end(), m_surfacesNodeList[s]->nodeURL ) == notFirstStageNodesURL.end()  )
+		//if( notFirstStageNodesURL.count() < 1 || notFirstStageNodesURL.count( m_surfacesNodeList[s]->nodeURL ) < 1  )
 		{
 
 			BBox shapeBB = m_surfacesNodeList[s]->boundingBox;
@@ -226,6 +233,7 @@ bool RayCasting::SetScene( TSceneNode* scene, QStringList notFirstStageNodesURL 
 		delete[] areaMatrix[i];
 	delete[] areaMatrix;
 
+	std::cout<<"END RayCasting::SetScene"<<std::endl;
 	return ( true );
 }
 
@@ -246,7 +254,7 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 		Ray ray;
 		if( NewRay( &ray, rand ) )
 		{
-			photonsVector.push_back( Photon( ray.origin, worldToSun(ray.origin), 1, 0, QLatin1String( "\\\\SunNode" ) ) );
+			photonsVector.push_back( Photon( ray.origin, worldToSun(ray.origin), 1, 0, "\\\\SunNode" ) );
 			int rayLength = 0;
 
 			RayCastingNode* intersectedSurface = 0;
@@ -280,7 +288,7 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 				{
 					ray.maxt = 0.1;
 					photonsVector.push_back( Photon( (ray)( ray.maxt ), (ray)( ray.maxt ),
-							0, ++rayLength, QString(), 0 ) );
+							0, ++rayLength, std::string(), 0 ) );
 				}
 				else
 				{
@@ -297,21 +305,20 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 	photonsVector.resize( photonsVector.size() );
 
 
-	m_mutexPhotonMap.lock();
+	//m_mutexPhotonMap.lock();
 	m_pPhotonMap->StoreRays( photonsVector );
-	m_mutexPhotonMap.unlock();
+	//m_mutexPhotonMap.unlock();
 
 }
 
 /*!
  * Creates nodes tree. The bounding box of each node instance and the transformation to pass from world to object local coordinates are calculated.
  */
-bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode* rTRNode, Transform parentWT0, QString parentURL )
+bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode* rTRNode, Transform parentWT0, std::string parentURL )
 {
 	if( !node || !rTRNode )	return ( false );
 
-	rTRNode->nodeURL = QString( "%1\\%2" ).arg( parentURL, node->GetName() );
-
+	rTRNode->nodeURL = parentURL + "\\" + node->GetName();
 	TGroupNode* nodeGroup = node->as<TGroupNode>();
 	if( nodeGroup )
 	{
@@ -326,24 +333,22 @@ bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode*
 		if( numberOfChildren == 1  )
 		{
 			TNode* childNode = childrenListNode->Item( 0 );
+
 			TGroupNode* childNodeGroup = childNode->as<TGroupNode>();
 
 			//if the parent node only has one child and this child is a group node, the transformations can combined.
 			if( childNodeGroup )
 			{
-				rTRNode->nodeURL = QString( "%1\\%2" ).arg( rTRNode->nodeURL, childNode->GetName() );
+				rTRNode->nodeURL = rTRNode->nodeURL+ "\\" + childNode->GetName();
 
 				//Transform childTransformOTW;
 				Transform childTransformOTW = childNodeGroup->GetTrasformation();
 				if( !childTransformOTW.GetMatrix() ) 	return ( false );
 
-
 				rTRNode->wtoTransformation = (childTransformOTW.GetInverse() * rTRNode->wtoTransformation );
 
-
-			childrenListNode = childNodeGroup->GetPart( "childrenList" )->as<TNodesList>();
-			numberOfChildren = childrenListNode->Count();
-
+				childrenListNode = childNodeGroup->GetPart( "childrenList" )->as<TNodesList>();
+				numberOfChildren = childrenListNode->Count();
 
 			}
 		}
@@ -375,10 +380,11 @@ bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode*
 		if( !surfaceNode )	return ( false );
 		rTRNode->surfaceNode = ( surfaceNode );
 
-		TShape* shape = surfaceNode->GetPart( QLatin1String( "shape" ) )->as<TShape>();
+		TShape* shape = surfaceNode->GetPart( "shape" )->as<TShape>();
 		rTRNode->boundingBox = rTRNode->otwTransformation( shape->GetBondingBox() );
 	}
 
+	std::cout<<"END RayCasting::CreateRayTracerNodesTree"<<std::endl;
 	return ( true );
 }
 

@@ -46,7 +46,7 @@ TNodeType TShape::m_nodeType = TNodeType::CreateEmptyType();
  */
 void TShape::Init()
 {
-	TShape::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), QString( "Shape" ) );
+	TShape::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "Shape" );
 }
 
 /*!
@@ -55,7 +55,8 @@ void TShape::Init()
 TShape::TShape()
 :TNode()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 }
 
 

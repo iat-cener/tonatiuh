@@ -53,10 +53,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class ShapeCone : public TShape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeCone)
+	ShapeCone(const ShapeCone& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -64,7 +63,7 @@ public:
 
 	ShapeCone( );
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

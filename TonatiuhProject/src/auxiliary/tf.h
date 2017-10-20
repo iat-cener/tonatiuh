@@ -37,27 +37,22 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef RANDOMDEVIATEFACTORY_H_
-#define RANDOMDEVIATEFACTORY_H_
+#ifndef TF_H_
+#define TF_H_
 
-#include <QtPlugin>
+#include <regex>
+#include <string>
 
-class QIcon;
-class RandomDeviate;
-
-//!  RandomDeviateFactory is the interface for random generators plugins.
-/*!
-  A random generator plugin must implement the following interface to load as a valid plugin for Toantiuh.
-*/
-
-class RandomDeviateFactory
+namespace tf
 {
-public:
-    virtual std::string  RandomDeviateName() const  = 0;
-    virtual QIcon RandomDeviateIcon() const = 0;
-    virtual RandomDeviate* CreateRandomDeviate( ) const = 0;
+
+	/*!
+	 * Splits the \a input string with the regular expresion defined in \a delimeter.
+	 * Skips empty parts.
+	 */
+	std::vector< std::string > StringSplit( std::string input , std::string delimiter );
+
+
 };
 
-Q_DECLARE_INTERFACE( RandomDeviateFactory, "tonatiuh.RandomDeviateFactory")
-
-#endif /* RANDOMDEVIATEFACTORY_H_ */
+#endif /* TF_H_ */

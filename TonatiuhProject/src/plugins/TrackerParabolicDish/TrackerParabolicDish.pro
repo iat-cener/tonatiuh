@@ -5,6 +5,7 @@ include( $$(TONATIUH_ROOT)/config.pri )
 
 INCLUDEPATH += . \
 			src \
+            $$(TONATIUH_ROOT)/src/auxiliary \
             $$(TONATIUH_ROOT)/src/plugins \
             $$(TONATIUH_ROOT)/src/nodes
 

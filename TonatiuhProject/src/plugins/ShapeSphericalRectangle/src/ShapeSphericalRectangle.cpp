@@ -60,7 +60,7 @@ void* ShapeSphericalRectangle::CreateInstance( )
  */
 void ShapeSphericalRectangle::Init()
 {
-	ShapeSphericalRectangle::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), QString( "ShapeSphericalRectangle" ), &ShapeSphericalRectangle::CreateInstance );
+	ShapeSphericalRectangle::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Shape" ), "ShapeSphericalRectangle", &ShapeSphericalRectangle::CreateInstance );
 }
 
 /*!
@@ -70,12 +70,13 @@ void ShapeSphericalRectangle::Init()
 ShapeSphericalRectangle::ShapeSphericalRectangle()
 :TShape()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( QLatin1String("radius"), 0.75 );
-	m_parametersList->Append( QLatin1String("widthX"), 1.0 );
-	m_parametersList->Append( QLatin1String("widthZ"), 1.0 );
+	m_parametersList->Append( "radius", 0.75 );
+	m_parametersList->Append( "widthX", 1.0 );
+	m_parametersList->Append( "widthZ", 1.0 );
 
 }
 
@@ -91,10 +92,10 @@ ShapeSphericalRectangle::~ShapeSphericalRectangle()
 /*!
  * Returns the filename that stores the shape icon.
  */
-QString ShapeSphericalRectangle::GetIcon()
+std::string ShapeSphericalRectangle::GetIcon() const
 {
 
-	return QString( ":/icons/ShapeSphericalRectangle.png" );
+	return ( ":/icons/ShapeSphericalRectangle.png" );
 }
 
 /*!
@@ -103,9 +104,9 @@ QString ShapeSphericalRectangle::GetIcon()
 BBox ShapeSphericalRectangle::GetBondingBox() const
 {
 
-	double radius = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
-	double widthX = m_parametersList->GetValue( QLatin1String("widthX") ).toDouble();
-	double widthZ = m_parametersList->GetValue( QLatin1String("widthZ") ).toDouble();
+	double radius = m_parametersList->GetValue( "radius" ).toDouble();
+	double widthX = m_parametersList->GetValue( "widthX" ).toDouble();
+	double widthZ = m_parametersList->GetValue( "widthZ" ).toDouble();
 
 	double xmin = -widthX/2;
 	double xmax = widthX/2;
@@ -133,9 +134,9 @@ TNodeType ShapeSphericalRectangle::GetType() const
  */
 bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double r = m_parametersList->GetValue( QLatin1String("radius") ).toDouble();
-	double wX = m_parametersList->GetValue( QLatin1String("widthX") ).toDouble();
-	double wZ = m_parametersList->GetValue( QLatin1String("widthZ") ).toDouble();
+	double r = m_parametersList->GetValue( "radius" ).toDouble();
+	double wX = m_parametersList->GetValue( "widthX" ).toDouble();
+	double wZ = m_parametersList->GetValue( "widthZ" ).toDouble();
 
 	// Compute quadratic ShapeSphere coefficients
 	double A =   objectRay.direction().x * objectRay.direction().x

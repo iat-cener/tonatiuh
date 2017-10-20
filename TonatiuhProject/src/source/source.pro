@@ -9,12 +9,15 @@ TARGET = Tonatiuh
 
               
 INCLUDEPATH += 	. \
+               $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/raytracing \
                $$(TONATIUH_ROOT)/src/statistics
               
-QT += xml opengl svg  script 
+QT += core xml	 
+QT -= gui	
+
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += concurrent printsupport 
 } 
@@ -22,15 +25,17 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 
 
 # Input
-HEADERS += $$(TONATIUH_ROOT)/src/source/application/*.h \
-               $$(TONATIUH_ROOT)/src/raytracing/*.h \
-               $$(TONATIUH_ROOT)/src/statistics/*.h
+HEADERS += $$(TONATIUH_ROOT)/src/auxiliary/*.h \
+			$$(TONATIUH_ROOT)/src/source/application/*.h \
+			$$(TONATIUH_ROOT)/src/raytracing/*.h \
+			$$(TONATIUH_ROOT)/src/statistics/*.h
                 
 #FORMS += src/source/gui/*.ui
 
-SOURCES += $$(TONATIUH_ROOT)/src/source/application/*.cpp  \
-               $$(TONATIUH_ROOT)/src/raytracing/*.cpp  \
-               $$(TONATIUH_ROOT)/src/statistics/*.cpp
+SOURCES += $$(TONATIUH_ROOT)/src/auxiliary/*.cpp \
+			$$(TONATIUH_ROOT)/src/source/application/*.cpp  \
+			$$(TONATIUH_ROOT)/src/raytracing/*.cpp  \
+			$$(TONATIUH_ROOT)/src/statistics/*.cpp
 
 #RESOURCES += tonatiuh.qrc
  

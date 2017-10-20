@@ -37,6 +37,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "tf.h"
+
 #include "TParameterPoint3D.h"
 
 /*!
@@ -82,18 +84,37 @@ Point3D TParameterPoint3D::GetPoint3D( ) const
 bool TParameterPoint3D::SetValue( QVariant value )
 {
 
-	QStringList pointCoordinatesValues = value.toString().split( QRegExp("\\s+"), QString::SkipEmptyParts );
-	if( pointCoordinatesValues.count() != 3 ) 	return ( false );
-	m_pointCoordinates = Point3D( pointCoordinatesValues[0].toDouble(), pointCoordinatesValues[1].toDouble(), pointCoordinatesValues[2].toDouble()  );
+	/*
+	std::string valueString = value.toString().toStdString();
+	std::regex rgx( std::string(  "\\s+" ) ) ;
 
+	std::sregex_token_iterator iter( valueString.begin(), valueString.end(), rgx, -1);
+	std::sregex_token_iterator end;
+
+
+	std::vector< double > pointCoordinatesValues;
+	while( iter != end)
+	{
+		pointCoordinatesValues.push_back( stod( *iter ) );
+		++iter;
+	}
+	*/
+
+	std::vector< std::string > pointCoordinatesValues = tf::StringSplit( value.toString().toStdString(), "\\s+" );
+	if( pointCoordinatesValues.size () != 3 )
+		return ( false );
+
+	m_pointCoordinates = Point3D( stod( pointCoordinatesValues[0] ), stod( pointCoordinatesValues[1] ), stod( pointCoordinatesValues[2] ) );
 	return ( true );
 }
 
 /*!
  * Returns the name of the selected value.
  */
-QString TParameterPoint3D::ToString() const
+std::string TParameterPoint3D::ToString() const
 {
 
-	return (  QString( "%1, %2, %3" ).arg( m_pointCoordinates.x, m_pointCoordinates.y, m_pointCoordinates.z) );
+	return (  std::to_string( m_pointCoordinates.x ) + std::string( ", " ) +
+			std::to_string( m_pointCoordinates.y ) + ", " +
+			std::to_string( m_pointCoordinates.z )  );
 }

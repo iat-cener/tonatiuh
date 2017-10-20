@@ -57,9 +57,9 @@ void SunshapeBuieFactory::Init() const
 /*!
  * Returns sunshape type name.
  */
-QString SunshapeBuieFactory::TSunshapeName() const
+std::string SunshapeBuieFactory::TSunshapeName() const
 {
-	return QString( "Buie_Sunshape" );
+	return "Buie_Sunshape";
 }
 
 /*!

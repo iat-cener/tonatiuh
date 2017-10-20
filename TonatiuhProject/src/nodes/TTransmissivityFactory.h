@@ -43,7 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 #include <QtPlugin>
-#include <QVector>
 #include <QVariant>
 
 class TTransmissivityNode;
@@ -59,7 +58,7 @@ class TTransmissivityFactory
 public:
     virtual ~TTransmissivityFactory() {}
     virtual void Init() const  = 0;
-    virtual QString TTransmissivityNodeName() const  = 0;
+    virtual std::string TTransmissivityNodeName() const  = 0;
     virtual QIcon TTransmissivityNodeNodeIcon() const = 0;
     virtual TTransmissivityNode* CreateTTransmissivityNodeNode( ) const = 0;
 

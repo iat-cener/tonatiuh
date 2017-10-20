@@ -36,10 +36,10 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <vector>
 
-#include <QtGlobal>
-#include <QString>
+#include <cassert>
+#include <string>
+#include <vector>
 
 #include "TNodeType.h"
 
@@ -54,7 +54,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 struct TTypeData
 {
-	TTypeData( const QString theName,
+	TTypeData( const std::string theName,
 			const TNodeType theType = TNodeType::CreateEmptyType(),
 			const TNodeType theParent = TNodeType::CreateEmptyType(),
 			const TNodeType::ConstructorMethod theConstructorMethod = 0  )
@@ -66,7 +66,7 @@ struct TTypeData
 
 	};
 
-	QString name;
+	std::string name;
 	TNodeType type;
 	TNodeType parentType;
 	TNodeType::ConstructorMethod constructorMethod;
@@ -83,7 +83,7 @@ std::vector< TTypeData* >*  TNodeType::m_typeList = 0;
 /*!
  * Returns true if a type with \a name exists. Otherwise returns false.
  */
-bool TNodeType::Contains(const QString& name)
+bool TNodeType::Contains(const std::string& name)
 {
 	for( unsigned int i = 0; i < TNodeType::m_typeList->size(); i++ )
 	{
@@ -106,11 +106,13 @@ const TNodeType TNodeType::CreateEmptyType()
 /*!
  * Creates a TNodeType object.
  */
-const TNodeType TNodeType::CreateType(const TNodeType parent, const QString name,
+const TNodeType TNodeType::CreateType(const TNodeType parent, const std::string name,
         const ConstructorMethod method )
 {
-	QString msg = QString(  "The node name %1 already exists in the database." ).arg ( name );
-	Q_ASSERT_X( !TNodeType::Contains( name ), "CreateType", msg.toStdString().c_str() );
+
+	std::string msg = std::string( "CreateType: The node name ") + name + std::string ( " already exists in the database." );
+	assert(!TNodeType::Contains( name ) && msg.c_str() );
+
 
 	TNodeType newType;
 	newType.m_index = TNodeType::m_typeList->size();
@@ -124,7 +126,7 @@ const TNodeType TNodeType::CreateType(const TNodeType parent, const QString name
  * Returns the node type with already defined with the \a name.
  * If there is not a type with \a name, am empty type will be returned.
  */
-TNodeType TNodeType::FromName( const QString name )
+TNodeType TNodeType::FromName( const std::string name )
 {
 
 	for( unsigned int i = 0; i < TNodeType::m_typeList->size(); i++ )
@@ -141,14 +143,16 @@ TNodeType TNodeType::FromName( const QString name )
  */
 void TNodeType::Init()
 {
-	Q_ASSERT(TNodeType::m_typeList == 0 );
+
+	assert(TNodeType::m_typeList == 0 && "Error initializing node types list" );
+
 	TNodeType::m_typeList  = new std::vector<TTypeData*>();
 }
 
 /*!
  * Name of the type.
  */
-QString TNodeType::GetName() const
+std::string TNodeType::GetName() const
 {
 	return ( TNodeType::m_typeList->at( m_index )->name );
 }

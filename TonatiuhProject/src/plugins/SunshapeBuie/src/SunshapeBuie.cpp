@@ -63,7 +63,7 @@ void* SunshapeBuie::CreateInstance( )
  */
 void SunshapeBuie::Init()
 {
-	SunshapeBuie::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Sunshape" ), QString( "SunshapeBuie" ), &SunshapeBuie::CreateInstance );
+	SunshapeBuie::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Sunshape" ), "SunshapeBuie", &SunshapeBuie::CreateInstance );
 }
 
 /*!
@@ -82,12 +82,12 @@ SunshapeBuie::SunshapeBuie()
  m_heightRectangle2( 0.0 ),
  m_probabilityRectangle1( 0.0 )
 {
-
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( QLatin1String("irradiance"), 1000.0 );
-	m_parametersList->Append( QLatin1String("csr"), 0.02 );
+	m_parametersList->Append( "irradiance", 1000.0 );
+	m_parametersList->Append( "csr", 0.02 );
 
 	m_deltaThetaCSSD = m_thetaCS - m_thetaSD;
 	UpdateState( 0.02 );
@@ -121,12 +121,21 @@ void SunshapeBuie::GenerateRayDirection( Vector3D& direction, RandomDeviate& ran
 }
 
 /*!
+ * Returns the filename that stores the shape icon.
+ */
+std::string SunshapeBuie::GetIcon() const
+{
+
+	return ( ":/icons/SunshapeBuie.png" );
+}
+
+/*!
  * Returns irradiance value.
  */
 double SunshapeBuie::GetIrradiance() const
 {
 
-	return ( m_parametersList->GetValue( QLatin1String("irradiance") ).toDouble() );
+	return ( m_parametersList->GetValue( "irradiance" ).toDouble() );
 }
 
 /*!
@@ -135,7 +144,7 @@ double SunshapeBuie::GetIrradiance() const
 double SunshapeBuie::GetThetaMax() const
 {
 
-	return ( m_parametersList->GetValue( QLatin1String("thetaMax") ).toDouble() );
+	return ( m_parametersList->GetValue( "thetaMax" ).toDouble() );
 }
 
 /*!

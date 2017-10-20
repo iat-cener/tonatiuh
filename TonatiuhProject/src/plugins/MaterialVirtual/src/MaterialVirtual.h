@@ -48,10 +48,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class MaterialVirtual : public TMaterial
 {
+
+private:
+	MaterialVirtual(const MaterialVirtual& node) = delete;
+/*
 	Q_OBJECT
 
 private:
 	Q_DISABLE_COPY(MaterialVirtual)
+*/
 
 public:
 	static void* CreateInstance();
@@ -59,7 +64,7 @@ public:
 
 	MaterialVirtual( );
 
-    QString GetIcon();
+    std::string GetIcon();
 	TNodeType GetType() const;
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay ) const;
 

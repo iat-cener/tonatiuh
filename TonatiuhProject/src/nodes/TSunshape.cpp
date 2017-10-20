@@ -51,7 +51,7 @@ TNodeType TSunshape::m_nodeType = TNodeType::CreateEmptyType();
  */
 void TSunshape::Init()
 {
-	TSunshape::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), QString( "Sunshape" ) );
+	TSunshape::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "Sunshape" );
 
 }
 
@@ -61,12 +61,8 @@ void TSunshape::Init()
 TSunshape::TSunshape()
 :TNode()
 {
-
-	setObjectName(GetType().GetName());
-
-
-	//Transformation
-	//m_parametersList->Append( QLatin1String("irradiance"), 0 );
+	//setObjectName( GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 
 }
 

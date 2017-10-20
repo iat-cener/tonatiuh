@@ -52,10 +52,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class ShapeCylinder : public TShape
 {
-	Q_OBJECT
 
 private:
-	Q_DISABLE_COPY(ShapeCylinder)
+	ShapeCylinder(const ShapeCylinder& node) = delete;
 
 public:
 	static void* CreateInstance();
@@ -63,7 +62,7 @@ public:
 
 	ShapeCylinder( );
 
-	QString GetIcon();
+	std::string GetIcon() const;
 	BBox GetBondingBox() const;
 	TNodeType GetType() const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const;

@@ -57,9 +57,9 @@ void TrackerOneAxisFactory::Init() const
 /*!
  * Returns tracker type name.
  */
-QString TrackerOneAxisFactory::TTrackerNodeName() const
+std::string TrackerOneAxisFactory::TTrackerNodeName() const
 {
-	return QString("One Axis tracker");
+	return ( "One Axis tracker" );
 }
 
 /*!

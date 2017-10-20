@@ -43,6 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <stdlib.h>
 
 #include <QApplication>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
@@ -92,34 +93,6 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
     }
 }
 
-/*
-void ChildrenBranch( TNode* branch )
-{
-	std::cout<<"ChildrenBranch "<<std::endl;
-
-	if( !branch  ) return;
-	std::cout<<"\t"<<branch->GetName().toStdString()<<" "<<branch->GetReferences()<<std::endl;
-
-	if( const TNodesList* listNode = branch->as<TNodesList>() )
-	{
-		int numberOfChildren = listNode->Count();
-		for( int l = 0; l < numberOfChildren; l++ )
-		{
-			if( listNode->Item( l ) && listNode->Item( l ) != 0 )
-				ChildrenBranch( listNode->Item( l ) );
-		}
-	}
-
-
-	if( const TContainerNode* containerNode = branch->as<TContainerNode>() )
-	{
-		int numberOfParts = containerNode->NumberOfParts();
-		QStringList partNamesList = containerNode->GetPartNames();
-		for( int p = 0; p < numberOfParts; p++ )	ChildrenBranch( containerNode->GetPart( partNamesList[p] )  );
-	}
-
-}
-*/
 
 int main ( int argc, char** argv )
 {
@@ -286,6 +259,7 @@ int main ( int argc, char** argv )
 	tonatiuhScene = 0;
 	*/
 
+	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
 
 	TNodesDocument readDocument;
 	bool okRead = readDocument.Read( argv[1] );
@@ -296,6 +270,7 @@ int main ( int argc, char** argv )
 	}
 
 
+	std::cout<<"Tonatiuh 3.0 sceneNode"<<std::endl;
 	TSceneNode* sceneNode = readDocument.GetRootNode()->as<TSceneNode>();
 	if( !sceneNode || sceneNode == 0 )
 	{
@@ -319,6 +294,8 @@ int main ( int argc, char** argv )
 	//Reference count
 	//std::cout<<"sceneNode "<<sceneNode->GetName().toStdString()<<std::endl;
 	//ChildrenBranch(sceneNode);
+	 *
+	 */
 
 
 	/*
@@ -335,15 +312,14 @@ int main ( int argc, char** argv )
 
 	//Change sun position
 	std::cout<<"Change sun position:"<<std::endl;
-	TSunNode* sun = sceneNode->GetPart( QLatin1String( "light" ) )->as<TSunNode>();
+	TSunNode* sun = sceneNode->GetPart( "light" )->as<TSunNode>();
 	std::cout<<"\tCurrent values:"<<std::endl;
 	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
 	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
 
 
 	std::cout<<"\tChanging sun position..."<<std::endl;
-	sun->ChangeSunPosition( 180*gc::Degree, 0*gc::Degree );
-	//sun->ChangeSunPosition( 180*gc::Degree, 0.0*gc::Degree );
+	sceneNode->ChangeSunPosition( 180*gc::Degree, 0*gc::Degree );
 
 
 	std::cout<<"\tNew values:"<<std::endl;
@@ -363,6 +339,9 @@ int main ( int argc, char** argv )
 	TPhotonMap* pPhotonMap = new TPhotonMap;
 	std::cout<<"pPhotonMap"<<std::endl;
 
+	QDateTime startTime = QDateTime::currentDateTime();
+
+
 	RayCasting raytracer;
 	std::cout<<"raytracer"<<std::endl;
 	if( !raytracer.SetScene( sceneNode ) )
@@ -376,6 +355,9 @@ int main ( int argc, char** argv )
 	raytracer.SetRandomNumberGenerator( pRand );
 	raytracer.SetPhotonMap( pPhotonMap );
 	raytracer.Run( 10000000 );
+
+	QDateTime endTime = QDateTime::currentDateTime();
+	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 
 	std::cout<<"END main"<<std::endl;
 

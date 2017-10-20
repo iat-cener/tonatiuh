@@ -53,7 +53,7 @@ class MaterialStandardSpecularFactory: public QObject, public TMaterialFactory
     
 public:
     void Init() const;
-   	QString TMaterialName() const;
+   	std::string TMaterialName() const;
    	QIcon TMaterialIcon() const;
    	MaterialStandardSpecular* CreateTMaterial( ) const;
 };

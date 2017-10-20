@@ -46,7 +46,7 @@ TNodeType TTransmissivityNode::m_nodeType = TNodeType::CreateEmptyType();
  */
 void TTransmissivityNode::Init()
 {
-	TTransmissivityNode::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), QString( "TransmissivityNode" ) );
+	TTransmissivityNode::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "TransmissivityNode" );
 }
 
 /*!
@@ -55,7 +55,8 @@ void TTransmissivityNode::Init()
 TTransmissivityNode::TTransmissivityNode()
 :TNode()
 {
-	setObjectName(GetType().GetName());
+	//setObjectName(GetType().GetName().c_str() );
+	SetName( GetType().GetName() );
 }
 
 
