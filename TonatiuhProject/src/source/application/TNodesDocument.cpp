@@ -477,6 +477,7 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 
 	if( writtenNodes->contains( nodeID ) )	return ( true );
 
+	writtenNodes->append( nodeID );
 	std::vector<std::string> parametersList = containerNode->GetVisibleParametersName();
 	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
@@ -491,7 +492,6 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 		else
 			el.setAttribute( parameterName.c_str(),  parameterValue.toString().toStdString().c_str() );
 	}
-	writtenNodes->append( nodeID );
 
 	int numberOfParts = containerNode->NumberOfParts();
 	std::vector<std::string> partNamesList = containerNode->GetPartNames();

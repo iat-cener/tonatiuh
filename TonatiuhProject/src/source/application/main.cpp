@@ -251,7 +251,7 @@ int main ( int argc, char** argv )
 	TGroupNode* concentrator2Node = new TGroupNode();
 	concentrator2Node->SetName( "Concentrator2");
 	concentrator2Node->SetParameterValue( "translation",  QString( "5 0 0" ) );
-	if( !( rootNode->GetPart("childrenList" )->as< TNodesList >() )->InsertItem( concentrator2Node ) )
+	if( !( rootNode->GetPart( "childrenList" )->as< TNodesList >() )->InsertItem( concentrator2Node ) )
 	{
 		std::cout<<"Error adding concentrator 2 to root node"<<std::endl;
 		return -1;
@@ -259,10 +259,16 @@ int main ( int argc, char** argv )
 
 	std::cout<<"\tConcentrator2 tracker"<<std::endl;
 	TTrackerNode* c2ParabolicDishTracker = trackerFactoryList[trackerFactoryIndex]->CreateTTrackerNode();
-	c2ParabolicDishTracker->SetName( "Tracker_Concentrator_2");
-	if( !( c2ParabolicDishTracker->GetPart("childrenList" )->as< TNodesList >() )->InsertItem( concentratorSurfaceNode ) )
+	c2ParabolicDishTracker->SetName( "Tracker_Concentrator_2" );
+	if( !( concentrator2Node->GetPart( "childrenList" )->as< TNodesList >() )->InsertItem( c2ParabolicDishTracker ) )
 	{
 		std::cout<<"Error adding tracker node to concentrator 2"<<std::endl;
+		return ( -1 );
+	}
+
+	if( !( c2ParabolicDishTracker->GetPart( "childrenList" )->as< TNodesList >() )->InsertItem( concentratorSurfaceNode ) )
+	{
+		std::cout<<"Error adding surface node to concentrator 2 tracker"<<std::endl;
 		return -1;
 	}
 
