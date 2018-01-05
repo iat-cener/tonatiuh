@@ -207,7 +207,7 @@ double SunshapeBuie::PhiSolarDisk( double theta ) const
  */
 bool SunshapeBuie::UpdateState( )
 {
-	std::cout<<"SunshapeBuie::UpdateState"<<std::endl;
+
 	double csrValue = GetParameterValue<double>( m_csrLabel );
 
     double chi = 0.0;
