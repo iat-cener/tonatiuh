@@ -186,29 +186,28 @@ int main ( int argc, char** argv )
 
 
 
-
-	TSceneNode* tonatiuhScene = new TSceneNode;
-	std::cout<<"tonatiuhScene"<<std::endl;
+	std::cout<<"Creating new tonatiuh scene"<<std::endl;
+	TSceneNode* tonatiuhScene = static_cast<TSceneNode*>( TSceneNode::CreateInstance() );
+	std::cout<<" - tonatiuhScene created."<<std::endl;
 
 	//Sun
+	std::cout<<"Creating new scene Sun"<<std::endl;
 	double azimuthRad = 180 * gc::Degree;
 	double zentihRad = 15 * gc::Degree;
-	std::cout<<"sunNode"<<std::endl;
 	TSunNode* sunNode = new TSunNode();
+	std::cout<<" - sunNode created."<<std::endl;
 	tonatiuhScene->SetPart( "light",  sunNode );
-	std::cout<<"azimuth: "<<azimuthRad<<std::endl;
 	sunNode->SetParameterValue<double>( "azimuth", azimuthRad );
-	std::cout<<"zenith: "<<zentihRad<<std::endl;
+	std::cout<<" - sunNode parameters: azimuth "<<azimuthRad<<" && zenith "<<zentihRad<<std::endl;
 	sunNode->SetParameterValue<double>( "zenith", zentihRad );
 
-	std::cout<<"sunshapeIndex"<<std::endl;
+	std::cout<<" - finding the desired sunhape index in the sunshapes list"<<std::endl;
 	int sunshapeIndex = std::distance( sunshapeFactoryName.begin(), std::find(sunshapeFactoryName.begin(), sunshapeFactoryName.end(), "Buie_Sunshape" ) );
 	if( sunshapeIndex >= sunshapeFactoryList.size() )
 	{
 		std::cout<<"Error defining sunshape type."<<std::endl;
 		return -1;
 	}
-
 	TSunshape* sunshapeNode = sunshapeFactoryList[0]->CreateTSunshape();
 	sunshapeNode->SetName( "sunshapeModel");
 	sunNode->SetPart( "sunshape",  sunshapeNode );

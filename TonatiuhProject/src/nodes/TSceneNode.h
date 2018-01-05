@@ -68,7 +68,6 @@ public:
 	static void* CreateInstance();
 	static void Init();
 
-	TSceneNode();
 
 	virtual TSceneNode* Copy() const;
 
@@ -80,6 +79,7 @@ public:
 
 
 protected:
+	TSceneNode();
 	virtual ~TSceneNode();
 	void UpdateTrackersTransform( TNode* branch, Vector3D sunVector, Transform parentWT0 );
 	void UpdateTrackers( double azimuth, double zenith );
