@@ -40,9 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "DifferentialGeometry.h"
 
 #include "ShapeFlatTriangle.h"
-#include "TParameterList.h"
-#include "TParameterPoint3D.h"
-
 
 TNodeType ShapeFlatTriangle::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -66,23 +63,17 @@ void ShapeFlatTriangle::Init()
  * Default constructor, initializes node instance.
  */
 ShapeFlatTriangle::ShapeFlatTriangle(  )
-:TShape()
+:TShape(),
+ m_aLabel( "a" ),
+ m_bLabel( "b" ),
+ m_cLabel( "c" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Parameters
-	QVariant aParameter;
-	aParameter.setValue( new TParameterPoint3D( Point3D( -0.5, 0.0, 0.0 ) ) );
-	m_parametersList->Append( "a", aParameter );
-
-	QVariant bParameter;
-	bParameter.setValue( new TParameterPoint3D( Point3D( 0.5, 0.0, 0.0 ) ) );
-	m_parametersList->Append( "b", bParameter );
-
-	QVariant cParameter;
-	cParameter.setValue( new TParameterPoint3D( Point3D( 0.0, 1.0, 0.0 ) ) );
-	m_parametersList->Append( "c", cParameter );
+	m_pParametersList->Append<Point3D>( m_aLabel, Point3D( -0.5, 0.0, 0.0 ), true );
+	m_pParametersList->Append<Point3D>( m_bLabel, Point3D( 0.5, 0.0, 0.0 ), true );
+	m_pParametersList->Append<Point3D>( m_cLabel, Point3D( 0.0, 1.0, 0.0 ), true );
 }
 
 /*!
@@ -90,18 +81,26 @@ ShapeFlatTriangle::ShapeFlatTriangle(  )
  */
 ShapeFlatTriangle::~ShapeFlatTriangle()
 {
-	TParameterPoint3D* aPoint = m_parametersList->GetValue( "a" ).value<TParameterPoint3D*>();
-	delete aPoint;
-	aPoint = 0;
 
-	TParameterPoint3D* bPoint = m_parametersList->GetValue( "b" ).value<TParameterPoint3D*>();
-	delete bPoint;
-	bPoint = 0;
+}
 
-	TParameterPoint3D* cPoint = m_parametersList->GetValue( "c" ).value<TParameterPoint3D*>();
-	delete cPoint;
-	cPoint = 0;
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeFlatTriangle* ShapeFlatTriangle::Copy() const
+{
+	ShapeFlatTriangle* shapeNode = new ShapeFlatTriangle;
+	if( shapeNode == 0 )	return ( 0  );
 
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_aLabel, GetParameterValue<double>( m_aLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_bLabel, GetParameterValue<double>( m_bLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_cLabel, GetParameterValue<double>( m_cLabel ) );
+
+	return ( shapeNode );
 }
 
 /*!
@@ -119,10 +118,9 @@ std::string ShapeFlatTriangle::GetIcon() const
  */
 BBox ShapeFlatTriangle::GetBondingBox() const
 {
-
-	Point3D aPoint = m_parametersList->GetValue( "a" ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D bPoint = m_parametersList->GetValue( "b" ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D cPoint = m_parametersList->GetValue( "c" ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D aPoint = GetParameterValue<double>( m_aLabel );
+	Point3D bPoint = GetParameterValue<double>( m_bLabel );
+	Point3D cPoint = GetParameterValue<double>( m_cLabel );
 
 	double xmin = std::min( aPoint.x, std::min( bPoint.x, cPoint.x ) );
 	double xmax = std::max( aPoint.x, std::max( bPoint.x, cPoint.x ) );
@@ -148,11 +146,9 @@ TNodeType ShapeFlatTriangle::GetType() const
  */
 bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-
-	Point3D aPoint = m_parametersList->GetValue( "a" ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D bPoint = m_parametersList->GetValue( "b" ).value<TParameterPoint3D*>()->GetPoint3D();
-	Point3D cPoint = m_parametersList->GetValue( "c" ).value<TParameterPoint3D*>()->GetPoint3D();
-
+	Point3D aPoint = GetParameterValue<double>( m_aLabel );
+	Point3D bPoint = GetParameterValue<double>( m_bLabel );
+	Point3D cPoint = GetParameterValue<double>( m_cLabel );
 
 	Vector3D vAB = Vector3D( bPoint - aPoint );
 	Vector3D vAC = Vector3D( cPoint - aPoint );

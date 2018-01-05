@@ -68,15 +68,18 @@ void ShapeSphericalRectangle::Init()
  */
 
 ShapeSphericalRectangle::ShapeSphericalRectangle()
-:TShape()
+:TShape(),
+ m_radiusLabel( "radius" ),
+ m_widthXLabel( "widthX" ),
+ m_widthZLabel( "widthZ" )
 {
 	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( "radius", 0.75 );
-	m_parametersList->Append( "widthX", 1.0 );
-	m_parametersList->Append( "widthZ", 1.0 );
+	m_pParametersList->Append<double>( m_radiusLabel, 0.75, true );
+	m_pParametersList->Append<double>( m_widthXLabel, 1.0, true );
+	m_pParametersList->Append<double>( m_widthZLabel, 1.0, true );
 
 }
 
@@ -87,6 +90,25 @@ ShapeSphericalRectangle::ShapeSphericalRectangle()
 ShapeSphericalRectangle::~ShapeSphericalRectangle()
 {
 
+}
+
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeSphericalRectangle* ShapeSphericalRectangle::Copy() const
+{
+	ShapeSphericalRectangle* shapeNode = new ShapeSphericalRectangle;
+	if( shapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_radiusLabel, GetParameterValue<double>( m_radiusLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_widthXLabel, GetParameterValue<double>( m_widthXLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_widthZLabel, GetParameterValue<double>( m_widthZLabel ) );
+
+	return ( shapeNode );
 }
 
 /*!
@@ -103,10 +125,9 @@ std::string ShapeSphericalRectangle::GetIcon() const
  */
 BBox ShapeSphericalRectangle::GetBondingBox() const
 {
-
-	double radius = m_parametersList->GetValue( "radius" ).toDouble();
-	double widthX = m_parametersList->GetValue( "widthX" ).toDouble();
-	double widthZ = m_parametersList->GetValue( "widthZ" ).toDouble();
+	double radius = GetParameterValue<double>( m_radiusLabel );
+	double widthX = GetParameterValue<double>( m_widthXLabel );
+	double widthZ = GetParameterValue<double>( m_widthZLabel );
 
 	double xmin = -widthX/2;
 	double xmax = widthX/2;
@@ -134,9 +155,9 @@ TNodeType ShapeSphericalRectangle::GetType() const
  */
 bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double r = m_parametersList->GetValue( "radius" ).toDouble();
-	double wX = m_parametersList->GetValue( "widthX" ).toDouble();
-	double wZ = m_parametersList->GetValue( "widthZ" ).toDouble();
+	double radius = GetParameterValue<double>( m_radiusLabel );
+	double widthX = GetParameterValue<double>( m_widthXLabel );
+	double widthZ = GetParameterValue<double>( m_widthZLabel );
 
 	// Compute quadratic ShapeSphere coefficients
 	double A =   objectRay.direction().x * objectRay.direction().x
@@ -146,12 +167,12 @@ bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, Dif
 	double B = 2.0 * (   objectRay.origin.x * objectRay.direction().x
 					   + objectRay.origin.y * objectRay.direction().y
 					   + objectRay.origin.z * objectRay.direction().z
-					   - objectRay.direction().y * r );
+					   - objectRay.direction().y * radius );
 
 	double C =   objectRay.origin.x * objectRay.origin.x
 			   + objectRay.origin.y * objectRay.origin.y
 			   + objectRay.origin.z * objectRay.origin.z
-			   - 2 * objectRay.origin.y * r;
+			   - 2 * objectRay.origin.y * radius;
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -165,23 +186,23 @@ bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, Dif
 	//Evaluate Tolerance
 	double tol = 0.00001;
 
-	double ymax = r - sqrt( r* r - ( wX / 2 ) * ( wX / 2 )
-													- ( wZ / 2 ) * ( wZ / 2 ) );
+	double ymax = radius - sqrt( radius* radius - ( widthX / 2 ) * ( widthX / 2 )
+													- ( widthZ / 2 ) * ( widthZ / 2 ) );
 
 	//Compute possible hit position
 	Point3D hitPoint = objectRay( thit );
 
 	// Test intersection against clipping parameters
-	if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - wX / 2 ) || hitPoint.x > ( wX / 2 ) ||
-			hitPoint.z < ( - wZ / 2 ) || hitPoint.z > ( wZ / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
+	if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - widthX / 2 ) || hitPoint.x > ( widthX / 2 ) ||
+			hitPoint.z < ( - widthZ / 2 ) || hitPoint.z > ( widthZ / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
 	{
 		if ( thit == t1 ) return false;
 		if ( t1 > objectRay.maxt ) return false;
 		thit = t1;
 
 		hitPoint = objectRay( thit );
-		if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - wX / 2 ) || hitPoint.x > ( wX / 2 ) ||
-					hitPoint.z < ( - wZ / 2 ) || hitPoint.z > ( wZ / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
+		if( (thit - objectRay.mint) < tol ||  hitPoint.x < ( - widthX / 2 ) || hitPoint.x > ( widthX / 2 ) ||
+					hitPoint.z < ( - widthZ / 2 ) || hitPoint.z > ( widthZ / 2 ) || hitPoint.y < 0.0 || hitPoint.y > ymax  )
 			return false;
 
 	}
@@ -195,40 +216,40 @@ bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, Dif
 	// Compute possible parabola hit position
 
 	// Find parametric representation of paraboloid hit
-	double u =  ( hitPoint.x  / wX ) + 0.5;
-	double v =  ( hitPoint.z  / wZ ) + 0.5;
+	double u =  ( hitPoint.x  / widthX ) + 0.5;
+	double v =  ( hitPoint.z  / widthZ ) + 0.5;
 
-	double aux = r * r
-			- (-0.5 + u) * (-0.5 + u) * wX *wX
-			- (-0.5 + v) * (-0.5 + v) * wZ *wZ;
+	double aux = radius * radius
+			- (-0.5 + u) * (-0.5 + u) * widthX *widthX
+			- (-0.5 + v) * (-0.5 + v) * widthZ *widthZ;
 
 
-	Vector3D dpdu( wX,
-					( (-0.5 + u) * wX *  wX )/ sqrt( r * r
-							- (-0.5 + u) * (-0.5 + u) * wX *wX
-							- (-0.5 + v) * (-0.5 + v) * wZ *wZ ),
+	Vector3D dpdu( widthX,
+					( (-0.5 + u) * widthX *  widthX )/ sqrt( radius * radius
+							- (-0.5 + u) * (-0.5 + u) * widthX *widthX
+							- (-0.5 + v) * (-0.5 + v) * widthZ *widthZ ),
 					0 );
 
 
 	Vector3D dpdv( 0.0,
-				( (-0.5 + v) * wZ *  wZ )/ sqrt( r * r
-						- (-0.5 + u) * (-0.5 + u) * wX *wX
-						- (-0.5 + v) * (-0.5 + v) * wZ *wZ ),
-				wZ );
+				( (-0.5 + v) * widthZ *  widthZ )/ sqrt( radius * radius
+						- (-0.5 + u) * (-0.5 + u) * widthX *widthX
+						- (-0.5 + v) * (-0.5 + v) * widthZ *widthZ ),
+				widthZ );
 
 	// Compute parabaloid \dndu and \dndv
 	Vector3D d2Pduu( 0.0,
-			( ( (-0.5 + u) * (-0.5 + u) * wX *  wX * wX *  wX ) / sqrt( aux * aux * aux ) )
-				+ ( ( wX *  wX )  / sqrt( aux ) ),
+			( ( (-0.5 + u) * (-0.5 + u) * widthX *  widthX * widthX *  widthX ) / sqrt( aux * aux * aux ) )
+				+ ( ( widthX *  widthX )  / sqrt( aux ) ),
 			0.0 );
 
 	Vector3D d2Pduv( 0.0,
-			( (-0.5 + u) * (-0.5 + v ) * wX *  wX * wZ *  wZ  )
+			( (-0.5 + u) * (-0.5 + v ) * widthX *  widthX * widthZ *  widthZ  )
 				/ sqrt( aux * aux * aux ),
 			0.0 );
 	Vector3D d2Pdvv( 0.0,
-				( ( (-0.5 + u) * (-0.5 + u) * wZ *  wZ * wZ *  wZ ) / sqrt( aux * aux * aux ) )
-					+ ( ( wZ *  wZ )  / sqrt( aux ) ),
+				( ( (-0.5 + u) * (-0.5 + u) * widthZ *  widthZ * widthZ *  widthZ ) / sqrt( aux * aux * aux ) )
+					+ ( ( widthZ *  widthZ )  / sqrt( aux ) ),
 				0.0 );
 
 	// Compute coefficients for fundamental forms

@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "gf.h"
 
 #include "ShapeParabolicDish.h"
-#include "TParameterList.h"
 
 
 TNodeType ShapeParabolicDish::m_nodeType = TNodeType::CreateEmptyType();
@@ -67,16 +66,19 @@ void ShapeParabolicDish::Init()
  * ShapeParabolicDish : public TNode
  */
 ShapeParabolicDish::ShapeParabolicDish()
-:TShape()
+:TShape(),
+ m_focusLengthLabel( "focusLength" ),
+ m_dishMinRadiusLabel( "dishMinRadius" ),
+ m_dishMaxRadiusLabel( "dishMaxRadius" ),
+ m_phiMaxLabel( "phiMax" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( "focusLength", 0.125 );
-	m_parametersList->Append( "dishMinRadius", 0.1 );
-	m_parametersList->Append( "dishMaxRadius", 0.5 );
-	m_parametersList->Append( "phiMax", gc::TwoPi );
+	m_pParametersList->Append<double>( m_focusLengthLabel, 0.125, true );
+	m_pParametersList->Append<double>( m_dishMinRadiusLabel, 0.1, true );
+	m_pParametersList->Append<double>( m_dishMaxRadiusLabel, 0.5, true );
+	m_pParametersList->Append<double>( m_phiMaxLabel, gc::TwoPi, true );
 
 }
 
@@ -86,6 +88,26 @@ ShapeParabolicDish::ShapeParabolicDish()
 ShapeParabolicDish::~ShapeParabolicDish()
 {
 
+}
+
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeParabolicDish* ShapeParabolicDish::Copy() const
+{
+	ShapeParabolicDish* shapeNode = new ShapeParabolicDish;
+	if( shapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_focusLengthLabel, GetParameterValue<double>( m_focusLengthLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_dishMinRadiusLabel, GetParameterValue<double>( m_dishMinRadiusLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_dishMaxRadiusLabel, GetParameterValue<double>( m_dishMaxRadiusLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_phiMaxLabel, GetParameterValue<double>( m_phiMaxLabel ) );
+
+	return ( shapeNode );
 }
 
 /*!
@@ -103,10 +125,10 @@ std::string ShapeParabolicDish::GetIcon() const
  */
 BBox ShapeParabolicDish::GetBondingBox() const
 {
-	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
-	double dishMaxRadius = m_parametersList->GetValue( "dishMaxRadius" ).toDouble();
-	double dishMinRadius = m_parametersList->GetValue( "dishMinRadius" ).toDouble();
-	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
+	double focusLength = GetParameterValue<double>( m_focusLengthLabel );
+	double dishMaxRadius = GetParameterValue<double>( m_dishMinRadiusLabel );
+	double dishMinRadius = GetParameterValue<double>( m_dishMaxRadiusLabel );
+	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -140,12 +162,10 @@ TNodeType ShapeParabolicDish::GetType() const
  */
 bool ShapeParabolicDish::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-
-	double pMax = m_parametersList->GetValue( "phiMax" ).toDouble();
-	double dishMaxRadius = m_parametersList->GetValue( "dishMaxRadius" ).toDouble();
-	double dishMinRadius = m_parametersList->GetValue( "dishMinRadius" ).toDouble();
-	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
-
+	double focusLength = GetParameterValue<double>( m_focusLengthLabel );
+	double dishMaxRadius = GetParameterValue<double>( m_dishMinRadiusLabel );
+	double dishMinRadius = GetParameterValue<double>( m_dishMaxRadiusLabel );
+	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
 
 	double A = objectRay.direction().x*objectRay.direction().x + objectRay.direction().z * objectRay.direction().z;
 	double B = 2.0 * ( objectRay.direction().x* objectRay.origin.x + objectRay.direction().z * objectRay.origin.z - 2 * focusLength * objectRay.direction().y );
@@ -173,7 +193,7 @@ bool ShapeParabolicDish::Intersect( const Ray& objectRay, double* tHit, Differen
 	else phi = gc::TwoPi + atan2( hitPoint.x, hitPoint.z );
 
 	// Test intersection against clipping parameters
-	if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius || radius > dishMaxRadius || phi > pMax )
+	if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius || radius > dishMaxRadius || phi > phiMax )
 		{
 			if ( thit == t1 ) return false;
 			if ( t1 > objectRay.maxt ) return false;
@@ -185,7 +205,7 @@ bool ShapeParabolicDish::Intersect( const Ray& objectRay, double* tHit, Differen
 			else if( hitPoint.x > 0 ) phi = atan2( hitPoint.x, hitPoint.z );
 			else phi = gc::TwoPi + atan2( hitPoint.x, hitPoint.z );
 
-			if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius || radius > dishMaxRadius || phi > pMax ) return false;
+			if( (thit - objectRay.mint) < tol ||  radius < dishMinRadius || radius > dishMaxRadius || phi > phiMax ) return false;
 		}
 
 	// Now check if the function is being called from IntersectP,
@@ -196,28 +216,28 @@ bool ShapeParabolicDish::Intersect( const Ray& objectRay, double* tHit, Differen
 ///////////////////////////////////////////////////////////////////////////////////////
 
 	// Find parametric representation of paraboloid hit
-	double u = phi / pMax;
+	double u = phi / phiMax;
 	double v = ( radius - dishMinRadius )  /( dishMaxRadius- dishMinRadius );
 
 	// Compute Circular Parabolic Facet \dpdu and \dpdv
 	double r = v * ( dishMaxRadius - dishMinRadius ) + dishMinRadius;
-	Vector3D dpdu( pMax * r * cos( pMax * u ),
+	Vector3D dpdu( phiMax * r * cos( phiMax * u ),
 					0,
-					-pMax * r * sin( pMax * u ) );
+					-phiMax * r * sin( phiMax * u ) );
 
-	Vector3D dpdv( ( dishMaxRadius - dishMinRadius )  * sin( pMax * u ),
+	Vector3D dpdv( ( dishMaxRadius - dishMinRadius )  * sin( phiMax * u ),
 				   ( ( dishMaxRadius - dishMinRadius ) * r  )
 							   / ( 2 * focusLength ),
-					( dishMaxRadius - dishMinRadius ) * cos( pMax * u ) );
+					( dishMaxRadius - dishMinRadius ) * cos( phiMax * u ) );
 
 
 	// Compute Circular Parabolic Facet \dndu and \dndv
-	Vector3D d2Pduu ( -pMax * pMax * r * sin( pMax * u ),
+	Vector3D d2Pduu ( -phiMax * phiMax * r * sin( phiMax * u ),
 			0.0,
-			-pMax* pMax * r * cos( pMax * u ) );
-	Vector3D d2Pduv ( pMax* ( dishMaxRadius- dishMinRadius ) * cos( pMax * u ),
+			-phiMax* phiMax * r * cos( phiMax * u ) );
+	Vector3D d2Pduv ( phiMax* ( dishMaxRadius- dishMinRadius ) * cos( phiMax * u ),
 					0.0,
-					-pMax * ( dishMaxRadius- dishMinRadius ) * sin( pMax * u ) );
+					-phiMax * ( dishMaxRadius- dishMinRadius ) * sin( phiMax * u ) );
 	Vector3D d2Pdvv (0, ( ( dishMaxRadius- dishMinRadius ) * ( dishMaxRadius- dishMinRadius ) ) /(2 * focusLength ), 0 );
 
 

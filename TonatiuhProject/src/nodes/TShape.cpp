@@ -55,7 +55,6 @@ void TShape::Init()
 TShape::TShape()
 :TNode()
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 }
 

@@ -4,9 +4,7 @@ CONFIG       += plugin debug_and_release
 
 include( $$(TONATIUH_ROOT)/config.pri )
 
-INCLUDEPATH += . \
-			src \
-            $$(TONATIUH_ROOT)/src/auxiliary \
+INCLUDEPATH += src \
             $$(TONATIUH_ROOT)/src/plugins \
             $$(TONATIUH_ROOT)/src/nodes
 

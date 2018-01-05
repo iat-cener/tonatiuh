@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSUNNODE_H_
 
 
+#include "NodeLibrary.h"
 #include "TContainerNode.h"
 #include "TNodeType.h"
 
@@ -56,20 +57,22 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   - zenith: sun position zenith angle in radians. Complementary angle of the sun elevation (measured from the horizon). Positive from the zenith.
 */
 
-class TSunNode : public TContainerNode
+class NODE_API TSunNode : public TContainerNode
 {
 
 private:
-	TSunNode(const TSunNode& node) = delete;
-/*
-	Q_OBJECT
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TSunNode(const TSunNode& ) = delete;
+	TSunNode& operator=(const TSunNode&) = delete;
+
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TSunNode();
+	TSunNode* Copy() const;
+
 	void ChangeSunPosition( double azimuth, double zenith );
 
 	double GetAzimuth() const;

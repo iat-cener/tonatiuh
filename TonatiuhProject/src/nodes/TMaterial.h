@@ -40,6 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TMATERIAL_H_
 #define TMATERIAL_H_
 
+#include "NodeLibrary.h"
+
 #include "TNode.h"
 #include "TNodeType.h"
 
@@ -52,22 +54,19 @@ class Ray;
   TMaterial class is the base for material nodes. The node classes that has material properties inherits this class. This class has some common code for all materials.
 */
 
-class TMaterial: public TNode
+class NODE_API TMaterial: public TNode
 {
 
 private:
-	TMaterial(const TMaterial& node) = delete;
-/*
-	Q_OBJECT
-
-private:
-	Q_DISABLE_COPY(TMaterial)
-	*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TMaterial(const TMaterial& ) = delete;
+	TMaterial& operator=(const TMaterial&) = delete;
 
 public:
 	static void Init();
 
 	TMaterial();
+	virtual TMaterial* Copy() const = 0;
 
 	virtual std::string GetIcon() = 0;
 	virtual TNodeType GetType() const;

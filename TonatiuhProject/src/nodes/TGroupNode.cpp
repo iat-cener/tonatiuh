@@ -41,11 +41,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "gc.h"
 #include "Vector3D.h"
 
-#include "tf.h"
-
+#include "nf.h"
 #include "TGroupNode.h"
 #include "TNodesList.h"
 #include "TParameterList.h"
+//#include "TParameterString.h"
+//#include "TParameterVector3D.h"
 #include "Transform.h"
 
 /******************************
@@ -82,16 +83,16 @@ TGroupNode::TGroupNode()
 	SetName(GetType().GetName() );
 
 	//Parts
-	TNodesList* childrenListNode = new TNodesList();
+	TNodesList* childrenListNode = new TNodesList{};
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "GroupNode") ) ;
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "SurfaceNode") ) ;
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "TrackerNode") ) ;
 	AppendPart( "childrenList", TNodeType::FromName( "NodesList" ) , childrenListNode );
 
 	//Transformation
-	m_parametersList->Append( m_translationName, "0 0 0", true );
-	m_parametersList->Append( m_rotationName, "0 0 1 0" );
-	m_parametersList->Append( m_scaleFactorName, "1 1 1" );
+	m_pParametersList->Append<std::string>( m_translationName, "0 0 0", true );
+	m_pParametersList->Append<std::string>( m_rotationName, "0 0 1 0", true );
+	m_pParametersList->Append<std::string>( m_scaleFactorName, "1 1 1", true );
 }
 
 /*!
@@ -101,6 +102,33 @@ TGroupNode::~TGroupNode()
 {
 	SetPart( "childrenList", 0 );
 }
+
+/*!
+ * Creates a copy of group node.
+ */
+ TGroupNode* TGroupNode::Copy() const
+ {
+
+	 TGroupNode* groupNode = new TGroupNode;
+	 if( groupNode == 0 )	return ( 0  );
+
+	 for (std::map<std::string, TNodeType>::iterator it = groupNode->m_partsTypeList.begin(); it!=groupNode->m_partsTypeList.end(); ++it)
+	 {
+		 std::string partName = it->first;
+		 TNodeType partType = it->second;
+		 TNode* partNode = groupNode->m_partsList[partName];
+
+		 groupNode->AppendPart( partName, partType, partNode->Copy() );
+	 }
+
+
+	 //Coping the parameters.
+	 groupNode->m_pParametersList->SetValue( m_translationName, GetParameterValue<std::string>( m_translationName ) );
+	 groupNode->m_pParametersList->SetValue( m_rotationName, GetParameterValue<std::string>( m_rotationName ) );
+	 groupNode->m_pParametersList->SetValue( m_scaleFactorName, GetParameterValue<std::string>( m_scaleFactorName ) );
+
+	 return ( groupNode );
+ }
 
 /*!
  * Returns icon file name
@@ -119,17 +147,17 @@ Transform TGroupNode::GetTrasformation() const
 	if( parametersList.empty() )	return ( Transform() );
 
 
-	std::vector< std::string > translationValues = tf::StringSplit( m_parametersList->GetValue( m_translationName ).toString().toStdString(), "\\s+" );
+	std::vector< std::string > translationValues = nf::StringSplit( GetParameterValue<std::string>( m_translationName ) , "\\s+" );
 	if( translationValues.size() != 3 ) 	return ( Transform() );
 	Transform translation = Translate( stod( translationValues[0] ), stod( translationValues[1] ), stod( translationValues[2] )  );
 
-	std::vector< std::string >  rotationValues = tf::StringSplit( m_parametersList->GetValue( m_rotationName ).toString().toStdString(), "\\s+" );
+	std::vector< std::string >  rotationValues = nf::StringSplit( GetParameterValue<std::string>( m_rotationName ), "\\s+" );
 	if( rotationValues.size() != 4 ) return ( Transform() );
 	Vector3D rotationAxis( stod( rotationValues[0] ), stod( rotationValues[1] ), stod( rotationValues[2] ) );
 	if( fabs( 1.0 - rotationAxis.length() ) > gc::Epsilon  )	return ( Transform() );
 	Transform rotation = Rotate( stod( rotationValues[3] ), rotationAxis   );
 
-	std::vector< std::string >  scaleValues = tf::StringSplit( m_parametersList->GetValue( m_scaleFactorName).toString().toStdString(), "\\s+" );
+	std::vector< std::string >  scaleValues = nf::StringSplit( GetParameterValue<std::string>( m_scaleFactorName), "\\s+" );
 	if( scaleValues.size() != 3 ) return ( Transform() );
 	Transform scale = Scale( stod( scaleValues[0] ), stod( scaleValues[1] ), stod( scaleValues[2] ) );
 

@@ -40,17 +40,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TNODE_H_
 #define TNODE_H_
 
-
-//#include <QObject>
-//#include <QMetaType>
-
+#include <memory>
 #include <string>
 
-#include <QVariant>
-
+#include "NodeLibrary.h"
 #include "TNodeType.h"
-
-class TParameterList;
+#include "TParameterList.h"
 
 
 //!  TNode class is the base class for all Tonatiuh nodes.
@@ -59,26 +54,29 @@ class TParameterList;
 */
 
 /** Base class of all Tonatiuh nodes: TNode */
-class TNode// : public QObject
+class NODE_API TNode
 {
-	//Q_OBJECT
 
 private:
+	//No copy constructor. Use Copy to create a copy of the node
 	TNode(const TNode& node) = delete;
+	TNode& operator=(const TNode&) = delete;
 
 public:
+	virtual ~TNode() noexcept;
 	static void Init();
 
-	TNode();
 	template<class T> const T* as() const;
 	template<class T> T* as();
 
-	virtual TNode* Copy() const;
+	//TNode* CopyNode() const;
+	virtual TNode* Copy() const = 0;
 
 	int GetID() const;
 	std::string GetName() const;
 	virtual std::string GetIcon() const;
-	QVariant GetParameterValue( std::string  name ) const;
+	template<class T> T GetParameterValue( std::string name ) const;
+	std::string GetParameterToString( std::string name ) const;
 	int GetReferences() const;
 	virtual TNodeType GetType() const;
 	std::vector<std::string> GetVisibleParametersName() const;
@@ -87,12 +85,15 @@ public:
 	void RemoveReference();
 
 	void SetName( std::string name );
-	bool SetParameterValue( const std::string & name, const QVariant& value );
+	template<class T> bool SetParameterValue( const std::string& name, const T& value );
+	bool SetParameterFormString( const std::string& name, const std::string& value );
 
 
 protected:
-	TParameterList* m_parametersList;
-	virtual ~TNode();
+	//virtual TNode* CreateCopy() const = 0;
+	std::unique_ptr<TParameterList> m_pParametersList;
+
+	TNode();
 
 private:
 
@@ -103,9 +104,10 @@ private:
 
 };
 
-//Q_DECLARE_METATYPE(TNode*)
 
-
+/*!
+ * Returns the node as a node of type T
+ */
 template<class T>
 const T* TNode::as() const
 {
@@ -113,7 +115,9 @@ const T* TNode::as() const
   return t;
 }
 
-
+/*!
+ * Returns the node as a node of type T
+ */
 template<class T>
 T* TNode::as()
 {
@@ -121,6 +125,31 @@ T* TNode::as()
   return t;
 }
 
+/*!
+ * Returns the value of the parameter \a name.
+ */
+template<class T> T TNode::GetParameterValue( std::string name ) const
+{
+	//if(!m_parametersList )	return( std::any() );
+	if( !m_pParametersList->Contains( name ) || !m_pParametersList->GetVisibility( name ) )
+		return( T{} );
+	return ( std::get<T>( m_pParametersList->GetValue( name ).value() ) );
+
+}
+
+/*!
+ * Sets to the parameter \a name the \a value.
+ */
+template<class T>  bool TNode::SetParameterValue( const std::string& name, const T& value )
+{
+	if( !m_pParametersList )	return ( false );
+	if( !m_pParametersList->Contains( name ) || !m_pParametersList->GetVisibility( name ) )
+		return ( false );
+
+	if( !m_pParametersList->SetValue( name, value ) ) 	return ( false );
+
+	return (true);
+}
 
 
 #endif /* TNODE_H_ */

@@ -43,7 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <map>
 #include <string>
 
-
+#include "NodeLibrary.h"
 #include "TNode.h"
 
 //!  TContainerNode class is the base class for all container nodes.
@@ -51,22 +51,23 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   TContainerNode class defines all the basic methods for the nodes that collects different parts for its definition.
 */
 
-class TContainerNode : public TNode
+class NODE_API TContainerNode : public TNode
 {
-	//Q_OBJECT
 
 private:
-	TContainerNode(const TContainerNode& node) = delete;
-	//Q_DISABLE_COPY(TContainerNode)
+	//No copy constructor. Use Copy to create a copy of the node
+	TContainerNode(const TContainerNode&) = delete;
+	TContainerNode& operator=(const TContainerNode&) = delete;
 
 public:
-	//static void* CreateInstance();
 	static void Init();
 
 	TContainerNode();
 
+	virtual TContainerNode* Copy() const = 0;
+
+
 	bool Contains(const std::string & name) const;
-	virtual TContainerNode* Copy() const;
 	virtual std::string GetIcon() const;
 	TNode* GetPart( const std::string name ) const;
 	std::vector<std::string> GetPartNames() const;
@@ -78,6 +79,7 @@ public:
 
 protected:
 	virtual ~TContainerNode();
+	//virtual TNode* CreateCopy() const = 0;
 
 	void AppendPart( const std::string name, TNodeType type, TNode* defaultNode );
 	void RevomePart( const std::string name );
@@ -88,8 +90,6 @@ protected:
 private:
 	static TNodeType m_nodeType;
 };
-
-//Q_DECLARE_METATYPE(TContainerNode*)
 
 
 #endif /* TCONTAINERNODE_H_ */

@@ -56,13 +56,16 @@ class ShapeParabolicDish : public TShape
 {
 
 private:
-	ShapeParabolicDish(const ShapeParabolicDish& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeParabolicDish(const ShapeParabolicDish&) = delete;
+	ShapeParabolicDish& operator=(const ShapeParabolicDish&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeParabolicDish( );
+	ShapeParabolicDish* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -75,6 +78,10 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_focusLengthLabel;
+	std::string m_dishMinRadiusLabel;
+	std::string m_dishMaxRadiusLabel;
+	std::string m_phiMaxLabel;
 };
 
 #endif /*SHAPEPARABOLICDISH_H_*/

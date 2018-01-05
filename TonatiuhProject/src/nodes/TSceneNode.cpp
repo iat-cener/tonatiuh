@@ -78,7 +78,6 @@ TSceneNode::TSceneNode()
  m_lightName( "light" ),
  m_transmisivityName( "transmisivity" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 
 	//Parts
@@ -96,6 +95,29 @@ TSceneNode::~TSceneNode()
 	SetPart( m_childrenListName, 0 );
 }
 
+
+/*!
+ * Creates a copy of group node.
+ */
+TSceneNode* TSceneNode::Copy() const
+{
+	TSceneNode* sceneNode = new TSceneNode;
+	 if( sceneNode == 0 )	return ( 0  );
+
+	 for (std::map<std::string, TNodeType>::iterator it = sceneNode->m_partsTypeList.begin(); it!=sceneNode->m_partsTypeList.end(); ++it)
+	 {
+		 std::string partName = it->first;
+		 TNodeType partType = it->second;
+		 TNode* partNode = sceneNode->m_partsList[partName];
+
+
+		 sceneNode->AppendPart( partName, partType, partNode->Copy() );
+	 }
+
+	 //Coping the parameters. No parameters.
+	 //
+	 return ( sceneNode );
+}
 
 /*
  * If sun node is defined in the scene, changes the sun node position to the coordinates defined by the angles \a azimuth and zenith. These angles are in radians.

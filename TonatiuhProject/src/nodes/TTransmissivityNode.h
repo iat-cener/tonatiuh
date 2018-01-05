@@ -40,6 +40,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TTRANSMISSIVITYNODE_H_
 #define TTRANSMISSIVITYNODE_H_
 
+#include "NodeLibrary.h"
 #include "TNode.h"
 
 class RandomDeviate;
@@ -50,22 +51,19 @@ class RandomDeviate;
   The node classes that inherits this class will define if a ray intersected at defined distance will be transmitted or not pending of the specific model defined.
 */
 
-class TTransmissivityNode: public TNode
+class NODE_API TTransmissivityNode: public TNode
 {
 
 private:
-	TTransmissivityNode(const TTransmissivityNode& node) = delete;
-/*
-	Q_OBJECT
-
-private:
-	Q_DISABLE_COPY(TTransmissivityNode)
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TTransmissivityNode(const TTransmissivityNode& ) = delete;
+	TTransmissivityNode& operator=(const TTransmissivityNode&) = delete;
 
 public:
 	static void Init();
 
 	TTransmissivityNode();
+	virtual TTransmissivityNode* Copy() const = 0;
 
 	virtual std::string GetIcon() const = 0;
 	virtual TNodeType GetType() const;
@@ -77,9 +75,5 @@ protected:
 private:
 	static TNodeType m_nodeType;
 };
-
-Q_DECLARE_METATYPE(TTransmissivityNode*)
-
-
 
 #endif /* TTRANSMISSIVITYNODE_H_ */

@@ -37,22 +37,23 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TF_H_
-#define TF_H_
+#ifndef NF_H_
+#define NF_H_
 
 #include <regex>
 #include <string>
 
-namespace tf
+#include "NodeLibrary.h"
+
+namespace nf
 {
 
 	/*!
 	 * Splits the \a input string with the regular expresion defined in \a delimeter.
 	 * Skips empty parts.
 	 */
-	std::vector< std::string > StringSplit( std::string input , std::string delimiter );
-
+	std::vector< std::string > NODE_API StringSplit( std::string input , std::string delimiter );
 
 };
 
-#endif /* TF_H_ */
+#endif /* NF_H_ */

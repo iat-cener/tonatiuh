@@ -46,13 +46,15 @@ class SunshapeBuie : public TSunshape
 {
 
 private:
-	SunshapeBuie(const SunshapeBuie& node) = delete;
-
+	//No copy constructor. Use Copy to create a copy of the node
+	SunshapeBuie(const SunshapeBuie&) = delete;
+	SunshapeBuie& operator=(const SunshapeBuie&) = delete;
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	SunshapeBuie( );
+	SunshapeBuie* Copy() const;
 
 	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
 	std::string GetIcon() const;
@@ -61,17 +63,20 @@ public:
 	TNodeType GetType() const;
 
 protected:
-	~SunshapeBuie();
+	virtual ~SunshapeBuie();
 
 	double PDFTheta( double theta ) const;
 	double Phi( double theta ) const;
 	double PhiCircumSolarRegion( double theta ) const;
 	double PhiSolarDisk( double theta ) const;
-	void UpdateState( double csrValue );
+	//void UpdateState( double csrValue );
+	bool UpdateState( );
 	double ZenithAngle( RandomDeviate& rand ) const;
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_irradianceLabel;
+	std::string m_csrLabel;
 
 	 const double m_thetaCS;
 	 const double m_thetaSD;

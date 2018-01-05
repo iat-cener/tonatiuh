@@ -54,13 +54,16 @@ class ShapeCylinder : public TShape
 {
 
 private:
-	ShapeCylinder(const ShapeCylinder& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeCylinder(const ShapeCylinder&) = delete;
+	ShapeCylinder& operator=(const ShapeCylinder&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeCylinder( );
+	ShapeCylinder* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -73,6 +76,9 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_radiusLabel;
+	std::string m_lengthLabel;
+	std::string m_phiMaxLabel;
 };
 
 #endif /*SHAPECYLINDER_H_*/

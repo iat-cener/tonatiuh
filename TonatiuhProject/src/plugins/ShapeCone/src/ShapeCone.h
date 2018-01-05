@@ -55,13 +55,15 @@ class ShapeCone : public TShape
 {
 
 private:
-	ShapeCone(const ShapeCone& node) = delete;
-
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeCone(const ShapeCone&) = delete;
+	ShapeCone& operator=(const ShapeCone&) = delete;
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeCone( );
+	ShapeCone* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -74,6 +76,10 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_baseRadiusLabel;
+	std::string m_topRadiusLabel;
+	std::string m_heightLabel;
+	std::string m_phiMaxLabel;
 };
 
 

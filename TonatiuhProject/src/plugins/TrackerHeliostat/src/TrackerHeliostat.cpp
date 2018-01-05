@@ -44,11 +44,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 #include "Vector3D.h"
 
-#include "tf.h"
-
-#include "TParameterEnumerator.h"
-#include "TParameterList.h"
-#include "TParameterPoint3D.h"
+#include "nf.h"
+#include "EnumeratedTypes.h"
 #include "TrackerHeliostat.h"
 
 TNodeType TrackerHeliostat::m_nodeType = TNodeType::CreateEmptyType();
@@ -83,10 +80,10 @@ TrackerHeliostat::TrackerHeliostat()
  m_yxRotationLabel( "YX" ),
  m_yzRotationLabel( "YZ" ),
  m_xzRotationLabel( "XZ" ),
- m_zxRotationLabel( "ZX" )
+ m_zxRotationLabel( "ZX" ),
+ m_nodeTransformationLabel( "node_transformation" )
 {
 	//Default object name is the name of the type
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	std::string transformationValue( "" );
@@ -104,30 +101,23 @@ TrackerHeliostat::TrackerHeliostat()
 
 
 	// Define input fields and their default values
-
-	QVariant aimingPointParameter;
-	aimingPointParameter.setValue( new TParameterPoint3D( Point3D( 0.0, 0.0, 0.0 ) ) );
-	m_parametersList->Append( m_aimingPointLabel, aimingPointParameter );
+	m_pParametersList->Append<Point3D>( m_aimingPointLabel, Point3D( 0.0, 0.0, 0.0 ), true );
 
 
-	TParameterEnumerator* typeOfAimingPointEnumerator = new TParameterEnumerator;
-	typeOfAimingPointEnumerator->AddValue( m_absoluteAimingLabel, true );
-	typeOfAimingPointEnumerator->AddValue( m_relativeAimingLabel, false );
-	QVariant typeOfAimingPointParameter;
-	typeOfAimingPointParameter.setValue( typeOfAimingPointEnumerator);
-	m_parametersList->Append( m_aimingPointTypeLabel, typeOfAimingPointParameter );
+	EnumeratedTypes typeOfAimingPointEnumerator;
+	typeOfAimingPointEnumerator.AddValue( m_absoluteAimingLabel, true );
+	typeOfAimingPointEnumerator.AddValue( m_relativeAimingLabel, false );
+	m_pParametersList->Append<EnumeratedTypes>( m_aimingPointTypeLabel, typeOfAimingPointEnumerator, true );
 
-	TParameterEnumerator* typeOfRotationEnumerator = new TParameterEnumerator;
-	typeOfRotationEnumerator->AddValue( m_yxRotationLabel, true );
-	typeOfRotationEnumerator->AddValue( m_yzRotationLabel, false );
-	typeOfRotationEnumerator->AddValue( m_xzRotationLabel, false );
-	typeOfRotationEnumerator->AddValue( m_zxRotationLabel, false );
-	QVariant typeOfRotationParameter;
-	typeOfRotationParameter.setValue( typeOfRotationEnumerator);
-	m_parametersList->Append( m_rotationTypeLabel, typeOfRotationParameter  );
+	EnumeratedTypes typeOfRotationEnumerator;
+	typeOfRotationEnumerator.AddValue( m_yxRotationLabel, true );
+	typeOfRotationEnumerator.AddValue( m_yzRotationLabel, false );
+	typeOfRotationEnumerator.AddValue( m_xzRotationLabel, false );
+	typeOfRotationEnumerator.AddValue( m_zxRotationLabel, false );
+	m_pParametersList->Append<EnumeratedTypes>( m_rotationTypeLabel, typeOfRotationEnumerator, true );
 
 	//Transformation
-	m_parametersList->Append( "node_transformation", transformationValue.c_str(), false );
+	m_pParametersList->Append<std::string>( m_nodeTransformationLabel, transformationValue, false );
 }
 
 /*!
@@ -135,17 +125,27 @@ TrackerHeliostat::TrackerHeliostat()
  */
 TrackerHeliostat::~TrackerHeliostat()
 {
-	TParameterPoint3D* aPoint = m_parametersList->GetValue( m_aimingPointLabel ).value<TParameterPoint3D*>();
-	delete aPoint;
-	aPoint = 0;
 
-	TParameterEnumerator* typeOfAimingPointEnumerator = m_parametersList->GetValue( m_aimingPointTypeLabel ).value<TParameterEnumerator*>();
-	delete typeOfAimingPointEnumerator;
-	typeOfAimingPointEnumerator = 0;
+}
 
-	TParameterEnumerator* typeOfRotationEnumerator = m_parametersList->GetValue( m_rotationTypeLabel ).value<TParameterEnumerator*>();
-	delete typeOfRotationEnumerator;
-	typeOfRotationEnumerator = 0;
+/*!
+ * Creates a copy of tracker node.
+ */
+TrackerHeliostat* TrackerHeliostat::Copy() const
+ {
+	TrackerHeliostat* trackerNode = new TrackerHeliostat;
+	 if( trackerNode == 0 )	return ( 0  );
+
+	 //Coping node parts.
+	 //NO parts
+
+	 //Coping the parameters.
+	 trackerNode->m_pParametersList->SetValue( m_aimingPointLabel, GetParameterValue<Point3D>( m_aimingPointLabel ) );
+	 trackerNode->m_pParametersList->SetValue( m_aimingPointTypeLabel, GetParameterValue<EnumeratedTypes>( m_aimingPointTypeLabel ) );
+	 trackerNode->m_pParametersList->SetValue( m_rotationTypeLabel, GetParameterValue<EnumeratedTypes>( m_rotationTypeLabel ) );
+	 trackerNode->m_pParametersList->SetValue( m_nodeTransformationLabel, GetParameterValue<std::string>( m_nodeTransformationLabel ) );
+
+	 return ( trackerNode );
 }
 
 /*!
@@ -162,8 +162,8 @@ std::string TrackerHeliostat::GetIcon() const
  */
 Transform TrackerHeliostat::GetTrasformation( ) const
 {
-	std::string transformationValue = m_parametersList->GetValue( "node_transformation" ).toString().toStdString();
-	std::vector< std::string > transformationValues = tf::StringSplit( transformationValue,
+	std::string transformationValue = GetParameterValue<std::string>( m_nodeTransformationLabel );
+	std::vector< std::string > transformationValues = nf::StringSplit( transformationValue,
 			"[\\s+,\\[\\]]" );
 
 	double nodeTransformationMatrix[4][4];
@@ -193,11 +193,11 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	if( i.length() == 0.0f ) return;
 	i = Normalize(i);
 
-	Point3D focus = m_parametersList->GetValue( m_aimingPointLabel ).value<TParameterPoint3D*>()->GetPoint3D();
+	Point3D focus = GetParameterValue<Point3D>( m_aimingPointLabel );
 
-	TParameterEnumerator* typeOfAimingPoint = m_parametersList->GetValue( m_aimingPointTypeLabel ).value<TParameterEnumerator*>();
+	EnumeratedTypes typeOfAimingPoint = GetParameterValue<EnumeratedTypes>( m_aimingPointTypeLabel );
 	Vector3D r;
-	if (typeOfAimingPoint->GetSelectedName( ) == m_absoluteAimingLabel ) //Absolute
+	if (typeOfAimingPoint.GetSelectedName( ) == m_absoluteAimingLabel ) //Absolute
 	{
 		r = Vector3D( parentWT0( focus ) );
 	}
@@ -212,13 +212,13 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	if( n.length() == 0.0f ) return;
 	n = Normalize( n );
 
-	TParameterEnumerator* typeOfRotation = m_parametersList->GetValue( m_rotationTypeLabel ).value<TParameterEnumerator*>();
+	EnumeratedTypes typeOfRotation =  GetParameterValue<EnumeratedTypes>( m_rotationTypeLabel ) ;
 
 	Vector3D Axe1;
-	if ((typeOfRotation->GetSelectedName( ) == m_yxRotationLabel ) || (typeOfRotation->GetSelectedName( ) == m_yzRotationLabel ))// YX or YZ
+	if ((typeOfRotation.GetSelectedName( ) == m_yxRotationLabel ) || (typeOfRotation.GetSelectedName( ) == m_yzRotationLabel ))// YX or YZ
 		Axe1 = Vector3D( 0.0f, 1.0f, 0.0f );
 
-	else if (typeOfRotation->GetSelectedName( ) == m_xzRotationLabel ) // XZ
+	else if (typeOfRotation.GetSelectedName( ) == m_xzRotationLabel ) // XZ
 		Axe1 = Vector3D( 1.0f, 0.0f, 0.0f );
 
 	else // ZX
@@ -234,7 +234,7 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 	p = Normalize(p);
 
 	Matrix4x4 transformMatrix;
-	if ((typeOfRotation->GetSelectedName( )  == m_yxRotationLabel ) || (typeOfRotation->GetSelectedName( )  == m_zxRotationLabel ))// YX ou  ZX
+	if ((typeOfRotation.GetSelectedName( )  == m_yxRotationLabel ) || (typeOfRotation.GetSelectedName( )  == m_zxRotationLabel ))// YX ou  ZX
 	{
 		 transformMatrix = Matrix4x4( t[0], n[0], p[0], 0.0,
 					t[1], n[1], p[1], 0.0,
@@ -272,5 +272,5 @@ void TrackerHeliostat::UpdateTrackerTransform( Vector3D sunVector, Transform par
 		transformationValue +=   std::string( " ]\n" );
 	}
 
-	m_parametersList->SetValue( "node_transformation", transformationValue.c_str() );
+	m_pParametersList->SetValue( m_nodeTransformationLabel, transformationValue );
 }

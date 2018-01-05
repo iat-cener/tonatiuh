@@ -48,14 +48,16 @@ class SunshapePillbox : public TSunshape
 {
 
 private:
-	SunshapePillbox(const SunshapePillbox& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	SunshapePillbox(const SunshapePillbox&) = delete;
+	SunshapePillbox& operator=(const SunshapePillbox&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	SunshapePillbox( );
-	~SunshapePillbox();
+	SunshapePillbox* Copy() const;
 
 	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
 	std::string GetIcon() const;
@@ -63,10 +65,15 @@ public:
     double GetThetaMax() const;
 	TNodeType GetType() const;
 
+protected:
+	virtual ~SunshapePillbox();
+
 private:
 	static TNodeType m_nodeType;
+
+	std::string m_irradianceLabel;
+	std::string m_thetaMaxLabel;
 };
 
-//Q_DECLARE_METATYPE(SunshapePillbox*)
 
 #endif /* SUNSHAPEPILLBOX_H_ */

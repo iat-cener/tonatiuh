@@ -55,7 +55,6 @@ void TTransmissivityNode::Init()
 TTransmissivityNode::TTransmissivityNode()
 :TNode()
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 }
 

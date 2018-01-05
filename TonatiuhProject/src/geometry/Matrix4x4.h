@@ -41,10 +41,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define MATRIX4X4_H_
 
 #include <iostream>
+
+#include "GeometryLibrary.h"
 #include "RefCount.h"
 #include "Ptr.h"
 
-class Matrix4x4 : public RefCount
+class GEOMETRY_API Matrix4x4 : public RefCount
 {
 public:
 	Matrix4x4( );

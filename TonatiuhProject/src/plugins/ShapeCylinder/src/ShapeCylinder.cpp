@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "NormalVector.h"
 
 #include "ShapeCylinder.h"
-#include "TParameterList.h"
 
 
 TNodeType ShapeCylinder::m_nodeType = TNodeType::CreateEmptyType();
@@ -66,15 +65,17 @@ void ShapeCylinder::Init()
  * ShapeFlatDisk : public TShape
  */
 ShapeCylinder::ShapeCylinder()
-:TShape()
+:TShape(),
+ m_radiusLabel( "radius" ),
+ m_lengthLabel( "length" ),
+ m_phiMaxLabel( "phiMax" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Parameters
-	m_parametersList->Append( "radius", 0.5 );
-	m_parametersList->Append( "length", 1.0 );
-	m_parametersList->Append( "phiMax", gc::TwoPi );
+	m_pParametersList->Append<double>( m_radiusLabel, 0.5, true );
+	m_pParametersList->Append<double>( m_lengthLabel,  1.0, true );
+	m_pParametersList->Append<double>( m_phiMaxLabel, gc::TwoPi, true );
 }
 
 /*!
@@ -83,6 +84,25 @@ ShapeCylinder::ShapeCylinder()
 ShapeCylinder::~ShapeCylinder()
 {
 
+}
+
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeCylinder* ShapeCylinder::Copy() const
+{
+	ShapeCylinder* shapeNode = new ShapeCylinder;
+	if( shapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_radiusLabel, GetParameterValue<double>( m_radiusLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_lengthLabel, GetParameterValue<double>( m_lengthLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_phiMaxLabel, GetParameterValue<double>( m_phiMaxLabel ) );
+
+	return ( shapeNode );
 }
 
 /*!
@@ -100,9 +120,9 @@ std::string ShapeCylinder::GetIcon() const
  */
 BBox ShapeCylinder::GetBondingBox() const
 {
-	double radius = m_parametersList->GetValue( "radius" ).toDouble();
-	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
-	double length = m_parametersList->GetValue( "length" ).toDouble();
+	double radius = GetParameterValue<double>( m_radiusLabel );
+	double length = GetParameterValue<double>( m_lengthLabel );
+	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -135,10 +155,9 @@ TNodeType ShapeCylinder::GetType() const
  */
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-
-	double radius = m_parametersList->GetValue( "radius" ).toDouble();
-	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
-	double length = m_parametersList->GetValue( "length" ).toDouble();
+	double radius = GetParameterValue<double>( m_radiusLabel );
+	double length = GetParameterValue<double>( m_lengthLabel );
+	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
 
 	// Compute quadratic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );

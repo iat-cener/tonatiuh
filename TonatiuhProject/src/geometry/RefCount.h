@@ -40,7 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef REFCOUNT_H_
 #define REFCOUNT_H_
 
-class RefCount 
+#include "GeometryLibrary.h"
+
+class GEOMETRY_API RefCount
 {
 public:
     RefCount();

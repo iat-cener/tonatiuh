@@ -54,13 +54,16 @@ class ShapeFlatRectangle : public TShape
 {
 
 private:
-	ShapeFlatRectangle(const ShapeFlatRectangle& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeFlatRectangle(const ShapeFlatRectangle&) = delete;
+	ShapeFlatRectangle& operator=(const ShapeFlatRectangle&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeFlatRectangle( );
+	ShapeFlatRectangle* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -73,6 +76,8 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_widthLabel;
+	std::string m_heightLabel;
 };
 
 #endif /*SHAPEFLATRECTANGLE_H_*/

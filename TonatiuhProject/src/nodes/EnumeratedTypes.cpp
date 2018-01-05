@@ -37,84 +37,88 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "tf.h"
+#include "EnumeratedTypes.h"
 
-#include "TParameterPoint3D.h"
+
+#include <algorithm>
+
 
 /*!
- * Creates an empty point 3D type object
+ * Creates an empty enumerator type
  */
-TParameterPoint3D::TParameterPoint3D()
-:TParameter(),
- m_pointCoordinates( Point3D() )
+EnumeratedTypes::EnumeratedTypes()
+:m_selectedIndex( -1 )
 {
 
 }
 
 /*!
- * Creates a point3D object with the point \a point.
+ * Destroys the enumerator object.
  */
-TParameterPoint3D::TParameterPoint3D( Point3D point )
-:TParameter(),
- m_pointCoordinates( point )
+EnumeratedTypes::~EnumeratedTypes()
 {
+	m_nameList.clear();
+	m_selectedIndex = -1;
+}
+
+/*
+EnumeratedTypes& EnumeratedTypes::operator=(const EnumeratedTypes& other )
+{
+    if (this != &other) // protect against invalid self-assignment
+    {
+    	/*
+    	 * // 1: allocate new memory and copy the elements
+         int * new_array = new int[other.count];
+         std::copy(other.array, other.array + other.count, new_array);
+
+         // 2: deallocate old memory
+         delete [] array;
+
+         // 3: assign the new memory to the object
+         array = new_array;
+         count = other.count;
+
+     }
+     // by convention, always return *this
+     return *this;
+}
+*/
+
+/*!
+ * Adds a new element to the enumerator list with the given \a name.
+ * If \a isDefault is true, the current element with be the selected element by defualt.
+ */
+void EnumeratedTypes::AddValue( std::string name, bool isDefault )
+{
+
+	if( std::find( m_nameList.begin(), m_nameList.end(), name  ) == m_nameList.end() )
+		m_nameList.push_back( name );
+
+	if( isDefault )
+		m_selectedIndex = distance( m_nameList.begin(), std::find( m_nameList.begin(), m_nameList.end(), name  ) );
 
 }
 
 /*!
- * Destroys the object.
+ * Gives the name of the selected element.
  */
-TParameterPoint3D::~TParameterPoint3D()
+std::string EnumeratedTypes::GetSelectedName() const
 {
-
-}
-
-/*!
- * Returns the point stored in the parameter.
- */
-Point3D TParameterPoint3D::GetPoint3D( ) const
-{
-	return ( m_pointCoordinates );
+	return ( m_nameList[m_selectedIndex] );
 }
 
 /*!
  * Sets the selected element to the element with the given name in \a value
  * Returns false if the name of the value is not in the current enumerator list.
  */
-bool TParameterPoint3D::SetValue( QVariant value )
+bool EnumeratedTypes::SetValue( const std::string& value )
 {
-
-	/*
-	std::string valueString = value.toString().toStdString();
-	std::regex rgx( std::string(  "\\s+" ) ) ;
-
-	std::sregex_token_iterator iter( valueString.begin(), valueString.end(), rgx, -1);
-	std::sregex_token_iterator end;
-
-
-	std::vector< double > pointCoordinatesValues;
-	while( iter != end)
-	{
-		pointCoordinatesValues.push_back( stod( *iter ) );
-		++iter;
-	}
-	*/
-
-	std::vector< std::string > pointCoordinatesValues = tf::StringSplit( value.toString().toStdString(), "\\s+" );
-	if( pointCoordinatesValues.size () != 3 )
+	std::vector<std::string>::iterator it = std::find( m_nameList.begin(), m_nameList.end(), value  );
+	if( it == m_nameList.end() )
 		return ( false );
 
-	m_pointCoordinates = Point3D( stod( pointCoordinatesValues[0] ), stod( pointCoordinatesValues[1] ), stod( pointCoordinatesValues[2] ) );
+
+	m_selectedIndex = distance( m_nameList.begin(),it );
 	return ( true );
 }
 
-/*!
- * Returns the name of the selected value.
- */
-std::string TParameterPoint3D::ToString() const
-{
-
-	return (  std::to_string( m_pointCoordinates.x ) + std::string( ", " ) +
-			std::to_string( m_pointCoordinates.y ) + ", " +
-			std::to_string( m_pointCoordinates.z )  );
-}

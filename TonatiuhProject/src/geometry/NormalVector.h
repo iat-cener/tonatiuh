@@ -41,9 +41,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define NORMALVECTOR_H
 
 #include <iostream>
+
+#include "GeometryLibrary.h"
+
 struct Vector3D;
 
-struct NormalVector
+struct GEOMETRY_API NormalVector
 {
     NormalVector( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
     explicit NormalVector( const Vector3D& vector );
@@ -72,12 +75,12 @@ struct NormalVector
     double z;
 };
 
-NormalVector operator+( NormalVector lhs, const NormalVector& rhs );
-NormalVector operator-( NormalVector lhs, const NormalVector& rhs );
-NormalVector operator*( double scalar, const NormalVector& nV );
-std::ostream& operator<<( std::ostream& os, const NormalVector& nV );
-double DotProduct( const NormalVector& nA, const NormalVector& nB );
-double AbsDotProduct( const NormalVector& nA, const NormalVector& nB );
-NormalVector Normalize( const NormalVector& nV );
+NormalVector GEOMETRY_API operator+( NormalVector lhs, const NormalVector& rhs );
+NormalVector GEOMETRY_API operator-( NormalVector lhs, const NormalVector& rhs );
+NormalVector GEOMETRY_API operator*( double scalar, const NormalVector& nV );
+std::ostream& GEOMETRY_API operator<<( std::ostream& os, const NormalVector& nV );
+double GEOMETRY_API DotProduct( const NormalVector& nA, const NormalVector& nB );
+double GEOMETRY_API AbsDotProduct( const NormalVector& nA, const NormalVector& nB );
+NormalVector GEOMETRY_API Normalize( const NormalVector& nV );
 
 #endif

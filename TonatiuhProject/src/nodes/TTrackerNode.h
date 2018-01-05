@@ -40,8 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TTRACKERNODE_H_
 #define TTRACKERNODE_H_
 
+#include "NodeLibrary.h"
 #include "TGroupNode.h"
-
 
 //!  TTrackerNode is the base class for tracker nodes.
 /*!
@@ -50,19 +50,20 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
  */
 
-class TTrackerNode : public TGroupNode
+class NODE_API TTrackerNode : public TGroupNode
 {
 
 private:
-	TTrackerNode(const TTrackerNode& node) = delete;
-/*
-	Q_OBJECT
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TTrackerNode(const TTrackerNode&) = delete;
+	TTrackerNode& operator=(const TTrackerNode&) = delete;
+
 public:
-	static void* CreateInstance();
 	static void Init();
 
 	TTrackerNode();
+
+	virtual TTrackerNode* Copy() const = 0;
 
 	virtual std::string GetIcon() const = 0;
 	virtual Transform GetTrasformation() const = 0;

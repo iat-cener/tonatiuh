@@ -42,11 +42,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <string>
 #include <vector>
 
+#include "NodeLibrary.h"
+
 struct TTypeData;
 
 
 /** Base class of all types */
-class  TNodeType
+class  NODE_API TNodeType
 {
 
 public:

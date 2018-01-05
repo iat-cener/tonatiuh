@@ -39,6 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TCUBOID_H_
 #define TCUBOID_H_
 
+#include <memory>
+
+#include "NodeLibrary.h"
 
 #include "TShape.h"
 
@@ -52,19 +55,20 @@ class DifferentialGeometry;
 * 	- depth: in the z axis
 */
 
-class TCuboid : public TShape
+class NODE_API TCuboid : public TShape
 {
-	//Q_OBJECT
 
 private:
-	TCuboid(const TCuboid& node) = delete;
-	//Q_DISABLE_COPY(TCuboid)
+	//No copy constructor. Use Copy to create a copy of the node
+	TCuboid(const TCuboid&) = delete;
+	TCuboid& operator=(const TCuboid&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
-	TCuboid();
+	//std::shared_ptr<TCuboid> CopyCuboid() const;
+	TCuboid* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -73,15 +77,16 @@ public:
 	void Draw() const;
 
 protected:
-	virtual ~TCuboid();
+	TCuboid();
+	~TCuboid() noexcept;
+	//std::shared_ptr<TNode> CreateCopy() const final override;
 
-protected:
-	double m_depth;
-	double m_height;
-	double m_width;
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_depthLabel;
+	std::string m_heightLabel;
+	std::string m_widthLabel;
 };
 
 #endif /*TCUBOID_H_*/

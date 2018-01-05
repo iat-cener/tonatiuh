@@ -37,44 +37,38 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TPARAMETERENUMERATOR_H_
-#define TPARAMETERENUMERATOR_H_
+#ifndef ENUMERATEDTYPES_H_
+#define ENUMERATEDTYPES_H_
 
 #include <string>
 #include <vector>
 
-#include <QMetaType>
+#include "NodeLibrary.h"
 
-#include "TParameter.h"
-
-//!  TParameterEnumerator class is the parameter class for all Tonatiuh enumerators.
+//!  EnumeratedTypes class is the class for all  enumerators.
 /*!
- * TParameterEnumerator is the class to store enumerator types in Tonatiuh.
+ * EnumeratedTypes is the class to store enumerator types in Tonatiuh.
 */
 
-class TParameterEnumerator: public TParameter
+class NODE_API EnumeratedTypes
 {
-	Q_OBJECT
 
-private:
-	TParameterEnumerator(const TParameterEnumerator& node) = delete;
-	/*
-	Q_OBJECT
-	Q_DISABLE_COPY(TParameterEnumerator)
-	*/
+//private:
+	//No copy constructor. Use Copy to create a copy of the node
+	//EnumeratedTypes(const EnumeratedTypes&) = delete;
+	//EnumeratedTypes& operator=(const EnumeratedTypes&) = delete;
 
 public:
-	TParameterEnumerator();
-	~TParameterEnumerator();
+	EnumeratedTypes();
+	~EnumeratedTypes();
 
-	void AddValue( std::string name, bool iDefault = true );
 
-	//int GetSelectedIndex( ) const;
+	//EnumeratedTypes& operator=(const EnumeratedTypes& enumType );
+
+	void AddValue( std::string name, bool isDefault = false );
+
 	std::string GetSelectedName() const;
-
-
-	bool SetValue( QVariant value );
-	std::string ToString() const;
+	bool SetValue( const std::string& value );
 
 private:
 
@@ -82,6 +76,5 @@ private:
 	std::vector<std::string> m_nameList;
 };
 
-Q_DECLARE_METATYPE(TParameterEnumerator*)
 
-#endif /* TPARAMETERENUMERATOR_H_ */
+#endif /* ENUMERATEDTYPES_H_ */

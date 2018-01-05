@@ -41,8 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "gf.h"
 
 #include "ShapeTroughParabola.h"
-#include "TParameterList.h"
-
 
 TNodeType ShapeTroughParabola::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -68,17 +66,21 @@ void ShapeTroughParabola::Init()
  */
 
 ShapeTroughParabola::ShapeTroughParabola()
-:TShape()
+:TShape(),
+ m_focusLengthLabel( "focusLength" ),
+ m_xMinLabel("xMin"),
+ m_xMaxLabel("xMax"),
+ m_lengthXMinLabel("lengthXMin"),
+ m_lengthXMaxLabel("lengthXMax")
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( "focusLength", 0.125);
-	m_parametersList->Append( "xMin", -0.5 );
-	m_parametersList->Append( "xMax", 0.5 );
-	m_parametersList->Append( "lengthXMin", 1.0 );
-	m_parametersList->Append( "lengthXMax", 1.0 );
+	m_pParametersList->Append<double>( m_focusLengthLabel, 0.125, true );
+	m_pParametersList->Append<double>( m_xMinLabel, -0.5, true );
+	m_pParametersList->Append<double>( m_xMaxLabel,  0.5 , true );
+	m_pParametersList->Append<double>( m_lengthXMinLabel, 1.0, true );
+	m_pParametersList->Append<double>( m_lengthXMaxLabel, 1.0, true );
 }
 
 /*!
@@ -87,6 +89,27 @@ ShapeTroughParabola::ShapeTroughParabola()
 ShapeTroughParabola::~ShapeTroughParabola()
 {
 
+}
+
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeTroughParabola* ShapeTroughParabola::Copy() const
+{
+	ShapeTroughParabola* shapeNode = new ShapeTroughParabola;
+	if( shapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_focusLengthLabel, GetParameterValue<double>( m_focusLengthLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_xMinLabel, GetParameterValue<double>( m_xMinLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_xMaxLabel, GetParameterValue<double>( m_xMaxLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_lengthXMinLabel, GetParameterValue<double>( m_lengthXMinLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_lengthXMaxLabel, GetParameterValue<double>( m_lengthXMaxLabel ) );
+
+	return ( shapeNode );
 }
 
 
@@ -103,12 +126,11 @@ std::string ShapeTroughParabola::GetIcon() const
  */
 BBox ShapeTroughParabola::GetBondingBox() const
 {
-
-	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
-	double xmin = m_parametersList->GetValue( "xMin" ).toDouble();
-	double xmax = m_parametersList->GetValue( "xMax" ).toDouble();
-	double lengthXMin = m_parametersList->GetValue( "lengthXMin" ).toDouble();
-	double lengthXMax = m_parametersList->GetValue( "lengthXMax" ).toDouble();
+	double focusLength = GetParameterValue<double>( m_focusLengthLabel );
+	double xmin = GetParameterValue<double>( m_xMinLabel );
+	double xmax = GetParameterValue<double>( m_xMaxLabel );
+	double lengthXMin = GetParameterValue<double>( m_lengthXMinLabel );
+	double lengthXMax = GetParameterValue<double>( m_lengthXMaxLabel );
 
 	double y1 = ( xmin * xmin ) / ( 4 * focusLength );
 	double y2 = ( xmax * xmax ) / ( 4 * focusLength );
@@ -140,13 +162,11 @@ TNodeType ShapeTroughParabola::GetType() const
  */
 bool ShapeTroughParabola::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-
-	double focusLength = m_parametersList->GetValue( "focusLength" ).toDouble();
-	double xmin = m_parametersList->GetValue( "xMin" ).toDouble();
-	double xmax = m_parametersList->GetValue( "xMax" ).toDouble();
-	double lengthXMin = m_parametersList->GetValue( "lengthXMin" ).toDouble();
-	double lengthXMax = m_parametersList->GetValue( "lengthXMax" ).toDouble();
-
+	double focusLength = GetParameterValue<double>( m_focusLengthLabel );
+	double xmin = GetParameterValue<double>( m_xMinLabel );
+	double xmax = GetParameterValue<double>( m_xMaxLabel );
+	double lengthXMin = GetParameterValue<double>( m_lengthXMinLabel );
+	double lengthXMax = GetParameterValue<double>( m_lengthXMaxLabel );
 
 	// Compute quadratic parabolic cylinder coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );

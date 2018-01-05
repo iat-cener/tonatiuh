@@ -37,6 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include "TCuboid.h"
+#include "TParameterList.h"
 
 
 TNodeType TCuboid::m_nodeType = TNodeType::CreateEmptyType();
@@ -63,12 +64,41 @@ void TCuboid::Init()
  */
 TCuboid::TCuboid()
 :TShape(),
- m_depth( 1 ),
- m_height( 1 ),
- m_width( 1 )
+ m_depthLabel( "depth" ),
+ m_heightLabel( "height" ),
+ m_widthLabel( "width" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
+
+
+	m_pParametersList->Append<double>( m_depthLabel,  1.0, true );
+	m_pParametersList->Append<double>( m_heightLabel, 1.0, true );
+	m_pParametersList->Append<double>( m_widthLabel, 1.0, true );
+}
+
+/*!
+ * Creates a copy of cuboid node.
+ */
+/*
+std::shared_ptr<TCuboid> TCuboid::CopyCuboid() const
+{
+	std::shared_ptr<TCuboid> cuboid = std::make_shared<TCuboid>();
+
+	cuboid->m_pParametersList->SetValue( m_depthLabel, GetParameterValue<double>( m_depthLabel ) );
+	cuboid->m_pParametersList->SetValue( m_heightLabel, GetParameterValue<double>( m_heightLabel ) );
+	cuboid->m_pParametersList->SetValue( m_widthLabel, GetParameterValue<double>( m_widthLabel ) );
+	return ( cuboid );
+
+}
+*/
+TCuboid* TCuboid::Copy() const
+{
+	TCuboid* cuboid = new TCuboid{};
+
+	cuboid->m_pParametersList->SetValue( m_depthLabel, GetParameterValue<double>( m_depthLabel ) );
+	cuboid->m_pParametersList->SetValue( m_heightLabel, GetParameterValue<double>( m_heightLabel ) );
+	cuboid->m_pParametersList->SetValue( m_widthLabel, GetParameterValue<double>( m_widthLabel ) );
+	return ( cuboid );
 }
 
 
@@ -99,9 +129,9 @@ BBox TCuboid::GetBondingBox() const
 	// Compute the half-width, half-height, and half-depth of
      // the pyramid. We'll use this info to set the min and max
      // points.
-    double halfWidth = 0.5 * m_width;
-    double halfHeight = 0.5 * m_height;
-    double halfDepth = 0.5 * m_depth;
+    double halfWidth = 0.5 * GetParameterValue<double>( m_widthLabel );//m_width;
+    double halfHeight = 0.5 * GetParameterValue<double>( m_heightLabel );//m_height;
+    double halfDepth = 0.5 * GetParameterValue<double>( m_depthLabel );// m_depth;
 
     bBox.pMin = Point3D( -halfWidth, -halfHeight, -halfDepth );
     bBox.pMax = Point3D( halfWidth, halfHeight, halfDepth );
@@ -127,3 +157,5 @@ void TCuboid::Draw() const
 {
 
 }
+
+

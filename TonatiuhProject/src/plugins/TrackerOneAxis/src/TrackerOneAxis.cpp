@@ -43,10 +43,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Vector3D.h"
 #include "Transform.h"
 
-#include "tf.h"
-
-#include "TParameterEnumerator.h"
-#include "TParameterList.h"
+#include "nf.h"
 #include "TrackerOneAxis.h"
 
 TNodeType TrackerOneAxis::m_nodeType = TNodeType::CreateEmptyType();
@@ -76,7 +73,8 @@ TrackerOneAxis::TrackerOneAxis()
  m_axisLabel( "axis" ),
  m_xAxisLabel( "X" ),
  m_yAxisLabel( "Y" ),
- m_zAxisLabel( "Z" )
+ m_zAxisLabel( "Z" ),
+ m_nodeTransformationLabel( "node_transformation" )
 {
 	//Default object name is the name of the type
 	//setObjectName(GetType().GetName().c_str() );
@@ -96,16 +94,14 @@ TrackerOneAxis::TrackerOneAxis()
 	}
 
 	// Define input fields and their default values
-	TParameterEnumerator* axisEnumerator = new TParameterEnumerator;
-	axisEnumerator->AddValue( m_xAxisLabel, true );
-	axisEnumerator->AddValue( m_yAxisLabel, false );
-	axisEnumerator->AddValue( m_zAxisLabel, false );
-	QVariant axisParameter;
-	axisParameter.setValue( axisEnumerator);
-	m_parametersList->Append( m_axisLabel, axisParameter );
+	EnumeratedTypes axisEnumerator;
+	axisEnumerator.AddValue( m_xAxisLabel, true );
+	axisEnumerator.AddValue( m_yAxisLabel, false );
+	axisEnumerator.AddValue( m_zAxisLabel, false );
+	m_pParametersList->Append<EnumeratedTypes>( m_axisLabel, axisEnumerator, true );
 
 	//Transformation
-	m_parametersList->Append( "node_transformation", transformationValue.c_str(), false );
+	m_pParametersList->Append<std::string>( m_nodeTransformationLabel, transformationValue, false );
 
 }
 
@@ -114,9 +110,25 @@ TrackerOneAxis::TrackerOneAxis()
  */
 TrackerOneAxis::~TrackerOneAxis()
 {
-	TParameterEnumerator* axisEnumerator = m_parametersList->GetValue( m_axisLabel ).value<TParameterEnumerator*>();
-	delete axisEnumerator;
-	axisEnumerator = 0;
+
+}
+
+/*!
+ * Creates a copy of tracker node.
+ */
+TrackerOneAxis* TrackerOneAxis::Copy() const
+ {
+	TrackerOneAxis* trackerNode = new TrackerOneAxis;
+	 if( trackerNode == 0 )	return ( 0  );
+
+	 //Coping node parts.
+	 //NO parts
+
+	 //Coping the parameters.
+	 trackerNode->m_pParametersList->SetValue( m_axisLabel, GetParameterValue<EnumeratedTypes>( m_axisLabel ) );
+	 trackerNode->m_pParametersList->SetValue( m_nodeTransformationLabel, GetParameterValue<std::string>( m_nodeTransformationLabel ) );
+
+	 return ( trackerNode );
 }
 
 /*!
@@ -133,8 +145,8 @@ std::string TrackerOneAxis::GetIcon() const
  */
 Transform TrackerOneAxis::GetTrasformation( ) const
 {
-	std::string transformationValue = m_parametersList->GetValue( "node_transformation" ).toString().toStdString();
-	std::vector< std::string > transformationValues = tf::StringSplit( transformationValue,
+	std::string transformationValue = GetParameterValue<std::string>( m_nodeTransformationLabel );
+	std::vector< std::string > transformationValues = nf::StringSplit( transformationValue,
 			"[\\s+,\\[\\]]" );
 
 	double nodeTransformationMatrix[4][4];
@@ -158,8 +170,8 @@ TNodeType TrackerOneAxis::GetType() const
  */
 void TrackerOneAxis::UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 )
 {
-	TParameterEnumerator* axisEnumerator = m_parametersList->GetValue( m_axisLabel ).value<TParameterEnumerator*>();
-	if(axisEnumerator->GetSelectedName() == m_xAxisLabel )
+	EnumeratedTypes axisEnumerator = GetParameterValue<EnumeratedTypes>( m_axisLabel );
+	if(axisEnumerator.GetSelectedName() == m_xAxisLabel )
 	{
 		Vector3D s = Normalize( parentWT0( sunVector ) );
 		Vector3D p( 1.0f, 0.0f, 0.0f);
@@ -203,13 +215,13 @@ void TrackerOneAxis::UpdateTrackerTransform( Vector3D sunVector, Transform paren
 			transformationValue += std::string( " ]\n" );
 		}
 
-		m_parametersList->SetValue( "node_transformation" , transformationValue.c_str() );
+		m_pParametersList->SetValue( m_nodeTransformationLabel , transformationValue );
 	}
-	else if(axisEnumerator->GetSelectedName() == m_yAxisLabel )
+	else if(axisEnumerator.GetSelectedName() == m_yAxisLabel )
 	{
 		//NOT IMPLEMENTED YET
 	}
-	else if(axisEnumerator->GetSelectedName() == m_zAxisLabel )
+	else if(axisEnumerator.GetSelectedName() == m_zAxisLabel )
 	{
 		//NOT IMPLEMENTED YET
 	}

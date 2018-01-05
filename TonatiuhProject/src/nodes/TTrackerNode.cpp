@@ -61,12 +61,11 @@ void TTrackerNode::Init()
 TTrackerNode::TTrackerNode()
 :TGroupNode()
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
-	m_parametersList->RemoveParameter(  m_rotationName );
-	m_parametersList->RemoveParameter(  m_scaleFactorName );
-	m_parametersList->RemoveParameter(  m_translationName );
+	m_pParametersList->RemoveParameter(  m_rotationName );
+	m_pParametersList->RemoveParameter(  m_scaleFactorName );
+	m_pParametersList->RemoveParameter(  m_translationName );
 }
 
 /*!

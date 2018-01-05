@@ -43,7 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "gc.h"
 #include "Vector3D.h"
-#include "Point3D.h"
 
 
 

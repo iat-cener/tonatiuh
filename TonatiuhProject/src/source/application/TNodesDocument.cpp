@@ -36,13 +36,15 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+
+#include <any>
 #include <iostream>
 
 #include <QDataStream>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QFile>
-#include <QVariant>
+#include <QMap>
 
 #include "TContainerNode.h"
 #include "TNode.h"
@@ -164,7 +166,6 @@ void TNodesDocument::SetRootNode( TNode* node )
  */
 bool TNodesDocument::Write( std::string filename ) const
 {
-	std::cout<<"START TNodesDocument::Write"<<std::endl;
 	QFile tonatiuhFile( filename.c_str() );
 	if( !tonatiuhFile.open( QIODevice::WriteOnly ) )	return (false);
 
@@ -203,7 +204,6 @@ bool TNodesDocument::Write( std::string filename ) const
 		return (false);
 
 
-	std::cout<<"END TNodesDocument::Write"<<std::endl;
 	return (true);
 
 }
@@ -230,13 +230,17 @@ TNode* TNodesDocument::CreateNodeObject( QDomElement node, std::string* errMsg )
 	{
 		std::string attributeName = nodeAttributes.item( att ).nodeName().toStdString();
 		if( ( attributeName != "type" ) && ( attributeName != "name" )  && ( attributeName != "id" ))
-			if( !objectNode->SetParameterValue( attributeName, node.attribute( attributeName.c_str() ) ) )
+		{
+			std::string parameterValue = node.attribute( attributeName.c_str() ).toStdString();
+			if( !objectNode->SetParameterFormString( attributeName, parameterValue ) )
 			{
 				*errMsg= std::string("TNodesDocument::CreateNodeObject. Error defining the attribute '" ) + node.tagName().toStdString() +
-						std::string( "' of node '" ) + attributeName + std::string( "'." );
+						std::string( "' of node '" ) + attributeName +
+						std::string( "' and value '") + parameterValue + std::string("'." );
 
 			    return ( 0 );
 			}
+		}
 	}
 
     return ( objectNode );
@@ -252,7 +256,6 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 		{
 			TNode* nodeObject = readNodes->value( nodeID );
 			if( !nodeObject || nodeObject == 0 )	return ( false );
-
 			return ( true );
 		}
 		else
@@ -429,18 +432,9 @@ bool TNodesDocument::WriteNode( QDomElement parent, const TNode* node, QList< in
 	std::vector< std::string > parametersList = node->GetVisibleParametersName();
 	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
-
-		std::string  parameterName = parametersList[p];
-		QVariant parameterValue = node->GetParameterValue( parameterName );
-
-		int typeID = parameterValue.type();
-		if( QMetaType::User == typeID )
-		{
-			TParameter* parameter = parameterValue.value<TParameter*>();
-			el.setAttribute( parameterName.c_str(), parameter->ToString().c_str()  );
-		}
-		else
-			el.setAttribute( parameterName.c_str(),  parameterValue.toString() );
+		std::string parameterName = parametersList[p];
+		std::string parameterValue = node->GetParameterToString( parameterName );
+		el.setAttribute( parameterName.c_str(), parameterValue.c_str() );
 	}
 	writtenNodes->append( nodeID );
 
@@ -467,7 +461,6 @@ bool TNodesDocument::WriteNode( QDomElement parent, const TNode* node, QList< in
 bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNode* containerNode, QList< int >* writtenNodes ) const
 {
 	if( !containerNode )	return (false);
-
 	int nodeID = containerNode->GetID();
 
 	QDomElement el = parent.ownerDocument().createElement(containerNode->GetName().c_str() );
@@ -479,18 +472,12 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 
 	writtenNodes->append( nodeID );
 	std::vector<std::string> parametersList = containerNode->GetVisibleParametersName();
+
 	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
 		std::string parameterName = parametersList[p];
-		QVariant parameterValue = containerNode->GetParameterValue( parameterName );
-		int typeID = parameterValue.type();
-		if( QMetaType::User == typeID )
-		{
-			TParameter* parameter = parameterValue.value<TParameter*>();
-			el.setAttribute( parameterName.c_str(), parameter->ToString().c_str()  );
-		}
-		else
-			el.setAttribute( parameterName.c_str(),  parameterValue.toString().toStdString().c_str() );
+		std::string parameterValue = containerNode->GetParameterToString( parameterName );
+		el.setAttribute( parameterName.c_str(), parameterValue.c_str() );
 	}
 
 	int numberOfParts = containerNode->NumberOfParts();

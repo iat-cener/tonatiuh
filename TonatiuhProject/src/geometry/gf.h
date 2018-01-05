@@ -41,12 +41,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <string>
 
+#include "GeometryLibrary.h"
+
 namespace gf
 {
-    void SevereError( std::string errorMessage );
-    void Warning( std::string warningMessage );
-    bool IsOdd( int number );
-    bool Quadratic( double A, double B, double C, double* t0, double* t1);
+    void GEOMETRY_API SevereError( std::string errorMessage );
+    void GEOMETRY_API Warning( std::string warningMessage );
+    bool GEOMETRY_API IsOdd( int number );
+    bool GEOMETRY_API Quadratic( double A, double B, double C, double* t0, double* t1);
 }
 
 #endif /*GF_H_*/

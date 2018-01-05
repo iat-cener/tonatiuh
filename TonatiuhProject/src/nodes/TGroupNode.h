@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TGROUPNODE_H_
 
 
+#include "NodeLibrary.h"
 #include "TContainerNode.h"
 #include "TNodeType.h"
 
@@ -59,17 +60,21 @@ class Vector3D;
     - "scale"
 */
 
-class TGroupNode : public TContainerNode
+class NODE_API TGroupNode : public TContainerNode
 {
-	//Q_OBJECT
+
 private:
+	//No copy constructor. Use Copy to create a copy of the node
 	TGroupNode(const TGroupNode& node) = delete;
+	TGroupNode& operator=(const TGroupNode&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TGroupNode();
+
+	virtual TGroupNode* Copy() const;
 
 	virtual std::string GetIcon() const;
 	virtual Transform GetTrasformation() const;

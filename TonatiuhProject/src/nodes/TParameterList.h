@@ -8,30 +8,35 @@
 #ifndef TPARAMETERLIST_H_
 #define TPARAMETERLIST_H_
 
+#include <any>
 #include <map>
+#include <memory>
 #include <string>
+#include <vector>
 
-#include <QVariant>
+#include "NodeLibrary.h"
+#include "TParameter.h"
 
 
-class TParameterList
+
+class NODE_API TParameterList
 {
 private:
 	TParameterList( const TParameterList& node) = delete;
-//	Q_OBJECT
+
 
 public:
 	TParameterList();
 	~TParameterList();
 
-	void Append( const std::string& key, const QVariant& value, bool visible = true );
+	template<typename  T> void Append( const std::string& key, const T& value, bool visible, std::function<bool()> connectedFunction = 0 );
 
 	// Testing
 	bool Contains(const std::string& name) const;
 
 	// Query Values
-	QVariant GetValue(const std::string& name) const;
-	QVariant GetValue(const std::string& name, const QVariant& defaultValue) const;
+	tonatiuh_variant GetValue( const std::string& name ) const;
+	std::string GetValueToString(const std::string& name) const;
 	bool GetVisibility(const std::string& name) const;
 	std::vector< std::string > GetParametersNames() const;
 
@@ -39,11 +44,26 @@ public:
 
 	bool RemoveParameter( const std::string& name );
 
-	bool SetValue(const std::string& name, const QVariant& value );
+	bool SetValue(const std::string& name, const tonatiuh_variant& value );
+	bool SetValueFromString(const std::string& name, const std::string& value );
+
 
 protected:
-	std::map< std::string, QVariant > m_parametersList;
+	std::map< std::string, std::unique_ptr< TParameter> > m_parametersList;
 	std::map< std::string, bool > m_parametersVisibilityList;
 };
+
+template<class T> void TParameterList::Append( const std::string& key, const T& value, bool visible, std::function<bool()> connectedFunction )
+{
+	if( m_parametersList.find( key ) != m_parametersList.end() )
+		return;
+
+	TParameter newParameter;
+	m_parametersList[key] = std::make_unique<TParameter>();
+	m_parametersList[key]->SetValue( value );
+	if( connectedFunction!= 0 )
+		m_parametersList[key]->SetConnectedFuntion( connectedFunction );
+	m_parametersVisibilityList[key] = visible;
+}
 
 #endif /* TPARAMETERLIST_H_ */

@@ -44,23 +44,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 TNodeType TContainerNode::m_nodeType = TNodeType::CreateEmptyType();
 
-
-/*!
-  Creates a new instance of the class type corresponding object.
-*/
-/*
-void* TContainerNode::CreateInstance( )
-{
-  return ( new TContainerNode() );
-}
-*/
-
 /*!
  * Initializes TGroupNode type.
  */
 void TContainerNode::Init()
 {
-	//m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "ContainerNode", &TContainerNode::CreateInstance );
 	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "ContainerNode" );
 }
 
@@ -71,7 +59,6 @@ void TContainerNode::Init()
 TContainerNode::TContainerNode()
 :TNode()
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 
 }
@@ -94,37 +81,6 @@ bool TContainerNode::Contains(const std::string& name) const
 	if( m_partsList.find( name ) != m_partsList.end() )
 		return ( true );
 	return ( false);
-}
-
-/*!
- * Creates a container node objecte as a copy of this node.
- */
-TContainerNode* TContainerNode::Copy() const
-{
-	TContainerNode* containerNode = new TContainerNode();
-	if( containerNode == 0 )	return ( 0  );
-
-	for (std::map<std::string, TNodeType>::iterator it = containerNode->m_partsTypeList.begin(); it!=containerNode->m_partsTypeList.end(); ++it)
-	{
-		std::string partName = it->first;
-		TNodeType partType = it->second;
-		TNode* partNode = containerNode->m_partsList[partName];
-
-    	containerNode->AppendPart( partName, partType, partNode->Copy() );
-	}
-
-	TParameterList* parametersList = containerNode->m_parametersList;
-
-	std::vector< std::string > parameterNames = m_parametersList->GetParametersNames();
-	for( unsigned int p = 0; p < parameterNames.size(); p++ )
-	{
-		QVariant parameterValue = m_parametersList->GetValue( parameterNames[p] );
-		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
-		parametersList->Append(parameterNames[p], parameterValue, parameterVisibility );
-	}
-
-
-	return ( containerNode );
 }
 
 /*!

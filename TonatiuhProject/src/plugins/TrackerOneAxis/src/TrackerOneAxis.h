@@ -55,13 +55,16 @@ class TrackerOneAxis : public TTrackerNode
 {
 
 private:
-	TrackerOneAxis(const TrackerOneAxis& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	TrackerOneAxis(const TrackerOneAxis&) = delete;
+	TrackerOneAxis& operator=(const TrackerOneAxis&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TrackerOneAxis();
+	TrackerOneAxis* Copy() const;
 
 	std::string GetIcon() const;
 	Transform GetTrasformation() const;
@@ -69,7 +72,7 @@ public:
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
 
 protected:
-	~TrackerOneAxis();
+	virtual ~TrackerOneAxis();
 
 private:
 	static TNodeType m_nodeType;
@@ -77,6 +80,7 @@ private:
 	std::string m_xAxisLabel;
 	std::string m_yAxisLabel;
 	std::string m_zAxisLabel;
+	std::string m_nodeTransformationLabel;
 };
 
 

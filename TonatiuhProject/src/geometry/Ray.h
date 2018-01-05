@@ -40,11 +40,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RAY_H
 #define RAY_H
 
+#include "GeometryLibrary.h"
+
 #include "gc.h"
 #include "Point3D.h"
 #include "Vector3D.h"
 
-class Ray
+class GEOMETRY_API Ray
 {
 public:
     Ray() : mint( gc::Epsilon ), maxt( gc::Infinity )

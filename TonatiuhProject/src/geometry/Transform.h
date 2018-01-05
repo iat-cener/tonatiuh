@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <iostream>
 
+#include "GeometryLibrary.h"
 #include "Matrix4x4.h"
 #include "Ptr.h"
 
@@ -51,7 +52,7 @@ struct NormalVector;
 class Ray;
 struct BBox;
 
-class Transform
+class GEOMETRY_API Transform
 {
 public:
 	Transform( );
@@ -89,16 +90,16 @@ private:
 	Ptr<Matrix4x4> m_minv;
 };
 
-Transform Translate( const Vector3D& delta );
-Transform Translate( double x, double y, double z);
-Transform Scale( double x, double y, double z );
-Transform RotateX( double angle );
-Transform RotateY( double angle );
-Transform RotateZ( double angle );
-Transform Rotate( double angle, const Vector3D& axis );
-Transform LookAt( const Point3D& pos, const Point3D& look, const Vector3D& up );
+Transform GEOMETRY_API Translate( const Vector3D& delta );
+Transform GEOMETRY_API Translate( double x, double y, double z);
+Transform GEOMETRY_API Scale( double x, double y, double z );
+Transform GEOMETRY_API RotateX( double angle );
+Transform GEOMETRY_API RotateY( double angle );
+Transform GEOMETRY_API RotateZ( double angle );
+Transform GEOMETRY_API Rotate( double angle, const Vector3D& axis );
+Transform GEOMETRY_API LookAt( const Point3D& pos, const Point3D& look, const Vector3D& up );
 
-std::ostream& operator<<( std::ostream& os, const Transform& tran );
+std::ostream& GEOMETRY_API operator<<( std::ostream& os, const Transform& tran );
 
 #endif /*TRANSFORMATION_H_*/
 

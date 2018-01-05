@@ -40,11 +40,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef BBOX_H_
 #define BBOX_H_
 
+#include "GeometryLibrary.h"
+
 #include "Point3D.h"
 
 class Ray;
 
-struct BBox
+struct GEOMETRY_API BBox
 {
 	BBox( );
 	explicit BBox( const Point3D& point );
@@ -61,8 +63,8 @@ struct BBox
 	Point3D pMax;
 };
 
-BBox Union( const BBox& bbox, const Point3D& point );
-BBox Union( const BBox& bbox1, const BBox& bbox2 );
-std::ostream& operator<<( std::ostream& os, const BBox& bbox );
+BBox GEOMETRY_API Union( const BBox& bbox, const Point3D& point );
+BBox GEOMETRY_API Union( const BBox& bbox1, const BBox& bbox2 );
+std::ostream& GEOMETRY_API operator<<( std::ostream& os, const BBox& bbox );
 
 #endif //BBOX_H_

@@ -44,9 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomDeviate.h"
 #include "sf.h"
 #include "Transform.h"
-
-#include "TParameterEnumerator.h"
-#include "TParameterList.h"
+#include "EnumeratedTypes.h"
 
 TNodeType MaterialStandardSpecular::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -71,26 +69,27 @@ void MaterialStandardSpecular::Init()
  * Creates a material object
  */
 MaterialStandardSpecular::MaterialStandardSpecular()
-:TMaterial()
+:TMaterial(),
+ m_reflectivityLabel( "reflectivity" ),
+ m_sigmaSlopeLabel( "sigmaSlope" ),
+ m_distributionLabel( "distribution" ),
+ m_colorLabel( "color" ),
+ m_transparencyLabel( "transparency" )
+
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 
 	//Translation
-	m_parametersList->Append( "reflectivity", 0.0 );
-	m_parametersList->Append( "sigmaSlope", 2.0 );
+	m_pParametersList->Append<double>( m_reflectivityLabel, 0.0, true );
+	m_pParametersList->Append<double>( m_sigmaSlopeLabel, 2.0, true );
 
-	TParameterEnumerator*  distributionEnumerator = new TParameterEnumerator;
-	distributionEnumerator->AddValue( "PILLBOX", true );
-	distributionEnumerator->AddValue( "NORMAL", false );
+	EnumeratedTypes distributionEnumerator;
+	distributionEnumerator.AddValue( "NORMAL", true );
+	m_pParametersList->Append<EnumeratedTypes>( m_distributionLabel, distributionEnumerator, true );
 
-	QVariant distributionParameter;
-	distributionParameter.setValue( distributionEnumerator);
-	m_parametersList->Append( "distribution", distributionParameter );
-
-	m_parametersList->Append( "color", "0.2 0.2 0.2" );
-	m_parametersList->Append( "transparency", 0.0 );
+	m_pParametersList->Append<std::string>(m_colorLabel,  "0.2 0.2 0.2", true );
+	m_pParametersList->Append<double>( m_transparencyLabel, 0.0, true );
 }
 
 /*!
@@ -98,10 +97,30 @@ MaterialStandardSpecular::MaterialStandardSpecular()
  */
 MaterialStandardSpecular::~MaterialStandardSpecular()
 {
-	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( "distribution" ).value<TParameterEnumerator*>();
-	delete typeOfDistribution;
-	typeOfDistribution = 0;
+
 }
+
+/*!
+ * Creates a copy of material node.
+ */
+MaterialStandardSpecular* MaterialStandardSpecular::Copy() const
+ {
+
+	MaterialStandardSpecular* materialNode = new MaterialStandardSpecular;
+	 if( materialNode == 0 )	return ( 0  );
+
+	 //Coping node parts.
+	 //NO parts
+
+	 //Coping the parameters.
+	 materialNode->m_pParametersList->SetValue( m_reflectivityLabel, GetParameterValue<double>( m_reflectivityLabel ) );
+	 materialNode->m_pParametersList->SetValue( m_sigmaSlopeLabel, GetParameterValue<double>( m_sigmaSlopeLabel ) );
+	 materialNode->m_pParametersList->SetValue( m_distributionLabel, GetParameterValue<EnumeratedTypes>( m_distributionLabel ) );
+	 materialNode->m_pParametersList->SetValue( m_colorLabel, GetParameterValue<std::string>( m_colorLabel ) );
+	 materialNode->m_pParametersList->SetValue( m_transparencyLabel, GetParameterValue<double>( m_transparencyLabel ) );
+
+	 return ( materialNode );
+ }
 
 /*!
  * Returns the material icon filename.
@@ -125,9 +144,9 @@ TNodeType MaterialStandardSpecular::GetType() const
 bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {
 
-	double reflectivity = m_parametersList->GetValue( "reflectivity" ).toDouble();
-	double sigmaSlopeMRAD = m_parametersList->GetValue(  "sigmaSlope" ).toDouble();
-	TParameterEnumerator* typeOfDistribution = m_parametersList->GetValue( "distribution" ).value<TParameterEnumerator*>();
+	double reflectivity = GetParameterValue<double>( m_reflectivityLabel );
+	double sigmaSlopeMRAD = GetParameterValue<double>( m_sigmaSlopeLabel );
+	EnumeratedTypes typeOfDistribution = GetParameterValue<EnumeratedTypes>( m_distributionLabel );
 
 	double randomNumber = rand.RandomDouble();
 	if ( randomNumber >= reflectivity  ) return ( false );
@@ -139,16 +158,18 @@ bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeome
 	double sigmaSlope = sigmaSlopeMRAD / 1000;
 	if( sigmaSlope > 0.0 )
 	{
-		NormalVector errorNormal;
-		std::string typeOfDistributionValue = typeOfDistribution->GetSelectedName();
+		NormalVector errorNormal{ 0, 1, 0 };
+		std::string typeOfDistributionValue = typeOfDistribution.GetSelectedName();
 		if( typeOfDistributionValue == "PILLBOX" )
 		{
-			double phi = gc::TwoPi * rand.RandomDouble();
-			double theta = sigmaSlope * rand.RandomDouble();
+			//double phi = gc::TwoPi * rand.RandomDouble();
+			//double theta = sigmaSlope * rand.RandomDouble();
 
-			errorNormal.x = sin( theta ) * sin( phi ) ;
-			errorNormal.y = cos( theta );
-			errorNormal.z = sin( theta ) * cos( phi );
+			//errorNormal.x = sin( theta ) * sin( phi ) ;
+			//errorNormal.y = cos( theta );
+			//errorNormal.z = sin( theta ) * cos( phi );
+
+
 		}
 		else if( typeOfDistributionValue == "NORMAL" )
 		{

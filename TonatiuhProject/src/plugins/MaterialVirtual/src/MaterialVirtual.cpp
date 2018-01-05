@@ -67,7 +67,6 @@ void MaterialVirtual::Init()
 MaterialVirtual::MaterialVirtual()
 :TMaterial()
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 }
@@ -79,6 +78,25 @@ MaterialVirtual::~MaterialVirtual()
 {
 
 }
+
+/*!
+ * Creates a copy of material node.
+ */
+MaterialVirtual* MaterialVirtual::Copy() const
+ {
+
+	MaterialVirtual* materialNode = new MaterialVirtual;
+	 if( materialNode == 0 )	return ( 0  );
+
+	 //Coping node parts.
+	 //NO parts
+
+	 //Coping the parameters..
+	 //NO parameters
+
+	 return ( materialNode );
+ }
+
 
 /*!
  * Returns the material icon filename.

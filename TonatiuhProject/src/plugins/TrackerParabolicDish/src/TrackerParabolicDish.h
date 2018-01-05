@@ -55,24 +55,28 @@ class TrackerParabolicDish : public TTrackerNode
 {
 
 private:
-	TrackerParabolicDish(const TrackerParabolicDish& node) = delete;
-
+	//No copy constructor. Use Copy to create a copy of the node
+	TrackerParabolicDish(const TrackerParabolicDish&) = delete;
+	TrackerParabolicDish& operator=(const TrackerParabolicDish&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TrackerParabolicDish();
-	~TrackerParabolicDish();
+	TrackerParabolicDish* Copy() const;
 
 	std::string GetIcon() const;
 	Transform GetTrasformation() const;
 	TNodeType GetType() const;
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
 
+protected:
+	virtual ~TrackerParabolicDish();
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_nodeTransformationLabel;
 };
 
 

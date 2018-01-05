@@ -37,8 +37,9 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "TSunNode.h"
+
 #include "TParameterList.h"
+#include "TSunNode.h"
 
 /******************************
  * TSunNode
@@ -72,16 +73,15 @@ TSunNode::TSunNode()
  m_azimuthLabel( "azimuth" ),
  m_zenithLabel( "zenith" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 
 	//Parts
 	AppendPart( "sunshape", TNodeType::FromName( "Sunshape" ) , 0 );
 
 
-	//Transormation
-	m_parametersList->Append( m_azimuthLabel, 0.0);
-	m_parametersList->Append( m_zenithLabel, 0.0 );
+	//Sun coordinates
+	m_pParametersList->Append<double>( m_azimuthLabel, 0.0, true );
+	m_pParametersList->Append<double>( m_zenithLabel, 0.0, true );
 }
 
 /*!
@@ -92,13 +92,41 @@ TSunNode::~TSunNode()
 	SetPart( "sunshape", 0 );
 }
 
+/*!
+ * Creates a copy of sun node.
+ */
+TSunNode* TSunNode::Copy() const
+ {
+
+	TSunNode* sunNode = new TSunNode;
+	 if( sunNode == 0 )	return ( 0  );
+
+	 for (std::map<std::string, TNodeType>::iterator it = sunNode->m_partsTypeList.begin(); it!=sunNode->m_partsTypeList.end(); ++it)
+	 {
+		 std::string partName = it->first;
+		 TNodeType partType = it->second;
+		 TNode* partNode = sunNode->m_partsList[partName];
+
+
+		 sunNode->AppendPart( partName, partType, partNode->Copy() );
+	 }
+
+
+	 //Coping the parameters.
+	 sunNode->m_pParametersList->SetValue( m_azimuthLabel, GetParameterValue<double>( m_azimuthLabel ) );
+	 sunNode->m_pParametersList->SetValue( m_zenithLabel, GetParameterValue<double>( m_zenithLabel ) );
+
+	 return ( sunNode );
+ }
+
+
 /*
  * Changes the sun node position to the coordinates defined by the angles \a azimuth and zenith. These angles are in radians.
  */
 void TSunNode::ChangeSunPosition( double azimuth, double zenith )
 {
-	m_parametersList->SetValue( m_azimuthLabel, QVariant( azimuth ) );
-	m_parametersList->SetValue( m_zenithLabel, zenith );
+	m_pParametersList->SetValue( m_azimuthLabel, azimuth );
+	m_pParametersList->SetValue( m_zenithLabel, zenith );
 
 	//emit SunpositonChanged( azimuth, zenith );
 
@@ -109,7 +137,7 @@ void TSunNode::ChangeSunPosition( double azimuth, double zenith )
  */
 double TSunNode::GetAzimuth() const
 {
-	return ( GetParameterValue( m_azimuthLabel ).toDouble() );
+	return ( GetParameterValue<double>( m_azimuthLabel ) );
 }
 
 /*!
@@ -125,7 +153,7 @@ std::string TSunNode::GetIcon() const
  */
 double TSunNode::GetZenith() const
 {
-	return( GetParameterValue( m_zenithLabel ).toDouble() );
+	return( GetParameterValue<double>( m_zenithLabel ) );
 }
 
 

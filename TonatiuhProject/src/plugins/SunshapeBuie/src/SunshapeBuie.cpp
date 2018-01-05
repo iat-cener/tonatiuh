@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <functional>
 
 #include "gc.h"
 
@@ -71,6 +72,8 @@ void SunshapeBuie::Init()
  */
 SunshapeBuie::SunshapeBuie()
 :TSunshape(),
+ m_irradianceLabel( "irradiance" ),
+ m_csrLabel( "csr" ),
  m_thetaCS ( 0.0436 ),
  m_thetaSD( 0.00465 ),
  m_integralA (9.224724736098827/1000000.0 ),
@@ -82,15 +85,16 @@ SunshapeBuie::SunshapeBuie()
  m_heightRectangle2( 0.0 ),
  m_probabilityRectangle1( 0.0 )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( "irradiance", 1000.0 );
-	m_parametersList->Append( "csr", 0.02 );
+	m_pParametersList->Append<double>( m_irradianceLabel, 1000.0, true );
+
+	auto f_sunshapeState = std::bind(&UpdateState, this);
+	m_pParametersList->Append<double>( m_csrLabel, 0.02, true, f_sunshapeState );
 
 	m_deltaThetaCSSD = m_thetaCS - m_thetaSD;
-	UpdateState( 0.02 );
+	UpdateState( );
 
 }
 
@@ -103,11 +107,28 @@ SunshapeBuie::~SunshapeBuie()
 }
 
 /*!
+ * Creates a copy of sunshape node.
+ */
+SunshapeBuie* SunshapeBuie::Copy() const
+{
+	SunshapeBuie* sunshapeNode = new SunshapeBuie;
+	if( sunshapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	sunshapeNode->m_pParametersList->SetValue( m_irradianceLabel, GetParameterValue<double>( m_irradianceLabel ) );
+	sunshapeNode->m_pParametersList->SetValue( m_csrLabel, GetParameterValue<double>( m_csrLabel ) );
+
+	return ( sunshapeNode );
+}
+
+/*!
  * Creates a ray for the given sunshape model.
  */
 void SunshapeBuie::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-
 	double phi = gc::TwoPi * rand.RandomDouble();
     double theta = ZenithAngle( rand );
     double sinTheta = sin( theta );
@@ -125,7 +146,6 @@ void SunshapeBuie::GenerateRayDirection( Vector3D& direction, RandomDeviate& ran
  */
 std::string SunshapeBuie::GetIcon() const
 {
-
 	return ( ":/icons/SunshapeBuie.png" );
 }
 
@@ -135,7 +155,7 @@ std::string SunshapeBuie::GetIcon() const
 double SunshapeBuie::GetIrradiance() const
 {
 
-	return ( m_parametersList->GetValue( "irradiance" ).toDouble() );
+	return ( GetParameterValue<double>( m_irradianceLabel ) );
 }
 
 /*!
@@ -143,8 +163,7 @@ double SunshapeBuie::GetIrradiance() const
  */
 double SunshapeBuie::GetThetaMax() const
 {
-
-	return ( m_parametersList->GetValue( "thetaMax" ).toDouble() );
+	return ( m_maxCRSValue );
 }
 
 /*!
@@ -186,10 +205,10 @@ double SunshapeBuie::PhiSolarDisk( double theta ) const
 /*!
  * Updates internal values.
  */
-void SunshapeBuie::UpdateState( double csrValue )
+bool SunshapeBuie::UpdateState( )
 {
-
-    //m_chi = chiValue( csrValue );
+	std::cout<<"SunshapeBuie::UpdateState"<<std::endl;
+	double csrValue = GetParameterValue<double>( m_csrLabel );
 
     double chi = 0.0;
 	if( csrValue > 0.035 )
@@ -223,10 +242,11 @@ void SunshapeBuie::UpdateState( double csrValue )
 	double areaR2 = (m_thetaCS - m_thetaSD) * m_heightRectangle2;
 	m_probabilityRectangle1 = ( areaR1 / ( areaR1 + areaR2 ) );
 
+	return ( true );
 }
 
 /*!
- * Gives the next zenith angle of the ray in radians for this ditribution function.
+ * Gives the next zenith angle of the ray in radians for this distribution function.
  */
 double SunshapeBuie::ZenithAngle( RandomDeviate& rand ) const
 {

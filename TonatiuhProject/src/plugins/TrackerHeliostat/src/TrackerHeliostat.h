@@ -59,13 +59,16 @@ class TrackerHeliostat : public TTrackerNode
 {
 
 private:
-	TrackerHeliostat(const TrackerHeliostat& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	TrackerHeliostat(const TrackerHeliostat&) = delete;
+	TrackerHeliostat& operator=(const TrackerHeliostat&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TrackerHeliostat();
+	TrackerHeliostat* Copy() const;
 
 	std::string GetIcon() const;
 	Transform GetTrasformation() const;
@@ -74,7 +77,7 @@ public:
 
 
 protected:
-	~TrackerHeliostat();
+	virtual ~TrackerHeliostat();
 
 private:
 	static TNodeType m_nodeType;
@@ -87,6 +90,7 @@ private:
 	std::string m_yzRotationLabel;
 	std::string m_xzRotationLabel;
 	std::string m_zxRotationLabel;
+	std::string m_nodeTransformationLabel;
 };
 
 #endif /* TRACKERHELIOSTAT_H_ */

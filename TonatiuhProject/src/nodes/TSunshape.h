@@ -41,11 +41,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TSUNSHAPE_H_
 #define TSUNSHAPE_H_
 
+#include "Vector3D.h"
 
+#include "NodeLibrary.h"
 #include "TNode.h"
 #include "TNodeType.h"
 
-#include "Vector3D.h"
 
 class RandomDeviate;
 
@@ -54,19 +55,20 @@ class RandomDeviate;
   TSunshapeNode class provides have a model of the radial distribution of the incident solar energy. For convenience, the TSunshapeNode class contains common code used by the inherited classes.
 */
 
-class TSunshape : public TNode
+class NODE_API TSunshape : public TNode
 {
 
 private:
-	TSunshape(const TSunshape& node) = delete;
-/*
-	Q_OBJECT
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TSunshape(const TSunshape& ) = delete;
+	TSunshape& operator=(const TSunshape&) = delete;
 
 public:
 	static void Init();
 
 	TSunshape();
+
+	virtual TSunshape* Copy() const = 0;
 
 	virtual std::string GetIcon() const = 0;
 	virtual void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;

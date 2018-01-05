@@ -37,8 +37,10 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QVariant>
+#include <iostream>
+#include <sstream>
 
+#include "nf.h"
 #include "TParameter.h"
 
 /*!
@@ -46,7 +48,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 TParameter::TParameter()
 {
+	m_connectedFunction = 0;
+}
 
+TParameter::TParameter(const TParameter& parameter)
+
+{
+	m_variant = parameter.m_variant;
+	m_connectedFunction = parameter.m_connectedFunction;
 }
 
 /*
@@ -54,5 +63,142 @@ TParameter::TParameter()
  */
 TParameter::~TParameter()
 {
+
+}
+
+/*!
+ * Sets to the parameter the value in \a value stored as a string.
+ */
+bool TParameter::FromString( const std::string& value )
+{
+	//string
+	if( m_variant.value().index() == 0 )
+	{
+		m_variant = value;
+	}
+	//int
+	else if( m_variant.value().index() == 1 )
+	{
+		m_variant = stoi( value );
+	}
+	//double
+	else if( m_variant.value().index() == 2 )
+	{
+		m_variant = stod( value );
+	}
+	//Point3D
+	else if( m_variant.value().index() == 3 )
+	{
+		std::vector< std::string > pointCoordinatesValues = nf::StringSplit( value, "\\s+" );
+		if( pointCoordinatesValues.size () != 3 )
+			return ( false );
+
+		m_variant =  Point3D( stod( pointCoordinatesValues[0] ), stod( pointCoordinatesValues[1] ), stod( pointCoordinatesValues[2] ) );
+
+	}
+	//EnumeratedTypes
+	else if( m_variant.value().index() == 4 )
+	{
+		EnumeratedTypes enumType = std::get<EnumeratedTypes>(m_variant.value());
+		enumType.SetValue( value );
+		m_variant = enumType;
+	}
+	else
+		return ( false );
+
+
+	if( m_connectedFunction != 0  )
+		m_connectedFunction();
+	return ( true );
+}
+
+
+/*!
+ * Returns the parameter value as a variant.
+ */
+tonatiuh_variant TParameter::GetValue() const
+{
+	return ( m_variant );
+}
+
+/*!
+ * Sets the parameter value to \a value. This value could be of different types.
+ */
+bool TParameter::SetValue( const tonatiuh_variant& value )
+{
+	if( ( m_variant != std::nullopt )  &&  ( m_variant.value().index() != value.value().index() ) )
+	{
+		return ( false );
+	}
+
+	tonatiuh_variant old_value = m_variant;
+	m_variant = value;
+	if( m_connectedFunction != 0  )
+		if( !m_connectedFunction( ) )
+		{
+			m_variant = old_value ;
+			return ( false );
+		}
+
+	return ( true );
+}
+
+
+void TParameter::SetConnectedFuntion( std::function<bool()> function )
+{
+	m_connectedFunction = function;
+}
+
+/*!
+ * Returns parameter value in a string.
+ */
+std::string TParameter::ToString() const
+{
+	if(  m_variant == std::nullopt )
+		return ( std::string() );
+
+
+	//string
+	if( m_variant.value().index() == 0 )
+	{
+		return ( std::get<std::string>( m_variant.value() ) );
+	}
+
+	//int
+	else if( m_variant.value().index() == 1 )
+	{
+
+		std::ostringstream int_convert;
+		int_convert << std::get<int>(m_variant.value());
+		return ( int_convert.str() );
+	}
+
+	//double
+	else if( m_variant.value().index() == 2 )
+	{
+		std::ostringstream double_convert;
+		double_convert << std::get<double>(m_variant.value());
+		return ( double_convert.str() );
+	}
+	//Point3D
+	else if( m_variant.value().index() == 3 )
+	{
+		Point3D pointCoordinates = std::get<double>(m_variant.value());
+		std::stringstream ss;
+		ss<<pointCoordinates.x ;
+		ss<<", ";
+		ss<<pointCoordinates.y ;
+		ss<<", ";
+		ss<<pointCoordinates.z ;
+		return ( ss.str() );
+	}
+	//EnumeratedTypes
+	else if( m_variant.value().index() == 4 )
+	{
+		EnumeratedTypes enumType = std::get<EnumeratedTypes>(m_variant.value());
+		return ( enumType.GetSelectedName() );
+	}
+
+	return ( std::string() );
 
 }

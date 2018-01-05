@@ -55,14 +55,16 @@ class ShapeTroughParabola : public TShape
 {
 
 private:
-	ShapeTroughParabola(const ShapeTroughParabola& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeTroughParabola(const ShapeTroughParabola&) = delete;
+	ShapeTroughParabola& operator=(const ShapeTroughParabola&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeTroughParabola();
-
+	ShapeTroughParabola* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -75,6 +77,11 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_focusLengthLabel;
+	std::string m_xMinLabel;
+	std::string m_xMaxLabel;
+	std::string m_lengthXMinLabel;
+	std::string m_lengthXMaxLabel;
 };
 
 #endif /*SHAPETROUGHPARABOLA_H_*/

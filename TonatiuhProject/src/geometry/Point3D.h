@@ -41,9 +41,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define POINT3D_H
 
 #include <iostream>
+
+#include "GeometryLibrary.h"
+
+
 struct Vector3D;
 
-struct Point3D
+struct GEOMETRY_API Point3D
 {
     Point3D( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
     explicit Point3D ( const Vector3D& vector );
@@ -70,9 +74,9 @@ struct Point3D
     double z;   
 };
 
-Point3D operator*( double scalar, const Point3D& point );
-std::ostream &operator<<( std::ostream& os, const Point3D& point );
-double Distance( const Point3D& pointA, const Point3D& pointB );
-double DistanceSquared( const Point3D& pointA, const Point3D& pointB );
+Point3D GEOMETRY_API operator*( double scalar, const Point3D& point );
+std::ostream& GEOMETRY_API operator<<( std::ostream& os, const Point3D& point );
+double GEOMETRY_API Distance( const Point3D& pointA, const Point3D& pointB );
+double GEOMETRY_API DistanceSquared( const Point3D& pointA, const Point3D& pointB );
 
 #endif

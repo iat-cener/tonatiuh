@@ -47,13 +47,16 @@ class ShapeFlatDisk : public TShape
 {
 
 private:
-	ShapeFlatDisk(const ShapeFlatDisk& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeFlatDisk(const ShapeFlatDisk&) = delete;
+	ShapeFlatDisk& operator=(const ShapeFlatDisk&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeFlatDisk( );
+	ShapeFlatDisk* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -66,6 +69,7 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_radiusLabel;
 };
 
 

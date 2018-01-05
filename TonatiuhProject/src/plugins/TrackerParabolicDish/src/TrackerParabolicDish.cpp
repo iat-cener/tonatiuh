@@ -39,12 +39,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <cmath>
 
 #include "gc.h"
-#include "tf.h"
-#include "TParameterList.h"
-#include "TrackerParabolicDish.h"
 #include "Transform.h"
 #include "Vector3D.h"
 
+#include "nf.h"
+#include "TrackerParabolicDish.h"
 
 TNodeType TrackerParabolicDish::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -69,10 +68,10 @@ void TrackerParabolicDish::Init()
  * Creates a tracker object.
  */
 TrackerParabolicDish::TrackerParabolicDish()
-:TTrackerNode()
+:TTrackerNode(),
+ m_nodeTransformationLabel( "node_transformation" )
 {
 	//Default object name is the name of the type
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	std::string transformationValue( "" );
@@ -89,7 +88,7 @@ TrackerParabolicDish::TrackerParabolicDish()
 	}
 
 	//Transformation
-	m_parametersList->Append( "node_transformation", transformationValue.c_str(), false );
+	m_pParametersList->Append<std::string>( m_nodeTransformationLabel, transformationValue, false );
 
 }
 
@@ -100,6 +99,23 @@ TrackerParabolicDish::~TrackerParabolicDish()
 {
 	SetName( GetType().GetName() );
 
+}
+
+/*!
+ * Creates a copy of tracker node.
+ */
+TrackerParabolicDish* TrackerParabolicDish::Copy() const
+ {
+	TrackerParabolicDish* trackerNode = new TrackerParabolicDish;
+	 if( trackerNode == 0 )	return ( 0  );
+
+	 //Coping node parts.
+	 //NO parts
+
+	 //Coping the parameters.
+	 trackerNode->m_pParametersList->SetValue( m_nodeTransformationLabel, GetParameterValue<std::string>( m_nodeTransformationLabel ) );
+
+	 return ( trackerNode );
 }
 
 /*!
@@ -116,8 +132,8 @@ std::string TrackerParabolicDish::GetIcon() const
  */
 Transform TrackerParabolicDish::GetTrasformation( ) const
 {
-	std::string transformationValue = m_parametersList->GetValue( "node_transformation" ).toString().toStdString();
-	std::vector< std::string > transformationValues = tf::StringSplit( transformationValue,
+	std::string transformationValue = GetParameterValue<std::string>( m_nodeTransformationLabel );
+	std::vector< std::string > transformationValues = nf::StringSplit( transformationValue,
 			"[\\s+,\\[\\]]" );
 
 	double nodeTransformationMatrix[4][4];
@@ -180,5 +196,5 @@ void TrackerParabolicDish::UpdateTrackerTransform( Vector3D sunVector, Transform
 		transformationValue += std::string( " ]\n" );
 	}
 
-	m_parametersList->SetValue( "node_transformation" , transformationValue.c_str() );
+	m_pParametersList->SetValue( m_nodeTransformationLabel, transformationValue );
 }

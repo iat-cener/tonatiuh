@@ -88,6 +88,31 @@ TSurfaceNode::~TSurfaceNode()
 }
 
 
+
+/*!
+ * Creates a copy of surface node.
+ */
+TSurfaceNode* TSurfaceNode::Copy() const
+ {
+	TSurfaceNode* surfaceNode = new TSurfaceNode;
+	 if( surfaceNode == 0 )	return ( 0  );
+
+	 for (std::map<std::string, TNodeType>::iterator it = surfaceNode->m_partsTypeList.begin(); it!=surfaceNode->m_partsTypeList.end(); ++it)
+	 {
+		 std::string partName = it->first;
+		 TNodeType partType = it->second;
+		 TNode* partNode = surfaceNode->m_partsList[partName];
+
+
+		 surfaceNode->AppendPart( partName, partType, partNode->Copy() );
+	 }
+
+	 //Coping the parameters.
+	 //No parameters.
+
+	 return ( surfaceNode );
+ }
+
 /*!
  * Returns the type of node.
  */

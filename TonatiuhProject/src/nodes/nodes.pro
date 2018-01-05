@@ -1,7 +1,9 @@
 TEMPLATE = lib
-CONFIG       += debug_and_release
-
 CONFIG       += qt warn_on thread debug_and_release
+
+CONFIG -= c++11
+QMAKE_CXXFLAGS += -std=gnu++17
+QMAKE_LFLAGS += -Wl,--export-all-symbols
 
 
 CONFIG(debug, debug|release) {
@@ -20,10 +22,11 @@ else {
 QT +=core	
 QT -=gui	
 
-TARGET = nodes   
+TARGET = nodes
+
+DEFINES += NODELIBRARY_EXPORTS   
 
 INCLUDEPATH += 	. \
-               $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/statistics
@@ -36,11 +39,9 @@ CONFIG(debug, debug|release) {
 }
 
 # Input
-HEADERS += *.h \
-		$$(TONATIUH_ROOT)/src/auxiliary/*.h
+HEADERS += *.h 
 
-SOURCES += *.cpp \
-		$$(TONATIUH_ROOT)/src/auxiliary/*.cpp
+SOURCES += *.cpp 
           
  
 

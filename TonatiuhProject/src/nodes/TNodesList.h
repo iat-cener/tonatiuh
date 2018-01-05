@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TNODESLIST_H_
 
 
+#include "NodeLibrary.h"
 #include "TContainerNode.h"
 #include "TNodeType.h"
 
@@ -49,16 +50,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   TNodesList class stores in a vector the nodes of the types defined as valid.
 */
 
-
 /******************************
  * TNodesList
  ******************************/
 
-class TNodesList : public TNode
+class NODE_API TNodesList : public TNode
 {
 
 private:
+	//No copy constructor. Use Copy to create a copy of the node
 	TNodesList(const TNodesList& node) = delete;
+	TNodesList& operator=(const TNodesList&) = delete;
 
 public:
 	static void Init();

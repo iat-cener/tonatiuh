@@ -37,14 +37,15 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "tf.h"
+#include "nf.h"
 
 
 /*!
  * Splits the \a input string with the regular expresion defined in \a delimeter.
  * Skips empty parts.
  */
-std::vector< std::string > tf::StringSplit( std::string input , std::string delimiter )
+
+std::vector< std::string > nf::StringSplit( std::string input , std::string delimiter )
 {
 	std::regex rgx( delimiter ) ;
 	std::sregex_token_iterator iter( input.begin(), input.end(), rgx, -1);

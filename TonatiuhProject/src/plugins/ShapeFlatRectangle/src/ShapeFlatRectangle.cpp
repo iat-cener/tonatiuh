@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "DifferentialGeometry.h"
 
 #include "ShapeFlatRectangle.h"
-#include "TParameterList.h"
 
 
 TNodeType ShapeFlatRectangle::m_nodeType = TNodeType::CreateEmptyType();
@@ -64,14 +63,15 @@ void ShapeFlatRectangle::Init()
  * Creates ShapeFlatRectangle object
  */
 ShapeFlatRectangle::ShapeFlatRectangle()
-:TShape()
+:TShape(),
+ m_widthLabel( "width" ),
+ m_heightLabel( "height" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Parameters
-	m_parametersList->Append( "width", 1.0 );
-	m_parametersList->Append( "height", 1.0 );
+	m_pParametersList->Append( m_widthLabel, 1.0, true );
+	m_pParametersList->Append( m_heightLabel, 1.0, true );
 }
 
 /*!
@@ -80,6 +80,24 @@ ShapeFlatRectangle::ShapeFlatRectangle()
 ShapeFlatRectangle::~ShapeFlatRectangle()
 {
 
+}
+
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeFlatRectangle* ShapeFlatRectangle::Copy() const
+{
+	ShapeFlatRectangle* shapeNode = new ShapeFlatRectangle;
+	if( shapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_widthLabel, GetParameterValue<double>( m_widthLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_heightLabel, GetParameterValue<double>( m_heightLabel ) );
+
+	return ( shapeNode );
 }
 
 /*!
@@ -98,8 +116,8 @@ std::string ShapeFlatRectangle::GetIcon() const
 BBox ShapeFlatRectangle::GetBondingBox() const
 {
 
-	double width = m_parametersList->GetValue( "width" ).toDouble();
-	double height = m_parametersList->GetValue( "height" ).toDouble();
+	double width = GetParameterValue<double>( m_widthLabel ) ;
+	double height = GetParameterValue<double>( m_heightLabel );
 
 	Point3D min = Point3D( -height/2, 0.0, -width/2);
 	Point3D max = Point3D( height/2, 0.0, width/2);
@@ -120,8 +138,8 @@ TNodeType ShapeFlatRectangle::GetType() const
  */
 bool ShapeFlatRectangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double width = m_parametersList->GetValue( "width" ).toDouble();
-	double height = m_parametersList->GetValue( "height" ).toDouble();
+	double width = GetParameterValue<double>( m_widthLabel ) ;
+	double height = GetParameterValue<double>( m_heightLabel );
 
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction().y == 0 ) ) return ( false );

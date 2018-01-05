@@ -50,19 +50,16 @@ class MaterialVirtual : public TMaterial
 {
 
 private:
-	MaterialVirtual(const MaterialVirtual& node) = delete;
-/*
-	Q_OBJECT
-
-private:
-	Q_DISABLE_COPY(MaterialVirtual)
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	MaterialVirtual(const MaterialVirtual&) = delete;
+	MaterialVirtual& operator=(const MaterialVirtual&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	MaterialVirtual( );
+	MaterialVirtual* Copy() const;
 
     std::string GetIcon();
 	TNodeType GetType() const;

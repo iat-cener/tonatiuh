@@ -1,7 +1,11 @@
 TEMPLATE = lib
 CONFIG       += debug_and_release
 
-CONFIG       += qt warn_on thread debug_and_release
+CONFIG -= c++11
+QMAKE_CXXFLAGS += -std=gnu++17
+QMAKE_LFLAGS += -Wl,--export-all-symbols
+
+DEFINES += GEOMETRYLIBRARY_EXPORTS
 
 
 CONFIG(debug, debug|release) {
@@ -24,9 +28,6 @@ DEPENDPATH += . \
                 $$(TONATIUH_ROOT)
 
  
-
-
-
 # Input
 HEADERS += *.h \
 

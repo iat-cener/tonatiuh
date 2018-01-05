@@ -37,6 +37,9 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+#include <typeinfo>
+
 #include "TParameter.h"
 #include "TParameterList.h"
 
@@ -53,19 +56,8 @@ TParameterList::TParameterList()
  */
 TParameterList::~TParameterList()
 {
-
-}
-
-/*!
- * Appends the parameter defined with the \a key and its \a value to the list.
- */
-void TParameterList::Append(const std::string& key, const QVariant& value, bool visibility )
-{
-	if( m_parametersList.find( key ) != m_parametersList.end() )
-		return;
-
-	m_parametersList[key] = value;
-	m_parametersVisibilityList[key] = visibility;
+	m_parametersList.clear();
+	m_parametersVisibilityList.clear();
 }
 
 /*!
@@ -80,22 +72,26 @@ bool TParameterList::Contains(const std::string& name) const
 }
 
 /*!
- * Returns the value of the parameter \a name. If a parameter with defined name is not defined in the list, an empty string is returned.
+ * Returns the value of the parameter \a name. If a parameter with defined name is not defined in the list, an empty variant is returned.
  */
-QVariant TParameterList::GetValue(const std::string& name) const
+tonatiuh_variant TParameterList::GetValue( const std::string& name ) const
 {
-  return ( GetValue(name, QVariant() ) );
+	if( Contains(name) )
+		return ( m_parametersList.at( name )->GetValue() );
+
+	return ( tonatiuh_variant{} );
+
 }
 
 /*!
  * Returns the value of the parameter \a name. If there is not a parameter with the name defined \a defaultValue is returned.
  */
-QVariant TParameterList::GetValue(const std::string& name, const QVariant& defaultValue) const
+std::string TParameterList::GetValueToString(const std::string& name ) const
 {
 	if( Contains(name) )
-		return ( m_parametersList.at( name ) );
-  else
-    return ( defaultValue );
+		return ( m_parametersList.at( name )->ToString() );
+
+	return ( std::string() );
 }
 
 /*!
@@ -150,20 +146,21 @@ bool TParameterList::RemoveParameter( const std::string& name )
 /*!
  * Sets to the parameter \a name the \a value.
  */
-
-bool TParameterList::SetValue(const std::string& name, const QVariant& value )
+bool TParameterList::SetValue(const std::string& name, const tonatiuh_variant& value )
 {
 	if( !Contains(name) )	return ( false );
+	m_parametersList[name]->SetValue( value );
 
+	return ( true );
+}
 
-	int typeID = m_parametersList[name].type();
-	if( QMetaType::User == typeID )
-	{
-		TParameter* variantType = m_parametersList[name].value<TParameter*>();
-		if( !variantType || !variantType->SetValue( value ) ) return ( false );
-	}
-	else
-		m_parametersList[name] = value;
+/*!
+ * Sets to the parameter \a name the \a value that is stored in a string type.
+ */
+bool TParameterList::SetValueFromString(const std::string& name, const std::string& value )
+{
+	if( !Contains(name) )	return ( false );
+	m_parametersList[name]->FromString( value );
 
 	return ( true );
 }

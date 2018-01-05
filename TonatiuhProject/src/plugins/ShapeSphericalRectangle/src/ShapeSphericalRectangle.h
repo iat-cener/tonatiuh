@@ -55,14 +55,16 @@ class ShapeSphericalRectangle : public TShape
 {
 
 private:
-	ShapeSphericalRectangle(const ShapeSphericalRectangle& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeSphericalRectangle(const ShapeSphericalRectangle&) = delete;
+	ShapeSphericalRectangle& operator=(const ShapeSphericalRectangle&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeSphericalRectangle();
-
+	ShapeSphericalRectangle* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -75,6 +77,9 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_radiusLabel;
+	std::string m_widthXLabel;
+	std::string m_widthZLabel;
 };
 
 

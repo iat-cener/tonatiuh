@@ -37,12 +37,16 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <any>
+#include <locale>
+#include <type_traits>
 #include <iostream>
 #include <memory>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
 
+#include <QLibrary>
 #include <QApplication>
 #include <QDateTime>
 #include <QDir>
@@ -50,26 +54,34 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTextStream>
 #include <QVariant>
 
-#include "gc.h"
+#include <TNodesDatabase.h>
+
 #include "PluginManager.h"
-#include "RandomDeviateFactory.h"
-#include "RayCasting.h"
-#include "TCuboid.h"
-#include "TGroupNode.h"
-#include "TGroupNode.h"
-#include "TMaterial.h"
 #include "TMaterialFactory.h"
-#include "TNodesDatabase.h"
 #include "TNodesDocument.h"
-#include "TParameterList.h"
-#include "TPhotonMap.h"
-#include "TSceneNode.h"
-#include "TShapeFactory.h"
 #include "TShapeFactory.h"
 #include "TSunshapeFactory.h"
-#include "TSunNode.h"
-#include "TSurfaceNode.h"
 #include "TTrackerFactory.h"
+//#include <Vector3D.h>
+/*
+#include <nf.h>
+#include <TCuboid.h>
+#include "../../nodes/TGroupNode.h"
+#include "../../nodes/TGroupNode.h"
+#include "../../nodes/TMaterial.h"
+#include "../../nodes/TNodesDatabase.h"
+#include "../../nodes/TParameterList.h"
+#include <TSceneNode.h>
+#include "../../nodes/TSunNode.h"
+#include "../../nodes/TSurfaceNode.h"
+#include "gc.h"
+#include "RandomDeviateFactory.h"
+#include "RayCasting.h"
+#include "TNodesDocument.h"
+#include "TPhotonMap.h"
+#include "Vector3D.h"
+*/
+
 
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -94,16 +106,52 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
     }
 }
 
+template<class T1, class T2>
+void print_is_same() {
+  std::cout << std::is_same<T1, T2>() << '\n';
+}
+
+
+void do_stuff_with_any(const std::any& obj);
+/*
+{
+    std::cout << std::any_cast<const std::string&>(obj) << "\n";
+}
+*/
 
 int main ( int argc, char** argv )
 {
+
 	qInstallMessageHandler(myMessageOutput);
 
-    QApplication a( argc, argv );
+    QApplication a{ argc, argv };
 	a.setApplicationVersion( APP_VERSION );
 
 	std::cout<<"Tonatiuh 3.0"<<std::endl;
 	TNodesDatabase::Init();
+
+	/*
+
+	 QLibrary library1("geometry.dll");
+	 QLibrary library2("nodes.dll");
+	 if (! library1.load() )	return ( -1 );
+	 if (! library2.load() )	return ( -1 );
+
+
+	 typedef void (*Vector3D )();
+	 Vector3D vector3D = (Vector3D) library2.resolve("Vector3D");
+	 */
+
+
+	/*
+	do_stuff_with_any(std::string{"Hello World"});
+	Vector3D translationValue1{ -5, 0, 0 };
+	std::any variantVector3D1( translationValue1 );
+	do_stuff_with_any( translationValue1 );
+	do_stuff_with_any(std::string{"\n\n\n"});
+	*/
+
+
 
 
 	QDir pluginsDirectory( qApp->applicationDirPath() );
@@ -115,6 +163,7 @@ int main ( int argc, char** argv )
 	{
 		std::cerr<<err.toStdString()<<std::endl;
 	}
+
 	QVector< TMaterialFactory* > materialFactoryList =  pluginManager.GetMaterialFactories();
 	std::vector< std::string > materialFactoryName;
 	for( int p = 0; p < materialFactoryList.count(); p++ )
@@ -123,7 +172,12 @@ int main ( int argc, char** argv )
 	std::vector< std::string > shapeFactoryName;
 	for( int p = 0; p < shapeFactoryList.count(); p++ )
 		shapeFactoryName.push_back( shapeFactoryList[p]->TShapeName() );
+
 	QVector< TSunshapeFactory* > sunshapeFactoryList = pluginManager.GetSunshapeFactories();
+	std::vector< std::string >  sunshapeFactoryName;
+	for( int p = 0; p < sunshapeFactoryList.count(); p++ )
+		sunshapeFactoryName.push_back( sunshapeFactoryList[p]->TSunshapeName() );
+
 	QVector< TTrackerFactory* > trackerFactoryList = pluginManager.GetTrackerFactories();
 	std::vector< std::string > trackerFactoryName;
 	for( int p = 0; p < trackerFactoryList.count(); p++ )
@@ -132,18 +186,38 @@ int main ( int argc, char** argv )
 
 
 
+
 	TSceneNode* tonatiuhScene = new TSceneNode;
 	std::cout<<"tonatiuhScene"<<std::endl;
 
 	//Sun
 	double azimuthRad = 180 * gc::Degree;
+	double zentihRad = 15 * gc::Degree;
+	std::cout<<"sunNode"<<std::endl;
 	TSunNode* sunNode = new TSunNode();
 	tonatiuhScene->SetPart( "light",  sunNode );
-	sunNode->SetParameterValue( "azimuth",  QString( "%1" ).arg( QString::number(azimuthRad) ) );
+	std::cout<<"azimuth: "<<azimuthRad<<std::endl;
+	sunNode->SetParameterValue<double>( "azimuth", azimuthRad );
+	std::cout<<"zenith: "<<zentihRad<<std::endl;
+	sunNode->SetParameterValue<double>( "zenith", zentihRad );
+
+	std::cout<<"sunshapeIndex"<<std::endl;
+	int sunshapeIndex = std::distance( sunshapeFactoryName.begin(), std::find(sunshapeFactoryName.begin(), sunshapeFactoryName.end(), "Buie_Sunshape" ) );
+	if( sunshapeIndex >= sunshapeFactoryList.size() )
+	{
+		std::cout<<"Error defining sunshape type."<<std::endl;
+		return -1;
+	}
 
 	TSunshape* sunshapeNode = sunshapeFactoryList[0]->CreateTSunshape();
 	sunshapeNode->SetName( "sunshapeModel");
 	sunNode->SetPart( "sunshape",  sunshapeNode );
+	if( !sunshapeNode->SetParameterValue<double>( "csr", 0.028 ) )
+	{
+		std::cout<<"Error defining crs value."<<std::endl;
+		return -1;
+	}
+
 
 
 	//Parabolic dish
@@ -153,11 +227,12 @@ int main ( int argc, char** argv )
 	tonatiuhScene->SetPart( "childrenList",  rootNode );
 	std::cout<<"rootNode: "<<rootNode->GetName()<<std::endl;
 
-
 	//Concentrator 1
 	TGroupNode* concentrator1Node = new TGroupNode();
 	concentrator1Node->SetName( "Concentrator_1");
-	concentrator1Node->SetParameterValue( "translation",  "-5 0 0" );
+	Vector3D translationValue( -5, 0, 0 );
+	std::any variantVector3D( translationValue );
+	concentrator1Node->SetParameterValue<std::string>( "translation", "-5 0 0" );
 	std::cout<<"concentratorNode: "<<concentrator1Node->GetName()<<std::endl;
 	if( !( rootNode->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( concentrator1Node ) )
 	{
@@ -177,6 +252,7 @@ int main ( int argc, char** argv )
 
 
 
+
 	std::cout<<"TSurfaceNode"<<std::endl;
 	TSurfaceNode* concentratorSurfaceNode = new TSurfaceNode();
 	concentratorSurfaceNode->SetName( "ConcentratorSurface");
@@ -191,9 +267,9 @@ int main ( int argc, char** argv )
 
 	TShape* concentratorShape = shapeFactoryList[concentratorShapeFactoryIndex]->CreateTShape();
 	concentratorShape->SetName( "ConcentratorGeometry");
-	concentratorShape->SetParameterValue( "focusLength", 4.520 );
-	concentratorShape->SetParameterValue( "dishMinRadius",  0.0 );
-	concentratorShape->SetParameterValue( "dishMaxRadius",  4.25 );
+	concentratorShape->SetParameterValue<double>( "focusLength", 4.520 );
+	concentratorShape->SetParameterValue<double>( "dishMinRadius",  0.0 );
+	concentratorShape->SetParameterValue<double>( "dishMaxRadius",  4.25 );
 	concentratorSurfaceNode->SetPart( "shape",  concentratorShape );
 
 	int concentratorMaterialIndex = std::distance( materialFactoryName.begin(), std::find(materialFactoryName.begin(), materialFactoryName.end(), "Specular_Standard_Material" ) );
@@ -206,8 +282,8 @@ int main ( int argc, char** argv )
 	if( materialFactoryList.count() > 0 )
 	{
 		TMaterial* concentratorMaterial = materialFactoryList[concentratorMaterialIndex]->CreateTMaterial();
-		concentratorMaterial->SetParameterValue( "reflectivity", 0.925 );
-		concentratorMaterial->SetParameterValue( "sigmaSlope", 4.4270 );
+		concentratorMaterial->SetParameterValue<double>( "reflectivity", 0.925 );
+		concentratorMaterial->SetParameterValue<double>( "sigmaSlope", 4.4270 );
 		concentratorSurfaceNode->SetPart( "material",  concentratorMaterial );
 	}
 
@@ -217,9 +293,7 @@ int main ( int argc, char** argv )
 	std::cout<<"\treceiverNode: "<<receiverNode->GetName()<<std::endl;
 	receiverNode->SetName( "Receiver ");
 
-	QString translationValue = receiverNode->GetParameterValue( "translation" ).toString();
-	receiverNode->SetParameterValue( "translation",  "0 4.52 0" );
-	translationValue = receiverNode->GetParameterValue( "translation" ).toString();
+	receiverNode->SetParameterValue<std::string>( "translation",  "0 4.52 0" );
 	( c1ParabolicDishTracker->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( receiverNode );
 
 	std::cout<<"TSurfaceNode"<<std::endl;
@@ -234,7 +308,7 @@ int main ( int argc, char** argv )
 	TShape* receiverShape = shapeFactoryList[receiverShapeIndex]->CreateTShape();
 	std::cout<<"\treceiverShape: "<<receiverShape->GetName()<<std::endl;
 	receiverShape->SetName( "ReceiverGeometry");
-	receiverShape->SetParameterValue( "radius",  0.30 );
+	receiverShape->SetParameterValue<double>( "radius",  0.30 );
 	receiverSurfaceNode->SetPart( "shape",  receiverShape );
 
 	if( materialFactoryList.count() > 0 )
@@ -242,7 +316,7 @@ int main ( int argc, char** argv )
 		TMaterial* receiverMaterial = materialFactoryList[concentratorMaterialIndex]->CreateTMaterial();
 		receiverMaterial->SetName( "ReceiverMaterial");
 		std::cout<<"\treceiverMaterial: "<<receiverMaterial->GetName()<<std::endl;
-		receiverMaterial->SetParameterValue( "reflectivity", 0.0 );
+		receiverMaterial->SetParameterValue<double>( "reflectivity", 0.0 );
 		receiverSurfaceNode->SetPart( "material",  receiverMaterial );
 	}
 
@@ -250,7 +324,7 @@ int main ( int argc, char** argv )
 	std::cout<<"Concentrator 2"<<std::endl;
 	TGroupNode* concentrator2Node = new TGroupNode();
 	concentrator2Node->SetName( "Concentrator2");
-	concentrator2Node->SetParameterValue( "translation",  QString( "5 0 0" ) );
+	concentrator2Node->SetParameterValue<std::string>( "translation",  "5 0 0" );
 	if( !( rootNode->GetPart( "childrenList" )->as< TNodesList >() )->InsertItem( concentrator2Node ) )
 	{
 		std::cout<<"Error adding concentrator 2 to root node"<<std::endl;
@@ -271,6 +345,7 @@ int main ( int argc, char** argv )
 		std::cout<<"Error adding surface node to concentrator 2 tracker"<<std::endl;
 		return -1;
 	}
+
 
 	std::cout<<"TNodesDocument saveDocument"<<std::endl;
 	TNodesDocument saveDocument;
@@ -338,7 +413,7 @@ int main ( int argc, char** argv )
 	std::cout<<"p: "<<transformOTW(Point3D( 0, 0, 0 ) )<<std::endl;
 	*/
 
-
+	/*
 
 	//Change sun position
 	std::cout<<"Change sun position:"<<std::endl;
@@ -419,6 +494,14 @@ int main ( int argc, char** argv )
 	std::cout<<"Removed scene node"<<std::endl;
 	sceneNode = 0;
 
+	*/
+
+	//Change sun position
+	std::cout<<"Change sun position:"<<std::endl;
+	TSunNode* sun = sceneNode->GetPart( "light" )->as<TSunNode>();
+	std::cout<<"\tCurrent values:"<<std::endl;
+	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
+	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
 
 	return ( 0 );
 }

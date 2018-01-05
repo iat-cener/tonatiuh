@@ -66,14 +66,15 @@ void SunshapePillbox::Init()
  * SunshapePillbox : public TNode
  */
 SunshapePillbox::SunshapePillbox()
-:TSunshape()
+:TSunshape(),
+ m_irradianceLabel( "irradiance" ),
+ m_thetaMaxLabel( "thetaMax" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( "irradiance", 1000.0 );
-	m_parametersList->Append( "thetaMax", 0.00465 );
+	m_pParametersList->Append<double>( m_irradianceLabel, 1000.0, true );
+	m_pParametersList->Append<double>( m_thetaMaxLabel, 0.00465, true  );
 }
 
 /*!
@@ -85,11 +86,29 @@ SunshapePillbox::~SunshapePillbox()
 }
 
 /*!
+ * Creates a copy of sunshape node.
+ */
+SunshapePillbox* SunshapePillbox::Copy() const
+{
+	SunshapePillbox* sunshapeNode = new SunshapePillbox;
+	if( sunshapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	sunshapeNode->m_pParametersList->SetValue( m_irradianceLabel, GetParameterValue<double>( m_irradianceLabel ) );
+	sunshapeNode->m_pParametersList->SetValue( m_thetaMaxLabel, GetParameterValue<double>( m_thetaMaxLabel ) );
+
+	return ( sunshapeNode );
+}
+
+/*!
  * Creates a ray for the given sunshape model.
  */
 void SunshapePillbox::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
 {
-	double thetaMax = m_parametersList->GetValue( "thetaMax" ).toDouble();
+	double thetaMax = GetParameterValue<double>( m_thetaMaxLabel );
 
 	double phi = gc::TwoPi * rand.RandomDouble();
     double theta = asin( sin( thetaMax )*sqrt( rand.RandomDouble() ) );
@@ -117,7 +136,7 @@ std::string SunshapePillbox::GetIcon() const
 double SunshapePillbox::GetIrradiance() const
 {
 
-	return ( m_parametersList->GetValue( "irradiance" ).toDouble() );
+	return ( GetParameterValue<double>( m_irradianceLabel ) );
 }
 
 /*!
@@ -126,7 +145,7 @@ double SunshapePillbox::GetIrradiance() const
 double SunshapePillbox::GetThetaMax() const
 {
 
-	return ( m_parametersList->GetValue( "thetaMax" ).toDouble() );
+	return ( GetParameterValue<double>( m_thetaMaxLabel ) );
 }
 
 /*!

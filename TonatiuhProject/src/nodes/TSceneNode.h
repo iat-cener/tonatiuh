@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSCENENODE_H_
 
 
+#include "NodeLibrary.h"
 #include "TContainerNode.h"
 
 class Transform;
@@ -55,20 +56,21 @@ class Vector3D;
   -->   "childrenList"
 */
 
-class TSceneNode : public TContainerNode
+class NODE_API TSceneNode : public TContainerNode
 {
 
 private:
-	TSceneNode(const TSceneNode& node) = delete;
-/*
-	Q_OBJECT
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TSceneNode(const TSceneNode&) = delete;
+	TSceneNode& operator=(const TSceneNode&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TSceneNode();
+
+	virtual TSceneNode* Copy() const;
 
 	void ChangeSunPosition( double azimuth, double zenith );
 

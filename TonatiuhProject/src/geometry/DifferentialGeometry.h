@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define DIFFERENTIALGEOMETRY_H
 
 
+#include "GeometryLibrary.h"
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "Vector3D.h"
@@ -50,7 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   DifferentialGeometry represents a point in a surface without the need of the surface information.
 */
 
-struct DifferentialGeometry
+struct GEOMETRY_API DifferentialGeometry
 {
     DifferentialGeometry( );
 	DifferentialGeometry( const Point3D& P, const Vector3D& DPDU,

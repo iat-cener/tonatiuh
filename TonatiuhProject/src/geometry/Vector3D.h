@@ -42,11 +42,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <iostream>
 
+#include "GeometryLibrary.h"
+
 struct Point3D;
 struct NormalVector;
 
 
-struct Vector3D
+struct GEOMETRY_API Vector3D
 {
     Vector3D( double dx = 0.0, double dy = 0.0, double dz = 0.0 );
     Vector3D( const NormalVector& norm );
@@ -77,20 +79,20 @@ struct Vector3D
     double z;
 };
 
-Vector3D operator+( Vector3D lhs, const Vector3D& rhs );
-Vector3D operator-( Vector3D lhs, const Vector3D& rhs );
-Vector3D operator*( double scalar, const Vector3D& vector );
-std::ostream& operator<<( std::ostream& os, const Vector3D& vector );
-double DotProduct( const Vector3D& vA, const Vector3D& vB );
-double DotProduct( const Vector3D& vA, const NormalVector& nB );
-double DotProduct( const NormalVector& nA, const Vector3D& vB );
-double AbsDotProduct( const Vector3D& vA, const Vector3D& vB );
-double AbsDotProduct( const Vector3D& vA, const NormalVector& nB );
-double AbsDotProduct( const NormalVector& nA, const Vector3D& vB );
-Vector3D CrossProduct( const Vector3D& vA, const Vector3D& vB );
-Vector3D CrossProduct( const Vector3D& vA, const NormalVector& nB );
-Vector3D CrossProduct( const NormalVector& nA, const Vector3D& vB );
-Vector3D Normalize( const Vector3D& vA );
-bool SameHemisphere( const Vector3D& vA, const Vector3D& vB );
+Vector3D GEOMETRY_API operator+( Vector3D lhs, const Vector3D& rhs );
+Vector3D GEOMETRY_API operator-( Vector3D lhs, const Vector3D& rhs );
+Vector3D GEOMETRY_API operator*( double scalar, const Vector3D& vector );
+std::ostream& GEOMETRY_API operator<<( std::ostream& os, const Vector3D& vector );
+double GEOMETRY_API DotProduct( const Vector3D& vA, const Vector3D& vB );
+double GEOMETRY_API DotProduct( const Vector3D& vA, const NormalVector& nB );
+double GEOMETRY_API DotProduct( const NormalVector& nA, const Vector3D& vB );
+double GEOMETRY_API AbsDotProduct( const Vector3D& vA, const Vector3D& vB );
+double GEOMETRY_API AbsDotProduct( const Vector3D& vA, const NormalVector& nB );
+double GEOMETRY_API AbsDotProduct( const NormalVector& nA, const Vector3D& vB );
+Vector3D GEOMETRY_API CrossProduct( const Vector3D& vA, const Vector3D& vB );
+Vector3D GEOMETRY_API CrossProduct( const Vector3D& vA, const NormalVector& nB );
+Vector3D GEOMETRY_API CrossProduct( const NormalVector& nA, const Vector3D& vB );
+Vector3D GEOMETRY_API Normalize( const Vector3D& vA );
+bool GEOMETRY_API SameHemisphere( const Vector3D& vA, const Vector3D& vB );
 
 #endif

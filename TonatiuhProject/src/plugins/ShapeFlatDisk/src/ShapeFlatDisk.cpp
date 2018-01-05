@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "NormalVector.h"
 
 #include "ShapeFlatDisk.h"
-#include "TParameterList.h"
 
 
 TNodeType ShapeFlatDisk::m_nodeType = TNodeType::CreateEmptyType();
@@ -66,12 +65,13 @@ void ShapeFlatDisk::Init()
  * ShapeFlatDisk : public TShape
  */
 ShapeFlatDisk::ShapeFlatDisk()
-:TShape()
+:TShape(),
+ m_radiusLabel( "radius" )
 {
 	SetName(GetType().GetName() );
 
 	//Translation
-	m_parametersList->Append( "radius", 0.5 );
+	m_pParametersList->Append<double>( m_radiusLabel, 0.5, true );
 }
 
 /*!
@@ -80,6 +80,23 @@ ShapeFlatDisk::ShapeFlatDisk()
 ShapeFlatDisk::~ShapeFlatDisk()
 {
 
+}
+
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeFlatDisk* ShapeFlatDisk::Copy() const
+{
+	ShapeFlatDisk* shapeNode = new ShapeFlatDisk;
+	if( shapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_radiusLabel, GetParameterValue<double>( m_radiusLabel ) );
+
+	return ( shapeNode );
 }
 
 /*!
@@ -97,7 +114,7 @@ std::string ShapeFlatDisk::GetIcon() const
 BBox ShapeFlatDisk::GetBondingBox() const
 {
 
-	double radius = m_parametersList->GetValue( "radius" ).toDouble();
+	double radius = GetParameterValue<double>( m_radiusLabel );
 	Point3D min = Point3D( -radius, 0.0, -radius );
 	Point3D max = Point3D( radius, 0.0, radius );
 
@@ -118,10 +135,7 @@ TNodeType ShapeFlatDisk::GetType() const
  */
 bool ShapeFlatDisk::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	//return ( false );
-
-
-	double radius = m_parametersList->GetValue( "radius" ).toDouble();
+	double radius = GetParameterValue<double>( m_radiusLabel );
 
 	// Solve equation for _t_ value
 	if ( ( objectRay.origin.y == 0 ) && ( objectRay.direction().y == 0 ) ) return false;

@@ -56,19 +56,16 @@ class MaterialStandardSpecular : public TMaterial
 {
 
 private:
-	MaterialStandardSpecular(const MaterialStandardSpecular& node) = delete;
-/*
-	Q_OBJECT
-
-private:
-	Q_DISABLE_COPY(MaterialStandardSpecular)
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	MaterialStandardSpecular(const MaterialStandardSpecular&) = delete;
+	MaterialStandardSpecular& operator=(const MaterialStandardSpecular&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	MaterialStandardSpecular( );
+	MaterialStandardSpecular* Copy() const;
 
     std::string GetIcon();
 	TNodeType GetType() const;
@@ -80,6 +77,11 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_reflectivityLabel;
+	std::string m_sigmaSlopeLabel;
+	std::string m_distributionLabel;
+	std::string m_colorLabel;
+	std::string m_transparencyLabel;
 
 };
 

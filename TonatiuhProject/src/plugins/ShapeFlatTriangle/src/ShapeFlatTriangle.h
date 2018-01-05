@@ -58,13 +58,16 @@ class ShapeFlatTriangle : public TShape
 {
 
 private:
-	ShapeFlatTriangle(const ShapeFlatTriangle& node) = delete;
+	//No copy constructor. Use Copy to create a copy of the node
+	ShapeFlatTriangle(const ShapeFlatTriangle&) = delete;
+	ShapeFlatTriangle& operator=(const ShapeFlatTriangle&) = delete;
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	ShapeFlatTriangle( );
+	ShapeFlatTriangle* Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -77,6 +80,9 @@ protected:
 
 private:
 	static TNodeType m_nodeType;
+	std::string m_aLabel;
+	std::string m_bLabel;
+	std::string m_cLabel;
 };
 
 #endif /* SHAPEFLATTRIANGLE_H_ */

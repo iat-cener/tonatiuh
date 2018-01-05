@@ -40,31 +40,50 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TPARAMETER_H_
 #define TPARAMETER_H_
 
-#include <QVariant>
-#include <QMetaType>
+//#include <any>
+#include <functional>
+#include <string>
+
+//#include <QVariant>
+
+#include <optional>
+#include <variant>
+
+
+#include "EnumeratedTypes.h"
+#include "NodeLibrary.h"
+#include "Point3D.h"
+
 
 //!  TParameter class is the base class for all Tonatiuh parameter types.
 /*!
  * TParameter is the abstraction of the new types of parameters. All the new types of parameters in Tonatiuh must be inherited by this class.
 */
 
-/** Base class of all Tonatiuh parameters: TParameter
- * TParameter must be a QObject to work as a QVariant*/
-class TParameter: public QObject
-{
-	Q_OBJECT
+/** Base class of all Tonatiuh parameters: TParameter*/
 
-private:
-	TParameter(const TParameter& node) = delete;
+
+typedef std::optional<std::variant<std::string, int, double, Point3D, EnumeratedTypes> > tonatiuh_variant;
+
+class NODE_API TParameter
+{
 
 public:
 	TParameter();
+	TParameter(const TParameter& parameter);
 	virtual ~TParameter();
 
-	virtual bool SetValue( QVariant value ) = 0;
-	virtual std::string ToString() const = 0;
+	bool FromString( const std::string& value );
+	tonatiuh_variant GetValue() const;
+
+	bool SetValue( const tonatiuh_variant& value );
+	void SetConnectedFuntion( std::function<bool()> function );
+	std::string ToString() const;
+
+private:
+	tonatiuh_variant m_variant;
+	std::function<bool()> m_connectedFunction;
 };
 
-Q_DECLARE_METATYPE( TParameter* )
 
 #endif /* TPARAMETER_H_ */

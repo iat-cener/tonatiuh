@@ -61,7 +61,6 @@ void TSunshape::Init()
 TSunshape::TSunshape()
 :TNode()
 {
-	//setObjectName( GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 
 }

@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSURFACENODE_H_
 
 
+#include "Vector3D.h"
 #include "TContainerNode.h"
 
 //!  TSurfaceNode class is the container class to describe a surface.
@@ -50,20 +51,22 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   -->   "material"
 */
 
-class TSurfaceNode : public TContainerNode
+class NODE_API TSurfaceNode : public TContainerNode
 {
 
 private:
-	TSurfaceNode(const TSurfaceNode& node) = delete;
-/*
-	Q_OBJECT
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TSurfaceNode(const TSurfaceNode& ) = delete;
+	TSurfaceNode& operator=(const TSurfaceNode&) = delete;
+
 
 public:
 	static void* CreateInstance();
 	static void Init();
 
 	TSurfaceNode();
+	virtual TSurfaceNode* Copy() const;
+
 	virtual TNodeType GetType() const;
 
 

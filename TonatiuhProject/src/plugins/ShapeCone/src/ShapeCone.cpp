@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "gf.h"
 
 #include "ShapeCone.h"
-#include "TParameterList.h"
 
 TNodeType ShapeCone::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -65,16 +64,19 @@ void ShapeCone::Init()
  * ShapeFlatDisk : public TShape
  */
 ShapeCone::ShapeCone(  )
-:TShape()
+:TShape(),
+ m_baseRadiusLabel( "baseRadius" ),
+ m_topRadiusLabel( "topRadius" ),
+ m_heightLabel( "height" ),
+ m_phiMaxLabel( "phiMax" )
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName(GetType().GetName() );
 
 	//Parameters
-	m_parametersList->Append( "baseRadius", 0.5 );
-	m_parametersList->Append( "topRadius", 0.0 );
-	m_parametersList->Append( "height", 1.0 );
-	m_parametersList->Append( "phiMax", gc::TwoPi );
+	m_pParametersList->Append<double>( m_baseRadiusLabel, 0.5, true );
+	m_pParametersList->Append<double>( m_topRadiusLabel, 0.0, true );
+	m_pParametersList->Append<double>( m_heightLabel, 1.0, true );
+	m_pParametersList->Append<double>( m_phiMaxLabel, gc::TwoPi, true );
 
 }
 
@@ -85,6 +87,27 @@ ShapeCone::~ShapeCone()
 {
 
 }
+
+/*!
+ * Creates a copy of shape node.
+ */
+ShapeCone* ShapeCone::Copy() const
+{
+	ShapeCone* shapeNode = new ShapeCone;
+	if( shapeNode == 0 )	return ( 0  );
+
+	//Coping node parts.
+	//NO parts
+
+	//Coping the parameters.
+	shapeNode->m_pParametersList->SetValue( m_baseRadiusLabel, GetParameterValue<double>( m_baseRadiusLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_topRadiusLabel, GetParameterValue<double>( m_topRadiusLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_heightLabel, GetParameterValue<double>( m_heightLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_phiMaxLabel, GetParameterValue<double>( m_phiMaxLabel ) );
+
+	return ( shapeNode );
+}
+
 
 /*!
  * Returns the filename that stores the shape icon.
@@ -101,10 +124,10 @@ std::string ShapeCone::GetIcon() const
  */
 BBox ShapeCone::GetBondingBox() const
 {
-	double baseRadius = m_parametersList->GetValue( "baseRadius" ).toDouble();
-	double topRadius = m_parametersList->GetValue( "topRadius" ).toDouble();
-	double height = m_parametersList->GetValue( "height" ).toDouble();
-	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
+	double baseRadius = GetParameterValue<double>( m_baseRadiusLabel );
+	double topRadius = GetParameterValue<double>( m_topRadiusLabel );
+	double height = GetParameterValue<double>( m_heightLabel );
+	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -138,10 +161,10 @@ TNodeType ShapeCone::GetType() const
  */
 bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	double baseRadius = m_parametersList->GetValue( "baseRadius" ).toDouble();
-	double topRadius = m_parametersList->GetValue( "topRadius" ).toDouble();
-	double height = m_parametersList->GetValue( "height" ).toDouble();
-	double phiMax = m_parametersList->GetValue( "phiMax" ).toDouble();
+	double baseRadius = GetParameterValue<double>( m_baseRadiusLabel );
+	double topRadius = GetParameterValue<double>( m_topRadiusLabel );
+	double height = GetParameterValue<double>( m_heightLabel );
+	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
 
 
 	// Compute quadratic ShapeCone coefficients

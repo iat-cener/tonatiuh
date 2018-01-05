@@ -56,7 +56,6 @@ void TNodesList::Init()
 TNodesList::TNodesList()
 :TNode()
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 }
 
@@ -105,17 +104,8 @@ TNodesList* TNodesList::Copy() const
 	for( unsigned int i = 0; i < m_children.size(); i++ )
 		nodeList->InsertItem( m_children[i]->Copy() );
 
-
-
-	TParameterList* parametersList = nodeList->m_parametersList;
-	std::vector< std::string > parameterNames = m_parametersList->GetParametersNames();
-	for( unsigned int p = 0; p < parameterNames.size(); p++ )
-	{
-		QVariant parameterValue = m_parametersList->GetValue( parameterNames[p] );
-		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
-		parametersList->Append(parameterNames[p], parameterValue, parameterVisibility );
-	}
-
+	//There are not parameters in TNodesLists
+	//
 	return ( nodeList );
 }
 

@@ -37,9 +37,13 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <string>
+
+
+#include "Vector3D.h"
+
 #include "TNode.h"
 #include "TNodeType.h"
-#include "TParameterList.h"
 
 TNodeType TNode::m_nodeType = TNodeType::CreateEmptyType();
 
@@ -66,8 +70,7 @@ TNode::TNode()
 	m_id = nodeIndex;
 	nodeIndex++;
 
-	//setObjectName(GetType().GetName().c_str() );
-	m_parametersList = new TParameterList;
+	m_pParametersList = std::make_unique<TParameterList>();
 }
 
 /*!
@@ -81,23 +84,12 @@ TNode::~TNode()
 /*!
  * Creates a copy of the node.
  */
+/*
 TNode* TNode::Copy() const
 {
-	TNode* node = new TNode();
-
-	TParameterList* parametersList = node->m_parametersList;
-
-	std::vector< std::string > parameterNames = m_parametersList->GetParametersNames();
-	for( unsigned int p = 0; p < parameterNames.size(); p++ )
-	{
-		QVariant parameterValue = m_parametersList->GetValue( parameterNames[p] );
-		bool parameterVisibility = m_parametersList->GetVisibility( parameterNames[p] );
-		parametersList->Append(parameterNames[p], parameterValue, parameterVisibility );
-	}
-
-
-	return ( node );
+	return ( CreateCopy() );
 }
+*/
 
 /*!
  * Returns node identifier.
@@ -124,16 +116,14 @@ std::string TNode::GetIcon() const
 }
 
 /*!
- * Returns the value of the parameter \a name.
+ * Returns the value of the parameter \a name as a string.
  */
-QVariant TNode::GetParameterValue( std::string name ) const
+std::string TNode::GetParameterToString( std::string name ) const
 {
-
-	if(!m_parametersList )	return( QVariant() );
-	if( !m_parametersList->Contains( name ) || !m_parametersList->GetVisibility( name ) )
-		return( QVariant() );
-	return (m_parametersList->GetValue( name ) );
-
+	if(!m_pParametersList )	return( std::string() );
+	if( !m_pParametersList->Contains( name ) || !m_pParametersList->GetVisibility( name ) )
+		return( std::string() );
+	return (m_pParametersList->GetValueToString( name ) );
 }
 
 /*!
@@ -157,13 +147,13 @@ TNodeType TNode::GetType() const
  */
 std::vector<std::string> TNode::GetVisibleParametersName() const
 {
-	std::vector< std::string > allParametersNames = m_parametersList->GetParametersNames();
+	std::vector< std::string > allParametersNames = m_pParametersList->GetParametersNames();
 
 	//Remove the no visible parameters starting from the end to avoid the changes in the indexes
 	int nParameters = allParametersNames.size();
 	for( int i = nParameters -1; i >=0; i-- )
 	{
-		if( !m_parametersList->GetVisibility( allParametersNames[i] ) )
+		if( !m_pParametersList->GetVisibility( allParametersNames[i] ) )
 			allParametersNames.erase( allParametersNames.begin() + i );
 	}
 	return ( allParametersNames );
@@ -178,6 +168,9 @@ void TNode::IncreaseReference()
 	m_referenceCount++;
 }
 
+/*!
+ * Decrease the number of references. Deletes the node if there are not references to this node.
+ */
 void TNode::RemoveReference()
 {
 	m_referenceCount--;
@@ -194,15 +187,16 @@ void TNode::SetName( std::string name )
 }
 
 /*!
- * Sets to the parameter \a name the \a value.
+ * Sets to the parameter \a name the \a value that is stored in a string type.
  */
-bool TNode::SetParameterValue( const std::string& name, const QVariant& value )
+bool TNode::SetParameterFormString( const std::string& name, const std::string& value )
 {
-
-	if( !m_parametersList )	return ( false );
-	if( !m_parametersList->Contains( name ) || !m_parametersList->GetVisibility( name ) )
+	if( !m_pParametersList )	return ( false );
+	if( !m_pParametersList->Contains( name ) || !m_pParametersList->GetVisibility( name ) )
 		return ( false );
-	if( !m_parametersList->SetValue( name, value ) ) 	return ( false );
+
+	if( !m_pParametersList->SetValueFromString( name, value ) ) 	return ( false );
 
 	return (true);
 }
+

@@ -1,15 +1,11 @@
 TEMPLATE = app
 
-
-CONFIG       += qt warn_on thread debug_and_release
-
 include( $$(TONATIUH_ROOT)/config.pri )
 
 TARGET = Tonatiuh   
 
               
 INCLUDEPATH += 	. \
-               $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/raytracing \
@@ -25,15 +21,13 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 
 
 # Input
-HEADERS += $$(TONATIUH_ROOT)/src/auxiliary/*.h \
-			$$(TONATIUH_ROOT)/src/source/application/*.h \
+HEADERS += $$(TONATIUH_ROOT)/src/source/application/*.h \
 			$$(TONATIUH_ROOT)/src/raytracing/*.h \
 			$$(TONATIUH_ROOT)/src/statistics/*.h
                 
 #FORMS += src/source/gui/*.ui
 
-SOURCES += $$(TONATIUH_ROOT)/src/auxiliary/*.cpp \
-			$$(TONATIUH_ROOT)/src/source/application/*.cpp  \
+SOURCES +=	$$(TONATIUH_ROOT)/src/source/application/*.cpp  \
 			$$(TONATIUH_ROOT)/src/raytracing/*.cpp  \
 			$$(TONATIUH_ROOT)/src/statistics/*.cpp
 

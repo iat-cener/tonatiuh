@@ -41,8 +41,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TSHAPE_H_
 
 #include "BBox.h"
-
 #include "Ray.h"
+
+#include "NodeLibrary.h"
 #include "TNode.h"
 #include "TNodeType.h"
 
@@ -53,21 +54,18 @@ class DifferentialGeometry;
   TShape class is the base for geometry nodes. The node classes that has geometry properties inherits this class. This class has some common code for all shapes.
 */
 
-class TShape: public TNode
+class NODE_API TShape: public TNode
 {
 
 private:
-	TShape(const TShape& node) = delete;
-/*
-
-private:
-	Q_DISABLE_COPY(TShape)
-*/
+	//No copy constructor. Use Copy to create a copy of the node
+	TShape(const TShape& ) = delete;
+	TShape& operator=(const TShape&) = delete;
 
 public:
 	static void Init();
 
-	TShape();
+	//TShape* Copy() const = 0;
 
 	virtual std::string GetIcon() const = 0;
 	virtual BBox GetBondingBox() const = 0;
@@ -76,7 +74,10 @@ public:
 	virtual void Draw() const = 0;
 
 protected:
-	virtual ~TShape();
+	//virtual TNode* CreateCopy() const = 0;
+
+	TShape();
+	virtual ~TShape() noexcept;
 
 private:
 	static TNodeType m_nodeType;
