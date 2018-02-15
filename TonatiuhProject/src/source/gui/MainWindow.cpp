@@ -277,13 +277,13 @@ void MainWindow::SetPluginManager( PluginManager* pluginManager )
  */
 void MainWindow::StartManipulation( SoDragger* dragger )
 {
-	SoSearchAction* coinSearch = new SoSearchAction();
-	coinSearch->setNode( dragger );
-	coinSearch->setInterest( SoSearchAction::FIRST);
+	SoSearchAction coinSearch;
+	coinSearch.setNode( dragger );
+	coinSearch.setInterest( SoSearchAction::FIRST);
 
-	coinSearch->apply( m_graphicsRoot->GetNode() );
+	coinSearch.apply( m_graphicsRoot->GetNode() );
 
-	SoPath* coinScenePath = coinSearch->getPath( );
+	SoPath* coinScenePath = coinSearch.getPath( );
 	if( !coinScenePath ) gf::SevereError( "PathFromIndex Null coinScenePath." );
 
 	SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
@@ -317,7 +317,6 @@ void MainWindow::StartManipulation( SoDragger* dragger )
 			m_manipulators_Buffer->push_back(QString( fieldValue.getString() ) );
 		}
 	}
-	delete coinSearch;
 }
 
 /*!
@@ -929,12 +928,12 @@ void MainWindow::on_actionSunPlane_triggered()
 	if ( !lightKit ) return;
 
 
-	SoSearchAction* coinSearch = new SoSearchAction();
-	coinSearch->setNode( lightKit );
-	coinSearch->setInterest( SoSearchAction::FIRST );
-	coinSearch->apply( m_graphicsRoot->GetNode() );
+	SoSearchAction coinSearch;
+	coinSearch.setNode( lightKit );
+	coinSearch.setInterest( SoSearchAction::FIRST );
+	coinSearch.apply( m_graphicsRoot->GetNode() );
 
-	SoPath* lightPath = coinSearch->getPath( );
+	SoPath* lightPath = coinSearch.getPath( );
 	if( !lightPath ) gf::SevereError( "MainWindow Null light path." );
 
 	const SbViewportRegion vpr = m_graphicView[m_focusView]->GetViewportRegion();
@@ -1340,11 +1339,11 @@ void MainWindow::CreateComponentNode( QString componentType, QString nodeName, i
 	if( lightKit )
 	{
 
-		SoSearchAction* tracersSearch = new SoSearchAction();
-		tracersSearch->setType( TTracker::getClassTypeId() );
-		tracersSearch->setInterest( SoSearchAction::ALL);
-		tracersSearch->apply( componentRootNode );
-		SoPathList& trackersPath = tracersSearch->getPaths();
+		SoSearchAction trackersSearch;
+		trackersSearch.setType( TTracker::getClassTypeId() );
+		trackersSearch.setInterest( SoSearchAction::ALL);
+		trackersSearch.apply( componentRootNode );
+		SoPathList& trackersPath = trackersSearch.getPaths();
 
 		for( int index = 0; index <trackersPath.getLength(); ++index )
 		{
@@ -1698,11 +1697,11 @@ void MainWindow::InsertFileComponent( QString componentFileName )
 	if( lightKit )
 	{
 
-		SoSearchAction* tracersSearch = new SoSearchAction();
-		tracersSearch->setType( TTracker::getClassTypeId() );
-		tracersSearch->setInterest( SoSearchAction::ALL);
-		tracersSearch->apply( componentRootNode );
-		SoPathList& trackersPath = tracersSearch->getPaths();
+		SoSearchAction trackersSearch;
+		trackersSearch.setType( TTracker::getClassTypeId() );
+		trackersSearch.setInterest( SoSearchAction::ALL);
+		trackersSearch.apply( componentRootNode );
+		SoPathList& trackersPath = trackersSearch.getPaths();
 
 		for( int index = 0; index <trackersPath.getLength(); ++index )
 		{
@@ -2644,11 +2643,11 @@ void MainWindow::CreateComponent( TComponentFactory* pTComponentFactory )
 	if( lightKit )
 	{
 
-		SoSearchAction* tracersSearch = new SoSearchAction();
-		tracersSearch->setType( TTracker::getClassTypeId() );
-		tracersSearch->setInterest( SoSearchAction::ALL);
-		tracersSearch->apply( componentRootNode );
-		SoPathList& trackersPath = tracersSearch->getPaths();
+		SoSearchAction trackersSearch;
+		trackersSearch.setType( TTracker::getClassTypeId() );
+		trackersSearch.setInterest( SoSearchAction::ALL);
+		trackersSearch.apply( componentRootNode );
+		SoPathList& trackersPath = trackersSearch.getPaths();
 
 		for( int index = 0; index <trackersPath.getLength(); ++index )
 		{

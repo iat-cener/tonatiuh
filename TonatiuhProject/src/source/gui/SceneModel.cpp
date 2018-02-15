@@ -339,18 +339,18 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
     	    		nodeName = QLatin1String( coinNode->getName().getString() );
 
 
-				SoSearchAction* coinSearch = new SoSearchAction();
-				coinSearch->setNode( coinNode );
-				coinSearch->setInterest( SoSearchAction::ALL);
-				coinSearch->apply( m_coinRoot );
+				SoSearchAction coinSearch;
+				coinSearch.setNode( coinNode );
+				coinSearch.setInterest( SoSearchAction::ALL);
+				coinSearch.apply( m_coinRoot );
 
-				int numReferences = coinSearch->getPaths( ).getLength();
+				int numReferences = coinSearch.getPaths( ).getLength();
 
 				QString references( QLatin1String( " ( " ) );
 				references += QString::number( numReferences, 10);
 				references +=  QLatin1String( " )  ");
 
-				delete coinSearch;
+				//delete coinSearch;
 
     	    	return references + nodeName;
     	    }
@@ -475,11 +475,11 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 
 	m_coinScene->setPart( "lightList[0]", &coinLight );
 
-	SoSearchAction* tracersSearch = new SoSearchAction();
-	tracersSearch->setType( TTracker::getClassTypeId() );
-	tracersSearch->setInterest( SoSearchAction::ALL);
-	tracersSearch->apply( m_coinRoot );
-	SoPathList& trackersPath = tracersSearch->getPaths();
+	SoSearchAction trackersSearch;
+	trackersSearch.setType( TTracker::getClassTypeId() );
+	trackersSearch.setInterest( SoSearchAction::ALL);
+	trackersSearch.apply( m_coinRoot );
+	SoPathList& trackersPath = trackersSearch.getPaths();
 
 	for( int index = 0; index <trackersPath.getLength(); ++index )
 	{
@@ -539,11 +539,11 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
     if ( lightList ) lightList->removeChild( &coinLight );
     m_instanceRoot->children.remove( 0 );
 
-	SoSearchAction* tracersSearch = new SoSearchAction();
-	tracersSearch->setType( TTracker::getClassTypeId() );
-	tracersSearch->setInterest( SoSearchAction::ALL);
-	tracersSearch->apply( m_coinRoot );
-	SoPathList& trackersPath = tracersSearch->getPaths();
+	SoSearchAction trackersSearch;
+	trackersSearch.setType( TTracker::getClassTypeId() );
+	trackersSearch.setInterest( SoSearchAction::ALL);
+	trackersSearch.apply( m_coinRoot );
+	SoPathList& trackersPath = trackersSearch.getPaths();
 
 	for( int index = 0; index <trackersPath.getLength(); ++index )
 	{
@@ -948,19 +948,18 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 	}
 	else
 	{
-		SoSearchAction* coinSearch = new SoSearchAction();
-		coinSearch->setNode( m_coinScene );
-		coinSearch->setInterest( SoSearchAction::FIRST);
-		coinSearch->apply( m_coinRoot );
+		SoSearchAction coinSearch;
+		coinSearch.setNode( m_coinScene );
+		coinSearch.setInterest( SoSearchAction::FIRST);
+		coinSearch.apply( m_coinRoot );
 
-		SoPath* coinScenePath = coinSearch->getPath( );
+		SoPath* coinScenePath = coinSearch.getPath( );
 		if( !coinScenePath ) gf::SevereError( "PathFromIndex Null coinScenePath." );
 
 		SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
 		if( !nodePath ) gf::SevereError( "PathFromIndex Null nodePath." );
 
 		nodePath->ref();
-		delete coinSearch;
 
 		InstanceNode* instanceNode = NodeFromIndex( modelIndex );
 
