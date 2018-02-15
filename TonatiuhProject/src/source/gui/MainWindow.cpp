@@ -942,16 +942,10 @@ void MainWindow::on_actionSunPlane_triggered()
 
 	Transform  lightToWorld = tgf::TransformFromMatrix( getmatrixaction->getMatrix() );
 
-	//Vector3D camOrientation= lightToWorld( Vector3D( 0.0, -1.0, 0.0 ) );
-
-	//double t = 1.0;
-	//if( camPosition.y != 0.0 && camOrientation.y != 0.0 ) t = -camPosition.y / camOrientation.y;
-	//Point3D targetPoint = camPosition + camOrientation * t;
-
-
 	SoCamera* cam = m_graphicView[m_focusView]->GetCamera();
 	Point3D camPosition = lightToWorld( Point3D( 0.0, cam->focalDistance.getValue(), 0.0 ) );
 
+	delete getmatrixaction;
 
 	SbVec3f target = getTargetOfCamera(cam);
 
@@ -3890,6 +3884,7 @@ void MainWindow::ShowRaysIn3DView()
 bool MainWindow::StartOver( const QString& fileName )
 {
 	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
+
 	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
@@ -3904,7 +3899,7 @@ bool MainWindow::StartOver( const QString& fileName )
 
 	SetSunPositionCalculatorEnabled( 0 );
 
-	QStatusBar* statusbar = new QStatusBar;
+	QStatusBar* statusbar = statusBar();
 	setStatusBar( statusbar );
 
 	if( !fileName.isEmpty() && m_document->ReadFile( fileName ) )

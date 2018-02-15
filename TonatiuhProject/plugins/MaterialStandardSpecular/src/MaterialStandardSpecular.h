@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 
 class SoSensor;
+class SoFieldSensor;
 
 
 class MaterialStandardSpecular : public TMaterial
@@ -89,6 +90,16 @@ protected:
 	static void updateEmissiveColor( void* data, SoSensor* );
 	static void updateShininess( void* data, SoSensor* );
 	static void updateTransparency( void* data, SoSensor* );
+
+private:
+	SoFieldSensor* m_reflectivitySensor;
+	SoFieldSensor* m_ambientColorSensor;
+	SoFieldSensor* m_diffuseColorSensor;
+	SoFieldSensor* m_specularColorSensor;
+	SoFieldSensor* m_emissiveColorSensor;
+	SoFieldSensor* m_shininessSensor;
+	SoFieldSensor* m_transparencySensor;
+
 
 };
 

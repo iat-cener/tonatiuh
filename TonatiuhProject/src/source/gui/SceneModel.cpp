@@ -641,6 +641,8 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	{
 		InstanceNode* instanceNode = instanceList[0];
 	    DeleteInstanceTree( *instanceNode );
+	    delete instanceNode;
+	    instanceNode = 0;
 	}
 	else
 	{
@@ -650,6 +652,8 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 		    InstanceNode* instanceParent = instanceListParent[0];
 		    InstanceNode* instanceNode = instanceParent->children[row];
 		    DeleteInstanceTree( *instanceNode );
+		    delete instanceNode;
+		    instanceNode = 0;
 		}
 		else
 		{
@@ -658,6 +662,8 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 			    InstanceNode* instanceParent = instanceListParent[index];
 			    InstanceNode* instanceNode = instanceParent->children[row];
 			    DeleteInstanceTree( *instanceNode );
+			    delete instanceNode;
+			    instanceNode = 0;
 			}
 		}
 	}
@@ -921,8 +927,10 @@ void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 	{
 		InstanceNode* childInstance = instanceNode.children[instanceNode.children.count()-1];
 		DeleteInstanceTree( *childInstance );
-		//delete childInstance;
+		delete childInstance;
+		childInstance = 0;
 	}
+
 
 	QList<InstanceNode*>& instanceList = m_mapCoinQt[ instanceNode.GetNode()];
 	instanceList.removeAt( instanceList.indexOf( &instanceNode ) );
@@ -933,6 +941,7 @@ void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 		int row = instanceParent->children.indexOf( &instanceNode );
 		instanceParent->children.remove( row );
 	}
+
 }
 
 SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
@@ -940,7 +949,6 @@ SoNodeKitPath* SceneModel::PathFromIndex( const QModelIndex& modelIndex ) const
 	SoNode* coinNode = NodeFromIndex( modelIndex )->GetNode();
 	if (!coinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
-
     	QModelIndex parentIndex = parent( modelIndex );
 		SoNodeKitPath* parentPath = PathFromIndex( parentIndex );
 		return parentPath;

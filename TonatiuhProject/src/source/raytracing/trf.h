@@ -190,6 +190,7 @@ inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , s
 
 inline Transform trf::GetObjectToWorld(SoPath* nodePath)
 {
+
 	SoGetMatrixAction* getmatrixAction = new SoGetMatrixAction( SbViewportRegion () );
 	getmatrixAction->apply( nodePath );
 

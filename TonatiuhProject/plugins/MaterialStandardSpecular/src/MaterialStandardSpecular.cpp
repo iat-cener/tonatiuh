@@ -76,32 +76,39 @@ MaterialStandardSpecular::MaterialStandardSpecular()
 	SO_NODE_ADD_FIELD( m_shininess, (0.2f) );
 	SO_NODE_ADD_FIELD( m_transparency, (0.0f) );
 
-	SoFieldSensor* m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
+	m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
 	m_reflectivitySensor->setPriority( 1 );
 	m_reflectivitySensor->attach( &m_reflectivity );
 
-	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
+	m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
 	m_ambientColorSensor->setPriority( 1 );
 	m_ambientColorSensor->attach( &m_ambientColor );
-	SoFieldSensor* m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
+	m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
 	m_diffuseColorSensor->setPriority( 1 );
 	m_diffuseColorSensor->attach( &m_diffuseColor );
-	SoFieldSensor* m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
+	m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
 	m_specularColorSensor->setPriority( 1 );
 	m_specularColorSensor->attach( &m_specularColor );
-	SoFieldSensor* m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
+	m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
 	m_emissiveColorSensor->setPriority( 1 );
 	m_emissiveColorSensor->attach( &m_emissiveColor );
-	SoFieldSensor* m_shininessSensor = new SoFieldSensor( updateShininess, this );
+	m_shininessSensor = new SoFieldSensor( updateShininess, this );
 	m_shininessSensor->setPriority( 1 );
 	m_shininessSensor->attach( &m_shininess );
-	SoFieldSensor* m_transparencySensor = new SoFieldSensor( updateTransparency, this );
+	m_transparencySensor = new SoFieldSensor( updateTransparency, this );
 	m_transparencySensor->setPriority( 1 );
 	m_transparencySensor->attach( &m_transparency );
 }
 
 MaterialStandardSpecular::~MaterialStandardSpecular()
 {
+	delete m_reflectivitySensor;
+	delete m_ambientColorSensor;
+	delete m_diffuseColorSensor;
+	delete m_specularColorSensor;
+	delete m_emissiveColorSensor;
+	delete m_shininessSensor;
+	delete m_transparencySensor;
 }
 
 QString MaterialStandardSpecular::getIcon()

@@ -58,12 +58,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 InstanceNode::InstanceNode( SoNode* node )
 : m_coinNode( node ), m_parent( 0 )
 {
+	m_coinNode->ref();
 }
 
+/*
 InstanceNode::InstanceNode( const InstanceNode* node )
 {
    m_coinNode = node->m_coinNode;
-   node->m_coinNode->ref();
+   m_coinNode->ref();
    m_parent = node->m_parent;
 
    for( int index = 0; index < node->children.count(); ++index )
@@ -72,10 +74,12 @@ InstanceNode::InstanceNode( const InstanceNode* node )
        children.append(child);
     }
 }
+*/
 
 InstanceNode::~InstanceNode()
 {
-   qDeleteAll( children );
+	m_coinNode->unref();
+	qDeleteAll( children );
 }
 
 /**
