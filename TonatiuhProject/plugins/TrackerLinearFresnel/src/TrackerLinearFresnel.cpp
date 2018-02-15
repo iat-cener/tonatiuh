@@ -60,7 +60,8 @@ void TrackerLinearFresnel::initClass()
 }
 
 TrackerLinearFresnel::TrackerLinearFresnel()
-:m_previousAimingPointType( 0 )
+:m_previousAimingPointType( 0 ),
+ m_infoDisplayed( 0 )
 {
 	SO_NODEENGINE_CONSTRUCTOR( TrackerLinearFresnel );
 
@@ -74,7 +75,7 @@ TrackerLinearFresnel::TrackerLinearFresnel()
 	SO_NODE_DEFINE_ENUM_VALUE( AimingPointType, Relative );
 	SO_NODE_SET_SF_ENUM_TYPE( typeOfAimingPoint, AimingPointType );
 	SO_NODE_ADD_FIELD( typeOfAimingPoint, (Absolute) );
-	SoFieldSensor* m_infoDisplayed = new SoFieldSensor( TTrackerForAiming::updateTypeOfAimingPoint, this );
+	m_infoDisplayed = new SoFieldSensor( TTrackerForAiming::updateTypeOfAimingPoint, this );
 	m_infoDisplayed->setPriority( 1 );
 	m_infoDisplayed->attach( &typeOfAimingPoint );
 
@@ -99,6 +100,8 @@ TrackerLinearFresnel::TrackerLinearFresnel()
 
 TrackerLinearFresnel::~TrackerLinearFresnel()
 {
+	delete m_infoDisplayed;
+	m_infoDisplayed = 0;
 }
 
 QString TrackerLinearFresnel::getIcon()
@@ -109,10 +112,14 @@ QString TrackerLinearFresnel::getIcon()
 
 void TrackerLinearFresnel::evaluate()
 {
-
 	if (!IsConnected()) return;
-	SoPath* nodePath= m_scene->GetSoPath(this );
-	if (!nodePath) return;
+
+	SoSearchAction coinSearch;
+	coinSearch.setNode( this );
+
+	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
+	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
+		return;
 
 	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath->copy() );
 	parentPath->pop();
@@ -185,9 +192,12 @@ void TrackerLinearFresnel::SwitchAimingPointType()
 {
 	if( m_previousAimingPointType == typeOfAimingPoint.getValue() )	return;
 
+	SoSearchAction coinSearch;
+	coinSearch.setNode( this );
 
-	SoPath* nodePath= m_scene->GetSoPath( this );
-	if (!nodePath) return;
+	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
+	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
+		return;
 	Transform objectToWorld = trf::GetObjectToWorld(nodePath);
 
 	Point3D focus;

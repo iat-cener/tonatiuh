@@ -59,7 +59,8 @@ void TrackerHeliostat::initClass()
 }
 
 TrackerHeliostat::TrackerHeliostat()
-:m_previousAimingPointType( 0 )
+:m_previousAimingPointType( 0 ),
+ m_infoDisplayed( 0 )
 {
 	SO_NODEENGINE_CONSTRUCTOR( TrackerHeliostat );
 	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
@@ -71,7 +72,8 @@ TrackerHeliostat::TrackerHeliostat()
 	SO_NODE_DEFINE_ENUM_VALUE( AimingPointType, Relative );
 	SO_NODE_SET_SF_ENUM_TYPE( typeOfAimingPoint, AimingPointType );
 	SO_NODE_ADD_FIELD( typeOfAimingPoint, (Absolute) );
-	SoFieldSensor* m_infoDisplayed = new SoFieldSensor( TTrackerForAiming::updateTypeOfAimingPoint, this );
+
+	m_infoDisplayed = new SoFieldSensor( TTrackerForAiming::updateTypeOfAimingPoint, this );
 	m_infoDisplayed->setPriority( 1 );
 	m_infoDisplayed->attach( &typeOfAimingPoint );
 
@@ -95,6 +97,8 @@ TrackerHeliostat::TrackerHeliostat()
 
 TrackerHeliostat::~TrackerHeliostat()
 {
+	delete m_infoDisplayed;
+	m_infoDisplayed = 0;
 }
 
 QString TrackerHeliostat::getIcon()
@@ -108,15 +112,22 @@ QString TrackerHeliostat::getIcon()
 void TrackerHeliostat::evaluate()
 {
 	if( !IsConnected() )	return;
-	SoPath* nodePath= m_scene->GetSoPath(this );
-	if( !nodePath ) return;
+
+
+	SoSearchAction coinSearch;
+	coinSearch.setNode( this );
+
+	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
+	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
+		return;
 
 	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath );
-	parentPath->ref();
 	parentPath->pop();
 
 	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
 	Transform worldToObject = objectToWorld.GetInverse();
+
+
 
 	Vector3D i = worldToObject( GetGobalSunVector() );
 
@@ -125,7 +136,7 @@ void TrackerHeliostat::evaluate()
 
 	Point3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
 	Vector3D r;
-	if (typeOfAimingPoint.getValue() == 0) //Absolute
+	if( typeOfAimingPoint.getValue() == 0 ) //Absolute
 	{
 		r = Vector3D( worldToObject( focus ) );
 	}
@@ -180,20 +191,21 @@ void TrackerHeliostat::evaluate()
 	SoTransform* newTransform = new SoTransform();
 	newTransform->setMatrix( transformMatrix );
 
-	parentPath->unref();
 	SetEngineOutput(newTransform);
-
 }
 
 void TrackerHeliostat::SwitchAimingPointType()
 {
 	if( m_previousAimingPointType == typeOfAimingPoint.getValue() )	return;
 
-	SoPath* nodePath= m_scene->GetSoPath( this );
-	if (!nodePath) return;
+	SoSearchAction coinSearch;
+	coinSearch.setNode( this );
+
+	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
+	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
+		return;
 
 	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
-	parentPath->ref();
 	parentPath->pop();
 
 	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
@@ -210,6 +222,5 @@ void TrackerHeliostat::SwitchAimingPointType()
 
 	aimingPoint.setValue( r.x, r.y, r.z );
 
-	parentPath->unref();
 	m_previousAimingPointType = typeOfAimingPoint.getValue();
 }

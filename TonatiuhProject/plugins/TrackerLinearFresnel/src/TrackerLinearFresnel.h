@@ -76,6 +76,7 @@ private:
 	virtual void evaluate();
 
 	int m_previousAimingPointType;
+	SoFieldSensor* m_infoDisplayed;
 
 };
 

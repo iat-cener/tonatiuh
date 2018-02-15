@@ -58,7 +58,7 @@ class TSceneKit : public SoSceneKit
 public:
  	TSceneKit();
     static void initClass();
-	SoPath* GetSoPath(SoNode * theNode );
+	SoPath* GetSoPath( SoSearchAction* action );
 
 
     trt::TONATIUH_REAL azimuth;

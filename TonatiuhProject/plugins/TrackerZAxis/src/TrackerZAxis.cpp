@@ -95,17 +95,21 @@ void TrackerZAxis::evaluate()
 {
 	if (!IsConnected()) return;
 
-	SoPath* nodePath= m_scene->GetSoPath( this );
-	if (!nodePath) return;
+	SoSearchAction coinSearch;
+	coinSearch.setNode( this );
+
+	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
+	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
+		return;
 
 	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
-	parentPath->ref();
 	parentPath->pop();
 
 	if( !parentPath ) return;
 
 	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
 	Transform worldToObject = objectToWorld.GetInverse();
+	nodePath->unref();
 
 
 	Vector3D s = worldToObject( GetGobalSunVector() );
@@ -136,7 +140,5 @@ void TrackerZAxis::evaluate()
 	SoTransform* newTransform = new SoTransform();
 	newTransform->setMatrix( transformMatrix );
 
-
-	parentPath->unref();
 	SetEngineOutput(newTransform);
 }
