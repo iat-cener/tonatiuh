@@ -65,7 +65,6 @@ class InstanceNode
 {
 public:
     InstanceNode( SoNode* node );
-    //InstanceNode( const InstanceNode* node );
     ~InstanceNode();
 
     void SetNode( SoNode* node );

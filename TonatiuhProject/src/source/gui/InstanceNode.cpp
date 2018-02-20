@@ -61,21 +61,6 @@ InstanceNode::InstanceNode( SoNode* node )
 	m_coinNode->ref();
 }
 
-/*
-InstanceNode::InstanceNode( const InstanceNode* node )
-{
-   m_coinNode = node->m_coinNode;
-   m_coinNode->ref();
-   m_parent = node->m_parent;
-
-   for( int index = 0; index < node->children.count(); ++index )
-   {
-       InstanceNode* child = new InstanceNode( *(node->children[index]) );
-       children.append(child);
-    }
-}
-*/
-
 InstanceNode::~InstanceNode()
 {
 	m_coinNode->unref();

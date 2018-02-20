@@ -141,6 +141,7 @@ void GraphicRoot::AddRays( SoSeparator* rays )
 {
 	RemoveRays();
 	m_pRays = rays;
+	m_pRays->ref();
 }
 
 void GraphicRoot::AddModel( TSceneKit* sceneModel )
@@ -171,7 +172,6 @@ void GraphicRoot::RemoveGrid()
 	{
 		ShowGrid( false );
 		m_pGrid->removeAllChildren();
-		std::cout<<"m_pGrid: "<<m_pGrid->getRefCount()<<std::endl;
 		while( m_pGrid->getRefCount() > 1 ) m_pGrid->unref();
 		if ( m_pGrid->getRefCount() > 1 ) gf::SevereError( "RemoveGrid: m_pGrid referenced in excess ");
 		m_pGrid->unref();

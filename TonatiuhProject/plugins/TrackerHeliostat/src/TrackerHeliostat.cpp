@@ -62,6 +62,7 @@ TrackerHeliostat::TrackerHeliostat()
 :m_previousAimingPointType( 0 ),
  m_infoDisplayed( 0 )
 {
+
 	SO_NODEENGINE_CONSTRUCTOR( TrackerHeliostat );
 	SO_NODE_ADD_FIELD( m_azimuth, ( 0.0 ) );
 	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
@@ -187,7 +188,6 @@ void TrackerHeliostat::evaluate()
 	}
 
 
-
 	SoTransform* newTransform = new SoTransform();
 	newTransform->setMatrix( transformMatrix );
 
@@ -196,6 +196,9 @@ void TrackerHeliostat::evaluate()
 
 void TrackerHeliostat::SwitchAimingPointType()
 {
+
+	if( !IsConnected() )	return;
+
 	if( m_previousAimingPointType == typeOfAimingPoint.getValue() )	return;
 
 	SoSearchAction coinSearch;

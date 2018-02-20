@@ -211,6 +211,7 @@ m_focusView( 0 )
     {
    		StartOver( tonatiuhFile );
     }
+    SelectNode( QLatin1String( "//SunNode/RootNode" ) );
 }
 
 /*!
@@ -497,6 +498,8 @@ void MainWindow::ItemDragAndDropCopy(const QModelIndex& newParent, const QModelI
  */
 void MainWindow::Open()
 {
+	std::cout<<"START MainWindow::Open"<<std::endl;
+
     if ( OkToContinue() )
     {
     	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
@@ -512,6 +515,7 @@ void MainWindow::Open()
     	settings.setValue( "openDirectory", file.absolutePath() );
     	StartOver( fileName );
     }
+	std::cout<<"END MainWindow::Open"<<std::endl;
 }
 
 /*!
@@ -2891,7 +2895,6 @@ void MainWindow::ChangeModelScene()
 	InstanceNode* concentratorRoot = viewRootNode->children[ 0 ];
 
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
-
 }
 
 /*!
@@ -3852,7 +3855,6 @@ void MainWindow::ShowRaysIn3DView()
 	if( m_drawRays || m_drawPhotons )
 	{
 		SoSeparator* rays = new SoSeparator;
-		rays->ref();
 		rays->setName( "Rays" );
 
 		if( m_drawPhotons )
@@ -3900,8 +3902,6 @@ bool MainWindow::StartOver( const QString& fileName )
 	SetSunPositionCalculatorEnabled( 0 );
 
 	QStatusBar* statusbar = statusBar();
-	setStatusBar( statusbar );
-
 	if( !fileName.isEmpty() && m_document->ReadFile( fileName ) )
 	{
 		statusbar->showMessage( tr( "File loaded" ), 2000 );
@@ -3916,7 +3916,7 @@ bool MainWindow::StartOver( const QString& fileName )
 	}
 
     ChangeModelScene();
-    return true;
+    return ( true );
 }
 
 /*!

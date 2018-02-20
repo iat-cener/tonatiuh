@@ -336,7 +336,7 @@
    <addaction name="separator"/>
    <addaction name="actionGridSettings"/>
   </widget>
-  <widget class="QToolBar" name="insertTollBar">
+  <widget class="QToolBar" name="insertToolBar">
    <property name="windowTitle">
     <string>Node Kits</string>
    </property>
