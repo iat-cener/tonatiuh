@@ -80,6 +80,7 @@ signals:
 	void ChangeSelection( SoSelection* selection );
 
 private:
+
 	SoSeparator* CreateGrid( int xDimension, int zDimension, double xSpacing, double zSpacing );
 
 	SoSeparator* m_graphicsRoot;

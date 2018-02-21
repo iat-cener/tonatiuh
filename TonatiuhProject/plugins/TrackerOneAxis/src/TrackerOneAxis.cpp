@@ -70,8 +70,8 @@ TrackerOneAxis::TrackerOneAxis()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerOneAxis );
 
 	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
+	//SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
+	//SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
@@ -93,6 +93,7 @@ QString TrackerOneAxis::getIcon()
 
 void TrackerOneAxis::evaluate()
 {
+	/*
 	if (!IsConnected()) return;
 
 	SoSearchAction coinSearch;
@@ -138,4 +139,5 @@ void TrackerOneAxis::evaluate()
 	newTransform->setMatrix( transformMatrix );
 
 	SetEngineOutput(newTransform);
+	*/
 }

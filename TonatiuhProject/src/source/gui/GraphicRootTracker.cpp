@@ -54,6 +54,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Point3D.h"
 #include "GraphicRootTracker.h"
 #include "Transform.h"
+#include "TSceneKit.h"
 #include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( GraphicRootTracker );
@@ -84,7 +85,26 @@ GraphicRootTracker::GraphicRootTracker()
 
 GraphicRootTracker::~GraphicRootTracker()
 {
+	m_azimuth.disconnect();
+	m_zenith.disconnect();
 }
+
+void GraphicRootTracker::Disconnect()
+{
+	m_azimuth.disconnect();
+	m_zenith.disconnect();
+}
+
+void GraphicRootTracker::SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField )
+{
+	m_azimuth.connectFrom( azimuthField );
+}
+
+void GraphicRootTracker::SetZenithAngle( trt::TONATIUH_REAL* zenithField )
+{
+	m_zenith.connectFrom( zenithField );
+}
+
 
 QString GraphicRootTracker::getIcon()
 {
@@ -95,14 +115,18 @@ QString GraphicRootTracker::getIcon()
 void GraphicRootTracker::evaluate()
 {
 
-	if (!IsConnected()) return;
+	if (!m_azimuth.isConnected() || !m_zenith.isConnected() ) return;
 
-	double alpha = gc::Pi - GetAzimuth();
+	//double alpha = gc::Pi - GetAzimuth();
+	double azimuth = m_azimuth.getValue();
+	double alpha = gc::Pi - azimuth;
 
 	SbVec3f yAxis( 0.0, 1.0, 0.0 );
 	SbRotation yRotation( yAxis, alpha );
 	SbVec3f xAxis( 1.0, 0.0, 0.0 );
-	SbRotation xRotation( xAxis, GetZenith() );
+	//SbRotation xRotation( xAxis, GetZenith() );
+	double zenith = m_zenith.getValue();
+	SbRotation xRotation( xAxis, zenith );
 
 	SbRotation rotation = xRotation * yRotation;
 

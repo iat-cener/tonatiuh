@@ -45,8 +45,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 #include "tgf.h"
 
-
 class QString;
+class Vector3D;
+class Transform;
 
 class TSceneKit : public SoSceneKit
 {
@@ -58,14 +59,19 @@ class TSceneKit : public SoSceneKit
 public:
  	TSceneKit();
     static void initClass();
+
+    trt::TONATIUH_REAL* GetAzimuthAngle();
+    trt::TONATIUH_REAL* GetZenithAngle();
+
 	SoPath* GetSoPath( SoSearchAction* action );
 
+	void UpdateSunPosition( double azimuthValue, double zenithValue );
 
     trt::TONATIUH_REAL azimuth;
     trt::TONATIUH_REAL zenith;
-
 protected:
     virtual ~TSceneKit();
+    void UpdateTrackersTransform( SoBaseKit* branch, Vector3D sunVector, Transform parentOTW );
 };
 
 

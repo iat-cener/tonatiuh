@@ -70,8 +70,8 @@ TrackerZAxis::TrackerZAxis()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerZAxis );
 
 	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
+	//SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
+	//SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
@@ -93,6 +93,7 @@ QString TrackerZAxis::getIcon()
 
 void TrackerZAxis::evaluate()
 {
+	/*
 	if (!IsConnected()) return;
 
 	SoSearchAction coinSearch;
@@ -141,4 +142,5 @@ void TrackerZAxis::evaluate()
 	newTransform->setMatrix( transformMatrix );
 
 	SetEngineOutput(newTransform);
+	*/
 }

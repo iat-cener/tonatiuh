@@ -65,7 +65,10 @@ protected:
 	virtual ~TSceneTracker();
 
 private:
-  virtual void evaluate();
+	virtual void evaluate();
+
+	//trt::TONATIUH_REAL m_azimuth;
+	//trt::TONATIUH_REAL m_zenith;
 
 };
 

@@ -111,7 +111,7 @@ void CmdDeleteTracker::redo( )
 	transform->scaleFactor.disconnect();
 	transform->scaleOrientation.disconnect();
 	transform->center.disconnect();
-	m_tracker->Disconnect();
+	//m_tracker->Disconnect();
 
 	m_pModel->Cut( *m_coinParent, m_row );
 

@@ -83,6 +83,8 @@ TSceneTracker::TSceneTracker()
 
 TSceneTracker::~TSceneTracker()
 {
+	m_azimuth.disconnect();
+	m_zenith.disconnect();
 }
 
 QString TSceneTracker::getIcon()
@@ -94,16 +96,27 @@ QString TSceneTracker::getIcon()
 void TSceneTracker::evaluate()
 {
 
-	if (!IsConnected()) return;
-	SetAnglesToScene();
+	if ( !m_azimuth.isConnected() || !m_zenith.isConnected() ) return;
+	//SetAnglesToScene();
 
-	double alpha = gc::Pi - GetAzimuth();
+	double azimuth = m_azimuth.getValue();
+	double zenith = m_zenith.getValue();
+
+	m_scene->UpdateSunPosition( azimuth, zenith );
+
+
+	//m_scene->azimuth.setValue( azimuth );
+
+	//double alpha = gc::Pi - GetAzimuth();
+	double alpha = gc::Pi - azimuth;
 
 	SbVec3f yAxis( 0.0, 1.0, 0.0 );
 	SbRotation yRotation( yAxis, -alpha );
 
 	SbVec3f xAxis( 1.0, 0.0, 0.0 );
-	SbRotation xRotation( xAxis, -GetZenith() );
+	//SbRotation xRotation( xAxis, -GetZenith() );
+	//m_scene->zenith.setValue( zenith );
+	SbRotation xRotation( xAxis, -zenith );
 
 	SbRotation rotation = yRotation * xRotation;
 

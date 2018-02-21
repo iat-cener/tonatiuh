@@ -60,12 +60,15 @@ public:
 	//Constructor
 	GraphicRootTracker();
 
+	void Disconnect();
+	void SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField );
+	void SetZenithAngle( trt::TONATIUH_REAL* zenithField );
 
 protected:
 	virtual ~GraphicRootTracker();
 
 private:
-  virtual void evaluate();
+	virtual void evaluate();
 
 };
 

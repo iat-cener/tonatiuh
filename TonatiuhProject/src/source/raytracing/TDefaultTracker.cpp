@@ -65,8 +65,8 @@ TDefaultTracker::TDefaultTracker()
 {
 	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
 
-	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
+	//SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
+	//SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();
 	// Define input fields and their default values
@@ -98,7 +98,7 @@ QString TDefaultTracker::getIcon()
  */
 void TDefaultTracker::evaluate()
 {
-	if (!IsConnected()) return;
+	//if (!IsConnected()) return;
 
 	SetEngineOutputIdentity();
 

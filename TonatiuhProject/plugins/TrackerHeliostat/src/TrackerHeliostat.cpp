@@ -108,15 +108,81 @@ QString TrackerHeliostat::getIcon()
 	return QString(":/icons/TrackerHeliostat.png");
 }
 
- 
+void TrackerHeliostat::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
+{
+	Vector3D i = parentWT0( sunVectorW );
+
+	if( i.length() == 0.0f ) return;
+	i = Normalize(i);
+
+	Point3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
+	Vector3D r;
+	if( typeOfAimingPoint.getValue() == 0 ) //Absolute
+	{
+		r = Vector3D( parentWT0( focus ) );
+	}
+	else
+		r = Vector3D( focus );
+
+
+	if( r.length() == 0.0f ) return;
+	r = Normalize(r);
+
+	Vector3D n = ( i + r );
+	if( n.length() == 0.0f ) return;
+	n = Normalize( n );
+
+	Vector3D Axe1;
+	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 1 ))// YX or YZ
+		Axe1 = Vector3D( 0.0f, 1.0f, 0.0f );
+
+	else if (typeOfRotation.getValue() == 2 ) // XZ
+		Axe1 = Vector3D( 1.0f, 0.0f, 0.0f );
+
+	else // ZX
+		Axe1 = Vector3D(0.0f, 0.0f, 1.0f);
+
+	Vector3D t = CrossProduct( n, Axe1 );
+	//Vector3D t( n[2], 0.0f, -n[0] );
+	if( t.length() == 0.0f ) return;
+	t = Normalize(t);
+
+	Vector3D p = CrossProduct( t, n );
+	if (p.length() == 0.0f) return;
+	p = Normalize(p);
+
+	SbMatrix transformMatrix;
+	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 3 ))// YX ou  ZX
+	{
+		 transformMatrix = SbMatrix( t[0], t[1], t[2], 0.0,
+								  n[0], n[1], n[2], 0.0,
+								  p[0], p[1], p[2], 0.0,
+								  0.0, 0.0, 0.0, 1.0 );
+	}
+	else // YZ
+	{
+		transformMatrix = SbMatrix( p[0], p[1], p[2], 0.0,
+								  n[0], n[1], n[2], 0.0,
+								  t[0], t[1], t[2], 0.0,
+								  0.0, 0.0, 0.0, 1.0 );
+	}
+
+
+	SoTransform* newTransform = new SoTransform();
+	newTransform->setMatrix( transformMatrix );
+
+	SetEngineOutput(newTransform);
+}
 
 void TrackerHeliostat::evaluate()
 {
+	/*
 	if( !IsConnected() )	return;
 
 
 	SoSearchAction coinSearch;
 	coinSearch.setNode( this );
+
 
 	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
 	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
@@ -126,8 +192,9 @@ void TrackerHeliostat::evaluate()
 	parentPath->pop();
 
 	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
-	Transform worldToObject = objectToWorld.GetInverse();
 
+
+	Transform worldToObject = objectToWorld.GetInverse();
 
 
 	Vector3D i = worldToObject( GetGobalSunVector() );
@@ -192,10 +259,12 @@ void TrackerHeliostat::evaluate()
 	newTransform->setMatrix( transformMatrix );
 
 	SetEngineOutput(newTransform);
+	*/
 }
 
 void TrackerHeliostat::SwitchAimingPointType()
 {
+	/*
 
 	if( !IsConnected() )	return;
 
@@ -226,4 +295,5 @@ void TrackerHeliostat::SwitchAimingPointType()
 	aimingPoint.setValue( r.x, r.y, r.z );
 
 	m_previousAimingPointType = typeOfAimingPoint.getValue();
+	*/
 }

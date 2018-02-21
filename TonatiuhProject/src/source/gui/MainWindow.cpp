@@ -498,8 +498,6 @@ void MainWindow::ItemDragAndDropCopy(const QModelIndex& newParent, const QModelI
  */
 void MainWindow::Open()
 {
-	std::cout<<"START MainWindow::Open"<<std::endl;
-
     if ( OkToContinue() )
     {
     	QSettings settings( "NREL UTB CENER", "Tonatiuh" );
@@ -515,7 +513,6 @@ void MainWindow::Open()
     	settings.setValue( "openDirectory", file.absolutePath() );
     	StartOver( fileName );
     }
-	std::cout<<"END MainWindow::Open"<<std::endl;
 }
 
 /*!
@@ -1522,6 +1519,7 @@ void MainWindow::Cut()
 
 	UpdateLightSize();
 	m_document->SetDocumentModified( true );
+
 }
 
 /*!
@@ -1730,7 +1728,6 @@ void MainWindow::New()
     	emit Abort( tr( "Current Tonatiuh model cannot be closed." ) );
     	return;
     }
-
     StartOver( "" );
 }
 
@@ -2651,8 +2648,8 @@ void MainWindow::CreateComponent( TComponentFactory* pTComponentFactory )
 		{
 			SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
 			TTracker* tracker = static_cast< TTracker* >( trackerPath->getTail() );
-			tracker->SetAzimuthAngle( &lightKit->azimuth );
-			tracker->SetZenithAngle( &lightKit->zenith );
+			//tracker->SetAzimuthAngle( &lightKit->azimuth );
+			//tracker->SetZenithAngle( &lightKit->zenith );
 		}
 	}
 
@@ -3901,7 +3898,9 @@ bool MainWindow::StartOver( const QString& fileName )
 
 	SetSunPositionCalculatorEnabled( 0 );
 
-	QStatusBar* statusbar = statusBar();
+	QStatusBar* statusbar = new QStatusBar();
+	setStatusBar( statusbar );
+	//QStatusBar* statusbar = statusBar();
 	if( !fileName.isEmpty() && m_document->ReadFile( fileName ) )
 	{
 		statusbar->showMessage( tr( "File loaded" ), 2000 );

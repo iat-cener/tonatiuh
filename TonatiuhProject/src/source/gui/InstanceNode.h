@@ -79,10 +79,10 @@ public:
 
     bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, InstanceNode** modelNode, Ray* outputRay );
 
-    template<class T> void RecursivlyApply(void (T::*func)(void));
-	template<class T,class Param1> void RecursivlyApply(void (T::*func)(Param1),Param1 param1);
-	template<class T,class Param1> void RecursivlyApplyWithMto(void (T::*func)(Param1),Param1 param1);
-	template<class T,class Param1,class Param2> void RecursivlyApplyWithMto(void (T::*func)(Param1,Param2),Param1 param1,Param1 param2);
+    //template<class T> void RecursivlyApply(void (T::*func)(void));
+    //template<class T,class Param1> void RecursivlyApply(void (T::*func)(Param1),Param1 param1);
+    //template<class T,class Param1> void RecursivlyApplyWithMto(void (T::*func)(Param1),Param1 param1);
+    //template<class T,class Param1,class Param2> void RecursivlyApplyWithMto(void (T::*func)(Param1,Param2),Param1 param1,Param1 param2);
 
 	void DisconnectAllTrackers();
 	void ReconnectAllTrackers(TLightKit * coinLight);

@@ -58,13 +58,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 InstanceNode::InstanceNode( SoNode* node )
 : m_coinNode( node ), m_parent( 0 )
 {
-	m_coinNode->ref();
 }
 
 InstanceNode::~InstanceNode()
 {
-	m_coinNode->unref();
-	qDeleteAll( children );
+		qDeleteAll( children );
 }
 
 /**
@@ -186,17 +184,17 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, bool* isShape
 
 void InstanceNode::DisconnectAllTrackers()
 {
-	RecursivlyApply<TTracker>(&TTracker::Disconnect);
+	//RecursivlyApply<TTracker>(&TTracker::Disconnect);
 }
 
 void InstanceNode::ReconnectAllTrackers(TLightKit * coinLight)
 {
-	RecursivlyApply<TTracker,TLightKit *>(&TTracker::SetLightAngles,coinLight);
+	//RecursivlyApply<TTracker,TLightKit *>(&TTracker::SetLightAngles,coinLight);
 }
 
 void  InstanceNode::SetAimingPointRelativity( bool relative )
 {
-	RecursivlyApply<TTrackerForAiming,bool>(&TTrackerForAiming::SetAimingPointRelativity, relative);
+	//RecursivlyApply<TTrackerForAiming,bool>(&TTrackerForAiming::SetAimingPointRelativity, relative);
 }
 
 void InstanceNode::extendBoxForLight( SbBox3f * extendedBox )
@@ -251,7 +249,7 @@ bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
 			 (thisNode.GetParent()->GetNode() == otherNode.GetParent()->GetNode()) );
 }
 
-
+/*
 template<class T> void InstanceNode::RecursivlyApply(void (T::*func)(void))
 {
 	if ( GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
@@ -312,3 +310,4 @@ template<class T,class Param1,class Param2> void InstanceNode::RecursivlyApplyWi
       }
 	}
 }
+*/

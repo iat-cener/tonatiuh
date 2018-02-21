@@ -57,6 +57,10 @@ public:
 
 	//Constructor
 	TrackerHeliostat();
+
+	void Evaluate( Vector3D sunVectorW, Transform parentWT0 );
+	virtual void SwitchAimingPointType();
+
 	enum Rotations{
 		YX = 0,
 		YZ   = 1,
@@ -65,8 +69,6 @@ public:
 	};
 	SoSFEnum typeOfRotation;
 	trt::TONATIUH_REALVECTOR3 aimingPoint;
-	
-	virtual void SwitchAimingPointType();
 
 protected:
 	virtual ~TrackerHeliostat();

@@ -341,10 +341,10 @@ TSeparatorKit* ComponentHeliostatField::CreateField(QVector< QVariant >  argumen
 	TSeparatorKit* heliostatComponentNode;
 	TShapeFactory* shapeFactory;
 	QString heliostatShape;
-	double heliostatWidth;
-	double heliostatHeight;
-	double heliostatRadius;
-	double reflectivity;
+	double heliostatWidth = 1.0;
+	double heliostatHeight = 1.0;
+	double heliostatRadius = 0.75;
+	double reflectivity = 0.0;
 	double sigma;
 
 	if( !argumentList[1].toString().isEmpty() )

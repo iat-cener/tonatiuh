@@ -641,8 +641,8 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	{
 		InstanceNode* instanceNode = instanceList[0];
 	    DeleteInstanceTree( *instanceNode );
-	    delete instanceNode;
-	    instanceNode = 0;
+	    //delete instanceNode;
+	    //instanceNode = 0;
 	}
 	else
 	{
@@ -652,8 +652,8 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 		    InstanceNode* instanceParent = instanceListParent[0];
 		    InstanceNode* instanceNode = instanceParent->children[row];
 		    DeleteInstanceTree( *instanceNode );
-		    delete instanceNode;
-		    instanceNode = 0;
+		    //delete instanceNode;
+		    //instanceNode = 0;
 		}
 		else
 		{
@@ -662,8 +662,8 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 			    InstanceNode* instanceParent = instanceListParent[index];
 			    InstanceNode* instanceNode = instanceParent->children[row];
 			    DeleteInstanceTree( *instanceNode );
-			    delete instanceNode;
-			    instanceNode = 0;
+			    //delete instanceNode;
+			    //instanceNode = 0;
 			}
 		}
 	}

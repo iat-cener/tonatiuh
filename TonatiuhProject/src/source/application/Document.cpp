@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -45,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QApplication>
 #include <QString>
-#include <QStatusBar>
 
 #include "Document.h"
 #include "TSceneKit.h"
@@ -121,9 +119,11 @@ bool Document::ReadFile( const QString& fileName )
 	    m_scene = inputScene;
 	    m_scene->setSearchingChildren( true );
 	    m_isModified = false;
-	    return true;
+
+	    return ( true );
 	}
-	return false;
+
+	return ( false );
 }
 
 /*!

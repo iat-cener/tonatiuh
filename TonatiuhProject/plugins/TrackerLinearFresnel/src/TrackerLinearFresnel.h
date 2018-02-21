@@ -58,6 +58,8 @@ public:
 
 	//Constructor
 	TrackerLinearFresnel();
+	void Evaluate( Vector3D sunVectorW, Transform parentWT0 );
+	void SwitchAimingPointType();
 
 	enum Axis{
 		X = 0,
@@ -67,7 +69,6 @@ public:
 
 	trt::TONATIUH_REALVECTOR2 axisOrigin;
 	SoSFEnum activeAxis;
-	void SwitchAimingPointType();
 
 protected:
 	virtual ~TrackerLinearFresnel();

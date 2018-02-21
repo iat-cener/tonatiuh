@@ -150,8 +150,8 @@ void GraphicRoot::AddModel( TSceneKit* sceneModel )
 	{
 		m_pSelectionNode->addChild( sceneModel );
 		m_pTracker->SetSceneKit( sceneModel );
-		m_pTracker->SetAzimuthAngle( &sceneModel->azimuth );
-		m_pTracker->SetZenithAngle( &sceneModel->zenith );
+		m_pTracker->SetAzimuthAngle( sceneModel->GetAzimuthAngle() );
+		m_pTracker->SetZenithAngle( sceneModel->GetZenithAngle() );
 	}
 }
 

@@ -37,11 +37,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
 
 #include "gc.h"
+#include "Transform.h"
+#include "Vector3D.h"
 
 #include "TDefaultTransmissivity.h"
 #include "TSceneKit.h"
+#include "TSeparatorKit.h"
+#include "TTracker.h"
 #include "TTransmissivity.h"
 
 SO_KIT_SOURCE(TSceneKit);
@@ -79,11 +84,22 @@ TSceneKit::~TSceneKit()
 
 }
 
+trt::TONATIUH_REAL* TSceneKit::GetAzimuthAngle()
+{
+	return ( &azimuth );
+}
 
+trt::TONATIUH_REAL* TSceneKit::GetZenithAngle()
+{
+	return ( &zenith );
+}
+
+
+/*!
+ * Returns the path from the scene node to the node in \a action.
+ */
 SoPath* TSceneKit::GetSoPath( SoSearchAction* action )
 {
-
-
 	TSeparatorKit* sunNode = static_cast< TSeparatorKit* > (getPart( "childList[0]", false ) );
 	if( !sunNode )	return NULL;
 
@@ -95,4 +111,75 @@ SoPath* TSceneKit::GetSoPath( SoSearchAction* action )
 	action->apply( rootNode );
 	SoPath* nodePath = action->getPath( );
 	return nodePath;
+}
+
+void TSceneKit::UpdateSunPosition( double azimuthValue, double zenithValue )
+{
+	azimuth = azimuthValue;
+	zenith = zenithValue;
+
+	Vector3D sunVector( sin( azimuth.getValue() ) * sin( zenith.getValue()  ),
+			cos( zenith.getValue()  ),
+			-sin( zenith.getValue() ) * cos( azimuth.getValue()  ) );
+
+
+	Transform sceneOTW( 1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1 );
+
+
+	SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( getPart( "childList", true ) );
+	if( !coinPartList || coinPartList->getNumChildren() < 1 )	return;
+
+
+	//SunNode
+	SoBaseKit* sunNode = static_cast< SoBaseKit* >( coinPartList->getChild( 0 ) );
+	if( !sunNode )	return;
+	SoNodeKitListPart* sunNodePartList = static_cast< SoNodeKitListPart* >( sunNode->getPart( "childList", true ) );
+	if( !sunNodePartList )	return;
+
+	for( int index = 0; index < sunNodePartList->getNumChildren(); ++index )
+	{
+		SoBaseKit* coinChild = static_cast< SoBaseKit* >( sunNodePartList->getChild( index ) );
+		UpdateTrackersTransform( coinChild, sunVector, sceneOTW );
+	}
+
+}
+
+/*!
+ * Updates all trackers transform for the current sun angles.
+ */
+void TSceneKit::UpdateTrackersTransform( SoBaseKit* branch, Vector3D sunVector, Transform parentOTW )
+{
+	if( !branch )	return;
+
+	SoNode* tracker = branch->getPart( "tracker", false );
+	if( tracker )
+	{
+
+		TTracker* trackerNode = static_cast< TTracker* >( tracker );
+		trackerNode->Evaluate( sunVector, parentOTW.GetInverse() );
+		return;
+	}
+
+	if( branch->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
+	{
+		SoTransform* nodeTransform = static_cast< SoTransform* >(branch->getPart( "transform", true ) );
+		Transform nodeTransformationOTW = tgf::TransformFromSoTransform( nodeTransform );
+		//Transform nodeTransformationWTO = groupNode->GetTrasformation().GetInverse();
+		Transform nodeOTW = nodeTransformationOTW * parentOTW;
+
+		SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( branch->getPart( "childList", false ) );
+		if ( coinPartList )
+		{
+			for( int index = 0; index < coinPartList->getNumChildren(); ++index )
+			{
+				SoBaseKit* coinChild = static_cast< SoBaseKit* >( coinPartList->getChild( index ) );
+				if( coinChild )		UpdateTrackersTransform( coinChild, sunVector, nodeOTW );
+			}
+		}
+
+	}
+
 }
