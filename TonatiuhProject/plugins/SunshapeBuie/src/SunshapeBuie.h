@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 
 class SoSensor;
+class SoFieldSensor;
 
 class SunshapeBuie : public TSunShape
 {
@@ -77,6 +78,8 @@ private:
 	 double intregralB( double k, double gamma, double thetaCS, double thetaSD ) const;
 	 double probabilityRectangle1( double widthR1, double heightR1, double widthR2, double heightR2 ) const;
 	 void updateState( double csrValue );
+
+	 SoFieldSensor* m_csrSensor;
 
 	 double m_chi;
 	 double m_k;

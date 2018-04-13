@@ -59,13 +59,9 @@ SunshapeBuie::SunshapeBuie( )
 	SO_NODE_ADD_FIELD( irradiance, ( 1000 ) );
 	SO_NODE_ADD_FIELD( csr, ( 0.02f ) );
 
-	SoFieldSensor* irradianceSensor = new SoFieldSensor( updateCSR, this );
-	irradianceSensor->setPriority( 1 );
-	irradianceSensor->attach( &irradiance );
-
-	SoFieldSensor* csrSensor = new SoFieldSensor( updateCSR, this );
-	csrSensor->setPriority( 1 );
-	csrSensor->attach( &csr );
+	m_csrSensor = new SoFieldSensor( updateCSR, this );
+	m_csrSensor->setPriority( 1 );
+	m_csrSensor->attach( &csr );
 
 	double csrValue = csr.getValue();
 	if( csrValue >= m_minCRSValue && csrValue <= m_maxCRSValue ) updateState( csrValue );
@@ -90,6 +86,7 @@ void SunshapeBuie::updateState( double csrValue )
 
 SunshapeBuie::~SunshapeBuie()
 {
+	delete m_csrSensor;
 }
 
 //Light Interface
