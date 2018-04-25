@@ -47,9 +47,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TTrackerNode;
 
-//!  TTrackerNodeFactory is the base class for creating TTrackerNode objects.
+//!  TTrackerNodeFactory is the base class for creating TTracker objects.
 /*!
-  TTrackerNodeFactory class is a factory class to create instances of TTrackerNode subclasses.
+  TTrackerNodeFactory class is a factory class to create instances of TTracker subclasses.
 */
 
 class TTrackerFactory
@@ -58,9 +58,9 @@ class TTrackerFactory
 public:
     virtual ~TTrackerFactory() {}
     virtual void Init() const  = 0;
-    virtual std::string TTrackerNodeName() const  = 0;
-    virtual QIcon TTrackerNodeIcon() const = 0;
-    virtual TTrackerNode* CreateTTrackerNode( ) const = 0;
+    virtual std::string TTrackerName() const  = 0;
+    virtual QIcon TTrackerIcon() const = 0;
+    virtual std::shared_ptr< TTracker > CreateTTracker( ) const = 0;
 
 };
 

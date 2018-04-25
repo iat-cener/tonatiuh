@@ -37,6 +37,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "Trace.h"
+
 #include "TMaterial.h"
 
 
@@ -56,7 +58,6 @@ void TMaterial::Init()
 TMaterial::TMaterial()
 :TNode()
 {
-	//setObjectName(GetType().GetName().c_str() );
 	SetName( GetType().GetName() );
 }
 
@@ -66,7 +67,7 @@ TMaterial::TMaterial()
  */
 TMaterial::~TMaterial()
 {
-
+	Trace{ "TMaterial::~TMaterial "  + GetName() };
 }
 
 /*!

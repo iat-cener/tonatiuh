@@ -36,52 +36,22 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
-#ifndef TRACKERONEAXIS_H_
-#define TRACKERONEAXIS_H_
+#ifndef TRACE_H_
+#define TRACE_H_
 
-#include "../../../nodes/TTracker.h"
-#include "TNodeType.h"
+#include <string>
 
-//!  TrackerOneAxis is the class for solar one-axis trackers.
-
-/*!
-  TrackerOneAxis class provides a structure to one axis tracker node.
-  This node is a group node which geometric to rotation around the user defined axis is applied so the plane perpendicular to the defined axis contains the sun vector.
-  Parameters:
-   - axis: rotation axis. Default: x
-*/
-
-class TrackerOneAxis : public TTrackerNode
+class Trace
 {
-
-private:
-	//No copy constructor. Use Copy to create a copy of the node
-	TrackerOneAxis(const TrackerOneAxis&) = delete;
-	TrackerOneAxis& operator=(const TrackerOneAxis&) = delete;
-
 public:
-	static void* CreateInstance();
-	static void Init();
-
-	TrackerOneAxis();
-	TrackerOneAxis* Copy() const;
-
-	std::string GetIcon() const;
-	Transform GetTrasformation() const;
-	TNodeType GetType() const;
-	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
-
-protected:
-	virtual ~TrackerOneAxis();
+    Trace( std::string functionName, bool showTrace = true );
+    ~Trace( );
 
 private:
-	static TNodeType m_nodeType;
-	std::string m_axisLabel;
-	std::string m_xAxisLabel;
-	std::string m_yAxisLabel;
-	std::string m_zAxisLabel;
-	std::string m_nodeTransformationLabel;
+    static int level;
+    static bool TraceEnabled;
+    std::string m_functionName;
+    bool m_functionTrace;
 };
 
-
-#endif /*TRACKERONEAXIS_H_*/
+#endif /*TRACE_H_*/

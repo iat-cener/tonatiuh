@@ -37,8 +37,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 
-#include <any>
-#include <iostream>
+//#include <iostream>
 
 #include <QDataStream>
 #include <QDomDocument>
@@ -73,7 +72,7 @@ TNodesDocument::~TNodesDocument()
 /*!
  *	Returns the root node in the document.
  */
-TNode* TNodesDocument::GetRootNode() const
+std::shared_ptr< TNode >  TNodesDocument::GetRootNode() const
 {
 	return ( m_pRootNode );
 }
@@ -123,39 +122,40 @@ bool TNodesDocument::Read( std::string filename )
 
 	std::string rootErrMsg;
 	m_pRootNode = CreateNodeObject( rootElement, &rootErrMsg );
-	if( !m_pRootNode || m_pRootNode == 0 || !rootErrMsg.empty() )
+	//if( !m_pRootNode || m_pRootNode == 0 || !rootErrMsg.empty() )
+	if( m_pRootNode == nullptr || !rootErrMsg.empty() )
 	{
 		std::cerr<< "TNodesDocument: error creating root node object. ";
 		std::cerr<< rootErrMsg;
 	    return ( false );
 	}
-	m_pRootNode->IncreaseReference();
+	//m_pRootNode->IncreaseReference();
 
 	std::string readErrMsg;
 	QDomNodeList rootChilds = rootElement.childNodes();
 	if( rootChilds.size() < 1 )		return ( false );
 
 
-	QMap< int, TNode* > readNodes;
+	QMap< int, std::shared_ptr< TNode > > readNodes;
 	for( int c = 0; c < rootChilds.size(); c++ )
 	{
 		QDomElement childNode = rootChilds.at(c).toElement();
-		if( !ReadNode( childNode, m_pRootNode, &readNodes, &readErrMsg ) )
+
+		 if( !ReadNode( childNode, m_pRootNode, &readNodes, &readErrMsg ) )
 		{
 			std::cerr<< readErrMsg;
 			return ( false );
 		}
 
+
 	}
-
-
 	return ( true );
 }
 
 /*!
  *	Sets document root node to \a node.
  */
-void TNodesDocument::SetRootNode( TNode* node )
+void TNodesDocument::SetRootNode( const std::shared_ptr< TNode >& node )
 {
 	m_pRootNode = node;
 }
@@ -166,6 +166,7 @@ void TNodesDocument::SetRootNode( TNode* node )
  */
 bool TNodesDocument::Write( std::string filename ) const
 {
+
 	QFile tonatiuhFile( filename.c_str() );
 	if( !tonatiuhFile.open( QIODevice::WriteOnly ) )	return (false);
 
@@ -187,9 +188,9 @@ bool TNodesDocument::Write( std::string filename ) const
 	QList< int > writtenNodes;
 	bool ok = false;
 	if( const TContainerNode* container = m_pRootNode->as<TContainerNode>() )
-		ok =  WriteConatinerNode(docummentRootElement, container, &writtenNodes );
+		ok =  WriteConatinerNode(docummentRootElement, *container, &writtenNodes );
 	else
-		ok = WriteNode(docummentRootElement, m_pRootNode, &writtenNodes );
+		ok = WriteNode(docummentRootElement, *m_pRootNode, &writtenNodes );
 
 	if( !ok )
 	{
@@ -211,12 +212,11 @@ bool TNodesDocument::Write( std::string filename ) const
 /*!
  * Reads the content of the node \a node and sets inside of the \a parentNode.
  */
-TNode* TNodesDocument::CreateNodeObject( QDomElement node, std::string* errMsg )
+std::shared_ptr<TNode > TNodesDocument::CreateNodeObject( QDomElement node, std::string* errMsg )
 {
 
 	TNodeType nodeType = TNodeType::FromName( node.attribute( "type" ).toStdString() );
-
-	TNode* objectNode = (TNode*) nodeType.NodeFromType();
+	std::shared_ptr<TNode> objectNode = nodeType.NodeFromType();
 	if( !objectNode || objectNode == 0 )
 	{
 		*errMsg = std::string( "TNodesDocument::CreateNodeObject. Error creating '" ) +  node.tagName().toStdString() +
@@ -246,7 +246,8 @@ TNode* TNodesDocument::CreateNodeObject( QDomElement node, std::string* errMsg )
     return ( objectNode );
 }
 
-bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, TNode* >* readNodes, std::string* errMsg )
+
+bool TNodesDocument::ReadNode( QDomElement node, std::shared_ptr< TNode > parentNode, QMap< int, std::shared_ptr< TNode > >* readNodes, std::string* errMsg )
 {
 
 	if( node.hasAttribute( QLatin1String( "type" ) ) &&  node.hasAttribute( QLatin1String( "id" ) ) )  //node
@@ -254,15 +255,15 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 		int nodeID  = node.attribute( QLatin1String( "id" ) ).toInt();
 		if( readNodes->contains( nodeID ) )
 		{
-			TNode* nodeObject = readNodes->value( nodeID );
-			if( !nodeObject || nodeObject == 0 )	return ( false );
+			std::shared_ptr< TNode > nodeObject = readNodes->value( nodeID );
+			if( !nodeObject || nodeObject == nullptr )	return ( false );
 			return ( true );
 		}
 		else
 		{
 
-			TNode* nodeObject = CreateNodeObject( node, errMsg );
-			if( !nodeObject || nodeObject == 0 )	return ( false );
+			std::shared_ptr< TNode > nodeObject = CreateNodeObject( node, errMsg );
+			if( !nodeObject || nodeObject == nullptr )	return ( false );
 
 			QDomNodeList children = node.childNodes();
 			if( children.size() < 1 ) return ( true );
@@ -282,8 +283,10 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 	else if( !node.hasAttributes() )	//part name. This node has not attributes
 	{
 		std::string partName = node.tagName().toStdString();
-		TContainerNode* parentContainer = parentNode->as<TContainerNode>();
-		if( !parentContainer || parentContainer == 0 )
+		//TContainerNode* parentContainer = parentNode->as<TContainerNode>();
+		std::shared_ptr< TContainerNode > parentContainer = std::dynamic_pointer_cast< TContainerNode > ( parentNode );
+
+		if( !parentContainer || parentContainer == 0  || parentContainer == nullptr )
 		{
 			*errMsg = "TNodesDocument::ReadNode error converting node in a container node.";
 			return ( false );
@@ -300,7 +303,8 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 		TNodeType partType = TNodeType::FromName( partNode.attribute( "type" ).toStdString() );
 		if( partType.IsDerivedFrom( TNodeType::FromName( "NodesList" ) ) )
 		{
-			TNodesList* listNode = parentContainer->GetPart( partName )->as<TNodesList>();
+			//TNodesList* listNode = parentContainer->GetPart( partName )->as<TNodesList>();
+			std::shared_ptr< TNodesList > listNode = std::dynamic_pointer_cast<TNodesList>(  parentContainer->GetPart( partName ) );
 			if( !listNode  || !ReadNodeList( partNode, listNode, readNodes, errMsg ) )	return (false);
 
 		}
@@ -309,7 +313,7 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 			int nodeID  = partNode.attribute( QLatin1String( "id" ) ).toInt();
 			if( readNodes->contains( nodeID ) )
 			{
-				TNode* nodeObject = readNodes->value( nodeID );
+				std::shared_ptr< TNode > nodeObject = readNodes->value( nodeID );
 				if( !nodeObject || nodeObject == 0 )	return ( false );
 
 				parentContainer->SetPart( partName, nodeObject );
@@ -319,7 +323,7 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 			}
 			else
 			{
-				TNode* nodeObject = CreateNodeObject( partNode, errMsg );
+				std::shared_ptr< TNode > nodeObject = CreateNodeObject( partNode, errMsg );
 				if( !nodeObject || nodeObject == 0 )	return ( false );
 				readNodes->insert( nodeID, nodeObject );
 				parentContainer->SetPart( partName, nodeObject );
@@ -340,16 +344,17 @@ bool TNodesDocument::ReadNode( QDomElement node, TNode* parentNode, QMap< int, T
 		return (true);
 	}
 
-
 	return (false);
 
 }
+
 
 /*!
  * Reads the children of the list \a node and insert into \a listNode.
  * Returns true if there is not errors during read process, otherwise returns false and a message in \a errMsg.
  */
-bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap< int, TNode* >* readNodes, std::string* errMsg  )
+
+bool TNodesDocument::ReadNodeList( QDomElement node, std::shared_ptr< TNodesList > listNode, QMap< int, std::shared_ptr< TNode > >* readNodes, std::string* errMsg  )
 {
 
 	QDomNodeList partChilds = node.childNodes();
@@ -365,7 +370,7 @@ bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap<
 			if( readNodes->contains( nodeID ) )
 			{
 
-				TNode* nodeObject = readNodes->value( nodeID );
+				std::shared_ptr< TNode > nodeObject = readNodes->value( nodeID );
 				if( !nodeObject || nodeObject == 0 )	return ( false );
 
 				bool ok = listNode->InsertItem( nodeObject );
@@ -382,7 +387,7 @@ bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap<
 			}
 			else
 			{
-				TNode* nodeObject = CreateNodeObject( itemNode, errMsg );
+				std::shared_ptr< TNode > nodeObject = CreateNodeObject( itemNode, errMsg );
 				if( !nodeObject || nodeObject == 0 )	return ( false );
 
 				readNodes->insert( nodeID, nodeObject );
@@ -415,41 +420,39 @@ bool TNodesDocument::ReadNodeList( QDomElement node, TNodesList* listNode, QMap<
 /*!
  * Adds the \a node parameters as a \a parent child
  */
-bool TNodesDocument::WriteNode( QDomElement parent, const TNode* node, QList< int >* writtenNodes ) const
+bool TNodesDocument::WriteNode( QDomElement parent, const TNode& node, QList< int >* writtenNodes ) const
 {
-	if( !node )	return (false);
+	int nodeID = node.GetID();
 
-	int nodeID = node->GetID();
-
-	QDomElement el = parent.ownerDocument().createElement( node->GetName().c_str() );
-	el.setAttribute( "type", node->GetType().GetName().c_str() );
+	QDomElement el = parent.ownerDocument().createElement( node.GetName().c_str() );
+	el.setAttribute( "type", node.GetType().GetName().c_str() );
 	el.setAttribute(  "id", nodeID );
 	parent.appendChild(el);
 
 	if( writtenNodes->contains( nodeID ) )	return ( true );
 
 
-	std::vector< std::string > parametersList = node->GetVisibleParametersName();
+	std::vector< std::string > parametersList = node.GetVisibleParametersName();
 	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
 		std::string parameterName = parametersList[p];
-		std::string parameterValue = node->GetParameterToString( parameterName );
+		std::string parameterValue = node.GetParameterToString( parameterName );
 		el.setAttribute( parameterName.c_str(), parameterValue.c_str() );
 	}
 	writtenNodes->append( nodeID );
 
-	if( const TNodesList* listNode = node->as<TNodesList>() )
+	if( const TNodesList* listNode = node.as<TNodesList>() )
 	{
 		int numberOfChildren = listNode->Count();
 		for( int l = 0; l < numberOfChildren; l++ )
 		{
-			TNode* childNode = listNode->Item( l );
+			std::shared_ptr< TNode > childNode = listNode->Item( l );
 			if( const TContainerNode* childNodeContainer = childNode->as<TContainerNode>() )
 			{
-				if( !WriteConatinerNode(el, childNodeContainer, writtenNodes ) ) 	return ( false );
+				if( !WriteConatinerNode(el, *childNodeContainer, writtenNodes ) ) 	return ( false );
 			}
 			else
-				if( !WriteNode(el, childNode, writtenNodes) )	return ( false );
+				if( !WriteNode(el, *childNode, writtenNodes) )	return ( false );
 		}
 	}
 	return ( true );
@@ -458,33 +461,32 @@ bool TNodesDocument::WriteNode( QDomElement parent, const TNode* node, QList< in
 /*!
  * Adds the as \a parent child the \a containerNode parameters and all the parts nodes
  */
-bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNode* containerNode, QList< int >* writtenNodes ) const
+bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNode& containerNode, QList< int >* writtenNodes ) const
 {
-	if( !containerNode )	return (false);
-	int nodeID = containerNode->GetID();
+	int nodeID = containerNode.GetID();
 
-	QDomElement el = parent.ownerDocument().createElement(containerNode->GetName().c_str() );
-	el.setAttribute( "type", containerNode->GetType().GetName().c_str() );
+	QDomElement el = parent.ownerDocument().createElement(containerNode.GetName().c_str() );
+	el.setAttribute( "type", containerNode.GetType().GetName().c_str() );
 	el.setAttribute( "id", nodeID );
 	parent.appendChild(el);
 
 	if( writtenNodes->contains( nodeID ) )	return ( true );
 
 	writtenNodes->append( nodeID );
-	std::vector<std::string> parametersList = containerNode->GetVisibleParametersName();
+	std::vector<std::string> parametersList = containerNode.GetVisibleParametersName();
 
 	for( unsigned int p = 0; p < parametersList.size(); p++ )
 	{
 		std::string parameterName = parametersList[p];
-		std::string parameterValue = containerNode->GetParameterToString( parameterName );
+		std::string parameterValue = containerNode.GetParameterToString( parameterName );
 		el.setAttribute( parameterName.c_str(), parameterValue.c_str() );
 	}
 
-	int numberOfParts = containerNode->NumberOfParts();
-	std::vector<std::string> partNamesList = containerNode->GetPartNames();
+	int numberOfParts = containerNode.NumberOfParts();
+	std::vector<std::string> partNamesList = containerNode.GetPartNames();
 	for( int p = 0; p < numberOfParts; p++ )
 	{
-		TNode* partNode = containerNode->GetPart( partNamesList[p] );
+		std::shared_ptr< TNode > partNode = containerNode.GetPart( partNamesList[p] );
 		if( partNode )
 		{
 			QDomElement partElement = el.ownerDocument().createElement( partNamesList[p].c_str() );
@@ -492,10 +494,10 @@ bool TNodesDocument::WriteConatinerNode( QDomElement parent, const TContainerNod
 
 			if( const TContainerNode* partContainer = partNode->as<TContainerNode>() )
 			{
-				if( !WriteConatinerNode(partElement, partContainer, writtenNodes ) ) return ( false );
+				if( !WriteConatinerNode(partElement, *partContainer, writtenNodes ) ) return ( false );
 			}
 			else
-				if( !WriteNode(partElement, partNode, writtenNodes ) ) return ( false );
+				if( !WriteNode(partElement, *partNode, writtenNodes ) ) return ( false );
 
 		}
 

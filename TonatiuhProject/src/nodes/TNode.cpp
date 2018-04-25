@@ -62,8 +62,9 @@ void TNode::Init()
 TNode::TNode()
 : //QObject(),
   m_id( 0 ),
-  m_name( GetType().GetName().c_str() ),
-  m_referenceCount( 0 )
+  m_name( GetType().GetName().c_str() )
+//,
+//  m_referenceCount( 0 )
 {
 
 	static int nodeIndex = 0;
@@ -78,18 +79,9 @@ TNode::TNode()
  */
 TNode::~TNode()
 {
-
+	//  m_pParametersList is std::unique_ptr
 }
 
-/*!
- * Creates a copy of the node.
- */
-/*
-TNode* TNode::Copy() const
-{
-	return ( CreateCopy() );
-}
-*/
 
 /*!
  * Returns node identifier.
@@ -129,10 +121,12 @@ std::string TNode::GetParameterToString( std::string name ) const
 /*!
  * Returns the number of references.
  */
+/*
 int TNode::GetReferences() const
 {
 	return ( m_referenceCount );
 }
+*/
 
 /*!
  * Returns node type.
@@ -163,20 +157,24 @@ std::vector<std::string> TNode::GetVisibleParametersName() const
 /*!
  * Increases in one the number of references to the node.
  */
+/*
 void TNode::IncreaseReference()
 {
 	m_referenceCount++;
 }
+*/
 
 /*!
  * Decrease the number of references. Deletes the node if there are not references to this node.
  */
+/*
 void TNode::RemoveReference()
 {
 	m_referenceCount--;
-	if( m_referenceCount < 1 )
-		delete this;
+	//if( m_referenceCount < 1 )
+	//	delete this;
 }
+*/
 
 /*!
  * Sets \a name to the node object.

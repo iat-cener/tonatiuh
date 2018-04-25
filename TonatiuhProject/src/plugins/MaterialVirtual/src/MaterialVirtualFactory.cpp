@@ -72,10 +72,9 @@ QIcon MaterialVirtualFactory::TMaterialIcon() const
 /*!
  * Returns a material object.
  */
-MaterialVirtual* MaterialVirtualFactory::CreateTMaterial( ) const
+std::shared_ptr< TMaterial > MaterialVirtualFactory::CreateTMaterial( ) const
 {
-
-	return ( new MaterialVirtual );
+	return ( std::dynamic_pointer_cast<TMaterial>( MaterialVirtual::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 
+#include "Trace.h"
+
 #include "TParameterList.h"
 #include "TSunNode.h"
 
@@ -51,9 +53,11 @@ TNodeType TSunNode::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TSunNode::CreateInstance( )
+std::shared_ptr< TNode > TSunNode::CreateInstance( )
 {
-  return ( new TSunNode() );
+	//shared_prt needs a public constructor
+	struct EnableCreateTSunNode : public TSunNode { using TSunNode::TSunNode; };
+	return ( std::make_unique<EnableCreateTSunNode>() );
 }
 
 
@@ -89,23 +93,26 @@ TSunNode::TSunNode()
  */
 TSunNode::~TSunNode()
 {
+	Trace{ "TSunNode::~TSunNode " + GetName() };
 	SetPart( "sunshape", 0 );
 }
 
 /*!
  * Creates a copy of sun node.
  */
-TSunNode* TSunNode::Copy() const
- {
+std::shared_ptr< TNode > TSunNode::Copy() const
+{
+	//shared_prt needs a public constructor
+	struct EnableCreateTSunNode : public TSunNode { using TSunNode::TSunNode; };
+	auto sunNode = std::make_unique<EnableCreateTSunNode>();
 
-	TSunNode* sunNode = new TSunNode;
 	 if( sunNode == 0 )	return ( 0  );
 
 	 for (std::map<std::string, TNodeType>::iterator it = sunNode->m_partsTypeList.begin(); it!=sunNode->m_partsTypeList.end(); ++it)
 	 {
 		 std::string partName = it->first;
 		 TNodeType partType = it->second;
-		 TNode* partNode = sunNode->m_partsList[partName];
+		 std::shared_ptr<TNode> partNode = sunNode->m_partsList[partName];
 
 
 		 sunNode->AppendPart( partName, partType, partNode->Copy() );
@@ -117,6 +124,7 @@ TSunNode* TSunNode::Copy() const
 	 sunNode->m_pParametersList->SetValue( m_zenithLabel, GetParameterValue<double>( m_zenithLabel ) );
 
 	 return ( sunNode );
+
  }
 
 

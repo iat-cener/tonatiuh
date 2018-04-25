@@ -40,7 +40,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TPHOTONMAP_H_
 #define TPHOTONMAP_H_
 
+#include <memory>
+#include <mutex>
 #include <vector>
+
+
 
 #include "Photon.h"
 
@@ -58,7 +62,7 @@ public:
 	~TPhotonMap();
 
     void EndStore( double wPhoton );
-	std::vector< Photon* > GetAllPhotons() const;
+	std::vector< Photon > GetAllPhotons() const;
 	void SetBufferSize( unsigned long nPhotons );
 	void StoreRays( std::vector< Photon >& raysList );
 
@@ -67,7 +71,7 @@ private:
     unsigned long m_bufferSize;
     unsigned long m_storedPhotonsInBuffer;
     unsigned long m_storedAllPhotons;
-    std::vector< Photon* > m_photonsInMemory;
+    std::vector< Photon > m_photonsInMemory;
 
 	std::mutex m_mutexPhotonMap;
 

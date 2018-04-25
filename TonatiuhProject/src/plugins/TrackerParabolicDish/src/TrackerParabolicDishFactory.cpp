@@ -57,7 +57,7 @@ void TrackerParabolicDishFactory::Init() const
 /*!
  * Returns tracker type name.
  */
-std::string TrackerParabolicDishFactory::TTrackerNodeName() const
+std::string TrackerParabolicDishFactory::TTrackerName() const
 {
 	return ( "Tracker_ParabolicDish" );
 }
@@ -65,7 +65,7 @@ std::string TrackerParabolicDishFactory::TTrackerNodeName() const
 /*!
  * Returns tracker icon.
  */
-QIcon TrackerParabolicDishFactory::TTrackerNodeIcon() const
+QIcon TrackerParabolicDishFactory::TTrackerIcon() const
 {
 	return ( QIcon( ":/icons/TrackerParabolicDish.png" ) );
 }
@@ -73,9 +73,9 @@ QIcon TrackerParabolicDishFactory::TTrackerNodeIcon() const
 /*!
  * Creates a new tracker object.
  */
-TrackerParabolicDish* TrackerParabolicDishFactory::CreateTTrackerNode( ) const
+std::shared_ptr< TTracker > TrackerParabolicDishFactory::CreateTTracker( ) const
 {
-	return ( new TrackerParabolicDish );
+	return ( std::dynamic_pointer_cast< TTracker >( TrackerParabolicDish::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

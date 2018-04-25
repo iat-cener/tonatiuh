@@ -53,11 +53,10 @@ private:
 	SunshapePillbox& operator=(const SunshapePillbox&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	SunshapePillbox( );
-	SunshapePillbox* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
 	std::string GetIcon() const;
@@ -66,6 +65,7 @@ public:
 	TNodeType GetType() const;
 
 protected:
+	SunshapePillbox( );
 	virtual ~SunshapePillbox();
 
 private:

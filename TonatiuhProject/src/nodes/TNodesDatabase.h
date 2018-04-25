@@ -51,8 +51,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunNode.h"
 #include "TSunshape.h"
 #include "TSurfaceNode.h"
-#include "TTrackerNode.h"
-#include "TTransmissivityNode.h"
+#include "TTracker.h"
+#include "TTransmissivity.h"
 
 //!  TNodesDatabase class collects nodes internal data.
 /*!
@@ -65,7 +65,7 @@ class TNodesDatabase
 public:
 	static void Init()
 	{
-		TNodeType::Init();
+		//TNodeType::Init();
 		TNode::Init();
 		TNodesList::Init();
 		TContainerNode::Init();
@@ -76,8 +76,8 @@ public:
 		TMaterial::Init();
 		TSunNode::Init();
 		TSunshape::Init();
-		TTrackerNode::Init();
-		TTransmissivityNode::Init();
+		TTracker::Init();
+		TTransmissivity::Init();
 
 	}
 

@@ -39,6 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TSUNSHAPEFACTORY_H_
 #define TSUNSHAPEFACTORY_H_
 
+#include "Trace.h"
+
+#include <memory>
 #include <vector>
 
 #include <QtPlugin>
@@ -56,11 +59,14 @@ class TSunshape;
 class TSunshapeFactory
 {
 public:
-    virtual ~TSunshapeFactory() {}
+    virtual ~TSunshapeFactory()
+    {
+    	Trace{ "TSunshapeFactory::~TSunshapeFactory", false };
+    }
     virtual void Init() const  = 0;
     virtual std::string TSunshapeName() const  = 0;
     virtual QIcon TSunshapeIcon() const = 0;
-    virtual TSunshape* CreateTSunshape( ) const = 0;
+    virtual std::shared_ptr< TSunshape > CreateTSunshape( ) const = 0;
 
 };
 

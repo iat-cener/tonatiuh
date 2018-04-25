@@ -61,7 +61,7 @@ public:
     void Init() const;
     std::string TMaterialName() const;
    	QIcon TMaterialIcon() const;
-   	MaterialVirtual* CreateTMaterial( ) const;
+   	std::shared_ptr< TMaterial > CreateTMaterial( ) const;
 };
 
 #endif /*MATERIALVIRTUALFACTORY_H_*/

@@ -73,9 +73,9 @@ QIcon SunshapePillboxFactory::TSunshapeIcon() const
 /*!
  * Creates a new sunshaope object.
  */
-SunshapePillbox* SunshapePillboxFactory::CreateTSunshape( ) const
+std::shared_ptr< TSunshape > SunshapePillboxFactory::CreateTSunshape( ) const
 {
-	return ( new SunshapePillbox );
+	return ( std::dynamic_pointer_cast<TSunshape >( SunshapePillbox::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

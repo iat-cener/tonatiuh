@@ -32,56 +32,23 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez, 
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
-#ifndef TRACKERONEAXIS_H_
-#define TRACKERONEAXIS_H_
+#ifndef TRACER_H_
+#define TRACER_H_
 
-#include "../../../nodes/TTracker.h"
-#include "TNodeType.h"
+#include <string>
+#include <iostream>
 
-//!  TrackerOneAxis is the class for solar one-axis trackers.
-
-/*!
-  TrackerOneAxis class provides a structure to one axis tracker node.
-  This node is a group node which geometric to rotation around the user defined axis is applied so the plane perpendicular to the defined axis contains the sun vector.
-  Parameters:
-   - axis: rotation axis. Default: x
-*/
-
-class TrackerOneAxis : public TTrackerNode
+class Tracer
 {
-
-private:
-	//No copy constructor. Use Copy to create a copy of the node
-	TrackerOneAxis(const TrackerOneAxis&) = delete;
-	TrackerOneAxis& operator=(const TrackerOneAxis&) = delete;
-
 public:
-	static void* CreateInstance();
-	static void Init();
-
-	TrackerOneAxis();
-	TrackerOneAxis* Copy() const;
-
-	std::string GetIcon() const;
-	Transform GetTrasformation() const;
-	TNodeType GetType() const;
-	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
-
-protected:
-	virtual ~TrackerOneAxis();
-
+    Tracer( std::string traceString = "too lazy, eh?");
+    ~Tracer(); // destructor
 private:
-	static TNodeType m_nodeType;
-	std::string m_axisLabel;
-	std::string m_xAxisLabel;
-	std::string m_yAxisLabel;
-	std::string m_zAxisLabel;
-	std::string m_nodeTransformationLabel;
+    std::string m_traceString;
 };
 
-
-#endif /*TRACKERONEAXIS_H_*/
+#endif /*TRACER_H_*/

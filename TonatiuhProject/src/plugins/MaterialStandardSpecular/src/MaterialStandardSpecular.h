@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MATERIALSTANDARDSPECULAR_H_
 #define MATERIALSTANDARDSPECULAR_H_
 
-#include "TMaterial.h"
+#include "../../../nodes/TMaterial.h"
 #include "TParameterList.h"
 
 //!  MaterialStandardSpecular class is the the representation of a specular material.
@@ -61,11 +61,10 @@ private:
 	MaterialStandardSpecular& operator=(const MaterialStandardSpecular&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	MaterialStandardSpecular( );
-	MaterialStandardSpecular* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
     std::string GetIcon();
 	TNodeType GetType() const;
@@ -73,6 +72,7 @@ public:
 
 
 protected:
+	MaterialStandardSpecular( );
    	virtual ~MaterialStandardSpecular();
 
 private:

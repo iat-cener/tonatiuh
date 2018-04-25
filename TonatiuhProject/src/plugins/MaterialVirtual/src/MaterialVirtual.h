@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MATERIALVIRTUAL_H_
 #define MATERIALVIRTUAL_H_
 
-#include "TMaterial.h"
+#include "../../../nodes/TMaterial.h"
 
 //!  MaterialVirtual class is the the representation of a virtual material.
 /*!
@@ -55,17 +55,17 @@ private:
 	MaterialVirtual& operator=(const MaterialVirtual&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	MaterialVirtual( );
-	MaterialVirtual* Copy() const;
+	 std::shared_ptr< TNode >  Copy() const;
 
     std::string GetIcon();
 	TNodeType GetType() const;
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay ) const;
 
 protected:
+	MaterialVirtual( );
    	virtual ~MaterialVirtual();
 
 private:

@@ -90,7 +90,8 @@ public:
 	bool Run( unsigned long numberOfRays );
 	void SetPhotonMap( TPhotonMap* photonMap  = 0 );
 	void SetRandomNumberGenerator( RandomDeviate* randomNumberGenerator = 0 );
-	virtual bool SetScene( TSceneNode* scene  = 0, std::vector<std::string > notFirstStageNodesURL = std::vector<std::string >() );
+	//virtual bool SetScene( TSceneNode* scene  = 0, std::vector<std::string > notFirstStageNodesURL = std::vector<std::string >() );
+	virtual bool SetScene( std::shared_ptr< TSceneNode >&  scene, std::vector<std::string > notFirstStageNodesURL = std::vector<std::string >() );
 
 protected:
 	bool NewRay( Ray* ray, ParallelRandomDeviate& rand );
@@ -100,9 +101,8 @@ protected:
 	RandomDeviate* m_pRandomNumberGenerator;
 	std::mutex m_randomMutex;
 
-
 	TPhotonMap* m_pPhotonMap;
-	TSunNode* m_pSunNode;
+	std::shared_ptr< TSunNode > m_pSunNode;
 	LightOriginShape m_lightOriginShape;
 	Transform m_sunTransformSTW;
 };

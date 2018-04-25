@@ -37,6 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "Trace.h"
 
 #include "TSunshape.h"
 
@@ -70,7 +71,7 @@ TSunshape::TSunshape()
  */
 TSunshape::~TSunshape()
 {
-
+	Trace{ "TSunshape::~TSunshape " + GetName() };
 }
 
 

@@ -45,8 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TGroupNode.h"
 #include "TNodesList.h"
 #include "TParameterList.h"
-//#include "TParameterString.h"
-//#include "TParameterVector3D.h"
 #include "Transform.h"
 
 /******************************
@@ -58,9 +56,11 @@ TNodeType TGroupNode::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TGroupNode::CreateInstance( )
+std::shared_ptr< TNode > TGroupNode::CreateInstance( )
 {
-  return ( new TGroupNode() );
+	//shared_prt needs a public constructor
+	struct EnableCreateTGroupNode : public TGroupNode { using TGroupNode::TGroupNode; };
+	return ( std::make_unique<EnableCreateTGroupNode>() );
 }
 
 /*!
@@ -83,11 +83,17 @@ TGroupNode::TGroupNode()
 	SetName(GetType().GetName() );
 
 	//Parts
-	TNodesList* childrenListNode = new TNodesList{};
+	//const std::shared_ptr< TNode >& childrenListNode = std::move( TNodesList::CreateInstance( ) );
+
+	auto childrenListNode =  std::dynamic_pointer_cast<TNodesList>( std::move( TNodesList::CreateInstance( ) )  );
+
+
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "GroupNode") ) ;
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "SurfaceNode") ) ;
 	childrenListNode->AddValidNodeType( TNodeType::FromName( "TrackerNode") ) ;
-	AppendPart( "childrenList", TNodeType::FromName( "NodesList" ) , childrenListNode );
+	AppendPart( "childrenList", TNodeType::FromName( "NodesList" ) , std::move( childrenListNode ) );
+
+
 
 	//Transformation
 	m_pParametersList->Append<std::string>( m_translationName, "0 0 0", true );
@@ -106,17 +112,20 @@ TGroupNode::~TGroupNode()
 /*!
  * Creates a copy of group node.
  */
- TGroupNode* TGroupNode::Copy() const
+std::shared_ptr< TNode > TGroupNode::Copy() const
  {
+	//smart pointer->public constructor
+	struct EnableCreateTGroupNode : public TGroupNode { using TGroupNode::TGroupNode; };
+	auto groupNode = std::make_unique<EnableCreateTGroupNode>();
 
-	 TGroupNode* groupNode = new TGroupNode;
+	 //TGroupNode* groupNode = new TGroupNode;
 	 if( groupNode == 0 )	return ( 0  );
 
 	 for (std::map<std::string, TNodeType>::iterator it = groupNode->m_partsTypeList.begin(); it!=groupNode->m_partsTypeList.end(); ++it)
 	 {
 		 std::string partName = it->first;
 		 TNodeType partType = it->second;
-		 TNode* partNode = groupNode->m_partsList[partName];
+		 std::shared_ptr< TNode > partNode = groupNode->m_partsList[partName];
 
 		 groupNode->AppendPart( partName, partType, partNode->Copy() );
 	 }

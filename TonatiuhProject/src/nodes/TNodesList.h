@@ -63,26 +63,27 @@ private:
 	TNodesList& operator=(const TNodesList&) = delete;
 
 public:
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	TNodesList();
 
 	void AddValidNodeType( TNodeType type );
-	virtual TNodesList* Copy() const;
+	virtual std::shared_ptr< TNode > Copy() const;
 	virtual std::string GetIcon() const;
 	virtual TNodeType GetType() const;
 
-	TNode* Item( int index ) const;
-	int IndexOf(const TNode* child ) const;
-	virtual bool InsertItem( TNode* node, int index=-1 );
+	std::shared_ptr< TNode > Item( int index ) const;
+	int IndexOf(const std::shared_ptr< TNode > child ) const;
+	virtual bool InsertItem( std::shared_ptr< TNode > node, int index=-1 );
 	int Count() const;
 	bool RemoveItem( int index );
 
 protected:
+	TNodesList();
 	virtual ~TNodesList();
 
 protected:
-	std::vector< TNode* > m_children;
+	std::vector< std::shared_ptr< TNode > > m_children;
 	std::vector< TNodeType > m_validNodeTypesList;
 
 private:

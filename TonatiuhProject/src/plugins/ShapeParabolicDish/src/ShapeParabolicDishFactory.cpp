@@ -72,10 +72,9 @@ QIcon ShapeParabolicDishFactory::TShapeIcon() const
 /*!
  * Creates a new parabolic dish object.
  */
-ShapeParabolicDish* ShapeParabolicDishFactory::CreateTShape( ) const
+std::shared_ptr< TShape > ShapeParabolicDishFactory::CreateTShape( ) const
 {
-
-	return ( new ShapeParabolicDish);
+	return ( std::dynamic_pointer_cast<TShape>( ShapeParabolicDish::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

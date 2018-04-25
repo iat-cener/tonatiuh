@@ -52,9 +52,14 @@ class RandomMersenneTwisterFactory : public QObject, public RandomDeviateFactory
 
 
 public:
+    ~RandomMersenneTwisterFactory()
+    {
+    	Trace{ "RandomMersenneTwisterFactory::~RandomMersenneTwisterFactory", false };
+
+    }
 	std::string RandomDeviateName() const;
 	QIcon RandomDeviateIcon() const;
-	RandomMersenneTwister* CreateRandomDeviate( ) const;
+	std::shared_ptr< RandomDeviate > CreateRandomDeviate( ) const;
 
 };
 

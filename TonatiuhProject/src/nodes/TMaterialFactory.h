@@ -39,7 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TMATERIALFACTORY_H_
 #define TMATERIALFACTORY_H_
 
+#include "Trace.h"
 
+#include <memory>
 #include <vector>
 
 #include <QtPlugin>
@@ -52,12 +54,20 @@ class TMaterial;
 class TMaterialFactory
 {
 public:
-    virtual ~TMaterialFactory() {}
+	TMaterialFactory()
+	{
+
+	}
+    virtual ~TMaterialFactory()
+    {
+    	Trace{ "TMaterialFactory::~TMaterialFactory", false };
+
+    }
     virtual void Init() const  = 0;
     virtual std::string TMaterialName() const  = 0;
     virtual QIcon TMaterialIcon() const = 0;
-    virtual TMaterial* CreateTMaterial( ) const = 0;
-    virtual TMaterial* CreateTMaterial( int /*numberofParameters*/, std::vector< QVariant > /*parametersList*/ ) const
+    virtual std::shared_ptr< TMaterial > CreateTMaterial( ) const = 0;
+    virtual std::shared_ptr< TMaterial > CreateTMaterial( int /*numberofParameters*/, std::vector< QVariant > /*parametersList*/ ) const
     {
     	return ( CreateTMaterial() );
     }

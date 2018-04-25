@@ -62,30 +62,30 @@ private:
 public:
 	static void Init();
 
-	TContainerNode();
 
-	virtual TContainerNode* Copy() const = 0;
+	virtual std::shared_ptr< TNode > Copy() const = 0;
 
 
 	bool Contains(const std::string & name) const;
 	virtual std::string GetIcon() const;
-	TNode* GetPart( const std::string name ) const;
+	std::shared_ptr< TNode > GetPart( const std::string name ) const;
 	std::vector<std::string> GetPartNames() const;
 	virtual TNodeType GetType() const;
 
 	int NumberOfParts() const;
-	virtual bool SetPart( const std::string name, TNode* node  );
+	virtual bool SetPart( const std::string name, std::shared_ptr< TNode > node  );
 
 
 protected:
-	virtual ~TContainerNode();
+	TContainerNode();
+	virtual ~TContainerNode(); 	//Virtual destructor: to delete from a instance of a base class
 	//virtual TNode* CreateCopy() const = 0;
 
-	void AppendPart( const std::string name, TNodeType type, TNode* defaultNode );
+	void AppendPart( const std::string name, TNodeType type, std::shared_ptr< TNode > defaultNode );
 	void RevomePart( const std::string name );
 
 	std::map< std::string, TNodeType > m_partsTypeList;
-	std::map< std::string, TNode* > m_partsList;
+	std::map< std::string, std::shared_ptr< TNode > > m_partsList;
 
 private:
 	static TNodeType m_nodeType;

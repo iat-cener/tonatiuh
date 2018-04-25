@@ -41,8 +41,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <string>
 
+#include "../../../nodes/TTracker.h"
 #include "TNodeType.h"
-#include "TTrackerNode.h"
 
 //!  TrackerHeliostat is the class for solar one-axis trackers.
 

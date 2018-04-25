@@ -50,11 +50,10 @@ private:
 	SunshapeBuie(const SunshapeBuie&) = delete;
 	SunshapeBuie& operator=(const SunshapeBuie&) = delete;
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	SunshapeBuie( );
-	SunshapeBuie* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const;
 	std::string GetIcon() const;
@@ -63,6 +62,7 @@ public:
 	TNodeType GetType() const;
 
 protected:
+	SunshapeBuie( );
 	virtual ~SunshapeBuie();
 
 	double PDFTheta( double theta ) const;

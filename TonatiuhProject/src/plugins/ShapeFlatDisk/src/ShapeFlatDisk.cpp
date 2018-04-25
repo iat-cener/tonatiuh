@@ -35,6 +35,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include "Trace.h"
 
 #include "DifferentialGeometry.h"
 #include "gf.h"
@@ -48,9 +49,11 @@ TNodeType ShapeFlatDisk::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* ShapeFlatDisk::CreateInstance( )
+std::shared_ptr< TNode > ShapeFlatDisk::CreateInstance( )
 {
-  return ( new ShapeFlatDisk() );
+	//shared_prt needs a public constructor
+	struct EnableCreatShapeFlatDisk : public ShapeFlatDisk { using ShapeFlatDisk::ShapeFlatDisk; };
+	return std::make_shared<EnableCreatShapeFlatDisk>();
 }
 
 /*!
@@ -79,16 +82,17 @@ ShapeFlatDisk::ShapeFlatDisk()
  */
 ShapeFlatDisk::~ShapeFlatDisk()
 {
-
+	Trace{ "ShapeFlatDisk::~ShapeFlatDisk "  + GetName() };
 }
 
 /*!
  * Creates a copy of shape node.
  */
-ShapeFlatDisk* ShapeFlatDisk::Copy() const
+std::shared_ptr< TNode > ShapeFlatDisk::Copy() const
 {
-	ShapeFlatDisk* shapeNode = new ShapeFlatDisk;
-	if( shapeNode == 0 )	return ( 0  );
+	struct EnableCreatShapeFlatDisk : public ShapeFlatDisk { using ShapeFlatDisk::ShapeFlatDisk; };
+	std::shared_ptr<ShapeFlatDisk> shapeNode = std::make_unique<EnableCreatShapeFlatDisk>();
+	if( shapeNode == nullptr )	return ( 0  );
 
 	//Coping node parts.
 	//NO parts

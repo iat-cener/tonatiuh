@@ -51,9 +51,14 @@ class RandomRngStreamFactory : public QObject, public RandomDeviateFactory
 #endif
 
 public:
+    ~RandomRngStreamFactory()
+    {
+    	Trace{ "RandomRngStreamFactory::~RandomRngStreamFactory", false };
+
+    }
 	std::string RandomDeviateName() const;
 	QIcon RandomDeviateIcon() const;
-	RandomRngStream* CreateRandomDeviate( ) const;
+	std::shared_ptr< RandomDeviate > CreateRandomDeviate( ) const;
 
 };
 

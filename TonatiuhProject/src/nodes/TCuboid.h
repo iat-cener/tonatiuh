@@ -64,11 +64,10 @@ private:
 	TCuboid& operator=(const TCuboid&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	//std::shared_ptr<TCuboid> CopyCuboid() const;
-	TCuboid* Copy() const;
+	 std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;

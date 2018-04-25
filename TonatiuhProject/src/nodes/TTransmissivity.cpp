@@ -36,46 +36,44 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include "Trace.h"
 
-#ifndef TSURFACENODE_H_
-#define TSURFACENODE_H_
+#include "TTransmissivity.h"
 
+TNodeType TTransmissivity::m_nodeType = TNodeType::CreateEmptyType();
 
-#include "Vector3D.h"
-#include "TContainerNode.h"
-
-//!  TSurfaceNode class is the container class to describe a surface.
 /*!
-  TSurfaceNode class is the container to collect a surface definition nodes. The part of this node are:
-  -->   "shape"
-  -->   "material"
-*/
-
-class NODE_API TSurfaceNode : public TContainerNode
+ * Initializes TTransmissivity type.
+ */
+void TTransmissivity::Init()
 {
+	TTransmissivity::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "TransmissivityNode" );
+}
 
-private:
-	//No copy constructor. Use Copy to create a copy of the node
-	TSurfaceNode(const TSurfaceNode& ) = delete;
-	TSurfaceNode& operator=(const TSurfaceNode&) = delete;
-
-
-public:
-	static std::shared_ptr< TNode > CreateInstance();
-	static void Init();
-
-	virtual std::shared_ptr< TNode > Copy() const;
-
-	virtual TNodeType GetType() const;
+/*!
+ * Constructor
+ */
+TTransmissivity::TTransmissivity()
+:TNode()
+{
+	SetName( GetType().GetName() );
+}
 
 
-protected:
-	TSurfaceNode();
-	virtual ~TSurfaceNode();
+/*!
+ * Destroys object.
+ */
+TTransmissivity::~TTransmissivity()
+{
+	Trace{ "TTransmissivity::~TTransmissivity "  + GetName() };
 
-private:
-	static TNodeType m_nodeType;
-};
+}
 
+/*!
+ * Returns the type of node.
+ */
+TNodeType TTransmissivity::GetType() const
+{
+	return ( TTransmissivity::m_nodeType );
+}
 
-#endif /* TSURFACENODE_H_ */

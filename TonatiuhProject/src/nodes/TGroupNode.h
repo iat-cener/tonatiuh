@@ -69,18 +69,18 @@ private:
 	TGroupNode& operator=(const TGroupNode&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	TGroupNode();
 
-	virtual TGroupNode* Copy() const;
+	virtual std::shared_ptr< TNode > Copy() const;
 
 	virtual std::string GetIcon() const;
 	virtual Transform GetTrasformation() const;
 	virtual TNodeType GetType() const;
 
 protected:
+	TGroupNode();
 	virtual ~TGroupNode();
 
 protected:

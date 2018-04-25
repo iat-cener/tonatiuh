@@ -41,16 +41,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PLUGINMANAGER_H_
 #define PLUGINMANAGER_H_
 
-#include <QVector>
+#include <memory>
+#include <vector>
+#include <map>
+
 
 class PhotonMapExportFactory;
 class QDir;
 class QStringList;
+class RandomDeviate;
 class RandomDeviateFactory;
+class TMaterial;
 class TMaterialFactory;
+class TShape;
 class TShapeFactory;
+class TSunshape;
 class TSunshapeFactory;
+class TTracker;
 class TTrackerFactory;
+class TTransmissivity;
 class TTransmissivityFactory;
 
 class PluginManager
@@ -60,12 +69,20 @@ public:
     PluginManager();
     ~PluginManager();
 
-    QVector< TMaterialFactory* > GetMaterialFactories() const;
-    QVector< RandomDeviateFactory* > GetRandomDeviateFactories() const;
-    QVector< TShapeFactory* > GetShapeFactories() const;
-    QVector< TSunshapeFactory* > GetSunshapeFactories() const;
-    QVector< TTrackerFactory* > GetTrackerFactories() const;
-    QVector< TTransmissivityFactory* > GetTransmissivityFactories() const;
+
+    std::shared_ptr< TMaterial > CreateTMaterial( std::string factoryName ) const;
+    std::shared_ptr< RandomDeviate > CreateRandomDeviate( std::string factoryName ) const;
+    std::shared_ptr< TShape > CreateTShape( std::string factoryName ) const;
+    std::shared_ptr< TSunshape > CreateTSunshape( std::string factoryName ) const;
+    std::shared_ptr< TTracker > CreateTTracker( std::string factoryName ) const;
+    std::shared_ptr< TTransmissivity > CreateTTransmissivity( std::string factoryName ) const;
+
+    std::vector< std::string > GetMaterialFactoryNames() const;
+    std::vector< std::string > GetRandomDeviateFactoryNames() const;
+    std::vector< std::string > GetShapeFactoryNames() const;
+    std::vector< std::string > GetSunshapeFactoryNames() const;
+    std::vector< std::string > GetTrackerFactoryNames() const;
+    std::vector< std::string > GetTransmissivityFactoryNames() const;
 	void LoadAvailablePlugins( QDir pluginsDirectory, QString* error );
 
 private:
@@ -81,12 +98,14 @@ private:
 	void LoadTransmissivityPlugin( QObject* plugin, QString* error );
 	bool ValidDirectoryName( QString& directoryName  );
 
-	QVector< TMaterialFactory* > m_materialFactoryList;
-	QVector< RandomDeviateFactory* > m_randomDeviateFactoryList;
-	QVector< TShapeFactory* > m_shapeFactoryList;
-	QVector< TSunshapeFactory* > m_sunshapeFactoryList;
-	QVector< TTrackerFactory* > m_trackerFactoryList;
-	QVector< TTransmissivityFactory* > m_transmissivityFactoryList;
+
+	std::vector< std::unique_ptr< TMaterialFactory > > m_materialFactoryList;
+	std::vector< std::unique_ptr< RandomDeviateFactory > > m_randomDeviateFactoryList;
+	std::vector< std::unique_ptr< TShapeFactory > > m_shapeFactoryList;
+	std::vector< std::unique_ptr< TSunshapeFactory > > m_sunshapeFactoryList;
+	std::vector< std::unique_ptr< TTrackerFactory > > m_trackerFactoryList;
+	std::vector< std::unique_ptr< TTransmissivityFactory > > m_transmissivityFactoryList;
+
 };
 
 #endif /* PLUGINMANAGER_H_ */

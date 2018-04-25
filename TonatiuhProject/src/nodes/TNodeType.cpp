@@ -77,20 +77,23 @@ struct TTypeData
  * TNodeType
  *******************************/
 
-std::vector< TTypeData* >*  TNodeType::m_typeList = 0;
-
+//std::vector< std::unique_ptr< TTypeData > >  TNodeType::m_typeList( 0 );
+std::vector< TTypeData >  TNodeType::m_typeList;
 
 /*!
  * Returns true if a type with \a name exists. Otherwise returns false.
  */
 bool TNodeType::Contains(const std::string& name)
 {
-	for( unsigned int i = 0; i < TNodeType::m_typeList->size(); i++ )
+
+	for( unsigned int i = 0; i < TNodeType::m_typeList.size(); i++ )
 	{
-		if( TNodeType::m_typeList->at(i)->name == name )
+		//if( TNodeType::m_typeList[i]->name == name )
+		if( TNodeType::m_typeList[i].name == name )
 				return (true );
 	}
 	return (false);
+
 }
 
 /*!
@@ -115,11 +118,13 @@ const TNodeType TNodeType::CreateType(const TNodeType parent, const std::string 
 
 
 	TNodeType newType;
-	newType.m_index = TNodeType::m_typeList->size();
-	TTypeData* typeData = new TTypeData(name, newType, parent, method);
-	TNodeType::m_typeList->push_back(typeData);
+	newType.m_index = TNodeType::m_typeList.size();
+	std::unique_ptr< TTypeData > typeData = std::make_unique<TTypeData> (name, newType, parent, method);
+	//TNodeType::m_typeList.push_back(std::move( typeData) );
+	TNodeType::m_typeList.push_back( *typeData );
 
 	return ( newType );
+
 }
 
 /*!
@@ -129,32 +134,38 @@ const TNodeType TNodeType::CreateType(const TNodeType parent, const std::string 
 TNodeType TNodeType::FromName( const std::string name )
 {
 
-	for( unsigned int i = 0; i < TNodeType::m_typeList->size(); i++ )
+	for( unsigned int i = 0; i < TNodeType::m_typeList.size(); i++ )
 	{
-		if( TNodeType::m_typeList->at(i)->name == name )
-				return ( TNodeType::m_typeList->at(i)->type );
+		//if( TNodeType::m_typeList[i]->name == name )
+		//	return ( TNodeType::m_typeList[i]->type );
+		if( TNodeType::m_typeList[i].name == name )
+			return ( TNodeType::m_typeList[i].type );
 	}
 
 	return ( CreateEmptyType() );
+
 }
 
 /*!
  * Initializes types system.
  */
+/*
 void TNodeType::Init()
 {
+	assert(TNodeType::m_typeList.size() < 0 && "Error initializing node types list" );
 
-	assert(TNodeType::m_typeList == 0 && "Error initializing node types list" );
-
-	TNodeType::m_typeList  = new std::vector<TTypeData*>();
+	//TNodeType::m_typeList = std::vector< std::unique_ptr< TTypeData> >  (CreateEmptyType());
+	//TNodeType::m_typeList.resize( 10 );
 }
+*/
 
 /*!
  * Name of the type.
  */
 std::string TNodeType::GetName() const
 {
-	return ( TNodeType::m_typeList->at( m_index )->name );
+	//return ( TNodeType::m_typeList[m_index]->name );
+	return ( TNodeType::m_typeList[m_index].name );
 }
 
 /*!
@@ -162,8 +173,8 @@ std::string TNodeType::GetName() const
  */
 const TNodeType TNodeType::GetParent() const
 {
-
-	return ( TNodeType::m_typeList->at( m_index )->parentType );
+	//return ( TNodeType::m_typeList[m_index]->parentType );
+	return ( TNodeType::m_typeList[m_index].parentType );
 }
 
 
@@ -172,11 +183,11 @@ const TNodeType TNodeType::GetParent() const
  */
 bool TNodeType::IsDerivedFrom(const TNodeType type) const
 {
-
 	int parentIndex = m_index;
 	while( parentIndex > 0 && type.m_index != parentIndex )
 	{
-		TNodeType parentType = TNodeType::m_typeList->at( parentIndex )->parentType;
+		//TNodeType parentType = TNodeType::m_typeList[parentIndex]->parentType;
+		TNodeType parentType = TNodeType::m_typeList[parentIndex].parentType;
 		parentIndex = parentType.m_index;
 	}
 
@@ -195,12 +206,12 @@ bool TNodeType::IsValid() const
 
 /*!
  * Creates a node object from the current type.
- * If
+ *
  */
-void* TNodeType::NodeFromType() const
+std::shared_ptr< TNode > TNodeType::NodeFromType() const
 {
-
-	TNodeType::ConstructorMethod method = TNodeType::m_typeList->at( m_index )->constructorMethod;
+	//TNodeType::ConstructorMethod method = TNodeType::m_typeList[m_index]->constructorMethod;
+	TNodeType::ConstructorMethod method = TNodeType::m_typeList[m_index].constructorMethod;
 	return ( method() );
 }
 

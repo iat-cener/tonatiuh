@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "Trace.h"
+
 #include <cmath>
 
 #include "gc.h"
@@ -50,9 +52,11 @@ TNodeType TrackerParabolicDish::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TrackerParabolicDish::CreateInstance( )
+std::shared_ptr< TNode > TrackerParabolicDish::CreateInstance( )
 {
-  return ( new TrackerParabolicDish() );
+	//shared_prt needs a public constructor
+	struct EnableCreateTrackerParabolicDish : public TrackerParabolicDish { using TrackerParabolicDish::TrackerParabolicDish; };
+	return std::make_shared<EnableCreateTrackerParabolicDish>();
 }
 
 /*!
@@ -68,9 +72,10 @@ void TrackerParabolicDish::Init()
  * Creates a tracker object.
  */
 TrackerParabolicDish::TrackerParabolicDish()
-:TTrackerNode(),
+:TTracker(),
  m_nodeTransformationLabel( "node_transformation" )
 {
+	Trace{ "TrackerParabolicDish::TrackerParabolicDish", false };
 	//Default object name is the name of the type
 	SetName(GetType().GetName() );
 
@@ -97,16 +102,17 @@ TrackerParabolicDish::TrackerParabolicDish()
  */
 TrackerParabolicDish::~TrackerParabolicDish()
 {
-	SetName( GetType().GetName() );
+	Trace{ "TrackerParabolicDish::~TrackerParabolicDish "  + GetName() };
 
 }
 
 /*!
  * Creates a copy of tracker node.
  */
-TrackerParabolicDish* TrackerParabolicDish::Copy() const
+std::shared_ptr< TNode > TrackerParabolicDish::Copy() const
  {
-	TrackerParabolicDish* trackerNode = new TrackerParabolicDish;
+	struct EnableCreateTrackerParabolicDish : public TrackerParabolicDish { using TrackerParabolicDish::TrackerParabolicDish; };
+	std::shared_ptr< TrackerParabolicDish > trackerNode  = std::make_unique<EnableCreateTrackerParabolicDish>();
 	 if( trackerNode == 0 )	return ( 0  );
 
 	 //Coping node parts.
@@ -132,7 +138,13 @@ std::string TrackerParabolicDish::GetIcon() const
  */
 Transform TrackerParabolicDish::GetTrasformation( ) const
 {
-	std::string transformationValue = GetParameterValue<std::string>( m_nodeTransformationLabel );
+	Trace{ "TrackerParabolicDish::GetTrasformation "  + GetName(), false };
+	//GetParameterValue only for visible parameters
+	//std::string transformationValue = GetParameterValue<std::string>( m_nodeTransformationLabel );
+
+	std::string transformationValue =  std::get<std::string>( m_pParametersList->GetValue( m_nodeTransformationLabel ).value() );
+
+
 	std::vector< std::string > transformationValues = nf::StringSplit( transformationValue,
 			"[\\s+,\\[\\]]" );
 
@@ -157,13 +169,17 @@ TNodeType TrackerParabolicDish::GetType() const
  */
 void TrackerParabolicDish::UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 )
 {
+	Trace{ "TrackerParabolicDish::UpdateTrackerTransform " + GetName(), false };
+
 	Matrix4x4 nodeTransformation;
 
-	if( abs( 1.0 - DotProduct( sunVector,  Vector3D( 0.0f, 1.0f, 0.0f ) ) ) < 0.000001 )
+	if( std::abs( 1.0 - DotProduct( sunVector,  Vector3D( 0.0f, 1.0f, 0.0f ) ) ) < 0.000001 )
+	{
 		nodeTransformation = Matrix4x4( 1.0, 0.0, 0.0, 0.0,
 				0.0, 1.0, 0.0, 0.0,
 				0.0, 0.0, 1.0, 0.0,
 				0.0, 0.0, 0.0, 1.0 );
+	}
 	else
 	{
 		Vector3D i = Normalize( parentWT0( sunVector ) );
@@ -197,4 +213,5 @@ void TrackerParabolicDish::UpdateTrackerTransform( Vector3D sunVector, Transform
 	}
 
 	m_pParametersList->SetValue( m_nodeTransformationLabel, transformationValue );
+
 }

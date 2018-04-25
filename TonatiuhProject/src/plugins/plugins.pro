@@ -5,17 +5,17 @@ SUBDIRS = MaterialStandardSpecular \
 			MaterialVirtual \
 			RandomMersenneTwister \
 			RandomRngStream \
-			SaveBinaryFile \
-			ShapeCone \
-			ShapeCylinder \
+#			SaveBinaryFile \
+#			ShapeCone \
+#			ShapeCylinder \
 			ShapeFlatDisk \
-			ShapeFlatRectangle \
-			ShapeFlatTriangle \
+#			ShapeFlatRectangle \
+#			ShapeFlatTriangle \
 			ShapeParabolicDish \
-			ShapeSphericalRectangle \
-			ShapeTroughParabola \
+#			ShapeSphericalRectangle \
+#			ShapeTroughParabola \
 			SunshapeBuie \
 			SunshapePillbox \
-			TrackerHeliostat \
-			TrackerOneAxis \
+#			TrackerHeliostat \
+#			TrackerOneAxis \
 			TrackerParabolicDish

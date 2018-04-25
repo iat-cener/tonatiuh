@@ -60,13 +60,12 @@ class NODE_API TMaterial: public TNode
 private:
 	//No copy constructor. Use Copy to create a copy of the node
 	TMaterial(const TMaterial& ) = delete;
-	TMaterial& operator=(const TMaterial&) = delete;
+	TMaterial& operator=( const TMaterial& ) = delete;
 
 public:
 	static void Init();
 
-	TMaterial();
-	virtual TMaterial* Copy() const = 0;
+	virtual std::shared_ptr< TNode > Copy() const = 0;
 
 	virtual std::string GetIcon() = 0;
 	virtual TNodeType GetType() const;
@@ -75,6 +74,7 @@ public:
 
 
 protected:
+	TMaterial();
 	virtual ~TMaterial();
 
 

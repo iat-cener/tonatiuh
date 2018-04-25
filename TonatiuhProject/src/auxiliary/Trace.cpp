@@ -36,52 +36,29 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
  
-#ifndef TRACKERONEAXIS_H_
-#define TRACKERONEAXIS_H_
+#include "Trace.h"
+#include <iostream>
 
-#include "../../../nodes/TTracker.h"
-#include "TNodeType.h"
+int Trace::level = -1;
+bool Trace::TraceEnabled = true;
 
-//!  TrackerOneAxis is the class for solar one-axis trackers.
-
-/*!
-  TrackerOneAxis class provides a structure to one axis tracker node.
-  This node is a group node which geometric to rotation around the user defined axis is applied so the plane perpendicular to the defined axis contains the sun vector.
-  Parameters:
-   - axis: rotation axis. Default: x
-*/
-
-class TrackerOneAxis : public TTrackerNode
+Trace::Trace( std::string functionName, bool showTrace )
+: m_functionName( functionName ), m_functionTrace( showTrace )
 {
+	if(!TraceEnabled || !m_functionTrace)
+		return;
 
-private:
-	//No copy constructor. Use Copy to create a copy of the node
-	TrackerOneAxis(const TrackerOneAxis&) = delete;
-	TrackerOneAxis& operator=(const TrackerOneAxis&) = delete;
+	level++;
+	for( int i = 0; i < level; ++i ) std::cout << "      ";
+	std::cout << "( " << level << " )" << "<ENTERING " << m_functionName << ">" << std::endl;
+}
 
-public:
-	static void* CreateInstance();
-	static void Init();
+Trace::~Trace( )
+{
+	if(!TraceEnabled || !m_functionTrace)
+		return;
 
-	TrackerOneAxis();
-	TrackerOneAxis* Copy() const;
-
-	std::string GetIcon() const;
-	Transform GetTrasformation() const;
-	TNodeType GetType() const;
-	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
-
-protected:
-	virtual ~TrackerOneAxis();
-
-private:
-	static TNodeType m_nodeType;
-	std::string m_axisLabel;
-	std::string m_xAxisLabel;
-	std::string m_yAxisLabel;
-	std::string m_zAxisLabel;
-	std::string m_nodeTransformationLabel;
-};
-
-
-#endif /*TRACKERONEAXIS_H_*/
+	for( int i = 0; i < level; ++i ) std::cout << "      ";
+    std::cout << "( " << level << " )" << "<EXITING  " << m_functionName << ">" << std::endl;
+    level--;
+}

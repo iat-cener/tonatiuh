@@ -35,6 +35,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include "Trace.h"
 
 #include "Ray.h"
 #include "DifferentialGeometry.h"
@@ -51,9 +52,11 @@ TNodeType MaterialStandardSpecular::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* MaterialStandardSpecular::CreateInstance( )
+std::shared_ptr< TNode > MaterialStandardSpecular::CreateInstance( )
 {
-  return ( new MaterialStandardSpecular() );
+	//shared_prt needs a public constructor
+	struct EnableCreateMaterialStandardSpecular : public MaterialStandardSpecular { using MaterialStandardSpecular::MaterialStandardSpecular; };
+	return std::make_shared<EnableCreateMaterialStandardSpecular>();
 }
 
 /*!
@@ -97,17 +100,18 @@ MaterialStandardSpecular::MaterialStandardSpecular()
  */
 MaterialStandardSpecular::~MaterialStandardSpecular()
 {
-
+	Trace{ "MaterialStandardSpecular::~MaterialStandardSpecular "  + GetName() };
 }
 
 /*!
  * Creates a copy of material node.
  */
-MaterialStandardSpecular* MaterialStandardSpecular::Copy() const
- {
-
-	MaterialStandardSpecular* materialNode = new MaterialStandardSpecular;
-	 if( materialNode == 0 )	return ( 0  );
+std::shared_ptr< TNode > MaterialStandardSpecular::Copy() const
+{
+	//shared_prt needs a public constructor
+	struct EnableCreateMaterialStandardSpecular : public MaterialStandardSpecular { using MaterialStandardSpecular::MaterialStandardSpecular; };
+	std::shared_ptr<MaterialStandardSpecular> materialNode = std::make_unique<EnableCreateMaterialStandardSpecular>();
+	if( materialNode == 0 )	return ( 0  );
 
 	 //Coping node parts.
 	 //NO parts

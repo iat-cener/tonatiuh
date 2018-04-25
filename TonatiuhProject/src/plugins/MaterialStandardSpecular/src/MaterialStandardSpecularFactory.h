@@ -52,10 +52,14 @@ class MaterialStandardSpecularFactory: public QObject, public TMaterialFactory
 #endif
     
 public:
+    ~MaterialStandardSpecularFactory()
+    {
+    	Trace{ "MaterialStandardSpecularFactory::~MaterialStandardSpecularFactory", false };
+    }
     void Init() const;
    	std::string TMaterialName() const;
    	QIcon TMaterialIcon() const;
-   	MaterialStandardSpecular* CreateTMaterial( ) const;
+   	std::shared_ptr< TMaterial > CreateTMaterial( ) const;
 };
 
 #endif /*MATERIALSTANDARDSPECULARFACTORY_H_*/

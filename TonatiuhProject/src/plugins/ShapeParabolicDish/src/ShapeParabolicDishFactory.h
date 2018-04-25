@@ -54,7 +54,7 @@ public:
     void Init() const;
    	std::string TShapeName() const;
    	QIcon TShapeIcon() const;
-   	ShapeParabolicDish* CreateTShape( ) const;
+   	std::shared_ptr< TShape > CreateTShape( ) const;
 };
 
 #endif /*SHAPEPARABOLICDISHFACTORY_H_*/

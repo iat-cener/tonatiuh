@@ -73,9 +73,9 @@ QIcon SunshapeBuieFactory::TSunshapeIcon() const
 /*!
  * Creates a new sunshaope object.
  */
-SunshapeBuie* SunshapeBuieFactory::CreateTSunshape( ) const
+std::shared_ptr< TSunshape > SunshapeBuieFactory::CreateTSunshape( ) const
 {
-	return ( new SunshapeBuie );
+	return ( std::dynamic_pointer_cast<TSunshape >( SunshapeBuie::CreateInstance() ) );
 }
 #if QT_VERSION < 0x050000 // pre Qt 5
 	Q_EXPORT_PLUGIN2(SunshapeBuie, SunshapeBuieFactory)

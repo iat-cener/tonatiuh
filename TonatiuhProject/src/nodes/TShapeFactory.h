@@ -39,6 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TSHAPEFACTORY_H_
 #define TSHAPEFACTORY_H_
 
+#include "Trace.h"
+
+#include <memory>
 #include <vector>
 
 #include <QtPlugin>
@@ -56,12 +59,15 @@ class TShape;
 class TShapeFactory
 {
 public:
-    virtual ~TShapeFactory() {}
+    virtual ~TShapeFactory()
+    {
+    	Trace{ "TShapeFactory::~TShapeFactory", false };
+    }
     virtual void Init() const  = 0;
     virtual std::string TShapeName() const  = 0;
     virtual QIcon TShapeIcon() const = 0;
-    virtual TShape* CreateTShape( ) const = 0;
-    virtual TShape* CreateTShape( int /*numberofParameters*/, std::vector< QVariant > /*parametersList*/ ) const
+    virtual std::shared_ptr< TShape > CreateTShape( ) const = 0;
+    virtual std::shared_ptr< TShape > CreateTShape( int /*numberofParameters*/, std::vector< QVariant > /*parametersList*/ ) const
     {
     	return ( CreateTShape() );
     }

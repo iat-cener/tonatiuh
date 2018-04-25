@@ -48,9 +48,11 @@ TNodeType SunshapePillbox::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* SunshapePillbox::CreateInstance( )
+std::shared_ptr< TNode > SunshapePillbox::CreateInstance( )
 {
-  return ( new SunshapePillbox() );
+	//shared_prt needs a public constructor
+	struct EnableCreateSunshapePillbox : public SunshapePillbox { using SunshapePillbox::SunshapePillbox; };
+	return std::make_shared<EnableCreateSunshapePillbox>();
 }
 
 
@@ -88,9 +90,10 @@ SunshapePillbox::~SunshapePillbox()
 /*!
  * Creates a copy of sunshape node.
  */
-SunshapePillbox* SunshapePillbox::Copy() const
+std::shared_ptr< TNode > SunshapePillbox::Copy() const
 {
-	SunshapePillbox* sunshapeNode = new SunshapePillbox;
+	struct EnableCreateSunshapePillbox : public SunshapePillbox { using SunshapePillbox::SunshapePillbox; };
+	std::shared_ptr<SunshapePillbox> sunshapeNode = std::make_unique<EnableCreateSunshapePillbox>();
 	if( sunshapeNode == 0 )	return ( 0  );
 
 	//Coping node parts.

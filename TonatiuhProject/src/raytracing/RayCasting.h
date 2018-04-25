@@ -40,13 +40,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RAYCASTING_H_
 #define RAYCASTING_H_
 
+#include <memory>
 #include <string>
 
+#include "TMaterial.h"
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "RayTracer.h"
-#include "TMaterial.h"
 #include "Transform.h"
 #include "TShape.h"
 #include "TSurfaceNode.h"
@@ -55,13 +56,22 @@ class TGroupNode;
 
 struct RayCastingNode
 {
+	RayCastingNode()
+	{
+
+	}
+
+	~RayCastingNode()
+	{
+		childrenList.clear();
+	}
 	std::string nodeURL;
 	BBox boundingBox; //world coordinates
 	Transform wtoTransformation;
 	Transform otwTransformation;
 
-	TSurfaceNode* surfaceNode = 0;
-	std::vector< RayCastingNode* > childrenList;
+	std::shared_ptr< TSurfaceNode > surfaceNode = nullptr;
+	std::vector< std::shared_ptr< RayCastingNode > > childrenList;
 
 	//Computes the intersection of the ray with node.
 	//Returns true if there is an output ray.
@@ -145,18 +155,18 @@ public:
 	RayCasting( );
 	~RayCasting();
 
-	bool SetScene( TSceneNode* scene  = 0, std::vector< std::string > notFirstStageNodesURL = std::vector< std::string >() );
+	bool SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< std::string > notFirstStageNodesURL = std::vector< std::string >() );
 
 protected:
 	void RunRaytracer( unsigned long numberOfRays );
 
 private:
-	bool CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode* rTRNode, Transform parentWT0, std::string parentURL );
-	void RemoveRayTracerNodesTree( RayCastingNode* rTParentNode );
+	bool CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& node, std::shared_ptr< RayCastingNode >& rTRNode, Transform parentWT0, std::string parentURL );
+	//void RemoveRayTracerNodesTree( RayCastingNode* rTParentNode );
 
 private:
-	RayCastingNode* m_sceneRootNode;
-	std::vector< RayCastingNode* > m_surfacesNodeList;
+	std::shared_ptr< RayCastingNode > m_sceneRootNode;
+	std::vector< std::shared_ptr< RayCastingNode > > m_surfacesNodeList;
 
 };
 

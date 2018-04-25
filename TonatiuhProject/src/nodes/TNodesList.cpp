@@ -36,6 +36,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include "Trace.h"
 
 #include "TNodesList.h"
 #include "TParameterList.h"
@@ -43,11 +44,22 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 TNodeType TNodesList::m_nodeType = TNodeType::CreateEmptyType();
 
 /*!
+ * Creates a new instance of the class type corresponding object.
+ */
+std::shared_ptr< TNode > TNodesList::CreateInstance( )
+{
+	//shared_prt needs a public constructor
+	struct EnableCreateTNodesList : public TNodesList { using TNodesList::TNodesList; };
+	return ( std::make_unique<EnableCreateTNodesList>() );
+}
+
+
+/*!
  * Initializes TNodesList type.
  */
 void TNodesList::Init()
 {
-	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "NodesList" );
+	m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Node" ), "NodesList", &TNodesList::CreateInstance );
 }
 
 /*!
@@ -65,8 +77,14 @@ TNodesList::TNodesList()
  */
 TNodesList::~TNodesList()
 {
+	Trace{ "TNodesList::~TNodesList " + GetName() };
+	for( unsigned int c = 0; c < m_children.size(); c++ )
+		std::cout<<" - "<<m_children[c]->GetName()<<" refCount: "<<m_children[c].use_count()<<std::endl;
+
+	/*
 	for( unsigned int c = 0; c < m_children.size(); c++ )
 		m_children[c]->RemoveReference();
+	*/
 
 	m_children.clear();
 	m_validNodeTypesList.clear();
@@ -89,14 +107,11 @@ void TNodesList::AddValidNodeType( TNodeType type )
 /*!
  * Creates a container node objecte as a copy of this node.
  */
-TNodesList* TNodesList::Copy() const
+std::shared_ptr< TNode > TNodesList::Copy() const
 {
-	TNodesList* nodeList = new TNodesList();
-	if( nodeList == 0 )	return ( 0  );
-
-	std::vector< TNode* > m_children;
-	std::vector< TNodeType > m_validNodeTypesList;
-
+	struct EnableCreateTNodesList : public TNodesList { using TNodesList::TNodesList; };
+	auto nodeList = std::make_unique<EnableCreateTNodesList>();
+	if( nodeList == nullptr )	return ( 0  );
 
 	for( unsigned int i = 0; i < m_validNodeTypesList.size(); i++ )
 		nodeList->AddValidNodeType( m_validNodeTypesList[i] );
@@ -129,7 +144,7 @@ TNodeType TNodesList::GetType() const
 /*!
  *	Returns the child number \a index.
  */
-TNode* TNodesList::Item( int index ) const
+std::shared_ptr< TNode > TNodesList::Item( int index ) const
 {
 	return ( m_children[index] );
 }
@@ -138,7 +153,7 @@ TNode* TNodesList::Item( int index ) const
  * Returns the index of the \a child in the children list.
  * If \a child is not this node child, returns -1.
  */
-int TNodesList::IndexOf(const TNode* child ) const
+int TNodesList::IndexOf(const std::shared_ptr< TNode > child ) const
 {
 	for( unsigned int i = 0; i < m_children.size(); i++)
 	{
@@ -151,7 +166,7 @@ int TNodesList::IndexOf(const TNode* child ) const
 /*!
  * Inserts a \a node as a child in the position \a index.
  */
-bool TNodesList::InsertItem( TNode* node, int index  )
+bool TNodesList::InsertItem( std::shared_ptr< TNode > node, int index  )
 {
 
 	bool validType = false;
@@ -171,7 +186,7 @@ bool TNodesList::InsertItem( TNode* node, int index  )
 		m_children.push_back( node );
 	else
 		m_children.insert( m_children.begin() + index, node );
-	node->IncreaseReference();
+	//node->IncreaseReference();
 	return (true);
 
 }
@@ -191,9 +206,9 @@ bool TNodesList::RemoveItem( int index )
 {
 	if( index >= int( m_children.size() ) )	return ( false );
 
-	TNode* nodeToRevome = m_children[index];
+	std::shared_ptr< TNode > nodeToRevome = m_children[index];
 	m_children.erase( m_children.begin() + index );
-	nodeToRevome->RemoveReference();
+	//nodeToRevome->RemoveReference();
 
 	return ( true );
 

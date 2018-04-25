@@ -54,7 +54,7 @@ public:
     void Init() const;
    	std::string TSunshapeName() const;
    	QIcon TSunshapeIcon() const;
-   	SunshapeBuie* CreateTSunshape( ) const;
+   	std::shared_ptr< TSunshape > CreateTSunshape( ) const;
 };
 
 

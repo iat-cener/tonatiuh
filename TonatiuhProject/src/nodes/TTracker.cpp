@@ -37,45 +37,53 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TSURFACENODE_H_
-#define TSURFACENODE_H_
+#include "Trace.h"
 
+#include "TParameterList.h"
+#include "TTracker.h"
 
-#include "Vector3D.h"
-#include "TContainerNode.h"
+/******************************
+ * TTracker
+ ******************************/
 
-//!  TSurfaceNode class is the container class to describe a surface.
+TNodeType TTracker::m_nodeType = TNodeType::CreateEmptyType();
+
 /*!
-  TSurfaceNode class is the container to collect a surface definition nodes. The part of this node are:
-  -->   "shape"
-  -->   "material"
-*/
-
-class NODE_API TSurfaceNode : public TContainerNode
+ * Initializes TSurfaceNode type.
+ */
+void TTracker::Init()
 {
+	TTracker::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "GroupNode" ), "Tracker" );
 
-private:
-	//No copy constructor. Use Copy to create a copy of the node
-	TSurfaceNode(const TSurfaceNode& ) = delete;
-	TSurfaceNode& operator=(const TSurfaceNode&) = delete;
+}
+
+/*!
+ * TGroupNode : public TNode
+ */
+TTracker::TTracker()
+:TGroupNode()
+{
+	SetName(GetType().GetName() );
+
+	m_pParametersList->RemoveParameter(  m_rotationName );
+	m_pParametersList->RemoveParameter(  m_scaleFactorName );
+	m_pParametersList->RemoveParameter(  m_translationName );
+}
+
+/*!
+ * Destructor.
+ */
+TTracker::~TTracker()
+{
+	Trace{ "TTracker::~TTracker "  + GetName() };
+}
+
+/*!
+ * Returns the type of node.
+ */
+TNodeType TTracker::GetType() const
+{
+	return ( TTracker::m_nodeType );
+}
 
 
-public:
-	static std::shared_ptr< TNode > CreateInstance();
-	static void Init();
-
-	virtual std::shared_ptr< TNode > Copy() const;
-
-	virtual TNodeType GetType() const;
-
-
-protected:
-	TSurfaceNode();
-	virtual ~TSurfaceNode();
-
-private:
-	static TNodeType m_nodeType;
-};
-
-
-#endif /* TSURFACENODE_H_ */

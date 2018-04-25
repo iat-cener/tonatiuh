@@ -72,10 +72,9 @@ QIcon MaterialStandardSpecularFactory::TMaterialIcon() const
 /*!
  * Returns a material object.
  */
-MaterialStandardSpecular* MaterialStandardSpecularFactory::CreateTMaterial( ) const
+std::shared_ptr< TMaterial > MaterialStandardSpecularFactory::CreateTMaterial( ) const
 {
-
-	return ( new MaterialStandardSpecular );
+	return ( std::dynamic_pointer_cast<TMaterial>( MaterialStandardSpecular::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

@@ -36,6 +36,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include "Trace.h"
 
 #include <thread>
 #include <vector>
@@ -53,8 +54,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 RayTracer::RayTracer(  )
 :m_pRandomNumberGenerator( 0 ),
  m_pPhotonMap( 0 ),
- m_pSunNode( 0 )
+ m_pSunNode( nullptr )
 {
+	Trace{ "RayTracer::RayTracer" };
 }
 
 /*!
@@ -62,12 +64,13 @@ RayTracer::RayTracer(  )
  */
 RayTracer::~RayTracer()
 {
+	Trace{ "RayTracer::~RayTracer" };
 
 }
 
 /*!
  * Executes the ray tracer with current selected algorithm.
- * Returns false if the ray tracer has not been correctly exectued.
+ * Returns false if the ray tracer has not been correctly executed.
  */
 bool RayTracer::Run( unsigned long numberOfRays )
 {
@@ -137,10 +140,10 @@ void RayTracer::SetRandomNumberGenerator( RandomDeviate* randomNumberGenerator )
  * Set the scene to simulate for the ray tracer.
  * Returns true if the scene is valid.
  */
-bool RayTracer::SetScene( TSceneNode* scene, std::vector<std::string > /*firstStageNodesURL*/ )
+bool RayTracer::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector<std::string > /*firstStageNodesURL*/ )
 {
-	if( !scene )	return false;
-	m_pSunNode = scene->GetPart( "light" )->as<TSunNode>();
+	if( scene == nullptr )	return ( false );
+	m_pSunNode = std::dynamic_pointer_cast< TSunNode > ( scene->GetPart( "light" ) );
 
 	return ( true );
 }

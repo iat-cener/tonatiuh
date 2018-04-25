@@ -47,6 +47,7 @@ else {
 	LIBS += -L$${COINDIR}/lib -lCoin -lSoQt
 }
 
+
 CONFIG(debug, debug|release) {
     QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
     QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage

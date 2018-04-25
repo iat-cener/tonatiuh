@@ -69,20 +69,19 @@ public:
 	template<class T> const T* as() const;
 	template<class T> T* as();
 
-	//TNode* CopyNode() const;
-	virtual TNode* Copy() const = 0;
+	virtual std::shared_ptr< TNode > Copy() const = 0;
 
 	int GetID() const;
 	std::string GetName() const;
 	virtual std::string GetIcon() const;
 	template<class T> T GetParameterValue( std::string name ) const;
 	std::string GetParameterToString( std::string name ) const;
-	int GetReferences() const;
+	//int GetReferences() const;
 	virtual TNodeType GetType() const;
 	std::vector<std::string> GetVisibleParametersName() const;
 
-	void IncreaseReference();
-	void RemoveReference();
+	//void IncreaseReference();
+	//void RemoveReference();
 
 	void SetName( std::string name );
 	template<class T> bool SetParameterValue( const std::string& name, const T& value );
@@ -90,7 +89,6 @@ public:
 
 
 protected:
-	//virtual TNode* CreateCopy() const = 0;
 	std::unique_ptr<TParameterList> m_pParametersList;
 
 	TNode();
@@ -99,7 +97,7 @@ private:
 
 	int m_id;
 	std::string m_name;
-	int m_referenceCount;
+	//int m_referenceCount;
 	static TNodeType m_nodeType;
 
 };
@@ -130,11 +128,10 @@ T* TNode::as()
  */
 template<class T> T TNode::GetParameterValue( std::string name ) const
 {
-	//if(!m_parametersList )	return( std::any() );
 	if( !m_pParametersList->Contains( name ) || !m_pParametersList->GetVisibility( name ) )
 		return( T{} );
-	return ( std::get<T>( m_pParametersList->GetValue( name ).value() ) );
 
+	return ( std::get<T>( m_pParametersList->GetValue( name ).value() ) );
 }
 
 /*!

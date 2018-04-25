@@ -36,6 +36,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include "Trace.h"
 
 #include "TSurfaceNode.h"
 
@@ -48,9 +49,11 @@ TNodeType TSurfaceNode::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TSurfaceNode::CreateInstance( )
+std::shared_ptr< TNode >  TSurfaceNode::CreateInstance( )
 {
-  return ( new TSurfaceNode() );
+	//shared_prt needs a public constructor
+	struct EnableCreateTSurfaceNode : public TSurfaceNode { using TSurfaceNode::TSurfaceNode; };
+	return ( std::make_unique<EnableCreateTSurfaceNode>() );
 }
 
 /*!
@@ -83,26 +86,25 @@ TSurfaceNode::TSurfaceNode()
  */
 TSurfaceNode::~TSurfaceNode()
 {
+	Trace{ "TSurfaceNode::~TSurfaceNode "  + GetName() };
 	SetPart( "shape", 0 );
 	SetPart( "material", 0 );
 }
 
-
-
 /*!
  * Creates a copy of surface node.
  */
-TSurfaceNode* TSurfaceNode::Copy() const
- {
-	TSurfaceNode* surfaceNode = new TSurfaceNode;
+std::shared_ptr< TNode > TSurfaceNode::Copy() const
+{
+	struct EnableCreateTSurfaceNode : public TSurfaceNode { using TSurfaceNode::TSurfaceNode; };
+	auto surfaceNode = std::make_unique<EnableCreateTSurfaceNode>();
 	 if( surfaceNode == 0 )	return ( 0  );
 
 	 for (std::map<std::string, TNodeType>::iterator it = surfaceNode->m_partsTypeList.begin(); it!=surfaceNode->m_partsTypeList.end(); ++it)
 	 {
 		 std::string partName = it->first;
 		 TNodeType partType = it->second;
-		 TNode* partNode = surfaceNode->m_partsList[partName];
-
+		 std::shared_ptr< TNode > partNode = surfaceNode->m_partsList[partName];
 
 		 surfaceNode->AppendPart( partName, partType, partNode->Copy() );
 	 }

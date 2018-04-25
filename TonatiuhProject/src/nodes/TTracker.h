@@ -37,45 +37,45 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TSURFACENODE_H_
-#define TSURFACENODE_H_
+#ifndef TTRACKER_H_
+#define TTRACKER_H_
 
+#include "NodeLibrary.h"
+#include "TGroupNode.h"
 
-#include "Vector3D.h"
-#include "TContainerNode.h"
-
-//!  TSurfaceNode class is the container class to describe a surface.
+//!  TTrackerNode is the base class for tracker nodes.
 /*!
-  TSurfaceNode class is the container to collect a surface definition nodes. The part of this node are:
-  -->   "shape"
-  -->   "material"
-*/
+  TTrackerNode class provides a structure to create tracker nodes. This node is a group node which geometric transformation is calculated depending of the the parameters defined and the sun position. sun shape model and the parameters to define light position.
+  A tracker node only can appear once in the nodes tree branch.
 
-class NODE_API TSurfaceNode : public TContainerNode
+ */
+
+class NODE_API TTracker : public TGroupNode
 {
 
 private:
 	//No copy constructor. Use Copy to create a copy of the node
-	TSurfaceNode(const TSurfaceNode& ) = delete;
-	TSurfaceNode& operator=(const TSurfaceNode&) = delete;
-
+	TTracker(const TTracker&) = delete;
+	TTracker& operator=(const TTracker&) = delete;
 
 public:
-	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	virtual std::shared_ptr< TNode > Copy() const;
+	virtual std::shared_ptr< TNode >  Copy() const = 0;
 
+	virtual std::string GetIcon() const = 0;
+	virtual Transform GetTrasformation() const = 0;
 	virtual TNodeType GetType() const;
-
+	virtual void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 ) = 0;
 
 protected:
-	TSurfaceNode();
-	virtual ~TSurfaceNode();
+	TTracker();
+	virtual ~TTracker();
 
 private:
 	static TNodeType m_nodeType;
 };
 
 
-#endif /* TSURFACENODE_H_ */
+
+#endif /* TTRACKERNODE_H_ */

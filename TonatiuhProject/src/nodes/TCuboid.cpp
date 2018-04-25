@@ -46,9 +46,10 @@ TNodeType TCuboid::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TCuboid::CreateInstance( )
+std::shared_ptr< TNode > TCuboid::CreateInstance( )
 {
-  return ( new TCuboid() );
+	struct EnableCreateTCuboid : public TCuboid { using TCuboid::TCuboid; };
+	return ( std::make_unique<EnableCreateTCuboid>() );
 }
 
 /*!
@@ -79,21 +80,11 @@ TCuboid::TCuboid()
 /*!
  * Creates a copy of cuboid node.
  */
-/*
-std::shared_ptr<TCuboid> TCuboid::CopyCuboid() const
+std::shared_ptr< TNode > TCuboid::Copy() const
 {
-	std::shared_ptr<TCuboid> cuboid = std::make_shared<TCuboid>();
-
-	cuboid->m_pParametersList->SetValue( m_depthLabel, GetParameterValue<double>( m_depthLabel ) );
-	cuboid->m_pParametersList->SetValue( m_heightLabel, GetParameterValue<double>( m_heightLabel ) );
-	cuboid->m_pParametersList->SetValue( m_widthLabel, GetParameterValue<double>( m_widthLabel ) );
-	return ( cuboid );
-
-}
-*/
-TCuboid* TCuboid::Copy() const
-{
-	TCuboid* cuboid = new TCuboid{};
+	//smart pointer->public constructor--> NO std::shared_ptr<TCuboid> cuboid = std::make_shared<TCuboid>();
+	struct EnableCreateTCuboid : public TCuboid { using TCuboid::TCuboid; };
+	auto cuboid = std::make_unique<EnableCreateTCuboid>();
 
 	cuboid->m_pParametersList->SetValue( m_depthLabel, GetParameterValue<double>( m_depthLabel ) );
 	cuboid->m_pParametersList->SetValue( m_heightLabel, GetParameterValue<double>( m_heightLabel ) );

@@ -37,7 +37,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QVariant>
 
 #include "ParallelRandomDeviate.h"
 #include "Ray.h"
@@ -52,7 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 RayCasting::RayCasting()
 :RayTracer( ),
- m_sceneRootNode( 0 )
+ m_sceneRootNode( nullptr )
 {
 
 }
@@ -62,32 +61,36 @@ RayCasting::RayCasting()
  */
 RayCasting::~RayCasting()
 {
-	if( m_sceneRootNode || m_sceneRootNode != 0 )
-		RemoveRayTracerNodesTree( m_sceneRootNode );
+	//if( m_sceneRootNode || m_sceneRootNode != 0 )
+	//	RemoveRayTracerNodesTree( m_sceneRootNode );
 }
 
 /*!
  * Set the scene to simulate for the ray tracer.
  * Returns true if the scene is valid.
  */
-bool RayCasting::SetScene( TSceneNode* scene, std::vector< std::string > notFirstStageNodesURL )
+bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< std::string > notFirstStageNodesURL )
 {
 
-	if( !scene )	return ( false );
-	m_pSunNode = scene->GetPart( "light" )->as<TSunNode>();
+	m_pSunNode = std::dynamic_pointer_cast< TSunNode > ( scene->GetPart( "light" ) );
+	if( m_pSunNode == nullptr )	return ( false );
 
-	TGroupNode* childrenRoot = scene->GetPart( "childrenList" )->as<TGroupNode>();
-	if( !childrenRoot )	return ( false );
+	std::vector<std::string> scenePartNames = scene->GetPartNames();
+	std::shared_ptr< TGroupNode > childrenRoot = std::dynamic_pointer_cast< TGroupNode > ( scene->GetPart( scenePartNames[0] ) );
+	if( childrenRoot == nullptr )	return ( false );
 
-	m_sceneRootNode = new RayCastingNode;
+	m_sceneRootNode.reset();
+	m_sceneRootNode = std::make_unique< RayCastingNode >() ;
+
 	Transform parentWT0(1, 0, 0, 0,
 						0, 1, 0, 0,
 						0, 0, 1, 0,
 						0, 0, 0, 1 );
 
-	if( !CreateRayTracerNodesTree( childrenRoot, m_sceneRootNode, parentWT0, "\\\\SunNode" ) )
+	auto childrenContainer = std::dynamic_pointer_cast< TContainerNode > ( childrenRoot );
+	if( !CreateRayTracerNodesTree( childrenContainer, m_sceneRootNode, parentWT0, "\\\\SunNode" ) )
 	{
-		RemoveRayTracerNodesTree( m_sceneRootNode );
+		//RemoveRayTracerNodesTree( m_sceneRootNode );
 		return (false);
 	}
 
@@ -307,53 +310,44 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 /*!
  * Creates nodes tree. The bounding box of each node instance and the transformation to pass from world to object local coordinates are calculated.
  */
-bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode* rTRNode, Transform parentWT0, std::string parentURL )
+bool RayCasting::CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& node, std::shared_ptr< RayCastingNode >& rTRNode, Transform parentWT0, std::string parentURL )
 {
-	if( !node || !rTRNode )	return ( false );
 
 	rTRNode->nodeURL = parentURL + "\\" + node->GetName();
-	TGroupNode* nodeGroup = node->as<TGroupNode>();
-	if( nodeGroup )
+
+
+	std::shared_ptr< TGroupNode > nodeGroup = std::dynamic_pointer_cast< TGroupNode > ( node );
+	if( nodeGroup != nullptr )
 	{
+
 		Transform transformOTW = nodeGroup->GetTrasformation();
 		if( !transformOTW.GetMatrix() ) 	return ( false );
 		rTRNode->wtoTransformation = (transformOTW.GetInverse() * parentWT0 );
 		rTRNode->otwTransformation = rTRNode->wtoTransformation.GetInverse();
 
-		TNodesList* childrenListNode = nodeGroup->GetPart( "childrenList" )->as<TNodesList>();
-		if( !childrenListNode )	return ( false );
+		//TNodesList* childrenListNode = nodeGroup->GetPart( "childrenList" )->as<TNodesList>();
+
+
+		std::shared_ptr< TNodesList > childrenListNode = std::dynamic_pointer_cast<  TNodesList > ( nodeGroup->GetPart( "childrenList" ) );
+		if( !childrenListNode || rTRNode == nullptr )	return ( false );
 		int numberOfChildren = childrenListNode->Count();
-		if( numberOfChildren == 1  )
-		{
-			TNode* childNode = childrenListNode->Item( 0 );
-
-			TGroupNode* childNodeGroup = childNode->as<TGroupNode>();
-
-			//if the parent node only has one child and this child is a group node, the transformations can combined.
-			if( childNodeGroup )
-			{
-				rTRNode->nodeURL = rTRNode->nodeURL+ "\\" + childNode->GetName();
-
-				//Transform childTransformOTW;
-				Transform childTransformOTW = childNodeGroup->GetTrasformation();
-				if( !childTransformOTW.GetMatrix() ) 	return ( false );
-
-				rTRNode->wtoTransformation = (childTransformOTW.GetInverse() * rTRNode->wtoTransformation );
-
-				childrenListNode = childNodeGroup->GetPart( "childrenList" )->as<TNodesList>();
-				numberOfChildren = childrenListNode->Count();
-
-			}
-		}
 
 		BBox nodeBB;
 		for( int l = 0; l < numberOfChildren; l++ )
 		{
 
-			TContainerNode* childContainerNode = childrenListNode->Item( l )->as<TContainerNode>();
-			if( !childContainerNode )	return ( false );
-			RayCastingNode* childRTNode = new RayCastingNode;
+			auto childContainerNode = std::dynamic_pointer_cast<  TContainerNode > ( childrenListNode->Item( l ) );
+			if( !childContainerNode || childContainerNode == nullptr )	return ( false );
+
+
+			//RayCastingNode* childRTNode = new RayCastingNode;
+			//rTRNode->childrenList.push_back( childRTNode );
+			//std::shared_ptr< RayCastingNode > childRTNode  = std::make_unique< RayCastingNode >() ;
+			std::shared_ptr< RayCastingNode > childRTNode = std::make_shared< RayCastingNode >() ;
 			rTRNode->childrenList.push_back( childRTNode );
+
+			childRTNode->nodeURL = rTRNode->nodeURL;
+
 			if( !CreateRayTracerNodesTree( childContainerNode, childRTNode, rTRNode->wtoTransformation, rTRNode->nodeURL ) )	return ( false );
 
 			nodeBB = Union( nodeBB, childRTNode->boundingBox );
@@ -362,18 +356,21 @@ bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode*
 		rTRNode->boundingBox = nodeBB;
 
 	}
-
 	else
 	{
+
 		m_surfacesNodeList.push_back(rTRNode);
 		rTRNode->wtoTransformation = parentWT0;
 		rTRNode->otwTransformation = parentWT0.GetInverse();
 
-		TSurfaceNode* surfaceNode = node->as<TSurfaceNode>();
-		if( !surfaceNode )	return ( false );
-		rTRNode->surfaceNode = ( surfaceNode );
 
-		TShape* shape = surfaceNode->GetPart( "shape" )->as<TShape>();
+		//TSurfaceNode* surfaceNode = node->as<TSurfaceNode>();
+		std::shared_ptr< TSurfaceNode > surfaceNode = std::dynamic_pointer_cast< TSurfaceNode > (node );
+
+		if( !surfaceNode || surfaceNode == nullptr )	return ( false );
+		rTRNode->surfaceNode = surfaceNode;
+
+		std::shared_ptr< TShape > shape = std::dynamic_pointer_cast< TShape > ( surfaceNode->GetPart( "shape" ) );
 		rTRNode->boundingBox = rTRNode->otwTransformation( shape->GetBondingBox() );
 	}
 
@@ -383,6 +380,7 @@ bool RayCasting::CreateRayTracerNodesTree( TContainerNode* node, RayCastingNode*
 /*!
  * Removes tray tracer nodes.
  */
+/*
 void RayCasting::RemoveRayTracerNodesTree( RayCastingNode* rTParentNode )
 {
 	if( rTParentNode )
@@ -398,3 +396,4 @@ void RayCasting::RemoveRayTracerNodesTree( RayCastingNode* rTParentNode )
 	}
 
 }
+*/

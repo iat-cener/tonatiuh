@@ -60,7 +60,7 @@ public:
     void Init() const;
     std::string TShapeName() const;
    	QIcon TShapeIcon() const;
-   	ShapeFlatDisk* CreateTShape( ) const;
+   	std::shared_ptr< TShape > CreateTShape( ) const;
 };
 
 #endif /*ShapeFlatDiskFactory_H_*/

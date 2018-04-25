@@ -61,11 +61,10 @@ private:
 	ShapeParabolicDish& operator=(const ShapeParabolicDish&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	ShapeParabolicDish( );
-	ShapeParabolicDish* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -74,6 +73,7 @@ public:
 	void Draw() const;
 
 protected:
+	ShapeParabolicDish( );
 	~ShapeParabolicDish();
 
 private:

@@ -37,6 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+
 #include "TContainerNode.h"
 #include "TNodeType.h"
 #include "TParameterList.h"
@@ -103,7 +104,7 @@ TNodeType TContainerNode::GetType() const
  * Returns the node related to the part \a name.
  * If the part does not exit, null value is returned.
  */
-TNode* TContainerNode::GetPart( const std::string name ) const
+std::shared_ptr< TNode > TContainerNode::GetPart( const std::string name ) const
 {
 	if( m_partsList.count( name ) < 1 ) return ( 0 );
 
@@ -134,16 +135,16 @@ int TContainerNode::NumberOfParts() const
  * Replaces the node of the part \a name with \a node. If the part does not exit, false is returned.
  * The previous node of the part is not destroyed.
  */
-bool TContainerNode::SetPart( const std::string name, TNode* node )
+bool TContainerNode::SetPart( const std::string name, std::shared_ptr< TNode > node )
 {
 	if( m_partsList.find( name ) == m_partsList.end() ) return ( false );
-	if( m_partsList[name] )	m_partsList[name]->RemoveReference();
+	//if( m_partsList[name] )	m_partsList[name]->RemoveReference();
 	m_partsList[name] = 0;
 
 	if( !node ) return ( true );
 	if( !node->GetType().IsDerivedFrom( m_partsTypeList[name] ) ) return (false);
 	m_partsList[name] = node;
-	node->IncreaseReference();
+	//node->IncreaseReference();
 
 	return ( true );
 }
@@ -153,12 +154,12 @@ bool TContainerNode::SetPart( const std::string name, TNode* node )
  * Adds a new part of \a type to the container defined with \a name. The default node for this part is \a defaultNode.
  * If there is a part with the \a name, the part is not included.
  */
-void TContainerNode::AppendPart( const std::string name, TNodeType type, TNode* defaultNode )
+void TContainerNode::AppendPart( const std::string name, TNodeType type, std::shared_ptr< TNode > defaultNode )
 {
 	if( m_partsList.find( name ) != m_partsList.end() ) return;
 
 	m_partsList[name] = defaultNode;
-	if( defaultNode ) defaultNode->IncreaseReference();
+	//if( defaultNode ) defaultNode->IncreaseReference();
 
 	m_partsTypeList[name] = type;
 
@@ -179,7 +180,7 @@ void TContainerNode::RevomePart( const std::string name )
 	if( m_partsList.find( name ) != m_partsList.end() )
 	{
 		m_partsList.erase( name );
-		m_partsList[name]->RemoveReference();
+		//m_partsList[name]->RemoveReference();
 	}
 
 }

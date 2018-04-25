@@ -27,6 +27,7 @@ TARGET = nodes
 DEFINES += NODELIBRARY_EXPORTS   
 
 INCLUDEPATH += 	. \
+			   $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/statistics
@@ -39,9 +40,14 @@ CONFIG(debug, debug|release) {
 }
 
 # Input
-HEADERS += *.h 
+HEADERS += *.h \
+			$$(TONATIUH_ROOT)/src/auxiliary/Trace.h \
+			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.h 
+			
 
-SOURCES += *.cpp 
+SOURCES += *.cpp  \
+			$$(TONATIUH_ROOT)/src/auxiliary/Trace.cpp  \
+			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.cpp
           
  
 

@@ -36,6 +36,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "Trace.h"
+
 #include <functional>
 
 #include "gc.h"
@@ -53,9 +55,11 @@ const double SunshapeBuie::m_maxCRSValue = 0.849;
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* SunshapeBuie::CreateInstance( )
+std::shared_ptr< TNode > SunshapeBuie::CreateInstance( )
 {
-  return ( new SunshapeBuie() );
+	//shared_prt needs a public constructor
+	struct EnableCreateSunshapeBuie : public SunshapeBuie { using SunshapeBuie::SunshapeBuie; };
+	return std::make_shared<EnableCreateSunshapeBuie>();
 }
 
 
@@ -103,15 +107,16 @@ SunshapeBuie::SunshapeBuie()
  */
 SunshapeBuie::~SunshapeBuie()
 {
-
+	Trace{ "SunshapeBuie::~SunshapeBuie " + GetName() };
 }
 
 /*!
  * Creates a copy of sunshape node.
  */
-SunshapeBuie* SunshapeBuie::Copy() const
+std::shared_ptr< TNode > SunshapeBuie::Copy() const
 {
-	SunshapeBuie* sunshapeNode = new SunshapeBuie;
+	struct EnableCreateSunshapeBuie : public SunshapeBuie { using SunshapeBuie::SunshapeBuie; };
+	std::shared_ptr<SunshapeBuie> sunshapeNode = std::make_unique<EnableCreateSunshapeBuie>();
 	if( sunshapeNode == 0 )	return ( 0  );
 
 	//Coping node parts.

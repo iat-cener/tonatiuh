@@ -39,6 +39,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TNODESDOCUMENT_H_
 #define TNODESDOCUMENT_H_
 
+#include <memory>
+
 class TContainerNode;
 class TNode;
 class TNodesList;
@@ -59,20 +61,22 @@ public:
 	TNodesDocument();
 	~TNodesDocument();
 
-	TNode*  GetRootNode() const;
+	std::shared_ptr< TNode > GetRootNode() const;
 	bool Read( std::string filename );
-	void SetRootNode( TNode* node ) ;
+	void SetRootNode( const std::shared_ptr< TNode >& node ) ;
 	bool Write( std::string filename ) const;
 
 protected:
-	TNode* CreateNodeObject( QDomElement node, std::string* errMsg );
-	bool ReadNode( QDomElement node, TNode* parentNode, QMap< int, TNode* >* readNodes, std::string* errMsg );
-	bool ReadNodeList( QDomElement node, TNodesList* listNode, QMap< int, TNode* >* readNodes, std::string* errMsg  );
-	bool WriteNode( QDomElement parent, const TNode* node, QList< int >* writtenNodes ) const;
-	bool WriteConatinerNode( QDomElement parent, const TContainerNode* containerNode, QList< int >* writtenNodes ) const;
+
+	std::shared_ptr< TNode > CreateNodeObject( QDomElement node, std::string* errMsg );
+	bool ReadNode( QDomElement node, std::shared_ptr< TNode > parentNode, QMap< int, std::shared_ptr< TNode > >* readNodes, std::string* errMsg );
+	bool ReadNodeList( QDomElement node, std::shared_ptr< TNodesList > listNode, QMap< int, std::shared_ptr< TNode > >* readNodes, std::string* errMsg  );
+	bool WriteNode( QDomElement parent, const TNode& node, QList< int >* writtenNodes ) const;
+	bool WriteConatinerNode( QDomElement parent, const TContainerNode& containerNode, QList< int >* writtenNodes ) const;
+
 
 private:
-	TNode* m_pRootNode;
+	std::shared_ptr<TNode > m_pRootNode;
 
 };
 

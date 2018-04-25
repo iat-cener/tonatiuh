@@ -42,6 +42,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * \brief PluginManager class manages plugin loading.
  * PluginManager is used to load plugins, manage the list of loaded plugins.
  */
+#include "Trace.h"
+
+#include <iostream>
 
 #include <QDir>
 #include <QPluginLoader>
@@ -59,7 +62,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * Creates a new PluginManager object.
  */
 PluginManager::PluginManager()
-:m_shapeFactoryList( 0 )
 {
 
 }
@@ -69,55 +71,149 @@ PluginManager::PluginManager()
  */
 PluginManager::~PluginManager()
 {
-
+	Trace{ "PluginManager::~PluginManager", false };
 }
 
 /*!
- * Returns available material plugins factory list.
+ * Returns an object of the material \a factoryName.
  */
-QVector< TMaterialFactory* > PluginManager::GetMaterialFactories() const
+std::shared_ptr< TMaterial > PluginManager::CreateTMaterial( std::string factoryName ) const
 {
-	return m_materialFactoryList;
+	for( unsigned int m = 0; m < m_materialFactoryList.size(); m++ )
+		if( m_materialFactoryList[m]->TMaterialName() == factoryName )
+			return ( m_materialFactoryList[m]->CreateTMaterial() );
+
+	return nullptr;
 }
+
+
+/*!
+ * Returns an object of the random generator \a factoryName.
+ */
+std::shared_ptr< RandomDeviate > PluginManager::CreateRandomDeviate( std::string factoryName ) const
+{
+	for( unsigned int r = 0; r < m_randomDeviateFactoryList.size(); r++ )
+		if( m_randomDeviateFactoryList[r]->RandomDeviateName() == factoryName )
+			return ( m_randomDeviateFactoryList[r]->CreateRandomDeviate() );
+
+	return nullptr;
+}
+
+/*!
+ * Returns an object of the shape \a factoryName.
+ */
+std::shared_ptr< TShape > PluginManager::CreateTShape( std::string factoryName ) const
+{
+	for( unsigned int s = 0; s < m_shapeFactoryList.size(); s++ )
+		if( m_shapeFactoryList[s]->TShapeName() == factoryName )
+			return ( m_shapeFactoryList[s]->CreateTShape() );
+
+	return nullptr;
+}
+
+/*!
+ * Returns an object of the sunshape \a factoryName.
+ */
+std::shared_ptr< TSunshape > PluginManager::CreateTSunshape( std::string factoryName ) const
+{
+	for( unsigned int s = 0; s < m_sunshapeFactoryList.size(); s++ )
+		if( m_sunshapeFactoryList[s]->TSunshapeName() == factoryName )
+			return ( m_sunshapeFactoryList[s]->CreateTSunshape() );
+
+	return nullptr;
+}
+
+/*!
+ * Returns an object of the tracker \a factoryName.
+ */
+std::shared_ptr< TTracker > PluginManager::CreateTTracker( std::string factoryName ) const
+{
+	for( unsigned int t = 0; t < m_trackerFactoryList.size(); t++ )
+		if( m_trackerFactoryList[t]->TTrackerName() == factoryName )
+			return ( m_trackerFactoryList[t]->CreateTTracker() );
+
+	return nullptr;
+}
+
+
+/*!
+ * Returns an object of the transmissivity model \a factoryName.
+ */
+std::shared_ptr< TTransmissivity > PluginManager::CreateTTransmissivity( std::string factoryName ) const
+{
+	for( unsigned int t = 0; t < m_transmissivityFactoryList.size(); t++ )
+		if( m_transmissivityFactoryList[t]->TTransmissivityName() == factoryName )
+			return ( m_transmissivityFactoryList[t]->CreateTTransmissivity() );
+
+	return nullptr;
+}
+
+/*!
+ * Returns available material plugin  name list.
+ */
+std::vector< std::string > PluginManager::GetMaterialFactoryNames() const
+{
+	std::vector< std::string > materialFactoryName;
+	for( unsigned int p = 0; p < m_materialFactoryList.size(); p++ )
+		materialFactoryName.push_back( m_materialFactoryList[p]->TMaterialName() );
+	return ( materialFactoryName );
+}
+
 
 /*!
  * Returns available random deviates plugins factory list.
  */
-QVector< RandomDeviateFactory* > PluginManager::GetRandomDeviateFactories() const
+std::vector< std::string >  PluginManager::GetRandomDeviateFactoryNames() const
 {
-	return	m_randomDeviateFactoryList;
+	std::vector< std::string > randomDeviateFactoryName;
+	for( unsigned int r = 0; r < m_randomDeviateFactoryList.size(); r++ )
+		randomDeviateFactoryName.push_back( m_randomDeviateFactoryList[r]->RandomDeviateName() );
+	return ( randomDeviateFactoryName );
+
 }
 
 /*!
  * Returns available shape plugins factory list.
  */
-QVector< TShapeFactory* > PluginManager::GetShapeFactories() const
+std::vector< std::string > PluginManager::GetShapeFactoryNames() const
 {
-	return m_shapeFactoryList;
+	std::vector< std::string > shapeFactoryName;
+	for( unsigned int s = 0; s < m_shapeFactoryList.size(); s++ )
+		shapeFactoryName.push_back( m_shapeFactoryList[s]->TShapeName() );
+	return ( shapeFactoryName );
 }
 
 /*!
  * Returns available sunshape plugins factory list.
  */
-QVector< TSunshapeFactory* > PluginManager::GetSunshapeFactories() const
+std::vector< std::string > PluginManager::GetSunshapeFactoryNames() const
 {
-	return ( m_sunshapeFactoryList );
+	std::vector< std::string > sunshapeFactoryName;
+	for( unsigned int p = 0; p < m_sunshapeFactoryList.size(); p++ )
+		sunshapeFactoryName.push_back( m_sunshapeFactoryList[p]->TSunshapeName() );
+	return ( sunshapeFactoryName );
 }
 
 /*!
  * Returns available tracker plugins factory list.
  */
-QVector< TTrackerFactory* > PluginManager::GetTrackerFactories() const
+std::vector< std::string > PluginManager::GetTrackerFactoryNames() const
 {
-	return ( m_trackerFactoryList );
+	std::vector< std::string > trackerFactoryName;
+	for( unsigned int t = 0; t < m_trackerFactoryList.size(); t++ )
+		trackerFactoryName.push_back( m_trackerFactoryList[t]->TTrackerName() );
+	return ( trackerFactoryName );
 }
 
 /*!
  * Returns available transmissivity plugins factory list.
  */
-QVector< TTransmissivityFactory* > PluginManager::GetTransmissivityFactories() const
+std::vector< std::string > PluginManager::GetTransmissivityFactoryNames() const
 {
-	return ( m_transmissivityFactoryList );
+	std::vector< std::string > transmissivityFactoryName;
+	for( unsigned int t = 0; t < m_transmissivityFactoryList.size(); t++ )
+		transmissivityFactoryName.push_back( m_transmissivityFactoryList[t]->TTransmissivityName() );
+	return ( transmissivityFactoryName );
 }
 
 /*!
@@ -126,6 +222,7 @@ QVector< TTransmissivityFactory* > PluginManager::GetTransmissivityFactories() c
  */
 void PluginManager::LoadAvailablePlugins( QDir pluginsDirectory, QString* error )
 {
+	Trace{ "PluginManager::LoadAvailablePlugins", false };
 	QStringList filesList;
 	BuildFileList( pluginsDirectory, filesList );
 	foreach( QString fileName, filesList ) LoadTonatiuhPlugin( fileName, error );
@@ -136,6 +233,7 @@ void PluginManager::LoadAvailablePlugins( QDir pluginsDirectory, QString* error 
  */
 void PluginManager::AddFilesToList( QDir directory, QStringList& filesList )
 {
+	Trace{ "PluginManager::AddFilesToList", false };
 	QString directoryPath( directory.absolutePath().append( QLatin1String( "/" ) ) );
 
     QStringList filenamesList = directory.entryList( QDir::Files, QDir::Unsorted );
@@ -150,6 +248,7 @@ void PluginManager::AddFilesToList( QDir directory, QStringList& filesList )
  */
 void PluginManager::BuildFileList( QDir directory, QStringList& filesList )
 {
+	Trace{ "PluginManager::BuildFileList", false };
 	AddFilesToList( directory, filesList );
 
 	QString directoryPath( directory.absolutePath().append( QLatin1String( "/" ) ) );
@@ -169,15 +268,17 @@ void PluginManager::BuildFileList( QDir directory, QStringList& filesList )
  */
 void PluginManager::LoadMaterialPlugin( QObject* plugin, QString* error  )
 {
+	Trace{ "PluginManager::LoadMaterialPlugin", false };
 
-	TMaterialFactory* pTMaterialFactory = qobject_cast<TMaterialFactory* >( plugin );
+	std::unique_ptr< TMaterialFactory > pTMaterialFactory{ qobject_cast<TMaterialFactory* >( plugin )};
+
 	if( !pTMaterialFactory )
 	{
 		*error = QString("LoadPlugins: Material plug-in not recognized" );
 		return;//gf::SevereError( "LoadPlugins: Material plug-in not recognized" );
 	}
 	pTMaterialFactory->Init();
-	m_materialFactoryList.push_back( pTMaterialFactory );
+	m_materialFactoryList.push_back( std::move( pTMaterialFactory ) );
 }
 
 /*!
@@ -185,13 +286,14 @@ void PluginManager::LoadMaterialPlugin( QObject* plugin, QString* error  )
  */
 void PluginManager::LoadRandomDeviatePlugin( QObject* plugin, QString* error  )
 {
-	RandomDeviateFactory* pRamdomDeviateFactory = qobject_cast<RandomDeviateFactory* >( plugin );
+	Trace{ "PluginManager::LoadRandomDeviatePlugin", false };
+	std::unique_ptr< RandomDeviateFactory > pRamdomDeviateFactory{ qobject_cast<RandomDeviateFactory* >( plugin )};
 	if( !pRamdomDeviateFactory )
 	{
 		*error = QString("LoadPlugins: RandomDeviate plug-in not recognized" );
 		return;
 	}
-	m_randomDeviateFactoryList.push_back( pRamdomDeviateFactory );
+	m_randomDeviateFactoryList.push_back( std::move( pRamdomDeviateFactory ) );
 }
 
 /*!
@@ -199,14 +301,15 @@ void PluginManager::LoadRandomDeviatePlugin( QObject* plugin, QString* error  )
  */
 void PluginManager::LoadShapePlugin( QObject* plugin, QString* error )
 {
-	TShapeFactory* pTShapeFactory = qobject_cast<TShapeFactory* >( plugin );
+	Trace{ "PluginManager::LoadShapePlugin", false };
+	std::unique_ptr< TShapeFactory > pTShapeFactory{ qobject_cast<TShapeFactory* >( plugin )};
 	if ( !pTShapeFactory )
 	{
 		*error = QString("LoadPlugins: Shape plug-in not recognized" );
 		return;//gf::SevereError( "LoadPlugins: Shape plug-in not recognized" );
 	}
 	pTShapeFactory->Init();
-	m_shapeFactoryList.push_back( pTShapeFactory );
+	m_shapeFactoryList.push_back( std::move( pTShapeFactory ) );
 }
 
 /*!
@@ -214,14 +317,16 @@ void PluginManager::LoadShapePlugin( QObject* plugin, QString* error )
  */
 void PluginManager::LoadSunshapePlugin( QObject* plugin, QString* error )
 {
-	TSunshapeFactory* pTSunshapeFactory = qobject_cast<TSunshapeFactory* >( plugin );
+	Trace{ "PluginManager::LoadSunshapePlugin", false };
+	std::unique_ptr< TSunshapeFactory > pTSunshapeFactory{ qobject_cast<TSunshapeFactory* >( plugin )};
+
 	if ( !pTSunshapeFactory )
 	{
 		*error = QString("LoadPlugins: Sunshape plug-in not recognized" );
 		return;
 	}
 	pTSunshapeFactory->Init();
-	m_sunshapeFactoryList.push_back( pTSunshapeFactory );
+	m_sunshapeFactoryList.push_back( std::move( pTSunshapeFactory ) );
 }
 
 
@@ -230,6 +335,8 @@ void PluginManager::LoadSunshapePlugin( QObject* plugin, QString* error )
  */
 void PluginManager::LoadTonatiuhPlugin( const QString& fileName, QString* error )
 {
+	Trace{ "PluginManager::LoadTonatiuhPlugin " + fileName.toStdString(), false };
+
  	QPluginLoader loader( fileName );
  	QObject* plugin = loader.instance();
     if ( plugin != 0)
@@ -248,14 +355,15 @@ void PluginManager::LoadTonatiuhPlugin( const QString& fileName, QString* error 
  */
 void PluginManager::LoadTrackerPlugin( QObject* plugin, QString* error )
 {
-	TTrackerFactory* pTTrackerFactory = qobject_cast<TTrackerFactory* >( plugin );
+	Trace{ "PluginManager::LoadTrackerPlugin", false };
+	std::unique_ptr< TTrackerFactory > pTTrackerFactory{ qobject_cast<TTrackerFactory* >( plugin )};
 	if ( !pTTrackerFactory )
 	{
 		*error = QString("LoadPlugins: Tracker plug-in not recognized" );
 		return;
 	}
 	pTTrackerFactory->Init();
-	m_trackerFactoryList.push_back( pTTrackerFactory );
+	m_trackerFactoryList.push_back( std::move( pTTrackerFactory ) );
 }
 
 /*!
@@ -263,14 +371,15 @@ void PluginManager::LoadTrackerPlugin( QObject* plugin, QString* error )
  */
 void PluginManager::LoadTransmissivityPlugin( QObject* plugin, QString* error )
 {
-	TTransmissivityFactory* pTTransmissivityFactory = qobject_cast< TTransmissivityFactory* >( plugin );
+	Trace{ "PluginManager::LoadTransmissivityPlugin", false };
+	std::unique_ptr< TTransmissivityFactory > pTTransmissivityFactory{ qobject_cast<TTransmissivityFactory* >( plugin )};
 	if ( !pTTransmissivityFactory )
 	{
 		*error = QString("LoadPlugins: Transmissivity plug-in not recognized" );
 		return;
 	}
 	pTTransmissivityFactory->Init();
-	m_transmissivityFactoryList.push_back( pTTransmissivityFactory );
+	m_transmissivityFactoryList.push_back( std::move( pTTransmissivityFactory ) );
 }
 
 /*!

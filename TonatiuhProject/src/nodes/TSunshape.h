@@ -66,9 +66,7 @@ private:
 public:
 	static void Init();
 
-	TSunshape();
-
-	virtual TSunshape* Copy() const = 0;
+	virtual std::shared_ptr< TNode > Copy() const = 0;
 
 	virtual std::string GetIcon() const = 0;
 	virtual void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;
@@ -77,6 +75,7 @@ public:
 	virtual TNodeType GetType() const;
 
 protected:
+	TSunshape();
 	virtual ~TSunshape();
 
 private:

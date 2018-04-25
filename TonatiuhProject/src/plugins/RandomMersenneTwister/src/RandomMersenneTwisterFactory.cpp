@@ -52,11 +52,13 @@ QIcon  RandomMersenneTwisterFactory::RandomDeviateIcon() const
 	return QIcon();
 }
 
-RandomMersenneTwister* RandomMersenneTwisterFactory::CreateRandomDeviate( ) const
+std::shared_ptr< RandomDeviate > RandomMersenneTwisterFactory::CreateRandomDeviate( ) const
 {
 	unsigned long seed = QTime::currentTime().msec();
-	return new RandomMersenneTwister( seed );
-	//return new RandomMersenneTwister( 123 );
+//	return new RandomMersenneTwister( seed );
+	return ( std::make_shared< RandomMersenneTwister >(  seed  ) );
+
+
 }
 #if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(RandomMersenneTwister, RandomMersenneTwisterFactory )

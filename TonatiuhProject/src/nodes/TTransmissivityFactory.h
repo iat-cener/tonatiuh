@@ -45,7 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QtPlugin>
 #include <QVariant>
 
-class TTransmissivityNode;
+class TTransmissivity;
 
 //!  TTransmissivityFactory is the base class for creating TTransmissivityNode objects.
 /*!
@@ -56,15 +56,18 @@ class TTransmissivityFactory
 {
 
 public:
-    virtual ~TTransmissivityFactory() {}
+    virtual ~TTransmissivityFactory()
+    {
+    	Trace{ "TTransmissivityFactory::~TTransmissivityFactory", false };
+    }
     virtual void Init() const  = 0;
-    virtual std::string TTransmissivityNodeName() const  = 0;
-    virtual QIcon TTransmissivityNodeNodeIcon() const = 0;
-    virtual TTransmissivityNode* CreateTTransmissivityNodeNode( ) const = 0;
+    virtual std::string TTransmissivityName() const  = 0;
+    virtual QIcon TTransmissivityNodeIcon() const = 0;
+    virtual std::shared_ptr< TTransmissivity > CreateTTransmissivity( ) const = 0;
 
 };
 
-Q_DECLARE_INTERFACE( TTransmissivityFactory, "tonatiuh.TTransmissivityFactory")
+Q_DECLARE_INTERFACE( TTransmissivityFactory, "tonatiuh.TTransmissivityFactory" )
 
 
 #endif /* TTRANSMISSIVITYFACTORY_H_ */

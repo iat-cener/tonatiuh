@@ -67,11 +67,10 @@ private:
 
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	TSunNode();
-	TSunNode* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	void ChangeSunPosition( double azimuth, double zenith );
 
@@ -82,6 +81,7 @@ public:
 
 
 protected:
+	TSunNode();
 	virtual ~TSunNode();
 
 private:

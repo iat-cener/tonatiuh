@@ -37,45 +37,43 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TSURFACENODE_H_
-#define TSURFACENODE_H_
+#ifndef TTRANSMISSIVITY_H_
+#define TTRANSMISSIVITY_H_
 
+#include "NodeLibrary.h"
+#include "TNode.h"
 
-#include "Vector3D.h"
-#include "TContainerNode.h"
+class RandomDeviate;
 
-//!  TSurfaceNode class is the container class to describe a surface.
+//!  TTransmissivity class is the base class for transmisivity models.
 /*!
-  TSurfaceNode class is the container to collect a surface definition nodes. The part of this node are:
-  -->   "shape"
-  -->   "material"
+  TTransmissivity class is the base for transmisivity models.
+  The node classes that inherits this class will define if a ray intersected at defined distance will be transmitted or not pending of the specific model defined.
 */
 
-class NODE_API TSurfaceNode : public TContainerNode
+class NODE_API TTransmissivity: public TNode
 {
 
 private:
 	//No copy constructor. Use Copy to create a copy of the node
-	TSurfaceNode(const TSurfaceNode& ) = delete;
-	TSurfaceNode& operator=(const TSurfaceNode&) = delete;
-
+	TTransmissivity(const TTransmissivity& ) = delete;
+	TTransmissivity& operator=(const TTransmissivity&) = delete;
 
 public:
-	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	virtual std::shared_ptr< TNode > Copy() const;
+	virtual std::shared_ptr< TNode > Copy() const = 0;
 
+	virtual std::string GetIcon() const = 0;
 	virtual TNodeType GetType() const;
-
+	virtual bool IsTransmitted( double distance, RandomDeviate& rand ) const = 0;
 
 protected:
-	TSurfaceNode();
-	virtual ~TSurfaceNode();
+	TTransmissivity();
+	virtual ~TTransmissivity();
 
 private:
 	static TNodeType m_nodeType;
 };
 
-
-#endif /* TSURFACENODE_H_ */
+#endif /* TTRANSMISSIVITYNODE_H_ */

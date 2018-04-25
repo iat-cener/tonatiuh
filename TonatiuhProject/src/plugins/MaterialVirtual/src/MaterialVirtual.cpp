@@ -35,7 +35,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
+#include "Trace.h"
 
 #include "DifferentialGeometry.h"
 #include "Ray.h"
@@ -47,9 +47,11 @@ TNodeType MaterialVirtual::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* MaterialVirtual::CreateInstance( )
+std::shared_ptr< TNode > MaterialVirtual::CreateInstance( )
 {
-  return ( new MaterialVirtual() );
+	//shared_prt needs a public constructor
+	struct EnableCreateMaterialVirtual : public MaterialVirtual { using MaterialVirtual::MaterialVirtual; };
+	return std::make_shared<EnableCreateMaterialVirtual>();
 }
 
 /*!
@@ -76,16 +78,18 @@ MaterialVirtual::MaterialVirtual()
  */
 MaterialVirtual::~MaterialVirtual()
 {
-
+	Trace{ "MaterialVirtual::~MaterialVirtual "  + GetName() };
 }
 
 /*!
  * Creates a copy of material node.
  */
-MaterialVirtual* MaterialVirtual::Copy() const
+std::shared_ptr< TNode >  MaterialVirtual::Copy() const
  {
+	//shared_prt needs a public constructorMaterialVirtual
+	struct EnableCreateMaterialVirtual : public MaterialVirtual { using MaterialVirtual::MaterialVirtual; };
+	std::shared_ptr<MaterialVirtual> materialNode = std::make_unique<EnableCreateMaterialVirtual>();
 
-	MaterialVirtual* materialNode = new MaterialVirtual;
 	 if( materialNode == 0 )	return ( 0  );
 
 	 //Coping node parts.

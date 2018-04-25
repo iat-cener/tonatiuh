@@ -9,9 +9,13 @@ INCLUDEPATH += . \
             $$(TONATIUH_ROOT)/src/nodes
 
 # Input
-HEADERS = src/*.h 
+HEADERS = src/*.h  \
+			$$(TONATIUH_ROOT)/src/auxiliary/Trace.h \
+			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.h 
 
-SOURCES = src/*.cpp  
+SOURCES = src/*.cpp   \
+			$$(TONATIUH_ROOT)/src/auxiliary/Trace.cpp \
+			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.cpp 
 RESOURCES += src/SunshapeBuie.qrc	
 
 TARGET        = SunshapeBuie

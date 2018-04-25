@@ -35,6 +35,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include "Trace.h"
 
 #include "DifferentialGeometry.h"
 #include "gc.h"
@@ -48,9 +49,11 @@ TNodeType ShapeParabolicDish::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* ShapeParabolicDish::CreateInstance( )
+std::shared_ptr< TNode > ShapeParabolicDish::CreateInstance( )
 {
-  return ( new ShapeParabolicDish() );
+	//shared_prt needs a public constructor
+	struct EnableCreatShapeParabolicDish : public ShapeParabolicDish { using ShapeParabolicDish::ShapeParabolicDish; };
+	return std::make_shared<EnableCreatShapeParabolicDish>();
 }
 
 
@@ -87,16 +90,17 @@ ShapeParabolicDish::ShapeParabolicDish()
  */
 ShapeParabolicDish::~ShapeParabolicDish()
 {
-
+	Trace{ "ShapeParabolicDish::~ShapeParabolicDish "  + GetName() };
 }
 
 /*!
  * Creates a copy of shape node.
  */
-ShapeParabolicDish* ShapeParabolicDish::Copy() const
+std::shared_ptr< TNode > ShapeParabolicDish::Copy() const
 {
-	ShapeParabolicDish* shapeNode = new ShapeParabolicDish;
-	if( shapeNode == 0 )	return ( 0  );
+	struct EnableCreatShapeParabolicDish : public ShapeParabolicDish { using ShapeParabolicDish::ShapeParabolicDish; };
+	std::shared_ptr<ShapeParabolicDish> shapeNode = std::make_unique<EnableCreatShapeParabolicDish>();
+	if( shapeNode == nullptr )	return ( 0  );
 
 	//Coping node parts.
 	//NO parts

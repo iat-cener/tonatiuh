@@ -65,23 +65,25 @@ private:
 	TSceneNode& operator=(const TSceneNode&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
 
-	virtual TSceneNode* Copy() const;
+	virtual std::shared_ptr< TNode > Copy() const;
 
 	void ChangeSunPosition( double azimuth, double zenith );
 
 	virtual std::string GetIcon() const;
 	TNodeType GetType() const;
-	bool SetPart( const std::string name, TNode* node  );
+	bool SetPart( const std::string name, std::shared_ptr< TNode > node );
+
+	void UpdateTrackers( );
 
 
 protected:
 	TSceneNode();
 	virtual ~TSceneNode();
-	void UpdateTrackersTransform( TNode* branch, Vector3D sunVector, Transform parentWT0 );
+	void UpdateTrackersTransform( std::shared_ptr< TNode > branch, Vector3D sunVector, Transform parentWT0 );
 	void UpdateTrackers( double azimuth, double zenith );
 
 private:

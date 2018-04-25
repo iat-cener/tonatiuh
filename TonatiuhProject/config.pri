@@ -1,9 +1,14 @@
 VERSION = 3.0.0
 
+CONFIG -= c++11
+QMAKE_CXXFLAGS += -std=gnu++17 
+
+
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 INCLUDEPATH += 	. \
+			   $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/raytracing \
@@ -16,7 +21,7 @@ CONFIG(debug, debug|release) {
    	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes
 }
 
-		 
+	
 CONFIG(debug, debug|release) {
     QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
     QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage

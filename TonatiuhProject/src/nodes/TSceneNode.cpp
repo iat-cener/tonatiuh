@@ -39,11 +39,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <cmath>
 
+#include "Trace.h"
+
 #include "TNodesList.h"
 #include "Transform.h"
 #include "TSceneNode.h"
 #include "TSunNode.h"
-#include "TTrackerNode.h"
+#include "TTracker.h"
 #include "Vector3D.h"
 
 /******************************
@@ -55,9 +57,12 @@ TNodeType TSceneNode::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TSceneNode::CreateInstance( )
+std::shared_ptr< TNode> TSceneNode::CreateInstance( )
 {
-  return ( new TSceneNode() );
+
+	//smart pointers needs a public constructor
+	struct EnableCreateTSceneNode : public TSceneNode { using TSceneNode::TSceneNode; };
+	return std::make_unique<EnableCreateTSceneNode>();
 }
 
 
@@ -74,7 +79,7 @@ void TSceneNode::Init()
  */
 TSceneNode::TSceneNode()
 :TContainerNode(),
- m_childrenListName( "childrenList" ),
+ m_childrenListName( "childrenRoot" ),
  m_lightName( "light" ),
  m_transmisivityName( "transmisivity" )
 {
@@ -91,24 +96,30 @@ TSceneNode::TSceneNode()
  */
 TSceneNode::~TSceneNode()
 {
+	Trace{ "TSceneNode::~TSceneNode "  + GetName() };
+
 	SetPart( m_lightName, 0 );
 	SetPart( m_childrenListName, 0 );
+	SetPart( m_transmisivityName, 0 );
 }
 
 
 /*!
  * Creates a copy of group node.
  */
-TSceneNode* TSceneNode::Copy() const
+std::shared_ptr< TNode > TSceneNode::Copy() const
 {
-	TSceneNode* sceneNode = new TSceneNode;
+	//smart pointer->public constructor
+	struct EnableCreateTSceneNode : public TSceneNode { using TSceneNode::TSceneNode; };
+	auto sceneNode = std::make_unique<EnableCreateTSceneNode>();
+
 	 if( sceneNode == 0 )	return ( 0  );
 
 	 for (std::map<std::string, TNodeType>::iterator it = sceneNode->m_partsTypeList.begin(); it!=sceneNode->m_partsTypeList.end(); ++it)
 	 {
 		 std::string partName = it->first;
 		 TNodeType partType = it->second;
-		 TNode* partNode = sceneNode->m_partsList[partName];
+		 std::shared_ptr<TNode> partNode = sceneNode->m_partsList[partName];
 
 
 		 sceneNode->AppendPart( partName, partType, partNode->Copy() );
@@ -154,38 +165,56 @@ TNodeType TSceneNode::GetType() const
  * The previous node of the part is not destroyed.
  *
  */
-bool TSceneNode::SetPart( const std::string name, TNode* node  )
+bool TSceneNode::SetPart( const std::string name, std::shared_ptr< TNode > node  )
 {
 	if( !TContainerNode::SetPart( name, node  ) ) return ( false );
 	return ( true );
 }
 
+
+void TSceneNode::UpdateTrackers( )
+{
+	TSunNode* sunNode = m_partsList[m_lightName]->as<TSunNode>();
+	if( !sunNode )	return;
+
+
+	UpdateTrackers( sunNode->GetAzimuth(), sunNode->GetZenith() );
+}
+
+
 /*!
  * Updates all trackers transform for the current sun angles.
  */
-void TSceneNode::UpdateTrackersTransform( TNode* branch, Vector3D sunVector, Transform parentWT0 )
+void TSceneNode::UpdateTrackersTransform( std::shared_ptr< TNode > branch, Vector3D sunVector, Transform parentWT0 )
 {
+	Trace{ "TSceneNode::UpdateTrackersTransform "  + branch->GetName(), false };
 	if( !branch )	return;
 
-	if( TTrackerNode* trackerNode = branch->as<TTrackerNode>() )
+
+
+	TTracker* trackerNode = branch->as<TTracker>();
+	if( trackerNode != nullptr )
 	{
+
 		trackerNode->UpdateTrackerTransform( sunVector, parentWT0 );
 		return;
 	}
 
-	if( const TGroupNode* groupNode = branch->as<TGroupNode>() )
+	std::shared_ptr< TGroupNode > groupNode = std::dynamic_pointer_cast<  TGroupNode > ( branch );
+	if( groupNode != nullptr )
 	{
 		Transform nodeTransformationWTO = groupNode->GetTrasformation().GetInverse();
 		Transform nodeWTO = nodeTransformationWTO * parentWT0;
 
-		TNodesList* listNode = groupNode->GetPart( m_childrenListName )->as<TNodesList>();
-		if( !listNode )	return;
+		//TNodesList* listNode = groupNode->GetPart( m_childrenListName )->as<TNodesList>();
+		std::shared_ptr< TNodesList > listNode = std::dynamic_pointer_cast<TNodesList>( groupNode->GetPart( "childrenList" ) ) ;
+		if( listNode == nullptr )	return;
 
 		int numberOfChildren = listNode->Count();
 		for( int l = 0; l < numberOfChildren; l++ )
 		{
-			TNode* childNode = listNode->Item( l );
-			if( childNode )	UpdateTrackersTransform( childNode, sunVector, nodeWTO );
+			std::shared_ptr< TNode > childNode = listNode->Item( l );
+			if( childNode != nullptr )	UpdateTrackersTransform( childNode, sunVector, nodeWTO );
 
 		}
 	}
@@ -196,6 +225,7 @@ void TSceneNode::UpdateTrackersTransform( TNode* branch, Vector3D sunVector, Tra
  */
 void TSceneNode::UpdateTrackers( double azimuth, double zenith )
 {
+	Trace{ "TSceneNode::UpdateTrackers "  + GetName(), false };
 	Vector3D sunVector( sin( azimuth ) * sin( zenith ),
 			cos( zenith ),
 			-sin( zenith ) * cos( azimuth ) );
@@ -207,8 +237,8 @@ void TSceneNode::UpdateTrackers( double azimuth, double zenith )
 			0, 0, 0, 1 );
 
 
-	TNode* childrenRootNode = GetPart( m_childrenListName );
-	if( !childrenRootNode )	return;
+	std::shared_ptr< TNode > childrenRootNode = GetPart( m_childrenListName );
+	if( childrenRootNode == nullptr )	return;
 
 	UpdateTrackersTransform( childrenRootNode, sunVector, sceneOTW );
 

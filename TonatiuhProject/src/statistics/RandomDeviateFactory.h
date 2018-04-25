@@ -40,6 +40,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RANDOMDEVIATEFACTORY_H_
 #define RANDOMDEVIATEFACTORY_H_
 
+#include "Trace.h"
+
+#include <memory>
+
 #include <QtPlugin>
 
 class QIcon;
@@ -53,9 +57,18 @@ class RandomDeviate;
 class RandomDeviateFactory
 {
 public:
+	RandomDeviateFactory()
+	{
+
+	}
+    virtual ~RandomDeviateFactory()
+    {
+    	Trace{ "RandomDeviateFactory::~RandomDeviateFactory", false };
+
+    }
     virtual std::string  RandomDeviateName() const  = 0;
     virtual QIcon RandomDeviateIcon() const = 0;
-    virtual RandomDeviate* CreateRandomDeviate( ) const = 0;
+    virtual std::shared_ptr< RandomDeviate > CreateRandomDeviate( ) const = 0;
 };
 
 Q_DECLARE_INTERFACE( RandomDeviateFactory, "tonatiuh.RandomDeviateFactory")

@@ -65,8 +65,6 @@ private:
 public:
 	static void Init();
 
-	//TShape* Copy() const = 0;
-
 	virtual std::string GetIcon() const = 0;
 	virtual BBox GetBondingBox() const = 0;
 	virtual TNodeType GetType() const;
@@ -74,8 +72,6 @@ public:
 	virtual void Draw() const = 0;
 
 protected:
-	//virtual TNode* CreateCopy() const = 0;
-
 	TShape();
 	virtual ~TShape() noexcept;
 

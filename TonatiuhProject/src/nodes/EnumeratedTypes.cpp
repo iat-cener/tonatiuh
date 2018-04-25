@@ -66,8 +66,8 @@ EnumeratedTypes& EnumeratedTypes::operator=(const EnumeratedTypes& other )
 {
     if (this != &other) // protect against invalid self-assignment
     {
-    	/*
-    	 * // 1: allocate new memory and copy the elements
+
+    	 // 1: allocate new memory and copy the elements
          int * new_array = new int[other.count];
          std::copy(other.array, other.array + other.count, new_array);
 

@@ -39,20 +39,29 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TNODETYPE_H_
 #define TNODETYPE_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "NodeLibrary.h"
 
 struct TTypeData;
+struct TNode;
 
 
-/** Base class of all types */
+//! TNodeType class is the class to describe type of the node.
+/*!
+*  TNodeType class specifies the type of the node and could give information if it is a derived type of return the type of a parent.
+*  Constructor method of object of the nodes could also be obtained from the type.
+*
+*  The static member \a m_typeList stores a list of all available types. The types are unique and cannot be duplicated.
+*/
+
 class  NODE_API TNodeType
 {
 
 public:
-	typedef void* (*ConstructorMethod)();
+	typedef std::shared_ptr< TNode > (*ConstructorMethod)();
 
 	static bool Contains(const std::string& name);
 	static const TNodeType CreateEmptyType();
@@ -63,23 +72,21 @@ public:
 	std::string GetName() const;
 	const TNodeType GetParent() const;
 
-	static void Init();
+	//static void Init();
 	bool IsDerivedFrom(const TNodeType type) const;
 	bool IsValid() const;
 
-	void* NodeFromType() const;
+	std::shared_ptr< TNode > NodeFromType() const;
 
 	bool operator==( const TNodeType type );
 
 
-	//  instantiationMethod getInstantiationMethod(void) const;
-
 private:
   int m_index;
-  static std::vector< TTypeData* >*  m_typeList;
+  //static std::vector< std::unique_ptr< TTypeData > > m_typeList;
+  static std::vector< TTypeData > m_typeList;
+
 };
-
-
 
 
 #endif /* TNODETYPE_H_ */

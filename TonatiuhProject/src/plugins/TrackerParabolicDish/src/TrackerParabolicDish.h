@@ -40,8 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TRACKERPARABOLICDISH_H_
 
 
+#include "TTracker.h"
 #include "TNodeType.h"
-#include "TTrackerNode.h"
 
 
 //!  TrackerParabolicDish is the class for solar two-axis trackers.
@@ -51,7 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
  */
 
-class TrackerParabolicDish : public TTrackerNode
+class TrackerParabolicDish : public TTracker
 {
 
 private:
@@ -60,11 +60,10 @@ private:
 	TrackerParabolicDish& operator=(const TrackerParabolicDish&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	TrackerParabolicDish();
-	TrackerParabolicDish* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	Transform GetTrasformation() const;
@@ -72,6 +71,7 @@ public:
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
 
 protected:
+	TrackerParabolicDish();
 	virtual ~TrackerParabolicDish();
 
 private:

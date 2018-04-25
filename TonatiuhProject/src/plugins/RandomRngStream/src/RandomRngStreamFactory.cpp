@@ -51,10 +51,11 @@ QIcon  RandomRngStreamFactory::RandomDeviateIcon() const
 	return QIcon();
 }
 
-RandomRngStream* RandomRngStreamFactory::CreateRandomDeviate( ) const
+std::shared_ptr< RandomDeviate > RandomRngStreamFactory::CreateRandomDeviate( ) const
 {
 	unsigned long seed = QTime::currentTime().msec();
-	return new RandomRngStream( seed );
+	//return new RandomRngStream( seed );
+	return ( std::make_shared< RandomRngStream >(  seed  ) );
 }
 #if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(RandomRngStream, RandomRngStreamFactory )
