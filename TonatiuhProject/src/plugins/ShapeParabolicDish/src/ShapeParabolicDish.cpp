@@ -35,7 +35,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-#include "Trace.h"
 
 #include "DifferentialGeometry.h"
 #include "gc.h"
@@ -90,7 +89,7 @@ ShapeParabolicDish::ShapeParabolicDish()
  */
 ShapeParabolicDish::~ShapeParabolicDish()
 {
-	Trace{ "ShapeParabolicDish::~ShapeParabolicDish "  + GetName() };
+
 }
 
 /*!
@@ -102,8 +101,6 @@ std::shared_ptr< TNode > ShapeParabolicDish::Copy() const
 	std::shared_ptr<ShapeParabolicDish> shapeNode = std::make_unique<EnableCreatShapeParabolicDish>();
 	if( shapeNode == nullptr )	return ( 0  );
 
-	//Coping node parts.
-	//NO parts
 
 	//Coping the parameters.
 	shapeNode->m_pParametersList->SetValue( m_focusLengthLabel, GetParameterValue<double>( m_focusLengthLabel ) );
@@ -130,9 +127,10 @@ std::string ShapeParabolicDish::GetIcon() const
 BBox ShapeParabolicDish::GetBondingBox() const
 {
 	double focusLength = GetParameterValue<double>( m_focusLengthLabel );
-	double dishMaxRadius = GetParameterValue<double>( m_dishMinRadiusLabel );
-	double dishMinRadius = GetParameterValue<double>( m_dishMaxRadiusLabel );
+	double dishMinRadius= GetParameterValue<double>( m_dishMinRadiusLabel );
+	double dishMaxRadius = GetParameterValue<double>( m_dishMaxRadiusLabel );
 	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
+
 
 	double cosPhiMax = cos( phiMax );
 	double sinPhiMax = sin( phiMax );
@@ -167,8 +165,8 @@ TNodeType ShapeParabolicDish::GetType() const
 bool ShapeParabolicDish::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
 	double focusLength = GetParameterValue<double>( m_focusLengthLabel );
-	double dishMaxRadius = GetParameterValue<double>( m_dishMinRadiusLabel );
-	double dishMinRadius = GetParameterValue<double>( m_dishMaxRadiusLabel );
+	double dishMinRadius = GetParameterValue<double>( m_dishMinRadiusLabel );
+	double dishMaxRadius = GetParameterValue<double>( m_dishMaxRadiusLabel );
 	double phiMax = GetParameterValue<double>( m_phiMaxLabel );
 
 	double A = objectRay.direction().x*objectRay.direction().x + objectRay.direction().z * objectRay.direction().z;

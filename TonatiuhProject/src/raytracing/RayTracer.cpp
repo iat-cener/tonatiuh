@@ -36,7 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-#include "Trace.h"
 
 #include <thread>
 #include <vector>
@@ -56,7 +55,7 @@ RayTracer::RayTracer(  )
  m_pPhotonMap( 0 ),
  m_pSunNode( nullptr )
 {
-	Trace{ "RayTracer::RayTracer" };
+
 }
 
 /*!
@@ -64,7 +63,6 @@ RayTracer::RayTracer(  )
  */
 RayTracer::~RayTracer()
 {
-	Trace{ "RayTracer::~RayTracer" };
 
 }
 
@@ -74,7 +72,10 @@ RayTracer::~RayTracer()
  */
 bool RayTracer::Run( unsigned long numberOfRays )
 {
+
 	if( !m_pSunNode || !m_pPhotonMap  || !m_pRandomNumberGenerator )	return ( false );
+
+	//RunRaytracer( 1 );
 
 	int maximumValueProgressScale = 100;
 	unsigned long nRaysPerThread = numberOfRays / maximumValueProgressScale;
@@ -90,6 +91,9 @@ bool RayTracer::Run( unsigned long numberOfRays )
 
 	for( auto& th : threadsList )
 		th.join();
+
+
+
 	/*
 	QVector< long > raysPerThread;
 	int maximumValueProgressScale = 100;

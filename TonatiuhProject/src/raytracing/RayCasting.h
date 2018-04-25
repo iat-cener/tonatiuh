@@ -79,31 +79,29 @@ struct RayCastingNode
 	{
 
 		//Check if the ray intersects with the BoundingBox
-	   if( !boundingBox.IntersectP(ray) ) return ( false );
+		if( !boundingBox.IntersectP(ray) ) return ( false );
 
-	   if( !surfaceNode )
-	   {
+		if( !surfaceNode )
+		{
+			bool isOutputRay = false;
+			double t = ray.maxt;
 
-	      bool isOutputRay = false;
-	      double t = ray.maxt;
-	      for( unsigned int index = 0; index < childrenList.size(); ++index )
-	      {
-	    	  Ray childOutputRay;
-	    	  bool childShapeFront = true;
-		      RayCastingNode* childIntersectedNode = 0;
+			for( unsigned int index = 0; index < childrenList.size(); ++index )
+			{
+				Ray childOutputRay;
+				bool childShapeFront = true;
+				RayCastingNode* childIntersectedNode = 0;
 
-	    	  bool isChildOutputRay = childrenList[index]->Intersect( ray, rand, &childShapeFront, &childIntersectedNode, &childOutputRay );
+				bool isChildOutputRay = childrenList[index]->Intersect( ray, rand, &childShapeFront, &childIntersectedNode, &childOutputRay );
+				if( ray.maxt < t )
+				{
+					t = ray.maxt;
 
-	    	  if( ray.maxt < t )
-	    	  {
-	    		  t = ray.maxt;
-
-	    		  *isShapeFront = childShapeFront;
-	    		  *intersectedNode = childIntersectedNode;
-	    		  *outputRay = childOutputRay;
-	    		  isOutputRay = isChildOutputRay;
-
-	    	  }
+					*isShapeFront = childShapeFront;
+					*intersectedNode = childIntersectedNode;
+					*outputRay = childOutputRay;
+					isOutputRay = isChildOutputRay;
+				}
 	      }
 
 	      return isOutputRay;

@@ -36,7 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-#include "Trace.h"
 
 #include "TSurfaceNode.h"
 
@@ -86,7 +85,6 @@ TSurfaceNode::TSurfaceNode()
  */
 TSurfaceNode::~TSurfaceNode()
 {
-	Trace{ "TSurfaceNode::~TSurfaceNode "  + GetName() };
 	SetPart( "shape", 0 );
 	SetPart( "material", 0 );
 }

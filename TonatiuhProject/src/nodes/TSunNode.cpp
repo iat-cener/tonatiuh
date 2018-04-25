@@ -37,9 +37,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
-#include "Trace.h"
-
 #include "TParameterList.h"
 #include "TSunNode.h"
 
@@ -93,7 +90,6 @@ TSunNode::TSunNode()
  */
 TSunNode::~TSunNode()
 {
-	Trace{ "TSunNode::~TSunNode " + GetName() };
 	SetPart( "sunshape", 0 );
 }
 

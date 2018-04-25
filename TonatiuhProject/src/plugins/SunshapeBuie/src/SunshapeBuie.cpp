@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "Trace.h"
-
 #include <functional>
 
 #include "gc.h"
@@ -107,7 +105,6 @@ SunshapeBuie::SunshapeBuie()
  */
 SunshapeBuie::~SunshapeBuie()
 {
-	Trace{ "SunshapeBuie::~SunshapeBuie " + GetName() };
 }
 
 /*!

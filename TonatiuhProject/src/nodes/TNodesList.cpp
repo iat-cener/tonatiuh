@@ -36,7 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-#include "Trace.h"
 
 #include "TNodesList.h"
 #include "TParameterList.h"
@@ -77,7 +76,6 @@ TNodesList::TNodesList()
  */
 TNodesList::~TNodesList()
 {
-	Trace{ "TNodesList::~TNodesList " + GetName() };
 	for( unsigned int c = 0; c < m_children.size(); c++ )
 		std::cout<<" - "<<m_children[c]->GetName()<<" refCount: "<<m_children[c].use_count()<<std::endl;
 

@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "Trace.h"
-
 #include <cmath>
 
 #include "gc.h"
@@ -75,7 +73,6 @@ TrackerParabolicDish::TrackerParabolicDish()
 :TTracker(),
  m_nodeTransformationLabel( "node_transformation" )
 {
-	Trace{ "TrackerParabolicDish::TrackerParabolicDish", false };
 	//Default object name is the name of the type
 	SetName(GetType().GetName() );
 
@@ -102,7 +99,6 @@ TrackerParabolicDish::TrackerParabolicDish()
  */
 TrackerParabolicDish::~TrackerParabolicDish()
 {
-	Trace{ "TrackerParabolicDish::~TrackerParabolicDish "  + GetName() };
 
 }
 
@@ -138,7 +134,6 @@ std::string TrackerParabolicDish::GetIcon() const
  */
 Transform TrackerParabolicDish::GetTrasformation( ) const
 {
-	Trace{ "TrackerParabolicDish::GetTrasformation "  + GetName(), false };
 	//GetParameterValue only for visible parameters
 	//std::string transformationValue = GetParameterValue<std::string>( m_nodeTransformationLabel );
 
@@ -169,8 +164,6 @@ TNodeType TrackerParabolicDish::GetType() const
  */
 void TrackerParabolicDish::UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 )
 {
-	Trace{ "TrackerParabolicDish::UpdateTrackerTransform " + GetName(), false };
-
 	Matrix4x4 nodeTransformation;
 
 	if( std::abs( 1.0 - DotProduct( sunVector,  Vector3D( 0.0f, 1.0f, 0.0f ) ) ) < 0.000001 )

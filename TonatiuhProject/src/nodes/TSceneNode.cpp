@@ -39,8 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <cmath>
 
-#include "Trace.h"
-
 #include "TNodesList.h"
 #include "Transform.h"
 #include "TSceneNode.h"
@@ -96,7 +94,6 @@ TSceneNode::TSceneNode()
  */
 TSceneNode::~TSceneNode()
 {
-	Trace{ "TSceneNode::~TSceneNode "  + GetName() };
 
 	SetPart( m_lightName, 0 );
 	SetPart( m_childrenListName, 0 );
@@ -187,10 +184,7 @@ void TSceneNode::UpdateTrackers( )
  */
 void TSceneNode::UpdateTrackersTransform( std::shared_ptr< TNode > branch, Vector3D sunVector, Transform parentWT0 )
 {
-	Trace{ "TSceneNode::UpdateTrackersTransform "  + branch->GetName(), false };
 	if( !branch )	return;
-
-
 
 	TTracker* trackerNode = branch->as<TTracker>();
 	if( trackerNode != nullptr )
@@ -225,7 +219,6 @@ void TSceneNode::UpdateTrackersTransform( std::shared_ptr< TNode > branch, Vecto
  */
 void TSceneNode::UpdateTrackers( double azimuth, double zenith )
 {
-	Trace{ "TSceneNode::UpdateTrackers "  + GetName(), false };
 	Vector3D sunVector( sin( azimuth ) * sin( zenith ),
 			cos( zenith ),
 			-sin( zenith ) * cos( azimuth ) );

@@ -37,8 +37,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "Trace.h"
-
 #include "TParameterList.h"
 #include "TTracker.h"
 
@@ -75,7 +73,7 @@ TTracker::TTracker()
  */
 TTracker::~TTracker()
 {
-	Trace{ "TTracker::~TTracker "  + GetName() };
+
 }
 
 /*!
