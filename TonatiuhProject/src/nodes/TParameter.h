@@ -40,11 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TPARAMETER_H_
 #define TPARAMETER_H_
 
-//#include <any>
 #include <functional>
 #include <string>
 
-//#include <QVariant>
 
 #include <optional>
 #include <variant>

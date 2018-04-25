@@ -3,7 +3,10 @@ CONFIG       += qt warn_on thread debug_and_release
 
 CONFIG -= c++11
 QMAKE_CXXFLAGS += -std=gnu++17
+
+win32 {
 QMAKE_LFLAGS += -Wl,--export-all-symbols
+}
 
 
 CONFIG(debug, debug|release) {

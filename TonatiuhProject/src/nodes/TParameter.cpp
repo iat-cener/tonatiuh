@@ -37,7 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
+//#include <iostream>
 #include <sstream>
 
 #include "nf.h"
@@ -79,12 +79,17 @@ bool TParameter::FromString( const std::string& value )
 	//int
 	else if( m_variant.value().index() == 1 )
 	{
-		m_variant = stoi( value );
+		int iValue;
+		std::stringstream{ value } >> iValue;
+		m_variant = iValue;
 	}
 	//double
+	//stod depends of locale
 	else if( m_variant.value().index() == 2 )
 	{
-		m_variant = stod( value );
+		double dValue;
+		std::stringstream{ value } >> dValue;
+		m_variant = dValue;
 	}
 	//Point3D
 	else if( m_variant.value().index() == 3 )
@@ -93,7 +98,13 @@ bool TParameter::FromString( const std::string& value )
 		if( pointCoordinatesValues.size () != 3 )
 			return ( false );
 
-		m_variant =  Point3D( stod( pointCoordinatesValues[0] ), stod( pointCoordinatesValues[1] ), stod( pointCoordinatesValues[2] ) );
+
+		double xValue, yValue, zValue;
+		std::stringstream{ pointCoordinatesValues[0] } >> xValue;
+		std::stringstream{ pointCoordinatesValues[1] } >> yValue;
+		std::stringstream{ pointCoordinatesValues[2] } >> zValue;
+
+		m_variant =  Point3D( xValue, yValue, zValue );
 
 	}
 	//EnumeratedTypes

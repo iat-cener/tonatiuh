@@ -37,8 +37,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include "Trace.h"
-
 #include <typeinfo>
 
 #include "TParameter.h"
@@ -77,7 +75,6 @@ bool TParameterList::Contains(const std::string& name) const
  */
 tonatiuh_variant TParameterList::GetValue( const std::string& name ) const
 {
-	Trace{ "TParameterList::GetValue: " + name, false };
 	if( Contains(name) )
 		return ( m_parametersList.at( name )->GetValue() );
 
@@ -150,7 +147,6 @@ bool TParameterList::RemoveParameter( const std::string& name )
  */
 bool TParameterList::SetValue(const std::string& name, const tonatiuh_variant& value )
 {
-	Trace{ "TParameterList::SetValue ", false };
 	if( !Contains(name) )	return ( false );
 
 	m_parametersList[name]->SetValue( value );

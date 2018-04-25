@@ -76,8 +76,6 @@ TNodesList::TNodesList()
  */
 TNodesList::~TNodesList()
 {
-	for( unsigned int c = 0; c < m_children.size(); c++ )
-		std::cout<<" - "<<m_children[c]->GetName()<<" refCount: "<<m_children[c].use_count()<<std::endl;
 
 	/*
 	for( unsigned int c = 0; c < m_children.size(); c++ )

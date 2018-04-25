@@ -92,7 +92,8 @@ SunshapeBuie::SunshapeBuie()
 	//Translation
 	m_pParametersList->Append<double>( m_irradianceLabel, 1000.0, true );
 
-	auto f_sunshapeState = std::bind(&UpdateState, this);
+	//Create a callable object to the update function after the value of the variable is changed.
+	auto f_sunshapeState = std::bind(&SunshapeBuie::UpdateState, this);
 	m_pParametersList->Append<double>( m_csrLabel, 0.02, true, f_sunshapeState );
 
 	m_deltaThetaCSSD = m_thetaCS - m_thetaSD;
@@ -211,6 +212,7 @@ bool SunshapeBuie::UpdateState( )
 {
 
 	double csrValue = GetParameterValue<double>( m_csrLabel );
+	std::cout<<"csrValue: "<<csrValue<<std::endl;
 
     double chi = 0.0;
 	if( csrValue > 0.035 )

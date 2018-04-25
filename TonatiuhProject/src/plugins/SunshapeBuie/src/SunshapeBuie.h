@@ -78,19 +78,20 @@ private:
 	std::string m_irradianceLabel;
 	std::string m_csrLabel;
 
-	 const double m_thetaCS;
-	 const double m_thetaSD;
-	 const double m_integralA;
-	 double m_alpha;
-	 double m_deltaThetaCSSD;
-	 double m_etokTimes1000toGamma;
-	 double m_gamma;
-	 double m_heightRectangle1;
-	 double m_heightRectangle2;
-	 double m_probabilityRectangle1;
 
-	 static const double m_minCRSValue;// = 0.001;
-	 static const double m_maxCRSValue;// = 0.8;
+	const double m_thetaCS;
+	const double m_thetaSD;
+	const double m_integralA;
+	double m_alpha;
+	double m_deltaThetaCSSD;
+	double m_etokTimes1000toGamma;
+	double m_gamma;
+	double m_heightRectangle1;
+	double m_heightRectangle2;
+	double m_probabilityRectangle1;
+
+	static const double m_minCRSValue;// = 0.001;
+	static const double m_maxCRSValue;// = 0.8;
 };
 
 

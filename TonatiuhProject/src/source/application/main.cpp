@@ -64,25 +64,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeFactory.h"
 #include "TSunshapeFactory.h"
 #include "TTrackerFactory.h"
-//#include <Vector3D.h>
-/*
-#include <nf.h>
-#include <TCuboid.h>
-#include "../../nodes/TGroupNode.h"
-#include "../../nodes/TGroupNode.h"
-#include "../../nodes/TMaterial.h"
-#include "../../nodes/TNodesDatabase.h"
-#include "../../nodes/TParameterList.h"
-#include <TSceneNode.h>
-#include "../../nodes/TSunNode.h"
-#include "../../nodes/TSurfaceNode.h"
-#include "gc.h"
-#include "RandomDeviateFactory.h"
-#include "RayCasting.h"
-#include "TNodesDocument.h"
-#include "TPhotonMap.h"
-#include "Vector3D.h"
-*/
 
 
 
@@ -485,7 +466,7 @@ int main ( int argc, char** argv )
 	bool okRead = readDocument.Read( argv[1] );
 	if( !okRead  )
 	{
-		std::cout<<"¡¡¡Error reading file!!!"<<std::endl;
+		std::cout<<"Â¡Â¡Â¡Error reading file!!!"<<std::endl;
 		return ( -1 );
 	}
 
@@ -494,7 +475,7 @@ int main ( int argc, char** argv )
 	std::shared_ptr< TSceneNode > sceneNode = std::dynamic_pointer_cast< TSceneNode > ( readDocument.GetRootNode() );
 	if( !sceneNode || sceneNode == 0 )
 	{
-		std::cout<<"¡¡¡Error reading file!!!"<<std::endl;
+		std::cout<<"Â¡Â¡Â¡Error reading file!!!"<<std::endl;
 		return ( -2 );
 	}
 
@@ -508,16 +489,18 @@ int main ( int argc, char** argv )
 /************************************************************
 
 
+	std::cout<<"Tonatiuh 3.0 saveDocument"<<std::endl;
 	TNodesDocument saveDocument2;
 	saveDocument2.SetRootNode( sceneNode );
-	if( !saveDocument2.Write( argv[1] )  )
+	if( !saveDocument2.Write( argv[2] )  )
 	{
 		std::cout<<"Error during writing file"<<std::endl;
 		return -1;
 	}
 
 
-	//Reference count
+***********************************/
+/***********************************
 	//std::cout<<"sceneNode "<<sceneNode->GetName().toStdString()<<std::endl;
 	//ChildrenBranch(sceneNode);
 
@@ -530,6 +513,7 @@ int main ( int argc, char** argv )
 
 	Transform transformOTW = translation * rotation * scale;
 	std::cout<<"p: "<<transformOTW(Point3D( 0, 0, 0 ) )<<std::endl;
+	*
 
 
 
@@ -596,12 +580,17 @@ int main ( int argc, char** argv )
 	std::cout<<"END main"<<std::endl;
 
 
+	if( argv[3] == NULL )
+	{
+		std::cout<<"No file to save results "<<std::endl;
+		return ( -4 );
+	}
 
-	QFile simulationsFile( argv[2] );
+	QFile simulationsFile( argv[3] );
 	if( !simulationsFile.open( QIODevice::WriteOnly ) )
 	{
 		std::cout<<"Cannot open file to save results: '"<< argv[2]<<std::endl;
-		return ( -4 );
+		return ( -5 );
 	}
 	QTextStream out( &simulationsFile );
 
@@ -616,11 +605,6 @@ int main ( int argc, char** argv )
 	simulationsFile.close();
 
 
-	//Codigo para si se eliminan los nodos
-	std::cout<<"Removing scene node"<<std::endl;
-	//sceneNode->RemoveReference();
-	std::cout<<"Removed scene node"<<std::endl;
-	//sceneNode = 0;
 
 
 /************************************************************/

@@ -3,7 +3,10 @@ CONFIG       += debug_and_release
 
 CONFIG -= c++11
 QMAKE_CXXFLAGS += -std=gnu++17
+
+win32 {
 QMAKE_LFLAGS += -Wl,--export-all-symbols
+}
 
 DEFINES += GEOMETRYLIBRARY_EXPORTS
 
