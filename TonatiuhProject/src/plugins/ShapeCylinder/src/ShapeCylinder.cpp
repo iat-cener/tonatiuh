@@ -48,9 +48,11 @@ TNodeType ShapeCylinder::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* ShapeCylinder::CreateInstance( )
+std::shared_ptr< TNode > ShapeCylinder::CreateInstance( )
 {
-  return ( new ShapeCylinder() );
+	//shared_prt needs a public constructor
+	struct EnableCreateShapeCylinder : public ShapeCylinder { using ShapeCylinder::ShapeCylinder; };
+	return std::make_shared<EnableCreateShapeCylinder>();
 }
 
 /*!
@@ -89,13 +91,11 @@ ShapeCylinder::~ShapeCylinder()
 /*!
  * Creates a copy of shape node.
  */
-ShapeCylinder* ShapeCylinder::Copy() const
+std::shared_ptr< TNode > ShapeCylinder::Copy() const
 {
-	ShapeCylinder* shapeNode = new ShapeCylinder;
+	struct EnableCreateShapeCylinder : public ShapeCylinder { using ShapeCylinder::ShapeCylinder; };
+	std::shared_ptr<ShapeCylinder> shapeNode = std::make_unique<EnableCreateShapeCylinder>();
 	if( shapeNode == 0 )	return ( 0  );
-
-	//Coping node parts.
-	//NO parts
 
 	//Coping the parameters.
 	shapeNode->m_pParametersList->SetValue( m_radiusLabel, GetParameterValue<double>( m_radiusLabel ) );

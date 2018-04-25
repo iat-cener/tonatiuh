@@ -72,9 +72,9 @@ QIcon ShapeCylinderFactory::TShapeIcon() const
 /*!
  * Returns a flat disk geometry object.
  */
-ShapeCylinder* ShapeCylinderFactory::CreateTShape( ) const
+std::shared_ptr< TShape > ShapeCylinderFactory::CreateTShape( ) const
 {
-	return ( new ShapeCylinder );
+	return ( std::dynamic_pointer_cast<TShape>( ShapeCylinder::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

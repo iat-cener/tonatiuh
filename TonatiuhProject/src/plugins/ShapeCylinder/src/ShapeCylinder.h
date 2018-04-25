@@ -59,11 +59,11 @@ private:
 	ShapeCylinder& operator=(const ShapeCylinder&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
 	ShapeCylinder( );
-	ShapeCylinder* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
