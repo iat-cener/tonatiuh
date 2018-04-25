@@ -212,7 +212,6 @@ bool SunshapeBuie::UpdateState( )
 {
 
 	double csrValue = GetParameterValue<double>( m_csrLabel );
-	std::cout<<"csrValue: "<<csrValue<<std::endl;
 
     double chi = 0.0;
 	if( csrValue > 0.035 )
