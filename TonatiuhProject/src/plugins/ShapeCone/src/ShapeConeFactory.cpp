@@ -72,9 +72,10 @@ QIcon ShapeConeFactory::TShapeIcon() const
 /*!
  * Returns a flat disk geometry object.
  */
-ShapeCone* ShapeConeFactory::CreateTShape( ) const
+std::shared_ptr< TShape > ShapeConeFactory::CreateTShape( ) const
 {
-	return ( new ShapeCone );
+	return ( std::dynamic_pointer_cast<TShape>( ShapeCone::CreateInstance() ) );
+
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

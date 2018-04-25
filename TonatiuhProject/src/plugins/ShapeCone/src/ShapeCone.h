@@ -59,11 +59,10 @@ private:
 	ShapeCone(const ShapeCone&) = delete;
 	ShapeCone& operator=(const ShapeCone&) = delete;
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	ShapeCone( );
-	ShapeCone* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -72,6 +71,7 @@ public:
 	void Draw() const;
 
 protected:
+	ShapeCone( );
 	~ShapeCone();
 
 private:

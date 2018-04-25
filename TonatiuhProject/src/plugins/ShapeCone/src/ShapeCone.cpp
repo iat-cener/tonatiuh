@@ -47,9 +47,11 @@ TNodeType ShapeCone::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* ShapeCone::CreateInstance( )
+std::shared_ptr< TNode > ShapeCone::CreateInstance( )
 {
-  return ( new ShapeCone() );
+	//shared_prt needs a public constructor
+	struct EnableCreateShapeCone : public ShapeCone { using ShapeCone::ShapeCone; };
+	return std::make_shared<EnableCreateShapeCone>();
 }
 
 /*!
@@ -91,9 +93,10 @@ ShapeCone::~ShapeCone()
 /*!
  * Creates a copy of shape node.
  */
-ShapeCone* ShapeCone::Copy() const
+std::shared_ptr< TNode > ShapeCone::Copy() const
 {
-	ShapeCone* shapeNode = new ShapeCone;
+	struct EnableCreateShapeCone : public ShapeCone { using ShapeCone::ShapeCone; };
+	std::shared_ptr<ShapeCone> shapeNode = std::make_unique<EnableCreateShapeCone>();
 	if( shapeNode == 0 )	return ( 0  );
 
 	//Coping node parts.
