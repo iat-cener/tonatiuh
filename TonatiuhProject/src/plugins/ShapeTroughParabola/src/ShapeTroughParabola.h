@@ -60,11 +60,10 @@ private:
 	ShapeTroughParabola& operator=(const ShapeTroughParabola&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	ShapeTroughParabola();
-	ShapeTroughParabola* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
@@ -73,6 +72,7 @@ public:
 	void Draw() const;
 
 protected:
+	ShapeTroughParabola();
 	~ShapeTroughParabola();
 
 private:

@@ -57,9 +57,9 @@ class TrackerOneAxisFactory : public QObject, public TTrackerFactory
     
 public:
     void Init() const;
-   	std::string TTrackerNodeName() const;
-   	QIcon TTrackerNodeIcon() const;
-   	TrackerOneAxis* CreateTTrackerNode( ) const;
+   	std::string TTrackerName() const;
+   	QIcon TTrackerIcon() const;
+   	std::shared_ptr< TTracker > CreateTTracker( ) const;
 };
 
 #endif /*TRACKERONEAXISFACTORY_H_*/

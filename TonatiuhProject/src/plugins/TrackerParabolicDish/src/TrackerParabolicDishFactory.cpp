@@ -38,6 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 
 #include <QIcon>
+
 #include "TrackerParabolicDishFactory.h"
 
 /*!

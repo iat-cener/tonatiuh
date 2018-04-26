@@ -64,5 +64,4 @@ public:
    	std::shared_ptr< TTracker > CreateTTracker( ) const;
 };
 
-
 #endif /* TRACKERPARABOLICDISHFACTORY_H_ */

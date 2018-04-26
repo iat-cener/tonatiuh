@@ -46,9 +46,10 @@ TNodeType ShapeFlatTriangle::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* ShapeFlatTriangle::CreateInstance( )
+std::shared_ptr< TNode > ShapeFlatTriangle::CreateInstance( )
 {
-  return ( new ShapeFlatTriangle() );
+	struct EnableCreateShapeFlatTriangle : public ShapeFlatTriangle { using ShapeFlatTriangle::ShapeFlatTriangle; };
+	return std::make_shared<EnableCreateShapeFlatTriangle>();
 }
 
 /*!
@@ -87,13 +88,11 @@ ShapeFlatTriangle::~ShapeFlatTriangle()
 /*!
  * Creates a copy of shape node.
  */
-ShapeFlatTriangle* ShapeFlatTriangle::Copy() const
+std::shared_ptr< TNode > ShapeFlatTriangle::Copy() const
 {
-	ShapeFlatTriangle* shapeNode = new ShapeFlatTriangle;
-	if( shapeNode == 0 )	return ( 0  );
-
-	//Coping node parts.
-	//NO parts
+	struct EnableCreateShapeFlatTriangle : public ShapeFlatTriangle { using ShapeFlatTriangle::ShapeFlatTriangle; };
+	std::shared_ptr<ShapeFlatTriangle> shapeNode = std::make_unique<EnableCreateShapeFlatTriangle>();
+	if( shapeNode == nullptr )	return ( 0  );
 
 	//Coping the parameters.
 	shapeNode->m_pParametersList->SetValue( m_aLabel, GetParameterValue<double>( m_aLabel ) );

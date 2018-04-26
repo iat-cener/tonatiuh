@@ -53,9 +53,11 @@ TNodeType TrackerHeliostat::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TrackerHeliostat::CreateInstance( )
+std::shared_ptr< TNode > TrackerHeliostat::CreateInstance( )
 {
-  return ( new TrackerHeliostat() );
+	//shared_prt needs a public constructor
+	struct EnableCreateTrackerHeliostat : public TrackerHeliostat { using TrackerHeliostat::TrackerHeliostat; };
+	return ( std::make_shared<EnableCreateTrackerHeliostat>() );
 }
 
 /*!
@@ -71,7 +73,7 @@ void TrackerHeliostat::Init()
  * Creates a tracker object.
  */
 TrackerHeliostat::TrackerHeliostat()
-:TTrackerNode(),
+:TTracker(),
  m_aimingPointLabel(  "aimingPoint" ),
  m_aimingPointTypeLabel(  "typeOfAimingPoint" ),
  m_absoluteAimingLabel(  "Absolute" ),
@@ -131,21 +133,19 @@ TrackerHeliostat::~TrackerHeliostat()
 /*!
  * Creates a copy of tracker node.
  */
-TrackerHeliostat* TrackerHeliostat::Copy() const
- {
-	TrackerHeliostat* trackerNode = new TrackerHeliostat;
-	 if( trackerNode == 0 )	return ( 0  );
+std::shared_ptr< TNode > TrackerHeliostat::Copy() const
+{
+	struct EnableCreateTrackerHeliostat : public TrackerHeliostat { using TrackerHeliostat::TrackerHeliostat; };
+	std::shared_ptr< TrackerHeliostat > trackerNode  = std::make_unique<EnableCreateTrackerHeliostat>();
+	if( trackerNode == 0 )	return ( 0  );
 
-	 //Coping node parts.
-	 //NO parts
+	//Coping the parameters.
+	trackerNode->m_pParametersList->SetValue( m_aimingPointLabel, GetParameterValue<Point3D>( m_aimingPointLabel ) );
+	trackerNode->m_pParametersList->SetValue( m_aimingPointTypeLabel, GetParameterValue<EnumeratedTypes>( m_aimingPointTypeLabel ) );
+	trackerNode->m_pParametersList->SetValue( m_rotationTypeLabel, GetParameterValue<EnumeratedTypes>( m_rotationTypeLabel ) );
+	trackerNode->m_pParametersList->SetValue( m_nodeTransformationLabel, GetParameterValue<std::string>( m_nodeTransformationLabel ) );
 
-	 //Coping the parameters.
-	 trackerNode->m_pParametersList->SetValue( m_aimingPointLabel, GetParameterValue<Point3D>( m_aimingPointLabel ) );
-	 trackerNode->m_pParametersList->SetValue( m_aimingPointTypeLabel, GetParameterValue<EnumeratedTypes>( m_aimingPointTypeLabel ) );
-	 trackerNode->m_pParametersList->SetValue( m_rotationTypeLabel, GetParameterValue<EnumeratedTypes>( m_rotationTypeLabel ) );
-	 trackerNode->m_pParametersList->SetValue( m_nodeTransformationLabel, GetParameterValue<std::string>( m_nodeTransformationLabel ) );
-
-	 return ( trackerNode );
+	return ( trackerNode );
 }
 
 /*!

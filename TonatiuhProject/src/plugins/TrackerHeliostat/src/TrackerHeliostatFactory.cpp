@@ -57,7 +57,7 @@ void TrackerHeliostatFactory::Init() const
 /*!
  * Returns tracker type name.
  */
-std::string TrackerHeliostatFactory::TTrackerNodeName() const
+std::string TrackerHeliostatFactory::TTrackerName() const
 {
 	return ( "Heliostat_tracker" );
 }
@@ -65,18 +65,17 @@ std::string TrackerHeliostatFactory::TTrackerNodeName() const
 /*!
  * Returns tracker icon.
  */
-QIcon TrackerHeliostatFactory::TTrackerNodeIcon() const
+QIcon TrackerHeliostatFactory::TTrackerIcon() const
 {
-	return QIcon(":/icons/TrackerHeliostat.png");
+	return QIcon( ":/icons/TrackerHeliostat.png" );
 }
 
 /*!
  * Creates a new tracker object.
  */
-TrackerHeliostat* TrackerHeliostatFactory::CreateTTrackerNode( ) const
+std::shared_ptr< TTracker > TrackerHeliostatFactory::CreateTTracker( ) const
 {
-	return ( new TrackerHeliostat );
-
+	return ( std::dynamic_pointer_cast< TTracker >( TrackerHeliostat::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

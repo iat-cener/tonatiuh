@@ -47,9 +47,10 @@ TNodeType ShapeTroughParabola::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* ShapeTroughParabola::CreateInstance( )
+std::shared_ptr< TNode > ShapeTroughParabola::CreateInstance( )
 {
-  return ( new ShapeTroughParabola() );
+	struct EnableCreateShapeTroughParabola : public ShapeTroughParabola { using ShapeTroughParabola::ShapeTroughParabola; };
+	return std::make_shared<EnableCreateShapeTroughParabola>();
 }
 
 
@@ -94,13 +95,12 @@ ShapeTroughParabola::~ShapeTroughParabola()
 /*!
  * Creates a copy of shape node.
  */
-ShapeTroughParabola* ShapeTroughParabola::Copy() const
+std::shared_ptr< TNode > ShapeTroughParabola::Copy() const
 {
-	ShapeTroughParabola* shapeNode = new ShapeTroughParabola;
-	if( shapeNode == 0 )	return ( 0  );
+	struct EnableCreateShapeTroughParabola : public ShapeTroughParabola { using ShapeTroughParabola::ShapeTroughParabola; };
+	std::shared_ptr<ShapeTroughParabola> shapeNode = std::make_unique<EnableCreateShapeTroughParabola>();
+	if( shapeNode == nullptr )	return ( 0 );
 
-	//Coping node parts.
-	//NO parts
 
 	//Coping the parameters.
 	shapeNode->m_pParametersList->SetValue( m_focusLengthLabel, GetParameterValue<double>( m_focusLengthLabel ) );

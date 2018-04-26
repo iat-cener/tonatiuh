@@ -51,9 +51,11 @@ TNodeType TrackerOneAxis::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* TrackerOneAxis::CreateInstance( )
+std::shared_ptr< TNode > TrackerOneAxis::CreateInstance( )
 {
-  return ( new TrackerOneAxis() );
+	//shared_prt needs a public constructor
+	struct EnableCreateTrackerOneAxis : public TrackerOneAxis { using TrackerOneAxis::TrackerOneAxis; };
+	return std::make_shared<EnableCreateTrackerOneAxis>();
 }
 
 /*!
@@ -69,7 +71,7 @@ void TrackerOneAxis::Init()
  * Creates a tracker object.
  */
 TrackerOneAxis::TrackerOneAxis()
-:TTrackerNode(),
+:TTracker(),
  m_axisLabel( "axis" ),
  m_xAxisLabel( "X" ),
  m_yAxisLabel( "Y" ),
@@ -116,13 +118,11 @@ TrackerOneAxis::~TrackerOneAxis()
 /*!
  * Creates a copy of tracker node.
  */
-TrackerOneAxis* TrackerOneAxis::Copy() const
- {
-	TrackerOneAxis* trackerNode = new TrackerOneAxis;
-	 if( trackerNode == 0 )	return ( 0  );
-
-	 //Coping node parts.
-	 //NO parts
+std::shared_ptr< TNode > TrackerOneAxis::Copy() const
+{
+	struct EnableCreateTrackerOneAxis : public TrackerOneAxis { using TrackerOneAxis::TrackerOneAxis; };
+	std::shared_ptr< TrackerOneAxis > trackerNode  = std::make_unique<EnableCreateTrackerOneAxis>();
+	if( trackerNode == 0 )	return ( 0  );
 
 	 //Coping the parameters.
 	 trackerNode->m_pParametersList->SetValue( m_axisLabel, GetParameterValue<EnumeratedTypes>( m_axisLabel ) );

@@ -72,10 +72,9 @@ QIcon ShapeFlatTriangleFactory::TShapeIcon() const
 /*!
  * Returns a flat rectangle geometry object.
  */
-ShapeFlatTriangle* ShapeFlatTriangleFactory::CreateTShape( ) const
+std::shared_ptr< TShape > ShapeFlatTriangleFactory::CreateTShape( ) const
 {
-
-	return ( new ShapeFlatTriangle );
+	return ( std::dynamic_pointer_cast<TShape>( ShapeFlatTriangle::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

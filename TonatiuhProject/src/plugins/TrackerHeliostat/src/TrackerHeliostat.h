@@ -39,9 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRACKERHELIOSTAT_H_
 #define TRACKERHELIOSTAT_H_
 
-#include <string>
+//#include <string>
 
-#include "../../../nodes/TTracker.h"
+#include "TTracker.h"
 #include "TNodeType.h"
 
 //!  TrackerHeliostat is the class for solar one-axis trackers.
@@ -55,7 +55,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	m_parametersList->Append( QLatin1String( "typeOfRotation" : rotation axis. Default: x
 */
 
-class TrackerHeliostat : public TTrackerNode
+class TrackerHeliostat : public TTracker
 {
 
 private:
@@ -64,11 +64,10 @@ private:
 	TrackerHeliostat& operator=(const TrackerHeliostat&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	TrackerHeliostat();
-	TrackerHeliostat* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	Transform GetTrasformation() const;
@@ -77,6 +76,7 @@ public:
 
 
 protected:
+	TrackerHeliostat();
 	virtual ~TrackerHeliostat();
 
 private:

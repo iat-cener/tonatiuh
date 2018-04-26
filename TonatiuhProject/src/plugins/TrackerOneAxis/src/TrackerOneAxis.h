@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRACKERONEAXIS_H_
 #define TRACKERONEAXIS_H_
 
-#include "../../../nodes/TTracker.h"
+#include "TTracker.h"
 #include "TNodeType.h"
 
 //!  TrackerOneAxis is the class for solar one-axis trackers.
@@ -51,7 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
    - axis: rotation axis. Default: x
 */
 
-class TrackerOneAxis : public TTrackerNode
+class TrackerOneAxis : public TTracker
 {
 
 private:
@@ -60,11 +60,10 @@ private:
 	TrackerOneAxis& operator=(const TrackerOneAxis&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	TrackerOneAxis();
-	TrackerOneAxis* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	Transform GetTrasformation() const;
@@ -72,6 +71,7 @@ public:
 	void UpdateTrackerTransform( Vector3D sunVector, Transform parentWT0 );
 
 protected:
+	TrackerOneAxis();
 	virtual ~TrackerOneAxis();
 
 private:

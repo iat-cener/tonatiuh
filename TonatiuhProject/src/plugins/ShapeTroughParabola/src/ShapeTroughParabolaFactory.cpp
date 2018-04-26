@@ -73,10 +73,9 @@ QIcon ShapeTroughParabolaFactory::TShapeIcon() const
  * Creates a new spherical rectangle object.
  */
 
-ShapeTroughParabola* ShapeTroughParabolaFactory::CreateTShape( ) const
+std::shared_ptr< TShape > ShapeTroughParabolaFactory::CreateTShape( ) const
 {
-
-	return ( new ShapeTroughParabola );
+	return ( std::dynamic_pointer_cast<TShape>( ShapeTroughParabola::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

@@ -56,7 +56,7 @@ public:
     void Init() const;
    	std::string TShapeName() const;
    	QIcon TShapeIcon() const;
-   	ShapeTroughParabola* CreateTShape() const;	 
+   	std::shared_ptr< TShape > CreateTShape() const;
 };
 
 #endif /*SHAPETROUGHPARABOLAFACTORY_H_*/

@@ -106,13 +106,10 @@ TrackerParabolicDish::~TrackerParabolicDish()
  * Creates a copy of tracker node.
  */
 std::shared_ptr< TNode > TrackerParabolicDish::Copy() const
- {
+{
 	struct EnableCreateTrackerParabolicDish : public TrackerParabolicDish { using TrackerParabolicDish::TrackerParabolicDish; };
 	std::shared_ptr< TrackerParabolicDish > trackerNode  = std::make_unique<EnableCreateTrackerParabolicDish>();
-	 if( trackerNode == 0 )	return ( 0  );
-
-	 //Coping node parts.
-	 //NO parts
+	if( trackerNode == 0 )	return ( 0  );
 
 	 //Coping the parameters.
 	 trackerNode->m_pParametersList->SetValue( m_nodeTransformationLabel, GetParameterValue<std::string>( m_nodeTransformationLabel ) );

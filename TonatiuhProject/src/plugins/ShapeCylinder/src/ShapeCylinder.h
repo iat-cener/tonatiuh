@@ -62,7 +62,6 @@ public:
 	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
-	ShapeCylinder( );
 	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
@@ -72,6 +71,7 @@ public:
 	void Draw() const;
 
 protected:
+	ShapeCylinder( );
 	~ShapeCylinder();
 
 private:

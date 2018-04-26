@@ -57,7 +57,7 @@ void TrackerOneAxisFactory::Init() const
 /*!
  * Returns tracker type name.
  */
-std::string TrackerOneAxisFactory::TTrackerNodeName() const
+std::string TrackerOneAxisFactory::TTrackerName() const
 {
 	return ( "One Axis tracker" );
 }
@@ -65,7 +65,7 @@ std::string TrackerOneAxisFactory::TTrackerNodeName() const
 /*!
  * Returns tracker icon.
  */
-QIcon TrackerOneAxisFactory::TTrackerNodeIcon() const
+QIcon TrackerOneAxisFactory::TTrackerIcon() const
 {
 	return QIcon(":/icons/TrackerOneAxis.png");
 }
@@ -73,9 +73,9 @@ QIcon TrackerOneAxisFactory::TTrackerNodeIcon() const
 /*!
  * Creates a new tracker object.
  */
-TrackerOneAxis* TrackerOneAxisFactory::CreateTTrackerNode( ) const
+std::shared_ptr< TTracker > TrackerOneAxisFactory::CreateTTracker( ) const
 {
-	return ( new TrackerOneAxis );
+	return ( std::dynamic_pointer_cast< TTracker >( TrackerOneAxis::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5
