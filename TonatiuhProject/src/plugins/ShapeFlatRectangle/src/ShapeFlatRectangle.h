@@ -59,11 +59,11 @@ private:
 	ShapeFlatRectangle& operator=(const ShapeFlatRectangle&) = delete;
 
 public:
-	static void* CreateInstance();
+	static std::shared_ptr< TNode > CreateInstance();
 	static void Init();
 
 	ShapeFlatRectangle( );
-	ShapeFlatRectangle* Copy() const;
+	std::shared_ptr< TNode > Copy() const;
 
 	std::string GetIcon() const;
 	BBox GetBondingBox() const;
