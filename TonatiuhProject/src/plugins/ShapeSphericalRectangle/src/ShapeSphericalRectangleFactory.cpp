@@ -71,9 +71,9 @@ QIcon ShapeSphericalRectangleFactory::TShapeIcon() const
 /*!
  * Creates a new spherical rectangle object.
  */
-ShapeSphericalRectangle* ShapeSphericalRectangleFactory::CreateTShape( ) const
+std::shared_ptr< TShape > ShapeSphericalRectangleFactory::CreateTShape( ) const
 {
-	return ( new ShapeSphericalRectangle );
+	return ( std::dynamic_pointer_cast<TShape>( ShapeSphericalRectangle::CreateInstance() ) );
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

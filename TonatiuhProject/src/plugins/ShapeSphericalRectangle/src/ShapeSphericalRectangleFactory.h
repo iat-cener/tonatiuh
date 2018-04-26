@@ -54,7 +54,7 @@ public:
     void Init() const;
    	std::string TShapeName() const;
    	QIcon TShapeIcon() const;
-   	ShapeSphericalRectangle* CreateTShape( ) const;
+   	std::shared_ptr< TShape > CreateTShape( ) const;
 };
 
 #endif /*SHAPESPHERICALRECTANGLEFACTORY_H_*/

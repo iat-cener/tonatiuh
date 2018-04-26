@@ -49,9 +49,10 @@ TNodeType ShapeSphericalRectangle::m_nodeType = TNodeType::CreateEmptyType();
 /*!
  * Creates a new instance of the class type corresponding object.
  */
-void* ShapeSphericalRectangle::CreateInstance( )
+std::shared_ptr< TNode > ShapeSphericalRectangle::CreateInstance( )
 {
-  return ( new ShapeSphericalRectangle() );
+	struct EnableCreateShapeSphericalRectangle : public ShapeSphericalRectangle { using ShapeSphericalRectangle::ShapeSphericalRectangle; };
+	return std::make_shared<EnableCreateShapeSphericalRectangle>();
 }
 
 
@@ -95,13 +96,11 @@ ShapeSphericalRectangle::~ShapeSphericalRectangle()
 /*!
  * Creates a copy of shape node.
  */
-ShapeSphericalRectangle* ShapeSphericalRectangle::Copy() const
+std::shared_ptr< TNode > ShapeSphericalRectangle::Copy() const
 {
-	ShapeSphericalRectangle* shapeNode = new ShapeSphericalRectangle;
-	if( shapeNode == 0 )	return ( 0  );
-
-	//Coping node parts.
-	//NO parts
+	struct EnableCreateShapeSphericalRectangle : public ShapeSphericalRectangle { using ShapeSphericalRectangle::ShapeSphericalRectangle; };
+	std::shared_ptr<ShapeSphericalRectangle> shapeNode = std::make_unique<EnableCreateShapeSphericalRectangle>();
+	if( shapeNode == nullptr )	return ( 0 );
 
 	//Coping the parameters.
 	shapeNode->m_pParametersList->SetValue( m_radiusLabel, GetParameterValue<double>( m_radiusLabel ) );
