@@ -90,6 +90,5 @@ private:
 	std::string m_zenithLabel;
 };
 
-//Q_DECLARE_METATYPE(TSunNode*)
 
 #endif /* TSUNNODE_H_ */

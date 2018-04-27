@@ -47,7 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class TTransmissivity;
 
-//!  TTransmissivityFactory is the base class for creating TTransmissivityNode objects.
+//!  TTransmissivityFactory is the base class for creating TTransmissivity objects.
 /*!
   TTransmissivityFactory class is a factory class to create instances of TTransmissivityNode subclasses.
 */
