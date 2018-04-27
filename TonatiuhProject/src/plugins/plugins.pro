@@ -3,6 +3,7 @@ TEMPLATE = subdirs
 
 SUBDIRS = MaterialStandardSpecular \
 			MaterialVirtual \
+			PhotonMapExportToBinaryFile \
 			RandomMersenneTwister \
 			RandomRngStream \
 			ShapeCone \

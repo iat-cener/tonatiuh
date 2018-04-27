@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+
+        <file>icons/PhotonMapExportToBinaryFile.png</file>
+    </qresource>
+</RCC>
