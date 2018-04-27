@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Photon.h"
 
 Photon::Photon( )
-:id( -1 ), posWorld( Point3D()), posLocal( Point3D()), intersectedSurfaceURL( std::string("") ), side(-1 ), isAbsorbed( -1 )
+:id( -1 ), posWorld( Point3D()), posLocal( Point3D()), intersectedSurfaceURL( std::string("") ), side(-1 ), isAbsorbed( -1 ), rayDir( Vector3D{} )
 {
 
 }
@@ -50,8 +50,8 @@ Photon::Photon( const Photon& photon )
 
 }
 
-Photon::Photon( Point3D posW, Point3D posL, int side, double id, std::string intersectedSurfaceURL, int absorbedPhoton )
-:id(id), posWorld(posW), posLocal( posL ), intersectedSurfaceURL( intersectedSurfaceURL ), side( side ), isAbsorbed( absorbedPhoton)
+Photon::Photon( Point3D posW, Point3D posL, int side, double id, std::string intersectedSurfaceURL, int absorbedPhoton, Vector3D rayDir )
+:id(id), posWorld(posW), posLocal( posL ), intersectedSurfaceURL( intersectedSurfaceURL ), side( side ), isAbsorbed( absorbedPhoton), rayDir( rayDir)
 {
 
 }

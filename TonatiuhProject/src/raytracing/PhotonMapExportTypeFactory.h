@@ -36,24 +36,33 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SAVEFILEFACTORY_H_
-#define SAVEFILEFACTORY_H_
+#ifndef PHOTONMAPEXPORTTYPEFACTORY_H_
+#define PHOTONMAPEXPORTTYPEFACTORY_H_
+
+#include <memory>
 
 #include <QtPlugin>
-#include <QVariant>
+//#include <QVariant>
 
 class QIcon;
-class SaveFile;
+class PhotonMapExportType;
 
-class SaveFileFactory
+
+//!  PhotonMapExportTypeFactory is the base class for creating PhotonMapExportType objects.
+/*!
+  PhotonMapExportTypeFactory class is a factory class to create instances of PhotonMapExportType subclasses. In order to create plug-ins of different type of export modes,
+  the plug-ins must be a derived class of this abstract factory.
+*/
+
+class PhotonMapExportTypeFactory
 {
 public:
-    virtual ~SaveFileFactory() {}
-    virtual std::string  SaveFileName() const  = 0;
-    virtual QIcon SaveFileIcon() const = 0;
-    virtual SaveFile* CreateSaveFile( ) const = 0;
+    virtual ~PhotonMapExportTypeFactory() {}
+    virtual std::string  PhotonMapExportTypName() const  = 0;
+    virtual QIcon PhotonMapExportTypIcon() const = 0;
+    virtual std::unique_ptr<PhotonMapExportType> CreatePhotonMapExportType( ) const = 0;
 
 };
-Q_DECLARE_INTERFACE( SaveFileFactory, "tonatiuh.SaveFileFactory")
+Q_DECLARE_INTERFACE( PhotonMapExportTypeFactory, "tonatiuh.PhotonMapExportTypeFactory")
 
-#endif /* SAVEFILEFACTORY_H_ */
+#endif /* PHOTONMAPEXPORTTYPEFACTORY_H_ */

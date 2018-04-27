@@ -42,18 +42,29 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <string>
 
 #include "Point3D.h"
+#include "Vector3D.h"
 
 
-//!  Photon is the structure that stores the information of the rays intersections in the surface .
+//!  Photon is the structure that stores the information of the rays intersections in the surface.
 /*!
-  Photon structure provides the information about the ray intersection: intersection point (into global and local to surface coordinates system), the surface url where the intersection has been, surface side or if the ray has been absorbed or not.
+  Photon structure provides the information about the ray intersection:
+  - intersection point (into global and local to surface coordinates system)
+  - the surface url where the intersection has been. Empty if this information is not available or if this photons is not generated due to an intersection with a surface.
+  - surface side:
+  	  * 0: back (back and front, depends of the surface)
+  	  * 1: front
+  - the ray has been absorbed or not in the photon intersection point:
+    * -1: this information is not available
+    * 0: the ray has not been absorbed.
+    * 1: the ray has been absorbed.
+  - ray direction: incident ray direction. Null vector if this information is not available.
 */
 
 struct Photon
 {
 	Photon( );
 	Photon( const Photon& photon );
-	Photon( Point3D posW,  Point3D posL, int side, double id = 0, std::string intersectedSurfaceURL = std::string( "" ), int absorbedPhoton = 0 );
+	Photon( Point3D posW,  Point3D posL, int side, double id = 0, std::string intersectedSurfaceURL = std::string( "" ), int absorbedPhoton = 0, Vector3D rayDir = Vector3D() );
 	~Photon();
 
 	double id;
@@ -62,6 +73,7 @@ struct Photon
 	std::string intersectedSurfaceURL;
 	int side;
 	int isAbsorbed;
+	Vector3D rayDir;
 
 };
 

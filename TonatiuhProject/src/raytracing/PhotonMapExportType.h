@@ -36,13 +36,13 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef SAVEFILE_H_
-#define SAVEFILE_H_
+#ifndef PHOTONMAPEXPORTTYPE_H_
+#define PHOTONMAPEXPORTTYPE_H_
 
 
-//!  SaveFile class provides an interface for safely writing simulation data to file.
+//!  PhotonMapExportType class provides an interface for safely writing simulation data to file.
 /*!
-  SaveFile is an I/O device that provides the base functionality for writing simulation data to a files, the specific file format depends on the SaveFile derived class used.
+  PhotonMapExportType is an I/O device that provides the base functionality for writing simulation data to a files, the specific file format depends on the PhotonMapExportType derived class used.
 */
 
 #include <string>
@@ -51,19 +51,21 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class Photon;
 
-class SaveFile
+class PhotonMapExportType
 {
 
 public:
 	/*!
-	 * Creates a SaveFile object that saves simulations data into the file \a filename
+	 * Creates a PhotonMapExportType object that saves simulations data into the file \a filename
 	 */
-	SaveFile()
+	PhotonMapExportType()
 	:m_saveCoordinates( false ),
 	 m_saveCoordinatesInGlobal( true ),
 	 m_savePrevNextID( true ),
 	 m_saveSide( true ),
 	 m_saveSurfaceID( true ),
+	 m_saveIsAbsorbed( true ),
+	 m_saveRayDirection( true ),
 	 m_saveSurfacesURLList()
 	{
 
@@ -73,7 +75,7 @@ public:
 	/*!
 	 * Destroys object
 	 */
-	virtual ~SaveFile()
+	virtual ~PhotonMapExportType()
 	{
 
 	}
@@ -86,7 +88,7 @@ public:
 	/*!
 	 * Saves the rays in the list \a raysLists in the file.
 	 */
-	virtual void SavePhotonMap( std::vector < Photon* > raysLists ) = 0;
+	virtual void SavePhotonMap( std::vector< Photon >& raysLists ) = 0;
 	//void SetConcentratorToWorld( Transform concentratorToWorld );
 
 	/*!
@@ -104,6 +106,14 @@ public:
 
 
 	//void SetSaveAllPhotonsEnabled();
+
+	/*!
+	 * Sets to \a enabled if the information about the ray is absorbed or not is saved.
+	 */
+	void SetSaveAbsorbedEnabled( bool enabled )
+	{
+		m_saveIsAbsorbed = enabled;
+	}
 
 	/*!
 	 * Sets to \a enabled if the photons coordinates are saved.
@@ -129,6 +139,15 @@ public:
 	void SetSavePreviousNextPhotonsID( bool enabled )
 	{
 		m_savePrevNextID = enabled;
+	}
+
+	/*!
+	 * If \a enabled is true for each photon the information about the ray direnction before the intersection is saved is saved.
+	 * Otherwise, this information will not be included.
+	 */
+	void SetSaveRayDirection( bool enabled )
+	{
+		m_saveRayDirection = enabled;
 	}
 
 	/*!
@@ -175,9 +194,11 @@ protected:
 	bool m_savePrevNextID;
 	bool m_saveSide;
 	bool m_saveSurfaceID;
+	bool m_saveIsAbsorbed;
+	bool m_saveRayDirection;
 	std::vector<std::string> m_saveSurfacesURLList;
 
 
 };
 
-#endif /* SAVEFILE_H_ */
+#endif /* PHOTONMAPEXPORTTYPE_H_ */

@@ -74,6 +74,11 @@ struct LightOriginShape
 
 	//first height (z dimension), second width (x dimension)
 	std::vector< std::pair< int, int > >  validSunAreasVector;
+
+	double GetValidArea() const
+	{
+		return ( validSunAreasVector.size() * cellHeight * cellWidth );
+	}
 };
 
 //!  RayTracer is base class for  is a container to execute the ray tracing algorithm in a scene.

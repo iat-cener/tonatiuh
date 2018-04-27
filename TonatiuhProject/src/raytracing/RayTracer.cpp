@@ -73,7 +73,10 @@ RayTracer::~RayTracer()
 bool RayTracer::Run( unsigned long numberOfRays )
 {
 
-	if( !m_pSunNode || !m_pPhotonMap  || !m_pRandomNumberGenerator )	return ( false );
+	if( !m_pSunNode || m_pSunNode == nullptr || !m_pPhotonMap  || !m_pRandomNumberGenerator )	return ( false );
+
+	std::shared_ptr< TSunshape > sunshapeNode = std::dynamic_pointer_cast< TSunshape > ( m_pSunNode->GetPart( "sunshape" ) );
+	if( !sunshapeNode || sunshapeNode == nullptr )	return ( false );
 
 	//RunRaytracer( 1 );
 
@@ -93,29 +96,13 @@ bool RayTracer::Run( unsigned long numberOfRays )
 		th.join();
 
 
-
-	/*
-	QVector< long > raysPerThread;
-	int maximumValueProgressScale = 100;
-	unsigned long  t1 = numberOfRays / maximumValueProgressScale;
-	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-	raysPerThread<< t1;
-
-	if( ( t1 * maximumValueProgressScale ) < numberOfRays )	raysPerThread<< ( numberOfRays-( t1* maximumValueProgressScale) );
-
-	// Create a QFutureWatcher and conncect signals and slots.
-	//QThreadPool::globalInstance()->setMaxThreadCount(1);
-	QFutureWatcher< void > futureWatcher;
-	QFuture< void > raytracingResult = QtConcurrent::map( raysPerThread,
-			[this] (unsigned long nRays ) { RunRaytracer( nRays ); } );
+	double irradiance = sunshapeNode->GetIrradiance();
+	double inputAperture = m_lightOriginShape.GetValidArea();
+	double wPhoton = ( inputAperture * irradiance ) / numberOfRays;
 
 
+	m_pPhotonMap->EndStore( wPhoton );
 
-	futureWatcher.setFuture( raytracingResult );
-
-	// Display the dialog and start the event loop.
-	futureWatcher.waitForFinished();
-	*/
 
 
 	return ( true );
