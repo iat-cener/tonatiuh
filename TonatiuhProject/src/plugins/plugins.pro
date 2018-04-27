@@ -5,7 +5,6 @@ SUBDIRS = MaterialStandardSpecular \
 			MaterialVirtual \
 			RandomMersenneTwister \
 			RandomRngStream \
-#			SaveBinaryFile \
 			ShapeCone \
 			ShapeCylinder \
 			ShapeFlatDisk \
