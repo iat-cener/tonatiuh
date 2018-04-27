@@ -153,40 +153,46 @@ int main ( int argc, char** argv )
 		std::cerr<<err.toStdString()<<std::endl;
 	}
 
-	std::vector< std::string > materialFactoryNameList = pluginManager.GetMaterialFactoryNames();
-	int numberOfMaterialFactories= int( materialFactoryNameList.size() );
-	std::cout<<"- Number of materials: "<<numberOfMaterialFactories<<std::endl;
-	for( int m = 0; m < numberOfMaterialFactories; m++ )
-		std::cout<<"  - Material "<< m <<" : "<<materialFactoryNameList[m]<<std::endl;
+	std::vector< std::string>  photonMapExportTypeNameList = pluginManager.GetPhotonMapExportTypeFactoryNames();
+	int numberOfPhotonMapExportTypeFactories = int( photonMapExportTypeNameList.size() );
+	std::cout<<"- Number of Photon Map Export Types: "<<numberOfPhotonMapExportTypeFactories<<std::endl;
+	for( int p = 0; p < numberOfPhotonMapExportTypeFactories; p++ )
+		std::cout<<"  - Photon Map Export Type "<< p <<" : "<<photonMapExportTypeNameList[p]<<std::endl;
 
 	std::vector< std::string>  randomFactoryNameList = pluginManager.GetRandomDeviateFactoryNames();
 	int numberOfRandomFactories = int( randomFactoryNameList.size() );
 	std::cout<<"- Number of Random Deviates: "<<numberOfRandomFactories<<std::endl;
 	for( int r = 0; r < numberOfRandomFactories; r++ )
-		std::cout<<"  - Shape "<< r <<" : "<<randomFactoryNameList[r]<<std::endl;
+		std::cout<<"  - Random Deviates "<< r <<" : "<<randomFactoryNameList[r]<<std::endl;
 
-	std::vector< std::string >  shapeFactoryNameList = pluginManager.GetShapeFactoryNames();
+	std::vector< std::string > materialFactoryNameList = pluginManager.GetTMaterialFactoryNames();
+	int numberOfMaterialFactories= int( materialFactoryNameList.size() );
+	std::cout<<"- Number of materials: "<<numberOfMaterialFactories<<std::endl;
+	for( int m = 0; m < numberOfMaterialFactories; m++ )
+		std::cout<<"  - Material "<< m <<" : "<<materialFactoryNameList[m]<<std::endl;
+
+	std::vector< std::string >  shapeFactoryNameList = pluginManager.GetTShapeFactoryNames();
 	int numberOfShapeFactories = int( shapeFactoryNameList.size() );
 	std::cout<<"- Number of shapes: "<<numberOfShapeFactories<<std::endl;
 	for( int s = 0; s < numberOfShapeFactories; s++ )
 		std::cout<<"  - Shape "<< s <<" : "<<shapeFactoryNameList[s]<<std::endl;
 
 
-	std::vector< std::string >  sunshapeFactoryNameList = pluginManager.GetSunshapeFactoryNames();
+	std::vector< std::string >  sunshapeFactoryNameList = pluginManager.GetTSunshapeFactoryNames();
 	int numberOfSunshapeFactories = int( sunshapeFactoryNameList.size() );
 	std::cout<<"- Number of sunshapes: "<<numberOfSunshapeFactories<<std::endl;
 	for( int s = 0; s < numberOfSunshapeFactories; s++ )
 		std::cout<<"  - Sunshape "<< s <<" : "<<sunshapeFactoryNameList[s]<<std::endl;
 
 
-	std::vector<std::string > trackerFactoryNameList = pluginManager.GetTrackerFactoryNames();
+	std::vector<std::string > trackerFactoryNameList = pluginManager.GetTTrackerFactoryNames();
 	int numberOfTrackerFactories= int( trackerFactoryNameList.size() );
 	std::cout<<"- Number of trackers: "<<numberOfSunshapeFactories<<std::endl;
 	for( int t = 0; t < numberOfTrackerFactories; t++ )
 		std::cout<<"  - tracker "<< t <<" : "<<trackerFactoryNameList[t]<<std::endl;
 
 
-	std::vector<std::string > transmissivityFactoryNameList = pluginManager.GetTransmissivityFactoryNames();
+	std::vector<std::string > transmissivityFactoryNameList = pluginManager.GetTTransmissivityFactoryNames();
 	int numberOfTransmissivityFactories= int( transmissivityFactoryNameList.size() );
 	std::cout<<"- Number of transmissivity models: "<<numberOfTransmissivityFactories<<std::endl;
 	for( int t = 0; t < numberOfTransmissivityFactories; t++ )
@@ -457,8 +463,6 @@ int main ( int argc, char** argv )
 
 
 
-
-
 /***********************************/
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
 
@@ -466,7 +470,7 @@ int main ( int argc, char** argv )
 	bool okRead = readDocument.Read( argv[1] );
 	if( !okRead  )
 	{
-		std::cout<<"Â¡Â¡Â¡Error reading file!!!"<<std::endl;
+		std::cout<<"¡¡¡Error reading file!!!"<<std::endl;
 		return ( -1 );
 	}
 
@@ -475,7 +479,7 @@ int main ( int argc, char** argv )
 	std::shared_ptr< TSceneNode > sceneNode = std::dynamic_pointer_cast< TSceneNode > ( readDocument.GetRootNode() );
 	if( !sceneNode || sceneNode == 0 )
 	{
-		std::cout<<"Â¡Â¡Â¡Error reading file!!!"<<std::endl;
+		std::cout<<"¡¡¡Error reading file!!!"<<std::endl;
 		return ( -2 );
 	}
 
@@ -555,24 +559,50 @@ int main ( int argc, char** argv )
 	std::cout<<"Create the random generator"<<std::endl;
 	std::shared_ptr< RandomDeviate > pRand = nullptr;
 	if( randomFactoryNameList.size() < 1 )
-		return ( -3 );
+		return ( -6 );
 	pRand =  pluginManager.CreateRandomDeviate( randomFactoryNameList[0] );
 	if( pRand == nullptr )
-		return ( -4 );
+		return ( -7 );
 
-	std::cout<<"pRand"<<std::endl;
 	raytracer.SetRandomNumberGenerator( pRand.get() );
 
 
 	//Creating the photon map
-	std::cout<<"Creating the photon map"<<std::endl;
+	std::cout<<"\tCreating the photon map"<<std::endl;
 	std::unique_ptr< TPhotonMap > pPhotonMap = std::make_unique < TPhotonMap >();
-	std::cout<<"pPhotonMap"<<std::endl;
+
+	//Defining how export the stored data.
+	std::cout<<"\t Defining how export the stored data."<<std::endl;
+	std::unique_ptr< PhotonMapExportType > pPhotonMapExportType = pluginManager.CreatePhotonMapExportType( photonMapExportTypeNameList[0] );
+
+
+	if( argv[3] == NULL || argv[4] == NULL )
+	{
+		std::cout<<"No file to save results "<<std::endl;
+		return ( -8 );
+	}
+
+	//QFileInfo exportFileInfo{ argv[3] };
+	//std::cout<<"\t\t"<< exportFileInfo.absoluteFilePath().toStdString()<<std::endl;
+	//std::cout<<"\t\t"<< exportFileInfo.fileName().toStdString()<<std::endl;
+	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
+	std::cout<<"\t\tExportFile: "<< argv[4]<<std::endl;
+
+	pPhotonMapExportType->SetSaveParameterValue( "ExportDirectory", argv[3] );
+	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", argv[4] );
+	// pPhotonMapExportType->SetSaveParameterValue( "FileSize", -1  );
+	pPhotonMap->SetExportType( std::move( pPhotonMapExportType ) );
 
 	raytracer.SetPhotonMap( pPhotonMap.get() );
 
 	std::cout<<"Run"<<std::endl;
-	raytracer.Run( 10000000 );
+	double tracedRays = 10000000;
+
+	raytracer.Run( tracedRays );
+
+
+	//QDateTime time2 = QDateTime::currentDateTime();
+	//std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
@@ -580,10 +610,11 @@ int main ( int argc, char** argv )
 	std::cout<<"END main"<<std::endl;
 
 
+	/*
 	if( argv[3] == NULL )
 	{
 		std::cout<<"No file to save results "<<std::endl;
-		return ( -4 );
+		return ( -9 );
 	}
 
 	QFile simulationsFile( argv[3] );
@@ -603,6 +634,7 @@ int main ( int argc, char** argv )
 
 	}
 	simulationsFile.close();
+	*/
 
 
 

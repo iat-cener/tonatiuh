@@ -45,8 +45,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <vector>
 #include <map>
 
-
+class PhotonMapExportType;
 class PhotonMapExportFactory;
+class PhotonMapExportTypeFactory;
 class QDir;
 class QStringList;
 class RandomDeviate;
@@ -69,42 +70,45 @@ public:
     PluginManager();
     ~PluginManager();
 
-
-    std::shared_ptr< TMaterial > CreateTMaterial( std::string factoryName ) const;
+    std::unique_ptr< PhotonMapExportType > CreatePhotonMapExportType( std::string factoryName ) const;
     std::shared_ptr< RandomDeviate > CreateRandomDeviate( std::string factoryName ) const;
+    std::shared_ptr< TMaterial > CreateTMaterial( std::string factoryName ) const;
     std::shared_ptr< TShape > CreateTShape( std::string factoryName ) const;
     std::shared_ptr< TSunshape > CreateTSunshape( std::string factoryName ) const;
     std::shared_ptr< TTracker > CreateTTracker( std::string factoryName ) const;
     std::shared_ptr< TTransmissivity > CreateTTransmissivity( std::string factoryName ) const;
 
-    std::vector< std::string > GetMaterialFactoryNames() const;
+    std::vector< std::string > GetPhotonMapExportTypeFactoryNames() const;
     std::vector< std::string > GetRandomDeviateFactoryNames() const;
-    std::vector< std::string > GetShapeFactoryNames() const;
-    std::vector< std::string > GetSunshapeFactoryNames() const;
-    std::vector< std::string > GetTrackerFactoryNames() const;
-    std::vector< std::string > GetTransmissivityFactoryNames() const;
+    std::vector< std::string > GetTMaterialFactoryNames() const;
+    std::vector< std::string > GetTShapeFactoryNames() const;
+    std::vector< std::string > GetTSunshapeFactoryNames() const;
+    std::vector< std::string > GetTTrackerFactoryNames() const;
+    std::vector< std::string > GetTTransmissivityFactoryNames() const;
 	void LoadAvailablePlugins( QDir pluginsDirectory, QString* error );
 
 private:
 	void AddFilesToList( QDir directory, QStringList& filesList );
 	void BuildFileList( QDir directory, QStringList& filesList );
 	void LoadAvailablePlugins( );
-	void LoadMaterialPlugin( QObject* plugin, QString* error  );
+	void LoadPhotonMapExportTypePlugin( QObject* plugin, QString* error );
 	void LoadRandomDeviatePlugin( QObject* plugin, QString* error );
-	void LoadShapePlugin( QObject* plugin, QString* error );
-	void LoadSunshapePlugin( QObject* plugin, QString* error );
+	void LoadTMaterialPlugin( QObject* plugin, QString* error  );
 	void LoadTonatiuhPlugin( const QString& fileName, QString* error );
-	void LoadTrackerPlugin( QObject* plugin, QString* error );
-	void LoadTransmissivityPlugin( QObject* plugin, QString* error );
+	void LoadTShapePlugin( QObject* plugin, QString* error );
+	void LoadTSunshapePlugin( QObject* plugin, QString* error );
+	void LoadTTrackerPlugin( QObject* plugin, QString* error );
+	void LoadTTransmissivityPlugin( QObject* plugin, QString* error );
 	bool ValidDirectoryName( QString& directoryName  );
 
 
-	std::vector< std::unique_ptr< TMaterialFactory > > m_materialFactoryList;
+	std::vector< std::unique_ptr< PhotonMapExportTypeFactory > > m_photonMapExportTypeFactoryList;
 	std::vector< std::unique_ptr< RandomDeviateFactory > > m_randomDeviateFactoryList;
-	std::vector< std::unique_ptr< TShapeFactory > > m_shapeFactoryList;
-	std::vector< std::unique_ptr< TSunshapeFactory > > m_sunshapeFactoryList;
-	std::vector< std::unique_ptr< TTrackerFactory > > m_trackerFactoryList;
-	std::vector< std::unique_ptr< TTransmissivityFactory > > m_transmissivityFactoryList;
+	std::vector< std::unique_ptr< TMaterialFactory > > m_tmaterialFactoryList;
+	std::vector< std::unique_ptr< TShapeFactory > > m_tshapeFactoryList;
+	std::vector< std::unique_ptr< TSunshapeFactory > > m_tsunshapeFactoryList;
+	std::vector< std::unique_ptr< TTrackerFactory > > m_ttrackerFactoryList;
+	std::vector< std::unique_ptr< TTransmissivityFactory > > m_ttransmissivityFactoryList;
 
 };
 
