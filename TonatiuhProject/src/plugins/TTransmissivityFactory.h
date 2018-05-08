@@ -38,33 +38,33 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 
-#ifndef TTRACKERFACTORY_H_
-#define TTRACKERFACTORY_H_
+#ifndef TTRANSMISSIVITYFACTORY_H_
+#define TTRANSMISSIVITYFACTORY_H_
 
 
-#include <QtPlugin>
-#include <QVariant>
+#include "TonatiuhPlugin.h"
 
-class TTrackerNode;
+class TTransmissivity;
 
-//!  TTrackerNodeFactory is the base class for creating TTracker objects.
+//!  TTransmissivityFactory is the base class for creating TTransmissivity objects.
 /*!
-  TTrackerNodeFactory class is a factory class to create instances of TTracker subclasses.
+  TTransmissivityFactory class is a factory class to create instances of TTransmissivityNode subclasses.
 */
 
-class TTrackerFactory
+class TTransmissivityFactory: public TonatiuhPlugin
 {
 
 public:
-    virtual ~TTrackerFactory() {}
+    virtual ~TTransmissivityFactory()
+    {
+    	Trace{ "TTransmissivityFactory::~TTransmissivityFactory", false };
+    }
     virtual void Init() const  = 0;
-    virtual std::string TTrackerName() const  = 0;
-    virtual QIcon TTrackerIcon() const = 0;
-    virtual std::shared_ptr< TTracker > CreateTTracker( ) const = 0;
+    virtual std::string TTransmissivityName() const  = 0;
+    virtual std::string TTransmissivityNodeIcon() const = 0;
+    virtual std::shared_ptr< TTransmissivity > CreateTTransmissivity( ) const = 0;
 
 };
 
-Q_DECLARE_INTERFACE( TTrackerFactory, "tonatiuh.TTrackerFactory")
 
-
-#endif /* TTRACKERFACTORY_H_ */
+#endif /* TTRANSMISSIVITYFACTORY_H_ */

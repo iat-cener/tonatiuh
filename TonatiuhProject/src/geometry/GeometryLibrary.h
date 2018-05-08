@@ -19,4 +19,6 @@
 	#define GEOMETRY_API
 #endif
 
+
+
 #endif /* GEOMETRYLIBRARY_H_ */

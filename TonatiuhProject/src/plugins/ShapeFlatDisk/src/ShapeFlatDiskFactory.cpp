@@ -36,9 +36,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
 #include "ShapeFlatDiskFactory.h"
-
 
 /*!
  * Initializes shape type.
@@ -64,9 +62,9 @@ std::string ShapeFlatDiskFactory::TShapeName() const
 /*!
  * Returns shape icon.
  */
-QIcon ShapeFlatDiskFactory::TShapeIcon() const
+std::string ShapeFlatDiskFactory::TShapeIcon() const
 {
-	return QIcon( ":/icons/ShapeFlatDisk.png" );
+	return std::string{ ":/icons/ShapeFlatDisk.png" };
 }
 
 /*!
@@ -77,6 +75,4 @@ std::shared_ptr< TShape > ShapeFlatDiskFactory::CreateTShape( ) const
 	return ( std::dynamic_pointer_cast<TShape>( ShapeFlatDisk::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(ShapeFlatDisk, ShapeFlatDiskFactory)
-#endif
+DEFINE_PLUGIN( ShapeFlatDiskFactory, TShapeFactory, APP_VERSION )

@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "TrackerHeliostatFactory.h"
 
 /*!
@@ -65,9 +63,9 @@ std::string TrackerHeliostatFactory::TTrackerName() const
 /*!
  * Returns tracker icon.
  */
-QIcon TrackerHeliostatFactory::TTrackerIcon() const
+std::string TrackerHeliostatFactory::TTrackerIcon() const
 {
-	return QIcon( ":/icons/TrackerHeliostat.png" );
+	return std::string{ ":/icons/TrackerHeliostat.png" };
 }
 
 /*!
@@ -78,7 +76,5 @@ std::shared_ptr< TTracker > TrackerHeliostatFactory::CreateTTracker( ) const
 	return ( std::dynamic_pointer_cast< TTracker >( TrackerHeliostat::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(TrackerHeliostat, TrackerHeliostatFactory)
-#endif
+DEFINE_PLUGIN( TrackerHeliostatFactory, TTrackerFactory, APP_VERSION )
 

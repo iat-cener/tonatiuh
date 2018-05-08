@@ -36,43 +36,33 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TMATERIALFACTORY_H_
-#define TMATERIALFACTORY_H_
-
-#include "Trace.h"
+#ifndef TSUNSHAPEFACTORY_H_
+#define TSUNSHAPEFACTORY_H_
 
 #include <memory>
 #include <vector>
 
-#include <QtPlugin>
-#include <QVariant>
+#include "TonatiuhPlugin.h"
+
+class TSunshape;
 
 
-class QIcon;
-class TMaterial;
+//!  TSunshapeFactory is the base class for creating TSunshapeNode objects.
+/*!
+  TSunshapeFactory class is a factory class to create instances of TSunshapeNode subclasses.
+*/
 
-class TMaterialFactory
+class TSunshapeFactory: public TonatiuhPlugin
 {
 public:
-	TMaterialFactory()
-	{
-
-	}
-    virtual ~TMaterialFactory()
+    virtual ~TSunshapeFactory()
     {
-    	Trace{ "TMaterialFactory::~TMaterialFactory", false };
-
     }
     virtual void Init() const  = 0;
-    virtual std::string TMaterialName() const  = 0;
-    virtual QIcon TMaterialIcon() const = 0;
-    virtual std::shared_ptr< TMaterial > CreateTMaterial( ) const = 0;
-    virtual std::shared_ptr< TMaterial > CreateTMaterial( int /*numberofParameters*/, std::vector< QVariant > /*parametersList*/ ) const
-    {
-    	return ( CreateTMaterial() );
-    }
+    virtual std::string TSunshapeName() const  = 0;
+    virtual std::string TSunshapeIcon() const = 0;
+    virtual std::shared_ptr< TSunshape > CreateTSunshape( ) const = 0;
+
 };
 
-Q_DECLARE_INTERFACE( TMaterialFactory, "tonatiuh.TMaterialFactory")
-
-#endif /* TMATERIALFACTORY_H_ */
+#endif /* TSUNSHAPEFACTORY_H_ */

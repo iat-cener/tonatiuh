@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
 #include "ShapeParabolicDishFactory.h"
 #include "ShapeParabolicDish.h"
 
@@ -64,9 +63,9 @@ std::string ShapeParabolicDishFactory::TShapeName() const
 /*!
  * Returns shape icon.
  */
-QIcon ShapeParabolicDishFactory::TShapeIcon() const
+std::string ShapeParabolicDishFactory::TShapeIcon() const
 {
-	return ( QIcon( ":/icons/ShapeParabolicDish.png" ) );
+	return ( std::string { ":/icons/ShapeParabolicDish.png" } );
 }
 
 /*!
@@ -77,8 +76,4 @@ std::shared_ptr< TShape > ShapeParabolicDishFactory::CreateTShape( ) const
 	return ( std::dynamic_pointer_cast<TShape>( ShapeParabolicDish::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(ShapeParabolicDish, ShapeParabolicDishFactory)
-#endif
-
-
+DEFINE_PLUGIN( ShapeParabolicDishFactory, TShapeFactory, APP_VERSION )

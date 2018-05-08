@@ -48,12 +48,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class PhotonMapExportType;
 class PhotonMapExportFactory;
 class PhotonMapExportTypeFactory;
+class PluginLoader;
 class QDir;
 class QStringList;
 class RandomDeviate;
 class RandomDeviateFactory;
 class TMaterial;
 class TMaterialFactory;
+class TonatiuhPluginDetails;
 class TShape;
 class TShapeFactory;
 class TSunshape;
@@ -85,21 +87,21 @@ public:
     std::vector< std::string > GetTSunshapeFactoryNames() const;
     std::vector< std::string > GetTTrackerFactoryNames() const;
     std::vector< std::string > GetTTransmissivityFactoryNames() const;
-	void LoadAvailablePlugins( QDir pluginsDirectory, QString* error );
+	void LoadAvailablePlugins( const std::string& pluginsDirectory, std::string* error );
 
 private:
-	void AddFilesToList( QDir directory, QStringList& filesList );
-	void BuildFileList( QDir directory, QStringList& filesList );
+	void AddFilesToList( const std::string& directoryPath, std::vector< std::string >& filesList );
+	void BuildFileList( const std::string& directoryPath, std::vector< std::string >& filesList );
 	void LoadAvailablePlugins( );
-	void LoadPhotonMapExportTypePlugin( QObject* plugin, QString* error );
-	void LoadRandomDeviatePlugin( QObject* plugin, QString* error );
-	void LoadTMaterialPlugin( QObject* plugin, QString* error  );
-	void LoadTonatiuhPlugin( const QString& fileName, QString* error );
-	void LoadTShapePlugin( QObject* plugin, QString* error );
-	void LoadTSunshapePlugin( QObject* plugin, QString* error );
-	void LoadTTrackerPlugin( QObject* plugin, QString* error );
-	void LoadTTransmissivityPlugin( QObject* plugin, QString* error );
-	bool ValidDirectoryName( QString& directoryName  );
+	void LoadPhotonMapExportTypePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error );
+	void LoadRandomDeviatePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error );
+	void LoadTMaterialPlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error  );
+	void LoadTonatiuhPlugin( const std::string& fileName, std::string* error );
+	void LoadTShapePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error );
+	void LoadTSunshapePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error );
+	void LoadTTrackerPlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error );
+	void LoadTTransmissivityPlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error );
+	bool ValidDirectoryName( std::string& directoryName  );
 
 
 	std::vector< std::unique_ptr< PhotonMapExportTypeFactory > > m_photonMapExportTypeFactoryList;
@@ -109,6 +111,7 @@ private:
 	std::vector< std::unique_ptr< TSunshapeFactory > > m_tsunshapeFactoryList;
 	std::vector< std::unique_ptr< TTrackerFactory > > m_ttrackerFactoryList;
 	std::vector< std::unique_ptr< TTransmissivityFactory > > m_ttransmissivityFactoryList;
+	std::vector< std::unique_ptr< PluginLoader > > m_tonatiuhPluginLibraries;
 
 };
 

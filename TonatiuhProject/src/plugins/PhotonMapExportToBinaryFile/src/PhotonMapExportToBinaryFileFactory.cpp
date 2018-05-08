@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
 #include "PhotonMapExportToBinaryFileFactory.h"
 
 
@@ -51,9 +50,9 @@ std::string PhotonMapExportToBinaryFileFactory::PhotonMapExportTypName() const
 /*!
  * Returns the icon related with this factory
  */
-QIcon  PhotonMapExportToBinaryFileFactory::PhotonMapExportTypIcon() const
+std::string PhotonMapExportToBinaryFileFactory::PhotonMapExportTypIcon() const
 {
-	return ( QIcon( ":/icons/PhotonMapExportToBinaryFile.png" ) );
+	return ( ":/icons/PhotonMapExportToBinaryFile.png" );
 }
 
 /*!
@@ -65,8 +64,4 @@ std::unique_ptr<PhotonMapExportType> PhotonMapExportToBinaryFileFactory::CreateP
 	return ( std::make_unique< PhotonMapExportToBinaryFile >() );
 }
 
-
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2( PhotonMapExportToBinaryFile, PhotonMapExportToBinaryFileFactory )
-#endif
-
+DEFINE_PLUGIN( PhotonMapExportToBinaryFileFactory, PhotonMapExportTypeFactory, APP_VERSION )

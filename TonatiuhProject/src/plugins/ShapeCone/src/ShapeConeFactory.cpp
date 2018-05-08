@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "ShapeConeFactory.h"
 
 /*!
@@ -64,9 +62,9 @@ std::string ShapeConeFactory::TShapeName() const
 /*!
  * Returns shape icon.
  */
-QIcon ShapeConeFactory::TShapeIcon() const
+std::string ShapeConeFactory::TShapeIcon() const
 {
-	return QIcon( ":/icons/ShapeCone.png" );
+	return ":/icons/ShapeCone.png";
 }
 
 /*!
@@ -78,7 +76,4 @@ std::shared_ptr< TShape > ShapeConeFactory::CreateTShape( ) const
 
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(ShapeCone, ShapeConeFactory)
-#endif
-
+DEFINE_PLUGIN( ShapeConeFactory, TShapeFactory, APP_VERSION )

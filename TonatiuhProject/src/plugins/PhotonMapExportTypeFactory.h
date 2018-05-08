@@ -36,43 +36,30 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef TSUNSHAPEFACTORY_H_
-#define TSUNSHAPEFACTORY_H_
-
-#include "Trace.h"
+#ifndef PHOTONMAPEXPORTTYPEFACTORY_H_
+#define PHOTONMAPEXPORTTYPEFACTORY_H_
 
 #include <memory>
-#include <vector>
 
-#include <QtPlugin>
-#include <QVariant>
+#include "TonatiuhPlugin.h"
 
-class QIcon;
-class TSunshape;
+class PhotonMapExportType;
 
 
-//!  TSunshapeFactory is the base class for creating TSunshapeNode objects.
+//!  PhotonMapExportTypeFactory is the base class for creating PhotonMapExportType objects.
 /*!
-  TSunshapeFactory class is a factory class to create instances of TSunshapeNode subclasses.
+  PhotonMapExportTypeFactory class is a factory class to create instances of PhotonMapExportType subclasses. In order to create plug-ins of different type of export modes,
+  the plug-ins must be a derived class of this abstract factory.
 */
 
-class TSunshapeFactory
+class PhotonMapExportTypeFactory : public TonatiuhPlugin
 {
 public:
-    virtual ~TSunshapeFactory()
-    {
-    	Trace{ "TSunshapeFactory::~TSunshapeFactory", false };
-    }
-    virtual void Init() const  = 0;
-    virtual std::string TSunshapeName() const  = 0;
-    virtual QIcon TSunshapeIcon() const = 0;
-    virtual std::shared_ptr< TSunshape > CreateTSunshape( ) const = 0;
+    virtual ~PhotonMapExportTypeFactory() {}
+    virtual std::string  PhotonMapExportTypName() const  = 0;
+    virtual std::string PhotonMapExportTypIcon() const = 0;
+    virtual std::unique_ptr<PhotonMapExportType> CreatePhotonMapExportType( ) const = 0;
 
 };
 
-Q_DECLARE_INTERFACE( TSunshapeFactory, "tonatiuh.TSunshapeFactory")
-
-
-
-
-#endif /* TSUNSHAPEFACTORY_H_ */
+#endif /* PHOTONMAPEXPORTTYPEFACTORY_H_ */

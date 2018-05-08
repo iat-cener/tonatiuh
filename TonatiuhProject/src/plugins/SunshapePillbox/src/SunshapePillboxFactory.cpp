@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "SunshapePillboxFactory.h"
 
 /*!
@@ -65,9 +63,9 @@ std::string SunshapePillboxFactory::TSunshapeName() const
 /*!
  * Returns sunshape icon.
  */
-QIcon SunshapePillboxFactory::TSunshapeIcon() const
+std::string SunshapePillboxFactory::TSunshapeIcon() const
 {
-	return ( QIcon( ":/icons/SunshapePillbox.png" ) );
+	return ( std::string{ ":/icons/SunshapePillbox.png" } );
 }
 
 /*!
@@ -78,9 +76,4 @@ std::shared_ptr< TSunshape > SunshapePillboxFactory::CreateTSunshape( ) const
 	return ( std::dynamic_pointer_cast<TSunshape >( SunshapePillbox::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(SunshapePillbox, SunshapePillboxFactory)
-#endif
-
-
-
+DEFINE_PLUGIN( SunshapePillboxFactory, TSunshapeFactory, APP_VERSION )

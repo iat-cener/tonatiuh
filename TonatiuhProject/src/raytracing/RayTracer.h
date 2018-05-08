@@ -45,6 +45,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <vector>
 #include <utility>
 
+#include "RayTracingLibrary.h"
 
 #include "TPhotonMap.h"
 #include "Transform.h"
@@ -86,7 +87,7 @@ struct LightOriginShape
   RayTracer class provides an interface for different ray tracing algorithms in order to execute the ray tracer technique to objects scene.
 */
 
-class RayTracer
+class RAYTRACING_API RayTracer
 {
 public:
 	RayTracer();

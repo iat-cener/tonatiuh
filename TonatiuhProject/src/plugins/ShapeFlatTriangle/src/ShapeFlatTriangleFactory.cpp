@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "ShapeFlatTriangleFactory.h"
 
 /*!
@@ -64,9 +62,9 @@ std::string ShapeFlatTriangleFactory::TShapeName() const
 /*!
  * Returns shape icon.
  */
-QIcon ShapeFlatTriangleFactory::TShapeIcon() const
+std::string ShapeFlatTriangleFactory::TShapeIcon() const
 {
-	return QIcon( ":/icons/ShapeFlatTriangle.png" );
+	return std::string( ":/icons/ShapeFlatTriangle.png" );
 }
 
 /*!
@@ -77,7 +75,4 @@ std::shared_ptr< TShape > ShapeFlatTriangleFactory::CreateTShape( ) const
 	return ( std::dynamic_pointer_cast<TShape>( ShapeFlatTriangle::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2( ShapeFlatTriangle, ShapeFlatTriangleFactory)
-#endif
-
+DEFINE_PLUGIN( ShapeFlatTriangleFactory, TShapeFactory, APP_VERSION )

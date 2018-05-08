@@ -9,32 +9,31 @@ INCLUDEPATH += 	. \
 			   $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
+               $$(TONATIUH_ROOT)/src/plugins \
                $$(TONATIUH_ROOT)/src/raytracing \
                $$(TONATIUH_ROOT)/src/statistics
               
-QT += core xml	 
+QT += core xml widgets
 QT -= gui	
 
-greaterThan(QT_MAJOR_VERSION, 4) {
-    QT += concurrent printsupport 
-} 
 
+CONFIG(debug, debug|release) {
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry$$VER_MAJ -lnodes$$VER_MAJ -lstatistics$$VER_MAJ -lraytracing$$VER_MAJ -lstdc++fs 
+}else{
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry$$VER_MAJ -lnodes$$VER_MAJ -lstatistics$$VER_MAJ -lraytracing$$VER_MAJ -lstdc++fs 
 
+}
 
 # Input
 HEADERS += 	$$(TONATIUH_ROOT)/src/auxiliary/Trace.h \
 			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.h \
-			$$(TONATIUH_ROOT)/src/source/application/*.h \
-			$$(TONATIUH_ROOT)/src/raytracing/*.h \
-			$$(TONATIUH_ROOT)/src/statistics/*.h
+			$$(TONATIUH_ROOT)/src/plugins/PluginManager.h \
+			$$(TONATIUH_ROOT)/src/source/application/*.h 
                 
-#FORMS += src/source/gui/*.ui
-
 SOURCES +=	$$(TONATIUH_ROOT)/src/auxiliary/Trace.cpp \
 			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.cpp \
-			$$(TONATIUH_ROOT)/src/source/application/*.cpp  \
-			$$(TONATIUH_ROOT)/src/raytracing/*.cpp  \
-			$$(TONATIUH_ROOT)/src/statistics/*.cpp
+			$$(TONATIUH_ROOT)/src/plugins/PluginManager.cpp \
+			$$(TONATIUH_ROOT)/src/source/application/*.cpp 
 
 #RESOURCES += tonatiuh.qrc
  

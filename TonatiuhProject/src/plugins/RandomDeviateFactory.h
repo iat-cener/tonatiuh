@@ -40,13 +40,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RANDOMDEVIATEFACTORY_H_
 #define RANDOMDEVIATEFACTORY_H_
 
-#include "Trace.h"
-
 #include <memory>
 
-#include <QtPlugin>
+#include "TonatiuhPlugin.h"
 
-class QIcon;
 class RandomDeviate;
 
 //!  RandomDeviateFactory is the interface for random generators plugins.
@@ -54,7 +51,7 @@ class RandomDeviate;
   A random generator plugin must implement the following interface to load as a valid plugin for Toantiuh.
 */
 
-class RandomDeviateFactory
+class RandomDeviateFactory: public TonatiuhPlugin
 {
 public:
 	RandomDeviateFactory()
@@ -63,14 +60,12 @@ public:
 	}
     virtual ~RandomDeviateFactory()
     {
-    	Trace{ "RandomDeviateFactory::~RandomDeviateFactory", false };
 
     }
     virtual std::string  RandomDeviateName() const  = 0;
-    virtual QIcon RandomDeviateIcon() const = 0;
+    virtual std::string RandomDeviateIcon() const = 0;
     virtual std::shared_ptr< RandomDeviate > CreateRandomDeviate( ) const = 0;
 };
 
-Q_DECLARE_INTERFACE( RandomDeviateFactory, "tonatiuh.RandomDeviateFactory")
 
 #endif /* RANDOMDEVIATEFACTORY_H_ */

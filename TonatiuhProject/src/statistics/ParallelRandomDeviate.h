@@ -42,17 +42,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <mutex>
 
-#include <QObject>
-
 #include "RandomDeviate.h"
 
 
-class ParallelRandomDeviate :  public QObject, public RandomDeviate
+class STATISTICS_API ParallelRandomDeviate:  public RandomDeviate
 {
-	Q_OBJECT
 
 public:
-	ParallelRandomDeviate( RandomDeviate* rand, std::mutex* mutex, unsigned long arraySize = 100000, QObject* parent = 0 );
+	ParallelRandomDeviate( RandomDeviate* rand, std::mutex* mutex, unsigned long arraySize = 100000 );
 	virtual ~ParallelRandomDeviate( );
     void FillArray( double* array, const unsigned long arraySize );
 

@@ -39,12 +39,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RANDOMDEVIATE_H_
 #define RANDOMDEVIATE_H_
 
+#include "StatisticsLibrary.h"
+
+
 //!  RandomDeviate is the base class for random generators.
 /*!
   A random generator class can be written based on this class.
 */
 
-class RandomDeviate
+class STATISTICS_API RandomDeviate
 {
 public:
 	explicit RandomDeviate( const unsigned long arraySize = 100000 );

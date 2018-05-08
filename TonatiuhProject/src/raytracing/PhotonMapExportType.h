@@ -61,11 +61,11 @@ public:
 	PhotonMapExportType()
 	:m_saveCoordinates( false ),
 	 m_saveCoordinatesInGlobal( true ),
-	 m_savePrevNextID( true ),
-	 m_saveSide( true ),
-	 m_saveSurfaceID( true ),
-	 m_saveIsAbsorbed( true ),
-	 m_saveRayDirection( true ),
+	 m_savePrevNextID( false ),
+	 m_saveSide( false ),
+	 m_saveSurfaceID( false ),
+	 m_saveIsAbsorbed( false ),
+	 m_saveRayDirection( false ),
 	 m_saveSurfacesURLList()
 	{
 

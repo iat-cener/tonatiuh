@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "SunshapeBuieFactory.h"
 
 /*!
@@ -65,9 +63,9 @@ std::string SunshapeBuieFactory::TSunshapeName() const
 /*!
  * Returns sunshape icon.
  */
-QIcon SunshapeBuieFactory::TSunshapeIcon() const
+std::string SunshapeBuieFactory::TSunshapeIcon() const
 {
-	return QIcon( ":/icons/SunshapeBuie.png" );
+	return std::string{ ":/icons/SunshapeBuie.png" };
 }
 
 /*!
@@ -77,7 +75,5 @@ std::shared_ptr< TSunshape > SunshapeBuieFactory::CreateTSunshape( ) const
 {
 	return ( std::dynamic_pointer_cast<TSunshape >( SunshapeBuie::CreateInstance() ) );
 }
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(SunshapeBuie, SunshapeBuieFactory)
-#endif
 
+DEFINE_PLUGIN( SunshapeBuieFactory, TSunshapeFactory, APP_VERSION )

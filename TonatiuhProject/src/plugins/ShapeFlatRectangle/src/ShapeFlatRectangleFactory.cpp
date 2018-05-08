@@ -35,9 +35,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QIcon>
-
 #include "ShapeFlatRectangleFactory.h"
 
 
@@ -65,9 +62,9 @@ std::string ShapeFlatRectangleFactory::TShapeName() const
 /*!
  * Returns shape icon.
  */
-QIcon ShapeFlatRectangleFactory::TShapeIcon() const
+std::string ShapeFlatRectangleFactory::TShapeIcon() const
 {
-	return QIcon(":/icons/ShapeFlatRectangle.png");
+	return std::string(":/icons/ShapeFlatRectangle.png");
 }
 
 /*!
@@ -78,7 +75,5 @@ std::shared_ptr< TShape > ShapeFlatRectangleFactory::CreateTShape( ) const
 	return ( std::dynamic_pointer_cast<TShape>( ShapeFlatRectangle::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(ShapeFlatRectangle, ShapeFlatRectangleFactory)
-#endif
+DEFINE_PLUGIN( ShapeFlatRectangleFactory, TShapeFactory, APP_VERSION )
 

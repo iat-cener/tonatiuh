@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "TrackerOneAxisFactory.h"
 
 /*!
@@ -65,9 +63,9 @@ std::string TrackerOneAxisFactory::TTrackerName() const
 /*!
  * Returns tracker icon.
  */
-QIcon TrackerOneAxisFactory::TTrackerIcon() const
+std::string TrackerOneAxisFactory::TTrackerIcon() const
 {
-	return QIcon(":/icons/TrackerOneAxis.png");
+	return std::string{":/icons/TrackerOneAxis.png"};
 }
 
 /*!
@@ -78,6 +76,4 @@ std::shared_ptr< TTracker > TrackerOneAxisFactory::CreateTTracker( ) const
 	return ( std::dynamic_pointer_cast< TTracker >( TrackerOneAxis::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(TrackerOneAxis, TrackerOneAxisFactory)
-#endif
+DEFINE_PLUGIN( TrackerOneAxisFactory, TTrackerFactory, APP_VERSION )

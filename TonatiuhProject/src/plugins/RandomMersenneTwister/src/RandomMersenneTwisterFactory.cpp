@@ -36,8 +36,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-#include <QTime>
+//#include <QTime>
+#include <chrono>
 
 #include "RandomMersenneTwister.h"
 #include "RandomMersenneTwisterFactory.h"
@@ -47,20 +47,22 @@ std::string RandomMersenneTwisterFactory::RandomDeviateName() const
 	return ( "Mersenne Twister" );
 }
 
-QIcon  RandomMersenneTwisterFactory::RandomDeviateIcon() const
+std::string RandomMersenneTwisterFactory::RandomDeviateIcon() const
 {
-	return QIcon();
+	return std::string {};
 }
 
 std::shared_ptr< RandomDeviate > RandomMersenneTwisterFactory::CreateRandomDeviate( ) const
 {
-	unsigned long seed = QTime::currentTime().msec();
-//	return new RandomMersenneTwister( seed );
+
+	using namespace std::chrono;
+	milliseconds ms = duration_cast< milliseconds >(
+	    system_clock::now().time_since_epoch()
+	);
+	unsigned long seed = ms.count();
+
+	//unsigned long seed = QTime::currentTime().msec();
 	return ( std::make_shared< RandomMersenneTwister >(  seed  ) );
-
-
 }
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(RandomMersenneTwister, RandomMersenneTwisterFactory )
-#endif
 
+DEFINE_PLUGIN( RandomMersenneTwisterFactory, RandomDeviateFactory, APP_VERSION )

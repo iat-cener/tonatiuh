@@ -44,20 +44,28 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  */
 #include "Trace.h"
 
+#include <dirent.h>
 #include <iostream>
+#include <experimental/filesystem>
+#include <fstream>
 
-#include <QDir>
-#include <QPluginLoader>
+
+#include "TonatiuhPlugin.h"
 
 #include "PhotonMapExportType.h"
 #include "PhotonMapExportTypeFactory.h"
 #include "PluginManager.h"
-#include "RandomDeviateFactory.h"
+
 #include "TMaterialFactory.h"
+#include "RandomDeviateFactory.h"
 #include "TShapeFactory.h"
 #include "TSunshapeFactory.h"
 #include "TTrackerFactory.h"
 #include "TTransmissivityFactory.h"
+
+
+#include <memory>
+
 
 /*!
  * Creates a new PluginManager object.
@@ -68,11 +76,18 @@ PluginManager::PluginManager()
 }
 
 /*!
- * Destroyes PluginManager object.
+ * Destroys PluginManager object.
  */
 PluginManager::~PluginManager()
 {
-	Trace{ "PluginManager::~PluginManager", false };
+	m_photonMapExportTypeFactoryList.clear();
+	m_randomDeviateFactoryList.clear();
+	m_tmaterialFactoryList.clear();
+	m_tshapeFactoryList.clear();
+	m_tsunshapeFactoryList.clear();
+	m_ttrackerFactoryList.clear();
+	m_ttransmissivityFactoryList.clear();
+
 }
 
 /*!
@@ -190,7 +205,8 @@ std::vector< std::string > PluginManager::GetTMaterialFactoryNames() const
 {
 	std::vector< std::string > materialFactoryName;
 	for( unsigned int p = 0; p < m_tmaterialFactoryList.size(); p++ )
-		materialFactoryName.push_back( m_tmaterialFactoryList[p]->TMaterialName() );
+		if( m_tmaterialFactoryList[p] != nullptr )
+			materialFactoryName.push_back( m_tmaterialFactoryList[p]->TMaterialName() );
 	return ( materialFactoryName );
 }
 
@@ -242,25 +258,32 @@ std::vector< std::string > PluginManager::GetTTransmissivityFactoryNames() const
  * Loads all the valid plugins from "plugins" subdirecotry of the directory in
  * which the running version of Tonatiuh is located.
  */
-void PluginManager::LoadAvailablePlugins( QDir pluginsDirectory, QString* error )
+void PluginManager::LoadAvailablePlugins( const std::string& pluginsDirectory, std::string* error )
 {
-	Trace{ "PluginManager::LoadAvailablePlugins", false };
-	QStringList filesList;
+	Trace{ "PluginManager::LoadAvailablePlugins", true };
+
+	std::vector< std::string > filesList;
 	BuildFileList( pluginsDirectory, filesList );
-	foreach( QString fileName, filesList ) LoadTonatiuhPlugin( fileName, error );
+
+	for( std::vector<std::string>::iterator it = filesList.begin() ; it != filesList.end(); ++it )
+		LoadTonatiuhPlugin( *it, error );
+
+
 }
 
 /*!
  * Appends to \a fileList directory files.
  */
-void PluginManager::AddFilesToList( QDir directory, QStringList& filesList )
+void PluginManager::AddFilesToList( const std::string& directoryPath, std::vector< std::string >& filesList )
 {
 	Trace{ "PluginManager::AddFilesToList", false };
-	QString directoryPath( directory.absolutePath().append( QLatin1String( "/" ) ) );
 
-    QStringList filenamesList = directory.entryList( QDir::Files, QDir::Unsorted );
-    for( int i = 0; i < filenamesList.size(); ++i )
-    	filesList << ( directoryPath + filenamesList[i] );
+    for( auto& p : std::experimental::filesystem::directory_iterator( directoryPath ) )
+    {
+    	std::string path = p.path().string();
+    	if( std::experimental::filesystem::is_regular_file( p ) )
+    		filesList.push_back( p.path().string() );
+    }
 }
 
 
@@ -268,33 +291,38 @@ void PluginManager::AddFilesToList( QDir directory, QStringList& filesList )
  * Creates a list with the files al files in the defined \a directory
  * and its subdirectories.
  */
-void PluginManager::BuildFileList( QDir directory, QStringList& filesList )
+void PluginManager::BuildFileList( const std::string& directoryPath, std::vector< std::string >& filesList )
 {
 	Trace{ "PluginManager::BuildFileList", false };
-	AddFilesToList( directory, filesList );
+	AddFilesToList( directoryPath, filesList );
 
-	QString directoryPath( directory.absolutePath().append( QLatin1String( "/" ) ) );
-    QStringList subdirectoriesList = directory.entryList( QDir::Dirs, QDir::Unsorted );
 
-   for( int i = 0; i< subdirectoriesList.size(); ++i )
-   {
-    	QString subdirectoryName = subdirectoriesList[i];
-   		if( ValidDirectoryName( subdirectoryName ) )
-   			BuildFileList( QDir( directoryPath + subdirectoryName ), filesList );
-   	}
+	//namespace fs = std::experimental::filesystem;
+    for( auto& p : std::experimental::filesystem::directory_iterator( directoryPath ) )
+    {
+    	std::string path = p.path().string();
+    	if(  std::experimental::filesystem::is_directory( p ) )
+   			BuildFileList( path , filesList );
+    }
 }
 
 
 /*!
  * Loads the \a plugin as PhotonMapExportType type.
  */
-void PluginManager::LoadPhotonMapExportTypePlugin( QObject* plugin, QString* error  )
+void PluginManager::LoadPhotonMapExportTypePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error  )
 {
-	Trace{ "PluginManager::LoadPhotonMapExportTypePlugin", false };
-	std::unique_ptr< PhotonMapExportTypeFactory > pPhotonMapExportTypeFactory{ qobject_cast<PhotonMapExportTypeFactory* >( plugin )};
+	std::unique_ptr< TonatiuhPlugin > pTonatiuhPlugin = pluginLoader->Instance();
+	if( pTonatiuhPlugin == nullptr )
+	{
+		*error = "LoadPlugins: PhotonMapExportType plug-in not recognized";
+		return;
+	}
+
+	std::unique_ptr< PhotonMapExportTypeFactory > pPhotonMapExportTypeFactory{ static_cast< PhotonMapExportTypeFactory* > ( pTonatiuhPlugin.release() ) };
 	if( !pPhotonMapExportTypeFactory )
 	{
-		*error = QString("LoadPlugins: PhotonMapExportType plug-in not recognized" );
+		*error = "LoadPlugins: PhotonMapExportType plug-in not recognized" ;
 		return;
 	}
 	m_photonMapExportTypeFactoryList.push_back( std::move( pPhotonMapExportTypeFactory ) );
@@ -303,13 +331,19 @@ void PluginManager::LoadPhotonMapExportTypePlugin( QObject* plugin, QString* err
 /*!
  * Loads the \a plugin as RandomDeviatePlugin type.
  */
-void PluginManager::LoadRandomDeviatePlugin( QObject* plugin, QString* error  )
+void PluginManager::LoadRandomDeviatePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error  )
 {
-	Trace{ "PluginManager::LoadRandomDeviatePlugin", false };
-	std::unique_ptr< RandomDeviateFactory > pRamdomDeviateFactory{ qobject_cast<RandomDeviateFactory* >( plugin )};
+	std::unique_ptr< TonatiuhPlugin > pTonatiuhPlugin = pluginLoader->Instance();
+	if( pTonatiuhPlugin == nullptr )
+	{
+		*error = "LoadPlugins: RandomDeviate plug-in not recognized";
+		return;
+	}
+
+	std::unique_ptr< RandomDeviateFactory > pRamdomDeviateFactory{ static_cast< RandomDeviateFactory* > ( pTonatiuhPlugin.release() ) };
 	if( !pRamdomDeviateFactory )
 	{
-		*error = QString("LoadPlugins: RandomDeviate plug-in not recognized" );
+		*error = "LoadPlugins: RandomDeviate plug-in not recognized";
 		return;
 	}
 	m_randomDeviateFactoryList.push_back( std::move( pRamdomDeviateFactory ) );
@@ -318,53 +352,76 @@ void PluginManager::LoadRandomDeviatePlugin( QObject* plugin, QString* error  )
 /*!
  * Loads the \a plugin as material type.
  */
-void PluginManager::LoadTMaterialPlugin( QObject* plugin, QString* error  )
+void PluginManager::LoadTMaterialPlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error  )
 {
-	Trace{ "PluginManager::LoadMaterialPlugin", false };
-
-	std::unique_ptr< TMaterialFactory > pTMaterialFactory{ qobject_cast<TMaterialFactory* >( plugin )};
-
-	if( !pTMaterialFactory )
+	std::unique_ptr< TonatiuhPlugin > pTonatiuhPlugin = pluginLoader->Instance();
+	if( pTonatiuhPlugin == nullptr )
 	{
-		*error = QString("LoadPlugins: Material plug-in not recognized" );
-		return;//gf::SevereError( "LoadPlugins: Material plug-in not recognized" );
+		*error = "LoadPlugins: Material plug-in not recognizedpTMaterialFactory";
+		return;
 	}
+
+	std::unique_ptr< TMaterialFactory > pTMaterialFactory{ static_cast< TMaterialFactory* > ( pTonatiuhPlugin.release() ) };
+	if( pTMaterialFactory == nullptr )
+	{
+		std::cerr<<"pTMaterialFactory: Material plug-in not recognized"<<std::endl;
+		*error = "LoadPlugins: Material plug-in not recognizedpTMaterialFactory";
+		return;
+	}
+
 	pTMaterialFactory->Init();
 	m_tmaterialFactoryList.push_back( std::move( pTMaterialFactory ) );
+
 }
 
 /*!
  * Loads the plugin is defined in \a fileName, if it is a valid plugin.
  */
-void PluginManager::LoadTonatiuhPlugin( const QString& fileName, QString* error )
+void PluginManager::LoadTonatiuhPlugin( const std::string& fileName, std::string* error )
 {
-	Trace{ "PluginManager::LoadTonatiuhPlugin " + fileName.toStdString(), false };
+	std::unique_ptr< PluginLoader > library  = std::make_unique< PluginLoader >( fileName );
 
- 	QPluginLoader loader( fileName );
- 	QObject* plugin = loader.instance();
-    if ( plugin != 0)
-    {
-    	if( plugin->inherits( "PhotonMapExportTypeFactory" ) ) LoadPhotonMapExportTypePlugin( plugin, error  );
-    	if( plugin->inherits( "RandomDeviateFactory" ) ) LoadRandomDeviatePlugin( plugin, error  );
-    	if( plugin->inherits( "TMaterialFactory" ) ) LoadTMaterialPlugin( plugin, error  );
-    	if( plugin->inherits( "TShapeFactory" ) ) LoadTShapePlugin( plugin, error );
-    	if( plugin->inherits( "TSunshapeFactory" ) ) LoadTSunshapePlugin( plugin, error );
-    	if( plugin->inherits( "TTrackerFactory" ) ) LoadTTrackerPlugin( plugin, error );
-    	if( plugin->inherits( "TTransmissivityFactory" ) ) LoadTTransmissivityPlugin( plugin, error );
-	}
+	std::unique_ptr< TonatiuhPluginDetails > tonatiuhPluginDetails = nullptr;
+	tonatiuhPluginDetails = library->Details( );
+	if( tonatiuhPluginDetails == nullptr )
+		return;
+
+	/*
+	std::cout << "Plugin Info: "
+			<< "\n\tClass Name: " << tonatiuhPluginDetails->className
+			<< "\n\tPlugin Name: " << tonatiuhPluginDetails->pluginType
+			<< "\n\tPlugin Version: " << tonatiuhPluginDetails->pluginVersion
+			<< std::endl;
+	*/
+
+	if( strcmp( tonatiuhPluginDetails->pluginType, "PhotonMapExportTypeFactory" ) == 0 )	LoadPhotonMapExportTypePlugin( library, error  );
+	if( strcmp( tonatiuhPluginDetails->pluginType, "RandomDeviateFactory" ) == 0 )	LoadRandomDeviatePlugin( library, error  );
+	if( strcmp( tonatiuhPluginDetails->pluginType, "TMaterialFactory" ) == 0 )	LoadTMaterialPlugin( library, error  );
+	if( strcmp( tonatiuhPluginDetails->pluginType, "TShapeFactory" ) == 0 )	LoadTShapePlugin( library, error  );
+	if( strcmp( tonatiuhPluginDetails->pluginType, "TSunshapeFactory" ) == 0 )	LoadTSunshapePlugin( library, error  );
+	if( strcmp( tonatiuhPluginDetails->pluginType, "TTrackerFactory" ) == 0 )	LoadTTrackerPlugin( library, error  );
+	if( strcmp( tonatiuhPluginDetails->pluginType, "TTransmissivityFactory" ) == 0 )	LoadTTrackerPlugin( library, error  );
+
+	m_tonatiuhPluginLibraries.push_back( std::move( library ) );
 }
 
 /*!
  * Loads the \a plugin as shape type.
  */
-void PluginManager::LoadTShapePlugin( QObject* plugin, QString* error )
+void PluginManager::LoadTShapePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error )
 {
-	Trace{ "PluginManager::LoadShapePlugin", false };
-	std::unique_ptr< TShapeFactory > pTShapeFactory{ qobject_cast<TShapeFactory* >( plugin )};
+	std::unique_ptr< TonatiuhPlugin > pTonatiuhPlugin = pluginLoader->Instance();
+	if( pTonatiuhPlugin == nullptr )
+	{
+		*error = "LoadPlugins: Shape plug-in not recognizedpTMaterialFactory";
+		return;
+	}
+
+	std::unique_ptr< TShapeFactory > pTShapeFactory{ static_cast< TShapeFactory* > ( pTonatiuhPlugin.release() ) };
 	if ( !pTShapeFactory )
 	{
-		*error = QString("LoadPlugins: Shape plug-in not recognized" );
-		return;//gf::SevereError( "LoadPlugins: Shape plug-in not recognized" );
+		*error = "LoadPlugins: Shape plug-in not recognized";
+		return;
 	}
 	pTShapeFactory->Init();
 	m_tshapeFactoryList.push_back( std::move( pTShapeFactory ) );
@@ -373,14 +430,19 @@ void PluginManager::LoadTShapePlugin( QObject* plugin, QString* error )
 /*!
  * Loads the \a plugin as shape type.
  */
-void PluginManager::LoadTSunshapePlugin( QObject* plugin, QString* error )
+void PluginManager::LoadTSunshapePlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error )
 {
-	Trace{ "PluginManager::LoadSunshapePlugin", false };
-	std::unique_ptr< TSunshapeFactory > pTSunshapeFactory{ qobject_cast<TSunshapeFactory* >( plugin )};
+	std::unique_ptr< TonatiuhPlugin > pTonatiuhPlugin = pluginLoader->Instance();
+	if( pTonatiuhPlugin == nullptr )
+	{
+		*error = "LoadPlugins: Sunshape plug-in not recognizedpTMaterialFactory";
+		return;
+	}
 
+	std::unique_ptr< TSunshapeFactory > pTSunshapeFactory{ static_cast< TSunshapeFactory* > ( pTonatiuhPlugin.release() ) };
 	if ( !pTSunshapeFactory )
 	{
-		*error = QString("LoadPlugins: Sunshape plug-in not recognized" );
+		*error = "LoadPlugins: Sunshape plug-in not recognized";
 		return;
 	}
 	pTSunshapeFactory->Init();
@@ -391,13 +453,19 @@ void PluginManager::LoadTSunshapePlugin( QObject* plugin, QString* error )
 /*!
  * Loads the \a plugin as tracker type.
  */
-void PluginManager::LoadTTrackerPlugin( QObject* plugin, QString* error )
+void PluginManager::LoadTTrackerPlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error )
 {
-	Trace{ "PluginManager::LoadTrackerPlugin", false };
-	std::unique_ptr< TTrackerFactory > pTTrackerFactory{ qobject_cast<TTrackerFactory* >( plugin )};
+	std::unique_ptr< TonatiuhPlugin > pTonatiuhPlugin = pluginLoader->Instance();
+	if( pTonatiuhPlugin == nullptr )
+	{
+		*error = "LoadPlugins: Tracker plug-in not recognizedpTMaterialFactory";
+		return;
+	}
+
+	std::unique_ptr< TTrackerFactory > pTTrackerFactory{ static_cast< TTrackerFactory* > ( pTonatiuhPlugin.release() ) };
 	if ( !pTTrackerFactory )
 	{
-		*error = QString("LoadPlugins: Tracker plug-in not recognized" );
+		*error = "LoadPlugins: Tracker plug-in not recognized";
 		return;
 	}
 	pTTrackerFactory->Init();
@@ -407,13 +475,19 @@ void PluginManager::LoadTTrackerPlugin( QObject* plugin, QString* error )
 /*!
  * Loads the \a plugin as transmissivity type.
  */
-void PluginManager::LoadTTransmissivityPlugin( QObject* plugin, QString* error )
+void PluginManager::LoadTTransmissivityPlugin( std::unique_ptr< PluginLoader >& pluginLoader, std::string* error )
 {
-	Trace{ "PluginManager::LoadTransmissivityPlugin", false };
-	std::unique_ptr< TTransmissivityFactory > pTTransmissivityFactory{ qobject_cast<TTransmissivityFactory* >( plugin )};
+	std::unique_ptr< TonatiuhPlugin > pTonatiuhPlugin = pluginLoader->Instance();
+	if( pTonatiuhPlugin == nullptr )
+	{
+		*error = "LoadPlugins: Transmissivity plug-in not recognizedpTMaterialFactory";
+		return;
+	}
+
+	std::unique_ptr< TTransmissivityFactory > pTTransmissivityFactory{ static_cast< TTransmissivityFactory* > ( pTonatiuhPlugin.release() ) };
 	if ( !pTTransmissivityFactory )
 	{
-		*error = QString("LoadPlugins: Transmissivity plug-in not recognized" );
+		*error = "LoadPlugins: Transmissivity plug-in not recognized";
 		return;
 	}
 	pTTransmissivityFactory->Init();
@@ -424,7 +498,7 @@ void PluginManager::LoadTTransmissivityPlugin( QObject* plugin, QString* error )
  * Checks if the \a directoryName is a valid directory name.
  * '.' and '..' are not valid names.
  */
-bool PluginManager::ValidDirectoryName( QString& directoryName  )
+bool PluginManager::ValidDirectoryName( std::string& directoryName  )
 {
-	return ( directoryName != QLatin1String( "." ) ) && ( directoryName != QLatin1String( ".." ) );
+	return ( ( directoryName.compare( "." ) != 0 ) && ( directoryName.compare( ".." )  != 0  ) );
 }

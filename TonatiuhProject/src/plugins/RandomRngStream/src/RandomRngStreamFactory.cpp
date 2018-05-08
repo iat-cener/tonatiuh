@@ -36,8 +36,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-#include <QTime>
+#include <chrono>
 
 #include "RandomRngStreamFactory.h"
 
@@ -46,18 +45,20 @@ std::string RandomRngStreamFactory::RandomDeviateName() const
 	return ( "Rng Stream" );
 }
 
-QIcon  RandomRngStreamFactory::RandomDeviateIcon() const
+std::string RandomRngStreamFactory::RandomDeviateIcon() const
 {
-	return QIcon();
+	return std::string {};
 }
 
 std::shared_ptr< RandomDeviate > RandomRngStreamFactory::CreateRandomDeviate( ) const
 {
-	unsigned long seed = QTime::currentTime().msec();
-	//return new RandomRngStream( seed );
+	using namespace std::chrono;
+	milliseconds ms = duration_cast< milliseconds >(
+	    system_clock::now().time_since_epoch()
+	);
+	unsigned long seed = ms.count();
 	return ( std::make_shared< RandomRngStream >(  seed  ) );
 }
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(RandomRngStream, RandomRngStreamFactory )
-#endif
+
+DEFINE_PLUGIN( RandomRngStreamFactory, RandomDeviateFactory, APP_VERSION )
 

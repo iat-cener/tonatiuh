@@ -42,23 +42,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RandomMersenneTwister.h"
 #include "RandomDeviateFactory.h"
 
-class RandomMersenneTwisterFactory : public QObject, public RandomDeviateFactory
+class RandomMersenneTwisterFactory : public RandomDeviateFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(RandomDeviateFactory)
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.RandomDeviateFactory")
-#endif
-
 
 public:
     ~RandomMersenneTwisterFactory()
     {
-    	Trace{ "RandomMersenneTwisterFactory::~RandomMersenneTwisterFactory", false };
 
     }
 	std::string RandomDeviateName() const;
-	QIcon RandomDeviateIcon() const;
+	std::string RandomDeviateIcon() const;
 	std::shared_ptr< RandomDeviate > CreateRandomDeviate( ) const;
 
 };

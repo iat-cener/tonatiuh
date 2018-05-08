@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
 #include "ShapeSphericalRectangleFactory.h"
 
 /*!
@@ -63,9 +62,9 @@ std::string ShapeSphericalRectangleFactory::TShapeName() const
 /*!
  * Returns shape icon.
  */
-QIcon ShapeSphericalRectangleFactory::TShapeIcon() const
+std::string ShapeSphericalRectangleFactory::TShapeIcon() const
 {
-	return QIcon(":icons/ShapeSphericalRectangle.png");
+	return std::string{":icons/ShapeSphericalRectangle.png"};
 }
 
 /*!
@@ -76,8 +75,4 @@ std::shared_ptr< TShape > ShapeSphericalRectangleFactory::CreateTShape( ) const
 	return ( std::dynamic_pointer_cast<TShape>( ShapeSphericalRectangle::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(ShapeSphericalRectangle, ShapeSphericalRectangleFactory)
-#endif
-
-
+DEFINE_PLUGIN( ShapeSphericalRectangleFactory, TShapeFactory, APP_VERSION )

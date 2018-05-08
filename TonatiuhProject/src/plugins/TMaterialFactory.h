@@ -36,33 +36,37 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef PHOTONMAPEXPORTTYPEFACTORY_H_
-#define PHOTONMAPEXPORTTYPEFACTORY_H_
+#ifndef TMATERIALFACTORY_H_
+#define TMATERIALFACTORY_H_
 
 #include <memory>
+#include <vector>
 
-#include <QtPlugin>
-//#include <QVariant>
+#include "TonatiuhPlugin.h"
 
-class QIcon;
-class PhotonMapExportType;
+class TMaterial;
 
-
-//!  PhotonMapExportTypeFactory is the base class for creating PhotonMapExportType objects.
-/*!
-  PhotonMapExportTypeFactory class is a factory class to create instances of PhotonMapExportType subclasses. In order to create plug-ins of different type of export modes,
-  the plug-ins must be a derived class of this abstract factory.
-*/
-
-class PhotonMapExportTypeFactory
+class TMaterialFactory : public TonatiuhPlugin
 {
 public:
-    virtual ~PhotonMapExportTypeFactory() {}
-    virtual std::string  PhotonMapExportTypName() const  = 0;
-    virtual QIcon PhotonMapExportTypIcon() const = 0;
-    virtual std::unique_ptr<PhotonMapExportType> CreatePhotonMapExportType( ) const = 0;
+	TMaterialFactory()
+	{
 
+	}
+    virtual ~TMaterialFactory()
+    {
+
+    }
+    virtual void Init() const  = 0;
+    virtual std::string TMaterialName() const  = 0;
+    virtual std::string TMaterialIcon() const = 0;
+    virtual std::shared_ptr< TMaterial > CreateTMaterial( ) const = 0;
+    virtual std::shared_ptr< TMaterial > CreateTMaterial( int /*numberofParameters*/, std::vector< std::string > /*parametersList*/ ) const
+    {
+    	return ( CreateTMaterial() );
+    }
 };
-Q_DECLARE_INTERFACE( PhotonMapExportTypeFactory, "tonatiuh.PhotonMapExportTypeFactory")
 
-#endif /* PHOTONMAPEXPORTTYPEFACTORY_H_ */
+
+
+#endif /* TMATERIALFACTORY_H_ */

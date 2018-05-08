@@ -36,9 +36,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
 #include "ShapeCylinderFactory.h"
-
 
 /*!
  * Initializes shape type.
@@ -64,9 +62,9 @@ std::string ShapeCylinderFactory::TShapeName() const
 /*!
  * Returns shape icon.
  */
-QIcon ShapeCylinderFactory::TShapeIcon() const
+std::string ShapeCylinderFactory::TShapeIcon() const
 {
-	return QIcon( ":/icons/ShapeCylinder.png" );
+	return std::string{ ":/icons/ShapeCylinder.png" };
 }
 
 /*!
@@ -77,7 +75,4 @@ std::shared_ptr< TShape > ShapeCylinderFactory::CreateTShape( ) const
 	return ( std::dynamic_pointer_cast<TShape>( ShapeCylinder::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(ShapeCylinder, ShapeCylinderFactory)
-#endif
-
+DEFINE_PLUGIN( ShapeCylinderFactory, TShapeFactory, APP_VERSION )

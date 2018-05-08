@@ -41,9 +41,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "RandomDeviate.h"
 
-namespace sf
+namespace  sf
 {
-    double AlternateBoxMuller( RandomDeviate& rand );
+    double STATISTICS_API AlternateBoxMuller( RandomDeviate& rand );
 }
 
 #endif /*GF_H_*/

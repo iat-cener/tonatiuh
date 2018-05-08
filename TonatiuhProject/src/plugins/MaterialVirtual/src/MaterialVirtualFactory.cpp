@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "MaterialVirtualFactory.h"
 
 /*!
@@ -64,9 +62,9 @@ std::string MaterialVirtualFactory::TMaterialName() const
 /*!
  * Returns material type icon.
  */
-QIcon MaterialVirtualFactory::TMaterialIcon() const
+std::string  MaterialVirtualFactory::TMaterialIcon() const
 {
-	return QIcon(":/icons/MaterialVirtual.png");
+	return (":/icons/MaterialVirtual.png");
 }
 
 /*!
@@ -77,6 +75,5 @@ std::shared_ptr< TMaterial > MaterialVirtualFactory::CreateTMaterial( ) const
 	return ( std::dynamic_pointer_cast<TMaterial>( MaterialVirtual::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(MaterialVirtual, MaterialVirtualFactory)
-#endif
+DEFINE_PLUGIN( MaterialVirtualFactory, TMaterialFactory, APP_VERSION )
+

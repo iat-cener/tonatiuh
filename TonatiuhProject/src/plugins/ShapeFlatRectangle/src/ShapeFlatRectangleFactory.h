@@ -43,18 +43,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeFactory.h"
 
 
-class ShapeFlatRectangleFactory: public QObject, public TShapeFactory
+class ShapeFlatRectangleFactory: public TShapeFactory
 {
-    Q_OBJECT
-    Q_INTERFACES(TShapeFactory)
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.TShapeFactory")
-#endif
     
 public:
     void Init() const;
    	std::string TShapeName() const;
-   	QIcon TShapeIcon() const;
+   	std::string TShapeIcon() const;
    	std::shared_ptr< TShape > CreateTShape( ) const;
 };
 

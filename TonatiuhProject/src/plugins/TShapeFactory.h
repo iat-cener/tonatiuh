@@ -39,13 +39,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TSHAPEFACTORY_H_
 #define TSHAPEFACTORY_H_
 
-#include "Trace.h"
-
 #include <memory>
 #include <vector>
 
-#include <QtPlugin>
-#include <QVariant>
+#include "TonatiuhPlugin.h"
 
 
 //!  TShapeFactory is the base class for creating TShapeNode objects.
@@ -53,26 +50,23 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   TShapeFactory class is a factory class to control the creation of  TShapeNode subclasses instances.
 */
 
-class QIcon;
 class TShape;
 
-class TShapeFactory
+class TShapeFactory: public TonatiuhPlugin
 {
 public:
     virtual ~TShapeFactory()
     {
-    	Trace{ "TShapeFactory::~TShapeFactory", false };
     }
+
     virtual void Init() const  = 0;
     virtual std::string TShapeName() const  = 0;
-    virtual QIcon TShapeIcon() const = 0;
+    virtual std::string  TShapeIcon() const = 0;
     virtual std::shared_ptr< TShape > CreateTShape( ) const = 0;
-    virtual std::shared_ptr< TShape > CreateTShape( int /*numberofParameters*/, std::vector< QVariant > /*parametersList*/ ) const
+    virtual std::shared_ptr< TShape > CreateTShape( int /*numberofParameters*/, std::vector< std::string  > /*parametersList*/ ) const
     {
     	return ( CreateTShape() );
     }
 };
-
-Q_DECLARE_INTERFACE( TShapeFactory, "tonatiuh.TShapeFactory")
 
 #endif /*TSHAPEFACTORY_H_*/

@@ -46,7 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <stdlib.h>
 #include <vector>
 
-#include <QLibrary>
+//#include <QLibrary>
 #include <QApplication>
 #include <QDateTime>
 #include <QDir>
@@ -55,10 +55,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QVariant>
 
 #include <TNodesDatabase.h>
+#include "TMaterialFactory.h"
 
 #include "PluginManager.h"
 #include "RayCasting.h"
-#include "TMaterialFactory.h"
 #include "TNodesDocument.h"
 #include "TPhotonMap.h"
 #include "TShapeFactory.h"
@@ -143,15 +143,14 @@ int main ( int argc, char** argv )
 	pluginsDirectory.cd( "plugins" );
 
 
+	std::string err;
 	PluginManager pluginManager;
-
-
-	QString err;
-	pluginManager.LoadAvailablePlugins( pluginsDirectory, &err );
-	if( !err.isEmpty() )
+	pluginManager.LoadAvailablePlugins( pluginsDirectory.absolutePath().toStdString(), &err );
+	if( err == "" )
 	{
-		std::cerr<<err.toStdString()<<std::endl;
+		std::cerr<<err<<std::endl;
 	}
+
 
 	std::vector< std::string>  photonMapExportTypeNameList = pluginManager.GetPhotonMapExportTypeFactoryNames();
 	int numberOfPhotonMapExportTypeFactories = int( photonMapExportTypeNameList.size() );
@@ -574,7 +573,11 @@ int main ( int argc, char** argv )
 	//Defining how export the stored data.
 	std::cout<<"\t Defining how export the stored data."<<std::endl;
 	std::unique_ptr< PhotonMapExportType > pPhotonMapExportType = pluginManager.CreatePhotonMapExportType( photonMapExportTypeNameList[0] );
+	pPhotonMapExportType->SetSaveCoordinatesEnabled( true );
+	pPhotonMapExportType->SetSavePreviousNextPhotonsID( false );
 
+	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
+	std::cout<<"\t\tExportFile: "<< argv[4]<<std::endl;
 
 	if( argv[3] == NULL || argv[4] == NULL )
 	{
@@ -582,59 +585,22 @@ int main ( int argc, char** argv )
 		return ( -8 );
 	}
 
-	//QFileInfo exportFileInfo{ argv[3] };
-	//std::cout<<"\t\t"<< exportFileInfo.absoluteFilePath().toStdString()<<std::endl;
-	//std::cout<<"\t\t"<< exportFileInfo.fileName().toStdString()<<std::endl;
-	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
-	std::cout<<"\t\tExportFile: "<< argv[4]<<std::endl;
-
 	pPhotonMapExportType->SetSaveParameterValue( "ExportDirectory", argv[3] );
 	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", argv[4] );
-	// pPhotonMapExportType->SetSaveParameterValue( "FileSize", -1  );
 	pPhotonMap->SetExportType( std::move( pPhotonMapExportType ) );
 
 	raytracer.SetPhotonMap( pPhotonMap.get() );
 
-	std::cout<<"Run"<<std::endl;
-	double tracedRays = 10000000;
+	double tracedRays = 1000000;
 
+	std::cout<<"Run "<<tracedRays<<" rays"<<std::endl;
 	raytracer.Run( tracedRays );
 
-
-	//QDateTime time2 = QDateTime::currentDateTime();
-	//std::cout <<"time2: "<< startTime.secsTo( time2 ) << std::endl;
 
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 
 	std::cout<<"END main"<<std::endl;
-
-
-	/*
-	if( argv[3] == NULL )
-	{
-		std::cout<<"No file to save results "<<std::endl;
-		return ( -9 );
-	}
-
-	QFile simulationsFile( argv[3] );
-	if( !simulationsFile.open( QIODevice::WriteOnly ) )
-	{
-		std::cout<<"Cannot open file to save results: '"<< argv[2]<<std::endl;
-		return ( -5 );
-	}
-	QTextStream out( &simulationsFile );
-
-	std::vector< Photon > photonsList = pPhotonMap->GetAllPhotons();
-	for( unsigned int p = 0; p < photonsList.size(); p++ )
-	{
-		out<<photonsList[p].posWorld.x<<"\t";
-		out<<photonsList[p].posWorld.y<<"\t";
-		out<<photonsList[p].posWorld.z<<"\n";
-
-	}
-	simulationsFile.close();
-	*/
 
 
 

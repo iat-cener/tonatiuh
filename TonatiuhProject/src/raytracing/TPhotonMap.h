@@ -44,6 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <mutex>
 #include <vector>
 
+#include "RayTracingLibrary.h"
 #include "Photon.h"
 #include "PhotonMapExportType.h"
 
@@ -55,7 +56,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   The base class only stores the photons, there is not export option. So, when the buffer is full, the stored photons are deleted.
 */
 
-class TPhotonMap
+class RAYTRACING_API TPhotonMap
 {
 
 public:

@@ -41,6 +41,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <string>
 
+#include "RayTracingLibrary.h"
 #include "Point3D.h"
 #include "Vector3D.h"
 
@@ -60,7 +61,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   - ray direction: incident ray direction. Null vector if this information is not available.
 */
 
-struct Photon
+struct RAYTRACING_API  Photon
 {
 	Photon( );
 	Photon( const Photon& photon );

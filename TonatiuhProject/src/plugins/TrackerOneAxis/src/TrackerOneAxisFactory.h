@@ -47,18 +47,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   TrackerOneAxisFactory class is a factory class to create instances of TrackerOneAxis.
 */
 
-class TrackerOneAxisFactory : public QObject, public TTrackerFactory
+class TrackerOneAxisFactory:  public TTrackerFactory
 {
-    Q_OBJECT
-    Q_INTERFACES(TTrackerFactory)
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.TTrackerFactory")
-#endif
     
 public:
     void Init() const;
    	std::string TTrackerName() const;
-   	QIcon TTrackerIcon() const;
+   	std::string TTrackerIcon() const;
    	std::shared_ptr< TTracker > CreateTTracker( ) const;
 };
 

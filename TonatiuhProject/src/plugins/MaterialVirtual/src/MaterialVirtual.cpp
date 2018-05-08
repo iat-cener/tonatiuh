@@ -35,7 +35,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-#include "Trace.h"
 
 #include "DifferentialGeometry.h"
 #include "Ray.h"
@@ -78,7 +77,7 @@ MaterialVirtual::MaterialVirtual()
  */
 MaterialVirtual::~MaterialVirtual()
 {
-	Trace{ "MaterialVirtual::~MaterialVirtual "  + GetName() };
+
 }
 
 /*!

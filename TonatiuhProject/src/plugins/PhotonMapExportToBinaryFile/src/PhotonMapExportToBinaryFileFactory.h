@@ -49,18 +49,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   PhotonMapExportToBinaryFileFactory class is a factory class to create objects of PhotonMapExportToBinaryFile that export the photons stored in the photonmap into binary files.
 */
 
-class PhotonMapExportToBinaryFileFactory : public QObject, public PhotonMapExportTypeFactory
+class PhotonMapExportToBinaryFileFactory : public PhotonMapExportTypeFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PhotonMapExportTypeFactory)
-
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.PhotonMapExportTypeFactory")
-#endif
 
 public:
 	std::string PhotonMapExportTypName() const;
-	QIcon PhotonMapExportTypIcon() const;
+	std::string  PhotonMapExportTypIcon() const;
 	std::unique_ptr<PhotonMapExportType> CreatePhotonMapExportType( ) const;
 
 };

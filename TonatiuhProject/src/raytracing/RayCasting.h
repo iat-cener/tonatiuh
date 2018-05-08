@@ -43,11 +43,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <memory>
 #include <string>
 
-#include "TMaterial.h"
+#include "RayTracingLibrary.h"
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "RayTracer.h"
+#include "TMaterial.h"
 #include "Transform.h"
 #include "TShape.h"
 #include "TSurfaceNode.h"
@@ -147,7 +148,7 @@ struct RayCastingNode
   RayTracer class provides an interface for different ray tracing algorithms in order to execute the ray tracer technique to objects scene.
 */
 
-class RayCasting : public RayTracer
+class RAYTRACING_API RayCasting : public RayTracer
 {
 public:
 	RayCasting( );

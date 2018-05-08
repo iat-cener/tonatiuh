@@ -42,18 +42,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunshapeFactory.h"
 #include "SunshapeBuie.h"
 
-class SunshapeBuieFactory: public QObject, public TSunshapeFactory
+class SunshapeBuieFactory: public TSunshapeFactory
 {
-    Q_OBJECT
-    Q_INTERFACES(TSunshapeFactory)
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.TSunshapeFactory")
-#endif
 
 public:
     void Init() const;
    	std::string TSunshapeName() const;
-   	QIcon TSunshapeIcon() const;
+   	std::string TSunshapeIcon() const;
    	std::shared_ptr< TSunshape > CreateTSunshape( ) const;
 };
 

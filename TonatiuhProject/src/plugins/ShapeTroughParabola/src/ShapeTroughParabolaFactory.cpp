@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
 #include "ShapeTroughParabolaFactory.h"
 
 /*!
@@ -64,9 +63,9 @@ std::string ShapeTroughParabolaFactory::TShapeName() const
  * Returns shape icon.
  */
 
-QIcon ShapeTroughParabolaFactory::TShapeIcon() const
+std::string ShapeTroughParabolaFactory::TShapeIcon() const
 {
-	return QIcon( ":/icons/ShapeTroughParabola.png" );
+	return std::string{ ":/icons/ShapeTroughParabola.png" };
 }
 
 /*!
@@ -78,7 +77,5 @@ std::shared_ptr< TShape > ShapeTroughParabolaFactory::CreateTShape( ) const
 	return ( std::dynamic_pointer_cast<TShape>( ShapeTroughParabola::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(ShapeTroughParabola, ShapeTroughParabolaFactory )
-#endif
+DEFINE_PLUGIN( ShapeTroughParabolaFactory, TShapeFactory, APP_VERSION )
 

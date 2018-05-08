@@ -36,7 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-#include "Trace.h"
 
 #include "TTransmissivity.h"
 
@@ -65,7 +64,6 @@ TTransmissivity::TTransmissivity()
  */
 TTransmissivity::~TTransmissivity()
 {
-	Trace{ "TTransmissivity::~TTransmissivity "  + GetName() };
 
 }
 

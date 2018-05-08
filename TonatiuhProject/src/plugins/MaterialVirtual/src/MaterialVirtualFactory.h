@@ -49,18 +49,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   MaterialVirtualFactory class is a factory class to control the creation of MaterialVirtual instances. All the objects of type MaterialVirtual will be created using this factory.
 */
 
-class MaterialVirtualFactory: public QObject, public TMaterialFactory
+class MaterialVirtualFactory: public TMaterialFactory
 {
-    Q_OBJECT
-    Q_INTERFACES(TMaterialFactory)
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.TMaterialFactory")
-#endif
 
 public:
     void Init() const;
     std::string TMaterialName() const;
-   	QIcon TMaterialIcon() const;
+    std::string  TMaterialIcon() const;
    	std::shared_ptr< TMaterial > CreateTMaterial( ) const;
 };
 

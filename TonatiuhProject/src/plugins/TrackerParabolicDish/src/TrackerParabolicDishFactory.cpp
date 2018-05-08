@@ -36,9 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
-#include <QIcon>
-
 #include "TrackerParabolicDishFactory.h"
 
 /*!
@@ -66,9 +63,9 @@ std::string TrackerParabolicDishFactory::TTrackerName() const
 /*!
  * Returns tracker icon.
  */
-QIcon TrackerParabolicDishFactory::TTrackerIcon() const
+std::string TrackerParabolicDishFactory::TTrackerIcon() const
 {
-	return ( QIcon( ":/icons/TrackerParabolicDish.png" ) );
+	return ( std::string{ ":/icons/TrackerParabolicDish.png" } );
 }
 
 /*!
@@ -79,8 +76,4 @@ std::shared_ptr< TTracker > TrackerParabolicDishFactory::CreateTTracker( ) const
 	return ( std::dynamic_pointer_cast< TTracker >( TrackerParabolicDish::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-	Q_EXPORT_PLUGIN2(TrackerParabolicDish, TrackerParabolicDishFactory)
-#endif
-
-
+DEFINE_PLUGIN( TrackerParabolicDishFactory, TTrackerFactory, APP_VERSION )

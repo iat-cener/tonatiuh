@@ -36,8 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
 #include "MaterialStandardSpecularFactory.h"
 
 /*!
@@ -64,9 +62,9 @@ std::string MaterialStandardSpecularFactory::TMaterialName() const
 /*!
  * Returns material type icon.
  */
-QIcon MaterialStandardSpecularFactory::TMaterialIcon() const
+std::string MaterialStandardSpecularFactory::TMaterialIcon() const
 {
-	return QIcon(":/icons/MaterialStandardSpecular.png");
+	return  std::string(":/icons/MaterialStandardSpecular.png");
 }
 
 /*!
@@ -77,6 +75,4 @@ std::shared_ptr< TMaterial > MaterialStandardSpecularFactory::CreateTMaterial( )
 	return ( std::dynamic_pointer_cast<TMaterial>( MaterialStandardSpecular::CreateInstance() ) );
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2(MaterialStandardSpecular, MaterialStandardSpecularFactory)
-#endif
+DEFINE_PLUGIN( MaterialStandardSpecularFactory, TMaterialFactory, APP_VERSION )
