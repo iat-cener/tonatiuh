@@ -1,27 +1,21 @@
-VERSION = 3.0.0
+#Tonatiuh verion:  major.minor.patch
+VER_MAJ = 3# major.minor.patch
+VER_MIN = 0# major.minor.patch
+VER_PAT = 0# major.minor.patch
+
 
 CONFIG -= c++11
 QMAKE_CXXFLAGS += -std=gnu++17 
 
-
-# Define the preprocessor macro to get the application version in our application.
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-
-INCLUDEPATH += 	. \
-			   $$(TONATIUH_ROOT)/src/auxiliary \
-               $$(TONATIUH_ROOT)/src/geometry \
-               $$(TONATIUH_ROOT)/src/nodes \
-               $$(TONATIUH_ROOT)/src/raytracing \
-               $$(TONATIUH_ROOT)/src/statistics
-
-
-CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes
-}else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes
+win32 {
+  #QMAKE_LFLAGS += -Wl,--export-all-symbols
 }
 
-	
+
+# Define the preprocessor macro to get the application version in our application.
+DEFINES += APP_VERSION=\\\"$$VER_MAJ"."$$VER_MIN"."$$VER_PAT\\\"
+
+
 CONFIG(debug, debug|release) {
     QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
     QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage
