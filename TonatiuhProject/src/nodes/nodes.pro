@@ -9,7 +9,7 @@ QT -=gui
 
 TARGET = nodes
 
-DEFINES += nodes_EXPORTS   
+DEFINES += NODELIBRARY_EXPORTS   
 
 INCLUDEPATH += 	. \
 			   $$(TONATIUH_ROOT)/src/auxiliary \

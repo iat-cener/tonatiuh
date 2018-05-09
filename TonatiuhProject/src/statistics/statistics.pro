@@ -3,7 +3,7 @@ CONFIG       += debug_and_release
 
 include( $$(TONATIUH_ROOT)/config.pri )
 
-DEFINES += statistics_EXPORTS
+DEFINES += STATISTICSLIBRARY_EXPORTS
 
 QT -=core	
 QT -=gui	
