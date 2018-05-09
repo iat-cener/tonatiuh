@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG       += debug_and_release
+CONFIG       += debug_and_release unversioned_libname skip_target_version_ext
 include( $$(TONATIUH_ROOT)/config.pri )
 
 

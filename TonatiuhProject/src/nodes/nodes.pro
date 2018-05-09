@@ -1,9 +1,9 @@
 TEMPLATE = lib
-CONFIG       += qt warn_on thread debug_and_release
+CONFIG       += warn_on thread debug_and_release
 
+CONFIG       += unversioned_libname
+CONFIG       += skip_target_version_ext
 
-#CONFIG -= c++11
-#QMAKE_CXXFLAGS += -std=gnu++17
 include( $$(TONATIUH_ROOT)/config.pri )
 
 
@@ -22,9 +22,9 @@ INCLUDEPATH += 	. \
 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry$$VER_MAJ  
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry 
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry
 }
 
 # Input

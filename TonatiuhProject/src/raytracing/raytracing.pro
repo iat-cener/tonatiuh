@@ -1,6 +1,9 @@
 TEMPLATE = lib
 CONFIG       += debug_and_release
 
+CONFIG       += unversioned_libname
+CONFIG       += skip_target_version_ext
+
 
 include( $$(TONATIUH_ROOT)/config.pri )
 
@@ -31,9 +34,9 @@ else {
 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry$$VER_MAJ -lnodes$$VER_MAJ -lstatistics$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes -lstatistics
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry$$VER_MAJ -lnodes$$VER_MAJ -lstatistics$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes -lstatistics
 
 }	
 
