@@ -45,9 +45,11 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Trace.h"
 
 #include <dirent.h>
-#include <iostream>
 #include <experimental/filesystem>
+#include <iostream>
 #include <fstream>
+#include <memory>
+#include <string.h>
 
 
 #include "TonatiuhPlugin.h"
@@ -62,9 +64,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunshapeFactory.h"
 #include "TTrackerFactory.h"
 #include "TTransmissivityFactory.h"
-
-
-#include <memory>
 
 
 /*!

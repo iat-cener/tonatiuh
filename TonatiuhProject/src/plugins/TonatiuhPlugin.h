@@ -159,7 +159,7 @@ public:
 		mbstowcs(wText, filename.c_str(), size);
 		m_pHandle = std::make_shared< LibraryHandle > ( LoadLibrary( wText ) );
 #else
-		return dlopen( (libName + ".so" ).c_str(), RTLD_LAZY);
+		m_pHandle = std::make_shared< LibraryHandle > ( dlopen( filename.c_str(), RTLD_LAZY ) );
 #endif
 		if ( m_pHandle == nullptr )
 			PrintError();
@@ -186,7 +186,7 @@ private:
 public:
 	/*!
 	 * Loads a plugin from \a filename file.
-	 * If the file contains a valid plugín the details of the plugin are returned. Otherwise, a nullptr is returned.
+	 * If the file contains a valid plugï¿½n the details of the plugin are returned. Otherwise, a nullptr is returned.
 	 */
 	std::unique_ptr< TonatiuhPluginDetails > Details (  )
 	{
@@ -199,7 +199,7 @@ public:
 #if _WIN32
 		fCreate  = (TonatiuhPluginDetails (*)()) GetProcAddress( (HMODULE) m_pHandle->GetHandle(), "Exports" );
 #else
-		fCreate =  (TonatiuhPluginDetails (*)()) dlsym( m_pHandle, "Exports" );
+		fCreate =  (TonatiuhPluginDetails (*)()) dlsym( m_pHandle->GetHandle(), "Exports" );
 #endif
 
 		if( !fCreate || fCreate == nullptr)
@@ -222,7 +222,12 @@ public:
 			return ( nullptr );
 
 		std::unique_ptr< TonatiuhPlugin > (*fInstance )() = nullptr;
+#if _WIN32
 		fInstance  = (std::unique_ptr< TonatiuhPlugin >(*)() ) GetProcAddress( (HMODULE) m_pHandle->GetHandle(), "Instance" );
+#else
+		fInstance =  (std::unique_ptr< TonatiuhPlugin >(*)() ) dlsym( m_pHandle->GetHandle(), "Instance" );
+#endif
+
 		//return ( fInstance() );
 		std::unique_ptr< TonatiuhPlugin > pluginInstance = fInstance();
 		pluginInstance->SetLibraryHandle( m_pHandle );

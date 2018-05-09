@@ -7,9 +7,6 @@ VER_PAT = 0# major.minor.patch
 CONFIG -= c++11
 QMAKE_CXXFLAGS += -std=gnu++17 
 
-win32 {
-  #QMAKE_LFLAGS += -Wl,--export-all-symbols
-}
 
 
 # Define the preprocessor macro to get the application version in our application.
