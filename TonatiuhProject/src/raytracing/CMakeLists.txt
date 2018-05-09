@@ -1,13 +1,13 @@
-FILE(GLOB RAYTRACINGLIBRARY ${PROJECT_SOURCE_DIR}/src/raytracing/*.cpp)
+FILE(GLOB raytracing ${PROJECT_SOURCE_DIR}/src/raytracing/*.cpp)
 
-ADD_LIBRARY(RAYTRACINGLIBRARY SHARED  ${RAYTRACINGLIBRARY})
+ADD_LIBRARY(raytracing SHARED  ${raytracing})
 
-INSTALL(TARGETS RAYTRACINGLIBRARY DESTINATION bin)
+INSTALL(TARGETS raytracing DESTINATION bin)
 
-SET_TARGET_PROPERTIES(RAYTRACINGLIBRARY PROPERTIES LINKER_LANGUAGE CXX)
+SET_TARGET_PROPERTIES(raytracing PROPERTIES LINKER_LANGUAGE CXX)
 
-target_include_directories(RAYTRACINGLIBRARY PUBLIC ${PROJECT_SOURCE_DIR}/src/raytracing )
+target_include_directories(raytracing PUBLIC ${PROJECT_SOURCE_DIR}/src/raytracing )
 
-target_link_libraries( RAYTRACINGLIBRARY GEOMETRYLIBRARY 
-										NODELIBRARY 
-										STATISTICSLIBRARY )
+target_link_libraries( raytracing geometry 
+										nodes 
+										statistics )

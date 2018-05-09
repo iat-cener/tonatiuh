@@ -8,8 +8,9 @@
 #ifndef TONATIUHPLUGIN_H_
 #define TONATIUHPLUGIN_H_
 
-#include <string>
 #include <iostream>
+#include <memory>
+#include <string>
 
 #if _WIN32
 #include <windows.h>
