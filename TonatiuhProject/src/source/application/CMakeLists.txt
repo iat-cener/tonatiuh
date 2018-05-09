@@ -41,39 +41,55 @@ find_package(Qt5 REQUIRED
 #QT4_WRAP_CPP(APPLICATION_MOC_SRCS ${APPLICATION_MOC_HDRS})
 
 
-ADD_EXECUTABLE(tonatiuh 
+ADD_EXECUTABLE( Tonatiuh 
 #	${APPLICATION_UI_HEADERS}
 	${APPLICATION_SRC}
 #	${APPLICATION_MOC_SRCS}
 #	${APPLICATION_RES}
 )
 
-SET_TARGET_PROPERTIES(tonatiuh PROPERTIES LINKER_LANGUAGE CXX)
+SET_TARGET_PROPERTIES( Tonatiuh PROPERTIES LINKER_LANGUAGE CXX)
 
-INSTALL(TARGETS tonatiuh  DESTINATION bin)
+INSTALL(TARGETS Tonatiuh  DESTINATION bin)
 
-set_target_properties(tonatiuh PROPERTIES
+set_target_properties(Tonatiuh PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
 
-target_include_directories(	tonatiuh PUBLIC
+target_include_directories(	Tonatiuh PUBLIC
 						${PROJECT_SOURCE_DIR}/src/geometry
 						${PROJECT_SOURCE_DIR}/src/auxiliary
 						${PROJECT_SOURCE_DIR}/src/nodes
 						${PROJECT_SOURCE_DIR}/src/plugins
 						${PROJECT_SOURCE_DIR}/src/raytracing
 						${PROJECT_BINARY_DIR}/src/source/application
-)						
-						
-TARGET_LINK_LIBRARIES(tonatiuh
-		stdc++fs 
-        Qt5::Core
-        Qt5::Xml
-        Qt5::Widgets
-        GEOMETRYLIBRARY
-        NODELIBRARY
-        RAYTRACINGLIBRARY
-        STATISTICSLIBRARY
-)
+)	
+
+
+if(UNIX)								
+	TARGET_LINK_LIBRARIES(Tonatiuh
+			dl
+			stdc++fs 
+	        Qt5::Core
+	        Qt5::Xml
+	        Qt5::Widgets
+	        GEOMETRYLIBRARY
+	        NODELIBRARY
+	        RAYTRACINGLIBRARY
+	        STATISTICSLIBRARY
+	)
+
+else()
+	TARGET_LINK_LIBRARIES(Tonatiuh
+			stdc++fs 
+	        Qt5::Core
+	        Qt5::Xml
+	        Qt5::Widgets
+	        GEOMETRYLIBRARY
+	        NODELIBRARY
+	        RAYTRACINGLIBRARY
+	        STATISTICSLIBRARY
+	)
+endif(UNIX)	

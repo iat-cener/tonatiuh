@@ -49,7 +49,7 @@ endif()
 
 SET (CMAKE_CXX_FLAGS_RELEASE " ${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS} -fPIC -O3 -march=native -mfpmath=sse   ")
 SET (CMAKE_CXX_FLAGS_DEBUG " ${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS} -fPIC -fprofile-arcs -ftest-coverage  ")
-SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--export-all-symbols ")
+#SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--export-all-symbols ")
 
 
 ADD_SUBDIRECTORY(src/geometry)
