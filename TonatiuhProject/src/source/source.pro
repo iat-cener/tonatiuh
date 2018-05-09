@@ -21,8 +21,13 @@ CONFIG(debug, debug|release) {
    	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs 
 }else{
    	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs 
-
 }
+
+unix {
+   	LIBS += -ldl
+}
+
+
 
 # Input
 HEADERS += 	$$(TONATIUH_ROOT)/src/auxiliary/Trace.h \

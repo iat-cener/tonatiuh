@@ -14,9 +14,9 @@ INCLUDEPATH += . \
                 $$(TONATIUH_ROOT)/src/statistics 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry$$VER_MAJ -lnodes$$VER_MAJ -lstatistics$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes  -lstatistics
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry$$VER_MAJ -lnodes$$VER_MAJ -lstatistics$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes  -lstatistics
 }
 
 # Input

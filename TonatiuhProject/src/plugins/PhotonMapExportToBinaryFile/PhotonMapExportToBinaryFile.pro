@@ -13,9 +13,9 @@ INCLUDEPATH += . \
 			    $$(TONATIUH_ROOT)/src/raytracing 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry$$VER_MAJ -lraytracing$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lraytracing
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry$$VER_MAJ -lraytracing$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lraytracing
 }
 
 

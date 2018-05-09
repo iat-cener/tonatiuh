@@ -12,9 +12,9 @@ INCLUDEPATH += . \
 				$$(TONATIUH_ROOT)/src/plugins 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry$$VER_MAJ -lnodes$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry$$VER_MAJ -lnodes$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes
 }
 
 # Input

@@ -13,9 +13,9 @@ INCLUDEPATH += . \
 			$$(TONATIUH_ROOT)/src/statistics 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lstatistics$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lstatistics
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lstatistics$$VER_MAJ
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lstatistics
 }
 
 # Input
