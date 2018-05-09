@@ -4,7 +4,7 @@ CONFIG       += debug_and_release
 include( $$(TONATIUH_ROOT)/config.pri )
 
 
-DEFINES += geometry_EXPORTS
+DEFINES += GEOMETRYLIBRARY_EXPORTS
 
 QT -=core	
 QT -=gui	
