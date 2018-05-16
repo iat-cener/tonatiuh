@@ -39,7 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "DifferentialGeometry.h"
 #include "MaterialStandardSpecular.h"
-
 #include "NormalVector.h"
 #include "RandomDeviate.h"
 #include "sf.h"

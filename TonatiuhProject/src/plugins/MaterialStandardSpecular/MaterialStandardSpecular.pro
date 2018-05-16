@@ -3,7 +3,7 @@ CONFIG       += plugin debug_and_release
 
 include( $$(TONATIUH_ROOT)/config.pri )
 
-#QT -=core	
+QT -=core	
 QT -=gui	
 
 DEFINES += TONATIUH_PLUGIN_SHARED_LIBRARY

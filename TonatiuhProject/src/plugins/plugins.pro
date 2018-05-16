@@ -1,7 +1,8 @@
 TEMPLATE = subdirs
 
 
-SUBDIRS = MaterialStandardSpecular \
+SUBDIRS = MaterialBasicRefractive \
+		MaterialStandardSpecular \
 		MaterialVirtual \
 		PhotonMapExportToBinaryFile \
 		RandomMersenneTwister \

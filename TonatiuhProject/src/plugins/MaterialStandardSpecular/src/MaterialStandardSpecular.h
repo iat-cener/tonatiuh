@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MATERIALSTANDARDSPECULAR_H_
 #define MATERIALSTANDARDSPECULAR_H_
 
-#include "../../../nodes/TMaterial.h"
+#include "TMaterial.h"
 #include "TParameterList.h"
 
 //!  MaterialStandardSpecular class is the the representation of a specular material.

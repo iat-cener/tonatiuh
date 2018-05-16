@@ -139,6 +139,8 @@ template<class T> T TNode::GetParameterValue( std::string name ) const
  */
 template<class T>  bool TNode::SetParameterValue( const std::string& name, const T& value )
 {
+
+	std::cout<<"\t\t TNode::SetParameterValue: "<<name<<" "<<value<<std::endl;
 	if( !m_pParametersList )	return ( false );
 	if( !m_pParametersList->Contains( name ) || !m_pParametersList->GetVisibility( name ) )
 		return ( false );
