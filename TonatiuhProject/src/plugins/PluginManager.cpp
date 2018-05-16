@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * \brief PluginManager class manages plugin loading.
  * PluginManager is used to load plugins, manage the list of loaded plugins.
  */
-#include "Trace.h"
 
 #include <dirent.h>
 #include <experimental/filesystem>
@@ -259,8 +258,6 @@ std::vector< std::string > PluginManager::GetTTransmissivityFactoryNames() const
  */
 void PluginManager::LoadAvailablePlugins( const std::string& pluginsDirectory, std::string* error )
 {
-	Trace{ "PluginManager::LoadAvailablePlugins", true };
-
 	std::vector< std::string > filesList;
 	BuildFileList( pluginsDirectory, filesList );
 
@@ -275,8 +272,6 @@ void PluginManager::LoadAvailablePlugins( const std::string& pluginsDirectory, s
  */
 void PluginManager::AddFilesToList( const std::string& directoryPath, std::vector< std::string >& filesList )
 {
-	Trace{ "PluginManager::AddFilesToList", false };
-
     for( auto& p : std::experimental::filesystem::directory_iterator( directoryPath ) )
     {
     	std::string path = p.path().string();
@@ -292,7 +287,6 @@ void PluginManager::AddFilesToList( const std::string& directoryPath, std::vecto
  */
 void PluginManager::BuildFileList( const std::string& directoryPath, std::vector< std::string >& filesList )
 {
-	Trace{ "PluginManager::BuildFileList", false };
 	AddFilesToList( directoryPath, filesList );
 
 

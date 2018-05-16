@@ -57,7 +57,7 @@ class TTransmissivityFactory: public TonatiuhPlugin
 public:
     virtual ~TTransmissivityFactory()
     {
-    	Trace{ "TTransmissivityFactory::~TTransmissivityFactory", false };
+
     }
     virtual void Init() const  = 0;
     virtual std::string TTransmissivityName() const  = 0;
