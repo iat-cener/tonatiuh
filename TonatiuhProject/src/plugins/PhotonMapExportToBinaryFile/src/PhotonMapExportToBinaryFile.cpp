@@ -589,7 +589,7 @@ void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 	*/
 
 	QStringList filters;
-	filters << filename.append( QLatin1String( "_*.dat" ) );
+	filters << filename.append( QLatin1String( "*.dat" ) );
 	exportDirectory.setNameFilters(filters);
 
 	QFileInfoList partialFilesList = exportDirectory.entryInfoList();
