@@ -1,4 +1,4 @@
-SET( PLUGIN MaterialStandardSpecular )
+SET( PLUGIN MaterialBasicRefractive )
 
 file(GLOB ${PLUGIN}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
 
