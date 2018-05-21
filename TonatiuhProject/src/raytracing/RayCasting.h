@@ -78,7 +78,6 @@ struct RayCastingNode
 	//Returns true if there is an output ray.
 	bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, RayCastingNode** intersectedNode, Ray* outputRay )
 	{
-
 		//Check if the ray intersects with the BoundingBox
 		if( !boundingBox.IntersectP(ray) ) return ( false );
 
@@ -111,11 +110,10 @@ struct RayCastingNode
 	   else
 	   {
 		   Ray childCoordinatesRay( wtoTransformation( ray ) );
+		   std::shared_ptr< TShape > tshape = std::dynamic_pointer_cast< TShape >( surfaceNode->GetPart( "shape" ) );
+		   std::shared_ptr< TMaterial >  tmaterial = std::dynamic_pointer_cast< TMaterial >( surfaceNode->GetPart( "material" ) );
 
-			TShape* tshape = surfaceNode->GetPart( "shape" )->as<TShape>();
-			TMaterial* tmaterial = surfaceNode->GetPart( "material" )->as<TMaterial>();
-
-			if( tshape )
+			if( tshape != nullptr )
 			{
 
 				 double thit = 0.0;
@@ -127,7 +125,7 @@ struct RayCastingNode
 				 *intersectedNode = this;
 				 *isShapeFront = shapeFront;
 
-				 if( tmaterial )
+				 if( tmaterial != nullptr )
 				 {
 					 Ray surfaceOutputRay;
 					 if( tmaterial->OutputRay( childCoordinatesRay, &dg, rand, &surfaceOutputRay ) )

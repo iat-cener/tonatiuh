@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 
-//#include <iostream>
 
 #include <QDataStream>
 #include <QDomDocument>
@@ -83,9 +82,12 @@ std::shared_ptr< TNode >  TNodesDocument::GetRootNode() const
  */
 bool TNodesDocument::Read( std::string filename )
 {
-
 	QFile tonatiuhFile( filename.c_str() );
-	if( !tonatiuhFile.open( QIODevice::ReadOnly ) )	return (false);
+	if( !tonatiuhFile.open( QIODevice::ReadOnly ) )
+	{
+		std::cerr<< "TNodesDocument: Cannot find " << filename << "\n" <<std::endl;
+		return (false);
+	}
 
 
 	int errLine;
@@ -117,12 +119,10 @@ bool TNodesDocument::Read( std::string filename )
 		std::cerr<< "TNodesDocument: The file is not compatible with this version of Tonatiuh\n";
 	    return ( false );
 	}
+
 	QDomElement rootElement = docChilds.at(0).toElement();
-
-
 	std::string rootErrMsg;
 	m_pRootNode = CreateNodeObject( rootElement, &rootErrMsg );
-	//if( !m_pRootNode || m_pRootNode == 0 || !rootErrMsg.empty() )
 	if( m_pRootNode == nullptr || !rootErrMsg.empty() )
 	{
 		std::cerr<< "TNodesDocument: error creating root node object. ";
@@ -146,8 +146,6 @@ bool TNodesDocument::Read( std::string filename )
 			std::cerr<< readErrMsg;
 			return ( false );
 		}
-
-
 	}
 	return ( true );
 }
@@ -249,7 +247,6 @@ std::shared_ptr<TNode > TNodesDocument::CreateNodeObject( QDomElement node, std:
 
 bool TNodesDocument::ReadNode( QDomElement node, std::shared_ptr< TNode > parentNode, QMap< int, std::shared_ptr< TNode > >* readNodes, std::string* errMsg )
 {
-
 	if( node.hasAttribute( QLatin1String( "type" ) ) &&  node.hasAttribute( QLatin1String( "id" ) ) )  //node
 	{
 		int nodeID  = node.attribute( QLatin1String( "id" ) ).toInt();

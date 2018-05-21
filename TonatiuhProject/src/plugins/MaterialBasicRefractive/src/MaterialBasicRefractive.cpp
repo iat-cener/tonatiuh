@@ -161,6 +161,8 @@ TNodeType MaterialBasicRefractive::GetType() const
  */
 bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {
+	//return ( false );
+
 	double reflectivityFront = GetParameterValue<double>( m_reflectivityFrontLabel );
 	double reflectivityBack = GetParameterValue<double>( m_reflectivityBackLabel );
 	double transmissivityFront = GetParameterValue<double>( m_transmissivityFrontLabel );

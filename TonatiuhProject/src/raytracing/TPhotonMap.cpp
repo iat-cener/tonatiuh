@@ -74,6 +74,7 @@ void TPhotonMap::SetBufferSize( unsigned long nPhotons )
 void TPhotonMap::SetExportType( std::unique_ptr< PhotonMapExportType > pPhotonMapExportType )
 {
 	m_pPhotonMapExportType = std::move( pPhotonMapExportType );
+	m_pPhotonMapExportType->StartSave();
 
 }
 

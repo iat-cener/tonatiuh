@@ -548,8 +548,12 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsSelectedData( QString fil
 void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 {
 
+	std::cout<<"PhotonMapExportToBinaryFile::RemoveExistingFiles "<<std::endl;
 	QDir exportDirectory( m_exportDirecotryName.c_str() );
+
+
 	QString filename( m_photonsFilename.c_str() );
+	/*
 	if( m_oneFile )
 	{
 		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
@@ -581,6 +585,28 @@ void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 				}
 
 		}
+	}
+	*/
+
+	QStringList filters;
+	filters << filename.append( QLatin1String( "_*.dat" ) );
+	exportDirectory.setNameFilters(filters);
+
+	QFileInfoList partialFilesList = exportDirectory.entryInfoList();
+	for( int i = 0; i< partialFilesList.count(); ++i )
+	{
+
+		std::cout<<"PhotonMapExportToBinaryFile::RemoveExistingFiles "<<partialFilesList[i].absoluteFilePath().toStdString()<<std::endl;
+
+		QFile partialFile( partialFilesList[i].absoluteFilePath() );
+		if(partialFile.exists() && !partialFile.remove()) {
+				QString message= QString( "Error deleting %1.\nThe file is in use. Please, close it before continuing. \n" ).arg( QString( partialFilesList[i].absoluteFilePath() ) );
+				//QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
+
+				std::cerr<<message.toStdString()<<std::endl;
+				RemoveExistingFiles();
+			}
+
 	}
 }
 

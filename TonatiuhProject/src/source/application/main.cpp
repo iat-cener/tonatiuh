@@ -469,16 +469,22 @@ int main ( int argc, char** argv )
 	bool okRead = readDocument.Read( argv[1] );
 	if( !okRead  )
 	{
-		std::cout<<"¡¡¡Error reading file!!!"<<std::endl;
+		std::cout<<"¡¡¡Error reading file 0!!!"<<std::endl;
 		return ( -1 );
 	}
 
 
 	std::cout<<"Tonatiuh 3.0 sceneNode"<<std::endl;
 	std::shared_ptr< TSceneNode > sceneNode = std::dynamic_pointer_cast< TSceneNode > ( readDocument.GetRootNode() );
+	if( sceneNode == nullptr )
+	{
+		std::cout<<"¡¡¡Error reading file 1!!!"<<std::endl;
+		return ( -2 );
+	}
+
 	if( !sceneNode || sceneNode == 0 )
 	{
-		std::cout<<"¡¡¡Error reading file!!!"<<std::endl;
+		std::cout<<"¡¡¡Error reading file 2!!!"<<std::endl;
 		return ( -2 );
 	}
 
@@ -535,6 +541,7 @@ int main ( int argc, char** argv )
 
 	std::cout<<"\tChanging sun position..."<<std::endl;
 	sceneNode->ChangeSunPosition( 180*gc::Degree, 0*gc::Degree );
+	//sceneNode->ChangeSunPosition( 150*gc::Degree, 30*gc::Degree );
 
 
 	std::cout<<"\tNew values:"<<std::endl;

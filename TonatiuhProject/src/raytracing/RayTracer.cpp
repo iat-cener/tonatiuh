@@ -78,7 +78,7 @@ bool RayTracer::Run( unsigned long numberOfRays )
 	std::shared_ptr< TSunshape > sunshapeNode = std::dynamic_pointer_cast< TSunshape > ( m_pSunNode->GetPart( "sunshape" ) );
 	if( !sunshapeNode || sunshapeNode == nullptr )	return ( false );
 
-	//RunRaytracer( 1 );
+	//RunRaytracer( 1000 );
 
 	int maximumValueProgressScale = 100;
 	unsigned long nRaysPerThread = numberOfRays / maximumValueProgressScale;
@@ -86,7 +86,6 @@ bool RayTracer::Run( unsigned long numberOfRays )
 	std::vector< std::thread> threadsList;
 	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 		threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, nRaysPerThread ) );
-
 
 	if( ( nRaysPerThread * maximumValueProgressScale ) < numberOfRays )
 		threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, ( numberOfRays-( nRaysPerThread* maximumValueProgressScale ) ) ) );
