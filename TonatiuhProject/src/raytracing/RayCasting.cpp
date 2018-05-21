@@ -37,7 +37,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
 #include "ParallelRandomDeviate.h"
 #include "Ray.h"
 #include "RayCasting.h"
@@ -71,23 +70,31 @@ RayCasting::~RayCasting()
  */
 bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< std::string > notFirstStageNodesURL )
 {
+	std::cout<<"START RayCasting::SetScene"<<std::endl;
 
 	m_pSunNode = std::dynamic_pointer_cast< TSunNode > ( scene->GetPart( "light" ) );
 	if( m_pSunNode == nullptr )	return ( false );
 
+	std::cout<<"\t m_pSunNode: "<<m_pSunNode->GetName()<<std::endl;
 	std::vector<std::string> scenePartNames = scene->GetPartNames();
+	std::cout<<"\t scenePartNames: "<<scenePartNames.size()<<std::endl;
 	std::shared_ptr< TGroupNode > childrenRoot = std::dynamic_pointer_cast< TGroupNode > ( scene->GetPart( scenePartNames[0] ) );
 	if( childrenRoot == nullptr )	return ( false );
+
+	std::cout<<"\t childrenRoot: "<<childrenRoot->GetName()<<std::endl;
 
 	m_sceneRootNode.reset();
 	m_sceneRootNode = std::make_unique< RayCastingNode >() ;
 
+	std::cout<<"\t m_sceneRootNode: "<<std::endl;
 	Transform parentWT0(1, 0, 0, 0,
 						0, 1, 0, 0,
 						0, 0, 1, 0,
 						0, 0, 0, 1 );
+	std::cout<<"\t parentWT0: "<<parentWT0<<std::endl;
 
 	auto childrenContainer = std::dynamic_pointer_cast< TContainerNode > ( childrenRoot );
+	std::cout<<"\t childrenContainer: "<<childrenContainer->GetName()<<std::endl;
 	if( !CreateRayTracerNodesTree( childrenContainer, m_sceneRootNode, parentWT0, "\\\\SunNode" ) )
 	{
 		//RemoveRayTracerNodesTree( m_sceneRootNode );
@@ -96,6 +103,8 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< st
 
 	double azimuthRad = m_pSunNode->GetAzimuth();
 	double zenithRad =  m_pSunNode->GetZenith();
+
+	std::cout<<"\t azimuthRad: "<<azimuthRad<<" zenithRad: "<<zenithRad<<std::endl;
 
 	double distMax =  Distance( m_sceneRootNode->boundingBox.pMin, m_sceneRootNode->boundingBox.pMax ) +10;
 	Vector3D sunVector ( sin(zenithRad) * sin(azimuthRad), cos(zenithRad), -sin(zenithRad) * cos(azimuthRad) );
@@ -230,6 +239,7 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< st
 		delete[] areaMatrix[i];
 	delete[] areaMatrix;
 
+	std::cout<<" END RayCasting::SetScene"<<std::endl;
 	return ( true );
 }
 
@@ -314,21 +324,19 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
  */
 bool RayCasting::CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& node, std::shared_ptr< RayCastingNode >& rTRNode, Transform parentWT0, std::string parentURL )
 {
-
 	rTRNode->nodeURL = parentURL + "\\" + node->GetName();
 
 	std::shared_ptr< TGroupNode > nodeGroup = std::dynamic_pointer_cast< TGroupNode > ( node );
 	if( nodeGroup != nullptr )
 	{
-
 		Transform transformOTW = nodeGroup->GetTrasformation();
 		if( !transformOTW.GetMatrix() ) 	return ( false );
 		rTRNode->wtoTransformation = (transformOTW.GetInverse() * parentWT0 );
 		rTRNode->otwTransformation = rTRNode->wtoTransformation.GetInverse();
 
-
 		std::shared_ptr< TNodesList > childrenListNode = std::dynamic_pointer_cast<  TNodesList > ( nodeGroup->GetPart( "childrenList" ) );
 		if( !childrenListNode || rTRNode == nullptr )	return ( false );
+
 		int numberOfChildren = childrenListNode->Count();
 
 		BBox nodeBB;
@@ -353,7 +361,6 @@ bool RayCasting::CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& no
 	}
 	else
 	{
-
 		m_surfacesNodeList.push_back(rTRNode);
 		rTRNode->wtoTransformation = parentWT0;
 		rTRNode->otwTransformation = parentWT0.GetInverse();
@@ -370,7 +377,6 @@ bool RayCasting::CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& no
 
 		rTRNode->boundingBox = rTRNode->otwTransformation( shape->GetBondingBox() );
 	}
-
 	return ( true );
 }
 
