@@ -78,6 +78,7 @@ struct RayCastingNode
 	//Returns true if there is an output ray.
 	bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, RayCastingNode** intersectedNode, Ray* outputRay )
 	{
+		//std::cout<<"RayCastingNode::Intersect "<<nodeURL<<" ray "<<ray.origin<<" - "<<ray.direction()<<std::endl;
 		//Check if the ray intersects with the BoundingBox
 		if( !boundingBox.IntersectP(ray) ) return ( false );
 

@@ -317,7 +317,6 @@ bool RayCasting::CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& no
 
 	rTRNode->nodeURL = parentURL + "\\" + node->GetName();
 
-
 	std::shared_ptr< TGroupNode > nodeGroup = std::dynamic_pointer_cast< TGroupNode > ( node );
 	if( nodeGroup != nullptr )
 	{

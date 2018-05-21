@@ -380,7 +380,7 @@ bool TNodesDocument::ReadNodeList( QDomElement node, std::shared_ptr< TNodesList
 
 					return ( false );
 				}
-				return ( true );
+				//return ( true );
 			}
 			else
 			{

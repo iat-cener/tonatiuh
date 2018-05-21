@@ -548,7 +548,6 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsSelectedData( QString fil
 void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 {
 
-	std::cout<<"PhotonMapExportToBinaryFile::RemoveExistingFiles "<<std::endl;
 	QDir exportDirectory( m_exportDirecotryName.c_str() );
 
 
@@ -595,8 +594,6 @@ void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 	QFileInfoList partialFilesList = exportDirectory.entryInfoList();
 	for( int i = 0; i< partialFilesList.count(); ++i )
 	{
-
-		std::cout<<"PhotonMapExportToBinaryFile::RemoveExistingFiles "<<partialFilesList[i].absoluteFilePath().toStdString()<<std::endl;
 
 		QFile partialFile( partialFilesList[i].absoluteFilePath() );
 		if(partialFile.exists() && !partialFile.remove()) {
