@@ -91,8 +91,15 @@ bool TParameter::FromString( const std::string& value )
 		std::stringstream{ value } >> dValue;
 		m_variant = dValue;
 	}
-	//Point3D
+	//bool
 	else if( m_variant.value().index() == 3 )
+	{
+		bool bValue;
+		std::stringstream{ value } >> bValue;
+		m_variant = bValue;
+	}
+	//Point3D
+	else if( m_variant.value().index() == 4 )
 	{
 		std::vector< std::string > pointCoordinatesValues = nf::StringSplit( value, "\\s+" );
 		if( pointCoordinatesValues.size () != 3 )
@@ -108,7 +115,7 @@ bool TParameter::FromString( const std::string& value )
 
 	}
 	//EnumeratedTypes
-	else if( m_variant.value().index() == 4 )
+	else if( m_variant.value().index() == 5 )
 	{
 		EnumeratedTypes enumType = std::get<EnumeratedTypes>(m_variant.value());
 		enumType.SetValue( value );
@@ -191,8 +198,17 @@ std::string TParameter::ToString() const
 		double_convert << std::get<double>(m_variant.value());
 		return ( double_convert.str() );
 	}
-	//Point3D
+
+	//bool
 	else if( m_variant.value().index() == 3 )
+	{
+		std::ostringstream double_convert;
+		double_convert << std::get<bool>(m_variant.value());
+		return ( double_convert.str() );
+	}
+
+	//Point3D
+	else if( m_variant.value().index() == 4 )
 	{
 		Point3D pointCoordinates = std::get<double>(m_variant.value());
 		std::stringstream ss;
@@ -204,7 +220,7 @@ std::string TParameter::ToString() const
 		return ( ss.str() );
 	}
 	//EnumeratedTypes
-	else if( m_variant.value().index() == 4 )
+	else if( m_variant.value().index() == 5 )
 	{
 		EnumeratedTypes enumType = std::get<EnumeratedTypes>(m_variant.value());
 		return ( enumType.GetSelectedName() );

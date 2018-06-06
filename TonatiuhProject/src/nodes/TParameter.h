@@ -61,7 +61,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 /** Base class of all Tonatiuh parameters: TParameter*/
 
 
-typedef std::optional<std::variant<std::string, int, double, Point3D, EnumeratedTypes> > tonatiuh_variant;
+typedef std::optional<std::variant<std::string, int, double, bool, Point3D, EnumeratedTypes> > tonatiuh_variant;
 
 class NODE_API TParameter
 {
