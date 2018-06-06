@@ -393,7 +393,7 @@ void PluginManager::LoadTonatiuhPlugin( const std::string& fileName, std::string
 	if( strcmp( tonatiuhPluginDetails->pluginType, "TShapeFactory" ) == 0 )	LoadTShapePlugin( library, error  );
 	if( strcmp( tonatiuhPluginDetails->pluginType, "TSunshapeFactory" ) == 0 )	LoadTSunshapePlugin( library, error  );
 	if( strcmp( tonatiuhPluginDetails->pluginType, "TTrackerFactory" ) == 0 )	LoadTTrackerPlugin( library, error  );
-	if( strcmp( tonatiuhPluginDetails->pluginType, "TTransmissivityFactory" ) == 0 )	LoadTTrackerPlugin( library, error  );
+	if( strcmp( tonatiuhPluginDetails->pluginType, "TTransmissivityFactory" ) == 0 )	LoadTTransmissivityPlugin( library, error  );
 
 	m_tonatiuhPluginLibraries.push_back( std::move( library ) );
 }

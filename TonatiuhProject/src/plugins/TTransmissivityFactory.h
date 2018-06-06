@@ -61,7 +61,7 @@ public:
     }
     virtual void Init() const  = 0;
     virtual std::string TTransmissivityName() const  = 0;
-    virtual std::string TTransmissivityNodeIcon() const = 0;
+    virtual std::string TTransmissivityIcon() const = 0;
     virtual std::shared_ptr< TTransmissivity > CreateTTransmissivity( ) const = 0;
 
 };
