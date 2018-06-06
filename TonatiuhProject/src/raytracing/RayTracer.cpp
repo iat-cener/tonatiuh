@@ -53,7 +53,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 RayTracer::RayTracer(  )
 :m_pRandomNumberGenerator( 0 ),
  m_pPhotonMap( 0 ),
- m_pSunNode( nullptr )
+ m_pSunNode( nullptr ),
+ m_pTransmissivityNode( nullptr )
 {
 
 }
@@ -84,12 +85,23 @@ bool RayTracer::Run( unsigned long numberOfRays )
 	unsigned long nRaysPerThread = numberOfRays / maximumValueProgressScale;
 
 	std::vector< std::thread> threadsList;
-	for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
-		threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, nRaysPerThread ) );
 
-	if( ( nRaysPerThread * maximumValueProgressScale ) < numberOfRays )
-		threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, ( numberOfRays-( nRaysPerThread* maximumValueProgressScale ) ) ) );
+	if( m_pTransmissivityNode == nullptr )
+	{
+		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
+			threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, nRaysPerThread ) );
 
+		if( ( nRaysPerThread * maximumValueProgressScale ) < numberOfRays )
+			threadsList.push_back( std::thread( &RayTracer::RunRaytracer, this, ( numberOfRays-( nRaysPerThread* maximumValueProgressScale ) ) ) );
+	}
+	else
+	{
+		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
+			threadsList.push_back( std::thread( &RayTracer::RunRaytracerWithTransmissivity, this, nRaysPerThread ) );
+
+		if( ( nRaysPerThread * maximumValueProgressScale ) < numberOfRays )
+			threadsList.push_back( std::thread( &RayTracer::RunRaytracerWithTransmissivity, this, ( numberOfRays-( nRaysPerThread* maximumValueProgressScale ) ) ) );
+	}
 
 	for( auto& th : threadsList )
 		th.join();
@@ -134,6 +146,8 @@ bool RayTracer::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector<std:
 {
 	if( scene == nullptr )	return ( false );
 	m_pSunNode = std::dynamic_pointer_cast< TSunNode > ( scene->GetPart( "light" ) );
+
+	m_pTransmissivityNode = std::dynamic_pointer_cast< TTransmissivity > ( scene->GetPart( "transmisivity" ) );
 
 	return ( true );
 }

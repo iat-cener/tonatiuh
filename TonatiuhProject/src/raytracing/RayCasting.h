@@ -157,6 +157,7 @@ public:
 
 protected:
 	void RunRaytracer( unsigned long numberOfRays );
+	void RunRaytracerWithTransmissivity( unsigned long numberOfRays );
 
 private:
 	bool CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& node, std::shared_ptr< RayCastingNode >& rTRNode, Transform parentWT0, std::string parentURL );

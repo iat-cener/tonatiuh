@@ -58,14 +58,18 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
     * -1: this information is not available
     * 0: the ray has not been absorbed.
     * 1: the ray has been absorbed.
-  - ray direction: incident ray direction. Null vector if this information is not available.
+  - ray direction: incident ray direction. Null vector if this information is not available.  (into global and local to surface coordinates system)
 */
 
 struct RAYTRACING_API  Photon
 {
 	Photon( );
 	Photon( const Photon& photon );
-	Photon( Point3D posW,  Point3D posL, int side, double id = 0, std::string intersectedSurfaceURL = std::string( "" ), int absorbedPhoton = 0, Vector3D rayDir = Vector3D() );
+	Photon( double id,
+			Point3D posW,  Point3D posL,
+			int side, std::string intersectedSurfaceURL = std::string( "" ),
+			int absorbedPhoton = 0,
+			Vector3D rayDirW = Vector3D(), Vector3D rayDirL = Vector3D() );
 	~Photon();
 
 	double id;
@@ -74,7 +78,8 @@ struct RAYTRACING_API  Photon
 	std::string intersectedSurfaceURL;
 	int side;
 	int isAbsorbed;
-	Vector3D rayDir;
+	Vector3D rayDirWorld; //global
+	Vector3D rayDirLocal; //local
 
 };
 

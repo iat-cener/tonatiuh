@@ -39,19 +39,34 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Photon.h"
 
 Photon::Photon( )
-:id( -1 ), posWorld( Point3D()), posLocal( Point3D()), intersectedSurfaceURL( std::string("") ), side(-1 ), isAbsorbed( -1 ), rayDir( Vector3D{} )
+:id( -1 ),
+ posWorld( Point3D()), posLocal( Point3D()),
+ intersectedSurfaceURL( std::string("") ), side(-1 ),
+ isAbsorbed( -1 ),
+ rayDirWorld( Vector3D{} ), rayDirLocal( Vector3D{} )
 {
 
 }
 
 Photon::Photon( const Photon& photon )
-:id( photon.id ), posWorld( photon.posWorld ), posLocal( photon.posLocal ), intersectedSurfaceURL( photon.intersectedSurfaceURL ), side( photon.side ), isAbsorbed( photon.isAbsorbed )
+:id( photon.id ),
+ posWorld( photon.posWorld ), posLocal( photon.posLocal ),
+ intersectedSurfaceURL( photon.intersectedSurfaceURL ), side( photon.side ),
+ isAbsorbed( photon.isAbsorbed ),
+ rayDirWorld( photon.rayDirWorld ), rayDirLocal( photon.rayDirLocal )
 {
 
 }
 
-Photon::Photon( Point3D posW, Point3D posL, int side, double id, std::string intersectedSurfaceURL, int absorbedPhoton, Vector3D rayDir )
-:id(id), posWorld(posW), posLocal( posL ), intersectedSurfaceURL( intersectedSurfaceURL ), side( side ), isAbsorbed( absorbedPhoton), rayDir( rayDir)
+Photon::Photon( double id, Point3D posW, Point3D posL,
+		int side, std::string intersectedSurfaceURL,
+		int absorbedPhoton,
+		Vector3D rayDirW, Vector3D rayDirL )
+:id(id),
+ posWorld(posW), posLocal( posL ),
+ intersectedSurfaceURL( intersectedSurfaceURL ), side( side ),
+ isAbsorbed( absorbedPhoton),
+ rayDirWorld( rayDirW), rayDirLocal( rayDirL)
 {
 
 }

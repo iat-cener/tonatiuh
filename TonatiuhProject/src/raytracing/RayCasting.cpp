@@ -262,7 +262,7 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 		if( NewRay( &ray, rand ) )
 		{
 
-			photonsVector.push_back( Photon( ray.origin, worldToSun(ray.origin), 1, 0, "\\\\SunNode" ) );
+			photonsVector.push_back( Photon( 0, ray.origin, worldToSun(ray.origin), 1, "\\\\SunNode" ) );
 			int rayLength = 0;
 
 			RayCastingNode* intersectedSurface = 0;
@@ -281,8 +281,9 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 				if( isReflectedRay && intersectedSurface )
 				{
 					Point3D intersectionPointW = (ray)( ray.maxt );
-					photonsVector.push_back( Photon( intersectionPointW, intersectedSurface->wtoTransformation( intersectionPointW ),
-							isFront, ++rayLength, intersectedSurface->nodeURL ) );
+					Vector3D rayDirectionW = Vector3D ( ray.origin - intersectionPointW );
+					photonsVector.push_back( Photon( ++rayLength, intersectionPointW, intersectedSurface->wtoTransformation( intersectionPointW ),
+							isFront, intersectedSurface->nodeURL, 0, rayDirectionW, intersectedSurface->wtoTransformation( rayDirectionW ) ) );
 
 					//Prepare node and ray for next iteration
 					ray = reflectedRay;
@@ -295,14 +296,105 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 				if( ray.maxt == HUGE_VAL  )
 				{
 					ray.maxt = 0.1;
-					photonsVector.push_back( Photon( (ray)( ray.maxt ), (ray)( ray.maxt ),
-							0, ++rayLength, std::string(), 0 ) );
+					photonsVector.push_back( Photon( ++rayLength,  (ray)( ray.maxt ), (ray)( ray.maxt ),
+							0, std::string(), 0 ) );
 				}
 				else
 				{
 					Point3D intersectionPointW = (ray)( ray.maxt );
-					photonsVector.push_back( Photon( intersectionPointW, intersectedSurface->wtoTransformation( intersectionPointW ),
-							isFront, ++rayLength, intersectedSurface->nodeURL, 1 ) );
+					Vector3D rayDirectionW = Vector3D ( ray.origin - intersectionPointW );
+					photonsVector.push_back( Photon( ++rayLength, intersectionPointW, intersectedSurface->wtoTransformation( intersectionPointW ),
+							isFront, intersectedSurface->nodeURL, 1, rayDirectionW, intersectedSurface->wtoTransformation( rayDirectionW )  ) );
+				}
+			}
+
+		}
+
+	}
+
+	photonsVector.resize( photonsVector.size() );
+
+
+	//m_mutexPhotonMap.lock();
+	m_pPhotonMap->StoreRays( photonsVector );
+	//m_mutexPhotonMap.unlock();
+
+}
+
+
+/*!
+ * Executes the ray tracer for the cases that transmissivity is defined.
+ */
+void RayCasting::RunRaytracerWithTransmissivity( unsigned long numberOfRays)
+{
+
+	std::vector< Photon > photonsVector;
+
+
+	Transform worldToSun = m_sunTransformSTW.GetInverse();
+
+	ParallelRandomDeviate rand( m_pRandomNumberGenerator, &m_randomMutex );
+
+	for(  unsigned long  i = 0; i < numberOfRays; ++i )
+	{
+		Ray ray;
+		if( NewRay( &ray, rand ) )
+		{
+
+			photonsVector.push_back( Photon( 0, ray.origin, worldToSun(ray.origin), 1, "\\\\SunNode" ) );
+			int rayLength = 0;
+
+			RayCastingNode* intersectedSurface = 0;
+			bool isFront = false;
+
+			//Trace the ray
+			bool isReflectedRay = true;
+			while( isReflectedRay )
+			{
+				intersectedSurface = 0;
+				isFront = 0;
+				Ray reflectedRay;
+				isReflectedRay = m_sceneRootNode->Intersect( ray, rand, &isFront, &intersectedSurface, &reflectedRay );
+
+				if( rayLength > 0 )
+				{
+					if( m_pTransmissivityNode && !m_pTransmissivityNode->IsTransmitted( ray.maxt, rand ) )
+					{
+						++rayLength;
+						isReflectedRay = false;
+						intersectedSurface = 0;
+						ray.maxt = HUGE_VAL;
+					}
+
+				}
+
+				if( isReflectedRay && intersectedSurface )
+				{
+					Point3D intersectionPointW = (ray)( ray.maxt );
+					Vector3D rayDirectionW = Vector3D ( ray.origin - intersectionPointW );
+					photonsVector.push_back( Photon( ++rayLength, intersectionPointW, intersectedSurface->wtoTransformation( intersectionPointW ),
+							isFront, intersectedSurface->nodeURL, 0, rayDirectionW, intersectedSurface->wtoTransformation( rayDirectionW ) ) );
+
+					//Prepare node and ray for next iteration
+					ray = reflectedRay;
+				}
+
+			}
+
+			if( !(rayLength == 0 && ray.maxt == HUGE_VAL) )
+			{
+				if( ray.maxt == HUGE_VAL  )
+				{
+					ray.maxt = 0.1;
+					photonsVector.push_back( Photon( ++rayLength,  (ray)( ray.maxt ), (ray)( ray.maxt ),
+							0, std::string(), 0 ) );
+				}
+				else
+				{
+					Point3D intersectionPointW = (ray)( ray.maxt );
+					Vector3D rayDirectionW = Vector3D ( ray.origin - intersectionPointW );
+					photonsVector.push_back( Photon( ++rayLength, intersectionPointW, intersectedSurface->wtoTransformation( intersectionPointW ),
+							isFront, intersectedSurface->nodeURL, 1, rayDirectionW, intersectedSurface->wtoTransformation( rayDirectionW )  ) );
 				}
 			}
 

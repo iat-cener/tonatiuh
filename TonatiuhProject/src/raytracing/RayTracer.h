@@ -51,6 +51,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Transform.h"
 #include "TSceneNode.h"
 #include "TSunNode.h"
+#include "TTransmissivity.h"
 
 class ParallelRandomDeviate;
 class RandomDeviate;
@@ -102,6 +103,7 @@ public:
 protected:
 	bool NewRay( Ray* ray, ParallelRandomDeviate& rand );
 	virtual void RunRaytracer( unsigned long numberOfRays ) = 0;
+	virtual void RunRaytracerWithTransmissivity( unsigned long numberOfRays ) = 0;
 
 protected:
 	RandomDeviate* m_pRandomNumberGenerator;
@@ -109,6 +111,7 @@ protected:
 
 	TPhotonMap* m_pPhotonMap;
 	std::shared_ptr< TSunNode > m_pSunNode;
+	std::shared_ptr< TTransmissivity > m_pTransmissivityNode;
 	LightOriginShape m_lightOriginShape;
 	Transform m_sunTransformSTW;
 };

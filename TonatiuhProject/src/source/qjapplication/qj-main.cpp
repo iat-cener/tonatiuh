@@ -59,7 +59,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "PluginManager.h"
 #include "RayCasting.h"
-#include "TNodesDocument.h"
+#include "TJSONNodesDocument.h"
 #include "TPhotonMap.h"
 #include "TShapeFactory.h"
 #include "TSunshapeFactory.h"
@@ -113,30 +113,6 @@ int main ( int argc, char** argv )
 
 	std::cout<<"Tonatiuh 3.0 TNodesDatabase"<<std::endl;
 	TNodesDatabase::Init();
-
-	/*
-
-	 QLibrary library1("geometry.dll");
-	 QLibrary library2("nodes.dll");
-	 if (! library1.load() )	return ( -1 );
-	 if (! library2.load() )	return ( -1 );
-
-
-	 typedef void (*Vector3D )();
-	 Vector3D vector3D = (Vector3D) library2.resolve("Vector3D");
-	 */
-
-
-	/*
-	do_stuff_with_any(std::string{"Hello World"});
-	Vector3D translationValue1{ -5, 0, 0 };
-	std::any variantVector3D1( translationValue1 );
-	do_stuff_with_any( translationValue1 );
-	do_stuff_with_any(std::string{"\n\n\n"});
-	*/
-
-
-/************************************************************/
 
 
 	QDir pluginsDirectory( qApp->applicationDirPath() );
@@ -199,7 +175,19 @@ int main ( int argc, char** argv )
 
 
 
-/************************************************************/
+/************************************************************
+
+	QString fileName = argv[1] ;
+	QFile scriptFile(fileName);
+	if (!scriptFile.open(QIODevice::ReadOnly))
+	    // handle error
+	QTextStream stream(&scriptFile);
+	QString contents = stream.readAll();
+	scriptFile.close();
+	myEngine.evaluate(contents, fileName);
+
+************************************************************/
+
 
 /************************************************************
 	std::cout<<"Creating new tonatiuh scene"<<std::endl;
@@ -441,7 +429,7 @@ int main ( int argc, char** argv )
 	tonatiuhScene->UpdateTrackers( );
 
 	std::cout<<"TNodesDocument saveDocument"<<std::endl;
-	TNodesDocument saveDocument;
+	TJSONNodesDocument saveDocument;
 	saveDocument.SetRootNode( tonatiuhScene );
 	if( !saveDocument.Write( argv[1] )  )
 	{
@@ -456,8 +444,6 @@ int main ( int argc, char** argv )
 	//tonatiuhScene = 0;
 
 
-
-
 ***********************************/
 
 
@@ -465,11 +451,11 @@ int main ( int argc, char** argv )
 /***********************************/
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
 
-	TNodesDocument readDocument;
+	TJSONNodesDocument readDocument;
 	bool okRead = readDocument.Read( argv[1] );
 	if( !okRead  )
 	{
-		std::cout<<"¡¡¡Error reading file 0!!!"<<std::endl;
+		std::cerr<<"\n ¡¡¡Error reading file 0!!!"<<std::endl;
 		return ( -1 );
 	}
 
@@ -488,8 +474,9 @@ int main ( int argc, char** argv )
 		return ( -2 );
 	}
 
-	std::cout<<"\tUpdating trackers..."<<std::endl;
+	std::cout<<"\t Updating trackers..."<<std::endl;
 	sceneNode->UpdateTrackers( );
+	std::cout<<"\t Trackers updated"<<std::endl;
 
 
 
@@ -499,14 +486,13 @@ int main ( int argc, char** argv )
 
 
 	std::cout<<"Tonatiuh 3.0 saveDocument"<<std::endl;
-	TNodesDocument saveDocument2;
+	TJSONNodesDocument saveDocument2;
 	saveDocument2.SetRootNode( sceneNode );
 	if( !saveDocument2.Write( argv[2] )  )
 	{
 		std::cout<<"Error during writing file"<<std::endl;
 		return -1;
 	}
-
 
 /***********************************/
 /***********************************
