@@ -69,12 +69,12 @@ public:
 
 private:
 	void ExportAllPhotonsAllData( QString filename, std::vector< Photon >&  raysLists );
-	void ExportAllPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists );
+	//void ExportAllPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists );
 	void ExportAllPhotonsSelectedData( QString filename, std::vector< Photon >& raysLists );
 	void ExportSelectedPhotonsAllData( QString filename, std::vector< Photon >& raysLists,
 			unsigned long startIndex, 	unsigned long numberOfPhotons );
-	void ExportSelectedPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists,
-			unsigned long startIndex, 	unsigned long numberOfPhotons );
+	//void ExportSelectedPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists,
+	//		unsigned long startIndex, 	unsigned long numberOfPhotons );
 	void ExportSelectedPhotonsSelectedData( QString filename, std::vector <Photon >& raysLists,
 			unsigned long startIndex, 	unsigned long numberOfPhotons );
 

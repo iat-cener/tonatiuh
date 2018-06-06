@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "MaterialBasicRefractive.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
-//#include "tgf.h"
 #include "sf.h"
 #include "Transform.h"
 
@@ -60,7 +59,7 @@ std::shared_ptr< TNode > MaterialBasicRefractive::CreateInstance( )
 }
 
 /*!
- * Initializes MaterialStandardSpecular type.
+ * Initializes MaterialBasicRefractive type.
  */
 void MaterialBasicRefractive::Init()
 {
@@ -157,7 +156,7 @@ TNodeType MaterialBasicRefractive::GetType() const
 }
 
 /*!
- * Checks if the material generates an \a outputRay for givem \a incident ray and intersection properties defined in \a dg.
+ * Checks if the material generates an \a outputRay for given \a incident ray and intersection properties defined in \a dg.
  */
 bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {

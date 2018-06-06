@@ -154,6 +154,7 @@ TNodeType ShapeSphericalRectangle::GetType() const
  */
 bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
+
 	double radius = GetParameterValue<double>( m_radiusLabel );
 	double widthX = GetParameterValue<double>( m_widthXLabel );
 	double widthZ = GetParameterValue<double>( m_widthZLabel );
@@ -284,6 +285,7 @@ bool ShapeSphericalRectangle::Intersect( const Ray& objectRay, double* tHit, Dif
 
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
+
 	return ( true );
 }
 

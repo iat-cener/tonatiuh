@@ -482,7 +482,7 @@ int main ( int argc, char** argv )
 
 /***********************************/
 
-/************************************************************/
+/************************************************************
 
 
 	std::cout<<"Tonatiuh 3.0 saveDocument"<<std::endl;
@@ -494,7 +494,7 @@ int main ( int argc, char** argv )
 		return -1;
 	}
 
-/***********************************/
+***********************************/
 /***********************************
 	//std::cout<<"sceneNode "<<sceneNode->GetName().toStdString()<<std::endl;
 	//ChildrenBranch(sceneNode);

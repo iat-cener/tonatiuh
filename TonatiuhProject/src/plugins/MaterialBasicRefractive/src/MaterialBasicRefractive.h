@@ -36,12 +36,10 @@ Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimen
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#ifndef MaterialBasicRefractive_H_
-#define MaterialBasicRefractive_H_
+#ifndef MATERIALBASICREFRACTIVE_H_
+#define MATERIALBASICREFRACTIVE_H_
 
 #include "TMaterial.h"
-
-class SoSensor;
 
 class MaterialBasicRefractive : public TMaterial
 {
@@ -92,4 +90,4 @@ private:
 
 };
 
-#endif /*MaterialBasicRefractive_H_*/
+#endif /*MATERIALBASICREFRACTIVE_H_*/

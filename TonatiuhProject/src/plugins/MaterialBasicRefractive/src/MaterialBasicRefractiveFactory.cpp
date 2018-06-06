@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "MaterialBasicRefractiveFactory.h"
 
 /*!
- * Initializes MaterialStandardSpecular node
+ * Initializes MaterialBasicRefractive node
  */
 void MaterialBasicRefractiveFactory::Init() const
 {

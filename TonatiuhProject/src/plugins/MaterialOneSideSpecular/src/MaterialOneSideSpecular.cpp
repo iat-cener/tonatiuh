@@ -32,7 +32,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
+Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
@@ -146,7 +146,7 @@ bool MaterialOneSideSpecular::OutputRay( const Ray& incident, DifferentialGeomet
 {
 
 	double reflectivity = GetParameterValue<double>( m_reflectivityLabel );
-	bool isFront = GetParameterValue<double>( m_isFrontLabel );
+	bool isFront = GetParameterValue<bool>( m_isFrontLabel );
 
 	bool shapeFrontSide = ( DotProduct( dg->normal, incident.direction() ) > 0 ) ? false : true;
 
@@ -206,6 +206,7 @@ bool MaterialOneSideSpecular::OutputRay( const Ray& incident, DifferentialGeomet
 
 	double cosTheta = DotProduct( normalVector, incident.direction() );
 	outputRay->setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
+
 	return true;
 
 }

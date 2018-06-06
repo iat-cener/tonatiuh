@@ -111,8 +111,6 @@ void PhotonMapExportToBinaryFile::SavePhotonMap( std::vector < Photon >& raysLis
 
 		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
 			ExportAllPhotonsAllData( exportFilename, raysLists );
-		else if( m_saveCoordinates && m_saveSide && !m_savePrevNextID && m_saveSurfaceID )
-			ExportAllPhotonsNotNextPrevID( exportFilename, raysLists );
 		else
 			ExportAllPhotonsSelectedData( exportFilename, raysLists );
 	}
@@ -231,60 +229,19 @@ void PhotonMapExportToBinaryFile::ExportAllPhotonsAllData( QString filename, std
 		//m_saveSurfaceID
 		out<<double( urlId );
 
+		//isAbsorbed;
+		out<<photon.isAbsorbed;
+
+		//rayDir;
+		Vector3D rayDir = photon.rayDirLocal;
+		if( m_saveCoordinatesInGlobal )
+			rayDir = photon.rayDirWorld;
+		out<<rayDir.x;
+		out<<rayDir.y;
+		out<<rayDir.z;
+
 		previousPhotonID = m_exportedPhotons;
 	}
-	exportFile.close();
-
-}
-
-/*!
- * Exports \a raysLists photons data except previous and next photon identifier to file \a filename.
- */
-void PhotonMapExportToBinaryFile::ExportAllPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists )
-{
-
-	QFile exportFile( filename );
-	exportFile.open( QIODevice::Append );
-
-	QDataStream out( &exportFile );
-
-	unsigned long nPhotons = raysLists.size();
-	for( unsigned long i = 0; i < nPhotons; ++i )
-	{
-		Photon photon = raysLists[i];
-		unsigned long urlId = 0;
-		if( !photon.intersectedSurfaceURL.empty() )
-		{
-			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
-			if (it == m_saveSurfacesURLList.end())
-			{
-				// url is not in vector
-				m_saveSurfacesURLList.push_back( photon.intersectedSurfaceURL );
-				urlId = m_saveSurfacesURLList.size();
-
-			} else
-			{
-				//urlId = m_saveSurfacesURLList.indexOf( photon.intersectedSurfaceURL ) + 1;
-				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
-			}
-		}
-
-
-		out<<double( ++m_exportedPhotons );
-
-		//m_saveCoordinates
-		Point3D scenePos = photon.posLocal;
-		if( m_saveCoordinatesInGlobal )
-			scenePos = photon.posWorld;
-		out<<scenePos.x << scenePos.y << scenePos.z;
-
-		//m_saveSide
-		out<<double( photon.side );
-
-		//m_saveSurfaceID
-		out<<double( urlId );
-	}
-
 	exportFile.close();
 
 }
@@ -343,6 +300,21 @@ void PhotonMapExportToBinaryFile::ExportAllPhotonsSelectedData( QString filename
 
 		if( m_saveSurfaceID )
 			out<<double( urlId );
+
+		//isAbsorbed;
+		if( m_saveIsAbsorbed )
+			out<<photon.isAbsorbed;
+
+		//rayDir;
+		if( m_saveRayDirection )
+		{
+			Vector3D rayDir = photon.rayDirLocal;
+			if( m_saveCoordinatesInGlobal )
+				rayDir = photon.rayDirWorld;
+			out<<rayDir.x;
+			out<<rayDir.y;
+			out<<rayDir.z;
+		}
 
 		previousPhotonID = m_exportedPhotons;
 
@@ -406,70 +378,26 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsAllData( QString filename
 		else
 			out <<0.0;
 
-
 		//m_saveSurfaceID
 		out<<double( urlId );
+
+		//isAbsorbed;
+		out<<photon.isAbsorbed;
+
+		//rayDir;
+		Vector3D rayDir = photon.rayDirLocal;
+		if( m_saveCoordinatesInGlobal )
+			rayDir = photon.rayDirWorld;
+		out<<rayDir.x;
+		out<<rayDir.y;
+		out<<rayDir.z;
 
 		previousPhotonID = m_exportedPhotons;
+
 		exportedPhotonsToFile++;
 
 	}
 
-
-	exportFile.close();
-
-}
-
-/*!
- * Exports \a numberOfPhotons photons from \a raysLists to file \a filename starting from [\a startIndexRaysList, \a endIndexRaysList ].
- */
-void PhotonMapExportToBinaryFile::ExportSelectedPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists,
-		unsigned long startIndex, unsigned long numberOfPhotons )
-{
-	QFile exportFile( filename );
-	exportFile.open( QIODevice::Append );
-
-	QDataStream out( &exportFile );
-
-
-	unsigned long exportedPhotonsToFile = 0;
-	while( exportedPhotonsToFile < numberOfPhotons )
-	{
-		Photon photon = raysLists[startIndex + exportedPhotonsToFile];
-		unsigned long urlId = 0;
-		if( !photon.intersectedSurfaceURL.empty() )
-		{
-			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
-			if (it == m_saveSurfacesURLList.end())
-			{
-				// url is not in vector
-				m_saveSurfacesURLList.push_back( photon.intersectedSurfaceURL );
-				urlId = m_saveSurfacesURLList.size();
-
-			} else
-			{
-				//urlId = m_saveSurfacesURLList.indexOf( photon.intersectedSurfaceURL ) + 1;
-				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
-			}
-		}
-
-		out<<double( ++m_exportedPhotons );
-
-		//m_saveCoordinates
-		Point3D scenePos = photon.posLocal;
-		if( m_saveCoordinatesInGlobal )
-			scenePos = photon.posWorld;
-		out<<scenePos.x << scenePos.y << scenePos.z;
-
-		//m_saveSide
-		double side = double( photon.side );
-		out<<side;
-
-		//m_saveSurfaceID
-		out<<double( urlId );
-
-		exportedPhotonsToFile++;
-	}
 
 	exportFile.close();
 
@@ -535,6 +463,22 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsSelectedData( QString fil
 		if( m_saveSurfaceID )
 			out<<double( urlId );
 
+		//isAbsorbed;
+		if( m_saveIsAbsorbed )
+			out<<photon.isAbsorbed;
+
+		//rayDir;
+		if( m_saveRayDirection )
+		{
+			Vector3D rayDir = photon.rayDirLocal;
+			if( m_saveCoordinatesInGlobal )
+				rayDir = photon.rayDirWorld;
+			out<<rayDir.x;
+			out<<rayDir.y;
+			out<<rayDir.z;
+		}
+
+
 		previousPhotonID = m_exportedPhotons;
 		exportedPhotonsToFile++;
 	}
@@ -552,40 +496,6 @@ void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 
 
 	QString filename( m_photonsFilename.c_str() );
-	/*
-	if( m_oneFile )
-	{
-		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
-		QFile exportFile( exportFilename );
-		if(exportFile.exists()&&!exportFile.remove()) {
-				QString message= QString( "Error deleting %1.\nThe file is in use. Please, close it before continuing. \n" ).arg( QString( exportFilename ) );
-				//QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
-				std::cerr<<message.toStdString()<<std::endl;
-				RemoveExistingFiles();
-			}
-	}
-	else
-	{
-
-		QStringList filters;
-		filters << filename.append( QLatin1String( "_*.dat" ) );
-		exportDirectory.setNameFilters(filters);
-
-		QFileInfoList partialFilesList = exportDirectory.entryInfoList();
-		for( int i = 0; i< partialFilesList.count(); ++i )
-		{
-			QFile partialFile( partialFilesList[i].absoluteFilePath() );
-			if(partialFile.exists() && !partialFile.remove()) {
-					QString message= QString( "Error deleting %1.\nThe file is in use. Please, close it before continuing. \n" ).arg( QString( partialFilesList[i].absoluteFilePath() ) );
-					//QMessageBox::warning( NULL, QLatin1String( "Tonatiuh" ), message );
-
-					std::cerr<<message.toStdString()<<std::endl;
-					RemoveExistingFiles();
-				}
-
-		}
-	}
-	*/
 
 	QStringList filters;
 	filters << filename.append( QLatin1String( "*.dat" ) );
@@ -632,8 +542,6 @@ void PhotonMapExportToBinaryFile::SaveToVariousFiles( std::vector <Photon >& ray
 
 			if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
 				ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
-			else if( m_saveCoordinates && m_saveSide && !m_savePrevNextID && m_saveSurfaceID )
-				ExportSelectedPhotonsNotNextPrevID( currentFileName, raysLists, startIndex, nPhotonsToExport );
 			else
 				ExportSelectedPhotonsSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
 			m_currentFileID++;
@@ -656,8 +564,6 @@ void PhotonMapExportToBinaryFile::SaveToVariousFiles( std::vector <Photon >& ray
 
 		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
 			ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
-		else if( m_saveCoordinates && m_saveSide && !m_savePrevNextID && m_saveSurfaceID )
-			ExportSelectedPhotonsNotNextPrevID( currentFileName, raysLists, startIndex, nPhotonsToExport );
 		else
 			ExportSelectedPhotonsSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
 	}
@@ -690,6 +596,17 @@ void PhotonMapExportToBinaryFile::WriteFileFormat( QString exportFilename )
 	if( m_saveSurfaceID )
 	{
 		out<<QString( QLatin1String( "surface ID\n" ) );
+	}
+	if( m_saveIsAbsorbed )
+	{
+		out<<QString( QLatin1String( "is absorbed ID\n" ) );
+	}
+
+	if( m_saveRayDirection )
+	{
+		out<<QString( QLatin1String( "ray direction x\n" ) );
+		out<<QString( QLatin1String( "ray direction y\n" ) );
+		out<<QString( QLatin1String( "ray direction z\n" ) );
 	}
 
 	out<<QString( QLatin1String( "END PARAMETERS\n" ) );
