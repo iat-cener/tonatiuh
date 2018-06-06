@@ -202,9 +202,9 @@ std::string TParameter::ToString() const
 	//bool
 	else if( m_variant.value().index() == 3 )
 	{
-		std::ostringstream double_convert;
-		double_convert << std::get<bool>(m_variant.value());
-		return ( double_convert.str() );
+		std::ostringstream bool_convert;
+		bool_convert << std::get<bool>(m_variant.value());
+		return ( bool_convert.str() );
 	}
 
 	//Point3D
