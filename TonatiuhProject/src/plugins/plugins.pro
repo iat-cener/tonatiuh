@@ -19,4 +19,5 @@ SUBDIRS = MaterialBasicRefractive \
 		SunshapePillbox \
 		TrackerHeliostat \
 		TrackerOneAxis \
-		TrackerParabolicDish
+		TrackerParabolicDish \
+		TransmissivityBallestrin
