@@ -162,7 +162,7 @@ std::string TrackerHeliostat::GetIcon() const
  */
 Transform TrackerHeliostat::GetTrasformation( ) const
 {
-	std::string transformationValue = GetParameterValue<std::string>( m_nodeTransformationLabel );
+	std::string transformationValue =  std::get<std::string>( m_pParametersList->GetValue( m_nodeTransformationLabel ).value() );
 	std::vector< std::string > transformationValues = nf::StringSplit( transformationValue,
 			"[\\s+,\\[\\]]" );
 
