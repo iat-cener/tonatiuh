@@ -171,9 +171,8 @@ bool TSceneNode::SetPart( const std::string name, std::shared_ptr< TNode > node 
 
 void TSceneNode::UpdateTrackers( )
 {
-	TSunNode* sunNode = m_partsList[m_lightName]->as<TSunNode>();
-	if( !sunNode )	return;
-
+	std::shared_ptr< TSunNode > sunNode = std::dynamic_pointer_cast< TSunNode > ( m_partsList[m_lightName] );
+	if( ( sunNode != 0 ) || ( sunNode == nullptr ) )	return;
 
 	UpdateTrackers( sunNode->GetAzimuth(), sunNode->GetZenith() );
 }
@@ -186,8 +185,8 @@ void TSceneNode::UpdateTrackersTransform( std::shared_ptr< TNode > branch, Vecto
 {
 	if( !branch )	return;
 
-	TTracker* trackerNode = branch->as<TTracker>();
-	if( trackerNode != nullptr )
+	std::shared_ptr< TTracker > trackerNode = std::dynamic_pointer_cast<  TTracker > ( branch );
+	if( ( trackerNode!= 0 ) || ( trackerNode != nullptr ) )
 	{
 
 		trackerNode->UpdateTrackerTransform( sunVector, parentWT0 );
