@@ -148,17 +148,25 @@ void TJSONNodesDocument::SetRootNode( const std::shared_ptr< TNode >& node )
  */
 bool TJSONNodesDocument::Write( std::string filename ) const
 {
+	std::cout<<"START  TJSONNodesDocument::Write"<<std::endl;
 
 	QFile tonatiuhFile( filename.c_str() );
-	if( !tonatiuhFile.open( QIODevice::WriteOnly ) )	return (false);
+	if( !tonatiuhFile.open( QIODevice::WriteOnly ) )
+	{
+		std::cerr<<" Cannot open "<<filename<<" file. "<<std::endl;
+		return (false);
+	}
 
 
 	if( !m_pRootNode || m_pRootNode == 0 )
 	{
 		tonatiuhFile.close();
+
+		std::cerr<<"The root node have not been defined. "<<std::endl;
 		return (false);
 	}
 
+	std::cout<<"\t TJSONNodesDocument::Write writtenNodes"<<std::endl;
     QList< int > writtenNodes;
     QJsonObject documentRootObject;
 	if( const TContainerNode* container = m_pRootNode->as<TContainerNode>() )
@@ -175,6 +183,7 @@ bool TJSONNodesDocument::Write( std::string filename ) const
     QJsonDocument jsonDocument( documentRootObject );
     tonatiuhFile.write( jsonDocument.toJson() );
 
+	std::cout<<"END  TJSONNodesDocument::Write"<<std::endl;
 	return (true);
 
 }
@@ -359,7 +368,6 @@ bool TJSONNodesDocument::ReadNodeList( QJsonArray jsonArray, std::shared_ptr< TN
  */
 QJsonValue TJSONNodesDocument::WriteNode( const TNode& node, QList< int >* writtenNodes ) const
 {
-
 	int nodeID = node.GetID();
 
 	QJsonObject jsonObject;
@@ -367,8 +375,7 @@ QJsonValue TJSONNodesDocument::WriteNode( const TNode& node, QList< int >* writt
 	jsonObject[ m_idLabel ] = nodeID;
 	jsonObject[ m_nameLabel ] = node.GetName().c_str();
 
-	if( writtenNodes->contains( nodeID ) )	return ( QJsonValue::Undefined );
-
+	if( writtenNodes->contains( nodeID ) )	return ( jsonObject );
 	writtenNodes->append( nodeID );
 
 	//Write parameters
@@ -402,7 +409,6 @@ QJsonValue TJSONNodesDocument::WriteNode( const TNode& node, QList< int >* writt
 		}
 		jsonObject[ m_nodeListLabel ] = jsonArray;
 	}
-
 	return ( jsonObject );
 }
 
@@ -452,6 +458,5 @@ QJsonValue TJSONNodesDocument::WriteConatinerNode( const TContainerNode& contain
 		}
 
 	}
-
 	return ( jsonObject );
 }
