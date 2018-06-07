@@ -183,6 +183,7 @@ bool TNodesDocument::Write( std::string filename ) const
 	QDomElement docummentRootElement = xmlDocument.createElement(QLatin1String( "Tonatiuh") );
 	xmlDocument.appendChild(docummentRootElement);
 
+
 	QList< int > writtenNodes;
 	bool ok = false;
 	if( const TContainerNode* container = m_pRootNode->as<TContainerNode>() )
@@ -195,7 +196,6 @@ bool TNodesDocument::Write( std::string filename ) const
 		tonatiuhFile.close();
 		return (false);
 	}
-
 
 
 	QByteArray arr = xmlDocument.toByteArray(2);

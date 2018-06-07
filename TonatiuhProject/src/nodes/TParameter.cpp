@@ -175,7 +175,6 @@ std::string TParameter::ToString() const
 	if(  m_variant == std::nullopt )
 		return ( std::string() );
 
-
 	//string
 	if( m_variant.value().index() == 0 )
 	{
@@ -210,7 +209,7 @@ std::string TParameter::ToString() const
 	//Point3D
 	else if( m_variant.value().index() == 4 )
 	{
-		Point3D pointCoordinates = std::get<double>(m_variant.value());
+		Point3D pointCoordinates = std::get<Point3D>(m_variant.value());
 		std::stringstream ss;
 		ss<<pointCoordinates.x ;
 		ss<<", ";

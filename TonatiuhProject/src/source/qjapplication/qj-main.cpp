@@ -192,7 +192,6 @@ int main ( int argc, char** argv )
 /************************************************************
 	std::cout<<"Creating new tonatiuh scene"<<std::endl;
 
-	//TSceneNode* sunNode = new TSceneNode();
 	std::shared_ptr< TSceneNode > tonatiuhScene = std::dynamic_pointer_cast<TSceneNode>( TSceneNode::CreateInstance() );
 	tonatiuhScene->SetName( "parabolic_dish_concentrator" );
 	std::cout<<" - tonatiuhScene created."<<std::endl;
@@ -450,12 +449,13 @@ int main ( int argc, char** argv )
 
 /***********************************/
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
+;
 
 	TJSONNodesDocument readDocument;
 	bool okRead = readDocument.Read( argv[1] );
 	if( !okRead  )
 	{
-		std::cerr<<"\n ¡¡¡Error reading file 0!!!"<<std::endl;
+		std::cerr<<"\t Error reading file 0!!!"<<std::endl;
 		return ( -1 );
 	}
 
@@ -464,13 +464,13 @@ int main ( int argc, char** argv )
 	std::shared_ptr< TSceneNode > sceneNode = std::dynamic_pointer_cast< TSceneNode > ( readDocument.GetRootNode() );
 	if( sceneNode == nullptr )
 	{
-		std::cout<<"¡¡¡Error reading file 1!!!"<<std::endl;
+		std::cout<<"\t Error reading file 1!!!"<<std::endl;
 		return ( -2 );
 	}
 
 	if( !sceneNode || sceneNode == 0 )
 	{
-		std::cout<<"¡¡¡Error reading file 2!!!"<<std::endl;
+		std::cout<<"\t Error reading file 2!!!"<<std::endl;
 		return ( -2 );
 	}
 
