@@ -148,7 +148,6 @@ void TJSONNodesDocument::SetRootNode( const std::shared_ptr< TNode >& node )
  */
 bool TJSONNodesDocument::Write( std::string filename ) const
 {
-	std::cout<<"START  TJSONNodesDocument::Write"<<std::endl;
 
 	QFile tonatiuhFile( filename.c_str() );
 	if( !tonatiuhFile.open( QIODevice::WriteOnly ) )
@@ -166,7 +165,6 @@ bool TJSONNodesDocument::Write( std::string filename ) const
 		return (false);
 	}
 
-	std::cout<<"\t TJSONNodesDocument::Write writtenNodes"<<std::endl;
     QList< int > writtenNodes;
     QJsonObject documentRootObject;
 	if( const TContainerNode* container = m_pRootNode->as<TContainerNode>() )
@@ -182,10 +180,7 @@ bool TJSONNodesDocument::Write( std::string filename ) const
 
     QJsonDocument jsonDocument( documentRootObject );
     tonatiuhFile.write( jsonDocument.toJson() );
-
-	std::cout<<"END  TJSONNodesDocument::Write"<<std::endl;
 	return (true);
-
 }
 
 /*!
