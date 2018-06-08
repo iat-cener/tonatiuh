@@ -86,39 +86,6 @@ private:
 	std::string m_colorLabel;
 	std::string m_transparencyLabel;
 
-	/*
-public:
-	static void initClass();
-
-    QString getIcon();
-	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
-
-	trt::TONATIUH_REAL reflectivity;
-	trt::TONATIUH_REAL sigmaSlope;
-	trt::TONATIUH_REAL sigmaSpecularity;
-	SoSFEnum distribution;
-
-	SoMFColor mAmbientColor;
-	SoMFColor mDiffuseColor;
-	SoMFColor mSpecularColor;
-	SoMFColor mEmissiveColor;
-	SoMFFloat mShininess;
-	SoMFFloat mTransparency;
-
-
-protected:
-	MaterialStandardRoughSpecular( );
-   	virtual ~MaterialStandardRoughSpecular();
-
-
-	static void updateReflectivity( void* data, SoSensor* );
-	static void updateAmbientColor( void* data, SoSensor* );
-	static void updateDiffuseColor( void* data, SoSensor* );
-	static void updateSpecularColor( void* data, SoSensor* );
-	static void updateEmissiveColor( void* data, SoSensor* );
-	static void updateShininess( void* data, SoSensor* );
-	static void updateTransparency( void* data, SoSensor* );
-*/
 };
 
 #endif /*MATERIALSTANDARDROUGHSPECULAR_H_*/
