@@ -1,4 +1,4 @@
-SET( PLUGIN ShapeFlatTriangle )
+SET( PLUGIN ShapeHyperboloid )
 
 file(GLOB ${PLUGIN}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
 

@@ -53,7 +53,7 @@ std::shared_ptr< TNode > ShapeFlatTriangle::CreateInstance( )
 }
 
 /*!
- * Initializes ShapeFlatDisk type.
+ * Initializes ShapeHyperboloid type.
  */
 void ShapeFlatTriangle::Init()
 {
@@ -95,9 +95,9 @@ std::shared_ptr< TNode > ShapeFlatTriangle::Copy() const
 	if( shapeNode == nullptr )	return ( 0  );
 
 	//Coping the parameters.
-	shapeNode->m_pParametersList->SetValue( m_aLabel, GetParameterValue<double>( m_aLabel ) );
-	shapeNode->m_pParametersList->SetValue( m_bLabel, GetParameterValue<double>( m_bLabel ) );
-	shapeNode->m_pParametersList->SetValue( m_cLabel, GetParameterValue<double>( m_cLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_aLabel, GetParameterValue<Point3D>( m_aLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_bLabel, GetParameterValue<Point3D>( m_bLabel ) );
+	shapeNode->m_pParametersList->SetValue( m_cLabel, GetParameterValue<Point3D>( m_cLabel ) );
 
 	return ( shapeNode );
 }
@@ -117,9 +117,9 @@ std::string ShapeFlatTriangle::GetIcon() const
  */
 BBox ShapeFlatTriangle::GetBondingBox() const
 {
-	Point3D aPoint = GetParameterValue<double>( m_aLabel );
-	Point3D bPoint = GetParameterValue<double>( m_bLabel );
-	Point3D cPoint = GetParameterValue<double>( m_cLabel );
+	Point3D aPoint = GetParameterValue<Point3D>( m_aLabel );
+	Point3D bPoint = GetParameterValue<Point3D>( m_bLabel );
+	Point3D cPoint = GetParameterValue<Point3D>( m_cLabel );
 
 	double xmin = std::min( aPoint.x, std::min( bPoint.x, cPoint.x ) );
 	double xmax = std::max( aPoint.x, std::max( bPoint.x, cPoint.x ) );
@@ -145,9 +145,9 @@ TNodeType ShapeFlatTriangle::GetType() const
  */
 bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg, bool* isShapeFront ) const
 {
-	Point3D aPoint = GetParameterValue<double>( m_aLabel );
-	Point3D bPoint = GetParameterValue<double>( m_bLabel );
-	Point3D cPoint = GetParameterValue<double>( m_cLabel );
+	Point3D aPoint = GetParameterValue<Point3D>( m_aLabel );
+	Point3D bPoint = GetParameterValue<Point3D>( m_bLabel );
+	Point3D cPoint = GetParameterValue<Point3D>( m_cLabel );
 
 	Vector3D vAB = Vector3D( bPoint - aPoint );
 	Vector3D vAC = Vector3D( cPoint - aPoint );
@@ -238,4 +238,3 @@ void ShapeFlatTriangle::Draw() const
 {
 
 }
-
