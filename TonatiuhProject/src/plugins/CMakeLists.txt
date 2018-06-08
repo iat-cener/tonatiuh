@@ -1,5 +1,6 @@
 ADD_SUBDIRECTORY(MaterialBasicRefractive)
 ADD_SUBDIRECTORY(MaterialOneSideSpecular)
+ADD_SUBDIRECTORY(MaterialStandardRoughSpecular)
 ADD_SUBDIRECTORY(MaterialStandardSpecular)
 ADD_SUBDIRECTORY(MaterialVirtual)
 ADD_SUBDIRECTORY(PhotonMapExportToBinaryFile)
