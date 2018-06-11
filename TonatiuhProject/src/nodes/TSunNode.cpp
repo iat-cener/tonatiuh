@@ -37,6 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include "nf.h"
 #include "TParameterList.h"
 #include "TSunNode.h"
 
@@ -72,6 +73,7 @@ void TSunNode::Init()
 TSunNode::TSunNode()
 :TContainerNode(),
  m_azimuthLabel( "azimuth" ),
+ m_disabledNodesLabel( "disabledNodes" ),
  m_zenithLabel( "zenith" )
 {
 	SetName( GetType().GetName() );
@@ -83,6 +85,7 @@ TSunNode::TSunNode()
 	//Sun coordinates
 	m_pParametersList->Append<double>( m_azimuthLabel, 0.0, true );
 	m_pParametersList->Append<double>( m_zenithLabel, 0.0, true );
+	m_pParametersList->Append<std::string>( m_disabledNodesLabel, std::string( "" ), true );
 }
 
 /*!
@@ -142,6 +145,20 @@ void TSunNode::ChangeSunPosition( double azimuth, double zenith )
 double TSunNode::GetAzimuth() const
 {
 	return ( GetParameterValue<double>( m_azimuthLabel ) );
+}
+
+/*!
+ * Returns the url of the nodes that are not defined as first stage nodes.
+ */
+std::vector<std::string> TSunNode::GetDisabledNodes() const
+{
+	std::vector< std::string > disabledNodesList;
+
+	std::string disabledNodes = GetParameterValue<std::string>( m_disabledNodesLabel );
+	if( disabledNodes.empty() )	return ( disabledNodesList );
+
+	disabledNodesList = nf::StringSplit( disabledNodes, "\\s+" );
+	return ( disabledNodesList );
 }
 
 /*!

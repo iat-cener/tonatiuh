@@ -75,6 +75,7 @@ public:
 	void ChangeSunPosition( double azimuth, double zenith );
 
 	double GetAzimuth() const;
+	std::vector<std::string> GetDisabledNodes() const;
 	virtual std::string GetIcon() const;
 	double GetZenith() const;
 	TNodeType GetType() const;
@@ -87,6 +88,7 @@ protected:
 private:
 	static TNodeType m_nodeType;
 	std::string m_azimuthLabel;
+	std::string m_disabledNodesLabel;
 	std::string m_zenithLabel;
 };
 
