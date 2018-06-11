@@ -40,9 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define PHOTONMAPEXPORTTOBINARYFILE_H_
 
 
-//!  SaveFile class provides an interface for safely writing simulation data to file.
+//!  PhotonMapExportToBinaryFile class provides an interface for safely writing simulation data to file.
 /*!
-  SaveFile is an I/O device that provides the base functionality for writing simulation data to a files, the specific file format depends on the SaveFile derived class used.
+  PhotonMapExportToBinaryFile is an I/O device that provides the base functionality for writing simulation data to a files, the specific file format depends on the SaveFile derived class used.
 */
 
 #include <string>
@@ -68,14 +68,11 @@ public:
 	bool StartSave();
 
 private:
-	void ExportAllPhotonsAllData( QString filename, std::vector< Photon >&  raysLists );
-	//void ExportAllPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists );
-	void ExportAllPhotonsSelectedData( QString filename, std::vector< Photon >& raysLists );
-	void ExportSelectedPhotonsAllData( QString filename, std::vector< Photon >& raysLists,
+	void ExportOneFileAllData( QString filename, std::vector< Photon >&  raysLists );
+	void ExportOneFileSelectedData( QString filename, std::vector< Photon >& raysLists );
+	void ExportSeveralFilesPhotonsAllData( QString filename, std::vector< Photon >& raysLists,
 			unsigned long startIndex, 	unsigned long numberOfPhotons );
-	//void ExportSelectedPhotonsNotNextPrevID( QString filename, std::vector< Photon >& raysLists,
-	//		unsigned long startIndex, 	unsigned long numberOfPhotons );
-	void ExportSelectedPhotonsSelectedData( QString filename, std::vector <Photon >& raysLists,
+	void ExportSeveralFilesSelectedData( QString filename, std::vector <Photon >& raysLists,
 			unsigned long startIndex, 	unsigned long numberOfPhotons );
 
 

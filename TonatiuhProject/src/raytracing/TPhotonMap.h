@@ -49,7 +49,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "PhotonMapExportType.h"
 
 
-
 //!  TPhotonMap is the base class that stores photons generated during the ray tracing.
 /*!
   TPhotonMap class is a template class that provides a storage way for the photons generated during a raytracing.
@@ -62,8 +61,6 @@ class RAYTRACING_API TPhotonMap
 public:
 	TPhotonMap();
 	~TPhotonMap();
-
-	void EmptyBuffer();
     void EndStore( double wPhoton );
 	std::vector< Photon > GetAllPhotons() const;
 	void SetBufferSize( unsigned long nPhotons );
@@ -72,6 +69,9 @@ public:
 
 
 private:
+
+	void EmptyBuffer();
+
     unsigned long m_bufferSize;
     unsigned long m_storedPhotonsInBuffer;
     unsigned long m_storedAllPhotons;

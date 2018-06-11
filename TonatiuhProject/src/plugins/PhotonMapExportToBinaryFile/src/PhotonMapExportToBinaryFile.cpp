@@ -90,7 +90,6 @@ void PhotonMapExportToBinaryFile::EndSave()
 	QString tmpFilename( QLatin1String( "tmpexportpotonmap.dat" ) );
 	QFile exportFile( exportFilename );
 
-
 	WriteFileFormat( exportFilename );
 	exportFile.open( QIODevice::Append );
 	QTextStream out( &exportFile );
@@ -103,16 +102,17 @@ void PhotonMapExportToBinaryFile::EndSave()
  */
 void PhotonMapExportToBinaryFile::SavePhotonMap( std::vector < Photon >& raysLists )
 {
+
 	if( m_oneFile )
 	{
 		QDir exportDirectory( m_exportDirecotryName.c_str() );
 		QString filename( m_photonsFilename.c_str() );
 		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
 
-		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
-			ExportAllPhotonsAllData( exportFilename, raysLists );
+		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID && m_saveIsAbsorbed && m_saveRayDirection)
+			ExportOneFileAllData( exportFilename, raysLists );
 		else
-			ExportAllPhotonsSelectedData( exportFilename, raysLists );
+			ExportOneFileSelectedData( exportFilename, raysLists );
 	}
 	else
 		SaveToVariousFiles( raysLists );
@@ -123,7 +123,6 @@ void PhotonMapExportToBinaryFile::SavePhotonMap( std::vector < Photon >& raysLis
  */
 void PhotonMapExportToBinaryFile::SetPowerPerPhoton( double wPhoton )
 {
-
 	m_powerPerPhoton = wPhoton;
 }
 
@@ -158,6 +157,8 @@ void PhotonMapExportToBinaryFile::SetSaveParameterValue( std::string parameterNa
 		}
 
 	}
+
+	StartSave();
 }
 
 /*!
@@ -172,7 +173,7 @@ bool PhotonMapExportToBinaryFile::StartSave()
 /*!
  * Export \a a raysList all data to file \a filename.
  */
-void PhotonMapExportToBinaryFile::ExportAllPhotonsAllData( QString filename, std::vector< Photon >& raysLists )
+void PhotonMapExportToBinaryFile::ExportOneFileAllData( QString filename, std::vector< Photon >& raysLists )
 {
 	QFile exportFile( filename );
 	exportFile.open( QIODevice::Append );
@@ -186,59 +187,49 @@ void PhotonMapExportToBinaryFile::ExportAllPhotonsAllData( QString filename, std
 	{
 
 		Photon photon = raysLists[i];
-		unsigned long urlId = 0;
-		if( !photon.intersectedSurfaceURL.empty() )
+		++m_exportedPhotons;
+
+		auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
+		if ( it != m_saveSurfacesURLList.end() )
 		{
-			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
-			if (it == m_saveSurfacesURLList.end())
-			{
-				// url is not in vector
-				m_saveSurfacesURLList.push_back( photon.intersectedSurfaceURL );
-				urlId = m_saveSurfacesURLList.size();
 
-			} else
-			{
-				//urlId = m_saveSurfacesURLList.indexOf( photon.intersectedSurfaceURL ) + 1;
-				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
-			}
+			unsigned long urlId =  std::distance( m_saveSurfacesURLList.begin(), it ) + 1;
+
+			out<<double( ++m_exportedPhotons );
+			if( photon.id < 1 )	previousPhotonID = 0;
 
 
+			//m_saveCoordinates
+			Point3D scenePos = photon.posLocal;
+			if( m_saveCoordinatesInGlobal )
+				scenePos = photon.posWorld;
+			out<<scenePos.x << scenePos.y << scenePos.z;
+
+			//m_saveSide
+			double side = double( photon.side );
+			out<<side;
+
+			//m_savePrevNexID
+			out<<previousPhotonID;
+			if( ( i < ( nPhotonElements - 1 ) ) && ( raysLists[i+1].id > 0  ) )
+				out<< double( m_exportedPhotons +1 );
+			else
+				out <<0.0;
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+
+			//isAbsorbed;
+			out<<photon.isAbsorbed;
+
+			//rayDir;
+			Vector3D rayDir = photon.rayDirLocal;
+			if( m_saveCoordinatesInGlobal )
+				rayDir = photon.rayDirWorld;
+			out<<rayDir.x;
+			out<<rayDir.y;
+			out<<rayDir.z;
 		}
-
-		out<<double( ++m_exportedPhotons );
-		if( photon.id < 1 )	previousPhotonID = 0;
-
-
-		//m_saveCoordinates
-		Point3D scenePos = photon.posLocal;
-		if( m_saveCoordinatesInGlobal )
-			scenePos = photon.posWorld;
-		out<<scenePos.x << scenePos.y << scenePos.z;
-
-		//m_saveSide
-		double side = double( photon.side );
-		out<<side;
-
-		//m_savePrevNexID
-		out<<previousPhotonID;
-		if( ( i < ( nPhotonElements - 1 ) ) && ( raysLists[i+1].id > 0  ) )
-			out<< double( m_exportedPhotons +1 );
-		else
-			out <<0.0;
-
-		//m_saveSurfaceID
-		out<<double( urlId );
-
-		//isAbsorbed;
-		out<<photon.isAbsorbed;
-
-		//rayDir;
-		Vector3D rayDir = photon.rayDirLocal;
-		if( m_saveCoordinatesInGlobal )
-			rayDir = photon.rayDirWorld;
-		out<<rayDir.x;
-		out<<rayDir.y;
-		out<<rayDir.z;
 
 		previousPhotonID = m_exportedPhotons;
 	}
@@ -250,7 +241,7 @@ void PhotonMapExportToBinaryFile::ExportAllPhotonsAllData( QString filename, std
  * Exports \a raysLists all photons data to file \a filename.
  * For each photon only selected parameters will be exported.
  */
-void PhotonMapExportToBinaryFile::ExportAllPhotonsSelectedData( QString filename, std::vector< Photon >& raysLists )
+void PhotonMapExportToBinaryFile::ExportOneFileSelectedData( QString filename, std::vector< Photon >& raysLists )
 {
 
 	QFile exportFile( filename );
@@ -263,60 +254,51 @@ void PhotonMapExportToBinaryFile::ExportAllPhotonsSelectedData( QString filename
 	for( unsigned long i = 0; i < nPhotons; ++i )
 	{
 		Photon photon = raysLists[i];
-		unsigned long urlId = 0;
-		if( !photon.intersectedSurfaceURL.empty() )
-		{
-			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
-			if (it == m_saveSurfacesURLList.end())
-			{
-				// url is not in vector
-				m_saveSurfacesURLList.push_back( photon.intersectedSurfaceURL );
-				urlId = m_saveSurfacesURLList.size();
+		++m_exportedPhotons;
 
-			} else
+		auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
+		if ( it != m_saveSurfacesURLList.end() )
+		{
+			unsigned long urlId =  std::distance( m_saveSurfacesURLList.begin(), it) +1 ;
+
+			out<<double( m_exportedPhotons );
+			if( photon.id < 1 )	previousPhotonID = 0;
+
+			if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon.posWorld.x << photon.posWorld.y << photon.posWorld.z;
+			else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )	out<<photon.posLocal.x << photon.posLocal.y << photon.posLocal.z;
+
+			if(  m_saveSide )
 			{
-				//urlId = m_saveSurfacesURLList.indexOf( photon.intersectedSurfaceURL ) + 1;
-				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
+				double side = double( photon.side );
+				out<<side;
 			}
+			if( m_savePrevNextID )
+			{
+				out<<previousPhotonID;
+				if( ( i < nPhotons - 1 ) && ( raysLists[i+1].id > 0  ) )	out<< double( m_exportedPhotons +1 );
+				else out <<0.0;
+			}
+
+			if( m_saveSurfaceID )
+				out<<double( urlId );
+
+			//isAbsorbed;
+			if( m_saveIsAbsorbed )
+				out<<photon.isAbsorbed;
+
+			//rayDir;
+			if( m_saveRayDirection )
+			{
+				Vector3D rayDir = photon.rayDirLocal;
+				if( m_saveCoordinatesInGlobal )
+					rayDir = photon.rayDirWorld;
+				out<<rayDir.x;
+				out<<rayDir.y;
+				out<<rayDir.z;
+			}
+
+			previousPhotonID = m_exportedPhotons;
 		}
-
-		out<<double( ++m_exportedPhotons );
-		if( photon.id < 1 )	previousPhotonID = 0;
-
-		if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon.posWorld.x << photon.posWorld.y << photon.posWorld.z;
-		else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )	out<<photon.posLocal.x << photon.posLocal.y << photon.posLocal.z;
-
-		if(  m_saveSide )
-		{
-			double side = double( photon.side );
-			out<<side;
-		}
-		if( m_savePrevNextID )
-		{
-			out<<previousPhotonID;
-			if( ( i < nPhotons - 1 ) && ( raysLists[i+1].id > 0  ) )	out<< double( m_exportedPhotons +1 );
-			else out <<0.0;
-		}
-
-		if( m_saveSurfaceID )
-			out<<double( urlId );
-
-		//isAbsorbed;
-		if( m_saveIsAbsorbed )
-			out<<photon.isAbsorbed;
-
-		//rayDir;
-		if( m_saveRayDirection )
-		{
-			Vector3D rayDir = photon.rayDirLocal;
-			if( m_saveCoordinatesInGlobal )
-				rayDir = photon.rayDirWorld;
-			out<<rayDir.x;
-			out<<rayDir.y;
-			out<<rayDir.z;
-		}
-
-		previousPhotonID = m_exportedPhotons;
 
 	}
 	exportFile.close();
@@ -325,7 +307,7 @@ void PhotonMapExportToBinaryFile::ExportAllPhotonsSelectedData( QString filename
 /*!
  * Exports \a numberOfPhotons photons from \a raysLists to file \a filename starting from [\a startIndexRaysList, \a endIndexRaysList ].
  */
-void PhotonMapExportToBinaryFile::ExportSelectedPhotonsAllData( QString filename, std::vector< Photon >& raysLists,
+void PhotonMapExportToBinaryFile::ExportSeveralFilesPhotonsAllData( QString filename, std::vector< Photon >& raysLists,
 		unsigned long startIndex, 	unsigned long numberOfPhotons )
 {
 
@@ -341,56 +323,48 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsAllData( QString filename
 	while( exportedPhotonsToFile < numberOfPhotons )
 	{
 		Photon photon = raysLists[startIndex + exportedPhotonsToFile];
-		unsigned long urlId = 0;
-		if( !photon.intersectedSurfaceURL.empty() )
+		++m_exportedPhotons;
+
+		auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
+		if( it != m_saveSurfacesURLList.end() )
 		{
-			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
-			if (it == m_saveSurfacesURLList.end())
-			{
-				// url is not in vector
-				m_saveSurfacesURLList.push_back( photon.intersectedSurfaceURL );
-				urlId = m_saveSurfacesURLList.size();
 
-			} else
-			{
-				//urlId = m_saveSurfacesURLList.indexOf( photon.intersectedSurfaceURL ) + 1;
-				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
-			}
+			unsigned long urlId =  std::distance( m_saveSurfacesURLList.begin(), it ) + 1;
+
+			out<<double( m_exportedPhotons );
+			if( photon.id < 1 )	previousPhotonID = 0;
+
+			//m_saveCoordinates
+			Point3D scenePos = photon.posLocal;
+			if( m_saveCoordinatesInGlobal )
+				scenePos = photon.posWorld;
+			out<<scenePos.x << scenePos.y << scenePos.z;
+
+			//m_saveSide
+			double side = double( photon.side );
+			out<<side;
+
+			//m_savePrevNexID
+			out<<previousPhotonID;
+			if( ( ( startIndex + exportedPhotonsToFile ) < ( nPhotonElements - 1 ) ) && ( raysLists[startIndex + exportedPhotonsToFile + 1].id > 0  ) )
+				out<< double( m_exportedPhotons +1 );
+			else
+				out <<0.0;
+
+			//m_saveSurfaceID
+			out<<double( urlId );
+
+			//isAbsorbed;
+			out<<photon.isAbsorbed;
+
+			//rayDir;
+			Vector3D rayDir = photon.rayDirLocal;
+			if( m_saveCoordinatesInGlobal )
+				rayDir = photon.rayDirWorld;
+			out<<rayDir.x;
+			out<<rayDir.y;
+			out<<rayDir.z;
 		}
-
-		out<<double( ++m_exportedPhotons );
-		if( photon.id < 1 )	previousPhotonID = 0;
-
-		//m_saveCoordinates
-		Point3D scenePos = photon.posLocal;
-		if( m_saveCoordinatesInGlobal )
-			scenePos = photon.posWorld;
-		out<<scenePos.x << scenePos.y << scenePos.z;
-
-		//m_saveSide
-		double side = double( photon.side );
-		out<<side;
-
-		//m_savePrevNexID
-		out<<previousPhotonID;
-		if( ( ( startIndex + exportedPhotonsToFile ) < ( nPhotonElements - 1 ) ) && ( raysLists[startIndex + exportedPhotonsToFile + 1].id > 0  ) )
-			out<< double( m_exportedPhotons +1 );
-		else
-			out <<0.0;
-
-		//m_saveSurfaceID
-		out<<double( urlId );
-
-		//isAbsorbed;
-		out<<photon.isAbsorbed;
-
-		//rayDir;
-		Vector3D rayDir = photon.rayDirLocal;
-		if( m_saveCoordinatesInGlobal )
-			rayDir = photon.rayDirWorld;
-		out<<rayDir.x;
-		out<<rayDir.y;
-		out<<rayDir.z;
 
 		previousPhotonID = m_exportedPhotons;
 
@@ -407,10 +381,9 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsAllData( QString filename
  * Exports \a numberOfPhotons photons from \a raysLists to file \a filename starting from [\a startIndexRaysList, \a endIndexRaysList ].
  *  * For each photon only selected parameters will be exported.
  */
-void PhotonMapExportToBinaryFile::ExportSelectedPhotonsSelectedData( QString filename, std::vector< Photon >& raysLists,
+void PhotonMapExportToBinaryFile::ExportSeveralFilesSelectedData( QString filename, std::vector< Photon >& raysLists,
 		unsigned long startIndex, 	unsigned long numberOfPhotons )
 {
-
 	QFile exportFile( filename );
 	exportFile.open( QIODevice::Append );
 
@@ -422,60 +395,51 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsSelectedData( QString fil
 	while( exportedPhotonsToFile < numberOfPhotons )
 	{
 		Photon photon = raysLists[startIndex + exportedPhotonsToFile];
-		unsigned long urlId = 0;
-		if( !photon.intersectedSurfaceURL.empty() )
-		{
-			auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
-			if (it == m_saveSurfacesURLList.end())
-			{
-				// url is not in vector
-				m_saveSurfacesURLList.push_back( photon.intersectedSurfaceURL );
-				urlId = m_saveSurfacesURLList.size();
+		++m_exportedPhotons;
 
-			} else
+		auto it = std::find( m_saveSurfacesURLList.begin(), m_saveSurfacesURLList.end(), photon.intersectedSurfaceURL );
+		if ( it != m_saveSurfacesURLList.end() )
+		{
+			unsigned long urlId =  std::distance( m_saveSurfacesURLList.begin(), it) + 1;
+
+			out<<double( m_exportedPhotons );
+			if( photon.id < 1 )	previousPhotonID = 0;
+
+
+			if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon.posWorld.x << photon.posWorld.y << photon.posWorld.z;
+			else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )	out<<photon.posLocal.x << photon.posLocal.y << photon.posLocal.z;
+
+			if(  m_saveSide )
 			{
-				//urlId = m_saveSurfacesURLList.indexOf( photon.intersectedSurfaceURL ) + 1;
-				urlId = std::distance( m_saveSurfacesURLList.begin(), it);
+				double side = double( photon.side );
+				out<<side;
 			}
-		}
+			if( m_savePrevNextID )
+			{
+				out<<previousPhotonID;
+				if( ( ( startIndex + exportedPhotonsToFile ) < nPhotonElements )
+						&& ( raysLists[startIndex + exportedPhotonsToFile + 1].id > 0  ) )
+					out<< double( m_exportedPhotons +1 );
+				else out <<0.0;
+			}
 
-		out<<double( ++m_exportedPhotons );
-		if( photon.id < 1 )	previousPhotonID = 0;
+			if( m_saveSurfaceID )
+				out<<double( urlId );
 
+			//isAbsorbed;
+			if( m_saveIsAbsorbed )
+				out<<photon.isAbsorbed;
 
-		if( m_saveCoordinates && m_saveCoordinatesInGlobal )	out<<photon.posWorld.x << photon.posWorld.y << photon.posWorld.z;
-		else if( m_saveCoordinates && !m_saveCoordinatesInGlobal )	out<<photon.posLocal.x << photon.posLocal.y << photon.posLocal.z;
-
-		if(  m_saveSide )
-		{
-			double side = double( photon.side );
-			out<<side;
-		}
-		if( m_savePrevNextID )
-		{
-			out<<previousPhotonID;
-			if( ( ( startIndex + exportedPhotonsToFile ) < nPhotonElements )
-					&& ( raysLists[startIndex + exportedPhotonsToFile + 1].id > 0  ) )
-				out<< double( m_exportedPhotons +1 );
-			else out <<0.0;
-		}
-
-		if( m_saveSurfaceID )
-			out<<double( urlId );
-
-		//isAbsorbed;
-		if( m_saveIsAbsorbed )
-			out<<photon.isAbsorbed;
-
-		//rayDir;
-		if( m_saveRayDirection )
-		{
-			Vector3D rayDir = photon.rayDirLocal;
-			if( m_saveCoordinatesInGlobal )
-				rayDir = photon.rayDirWorld;
-			out<<rayDir.x;
-			out<<rayDir.y;
-			out<<rayDir.z;
+			//rayDir;
+			if( m_saveRayDirection )
+			{
+				Vector3D rayDir = photon.rayDirLocal;
+				if( m_saveCoordinatesInGlobal )
+					rayDir = photon.rayDirWorld;
+				out<<rayDir.x;
+				out<<rayDir.y;
+				out<<rayDir.z;
+			}
 		}
 
 
@@ -483,7 +447,6 @@ void PhotonMapExportToBinaryFile::ExportSelectedPhotonsSelectedData( QString fil
 		exportedPhotonsToFile++;
 	}
 	exportFile.close();
-
 }
 
 /*!
@@ -498,7 +461,7 @@ void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 	QString filename( m_photonsFilename.c_str() );
 
 	QStringList filters;
-	filters << filename.append( QLatin1String( "*.dat" ) );
+	filters << filename.append( QLatin1String( "_*.dat" ) );
 	exportDirectory.setNameFilters(filters);
 
 	QFileInfoList partialFilesList = exportDirectory.entryInfoList();
@@ -523,7 +486,6 @@ void PhotonMapExportToBinaryFile::RemoveExistingFiles()
  */
 void PhotonMapExportToBinaryFile::SaveToVariousFiles( std::vector <Photon >& raysLists )
 {
-
 	QDir exportDirectory( m_exportDirecotryName.c_str() );
 
 	unsigned long nPhotons = raysLists.size();
@@ -540,10 +502,10 @@ void PhotonMapExportToBinaryFile::SaveToVariousFiles( std::vector <Photon >& ray
 
 			QString currentFileName = exportDirectory.absoluteFilePath( newName.c_str() );
 
-			if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
-				ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+			if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID && m_saveIsAbsorbed && m_saveRayDirection)
+				ExportSeveralFilesPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
 			else
-				ExportSelectedPhotonsSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+				ExportSeveralFilesSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
 			m_currentFileID++;
 
 			filePhotons = 0;
@@ -562,10 +524,10 @@ void PhotonMapExportToBinaryFile::SaveToVariousFiles( std::vector <Photon >& ray
 
 		QString currentFileName = exportDirectory.absoluteFilePath( newName.c_str() );
 
-		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID )
-			ExportSelectedPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+		if( m_saveCoordinates && m_saveSide && m_savePrevNextID && m_saveSurfaceID && m_saveIsAbsorbed && m_saveRayDirection)
+			ExportSeveralFilesPhotonsAllData( currentFileName, raysLists, startIndex, nPhotonsToExport );
 		else
-			ExportSelectedPhotonsSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
+			ExportSeveralFilesSelectedData( currentFileName, raysLists, startIndex, nPhotonsToExport );
 	}
 
 }

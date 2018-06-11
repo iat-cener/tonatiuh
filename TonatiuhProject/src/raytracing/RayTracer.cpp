@@ -54,7 +54,8 @@ RayTracer::RayTracer(  )
 :m_pRandomNumberGenerator( 0 ),
  m_pPhotonMap( 0 ),
  m_pSunNode( nullptr ),
- m_pTransmissivityNode( nullptr )
+ m_pTransmissivityNode( nullptr ),
+ m_lightNodeURL ( "//Light" )
 {
 
 }
@@ -73,7 +74,6 @@ RayTracer::~RayTracer()
  */
 bool RayTracer::Run( unsigned long numberOfRays )
 {
-
 	if( !m_pSunNode || m_pSunNode == nullptr || !m_pPhotonMap  || !m_pRandomNumberGenerator )	return ( false );
 
 	std::shared_ptr< TSunshape > sunshapeNode = std::dynamic_pointer_cast< TSunshape > ( m_pSunNode->GetPart( "sunshape" ) );
@@ -96,25 +96,27 @@ bool RayTracer::Run( unsigned long numberOfRays )
 	}
 	else
 	{
+		std::cout<<"\t m_pTransmissivityNode "<<std::endl;
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 			threadsList.push_back( std::thread( &RayTracer::RunRaytracerWithTransmissivity, this, nRaysPerThread ) );
 
 		if( ( nRaysPerThread * maximumValueProgressScale ) < numberOfRays )
 			threadsList.push_back( std::thread( &RayTracer::RunRaytracerWithTransmissivity, this, ( numberOfRays-( nRaysPerThread* maximumValueProgressScale ) ) ) );
+
 	}
 
 	for( auto& th : threadsList )
 		th.join();
 
-
 	double irradiance = sunshapeNode->GetIrradiance();
+	std::cout<<"\t irradiance "<<irradiance<<std::endl;
 	double inputAperture = m_lightOriginShape.GetValidArea();
+	std::cout<<"\t inputAperture "<<inputAperture<<std::endl;
+	// inputAperture 9.80836e+006
+	std::cout<<"\t numberOfRays "<<numberOfRays<<std::endl;
 	double wPhoton = ( inputAperture * irradiance ) / numberOfRays;
 
-
 	m_pPhotonMap->EndStore( wPhoton );
-
-
 
 	return ( true );
 
@@ -142,11 +144,10 @@ void RayTracer::SetRandomNumberGenerator( RandomDeviate* randomNumberGenerator )
  * Set the scene to simulate for the ray tracer.
  * Returns true if the scene is valid.
  */
-bool RayTracer::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector<std::string > /*firstStageNodesURL*/ )
+bool RayTracer::SetScene( std::shared_ptr< TSceneNode >& scene )
 {
 	if( scene == nullptr )	return ( false );
 	m_pSunNode = std::dynamic_pointer_cast< TSunNode > ( scene->GetPart( "light" ) );
-
 	m_pTransmissivityNode = std::dynamic_pointer_cast< TTransmissivity > ( scene->GetPart( "transmisivity" ) );
 
 	return ( true );
@@ -159,13 +160,13 @@ bool RayTracer::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector<std:
 bool RayTracer::NewRay( Ray* ray, ParallelRandomDeviate& rand )
 {
 	if( m_lightOriginShape.validSunAreasVector.size() < 1 )	return false;
+
 	int area = int ( rand.RandomDouble() * m_lightOriginShape.validSunAreasVector.size() );
-
 	std::pair< int, int > areaIndex = m_lightOriginShape.validSunAreasVector[area] ;
-
 
 	double u = rand.RandomDouble();
 	double v = rand.RandomDouble();
+
 
 	//calculate the photon coordinate
 	double x = m_lightOriginShape.xMinSunPlane + ( u * m_lightOriginShape.cellWidth ) + ( areaIndex.second * m_lightOriginShape.cellWidth);

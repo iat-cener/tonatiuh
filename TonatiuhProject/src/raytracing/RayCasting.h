@@ -153,7 +153,7 @@ public:
 	RayCasting( );
 	~RayCasting();
 
-	bool SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< std::string > notFirstStageNodesURL = std::vector< std::string >() );
+	bool SetScene( std::shared_ptr< TSceneNode >& scene );
 
 protected:
 	void RunRaytracer( unsigned long numberOfRays );

@@ -68,76 +68,122 @@ RayCasting::~RayCasting()
  * Set the scene to simulate for the ray tracer.
  * Returns true if the scene is valid.
  */
-bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< std::string > notFirstStageNodesURL )
+bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 {
-	std::cout<<"START RayCasting::SetScene"<<std::endl;
-
 	m_pSunNode = std::dynamic_pointer_cast< TSunNode > ( scene->GetPart( "light" ) );
 	if( m_pSunNode == nullptr )	return ( false );
+	//if( m_pSunNode ) 	std::cout<<"\t m_pSunNode: "<<m_pSunNode->GetName()<<std::endl;
+	std::vector< std::string > notFirstStageNodesURL = m_pSunNode->GetDisabledNodes();
+	//std::cout<<"\t notFirstStageNodesURL: "<<notFirstStageNodesURL.size()<<std::endl;
+	//for( unsigned int n = 0; n < notFirstStageNodesURL.size(); n++ )
+	//{
+	//	std::cout<<"notFirstStageNodesURL "<<n<<": "<<notFirstStageNodesURL[n]<<std::endl;
+	//}
 
-	std::cout<<"\t m_pSunNode: "<<m_pSunNode->GetName()<<std::endl;
+	m_pTransmissivityNode = std::dynamic_pointer_cast< TTransmissivity > ( scene->GetPart( "transmisivity" ) );
+	if( m_pTransmissivityNode ) 	std::cout<<"\t m_pTransmissivityNode: "<<m_pTransmissivityNode->GetName()<<std::endl;
+
 	std::vector<std::string> scenePartNames = scene->GetPartNames();
-	std::cout<<"\t scenePartNames: "<<scenePartNames.size()<<std::endl;
 	std::shared_ptr< TGroupNode > childrenRoot = std::dynamic_pointer_cast< TGroupNode > ( scene->GetPart( scenePartNames[0] ) );
 	if( childrenRoot == nullptr )	return ( false );
-
-	std::cout<<"\t childrenRoot: "<<childrenRoot->GetName()<<std::endl;
 
 	m_sceneRootNode.reset();
 	m_sceneRootNode = std::make_unique< RayCastingNode >() ;
 
-	std::cout<<"\t m_sceneRootNode: "<<std::endl;
 	Transform parentWT0(1, 0, 0, 0,
 						0, 1, 0, 0,
 						0, 0, 1, 0,
 						0, 0, 0, 1 );
-	std::cout<<"\t parentWT0: "<<parentWT0<<std::endl;
 
 	auto childrenContainer = std::dynamic_pointer_cast< TContainerNode > ( childrenRoot );
-	std::cout<<"\t childrenContainer: "<<childrenContainer->GetName()<<std::endl;
-	if( !CreateRayTracerNodesTree( childrenContainer, m_sceneRootNode, parentWT0, "\\\\SunNode" ) )
+	if( !CreateRayTracerNodesTree( childrenContainer, m_sceneRootNode, parentWT0, "//SunNode" ) )
 	{
 		//RemoveRayTracerNodesTree( m_sceneRootNode );
 		return (false);
 	}
 
+	if( -gc::Infinity  == m_sceneRootNode->boundingBox.Volume() ) 	return ( false );
+	//std::cout<<"\t m_sceneRootNode->boundingBox: "<< m_sceneRootNode->boundingBox<<std::endl;
+
 	double azimuthRad = m_pSunNode->GetAzimuth();
 	double zenithRad =  m_pSunNode->GetZenith();
 
-	std::cout<<"\t azimuthRad: "<<azimuthRad<<" zenithRad: "<<zenithRad<<std::endl;
-
-	double distMax =  Distance( m_sceneRootNode->boundingBox.pMin, m_sceneRootNode->boundingBox.pMax ) +10;
+	//double distMax =  Distance( m_sceneRootNode->boundingBox.pMin, m_sceneRootNode->boundingBox.pMax ) +10;
 	Vector3D sunVector ( sin(zenithRad) * sin(azimuthRad), cos(zenithRad), -sin(zenithRad) * cos(azimuthRad) );
 
-	Vector3D auxiliaryAxis( 1, 0, 0 );
+	Vector3D auxiliaryAxis( 0, 1, 0 );
 	Vector3D uVector = Normalize( CrossProduct( auxiliaryAxis, sunVector ) );
-	Vector3D vVector = Normalize( CrossProduct( sunVector, uVector ));
-	m_sunTransformSTW = Transform( uVector.x, sunVector.x, vVector.x, 0,
+	Vector3D vVector = Normalize( CrossProduct( uVector, sunVector  ));
+
+	Transform sunRotationSTW = Transform( uVector.x, sunVector.x, vVector.x, 0,
 													uVector.y, sunVector.y, vVector.y, 0,
 													uVector.z, sunVector.z, vVector.z, 0,
-													0, 0, 0, 1 ) *
+													0, 0, 0, 1 );
+	Transform sunRotationWTS = sunRotationSTW.GetInverse();
+
+
+
+	//std::cout<<"\t sunRotationSTW: "<< sunRotationSTW<<std::endl;
+
+	BBox sceneBBoxSunRotationCoors = sunRotationWTS( m_sceneRootNode->boundingBox );
+
+	//std::cout<<"\t sceneBBoxSunRotationCoors "<< sceneBBoxSunRotationCoors<<std::endl;
+
+	//Initializates to 0.0 to include {0.0, 0.0, 0.0} point
+	double yMin = 0.0; // gc::Infinity;
+	if( yMin > sceneBBoxSunRotationCoors.pMin.y )  yMin = sceneBBoxSunRotationCoors.pMin.y;
+	double yMax = 0.0;
+	if( yMax < sceneBBoxSunRotationCoors.pMax.y )  yMax = sceneBBoxSunRotationCoors.pMax.y;
+
+	//std::cout<<"\t yMin: "<< yMin<<std::endl;
+	//std::cout<<"\t yMax: "<< yMax<<std::endl;
+	//
+	//std::cout<<"\t distMax1: "<< (yMax -yMin ) +1<<std::endl;
+
+	Transform sunTransformSTW1 = sunRotationSTW *
 	    		Transform( 1, 0, 0, 0,
+	    				0, 1, 0, (yMax -yMin ) +1,
+						0, 0, 1, 0,
+						0, 0, 0, 1 );
+	Transform sunTransformWTS1 = sunTransformSTW1.GetInverse();
+
+
+	double distMax = ((yMax -yMin ) +1 ) - fabs( sunTransformWTS1(m_sceneRootNode->boundingBox.pMax).y ) +1 ;
+	//std::cout<<"\t distMax: "<< distMax<<std::endl;
+
+	m_sunTransformSTW = sunRotationSTW * 	Transform( 1, 0, 0, 0,
 	    				0, 1, 0, distMax,
 						0, 0, 1, 0,
 						0, 0, 0, 1 );
 
+
 	Transform sunTransformWTS = m_sunTransformSTW.GetInverse();
-	Point3D pMinBBoxSunCoord = sunTransformWTS( m_sceneRootNode->boundingBox).pMin;
-	Point3D pMaxBBoxSunCoord = sunTransformWTS( m_sceneRootNode->boundingBox).pMax;
+	//std::cout<<"\t m_sunTransformSTW: "<< m_sunTransformSTW<<std::endl;
+	//std::cout<<"\t sunTransformWTS: "<< sunTransformWTS<<std::endl;
 
-	double xMin = pMinBBoxSunCoord.x;
-	double zMin = pMinBBoxSunCoord.z;
-	double xMax = pMaxBBoxSunCoord.x;
-	double zMax = pMaxBBoxSunCoord.z;
+	double xMin = gc::Infinity;
+	double zMin = gc::Infinity;
+	double xMax = -gc::Infinity;
+	double zMax = -gc::Infinity;
+	std::vector< Point3D > sceneBBoxPointList;
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMin.z ) );
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMin.z ) );
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMax.z ) );
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMax.z ) );
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMin.z ) );
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMin.z ) );
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMax.z ) );
+	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMax.z ) );
 
-	if( -gc::Infinity  == m_sceneRootNode->boundingBox.Volume() )
+	for( unsigned int p = 0; p < sceneBBoxPointList.size(); p++ )
 	{
-		xMin = 0.0;
-		xMax = 0.0;
-		zMin = 0.0;
-		zMax = 0.0;
-		distMax = 0.0;
+		Point3D sceneBBoxPointSunCoord = sunTransformWTS( sceneBBoxPointList[p] );
+		if( xMin > sceneBBoxPointSunCoord.x )	xMin = sceneBBoxPointSunCoord.x;
+		if( zMin > sceneBBoxPointSunCoord.z )	zMin = sceneBBoxPointSunCoord.z;
+		if( xMax < sceneBBoxPointSunCoord.x )	xMax = sceneBBoxPointSunCoord.x;
+		if( zMax < sceneBBoxPointSunCoord.z )	zMax = sceneBBoxPointSunCoord.z;
 	}
+
 
 	TSunshape* sunshape = m_pSunNode->GetPart( "sunshape" )->as<TSunshape>();
 	if( !sunshape )	return ( false );
@@ -153,6 +199,14 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< st
 	double width = m_lightOriginShape.xMaxSunPlane - m_lightOriginShape.xMinSunPlane;
 	double height = m_lightOriginShape.zMaxSunPlane - m_lightOriginShape.zMinSunPlane;
 
+
+	//std::cout<<"m_lightOriginShape: xMin--> "<<xMin<<std::endl;
+	//std::cout<<"m_lightOriginShape: xMax--> "<<xMax<<std::endl;
+	//std::cout<<"m_lightOriginShape: zMin--> "<<zMin<<std::endl;
+	//std::cout<<"m_lightOriginShape: zMax--> "<<zMax<<std::endl;
+	//std::cout<<"m_lightOriginShape: delta--> "<<delta<<std::endl;
+	//std::cout<<"m_lightOriginShape:  "<<width<<" x "<<height<<std::endl;
+
 	int widthDivisions = 200;
 	int heigthDivisions = 200;
 
@@ -164,6 +218,7 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< st
 	m_lightOriginShape.heightElements = heigthDivisions;
 	m_lightOriginShape.cellHeight = height / heigthDivisions;
 
+
 	int** areaMatrix = new int*[heigthDivisions];
 	for( int i = 0; i < heigthDivisions; i++ )
 	{
@@ -174,8 +229,23 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< st
 
 	for( unsigned int s = 0; s < m_surfacesNodeList.size(); s++ )
 	{
-		if( notFirstStageNodesURL.empty() < 1 || std::find(notFirstStageNodesURL.begin(), notFirstStageNodesURL.end(), m_surfacesNodeList[s]->nodeURL ) == notFirstStageNodesURL.end()  )
-		//if( notFirstStageNodesURL.count() < 1 || notFirstStageNodesURL.count( m_surfacesNodeList[s]->nodeURL ) < 1  )
+		bool firstStageNode = true;
+
+		std::string nodeURL = m_surfacesNodeList[s]->nodeURL;
+		if( !notFirstStageNodesURL.empty() )
+		{
+			for( unsigned int n = 0; n < notFirstStageNodesURL.size(); n++ )
+			{
+				if( nodeURL.size() >= notFirstStageNodesURL[n].size()
+				        && equal(notFirstStageNodesURL[n].begin(), notFirstStageNodesURL[n].end(), nodeURL.begin() ) )
+				{
+					firstStageNode = false;
+					break;
+				}
+			}
+		}
+
+		if( firstStageNode )
 		{
 
 			BBox shapeBB = m_surfacesNodeList[s]->boundingBox;
@@ -234,12 +304,11 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene, std::vector< st
 				m_lightOriginShape.validSunAreasVector.push_back( std::pair<int,int>(i,j) );
 		}
 	}
-
+	std::cout<<"Valid Area:  "<<m_lightOriginShape.validSunAreasVector.size()<<" "<<m_lightOriginShape.GetValidArea()<<std::endl;
 	for( int i = 0; i < heigthDivisions; i++ )
 		delete[] areaMatrix[i];
 	delete[] areaMatrix;
 
-	std::cout<<" END RayCasting::SetScene"<<std::endl;
 	return ( true );
 }
 
@@ -262,7 +331,7 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
 		if( NewRay( &ray, rand ) )
 		{
 
-			photonsVector.push_back( Photon( 0, ray.origin, worldToSun(ray.origin), 1, "\\\\SunNode" ) );
+			photonsVector.push_back( Photon( 0, ray.origin, worldToSun(ray.origin), 1, m_lightNodeURL ) );
 			int rayLength = 0;
 
 			RayCastingNode* intersectedSurface = 0;
@@ -327,7 +396,7 @@ void RayCasting::RunRaytracer( unsigned long numberOfRays)
  */
 void RayCasting::RunRaytracerWithTransmissivity( unsigned long numberOfRays)
 {
-
+	//std::cout<<"\t START RayCasting::RunRaytracerWithTransmissivity numberOfRays: "<<numberOfRays<<std::endl;
 	std::vector< Photon > photonsVector;
 
 
@@ -341,7 +410,7 @@ void RayCasting::RunRaytracerWithTransmissivity( unsigned long numberOfRays)
 		if( NewRay( &ray, rand ) )
 		{
 
-			photonsVector.push_back( Photon( 0, ray.origin, worldToSun(ray.origin), 1, "\\\\SunNode" ) );
+			photonsVector.push_back( Photon( 0, ray.origin, worldToSun(ray.origin), 1, m_lightNodeURL ) );
 			int rayLength = 0;
 
 			RayCastingNode* intersectedSurface = 0;
@@ -404,10 +473,8 @@ void RayCasting::RunRaytracerWithTransmissivity( unsigned long numberOfRays)
 
 	photonsVector.resize( photonsVector.size() );
 
-
-	//m_mutexPhotonMap.lock();
 	m_pPhotonMap->StoreRays( photonsVector );
-	//m_mutexPhotonMap.unlock();
+	//std::cout<<"\t END RayCasting::RunRaytracerWithTransmissivity numberOfRays: "<<numberOfRays<<std::endl;
 
 }
 
@@ -416,7 +483,7 @@ void RayCasting::RunRaytracerWithTransmissivity( unsigned long numberOfRays)
  */
 bool RayCasting::CreateRayTracerNodesTree( std::shared_ptr< TContainerNode >& node, std::shared_ptr< RayCastingNode >& rTRNode, Transform parentWT0, std::string parentURL )
 {
-	rTRNode->nodeURL = parentURL + "\\" + node->GetName();
+	rTRNode->nodeURL = parentURL + "/" + node->GetName();
 
 	std::shared_ptr< TGroupNode > nodeGroup = std::dynamic_pointer_cast< TGroupNode > ( node );
 	if( nodeGroup != nullptr )

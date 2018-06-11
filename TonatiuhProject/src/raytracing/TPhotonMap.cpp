@@ -6,12 +6,13 @@
  * Creates a photon map
  */
 TPhotonMap::TPhotonMap()
-:m_bufferSize( 0 ),
+:m_bufferSize( 5000000 ),
  m_storedPhotonsInBuffer( 0 ),
  m_storedAllPhotons( 0 ),
  m_pPhotonMapExportType( nullptr )
 {
 
+	m_mutexPhotonMap.unlock();
 }
 
 /*
@@ -24,30 +25,21 @@ TPhotonMap::~TPhotonMap()
 }
 
 /*!
- * Checks if there is a export type defined as if so, export the current photons stored at the buffer.
- * Then, the photons are removed.
- */
-void TPhotonMap::EmptyBuffer()
-{
-	m_pPhotonMapExportType->SavePhotonMap( m_photonsInMemory );
-
-	m_photonsInMemory.clear();
-	std::vector< Photon >( m_photonsInMemory ).swap( m_photonsInMemory );
-	m_storedPhotonsInBuffer = 0;
-}
-
-/*!
  * Checks where the photon map has to be saved and saves them.
  */
 void TPhotonMap::EndStore( double wPhoton )
 {
-	if( m_storedPhotonsInBuffer  > 0 )
-	{
-		if( m_pPhotonMapExportType ) EmptyBuffer();
+	m_mutexPhotonMap.lock();
 
-	}
+	if( m_storedPhotonsInBuffer  > 0 &&  m_pPhotonMapExportType )
+		m_pPhotonMapExportType->SavePhotonMap( m_photonsInMemory );
+
+	EmptyBuffer();
+
 	if( m_pPhotonMapExportType )	m_pPhotonMapExportType->SetPowerPerPhoton( wPhoton );
 	if( m_pPhotonMapExportType )	m_pPhotonMapExportType->EndSave();
+
+	m_mutexPhotonMap.unlock();
 }
 
 /*!
@@ -88,12 +80,13 @@ void TPhotonMap::StoreRays( std::vector< Photon >& raysList )
 
 	unsigned int raysListSize = raysList.size();
 	if( ( m_storedPhotonsInBuffer > 0 ) && ( ( m_storedPhotonsInBuffer + raysListSize )  > m_bufferSize ) )
-		if( m_pPhotonMapExportType != nullptr ) EmptyBuffer();
+	{
+		if( m_pPhotonMapExportType != nullptr )
+			m_pPhotonMapExportType->SavePhotonMap( m_photonsInMemory );
 
+		EmptyBuffer();
+	}
 	m_photonsInMemory.insert(m_photonsInMemory.end(), raysList.begin(), raysList.end());
-
-	//for( unsigned int photon = 0; photon < raysListSize; photon++ )
-	//	m_photonsInMemory.push_back( new Photon( raysList[photon] ) );
 
 	m_storedPhotonsInBuffer += raysListSize;
 	m_storedAllPhotons += raysListSize;
@@ -102,7 +95,14 @@ void TPhotonMap::StoreRays( std::vector< Photon >& raysList )
 
 }
 
+/*!
+ * Checks if there is a export type defined as if so, export the current photons stored at the buffer.
+ * Then, the photons are removed.
+ */
+void TPhotonMap::EmptyBuffer()
+{
 
-
-
-
+	m_photonsInMemory.clear();
+	std::vector< Photon >( m_photonsInMemory ).swap( m_photonsInMemory );
+	m_storedPhotonsInBuffer = 0;
+}

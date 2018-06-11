@@ -43,6 +43,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 //!  PhotonMapExportType class provides an interface for safely writing simulation data to file.
 /*!
   PhotonMapExportType is an I/O device that provides the base functionality for writing simulation data to a files, the specific file format depends on the PhotonMapExportType derived class used.
+
+  After the change of any of the save options the save process restarts. So, if one of the parameters changes between two consecutive runs the previous saved data could be removed.
 */
 
 #include <string>
@@ -89,15 +91,7 @@ public:
 	 * Saves the rays in the list \a raysLists in the file.
 	 */
 	virtual void SavePhotonMap( std::vector< Photon >& raysLists ) = 0;
-	//void SetConcentratorToWorld( Transform concentratorToWorld );
 
-	/*!
-	 * Sets file name to \a filename.
-	 */
-	/*void SetFilename( QString filename )
-	{
-		m_photonsFilename = filename;
-	}*/
 
 	/*!
 	 * Saves the power per photon value \a wPhoton in the file.
@@ -105,14 +99,13 @@ public:
 	virtual void SetPowerPerPhoton( double wPhoton ) = 0;
 
 
-	//void SetSaveAllPhotonsEnabled();
-
 	/*!
 	 * Sets to \a enabled if the information about the ray is absorbed or not is saved.
 	 */
 	void SetSaveAbsorbedEnabled( bool enabled )
 	{
 		m_saveIsAbsorbed = enabled;
+		StartSave();
 	}
 
 	/*!
@@ -121,6 +114,7 @@ public:
 	void SetSaveCoordinatesEnabled( bool enabled )
 	{
 		m_saveCoordinates = enabled;
+		StartSave();
 	}
 
 	/*!
@@ -130,6 +124,7 @@ public:
 	void SetSaveCoordinatesInGlobalSystemEnabled( bool enabled )
 	{
 		m_saveCoordinatesInGlobal = enabled;
+		StartSave();
 	}
 
 	/*!
@@ -139,6 +134,7 @@ public:
 	void SetSavePreviousNextPhotonsID( bool enabled )
 	{
 		m_savePrevNextID = enabled;
+		StartSave();
 	}
 
 	/*!
@@ -148,6 +144,7 @@ public:
 	void SetSaveRayDirection( bool enabled )
 	{
 		m_saveRayDirection = enabled;
+		StartSave();
 	}
 
 	/*!
@@ -157,6 +154,7 @@ public:
 	void  SetSaveSideEnabled( bool enabled )
 	{
 		m_saveSide = enabled;
+		StartSave();
 	}
 
 	/*!
@@ -166,6 +164,7 @@ public:
 	void SetSaveSurfacesIDEnabled( bool enabled )
 	{
 		m_saveSurfaceID = enabled;
+		StartSave();
 	}
 
 	/*!
@@ -175,6 +174,7 @@ public:
 	void SetSaveSurfacesURLList( std::vector<std::string> surfacesURLList )
 	{
 		m_saveSurfacesURLList = surfacesURLList;
+		StartSave();
 	}
 
 	/*!
