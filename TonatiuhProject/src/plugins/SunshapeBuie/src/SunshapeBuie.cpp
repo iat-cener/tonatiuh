@@ -166,7 +166,7 @@ double SunshapeBuie::GetIrradiance() const
  */
 double SunshapeBuie::GetThetaMax() const
 {
-	return ( m_maxCRSValue );
+	return ( m_thetaCS );
 }
 
 /*!
