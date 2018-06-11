@@ -70,7 +70,6 @@ public:
 	TNodeType GetType() const;
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay ) const;
 
-
 protected:
 	MaterialStandardSpecular( );
    	virtual ~MaterialStandardSpecular();

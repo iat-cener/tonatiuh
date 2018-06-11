@@ -76,7 +76,6 @@ MaterialStandardSpecular::MaterialStandardSpecular()
  m_distributionLabel( "distribution" ),
  m_colorLabel( "color" ),
  m_transparencyLabel( "transparency" )
-
 {
 	SetName(GetType().GetName() );
 
@@ -145,7 +144,6 @@ TNodeType MaterialStandardSpecular::GetType() const
  */
 bool MaterialStandardSpecular::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {
-
 	double reflectivity = GetParameterValue<double>( m_reflectivityLabel );
 	double sigmaSlopeMRAD = GetParameterValue<double>( m_sigmaSlopeLabel );
 	EnumeratedTypes typeOfDistribution = GetParameterValue<EnumeratedTypes>( m_distributionLabel );
