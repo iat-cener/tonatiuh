@@ -157,7 +157,7 @@ std::vector<std::string> TSunNode::GetDisabledNodes() const
 	std::string disabledNodes = GetParameterValue<std::string>( m_disabledNodesLabel );
 	if( disabledNodes.empty() )	return ( disabledNodesList );
 
-	disabledNodesList = nf::StringSplit( disabledNodes, "\\s+" );
+	disabledNodesList = nf::StringSplit( disabledNodes, ";" );
 	return ( disabledNodesList );
 }
 
