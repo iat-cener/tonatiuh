@@ -16,6 +16,9 @@ SUBDIRS = MaterialBasicRefractive \
 		ShapeFlatTriangle \
 		ShapeHyperboloid \
 		ShapeParabolicDish \
+		ShapeParabolicRectangle \
+		ShapeSphere \
+		ShapeSphericalPolygon \
 		ShapeSphericalRectangle \
 		ShapeTroughParabola \
 		SunshapeBuie \
@@ -23,4 +26,5 @@ SUBDIRS = MaterialBasicRefractive \
 		TrackerHeliostat \
 		TrackerOneAxis \
 		TrackerParabolicDish \
+		TransmissivityATMParameters \
 		TransmissivityBallestrin
