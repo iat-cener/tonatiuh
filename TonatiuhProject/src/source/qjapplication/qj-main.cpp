@@ -42,6 +42,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <type_traits>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
@@ -94,13 +95,13 @@ void print_is_same() {
   std::cout << std::is_same<T1, T2>() << '\n';
 }
 
+int Ejemplo1_Azimuth180Elevation65(std::shared_ptr< TSceneNode >& sceneNode, const PluginManager& pluginManager, std::string directoryRootName,
+		std::string randomFactoryName, std::string photonMapExportTypeName  );
+int Ejemplo1_Azimuth290Elevation1(std::shared_ptr< TSceneNode >& sceneNode, const PluginManager& pluginManager, std::string directoryRootName,
+		std::string randomFactoryName, std::string photonMapExportTypeName  );
+int Ejemplo1_MatrizEficiencias(std::shared_ptr< TSceneNode >& sceneNode, const PluginManager& pluginManager, std::string directoryRootName,
+		std::string randomFactoryName, std::string photonMapExportTypeName );
 
-void do_stuff_with_any(const std::any& obj);
-/*
-{
-    std::cout << std::any_cast<const std::string&>(obj) << "\n";
-}
-*/
 
 int main ( int argc, char** argv )
 {
@@ -452,7 +453,7 @@ int main ( int argc, char** argv )
 ;
 
 	TJSONNodesDocument readDocument;
-	bool okRead = readDocument.Read( argv[1] );
+	bool okRead = readDocument.Read( argv[2] );
 	if( !okRead  )
 	{
 		std::cerr<<"\t Error reading file 0!!!"<<std::endl;
@@ -517,26 +518,19 @@ int main ( int argc, char** argv )
 /***********************************/
 
 
-	//Change sun position
-	std::cout<<"Change sun position:"<<std::endl;
-	TSunNode* sun = sceneNode->GetPart( "light" )->as<TSunNode>();
-	std::cout<<"\tCurrent values:"<<std::endl;
-	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
-	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
+	//std::cout<<"\tCurrent values:"<<std::endl;
+	//std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
+	//std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
 
+	//Caso 1
+	/*
 
-	std::cout<<"\tChanging sun position..."<<std::endl;
-	sceneNode->ChangeSunPosition( 180*gc::Degree, 0*gc::Degree );
-	//sceneNode->ChangeSunPosition( 150*gc::Degree, 30*gc::Degree );
-
-
+	sceneNode->ChangeSunPosition( 180*gc::Degree, ( 90-49.2565)*gc::Degree );
 	std::cout<<"\tNew values:"<<std::endl;
 	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
 	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
 
-
 	std::cout<<"Creating the raytracer"<<std::endl;
-
 	QDateTime startTime = QDateTime::currentDateTime();
 	RayCasting raytracer;
 	if( !raytracer.SetScene( sceneNode ) )
@@ -558,19 +552,19 @@ int main ( int argc, char** argv )
 
 	raytracer.SetRandomNumberGenerator( pRand.get() );
 
-
-	//Creating the photon map
 	std::cout<<"\tCreating the photon map"<<std::endl;
 	std::unique_ptr< TPhotonMap > pPhotonMap = std::make_unique < TPhotonMap >();
+	pPhotonMap->SetBufferSize( 50000000 );
 
 	//Defining how export the stored data.
 	std::cout<<"\t Defining how export the stored data."<<std::endl;
 	std::unique_ptr< PhotonMapExportType > pPhotonMapExportType = pluginManager.CreatePhotonMapExportType( photonMapExportTypeNameList[0] );
 	pPhotonMapExportType->SetSaveCoordinatesEnabled( true );
+	pPhotonMapExportType->SetSaveCoordinatesInGlobalSystemEnabled( true );
 	pPhotonMapExportType->SetSavePreviousNextPhotonsID( false );
+	pPhotonMapExportType->SetSaveSideEnabled( true );
+	pPhotonMapExportType->SetSaveSurfacesIDEnabled( true );
 
-	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
-	std::cout<<"\t\tExportFile: "<< argv[4]<<std::endl;
 
 	if( argv[3] == NULL || argv[4] == NULL )
 	{
@@ -578,22 +572,154 @@ int main ( int argc, char** argv )
 		return ( -8 );
 	}
 
+
+	std::string filesRootName = argv[4];
 	pPhotonMapExportType->SetSaveParameterValue( "ExportDirectory", argv[3] );
-	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", argv[4] );
+	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
+	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", filesRootName );
+	std::cout<<"\t\tExportFile: "<<filesRootName<<std::endl;
+	pPhotonMapExportType->SetSaveParameterValue( "FileSize",  "1000000" );
+
+	std::vector< std::string > saveSurfaceList{ "//SunNode/RootNode/Tower/Escudo/Receptor/SuperficieReceptor" };
+	//std::vector< std::string > saveSurfaceList{ "//Light", "//SunNode/RootNode/HeliostatField/Heliostat2/HeliostatTrackerNode/HeliostatR40", "//SunNode/RootNode/Tower/Escudo/Receptor/SuperficieReceptor", "" };
+	pPhotonMapExportType->SetSaveSurfacesURLList( saveSurfaceList );
 	pPhotonMap->SetExportType( std::move( pPhotonMapExportType ) );
 
 	raytracer.SetPhotonMap( pPhotonMap.get() );
 
-	double tracedRays = 1000000;
-
+	double tracedRays = 5000000;
 	std::cout<<"Run "<<tracedRays<<" rays"<<std::endl;
 	raytracer.Run( tracedRays );
-
 
 	QDateTime endTime = QDateTime::currentDateTime();
 	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
 
+*/
+/*
+	//Prueba 2
+
+	sceneNode->ChangeSunPosition( 180*gc::Degree, ( 90-55)*gc::Degree );
+	std::cout<<"\tNew values:"<<std::endl;
+	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
+	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
+
+	std::cout<<"Creating the raytracer"<<std::endl;
+	QDateTime startTime = QDateTime::currentDateTime();
+	RayCasting raytracer;
+	if( !raytracer.SetScene( sceneNode ) )
+	{
+
+		std::cout<<"ERROR in the scene"<<std::endl;
+		return ( -5 );
+	}
+
+
+	//Create the random generator
+	std::cout<<"Create the random generator"<<std::endl;
+	std::shared_ptr< RandomDeviate > pRand = nullptr;
+	if( randomFactoryNameList.size() < 1 )
+		return ( -6 );
+	pRand =  pluginManager.CreateRandomDeviate( randomFactoryNameList[0] );
+	if( pRand == nullptr )
+		return ( -7 );
+
+	raytracer.SetRandomNumberGenerator( pRand.get() );
+
+	std::cout<<"\tCreating the photon map"<<std::endl;
+	std::unique_ptr< TPhotonMap > pPhotonMap = std::make_unique < TPhotonMap >();
+	pPhotonMap->SetBufferSize( 50000000 );
+
+	//Defining how export the stored data.
+	std::cout<<"\t Defining how export the stored data."<<std::endl;
+	std::unique_ptr< PhotonMapExportType > pPhotonMapExportType = pluginManager.CreatePhotonMapExportType( photonMapExportTypeNameList[0] );
+	pPhotonMapExportType->SetSaveCoordinatesEnabled( true );
+	pPhotonMapExportType->SetSaveCoordinatesInGlobalSystemEnabled( true );
+	pPhotonMapExportType->SetSavePreviousNextPhotonsID( false );
+	pPhotonMapExportType->SetSaveSideEnabled( true );
+	pPhotonMapExportType->SetSaveSurfacesIDEnabled( true );
+
+
+	if( argv[3] == NULL || argv[4] == NULL )
+	{
+		std::cout<<"No file to save results "<<std::endl;
+		return ( -8 );
+	}
+
+
+	std::string filesRootName = argv[4];
+	pPhotonMapExportType->SetSaveParameterValue( "ExportDirectory", argv[3] );
+	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
+	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", filesRootName );
+	std::cout<<"\t\tExportFile: "<<filesRootName<<std::endl;
+	pPhotonMapExportType->SetSaveParameterValue( "FileSize",  "1000000" );
+
+	std::vector< std::string > saveSurfaceList{ "//Light", "//SunNode/SolarField/Tower/Receiver/ReceiverRotation/ReceiverSurface" ,"//SunNode/SolarField/Heliostat_Field_Component/Heliostat0/HeliostatTrackerNode/HeliostatSurface", ""};
+
+	pPhotonMapExportType->SetSaveSurfacesURLList( saveSurfaceList );
+	pPhotonMap->SetExportType( std::move( pPhotonMapExportType ) );
+
+	raytracer.SetPhotonMap( pPhotonMap.get() );
+
+	double tracedRays = 5000000;
+	std::cout<<"Run "<<tracedRays<<" rays"<<std::endl;
+	raytracer.Run( tracedRays );
+
+	QDateTime endTime = QDateTime::currentDateTime();
+	std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
+
+*/
+
+
+	std::string::size_type sz;   // alias of size_t
+	int simulationIndex = std::stoi (argv[1], &sz);
+
+	switch( simulationIndex )
+	{
+		case 1:
+		{
+			//Create design
+			break;
+		}
+		case 2:
+		{
+			//Create design
+			break;
+		}
+		case 3:
+		{
+			QDateTime startTime = QDateTime::currentDateTime();
+			Ejemplo1_Azimuth180Elevation65( sceneNode, pluginManager, argv[3], randomFactoryNameList[0], photonMapExportTypeNameList[0] );
+
+			QDateTime endTime = QDateTime::currentDateTime();
+			std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
+			break;
+		}
+		case 4:
+		{
+			QDateTime startTime = QDateTime::currentDateTime();
+			Ejemplo1_Azimuth290Elevation1( sceneNode, pluginManager, argv[3], randomFactoryNameList[0], photonMapExportTypeNameList[0] );
+
+			QDateTime endTime = QDateTime::currentDateTime();
+			std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
+			break;
+		}
+		case 5:
+		{
+
+			QDateTime startTime = QDateTime::currentDateTime();
+			Ejemplo1_MatrizEficiencias( sceneNode, pluginManager, argv[3], randomFactoryNameList[0], photonMapExportTypeNameList[0] );
+
+			QDateTime endTime = QDateTime::currentDateTime();
+			std::cout <<"Elapsed time: "<< startTime.secsTo( endTime ) << std::endl;
+
+			break;
+		}
+
+	}
+
+
 	std::cout<<"END main"<<std::endl;
+
 
 
 

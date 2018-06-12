@@ -96,7 +96,6 @@ bool RayTracer::Run( unsigned long numberOfRays )
 	}
 	else
 	{
-		std::cout<<"\t m_pTransmissivityNode "<<std::endl;
 		for( int progressCount = 0; progressCount < maximumValueProgressScale; ++ progressCount )
 			threadsList.push_back( std::thread( &RayTracer::RunRaytracerWithTransmissivity, this, nRaysPerThread ) );
 
@@ -109,11 +108,10 @@ bool RayTracer::Run( unsigned long numberOfRays )
 		th.join();
 
 	double irradiance = sunshapeNode->GetIrradiance();
-	std::cout<<"\t irradiance "<<irradiance<<std::endl;
+	//std::cout<<"\t irradiance "<<irradiance<<std::endl;
 	double inputAperture = m_lightOriginShape.GetValidArea();
-	std::cout<<"\t inputAperture "<<inputAperture<<std::endl;
-	// inputAperture 9.80836e+006
-	std::cout<<"\t numberOfRays "<<numberOfRays<<std::endl;
+	//std::cout<<"\t inputAperture "<<inputAperture<<std::endl;
+	//std::cout<<"\t numberOfRays "<<numberOfRays<<std::endl;
 	double wPhoton = ( inputAperture * irradiance ) / numberOfRays;
 
 	m_pPhotonMap->EndStore( wPhoton );
