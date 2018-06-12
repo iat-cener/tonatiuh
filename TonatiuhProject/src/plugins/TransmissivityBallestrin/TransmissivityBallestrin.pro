@@ -34,6 +34,3 @@ else {
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/TransmissivityBallestrin
 }
 
-
-
-

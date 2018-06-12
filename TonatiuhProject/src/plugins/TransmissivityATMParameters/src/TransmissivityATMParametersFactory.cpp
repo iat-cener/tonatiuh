@@ -36,35 +36,45 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QIcon>
-
-#include "TransmissivityATMParametersFactory.h"
 #include "TransmissivityATMParameters.h"
+#include "TransmissivityATMParametersFactory.h"
 
-
-QString TransmissivityATMParametersFactory::TTransmissivityName() const
+/*!
+ * Initializes transmissivity type.
+ */
+void TransmissivityATMParametersFactory::Init() const
 {
-	return QString( "ATM Parameters Transmissivity" );
-}
 
-QIcon TransmissivityATMParametersFactory::TTransmissivityIcon() const
-{
-	return QIcon(":/icons/TransmissivityATMParameters.png");
-}
-
-TransmissivityATMParameters* TransmissivityATMParametersFactory::CreateTTransmissivity( ) const
-{
 	static bool firstTime = true;
 	if ( firstTime )
 	{
-	    // Initialize the new node classes
-		TransmissivityATMParameters::initClass();
+		TransmissivityATMParameters::Init();
 	    firstTime = false;
 	}
-	return new TransmissivityATMParameters;
-
 }
 
-#if QT_VERSION < 0x050000 // pre Qt 5
-Q_EXPORT_PLUGIN2( TransmissivityATMParameters, TransmissivityATMParametersFactory )
-#endif
+/*!
+ * Returns transmissivity model name.
+ */
+std::string TransmissivityATMParametersFactory::TTransmissivityName() const
+{
+	return ( "ATM Parameters Transmissivity" );
+}
+
+/*!
+ * Returns icon filename.
+ */
+std::string TransmissivityATMParametersFactory::TTransmissivityIcon() const
+{
+	return (":/icons/TransmissivityATMParameters.png");
+}
+
+/*!
+ * Returns an object of this type.
+ */
+std::shared_ptr< TTransmissivity >  TransmissivityATMParametersFactory::CreateTTransmissivity( ) const
+{
+	return ( std::dynamic_pointer_cast< TTransmissivity >( TransmissivityATMParameters::CreateInstance() ) );
+}
+
+DEFINE_PLUGIN( TransmissivityATMParametersFactory, TTransmissivityFactory, APP_VERSION )

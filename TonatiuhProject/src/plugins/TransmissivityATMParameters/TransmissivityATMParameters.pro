@@ -3,23 +3,27 @@ CONFIG       += plugin debug_and_release
 
 include( $$(TONATIUH_ROOT)/config.pri )
 
-INCLUDEPATH +=  . \
-                src \
-                $$(TONATIUH_ROOT)/plugins \
-                $$(TONATIUH_ROOT)/src \
-                $$(TONATIUH_ROOT)/src/raytracing
+QT -=gui	
+
+INCLUDEPATH += src \
+               	$$(TONATIUH_ROOT)/src/geometry \
+                $$(TONATIUH_ROOT)/src/nodes   \
+				$$(TONATIUH_ROOT)/src/plugins   \
+                $$(TONATIUH_ROOT)/src/statistics 
+
+CONFIG(debug, debug|release) {
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes -lstatistics
+}else{
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes -lstatistics
+}
 
 # Input
-HEADERS = src/*.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/TTransmissivity.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/TTransmissivityFactory.h
+HEADERS = src/*.h  
 
-
-SOURCES = src/*.cpp \
-            $$(TONATIUH_ROOT)/src/source/raytracing/TTransmissivity.cpp
+SOURCES = src/*.cpp   
 
 RESOURCES += src/TransmissivityATMParameters.qrc
+
 TARGET        = TransmissivityATMParameters
 
 CONFIG(debug, debug|release) {

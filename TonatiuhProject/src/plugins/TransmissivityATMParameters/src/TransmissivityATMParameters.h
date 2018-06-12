@@ -39,28 +39,45 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRANSMISSIVITYFATMPARAMETERS_H_
 #define TRANSMISSIVITYFATMPARAMETERS_H_
 
-#include "trt.h"
+
 #include "TTransmissivity.h"
+#include "TNodeType.h"
+
+
+//!  TransmissivityATMParameters is the class for transmivity model defined by polynomial equation of degree 4.
+/*!
+  TransmissivityATMParameters class provides a transmissivity functionality taking into account a polynomial equation of degree 4 .
+  */
 
 
 class TransmissivityATMParameters : public TTransmissivity
 {
-	SO_NODE_HEADER( TransmissivityATMParameters );
+
+private:
+	//No copy constructor. Use Copy to create a copy of the node
+	TransmissivityATMParameters(const TransmissivityATMParameters& ) = delete;
+	TransmissivityATMParameters& operator=(const TransmissivityATMParameters&) = delete;
 
 public:
-    static void initClass();
-    TransmissivityATMParameters();
+	static std::shared_ptr< TNode > CreateInstance();
+	static void Init();
 
+	virtual std::shared_ptr< TNode > Copy() const;
+
+	std::string GetIcon() const;
+	virtual TNodeType GetType() const;
 	bool IsTransmitted( double distance, RandomDeviate& rand ) const;
 
-	//trt::TONATIUH_BOOL ClearDay;
-	trt::TONATIUH_REAL atm1;
-	trt::TONATIUH_REAL atm2;
-	trt::TONATIUH_REAL atm3;
-	trt::TONATIUH_REAL atm4;
-
 protected:
+	TransmissivityATMParameters();
     virtual ~TransmissivityATMParameters();
+
+private:
+	static TNodeType m_nodeType;
+	std::string m_atm1Label;
+	std::string m_atm2Label;
+	std::string m_atm3Label;
+	std::string m_atm4Label;
 
 };
 

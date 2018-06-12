@@ -39,24 +39,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRANSMISSIVITYFACTORYATMPARAMETERS_H_
 #define TRANSMISSIVITYFACTORYATMPARAMETERS_H_
 
-#include "TransmissivityATMParameters.h"
 #include "TTransmissivityFactory.h"
 
-class TransmissivityATMParameters;
-
-class TransmissivityATMParametersFactory : public QObject, public TTransmissivityFactory
+class TransmissivityATMParametersFactory : public TTransmissivityFactory
 {
-    Q_OBJECT
-    Q_INTERFACES( TTransmissivityFactory )
-#if QT_VERSION >= 0x050000 // pre Qt 5
-    Q_PLUGIN_METADATA(IID "tonatiuh.TTransmissivityFactory")
-#endif
-
 
 public:
-    QString TTransmissivityName() const;
-    QIcon TTransmissivityIcon() const;
-    TransmissivityATMParameters* CreateTTransmissivity( ) const;
+	void Init() const;
+	std::string TTransmissivityName() const;
+	std::string TTransmissivityIcon() const;
+	std::shared_ptr< TTransmissivity > CreateTTransmissivity( ) const;
 };
 
 #endif /* TRANSMISSIVITYFACTORYATMPARAMETERS_H_ */

@@ -36,38 +36,108 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+
+#include "RandomDeviate.h"
 #include "TransmissivityATMParameters.h"
 
 
-SO_NODE_SOURCE( TransmissivityATMParameters );
+TNodeType TransmissivityATMParameters::m_nodeType = TNodeType::CreateEmptyType();
 
-
-void TransmissivityATMParameters::initClass()
+/*!
+ * Creates a new instance of the class type corresponding object.
+ */
+std::shared_ptr< TNode > TransmissivityATMParameters::CreateInstance( )
 {
-	SO_NODE_INIT_CLASS( TransmissivityATMParameters, TTransmissivity, "TTransmissivity" );
+	//shared_prt needs a public constructor
+	struct EnableCreateTransmissivityATMParameters: public TransmissivityATMParameters { using TransmissivityATMParameters::TransmissivityATMParameters; };
+	return std::make_shared<EnableCreateTransmissivityATMParameters>();
 }
 
+/*!
+ * Initializes transmissivity type.
+ */
+void TransmissivityATMParameters::Init()
+{
+
+	TransmissivityATMParameters::m_nodeType = TNodeType::CreateType( TNodeType::FromName( "Transmissivity" ),  "TransmissivityATMParameters", &TransmissivityATMParameters::CreateInstance );
+}
+
+/*!
+ * Creates a copy of transmissivity node.
+ */
 TransmissivityATMParameters::TransmissivityATMParameters( )
+:TTransmissivity(),
+ m_atm1Label( "atm1" ),
+ m_atm2Label( "atm2" ),
+ m_atm3Label( "atm3" ),
+ m_atm4Label( "atm4" )
 {
-	SO_NODE_CONSTRUCTOR( TransmissivityATMParameters );
-	SO_NODE_ADD_FIELD( atm1, ( 0.29544 ) );
-	SO_NODE_ADD_FIELD( atm2, ( 15.22128 ) );
-	SO_NODE_ADD_FIELD( atm3, ( -1.8598 ) );
-	SO_NODE_ADD_FIELD( atm4, ( 0.15182 ) );
+	//Default object name is the name of the type
+	SetName(GetType().GetName() );
+
+	m_pParametersList->Append<double>( m_atm1Label, 0.29544, true );
+	m_pParametersList->Append<double>( m_atm2Label, 15.22128, true );
+	m_pParametersList->Append<double>( m_atm3Label, -1.8598, true );
+	m_pParametersList->Append<double>( m_atm4Label, 0.15182, true );
+
+
 }
 
+/*!
+ * Destroys the object.
+ */
 TransmissivityATMParameters::~TransmissivityATMParameters()
 {
 
 }
 
+/*!
+ * Creates a copy of tracker node.
+ */
+std::shared_ptr< TNode > TransmissivityATMParameters::Copy() const
+{
+	struct EnableCreateTransmissivityATMParameters : public TransmissivityATMParameters { using TransmissivityATMParameters::TransmissivityATMParameters; };
+	std::shared_ptr< TransmissivityATMParameters > transmissivityNode  = std::make_unique<EnableCreateTransmissivityATMParameters>();
+	if( transmissivityNode == 0 )	return ( 0  );
+
+	 //Coping the parameters.
+	transmissivityNode->m_pParametersList->SetValue( m_atm1Label, GetParameterValue<bool>( m_atm1Label ) );
+	transmissivityNode->m_pParametersList->SetValue( m_atm2Label, GetParameterValue<bool>( m_atm2Label ) );
+	transmissivityNode->m_pParametersList->SetValue( m_atm3Label, GetParameterValue<bool>( m_atm3Label ) );
+	transmissivityNode->m_pParametersList->SetValue( m_atm4Label, GetParameterValue<bool>( m_atm4Label ) );
+
+	 return ( transmissivityNode );
+}
+
+/*!
+ * Returns the filename that stores the shape icon.
+ */
+std::string TransmissivityATMParameters::GetIcon() const
+{
+	return  (":/icons/TransmissivityATMParameters.png.png");
+}
+
+/*!
+ * Returns node type.
+ */
+TNodeType TransmissivityATMParameters::GetType() const
+{
+	return ( TransmissivityATMParameters::m_nodeType );
+}
+
+/*!
+ * Returns true if the ray is not absorpted by the atmosphere.
+ */
 bool TransmissivityATMParameters::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
-
+	double atm1 = GetParameterValue<double>( m_atm1Label );
+	double atm2 = GetParameterValue<double>( m_atm2Label );
+	double atm3 = GetParameterValue<double>( m_atm3Label );
+	double atm4 = GetParameterValue<double>( m_atm4Label );
 
 	double dKM = ( distance / 1000 );
 
-	double attenuation = atm1.getValue() + atm2.getValue() * dKM + atm3.getValue()* dKM * dKM + atm4.getValue() * dKM * dKM * dKM;
+	double attenuation = atm1 + atm2 * dKM + atm3 * dKM * dKM + atm4 * dKM * dKM * dKM;
 
 	double t = 1 - ( attenuation / 100 );
 
