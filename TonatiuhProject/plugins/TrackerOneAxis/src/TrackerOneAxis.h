@@ -57,6 +57,8 @@ public:
 	//Constructor
 	TrackerOneAxis();
 
+	void Evaluate( Vector3D sunVectorW, Transform parentWT0 );
+
 protected:	
 	virtual ~TrackerOneAxis();
 

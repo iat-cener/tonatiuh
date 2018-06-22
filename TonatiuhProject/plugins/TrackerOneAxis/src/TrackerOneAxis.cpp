@@ -70,8 +70,8 @@ TrackerOneAxis::TrackerOneAxis()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerOneAxis );
 
 	// Define input fields and their default values
-	//SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
-	//SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
 	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
@@ -91,10 +91,44 @@ QString TrackerOneAxis::getIcon()
 	return QString(":/icons/TrackerOneAxis.png");
 }
 
+void TrackerOneAxis::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
+{
+	Vector3D s = parentWT0( sunVectorW );
+	Vector3D p( 1.0f, 0.0f, 0.0f);
+
+
+	Vector3D n;
+	Vector3D t;
+	if( fabs( DotProduct( s, p ) ) < 1.0 )
+	{
+		//n = ( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
+	//	n = Normalize( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
+		//t = Normalize( CrossProduct( p, n ) );
+		t = Normalize( CrossProduct( p, s ) );
+		n = Normalize( CrossProduct( t, p ) );
+	}
+	else
+	{
+		t = Vector3D( 0.0f, 0.0f, 1.0f );
+		n = Normalize( CrossProduct( t, p ) );
+	}
+
+
+	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
+								n[0], n[1], n[2], 0.0,
+								p[0], p[1], p[2], 0.0,
+								0.0, 0.0, 0.0, 1.0 );
+
+	SoTransform* newTransform = new SoTransform();
+	newTransform->setMatrix( transformMatrix );
+
+	SetEngineOutput(newTransform);
+}
+
 void TrackerOneAxis::evaluate()
 {
-	/*
-	if (!IsConnected()) return;
+
+	/*if (!IsConnected()) return;
 
 	SoSearchAction coinSearch;
 	coinSearch.setNode( this );
@@ -139,5 +173,5 @@ void TrackerOneAxis::evaluate()
 	newTransform->setMatrix( transformMatrix );
 
 	SetEngineOutput(newTransform);
-	*/
+*/
 }
