@@ -158,7 +158,6 @@ TNodeType ShapeParabolicDish::GetType() const
 	return ( m_nodeType );
 }
 
-
 /*!
  * Computes if the \a objectRay intersects with current surface.
  * \a tHit, \a dg and \a isShapeFront return information about the intersection point.
@@ -287,4 +286,3 @@ void ShapeParabolicDish::Draw() const
 {
 
 }
-

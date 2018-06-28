@@ -495,7 +495,7 @@ int main ( int argc, char** argv )
 
 /***********************************/
 
-/************************************************************/
+/************************************************************
 
 
 	std::cout<<"Tonatiuh 3.0 saveDocument"<<std::endl;
@@ -508,7 +508,7 @@ int main ( int argc, char** argv )
 	}
 
 
-/***********************************/
+***********************************/
 /***********************************
 	//std::cout<<"sceneNode "<<sceneNode->GetName().toStdString()<<std::endl;
 	//ChildrenBranch(sceneNode);
@@ -540,7 +540,7 @@ int main ( int argc, char** argv )
 
 
 	std::cout<<"\tChanging sun position..."<<std::endl;
-	sceneNode->ChangeSunPosition( 180*gc::Degree, 0*gc::Degree );
+	sceneNode->ChangeSunPosition( 180*gc::Degree, 0 * gc::Degree );
 	//sceneNode->ChangeSunPosition( 150*gc::Degree, 30*gc::Degree );
 
 
@@ -580,17 +580,26 @@ int main ( int argc, char** argv )
 	//Defining how export the stored data.
 	std::cout<<"\t Defining how export the stored data."<<std::endl;
 	std::unique_ptr< PhotonMapExportType > pPhotonMapExportType = pluginManager.CreatePhotonMapExportType( photonMapExportTypeNameList[0] );
+	if( pPhotonMapExportType == nullptr )
+	{
+		std::cerr<<"\t Error defining the export type."<<std::endl;
+		return ( -8 );
+	}
+
 	pPhotonMapExportType->SetSaveCoordinatesEnabled( true );
+	pPhotonMapExportType->SetSaveCoordinatesInGlobalSystemEnabled( true );
 	pPhotonMapExportType->SetSavePreviousNextPhotonsID( false );
+	pPhotonMapExportType->SetSaveSideEnabled( true );
+	pPhotonMapExportType->SetSaveSurfacesIDEnabled( true );
+
+	if( argc < 4 )
+	{
+		std::cerr<<"No file to save results "<<std::endl;
+		return ( -9 );
+	}
 
 	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
 	std::cout<<"\t\tExportFile: "<< argv[4]<<std::endl;
-
-	if( argv[3] == NULL || argv[4] == NULL )
-	{
-		std::cout<<"No file to save results "<<std::endl;
-		return ( -8 );
-	}
 
 	pPhotonMapExportType->SetSaveParameterValue( "ExportDirectory", argv[3] );
 	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", argv[4] );
@@ -613,15 +622,6 @@ int main ( int argc, char** argv )
 
 
 /************************************************************/
-
-/************************************************************
-	//Change sun position
-	std::cout<<"Change sun position:"<<std::endl;
-	TSunNode* sun = sceneNode->GetPart( "light" )->as<TSunNode>();
-	std::cout<<"\tCurrent values:"<<std::endl;
-	std::cout<<"\t\t azimuth: "<<sun->GetAzimuth()<<std::endl;
-	std::cout<<"\t\t zenith: "<<sun->GetZenith()<<std::endl;
-************************************************************/
 
 
 	std::cout<<"END" <<std::endl;

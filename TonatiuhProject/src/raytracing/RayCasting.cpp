@@ -60,8 +60,6 @@ RayCasting::RayCasting()
  */
 RayCasting::~RayCasting()
 {
-	//if( m_sceneRootNode || m_sceneRootNode != 0 )
-	//	RemoveRayTracerNodesTree( m_sceneRootNode );
 }
 
 /*!
@@ -96,42 +94,43 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 						0, 0, 0, 1 );
 
 	auto childrenContainer = std::dynamic_pointer_cast< TContainerNode > ( childrenRoot );
-	if( !CreateRayTracerNodesTree( childrenContainer, m_sceneRootNode, parentWT0, "//SunNode" ) )
-	{
-		//RemoveRayTracerNodesTree( m_sceneRootNode );
-		return (false);
-	}
-
+	if( !CreateRayTracerNodesTree( childrenContainer, m_sceneRootNode, parentWT0, "//SunNode" ) )	return (false);
 	if( -gc::Infinity  == m_sceneRootNode->boundingBox.Volume() ) 	return ( false );
-	//std::cout<<"\t m_sceneRootNode->boundingBox: "<< m_sceneRootNode->boundingBox<<std::endl;
+
 	std::vector< Point3D > sceneBBoxPointList;
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMin.z ) );
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMin.z ) );
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMax.z ) );
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMax.z ) );
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMin.z ) );
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMin.z ) );
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMax.z ) );
-	sceneBBoxPointList.push_back( Point3D(  m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMax.z ) );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMin.z } );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMin.z } );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMax.z } );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMin.y,  m_sceneRootNode->boundingBox.pMax.z } );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMin.z } );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMin.z } );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMax.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMax.z } );
+	sceneBBoxPointList.push_back( Point3D{ m_sceneRootNode->boundingBox.pMin.x,  m_sceneRootNode->boundingBox.pMax.y,  m_sceneRootNode->boundingBox.pMax.z } );
 
 	double azimuthRad = m_pSunNode->GetAzimuth();
 	double zenithRad =  m_pSunNode->GetZenith();
-	Vector3D sunVector ( sin(zenithRad) * sin(azimuthRad), cos(zenithRad), -sin(zenithRad) * cos(azimuthRad) );
+	Vector3D sunVector{ sin(zenithRad) * sin(azimuthRad), cos(zenithRad), -sin(zenithRad) * cos(azimuthRad) };
 
 	Vector3D auxiliaryAxis( 0, 1, 0 );
-	Vector3D uVector = Normalize( CrossProduct( auxiliaryAxis, sunVector ) );
-	Vector3D vVector = Normalize( CrossProduct( uVector, sunVector  ));
+	Vector3D uVector;
+	Vector3D vVector;
+	if( sunVector != auxiliaryAxis )
+	{
+		uVector = Normalize( CrossProduct( auxiliaryAxis, sunVector ) );
+		vVector = Normalize( CrossProduct( uVector, sunVector  ));
+	}
+	else
+	{
+		vVector = Vector3D{ sin(azimuthRad), 0.0, -cos(azimuthRad) };
+		uVector = Normalize( CrossProduct( sunVector, vVector ) );
+	}
 
-	Transform sunRotationSTW = Transform( uVector.x, sunVector.x, vVector.x, 0,
+	Transform sunRotationSTW = Transform{ uVector.x, sunVector.x, vVector.x, 0,
 													uVector.y, sunVector.y, vVector.y, 0,
 													uVector.z, sunVector.z, vVector.z, 0,
-													0, 0, 0, 1 );
+													0, 0, 0, 1 };
 	Transform sunRotationWTS = sunRotationSTW.GetInverse();
-
-
-	//std::cout<<"\t sunRotationSTW: "<< sunRotationSTW<<std::endl;
 	BBox sceneBBoxSunRotationCoors = sunRotationWTS( m_sceneRootNode->boundingBox );
-	//std::cout<<"\t sceneBBoxSunRotationCoors "<< sceneBBoxSunRotationCoors<<std::endl;
 
 	//Initializates to 0.0 to include {0.0, 0.0, 0.0} point
 	double yMin = 0.0; // gc::Infinity;
@@ -142,11 +141,6 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 		if( yMin > sceneBBoxPointSunCoord.y )	yMin = sceneBBoxPointSunCoord.y;
 		if( yMax < sceneBBoxPointSunCoord.y )	yMax = sceneBBoxPointSunCoord.y;
 	}
-
-
-	//std::cout<<"\t yMin: "<< yMin<<std::endl;
-	//std::cout<<"\t yMax: "<< yMax<<std::endl;
-	//std::cout<<"\t distMax1: "<< (yMax -yMin ) +1<<std::endl;
 	Transform sunTransformSTW1 = sunRotationSTW *
 	    		Transform( 1, 0, 0, 0,
 	    				0, 1, 0, (yMax -yMin ) +1,
@@ -161,17 +155,14 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 	}
 
 	double distMax = ((yMax -yMin ) +1 ) - dMin +1 ;
-	//std::cout<<"\t distMax: "<< distMax<<std::endl;
 
-	m_sunTransformSTW = sunRotationSTW * 	Transform( 1, 0, 0, 0,
+	m_sunTransformSTW = sunRotationSTW * Transform{ 1, 0, 0, 0,
 	    				0, 1, 0, distMax,
 						0, 0, 1, 0,
-						0, 0, 0, 1 );
+						0, 0, 0, 1 };
 
 
 	Transform sunTransformWTS = m_sunTransformSTW.GetInverse();
-	//std::cout<<"\t m_sunTransformSTW: "<< m_sunTransformSTW<<std::endl;
-	//std::cout<<"\t sunTransformWTS: "<< sunTransformWTS<<std::endl;
 
 	double xMin = gc::Infinity;
 	double zMin = gc::Infinity;
@@ -201,13 +192,6 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 	double width = m_lightOriginShape.xMaxSunPlane - m_lightOriginShape.xMinSunPlane;
 	double height = m_lightOriginShape.zMaxSunPlane - m_lightOriginShape.zMinSunPlane;
 
-
-	//std::cout<<"m_lightOriginShape: xMin--> "<<xMin<<std::endl;
-	//std::cout<<"m_lightOriginShape: xMax--> "<<xMax<<std::endl;
-	//std::cout<<"m_lightOriginShape: zMin--> "<<zMin<<std::endl;
-	//std::cout<<"m_lightOriginShape: zMax--> "<<zMax<<std::endl;
-	//std::cout<<"m_lightOriginShape: delta--> "<<delta<<std::endl;
-	//std::cout<<"m_lightOriginShape:  "<<width<<" x "<<height<<std::endl;
 
 	int widthDivisions = 200;
 	int heigthDivisions = 200;
@@ -253,14 +237,14 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 			BBox shapeBB = m_surfacesNodeList[s]->boundingBox;
 
 			std::vector< Point3D > surfacePolygonList;
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMin.z ) ) );
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMin.z ) ) );
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMax.z ) ) );
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMax.z ) ) );
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMin.z ) ) );
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMin.z ) ) );
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMax.z ) ) );
-			surfacePolygonList.push_back( sunTransformWTS( Point3D( shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMax.z ) ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMin.z } ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMin.z } ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMax.x, shapeBB.pMin.y, shapeBB.pMax.z } ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMin.x, shapeBB.pMin.y, shapeBB.pMax.z } ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMin.z } ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMin.z } ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMax.x, shapeBB.pMax.y, shapeBB.pMax.z } ) );
+			surfacePolygonList.push_back( sunTransformWTS( Point3D{ shapeBB.pMin.x, shapeBB.pMax.y, shapeBB.pMax.z } ) );
 
 			int xMinIndex = widthDivisions;
 			int xMaxIndex = 0;
@@ -311,6 +295,7 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 		delete[] areaMatrix[i];
 	delete[] areaMatrix;
 
+	std::cout<<"END RayCasting::SetScene "<<std::endl;
 	return ( true );
 }
 
