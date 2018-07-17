@@ -461,7 +461,6 @@ int main ( int argc, char** argv )
 ***********************************/
 
 
-
 /***********************************/
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
 
@@ -492,8 +491,8 @@ int main ( int argc, char** argv )
 	sceneNode->UpdateTrackers( );
 
 
-
 /***********************************/
+
 
 /************************************************************
 
@@ -587,7 +586,7 @@ int main ( int argc, char** argv )
 	}
 
 	pPhotonMapExportType->SetSaveCoordinatesEnabled( true );
-	pPhotonMapExportType->SetSaveCoordinatesInGlobalSystemEnabled( true );
+	pPhotonMapExportType->SetSaveCoordinatesInGlobalSystemEnabled( false );
 	pPhotonMapExportType->SetSavePreviousNextPhotonsID( false );
 	pPhotonMapExportType->SetSaveSideEnabled( true );
 	pPhotonMapExportType->SetSaveSurfacesIDEnabled( true );
@@ -599,12 +598,17 @@ int main ( int argc, char** argv )
 	}
 
 	std::cout<<"\t\tExportDirectory: "<< argv[3]<<std::endl;
-	std::cout<<"\t\tExportFile: "<< argv[4]<<std::endl;
-
 	pPhotonMapExportType->SetSaveParameterValue( "ExportDirectory", argv[3] );
-	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", argv[4] );
-	pPhotonMap->SetExportType( std::move( pPhotonMapExportType ) );
 
+	std::cout<<"\t\tExportFile: "<< argv[4]<<std::endl;
+	pPhotonMapExportType->SetSaveParameterValue( "ExportFile", argv[4] );
+
+
+	//std::vector< std::string > saveSurfaceList{ "//SunNode/SolarField/Tower/Receiver/ReceiverRotation/ReceiverSurface" };
+	std::vector< std::string > saveSurfaceList{ "//SunNode/Heliostat_Field/solarField_node/tower_node/receiver_node/receiver_rotation/ReceiverSurface" };
+	//std::vector< std::string > saveSurfaceList{ "//Light" };
+	pPhotonMapExportType->SetSaveSurfacesURLList( saveSurfaceList );
+	pPhotonMap->SetExportType( std::move( pPhotonMapExportType ) );
 	raytracer.SetPhotonMap( pPhotonMap.get() );
 
 	double tracedRays = 1000000;

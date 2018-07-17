@@ -454,7 +454,6 @@ void PhotonMapExportToBinaryFile::ExportSeveralFilesSelectedData( QString filena
  */
 void PhotonMapExportToBinaryFile::RemoveExistingFiles()
 {
-
 	QDir exportDirectory( m_exportDirecotryName.c_str() );
 
 
