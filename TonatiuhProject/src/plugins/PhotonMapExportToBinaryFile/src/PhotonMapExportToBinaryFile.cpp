@@ -102,9 +102,10 @@ void PhotonMapExportToBinaryFile::EndSave()
  */
 void PhotonMapExportToBinaryFile::SavePhotonMap( std::vector < Photon >& raysLists )
 {
-
+	std::cout<<"PhotonMapExportToBinaryFile::SavePhotonMap"<<std::endl;
 	if( m_oneFile )
 	{
+		std::cout<<"\t m_oneFile"<<std::endl;
 		QDir exportDirectory( m_exportDirecotryName.c_str() );
 		QString filename( m_photonsFilename.c_str() );
 		QString exportFilename = exportDirectory.absoluteFilePath( filename.append( QLatin1String( ".dat" ) ) );
@@ -115,7 +116,10 @@ void PhotonMapExportToBinaryFile::SavePhotonMap( std::vector < Photon >& raysLis
 			ExportOneFileSelectedData( exportFilename, raysLists );
 	}
 	else
+	{
+		std::cout<<"\t SaveToVariousFiles"<<std::endl;
 		SaveToVariousFiles( raysLists );
+	}
 }
 
 /*!
@@ -382,7 +386,7 @@ void PhotonMapExportToBinaryFile::ExportSeveralFilesPhotonsAllData( QString file
  *  * For each photon only selected parameters will be exported.
  */
 void PhotonMapExportToBinaryFile::ExportSeveralFilesSelectedData( QString filename, std::vector< Photon >& raysLists,
-		unsigned long startIndex, 	unsigned long numberOfPhotons )
+		unsigned long startIndex, unsigned long numberOfPhotons )
 {
 	QFile exportFile( filename );
 	exportFile.open( QIODevice::Append );
@@ -489,12 +493,16 @@ void PhotonMapExportToBinaryFile::SaveToVariousFiles( std::vector <Photon >& ray
 
 	unsigned long nPhotons = raysLists.size();
 
+	//Index of the photons vector to start the store.
 	unsigned long startIndex = 0;
-	unsigned long filePhotons = m_exportedPhotons - ( m_nPhotonsPerFile * ( m_currentFileID - 1 ) );
 
+	//Number of photons in the current dat file
+	unsigned long filePhotons = m_exportedPhotons - ( m_nPhotonsPerFile * ( m_currentFileID - 1 ) );
 	unsigned long nPhotonsToExport = 0;
+
 	for( unsigned long i = 0; i < nPhotons; i++ )
 	{
+		//While the maximum number of photons to store is not achieved, this number is incremented
 		if( !( filePhotons < m_nPhotonsPerFile ) )
 		{
 			std::string newName = m_photonsFilename + std::string( "_" ) + std::to_string(m_currentFileID) + std::string( ".dat" );

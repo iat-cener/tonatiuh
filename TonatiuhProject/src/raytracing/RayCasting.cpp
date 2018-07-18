@@ -295,7 +295,6 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 		delete[] areaMatrix[i];
 	delete[] areaMatrix;
 
-	std::cout<<"END RayCasting::SetScene "<<std::endl;
 	return ( true );
 }
 

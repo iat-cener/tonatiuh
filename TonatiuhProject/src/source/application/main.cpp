@@ -65,7 +65,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSunshapeFactory.h"
 #include "TTrackerFactory.h"
 
-
+#include "Ejemplo1_CreateModel.h"
+#include "Ejemplo1_Convergencia.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -460,8 +461,38 @@ int main ( int argc, char** argv )
 
 ***********************************/
 
+/************************************/
 
-/***********************************/
+	//Run valitation examples
+	std::string currentDirectory = argv[1];
+
+	int ejemplo = atoi( argv[2] );
+	int simulacion  = atoi( argv[3] );
+
+	switch( ejemplo )
+	{
+		case 1:
+		{
+			if( simulacion == 0 ) //Create model
+			{
+				Ejemplo1_CreateModel( currentDirectory, &pluginManager );
+			}
+
+			if( simulacion == 1 ) //Convergencia
+			{
+				double azimuth = atof( argv[4] );
+				double elevation = atof( argv[5] );
+				Ejemplo1_Convergencia( currentDirectory, azimuth, elevation, &pluginManager );
+			}
+
+			break;
+		}
+
+	}
+
+
+
+/***********************************
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
 
 	TNodesDocument readDocument;
@@ -491,7 +522,7 @@ int main ( int argc, char** argv )
 	sceneNode->UpdateTrackers( );
 
 
-/***********************************/
+***********************************/
 
 
 /************************************************************
@@ -527,7 +558,7 @@ int main ( int argc, char** argv )
 
 ***********************************/
 
-/***********************************/
+/***********************************
 
 
 	//Change sun position
@@ -625,7 +656,7 @@ int main ( int argc, char** argv )
 
 
 
-/************************************************************/
+************************************************************/
 
 
 	std::cout<<"END" <<std::endl;
