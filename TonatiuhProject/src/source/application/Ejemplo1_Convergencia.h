@@ -30,7 +30,7 @@ void Ejemplo1_Convergencia( std::string currentDirectory, double azimuth, double
 	workingPath.cd( "Ejemplo1" );
 	std::cout<< "\t workingPath: "<<workingPath.absolutePath().toStdString()<<std::endl;
 
-	std::string filename = workingPath.absoluteFilePath( "Ejemplo1_8534heliostatos_aimingStrategy_v3XML.tnhs" ).toStdString();
+	std::string filename = workingPath.absoluteFilePath( "Ejemplo1_8534heliostatos_aimingStrategy_v3XML.tnh" ).toStdString();
 
 	TNodesDocument readDocument;
 	bool okRead = readDocument.Read( filename );
@@ -101,20 +101,29 @@ void Ejemplo1_Convergencia( std::string currentDirectory, double azimuth, double
 	QDir exportDir = workingPath;
 
 	if( !exportDir.cd( "Simulaciones" ) )
+	{
 		exportDir.mkdir( "Simulaciones" );
+		exportDir.cd( "Simulaciones"  );
+	}
 
 	if( !exportDir.cd( "Convergencia" ) )
+	{
 		exportDir.mkdir( "Convergencia" );
+		exportDir.cd( "Convergencia"  );
+	}
 
 	if( !exportDir.cd( positionDirName.c_str() ) )
+	{
 			exportDir.mkdir( positionDirName.c_str() );
+			exportDir.cd( positionDirName.c_str() );
+	}
 
 	if( !exportDir.exists() )
 	{
 		std::cerr<<"ERROR defining export folder"<<std::endl;
 	}
 
-	double tracedRays = 500000;
+	double tracedRays = 5000000;
 	std::vector< std::string > saveSurfaceList{ "//SunNode/solarField_node/tower_node/receiver_node/receiver_rotation/ReceiverSurface" };
 	for( int s = 0; s < 20; s++ )
 	{

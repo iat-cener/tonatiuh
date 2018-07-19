@@ -403,7 +403,7 @@ void Ejemplo1_CreateModel( std::string currentDirectory, PluginManager* pPluginM
 	tonatiuhScene->UpdateTrackers( );
 
 	workingPath.cdUp();
-	std::string filename = workingPath.absoluteFilePath( "Ejemplo1_8534heliostatos_aimingStrategy_v3XML.tnhs" ).toStdString();
+	std::string filename = workingPath.absoluteFilePath( "Ejemplo1_8534heliostatos_aimingStrategy_v3XML.tnh" ).toStdString();
 
 	std::cout<<"Saving the scene..."<<std::endl;
 	TNodesDocument saveDocument;

@@ -67,6 +67,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "Ejemplo1_CreateModel.h"
 #include "Ejemplo1_Convergencia.h"
+#include "Ejemplo1_EfficiencyMatrix.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -476,6 +477,7 @@ int main ( int argc, char** argv )
 			if( simulacion == 0 ) //Create model
 			{
 				Ejemplo1_CreateModel( currentDirectory, &pluginManager );
+				break;
 			}
 
 			if( simulacion == 1 ) //Convergencia
@@ -483,14 +485,20 @@ int main ( int argc, char** argv )
 				double azimuth = atof( argv[4] );
 				double elevation = atof( argv[5] );
 				Ejemplo1_Convergencia( currentDirectory, azimuth, elevation, &pluginManager );
+				break;
 			}
 
+			if( simulacion == 2 ) //Efficiency Matrix
+			{
+				Ejemplo1_EfficiencyMatrix( currentDirectory, &pluginManager );
+				break;
+			}
 			break;
 		}
 
 	}
 
-
+/************************************/
 
 /***********************************
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;

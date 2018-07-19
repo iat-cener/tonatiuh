@@ -67,6 +67,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTrackerFactory.h"
 
 
+#include "Ejemplo1_Convergencia.h"
+#include "Ejemplo1_EfficiencyMatrix.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -100,7 +102,7 @@ void print_is_same() {
 int main ( int argc, char** argv )
 {
 
-	std::cout<<"Tonatiuh 3.0"<<std::endl;
+	std::cout<<"Tonatiuh 3.0 JSON"<<std::endl;
 	qInstallMessageHandler(myMessageOutput);
 
     QApplication a{ argc, argv };
@@ -183,268 +185,50 @@ int main ( int argc, char** argv )
 
 ************************************************************/
 
+/************************************/
 
-/************************************************************
-	std::cout<<"Creating new tonatiuh scene"<<std::endl;
-
-	std::shared_ptr< TSceneNode > tonatiuhScene = std::dynamic_pointer_cast<TSceneNode>( TSceneNode::CreateInstance() );
-	tonatiuhScene->SetName( "parabolic_dish_concentrator" );
-	std::cout<<" - tonatiuhScene created."<<std::endl;
+	//Run validation examples
+	std::string currentDirectory = argv[1];
 
 
-	std::vector<std::string> scenePartNames = tonatiuhScene->GetPartNames();
-	std::cout<<"- Tonatiuh scene part names: "<<std::endl;
-	for( unsigned int p = 0; p < scenePartNames.size(); p++ )
-		std::cout<<"  -  "<<scenePartNames[p]<<std::endl;
+	int ejemplo = atoi( argv[2] );
+	int simulacion  = atoi( argv[3] );
 
-
-	//Sun
-	std::cout<<"Creating new scene Sun"<<std::endl;
-	double azimuthRad = 180 * gc::Degree;
-	double zentihRad = 15 * gc::Degree;
-	std::shared_ptr< TSunNode > sunNode = std::dynamic_pointer_cast<TSunNode>( TSunNode::CreateInstance() );
-	sunNode->SetName( "sun_node" );
-
-
-	std::cout<<" - sunNode created."<<std::endl;
-	tonatiuhScene->SetPart( scenePartNames[1],  sunNode );
-	sunNode->SetParameterValue<double>( "azimuth", azimuthRad );
-	sunNode->SetParameterValue<double>( "zenith", zentihRad );
-	std::cout<<" - sunNode parameters: azimuth "<<azimuthRad<<" && zenith "<<zentihRad<<std::endl;
-
-	std::cout<<"Creating sunshape: "<<std::endl;
-	std::cout<<" - finding the desired sunhape index in the sunshapes list"<<std::endl;
-	int sunshapeIndex = std::distance( sunshapeFactoryNameList.begin(), std::find(sunshapeFactoryNameList.begin(), sunshapeFactoryNameList.end(), "Buie_Sunshape" ) );
-	if( sunshapeIndex >= numberOfSunshapeFactories )
+	switch( ejemplo )
 	{
-		std::cout<<"Error defining sunshape type."<<std::endl;
-		return -1;
-	}
-	std::cout<<" - Sunshape index: "<<sunshapeIndex<<std::endl;
+		case 1:
+		{
+			if( simulacion == 0 ) //Create model
+			{
+				//Ejemplo1_CreateModel( currentDirectory, &pluginManager );
 
-	//std::shared_ptr< TSunshape > sunshapeNode = sunshapeFactoryList[0]->CreateTSunshape();
+				break;
+			}
 
-	std::shared_ptr< TSunshape > sunshapeNode = pluginManager.CreateTSunshape( "Buie_Sunshape" );
-	if( sunshapeNode == nullptr )
-	{
-		std::cout<<"Error defining 'Buie_Sunshape' sunshape type."<<std::endl;
-		return -1;
+			if( simulacion == 1 ) //Convergencia
+			{
+				double azimuth = atof( argv[4] );
+				double elevation = atof( argv[5] );
+				std::cout<<azimuth<<std::endl;
+				std::cout<<elevation<<std::endl;
+				Ejemplo1_Convergencia( currentDirectory, azimuth, elevation, &pluginManager );
+				break;
+			}
+
+			if( simulacion == 2 ) //Efficiency Matrix
+			{
+				Ejemplo1_EfficiencyMatrix( currentDirectory, &pluginManager );
+				break;
+			}
+			break;
+		}
+
 	}
 
-	sunshapeNode->SetName( "sunshapeModel" );
-	sunNode->SetPart( "sunshape",  sunshapeNode );
-	if( !sunshapeNode->SetParameterValue<double>( "csr", 0.028 ) )
-	{
-		std::cout<<"Error defining crs value."<<std::endl;
-		return ( -1 );
-	}
+/************************************/
 
-
-
-
-	//Parabolic dish
-	std::cout<<"Eurodish_field"<<std::endl;
-	std::shared_ptr< TGroupNode > rootNode = std::dynamic_pointer_cast<TGroupNode>( TGroupNode::CreateInstance() );  //= new TGroupNode();
-	rootNode->SetName( "Eurodish_field");
-	if( !tonatiuhScene->SetPart( scenePartNames[0],  rootNode ) )
-	{
-		std::cout<<"Cannnot be define the scene children node."<<std::endl;
-		return ( -1 );
-
-	}
-	std::cout<<"childRoot: "<<rootNode->GetName()<<std::endl;
-
-
-	//Concentrator 1
-	std::shared_ptr< TGroupNode > concentrator1Node = std::dynamic_pointer_cast<TGroupNode>( TGroupNode::CreateInstance() );
-	concentrator1Node->SetName( "Concentrator_1");
-	Vector3D translationValue( -5, 0, 0 );
-	std::any variantVector3D( translationValue );
-	concentrator1Node->SetParameterValue<std::string>( "translation", "-5 0 0" );
-	std::cout<<"  Concentrator 1 Node: "<<concentrator1Node->GetName()<<std::endl;
-	if( !( rootNode->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( concentrator1Node ) )
-	{
-		std::cout<<"Error adding concentrator 1 to root node."<<std::endl;
-		return -1;
-	}
-
-
-	std::cout<<"    concentrator 1 tracker: Tracker_Concentrator_1"<<std::endl;
-	std::string trackerFactoryName = "Tracker_ParabolicDish" ;
-	int trackerFactoryIndex = std::distance( trackerFactoryNameList.begin(), std::find(trackerFactoryNameList.begin(), trackerFactoryNameList.end(), trackerFactoryName ) );
-	if( trackerFactoryIndex >= numberOfTrackerFactories )
-	{
-		std::cout<<"Error defining concentrator tracker type."<<std::endl;
-		return -1;
-	}
-
-	std::shared_ptr< TTracker > c1ParabolicDishTracker = pluginManager.CreateTTracker( trackerFactoryName );
-	if( c1ParabolicDishTracker == nullptr )
-	{
-		std::cout<<"Error defining '"<<trackerFactoryName<<"' tracker type."<<std::endl;
-		return -1;
-	}
-
-	c1ParabolicDishTracker->SetName( "Tracker_Concentrator_1");
-	( concentrator1Node->GetPart("childrenList" )->as< TNodesList>())->InsertItem( c1ParabolicDishTracker );
-
-
-	std::cout<<"      concentrator 1 surface:  ConcentratorSurface"<<std::endl;
-	std::shared_ptr< TSurfaceNode > concentratorSurfaceNode = std::dynamic_pointer_cast<TSurfaceNode>( TSurfaceNode::CreateInstance() );
-	concentratorSurfaceNode->SetName( "ConcentratorSurface" );
-	( c1ParabolicDishTracker->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( concentratorSurfaceNode );
-
-
-	std::cout<<"        concentrator 1 shape:  ConcentratorGeometry"<<std::endl;
-	std::string concentratorShapeName = "Parabolic_dish";
-	int concentratorShapeIndex = std::distance( shapeFactoryNameList.begin(), std::find(shapeFactoryNameList.begin(), shapeFactoryNameList.end(), concentratorShapeName ) );
-	if( concentratorShapeIndex >= numberOfShapeFactories )
-	{
-		std::cout<<"Error defining concentrator shape: "<<concentratorShapeName<<std::endl;
-		return -1;
-	}
-
-	std::shared_ptr< TShape > concentratorShape = pluginManager.CreateTShape( concentratorShapeName );
-	if( concentratorShape == nullptr )
-	{
-		std::cout<<"Error defining '"<<concentratorShapeName<<"' shape type."<<std::endl;
-		return -1;
-	}
-
-	concentratorShape->SetName( "ConcentratorGeometry");
-	concentratorShape->SetParameterValue<double>( "focusLength", 4.520 );
-	concentratorShape->SetParameterValue<double>( "dishMinRadius",  0.0 );
-	concentratorShape->SetParameterValue<double>( "dishMaxRadius",  4.25 );
-	concentratorSurfaceNode->SetPart( "shape",  concentratorShape );
-
-
-	std::cout<<"        concentrator 1 material:  ConcentratorMaterial"<<std::endl;
-	std::string concentratorMaterialName = "Specular_Standard_Material";
-	int concentratorMaterialIndex = std::distance( materialFactoryNameList.begin(), std::find(materialFactoryNameList.begin(), materialFactoryNameList.end(), concentratorMaterialName ) );
-	if( concentratorMaterialIndex >= numberOfMaterialFactories )
-	{
-		std::cout<<"Error defining concentrator material: "<<concentratorMaterialName<<std::endl;
-		return -1;
-	}
-
-	std::shared_ptr< TMaterial > concentratorMaterial = pluginManager.CreateTMaterial( concentratorMaterialName );
-	if( concentratorMaterial == nullptr )
-	{
-		std::cout<<"Error defining '"<<concentratorMaterialName<<"' material type."<<std::endl;
-		return -1;
-	}
-	concentratorMaterial->SetName( "ConcentratorMaterial");
-	concentratorMaterial->SetParameterValue<double>( "reflectivity", 0.925 );
-	concentratorMaterial->SetParameterValue<double>( "sigmaSlope", 4.4270 );
-	concentratorSurfaceNode->SetPart( "material",  concentratorMaterial );
-
-
-
-	//Receiver
-	std::cout<<"    receiverNode: Receiver"<<std::endl;
-	std::shared_ptr< TGroupNode > receiverNode = std::dynamic_pointer_cast<TGroupNode>( TGroupNode::CreateInstance() );
-	receiverNode->SetName( "Receiver ");
-	receiverNode->SetParameterValue<std::string>( "translation",  "0 4.52 0" );
-	( c1ParabolicDishTracker->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( receiverNode );
-
-
-	std::cout<<"      receiverSurfaceNode: ReceiverSurface"<<std::endl;
-	std::shared_ptr< TSurfaceNode > receiverSurfaceNode = std::dynamic_pointer_cast<TSurfaceNode>( TSurfaceNode::CreateInstance() );
-	receiverSurfaceNode->SetName( "ReceiverSurface" );
-	( receiverNode->GetPart("childrenList" )->as< TNodesList >() )->InsertItem( receiverSurfaceNode );
-
-
-	std::cout<<"          receiver  shape:  ReceiverGeometry"<<std::endl;
-	std::string receiverShapeName = "Flat_disk";
-	int receiverShapeIndex = std::distance( shapeFactoryNameList.begin(), std::find(shapeFactoryNameList.begin(), shapeFactoryNameList.end(), receiverShapeName ) );
-	if( receiverShapeIndex >= numberOfShapeFactories )
-	{
-		std::cout<<"Error defining receiver shape: "<<receiverShapeName<<std::endl;
-		return -1;
-	}
-	std::shared_ptr< TShape > receiverShape = pluginManager.CreateTShape( receiverShapeName );
-	if( receiverShape == nullptr )
-	{
-		std::cout<<"Error defining '"<<receiverShapeName<<"' shape type."<<std::endl;
-		return( -1 );
-	}
-
-	receiverShape->SetName( "ReceiverGeometry");
-	receiverShape->SetParameterValue<double>( "radius",  0.30 );
-	receiverSurfaceNode->SetPart( "shape",  receiverShape );
-
-
-	std::cout<<"          receiver  material:  ReceiverMaterial"<<std::endl;
-	std::shared_ptr< TMaterial > receiverMaterial = pluginManager.CreateTMaterial( concentratorMaterialName );
-	if( receiverMaterial == nullptr )
-	{
-		std::cout<<"Error defining '"<<concentratorMaterialName<<"' material type."<<std::endl;
-		return( -1 );
-	}
-	receiverMaterial->SetName( "ReceiverMaterial");
-	receiverMaterial->SetParameterValue<double>( "reflectivity", 0.0 );
-	receiverSurfaceNode->SetPart( "material",  receiverMaterial );
-
-
-
-	//Concentrator 2
-	std::cout<<"  Concentrator 2 Node: Concentrator_2"<<std::endl;
-	std::shared_ptr< TGroupNode > concentrator2Node = std::dynamic_pointer_cast<TGroupNode>( TGroupNode::CreateInstance() );
-	concentrator2Node->SetName( "Concentrator_2");
-	concentrator2Node->SetParameterValue<std::string>( "translation",  "5 0 0" );
-	if( !( rootNode->GetPart( "childrenList" )->as< TNodesList >() )->InsertItem( concentrator2Node ) )
-	{
-		std::cout<<"Error adding concentrator 2 to root node"<<std::endl;
-		return( -1 );
-	}
-
-
-	std::cout<<"    concentrator2 tracker"<<std::endl;
-	std::shared_ptr< TTracker > c2ParabolicDishTracker = pluginManager.CreateTTracker( trackerFactoryName );
-	if( c2ParabolicDishTracker == nullptr )
-	{
-		std::cout<<"Error defining '"<<trackerFactoryName<<"' tracker type."<<std::endl;
-		return( -1 );
-	}
-	c2ParabolicDishTracker->SetName( "Tracker_Concentrator_2");
-	( concentrator2Node->GetPart("childrenList" )->as< TNodesList>())->InsertItem( c2ParabolicDishTracker );
-
-
-	std::cout<<"      concentrator 2 surface:  ConcentratorSurface"<<std::endl;
-	if( !( c2ParabolicDishTracker->GetPart( "childrenList" )->as< TNodesList >() )->InsertItem( concentratorSurfaceNode ) )
-	{
-		std::cout<<"Error adding surface node to concentrator 2 tracker"<<std::endl;
-		return( -1 );
-	}
-
-
-
-	std::cout<<"\tUpdating trackers..."<<std::endl;
-	tonatiuhScene->UpdateTrackers( );
-
-	std::cout<<"TNodesDocument saveDocument"<<std::endl;
-	TJSONNodesDocument saveDocument;
-	saveDocument.SetRootNode( tonatiuhScene );
-	if( !saveDocument.Write( argv[1] )  )
-	{
-		std::cout<<"Error during writing file"<<std::endl;
-		return -1;
-	}
-
-	////Codigo para si se eliminan los nodos
-	//std::cout<<"Removing scene node"<<std::endl;
-	//tonatiuhScene->RemoveReference();
-	//std::cout<<"Removed scene node"<<std::endl;
-	//tonatiuhScene = 0;
-
-
-***********************************/
-
-
-
-/***********************************/
+/***********************************
 	std::cout<<"Tonatiuh 3.0 readDocument"<<std::endl;
-;
 
 	TJSONNodesDocument readDocument;
 	bool okRead = readDocument.Read( argv[2] );
@@ -475,7 +259,7 @@ int main ( int argc, char** argv )
 
 
 
-/***********************************/
+***********************************/
 
 /************************************************************
 
@@ -509,7 +293,7 @@ int main ( int argc, char** argv )
 
 ***********************************/
 
-/***********************************/
+/***********************************
 
 
 	std::cout<<"\tCurrent values:"<<std::endl;
@@ -593,7 +377,7 @@ int main ( int argc, char** argv )
 
 
 
-/************************************************************/
+************************************************************/
 
 
 	std::cout<<"END" <<std::endl;

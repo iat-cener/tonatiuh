@@ -102,7 +102,6 @@ void PhotonMapExportToBinaryFile::EndSave()
  */
 void PhotonMapExportToBinaryFile::SavePhotonMap( std::vector < Photon >& raysLists )
 {
-	std::cout<<"PhotonMapExportToBinaryFile::SavePhotonMap"<<std::endl;
 	if( m_oneFile )
 	{
 		std::cout<<"\t m_oneFile"<<std::endl;
@@ -117,7 +116,6 @@ void PhotonMapExportToBinaryFile::SavePhotonMap( std::vector < Photon >& raysLis
 	}
 	else
 	{
-		std::cout<<"\t SaveToVariousFiles"<<std::endl;
 		SaveToVariousFiles( raysLists );
 	}
 }
