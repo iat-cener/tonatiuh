@@ -200,7 +200,7 @@ int main ( int argc, char** argv )
 		{
 			if( simulacion == 0 ) //Create model
 			{
-				//Ejemplo1_CreateModel( currentDirectory, &pluginManager );
+				Ejemplo1_CreateModel( currentDirectory, &pluginManager );
 
 				break;
 			}
