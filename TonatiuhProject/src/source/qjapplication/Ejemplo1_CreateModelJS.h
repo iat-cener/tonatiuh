@@ -49,6 +49,12 @@ void Ejemplo1_CreateModel( std::string currentDirectory, PluginManager* pPluginM
 		std::cout<<"\t\t - "<<scenePartNames[p]<<std::endl;
 	*/
 
+	QDir workingPath{ currentDirectory.c_str() };
+	if( !workingPath.cd( "Ejemplo1" ) )
+	{
+		std::cerr<<"ERROR 'Ejemplo1' folder does not exists"<<std::endl;
+		return;
+	}
 
 
 	//Sun
@@ -278,12 +284,17 @@ void Ejemplo1_CreateModel( std::string currentDirectory, PluginManager* pPluginM
 	bottomCoverSurface->SetPart( "shape",  bottomCoverShape );
 
 	//Heliostat List
-	QDir workingPath{ currentDirectory.c_str() };
-	workingPath.cd( "Ejemplo1" );
-	workingPath.cd( "Input" );
+	if( !workingPath.cd( "Input" ) )
+	{
+		std::cerr<<"ERROR 'Input' folder does not exists inside 'Ejemplo1' folder."<<std::endl;
+		return;
+	}
+	if( !workingPath.exists( "Ejemplo1_Coordeandas&Aimingcvs.csv" ) )
+	{
+		std::cerr<<"ERROR: The file 'Ejemplo1_Coordeandas&Aimingcvs.csv'with the heliostat coordinates does not exists inside 'Input' folder."<<std::endl;
+		return;
+	}
 	std::string inputFilename = workingPath.absoluteFilePath( "Ejemplo1_Coordeandas&Aimingcvs.csv" ).toStdString();
-	std::cout<< "\t inputFilename: "<<inputFilename<<std::endl;
-
 
 	std::cout<<"Creating heliostat list"<<std::endl;
 	std::shared_ptr< TGroupNode > heliostatFieldNode = std::dynamic_pointer_cast<TGroupNode>( TGroupNode::CreateInstance() );
@@ -297,13 +308,9 @@ void Ejemplo1_CreateModel( std::string currentDirectory, PluginManager* pPluginM
 	std::ifstream file( inputFilename );
 	std::vector<std::string> csvLines = readCSVParameters(file, '\n');
 
-	//! Receiver Center
-	//Point3D rCenter( 0, 170, 0);
-
 	std::string trackerFactoryName = "Heliostat_tracker" ;
 	std::string heliostatMirrorShapeName = "Spherical_rectangle";
 	std::string heliostatMirrorMaterialName = "Specular_Standard_Material";
-
 	for( unsigned int h = 0; h < csvLines.size(); h++ )
 	{
 		std::cout<<"\t Creating Heliostat"<<h<<std::endl;
@@ -318,20 +325,24 @@ void Ejemplo1_CreateModel( std::string currentDirectory, PluginManager* pPluginM
 		}
 
 		//! Traslation
-		std::string t_x = coord[1];
-		std::string t_y = coord[2];
-		std::string t_z = coord[3];
-		Point3D heliostatPosition3D{ std::stod(coord[1]), std::stod( coord[2]), std::stod(coord[3]) };
+
+		//! Traslation
+		Point3D heliostatPosition3D;
+		std::stringstream{ coord[1] } >> heliostatPosition3D.x;
+		std::stringstream{ coord[2] } >> heliostatPosition3D.y;
+		std::stringstream{ coord[3] } >> heliostatPosition3D.z;
 
 		//! Aiming point
-		Point3D aimingPoint3D{ std::stod(coord[4]), std::stod( coord[5]), std::stod(coord[6]) };
-
+		Point3D aimingPoint3D;
+		std::stringstream{ coord[4] } >> aimingPoint3D.x;
+		std::stringstream{ coord[5] } >> aimingPoint3D.y;
+		std::stringstream{ coord[6] } >> aimingPoint3D.z;
 
 		//Heliostat h
 		std::cout<<"\t\t Creating heliostat: "<<std::endl;
 		std::shared_ptr< TGroupNode > heliostatNode = std::dynamic_pointer_cast<TGroupNode>( TGroupNode::CreateInstance() );
 		heliostatNode->SetName("Heliostat" + std::to_string(h) );
-		heliostatNode->SetParameterValue<std::string>( "translation", t_x + " " + t_y + " " + t_z );
+		heliostatNode->SetParameterValue<std::string>( "translation", coord[1] + " " + coord[2] + " " + coord[3] );
 		if( !( heliostatFieldNode->GetPart("childrenList" )->as< TNodesList>() )->InsertItem( heliostatNode ) )
 		{
 			std::cerr<<"Error adding 'Helisotat"<<h<<"' to 'HeliostatFiled' node."<<std::endl;

@@ -169,7 +169,9 @@ Transform TrackerHeliostat::GetTrasformation( ) const
 	double nodeTransformationMatrix[4][4];
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
-			nodeTransformationMatrix[i][j] = stod( transformationValues[i*4+j] ) ;
+			std::stringstream{ transformationValues[i*4+j] } >> nodeTransformationMatrix[i][j];
+
+			//stod depends of locale: nodeTransformationMatrix[i][j] = stod( transformationValues[i*4+j] ) ;
 
 	return ( Transform( nodeTransformationMatrix ) );
 }

@@ -37,6 +37,7 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <sstream>
 
 #include "gc.h"
 #include "Vector3D.h"
@@ -158,17 +159,34 @@ Transform TGroupNode::GetTrasformation() const
 
 	std::vector< std::string > translationValues = nf::StringSplit( GetParameterValue<std::string>( m_translationName ) , "\\s+" );
 	if( translationValues.size() != 3 ) 	return ( Transform() );
-	Transform translation = Translate( stod( translationValues[0] ), stod( translationValues[1] ), stod( translationValues[2] )  );
+
+	double xt, yt, zt;
+	std::stringstream{ translationValues[0] } >> xt;
+	std::stringstream{ translationValues[1] } >> yt;
+	std::stringstream{ translationValues[2] } >> zt;
+	Transform translation = Translate( xt, yt, zt );
 
 	std::vector< std::string >  rotationValues = nf::StringSplit( GetParameterValue<std::string>( m_rotationName ), "\\s+" );
 	if( rotationValues.size() != 4 ) return ( Transform() );
-	Vector3D rotationAxis( stod( rotationValues[0] ), stod( rotationValues[1] ), stod( rotationValues[2] ) );
+
+	double xr, yr, zr, ar;
+	std::stringstream{ rotationValues[0] } >> xr;
+	std::stringstream{ rotationValues[1] } >> yr;
+	std::stringstream{ rotationValues[2] } >> zr;
+	std::stringstream{ rotationValues[3] } >> ar;
+	Vector3D rotationAxis( xr, yr,zr );
 	if( fabs( 1.0 - rotationAxis.length() ) > gc::Epsilon  )	return ( Transform() );
-	Transform rotation = Rotate( stod( rotationValues[3] ), rotationAxis   );
+	Transform rotation = Rotate( ar, rotationAxis   );
 
 	std::vector< std::string >  scaleValues = nf::StringSplit( GetParameterValue<std::string>( m_scaleFactorName), "\\s+" );
 	if( scaleValues.size() != 3 ) return ( Transform() );
-	Transform scale = Scale( stod( scaleValues[0] ), stod( scaleValues[1] ), stod( scaleValues[2] ) );
+
+
+	double xs, ys, zs;
+	std::stringstream{ scaleValues[0] } >> xs;
+	std::stringstream{ scaleValues[1] } >> ys;
+	std::stringstream{ scaleValues[2] } >> zs;
+	Transform scale = Scale( xs, ys, zs );
 
 	//First scaled, the rotated and finally is translated
 	Transform transformOTW = translation*rotation*scale;

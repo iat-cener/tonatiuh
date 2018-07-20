@@ -70,20 +70,15 @@ bool RayCasting::SetScene( std::shared_ptr< TSceneNode >& scene )
 {
 	m_pSunNode = std::dynamic_pointer_cast< TSunNode > ( scene->GetPart( "light" ) );
 	if( m_pSunNode == nullptr )	return ( false );
-	//if( m_pSunNode ) 	std::cout<<"\t m_pSunNode: "<<m_pSunNode->GetName()<<std::endl;
-	std::vector< std::string > notFirstStageNodesURL = m_pSunNode->GetDisabledNodes();
-	//std::cout<<"\t notFirstStageNodesURL: "<<notFirstStageNodesURL.size()<<std::endl;
-	//for( unsigned int n = 0; n < notFirstStageNodesURL.size(); n++ )
-	//{
-	//	std::cout<<"notFirstStageNodesURL "<<n<<": "<<notFirstStageNodesURL[n]<<std::endl;
-	//}
 
+	std::vector< std::string > notFirstStageNodesURL = m_pSunNode->GetDisabledNodes();
 	m_pTransmissivityNode = std::dynamic_pointer_cast< TTransmissivity > ( scene->GetPart( "transmisivity" ) );
-	//if( m_pTransmissivityNode ) 	std::cout<<"\t m_pTransmissivityNode: "<<m_pTransmissivityNode->GetName()<<std::endl;
 
 	std::vector<std::string> scenePartNames = scene->GetPartNames();
+
 	std::shared_ptr< TGroupNode > childrenRoot = std::dynamic_pointer_cast< TGroupNode > ( scene->GetPart( scenePartNames[0] ) );
 	if( childrenRoot == nullptr )	return ( false );
+
 
 	m_sceneRootNode.reset();
 	m_sceneRootNode = std::make_unique< RayCastingNode >() ;

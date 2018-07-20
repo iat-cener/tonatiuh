@@ -26,7 +26,12 @@ void Ejemplo1_EfficiencyMatrix( std::string currentDirectory, PluginManager* pPl
 	std::cout<< "Ejemplo1_EfficiencyMatrix"<<std::endl;
 
 	QDir workingPath{ currentDirectory.c_str() };
-	workingPath.cd( "Ejemplo1" );
+	if( !workingPath.cd( "Ejemplo1" ) )
+	{
+		std::cerr<<"ERROR 'Ejemplo1' folder does not exists"<<std::endl;
+		return;
+
+	}
 	std::cout<< "\t workingPath: "<<workingPath.absolutePath().toStdString()<<std::endl;
 
 	std::string filename = workingPath.absoluteFilePath( "Ejemplo1_8534heliostatos_aimingStrategy_v3JS.tnh" ).toStdString();
@@ -35,7 +40,7 @@ void Ejemplo1_EfficiencyMatrix( std::string currentDirectory, PluginManager* pPl
 	bool okRead = readDocument.Read( filename );
 	if( !okRead  )
 	{
-		std::cerr<<"¡¡¡Error reading file: "<<filename<<"!!!"<<std::endl;
+		std::cerr<<"Error reading file: "<<filename<<"!!!"<<std::endl;
 		return;
 	}
 
@@ -43,7 +48,7 @@ void Ejemplo1_EfficiencyMatrix( std::string currentDirectory, PluginManager* pPl
 	std::shared_ptr< TSceneNode > sceneNode = std::dynamic_pointer_cast< TSceneNode > ( readDocument.GetRootNode() );
 	if( sceneNode == nullptr )
 	{
-		std::cout<<"¡¡¡Error reading file scene node!!!"<<std::endl;
+		std::cout<<"Error reading file scene node!!!"<<std::endl;
 		return;
 	}
 
