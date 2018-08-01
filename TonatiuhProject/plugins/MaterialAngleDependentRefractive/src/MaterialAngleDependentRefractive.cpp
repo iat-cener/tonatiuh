@@ -72,12 +72,12 @@ MaterialAngleDependentRefractive::MaterialAngleDependentRefractive()
 
 
 	m_frontOpticValuesSensor = new SoFieldSensor(  updateOpticFront,  this );
-	m_frontOpticValuesSensor->setPriority( 1 );
+	m_frontOpticValuesSensor->setPriority(0 );
 	m_frontOpticValuesSensor->attach( &frontOpticValues );
 
 
 	m_backOpticValuesSensor = new SoFieldSensor(  updateOpticBack,  this );
-	m_backOpticValuesSensor->setPriority( 1 );
+	m_backOpticValuesSensor->setPriority( 0 );
 	m_backOpticValuesSensor->attach( &backOpticValues );
 
 	m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
@@ -98,6 +98,7 @@ MaterialAngleDependentRefractive::MaterialAngleDependentRefractive()
 	m_transparencySensor = new SoFieldSensor( updateTransparency, this );
 	m_transparencySensor->setPriority( 1 );
 	m_transparencySensor->attach( &transparencyValue );
+
 
 }
 
@@ -241,43 +242,36 @@ void MaterialAngleDependentRefractive::updateTransparency( void* data, SoSensor*
 bool MaterialAngleDependentRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {
 	NormalVector dgNormal;
-	if( dg->shapeFrontSide )	dgNormal = dg->normal;
-		else	dgNormal = - dg->normal;
-	double incidenceAngle = acos( DotProduct( -incident.direction(), dgNormal ) );
-	std::vector< double>  reflectivityTransmissivity = OutputPropertyValue( m_frontReflectivityIncidenceAngle,  m_frontReflectivityValue, m_frontTransmissivityValue, incidenceAngle );
-	double reflectivity = reflectivityTransmissivity[0];
-	double transmissivity = reflectivityTransmissivity[1];
-	double randomNumber = rand.RandomDouble();
-
+	std::vector< double>  reflectivityTransmissivity;
 	if( dg->shapeFrontSide )
 	{
-		if ( randomNumber < reflectivity )
-		{
-			*outputRay = ReflectedRay( incident, dg, rand );
-			return true;
-		}
-		else if ( randomNumber < ( reflectivity + transmissivity ) )
-		{
-			*outputRay = RefractedtRay( incident, dg, rand );
-			return true;
-		}
-		else return false;
+
+		dgNormal = dg->normal;
+		double incidenceAngle = acos( DotProduct( -incident.direction(), dgNormal ) );
+		reflectivityTransmissivity = OutputPropertyValue( m_frontReflectivityIncidenceAngle,  m_frontReflectivityValue, m_frontTransmissivityValue, incidenceAngle );
 	}
 	else
 	{
-		if ( randomNumber < reflectivity  )
-		{
-			*outputRay = ReflectedRay( incident, dg, rand );
-			return true;
-		}
-		else if ( randomNumber < ( reflectivity + transmissivity ) )
-		{
-			*outputRay = RefractedtRay( incident, dg, rand );
-			return true;
-		}
-		else return false;
 
+		dgNormal = - dg->normal;
+		double incidenceAngle = acos( DotProduct( -incident.direction(), dgNormal ) );
+		reflectivityTransmissivity = OutputPropertyValue( m_backReflectivityIncidenceAngle,  m_backReflectivityValue, m_backTransmissivityValue, incidenceAngle );
 	}
+	double randomNumber = rand.RandomDouble();
+	double reflectivity = reflectivityTransmissivity[0];
+	double transmissivity = reflectivityTransmissivity[1];
+
+	if ( randomNumber < reflectivity )
+	{
+		*outputRay = ReflectedRay( incident, dg, rand );
+		return true;
+	}
+	else if ( randomNumber < ( reflectivity + transmissivity ) )
+	{
+		*outputRay = RefractedtRay( incident, dg, rand );
+		return true;
+	}
+	else return false;
 }
 
 Ray MaterialAngleDependentRefractive::ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand ) const
