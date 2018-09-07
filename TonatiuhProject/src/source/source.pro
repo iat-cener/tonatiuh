@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = application \
-		qjapplication
+		  qmlapplication \
+		  qjapplication

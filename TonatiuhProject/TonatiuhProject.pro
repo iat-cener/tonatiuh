@@ -5,4 +5,6 @@ SUBDIRS = src/geometry \
 		src/statistics \
 		src/raytracing \
 		src/source \
-		src/plugins
+		src/plugins 
+		src/gui
+		
