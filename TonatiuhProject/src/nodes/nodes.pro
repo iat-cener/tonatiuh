@@ -16,7 +16,7 @@ INCLUDEPATH += 	. \
                $$(TONATIUH_ROOT)/src/geometry \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/statistics \
-               $$(TONATIUH_ROOT)/src/gui
+              // $$(TONATIUH_ROOT)/src/gui
 
 
 CONFIG(debug, debug|release) {

@@ -13,7 +13,7 @@ win32 {
 	CONFIG       += skip_target_version_ext
 }
 
-QT += 3dextras datavisualization 3drender qml quick quickwidgets
+#QT += 3dextras datavisualization 3drender qml quick quickwidgets
 
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VER_MAJ"."$$VER_MIN"."$$VER_PAT\\\"

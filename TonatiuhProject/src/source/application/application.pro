@@ -2,7 +2,7 @@ TEMPLATE = app
 
 include( $$(TONATIUH_ROOT)/config.pri )
 
-#TARGET = Tonatiuh   
+TARGET = Tonatiuh   
 
               
 INCLUDEPATH += 	. \
@@ -11,11 +11,10 @@ INCLUDEPATH += 	. \
                $$(TONATIUH_ROOT)/src/nodes \
                $$(TONATIUH_ROOT)/src/plugins \
                $$(TONATIUH_ROOT)/src/raytracing \
-               $$(TONATIUH_ROOT)/src/statistics \
-               $$(TONATIUH_ROOT)/src/gui
+               $$(TONATIUH_ROOT)/src/statistics
               
-QT += core xml widgets quickwidgets qml quick 3dinput quickwidgets
-#QT -= gui	
+QT += core xml widgets
+QT -= gui	
 
 
 CONFIG(debug, debug|release) {
@@ -34,18 +33,14 @@ unix {
 HEADERS += 	$$(TONATIUH_ROOT)/src/auxiliary/Trace.h \
 			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.h \
 			$$(TONATIUH_ROOT)/src/plugins/PluginManager.h \
-			$$(TONATIUH_ROOT)/src/source/application/*.h \
-			$$(TONATIUH_ROOT)/src/gui/*.h
+			$$(TONATIUH_ROOT)/src/source/application/*.h 
                 
 SOURCES +=	$$(TONATIUH_ROOT)/src/auxiliary/Trace.cpp \
 			$$(TONATIUH_ROOT)/src/auxiliary/Tracer.cpp \
 			$$(TONATIUH_ROOT)/src/plugins/PluginManager.cpp \
-			$$(TONATIUH_ROOT)/src/source/application/*.cpp \
-			$$(TONATIUH_ROOT)/src/gui/*.cpp 
+			$$(TONATIUH_ROOT)/src/source/application/*.cpp 
 
-RESOURCES += ../../../tonatiuh.qrc \
-			../../gui/gui.qrc
-				
+#RESOURCES += tonatiuh.qrc
  
 
 CONFIG(debug, debug|release) {
