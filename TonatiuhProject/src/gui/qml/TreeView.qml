@@ -12,7 +12,7 @@ Rectangle {
 	anchors.leftMargin : 5
 	anchors.right: parent.right
 	anchors.rightMargin : 5
-	anchors.top: treeviewTitle.bottom
+	anchors.top:  treeviewTitle.bottom
 	anchors.topMargin : 5
 	anchors.bottom: parent.bottom
 	anchors.bottomMargin : 5

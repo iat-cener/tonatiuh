@@ -72,14 +72,12 @@ Rectangle {
                                 scene.width = 50
                                 view2d.width = contentLayout.width - scene.width - 6
                             	view2d.x = 56
-                            	console.log("menor que 50")
                         	}
                             else if(scene.width > contentLayout.width-56)
                             {
                                 scene.width = contentLayout.width - 56
                                 view2d.width = 50
                                 view2d.x = contentLayout.width - 50
-                            	console.log("es mayor1")
                         	}                   
                         }
                     }
@@ -183,9 +181,11 @@ Rectangle {
 					        font { bold: true; pixelSize: 12 }
 						}
 					}
+					
 					TreeView { 
 						id: treeviewList
 						height: treeview.height - 35
+						property string selectedNodeType: "SeparatorKit"
 						
 					}
 					
@@ -204,11 +204,16 @@ Rectangle {
 	                color: "steelblue"
             	}
             	
+            	
 				ColumnLayout {
         			id: parametersLayout
         			Layout.fillHeight: true
         			width : parent.width - 6
         			height: parameters.height
+        			anchors.rightMargin : 5
+					anchors.top:  parent.top
+					anchors.bottom: parent.bottom
+        			anchors.left: parent.left
         			x: parent.x + 3
         			y: parent.y + 3
         			
@@ -225,20 +230,60 @@ Rectangle {
 						anchors.right: parent.right
 						anchors.rightMargin : 5
 						anchors.top: parent.top
-						anchors.topMargin : 5
-								
+						anchors.topMargin : 5								
         					
 						Text {
 					        text: 'Parameters'
 					        font { bold: true; pixelSize: 12 }
 						}
 					}
-					TreeView { 
+					Loader { 
+						id: parametersView2
+						//source: "/../qml/ParametersView.qml"
+						height: parameters.height - 35
+						width: parameters.width
+						anchors.left: parent.left
+						anchors.leftMargin : 5
+						anchors.right: parent.right
+						anchors.rightMargin : 5
+						anchors.top: parametersTitle.bottom
+						anchors.topMargin: 5
+						anchors.bottom: parent.bottom
+						anchors.bottomMargin : 5
+						
+					 }
+					 Component.onCompleted: {
+					 	// Depending on the node selected, load one parameter view or other.
+					 	switch(treeviewList.selectedNodeType) {
+                            case "SeparatorKit": {
+                                parametersView2.setSource("/../qml/qml/ParametersView.qml")
+                                break
+                            }
+                            case "ShapeKit": {
+                            	// Depending on the children
+                            	//parametersView2.setSource("/../qml/qml/ParametersViewShapeKit.qml")
+                                break
+                            }
+                            case "Tracker": {
+                            	parametersView2.setSource("/../qml/qml/ParametersTracker.qml")
+                                break
+                            }
+                            case "Shape": {
+                            	parametersView2.setSource("/../qml/qml/ParametersViewShape.qml")
+                                break
+                            }
+                            case "Material": {
+                            	parametersView2.setSource("/../qml/qml/ParametersViewMaterial.qml")
+                                break
+                            }
+                        }    
+				 	}
+					
+					/*ParametersView { 
 						id: parametersView
-						height: treeView.height - 35
-					}
+						height: parameters.height - 35
+					}*/
 				}	
-				
 				
 				Rectangle {
 	            	id: resizeArea2d
@@ -255,7 +300,6 @@ Rectangle {
 	                    cursorShape: Qt.SizeVerCursor
 	                    onMouseXChanged: {
 	                        if(drag.active){
-	               				console.log("contentLayout.yParameter al definir", contentLayout.yParameter)
 	                            parameters.height = parameters.height - mouseY
 	                            parameters.y = parameters.y + mouseY	          
 	                            treeview.height = treeview.height + mouseY
@@ -277,9 +321,7 @@ Rectangle {
         						contentLayout.yTreeview = treeview.y
         						contentLayout.treeviewHeight = treeview.height  
         						treeviewLayout.height = treeview.height 
-        						treeviewList.height = treeview.height - 35
-        						console.log("treeviewList.height", treeviewList.height)        						               
-        						console.log("treeviewLayout.height",treeviewLayout.height)     
+        						treeviewList.height = treeview.height - 35   
 	                        }
 	                    }
 	                }

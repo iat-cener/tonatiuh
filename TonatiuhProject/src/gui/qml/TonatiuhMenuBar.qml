@@ -187,8 +187,26 @@ MenuBar {
         title: qsTr("Environment")
         Menu {
         	title: qsTr("Sun Light")
-        	Action { text: qsTr("Defin Sun Light...")}
-        	Action { text: qsTr("Su Position Calculator...")}
+        	Action { 
+        		property variant sunlightwin
+        		text: qsTr("Defin Sun Light...")
+        		
+        		onTriggered: {			
+        			var component = Qt.createComponent("DefineSunlight.qml");
+			    	sunlightwin = component.createObject(windowTonatiuh);        
+			        sunlightwin.show();
+			    }
+        	}
+        	Action { 
+        		property variant sunpositioncalc
+        		text: qsTr("Sun Position Calculator...")
+        		onTriggered: {			
+        			var component = Qt.createComponent("SunPositionCalculator.qml");
+			    	sunpositioncalc = component.createObject(windowTonatiuh);        
+			        sunpositioncalc.show();
+			    }
+        	
+        	}
         	Action { text: qsTr("Disconnect all trackers...")}    
         	
         	delegate : MenuDelegate{ }
@@ -203,7 +221,16 @@ MenuBar {
         }
         Menu{
         	title: qsTr("Transmissivity")
-        	Action { text: qsTr("Define Transmissivity") }
+        	Action { 
+        		property variant transmissivitywin
+        		text: qsTr("Define Transmissivity") 
+        		onTriggered: {			
+        			var component = Qt.createComponent("DefineTransmissivity.qml");
+			    	transmissivitywin = component.createObject(windowTonatiuh);        
+			        transmissivitywin.show();
+			    }
+        		
+        	}
         	
         	delegate : MenuDelegate{ }
     	
@@ -227,8 +254,25 @@ MenuBar {
     }
     Menu {
         title: qsTr("Ray Trace")
-        Action { text: qsTr("Run") }
-        Action { text: qsTr("Run Flux Analysis...") }
+        Action { 
+        	text: qsTr("Run") 
+        	property variant runwin
+        	onTriggered: {			
+    			var component = Qt.createComponent("Run.qml");
+		    	runwin = component.createObject(windowTonatiuh);        
+		        runwin.show();
+		    }
+        
+        }
+        Action { 
+        	text: qsTr("Run Flux Analysis...") 
+        	property variant runFluxwin
+        	onTriggered: {			
+    			var component = Qt.createComponent("RunFlux.qml");
+		    	runFluxwin = component.createObject(windowTonatiuh);        
+		        runFluxwin.show();
+		    }
+        }
         Action { 
         	text: qsTr("Display Rays") 
         	enabled: false

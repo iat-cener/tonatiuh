@@ -57,7 +57,6 @@ Entity {
     
     signal hideBackground
     /*onHideBackground(): {
-    	console.log("se ha llamado a destroy")
     	groundEntity.destroy()
     }*/
     PhongMaterial {

@@ -10,6 +10,10 @@
     	<file>qml/ViewToolBar.qml</file>
     	<file>qml/InsertElementToolBar.qml</file>
     	<file>qml/InsertShapeToolBar.qml</file>
+    	<file>qml/InsertTrackerToolBar.qml</file>
+    	<file>qml/InsertMaterialToolBar.qml</file>
+    	<file>qml/GenericToolBarButton.qml</file>
+    	<file>qml/DropDownButton.qml</file>
     	<file>qml/TonatiuhMenuBar.qml</file>	
     	<file>qml/TonatiuhContent.qml</file>	
     	<file>qml/AnimatedEntity.qml</file>	
@@ -17,6 +21,19 @@
     	<file>qml/GroundPlane.qml</file>
     	<file>qml/TreeView.qml</file>
     	<file>qml/ParametersView.qml</file>
+    	<file>qml/ParametersViewMaterial.qml</file>
+    	<file>qml/ParametersViewSeparatorKit.qml</file>
+    	<file>qml/ParametersViewShapeKit.qml</file>
+    	<file>qml/ParametersViewShape.qml</file>
+    	<file>qml/ParametersViewTracker.qml</file> 
+    	<file>qml/DefineSunlight.qml</file>    	
+    	<file>qml/DefineTransmissivity.qml</file>
+    	<file>qml/RayTraceOptions.qml</file>
+    	<file>qml/Run.qml</file>
+    	<file>qml/RunFlux.qml</file>
+    	<file>qml/ScriptEditor.qml</file>
+    	<file>qml/SunPositionCalculator.qml</file>
+    	<file>qml/Help.qml</file>
     	<file>qml/componentCreation.js</file>
     	<file>icons/AnalyzerKit.png</file>
 	    <file>icons/AnalysisTool.png</file>
@@ -67,5 +84,6 @@
 	    <file>icons/zoom-out.png</file> 
 	    <file>icons/tickIcon.png</file> 
 	    <file>icons/torusIcon.png</file>
+	    <file>icons/plugings/trackers/TrackerHeliostat.png</file>
     </qresource>
 </RCC>

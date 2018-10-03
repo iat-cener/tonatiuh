@@ -13,30 +13,33 @@
 #include <QQmlApplicationEngine>
 #include "SceneView.h"
 
+#include "PluginManager.h"
+
 
 class WindowMain : public QObject
 {
     Q_OBJECT
-    //Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
 
 public:
+    enum PluginType {Tracker, Shape, Material};
+    Q_ENUM(PluginType)
     explicit WindowMain(QQmlApplicationEngine * engine=nullptr);
 
-    Q_INVOKABLE void buttonClicked();
+    Q_INVOKABLE void updateToolBar();
     QQmlApplicationEngine *m_engine;
 
-public slots:
-	void buttonClicked2();
-
 signals:
-    void userNameChanged();
+   void addToolBarItem(QString pluginName, PluginType pt);
+
 
 private:
+   PluginManager m_pluginManager;
+   std::vector<std::string > m_trackerFactoryNameList;
+   std::vector<std::string > m_shapeFactoryNameList;
+   std::vector<std::string > m_materialFactoryNameList;
     //QQmlApplicationEngine *m_engine;
 
 
 };
-
-
 
 #endif /* WINDOWMAIN_H_ */
