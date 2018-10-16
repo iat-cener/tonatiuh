@@ -20,10 +20,10 @@ Rectangle {
     signal addElement(string eleFile)
 	onAddElement: sceneRoot.addElement(eleFile) 
     
-    signal addSeparatorKit
+    /*signal addSeparatorKit
     signal addShapeKit
     onAddSeparatorKit: treeviewList.addSeparatorKit()
-    onAddShapeKit: treeviewList.addShapeKit()
+    onAddShapeKit: treeviewList.addShapeKit()*/
     
 	RowLayout {
 		id: contentLayout
@@ -128,6 +128,7 @@ Rectangle {
 				    ]
 		            AnimatedEntity {
 		            	id: sceneRoot
+		            	objectName : "sceneRoot"
 		            }  
 		        }
 				
@@ -184,6 +185,7 @@ Rectangle {
 					
 					TreeView { 
 						id: treeviewList
+						objectName: "treeviewList"
 						height: treeview.height - 35
 						property string selectedNodeType: "SeparatorKit"
 						
@@ -238,7 +240,8 @@ Rectangle {
 						}
 					}
 					Loader { 
-						id: parametersView2
+						id: parametersView
+						objectName: "parametersView"
 						//source: "/../qml/ParametersView.qml"
 						height: parameters.height - 35
 						width: parameters.width

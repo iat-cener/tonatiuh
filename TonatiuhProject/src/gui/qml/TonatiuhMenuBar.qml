@@ -2,19 +2,33 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+//import insertshapemenu 1.0
 
 MenuBar { 
  	
     Menu {
+    	id: fileMenu
+    	objectName: "fileMenu"
         title: qsTr("File")
+        
         Action { 
-        	text: qsTr("New")           	
-        	} 
+        	text: qsTr("New")    
+        	onTriggered: 
+        	{
+        		windowTonatiuh.newFileCb()
+        	}
+        } 
         Action { 
         	text: qsTr("Open...") 
-        	} 
+        	onTriggered: {    
+        		openFileDialog.title = "Open..."
+            	openFileDialog.acceptLabel = "Open"
+            	openFileDialog.fileMode = FileDialog.OpenFile
+            	openFileDialog.open()    	
+    		}
+        } 
         Menu {
-    		title: "Recent"
+			title: "Recent"
     		
     		delegate : MenuDelegate{ }
     	
@@ -25,29 +39,70 @@ MenuBar {
 		        border.color: "#4682b4"
 		        radius: 2            	
     		}
-	    }
-	    
+    		
+    		id: recentFilesSubMenu
+          	//title: qsTr("Recent Files")
+          	enabled: recentFilesInstantiator.count > 0
+
+          	Instantiator {
+              	id: recentFilesInstantiator
+              	model: appSettings.recentFiles
+              	delegate: MenuItem {
+                  	text: appSettings.displayableFilePath(modelData)
+                  	onTriggered: {
+                  		console.log("Trigger")
+                  		windowTonatiuh.openFileCb(modelData)
+                  	}
+              	}
+
+              	onObjectAdded: {
+              		console.log("object added")
+              		recentFilesSubMenu.insertItem(index, object)
+              	}
+              	onObjectRemoved:  {
+              		console.log("object removed")
+              		recentFilesSubMenu.removeItem(object)
+          		}              		
+          	}
+
+          	MenuSeparator {}
+
+          	MenuItem {
+              	text: qsTr("Clear Recent Files")
+              	onTriggered: appSettings.clearRecentFiles()
+          	}    			
+	    }  
 	    
         MenuSeparator { }            
         Action { 
         	text: qsTr("Save")
+        	onTriggered: windowTonatiuh.saveFileCb()
         	 }
         Action { 
         	text: qsTr("Save as")
+        	onTriggered: {
+        		 openFileDialog.title = "Save as..."
+            	openFileDialog.acceptLabel = "Save"
+            	openFileDialog.fileMode = FileDialog.SaveFile
+            	openFileDialog.open()
         	}
+    	}
         Action { 
         	text: qsTr("Save Component")
+        	onTriggered: windowTonatiuh.saveComponentFileCb()
         	icon.source:"" }
         MenuSeparator { }
         Action { 
         	text: qsTr("Print")
         	enabled: false
         	icon.source:"/../qml/icons/print.png"
+        	onTriggered: windowTonatiuh.printFileCb()
     	 }
         MenuSeparator { }
         Action { 
         	text: qsTr("Close") 
         	icon.source:"/../qml/icons/close.png"
+        	onTriggered: Qt.quit()
         }
         	
     	delegate : MenuDelegate{ }
@@ -74,12 +129,12 @@ MenuBar {
         MenuSeparator { }
         Action { text: qsTr("Paste") }
         Action { text: qsTr("Cut") }
-        Action { 
+        MenuItem { 
         	id: copyAction
         	text: qsTr("Copy") 
         	icon.name: "copy"
         	icon.source:"/../qml/icons/copy.png"
-        	shortcut: StandardKey.Copy
+        	icon.color : "transparent"
         	onTriggered: window.activeFocusItem.copy()          	
 		}
         Action { text: qsTr("Paste") }
@@ -113,10 +168,41 @@ MenuBar {
     }
     Menu {
         title: qsTr("Insert")
-        Action { text: qsTr("Group Node") }
-        Action { text: qsTr("Surface Node") }
+        MenuItem { 
+        	text: qsTr("Group Node")         	
+	        icon.source: "/../qml/icons/separatorKit.png"
+	        icon.color : "transparent"
+	        onClicked: {
+	            	windowTonatiuh.addSeparatorKitCb()	               	
+	    	}           
+	    }
+        
+        MenuItem { 
+        	text: qsTr("Surface Node")        	
+	        icon.source: "/../qml/icons/shapeKit.png"
+	        icon.color : "transparent"
+	        onClicked: {
+	            	windowTonatiuh.addShapeKitCb()	               	
+	    	}    
+	    }
         MenuSeparator { }
+        
+        // Update Tracker Toolbar with available plugins
+        //InsertShapeMenu {		
+		//	onAddShapeToolBarItem : {
+		//		console.log("insert shapeeee")
+		//		var component = Qt.createComponent("GenericMenuButton.qml");
+		//		var object = component.createObject(shapeMenu, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Shape", name:pluginName});		
+		//	}			
+		//	Component.onCompleted: {					
+		//		updateShapeToolBar()
+		//	}
+		//} 
         Menu{
+        	id: shapeMenu
+        	objectName: "shapeMenu"
+        	
+			
         	title: qsTr("Shape")
         	
         	delegate : MenuDelegate{ }
@@ -378,7 +464,8 @@ MenuBar {
             color: menuBarItem.highlighted ? "#4682b4" : "transparent"
         }
 	}
-
+	
+	
     background: Rectangle {
         implicitWidth: 40
         implicitHeight: 40

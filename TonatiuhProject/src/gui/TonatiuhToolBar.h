@@ -20,7 +20,7 @@ class TonatiuhToolBar : public QObject
 
 public:
     explicit TonatiuhToolBar();
-    Q_INVOKABLE void saveToolbarRef(QObject *toolbaObject, int toolbarSize);
+    Q_INVOKABLE void saveToolbarRef(QObject *toolbaObject);
     Q_INVOKABLE void fileToolBarUpdater(int tonatiuhWindowWidth);
 
 
@@ -34,18 +34,6 @@ private:
     QObject * m_insertTrackerToolbar;
     QObject * m_insertMaterialToolbar;
     QObject * m_insertShapeToolbar;
-
-    int m_fileToolbarSize;
-    int m_doUndoToolbarSize;
-    int m_editToolbarSize;
-    int m_viewToolbarSize;
-    int m_runToolbarSize;
-    int m_insertElementToolbarSize;
-    int m_insertTrackerToolbarSize;
-    int m_insertMaterialToolbarSize;
-    int m_insertShapeToolbarSize;
-
-
 };
 
 #endif /* TONATIUHTOOLBAR_H_ */

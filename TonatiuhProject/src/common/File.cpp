@@ -7,66 +7,41 @@
 #include "TParameterList.h"
 */
 #include "File.h"
+#include "../../thirdparty/pugixml/src/pugixml.hpp"
 
 #include <map>
 #include <iterator>
 #include <memory>
 
-/*!
- * Reads the content of the node \a node and sets inside of the \a parentNode.
- */
-/*std::shared_ptr<TNode> SunLight::CreateNodeObject(const pugi::xml_node & node)
+File::File(const std::string & filename)
 {
-    TNodeType nodeType = TNodeType::FromName( node.attribute( "type" ).value() );
-    std::shared_ptr<TNode> objectNode = nodeType.NodeFromType();
-    if( !objectNode || objectNode == 0 )
-    {
-        return 0;
-    }
+    pugi::xml_node decl = doc_.prepend_child(pugi::node_declaration);
+    decl.append_attribute("version") = "1.0";
+    decl.append_attribute("encoding") = "UTF-8";
 
-    objectNode->SetName( node.name() );
-    for(pugi::xml_attribute attr: node.attributes())
-    {
+    auto docummentRootElement = doc_.append_child("Tonatiuh");
 
-        std::string attributeName =attr.name();
-        if( (attributeName != "type" ) && ( attributeName != "name" )  && ( attributeName != "id" ))
-        {
-            std::string parameterValue = attr.value();
-            if( !objectNode->SetParameterFormString( attributeName, parameterValue ) )
-            {
-                return 0 ;
-            }
-        }
-    }
-
-    return objectNode;
+   /* bool saveSucceeded = doc_.save_file(filename.c_str(), PUGIXML_TEXT("  "));
+    if (!saveSucceeded)
+        throw std::runtime_error("Error creating file " + filename);*/
 }
-*/
-    //newFile:
-    //openFile:
-int File::openFile(std::string filename, std::string path)
+
+void File::openFile(const std::string & filename)
 {
-    if(path.back() =! "/") path += "/";
-    if(filename.substr(filename.find_last_of(".") + 1) != "xml") return -1;
-    path += filename;
-
-    pugi::xml_parse_result result = doc.load_file("filename");
-    if (!result) return -1;
-    return 0;
-
+    pugi::xml_parse_result result = doc_.load_file(filename.c_str(), 
+            pugi::parse_default|pugi::parse_declaration);
+    if (!result)
+        throw std::runtime_error("Error opening file " + filename);
 }
-    //saveFile:
-int File::saveFile(std::string filename, std::string path)
+
+void File::saveFile(const std::string & filename)
 {
-    if(path.back() =! "/") path += "/";
-    if(filename.find('.') == std::string::npos) filename += ".xml";
-    if(filename.substr(filename.find_last_of(".") + 1) != "xml") return -1;
-    path += filename;
-
-    doc.save_file("path");
-
-    return 0;
+  bool saveSucceeded = doc_.save_file(filename.c_str(), PUGIXML_TEXT("  "));
+  if (!saveSucceeded) {
+    throw std::runtime_error("Error saving file " + filename);
+  }
 }
-//saveComponent
+
+
 //insertUserComponent:
 

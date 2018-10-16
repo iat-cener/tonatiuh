@@ -67,33 +67,20 @@ ToolBar {
             	}
             	
                 MenuItem {
-                	id: menuItemLayout
+                	id: menuRunItemLayout
                     ToolButton {
 			        	id: runAux
 			        	Layout.preferredWidth: 44
                 		implicitWidth: 44
 			            icon.source: "/../qml/icons/run.png"
-			            icon.color : "transparent"
-			            /*background: Rectangle {
-			        		color: Qt.darker("#33333333", run.enabled && (run.checked || run.highlighted) ? 1.5 : 1.0)
-			    			opacity: enabled ? 1 : 0.3
-			    			visible: run.down || (run.enabled && (run.checked || run.highlighted))
-						}*/
+			            icon.color : "transparent"			            
 			        }
-                }
-                MenuItem {
-                    ToolButton {
+			        ToolButton {
 			            icon.source: "/../qml/icons/fluxdistribution.png"
 			            icon.color : "transparent"
 			            id: fluxDistributionAux
 			            Layout.preferredWidth: 44
-                		implicitWidth: 44
-			            /*background: Rectangle {
-			        		color: Qt.darker("#33333333", fluxDistribution.enabled && (fluxDistribution.checked || fluxDistribution.highlighted) ? 1.5 : 1.0)
-			    			opacity: enabled ? 1 : 0.3
-			    			visible: fluxDistribution.down || (fluxDistribution.enabled && (fluxDistribution.checked || fluxDistribution.highlighted))
-						}*/
-			            
+                		implicitWidth: 44     
 			        } 
                 }
             }
@@ -132,9 +119,9 @@ ToolBar {
   		var currentWidth = 0
   		var currentHeight = 0 
   		var widthIndex = 0  	
-  		for(var i = 0; i < menuItemLayout.children.length-1 ; i++) {
-  			 menuItemLayout.children[i].x = currentWidth
-  			 menuItemLayout.children[i].y = currentHeight
+  		for(var i = 0; i < 2 ; i++) {
+  			 menuRunItemLayout.children[i].x = currentWidth
+  			 menuRunItemLayout.children[i].y = currentHeight
   			 if (widthIndex < (nButtons - 1) ) {
   			 	currentWidth = currentWidth + 44
   			 	widthIndex = widthIndex + 1

@@ -13,7 +13,7 @@ ToolBar {
 	InsertShapeToolBar {		
 		onAddShapeToolBarItem : {
 			var component = Qt.createComponent("GenericToolBarButton.qml");
-			var object = component.createObject(insertShapeToolbarRow, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":pluginName});		
+			var object = component.createObject(insertShapeToolbarRow, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Shape", name:pluginName});		
 			insertShapeToolbar.toolbarSize = insertShapeToolbar.toolbarSize + 44
 			
 		}			
@@ -69,7 +69,7 @@ ToolBar {
                 	InsertShapeToolBar {		
 						onAddShapeToolBarItem : {
 							var component = Qt.createComponent("GenericToolBarButton.qml");
-							var object = component.createObject(menuItemLayoutShape, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":pluginName});
+							var object = component.createObject(menuItemLayoutShape, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Shape", name:pluginName});
 							insertShapeToolbar.toolbarSize = insertShapeToolbar.toolbarSize + object.width
 						}			
 						Component.onCompleted: {

@@ -16,18 +16,21 @@ TARGET = gui
 INCLUDEPATH += 	. \
 			   $$(TONATIUH_ROOT)/src/auxiliary \
                $$(TONATIUH_ROOT)/src/geometry \
-               $$(TONATIUH_ROOT)/src/nodes \
-               $$(TONATIUH_ROOT)/src/gui \
+               $$(TONATIUH_ROOT)/src/nodes \               
                $$(TONATIUH_ROOT)/src/statistics \
-               $$(TONATIUH_ROOT)/src/gui/qml
+               $$(TONATIUH_ROOT)/src/common \
+               $$(TONATIUH_ROOT)/src/gui \
+               $$(TONATIUH_ROOT)/src/gui/qml 
+               
+               
 
 
 CONFIG += console
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry 
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lcommon
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lcommon
 }
 
 

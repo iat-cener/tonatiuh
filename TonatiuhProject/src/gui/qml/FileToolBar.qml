@@ -17,30 +17,49 @@ ToolBar {
             icon.source: "/../qml/icons/new.png"
             icon.color : "transparent"
             ToolTip.visible: hovered
-			ToolTip.text: qsTr("New")            
+			ToolTip.text: qsTr("New")  
+			onClicked: {				
+				windowTonatiuh.newFileCb()
+			}
         }
         ToolButton {
             icon.source: "/../qml/icons/open.png"
             icon.color : "transparent"
+            onClicked: 
+            {
+            	openFileDialog.title = "Open..."
+            	openFileDialog.acceptLabel = "Open"
+            	openFileDialog.fileMode = FileDialog.OpenFile
+            	openFileDialog.open()
+            }
 
         }
         ToolButton {
             icon.source: "/../qml/icons/save.png"
             icon.color : "transparent"
+            onClicked: windowTonatiuh.saveFileCb()
         }
         ToolButton {
             icon.source: "/../qml/icons/saveas.png"
             icon.color : "transparent"
+            onClicked: {
+            	openFileDialog.title = "Save as..."
+            	openFileDialog.acceptLabel = "Save"
+            	openFileDialog.fileMode = FileDialog.SaveFile
+            	openFileDialog.open()
+            }
         }
         //ToolSeparator {}
         ToolButton {
             icon.source: "/../qml/icons/print.png"
             icon.color : "transparent"
+            onClicked: windowTonatiuh.printFileCb()
         }
         //ToolSeparator {}
         ToolButton {
             icon.source: "/../qml/icons/close.png"
             icon.color : "transparent"
+            onClicked: Qt.quit()
         }
         ToolButton {
         	id: dropDownButton
@@ -79,30 +98,36 @@ ToolBar {
 			            icon.color : "transparent"
 			            ToolTip.visible: hovered
 						ToolTip.text: qsTr("New")
+						onClicked: windowTonatiuh.newFileCb()
 			            
 			        }
 			        ToolButton {
 			            icon.source: "/../qml/icons/open.png"
 			            icon.color : "transparent"
+			            onClicked: windowTonatiuh.openFileCb()
 			
 			        }
 			        ToolButton {
 			            icon.source: "/../qml/icons/save.png"
 			            icon.color : "transparent"
+			            onClicked: windowTonatiuh.saveFileCb()
 			        }
 			        ToolButton {
 			            icon.source: "/../qml/icons/saveas.png"
 			            icon.color : "transparent"
+			            onClicked: windowTonatiuh.saveFileAsCb()
 			        }
 			        //ToolSeparator {}
 			        ToolButton {
 			            icon.source: "/../qml/icons/print.png"
 			            icon.color : "transparent"
+			            onClicked: windowTonatiuh.printFileCb()
 			        }
 			        //ToolSeparator {}
 			        ToolButton {
 			            icon.source: "/../qml/icons/close.png"
 			            icon.color : "transparent"
+			            onClicked: windowTonatiuh.closeFileCb()
 			        }
                 }
             }

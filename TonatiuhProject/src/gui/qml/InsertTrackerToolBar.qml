@@ -15,7 +15,7 @@ ToolBar {
 		id: insertTrackerObject
 		onAddTrackerToolBarItem : {
 			var component = Qt.createComponent("GenericToolBarButton.qml");	
-			var object = component.createObject(insertTrackerToolbarRow, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":pluginName});
+			var object = component.createObject(insertTrackerToolbarRow, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Tracker", name:pluginName});
 			insertTrackerToolbar.toolbarSize = insertTrackerToolbar.toolbarSize + 44
 		}			
 		Component.onCompleted: {
@@ -65,7 +65,7 @@ ToolBar {
                 	InsertTrackerToolBar {
 						onAddTrackerToolBarItem : {
 							var component = Qt.createComponent("GenericToolBarButton.qml");	
-							var object = component.createObject(menuItemLayoutTracker, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":pluginName});
+							var object = component.createObject(menuItemLayoutTracker, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Tracker", name:pluginName});
 							object.visible = true							
 						}			
 						Component.onCompleted: {

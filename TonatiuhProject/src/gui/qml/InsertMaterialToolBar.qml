@@ -18,7 +18,7 @@ ToolBar {
 		InsertMaterialToolBar {			
 			onAddMaterialToolBarItem : {
 				var component = Qt.createComponent("GenericToolBarButton.qml");
-				var object = component.createObject(insertMaterialToolbarRow, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":pluginName});
+				var object = component.createObject(insertMaterialToolbarRow, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Material", name:pluginName});
 				insertMaterialToolbar.toolbarSize = insertMaterialToolbar.toolbarSize + 44
 			}		
 			
@@ -65,7 +65,7 @@ ToolBar {
 	                	InsertMaterialToolBar {			
 							onAddMaterialToolBarItem : {
 								var component = Qt.createComponent("GenericToolBarButton.qml");
-								var object = component.createObject(menuItemLayoutMaterial, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":pluginName});
+								var object = component.createObject(menuItemLayoutMaterial, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Material", name:pluginName});
 								object.visible = true
 							}								
 							Component.onCompleted: {

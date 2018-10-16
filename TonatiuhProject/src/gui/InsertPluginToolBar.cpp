@@ -8,6 +8,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QApplication>
+#include <QtQml/QQmlEngine>
+#include <QtQuick/QQuickView>
 
 #include <QDir>
 
@@ -68,4 +70,5 @@ void InsertPluginToolBar::updateShapeToolBar()
 		emit addShapeToolBarItem(QString::fromUtf8((m_shapeFactoryNameList.at(i)).c_str()), i*44, (QString::fromUtf8(icon_source.c_str())));
 	}
 }
+
 

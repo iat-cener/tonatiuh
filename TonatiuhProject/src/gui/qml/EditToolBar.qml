@@ -3,7 +3,6 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQml.Models 2.1
 import QtQml.Models 2.1
-import windowmain 1.0
 
 ToolBar {  
  	id: editToolbar 

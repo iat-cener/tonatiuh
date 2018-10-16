@@ -14,18 +14,18 @@
 
 class TreeView {
 
-protected:
+public:
     TreeView(const pugi::xml_document & doc);
     TreeView(const std::string & path);
     std::shared_ptr<TNode> CreateNodeObject(const pugi::xml_node & node);
-    int addNode(const std::string & nodetype, const std::string & parent_node_url);
-    int deleteNode(std::string node_url);
+    void addNode(const std::string & nodetype, const std::string & parent_node_url);
+    void deleteNode(std::string node_url);
     std::shared_ptr<TNode> getRootNode();
-    int copyNode(const std::string & node_url);
+    void copyNode(const std::string & node_url);
     void copyRefNode(const std::string & node_url);
-    int pasteNode(const std::string & node_url, const std::string & parent_node_url);
-    int pasteRefNode(const pugi::xml_node & toPaste, const std::string & parent_node_url);
-    int setNodeName(const std::string & node_url, const std::string & new_name);
+    void pasteNode(const std::string & node_url);
+    void pasteRefNode(const pugi::xml_node & toPaste, const std::string & parent_node_url);
+    void setNodeName(const std::string & node_url, const std::string & new_name);
     std::string getNodeName(const std::string & node_url);
     TNodeType getNodeParamenterType(const std::string & node_url, const std::string & param_name);
     
@@ -36,6 +36,7 @@ protected:
     
 private:
     pugi::xml_document doc_;
+    pugi::xml_node node_;
 };
 
 

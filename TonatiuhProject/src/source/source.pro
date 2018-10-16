@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = application \
-		  guiapplication \
-		  qjapplication
+		  guiapplication 
+		  //qjapplication

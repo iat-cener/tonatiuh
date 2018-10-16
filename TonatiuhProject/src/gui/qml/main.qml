@@ -1,9 +1,10 @@
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.11
+import Qt.labs.settings 1.0
 
 import QtQuick 2.11
-import windowmain 1.0
+//import windowmaincontroller 1.0
 
 
 ApplicationWindow {
@@ -17,30 +18,39 @@ ApplicationWindow {
    
     property bool showBckgrnd: true
     
-    signal addElement(string eleFile)
-    signal addSeparatorKit()
-    signal addShapeKit()
+    // File callbacks
+    signal newFileCb()
+	signal openFileCb(string fileUrl)
+	signal saveFileCb()
+	signal saveFileAsCb(string fileUrl)
+	signal printFileCb()
+	signal closeFileCb()
     
+    //Insert Elements callbacks
+    signal addElement(string eleFile)
+    signal addSeparatorKitCb()
+    signal addShapeKitCb()
+    signal addNodeCb(string nodeType, string nodeName)
+      
     signal showBackground()
     
     onWidthChanged: { 
-    	console.log("2width", windowTonatiuh.width)
+    	console.log("2width", windowTonatiuh.width)    	
     	tonatiuhToolBar.updateSizeToolBar(windowTonatiuh.width - 12)
     }
             
- 	onAddElement: content.addElement(eleFile)
- 	onAddSeparatorKit: content.addSeparatorKit()
- 	onAddShapeKit: content.addShapeKit()
+ 	onAddElement: tonatiuhContent.addElement(eleFile)
+
+ 	
  	onShowBackground: {
- 		content.showBackground(showBckgrnd) 
+ 		tonatiuhContent.showBackground(showBckgrnd) 
  		showBckgrnd = ! showBckgrnd
 	}		
 	
-	signal addNode(string nodeType)
 	
-	onAddNode: console.log("add node", nodeType)
 	
-	signal addHeliostatTracker()
+	
+	/*signal addHeliostatTracker()
     signal addLinearFresnelTracker()
     signal addOneAxisTracker()
     signal addZAxisTracker()
@@ -48,20 +58,26 @@ ApplicationWindow {
 	onAddHeliostatTracker: console.log("add tracker")
     onAddLinearFresnelTracker: console.log("add lf tracker")
     onAddOneAxisTracker: console.log("add 1 axis tracker")
-    onAddZAxisTracker: console.log("add z axix tracker")
+    onAddZAxisTracker: console.log("add z axix tracker")*/
 	
-	Component.onCompleted: windowTonatiuh.showBackground()
+	Component.onCompleted: {
+		windowTonatiuh.showBackground()
+		//windowMainController.init(windowTonatiuh)
+	}
  	    
 	menuBar: TonatiuhMenuBar{
 		id: tonatiuhMenuBar
+		objectName: "tonatiuhMenuBar"
 	}
     
 	header: TonatiuhToolBar{
 		id: tonatiuhToolBar
+		objectName: "tonatiuhToolBar"
 	}
 	
 	TonatiuhContent {
-		id: content
+		id: tonatiuhContent
+		objectName: "tonatiuhContent"
 	}
 	
 	Item {
@@ -83,6 +99,40 @@ ApplicationWindow {
             }
         ]
     }
-	
+    
+    FileDialog {
+    	id: openFileDialog
+    	objectName: "openfileDialog"
+    }
+    
+    
+    Settings {
+    	id: settings
+    	
+    	//signal displayableFilePath(string path)
+    	/*onDisplayableFilePath: {
+    		console.log("path", path)
+    		appSettings.displayableFilePath(path)
+    		return "hola"
+    	}*/
+    	property alias windowX: windowTonatiuh.x 
+        property alias windowY: windowTonatiuh.y 
+        /*property alias windowWidth: windowTonatiuh.width 
+        property alias windowHeight: windowTonatiuh.height */
+
+        property alias windowVisibility: windowTonatiuh.visibility 
+        //property var recentFiles: ["File11", "File2", "File3"]
+    }   
+    
+    
+    Component.onDestruction: {
+        //Save Settings
+    }    
+    
+    
+    
+	/*WindowMainController {
+		id: windowMainController		
+	}*/
 	
 }

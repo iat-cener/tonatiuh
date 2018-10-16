@@ -19,7 +19,7 @@ ToolBar {
             icon.source: "/../qml/icons/separatorKit.png"
             icon.color : "transparent"
             onClicked: {
-            	windowTonatiuh.addSeparatorKit()	               	
+            	windowTonatiuh.addSeparatorKitCb()	               	
     		}
            
         }
@@ -29,7 +29,7 @@ ToolBar {
             icon.source: "/../qml/icons/shapeKit.png"
             icon.color : "transparent"
             onClicked: {
-            	windowTonatiuh.addShapeKit()	               	
+            	windowTonatiuh.addShapeKitCb()	               	
     		}
         }
         
@@ -55,10 +55,17 @@ ToolBar {
                 //transformOrigin: Menu.BottomLeft
 				property int menuwidth
                 width: menuwidth
+                height : 0
 				x: parent.width - width - 16
-				
-				 MenuItem {
-				 	id: menuItemLayout
+				background: Rectangle{
+	                    implicitWidth: parent.width
+	                    implicitHeight: parent.height
+	                    color: "gainsboro"
+	                    border.width: 1
+	                    border.color: "black"
+            	}
+				MenuItem {
+				 	id: menuItemElementLayout
 	                ToolButton {
 	                	id: separatorKitAux			      
 			        	visible: true
@@ -66,23 +73,20 @@ ToolBar {
 			            icon.source: "/../qml/icons/separatorKit.png"
 			            icon.color : "transparent"
 			            onClicked: {
-			            	windowTonatiuh.addSeparatorKit()	               	
+			            	windowTonatiuh.addSeparatorKitCb()	               	
 			    		}
 			           
 			        }
-		        }
-                MenuItem {
-                	
-                    ToolButton {		
+			        ToolButton {		
                     	id: shapeKitAux	    
 			        	visible: true
 			            icon.source: "/../qml/icons/shapeKit.png"
 			            icon.color : "transparent"
 			            onClicked: {
-			            	windowTonatiuh.addShapeKit()	               	
+			            	windowTonatiuh.addShapeKitCb()	               	
 			    		}
 			        }       
-                }               
+		        }              
             }
         }  
     }	
@@ -115,9 +119,9 @@ ToolBar {
   		var currentWidth = 0
   		var currentHeight = 0 
   		var widthIndex = 0  	
-  		for(var i = 0; i < menuItemLayout.children.length-1 ; i++) {
-  			 menuItemLayout.children[i].x = currentWidth
-  			 menuItemLayout.children[i].y = currentHeight
+  		for(var i = 0; i < 2 ; i++) {
+  			 menuItemElementLayout.children[i].x = currentWidth
+  			 menuItemElementLayout.children[i].y = currentHeight
   			 if (widthIndex < (nButtons - 1) ) {
   			 	currentWidth = currentWidth + 44
   			 	widthIndex = widthIndex + 1
@@ -128,14 +132,16 @@ ToolBar {
   			 	currentHeight = currentHeight + 44
 		 	 }
   		}
-  		
+  		console.log("currentHeihte antes", currentHeight)
   		if (widthIndex != 0)
   		{
   			currentHeight = currentHeight + 44
   		}
   		dropDownMenu.height = currentHeight
+  		console.log("currentHeihte boton", dropDownMenu.height)
+  		console.log("currentHeihte antes", currentHeight)
   		dropDownMenu.menuwidth = nButtons * 44 
-  		currentWidth = nButtons * 44  
+  		//currentWidth = nButtons * 44  
     }   	
     
 }

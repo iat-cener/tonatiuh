@@ -5,8 +5,9 @@ import QtQuick.Controls 2.4
 
 
 Rectangle {  
-    objectName : "treeview"
     id: treeviewList
+    property string selectedNodeURL
+    property int selectedNodeIdx
     width: parent.width
 	anchors.left: parent.left
 	anchors.leftMargin : 5
@@ -17,11 +18,38 @@ Rectangle {
 	anchors.bottom: parent.bottom
 	anchors.bottomMargin : 5
 	
-	signal addSeparatorKit
-	signal addShapeKit
+	signal addSeparatorKit(string name, string nodeUrl)
+	signal addShapeKit(string name, string nodeUrl)
+	/*signal addMaterialNode(string name, string icon, string nodeUrl)
+	signal addTrackerNode(string name, string icon, string nodeUrl)
+	signal addShapeNode(string name, string icon, string nodeUrl)*/
+	signal addNode(string name, string icon, string nodeUrl)
+	signal deleteNodeCb(string nodeUrl)
+	signal deleteNode(string nodeUrl)
+	signal getSelectedNode
 	
-	onAddSeparatorKit: objModel.append({"name": qsTr("TSeparatorKit1"), "icon":"/../qml/icons/separatorKit.png", "level": 1, "parentModel": objModel, "subNode": [], "parentIndex": 0}) 
-	onAddShapeKit: objModel.append({"name": qsTr("TShapeKit1"), "icon":"/../qml/icons/shapeKit.png", "level": 1, "parentModel": objModel, "subNode": [], "parentIndex": 0}) 
+	
+	onAddSeparatorKit: {
+		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":"/../qml/icons/separatorKit.png", "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl}) 
+	}
+	onAddShapeKit: {
+		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":"/../qml/icons/shapeKit.png", "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl}) 
+	}
+	onAddNode: {
+		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":icon, "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl}) 
+	}
+	
+	onDeleteNode: {
+		objModel.remove(listview.currentIndex + 1)
+	}
+	
+	
+	onGetSelectedNode: {
+		console.log("emitida")
+		selectedNodeURL = objModel.get(listview.currentIndex).url
+		selectedNodeIdx = objModel.get(listview.currentIndex).parentIndex
+		console.log("selected index", objModel.get(listview.currentIndex).parentIndex)
+	}
 	
 	Keys.onPressed: {
 		if (event.key == Qt.Key_Top) {
@@ -41,7 +69,8 @@ Rectangle {
 	property int rowHeight
 	    	
     ListModel {
-        id: objModel   
+        id: objModel  
+        objectName : "objModel" 
     }     
 
     Component {
@@ -72,7 +101,7 @@ Rectangle {
 	            	console.log("parent", model.parentIndex)
 	                console.log("index", index)
 	            	console.log("item", listview.currentItem)
-	            	console.log("item", item)
+	            	//console.log("item", item)
 	            }
                         
 	            drag.target: objDragRect
@@ -205,15 +234,57 @@ Rectangle {
 	                            id: textMouseArea
 	                            anchors.fill: parent
 	                            hoverEnabled: true
+	                            acceptedButtons: Qt.LeftButton | Qt.RightButton
 	                            onDoubleClicked: {
 	                         		objText.forceActiveFocus()	                         		                    		
                          		}                         		
                          		onClicked: {
                          			listview.focus = true
 	            					listview.currentIndex = index 
+	            					console.log("clicked")
+	            					if (mouse.button == Qt.LeftButton)
+							        {
+							            console.log("Left")
+							        }
+							        else if (mouse.button == Qt.RightButton)
+							        {
+							            console.log("Right")
+							            contextMenu.popup()
+							        }	            					
                          		}
-                         		
-                         		                        		   		
+                         		Menu {
+							        id: contextMenu
+							        MenuItem { 
+							        	text: "Cut"
+							        	onTriggered: {			
+						        			console.log("Call to cut action")
+									    } 
+								    }
+							        MenuItem { 
+							        	text: "Copy"
+							        	onTriggered: {			
+						        			console.log("Call to copy action")
+									    } 
+						        	 }
+							        MenuItem { 
+							        	text: "Paste" 
+							        	onTriggered: {			
+						        			console.log("Call to paste action")
+									    } 
+									}
+							        MenuItem { 
+							        	text: "PasteLink" 
+							        	onTriggered: {			
+						        			console.log("Call to paste link action")
+									    } 
+								    }
+							        MenuItem { text: "Delete"
+							        	onTriggered: {		
+							        		treeviewList.deleteNodeCb(objModel.get(listview.currentIndex).url)
+						        			console.log("Call to delete action")
+									    } 
+									}
+							    }                       		   		
 	                        }		                              
 		                } 	                                   
 					}              
@@ -229,22 +300,7 @@ Rectangle {
    	}
    
    	Component.onCompleted: {	     
-		objModel.append({"name": qsTr("RootNode"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		/*objModel.append({"name": qsTr("Oneaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		objModel.append({"name": qsTr("Twoaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0}) 
-  		objModel.append({"name":qsTr("SomethingElse3aaaaaaaaaaaaaaaaaa") , "icon":"/../qml/icons/separatorKit.png", "parentModel": objModel, "level": 1, "subNode": [], "parentIndex": 1})
-  		objModel.append({"name": qsTr("Zeroaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		objModel.append({"name": qsTr("Oneaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		objModel.append({"name": qsTr("Twoaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0}) 
-  		objModel.append({"name": qsTr("Zeroaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		objModel.append({"name": qsTr("Oneaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		objModel.append({"name": qsTr("Twoaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0}) 
-  		objModel.append({"name":qsTr("SomethingElse3") , "icon":"/../qml/icons/separatorKit.png", "level": 1, "parentModel": objModel, "subNode": [], "parentIndex": 1})
-  		objModel.append({"name": qsTr("Zeroaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		objModel.append({"name": qsTr("Oneaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0})
-  		objModel.append({"name": qsTr("Twoaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0}) 
-  		objModel.append({"name":qsTr("SomethingElse3") , "icon":"/../qml/icons/separatorKit.png", "level": 1, "parentModel": objModel, "subNode": [], "parentIndex": 2})
-  		objModel.append({"name": qsTr("Twoaaaa"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0}) */
+		objModel.append({"name": qsTr("RootNode"), "icon":"/../qml/icons/separatorKit.png", "level": 0, "parentModel": objModel, "subNode": [], "parentIndex": 0, url:"/RootNode/"})
 	}
 	   
    

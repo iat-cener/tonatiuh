@@ -34,6 +34,7 @@
     	<file>qml/ScriptEditor.qml</file>
     	<file>qml/SunPositionCalculator.qml</file>
     	<file>qml/Help.qml</file>
+    	<file>qml/FileDialog.qml</file>
     	<file>qml/componentCreation.js</file>
     	<file>icons/AnalyzerKit.png</file>
 	    <file>icons/AnalysisTool.png</file>
@@ -67,7 +68,7 @@
 	    <file>icons/saveas.png</file>
 	    <file>icons/separatorKit.png</file>
 	    <file>icons/tcube.png</file>
-	    <file>icons/Tonatiuh.icns</file>
+	    <file>icons/Tonatiuh.ico</file>
 	    <file>icons/tonatiuhsplash.png</file>
 	    <file>icons/undo.png</file>
 	    <file>icons/undoView.png</file>

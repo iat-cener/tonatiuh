@@ -23,13 +23,19 @@ class TNodesList;
 
 class SunLight {
 protected:
-    int setSunShape(const std::string & nodeurl, const std::map<std::string,std::string> & parameterList);
-    int getSunShape(const std::string & nodeurl, TNode & node);
-    int setSunPosition(const std::string & nodeurl, float zenith, float azimuth);
-    int setSunArea(const std::string & nodeurl);
-    int setTransmissivity (const std::string & nodeurl);
+    void setSunShape(const std::string & nodeurl, const std::map<std::string,std::string> & parameterList);
+    std::shared_ptr<TNode> getSunShape(const std::string & nodeurl);
+
+    void setSunPosition(const std::string & nodeurl, float zenith, float azimuth);
+
+    void setSunArea(const std::string & nodeurl);
+
+    void setTransmissivity (const std::string & nodeurl, const std::map<std::string, std::string> & parameters);
     std::shared_ptr<TNode> getTransmissivity (const std::string & nodeurl);
+
+private:
     std::shared_ptr<TNode> CreateNodeObject(const pugi::xml_node & node);
+
 private:
     pugi::xml_document doc_;
 };
