@@ -34,8 +34,7 @@ ApplicationWindow {
       
     signal showBackground()
     
-    onWidthChanged: { 
-    	console.log("2width", windowTonatiuh.width)    	
+    onWidthChanged: { 	
     	tonatiuhToolBar.updateSizeToolBar(windowTonatiuh.width - 12)
     }
             
@@ -46,20 +45,7 @@ ApplicationWindow {
  		tonatiuhContent.showBackground(showBckgrnd) 
  		showBckgrnd = ! showBckgrnd
 	}		
-	
-	
-	
-	
-	/*signal addHeliostatTracker()
-    signal addLinearFresnelTracker()
-    signal addOneAxisTracker()
-    signal addZAxisTracker()
-	
-	onAddHeliostatTracker: console.log("add tracker")
-    onAddLinearFresnelTracker: console.log("add lf tracker")
-    onAddOneAxisTracker: console.log("add 1 axis tracker")
-    onAddZAxisTracker: console.log("add z axix tracker")*/
-	
+		
 	Component.onCompleted: {
 		windowTonatiuh.showBackground()
 		//windowMainController.init(windowTonatiuh)
@@ -109,19 +95,14 @@ ApplicationWindow {
     Settings {
     	id: settings
     	
-    	//signal displayableFilePath(string path)
-    	/*onDisplayableFilePath: {
-    		console.log("path", path)
-    		appSettings.displayableFilePath(path)
-    		return "hola"
-    	}*/
+    	
     	property alias windowX: windowTonatiuh.x 
         property alias windowY: windowTonatiuh.y 
         /*property alias windowWidth: windowTonatiuh.width 
         property alias windowHeight: windowTonatiuh.height */
 
         property alias windowVisibility: windowTonatiuh.visibility 
-        //property var recentFiles: ["File11", "File2", "File3"]
+
     }   
     
     

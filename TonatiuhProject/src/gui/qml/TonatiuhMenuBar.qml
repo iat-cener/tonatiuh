@@ -2,7 +2,9 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-//import insertshapemenu 1.0
+import insertshapetoolbar 1.0
+import insertmaterialtoolbar 1.0
+import inserttrackertoolbar 1.0
 
 MenuBar { 
  	
@@ -50,17 +52,14 @@ MenuBar {
               	delegate: MenuItem {
                   	text: appSettings.displayableFilePath(modelData)
                   	onTriggered: {
-                  		console.log("Trigger")
                   		windowTonatiuh.openFileCb(modelData)
                   	}
               	}
 
               	onObjectAdded: {
-              		console.log("object added")
               		recentFilesSubMenu.insertItem(index, object)
               	}
               	onObjectRemoved:  {
-              		console.log("object removed")
               		recentFilesSubMenu.removeItem(object)
           		}              		
           	}
@@ -187,17 +186,16 @@ MenuBar {
 	    }
         MenuSeparator { }
         
-        // Update Tracker Toolbar with available plugins
-        //InsertShapeMenu {		
-		//	onAddShapeToolBarItem : {
-		//		console.log("insert shapeeee")
-		//		var component = Qt.createComponent("GenericMenuButton.qml");
-		//		var object = component.createObject(shapeMenu, {"x": 0 + xposition, "y": 0, "iconSource":icon, "typeOfButton":"Shape", name:pluginName});		
-		//	}			
-		//	Component.onCompleted: {					
-		//		updateShapeToolBar()
-		//	}
-		//} 
+        //Update Tracker Toolbar with available plugins
+        InsertShapeToolBar {		
+			onAddShapeToolBarItem : {
+				var component = Qt.createComponent("GenericMenuButton.qml");
+				var object = shapeMenu.addItem(component.createObject(shapeMenu, {"x": 0, "y": 0, "iconSource":icon, "typeOfButton":"Shape", name:pluginName}));		
+			}			
+			Component.onCompleted: {					
+				updateShapeToolBar()
+			}
+		} 
         Menu{
         	id: shapeMenu
         	objectName: "shapeMenu"
@@ -215,9 +213,18 @@ MenuBar {
 		        radius: 2            	
     		}
         }
+        InsertMaterialToolBar {		
+			onAddMaterialToolBarItem : {
+				var component = Qt.createComponent("GenericMenuButton.qml");
+				var object = materialMenu.addItem(component.createObject(materialMenu, {"x": 0, "y": 0, "iconSource":icon, "typeOfButton":"Material", name:pluginName}));		
+			}			
+			Component.onCompleted: {					
+				updateMaterialToolBar()
+			}
+		} 
         Menu{
         	title: qsTr("Material")
-        	
+        	id: materialMenu
         	delegate : MenuDelegate{ }
     	
         	background: Rectangle {
@@ -228,9 +235,18 @@ MenuBar {
 		        radius: 2            	
     		}
         }
+        InsertTrackerToolBar {		
+			onAddTrackerToolBarItem : {
+				var component = Qt.createComponent("GenericMenuButton.qml");
+				var object = trackerMenu.addItem(component.createObject(trackerMenu, {"x": 0, "y": 0, "iconSource":icon, "typeOfButton":"Tracker", name:pluginName}));		
+			}			
+			Component.onCompleted: {					
+				updateTrackerToolBar()
+			}
+		} 
         Menu{
         	title: qsTr("Tracker")
-        	
+        	id: trackerMenu
         	delegate : MenuDelegate{ }
     	
         	background: Rectangle {

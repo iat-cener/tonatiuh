@@ -15,7 +15,6 @@ RowLayout {
 	signal updateSizeToolBar(int width)
 	
 	onUpdateSizeToolBar: {
-		console.log("width", width)
 		
 		tonatiuhToolbarUpdater.updateToolBar(width)
 	}
@@ -137,7 +136,6 @@ RowLayout {
 		                		var remainingSize = 0
 		                		remainingSize = (9 - gridLayout.itemIndex) * 65	  			
 								loader.item.compressToolBar(windowTonatiuh.width - 12, gridLayout.totalSize, remainingSize)
-								console.log("loaderrrr")
 			                	gridLayout.totalSize = gridLayout.totalSize + loader.item.toolbarSize	
 			                	tonatiuhToolbarUpdater.saveToolbarRef(loader.item)
 	                		} 	

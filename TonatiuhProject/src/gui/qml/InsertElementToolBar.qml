@@ -96,7 +96,6 @@ ToolBar {
 		var nButtons = Math.floor((availableSize - 16) /44)
 		if (nButtons == 0)
 			nButtons = 1
-		console.log("nButtons", nButtons)
 		for(var i = insertToolbarRow.children.length-1; i > 0 ; i--) {
 			if (i <= nButtons) {
 				insertToolbarRow.children[i-1].visible = true	   				 
@@ -132,14 +131,11 @@ ToolBar {
   			 	currentHeight = currentHeight + 44
 		 	 }
   		}
-  		console.log("currentHeihte antes", currentHeight)
   		if (widthIndex != 0)
   		{
   			currentHeight = currentHeight + 44
   		}
   		dropDownMenu.height = currentHeight
-  		console.log("currentHeihte boton", dropDownMenu.height)
-  		console.log("currentHeihte antes", currentHeight)
   		dropDownMenu.menuwidth = nButtons * 44 
   		//currentWidth = nButtons * 44  
     }   	

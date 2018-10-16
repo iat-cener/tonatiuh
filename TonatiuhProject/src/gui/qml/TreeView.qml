@@ -45,10 +45,8 @@ Rectangle {
 	
 	
 	onGetSelectedNode: {
-		console.log("emitida")
 		selectedNodeURL = objModel.get(listview.currentIndex).url
 		selectedNodeIdx = objModel.get(listview.currentIndex).parentIndex
-		console.log("selected index", objModel.get(listview.currentIndex).parentIndex)
 	}
 	
 	Keys.onPressed: {
@@ -88,8 +86,6 @@ Rectangle {
                 onDoubleClicked: {
                     for(var i = 1; i < parent.children.length - 1; ++i) {               		
                         if(parent.children[i].objectName !== "objMouseArea") {
-                        console.log("object name", parent.children[i].objectName)
-                        console.log("elemento i", i)
                   	    parent.children[i].visible = !parent.children[i].visible
                         }
                     }
@@ -98,10 +94,6 @@ Rectangle {
 	            onClicked: {
 	            	listview.focus = true
 	            	listview.currentIndex = index 
-	            	console.log("parent", model.parentIndex)
-	                console.log("index", index)
-	            	console.log("item", listview.currentItem)
-	            	//console.log("item", item)
 	            }
                         
 	            drag.target: objDragRect
@@ -113,8 +105,6 @@ Rectangle {
             
 	            onWheel: {
 	            	objRow.x = 0
-	        		console.log("x position", objRow.x)
-	        		console.log("altura", treeviewList.height)
 	        	}
             
 	            Row {
@@ -241,7 +231,6 @@ Rectangle {
                          		onClicked: {
                          			listview.focus = true
 	            					listview.currentIndex = index 
-	            					console.log("clicked")
 	            					if (mouse.button == Qt.LeftButton)
 							        {
 							            console.log("Left")

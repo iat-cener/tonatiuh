@@ -96,7 +96,6 @@ ToolBar {
 		var nButtons = Math.floor((availableSize - 16) /44)
 		if (nButtons == 0)
 			nButtons = 1
-		console.log("nButtons", nButtons)
 		for(var i = runToolBarLayout.children.length-1; i > 0 ; i--) {
 			if (i <= nButtons) {
 				runToolBarLayout.children[i-1].visible = true	   				 
