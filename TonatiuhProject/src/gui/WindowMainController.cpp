@@ -1,4 +1,3 @@
-#include <iostream>
 
 #include "WindowMainController.h"
 #include "SceneView.h"
@@ -8,6 +7,7 @@
 #include <QQuickItem>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QApplication>
 
 #include <QDir>
 
@@ -16,6 +16,12 @@
 #include "PluginManager.h"
 #include "TreeView.h"
 #include "TreeViewListController.h"
+#include "TTrackerFactory.h"
+#include "TTracker.h"
+#include "TMaterialFactory.h"
+#include "TMaterial.h"
+#include "TShapeFactory.h"
+#include "TShape.h"
 
 WindowMainController::WindowMainController(QObject *parent, ApplicationSettings * appSettings) :
 	    QObject(parent)
@@ -25,6 +31,7 @@ WindowMainController::WindowMainController(QObject *parent, ApplicationSettings 
 
 void WindowMainController::init(QObject *parent)
 {
+	loadPlugins();
 
 	//! Connect file callbacks
 	QObject::connect(parent, SIGNAL(newFileCb()), this, SLOT(newFileCb()));
@@ -39,19 +46,25 @@ void WindowMainController::init(QObject *parent)
 	QObject::connect(parent, SIGNAL(addShapeKitCb()), this, SLOT(addShapeKitCb()));
 	QObject::connect(parent, SIGNAL(addNodeCb(QString, QString)), this, SLOT(addNodeCb(QString, QString)));
 
+	//! Connect parameters view callbacks
+	QObject::connect(parent, SIGNAL(updateParameterViewCb(QString, QString)), this, SLOT(updateParameterViewCb(QString, QString)));
+
 	m_tonatiuhContent = parent->findChild<QObject *>("tonatiuhContent");
 
 	//!Tree view GUI
 	m_treeViewList = m_tonatiuhContent->findChild<QObject *>("treeviewList");
 	m_treeviewlistController = new TreeViewListController(m_treeViewList, m_treeviewXml);
+	//m_parametersViewController = new ParametersViewController();
 	//! Connect treeviewlist callbacks
 	QObject::connect(m_treeViewList, SIGNAL(deleteNodeCb(QString)), this, SLOT(deleteNodeCb(QString)));
 
 	//!Parameter view GUI
-	m_parametersView = m_tonatiuhContent->findChild<QObject *>("parametersView");
+	m_parametersView = m_tonatiuhContent->findChild<QObject *>("parametersViewLoader");
+	m_parametersViewController = new ParametersViewController(m_parametersView);
 
 	//!3D view GUI
 	m_sceneRoot = m_tonatiuhContent->findChild<QObject *>("sceneRoot");
+
 
 	//! Node structure
 	m_treeviewXml = new TreeView("D:\\Olaia\\Tonatiuh\\RootNode.tnh");
@@ -100,7 +113,17 @@ void WindowMainController::addSeparatorKitCb()
 	try
 	{
 		m_treeviewXml->addNode(nodetype, parentNodeURL);
+
+		//! Set default parameters
+		//! Group Node parameters (default):
+		//! 	- Translation: 0 0 0
+		//! 	- Rotation: 0 0 1  0
+		//!		- ScaleFactor: 1 1 1
+		//! 	- Center 0 0 0
+		//TODO: llamar a la función m_treeviewXml->setParameter(nodeurl, parmeter, value)
+
 		//TODO: coger la URL que devuelva la función addNode
+
 		nodeURL = parentNodeURL + "//" + "NODENAME";
 		m_treeviewlistController->addTreeViewSeparatorKit(QString::fromUtf8(nodeURL.c_str()));
 
@@ -170,11 +193,28 @@ void WindowMainController::addNodeCb(QString nodeType, QString nodeName)
 		//meterlo como parametro de entrada de las funciones addTreeViewMaterialNode, addTreeViewShapeNode, addTreeViewTrackerNode
 		nodeURL = parentNodeURL + "//" + "NODENAME";
 		if (nodeType.toStdString() == "Material")
-			m_treeviewlistController->addTreeViewMaterialNode(nodeName, QString::fromUtf8(nodeURL.c_str()));
+		{
+			//! Set material parameters
+			//! TODO
+			setMaterialProperties(nodeName.toStdString());
+			m_treeviewlistController->addTreeViewMaterialNode(QString::fromUtf8(m_currentIcon.c_str()), QString::fromUtf8(nodeURL.c_str()), nodeName);
+			//TODO: Update Parameters View with m_currentParameterList
+
+		}
 		else if (nodeType.toStdString() == "Shape")
-			m_treeviewlistController->addTreeViewShapeNode(nodeName, QString::fromUtf8(nodeURL.c_str()));
+		{
+			setShapeProperties(nodeName.toStdString());
+			m_treeviewlistController->addTreeViewShapeNode(QString::fromUtf8(m_currentIcon.c_str()), QString::fromUtf8(nodeURL.c_str()), nodeName);
+			//TODO: Update Parameters View  with m_currentParameterList
+
+		}
 		else if (nodeType.toStdString() == "Tracker")
-			m_treeviewlistController->addTreeViewTrackerNode(nodeName, QString::fromUtf8(nodeURL.c_str()));
+		{
+			setTrackerProperties(nodeName.toStdString());
+			m_treeviewlistController->addTreeViewTrackerNode(QString::fromUtf8(m_currentIcon.c_str()), QString::fromUtf8(nodeURL.c_str()), nodeName);
+			//TODO: Update Parameters View with m_currentParameterList
+
+		}
 	}
 	catch(std::runtime_error &e)
 	{
@@ -254,3 +294,111 @@ void WindowMainController::closeFileCb()
 {
 	std::cout<<"closeFileCb"<<std::endl;
 }
+
+
+void WindowMainController::updateParameterViewCb(QString nodeName, QString pluginName)
+{
+	setNodeProperties(nodeName.toStdString(), pluginName.toStdString());
+	m_parametersViewController->updateParametersView(m_currentParameterList);
+}
+
+void WindowMainController::loadPlugins()
+{
+	QString str_pluginsDirectory= QApplication::applicationDirPath() + QDir::separator() + "plugins";
+	QDir pluginsDirectory(str_pluginsDirectory);
+	std::string error;
+	m_pluginManager.LoadAvailablePlugins( pluginsDirectory.absolutePath().toStdString(), &error);
+	m_trackerFactoryNameList = m_pluginManager.GetTTrackerFactoryNames();
+	m_shapeFactoryNameList = m_pluginManager.GetTShapeFactoryNames();
+	m_materialFactoryNameList = m_pluginManager.GetTMaterialFactoryNames();
+}
+
+void WindowMainController::setTrackerProperties(std::string name)
+{
+	//TODO: the parameter values must be updated with the xml values, not the default values
+	// Load Tracker Properties
+	m_currentParameterList.clear();
+	for( unsigned int i = 0; i < m_trackerFactoryNameList.size(); i++ ) {
+		if (name == m_trackerFactoryNameList.at(i))
+		{
+			std::shared_ptr< TTracker > pTTrackerFactory = m_pluginManager.CreateTTracker(m_trackerFactoryNameList.at(i));
+			m_currentIcon = "qrc" + pTTrackerFactory->GetIcon();
+			std::vector<std::string> parameterList = pTTrackerFactory->GetVisibleParametersName();
+			for( unsigned int p = 0; p < parameterList.size(); p++ )
+			{
+				std::string parameterName = parameterList[p];
+				std::string parameterValue = pTTrackerFactory->GetParameterToString( parameterName );
+				std::pair<std::string, std::string> parametersPair;
+				parametersPair = std::make_pair(std::string(parameterName),std::string(parameterValue));
+				m_currentParameterList.push_back( parametersPair);
+			}
+			//m_currentParameterList = pTTrackerFactory->GetVisibleParametersName();
+		}
+	}
+}
+
+void WindowMainController::setShapeProperties(std::string name)
+{
+	//TODO: the parameter values must be updated with the xml values, not the default values
+	// Load Shape Properties
+	m_currentParameterList.clear();
+	for( unsigned int i = 0; i < m_shapeFactoryNameList.size(); i++ ) {
+		if (name == m_shapeFactoryNameList.at(i))
+		{
+			std::shared_ptr< TShape > pTShapeFactory = m_pluginManager.CreateTShape(m_shapeFactoryNameList.at(i));
+			m_currentIcon = "qrc" + pTShapeFactory->GetIcon();
+			std::vector<std::string> parameterList = pTShapeFactory->GetVisibleParametersName();
+			for( unsigned int p = 0; p < parameterList.size(); p++ )
+			{
+				std::string parameterName = parameterList[p];
+				std::string parameterValue = pTShapeFactory->GetParameterToString( parameterName );
+				std::pair<std::string, std::string> parametersPair;
+				parametersPair = std::make_pair(std::string(parameterName),std::string(parameterValue));
+				m_currentParameterList.push_back( parametersPair);
+			}
+		}
+	}
+}
+
+void WindowMainController::setMaterialProperties(std::string name)
+{
+	//TODO: the parameter values must be updated with the xml values, not the default values
+	// Load Material Properties
+	m_currentParameterList.clear();
+	for( unsigned int i = 0; i < m_materialFactoryNameList.size(); i++ ) {
+		if (name == m_materialFactoryNameList.at(i))
+		{
+			std::shared_ptr< TMaterial > pTMaterialFactory = m_pluginManager.CreateTMaterial(m_materialFactoryNameList.at(i));
+			m_currentIcon = "qrc" + pTMaterialFactory->GetIcon();
+			std::vector<std::string> parameterList = pTMaterialFactory->GetVisibleParametersName();
+			for( unsigned int p = 0; p < parameterList.size(); p++ )
+			{
+				std::string parameterName = parameterList[p];
+				std::string parameterValue = pTMaterialFactory->GetParameterToString( parameterName );
+				std::pair<std::string, std::string> parametersPair;
+				parametersPair = std::make_pair(std::string(parameterName),std::string(parameterValue));
+				m_currentParameterList.push_back( parametersPair);
+			}
+		}
+	}
+
+}
+
+void WindowMainController::setNodeProperties(std::string nodeName, std::string pluginName)
+{
+	// Load Node Properties
+	if (nodeName == "Shape")
+	{
+		setShapeProperties(pluginName);
+	}
+	else if (nodeName == "Tracker")
+	{
+		setTrackerProperties(pluginName);
+	}
+	else if (nodeName == "Material")
+	{
+		setMaterialProperties(pluginName);
+	}
+
+}
+

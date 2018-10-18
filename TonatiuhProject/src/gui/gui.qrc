@@ -14,6 +14,7 @@
     	<file>qml/InsertMaterialToolBar.qml</file>
     	<file>qml/GenericToolBarButton.qml</file>
     	<file>qml/GenericMenuButton.qml</file>
+    	<file>qml/GenericParametersView.qml</file>
     	<file>qml/DropDownButton.qml</file>
     	<file>qml/TonatiuhMenuBar.qml</file>	
     	<file>qml/TonatiuhContent.qml</file>	

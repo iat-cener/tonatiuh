@@ -19,12 +19,10 @@ Rectangle {
     
     signal addElement(string eleFile)
 	onAddElement: sceneRoot.addElement(eleFile) 
-    
-    /*signal addSeparatorKit
-    signal addShapeKit
-    onAddSeparatorKit: treeviewList.addSeparatorKit()
-    onAddShapeKit: treeviewList.addShapeKit()*/
-    
+	
+	signal changeSelectionNode(string nodeName, string pluginName)
+	onChangeSelectionNode: { parametersLayout.changeSelectionNode(nodeName, pluginName)}
+        
 	RowLayout {
 		id: contentLayout
 		objectName: "contentLayout"
@@ -212,14 +210,16 @@ Rectangle {
         			Layout.fillHeight: true
         			width : parent.width - 6
         			height: parameters.height
-        			anchors.rightMargin : 5
 					anchors.top:  parent.top
 					anchors.bottom: parent.bottom
-        			anchors.left: parent.left
         			x: parent.x + 3
         			y: parent.y + 3
+        		        			
+        			spacing: 2
         			
-        			spacing: 2        			
+        			signal changeSelectionNode(string nodeName, string pluginName)
+        			
+        			        			
         			
         			Rectangle {
 						id: parametersTitle
@@ -240,8 +240,12 @@ Rectangle {
 						}
 					}
 					Loader { 
-						id: parametersView
-						objectName: "parametersView"
+						id: parametersViewLoader
+						objectName: "parametersViewLoader"
+						sourceComponent: ParametersView { 
+							id: parametersView			
+							objectName: "parametersView"			
+						}
 						//source: "/../qml/ParametersView.qml"
 						height: parameters.height - 35
 						width: parameters.width
@@ -255,31 +259,38 @@ Rectangle {
 						anchors.bottomMargin : 5
 						
 					 }
-					 Component.onCompleted: {
+					 
+					 onChangeSelectionNode: {
 					 	// Depending on the node selected, load one parameter view or other.
-					 	switch(treeviewList.selectedNodeType) {
-                            case "SeparatorKit": {
-                                parametersView2.setSource("/../qml/qml/ParametersView.qml")
+					 	//console.log("entra aqui selected node type", treeviewList.selectedNodeType)
+					 	windowTonatiuh.updateParameterViewCb(nodeName, pluginName)
+					 	/*switch(treeviewList.selectedNodeType) {
+                            case "/../qml/icons/separatorKit.png": {
+                                parametersView.setSource("/../qml/qml/ParametersView.qml")
                                 break
                             }
-                            case "ShapeKit": {
-                            	// Depending on the children
-                            	//parametersView2.setSource("/../qml/qml/ParametersViewShapeKit.qml")
+                            case "/../qml/icons/shapeKit.png": {
+                            	console.log("Depending on the children")
+                            	//parametersView.setSource("/../qml/qml/ParametersViewShapeKit.qml")
                                 break
                             }
-                            case "Tracker": {
-                            	parametersView2.setSource("/../qml/qml/ParametersTracker.qml")
+                            default:
+                            	console.log("load depending on plugin")
+                            	break*/
+                            /*case "Tracker": {
+                            	parametersView.setSource("/../qml/qml/ParametersTracker.qml")
                                 break
                             }
+                            
                             case "Shape": {
-                            	parametersView2.setSource("/../qml/qml/ParametersViewShape.qml")
+                            	parametersView.setSource("/../qml/qml/ParametersViewShape.qml")
                                 break
                             }
                             case "Material": {
-                            	parametersView2.setSource("/../qml/qml/ParametersViewMaterial.qml")
+                            	parametersView.setSource("/../qml/qml/ParametersViewMaterial.qml")
                                 break
-                            }
-                        }    
+                            }*/
+                        //}    
 				 	}
 					
 					/*ParametersView { 
@@ -287,6 +298,7 @@ Rectangle {
 						height: parameters.height - 35
 					}*/
 				}	
+				
 				
 				Rectangle {
 	            	id: resizeArea2d

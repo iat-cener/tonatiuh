@@ -20,23 +20,20 @@ Rectangle {
 	
 	signal addSeparatorKit(string name, string nodeUrl)
 	signal addShapeKit(string name, string nodeUrl)
-	/*signal addMaterialNode(string name, string icon, string nodeUrl)
-	signal addTrackerNode(string name, string icon, string nodeUrl)
-	signal addShapeNode(string name, string icon, string nodeUrl)*/
-	signal addNode(string name, string icon, string nodeUrl)
+	signal addNode(string name, string icon, string nodeUrl, string pluginName)
 	signal deleteNodeCb(string nodeUrl)
 	signal deleteNode(string nodeUrl)
 	signal getSelectedNode
 	
 	
 	onAddSeparatorKit: {
-		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":"/../qml/icons/separatorKit.png", "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl}) 
+		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":"/../qml/icons/separatorKit.png", "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl, pluginName:"separatorKit"}) 
 	}
 	onAddShapeKit: {
-		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":"/../qml/icons/shapeKit.png", "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl}) 
+		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":"/../qml/icons/shapeKit.png", "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl, pluginName:"shapeKit"}) 
 	}
 	onAddNode: {
-		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":icon, "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl}) 
+		objModel.insert(listview.currentIndex + 1, {"name": qsTr(name), "icon":icon, "level": (objModel.get(listview.currentIndex).level + 1), "parentModel": objModel, "subNode": [], "parentIndex": listview.currentIndex, url:nodeUrl, pluginName:pluginName}) 
 	}
 	
 	onDeleteNode: {
@@ -94,6 +91,7 @@ Rectangle {
 	            onClicked: {
 	            	listview.focus = true
 	            	listview.currentIndex = index 
+	            	
 	            }
                         
 	            drag.target: objDragRect
@@ -233,7 +231,9 @@ Rectangle {
 	            					listview.currentIndex = index 
 	            					if (mouse.button == Qt.LeftButton)
 							        {
-							            console.log("Left")
+							            console.log("SelectedNode", objModel.get(listview.currentIndex).url)
+							            treeviewList.selectedNodeType = objModel.get(listview.currentIndex).icon
+							            content.changeSelectionNode(objModel.get(listview.currentIndex).name, objModel.get(listview.currentIndex).pluginName)
 							        }
 							        else if (mouse.button == Qt.RightButton)
 							        {

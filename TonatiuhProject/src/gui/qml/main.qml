@@ -31,6 +31,10 @@ ApplicationWindow {
     signal addSeparatorKitCb()
     signal addShapeKitCb()
     signal addNodeCb(string nodeType, string nodeName)
+    
+    //Update Parameter View
+    signal updateParameterViewCb(string nodeName, string pluginName)
+    
       
     signal showBackground()
     

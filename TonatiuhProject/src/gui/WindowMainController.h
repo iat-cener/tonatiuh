@@ -15,6 +15,7 @@
 #include "TreeView.h"
 #include "PluginManager.h"
 #include "TreeViewListController.h"
+#include "ParametersViewController.h"
 #include "File.h"
 #include "ApplicationSettings.h"
 
@@ -32,6 +33,7 @@ public:
     void newFile();
     void openFile(std::string filename);
     void saveFile(std::string filename);
+    void setNodeProperties(std::string nodeName,  std::string pluginName);
 
 
 public slots:
@@ -49,6 +51,9 @@ public slots:
     void addShapeKitCb();
     void addNodeCb(QString nodeType, QString nodeName);
 
+    //! Parameters Callbacks
+    void updateParameterViewCb(QString nodeName, QString pluginName);
+
 
 
 signals:
@@ -58,6 +63,17 @@ signals:
    //void getSelectedNodeURL();
 
 private:
+	void loadPlugins();
+    void setTrackerProperties(std::string name);
+    void setShapeProperties(std::string name);
+    void setMaterialProperties(std::string name);
+    PluginManager m_pluginManager;
+    std::vector<std::string > m_trackerFactoryNameList;
+    std::vector<std::string > m_shapeFactoryNameList;
+    std::vector<std::string > m_materialFactoryNameList;
+    std::string m_currentIcon;
+    std::vector< std::pair<std::string, std::string> >  m_currentParameterList;
+
     TreeView  * m_treeviewXml;
     File * m_file;
     QObject * m_tonatiuhContent;
@@ -65,6 +81,7 @@ private:
     QObject * m_parametersView;
     QObject * m_sceneRoot;
     TreeViewListController *m_treeviewlistController;
+    ParametersViewController *m_parametersViewController;
     File * m_workingFile;
     std::string m_workingFilename;
     ApplicationSettings * m_appSettings;
