@@ -22,7 +22,8 @@ Rectangle {
 	
 	signal changeSelectionNode(string nodeName, string pluginName)
 	onChangeSelectionNode: { parametersLayout.changeSelectionNode(nodeName, pluginName)}
-        
+	
+	
 	RowLayout {
 		id: contentLayout
 		objectName: "contentLayout"

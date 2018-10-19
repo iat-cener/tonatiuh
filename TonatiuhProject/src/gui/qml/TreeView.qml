@@ -231,9 +231,35 @@ Rectangle {
 	            					listview.currentIndex = index 
 	            					if (mouse.button == Qt.LeftButton)
 							        {
-							            console.log("SelectedNode", objModel.get(listview.currentIndex).url)
-							            treeviewList.selectedNodeType = objModel.get(listview.currentIndex).icon
-							            content.changeSelectionNode(objModel.get(listview.currentIndex).name, objModel.get(listview.currentIndex).pluginName)
+							        	console.log("listview.currentIndex", listview.currentIndex)
+							            console.log("SelectedNode", objModel.get(listview.currentIndex).pluginName)
+							            if (objModel.get(listview.currentIndex).pluginName == "shapeKit")
+							           	{
+							           		//Check if has one child
+							           		if  (objModel.get(listview.currentIndex + 1).parentIndex == listview.currentIndex)
+							           		{							           			
+							           			console.log("tiene 1 hijo")
+							           			// load properties of that children and check if has other
+							           			if  (objModel.get(listview.currentIndex + 2).parentIndex == listview.currentIndex)
+							           			{
+							           				//load properties of that children
+							           				console.log("tiene 2 hijos")
+							           				windowTonatiuh.loadChildParametersViewCb(objModel.get(listview.currentIndex).nodeUrl, 
+							           					objModel.get(listview.currentIndex + 1).nodeUrl, objModel.get(listview.currentIndex + 1).name, objModel.get(listview.currentIndex + 1).pluginName,
+							           					objModel.get(listview.currentIndex + 2).nodeUrl, objModel.get(listview.currentIndex + 2).name, objModel.get(listview.currentIndex + 2).pluginName)
+							           			}
+							           			else
+							           			{
+							           				windowTonatiuh.loadChildParametersViewCb(objModel.get(listview.currentIndex).nodeUrl, objModel.get(listview.currentIndex + 1).nodeUrl, 
+							           					objModel.get(listview.currentIndex + 1).name, objModel.get(listview.currentIndex + 1).pluginName, null, null, null)
+							           			}
+							           		}
+							           	}
+							           	else
+							           	{
+								            treeviewList.selectedNodeType = objModel.get(listview.currentIndex).icon
+								            content.changeSelectionNode(objModel.get(listview.currentIndex).name, objModel.get(listview.currentIndex).pluginName)
+							            }
 							        }
 							        else if (mouse.button == Qt.RightButton)
 							        {

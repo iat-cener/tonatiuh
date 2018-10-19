@@ -7,22 +7,14 @@ import QtQuick.Controls 2.4
 Page {
     property string recColor : "steelblue"
     
-     
-    //contentWidth : parametersView.width
-    //contentHeight: parent.height
-    //anchors.fill: parent
-    //anchors.margins: 4
-
     SwipeView {
         id: swipeView
         objectName: "swipeView"
-        //anchors.fill: parent
-        //width: parametersView.width -4
-        //currentIndex: tabBar.currentIndex
-        //anchors.margins: 4
-        
-		Rectangle {	
-			objectName: "rectParamView"
+        currentIndex: tabBar.currentIndex
+                
+		Rectangle {
+			id: rectParamView1
+			objectName: "rectParamView1"
     		border.color: "steelblue"
     		border.width: 2	   
     	
@@ -35,33 +27,18 @@ Page {
 		}  
 		
 		Rectangle {	
+			id: rectParamView2
 			objectName: "rectParamView2"
-    		border.color: "steelblue"
-    		border.width: 2	   
-    	
+    		border.color: "black"
+    		border.width: 2	       	
 			height:  parametersView.height - tabBar.height
 			width: parametersView.width
 			GenericParametersView {
 				id: genericParameterView2
 				objectName: "genericParameterView2"
 			}
-		}     
-        /*Repeater {
-        	objectName : "repeater"
-            model: 2
-			Rectangle {	
-				objectName: "rectParamView"
-	    		border.color: "steelblue"
-	    		border.width: 2	   
-	    	
-				height:  parametersView.height - tabBar.height
-				width: parametersView.width
-				GenericParametersView {
-					id: genericParameterView
-					objectName: "genericParameterView"
-				}
-			}            
-        }*/
+		}  
+       
     }
 
     header: TabBar {
@@ -69,6 +46,7 @@ Page {
         currentIndex: swipeView.currentIndex
         
         TabButton {
+        	id: tab1
             text: "Transform"
             width: implicitWidth
             height: 20    
@@ -78,11 +56,15 @@ Page {
             }   
             onClicked: { 
             	console.log("clickada la primera tab")
-            	page.recColor = "steelblue"
+            	console.log("swipeView.currentIndex", swipeView.currentIndex)
+            	//rectParamView1.visible = true
+            	//rectParamView2.visible = false   
+            	
             }
             
         }
         TabButton {
+        	id: tab2
             text: "Second"
             width: implicitWidth
             height: 20   
@@ -90,12 +72,12 @@ Page {
            
             background: Rectangle {
             	color: tabBar.currentIndex == 1 ? "steelblue" : "powderblue"
-    
-            }       
-               
+            }                      
             onClicked: { 
-            	console.log("clickada la segunda tab")
-            	page.recColor = "red"
+            	console.log("clickada la segunda tab")        
+            	//rectParamView1.visible = false
+            	//rectParamView2.visible = true
+            	   	
             }
         }
         

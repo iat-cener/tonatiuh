@@ -35,6 +35,8 @@ ApplicationWindow {
     //Update Parameter View
     signal updateParameterViewCb(string nodeName, string pluginName)
     
+    signal loadChildParametersViewCb(string nodeUrl, string childUrl1, string childName1, string childPluginName1,
+    	string childUrl2, string childName2, string childPluginName2)
       
     signal showBackground()
     

@@ -48,7 +48,8 @@ void WindowMainController::init(QObject *parent)
 
 	//! Connect parameters view callbacks
 	QObject::connect(parent, SIGNAL(updateParameterViewCb(QString, QString)), this, SLOT(updateParameterViewCb(QString, QString)));
-
+	QObject::connect(parent, SIGNAL(loadChildParametersViewCb(QString, QString, QString, QString, QString, QString, QString)),
+			this, SLOT(loadChildParametersViewCb(QString, QString, QString, QString, QString, QString, QString)));
 	m_tonatiuhContent = parent->findChild<QObject *>("tonatiuhContent");
 
 	//!Tree view GUI
@@ -302,6 +303,35 @@ void WindowMainController::updateParameterViewCb(QString nodeName, QString plugi
 	m_parametersViewController->updateParametersView(m_currentParameterList);
 }
 
+void WindowMainController::loadChildParametersViewCb(QString nodeUrl,
+		QString childUrl1, QString childName1, QString childPluginName1,
+		QString childUrl2, QString childName2, QString childPluginName2)
+{
+	std::vector< std::pair<std::string, std::string> > child1_paramList;
+	std::vector< std::pair<std::string, std::string> > child2_paramList;
+
+	//! Set child 1 parameters
+	setNodeProperties(childName1.toStdString(), childPluginName1.toStdString());
+	child1_paramList = m_currentParameterList;
+
+	//! Set child 2 parameters
+	setNodeProperties(childName2.toStdString(), childPluginName2.toStdString());
+	child2_paramList = m_currentParameterList;
+	/*if (childUrl2 != nullptr)
+	{
+		setNodeProperties(childName2.toStdString(), childPluginName2.toStdString());
+		child2_paramList = m_currentParameterList;
+	}
+	else
+	{
+		child2_paramList.clear();
+	}*/
+	m_parametersViewController->updateChildParametersView(child1_paramList, child2_paramList);
+
+
+
+}
+
 void WindowMainController::loadPlugins()
 {
 	QString str_pluginsDirectory= QApplication::applicationDirPath() + QDir::separator() + "plugins";
@@ -317,7 +347,6 @@ void WindowMainController::setTrackerProperties(std::string name)
 {
 	//TODO: the parameter values must be updated with the xml values, not the default values
 	// Load Tracker Properties
-	m_currentParameterList.clear();
 	for( unsigned int i = 0; i < m_trackerFactoryNameList.size(); i++ ) {
 		if (name == m_trackerFactoryNameList.at(i))
 		{
@@ -341,7 +370,6 @@ void WindowMainController::setShapeProperties(std::string name)
 {
 	//TODO: the parameter values must be updated with the xml values, not the default values
 	// Load Shape Properties
-	m_currentParameterList.clear();
 	for( unsigned int i = 0; i < m_shapeFactoryNameList.size(); i++ ) {
 		if (name == m_shapeFactoryNameList.at(i))
 		{
@@ -364,7 +392,6 @@ void WindowMainController::setMaterialProperties(std::string name)
 {
 	//TODO: the parameter values must be updated with the xml values, not the default values
 	// Load Material Properties
-	m_currentParameterList.clear();
 	for( unsigned int i = 0; i < m_materialFactoryNameList.size(); i++ ) {
 		if (name == m_materialFactoryNameList.at(i))
 		{
@@ -387,6 +414,8 @@ void WindowMainController::setMaterialProperties(std::string name)
 void WindowMainController::setNodeProperties(std::string nodeName, std::string pluginName)
 {
 	// Load Node Properties
+	m_currentParameterList.clear();
+	std::cout<<"nodeName"<<nodeName<<std::endl;
 	if (nodeName == "Shape")
 	{
 		setShapeProperties(pluginName);
@@ -399,6 +428,10 @@ void WindowMainController::setNodeProperties(std::string nodeName, std::string p
 	{
 		setMaterialProperties(pluginName);
 	}
-
+	else if (nodeName == "ShapeKit")
+	{
+		//TODO: chequear si tiene hijo Material y setear paramaetros
+		//TDOO: chequear si tiene hijo Shape y setear paramaetros
+	}
 }
 
