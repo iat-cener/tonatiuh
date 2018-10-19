@@ -79,7 +79,8 @@ Page {
             	//rectParamView2.visible = true
             	   	
             }
-        }
+        }       
         
     }
+        
 }

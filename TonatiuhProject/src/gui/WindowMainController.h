@@ -54,7 +54,7 @@ public slots:
     //! Parameters Callbacks
     void updateParameterViewCb(QString nodeName, QString pluginName);
     void loadChildParametersViewCb(QString nodeUrl, QString childUrl1, QString childName1, QString childPluginName1,
-    		QString childUrl2, QString childName2, QString childPluginName2);
+    		QString childUrl2, QString childName2, QString childPluginName);
 
 
 
@@ -69,6 +69,7 @@ private:
     void setTrackerProperties(std::string name);
     void setShapeProperties(std::string name);
     void setMaterialProperties(std::string name);
+    void setSeparatorKitProperties();
     PluginManager m_pluginManager;
     std::vector<std::string > m_trackerFactoryNameList;
     std::vector<std::string > m_shapeFactoryNameList;

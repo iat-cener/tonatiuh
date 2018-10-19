@@ -300,7 +300,7 @@ void WindowMainController::closeFileCb()
 void WindowMainController::updateParameterViewCb(QString nodeName, QString pluginName)
 {
 	setNodeProperties(nodeName.toStdString(), pluginName.toStdString());
-	m_parametersViewController->updateParametersView(m_currentParameterList);
+	m_parametersViewController->updateParametersView(m_currentParameterList, pluginName);
 }
 
 void WindowMainController::loadChildParametersViewCb(QString nodeUrl,
@@ -317,16 +317,8 @@ void WindowMainController::loadChildParametersViewCb(QString nodeUrl,
 	//! Set child 2 parameters
 	setNodeProperties(childName2.toStdString(), childPluginName2.toStdString());
 	child2_paramList = m_currentParameterList;
-	/*if (childUrl2 != nullptr)
-	{
-		setNodeProperties(childName2.toStdString(), childPluginName2.toStdString());
-		child2_paramList = m_currentParameterList;
-	}
-	else
-	{
-		child2_paramList.clear();
-	}*/
-	m_parametersViewController->updateChildParametersView(child1_paramList, child2_paramList);
+
+	m_parametersViewController->updateChildParametersView(child1_paramList, child2_paramList, childPluginName1, childPluginName2);
 
 
 
@@ -411,6 +403,23 @@ void WindowMainController::setMaterialProperties(std::string name)
 
 }
 
+void WindowMainController::setSeparatorKitProperties()
+{
+	//TODO: the parameter values must be updated with the xml values, not the default values
+	// Load Separator kit Properties
+	std::vector<std::string> parameterList = {"Translation", "Rotation", "ScaleFactor", "ScaleOrientation", "Center"};
+	for( unsigned int p = 0; p < parameterList.size(); p++ )
+	{
+		std::string parameterName = parameterList[p];
+		std::string parameterValue = "0"; //TODO: get parameter from node structure
+		std::pair<std::string, std::string> parametersPair;
+		parametersPair = std::make_pair(std::string(parameterName),std::string(parameterValue));
+		m_currentParameterList.push_back( parametersPair);
+	}
+
+
+}
+
 void WindowMainController::setNodeProperties(std::string nodeName, std::string pluginName)
 {
 	// Load Node Properties
@@ -430,8 +439,11 @@ void WindowMainController::setNodeProperties(std::string nodeName, std::string p
 	}
 	else if (nodeName == "ShapeKit")
 	{
-		//TODO: chequear si tiene hijo Material y setear paramaetros
-		//TDOO: chequear si tiene hijo Shape y setear paramaetros
+		//Do nothing
+	}
+	else if (nodeName =="SeparatorKit")
+	{
+		setSeparatorKitProperties();
 	}
 }
 
