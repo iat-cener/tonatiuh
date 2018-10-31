@@ -328,7 +328,7 @@ double RandomRngStream::sm_nextSeed[6] =
 /**
  * Constructor.
  */
-RandomRngStream::RandomRngStream ( const unsigned long arraySize )
+RandomRngStream::RandomRngStream (  unsigned long seedValue, const unsigned long arraySize )
 : RandomDeviate(arraySize)
 {
    m_anti = false;
@@ -341,9 +341,9 @@ RandomRngStream::RandomRngStream ( const unsigned long arraySize )
    bits if machine follows IEEE 754 standard) if m_incPrec = true. sm_nextSeed
    will be the seed of the next declared RandomRandomRngStream. */
 
-   for (int i = 0; i < 6; ++i) {
-      m_bg[i] = m_cg[i] = m_ig[i] = sm_nextSeed[i];
-   }
+   unsigned long seedArray[6] = { seedValue, seedValue, seedValue, seedValue, seedValue, seedValue };
+   SetSeed( seedArray );
+
 
    MatVecModM (A1p127, sm_nextSeed, sm_nextSeed, m1);
    MatVecModM (A2p127, &sm_nextSeed[3], &sm_nextSeed[3], m2);

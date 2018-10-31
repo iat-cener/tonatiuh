@@ -47,18 +47,18 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class RandomRngStream : public RandomDeviate
 {
 public:
-	RandomRngStream ( const unsigned long arraySize = 1000000 );
+	RandomRngStream ( unsigned long seedValue = 5489UL, const unsigned long arraySize = 1000000 );
 	~RandomRngStream();
 	void FillArray( double* array, const unsigned long arraySize );
 
 private:
-	static bool SetPackageSeed (const unsigned long seed[6]);
+	static bool SetPackageSeed( const unsigned long seed[6] ) ;
 	void ResetStartStream ();
 	void ResetStartSubstream ();
 	void ResetNextSubstream ();
 	void SetAntithetic (bool a);
 	void IncreasedPrecis (bool incp);
-	bool SetSeed (const unsigned long seed[6]);
+	bool SetSeed (const unsigned long seed[6] );
 	void AdvanceState (long e, long c);
 	void GetState (unsigned long seed[6]) const;
 	double RandU01 ();
