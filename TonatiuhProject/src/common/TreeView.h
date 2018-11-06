@@ -11,33 +11,42 @@
 #include "TNode.h"
 #include "TNodeType.h"
 #include "TNode.h"
+#include "File.h"
 
 class TreeView {
 
 public:
-    TreeView(const pugi::xml_document & doc);
-    TreeView(const std::string & path);
-    std::shared_ptr<TNode> CreateNodeObject(const pugi::xml_node & node);
-    void addNode(const std::string & nodetype, const std::string & parent_node_url);
-    void deleteNode(std::string node_url);
-    std::shared_ptr<TNode> getRootNode();
-    void copyNode(const std::string & node_url);
-    void copyRefNode(const std::string & node_url);
-    void pasteNode(const std::string & node_url);
-    void pasteRefNode(const pugi::xml_node & toPaste, const std::string & parent_node_url);
-    void setNodeName(const std::string & node_url, const std::string & new_name);
-    std::string getNodeName(const std::string & node_url);
-    TNodeType getNodeParamenterType(const std::string & node_url, const std::string & param_name);
-    
-    std::map<std::string, std::string> getNodeParamenterList(const std::string & node_url);
-    std::shared_ptr<TNode> getNode(const std::string & node_url);
 
-    std::string getNodeType(const std::string & node_url);
-    
+  explicit TreeView(File & f) : file_{f} {}
+  std::string addNode(const std::string & nodetype, const std::string & parent_node_url);
+  void deleteNode(std::string node_url);
+  std::shared_ptr<TNode> getRootNode();
+  void copyNode(const std::string & node_url);
+  void copyRefNode(const std::string & node_url);
+  std::string pasteNode(const std::string & node_url);
+  std::string pasteRefNode(const std::string & parent_url);
+  void setNodeName(const std::string & node_url, const std::string & new_name);
+  std::string getNodeName(const std::string & node_url);
+  TNodeType getNodeParamenterType(const std::string & node_url, const std::string & param_name);
+
+  std::map<std::string, std::string> getNodeParamenterList(const std::string & node_url);
+  std::shared_ptr<TNode> getNode(const std::string & node_url);
+
+  std::string getNodeType(const std::string & node_url);
+
+  std::string getParameter(const std::string & node_url, const std::string & param);
+  void setParameter(const std::string & node_url, const std::string & param, const std::string & value);
+
 private:
-    pugi::xml_document doc_;
-    pugi::xml_node node_;
+  std::shared_ptr<TNode> CreateNodeObject(const pugi::xml_node & node);
+  int maxId ();
+  inline bool validGroupNodeChild(const std::string & parent, const std::string & child);
+  inline bool validSurfaceNodeChild(const std::string & parent, const std::string & child);
+  inline bool validChild(const std::string & parent, const std::string & child);
+  File & file_;
+  pugi::xml_node node_;
 };
 
 
 #endif //TONATIUH_TREEVIEW_H
+

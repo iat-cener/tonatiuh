@@ -21,9 +21,9 @@ QT += core xml widgets quickwidgets qml quick 3dinput
 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes -lstatistics -lraytracing -lcommon -lstdc++fs 
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs -lcommon 
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes -lstatistics -lraytracing -lcommon -lstdc++fs 
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs -lcommon 
 }
 
 unix {

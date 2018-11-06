@@ -61,13 +61,14 @@ int main(int argc, char *argv[])
 
 	QList<QObject *> parent = engine.rootObjects();
 	WindowMainController * windowMainController = new WindowMainController(parent.at(0), appSettings);
-	windowMainController->init(parent.at(0));
+
 
 
 	if( argc > 1 )
 	{
 		//! Call to openFile
-		windowMainController->newFile();
+		windowMainController->openFile("D:\\Olaia\\Tonatiuh\\RootNode2.tnh");
+		//windowMainController->newFile();
 		//windowMainController->openFile(argv[1]);
 		//windowMainController->saveFile("D:\\Olaia\\Tonatiuh\\RootNode.tnh");
 
@@ -75,10 +76,11 @@ int main(int argc, char *argv[])
 	else
 	{
 		//! Call to newFile
-
-		windowMainController->newFile();
+		windowMainController->openFile("D:\\Olaia\\Tonatiuh\\RootNode2.tnh");
+		//windowMainController->newFile();
 
 	}
+	windowMainController->init(parent.at(0));
 
 
     return app.exec();

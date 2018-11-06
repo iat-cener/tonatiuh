@@ -3,28 +3,28 @@
 //
 
 #include "Plugins.h"
+#include <experimental/filesystem>
 
 
-/*std::vector<std::string> Plugins::GetFactoriesAvailable (const std::string & pluginsPath, const std::string & factory) {
-    namespace fs = std::experimental::filesystem;
+std::vector<std::string> Plugins::GetFactoriesAvailable(const std::string & pluginsPath, const std::string & factory) {
+  namespace fs = std::experimental::filesystem;
 
-    std::vector<std::string> plugins;
-    fs::path p {pluginsPath.c_str()};
+  std::vector<std::string> plugins;
+  fs::path path{pluginsPath.c_str()};
 
-    for(auto & p: fs::recursive_directory_iterator(p)) {
-        std::string filename = p.path().filename().string();
+  for (auto &p: fs::recursive_directory_iterator(path)) {
+    std::string filename = p.path().filename().string();
 
-        if (filename.find(factory))
-            plugins.push_back(filename);
-    }
+    if (filename.find(factory) != std::string::npos)
+      plugins.push_back(filename);
+  }
 
-    if (!plugins.size()) {
-        throw std::runtime_error("Factory " + factory + " not found");
-    }
+  if (plugins.empty()) {
+    throw std::runtime_error("Factory " + factory + " not found");
+  }
 
-    return plugins;
+  return plugins;
 }
-
 
 std::vector<std::string> Plugins::GetMaterialFactoriesAvailable (const std::string & pluginsPath) {
     return GetFactoriesAvailable(pluginsPath, "Material");
@@ -40,4 +40,4 @@ std::vector<std::string> Plugins::GetTrackerFactoriesAvailable (const std::strin
 
 std::vector<std::string> Plugins::GetTransmissivityFactoriesAvailable (const std::string & pluginsPath) {
     return GetFactoriesAvailable(pluginsPath, "Transmissivity");
-}*/
+}

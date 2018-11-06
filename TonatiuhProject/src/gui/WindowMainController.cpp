@@ -27,6 +27,8 @@ WindowMainController::WindowMainController(QObject *parent, ApplicationSettings 
 	    QObject(parent)
 {
 	m_appSettings = appSettings;
+	const std::string filename = "D:\\Olaia\\Tonatiuh\\RootNode.tnh";
+	m_workingFile = new File(filename);
 }
 
 void WindowMainController::init(QObject *parent)
@@ -56,8 +58,13 @@ void WindowMainController::init(QObject *parent)
 	m_treeViewList = m_tonatiuhContent->findChild<QObject *>("treeviewList");
 	m_treeviewlistController = new TreeViewListController(m_treeViewList, m_treeviewXml);
 	//m_parametersViewController = new ParametersViewController();
+
 	//! Connect treeviewlist callbacks
 	QObject::connect(m_treeViewList, SIGNAL(deleteNodeCb(QString)), this, SLOT(deleteNodeCb(QString)));
+	QObject::connect(m_treeViewList, SIGNAL(copyNodeCb(QString)), this, SLOT(copyNodeCb(QString)));
+	QObject::connect(m_treeViewList, SIGNAL(pasteNodeCb(QString)), this, SLOT(pasteNodeCb(QString)));
+	QObject::connect(m_treeViewList, SIGNAL(pasteRefNodeCb(QString)), this, SLOT(pasteRefNodeCb(QString)));
+
 
 	//!Parameter view GUI
 	m_parametersView = m_tonatiuhContent->findChild<QObject *>("parametersViewLoader");
@@ -68,7 +75,8 @@ void WindowMainController::init(QObject *parent)
 
 
 	//! Node structure
-	m_treeviewXml = new TreeView("D:\\Olaia\\Tonatiuh\\RootNode.tnh");
+	m_treeviewXml = new TreeView(*m_workingFile);
+	//m_treeviewXml = new TreeView("D:\\Olaia\\Tonatiuh\\RootNode.tnh");
 
 	m_appSettings->loadRecentFiles();
 
@@ -98,9 +106,11 @@ void WindowMainController::saveFile(std::string filename)
 void WindowMainController::addSeparatorKitCb()
 {
 	std::string nodetype = "GroupNode";
-	std::string parentNodeURL = "//Tonatiuh//RootNode//childrenRoot";
-	std::string nodeURL;
+	std::string parentNodeURL = "//Tonatiuh//sceneNode//rootNode";
 	TreeViewListController::treeViewNode parentNode = m_treeviewlistController->getTreeViewSelectedNode();
+	//std::string parentNodeURL = parentNode.nodeUrl;
+	std::string nodeURL;
+
 	//TODO: poner bien la ruta de parentNodeURL
 	/*if (parentNode.nodeIdx == 0)
 	{
@@ -113,7 +123,8 @@ void WindowMainController::addSeparatorKitCb()
 	std::cout<<"add separator kit"<<std::endl;
 	try
 	{
-		m_treeviewXml->addNode(nodetype, parentNodeURL);
+		nodeURL = m_treeviewXml->addNode(nodetype, parentNodeURL);
+		std::cout<< "nodeUrl" << nodeURL << std::endl;
 
 		//! Set default parameters
 		//! Group Node parameters (default):
@@ -124,8 +135,8 @@ void WindowMainController::addSeparatorKitCb()
 		//TODO: llamar a la función m_treeviewXml->setParameter(nodeurl, parmeter, value)
 
 		//TODO: coger la URL que devuelva la función addNode
+		//nodeURL = parentNodeURL + "//" + "NODENAME";
 
-		nodeURL = parentNodeURL + "//" + "NODENAME";
 		m_treeviewlistController->addTreeViewSeparatorKit(QString::fromUtf8(nodeURL.c_str()));
 
 	}
@@ -147,7 +158,8 @@ void WindowMainController::addShapeKitCb()
 	std::string nodetype = "SurfaceNode";
 
 	TreeViewListController::treeViewNode parentNode = m_treeviewlistController->getTreeViewSelectedNode();
-	std::string parentNodeURL = "//Tonatiuh//RootNode//childrenRoot";
+	std::string parentNodeURL = parentNode.nodeUrl;
+	//std::string parentNodeURL = "//Tonatiuh//sceneNode//rootNode";
 	std::string nodeURL;
 	//TODO: poner bien la ruta de parentNodeURL
 	/*if (parentNode.nodeIdx == 0)
@@ -160,9 +172,11 @@ void WindowMainController::addShapeKitCb()
 	}*/
 	try
 	{
-		m_treeviewXml->addNode(nodetype, parentNodeURL);
+		nodeURL = m_treeviewXml->addNode(nodetype, parentNodeURL);
+		std::cout<< "nodeUrl shape kit" << nodeURL << std::endl;
+		//m_treeviewXml->addNode(nodetype, parentNodeURL);
 		//TODO: coger la URL que devuelva la función addNode
-		nodeURL = parentNodeURL + "//" + "NODENAME";
+		//nodeURL = parentNodeURL + "//" + "NODENAME";
 		m_treeviewlistController->addTreeViewShapeKit(QString::fromUtf8(nodeURL.c_str()));
 
 	}
@@ -176,7 +190,8 @@ void WindowMainController::addNodeCb(QString nodeType, QString nodeName)
 {
 
 	TreeViewListController::treeViewNode parentNode = m_treeviewlistController->getTreeViewSelectedNode();
-	std::string parentNodeURL = "//Tonatiuh//RootNode//childrenRoot";
+	std::string parentNodeURL = parentNode.nodeUrl;
+	//std::string parentNodeURL = "//Tonatiuh//sceneNode//rootNode";
 	std::string nodeURL;
 	//TODO: poner bien la ruta de parentNodeURL
 	/*if (parentNode.nodeIdx == 0)
@@ -189,10 +204,12 @@ void WindowMainController::addNodeCb(QString nodeType, QString nodeName)
 	}*/
 	try
 	{
-		m_treeviewXml->addNode(nodeType.toStdString(), parentNodeURL);
+		nodeURL = m_treeviewXml->addNode(nodeType.toStdString(), parentNodeURL);
+		std::cout<< "nodeUrl node" << nodeURL << std::endl;
+		//m_treeviewXml->addNode(nodeType.toStdString(), parentNodeURL);
 		//TODO: coger la URL que devuelva la función addNode y coger el nombre por defecto para
 		//meterlo como parametro de entrada de las funciones addTreeViewMaterialNode, addTreeViewShapeNode, addTreeViewTrackerNode
-		nodeURL = parentNodeURL + "//" + "NODENAME";
+		//nodeURL = parentNodeURL + "//" + "NODENAME";
 		if (nodeType.toStdString() == "Material")
 		{
 			//! Set material parameters
@@ -229,10 +246,10 @@ void WindowMainController::deleteNodeCb(QString nodeUrl)
 	try
 	{
 		//TODO: delete node with the real url
-		/*m_treeviewXml->deleteNode(nodeUrl.toStdString());
-		m_treeviewlistController->deleteTreeViewNode(nodeUrl);*/
-		m_treeviewXml->deleteNode("//Tonatiuh//RootNode//childrenRoot//nodename");
-		m_treeviewlistController->deleteTreeViewNode("//Tonatiuh//RootNode//childrenRoot//nodename");
+		m_treeviewXml->deleteNode(nodeUrl.toStdString());
+		m_treeviewlistController->deleteTreeViewNode(nodeUrl);
+		/*m_treeviewXml->deleteNode("//Tonatiuh//RootNode//childrenRoot//nodename");
+		m_treeviewlistController->deleteTreeViewNode("//Tonatiuh//RootNode//childrenRoot//nodename");*/
 		//TODO: Update Parameters View
 		//TODO: Update 3D View
 	}
@@ -240,6 +257,84 @@ void WindowMainController::deleteNodeCb(QString nodeUrl)
 	{
 		std::cout<<e.what()<<std::endl;
 	}
+}
+
+
+void WindowMainController::cutNodeCb(QString nodeUrl)
+{
+	try
+	{
+		m_treeviewXml->copyNode(nodeUrl.toStdString());
+		m_treeviewXml->deleteNode(nodeUrl.toStdString());
+		m_treeviewlistController->deleteTreeViewNode(nodeUrl);
+		//TODO: Update Parameters View
+		//TODO: Update 3D View
+	}
+	catch(std::runtime_error &e)
+	{
+		std::cout<<e.what()<<std::endl;
+	}
+
+}
+
+void WindowMainController::copyNodeCb(QString nodeUrl)
+{
+	try
+	{
+		m_treeviewXml->copyNode(nodeUrl.toStdString());
+		//TODO: Update Parameters View
+		//TODO: Update 3D View
+	}
+	catch(std::runtime_error &e)
+	{
+		std::cout<<e.what()<<std::endl;
+	}
+
+}
+void WindowMainController::copyRefNodeCb(QString nodeUrl)
+{
+	try
+	{
+		m_treeviewXml->copyRefNode(nodeUrl.toStdString());
+		//TODO: Update Parameters View
+		//TODO: Update 3D View
+	}
+	catch(std::runtime_error &e)
+	{
+		std::cout<<e.what()<<std::endl;
+	}
+}
+
+void WindowMainController::pasteNodeCb(QString nodeUrl)
+{
+	try
+	{
+		//TODO: delete node with the real url
+		m_treeviewXml->pasteNode(nodeUrl.toStdString());
+		//TODO: Update Parameters View
+		//TODO: Update 3D View
+	}
+	catch(std::runtime_error &e)
+	{
+		std::cout<<e.what()<<std::endl;
+	}
+
+}
+
+void WindowMainController::pasteRefNodeCb(QString nodeUrl)
+{
+	try
+	{
+		//TODO: delete node with the real url
+		m_treeviewXml->pasteRefNode(nodeUrl.toStdString());
+		//TODO: Update Parameters View
+		//TODO: Update 3D View
+	}
+	catch(std::runtime_error &e)
+	{
+		std::cout<<e.what()<<std::endl;
+	}
+
 }
 
 void WindowMainController::newFileCb()

@@ -19,9 +19,9 @@ QT -= gui
 
 
 CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs 
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs
 }else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs 
+   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry -lnodes -lstatistics -lraytracing -lstdc++fs
 }
 
 unix {

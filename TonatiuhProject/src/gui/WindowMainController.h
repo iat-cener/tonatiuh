@@ -46,10 +46,15 @@ public slots:
 	void closeFileCb();
 
     //! Node Callbacks
-    void deleteNodeCb(QString nodeUrl);
     void addSeparatorKitCb();
     void addShapeKitCb();
     void addNodeCb(QString nodeType, QString nodeName);
+    void deleteNodeCb(QString nodeUrl);
+    void cutNodeCb(QString nodeUrl);
+    void copyNodeCb(QString nodeUrl);
+    void copyRefNodeCb(QString nodeUrl);
+    void pasteNodeCb(QString nodeUrl);
+    void pasteRefNodeCb(QString nodeUrl);
 
     //! Parameters Callbacks
     void updateParameterViewCb(QString nodeName, QString pluginName);

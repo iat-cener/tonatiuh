@@ -22,6 +22,10 @@ Rectangle {
 	signal addShapeKit(string name, string nodeUrl)
 	signal addNode(string name, string icon, string nodeUrl, string pluginName)
 	signal deleteNodeCb(string nodeUrl)
+	signal copyNodeCb(string nodeUrl)
+	signal pasteNodeCb(string nodeUrl)
+	signal pasteRefNodeCb(string nodeUrl)
+	
 	signal deleteNode(string nodeUrl)
 	signal getSelectedNode
 	
@@ -37,7 +41,7 @@ Rectangle {
 	}
 	
 	onDeleteNode: {
-		objModel.remove(listview.currentIndex + 1)
+		objModel.remove(listview.currentIndex)
 	}
 	
 	
@@ -277,19 +281,22 @@ Rectangle {
 								    }
 							        MenuItem { 
 							        	text: "Copy"
-							        	onTriggered: {			
+							        	onTriggered: {	
+							        		treeviewList.copyNodeCb(objModel.get(listview.currentIndex).url)		
 						        			console.log("Call to copy action")
 									    } 
 						        	 }
 							        MenuItem { 
 							        	text: "Paste" 
-							        	onTriggered: {			
+							        	onTriggered: {	
+							        		treeviewList.pasteNodeCb(objModel.get(listview.currentIndex).url)			
 						        			console.log("Call to paste action")
 									    } 
 									}
 							        MenuItem { 
 							        	text: "PasteLink" 
-							        	onTriggered: {			
+							        	onTriggered: {	
+							        		treeviewList.pasteRefNodeCb(objModel.get(listview.currentIndex).url)			
 						        			console.log("Call to paste link action")
 									    } 
 								    }
