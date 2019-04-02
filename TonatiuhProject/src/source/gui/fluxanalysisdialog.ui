@@ -684,7 +684,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset>
+                <iconset resource="../../tonatiuh.qrc">
                  <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
                </property>
               </widget>
