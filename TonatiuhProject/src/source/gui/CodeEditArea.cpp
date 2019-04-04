@@ -1,43 +1,40 @@
-/****************************************************************************
- **
- ** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
- ** All rights reserved.
- ** Contact: Nokia Corporation (qt-info@nokia.com)
- **
- ** This file is part of the examples of the Qt Toolkit.
- **
- ** $QT_BEGIN_LICENSE:LGPL$
- ** Commercial Usage
- ** Licensees holding valid Qt Commercial licenses may use this file in
- ** accordance with the Qt Commercial License Agreement provided with the
- ** Software or, alternatively, in accordance with the terms contained in
- ** a written agreement between you and Nokia.
- **
- ** GNU Lesser General Public License Usage
- ** Alternatively, this file may be used under the terms of the GNU Lesser
- ** General Public License version 2.1 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file.  Please review the following information to
- ** ensure the GNU Lesser General Public License version 2.1 requirements
- ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
- **
- ** In addition, as a special exception, Nokia gives you certain additional
- ** rights.  These rights are described in the Nokia Qt LGPL Exception
- ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
- **
- ** GNU General Public License Usage
- ** Alternatively, this file may be used under the terms of the GNU
- ** General Public License version 3.0 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.GPL included in the
- ** packaging of this file.  Please review the following information to
- ** ensure the GNU General Public License version 3.0 requirements will be
- ** met: http://www.gnu.org/copyleft/gpl.html.
- **
- ** If you have questions regarding the use of this file, please contact
- ** Nokia at qt-info@nokia.com.
- ** $QT_END_LICENSE$
- **
- ****************************************************************************/
+/***************************************************************************
+ Copyright (C) 2008 by the Tonatiuh Software Development Team.
+
+ This file is part of Tonatiuh.
+
+ Tonatiuh program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+ Acknowledgments:
+
+ The development of Tonatiuh was started on 2004 by Dr. Manuel J. Blanco,
+ then Chair of the Department of Engineering of the University of Texas at
+ Brownsville. From May 2004 to July 2008, it was supported by the Department
+ of Energy (DOE) and the National Renewable Energy Laboratory (NREL) under
+ the Minority Research Associate (MURA) Program Subcontract ACQ-4-33623-06.
+ During 2007, NREL also contributed to the validation of Tonatiuh under the
+ framework of the Memorandum of Understanding signed with the Spanish
+ National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117).
+ Since June 2006, the development of Tonatiuh is being led by the CENER, under the
+ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
+
+ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
+
+ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola, Gilda Jimenez,
+ Juana Amieva, Azael Mancillas, Cesar Cantu.
+ ***************************************************************************/
 
 #include <QPainter>
 #include <QTextBlock>

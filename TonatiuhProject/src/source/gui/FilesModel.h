@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
 #ifndef FILESMODEL_H_
 #define FILESMODEL_H_
 

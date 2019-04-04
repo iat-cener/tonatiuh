@@ -39,9 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef BVH_H_
 #define BVH_H_
 
-
-
-
 #include <vector>
 
 #include "BBox.h"

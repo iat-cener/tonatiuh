@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 
-
 #include <string> // library for string handleing
 #include <fstream> // library for file handling e.g. reading and writing
 #include <stdlib.h> // to include *atof*, string to double

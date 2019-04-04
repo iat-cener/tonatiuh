@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
 #include <iostream>
 #include <QComboBox>
 #include <QLineEdit>

@@ -36,7 +36,6 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
 #ifndef SELECTSURFACEDIALOG_H_
 #define SELECTSURFACEDIALOG_H_
 
