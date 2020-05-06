@@ -7,21 +7,6 @@ In this release some bugs have been solved. The most relevant one is a bugs in S
  
 Find the last release following this link: https://github.com/iat-cener/tonatiuh/releases/tag/v2.2.4
 
-## First workshop on Tonatiuh ##
-
-First TONATIUH workshop, with title “An introduction to TONATIUH”, has been successfully delivered by Amaia Mutuberria, Senior researcher of CENER Solar Thermal Energy Department.
-The course was organized within the activities that are being performed in WP12 of STAGE STAE (STAGE-STE project, http://stage-ste.eu/, has received funding from the European Union´s Horizon FP7 under grant agreement nº 609837).
-
-The workshop was online and took place on 16th and 17th of September, 3 hours course per day. It was a success with a mass participation: more than 20 attenders of 10 different countries.
-
-The main aim of this workshop was to explain how to design and analyze different CSP technologies using TONATIUH. In this workshop R programming language was used for the post-processing of TONATIUH's simulation output files, in order to transform raw photon data into flux distributions estimates, and to present those fluxes estimates as graphs.
-
-Advanced level workshop will take place coming soon (second week of November expected). The main aim of this webinar will be to introduce the users in the development of the source code. After these sessions the attendants will be able to modify the code of the tool and they will be able to develop new plug-ins for TONATIUH.
-
-Mrs. Amaia Mutuberria is a CENER senior researcher with more than 8 years of experience in the field of design and development of software for CSP systems simulations.
-
-Amaia had the cooperation of Mr. Juan Manuel Quintanilla, Researcher of CENER Solar Thermal Energy Department, making ready the examples done during the presentation.
-
 # Overview #
 _The Tonatiuh project aims to create an open source, cutting-edge, accurate, and easy to use Monte Carlo ray tracer for the optical simulation of solar concentrating systems. It intends to advance the state-of-the-art of the simulation tools available for the design and analysis of solar concentrating systems, and to make those tools freely available to anyone interested in using and improving them._
 Some of the most relevant design goals of Tonatiuh are:
