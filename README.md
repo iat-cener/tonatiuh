@@ -48,6 +48,8 @@ From version 2.0.1 the format of the outputs of simulations has been changed to 
 ## Citing Tonatiuh ##
 
 These are some of the most relevant references:
+ * Les, I., Mutuberria, A., Schöttl, P., Nitz, P. (2017). New Functionalities for the Tonatiuh Ray-tracing Software. Proceedings of the 23rd SolarPACES Conference.
+ * J. Cardoso, J., Mutuberria, A., Marakko, C., Schoettl, P., Osório, T., Les, I.,(2017). New Functionalities for the Tonatiuh Ray-tracing Software. Proceedings of the 23rd SolarPACES Conference.
  * Blanco, M., Mutuberria, A., Monreal, A., & Albert, R. (2011). Results of the empirical validation of Tonatiuh at Mini-Pegase CNRS-PROMES facility. Proc SolarPACES.
  * Blanco, M. J., Mutuberria, A., & Martinez, D. (2010). Experimental validation of Tonatiuh using the Plataforma Solar de Almería secondary concentrator test campaign data. In 16th annual SolarPACES symposium.
  * Blanco, M. J., Mutuberria, A., Garcia, P., Gastesi, R., & Martin, V. (2009). Preliminary validation of Tonatiuh SOLARPACES Symposium. Berlin, Germany.
