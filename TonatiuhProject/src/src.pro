@@ -3,7 +3,7 @@ TEMPLATE = app
 
 CONFIG       += qt warn_on thread debug_and_release
 
-include( ../config.pri )
+include( $$(TONATIUH_ROOT)/config.pri )
 
 TARGET = Tonatiuh   
 
@@ -20,7 +20,7 @@ DEPENDPATH += . \
               
  
               
-QT += xml opengl svg  script 
+QT += script 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += concurrent printsupport 
 } 
@@ -53,10 +53,10 @@ RESOURCES += tonatiuh.qrc
  
 
 CONFIG(debug, debug|release) {
-	DESTDIR = ../bin/debug
+	DESTDIR = $$(TONATIUH_ROOT)/bin/debug
 }
 else{
-	DESTDIR=../bin/release
+	DESTDIR= $$(TONATIUH_ROOT)/bin/release
 }
 	
 QMAKE_CLEAN -= *.rc  
