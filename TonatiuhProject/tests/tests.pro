@@ -1,8 +1,8 @@
 TEMPLATE = app
 CONFIG += console debug_and_release
-include( ../config.pri )
+include( $$(TONATIUH_ROOT)/config.pri )
 
-QT += xml opengl svg  script network
+QT += script
 
 DEFINES += TEST_DIR=\\\"PWD/../tests\\\"
 
