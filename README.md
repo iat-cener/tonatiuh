@@ -1,4 +1,5 @@
-![http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif](http://tonatiuhdocs.googlepages.com/Logodefinitivo301x115.gif)
+![Logo image](https://github.com/iat-cener/tonatiuh/wiki/images/Logodefinitivo301x115_transparent.gif?raw=true)
+
 # News #
 
 ## Tonatiuh release 2.2.4 is now available! ##
