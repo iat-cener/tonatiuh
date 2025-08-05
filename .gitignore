@@ -35,3 +35,11 @@ Makefile*
 #QtCtreator Qml
 *.qmlproject.user
 *.qmlproject.user.*
+*.Debug
+*.Release
+TonatiuhProject/.qmake.stash
+*.rc
+TonatiuhProject/release/moc_predefs.h
+TonatiuhProject/release/plugins/moc_predefs.h
+*.gcno
+*.h
