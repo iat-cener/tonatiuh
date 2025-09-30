@@ -50,7 +50,7 @@ class HeliostatFieldWizard : public QWizard, private Ui::HeliostatFieldWizard
 	Q_OBJECT
 
 public:
-	HeliostatFieldWizard( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	HeliostatFieldWizard( QWidget * parent = 0 );
 	~HeliostatFieldWizard();
 
 	int GetHelCoordinates() const;

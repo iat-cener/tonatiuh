@@ -93,10 +93,7 @@ public:
 	void SetupModels();
 	int SetTonatiuhModelFile ( QString filename );
 
-	int Trace();
-
 	int SetSunPositionToScene();
-	int SetDisconnectAllTrackers(bool disconnect);
 	int Save( const QString& fileName);
 
 private:

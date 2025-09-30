@@ -215,8 +215,6 @@
      </property>
      <addaction name="actionDefineSunLight"/>
      <addaction name="actionCalculateSunPosition"/>
-     <addaction name="separator"/>
-     <addaction name="actionDisconnect_All_Trackers"/>
     </widget>
     <widget class="QMenu" name="menuTransmissivity">
      <property name="title">

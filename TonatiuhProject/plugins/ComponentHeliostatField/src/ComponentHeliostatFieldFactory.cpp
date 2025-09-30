@@ -62,9 +62,11 @@ TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* 
 }
 
 
-TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* pPluginManager, int numberofParameters, QVector< QVariant > parametersList  ) const
+TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* pPluginManager, int numberofParameters, QVariant parameters  ) const
 {
-	if( numberofParameters != 15 )
+	
+	QList<QVariant> parametersList = parameters.toList();
+	if( numberofParameters != 15 || parametersList.size() != 15 )
 	{
 
         QMessageBox::warning( 0, QString( "Heliostat Field Layout" ),

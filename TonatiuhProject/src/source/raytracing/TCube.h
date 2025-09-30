@@ -59,6 +59,8 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 	Point3D Sample( double u1, double u2 ) const;
+	
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL m_width;
 	trt::TONATIUH_REAL m_height;

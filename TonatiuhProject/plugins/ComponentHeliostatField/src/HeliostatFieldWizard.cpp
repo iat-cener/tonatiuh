@@ -46,8 +46,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InputTable.h"
 #include "HeliostatFieldWizard.h"
 
-HeliostatFieldWizard::HeliostatFieldWizard( QWidget * parent, Qt::WindowFlags flags )
-:QWizard( parent, flags )
+HeliostatFieldWizard::HeliostatFieldWizard( QWidget * parent )
+:QWizard( parent )
 {
 	setupUi( this );
 

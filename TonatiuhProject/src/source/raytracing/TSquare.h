@@ -59,6 +59,8 @@ public:
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 	Point3D Sample( double u, double v ) const;
+	
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	SoSFDouble m_sideLength;
 

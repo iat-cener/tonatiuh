@@ -43,6 +43,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "FieldContainerWidget.h"
 #include "ParametersView.h"
 
+#include <iostream>
+
 /**
  * Creates a new ParametersView with parent \a parent.
  */
@@ -68,23 +70,14 @@ ParametersView::~ParametersView()
  */
 void ParametersView::SelectionChangedToPart( SoNode* coinPart )
 {
+	int tabs = count();
+	for( int t = 0; t < tabs; t++ )
+	{
+		delete widget(0);
+	}
 	clear();
 
-	if (coinPart->getTypeId().isDerivedFrom(SoNodeKitListPart::getClassTypeId()))
-	{
-		/*SoNodeKitListPart* parentGroup = static_cast< SoNodeKitListPart* >( coinPart );
-		if( parentGroup )
-		{
-			int child=0;
-			while( child < parentGroup->getNumChildren() && child <10)
-			{
-				SoNode* element = (SoNode*)  parentGroup->getChild(child);
-				if( element )	AddTab( element, "" );
-				child++;
-			}
-		}*/
-	}
-	else
+	if( !coinPart->getTypeId().isDerivedFrom(SoNodeKitListPart::getClassTypeId()))
 	{
 		m_actualCoinNode = coinPart;
 		m_isPart =true;
@@ -95,8 +88,13 @@ void ParametersView::SelectionChangedToPart( SoNode* coinPart )
 /*!
  * Changes the parameters view to show \a coinNode \a parts parameters.
  */
-void ParametersView::SelectionChangedToKit( SoBaseKit* coinNode/*, QStringList parts*/ )
+void ParametersView::SelectionChangedToKit( SoBaseKit* coinNode )
 {
+	int tabs = count();
+	for( int t = 0; t < tabs; t++ )
+	{
+		delete widget(0);
+	}
 	clear();
 
 	QStringList	parts = ContainerNodeParts( coinNode );
@@ -160,6 +158,7 @@ void ParametersView::AddTab( SoNode* coinNode, QString partName )
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( coinNode, partName, this );
 	addTab( nodeContainer, type );
 	connect( nodeContainer, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
+	
 }
 
 /*!
@@ -170,7 +169,7 @@ void ParametersView::AddTab( SoNode* coinNode, QString partName )
 QStringList ParametersView::ContainerNodeParts( SoBaseKit* coinNode )
 {
 	QStringList parts;
-	if( !coinNode && ! coinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )	return parts;
+	if( !coinNode || !coinNode->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )	return parts;
 
 	SoBaseKit* nodeKit = static_cast< SoBaseKit* >( coinNode );
 	QString type = nodeKit->getTypeId().getName().getString();

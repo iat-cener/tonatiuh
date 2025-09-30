@@ -36,9 +36,9 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -55,8 +55,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParametersDelegate.h"
 #include "ParametersItem.h"
 #include "ParametersModel.h"
+#include "ParameterValueException.h"
 #include "UserMField.h"
 #include "UserSField.h"
+#include "TShape.h"
 
 /*!
  * Creates an empty widget.
@@ -150,6 +152,8 @@ void FieldContainerWidget::currentChanged( const QModelIndex& current, const QMo
 
 void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::EndEditHint hint )
 {
+	QTreeView::closeEditor( editor, hint );
+	
 	QString newValue;
 	SoField* field = m_pModel->ModelItem( m_currentIndex )->GetField();
 	if( field->getTypeId().isDerivedFrom( SoSFEnum::getClassTypeId() ) )
@@ -180,8 +184,24 @@ void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::
 	m_pFieldContainer->getFieldName( field, fieldName );
 	QString parameterName( fieldName.getString() );
 
-	if( !newValue.isEmpty() ) 	emit valueModificated( m_pFieldContainer, parameterName, newValue );
-	QTreeView::closeEditor( editor, hint );
+	
+	try{
+		if( m_pFieldContainer->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+		{
+			TShape* shape = static_cast< TShape* >( m_pFieldContainer );
+			shape->ValidateParamaterValue( parameterName.toStdString(), newValue.toStdString() );
+		}
+	}
+	catch(ParameterValueException &ex ){
+		QMessageBox::warning( 0, QString( "Tonatiuh" ), ex.what() );
+		newValue = "";
+	}
+
+	if( !newValue.isEmpty() )
+	{
+		emit valueModificated( m_pFieldContainer, parameterName, newValue );
+
+	} 	
 
 }
 

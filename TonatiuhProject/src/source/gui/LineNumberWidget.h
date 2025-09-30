@@ -49,7 +49,7 @@ class LineNumberWidget: public QWidget
 	Q_OBJECT
 
 public:
-	LineNumberWidget( QWidget* parent = 0, Qt::WindowFlags f = 0 );
+	LineNumberWidget( QWidget* parent = 0 );
 	~LineNumberWidget();
 
 	void SetCodeEditor( CodeEditArea* editor );

@@ -61,8 +61,6 @@ TTracker::TTracker()
 TTracker::~TTracker()
 {
 	m_scene = 0;
-	//m_azimuth.disconnect();
-	//m_zenith.disconnect();
 }
 
 
@@ -71,15 +69,6 @@ void TTracker::Disconnect()
 	m_azimuth.disconnect();
 	m_zenith.disconnect();
 }
-
-/*
-void TTracker::SetLightAngles(TLightKit * coinLight )
-{
-	m_azimuth.connectFrom( &(coinLight->azimuth) );
-	m_zenith.connectFrom( &(coinLight->zenith) );
-}
-*/
-
 
 void TTracker::SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField )
 {
@@ -139,32 +128,3 @@ void TTracker::SetEngineOutputIdentity()
 	SO_ENGINE_OUTPUT( outputScaleOrientation, SoSFRotation, setValue( 0.0, 0.0, 1.0, 0.0 ) );
 	SO_ENGINE_OUTPUT( outputCenter, SoSFVec3f, setValue( 0.0, 0.0, 0.0 ) );
 }
-
-/*
-bool TTracker::IsConnected()
-{
-	if( !m_azimuth.isConnected() ) return false;
-	if( !m_zenith.isConnected() ) return false;
-	return true;
-}
-*/
-
-/*
-Vector3D TTracker::GetGobalSunVector()
-{
-	Vector3D globalSunVector( sin( m_azimuth.getValue() ) * sin( m_zenith.getValue() ),
-				 cos( m_zenith.getValue() ),
-				-cos( m_azimuth.getValue() ) * sin( m_zenith.getValue() ) );
-	return globalSunVector;
-}
-
-/*
-void TTracker::SetAnglesToScene()
-{
-	if( m_scene )
-	{
-		m_scene->azimuth.setValue( m_azimuth.getValue() );
-		m_scene->zenith.setValue( m_zenith.getValue() );
-	}
-}
-*/

@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "BBox.h"
 #include "DifferentialGeometry.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeCylinder.h"
 #include "Vector3D.h"
@@ -220,6 +221,18 @@ bool ShapeCylinder::IntersectP( const Ray& worldRay ) const
 Point3D ShapeCylinder::Sample( double u, double v ) const
 {
 	return GetPoint3D( u, v );
+}
+
+bool ShapeCylinder::ValidateParamaterValue( std::string name, std::string value ) const
+{
+    if( name == "radius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "radius", " The radius of the cylinder, must be a positive number" );
+	else if( name == "length" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "length", " The length of the cylinder must be a positive number" );
+	else if( name == "phiMax" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "phiMax", " The angle to define the shape section must be a positive number" );
+
+	return true;
 }
 
 bool ShapeCylinder::OutOfRange( double u, double v ) const

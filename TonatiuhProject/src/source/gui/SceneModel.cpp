@@ -350,8 +350,6 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 				references += QString::number( numReferences, 10);
 				references +=  QLatin1String( " )  ");
 
-				//delete coinSearch;
-
     	    	return references + nodeName;
     	    }
     	    else return QVariant();
@@ -366,7 +364,6 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 	            return QVariant::fromValue( pathWrapper );
 
         	}
-        	coinKitPath->unref();
         	return  QVariant();
         }
         if (role == Qt::DecorationRole)
@@ -557,17 +554,6 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 
 }
 
-void SceneModel::ReconnectAllTrackers()
-{
-	TLightKit * coinLight =  static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ));
-	m_instanceRoot->ReconnectAllTrackers(coinLight);
-}
-
-void SceneModel::DisconnectAllTrackers()
-{
-	m_instanceRoot->DisconnectAllTrackers();
-}
-
 Qt::ItemFlags SceneModel::flags( const QModelIndex& modelIndex ) const
 {
 	Qt::ItemFlags defaultFlags = QAbstractItemModel::flags( modelIndex );
@@ -684,7 +670,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 **/
 QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
 {
-	QStringList nodeList = nodeUrl.split( QLatin1String( "/" ), QString::SkipEmptyParts );
+	QStringList nodeList = nodeUrl.split( QLatin1String( "/" ), Qt::SkipEmptyParts );
 
 	if( ( nodeList.size() == 1 ) &&
 			( nodeList[0] == QLatin1String( "Light" ) ) )	return index( 0, 0 );

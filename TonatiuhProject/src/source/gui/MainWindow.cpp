@@ -108,7 +108,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "InstanceNode.h"
 #include "LightDialog.h"
 #include "MainWindow.h"
-#include "NetworkConnectionsDialog.h"
 #include "PhotonMapExport.h"
 #include "PhotonMapExportFactory.h"
 #include "PhotonMapExportSettings.h"
@@ -158,8 +157,8 @@ void finishManipulator(void *data, SoDragger* /*dragger*/ )
 /*!
  * Creates a new MainWindow object.
  */
-MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent, Qt::WindowFlags flags )
-:QMainWindow( parent, flags ),
+MainWindow::MainWindow( QString tonatiuhFile , QWidget* parent )
+:QMainWindow( parent ),
  m_commandStack( 0 ),
  m_commandView( 0 ),
  m_currentFile( "" ),
@@ -395,24 +394,12 @@ void MainWindow::DefineTransmissivity()
 
 }
 
-
-void MainWindow::DisconnectAllTrackers( bool disconnect )
-{
-	if (disconnect) m_sceneModel->DisconnectAllTrackers();
-	else m_sceneModel->ReconnectAllTrackers();
-}
-
-
 /*!
  *If actionDisplay_rays is checked the 3D view shows rays representation. Otherwise the representation is hidden.
  */
 void MainWindow::DisplayRays( bool display )
 {
 	m_graphicsRoot->ShowRays( display );
-	/*if( display && ( m_pRays ) )
-		m_graphicsRoot->insertChild( m_pRays, 0 );
-	else if( !display )
-		if ( m_pRays->getRefCount( ) > 0 )	m_graphicsRoot->removeChild( 0 );*/
 }
 
 /*!
@@ -808,8 +795,6 @@ void MainWindow::ShowMenu( const QModelIndex& index)
 	m_selectionModel->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect );
 
 	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(index);
-	SoNode* coinNode = instanceNode->GetNode();
-	SoType type = coinNode->getTypeId();
 
 	QMenu popupmenu(this);
 
@@ -820,34 +805,6 @@ void MainWindow::ShowMenu( const QModelIndex& index)
 		popupmenu.addAction( actionPasteCopy );
 		popupmenu.addAction( actionPasteLink );
 		popupmenu.addAction( actionDelete );
-	}
-
-	if( type.isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
-	{
-		QMenu * trackersMenu = popupmenu.addMenu("Trackers" );
-		trackersMenu->addAction( actionSetAimingPointRelative);
-		trackersMenu->addAction( actionSetAimingPointAbsolute);
-
-		QMenu * transformMenu = popupmenu.addMenu("Convert to" );
-		//QMenu transformMenu( "Convert to", &popupmenu );
-		//popupmenu.addAction( transformMenu.menuAction() );
-		TSeparatorKit* coinKit = dynamic_cast< TSeparatorKit* > ( coinNode );
-		SoTransform* transform = static_cast< SoTransform* >( coinKit->getPart("transform", true) );
-		SoType transformType = transform->getTypeId();
-
-
-		if (!transformType.isDerivedFrom(SoCenterballManip::getClassTypeId()) )	transformMenu->addAction( tr("SoCenterballManip"),  this, SLOT(SoTransform_to_SoCenterballManip()));
-		if (!transformType.isDerivedFrom(SoHandleBoxManip::getClassTypeId()) )	transformMenu->addAction( tr("SoHandleBoxManip"), this, SLOT(SoTransform_to_SoHandleBoxManip()));
-		if (!transformType.isDerivedFrom(SoJackManip::getClassTypeId()) )	transformMenu->addAction( tr("SoJackManip"), this, SLOT(SoTransform_to_SoJackManip()));
-		if (!transformType.isDerivedFrom(SoTabBoxManip::getClassTypeId()) )	transformMenu->addAction( tr("SoTabBoxManip"), this, SLOT(SoTransform_to_SoTabBoxManip()));
-		if (!transformType.isDerivedFrom(SoTrackballManip::getClassTypeId()) ) transformMenu->addAction( tr("SoTrackballManip"),  this, SLOT(SoTransform_to_SoTrackballManip()));
-		if (!transformType.isDerivedFrom(SoTransformBoxManip::getClassTypeId()) ) transformMenu->addAction( tr("SoTransformBoxManip"), this, SLOT(SoTransform_to_SoTransformBoxManip()));
-		if (!transformType.isDerivedFrom(SoTransformerManip::getClassTypeId()) ) transformMenu->addAction( tr("SoTransformerManip"), this, SLOT(SoTransform_to_SoTransformerManip()));
-
-
-
-		if ( transformType.isDerivedFrom(SoTransformManip::getClassTypeId()) )	transformMenu->addAction( tr("SoTransform"), this, SLOT(SoManip_to_SoTransform()) );
-
 	}
 
 	//Mostramos el menu contextual
@@ -1286,13 +1243,9 @@ void MainWindow::CreateGroupNode()
 }
 
 /*!
- * Creates a new analyzer node as a selected node child.
- */
-
-/*!
  * Creates a \a componentType component node with the name \a nodeName.
  */
-void MainWindow::CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVector< QVariant > parametersList )
+void MainWindow::CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVariant parameters )
 {
 	QModelIndex parentIndex = ( (! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex() ) ) ?
 								m_sceneModel->index( 0, 0, sceneModelView->rootIndex( )):
@@ -1322,7 +1275,7 @@ void MainWindow::CreateComponentNode( QString componentType, QString nodeName, i
 
     //CreateComponent( pTComponentFactory );
 
-	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent( m_pPluginManager, numberofParameters, parametersList );
+	TSeparatorKit* componentRootNode = pTComponentFactory->CreateTComponent( m_pPluginManager, numberofParameters, parameters );
 	if( !componentRootNode )	return;
 
 
@@ -1411,13 +1364,13 @@ void MainWindow::CreateShape( QString shapeType )
 
 
 /*!
- * Creates a \a shapeType shape node from the as current selected node child with the parameters defined in \a parametersList. \a numberOfParameters is the
+ * Creates a \a shapeType shape node from the as current selected node child with the parameters defined in \a parameters. \a numberOfParameters is the
  * number of parametners in the vector \a numberOfParameters
  *
  * If the current node is not a valid parent node or \a shapeType is not a valid type, the shape node will not be created.
  *
  */
-void MainWindow::CreateShape( QString shapeType, int numberOfParameters, QVector< QVariant > parametersList )
+void MainWindow::CreateShape( QString shapeType, int numberOfParameters, QVariant parameters )
 {
 	QVector< TShapeFactory* > factoryList = m_pPluginManager->GetShapeFactories();
 	if( factoryList.size() == 0 )	return;
@@ -1433,7 +1386,7 @@ void MainWindow::CreateShape( QString shapeType, int numberOfParameters, QVector
 		return ;
 	}
 
-	CreateShape( factoryList[ selectedShape ], numberOfParameters, parametersList );
+	CreateShape( factoryList[ selectedShape ], numberOfParameters, parameters );
 }
 
 /*!
@@ -1621,28 +1574,6 @@ double MainWindow::GetwPhoton(){
 }
 
 
-void MainWindow::SetAimingPointRelativity( bool relative )
-{
-	if( !m_selectionModel->hasSelection() )	return;
-	SetAimingPointRelativity( m_selectionModel->currentIndex(),relative );
-}
-
-/*!
- * * Set all subnodes as relative or absolute.
- *
- * If \a nodeURL is not a valid node url, nothing is done.
- */
-
-bool MainWindow::SetAimingPointRelativity( QModelIndex nodeIndex,bool relative)
-{
-	if( !nodeIndex.isValid() ) return false;
-
-	InstanceNode* ancestor = m_sceneModel->NodeFromIndex( nodeIndex );
-	ancestor->SetAimingPointRelativity(relative);
-
-	return true;
-
-}
 
 /*!
  *
@@ -1856,7 +1787,7 @@ void MainWindow::Run()
 		m_pPhotonMap->SetConcentratorToWorld( rootSeparatorInstance->GetIntersectionTransform() );
 
 		TLightKit* light = static_cast< TLightKit* > ( lightInstance->GetNode() );
-		QStringList disabledNodes = QString( light->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
+		QStringList disabledNodes = QString( light->disabledNodes.getValue().getString() ).split( ";", Qt::SkipEmptyParts );
 		QVector< QPair< TShapeKit*, Transform > > surfacesList;
 		trf::ComputeFistStageSurfaceList( rootSeparatorInstance, disabledNodes, &surfacesList );
 		light->ComputeLightSourceArea( m_widthDivisions, m_heightDivisions, surfacesList );
@@ -2009,22 +1940,6 @@ void MainWindow::SelectNode( QString nodeUrl )
 {
 	QModelIndex nodeIndex = m_sceneModel->IndexFromNodeUrl( nodeUrl );
 	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
-}
-
-/*!
- * Sets current tracker aiming .
- */
-void MainWindow::SetAimingPointAbsolute()
-{
-	SetAimingPointRelativity( false );
-}
-
-/*!
- * Disables current tracker aiming.
- */
-void MainWindow::SetAimingPointRelative()
-{
-	SetAimingPointRelativity( true );
 }
 
 /*!
@@ -2386,216 +2301,9 @@ void MainWindow::SetValue( QString nodeUrl, QString parameter, QString value )
 	SetParameterValue( node, parameter, value );
 }
 
-
-//Manipulators actions
-void MainWindow::SoTransform_to_SoCenterballManip()
-{
-	//Transform to a SoCenterballManip manipulator
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransform* transform = static_cast< SoTransform* >( coinNode->getPart( "transform", false ) );
-
-	SoCenterballManip * manipulator = new SoCenterballManip;
-	manipulator->rotation.setValue(transform->rotation.getValue());
-  	manipulator->translation.setValue(transform->translation.getValue());
-   	manipulator->scaleFactor.setValue(transform->scaleFactor.getValue());
-   	manipulator->scaleOrientation.setValue(transform->scaleOrientation.getValue());
-   	manipulator->center.setValue(transform->center.getValue());
-
-	coinNode->setPart("transform", manipulator);
-	ChangeSelection( currentIndex );
-
-	SoDragger* dragger = manipulator->getDragger();
-	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
-	dragger->addFinishCallback(finishManipulator, static_cast< void*>( this ) );
-
-	m_document->SetDocumentModified( true );
-}
-
-void MainWindow::SoTransform_to_SoJackManip()
-{
-	//Transform to a SoJackManip manipulator
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransform* transform = static_cast< SoTransform* >( coinNode->getPart( "transform", false ) );
-
-	SoJackManip * manipulator = new SoJackManip;
-	manipulator->rotation.setValue(transform->rotation.getValue());
-  	manipulator->translation.setValue(transform->translation.getValue());
-   	manipulator->scaleFactor.setValue(transform->scaleFactor.getValue());
-   	manipulator->scaleOrientation.setValue(transform->scaleOrientation.getValue());
-   	manipulator->center.setValue(transform->center.getValue());
-
-	coinNode->setPart("transform", manipulator);
-	ChangeSelection( currentIndex );
-
-	SoDragger* dragger = manipulator->getDragger();
-	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
-	dragger->addFinishCallback(finishManipulator, static_cast< void*>( this ) );
-
-	m_document->SetDocumentModified( true );
-}
-
-void MainWindow::SoTransform_to_SoHandleBoxManip()
-{
-	//Transform to a SoHandleBoxManip manipulator
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransform* transform = static_cast< SoTransform* >( coinNode->getPart( "transform", false ) );
-
-	SoHandleBoxManip * manipulator = new SoHandleBoxManip;
-	manipulator->rotation.setValue(transform->rotation.getValue());
-  	manipulator->translation.setValue(transform->translation.getValue());
-   	manipulator->scaleFactor.setValue(transform->scaleFactor.getValue());
-   	manipulator->scaleOrientation.setValue(transform->scaleOrientation.getValue());
-   	manipulator->center.setValue(transform->center.getValue());
-
-	coinNode->setPart("transform", manipulator);
-	ChangeSelection( currentIndex );
-
-	SoDragger* dragger = manipulator->getDragger();
-	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
-	dragger->addFinishCallback(finishManipulator, static_cast< void*>( this ) );
-
-	m_document->SetDocumentModified( true );
-}
-
-void MainWindow::SoTransform_to_SoTabBoxManip()
-{
-	//Transform to a SoTabBoxManip manipulator
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransform* transform = static_cast< SoTransform* >( coinNode->getPart( "transform", false ) );
-
-	SoTabBoxManip * manipulator = new SoTabBoxManip;
-	manipulator->rotation.setValue(transform->rotation.getValue());
-  	manipulator->translation.setValue(transform->translation.getValue());
-   	manipulator->scaleFactor.setValue(transform->scaleFactor.getValue());
-   	manipulator->scaleOrientation.setValue(transform->scaleOrientation.getValue());
-   	manipulator->center.setValue(transform->center.getValue());
-
-	coinNode->setPart("transform", manipulator);
-	ChangeSelection( currentIndex );
-
-	SoDragger* dragger = manipulator->getDragger();
-	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
-	dragger->addFinishCallback(finishManipulator, static_cast< void*>( this ) );
-
-	m_document->SetDocumentModified( true );
-}
-
-void MainWindow::SoTransform_to_SoTrackballManip()
-{
-	//Transform to a SoTrackballManip manipulator
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransform* transform = static_cast< SoTransform* >( coinNode->getPart( "transform", false ) );
-
-	SoTrackballManip* manipulator = new SoTrackballManip;
-	manipulator->rotation.setValue(transform->rotation.getValue());
-  	manipulator->translation.setValue(transform->translation.getValue());
-   	manipulator->scaleFactor.setValue(transform->scaleFactor.getValue());
-   	manipulator->scaleOrientation.setValue(transform->scaleOrientation.getValue());
-   	manipulator->center.setValue(transform->center.getValue());
-
-	coinNode->setPart("transform", manipulator);
-	ChangeSelection( currentIndex );
-
-	SoDragger* dragger = manipulator->getDragger();
-	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
-	dragger->addFinishCallback(finishManipulator, static_cast< void*>( this ) );
-
-	m_document->SetDocumentModified( true );
-}
-
-void MainWindow::SoTransform_to_SoTransformBoxManip()
-{
-	//Transform to a SoTransformBoxManip manipulator
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransform* transform = static_cast< SoTransform* >( coinNode->getPart( "transform", false ) );
-
-	SoTransformBoxManip * manipulator = new SoTransformBoxManip;
-	manipulator->rotation.setValue(transform->rotation.getValue());
-  	manipulator->translation.setValue(transform->translation.getValue());
-   	manipulator->scaleFactor.setValue(transform->scaleFactor.getValue());
-   	manipulator->scaleOrientation.setValue(transform->scaleOrientation.getValue());
-   	manipulator->center.setValue(transform->center.getValue());
-
-	coinNode->setPart("transform", manipulator);
-
-	ChangeSelection( currentIndex );
-
-	SoDragger* dragger = manipulator->getDragger();
-	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
-	dragger->addFinishCallback(finishManipulator, static_cast< void*>( this ) );
-
-	m_document->SetDocumentModified( true );
-}
-
-void MainWindow::SoTransform_to_SoTransformerManip()
-{
-	//Transform to a SoTransformerManip manipulator
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransform* transform = static_cast< SoTransform* >( coinNode->getPart( "transform", false ) );
-
-	SoTransformerManip* manipulator = new SoTransformerManip;
-	manipulator->rotation.setValue(transform->rotation.getValue());
-  	manipulator->translation.setValue(transform->translation.getValue());
-   	manipulator->scaleFactor.setValue(transform->scaleFactor.getValue());
-   	manipulator->scaleOrientation.setValue(transform->scaleOrientation.getValue());
-   	manipulator->center.setValue(transform->center.getValue());
-
-
-	coinNode->setPart("transform", manipulator);
-	ChangeSelection( currentIndex );
-
-	SoDragger* dragger = manipulator->getDragger();
-	dragger->addStartCallback (startManipulator, static_cast< void*>( this ) );
-	dragger->addFinishCallback(finishManipulator, static_cast< void*>( this ) );
-
-	m_document->SetDocumentModified( true );
-
-}
-
-void MainWindow::SoManip_to_SoTransform()
-{
-	//Transform manipulator to a SoTransform
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-
-	InstanceNode* instanceNode = m_sceneModel->NodeFromIndex(currentIndex);
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( instanceNode->GetNode() );
-	SoTransformManip* manipulator = static_cast< SoTransformManip* >( coinNode->getPart( "transform", false ) );
-	if( !manipulator ) return;
-
-   	SoTransform* transform = new SoTransform;
-   	transform->rotation.setValue(manipulator->rotation.getValue());
-   	transform->translation.setValue(manipulator->translation.getValue());
-   	transform->scaleFactor.setValue(manipulator->scaleFactor.getValue());
-   	transform->scaleOrientation.setValue(manipulator->scaleOrientation.getValue());
-   	transform->center.setValue(manipulator->center.getValue());
-
-	coinNode->setPart("transform", transform);
-	ChangeSelection( currentIndex );
-
-	m_document->SetDocumentModified( true );
-}
-
+/*!
+* Changes the current selection node to that with the index \a current.
+*/
 void MainWindow::ChangeSelection( const QModelIndex& current )
 {
 	InstanceNode* instanceSelected = m_sceneModel->NodeFromIndex( current );
@@ -2632,28 +2340,6 @@ void MainWindow::CreateComponent( TComponentFactory* pTComponentFactory )
 
     QString typeName = pTComponentFactory->TComponentName();
     componentRootNode->setName( typeName.toStdString().c_str() );
-
-	TSceneKit* scene = m_document->GetSceneKit();
-	TLightKit* lightKit = static_cast< TLightKit* >( scene->getPart("lightList[0]", false) );
-	if( lightKit )
-	{
-
-		SoSearchAction trackersSearch;
-		trackersSearch.setType( TTracker::getClassTypeId() );
-		trackersSearch.setInterest( SoSearchAction::ALL);
-		trackersSearch.apply( componentRootNode );
-		SoPathList& trackersPath = trackersSearch.getPaths();
-
-		for( int index = 0; index <trackersPath.getLength(); ++index )
-		{
-			SoFullPath* trackerPath = static_cast< SoFullPath* > ( trackersPath[index] );
-			TTracker* tracker = static_cast< TTracker* >( trackerPath->getTail() );
-			//tracker->SetAzimuthAngle( &lightKit->azimuth );
-			//tracker->SetZenithAngle( &lightKit->zenith );
-		}
-	}
-
-
 
     CmdInsertSeparatorKit* cmdInsertSeparatorKit = new CmdInsertSeparatorKit( componentRootNode, QPersistentModelIndex(parentIndex), m_sceneModel );
     QString commandText = QString( "Create Component: %1").arg( pTComponentFactory->TComponentName().toLatin1().constData() );
@@ -2708,10 +2394,6 @@ void MainWindow::CreateMaterial( TMaterialFactory* pTMaterialFactory )
  *
  * If the current node is not a surface type node, the shape node will not be created.
  */
-/*!
- * Creates a shape node from the \a pTTrackerFactory as current selected node child.
- *
- */
 void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 {
     QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
@@ -2747,15 +2429,12 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory )
 }
 
 /*!
- * Creates a shape node from the \a pTShapeFactory as current selected node child.
+ * Creates a shape node from the \a pTShapeFactory as current selected node child with the parameters defined in \a parameters. \a numberOfParameters is the
+ * number of parametners.
  *
  * If the current node is not a surface type node, the shape node will not be created.
  */
-/*!
- * Creates a shape node from the \a pTTrackerFactory as current selected node child.
- *
- */
-void MainWindow::CreateShape( TShapeFactory* pTShapeFactory, int numberofParameters, QVector< QVariant > parametersList )
+void MainWindow::CreateShape( TShapeFactory* pTShapeFactory, int numberofParameters, QVariant parameters )
 {
 	QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
 									m_sceneModel->index (0,0,sceneModelView->rootIndex()) : sceneModelView->currentIndex();
@@ -2774,7 +2453,7 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory, int numberofParamet
 	}
 	else
 	{
-		shape = pTShapeFactory->CreateTShape( numberofParameters, parametersList );
+		shape = pTShapeFactory->CreateTShape( numberofParameters, parameters );
 		/*Hay que comprobar si shape es nulo para no crear una superficie a partir de nulo que probacara el cierre de la aplicacion.*/
 		if(shape!=0){
 		shape->setName( pTShapeFactory->TShapeName().toStdString().c_str() );
@@ -2789,7 +2468,10 @@ void MainWindow::CreateShape( TShapeFactory* pTShapeFactory, int numberofParamet
 	}
 }
 
-
+/*!
+ * Creates a shape node from the \a pTTrackerFactory as current selected node child.
+ *
+ */
 void MainWindow::CreateTracker( TTrackerFactory* pTTrackerFactory )
 {
 	QModelIndex parentIndex = ((! sceneModelView->currentIndex().isValid() ) || (sceneModelView->currentIndex() == sceneModelView->rootIndex())) ?
@@ -3801,8 +3483,6 @@ void MainWindow::SetupTriggers()
 	connect( actionPasteCopy, SIGNAL( triggered() ), this, SLOT ( PasteCopy() ) );
 	connect( actionPasteLink, SIGNAL( triggered() ), this, SLOT ( PasteLink() ) );
 	connect( actionDelete, SIGNAL( triggered() ), this, SLOT ( Delete() ) );
-	connect( actionSetAimingPointRelative, SIGNAL( triggered() ), this, SLOT ( SetAimingPointRelative() ) );
-	connect( actionSetAimingPointAbsolute, SIGNAL( triggered() ), this, SLOT ( SetAimingPointAbsolute() ) );
 
 	//Insert actions
 	connect( actionNode, SIGNAL( triggered() ), this, SLOT ( CreateGroupNode() ) );
@@ -3812,7 +3492,6 @@ void MainWindow::SetupTriggers()
 	//Environment menu actions
 	connect( actionDefineSunLight, SIGNAL( triggered() ), this, SLOT ( DefineSunLight() ) );
 	connect( actionCalculateSunPosition, SIGNAL( triggered() ), this, SLOT ( CalculateSunPosition() ) );
-	connect( actionDisconnect_All_Trackers, SIGNAL( toggled( bool ) ), this, SLOT ( DisconnectAllTrackers( bool ) ) );
 	connect( actionDefineTransmissivity, SIGNAL( triggered() ), this, SLOT ( DefineTransmissivity() ) );
 
 	//Ray trace menu actions

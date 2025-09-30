@@ -46,8 +46,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "trt.h"
 
-class SoFieldSensor;
-class SoSensor;
 
 class ShapeSphere : public TShape
 {
@@ -61,13 +59,14 @@ public:
 
 	ShapeSphere( );
 	static void initClass();
-    SoNode* copy( SbBool copyConnections ) const;
 	double GetArea() const;
 	double GetVolume() const;
 	BBox GetBBox() const;
     QString GetIcon() const;
 
     Point3D Sample( double u1, double u2 ) const;
+	
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
@@ -79,10 +78,6 @@ public:
 	SoSFEnum activeSide;
 
 protected:
-	static void updateRadius(void *data, SoSensor *);
-	static void updateYMin(void *data, SoSensor *);
-	static void updateYMax(void *data, SoSensor *);
-	static void updatePhiMax(void *data, SoSensor *);
 
 	bool OutOfRange( double u, double v ) const;
 	Point3D GetPoint3D ( double u, double v ) const;
@@ -91,16 +86,6 @@ protected:
 	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	void generatePrimitives(SoAction *action);
    	virtual ~ShapeSphere();
-
-private:
-   	double m_lastValidRadius;
-	double m_lastValidYMax;
-	double m_lastValidYMin;
-
-	SoFieldSensor* m_radiusSensor;
-	SoFieldSensor* m_yMinSensor;
-	SoFieldSensor* m_yMaxSensor;
-	SoFieldSensor* m_phiMaxSensor;
 
 };
 

@@ -36,20 +36,13 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-
-#include <QVector>
-
-
 #include <Inventor/fields/SoSFBool.h>
 
-
 #include "TransmissivityDialog.h"
-#include "TTransmissivity.h"
 #include "TTransmissivityFactory.h"
 
-TransmissivityDialog::TransmissivityDialog( QVector< TTransmissivityFactory* > transmissivityFactoryList, QWidget* parent, Qt::WindowFlags f )
-:QDialog( parent, f ),
+TransmissivityDialog::TransmissivityDialog( QVector< TTransmissivityFactory* > transmissivityFactoryList, QWidget* parent )
+:QDialog( parent ),
  m_currentTransmissivityIndex( -1 ),
  m_newTransmissivity( 0 )
 {

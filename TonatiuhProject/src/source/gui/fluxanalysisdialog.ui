@@ -275,7 +275,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <spacer name="horizontalSpacer_4">
+                 <spacer name="horizontalSpacer_3">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
@@ -298,7 +298,7 @@
                  </widget>
                 </item>
                 <item>
-                 <spacer name="horizontalSpacer_3">
+                 <spacer name="horizontalSpacer_4">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
@@ -311,9 +311,6 @@
                  </spacer>
                 </item>
                </layout>
-               <zorder>runButton</zorder>
-               <zorder>horizontalSpacer_3</zorder>
-               <zorder>horizontalSpacer_4</zorder>
               </widget>
              </item>
              <item row="13" column="2">
@@ -684,7 +681,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset>
+                <iconset resource="../../tonatiuh.qrc">
                  <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
                </property>
               </widget>

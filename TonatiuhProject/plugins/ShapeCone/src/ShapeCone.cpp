@@ -48,6 +48,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeCone.h"
 
@@ -248,6 +249,22 @@ Point3D ShapeCone::Sample( double u, double v ) const
 {
 	return GetPoint3D( u, v );
 }
+
+bool ShapeCone::ValidateParamaterValue( std::string name, std::string value ) const
+{
+
+    if( name == "baseRadius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "baseRadius", " The radius of the cone base, 'baseRadius', must be a positive number" );
+	else if( name == "topRadius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "topRadius", " The radius of the cone top 'topRadius' must be a positive number" );
+	else if( name == "height" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "height", " The height of the cone must be a positive number" );
+	else if( name == "phiMax" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "phiMax", " The angle to define the shape section must be a positive number" );
+
+	return true;
+}
+
 
 Point3D ShapeCone::GetPoint3D (double u, double v) const
 {

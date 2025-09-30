@@ -86,8 +86,6 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 		FieldEditor* fieldEdit = mField->GetEditor();
 		fieldEdit->setGeometry(option.rect);
 		fieldEdit->setParent(parent);
-
-		connect( fieldEdit, SIGNAL( editingFinished( )  ), this, SLOT( CloseEditor() ));
 		return fieldEdit;
 	}
 	else if( field->getTypeId().isDerivedFrom( UserMField::getClassTypeId() ) )
@@ -97,8 +95,6 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 		FieldEditor* fieldEdit = mField->GetEditor();
 		fieldEdit->setGeometry(option.rect);
 		fieldEdit->setParent(parent);
-
-		connect( fieldEdit, SIGNAL( editingFinished( )  ), this, SLOT( CloseEditor() ));
 		return fieldEdit;
 	}
 	else
@@ -149,10 +145,4 @@ void ParametersDelegate::setEditorData(QWidget *editor,
 		textEdit->setText(value);
 	}
 
-}
-
-void ParametersDelegate::CloseEditor()
-{
-    QWidget *editor = qobject_cast<QWidget *>(sender());
-    emit closeEditor(editor);
 }

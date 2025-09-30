@@ -73,7 +73,7 @@ public:
 
 	bool DefineSurfacePatches( std::vector< Point3D > inputData, int nUCurves, int nVCurves );
 
-	//void GLRender(SoGLRenderAction *action);
+	bool ValidateParamaterValue( std::string /*name*/, std::string /*value*/ ) const { return true; };
 
 
 protected:

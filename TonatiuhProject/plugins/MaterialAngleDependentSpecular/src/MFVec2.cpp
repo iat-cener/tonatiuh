@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "MFVec2.h"
 
-#if unix//( defined(Q_WS_X11) || defined(Q_WS_MAC) )
+#if unix
 	SO_MFIELD_SOURCE_MALLOC(MFVec2, SbVec2d, const SbVec2d &);
 
 	void MFVec2::initClass()
@@ -52,8 +52,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 	SbBool MFVec2::read1Value(SoInput * in, int idx)
 	{
-	    in->read(this->values[idx][0]) &&
-	    in->read(this->values[idx][1]);
+	    return( in->read(this->values[idx][0]) && in->read(this->values[idx][1]) );
 	}
 
 	void MFVec2::write1Value(SoOutput * out, int idx) const
@@ -129,8 +128,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 	SbBool MFVec2::read1Value(SoInput * in, int idx)
 	{
-	    in->read(this->values[idx][0]) &&
-	    in->read(this->values[idx][1]);
+	    return( in->read(this->values[idx][0]) && in->read(this->values[idx][1]) );
 	}
 
 	void MFVec2::write1Value(SoOutput * out, int idx) const

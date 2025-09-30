@@ -46,7 +46,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Point3D.h"
 #include "TrackerHeliostat.h"
 #include "Transform.h"
-#include "TSceneKit.h"
 #include "Vector3D.h"
 #include "trf.h"
 

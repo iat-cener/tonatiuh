@@ -211,7 +211,7 @@ void LightDialog::SetupSunSizeTab()
 	if( !m_currentLightKit )	return;
 
 	//Set disabled nodes
-	QStringList disabledNodes = QString( m_currentLightKit->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
+	QStringList disabledNodes = QString( m_currentLightKit->disabledNodes.getValue().getString() ).split( ";", Qt::SkipEmptyParts );
 	for( int n = 0; n < disabledNodes.count(); n++ )
 		disabledNodeList->addItem( disabledNodes[n] );
 

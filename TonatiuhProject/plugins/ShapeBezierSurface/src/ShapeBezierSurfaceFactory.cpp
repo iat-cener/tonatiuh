@@ -120,7 +120,7 @@ bool ShapeBezierSurfaceFactory::ReadInputDataFile( QString fileName, std::vector
 	while( !in.atEnd() )
 	{
 		QString dataLine = in.readLine();
-		QStringList curveData = dataLine.split(QRegExp("[\\s+{},]"), QString::SkipEmptyParts);
+		QStringList curveData = dataLine.split(QRegExp("[\\s+{},]"), Qt::SkipEmptyParts);
 		if( curveData.size() % 3 != 0 )	 return false;
 		int nPoints = curveData.size() / 3;
 

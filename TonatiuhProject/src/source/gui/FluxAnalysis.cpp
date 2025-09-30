@@ -33,7 +33,7 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iï¿½igo Les.
 ***************************************************************************/
 
 #include <cmath>
@@ -244,7 +244,9 @@ void FluxAnalysis::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsign
 		if( m_pPhotonMap ) 	m_pPhotonMap->EndStore( -1 );
 		delete m_pPhotonMap;
 		m_pPhotonMap = new TPhotonMap();
-		m_pPhotonMap->SetBufferSize( HUGE_VAL );
+		long unsigned int maxLimit = std::numeric_limits<int>::max();
+		m_pPhotonMap->SetBufferSize( maxLimit );
+		
 		m_tracedRays = 0;
 		m_wPhoton = 0;
 		m_totalPower = 0;
@@ -284,7 +286,7 @@ void FluxAnalysis::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsign
 
 	m_pPhotonMap->SetConcentratorToWorld( m_pRootSeparatorInstance->GetIntersectionTransform() );
 
-	QStringList disabledNodes = QString( lightKit->disabledNodes.getValue().getString() ).split( ";", QString::SkipEmptyParts );
+	QStringList disabledNodes = QString( lightKit->disabledNodes.getValue().getString() ).split( ";", Qt::SkipEmptyParts );
 	QVector< QPair< TShapeKit*, Transform > > surfacesList;
 	trf::ComputeFistStageSurfaceList( m_pRootSeparatorInstance, disabledNodes, &surfacesList );
 	lightKit->ComputeLightSourceArea( m_sunWidthDivisions, m_sunHeightDivisions, surfacesList );

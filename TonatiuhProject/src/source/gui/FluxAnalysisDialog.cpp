@@ -33,47 +33,19 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iï¿½igo Les.
 ***************************************************************************/
-
-#include <cmath>
-
-#include <QFileDialog>
-#include <QFutureWatcher>
-#include <QIntValidator>
-#include <QMessageBox>
-#include <QMutex>
-#include <QPair>
-#include <QProgressDialog>
-#include <QtConcurrentMap>
-
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoTransform.h>
+#include <QString>
 
 #include "FluxAnalysis.h"
 #include "FluxAnalysisDialog.h"
-#include "gc.h"
-#include "InstanceNode.h"
-#include "RandomDeviate.h"
-#include "RayTracer.h"
-#include "RayTracerNoTr.h"
-#include "SceneModel.h"
 #include "SelectSurfaceDialog.h"
-#include "TLightKit.h"
-#include "TLightShape.h"
-#include "Transform.h"
-#include "trf.h"
-#include "TSceneKit.h"
-#include "TShape.h"
-#include "TShapeKit.h"
-#include "TTransmissivity.h"
-
 
 /******************************************
  * FluxAnalysisDialog
  *****************************************/
 /*!
- * Create dialog object
+ * Create dialog object. 
  */
 FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& currentSceneModel,
 		InstanceNode* rootSeparatorInstance,
@@ -128,18 +100,18 @@ FluxAnalysisDialog::FluxAnalysisDialog( TSceneKit* currentScene, SceneModel& cur
 	contourPlotWidget->axisRect()->setupFullAxesBox( true );
 
 	contourPlotWidget->plotLayout()->insertRow( 0 );
-	contourPlotWidget->plotLayout()->addElement( 0, 0, new QCPPlotTitle( contourPlotWidget, "Incident Flux Distribution" ) );
+	contourPlotWidget->plotLayout()->addElement( 0, 0, new QCPTextElement ( contourPlotWidget, "Incident Flux Distribution" ) );
 	contourPlotWidget->xAxis->setLabel( "X (unit length)" );
 	contourPlotWidget->yAxis->setLabel( "Y (unit length)" );
 
 	horizontaSectorPlot->plotLayout()->insertRow( 0 );
-	horizontaSectorPlot->plotLayout()->addElement( 0, 0, new QCPPlotTitle(horizontaSectorPlot, "Horizontal Sector" ) );
+	horizontaSectorPlot->plotLayout()->addElement( 0, 0, new QCPTextElement (horizontaSectorPlot, "Horizontal Sector" ) );
 	// give the axes some labels:
 	horizontaSectorPlot->xAxis->setLabel( "Y (unit length)" );
 	horizontaSectorPlot->yAxis->setLabel( "Flux ( (unit power) / (unit length)^2 )" );
 
 	verticalSectorPlot->plotLayout()->insertRow( 0 );
-	verticalSectorPlot->plotLayout()->addElement( 0, 0, new QCPPlotTitle( verticalSectorPlot, "Vertical Sector" ) );
+	verticalSectorPlot->plotLayout()->addElement( 0, 0, new QCPTextElement ( verticalSectorPlot, "Vertical Sector" ) );
 	// give the axes some labels:
 	verticalSectorPlot->xAxis->setLabel( "X (unit length)" );
 	verticalSectorPlot->yAxis->setLabel( "Flux ( (unit power) / (unit length)^2 )" );
@@ -446,7 +418,6 @@ void FluxAnalysisDialog::UpdateFluxMapPlot( int** photonCounts, double wPhoton, 
 
 	// Create a QCPColorMap object to draw flux distribution
 	QCPColorMap* colorMap = new QCPColorMap( contourPlotWidget->xAxis, contourPlotWidget->yAxis );
-	contourPlotWidget->addPlottable( colorMap );
 
 	colorMap->data()->setSize( widthDivisions, heightDivisions ); // we want the color map to have widthDivisions * heightDivisions data points
 	colorMap->data()->setRange( QCPRange( xmin, xmax ), QCPRange( ymin, ymax ) ); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
@@ -502,7 +473,6 @@ void FluxAnalysisDialog::CreateSectorPlots( double xmin, double ymin, double xma
 	hSectorXCoordSpin->setMinimum( xmin );
 	hSectorXCoordSpin->setMaximum( xmax );
 	hSectorXCoordSpin->setSingleStep( ( xmax - xmin ) / 10 );
-	contourPlotWidget->addItem( tickVLine );
 
 	tickVLine->start->setCoords( 0, ymin - 1 );
 	tickVLine->end->setCoords( 0, ymax + 1 );
@@ -512,7 +482,6 @@ void FluxAnalysisDialog::CreateSectorPlots( double xmin, double ymin, double xma
 	hSectorYCoordSpin->setMinimum( ymin );
 	hSectorYCoordSpin->setMaximum( ymax );
 	hSectorYCoordSpin->setSingleStep( (  ymax - ymin ) / 10 );
-	contourPlotWidget->addItem( tickHLine );
 
 	tickHLine->start->setCoords( xmin -1 ,  0 );
 	tickHLine->end->setCoords( xmax + 1, 0 );

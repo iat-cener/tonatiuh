@@ -50,7 +50,6 @@ namespace tgf
 	SbMatrix MatrixFromTransform( const Transform& transform );
 	Transform TransformFromMatrix( SbMatrix const& matrix );
 	Transform TransformFromSoTransform( SoTransform* const & soTransform );
-	SbMatrix MatrixFromSoTransform( SoTransform* const & soTransform );
 }
 
 #endif /*TGF_H_*/

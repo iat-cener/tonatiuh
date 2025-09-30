@@ -70,7 +70,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <QTextStream>
 #include "PluginManager.h"
 #include "ScriptRayTracer.h"
-#include "tonatiuh_script.h"
 
 /*!
   \mainpage
@@ -92,11 +91,8 @@ The Tonatiuh project aims to create an open source, cutting-edge, accurate, and 
   application specific Coin3D extension subclasses, and the application loop.
 */
 
- Q_DECLARE_METATYPE(QVector<QVariant>)
-
 int main( int argc, char ** argv )
 {
-	QApplication::setColorSpec( QApplication::CustomColor );
 
     QApplication a( argc, argv );
 	a.setApplicationVersion( APP_VERSION );
@@ -162,7 +158,6 @@ int main( int argc, char ** argv )
     		testDirectory.cd( "." );
 
     		QScriptEngine* interpreter = new QScriptEngine;
-    		qScriptRegisterSequenceMetaType<QVector<QVariant> >(interpreter);
 
 
     		MainWindow* mw = new MainWindow( QLatin1String("") );

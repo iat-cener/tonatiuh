@@ -39,7 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "MFVec3.h"
 
-#if unix//( defined(Q_WS_X11) || defined(Q_WS_MAC) )
+#if unix
 	SO_MFIELD_SOURCE_MALLOC(MFVec3, SbVec3d, const SbVec3d &);
 
 	void MFVec3::initClass()
@@ -52,9 +52,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 	SbBool MFVec3::read1Value(SoInput * in, int idx)
 	{
-	   return ( in->read(this->values[idx][0]) &&
-	    in->read(this->values[idx][1]) &&
-	    in->read(this->values[idx][2]) );
+	   return( in->read( this->values[idx][0] ) && in->read( this->values[idx][1] ) && in->read( this->values[idx][2] ) );
 	}
 
 	void MFVec3::write1Value(SoOutput * out, int idx) const
@@ -130,17 +128,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		// This macro takes the name of the class and the name of the
 		// parent class
-			SO_MFIELD_INIT_CLASS(MFVec3, inherited);
+		SO_MFIELD_INIT_CLASS(MFVec3, inherited);
 	}
 
-	SbBool MFVec3::read1Value(SoInput * in, int idx)
+	SbBool MFVec3::read1Value( SoInput* in, int idx)
 	{
-	    in->read(this->values[idx][0]) &&
-	    in->read(this->values[idx][1]) &&
-	    in->read(this->values[idx][2]);
+	    return( in->read( this->values[idx][0] ) && in->read( this->values[idx][1] ) && in->read( this->values[idx][2] ) );
 	}
 
-	void MFVec3::write1Value(SoOutput * out, int idx) const
+	void MFVec3::write1Value( SoOutput* out, int idx) const
 	{
 		const SbVec3f & v = (*this)[idx];
 
@@ -153,7 +149,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 		out->write(v[2]);
 	}
 
-
 	void MFVec3::setValues(int start, int numarg, const float xyz[][3])
 	{
 		if (start+numarg > this->maxNum)
@@ -163,8 +158,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 		for(int i=0; i < numarg; i++)
 			this->values[start+i] = SbVec3f(xyz[i]);
-
-	  this->valueChanged();
+		this->valueChanged();
 	}
 
 	void MFVec3::set1Value(int idx, float x, float y, float z)

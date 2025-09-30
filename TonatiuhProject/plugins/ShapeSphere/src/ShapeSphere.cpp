@@ -36,23 +36,18 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-
-#include <iostream>
-
-#include <QMessageBox>
-#include <QObject>
 #include <QString>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "gc.h"
 #include "gf.h"
 
 #include "BBox.h"
 #include "DifferentialGeometry.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeSphere.h"
 
@@ -64,13 +59,6 @@ void ShapeSphere::initClass()
 }
 
 ShapeSphere::ShapeSphere( )
-:m_lastValidRadius( 0.5 ),
- m_lastValidYMax( 0.5 ),
- m_lastValidYMin( -0.5 ),
- m_radiusSensor( 0 ),
- m_yMinSensor( 0 ),
- m_yMaxSensor( 0 ),
- m_phiMaxSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeSphere);
 	SO_NODE_ADD_FIELD( radius, (0.5) );
@@ -82,40 +70,10 @@ ShapeSphere::ShapeSphere( )
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
 	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
-
-	SoFieldSensor* m_radiusSensor = new SoFieldSensor(updateRadius, this);
-	m_radiusSensor->setPriority( 1 );
-	m_radiusSensor->attach( &radius );
-	SoFieldSensor* m_yMinSensor = new SoFieldSensor(updateYMin, this);
-	m_yMinSensor->setPriority( 1 );
-	m_yMinSensor->attach( &yMin );
-	SoFieldSensor* m_yMaxSensor = new SoFieldSensor(updateYMax, this);
-	m_yMaxSensor->setPriority( 1 );
-	m_yMaxSensor->attach( &yMax );
-	SoFieldSensor* m_phiMaxSensor = new SoFieldSensor(updatePhiMax, this);
-	m_phiMaxSensor->setPriority( 1 );
-	m_phiMaxSensor->attach( &phiMax );
 }
 
 ShapeSphere::~ShapeSphere()
 {
-	delete m_radiusSensor;
-	delete m_yMinSensor;
-	delete m_yMaxSensor;
-	delete m_phiMaxSensor;
-}
-
-SoNode* ShapeSphere::copy( SbBool copyConnections ) const
-{
-	// Use the standard version of the copy method to create
-	// a copy of this instance, including its field data
-	ShapeSphere* newShapeSphere = dynamic_cast< ShapeSphere* >( SoNode::copy( copyConnections ) );
-
-	// Copy the m_thetaMin, m_thetaMax private members explicitly
-	newShapeSphere->m_lastValidYMax = m_lastValidYMax;
-	newShapeSphere->m_lastValidYMin = m_lastValidYMin;
-
-	return newShapeSphere;
 }
 
 double ShapeSphere::GetArea() const
@@ -161,6 +119,35 @@ Point3D ShapeSphere::Sample( double u1, double u2 ) const
 {
 	return GetPoint3D( u1, u2 );
 }
+
+bool ShapeSphere::ValidateParamaterValue( std::string name, std::string value ) const
+{
+
+    if( name == "radius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "radius", "The radius of the sphere, must be a positive number" );
+	else if( name == "radius" && std::stod( value ) < std::max( std::fabs( yMin.getValue() ), std::fabs( yMax.getValue() ) ) ) 
+		throw ParameterValueException( "radius", "The sphere radius must equal or greater than y values" );
+		
+	else if( name == "yMin" && std::stod( value ) > ( yMax.getValue() ) )
+		throw ParameterValueException( "yMin", "The sphere's minimum y-value must be less than its maximum y-value" );
+	else if( name == "yMin" && std::stod( value ) < ( -radius.getValue() ) )
+		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
+	else if( name == "yMin" && std::stod( value ) > ( radius.getValue() ) )
+		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
+		
+	else if( name == "yMax" && std::stod( value ) < ( yMin.getValue() ) )
+		throw ParameterValueException( "yMax", "The sphere's maximum y-value must be greater than its minimum y-value" );
+	else if( name == "yMax" && std::stod( value ) < ( -radius.getValue() ) )
+		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
+	else if( name == "yMax" && std::stod( value ) > ( radius.getValue() ) )
+		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
+		
+	else if( name == "phiMax" && std::stod( value ) < 0 )
+		throw ParameterValueException( "phiMax", "The sphere’s generation angle must be a positive value" );
+
+	return true;
+}
+
 
 bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
@@ -272,78 +259,6 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 bool ShapeSphere::IntersectP( const Ray& ray ) const
 {
 	return Intersect( ray, 0, 0 );
-}
-
-
-void ShapeSphere::updateYMin( void *data, SoSensor * )
-{
-	ShapeSphere* shapeSphere = (ShapeSphere *) data;
-	if( shapeSphere->yMin.getValue() >= shapeSphere->yMax.getValue() )
-	{
-		QMessageBox::warning( 0,
-				QLatin1String( "Tonatiuh" ),
-				QObject::tr( "Sphere y min must be smaller than y max value. ") );
-		shapeSphere->yMin.setValue( shapeSphere->m_lastValidYMin );
-	}
-	else if( shapeSphere->yMin.getValue() < -shapeSphere->radius.getValue() )
-	{
-		shapeSphere->yMin.setValue( -shapeSphere->radius.getValue() );
-		shapeSphere->m_lastValidYMin = -shapeSphere->radius.getValue();
-	}
-	else
-		shapeSphere->m_lastValidYMin = shapeSphere->yMin.getValue();
-}
-
-void ShapeSphere::updateRadius( void *data, SoSensor* )
-{
-
-	ShapeSphere* shapeSphere = (ShapeSphere *) data;
-	if( ( shapeSphere->radius.getValue() <= 0.0 ) )
-	{
-		QMessageBox::warning( 0,
-				QLatin1String( "Tonatiuh" ),
-				QObject::tr( "The sphere radius must be a positive value." ) );
-		shapeSphere->radius.setValue( shapeSphere->m_lastValidRadius );
-
-	}
-	else if( shapeSphere->radius.getValue() < std::max( std::fabs( shapeSphere->yMin.getValue() ), std::fabs( shapeSphere->yMin.getValue() ) ) )
-	{
-		QMessageBox::warning( 0, QLatin1String( "Tonatiuh" ),
-				QObject::tr( "The sphere radius must equal or greater than y value." ) );
-		shapeSphere->radius.setValue( shapeSphere->m_lastValidRadius );
-	}
-	else
-		shapeSphere->m_lastValidRadius = shapeSphere->radius.getValue();
-
-}
-
-
-void ShapeSphere::updateYMax( void *data, SoSensor* )
-{
-	ShapeSphere* shapeSphere = (ShapeSphere *) data;
-	if( shapeSphere->yMax.getValue() < shapeSphere->yMin.getValue() )
-	{
-		QMessageBox::warning( 0,
-				QLatin1String( "Tonatiuh" ),
-				QObject::tr( "Sphere y max must be larger than y min value. ") );
-		shapeSphere->yMax.setValue( shapeSphere->m_lastValidYMax );
-	}
-	else if( shapeSphere->yMax.getValue() > shapeSphere->radius.getValue() )
-	{
-		shapeSphere->yMax.setValue( shapeSphere->radius.getValue() );
-		shapeSphere->m_lastValidYMax = shapeSphere->radius.getValue();
-	}
-	else
-		shapeSphere->m_lastValidYMax = shapeSphere->yMax.getValue();
-
-}
-
-void ShapeSphere::updatePhiMax( void *data, SoSensor* )
-{
-	ShapeSphere* shapeSphere = (ShapeSphere *) data;
-	if( shapeSphere->phiMax.getValue() > gc::TwoPi )	shapeSphere->phiMax.setValue( gc::TwoPi );
-	else if ( shapeSphere->phiMax.getValue() < 0.0 )	shapeSphere->phiMax.setValue( 0.0 );
-
 }
 
 Point3D ShapeSphere::GetPoint3D( double u, double v ) const

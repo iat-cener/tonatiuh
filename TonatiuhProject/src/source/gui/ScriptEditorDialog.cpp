@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <iostream>
-#include <stdio.h>
 
 #include <QDateTime>
 #include <QScriptEngine>
@@ -45,10 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "FilesModel.h"
 #include "ScriptEditorDialog.h"
 #include "ScriptRayTracer.h"
-#include "tonatiuh_script.h"
 
-
- Q_DECLARE_METATYPE(QVector<QVariant>)
 
 /**
  * Creates a dialog to edit scripts and run them. The list \a listRandomDeviateFactory is
@@ -76,17 +72,11 @@ ScriptEditorDialog::ScriptEditorDialog( QVector< RandomDeviateFactory* > listRan
 	m_fileModel->setNameFilters( fileNamesFilter );
     fileTree->setModel( m_fileModel );
 
-
-
-
-
     QString pluginsDirectory= QApplication::applicationDirPath() + QDir::separator() + "plugins";
     QCoreApplication::addLibraryPath(pluginsDirectory );
 
-
   	//Init QtScript environment
 	m_interpreter = new QScriptEngine;
-	qScriptRegisterSequenceMetaType<QVector<QVariant> >(m_interpreter);
 
 	QScriptValue tonatiuh = m_interpreter->newQObject( parent );
 	m_interpreter->globalObject().setProperty( "tonatiuh", tonatiuh );
@@ -100,8 +90,6 @@ ScriptEditorDialog::ScriptEditorDialog( QVector< RandomDeviateFactory* > listRan
 
 	QScriptValue printFunction = m_interpreter->newFunction( ScriptEditorDialog::PrintMessage );
 	m_interpreter->globalObject().setProperty("print", printFunction );
-
-	//m_interpreter->globalObject().setProperty( "print", m_interpreter->newFunction( ScriptEditorDialog::WriteMessage ) );
 
 
 	QScriptValue import = m_interpreter->newFunction(ScriptEditorDialog::ImportExtension);
@@ -197,15 +185,6 @@ void  ScriptEditorDialog::RunScript()
 	QString logmessage = QString( "[%1]\t Start running script.\n").arg( start.toString() );
 	WriteMessage( logmessage );
 
-	int initialized = tonatiuh_script::init( m_interpreter );
-	if( !initialized )
-	{
-		QString logmessage = QString( "[%1]\t Script Execution Error.\n").arg( QDateTime::currentDateTime().toString() );
-		WriteMessage( logmessage );
-		std::cerr<<logmessage.toStdString()<<std::endl;
-
-		return;
-	}
 	QScriptValue rayTracerValue = m_interpreter->globalObject().property("rayTracer");
 	ScriptRayTracer* rayTracer = ( ScriptRayTracer* ) rayTracerValue.toQObject();
 	QFileInfo currentFile( m_currentScritFileName );

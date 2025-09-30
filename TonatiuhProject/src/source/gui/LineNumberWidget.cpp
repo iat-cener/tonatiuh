@@ -43,8 +43,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CodeEditorWidget.h"
 #include "LineNumberWidget.h"
 
-LineNumberWidget::LineNumberWidget( QWidget* parent, Qt::WindowFlags f )
-:QWidget( parent, f ),
+LineNumberWidget::LineNumberWidget( QWidget* parent )
+:QWidget( parent ),
  m_codeEditArea( 0 )
 {
 

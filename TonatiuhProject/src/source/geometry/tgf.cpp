@@ -103,10 +103,8 @@ SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 
 	SbVec3f axis1( m00, m10, m20 );
 	SbVec3f axis2( m01, m11, m21 );
-	//axis2.normalize();
 
 	SbVec3f axis3( m02, m12, m22 );
-	//axis3.normalize();
 
 	return SbMatrix( axis1[0], axis2[0], axis3[0], m03,
 			axis1[1], axis2[1], axis3[1], m13,
@@ -117,24 +115,15 @@ SbMatrix tgf::MatrixFromTransform( const Transform& transform )
 
 Transform tgf::TransformFromMatrix( SbMatrix const& matrix )
 {
-	Transform transform;
-	/*if( matrix.det4() < tgc::Epsilon )
-		transform = Transform( new Matrix4x4(), new Matrix4x4() );
-	else*/
-		transform = Transform( matrix[0][0], matrix[1][0], matrix[2][0], matrix[3][0],
+	Transform transform{ matrix[0][0], matrix[1][0], matrix[2][0], matrix[3][0],
 							 matrix[0][1], matrix[1][1], matrix[2][1], matrix[3][1],
 							 matrix[0][2], matrix[1][2], matrix[2][2], matrix[3][2],
-							 matrix[0][3], matrix[1][3], matrix[2][3], matrix[3][3] );
+							 matrix[0][3], matrix[1][3], matrix[2][3], matrix[3][3] };
 
 	return transform;
 }
 
 Transform tgf::TransformFromSoTransform( SoTransform* const & soTransform )
-{
-	return TransformFromMatrix( MatrixFromSoTransform( soTransform ) );
-}
-
-SbMatrix tgf::MatrixFromSoTransform( SoTransform* const & soTransform )
 {
 	SbMatrix sbMatrix;
 	sbMatrix.setTransform( 	soTransform->translation.getValue(),
@@ -143,7 +132,5 @@ SbMatrix tgf::MatrixFromSoTransform( SoTransform* const & soTransform )
 						    soTransform->scaleOrientation.getValue(),
 						    soTransform->center.getValue() );
 
-	return sbMatrix;
-
+	return TransformFromMatrix( sbMatrix );
 }
-

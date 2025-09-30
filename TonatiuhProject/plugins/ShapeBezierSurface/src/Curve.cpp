@@ -101,7 +101,6 @@ void Curve::Interpolate_BSpline( std::vector< Point3D> curvePoints )
 
 	std::vector<Point3D> x = TriDiag( alpha, beta, gamma, curvePoints );
 
-	//m_controlPointsList
 	m_controlPointsList.clear();
 	m_controlPointsList.push_back( x[0] );
 	for( unsigned int j = 0; j < x.size() ; j++)
@@ -110,9 +109,9 @@ void Curve::Interpolate_BSpline( std::vector< Point3D> curvePoints )
 	m_controlPointsList.push_back( x[x.size()-1] );
 
 
-	delete alpha;
-	delete beta;
-	delete gamma;
+	delete[] alpha;
+	delete[] beta;
+	delete[] gamma;
 }
 
 std::vector<Point3D> Curve::TriDiag( double* a, double* b, double* c, std::vector< Point3D> curvePoints  )

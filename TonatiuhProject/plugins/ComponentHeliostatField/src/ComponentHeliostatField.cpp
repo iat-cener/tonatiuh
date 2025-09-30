@@ -36,31 +36,24 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <algorithm>
-
 #include <QFile>
 #include <QMessageBox>
-#include <QTextStream>
 
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTransform.h>
 
-#include "Point3D.h"
-#include "NormalVector.h"
-
+#include "ComponentHeliostatField.h"
+#include "HeliostatFieldWizard.h"
 #include "PluginManager.h"
+#include "Point3D.h"
 #include "TMaterial.h"
 #include "TMaterialFactory.h"
-#include "TSceneKit.h"
+#include "trt.h"
 #include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TShapeFactory.h"
 #include "TShapeKit.h"
 #include "TTracker.h"
 #include "TTrackerFactory.h"
-
-#include "ComponentHeliostatField.h"
-#include "HeliostatFieldWizard.h"
 
 
 bool comparePuntosPorX( std::pair< Point3D, Point3D > pA, std::pair< Point3D, Point3D > pB )
@@ -173,7 +166,7 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 		while( !coordIn.atEnd() )
 		{
 			QString inLine = coordIn.readLine();
-			QStringList heliostatL = inLine.split(QRegExp("[\\t,;]"), QString::SkipEmptyParts);
+			QStringList heliostatL = inLine.split(QRegExp("[\\t,;]"), Qt::SkipEmptyParts);
 			if( heliostatL.count() >=3 )
 				hCenterList.push_back( Point3D( heliostatL[0].toDouble(),
 						heliostatL[1].toDouble(),
@@ -188,8 +181,13 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 	//HELIOSTAT
 	int heliostat = wizard.GetHeliostat(); //1:component; 2:new design
 
-	TSeparatorKit* heliostatComponent;
-	if( heliostat == 1)
+	TSeparatorKit* heliostatComponent = 0;
+	TShapeFactory* shapeFactory = 0;
+	TMaterial* materialNode = 0;
+	double heliostatWidth = 0.0;
+	double heliostatHeight = 0.0;
+	double heliostatRadius = 0.0;
+	if( heliostat == 1 )
 	{
 		QString heliostatComponentFileName = wizard.GetComponentFile();
 		heliostatComponent = OpenHeliostatComponent( heliostatComponentFileName );
@@ -199,28 +197,41 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 					QString( "Impossible to read the heliostat component." ) );
 			return 0;
 		}
+	
 	}
-
-	QString heliostatShape = wizard.GetHeliostatShape();
-
-	int selectedShape = shapeNames.indexOf( heliostatShape.toLatin1() );
-	if( selectedShape < 0 )
+	else if( heliostat == 2 )
 	{
-        QMessageBox::warning( 0, QString( "Campo Heliostatos" ),
-        		QString( "Specified plugin not found." ) );
-		return 0;
+		QString heliostatShape = wizard.GetHeliostatShape();
+
+		int selectedShape = shapeNames.indexOf( heliostatShape.toLatin1() );
+		if( selectedShape < 0 )
+		{
+			QMessageBox::warning( 0, QString( "Campo Heliostatos" ),
+					QString( "Specified plugin not found." ) );
+			return 0;
+		}
+
+		shapeFactory = shapeFactoryList[ selectedShape ];
+
+		heliostatWidth = wizard.GetHeliostatWidth();
+		heliostatHeight = wizard.GetHeliostatHeight();
+		heliostatRadius = wizard.GetHeliostatRadius(); //-1 for slant
+
+		//Material
+		materialNode = materialFactory->CreateTMaterial();
+		double reflectivity = wizard.GetHeliostatReflectivity();
+		double sigma = wizard.GetHeliostatSigma();
+		
+		trt::TONATIUH_REAL* hReflectivityField = static_cast< trt::TONATIUH_REAL* > ( materialNode->getField( "m_reflectivity" ) );
+		hReflectivityField->setValue(  reflectivity );
+
+		trt::TONATIUH_REAL* hSigmaField = static_cast< trt::TONATIUH_REAL* > ( materialNode->getField( "m_sigmaSlope" ) );
+		hSigmaField->setValue( sigma );
+
+		SoSFEnum* distributionField = static_cast< SoSFEnum* > ( materialNode->getField( "m_distribution" ) );
+		distributionField->setValue( "NORMAL" );
+
 	}
-
-	TShapeFactory* shapeFactory = shapeFactoryList[ selectedShape ];
-
-	double heliostatWidth = wizard.GetHeliostatWidth();
-	double heliostatHeight = wizard.GetHeliostatHeight();
-	double heliostatRadius = wizard.GetHeliostatRadius(); //-1 for slant
-
-	//Material
-	TMaterial* materialNode = materialFactory->CreateTMaterial();
-	double reflectivity = wizard.GetHeliostatReflectivity();
-	double sigma = wizard.GetHeliostatSigma();
 
 	//Aiming point
 	int strategy = wizard.GetAimingStrategy(); //1: one-dimensional; 2: point; 3:table; 4:file
@@ -261,7 +272,7 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 		while( !aimingPointIn.atEnd() )
 		{
 			QString inLine = aimingPointIn.readLine();
-			QStringList aimingPointL = inLine.split(QRegExp("[\\t,;]"), QString::SkipEmptyParts);
+			QStringList aimingPointL = inLine.split(QRegExp("[\\t,;]"), Qt::SkipEmptyParts);
 			if( aimingPointL.count() >=3 )
 				aimingPointList.push_back( Point3D( aimingPointL[0].toDouble(),
 						aimingPointL[1].toDouble(),
@@ -283,16 +294,6 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 		return 0;
 	}
 
-	//SoField* hReflectivityField = materialNode->getField( "m_reflectivity" );
-	trt::TONATIUH_REAL* hReflectivityField = static_cast< trt::TONATIUH_REAL* > ( materialNode->getField( "m_reflectivity" ) );
-	hReflectivityField->setValue(  reflectivity );
-
-	trt::TONATIUH_REAL* hSigmaField = static_cast< trt::TONATIUH_REAL* > ( materialNode->getField( "m_sigmaSlope" ) );
-	hSigmaField->setValue( sigma );
-
-	SoSFEnum* distributionField = static_cast< SoSFEnum* > ( materialNode->getField( "m_distribution" ) );
-	distributionField->setValue( "NORMAL" );
-
 
 	SoType separatorType = SoType::fromName( SbName ( "TSeparatorKit" ) );
 
@@ -308,7 +309,7 @@ TSeparatorKit* ComponentHeliostatField::CreateField()
 }
 
 
-TSeparatorKit* ComponentHeliostatField::CreateField(QVector< QVariant >  argumentList)
+TSeparatorKit* ComponentHeliostatField::CreateField( QList< QVariant > argumentList )
 {
 	//Heliostat coordinates
 	if( argumentList.count() != 15 )	return 0;
@@ -327,7 +328,7 @@ TSeparatorKit* ComponentHeliostatField::CreateField(QVector< QVariant >  argumen
 	while( !coordIn.atEnd() )
 	{
 		QString inLine = coordIn.readLine();
-		QStringList heliostat = inLine.split(QRegExp("[\\t,;]"), QString::SkipEmptyParts);
+		QStringList heliostat = inLine.split(QRegExp("[\\t,;]"), Qt::SkipEmptyParts );
 		if( heliostat.count() >=3 )
 			hCenterList.push_back( Point3D( heliostat[0].toDouble(),
 					heliostat[1].toDouble(),
@@ -336,16 +337,15 @@ TSeparatorKit* ComponentHeliostatField::CreateField(QVector< QVariant >  argumen
 
 
 	//Heliostat
-
 	int heliostat; //1:component; 2:new design
-	TSeparatorKit* heliostatComponentNode;
-	TShapeFactory* shapeFactory;
+	TSeparatorKit* heliostatComponentNode = 0;
+	TShapeFactory* shapeFactory = 0;
 	QString heliostatShape;
 	double heliostatWidth = 1.0;
 	double heliostatHeight = 1.0;
 	double heliostatRadius = 0.75;
 	double reflectivity = 0.0;
-	double sigma;
+	double sigma = 0.0;
 
 	if( !argumentList[1].toString().isEmpty() )
 	{
@@ -450,7 +450,7 @@ TSeparatorKit* ComponentHeliostatField::CreateField(QVector< QVariant >  argumen
 		while( !aimingPointIn.atEnd() )
 		{
 			QString inLine = aimingPointIn.readLine();
-			QStringList aimingPointL = inLine.split(QRegExp("[\\t,;]"), QString::SkipEmptyParts);
+			QStringList aimingPointL = inLine.split(QRegExp("[\\t,;]"), Qt::SkipEmptyParts);
 			if( aimingPointL.count() >=3 )
 				aimingPointList.push_back( Point3D( aimingPointL[0].toDouble(),
 						aimingPointL[1].toDouble(),
@@ -681,13 +681,11 @@ void ComponentHeliostatField::CreateHeliostatZones( std::vector< Point3D >  heli
 	}
 	else
 	{
-		//TSeparatorKit* heliostatSeparator1 = new TSeparatorKit;
 		TSeparatorKit* heliostatSeparator1 = static_cast< TSeparatorKit* > ( separatorType.createInstance() );
 		heliostatsNodePartList->addChild(heliostatSeparator1);
 		QString heliostatName1 = QString( QLatin1String( "DivisionPor%1_1" ) ).arg( ( eje == 3 )? QString( 'Z' ): QString( 'X' ) );
 		heliostatSeparator1->setName( heliostatName1.toStdString().c_str() );
 
-		//TSeparatorKit* heliostatSeparator2 = new TSeparatorKit;
 		TSeparatorKit* heliostatSeparator2 = static_cast< TSeparatorKit* > ( separatorType.createInstance() );
 		heliostatsNodePartList->addChild(heliostatSeparator2);
 		QString heliostatName2 = QString( QLatin1String( "DivisionPor%1_2" ) ).arg( ( eje == 3 )? QString( 'Z' ): QString( 'X' ) );
@@ -803,5 +801,3 @@ TSeparatorKit* ComponentHeliostatField::OpenHeliostatComponent( QString fileName
    return componentRoot;
 
 }
-
-

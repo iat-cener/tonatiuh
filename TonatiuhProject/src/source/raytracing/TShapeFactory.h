@@ -54,7 +54,7 @@ public:
     virtual QString TShapeName() const  = 0;
     virtual QIcon TShapeIcon() const = 0;
     virtual TShape* CreateTShape( ) const = 0;
-    virtual TShape* CreateTShape( int /*numberofParameters*/, QVector< QVariant > /*parametersList*/ ) const
+    virtual TShape* CreateTShape( int /*numberofParameters*/, QVariant /*parameters*/ ) const
     {
     	return ( CreateTShape() );
     }

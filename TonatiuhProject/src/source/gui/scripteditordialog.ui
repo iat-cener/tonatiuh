@@ -108,8 +108,6 @@
  </customwidgets>
  <resources>
   <include location="../../tonatiuh.qrc"/>
-  <include location="../../tonatiuh.qrc"/>
-  <include location="../../tonatiuh.qrc"/>
  </resources>
  <connections/>
 </ui>

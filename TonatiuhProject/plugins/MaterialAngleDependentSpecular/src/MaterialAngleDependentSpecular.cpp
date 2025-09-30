@@ -37,7 +37,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QMessageBox>
+#include <iostream>
+
 #include <QString>
 
 #include <Inventor/lists/SoFieldList.h>
@@ -97,7 +98,7 @@ MaterialAngleDependentSpecular::MaterialAngleDependentSpecular()
 	SO_NODE_ADD_FIELD( transparencyValue, (0.0) );
 
 
-
+	/*
 	m_reflectivityFrontValuesSensor = new SoFieldSensor(  updateReflectivityFront,  this );
 	m_reflectivityFrontValuesSensor->setPriority( 1 );
 	m_reflectivityFrontValuesSensor->attach( &reflectivityFrontValues );
@@ -106,6 +107,7 @@ MaterialAngleDependentSpecular::MaterialAngleDependentSpecular()
 	m_reflectivityBackValuesSensor = new SoFieldSensor(  updateReflectivityBack,  this );
 	m_reflectivityBackValuesSensor->setPriority( 1 );
 	m_reflectivityBackValuesSensor->attach( &reflectivityBackValues );
+	*/
 
 	m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
 	m_ambientColorSensor->setPriority( 1 );
@@ -198,6 +200,7 @@ double MaterialAngleDependentSpecular::OutputPropertyValue( std::vector< double 
  */
 void MaterialAngleDependentSpecular::updateReflectivityFront( void* data, SoSensor* )
 {
+	std::cout<<"MaterialAngleDependentSpecular::updateReflectivityFront"<<std::endl;
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
 
 	std::vector< double > oldFrontReflectivityIncidenceAngle = material->m_frontReflectivityIncidenceAngle;
@@ -223,8 +226,6 @@ void MaterialAngleDependentSpecular::updateReflectivityBack( void* data, SoSenso
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
 
 
-	//std::vector< double > m_backReflectivityIncidenceAngle;
-	//std::vector< double > m_backReflectivityValue;
 	int numberOfValues = material->reflectivityBackValues.getNum();
 
 	material->m_backReflectivityIncidenceAngle.clear();

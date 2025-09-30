@@ -63,6 +63,8 @@ public:
 	bool IntersectP( const Ray &ray ) const;
 
 	Point3D Sample( double u, double v ) const;
+	
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 
 	enum Side{

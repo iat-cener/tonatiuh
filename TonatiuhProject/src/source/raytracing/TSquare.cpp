@@ -47,6 +47,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "BBox.h"
 #include "NormalVector.h"
+#include "ParameterValueException.h"
 #include "Point3D.h"
 #include "TSquare.h"
 
@@ -103,6 +104,14 @@ Point3D TSquare::Sample( double u, double v ) const
 {
 	return GetPoint3D( u, v );
 }
+bool TSquare::ValidateParamaterValue( std::string name, std::string value ) const
+{
+
+    if( name == "m_sideLength" && std::stod( value ) < 0 ) throw ParameterValueException( name, "m_sideLength must be a positive number.");
+
+    return true;
+}
+
 
 Point3D TSquare::GetPoint3D (double u, double v) const
 {

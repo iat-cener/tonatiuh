@@ -60,11 +60,17 @@ GraphicView::GraphicView( QWidget* parent )
 
 }
 
+/*!
+* Destroys graphic view object.
+*/
 GraphicView::~GraphicView()
 {
     delete m_myRenderArea;
 }
 
+/*!
+* Sets view scene to \a sceneGraphRoot.
+*/
 void GraphicView::SetSceneGraph( GraphicRoot* sceneGraphRoot )
 {
 
@@ -77,30 +83,49 @@ void GraphicView::SetSceneGraph( GraphicRoot* sceneGraphRoot )
     ViewCoordinateSystem( true );
 }
 
+/*!
+* Returns the render area region.
+*/
 SbViewportRegion GraphicView::GetViewportRegion() const
 {
 	return m_myRenderArea->getViewportRegion();
 }
+
+/*!
+* Returns the render area camera.
+*/
 
 SoCamera* GraphicView::GetCamera() const
 {
 	return m_myRenderArea->getCamera();
 }
 
+/*!
+* This function has no effect.
+*/
 QModelIndex GraphicView::indexAt( const QPoint& /*point*/ ) const
 {
     return QModelIndex();
 }
 
+/*!
+* This function has no effect.
+*/
 void  GraphicView::scrollTo( const QModelIndex& /*index*/, ScrollHint /*hint*/ )
 {
 }
 
+/*!
+* This function an empty rect.
+*/
 QRect GraphicView::visualRect ( const QModelIndex& /*index*/ ) const
 {
     return QRect();
 }
 
+/*!
+* This function has no effect.
+*/
 void GraphicView::ViewCoordinateSystem( bool view )
 {
 	m_myRenderArea->setFeedbackVisibility( view );
@@ -111,51 +136,59 @@ void GraphicView::ViewDecoration( bool view )
 	m_myRenderArea->setDecoration( view );
 }
 
-void GraphicView::dataChanged( const QModelIndex&  /*topLeft*/, const QModelIndex&  /*bottomRight*/ )
-{
-
-}
-
-void GraphicView::rowsInserted( const QModelIndex& /*parent*/, int  /*start*/, int  /*end*/ )
-{
-
-}
-
-void GraphicView::rowsAboutToBeRemoved( const QModelIndex& /*parent*/, int  /*start*/, int  /*end*/ )
-{
-
-}
-
-void GraphicView::setSelection( const QRect&  /*rect*/, QItemSelectionModel::SelectionFlags  /*flags*/ )
-{
-
-}
-
+/*!
+* This function has no effect.
+*/
 int GraphicView::horizontalOffset() const
 {
 	return 0;
 }
 
-int GraphicView::verticalOffset() const
-{
-	return 0;
-}
-
+/*!
+* This function has no effect.
+*/
 bool GraphicView::isIndexHidden( const QModelIndex& /*index*/ ) const
 {
     return false;
 }
 
+/*!
+* This function has no effect.
+*/
 QModelIndex GraphicView::moveCursor( CursorAction /*cursorAction*/, Qt::KeyboardModifiers /*modifiers*/ )
 {
 	return QModelIndex();
 }
 
+/*!
+* Item selection is not supported in this view, is implemented in coin. As a result, this function has no effect
+*/
+void GraphicView::setSelection( const QRect&  /*rect*/, QItemSelectionModel::SelectionFlags  /*flags*/ )
+{
+
+}
+
+/*!
+* Returns zero offset of the view, in this view there is no scroll area.
+
+*/
+int GraphicView::verticalOffset() const
+{
+	return 0;
+}
+
+/*!
+* Returns the region from the viewport of the items in the given \a selection.
+* This method is required becouse the class inherits QAbstractItemView. In this class, returns an empty region.
+*/
 QRegion GraphicView::visualRegionForSelection( const QItemSelection& /*selection*/ ) const
 {
 	return QRegion();
 }
 
+/*!
+* When an item becomes the current item, preivious selections are removed and the node with the index \a current is selected into coin.
+*/
 void GraphicView::currentChanged( const QModelIndex & current, const QModelIndex& /*previous*/ )
 {
 	if( m_sceneGraphRoot )
@@ -170,7 +203,5 @@ void GraphicView::currentChanged( const QModelIndex & current, const QModelIndex
 			path = static_cast< SoFullPath*>( variant.value< PathWrapper >().GetPath() );
 			m_sceneGraphRoot->Select( path );
 		}
-
-		//m_sceneGraphRoot->touch();
 	}
 }

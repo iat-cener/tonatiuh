@@ -53,7 +53,7 @@ class TransmissivityDialog : public QDialog, private Ui::TransmissivityDialog
 	Q_OBJECT
 
 public:
-	TransmissivityDialog( QVector< TTransmissivityFactory* > transmissivityFactoryList, QWidget* parent = 0, Qt::WindowFlags f = 0 );
+	TransmissivityDialog( QVector< TTransmissivityFactory* > transmissivityFactoryList, QWidget* parent = 0 );
 	~TransmissivityDialog();
 
 	TTransmissivity* GetTransmissivity() const;

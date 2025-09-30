@@ -37,6 +37,8 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
+#include <iostream>
+
 #include "UserMField.h"
 
 SoType UserMField::classTypeId STATIC_SOTYPE_INIT;
@@ -65,6 +67,5 @@ void UserMField::atexit_cleanup(void)
   SoType::removeType(UserMField::classTypeId.getName());
   UserMField::classTypeId STATIC_SOTYPE_INIT;
 }
-
 
 

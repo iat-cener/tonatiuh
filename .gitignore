@@ -43,3 +43,12 @@ TonatiuhProject/release/moc_predefs.h
 TonatiuhProject/release/plugins/moc_predefs.h
 *.gcno
 *.h
+*.gcda
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json
+TonatiuhProject/.vscode/c_cpp_properties.json
+TonatiuhProject/.vscode/launch.json
+TonatiuhProject/.vscode/tasks.json
+TonatiuhProject/.db
+*.json

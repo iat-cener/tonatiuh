@@ -175,7 +175,8 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	int nIntersections =  vectorTr.size();
 	if ( nIntersections == 0 ) return false;
 	QList< double > keys = vectorTr.keys();
-	std::vector<double> array = QVector<double>::fromList( keys ).toStdVector() ;
+	QVector< double > keysVector = QVector<double>::fromList( keys );
+	std::vector<double> array( keysVector.begin(), keysVector.end() );
 
 
  	std::sort(array.begin(), array.end());

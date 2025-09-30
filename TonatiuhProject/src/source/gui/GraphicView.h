@@ -73,19 +73,16 @@ public:
     void ViewDecoration( bool view );
     void ViewCoordinateSystem( bool view );
 
-protected slots:
-    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-    void rowsInserted(const QModelIndex &parent, int start, int end);
-    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-    void currentChanged ( const QModelIndex & current, const QModelIndex & previous );
-
 protected:
-    virtual void setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags );
     virtual int horizontalOffset () const;
-    virtual int verticalOffset() const;
     virtual bool isIndexHidden ( const QModelIndex & index ) const;
     virtual QModelIndex moveCursor ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers );
+    virtual void setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags );
+    virtual int verticalOffset() const;
     virtual QRegion visualRegionForSelection ( const QItemSelection & selection ) const;
+
+protected slots:
+    void currentChanged ( const QModelIndex & current, const QModelIndex & previous );
 
 private:
     GraphicRoot* m_sceneGraphRoot;

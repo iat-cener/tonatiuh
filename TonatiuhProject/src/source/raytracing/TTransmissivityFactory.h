@@ -41,9 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QtPlugin>
 
+#include "TTransmissivity.h"
+
 class QString;
 class QIcon;
-class TTransmissivity;
 
 class TTransmissivityFactory
 {

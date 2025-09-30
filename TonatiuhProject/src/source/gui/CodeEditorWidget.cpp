@@ -49,8 +49,8 @@
 /*!
  * Creates a new code editor widget.
  */
-CodeEditorWidget::CodeEditorWidget( QWidget *parent, Qt::WindowFlags f )
-:QWidget( parent, f ),
+CodeEditorWidget::CodeEditorWidget( QWidget *parent )
+:QWidget( parent ),
  m_currentScritFileName( QString( "" ) )
 {
 

@@ -255,16 +255,16 @@ QString ContainerViewerMFVec3::GetData( ) const
  */
 bool ContainerViewerMFVec3::SetData( QString value )
 {
-	QStringList values = value.split( QRegExp( "[\\[\\]]" ), QString::SkipEmptyParts );
+	QStringList values = value.split( QRegExp( "[\\[\\]]" ), Qt::SkipEmptyParts );
 	if( values.count() < 1 || values.count() > 1 )	return false;
 
-	QStringList elements =values[0].split( QRegExp( "," ), QString::SkipEmptyParts );
+	QStringList elements =values[0].split( QRegExp( "," ), Qt::SkipEmptyParts );
 	int rows = elements.count();
 	int columns  = -1;
 	for( int i = 0; i < rows; i++ )
 	{
 
-		QStringList elementValues =elements[i].split( QRegExp("\\s+"), QString::SkipEmptyParts );
+		QStringList elementValues =elements[i].split( QRegExp("\\s+"), Qt::SkipEmptyParts );
 		if( i ==  0 ) columns = elementValues.count();
 		else if( i > 0 && columns != elementValues.count() )	return false;
 
@@ -274,7 +274,7 @@ bool ContainerViewerMFVec3::SetData( QString value )
 	variableValuesTable->setColumnCount( columns );
 	for( int i = 0; i < rows; i++ )
 	{
-		QStringList elementValues =elements[i].split( QRegExp("\\s+"), QString::SkipEmptyParts );
+		QStringList elementValues =elements[i].split( QRegExp("\\s+"), Qt::SkipEmptyParts );
 		for( int j = 0; j < columns; j++ )
 		{
 
@@ -471,6 +471,7 @@ QWidget* DoubleValuesDelegate::createEditor( QWidget* parent, const QStyleOption
 	QLineEdit* editor = new QLineEdit(parent);
 
 	QDoubleValidator* validator = new QDoubleValidator();
+    validator->setLocale( QLocale("en_US") );
 	validator->setNotation( QDoubleValidator::StandardNotation );
 	validator->setParent( editor );
 	editor->setValidator( validator );
@@ -495,6 +496,7 @@ void DoubleValuesDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
 {
 	QLineEdit* lineEditor = static_cast<QLineEdit*>( editor );
 	QString value = lineEditor->text();
+	std::replace(value.begin(), value.end(), ',', '.');
 	model->setData( index, value );
 }
 

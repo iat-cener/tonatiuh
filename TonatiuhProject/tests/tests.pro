@@ -40,7 +40,6 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/TLightKit.o \
                         $$(TONATIUH_ROOT)/debug/TLightShape.o \
                         $$(TONATIUH_ROOT)/debug/TMaterial.o \
-                        $$(TONATIUH_ROOT)/debug/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/debug/TPhotonMap.o \
                         $$(TONATIUH_ROOT)/debug/Transform.o \
                         $$(TONATIUH_ROOT)/debug/trf.o \
@@ -88,7 +87,6 @@ else {
                         $$(TONATIUH_ROOT)/release/TLightKit.o \
                         $$(TONATIUH_ROOT)/release/TLightShape.o \
                         $$(TONATIUH_ROOT)/release/TMaterial.o \
-                        $$(TONATIUH_ROOT)/release/tonatiuh_script.o \
                         $$(TONATIUH_ROOT)/release/TPhotonMap.o \
                         $$(TONATIUH_ROOT)/release/Transform.o \
                         $$(TONATIUH_ROOT)/release/trf.o \

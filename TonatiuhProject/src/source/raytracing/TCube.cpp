@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "BBox.h"
 #include "NormalVector.h"
+#include "ParameterValueException.h"
 #include "Point3D.h"
 #include "TCube.h"
 #include "Ray.h"
@@ -196,6 +197,18 @@ bool TCube::IntersectP( const Ray& ray ) const
 	}
 	else return false;
 }
+
+
+bool TCube::ValidateParamaterValue( std::string name, std::string value ) const
+{
+
+    if( name == "m_width" && std::stod( value ) < 0 ) throw ParameterValueException( name, "m_width must be a positive number.");
+    if( name == "m_height" && std::stod( value ) < 0 ) throw ParameterValueException( name, "m_height must be a positive number.");
+    if( name == "m_depth" && std::stod( value ) < 0)  throw ParameterValueException( name, "m_depth must be a positive number.");
+
+    return true;
+}
+
 
 void TCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
 {

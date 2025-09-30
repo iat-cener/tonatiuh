@@ -14,6 +14,8 @@ SUBDIRS = ComponentHeliostatField \
 			PhotonMapExportNull\
 			RandomMersenneTwister \
 			RandomRngStream \
+			ShapeAnnulus \
+			ShapeAxisymmetricCPC\
             ShapeBezierSurface \
 			ShapeCAD \
 			ShapeCone \

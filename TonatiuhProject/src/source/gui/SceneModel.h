@@ -98,8 +98,6 @@ public:
 	bool SetNodeName( SoNode* coinChild, QString newName );
 
 	void UpdateSceneModel();
-	void DisconnectAllTrackers();
-	void ReconnectAllTrackers();
 
 signals:
 	void LightNodeStateChanged( int newState );
@@ -112,8 +110,6 @@ private:
 	InstanceNode* AddInstanceNode( InstanceNode& instanceNodeParent, SoNode* separatorKit );
 	void GenerateInstanceTree( InstanceNode& instanceParent );
 	void GenerateTShapeKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
-//	void GenerateTAnalyzerKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
-//	void GenerateSoNodeKitListPartSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
 	void GenerateTSeparatorKitSubTree( InstanceNode& instanceNodeParent, SoNode* parentNode );
 
 private:

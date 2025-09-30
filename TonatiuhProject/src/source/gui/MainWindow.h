@@ -83,7 +83,7 @@ class MainWindow: public QMainWindow, private Ui::MainWindow
     Q_OBJECT
 
 public:
-	MainWindow( QString tonatiuhFile = 0, QWidget* parent = 0, Qt::WindowFlags flags = 0 );
+	MainWindow( QString tonatiuhFile = 0, QWidget* parent = 0 );
     ~MainWindow();
 
     void FinishManipulation( );
@@ -102,10 +102,10 @@ public slots:
 	void Copy();
 	void Copy( QString nodeURL );
 	void CreateGroupNode();
-	void CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVector< QVariant > parametersList );
+	void CreateComponentNode( QString componentType, QString nodeName, int numberofParameters, QVariant parameters );
 	void CreateMaterial( QString materialType );
 	void CreateShape( QString shapeType );
-	void CreateShape( QString shapeType, int numberOfParameters, QVector< QVariant > parametersList );
+	void CreateShape( QString shapeType, int numberOfParameters, QVariant parameters );
 	void CreateSurfaceNode();
 	void CreateTracker( QString trackerType );
 	void Cut();
@@ -124,8 +124,6 @@ public slots:
 	void SaveComponent( QString componentFileName  );
 	void SaveAs( QString fileName );
     void SelectNode( QString nodeUrl );
-	void SetAimingPointAbsolute();
-	void SetAimingPointRelative();
 	void SetExportAllPhotonMap();
 	void SetExportCoordinates( bool enabled, bool global );
 	void SetExportIntersectionSurface( bool enabled );
@@ -158,11 +156,10 @@ private slots:
 	void CreateComponent( TComponentFactory* pTComponentFactory );
 	void CreateMaterial( TMaterialFactory* pTMaterialFactory );
     void CreateShape( TShapeFactory* pTShapeFactory );
-    void CreateShape( TShapeFactory* pTShapeFactory, int numberOfParameters, QVector< QVariant > parametersList );
+    void CreateShape( TShapeFactory* pTShapeFactory, int numberOfParameters, QVariant parameters );
 	void CreateTracker( TTrackerFactory* pTTrackerFactory );
 	void DefineSunLight();
 	void DefineTransmissivity();
-	void DisconnectAllTrackers( bool disconnect );
 	void DisplayRays( bool display );
 	void InsertUserDefinedComponent();
 	void ItemDragAndDrop(const QModelIndex& newParent, const QModelIndex& node);
@@ -187,15 +184,7 @@ private slots:
 
 	SbVec3f getTargetOfCamera(SoCamera* cam);
 
-    //Manipulators actions
-    void SoTransform_to_SoCenterballManip();
-	void SoTransform_to_SoJackManip();
-	void SoTransform_to_SoHandleBoxManip();
-	void SoTransform_to_SoTabBoxManip();
-	void SoTransform_to_SoTrackballManip();
-	void SoTransform_to_SoTransformBoxManip();
-	void SoTransform_to_SoTransformerManip();
-	void SoManip_to_SoTransform();
+ 
 
 	//View menu actions
 	void on_actionAxis_toggled();
@@ -210,8 +199,6 @@ private slots:
 
 	//Help menu actions
 	void on_actionAbout_triggered();
-	//void on_actionCheckForUpdates_triggered();
-
 
 private:
     void ChangeModelScene();
@@ -222,8 +209,6 @@ private:
    	QSplitter* GetHorizontalSplitterPointer();
     bool OkToContinue();
     bool Paste( QModelIndex nodeIndex, tgc::PasteType type );
-	void SetAimingPointRelativity(bool relative);
-	bool SetAimingPointRelativity( QModelIndex nodeIndex, bool relative);
     QDir PluginDirectory();
 
     void ReadSettings();

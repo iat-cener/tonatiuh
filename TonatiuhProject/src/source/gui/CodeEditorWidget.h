@@ -90,7 +90,7 @@ class CodeEditorWidget : public QWidget, private Ui::CodeEditorWidget
 	Q_OBJECT
 
 public:
-	CodeEditorWidget( QWidget *parent = 0, Qt::WindowFlags f = 0);
+	CodeEditorWidget( QWidget *parent = 0 );
 	~CodeEditorWidget();
 
 	QTextDocument* Document() const;

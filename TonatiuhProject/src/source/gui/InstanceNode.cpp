@@ -182,21 +182,6 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, bool* isShape
 	return false;
 }
 
-void InstanceNode::DisconnectAllTrackers()
-{
-	//RecursivlyApply<TTracker>(&TTracker::Disconnect);
-}
-
-void InstanceNode::ReconnectAllTrackers(TLightKit * coinLight)
-{
-	//RecursivlyApply<TTracker,TLightKit *>(&TTracker::SetLightAngles,coinLight);
-}
-
-void  InstanceNode::SetAimingPointRelativity( bool relative )
-{
-	//RecursivlyApply<TTrackerForAiming,bool>(&TTrackerForAiming::SetAimingPointRelativity, relative);
-}
-
 void InstanceNode::extendBoxForLight( SbBox3f * extendedBox )
 {
 	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() );
@@ -221,6 +206,7 @@ void InstanceNode::SetIntersectionBBox( BBox nodeBBox )
 {
 	m_bbox = nodeBBox;
 }
+
 /**
  * Set node world to object transform to \a nodeTransform .
  */
@@ -248,66 +234,3 @@ bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
 	return ( (thisNode.GetNode() == otherNode.GetNode()) &&
 			 (thisNode.GetParent()->GetNode() == otherNode.GetParent()->GetNode()) );
 }
-
-/*
-template<class T> void InstanceNode::RecursivlyApply(void (T::*func)(void))
-{
-	if ( GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
-	{
-	   T * elem = static_cast< T* > ( GetNode() );
-	   (elem->*func)();
-	}
-	else
-	{
-      for( int index = 0; index < children.size(); ++index )
-      {
-         children[index]->RecursivlyApply<T>(func);
-      }
-	}
-}
-template<class T,class Param1> void InstanceNode::RecursivlyApply(void (T::*func)(Param1),Param1 param1)
-{
-	if (GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
-	{
-	   T * elem = static_cast< T* > ( GetNode() );
-	   (elem->*func)(param1);
-	}
-	else
-	{
-      for( int index = 0; index < children.size(); ++index )
-      {
-         children[index]->RecursivlyApply<T,Param1>(func,param1);
-      }
-	}
-}
-template<class T,class Param1> void InstanceNode::RecursivlyApplyWithMto(void (T::*func)(Param1),Param1 param1)
-{
-	if (GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
-	{
-	   T * elem = static_cast< T* > ( GetNode() );
-	   (elem->*func)(&m_transformWTO, param1);
-	}
-	else
-	{
-      for( int index = 0; index < children.size(); ++index )
-      {
-         children[index]->RecursivlyApplyWithMto<T,Param1>(func,param1);
-      }
-	}
-}
-template<class T,class Param1,class Param2> void InstanceNode::RecursivlyApplyWithMto(void (T::*func)(Param1,Param2),Param1 param1,Param1 param2)
-{
-	if (GetNode()->getTypeId().isDerivedFrom( T::getClassTypeId() ) )
-	{
-	   T * elem = static_cast< T* > ( GetNode() );
-	   (elem->*func)(&m_transformWTO, param1,param2);
-	}
-	else
-	{
-      for( int index = 0; index < children.size(); ++index )
-      {
-         children[index]->RecursivlyApplyWithMto<T,Param1,Param2>(func,param1,param2);
-      }
-	}
-}
-*/

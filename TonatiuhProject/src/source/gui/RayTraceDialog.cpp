@@ -44,12 +44,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "RayTraceDialog.h"
 
 /**
- * Creates a dialog to ray tracer options with the given \a parent and \a f flags.
+ * Creates a dialog to ray tracer options with the given \a parent.
  *
  * The variables take the default values.
  */
-RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ),
+RayTraceDialog::RayTraceDialog( QWidget * parent )
+:QDialog ( parent ),
  m_drawPhotons( false ),
  m_drawRays( false ),
  m_heightDivisions( 200 ),
@@ -65,7 +65,7 @@ RayTraceDialog::RayTraceDialog( QWidget * parent, Qt::WindowFlags f )
 }
 
 /**
- * Creates a dialog to ray tracer options with the given \a parent and \a f flags.
+ * Creates a dialog to ray tracer options with the given \a parents.
  *
  * The variables take the values specified by \a numRats, \a faction, \a drawPhotons and \a increasePhotonMap.
  */
@@ -74,8 +74,8 @@ RayTraceDialog::RayTraceDialog( int numRays,
 		int widthDivisions, int heightDivisions,
 		bool drawRays, bool drawPhotons,
 		int photonMapSize, bool increasePhotonMap,
-		QWidget * parent, Qt::WindowFlags f )
-:QDialog ( parent, f ),
+		QWidget * parent )
+:QDialog ( parent ),
  m_drawPhotons( drawPhotons ),
  m_drawRays( drawRays ),
  m_heightDivisions( heightDivisions ),

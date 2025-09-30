@@ -60,13 +60,13 @@ class RayTraceDialog: public QDialog, private Ui::RayTraceDialog
 
 
 public:
-	RayTraceDialog( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+	RayTraceDialog( QWidget * parent = 0 );
 	RayTraceDialog( int numRays,
 			QVector< RandomDeviateFactory* > randomFactoryList, int selectedRandomFactory = 0,
 			int widthDivisions = 200,int heightDivisions = 200,
 			bool drawRays = true, bool drawPhotons = false,
 			int photonMapSize = 1000000, bool increasePhotonMap = false,
-				QWidget * parent = 0, Qt::WindowFlags f = 0 );
+				QWidget * parent = 0 );
     ~RayTraceDialog();
 
     bool DrawPhotons() const;

@@ -54,7 +54,5 @@ public:
                            const QModelIndex &index) const;                       
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
 
-public slots:
-	void CloseEditor();
 };
 #endif /*PARAMETERSDELEGATE_H_*/

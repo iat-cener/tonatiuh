@@ -39,6 +39,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TSHAPE_H_
 #define TSHAPE_H_
 
+#include <string>
+
 #include <Inventor/nodes/SoShape.h>
 
 struct BBox;
@@ -62,6 +64,8 @@ public:
 	virtual BBox GetBBox() const = 0;
 	virtual QString GetIcon() const = 0;
 	virtual Point3D Sample( double u, double v ) const = 0;
+
+	virtual bool ValidateParamaterValue( std::string /*name*/, std::string /*value*/ ) const { return true; };
 
 protected:
 	virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) = 0;
