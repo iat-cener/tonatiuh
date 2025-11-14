@@ -46,8 +46,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "trt.h"
 
-class SoSensor;
-
 class ShapeFlatDisk : public TShape
 {
 	SO_NODE_HEADER(TShapeFlatDisk);
