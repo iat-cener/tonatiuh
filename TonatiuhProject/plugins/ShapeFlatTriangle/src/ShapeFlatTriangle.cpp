@@ -46,13 +46,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "gf.h"
 
 #include "BBox.h"
 #include "DifferentialGeometry.h"
 #include "NormalVector.h"
+#include "ParameterValueException.h"
 #include "Point3D.h"
 #include "Ray.h"
 #include "ShapeFlatTriangle.h"
@@ -79,20 +79,6 @@ ShapeFlatTriangle::ShapeFlatTriangle(  )
 	SO_NODE_ADD_FIELD( b, ( 0.5, 0.0, 0.0) );
 	SO_NODE_ADD_FIELD( c, ( 0.0, 1.0, 0.0) );
 
-
-	SoFieldSensor* m_aSensor = new SoFieldSensor(updateA, this);
-	m_aSensor->setPriority( 1 );
-	m_aSensor->attach( &a );
-	SoFieldSensor* m_bSensor = new SoFieldSensor(updateB, this);
-	m_bSensor->setPriority( 1 );
-	m_bSensor->attach( &b );
-	SoFieldSensor* m_cSensor = new SoFieldSensor(updateC, this);
-	m_cSensor->setPriority( 1 );
-	m_cSensor->attach( &c );
-
-	m_lastValidA = a;
-	m_lastValidB = b;
-	m_lastValidC = c;
 }
 
 /**
@@ -156,8 +142,6 @@ bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, Different
 	if( (thit - objectRay.mint) < tol ) return false;
 
 	Point3D hitPoint = objectRay( thit );
-	//Vector3D vAB = Vector3D( b.getValue()[0], b.getValue()[1], b.getValue()[2] ) - Vector3D( a.getValue()[0], a.getValue()[1], a.getValue()[2] );
-	//Vector3D vAC = Vector3D( c.getValue()[0], c.getValue()[1], c.getValue()[2] ) - Vector3D( a.getValue()[0], a.getValue()[1], a.getValue()[2] );
 
 	// is hitPoint inside triangle?
 	//double uu, uv, vv, wu, wv, D;
@@ -234,102 +218,53 @@ Point3D ShapeFlatTriangle::Sample( double u, double v ) const
 	return GetPoint3D( u, v );
 }
 
-void ShapeFlatTriangle::updateA( void *data, SoSensor * )
+/*!
+* Checks the \a value for parameter \a name.
+*/
+bool ShapeFlatTriangle::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	ShapeFlatTriangle* shapeFlatTriangle = (ShapeFlatTriangle *) data;
-	if( shapeFlatTriangle->a == shapeFlatTriangle->b )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "a and b vertex coordinates cannot be the same. ") );
-		shapeFlatTriangle->a.setValue( shapeFlatTriangle->m_lastValidA.getValue() );
-	}
-	else if( shapeFlatTriangle->a == shapeFlatTriangle->c )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "a and c vertex coordinates cannot be the same. ") );
-		shapeFlatTriangle->a.setValue( shapeFlatTriangle->m_lastValidA.getValue() );
-	}
+	trt::TONATIUH_REALVECTOR3 newValue;
+	newValue.set( value.c_str() );  
 
-	Point3D v0( shapeFlatTriangle->a.getValue()[0], shapeFlatTriangle->a.getValue()[1], shapeFlatTriangle->a.getValue()[2]);
-	Point3D v1( shapeFlatTriangle->b.getValue()[0], shapeFlatTriangle->b.getValue()[1], shapeFlatTriangle->b.getValue()[2] );
-	Point3D v2( shapeFlatTriangle->c.getValue()[0], shapeFlatTriangle->c.getValue()[1], shapeFlatTriangle->c.getValue()[2] );
+	Point3D v0( a.getValue()[0], a.getValue()[1], a.getValue()[2]);
+	Point3D v1( b.getValue()[0], b.getValue()[1], b.getValue()[2] );
+	Point3D v2( c.getValue()[0], c.getValue()[1], c.getValue()[2] );
+
+	if( name == "a" )
+	{
+		v0 = Point3D( newValue.getValue()[0], newValue.getValue()[1], newValue.getValue()[2] );
+		if( newValue == b )
+			throw ParameterValueException( "a", "'a' and 'b' vertex coordinates cannot be the same" );
+		else if(  newValue == c )
+			throw ParameterValueException( "a", "'a' and 'c' vertex coordinates cannot be the same" );
+	}
+	
+	if( name == "b" )
+	{
+		v1 = Point3D( newValue.getValue()[0], newValue.getValue()[1], newValue.getValue()[2] );
+		if( newValue == a )
+			throw ParameterValueException( "b", "'a' and 'b' vertex coordinates cannot be the same" );
+		if( newValue == c )
+			throw ParameterValueException( "b", "'b' and 'c' vertex coordinates cannot be the same" );
+	}
+	if( name == "c" )
+	{
+		v2 = Point3D( newValue.getValue()[0], newValue.getValue()[1], newValue.getValue()[2] );
+		if( newValue == a )
+			throw ParameterValueException( "c", "'a' and 'c' vertex coordinates cannot be the same" );
+		if( newValue == b )
+		 	throw ParameterValueException( "c", "'b' and 'c' vertex coordinates cannot be the same" );
+	}
 
 	Vector3D edge1 = Normalize( v1 - v0 );
 	Vector3D edge2 = Normalize( v2 - v0 );
-	if( ( DotProduct( edge1, edge2 ) < 1 ) && ( DotProduct( edge1, edge2 ) > -1 ) )
+	if( fabs(fabs( DotProduct( edge1, edge2 ) )  - 1.0 ) < 0.00000001 ) 
 	{
-		shapeFlatTriangle->m_lastValidA.setValue( shapeFlatTriangle->a.getValue() );
+		throw ParameterValueException( name, "Defined three vertex, are colinear points." );
 	}
-	else
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Defined three vertex, are colinear points.") );
-		shapeFlatTriangle->a.setValue( shapeFlatTriangle->m_lastValidA.getValue() );
-	}
-
-
+	return true;
 }
 
-void ShapeFlatTriangle::updateB( void *data, SoSensor * )
-{
-	ShapeFlatTriangle* shapeFlatTriangle = (ShapeFlatTriangle *) data;
-	if( shapeFlatTriangle->b == shapeFlatTriangle->a )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "b and a vertex coordinates cannot be the same. ") );
-		shapeFlatTriangle->b.setValue( shapeFlatTriangle->m_lastValidB.getValue() );
-	}
-	else if( shapeFlatTriangle->b == shapeFlatTriangle->c )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "b and c vertex coordinates cannot be the same. ") );
-		shapeFlatTriangle->b.setValue( shapeFlatTriangle->m_lastValidB.getValue() );
-	}
-
-	Point3D v0( shapeFlatTriangle->a.getValue()[0], shapeFlatTriangle->a.getValue()[1], shapeFlatTriangle->a.getValue()[2]);
-	Point3D v1( shapeFlatTriangle->b.getValue()[0], shapeFlatTriangle->b.getValue()[1], shapeFlatTriangle->b.getValue()[2] );
-	Point3D v2( shapeFlatTriangle->c.getValue()[0], shapeFlatTriangle->c.getValue()[1], shapeFlatTriangle->c.getValue()[2] );
-
-	Vector3D edge1 = Normalize( v1 - v0 );
-	Vector3D edge2 = Normalize( v2 - v0 );
-	if( ( DotProduct( edge1, edge2 ) < 1 ) && ( DotProduct( edge1, edge2 ) > -1 ) )
-	{
-		shapeFlatTriangle->m_lastValidB.setValue( shapeFlatTriangle->b.getValue() );
-	}
-	else
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Defined three vertex, are colinear points.") );
-		shapeFlatTriangle->b.setValue( shapeFlatTriangle->m_lastValidB.getValue() );
-	}
-
-}
-
-void ShapeFlatTriangle::updateC( void *data, SoSensor * )
-{
-	ShapeFlatTriangle* shapeFlatTriangle = (ShapeFlatTriangle *) data;
-	if( shapeFlatTriangle->c == shapeFlatTriangle->a )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "c and a vertex coordinates cannot be the same. ") );
-		shapeFlatTriangle->c.setValue( shapeFlatTriangle->m_lastValidC.getValue() );
-	}
-	else if( shapeFlatTriangle->c == shapeFlatTriangle->b )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "c and b vertex coordinates cannot be the same. ") );
-		shapeFlatTriangle->c.setValue( shapeFlatTriangle->m_lastValidC.getValue() );
-	}
-
-	Point3D v0( shapeFlatTriangle->a.getValue()[0], shapeFlatTriangle->a.getValue()[1], shapeFlatTriangle->a.getValue()[2]);
-	Point3D v1( shapeFlatTriangle->b.getValue()[0], shapeFlatTriangle->b.getValue()[1], shapeFlatTriangle->b.getValue()[2] );
-	Point3D v2( shapeFlatTriangle->c.getValue()[0], shapeFlatTriangle->c.getValue()[1], shapeFlatTriangle->c.getValue()[2] );
-
-	Vector3D edge1 = Normalize( v1 - v0 );
-	Vector3D edge2 = Normalize( v2 - v0 );
-	if( ( DotProduct( edge1, edge2 ) < 1 ) && ( DotProduct( edge1, edge2 ) > -1 ) )
-	{
-		shapeFlatTriangle->m_lastValidC.setValue( shapeFlatTriangle->c.getValue() );
-	}
-	else
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Defined three vertex, are colinear points.") );
-		shapeFlatTriangle->c.setValue( shapeFlatTriangle->m_lastValidC.getValue() );
-	}
-
-}
 
 Point3D ShapeFlatTriangle::GetPoint3D (double u, double v) const
 {

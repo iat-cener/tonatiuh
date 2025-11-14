@@ -45,8 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "trt.h"
 
-class SoSensor;
-
 class ShapeFlatTriangle : public TShape
 {
 	SO_NODE_HEADER(ShapeFlatTriangle);
@@ -63,15 +61,13 @@ public:
 	bool IntersectP( const Ray &ray ) const;
 
 	Point3D Sample( double u, double v ) const;
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REALVECTOR3 a;
 	trt::TONATIUH_REALVECTOR3 b;
 	trt::TONATIUH_REALVECTOR3 c;
 
 protected:
-	static void updateA(void *data, SoSensor *);
-	static void updateB(void *data, SoSensor *);
-	static void updateC(void *data, SoSensor *);
 
 	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
@@ -81,11 +77,6 @@ protected:
 	void generatePrimitives(SoAction *action);
 	virtual ~ShapeFlatTriangle();
 
-
-private:
-	trt::TONATIUH_REALVECTOR3 m_lastValidA;
-	trt::TONATIUH_REALVECTOR3 m_lastValidB;
-	trt::TONATIUH_REALVECTOR3 m_lastValidC;
 };
 
 #endif /* SHAPEFLATTRIANGLE_H_ */
