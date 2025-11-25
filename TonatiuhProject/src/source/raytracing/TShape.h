@@ -57,12 +57,12 @@ class TShape : public SoShape
 public:
     static void initClass();
 
-	virtual bool IntersectP( const Ray& objectRay ) const = 0;
-	virtual bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const = 0;
-	virtual double GetArea() const = 0;
-	virtual double GetVolume() const = 0;
 	virtual BBox GetBBox() const = 0;
 	virtual QString GetIcon() const = 0;
+
+	virtual bool IntersectP( const Ray& objectRay ) const = 0;
+	virtual bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const = 0;
+	
 	virtual Point3D Sample( double u, double v ) const = 0;
 
 	virtual bool ValidateParamaterValue( std::string /*name*/, std::string /*value*/ ) const { return true; };
