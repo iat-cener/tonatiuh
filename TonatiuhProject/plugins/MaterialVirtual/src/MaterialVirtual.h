@@ -36,21 +36,13 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MATERIALVIRTUAL_H_
 #define MATERIALVIRTUAL_H_
 
-
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFString.h>
-
 #include "TMaterial.h"
-#include "trt.h"
 
 class SoSensor;
-
+class SoFieldSensor;
 
 class MaterialVirtual : public TMaterial
 {
@@ -60,7 +52,7 @@ public:
 	MaterialVirtual( );
 	static void initClass();
 
-    QString getIcon();
+    std::string GetIcon();
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
 
 	SoMFColor  m_ambientColor;
@@ -69,7 +61,6 @@ public:
 	SoMFColor  m_emissiveColor;
 	SoMFFloat m_shininess;
 	SoMFFloat m_transparency ;
-
 
 protected:
    	virtual ~MaterialVirtual();
@@ -81,6 +72,12 @@ protected:
 	static void updateShininess( void* data, SoSensor* );
 	static void updateTransparency( void* data, SoSensor* );
 
+	SoFieldSensor* m_ambientColorSensor;
+	SoFieldSensor* m_diffuseColorSensor;
+	SoFieldSensor* m_specularColorSensor;
+	SoFieldSensor* m_emissiveColorSensor;
+	SoFieldSensor* m_shininessSensor;
+	SoFieldSensor* m_transparencySensor;
 };
 
 #endif /* MATERIALVIRTUAL_H_ */

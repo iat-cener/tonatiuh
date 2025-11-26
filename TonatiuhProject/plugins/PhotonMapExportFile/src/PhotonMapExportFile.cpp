@@ -35,19 +35,15 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Mart
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <iostream>
-
-#include <QDataStream>
-#include <QTextStream>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
 #include <QMessageBox>
 
-#include "PhotonMapExportFile.h"
+#include <QDataStream>
+#include <QDir>
+#include <QTextStream>
+
 #include "InstanceNode.h"
-#include "SceneModel.h"
+#include "Photon.h"
+#include "PhotonMapExportFile.h"
 
 /*!
  * Creates export object to export photon map photons to a file.

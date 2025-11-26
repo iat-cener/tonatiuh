@@ -46,6 +46,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoMField.h>
 
 class FieldEditor;
+class QWidget;
 
 class UserMField: public SoMField
 {
@@ -56,7 +57,7 @@ public:
 	static void initClass(void);
 	static SoType getClassTypeId(void);
 	static void atexit_cleanup(void);
-	virtual FieldEditor* GetEditor() const = 0;
+	virtual FieldEditor* GetEditor( QWidget* parent = 0 ) const = 0;
 
 	QStringList GetNames( ) const
 	{

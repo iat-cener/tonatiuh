@@ -74,8 +74,14 @@ int LineNumberWidget::LineNumberAreaWidth() const
 		max /= 10;
 		++digits;
 	}
-
-	int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+	
+	int space = 3;
+	
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+	space += ( fontMetrics().horizontalAdvance( QLatin1Char('9') ) * digits );
+#else
+	space += ( fontMetrics().width(QLatin1Char('9')) * digits );
+#endif
 
 	return space;
 }

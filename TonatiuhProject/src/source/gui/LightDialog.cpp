@@ -49,6 +49,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShape.h"
 #include "TShapeKit.h"
 #include "TShapeFactory.h"
+#include "TSunShape.h"
 #include "TSunShapeFactory.h"
 
 /**

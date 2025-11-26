@@ -39,8 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PHOTON_H_
 #define PHOTON_H_
 
-#include "InstanceNode.h"
 #include "Point3D.h"
+
+class InstanceNode;
 
 struct Photon
 {

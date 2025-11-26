@@ -33,15 +33,11 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, I�igo Les.
+Juana Amieva, Azael Mancillas, Cesar Cantu, Inigo Les.
 ***************************************************************************/
-
-#include <cmath>
-
-#include <QFileDialog>
+#include <QFileInfo>
 #include <QFutureWatcher>
-#include <QMutex>
-#include <QPair>
+#include <QModelIndex>
 #include <QProgressDialog>
 #include <QtConcurrentMap>
 
@@ -49,20 +45,20 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, I�igo Les.
 #include <Inventor/nodes/SoTransform.h>
 
 #include "FluxAnalysis.h"
-#include "TSceneKit.h"
-#include "SceneModel.h"
-#include "InstanceNode.h"
-#include "RandomDeviate.h"
-#include "TPhotonMap.h"
 #include "gc.h"
+#include "InstanceNode.h"
+#include "Photon.h"
 #include "RayTracer.h"
 #include "RayTracerNoTr.h"
+#include "SceneModel.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
-#include "Transform.h"
+#include "TPhotonMap.h"
 #include "trf.h"
+#include "TSceneKit.h"
 #include "TShape.h"
 #include "TShapeKit.h"
+#include "TSunShape.h"
 #include "TTransmissivity.h"
 
 /******************************************
@@ -220,7 +216,7 @@ void FluxAnalysis::RunFluxAnalysis( QString nodeURL, QString surfaceSide, unsign
 	if ( !m_pCurrentScene->getPart( "lightList[0]", false ) )return;
 	TLightKit* lightKit = static_cast< TLightKit* >( m_pCurrentScene->getPart( "lightList[0]", false ) );
 
-	InstanceNode* lightInstance = sceneInstance->children[0];
+	InstanceNode* lightInstance = sceneInstance->GetChild( 0 );
 	if ( !lightInstance ) return;
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return;

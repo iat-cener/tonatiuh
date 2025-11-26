@@ -39,24 +39,16 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef RAYTRACER_H_
 #define RAYTRACER_H_
 
-#include <vector>
-
-#include <QMap>
-#include <QPair>
-#include <QObject>
 #include <QVector>
 
 #include "Transform.h"
 
 class InstanceNode;
 class ParallelRandomDeviate;
-struct Photon;
-class RandomDeviate;
-struct RayTracerPhoton;
 class QMutex;
-class QPoint;
-class TPhotonMap;
+class RandomDeviate;
 class TLightShape;
+class TPhotonMap;
 class TSunShape;
 class TTransmissivity;
 

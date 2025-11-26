@@ -35,21 +35,17 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#ifndef MATERIALSTANDARDROUGHSPECULAR_H_
+#define MATERIALSTANDARDROUGHSPECULAR_H_
 
-#ifndef MaterialStandardRoughSpecular_H_
-#define MaterialStandardRoughSpecular_H_
-
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
 #include "trt.h"
 
 class SoSensor;
+class SoFieldSensor;
 class Vector3D;
-
 
 class MaterialStandardRoughSpecular : public TMaterial
 {
@@ -57,14 +53,15 @@ class MaterialStandardRoughSpecular : public TMaterial
 
 public:
 	enum Distribution {
-		//PILLBOX = 0,
 		NORMAL = 1,
 	   };
 	MaterialStandardRoughSpecular( );
 	static void initClass();
 
-    QString getIcon();
+    std::string GetIcon();
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
+
+    bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL reflectivity;
 	trt::TONATIUH_REAL sigmaSlope;
@@ -77,7 +74,6 @@ public:
 	SoMFColor mEmissiveColor;
 	SoMFFloat mShininess;
 	SoMFFloat mTransparency;
-
 
 protected:
    	virtual ~MaterialStandardRoughSpecular();
@@ -92,6 +88,12 @@ protected:
 	static void updateShininess( void* data, SoSensor* );
 	static void updateTransparency( void* data, SoSensor* );
 
+	SoFieldSensor* m_ambientColorSensor;
+	SoFieldSensor* m_diffuseColorSensor;
+	SoFieldSensor* m_specularColorSensor;
+	SoFieldSensor* m_emissiveColorSensor;
+	SoFieldSensor* m_shininessSensor;
+	SoFieldSensor* m_transparencySensor;
 };
 
-#endif /*MaterialStandardRoughSpecular_H_*/
+#endif /*MATERIALSTANDARDROUGHSPECULAR_H_*/

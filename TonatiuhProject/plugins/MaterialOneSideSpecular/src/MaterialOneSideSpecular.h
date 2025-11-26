@@ -36,21 +36,15 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MATERIALONESIDESPECULAR_H_
 #define MATERIALONESIDESPECULAR_H_
 
-
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
 #include "trt.h"
 
 class SoSensor;
-
 
 class MaterialOneSideSpecular : public TMaterial
 {
@@ -58,17 +52,16 @@ class MaterialOneSideSpecular : public TMaterial
 
 public:
 	enum Distribution {
-		//PILLBOX = 0,
 		NORMAL = 1,
 	   };
-
 
 	MaterialOneSideSpecular( );
 	static void initClass();
 
-    QString getIcon();
+    std::string GetIcon();
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
 
+    bool ValidateParamaterValue( std::string name, std::string value ) const;
 
     SoSFBool isFront;
 	trt::TONATIUH_REAL reflectivity;
@@ -80,25 +73,17 @@ public:
 	SoMFColor  m_specularColor;
 	SoMFColor  m_emissiveColor;
 	SoMFFloat m_shininess;
-	SoMFFloat m_transparency ;
-
+	SoMFFloat m_transparency;
 
 protected:
    	virtual ~MaterialOneSideSpecular();
-
-   	double m_sigmaOpt;
-
-	static void updateReflectivity( void* data, SoSensor* );
+	
 	static void updateAmbientColor( void* data, SoSensor* );
 	static void updateDiffuseColor( void* data, SoSensor* );
 	static void updateSpecularColor( void* data, SoSensor* );
 	static void updateEmissiveColor( void* data, SoSensor* );
 	static void updateShininess( void* data, SoSensor* );
 	static void updateTransparency( void* data, SoSensor* );
-
 };
-
-
-
 
 #endif /* MATERIALONESIDESPECULAR_H_ */

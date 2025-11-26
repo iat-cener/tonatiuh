@@ -32,25 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gc.h"
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
 #include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeCylinder.h"
-#include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeCylinder);
 
@@ -76,16 +69,6 @@ ShapeCylinder::~ShapeCylinder()
 {
 }
 
-double ShapeCylinder::GetArea() const
-{
-	return (2 * gc::Pi * radius.getValue() * length.getValue() );
-}
-
-double ShapeCylinder::GetVolume() const
-{
-	return (gc::Pi * (radius.getValue()*radius.getValue()) * length.getValue() );
-}
-
 /*!
  * Return the shape bounding box.
  */
@@ -107,9 +90,9 @@ BBox ShapeCylinder::GetBBox() const
 	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
-QString ShapeCylinder::GetIcon() const
+std::string ShapeCylinder::GetIcon() const
 {
-	return QLatin1String( ":/icons/ShapeCylinder.png" );
+	return ( ":/icons/ShapeCylinder.png" );
 }
 
 bool ShapeCylinder::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
@@ -218,19 +201,25 @@ bool ShapeCylinder::IntersectP( const Ray& worldRay ) const
 	return Intersect( worldRay, 0, 0 );
 }
 
+/*!
+* Returns the 3D coordintates por parameteric coordinates \a u and \a v
+*/
 Point3D ShapeCylinder::Sample( double u, double v ) const
 {
 	return GetPoint3D( u, v );
 }
 
+/*!
+* Checks the cone parameters values. Checks the \a value of parameter \a name .
+*/
 bool ShapeCylinder::ValidateParamaterValue( std::string name, std::string value ) const
 {
     if( name == "radius" && std::stod( value ) < 0 ) 
-		throw ParameterValueException( "radius", " The radius of the cylinder, must be a positive number" );
+		throw ParameterValueException( "radius", "The radius of the cylinder, must be a positive number" );
 	else if( name == "length" && std::stod( value ) < 0 ) 
-		throw ParameterValueException( "length", " The length of the cylinder must be a positive number" );
+		throw ParameterValueException( "length", "The length of the cylinder must be a positive number" );
 	else if( name == "phiMax" && std::stod( value ) < 0 ) 
-		throw ParameterValueException( "phiMax", " The angle to define the shape section must be a positive number" );
+		throw ParameterValueException( "phiMax", "The angle to define the shape section must be a positive number" );
 
 	return true;
 }
@@ -263,7 +252,6 @@ NormalVector ShapeCylinder::GetNormal (double u, double /* v */) const
 	Vector3D dpdv( 0.0, 0.0, length.getValue() );
 
 	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-
 }
 
 void ShapeCylinder::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
@@ -337,9 +325,6 @@ void ShapeCylinder::generatePrimitives(SoAction *action)
 		}
 	}
 
-
-	//const int totalIndices  = (rows-1)*(columns-1)*4;
-
     float u = 1;
     float v = 1;
 
@@ -392,5 +377,4 @@ void ShapeCylinder::generatePrimitives(SoAction *action)
 	}
 
 	endShape();
-
 }

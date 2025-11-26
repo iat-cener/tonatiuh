@@ -12,19 +12,11 @@ INCLUDEPATH += . \
 # Input
 HEADERS = src/*.h \
             $$(TONATIUH_ROOT)/src/source/geometry/tgf.h \	
-			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TShape.h  \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.h  \
-			$$(TONATIUH_ROOT)/src/source/statistics/RandomDeviate.h
+			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h
 
 SOURCES = src/*.cpp \
             $$(TONATIUH_ROOT)/src/source/geometry/tgf.cpp \		
-			$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.cpp \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TShape.cpp  \
-			$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.cpp 
-
+			$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.cpp 
 
 RESOURCES += src/MaterialAngleDependentRefractive.qrc
 
@@ -43,4 +35,3 @@ CONFIG(debug, debug|release) {
 else { 
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/release/plugins/MaterialAngleDependentRefractive
 }
-

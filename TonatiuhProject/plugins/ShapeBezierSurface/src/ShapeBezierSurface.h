@@ -39,18 +39,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SHAPEBEZIERPATCH_H_
 #define SHAPEBEZIERPATCH_H_
 
+#include <vector>
+
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include "Vector3D.h"
-#include "TShape.h"
+#include "BezierPatch.h"
+#include "BVHPatch.h"
 #include "trt.h"
-
-class BezierPatch;
-class BVHPatch;
-class SoMFVec3d;
-class SoSensor;
-
+#include "TShape.h"
 
 class ShapeBezierSurface : public TShape
 {
@@ -61,10 +58,8 @@ public:
 
     static void initClass();
 
-	double GetArea() const;
-	double GetVolume() const { return 0.0;};
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool IntersectP( const Ray& worldRay ) const;
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
@@ -72,8 +67,6 @@ public:
 	Point3D Sample( double u, double v ) const;
 
 	bool DefineSurfacePatches( std::vector< Point3D > inputData, int nUCurves, int nVCurves );
-
-	bool ValidateParamaterValue( std::string /*name*/, std::string /*value*/ ) const { return true; };
 
 
 protected:

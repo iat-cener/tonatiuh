@@ -40,15 +40,31 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 SO_NODE_ABSTRACT_SOURCE(TSunShape);
 
+/*!
+ * @brief Initializes the TSunShape class in the nodes type system.
+ *
+ * This static function must be called once before using any TSunShape-derived
+ * nodes.
+ */
 void TSunShape::initClass()
 {
 	SO_NODE_INIT_ABSTRACT_CLASS(TSunShape, SoNode, "Node");
 }
 
+/*!
+ * @brief Constructor for TSunShape.
+ *
+ * Initializes the base sunshape object. 
+ */
 TSunShape::TSunShape()
 {
 }
 
+/*!
+ * @brief Destructor for TSunShape.
+ *
+ * Cleans up resources associated with the base class.
+ */
 TSunShape::~TSunShape()
 {
 }

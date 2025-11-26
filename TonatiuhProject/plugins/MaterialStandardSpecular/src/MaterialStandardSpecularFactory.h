@@ -35,13 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MATERIALSTANDARDSPECULARFACTORY_H_
 #define MATERIALSTANDARDSPECULARFACTORY_H_
 
-#include "TMaterialFactory.h"
 #include "MaterialStandardSpecular.h"
-
+#include "TMaterialFactory.h"
 
 class MaterialStandardSpecularFactory: public QObject, public TMaterialFactory
 {

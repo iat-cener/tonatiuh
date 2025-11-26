@@ -39,9 +39,11 @@
 #ifndef TPHOTONMAP_H_
 #define TPHOTONMAP_H_
 
-#include "Photon.h"
+#include "Transform.h"
 
+class Photon;
 class PhotonMapExport;
+class SceneModel;
 
 class TPhotonMap
 {

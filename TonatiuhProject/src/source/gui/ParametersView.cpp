@@ -43,8 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "FieldContainerWidget.h"
 #include "ParametersView.h"
 
-#include <iostream>
-
 /**
  * Creates a new ParametersView with parent \a parent.
  */
@@ -158,7 +156,6 @@ void ParametersView::AddTab( SoNode* coinNode, QString partName )
 	FieldContainerWidget* nodeContainer = new FieldContainerWidget( coinNode, partName, this );
 	addTab( nodeContainer, type );
 	connect( nodeContainer, SIGNAL( valueModificated( SoNode*, QString, QString ) ), this, SLOT( SetValue( SoNode*, QString, QString ) ) );
-	
 }
 
 /*!

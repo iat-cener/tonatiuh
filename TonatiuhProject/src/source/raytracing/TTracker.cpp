@@ -35,15 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QString>
+#include <Inventor/nodes/SoTransform.h>
 
 #include "Transform.h"
-
-#include "TSceneKit.h"
 #include "TTracker.h"
-#include "TLightKit.h"
-#include "tgc.h"
+#include "Vector3D.h"
 
 
 SO_NODEENGINE_ABSTRACT_SOURCE( TTracker );
@@ -74,8 +70,6 @@ void TTracker::SetAzimuthAngle( trt::TONATIUH_REAL* azimuthField )
 {
 	m_azimuth.connectFrom( azimuthField );
 }
-
-
 
 void TTracker::SetZenithAngle( trt::TONATIUH_REAL* zenithField )
 {

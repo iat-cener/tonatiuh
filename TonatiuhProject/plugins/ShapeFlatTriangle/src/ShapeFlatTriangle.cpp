@@ -32,31 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <vector>
-#include <algorithm>
-
-#include <QMessageBox>
-#include <QString>
-#include <QVector>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
-#include "NormalVector.h"
 #include "ParameterValueException.h"
-#include "Point3D.h"
 #include "Ray.h"
 #include "ShapeFlatTriangle.h"
-#include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeFlatTriangle);
 
@@ -73,12 +59,10 @@ void ShapeFlatTriangle::initClass()
  */
 ShapeFlatTriangle::ShapeFlatTriangle(  )
 {
-
 	SO_NODE_CONSTRUCTOR(ShapeFlatTriangle);
 	SO_NODE_ADD_FIELD( a, (-0.5, 0.0, 0.0) );
 	SO_NODE_ADD_FIELD( b, ( 0.5, 0.0, 0.0) );
 	SO_NODE_ADD_FIELD( c, ( 0.0, 1.0, 0.0) );
-
 }
 
 /**
@@ -86,20 +70,6 @@ ShapeFlatTriangle::ShapeFlatTriangle(  )
  */
 ShapeFlatTriangle::~ShapeFlatTriangle()
 {
-}
-
-
-double ShapeFlatTriangle::GetArea() const
-{
-	Point3D v0( a.getValue()[0], a.getValue()[1], a.getValue()[2]);
-	Point3D v1( b.getValue()[0], b.getValue()[1], b.getValue()[2] );
-	Point3D v2( c.getValue()[0], c.getValue()[1], c.getValue()[2] );
-
-	Vector3D edge1 = v1 - v0;
-	Vector3D edge2 = v2 - v0;
-
-	double area = 0.5 * CrossProduct( edge1, edge2).length();
-	return area;
 }
 
 /*!
@@ -117,24 +87,21 @@ BBox ShapeFlatTriangle::GetBBox() const
 	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
-QString ShapeFlatTriangle::GetIcon() const
+std::string ShapeFlatTriangle::GetIcon() const
 {
-	return ":/icons/ShapeFlatTriangle.png";
+	return ( ":/icons/ShapeFlatTriangle.png" );
 }
 
 bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-
 	Vector3D vAB = Vector3D( b.getValue()[0], b.getValue()[1], b.getValue()[2] ) - Vector3D( a.getValue()[0], a.getValue()[1], a.getValue()[2] );
 	Vector3D vAC = Vector3D( c.getValue()[0], c.getValue()[1], c.getValue()[2] ) - Vector3D( a.getValue()[0], a.getValue()[1], a.getValue()[2] );
 
 	Vector3D vN = CrossProduct( vAB, vAC );
 	double d = -vN.x * a.getValue()[0] - vN.y * a.getValue()[1] - vN.z * a.getValue()[2];
-	//if( objectRay.direction.z ==0.0 ) return false;
 
 	double thit = (-d - vN.x * objectRay.origin.x - vN.y * objectRay.origin.y - vN.z * objectRay.origin.z )
 			/ (vN.x * objectRay.direction().x  + vN.y * objectRay.direction().y + vN.z * objectRay.direction().z );
-	//double thit = - objectRay.origin.z / objectRay.direction.z;
 
 	//Evaluate Tolerance
 	double tol = 0.00001;
@@ -144,7 +111,6 @@ bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, Different
 	Point3D hitPoint = objectRay( thit );
 
 	// is hitPoint inside triangle?
-	//double uu, uv, vv, wu, wv, D;
 	double uu = DotProduct( vAB, vAB );
 	double uv = DotProduct( vAB, vAC );
 	double vv = DotProduct( vAC, vAC );
@@ -168,7 +134,7 @@ bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, Different
 	Vector3D dpdu = vAB;
 	Vector3D dpdv = vAC;
 
-	// Compute ShapeCone \dndu and \dndv
+	// Compute \dndu and \dndv
 	Vector3D d2Pduu( 0.0, 0.0, 0.0 );
 	Vector3D d2Pduv( 0.0, 0.0, 0.0 );
 	Vector3D d2Pdvv( 0.0, 0.0, 0.0 );
@@ -179,7 +145,6 @@ bool ShapeFlatTriangle::Intersect( const Ray& objectRay, double* tHit, Different
 	double G = DotProduct( dpdv, dpdv );
 
 	Vector3D N = Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-
 
 	double e = DotProduct( N, d2Pduu );
 	double f = DotProduct( N, d2Pduv );
@@ -264,7 +229,6 @@ bool ShapeFlatTriangle::ValidateParamaterValue( std::string name, std::string va
 	}
 	return true;
 }
-
 
 Point3D ShapeFlatTriangle::GetPoint3D (double u, double v) const
 {
@@ -366,4 +330,3 @@ void ShapeFlatTriangle::generatePrimitives(SoAction *action)
 
     endShape();
 }
-

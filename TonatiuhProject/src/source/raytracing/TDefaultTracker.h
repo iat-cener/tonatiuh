@@ -52,7 +52,7 @@ class TDefaultTracker : public TTracker
 	
 public:
     static void initClass();
-	QString getIcon();
+	std::string GetIcon();
 	
 	//Constructor
 	TDefaultTracker();

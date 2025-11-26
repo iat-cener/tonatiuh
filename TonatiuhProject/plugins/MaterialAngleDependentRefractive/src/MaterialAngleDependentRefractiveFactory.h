@@ -36,15 +36,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MATERIALANGLEDEPENDINGREFRACTIVEFACTORY_H_
 #define MATERIALANGLEDEPENDINGREFRACTIVEFACTORY_H_
 
-
-
-#include "TMaterialFactory.h"
 #include "MaterialAngleDependentRefractive.h"
-
+#include "TMaterialFactory.h"
 
 class MaterialAngleDependentRefractiveFactory: public QObject, public TMaterialFactory
 {

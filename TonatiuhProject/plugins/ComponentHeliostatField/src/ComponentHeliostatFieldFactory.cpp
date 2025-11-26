@@ -35,13 +35,9 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <QIcon>
+#include <QList>
 #include <QMessageBox>
-#include <QVector>
-#include <QVariant>
-#include <iostream>
-
 
 #include "ComponentHeliostatFieldFactory.h"
 
@@ -61,14 +57,11 @@ TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* 
 	return component.CreateField();
 }
 
-
-TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* pPluginManager, int numberofParameters, QVariant parameters  ) const
+TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* pPluginManager, int numberofParameters, QVariant parameters ) const
 {
-	
 	QList<QVariant> parametersList = parameters.toList();
 	if( numberofParameters != 15 || parametersList.size() != 15 )
 	{
-
         QMessageBox::warning( 0, QString( "Heliostat Field Layout" ),
         		QString( "The number of arguments is not valid:\n"
         				"\t- Heliostat coordinates filename\n"
@@ -92,10 +85,10 @@ TSeparatorKit* ComponentHeliostatFieldFactory::CreateTComponent( PluginManager* 
 
 		return 0;
 	}
+	
 	ComponentHeliostatField component( pPluginManager );
 	return component.CreateField( parametersList );
 }
-
 
 #if QT_VERSION < 0x050000 // pre Qt 5
 Q_EXPORT_PLUGIN2(ComponentHeliostatField, ComponentHeliostatFieldFactory)

@@ -39,30 +39,18 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TRF_H_
 #define TRF_H_
 
-#include <QMap>
 #include <QPair>
 #include <QStringList>
 
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoNode.h>
 
-#include "Photon.h"
-#include "TPhotonMap.h"
-#include "Ray.h"
+#include "InstanceNode.h"
 #include "tgf.h"
-#include "TShape.h"
-#include "TSunShape.h"
-#include "Transform.h"
+#include "TPhotonMap.h"
 #include "TSeparatorKit.h"
+#include "TShape.h"
 #include "TShapeKit.h"
-
-
-
-class InstanceNode;
-class RandomDeviate;
-class TPhotonMap;
 
 namespace trf
 {
@@ -97,10 +85,11 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 		Transform nodeWTO(worldToObject * parentWTO );
 		instanceNode->SetIntersectionTransform( nodeWTO );
 
-		bool insertChildInSurfaceList=insertInSurfaceList;
-		for( int index = 0; index < instanceNode->children.count() ; ++index )
+		bool insertChildInSurfaceList = insertInSurfaceList;
+		int childrenSize = instanceNode->NumberOfChildren();
+		for( int index = 0; index < childrenSize; ++index )
 		{
-			InstanceNode* childInstance = instanceNode->children[index];
+			InstanceNode* childInstance = instanceNode->GetChild( index );
 			ComputeSceneTreeMap(childInstance, nodeWTO, insertChildInSurfaceList );
 
 			nodeBB = Union( nodeBB, childInstance->GetIntersectionBBox() );
@@ -129,13 +118,13 @@ inline void trf::ComputeSceneTreeMap( InstanceNode* instanceNode, Transform pare
 
 
 		BBox shapeBB;
-
-		if(  instanceNode->children.count() > 0 )
+		int childrenSize = instanceNode->NumberOfChildren();
+		if( childrenSize > 0 )
 		{
 			InstanceNode* shapeInstance = 0;
-			if( instanceNode->children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
-				shapeInstance =  instanceNode->children[0];
-			else if(  instanceNode->children.count() > 1 )	shapeInstance =  instanceNode->children[1];
+			if( instanceNode->GetChild( 0 )->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+				shapeInstance =  instanceNode->GetChild( 0 );
+			else if( childrenSize > 1 )	shapeInstance =  instanceNode->GetChild( 1 );
 
 			if( shapeInstance )
 			{
@@ -161,9 +150,11 @@ inline void trf::ComputeFistStageSurfaceList( InstanceNode* instanceNode, QStrin
 
 	if( coinNode->getTypeId().isDerivedFrom( TSeparatorKit::getClassTypeId() ) )
 	{
-		for( int index = 0; index < instanceNode->children.count() ; ++index )
+		
+		int childrenSize = instanceNode->NumberOfChildren();
+		for( int index = 0; index < childrenSize; ++index )
 		{
-			InstanceNode* childInstance = instanceNode->children[index];
+			InstanceNode* childInstance = instanceNode->GetChild( index );
 			ComputeFistStageSurfaceList( childInstance, disabledNodesURL, surfacesList );
 		}
 
@@ -186,7 +177,6 @@ inline void trf::CreatePhotonMap( TPhotonMap*& photonMap, QPair< TPhotonMap* , s
 	photonMap->StoreRays( photonsList.second );
 
 }
-
 
 inline Transform trf::GetObjectToWorld(SoPath* nodePath)
 {

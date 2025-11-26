@@ -36,9 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <iostream>
-
 #include "UserMField.h"
 
 SoType UserMField::classTypeId STATIC_SOTYPE_INIT;
@@ -56,7 +53,6 @@ UserMField::~UserMField()
 {
 }
 
-
 void UserMField::initClass(void)
 {
 	PRIVATE_FIELD_INIT_CLASS(UserMField, "UserMField", inherited, NULL);
@@ -67,5 +63,3 @@ void UserMField::atexit_cleanup(void)
   SoType::removeType(UserMField::classTypeId.getName());
   UserMField::classTypeId STATIC_SOTYPE_INIT;
 }
-
-

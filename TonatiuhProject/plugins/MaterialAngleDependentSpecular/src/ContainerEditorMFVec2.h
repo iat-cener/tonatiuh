@@ -40,39 +40,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef CONTAINEREDITORMFVEC2_H_
 #define CONTAINEREDITORMFVEC2_H_
 
-#include <QDialog>
-#include <QDoubleValidator>
 #include <QItemDelegate>
-#include <QPlainTextEdit>
-#include <QLineEdit>
-#include <QWidget>
 
 #include "FieldEditor.h"
 
 #include "ui_containerviewermfvec2.h"
 
 /***************************************************************
- * CustomPlainTextEdit
- ***************************************************************/
-class CustomPlainTextEdit: public QLineEdit
-{
-	Q_OBJECT
-public:
-	CustomPlainTextEdit( QWidget* parent = 0 );
-	~CustomPlainTextEdit();
-
-signals:
-	void editingFinished( );
-
-protected:
-    void focusOutEvent(QFocusEvent* event);
-};
-
-
-/***************************************************************
  * ContainerEditorMFVec2
  ***************************************************************/
-
 class ContainerEditorMFVec2: public FieldEditor
 {
 	Q_OBJECT
@@ -89,7 +65,6 @@ public:
 signals:
 	void editingFinished( );
 
-
 protected:
     void focusOutEvent(QFocusEvent* event);
 
@@ -99,16 +74,14 @@ protected slots:
 
 private:
     QHBoxLayout* m_horizontalLayout;
-    CustomPlainTextEdit* m_valuesEdit;
+	QLineEdit* m_valuesEdit;
     QPushButton* m_editButton;
     QStringList m_titlesList;
 };
 
-
 /***************************************************************
  * ContainerViewerMFVec2
  ***************************************************************/
-
 class DoubleValuesDelegate;
 class ContainerViewerMFVec2: public QDialog, private Ui::ContainerViewerMFVec2
 {
@@ -136,11 +109,9 @@ private:
 	DoubleValuesDelegate* m_delegate;
 };
 
-
 /***************************************************************
  * DoubleValuesDelegate
  ***************************************************************/
-
 class DoubleValuesDelegate : public QItemDelegate
 {
     Q_OBJECT
@@ -160,6 +131,5 @@ public:
         const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 };
-
 
 #endif /* CONTAINEREDITORMFVEC2_H_ */

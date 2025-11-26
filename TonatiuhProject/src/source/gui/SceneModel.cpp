@@ -35,30 +35,21 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QIcon>
 #include <QMessageBox>
+#include <QIcon>
 
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoSelection.h>
-#include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/nodekits/SoSceneKit.h>
-#include <Inventor/nodekits/SoNodeKitListPart.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include "gf.h"
-
 #include "InstanceNode.h"
-#include "PathWrapper.h"
 #include "SceneModel.h"
+#include "PathWrapper.h"
 #include "TLightKit.h"
 #include "TMaterial.h"
-#include "TSceneTracker.h"
 #include "TSceneKit.h"
-#include "TSeparatorKit.h"
+#include "TSceneTracker.h"
 #include "TShape.h"
 #include "TShapeKit.h"
-#include "TTracker.h"
 
 /*!
  * Creates an empty model.
@@ -270,7 +261,7 @@ QModelIndex SceneModel::index( int row, int column, const QModelIndex& parentMod
 {
 	if ( !m_instanceRoot ) return QModelIndex();
 	InstanceNode* instanceParent = NodeFromIndex( parentModelIndex );
-    return createIndex( row, column, instanceParent->children[ row ] );
+    return createIndex( row, column, instanceParent->GetChild( row ) );
 }
 
 InstanceNode* SceneModel::NodeFromIndex( const QModelIndex& modelIndex ) const
@@ -282,7 +273,7 @@ InstanceNode* SceneModel::NodeFromIndex( const QModelIndex& modelIndex ) const
 int SceneModel::rowCount( const QModelIndex& parentModelIndex ) const
 {
 	InstanceNode* instanceParent = NodeFromIndex( parentModelIndex );
-	return ( instanceParent ) ? ( instanceParent->children.count() ) : 0;
+	return ( instanceParent ) ? ( instanceParent->NumberOfChildren() ) : 0;
 }
 
 int SceneModel::columnCount( const QModelIndex& ) const
@@ -301,7 +292,7 @@ QModelIndex SceneModel::parent( const QModelIndex& childModelIndex ) const
     InstanceNode* instanceGrandparent = instanceParent->GetParent();
     if ( !instanceGrandparent ) return QModelIndex();
 
-    int row = instanceGrandparent->children.indexOf( instanceParent );
+    int row = instanceGrandparent->GetChildIndex( instanceParent );
     return createIndex( row, childModelIndex.column(), instanceParent );
 }
 
@@ -381,24 +372,24 @@ QVariant SceneModel::data( const QModelIndex& modelIndex, int role ) const
 			else if( coinNode->getTypeId().isDerivedFrom(TShapeKit::getClassTypeId() ) )
 			{
 				SoBaseKit* nodeKit = static_cast< SoBaseKit* >( coinNode );
-				TShape* kit = static_cast<TShape*>( nodeKit->getPart( "shape", false ) );
-				if( kit ) return QIcon( kit->GetIcon() );
+				TShape* shape = static_cast<TShape*>( nodeKit->getPart( "shape", false ) );
+				if( shape ) return QIcon( QString::fromStdString( shape->GetIcon() ) );
 				return QIcon( QLatin1String( ":/icons/shapeKit.png" ) );
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(SoShape::getClassTypeId() ) )
 			{
 				TShape* shape = static_cast<TShape*>( coinNode );
-				return QIcon( shape->GetIcon() );
+				return QIcon( QString::fromStdString( shape->GetIcon() ) );
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TMaterial::getClassTypeId() ) )
 			{
 				TMaterial* material = static_cast<TMaterial*>( coinNode );
-				return QIcon(material->getIcon());
+				return QIcon( QString::fromStdString( material->GetIcon() ) );
 			}
 			else if( coinNode->getTypeId().isDerivedFrom(TTracker::getClassTypeId() ) )
 			{
-				TTracker* tracer = static_cast<TTracker*>( coinNode );
-				return QIcon(tracer->getIcon());
+				TTracker* tracker = static_cast<TTracker*>( coinNode );
+				return QIcon( QString::fromStdString( tracker->GetIcon() ) );
 			}
      	}
     }
@@ -468,7 +459,13 @@ void SceneModel::InsertLightNode( TLightKit& coinLight )
 {
 	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* > ( m_coinScene->getPart("lightList", true ) ) ;
 	if ( lightList->getNumChildren() > 0 )
-		if( m_instanceRoot->children.size() > 0 ) m_instanceRoot->children.remove( 0 );
+	{	
+		if( m_instanceRoot->NumberOfChildren() > 0 )
+		{
+			// Remove first element
+			m_instanceRoot->RemoveChild( 0 );
+		} 
+	}
 
 	m_coinScene->setPart( "lightList[0]", &coinLight );
 
@@ -521,8 +518,8 @@ void SceneModel::RemoveCoinNode( int row, SoBaseKit& coinParent )
 	for( int index = 0; index< instanceListParent.size(); ++index )
 	{
 	    InstanceNode* instanceParent = instanceListParent[index];
-	    InstanceNode* instanceNode = instanceParent->children[row];
-	    instanceParent->children.remove(row);
+	    InstanceNode* instanceNode = instanceParent->GetChild( row );
+	    instanceParent->RemoveChild( row );
 
 	    QList<InstanceNode*>& instanceList = m_mapCoinQt[ instanceNode->GetNode()];
 		instanceList.removeAt( instanceList.indexOf( instanceNode ) );
@@ -534,7 +531,7 @@ void SceneModel::RemoveLightNode( TLightKit& coinLight )
 {
 	SoNodeKitListPart* lightList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "lightList", true ) );
     if ( lightList ) lightList->removeChild( &coinLight );
-    m_instanceRoot->children.remove( 0 );
+    m_instanceRoot->RemoveChild( 0 );
 
 	SoSearchAction trackersSearch;
 	trackersSearch.setType( TTracker::getClassTypeId() );
@@ -587,7 +584,7 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	QList<InstanceNode*> instanceListParent = m_mapCoinQt[ &coinParent ];
 	InstanceNode* instanceParent = instanceListParent[0];
 
-	SoNode* coinChild = instanceParent->children[row]->GetNode();
+	SoNode* coinChild = instanceParent->GetChild( row )->GetNode();
 	if( !coinChild->getTypeId().isDerivedFrom( SoBaseKit::getClassTypeId() ) )
 	{
 		SbString partName = coinParent.getPartString( coinChild );
@@ -627,8 +624,6 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 	{
 		InstanceNode* instanceNode = instanceList[0];
 	    DeleteInstanceTree( *instanceNode );
-	    //delete instanceNode;
-	    //instanceNode = 0;
 	}
 	else
 	{
@@ -636,20 +631,17 @@ bool SceneModel::Cut( SoBaseKit& coinParent, int row )
 		if( instanceListParent.size() == 1 )
 		{
 		    InstanceNode* instanceParent = instanceListParent[0];
-		    InstanceNode* instanceNode = instanceParent->children[row];
+		    InstanceNode* instanceNode = instanceParent->GetChild( row );
 		    DeleteInstanceTree( *instanceNode );
-		    //delete instanceNode;
-		    //instanceNode = 0;
+
 		}
 		else
 		{
 			for( int index = 0; index< instanceListParent.size(); ++index )
 			{
 			    InstanceNode* instanceParent = instanceListParent[index];
-			    InstanceNode* instanceNode = instanceParent->children[row];
+			    InstanceNode* instanceNode = instanceParent->GetChild( row );
 			    DeleteInstanceTree( *instanceNode );
-			    //delete instanceNode;
-			    //instanceNode = 0;
 			}
 		}
 	}
@@ -686,9 +678,9 @@ QModelIndex SceneModel::IndexFromNodeUrl( QString nodeUrl ) const
 
 		int child = 0;
 		int row = -1;
-		while( child < parentNode->children.count() )
+		while( child < parentNode->NumberOfChildren() )
 		{
-			if( parentNode->children[child]->GetNode()->getName()  == SbName( nodeName.toStdString().c_str() ) )
+			if( parentNode->GetChild( child )->GetNode()->getName()  == SbName( nodeName.toStdString().c_str() ) )
 			{
 				row = child;
 				break;
@@ -737,9 +729,9 @@ QModelIndex SceneModel::IndexFromPath( const SoNodeKitPath& coinNodePath ) const
     	if( coinNodePath.getNodeFromTail(1)->getTypeId().isDerivedFrom( SoSceneKit::getClassTypeId() ) )
 		{
     		int child = 0;
-			while( child < m_instanceRoot->children.count() )
+			while( child < m_instanceRoot->NumberOfChildren() )
 			{
-				if ( m_instanceRoot->children[child]->GetNode() == coinNode )
+				if ( m_instanceRoot->GetChild( child )->GetNode() == coinNode )
 					break;
 				child++;
 			}
@@ -862,12 +854,13 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 	{
 
 		InstanceNode* instance = nodeInstances[index];
-		QVector< InstanceNode* > parentChildren = instance->GetParent()->children;
-		int childIndex = parentChildren.indexOf( instance );
-		for( int child = 0; child < parentChildren.size(); ++child )
-		{
+		InstanceNode* parentInstance = instance->GetParent();
 
-			SbName idChildName = parentChildren[child]->GetNode()->getName();
+		int childIndex = parentInstance->GetChildIndex( instance );
+		int parentChildrenSize = parentInstance->NumberOfChildren();
+		for( int child = 0; child < parentChildrenSize; ++child )
+		{
+			SbName idChildName = parentInstance->GetChild( child )->GetNode()->getName();
 			if( child!= childIndex && idChildName == newName.toStdString().c_str() )	return false;
 		}
 	}
@@ -881,37 +874,15 @@ bool SceneModel::SetNodeName( SoNode* coinChild, QString newName )
 
 void SceneModel::UpdateSceneModel()
 {
-
-	/*TLightKit* lightKit = static_cast< TLightKit* >( m_coinScene->getPart( "lightList[0]", false ) );
-	if ( !lightKit )	return;
-
-	TSeparatorKit* concentratorRoot = static_cast< TSeparatorKit* >( m_coinScene->getPart( "childList[0]", false ) );
-	if ( !concentratorRoot )	return;
-
-	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
-	concentratorRoot->getBoundingBox( bbAction );
-
-	SbBox3f box = bbAction->getXfBoundingBox().project();
-	delete bbAction;
-
-	BBox sceneBox;
-	if( !box.isEmpty() )
-	{
-		sceneBox.pMin = Point3D( box.getMin()[0], box.getMin()[1], box.getMin()[2] );
-		sceneBox.pMax = Point3D( box.getMax()[0], box.getMax()[1], box.getMax()[2] );
-		if( lightKit ) lightKit->Update( sceneBox );
-	}
-	*/
 	emit layoutChanged();
 
 }
 
 void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 {
-
-	while (instanceNode.children.count()>0)
+	while (instanceNode.NumberOfChildren() > 0)
 	{
-		InstanceNode* childInstance = instanceNode.children[instanceNode.children.count()-1];
+		InstanceNode* childInstance = instanceNode.GetChild( instanceNode.NumberOfChildren()-1 );
 		DeleteInstanceTree( *childInstance );
 		delete childInstance;
 		childInstance = 0;
@@ -924,8 +895,8 @@ void SceneModel::DeleteInstanceTree( InstanceNode& instanceNode )
 	InstanceNode* instanceParent = instanceNode.GetParent();
 	if( instanceParent )
 	{
-		int row = instanceParent->children.indexOf( &instanceNode );
-		instanceParent->children.remove( row );
+		int row = instanceParent->GetChildIndex( &instanceNode );
+		instanceParent->RemoveChild( row );
 	}
 
 }

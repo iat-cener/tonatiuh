@@ -39,12 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef EXPORTPHOTONMAPFILE_H_
 #define EXPORTPHOTONMAPFILE_H_
 
-#include <QMap>
-#include <QString>
-
 #include "PhotonMapExport.h"
 
-class Photon;
+class InstanceNode;
 
 class PhotonMapExportFile : public PhotonMapExport
 {

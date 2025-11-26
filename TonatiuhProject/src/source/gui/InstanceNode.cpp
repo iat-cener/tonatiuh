@@ -36,37 +36,97 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
+#include <algorithm>
 
+#include <QString>
+
+#include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 
-#include "BBox.h"
-#include "DifferentialGeometry.h"
 #include "InstanceNode.h"
 #include "Ray.h"
-#include "tgf.h"
 #include "TMaterial.h"
-#include "Transform.h"
 #include "TShape.h"
 #include "TShapeKit.h"
-#include "TLightKit.h"
-#include "TTracker.h"
-#include "TTrackerForAiming.h"
 
 
+/*!
+* Creates an object for a \a node.
+*/
 InstanceNode::InstanceNode( SoNode* node )
 : m_coinNode( node ), m_parent( 0 )
 {
 }
 
+/*!
+* Destroys the object.
+*/
 InstanceNode::~InstanceNode()
 {
-		qDeleteAll( children );
+	// Delete all objects
+    for( auto child : m_children ) 
+        delete child;
+
+    // Clear vector to remove dangling pointers
+    m_children.clear();
 }
 
-/**
- * Returns node URL.
+/*!
+ * @brief Appends a new child node to the end of the child list.
+ *
+ * @param child Pointer to the node to be added as a child.
+ */
+void InstanceNode::AddChild( InstanceNode* child )
+{
+    m_children.push_back( child );
+    child->SetParent( this );
+}
+
+/*!
+ * @brief Returns the index of the given child node.
+ *
+ * Searches the children of the current node and returns the position of the specified child node.
+ *
+ * @param child Pointer to the child node.
+ * @return The index of the child node if found; otherwise, -1.
+ */
+int InstanceNode::GetChildIndex( InstanceNode* child ) const
+{
+	auto it = std::find( m_children.begin(), m_children.end(), child );
+    if( it != m_children.end() )
+	{
+        return ( std::distance( m_children.begin(), it) );
+	}
+	return -1;
+}
+
+/*!
+ * @brief Returns the bounding box of the instance node.
+ *
+ * @return The bounding box of the object.
+ */
+BBox InstanceNode::GetIntersectionBBox()
+{
+	return m_bbox;
+}
+
+/*!
+ * @brief Returns the transformation of the node.
+ *
+ * This transformation converts coordinates from world space to the object's
+ * local space.
+ *
+ * @return The transformation of the node.
+ */
+Transform InstanceNode::GetIntersectionTransform()
+{
+	return m_transformWTO;
+}
+
+/*!
+ * @brief Returns the URL of the node.
+ *
+ * @return A string representing the node's URL.
  */
 QString InstanceNode::GetNodeURL() const
 {
@@ -78,83 +138,78 @@ QString InstanceNode::GetNodeURL() const
    return url;
 }
 
-void InstanceNode::Print( int level ) const
-{
-   for( int i = 0; i < level; ++i ) std::cout << " ";
-      std::cout << m_coinNode->getTypeId().getName().getString()
-                << " has " << children.size()
-                << " children "<< std::endl;
-    for( int index = 0; index < children.count(); ++index )
-    	children[index]->Print( level++ );
-}
-
-/**
- * Appends new \a child node to the end of the child list.
-**/
-void InstanceNode::AddChild( InstanceNode* child )
-{
-    children.push_back( child );
-    child->SetParent( this );
-}
-/**
- * Inserts the \a instanceChild node as child number \a row.
-**/
+/*!
+ * @brief Inserts a child node at a specific position.
+ *
+ * Inserts the given \a instanceChild node as child number \a row.
+ *
+ * @param instanceChild Pointer to the child node to insert.
+ * @param row The position (index) at which to insert the child node.
+ */
 void InstanceNode::InsertChild( int row, InstanceNode* instanceChild)
 {
-   if( row > children.size() ) row = children.size();
-   children.insert( row, instanceChild);
+	if( row > int( m_children.size()  ) )
+   		m_children.push_back( instanceChild );
+	else
+		m_children.insert( m_children.begin() + row, instanceChild);
    instanceChild->SetParent(this);
 }
 
-
-//bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, InstanceNode** modelNode, Ray* outputRay )
+/*!
+ * @brief Executes the intersection routine of a ray with the node.
+ *
+ * Determines whether the given ray intersects with this node.
+ *
+ * @param ray The input ray to test for intersection.
+ * @param rand Random number generator.
+ * @param isShapeFront Set to indicate the surface side if an intersection occurs.
+ * @param modelNode The node where the intersection occrus, if any.
+ * @param outputRay The resulting ray after intersection, if any.
+ * @return true if the ray intersects with the node; false otherwise.
+ */
 bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, InstanceNode** modelNode, Ray* outputRay )
 {
+	int nChildren = int( m_children.size() );
 
 	//Check if the ray intersects with the BoundingBox
-   if( !m_bbox.IntersectP(ray) ) return false;
-   if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
-   {
-
-      bool isOutputRay = false;
-      double t = ray.maxt;
-      for( int index = 0; index < children.size(); ++index )
-      {
-         InstanceNode* intersectedChild = 0;
-         Ray childOutputRay;
-         bool childShapreFront = true;
-         bool isChildOutputRay = children[index]->Intersect( ray, rand, &childShapreFront, &intersectedChild, &childOutputRay );
-
-         if( ray.maxt < t )
-         {
-            t = ray.maxt;
-            *modelNode = intersectedChild;
-            *isShapeFront = childShapreFront;
-
-            *outputRay = childOutputRay;
-            isOutputRay = isChildOutputRay;
-
-         }
-      }
-
-      return isOutputRay;
-
-   }
+	if( !m_bbox.IntersectP(ray) ) return false;
+	if( !GetNode()->getTypeId().isDerivedFrom( TShapeKit::getClassTypeId() ) )
+	{
+		bool isOutputRay = false;
+		double t = ray.maxt;
+		for( int index = 0; index < nChildren; ++index )
+		{
+			InstanceNode* intersectedChild = 0;
+			Ray childOutputRay;
+			bool childShapreFront = true;
+			bool isChildOutputRay = m_children[index]->Intersect( ray, rand, &childShapreFront, &intersectedChild, &childOutputRay );
+			
+			if( ray.maxt < t )
+			{
+				t = ray.maxt;
+				*modelNode = intersectedChild;
+				*isShapeFront = childShapreFront;
+				*outputRay = childOutputRay;
+				isOutputRay = isChildOutputRay;
+			}
+		}
+		return isOutputRay;
+	}
 	else
 	{
 		Ray childCoordinatesRay( m_transformWTO( ray ) );
 
 		TShape* tshape = 0;
 		TMaterial* tmaterial = 0;
-		if( children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
+		if( m_children[0]->GetNode()->getTypeId().isDerivedFrom( TShape::getClassTypeId() ) )
 		{
-			tshape = static_cast< TShape* >( children[0]->GetNode() );
-			if( children.size() > 1 )	tmaterial = static_cast< TMaterial* > ( children[1]->GetNode() );
+			tshape = static_cast< TShape* >( m_children[0]->GetNode() );
+			if( m_children.size() > 1 )	tmaterial = static_cast< TMaterial* > ( m_children[1]->GetNode() );
 		}
-		else if(  children.count() > 1 )
+		else if( nChildren > 1 )
 		{
-			tmaterial = static_cast< TMaterial* > ( children[0]->GetNode() );
-			tshape = static_cast< TShape* >( children[1]->GetNode() );
+			tmaterial = static_cast< TMaterial* > ( m_children[0]->GetNode() );
+			tshape = static_cast< TShape* >( m_children[1]->GetNode() );
 		}
 
 		if( tshape )
@@ -182,53 +237,49 @@ bool InstanceNode::Intersect( const Ray& ray, RandomDeviate& rand, bool* isShape
 	return false;
 }
 
-void InstanceNode::extendBoxForLight( SbBox3f * extendedBox )
+/*!
+ * @brief Removes the child node at a given index from the children list.
+ *
+ * @param row The index of the child node to remove.
+ * @return true if the child node was successfully removed; false if the index is out of bounds.
+ */
+bool InstanceNode::RemoveChild( int row )
 {
-	SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() );
-	GetNode()->getBoundingBox( bbAction );
-
-	SbBox3f box = bbAction->getXfBoundingBox().project();
-	delete bbAction;
-	extendedBox->extendBy(box);
+	if( row >= int( m_children.size() ) )	return false;
+	m_children.erase( m_children.begin() + row );
+	return true;
 }
 
-BBox InstanceNode::GetIntersectionBBox()
-{
-	return m_bbox;
-}
-
-Transform InstanceNode::GetIntersectionTransform()
-{
-	return m_transformWTO;
-}
-
+/*!
+ * @brief Sets the bounding box of the object.
+ *
+ * @param nodeBBox The bounding box to assign to the object.
+ */
 void InstanceNode::SetIntersectionBBox( BBox nodeBBox )
 {
 	m_bbox = nodeBBox;
 }
 
-/**
- * Set node world to object transform to \a nodeTransform .
+/*!
+ * @brief Sets the world-to-object transformation of the node.
+ *
+ * @param nodeTransform The transformation to assign to the node.
  */
 void InstanceNode::SetIntersectionTransform( Transform nodeTransform )
 {
-
 	m_transformWTO = nodeTransform;
 	m_transformOTW = m_transformWTO.GetInverse();
 }
 
-QDataStream& operator<< ( QDataStream & s, const InstanceNode& node )
-{
-	s << node.GetNode();
-	return s;
-}
-
-QDataStream& operator>> ( QDataStream & s, const InstanceNode& node )
-{
-	s >> node;
-	return s;
-}
-
+/*!
+ * @brief Checks whether two instance nodes are the same.
+ *
+ * Two instances are considered identical if both their stored node
+ * and their parent node are the same.
+ *
+ * @param other The instance node to compare with.
+ * @return true if the instances are identical; false otherwise.
+ */
 bool operator==(const InstanceNode& thisNode,const InstanceNode& otherNode)
 {
 	return ( (thisNode.GetNode() == otherNode.GetNode()) &&

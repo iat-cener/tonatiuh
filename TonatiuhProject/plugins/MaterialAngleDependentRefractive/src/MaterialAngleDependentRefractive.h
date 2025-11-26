@@ -36,23 +36,16 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MATERIALANGLEDEPENDENTREFRACTIVE_H_
 #define MATERIALANGLEDEPENDENTREFRACTIVE_H_
 
-#include <vector>
-
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
-#include "TMaterial.h"
 #include "MFVec3.h"
+#include "TMaterial.h"
 #include "trt.h"
 
+class SoFieldSensor;
 class SoSensor;
 
 class MaterialAngleDependentRefractive : public TMaterial
@@ -61,35 +54,28 @@ class MaterialAngleDependentRefractive : public TMaterial
 
 public:
 	enum Distribution {
-		//PILLBOX = 0,
 		NORMAL = 1,
 	   };
 	MaterialAngleDependentRefractive( );
 	static void initClass();
 
-    QString getIcon();
+    std::string GetIcon();
     bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
 
-	//int	getFields(SoFieldList & fields) const;
-
-    //SoSFBool reflectivityFront;
     trt::TONATIUH_REAL nFront;
     MFVec3 frontOpticValues;
-    //SoSFBool reflectivityBack;
     trt::TONATIUH_REAL nBack;
     MFVec3 backOpticValues;
-
+	
 	trt::TONATIUH_REAL sigmaSlope;
+
 	SoSFEnum distribution;
-	SoSFColor ambient_Color;
-	SoSFColor diffuse_Color;
-	SoSFColor specular_Color;
-	SoSFColor emissive_Color;
-	SoSFFloat shininessValue;
-	SoSFFloat transparencyValue;
-
-
-
+	SoMFColor ambient_Color;
+	SoMFColor diffuse_Color;
+	SoMFColor specular_Color;
+	SoMFColor emissive_Color;
+	SoMFFloat shininessValue;
+	SoMFFloat transparencyValue;
 
 protected:
    	virtual ~MaterialAngleDependentRefractive();
@@ -109,7 +95,6 @@ protected:
 	Ray ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 	Ray RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 
-
 private:
 	SoFieldSensor* m_frontOpticValuesSensor;
 	SoFieldSensor* m_backOpticValuesSensor;
@@ -128,7 +113,5 @@ private:
 	std::vector< double > m_backReflectivityValue;
 	std::vector< double > m_backTransmissivityValue;
 };
-
-
 
 #endif /* MATERIALANGLEDEPENDENTREFRACTIVE_H_ */

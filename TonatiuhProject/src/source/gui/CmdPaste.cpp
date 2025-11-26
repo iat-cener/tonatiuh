@@ -57,7 +57,7 @@ CmdPaste::CmdPaste( tgc::PasteType type, const QModelIndex& parentModelIndex,  S
 	m_parentInstance = m_sceneModel->NodeFromIndex( parentModelIndex );
 	if( !m_parentInstance-> GetNode() ) gf::SevereError( "CmdPaste NULL m_coinParent." );
 
-	m_row = m_parentInstance->children.size();
+	m_row = m_parentInstance->NumberOfChildren();
 	m_oldNodeName = QString( coinClipboard->getName().getString() );
 }
 
@@ -77,7 +77,7 @@ void CmdPaste::undo()
 {
 	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
 	m_sceneModel->Cut( *coinParent, m_row );
-	m_parentInstance->children[m_row]->GetNode()->unref();
+	m_parentInstance->GetChild( m_row )->GetNode()->unref();
 	m_sceneModel->SetNodeName( m_coinChild, m_oldNodeName );
 }
 
@@ -90,7 +90,7 @@ void CmdPaste::redo( )
 	SoBaseKit* coinParent = static_cast< SoBaseKit* > ( m_parentInstance-> GetNode() );
 	if( !m_sceneModel->Paste( m_pasteType, *coinParent, *m_coinChild, m_row ) ) return;
 
-	SoNode* newNode = m_parentInstance->children[m_row]->GetNode();
+	SoNode* newNode = m_parentInstance->GetChild( m_row )->GetNode();
 	newNode->ref();
 
 	int count = 0;

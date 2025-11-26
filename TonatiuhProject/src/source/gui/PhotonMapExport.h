@@ -43,8 +43,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <QStringList>
 
-#include "Photon.h"
+#include "Transform.h"
 
+class Photon;
 class SceneModel;
 
 class PhotonMapExport

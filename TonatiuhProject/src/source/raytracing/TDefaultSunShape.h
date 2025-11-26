@@ -41,6 +41,17 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include "TSunShape.h"
 
+/*!
+ * @class TDefaultSunShape
+ * @brief Default concrete implementation of a sunshape node.
+ *
+ * TDefaultSunShape provides a placeholder concrete class for sunshape,
+ * used to define default node types in the system. This class does not
+ * generate rays or perform any radiation calculations.
+ * 
+ * It is primarily intended as the default sunshape node type for use
+ * within the TLightKit framework.
+ */
 class TDefaultSunShape : public TSunShape
 {
 	SO_NODE_HEADER(TDefaultSunShape);

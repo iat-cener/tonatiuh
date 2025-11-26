@@ -32,21 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gc.h"
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
 #include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeSphere.h"
@@ -76,15 +70,6 @@ ShapeSphere::~ShapeSphere()
 {
 }
 
-double ShapeSphere::GetArea() const
-{
-	return ( 4 * gc::Pi * radius.getValue() * radius.getValue() );
-}
-double ShapeSphere::GetVolume() const
-{
-	return ( 4 * gc::Pi * radius.getValue() * radius.getValue() * radius.getValue() /3 );
-}
-
 BBox ShapeSphere::GetBBox() const
 {
 	double cosPhiMax = cos( phiMax.getValue() );
@@ -110,48 +95,13 @@ BBox ShapeSphere::GetBBox() const
 	return BBox( Point3D( xmin, ymin, zmin), Point3D( xmax, ymax, zmax) );
 }
 
-QString ShapeSphere::GetIcon() const
+std::string ShapeSphere::GetIcon() const
 {
-	return QLatin1String( ":/icons/ShapeSphere.png" );
+	return ( ":/icons/ShapeSphere.png" );
 }
-
-Point3D ShapeSphere::Sample( double u1, double u2 ) const
-{
-	return GetPoint3D( u1, u2 );
-}
-
-bool ShapeSphere::ValidateParamaterValue( std::string name, std::string value ) const
-{
-
-    if( name == "radius" && std::stod( value ) < 0 ) 
-		throw ParameterValueException( "radius", "The radius of the sphere, must be a positive number" );
-	else if( name == "radius" && std::stod( value ) < std::max( std::fabs( yMin.getValue() ), std::fabs( yMax.getValue() ) ) ) 
-		throw ParameterValueException( "radius", "The sphere radius must equal or greater than y values" );
-		
-	else if( name == "yMin" && std::stod( value ) > ( yMax.getValue() ) )
-		throw ParameterValueException( "yMin", "The sphere's minimum y-value must be less than its maximum y-value" );
-	else if( name == "yMin" && std::stod( value ) < ( -radius.getValue() ) )
-		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
-	else if( name == "yMin" && std::stod( value ) > ( radius.getValue() ) )
-		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
-		
-	else if( name == "yMax" && std::stod( value ) < ( yMin.getValue() ) )
-		throw ParameterValueException( "yMax", "The sphere's maximum y-value must be greater than its minimum y-value" );
-	else if( name == "yMax" && std::stod( value ) < ( -radius.getValue() ) )
-		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
-	else if( name == "yMax" && std::stod( value ) > ( radius.getValue() ) )
-		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
-		
-	else if( name == "phiMax" && std::stod( value ) < 0 )
-		throw ParameterValueException( "phiMax", "The sphere’s generation angle must be a positive value" );
-
-	return true;
-}
-
 
 bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
 {
-
 	// Compute quadratic ShapeSphere coefficients
 	Vector3D vObjectRayOrigin = Vector3D( objectRay.origin );
 	double A = objectRay.direction().lengthSquared();
@@ -234,7 +184,7 @@ bool ShapeSphere::Intersect( const Ray& objectRay, double* tHit, DifferentialGeo
 	double f = DotProduct( N, d2Pduv );
 	double g = DotProduct( N, d2Pdvv );
 
-		// Compute \dndu and \dndv from fundamental form coefficients
+	// Compute \dndu and \dndv from fundamental form coefficients
 	double invEGF2 = 1.0 / (E*G - F*F);
 	Vector3D dndu = (f*F - e*G) * invEGF2 * dpdu +
 			        (e*F - f*E) * invEGF2 * dpdv;
@@ -261,7 +211,10 @@ bool ShapeSphere::IntersectP( const Ray& ray ) const
 	return Intersect( ray, 0, 0 );
 }
 
-Point3D ShapeSphere::GetPoint3D( double u, double v ) const
+/*!
+* Returns the 3D coordintates por parameteric coordinates \a u and \a v
+*/
+Point3D ShapeSphere::Sample( double u, double v ) const
 {
 	if ( OutOfRange( u, v ) ) gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
@@ -276,7 +229,36 @@ Point3D ShapeSphere::GetPoint3D( double u, double v ) const
 	double z = radius.getValue() * sin( theta ) * cos( phi );
 
 	return Point3D (x, y, z);
+}
 
+/*!
+* Checks the cone parameters values. Checks the \a value of parameter \a name .
+*/
+bool ShapeSphere::ValidateParamaterValue( std::string name, std::string value ) const
+{
+    if( name == "radius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "radius", "The radius of the sphere, must be a positive number" );
+	else if( name == "radius" && std::stod( value ) < std::max( std::fabs( yMin.getValue() ), std::fabs( yMax.getValue() ) ) ) 
+		throw ParameterValueException( "radius", "The sphere radius must equal or greater than y values" );
+		
+	else if( name == "yMin" && std::stod( value ) > ( yMax.getValue() ) )
+		throw ParameterValueException( "yMin", "The sphere's minimum y-value must be less than its maximum y-value" );
+	else if( name == "yMin" && std::stod( value ) < ( -radius.getValue() ) )
+		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
+	else if( name == "yMin" && std::stod( value ) > ( radius.getValue() ) )
+		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
+		
+	else if( name == "yMax" && std::stod( value ) < ( yMin.getValue() ) )
+		throw ParameterValueException( "yMax", "The sphere's maximum y-value must be greater than its minimum y-value" );
+	else if( name == "yMax" && std::stod( value ) < ( -radius.getValue() ) )
+		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
+	else if( name == "yMax" && std::stod( value ) > ( radius.getValue() ) )
+		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
+		
+	else if( name == "phiMax" && std::stod( value ) < 0 )
+		throw ParameterValueException( "phiMax", "The sphere’s generation angle must be a positive value" );
+
+	return true;
 }
 
 NormalVector ShapeSphere::GetNormal(double u, double v ) const
@@ -324,7 +306,6 @@ void ShapeSphere::generatePrimitives(SoAction *action)
 	const SoTextureCoordinateElement* tce = 0;
 	if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
 
-
 	SbVec3f  point;
 	int rows = 50; // Number of points per row
 	int columns = 50; // Number of points per column
@@ -344,7 +325,7 @@ void ShapeSphere::generatePrimitives(SoAction *action)
 		{
 			vj = ( 1.0 /(double)(columns-1) ) * j;
 
-			Point3D point = GetPoint3D(ui, vj);
+			Point3D point = Sample(ui, vj);
 			NormalVector normal;
 			if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
 			else	normal = GetNormal(ui, vj);

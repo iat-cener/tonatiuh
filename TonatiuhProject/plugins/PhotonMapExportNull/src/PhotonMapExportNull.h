@@ -35,12 +35,9 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef PHOTONMAPEXPORTNULL_H_
 #define PHOTONMAPEXPORTNULL_H_
 
-
-#include <QMap>
 #include <QString>
 
 #include "PhotonMapExport.h"
@@ -61,7 +58,6 @@ public:
 	void SetPowerPerPhoton( double wPhoton );
 	void SetSaveParameterValue( QString parameterName, QString parameterValue );
 	bool StartExport();
-
 };
 
 #endif /* PHOTONMAPEXPORTNULL_H_ */

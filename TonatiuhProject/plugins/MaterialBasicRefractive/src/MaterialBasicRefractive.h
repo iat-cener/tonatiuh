@@ -35,14 +35,10 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MaterialBasicRefractive_H_
 #define MaterialBasicRefractive_H_
 
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
 #include "trt.h"
@@ -55,25 +51,28 @@ class MaterialBasicRefractive : public TMaterial
 
 public:
 	enum Distribution {
-		//PILLBOX = 0,
 		NORMAL = 1,
 	   };
 	MaterialBasicRefractive( );
 	static void initClass();
 
-    QString getIcon();
-	//Ray* OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
+    std::string GetIcon();
     bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
+
+    bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL reflectivityFront;
 	trt::TONATIUH_REAL reflectivityBack;
 	trt::TONATIUH_REAL transmissivityFront;
 	trt::TONATIUH_REAL transmissivityBack;
+
 	trt::TONATIUH_REAL nFront;
 	trt::TONATIUH_REAL nBack;
+
 	trt::TONATIUH_REAL sigmaSlope;
-	//trt::TONATIUH_REAL m_sigmaSpecularity; ** yet to implemented
+
 	SoSFEnum distribution;
+
 	SoMFColor m_ambientColor;
 	SoMFColor m_diffuseColor;
 	SoMFColor m_specularColor;
@@ -81,16 +80,9 @@ public:
 	SoMFFloat m_shininess;
 	SoMFFloat m_transparency;
 
-
 protected:
    	virtual ~MaterialBasicRefractive();
-
-   	double m_sigmaOpt;
-
-	static void updateReflectivityFront( void* data, SoSensor* );
-	static void updateTransmissivityFront( void* data, SoSensor* );
-	static void updateReflectivityBack( void* data, SoSensor* );
-	static void updateTransmissivityBack( void* data, SoSensor* );
+	
 	static void updateAmbientColor( void* data, SoSensor* );
 	static void updateDiffuseColor( void* data, SoSensor* );
 	static void updateSpecularColor( void* data, SoSensor* );
@@ -100,7 +92,6 @@ protected:
 
 	Ray ReflectedRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
 	Ray RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand  ) const;
-
 };
 
 #endif /*MaterialBasicRefractive_H_*/

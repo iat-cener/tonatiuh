@@ -67,7 +67,7 @@ CmdDeleteTracker::CmdDeleteTracker( const QModelIndex& selectedIndex, SoSceneKit
 	if( !m_tracker ) gf::SevereError( "CmdDeleteTracker Null tracker." );
 	m_tracker->ref();
 
-	m_row = instanceSelection->GetParent()->children.indexOf( instanceSelection );
+	m_row = instanceSelection->GetParent()->GetChildIndex( instanceSelection );
 
 }
 
@@ -111,7 +111,6 @@ void CmdDeleteTracker::redo( )
 	transform->scaleFactor.disconnect();
 	transform->scaleOrientation.disconnect();
 	transform->center.disconnect();
-	//m_tracker->Disconnect();
 
 	m_pModel->Cut( *m_coinParent, m_row );
 

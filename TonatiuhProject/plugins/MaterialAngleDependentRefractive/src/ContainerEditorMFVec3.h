@@ -40,34 +40,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef CONTAINEREDITORMFVEC3_H_
 #define CONTAINEREDITORMFVEC3_H_
 
-#include <QDialog>
-#include <QDoubleValidator>
 #include <QItemDelegate>
-#include <QPlainTextEdit>
 #include <QLineEdit>
-#include <QWidget>
 
 #include "FieldEditor.h"
 
 #include "ui_containerviewermfvec3.h"
-
-/***************************************************************
- * CustomPlainTextEdit
- ***************************************************************/
-class CustomPlainTextEdit: public QLineEdit
-{
-	Q_OBJECT
-public:
-	CustomPlainTextEdit( QWidget* parent = 0 );
-	~CustomPlainTextEdit();
-
-signals:
-	void editingFinished( );
-
-protected:
-    void focusOutEvent(QFocusEvent* event);
-};
-
 
 /***************************************************************
  * ContainerEditor
@@ -98,10 +76,10 @@ protected slots:
     	void OpenContainerViewer();
 
 private:
-    QHBoxLayout* m_horizontalLayout;
-    CustomPlainTextEdit* m_valuesEdit;
-    QPushButton* m_editButton;
-    QStringList m_titlesList;
+	QHBoxLayout* m_horizontalLayout;
+	QLineEdit* m_valuesEdit;
+	QPushButton* m_editButton;
+	QStringList m_titlesList;
 };
 
 

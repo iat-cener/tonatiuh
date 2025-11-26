@@ -36,7 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef PHOTONMAPEXPORTNULLFACTORY_H_
 #define PHOTONMAPEXPORTNULLFACTORY_H_
 

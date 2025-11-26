@@ -58,6 +58,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "ParameterValueException.h"
 #include "UserMField.h"
 #include "UserSField.h"
+#include "TMaterial.h"
 #include "TShape.h"
 
 /*!
@@ -124,7 +125,6 @@ FieldContainerWidget::~FieldContainerWidget()
  */
 void FieldContainerWidget::SetContainer( SoNode* fieldContainer, QString containerName )
 {
-
 	m_pModel->clear();
 
 	m_pFieldContainer = fieldContainer;
@@ -190,6 +190,11 @@ void FieldContainerWidget::closeEditor( QWidget* editor, QAbstractItemDelegate::
 		{
 			TShape* shape = static_cast< TShape* >( m_pFieldContainer );
 			shape->ValidateParamaterValue( parameterName.toStdString(), newValue.toStdString() );
+		}
+		if( m_pFieldContainer->getTypeId().isDerivedFrom( TMaterial::getClassTypeId() ) )
+		{
+			TMaterial* material = static_cast< TMaterial* >( m_pFieldContainer );
+			material->ValidateParamaterValue( parameterName.toStdString(), newValue.toStdString() );
 		}
 	}
 	catch(ParameterValueException &ex ){

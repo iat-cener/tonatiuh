@@ -35,7 +35,18 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
+#include <Inventor/nodekits/SoSceneKit.h>
 
+#include "Document.h"
+#include "gc.h"
+#include "InstanceNode.h"
+#include "RandomDeviate.h"
+#include "RandomDeviateFactory.h"
+#include "SceneModel.h"
+#include "ScriptRayTracer.h"
+#include "TLightKit.h"
+#include "TPhotonMap.h"
+/*
 #include <QFutureWatcher>
 #include <QMutex>
 #include <QPoint>
@@ -44,26 +55,19 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/nodes/SoSelection.h>
 
-#include "Document.h"
 #include "GraphicRoot.h"
-#include "SceneModel.h"
-#include "ScriptRayTracer.h"
-#include "RandomDeviate.h"
-#include "RandomDeviateFactory.h"
 #include "RayTracer.h"
 #include "RayTracerNoTr.h"
 #include "tgf.h"
-#include "TLightKit.h"
 #include "TLightShape.h"
-#include "TPhotonMap.h"
 #include "trf.h"
 #include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TSunShape.h"
 #include "TTransmissivity.h"
+*/
 
 ScriptRayTracer::ScriptRayTracer(  QVector< RandomDeviateFactory* > listRandomDeviateFactory )
 :

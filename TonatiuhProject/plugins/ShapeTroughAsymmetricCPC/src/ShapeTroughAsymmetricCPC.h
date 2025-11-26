@@ -32,8 +32,8 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 
 #ifndef SHAPETROUGHASYMMETRICCPC_H_
@@ -41,15 +41,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <vector>
 
-#include <QString>
-
 #include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "trt.h"
 #include "TShape.h"
-
-class Vector3D;
 
 class ShapeTroughAsymmetricCPC: public TShape
 {
@@ -59,15 +54,15 @@ public:
 	ShapeTroughAsymmetricCPC( );
 	static void initClass();
 
-	double GetArea() const;
 	BBox GetBBox() const;
-	QString GetIcon() const;
-	double GetVolume() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
 	Point3D Sample( double u, double v) const;
+
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL rInt;
 	trt::TONATIUH_REAL rExt;
@@ -77,12 +72,8 @@ public:
 	trt::TONATIUH_REAL truncationOrigin;
 	trt::TONATIUH_REAL length;
 
-
 protected:
-	static void updateInternalValues( void *data, SoSensor *);
-
-	Point3D GetPoint3D ( double u, double v ) const;
-	NormalVector GetNormal( double u, double v ) const;
+	NormalVector GetNormal( double u, double v, double thetaMin, double thetaMax, double tangentAngle, double thetaZero ) const;
 	bool OutOfRange( double u, double v ) const;
 
 	void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center);
@@ -90,24 +81,20 @@ protected:
 	virtual ~ShapeTroughAsymmetricCPC();
 
 private:
-	Vector3D GetDPDURight( double acceptanceAngle, double theta ) const;
-	Vector3D GetDPDU( double u, double v ) const;
-	Vector3D GetD2PDUURight( double acceptanceAngle, double theta ) const;
-	Vector3D GetD2PDUU( double u, double v ) const;
+	Vector3D GetDPDU( double u, double v, double thetaMin, double thetaMax, double tangentAngle, double thetaZero ) const;
+	Vector3D GetDPDURight( double acceptanceAngle, double theta, double tangentAngle, double thetaZero  ) const;
+	Vector3D GetD2PDUURight( double acceptanceAngle, double theta, double tangentAngle, double thetaZero ) const;
+	Vector3D GetD2PDUU( double u, double v, double thetaMin, double thetaMax, double tangentAngle, double thetaZero ) const;
 
-	void SetInternalValues();
-	double ConcentratorProfileX( double theta ) const;
-	double ConcentratorProfileY( double theta ) const;
+	void GetInternalParameters( double* tangentAngle, double* thetaZero, double* thetaMin,  double* thetaMax ) const;
 
-	double TDeviation( const Ray ray, double theta, double acceptanceAngle ) const;
-	std::vector<double> FindRigthRoots( const Ray ray, double thetaStart , double thetaEnd , double acceptanceAngle ) const;
-	std::vector<double> FindRoots( const Ray ray ) const;
-	std::vector<double> FindThits( const Ray ray, const std::vector<double> roots ) const;
+	double ConcentratorProfileX( double theta, double tangentAngle, double thetaZero ) const;
+	double ConcentratorProfileY( double theta, double tangentAngle, double thetaZero ) const;
 
-	double m_tangentAngle;
-	double m_thetaZero;
-	double m_thetaMin;
-	double m_thetaMax;
+	double TDeviation( const Ray ray, double theta, double acceptanceAngle, double tangentAngle, double thetaZero ) const;
+	std::vector<double> FindRigthRoots( const Ray ray, double thetaStart , double thetaEnd , double acceptanceAngle, double tangentAngle, double thetaZero  ) const;
+	std::vector<double> FindRoots( const Ray ray, double thetaMin, double thetaMax, double tangentAngle, double thetaZero ) const;
+	std::vector<double> FindThits( const Ray ray, const std::vector<double> roots, double tangentAngle, double thetaZero ) const;
 };
 
 #endif /*SHAPETROUGHASYMMETRICCPC_H_*/

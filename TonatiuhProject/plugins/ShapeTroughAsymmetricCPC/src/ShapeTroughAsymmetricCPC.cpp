@@ -32,30 +32,20 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include <algorithm>
-#include <iomanip>
 #include <map>
-#include <vector>
-
-#include <QIcon>
-#include <QMap>
-#include <QMessageBox>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
-#include "BBox.h"
 #include "gc.h"
 #include "gf.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
-
-#include "DifferentialGeometry.h"
 #include "ShapeTroughAsymmetricCPC.h"
 
 double fPart( double alpha, double x, double r1, double theta, double r, double eccentricity )
@@ -80,49 +70,24 @@ ShapeTroughAsymmetricCPC::ShapeTroughAsymmetricCPC()
 	SO_NODE_ADD_FIELD( truncationAngle, ( 0 ) );
 	SO_NODE_ADD_FIELD( truncationOrigin, ( 1 ) );
 	SO_NODE_ADD_FIELD( length, ( 1 ) );
-
-	SetInternalValues();
-
-	SoFieldSensor* m_rIntSensor = new SoFieldSensor(updateInternalValues, this);
-	m_rIntSensor->setPriority( 1 );
-	m_rIntSensor->attach( &rInt );
-	SoFieldSensor* m_rExtSensor = new SoFieldSensor(updateInternalValues, this);
-	m_rExtSensor->setPriority( 1 );
-	m_rExtSensor->attach( &rExt );
-	SoFieldSensor* m_acceptanceAngleCWSensor = new SoFieldSensor(updateInternalValues, this);
-	m_acceptanceAngleCWSensor->setPriority( 1 );
-	m_acceptanceAngleCWSensor->attach( &acceptanceAngleCW );
-	SoFieldSensor* m_acceptanceAngleCCWSensor = new SoFieldSensor(updateInternalValues, this);
-	m_acceptanceAngleCCWSensor->setPriority( 1 );
-	m_acceptanceAngleCCWSensor->attach( &acceptanceAngleCCW );
-	SoFieldSensor* m_lengthSensor = new SoFieldSensor(updateInternalValues, this);
-	m_lengthSensor->setPriority( 1 );
-	m_lengthSensor->attach( &length );
-	SoFieldSensor* m_truncationAngleWSensor = new SoFieldSensor(updateInternalValues, this);
-	m_truncationAngleWSensor->setPriority( 1 );
-	m_truncationAngleWSensor->attach( &truncationAngle );
-	SoFieldSensor* m_truncationOriginSensor = new SoFieldSensor(updateInternalValues, this);
-	m_truncationOriginSensor->setPriority( 1 );
-	m_truncationOriginSensor->attach( &truncationOrigin );
-
 }
 
 ShapeTroughAsymmetricCPC::~ShapeTroughAsymmetricCPC()
 {
 }
 
-
-double ShapeTroughAsymmetricCPC::GetArea() const
-{
-	return -1;
-}
-
 BBox ShapeTroughAsymmetricCPC::GetBBox() const
 {
-	double xMin = ConcentratorProfileX( std::max( -( 3*gc::Pi/2 - acceptanceAngleCW.getValue() - m_tangentAngle ) , m_thetaMin ) );
-	double xMax = ConcentratorProfileX( std::min( 3*gc::Pi/2 - acceptanceAngleCCW.getValue() - m_tangentAngle , m_thetaMax ) );
-	double yMin = std::min( ConcentratorProfileY( ( gc::Pi / 2 ) - m_tangentAngle ) ,  ConcentratorProfileY( ( - gc::Pi / 2 ) - m_tangentAngle ) );
-	double yMax = std::max( ConcentratorProfileY( m_thetaMax ) , ConcentratorProfileY( m_thetaMin ) );
+	double tangentAngle;
+	double thetaZero;
+	double thetaMin;
+	double thetaMax;
+	GetInternalParameters( &tangentAngle, &thetaZero, &thetaMin,  &thetaMax );
+
+	double xMin = ConcentratorProfileX( std::max( -( 3*gc::Pi/2 - acceptanceAngleCW.getValue() - tangentAngle ) , thetaMin ), tangentAngle, thetaZero );
+	double xMax = ConcentratorProfileX( std::min( 3*gc::Pi/2 - acceptanceAngleCCW.getValue() - tangentAngle , thetaMax ), tangentAngle, thetaZero );
+	double yMin = std::min( ConcentratorProfileY( ( gc::Pi / 2 ) - tangentAngle, tangentAngle, thetaZero ) ,  ConcentratorProfileY( ( - gc::Pi / 2 ) - tangentAngle, tangentAngle, thetaZero ) );
+	double yMax = std::max( ConcentratorProfileY( thetaMax, tangentAngle, thetaZero ) , ConcentratorProfileY( thetaMin, tangentAngle, thetaZero ) );
 	double zMin = 0.0;
 	double zMax = length.getValue();
 
@@ -130,25 +95,25 @@ BBox ShapeTroughAsymmetricCPC::GetBBox() const
 
 }
 
-QString ShapeTroughAsymmetricCPC::GetIcon() const
+std::string ShapeTroughAsymmetricCPC::GetIcon() const
 {
-	return ":/icons/ShapeTroughAsymmetricCPC.png";
-}
-
-
-double ShapeTroughAsymmetricCPC::GetVolume() const
-{
-	return 0.0;
+	return ( ":/icons/ShapeTroughAsymmetricCPC.png" );
 }
 
 bool ShapeTroughAsymmetricCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
-	std::vector<double> roots = FindRoots( objectRay );
+	double tangentAngle;
+	double thetaZero;
+	double thetaMin;
+	double thetaMax;
+	GetInternalParameters( &tangentAngle, &thetaZero, &thetaMin,  &thetaMax );
+
+	std::vector<double> roots = FindRoots( objectRay, thetaMin, thetaMax, tangentAngle, thetaZero );
 	if ( roots.size() == 0 ) return false;
-	std::vector<double> tHits = FindThits( objectRay , roots );
-	QMap<double,double> intersectionsMap;
+	std::vector<double> tHits = FindThits( objectRay , roots, tangentAngle, thetaZero );
+	std::map< double,double> intersectionsMap;
 	for ( unsigned int i = 0; i < roots.size(); i++)
-		intersectionsMap.insert( tHits[ i ] , roots[ i ] );
+		intersectionsMap.insert( std::pair<double, double>( tHits[i] , roots[i] ) );
 
 	std::sort( tHits.begin(), tHits.end() );
 
@@ -179,13 +144,14 @@ bool ShapeTroughAsymmetricCPC::Intersect(const Ray& objectRay, double *tHit, Dif
 	else if( ( tHit == 0 ) || ( dg == 0 ) )	gf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of CPC concentrator hit
-	double thetaHit = intersectionsMap.value( thit );
-	double u = ( thetaHit - m_thetaMin ) / ( m_thetaMax - m_thetaMin );
+	//double thetaHit = intersectionsMap.value( thit );
+	double thetaHit = intersectionsMap[thit];
+	double u = ( thetaHit - thetaMin ) / ( thetaMax - thetaMin );
 	double v = hitPoint.z / length.getValue();
 
-	Vector3D dpdu = GetDPDU( u , v );
+	Vector3D dpdu = GetDPDU( u , v, thetaMin, thetaMax, tangentAngle, thetaZero );
 	Vector3D dpdv( 0.0 , 0.0 , 1.0 );
-	Vector3D d2pduu = GetD2PDUU( u , v );
+	Vector3D d2pduu = GetD2PDUU( u , v, thetaMin, thetaMax, tangentAngle, thetaZero );
 	Vector3D d2pduv( 0.0 , 0.0 , 0.0 );
 	Vector3D d2pdvv( 0.0 , 0.0 , 0.0 );
 
@@ -223,27 +189,48 @@ bool ShapeTroughAsymmetricCPC::IntersectP( const Ray& objectRay ) const
 
 Point3D ShapeTroughAsymmetricCPC::Sample( double u, double v ) const
 {
-	return GetPoint3D( u, v );
-}
+	double tangentAngle;
+	double thetaZero;
+	double thetaMin;
+	double thetaMax;
+	GetInternalParameters( &tangentAngle, &thetaZero, &thetaMin,  &thetaMax );
 
-void ShapeTroughAsymmetricCPC::updateInternalValues( void *data, SoSensor *)
-{
-	ShapeTroughAsymmetricCPC* shapeTroughAsymmetricCPC = (ShapeTroughAsymmetricCPC *) data;
-	shapeTroughAsymmetricCPC->SetInternalValues();
-}
-
-Point3D ShapeTroughAsymmetricCPC::GetPoint3D( double u, double v ) const
-{
-	double theta = m_thetaMin + u * ( m_thetaMax - m_thetaMin );
-	double x = ConcentratorProfileX( theta );
-	double y = ConcentratorProfileY( theta );
+	double theta = thetaMin + u * ( thetaMax - thetaMin );
+	double x = ConcentratorProfileX( theta, tangentAngle, thetaZero );
+	double y = ConcentratorProfileY( theta, tangentAngle, thetaZero );
 	double z = v * length.getValue();
 	return Point3D( x, y, z );
 }
 
-NormalVector ShapeTroughAsymmetricCPC::GetNormal (double u ,double v) const
+/*!
+* Checks the cone parameters values. Checks the \a value of parameter \a name .
+*/
+bool ShapeTroughAsymmetricCPC::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	Vector3D dpdu = GetDPDU( u, v );
+	if( name == "rInt" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "rInt", "The internal radius must be a positive number" );
+	else if( name == "rInt" && std::stod( value ) > rExt.getValue() ) 
+		throw ParameterValueException( "rInt", "The internal radius must be less than external radius value" );
+
+	if( name == "rExt" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "rExt", "The internal radius must be a positive number" );
+	else if( name == "rExt" && std::stod( value ) < rInt.getValue() ) 
+		throw ParameterValueException( "rExt", "The internal radius must be greater than internal radius value" );
+
+	if( name == "acceptanceAngleCW" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "acceptanceAngleCW", "The 'acceptanceAngleCW' must be a positive number" );
+		
+	if( name == "acceptanceAngleCCW" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "acceptanceAngleCCW", "The 'acceptanceAngleCCW' must be a positive number" );
+
+	if( name == "length" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "length", "The 'length' must be a positive number" );
+	return true;
+}
+	
+NormalVector ShapeTroughAsymmetricCPC::GetNormal (double u ,double v, double thetaMin, double thetaMax, double tangentAngle, double thetaZero) const
+{
+	Vector3D dpdu = GetDPDU( u, v, thetaMin, thetaMax, tangentAngle, thetaZero );
 	Vector3D dpdv( 0.0 , 0.0 , 1.0 );
 
 	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
@@ -256,10 +243,16 @@ bool ShapeTroughAsymmetricCPC::OutOfRange( double u, double v ) const
 
 void ShapeTroughAsymmetricCPC::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 {
-	double xMin = ConcentratorProfileX( std::max( -( 3*gc::Pi/2 - acceptanceAngleCW.getValue() - m_tangentAngle ) , m_thetaMin ) );
-	double xMax = ConcentratorProfileX( std::min( 3*gc::Pi/2 - acceptanceAngleCCW.getValue() - m_tangentAngle , m_thetaMax ) );
-	double yMin = std::min( ConcentratorProfileY( ( gc::Pi / 2 ) - m_tangentAngle ) ,  ConcentratorProfileY( ( - gc::Pi / 2 ) - m_tangentAngle ) );
-	double yMax = std::max( ConcentratorProfileY( m_thetaMax ) , ConcentratorProfileY( m_thetaMin ) );
+	double tangentAngle;
+	double thetaZero;
+	double thetaMin;
+	double thetaMax;
+	GetInternalParameters( &tangentAngle, &thetaZero, &thetaMin,  &thetaMax );
+
+	double xMin = ConcentratorProfileX( std::max( -( 3*gc::Pi/2 - acceptanceAngleCW.getValue() - tangentAngle ) , thetaMin ), tangentAngle, thetaZero );
+	double xMax = ConcentratorProfileX( std::min( 3*gc::Pi/2 - acceptanceAngleCCW.getValue() - tangentAngle , thetaMax ), tangentAngle, thetaZero );
+	double yMin = std::min( ConcentratorProfileY( ( gc::Pi / 2 ) - tangentAngle, tangentAngle, thetaZero ) ,  ConcentratorProfileY( ( - gc::Pi / 2 ) - tangentAngle, tangentAngle, thetaZero ) );
+	double yMax = std::max( ConcentratorProfileY( thetaMax, tangentAngle, thetaZero ) , ConcentratorProfileY( thetaMin, tangentAngle, thetaZero ) );
 	double zMin = 0.0;
 	double zMax = length.getValue();
 
@@ -268,11 +261,16 @@ void ShapeTroughAsymmetricCPC::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*c
 
 void ShapeTroughAsymmetricCPC::generatePrimitives(SoAction *action)
 {
+	double tangentAngle;
+	double thetaZero;
+	double thetaMin;
+	double thetaMax;
+	GetInternalParameters( &tangentAngle, &thetaZero, &thetaMin,  &thetaMax );
+
     SoPrimitiveVertex   pv;
     SoState  *state = action->getState();
 
-    SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) ==
-                          SoTextureCoordinateElement::FUNCTION );
+    SbBool useTexFunc = ( SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION );
 
     const SoTextureCoordinateElement* tce = 0;
     if ( useTexFunc ) tce = SoTextureCoordinateElement::getInstance(state);
@@ -295,9 +293,14 @@ void ShapeTroughAsymmetricCPC::generatePrimitives(SoAction *action)
     	{
 
     		vj = ( 1.0 /(double)(columns-1) ) * j;
+			double theta = thetaMin + ui * ( thetaMax - thetaMin );
+			double x = ConcentratorProfileX( theta, tangentAngle, thetaZero );
+			double y = ConcentratorProfileY( theta, tangentAngle, thetaZero );
+			double z = vj * length.getValue();
 
-    		Point3D point = GetPoint3D(ui, vj);
-    		NormalVector normal = GetNormal(ui, vj);
+    		Point3D point = Point3D( x, y, z );
+
+    		NormalVector normal = GetNormal(ui, vj, thetaMin, thetaMax, tangentAngle, thetaZero );
 
     		vertex[h][0] = point.x;
     		vertex[h][1] = point.y;
@@ -359,86 +362,84 @@ void ShapeTroughAsymmetricCPC::generatePrimitives(SoAction *action)
 	}
 
 	endShape();
-
-
 }
 
-Vector3D ShapeTroughAsymmetricCPC::GetDPDURight( double acceptanceAngle, double theta ) const
+Vector3D ShapeTroughAsymmetricCPC::GetDPDU( double u , double /* v */, double thetaMin, double thetaMax, double tangentAngle, double thetaZero ) const
 {
-	double involuteLimit = gc::Pi/2 + acceptanceAngle - m_tangentAngle;
-	double x;
-	double y;
-	if( theta > involuteLimit )
-	{
-		x =   ( rInt.getValue() * ( 2*acceptanceAngle + gc::Pi + 2*( theta + m_tangentAngle ) - 4*m_thetaZero - 2*cos( acceptanceAngle - ( theta + m_tangentAngle ) ) )*( cos( acceptanceAngle ) + sin( ( theta + m_tangentAngle ) ) ) ) / ( 2 * pow( -1 + sin( acceptanceAngle - ( theta + m_tangentAngle ) ) , 2 ) );
-		y = - ( rInt.getValue() * ( 2*acceptanceAngle + gc::Pi + 2*( theta + m_tangentAngle ) - 4*m_thetaZero - 2*cos( acceptanceAngle - ( theta + m_tangentAngle ) ) )*( cos( ( theta + m_tangentAngle ) ) - sin( acceptanceAngle ) ) ) / ( 2 * pow( -1 + sin( acceptanceAngle - ( theta + m_tangentAngle ) ) , 2 ) );
-	}
-	else
-	{
-		x = rInt.getValue() * ( theta + m_tangentAngle - m_thetaZero) * sin( theta + m_tangentAngle );
-		y = - rInt.getValue() * ( theta + m_tangentAngle - m_thetaZero) * cos( theta + m_tangentAngle );
-	}
-
-	return Vector3D( x , y , 0.0 );
-}
-
-Vector3D ShapeTroughAsymmetricCPC::GetDPDU( double u , double /* v */ ) const
-{
-	double theta = m_thetaMin + u * ( m_thetaMax - m_thetaMin );
+	double theta = thetaMin + u * ( thetaMax - thetaMin );
 	Vector3D dpdu;
 
 	if( theta >= 0.0 )
-		dpdu = GetDPDURight( acceptanceAngleCCW.getValue() , theta ) * ( m_thetaMax - m_thetaMin );
+		dpdu = GetDPDURight( acceptanceAngleCCW.getValue() , theta, tangentAngle, thetaZero ) * ( thetaMax - thetaMin );
 	else
 	{
-		dpdu = GetDPDURight( acceptanceAngleCW.getValue() , - theta ) * ( m_thetaMax - m_thetaMin );
+		dpdu = GetDPDURight( acceptanceAngleCW.getValue() , -theta, tangentAngle, thetaZero ) * ( thetaMax - thetaMin );
 		dpdu = Vector3D( -dpdu.x , dpdu.y, 0.0 );
 	}
 
 	return dpdu;
 }
 
-Vector3D ShapeTroughAsymmetricCPC::GetD2PDUURight( double acceptanceAngle, double theta ) const
+Vector3D ShapeTroughAsymmetricCPC::GetDPDURight( double acceptanceAngle, double theta, double tangentAngle, double thetaZero ) const
 {
-	double involuteLimit = gc::Pi/2 + acceptanceAngle - m_tangentAngle;
+	double involuteLimit = gc::Pi/2 + acceptanceAngle - tangentAngle;
 	double x;
 	double y;
 	if( theta > involuteLimit )
 	{
-		x = ( rInt.getValue() * (
-				( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + m_tangentAngle - 2 * m_thetaZero ) * ( cos( theta + m_tangentAngle ) + 2 * sin( acceptanceAngle ) ) )
-				- 4 * sin( 2 * acceptanceAngle - ( theta + m_tangentAngle ) )
-				- 5 * sin( theta + m_tangentAngle )
-				- 4 * cos( acceptanceAngle ) ) ) /
-				( -3 + cos( 2 * ( acceptanceAngle - ( theta + m_tangentAngle ) ) ) + 4 * sin( acceptanceAngle - ( theta + m_tangentAngle ) ));
-
-		y = ( rInt.getValue() * (
-				( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + m_tangentAngle - 2 * m_thetaZero ) * ( 2 * cos( acceptanceAngle )- sin( theta + m_tangentAngle ) ) )
-				+ cos( 2 * acceptanceAngle - ( theta + m_tangentAngle ) )
-				+ 5 * cos( theta + m_tangentAngle )
-				- 4 * sin( acceptanceAngle )
-				) ) /
-				( -3 + cos( 2 * ( acceptanceAngle - ( theta + m_tangentAngle ) ) ) + 4 * sin( acceptanceAngle - ( theta + m_tangentAngle ) ));
+		x =   ( rInt.getValue() * ( 2*acceptanceAngle + gc::Pi + 2*( theta + tangentAngle ) - 4 * thetaZero - 2*cos( acceptanceAngle - ( theta + tangentAngle ) ) )*( cos( acceptanceAngle ) + sin( ( theta + tangentAngle ) ) ) ) / ( 2 * pow( -1 + sin( acceptanceAngle - ( theta + tangentAngle ) ) , 2 ) );
+		y = - ( rInt.getValue() * ( 2*acceptanceAngle + gc::Pi + 2*( theta + tangentAngle ) - 4 * thetaZero - 2*cos( acceptanceAngle - ( theta + tangentAngle ) ) )*( cos( ( theta + tangentAngle ) ) - sin( acceptanceAngle ) ) ) / ( 2 * pow( -1 + sin( acceptanceAngle - ( theta + tangentAngle ) ) , 2 ) );
 	}
 	else
 	{
-		x = rInt.getValue() * ( ( theta + m_tangentAngle - m_thetaZero) * cos( theta + m_tangentAngle ) + sin( theta + m_tangentAngle ) );
-		y = rInt.getValue() * ( ( theta + m_tangentAngle - m_thetaZero) * sin( theta + m_tangentAngle ) - cos( theta + m_tangentAngle ) );
+		x = rInt.getValue() * ( theta + tangentAngle - thetaZero) * sin( theta + tangentAngle );
+		y = - rInt.getValue() * ( theta + tangentAngle - thetaZero) * cos( theta + tangentAngle );
 	}
 
 	return Vector3D( x , y , 0.0 );
 }
 
-Vector3D ShapeTroughAsymmetricCPC::GetD2PDUU( double u , double /* v */ ) const
+Vector3D ShapeTroughAsymmetricCPC::GetD2PDUURight( double acceptanceAngle, double theta, double tangentAngle, double thetaZero ) const
 {
-	double theta = m_thetaMin + u * ( m_thetaMax - m_thetaMin );
+	double involuteLimit = gc::Pi/2 + acceptanceAngle - tangentAngle;
+	double x;
+	double y;
+	if( theta > involuteLimit )
+	{
+		x = ( rInt.getValue() * (
+				( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + tangentAngle - 2 * thetaZero ) * ( cos( theta + tangentAngle ) + 2 * sin( acceptanceAngle ) ) )
+				- 4 * sin( 2 * acceptanceAngle - ( theta + tangentAngle ) )
+				- 5 * sin( theta + tangentAngle )
+				- 4 * cos( acceptanceAngle ) ) ) /
+				( -3 + cos( 2 * ( acceptanceAngle - ( theta + tangentAngle ) ) ) + 4 * sin( acceptanceAngle - ( theta + tangentAngle ) ));
+
+		y = ( rInt.getValue() * (
+				( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + tangentAngle - 2 * thetaZero ) * ( 2 * cos( acceptanceAngle )- sin( theta + tangentAngle ) ) )
+				+ cos( 2 * acceptanceAngle - ( theta + tangentAngle ) )
+				+ 5 * cos( theta + tangentAngle )
+				- 4 * sin( acceptanceAngle )
+				) ) /
+				( -3 + cos( 2 * ( acceptanceAngle - ( theta + tangentAngle ) ) ) + 4 * sin( acceptanceAngle - ( theta + tangentAngle ) ));
+	}
+	else
+	{
+		x = rInt.getValue() * ( ( theta + tangentAngle - thetaZero) * cos( theta + tangentAngle ) + sin( theta + tangentAngle ) );
+		y = rInt.getValue() * ( ( theta + tangentAngle - thetaZero) * sin( theta + tangentAngle ) - cos( theta + tangentAngle ) );
+	}
+
+	return Vector3D( x , y , 0.0 );
+}
+
+Vector3D ShapeTroughAsymmetricCPC::GetD2PDUU( double u , double /* v */, double thetaMin, double thetaMax, double tangentAngle, double thetaZero ) const
+{
+	double theta = thetaMin + u * ( thetaMax - thetaMin );
 	Vector3D d2pduu;
 
 	if( theta >= 0.0 )
-		d2pduu = GetD2PDUURight( acceptanceAngleCCW.getValue() , theta ) * pow( m_thetaMax - m_thetaMin , 2 );
+		d2pduu = GetD2PDUURight( acceptanceAngleCCW.getValue() , theta, tangentAngle, thetaZero ) * pow( thetaMax - thetaMin , 2 );
 	else
 	{
-		d2pduu = GetD2PDUURight( acceptanceAngleCW.getValue() , - theta ) * pow( m_thetaMax - m_thetaMin , 2 );
+		d2pduu = GetD2PDUURight( acceptanceAngleCW.getValue() , - theta, tangentAngle, thetaZero ) * pow( thetaMax - thetaMin , 2 );
 		d2pduu = Vector3D( -d2pduu.x , d2pduu.y, 0.0 );
 	}
 
@@ -446,100 +447,102 @@ Vector3D ShapeTroughAsymmetricCPC::GetD2PDUU( double u , double /* v */ ) const
 }
 
 /*!
- * Computes and sets \a m_phi, \a m_s, \a m_theta and \a m_eccentricity.
+ * Computes the internal parameters and sets to \a tangentAngle, \a thetaZero, \a thetaMin and \a thetaMin.
  */
-void ShapeTroughAsymmetricCPC::SetInternalValues()
+void ShapeTroughAsymmetricCPC::GetInternalParameters( double* tangentAngle, double* thetaZero, double* thetaMin, double* thetaMax ) const
 {
-	m_tangentAngle = acos( rInt.getValue() / rExt.getValue() );
-	m_thetaZero = m_tangentAngle - ( ( rExt.getValue()/rInt.getValue() ) * sin( m_tangentAngle ) );
+	double tAngle = acos( rInt.getValue() / rExt.getValue() );
+	double tZero = tAngle - ( ( rExt.getValue()/rInt.getValue() ) * sin( tAngle ) );
 
 	// Full length limits
-	m_thetaMax = 3*gc::Pi/2 - acceptanceAngleCW.getValue() - m_tangentAngle;
-	m_thetaMin = -( 3*gc::Pi/2 - acceptanceAngleCCW.getValue() - m_tangentAngle );
+	double tMax = 3*gc::Pi/2 - acceptanceAngleCW.getValue() - tAngle;
+	double tMin = -( 3*gc::Pi/2 - acceptanceAngleCCW.getValue() - tAngle );
 
 	// Truncation
-	double thetaMaxTruncated = m_thetaMax;
-	double thetaMinTruncated = m_thetaMin;
+	double thetaMaxTruncated = tMax;
+	double thetaMinTruncated = tMin;
 
 	Point3D truncationOr = Point3D( 0.0 , truncationOrigin.getValue() , 0.0 );
 	Vector3D truncationDir = Vector3D( cos( truncationAngle.getValue() ) , sin( truncationAngle.getValue() ) , 0.0 );
 	Ray truncationLine = Ray( truncationOr , truncationDir );
-	std::vector<double> intersections = FindRoots( truncationLine );
+	std::vector<double> intersections = FindRoots( truncationLine, tMin, tMax, tAngle, tZero );
 	if( intersections.size() > 0 )
 	{
 		if( intersections[ 0 ] > 0.0 ) thetaMaxTruncated = intersections[ 0 ];
 		if( intersections[ intersections.size() - 1 ] < 0.0 ) thetaMinTruncated = intersections[ intersections.size() - 1 ];
 	}
-	m_thetaMax = std::min( m_thetaMax , thetaMaxTruncated );
-	m_thetaMin = std::max( m_thetaMin , thetaMinTruncated );
 
+	*tangentAngle = tAngle;	
+	*thetaZero = tZero;
+	*thetaMax = std::min( tMax , thetaMaxTruncated );
+	*thetaMin = std::max( tMin , thetaMinTruncated );
 }
 
-double ShapeTroughAsymmetricCPC::ConcentratorProfileX( double theta ) const
+double ShapeTroughAsymmetricCPC::ConcentratorProfileX( double theta, double tangentAngle, double thetaZero ) const
 {
 	double x;
 	if( theta >= 0.0 )
 	{
 		double acceptanceAngle = acceptanceAngleCCW.getValue();
-		double involuteLimit = gc::Pi/2 + acceptanceAngle - m_tangentAngle;
+		double involuteLimit = gc::Pi/2 + acceptanceAngle - tangentAngle;
 		double ro;
 		if( theta < involuteLimit )
-			ro = rInt.getValue() * ( theta + m_tangentAngle - m_thetaZero );
+			ro = rInt.getValue() * ( theta + tangentAngle - thetaZero );
 		else
-			ro = ( rInt.getValue() * ( ( theta + m_tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * m_thetaZero ) ) -  cos( theta + m_tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( theta + m_tangentAngle - acceptanceAngle ) );
+			ro = ( rInt.getValue() * ( ( theta + tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * thetaZero ) ) -  cos( theta + tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( theta + tangentAngle - acceptanceAngle ) );
 
-		x = ( rInt.getValue() * sin( theta + m_tangentAngle ) + ro * sin( theta + m_tangentAngle - ( gc::Pi / 2 ) ) );
+		x = ( rInt.getValue() * sin( theta + tangentAngle ) + ro * sin( theta + tangentAngle - ( gc::Pi / 2 ) ) );
 	}
 	else
 	{
 		double negTheta = -theta;
 		double acceptanceAngle = acceptanceAngleCW.getValue();
-		double involuteLimit = gc::Pi/2 + acceptanceAngle - m_tangentAngle;
+		double involuteLimit = gc::Pi/2 + acceptanceAngle - tangentAngle;
 		double ro;
 		if( negTheta < involuteLimit )
-			ro = rInt.getValue() * ( negTheta + m_tangentAngle - m_thetaZero );
+			ro = rInt.getValue() * ( negTheta + tangentAngle - thetaZero );
 		else
-			ro = ( rInt.getValue() * ( ( negTheta + m_tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * m_thetaZero ) ) -  cos( negTheta + m_tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( negTheta + m_tangentAngle - acceptanceAngle ) );
+			ro = ( rInt.getValue() * ( ( negTheta + tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * thetaZero ) ) -  cos( negTheta + tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( negTheta + tangentAngle - acceptanceAngle ) );
 
-		x = - ( rInt.getValue() * sin( negTheta + m_tangentAngle ) + ro * sin( negTheta + m_tangentAngle - ( gc::Pi / 2 ) ) );
+		x = - ( rInt.getValue() * sin( negTheta + tangentAngle ) + ro * sin( negTheta + tangentAngle - ( gc::Pi / 2 ) ) );
 	}
 
 	return x;
 }
 
-double ShapeTroughAsymmetricCPC::ConcentratorProfileY( double theta ) const
+double ShapeTroughAsymmetricCPC::ConcentratorProfileY( double theta, double tangentAngle, double thetaZero ) const
 {
 	double y;
 	if( theta >= 0.0 )
 	{
 		double acceptanceAngle = acceptanceAngleCCW.getValue();
-		double involuteLimit = gc::Pi/2 + acceptanceAngle - m_tangentAngle;
+		double involuteLimit = gc::Pi/2 + acceptanceAngle - tangentAngle;
 		double ro;
 		if( theta < involuteLimit )
-			ro = rInt.getValue() * ( theta + m_tangentAngle - m_thetaZero );
+			ro = rInt.getValue() * ( theta + tangentAngle - thetaZero );
 		else
-			ro = ( rInt.getValue() * ( ( theta + m_tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * m_thetaZero ) ) -  cos( theta + m_tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( theta + m_tangentAngle - acceptanceAngle ) );
+			ro = ( rInt.getValue() * ( ( theta + tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * thetaZero ) ) -  cos( theta + tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( theta + tangentAngle - acceptanceAngle ) );
 
-		y = ( - rInt.getValue() * cos( theta + m_tangentAngle ) - ro * cos( theta + m_tangentAngle - ( gc::Pi / 2 ) ) );
+		y = ( - rInt.getValue() * cos( theta + tangentAngle ) - ro * cos( theta + tangentAngle - ( gc::Pi / 2 ) ) );
 	}
 	else
 	{
 		double negTheta = -theta;
 		double acceptanceAngle = acceptanceAngleCW.getValue();
-		double involuteLimit = gc::Pi/2 + acceptanceAngle - m_tangentAngle;
+		double involuteLimit = gc::Pi/2 + acceptanceAngle - tangentAngle;
 		double ro;
 		if( negTheta < involuteLimit )
-			ro = rInt.getValue() * ( negTheta + m_tangentAngle - m_thetaZero );
+			ro = rInt.getValue() * ( negTheta + tangentAngle - thetaZero );
 		else
-			ro = ( rInt.getValue() * ( ( negTheta + m_tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * m_thetaZero ) ) -  cos( negTheta + m_tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( negTheta + m_tangentAngle - acceptanceAngle ) );
+			ro = ( rInt.getValue() * ( ( negTheta + tangentAngle + acceptanceAngle + ( gc::Pi / 2 ) - ( 2 * thetaZero ) ) -  cos( negTheta + tangentAngle - acceptanceAngle )  ) ) / ( 1 + sin( negTheta + tangentAngle - acceptanceAngle ) );
 
-		y = ( - rInt.getValue() * cos( negTheta + m_tangentAngle ) - ro * cos( negTheta + m_tangentAngle - ( gc::Pi / 2 ) ) );
+		y = ( - rInt.getValue() * cos( negTheta + tangentAngle ) - ro * cos( negTheta + tangentAngle - ( gc::Pi / 2 ) ) );
 	}
 
 	return y;
 }
 
-std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, double thetaStart , double thetaEnd , double acceptanceAngle ) const
+std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, double thetaStart, double thetaEnd, double acceptanceAngle, double tangentAngle, double thetaZero  ) const
 {
 	std::vector<double> roots;
 	//Set general algorithm parameters
@@ -556,8 +559,8 @@ std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, dou
 	double thetaAux = - gc::Infinity;
 
 	//Compute extreme points
-	double tDeviation0 = TDeviation( ray, theta0 , acceptanceAngle );
-	double tDeviation1 = TDeviation( ray, theta1 , acceptanceAngle );
+	double tDeviation0 = TDeviation( ray, theta0 , acceptanceAngle, tangentAngle, thetaZero );
+	double tDeviation1 = TDeviation( ray, theta1 , acceptanceAngle, tangentAngle, thetaZero );
 
 	//If YDistance(start) * YDistance(end) > 0 add the defined step to the starting point
 	// until YDistance(start) * YDistance(end) < 0 condition is satisfied.
@@ -566,7 +569,7 @@ std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, dou
 		//Set theta aux if while is entered.
 		thetaAux = theta0;
 		theta0 += delta;
-		tDeviation0 = TDeviation( ray, theta0 , acceptanceAngle );
+		tDeviation0 = TDeviation( ray, theta0 , acceptanceAngle, tangentAngle, thetaZero );
 	}
 	// If YDistance(start) * YDistance(end) < 0 condition is NOT satisfied, there are no roots --> return.
 	if( ( ( tDeviation0 * tDeviation1 ) > 0.0 ) || ( theta0 > theta1 ) ) return roots;
@@ -576,7 +579,7 @@ std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, dou
 	while( ( fabs( theta1 - theta0 ) > tolerance ) && ( iterations < maxIterations ) )
 	{
 		double thetaMiddle = ( theta0 + theta1 ) / 2.0 ;
-		double tDeviationMiddle = TDeviation( ray, thetaMiddle , acceptanceAngle );
+		double tDeviationMiddle = TDeviation( ray, thetaMiddle , acceptanceAngle, tangentAngle, thetaZero );
 
 		if( ( tDeviationMiddle > 0.0 ) && ( tDeviation1 > tDeviation0 ) ) theta1 = thetaMiddle;
 		else if( ( tDeviationMiddle > 0.0 ) && ( tDeviation1 < tDeviation0 ) ) theta0 = thetaMiddle;
@@ -596,8 +599,8 @@ std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, dou
 	theta0 = std::max( thetaStart , thetaAux - delta );
 	theta1 = std::min( thetaAux + delta , thetaEnd );
 
-	tDeviation0 = TDeviation( ray, theta0 , acceptanceAngle );
-	tDeviation1 = TDeviation( ray, theta1 , acceptanceAngle );
+	tDeviation0 = TDeviation( ray, theta0 , acceptanceAngle, tangentAngle, thetaZero );
+	tDeviation1 = TDeviation( ray, theta1 , acceptanceAngle, tangentAngle, thetaZero );
 
 	if( ( tDeviation0 * tDeviation1 ) > 0.0 ) return roots;
 
@@ -605,7 +608,7 @@ std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, dou
 	while( ( fabs( theta1 - theta0 ) > tolerance ) && ( iterations < maxIterations ) )
 	{
 		double thetaMiddle = ( theta0 + theta1 ) / 2.0 ;
-		double tDeviationMiddle = TDeviation( ray, thetaMiddle , acceptanceAngle );
+		double tDeviationMiddle = TDeviation( ray, thetaMiddle , acceptanceAngle, tangentAngle, thetaZero );
 
 		if( ( tDeviationMiddle > 0.0 ) && ( tDeviation1 > tDeviation0 ) ) theta1 = thetaMiddle;
 		else if( ( tDeviationMiddle > 0.0 ) && ( tDeviation1 < tDeviation0 ) ) theta0 = thetaMiddle;
@@ -622,17 +625,17 @@ std::vector<double> ShapeTroughAsymmetricCPC::FindRigthRoots( const Ray ray, dou
 	return roots;
 }
 
-std::vector<double> ShapeTroughAsymmetricCPC::FindRoots( const Ray ray ) const
+std::vector<double> ShapeTroughAsymmetricCPC::FindRoots( const Ray ray, double thetaMin, double thetaMax, double tangentAngle, double thetaZero ) const
 {
 	// Right branch roots
-	std::vector<double> roots = FindRigthRoots( ray, 0 , m_thetaMax , acceptanceAngleCCW.getValue() );
+	std::vector<double> roots = FindRigthRoots( ray, 0, thetaMax , acceptanceAngleCCW.getValue(), tangentAngle, thetaZero );
 
 	// Left branch hits calculated with the symmetric ray.
 	Point3D symmetricRayOrigin = Point3D( - ray.origin.x , ray.origin.y , ray.origin.z );
 	Vector3D symmetricRayDirection = Vector3D( - ray.direction().x , ray.direction().y , ray.direction().z );
 	Ray symmetricRay = Ray( symmetricRayOrigin , symmetricRayDirection );
 
-	std::vector<double> rootsLeft = FindRigthRoots( symmetricRay, 0 , - m_thetaMin , acceptanceAngleCW.getValue() );
+	std::vector<double> rootsLeft = FindRigthRoots( symmetricRay, 0, - thetaMin , acceptanceAngleCW.getValue(), tangentAngle, thetaZero );
 
 	// Change sign to roots thetaRoot --> -thetaRoot and append to roots
 	for ( unsigned int i = 0; i < rootsLeft.size(); i++)
@@ -641,34 +644,33 @@ std::vector<double> ShapeTroughAsymmetricCPC::FindRoots( const Ray ray ) const
 	return roots;
 }
 
-
-double ShapeTroughAsymmetricCPC::TDeviation( const Ray ray, double theta, double acceptanceAngle ) const
+double ShapeTroughAsymmetricCPC::TDeviation( const Ray ray, double theta, double acceptanceAngle, double tangentAngle, double thetaZero ) const
 {
 	double dx = ray.direction().x;
 	double ox = ray.origin.x;
 	double dy = ray.direction().y;
 	double oy = ray.origin.y;
 
-	double involuteLimit = gc::Pi/2 + acceptanceAngle - m_tangentAngle;
+	double involuteLimit = gc::Pi/2 + acceptanceAngle - tangentAngle;
 	if( theta < involuteLimit )
-		return -dy * ox + dx * oy + rInt.getValue() * ( dx - dy * ( theta + m_tangentAngle - m_thetaZero ) ) * cos( theta + m_tangentAngle ) + rInt.getValue() * ( dy + dx * ( theta + m_tangentAngle - m_thetaZero ) ) * sin( theta + m_tangentAngle );
+		return -dy * ox + dx * oy + rInt.getValue() * ( dx - dy * ( theta + tangentAngle - thetaZero ) ) * cos( theta + tangentAngle ) + rInt.getValue() * ( dy + dx * ( theta + tangentAngle - thetaZero ) ) * sin( theta + tangentAngle );
 	else
 		return ( ( -2 * dy * rInt.getValue() * cos( acceptanceAngle ) )
-			+ rInt.getValue() * ( -2 * dx + dy * ( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + m_tangentAngle - 2 * m_thetaZero ) ) ) * cos( theta + m_tangentAngle )
-			+ 2 * ( dx * rInt.getValue() * sin( acceptanceAngle ) - ( dy * ox - dx * oy ) * ( -1 + sin( acceptanceAngle - theta - m_tangentAngle ) ) )
-			- rInt.getValue() * ( 2*dy + dx * ( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + m_tangentAngle - 2 * m_thetaZero ) ) ) * sin( theta + m_tangentAngle ) ) /
-			( 2*( -1 + sin( acceptanceAngle - theta - m_tangentAngle ) ) );
+			+ rInt.getValue() * ( -2 * dx + dy * ( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + tangentAngle - 2 * thetaZero ) ) ) * cos( theta + tangentAngle )
+			+ 2 * ( dx * rInt.getValue() * sin( acceptanceAngle ) - ( dy * ox - dx * oy ) * ( -1 + sin( acceptanceAngle - theta - tangentAngle ) ) )
+			- rInt.getValue() * ( 2*dy + dx * ( 2 * acceptanceAngle + gc::Pi + 2 * ( theta + tangentAngle - 2 * thetaZero ) ) ) * sin( theta + tangentAngle ) ) /
+			( 2*( -1 + sin( acceptanceAngle - theta - tangentAngle ) ) );
 
 }
 
-std::vector<double> ShapeTroughAsymmetricCPC::FindThits( const Ray ray, const std::vector<double> roots ) const
+std::vector<double> ShapeTroughAsymmetricCPC::FindThits( const Ray ray, const std::vector<double> roots, double tangentAngle, double thetaZero ) const
 {
 	double tolerance = 0.000001;
 	std::vector<double> tHits;
 	for( unsigned int i = 0 ; i < roots.size(); ++i )
 	{
-		double x = ConcentratorProfileX( roots[ i ] );
-		double y = ConcentratorProfileY( roots[ i ] );
+		double x = ConcentratorProfileX( roots[ i ], tangentAngle, thetaZero );
+		double y = ConcentratorProfileY( roots[ i ], tangentAngle, thetaZero );
 
 		double a = 1 - ray.direction().z * ray.direction().z;
 		double b = 0;

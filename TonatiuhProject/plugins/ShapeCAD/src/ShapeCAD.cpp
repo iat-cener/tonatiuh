@@ -33,30 +33,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iï¿½igo Les.
 ***************************************************************************/
-
-#include <algorithm>
-#include <functional> // for std::bind
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
-
-#include "gc.h"
 #include "gf.h"
-#include "trt.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
-#include "NormalVector.h"
 #include "Ray.h"
 #include "ShapeCAD.h"
-#include "Triangle.h"
-
 
 /*! *****************************
  * class ShapeCAD
@@ -114,29 +99,20 @@ ShapeCAD::~ShapeCAD()
 	delete m_normalSensor;
 }
 
-
-double ShapeCAD::GetArea() const
-{
-	return -1;
-}
-
 /*!
  * Return the shape bounding box.
  */
 BBox ShapeCAD::GetBBox() const
 {
-
-	//return BBox( Point3D( m_xMin, m_yMin, m_zMin ), Point3D( m_xMax, m_yMax, m_zMax ) );
 	if( m_pBVH )
 		return ( m_pBVH->GetBBox() );
 
 	return ( BBox( ) );
 }
 
-
-QString ShapeCAD::GetIcon() const
+std::string ShapeCAD::GetIcon() const
 {
-	return ( QLatin1String( ":/icons/ShapeCAD.png" ) );
+	return ( ":/icons/ShapeCAD.png" );
 }
 
 bool ShapeCAD::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
@@ -158,8 +134,6 @@ bool ShapeCAD::Intersect( const Ray& objectRay, double* tHit, DifferentialGeomet
 	dg->pShape = this;
 
 	return ( true );
-
-
 }
 
 bool ShapeCAD::IntersectP( const Ray& worldRay ) const
@@ -169,10 +143,8 @@ bool ShapeCAD::IntersectP( const Ray& worldRay ) const
 
 Point3D ShapeCAD::Sample( double /*u*/, double /*v*/ ) const
 {
-	//return GetPoint3D( u, v );
 	return ( Point3D( 0.0, 0.0, 0.0 ) );
 }
-
 
 bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 {
@@ -217,7 +189,6 @@ bool ShapeCAD:: SetFacetList( std::vector< Triangle* > triangleList )
 
 	m_pBVH = new BVH( &m_pTriangleList, 1 );
 
-
 	m_v1Sensor->setPriority( 0 );
 	m_v1Sensor->attach( &v1VertexList );
 	m_v2Sensor->setPriority( 0 );
@@ -236,8 +207,6 @@ int ShapeCAD::getFields(SoFieldList & /*fields*/ ) const
 
 void ShapeCAD::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 {
-
-
 	BBox bBox = GetBBox();
 	// These points define the min and max extents of the box.
     SbVec3f min, max;
@@ -251,7 +220,6 @@ void ShapeCAD::computeBBox(SoAction *, SbBox3f &box, SbVec3f& /*center*/ )
 
 void ShapeCAD::generatePrimitives(SoAction *action)
 {
-
 	SoPrimitiveVertex   pv;
 
 	// Access the state from the action.
@@ -306,10 +274,7 @@ void ShapeCAD::generatePrimitives(SoAction *action)
 	}
 
     endShape();
-
-
 }
-
 
 void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 {
@@ -339,16 +304,6 @@ void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 			( shapeCAD->v3VertexList.getNum() == v1Size ) &&
 			( shapeCAD->normalVertexList.getNum() == v1Size )  )
 	{
-		/*
-		shapeCAD->m_xMin = gc::Infinity;
-		shapeCAD->m_yMin = gc::Infinity;
-		shapeCAD->m_zMin = gc::Infinity;
-
-		shapeCAD->m_xMax = - gc::Infinity;
-		shapeCAD->m_yMax = - gc::Infinity;
-		shapeCAD->m_zMax = - gc::Infinity;
-		*/
-
 		for(  int f = 0; f < v1Size; f++ )
 		{
 			Point3D v1 = Point3D( shapeCAD->v1VertexList[f][0], shapeCAD->v1VertexList[f][1], shapeCAD->v1VertexList[f][2] );
@@ -357,34 +312,7 @@ void ShapeCAD::updateTrinaglesList( void* data, SoSensor* )
 			NormalVector normal = NormalVector( shapeCAD->normalVertexList[f][0], shapeCAD->normalVertexList[f][1], shapeCAD->normalVertexList[f][2] );
 			Triangle* triangle = new Triangle( v1, v2, v3, normal );
 			shapeCAD->m_pTriangleList.push_back( triangle );
-
-			/*
-			if( v1.x < shapeCAD->m_xMin )	shapeCAD->m_xMin = v1.x;
-			if( v2.x < shapeCAD->m_xMin )	shapeCAD->m_xMin = v2.x;
-			if( v3.x < shapeCAD->m_xMin )	shapeCAD->m_xMin = v3.x;
-
-			if( v1.y < shapeCAD->m_yMin )	shapeCAD->m_yMin = v1.y;
-			if( v2.y < shapeCAD->m_yMin )	shapeCAD->m_yMin = v2.y;
-			if( v3.y < shapeCAD->m_yMin ) 	shapeCAD->m_yMin = v3.y;
-
-			if( v1.z < shapeCAD->m_zMin )	shapeCAD->m_zMin = v1.z;
-			if( v2.z < shapeCAD->m_zMin )	shapeCAD->m_zMin = v2.z;
-			if( v3.z < shapeCAD->m_zMin )	shapeCAD->m_zMin = v3.z;
-
-			if( v1.x > shapeCAD->m_xMax )	shapeCAD->m_xMax = v1.x;
-			if( v2.x > shapeCAD->m_xMax )	shapeCAD->m_xMax = v2.x;
-			if( v3.x > shapeCAD->m_xMax )	shapeCAD->m_xMax = v3.x;
-
-			if( v1.y > shapeCAD->m_yMax )	shapeCAD->m_yMax = v1.y;
-			if( v2.y > shapeCAD->m_yMax )	shapeCAD->m_yMax = v2.y;
-			if( v3.y > shapeCAD->m_yMax )	shapeCAD->m_yMax = v3.y;
-
-			if( v1.z > shapeCAD->m_zMax )	shapeCAD->m_zMax = v1.z;
-			if( v2.z > shapeCAD->m_zMax )	shapeCAD->m_zMax = v2.z;
-			if( v3.z > shapeCAD->m_zMax )	shapeCAD->m_zMax = v3.z;
-			*/
 		}
 		shapeCAD->m_pBVH = new BVH( &shapeCAD->m_pTriangleList, 1);
 	}
 }
-

@@ -37,7 +37,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
 #include <QIcon>
-#include <QString>
 
 #include "PhotonMapExportDBFactory.h"
 

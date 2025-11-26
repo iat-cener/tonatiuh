@@ -184,8 +184,6 @@ private slots:
 
 	SbVec3f getTargetOfCamera(SoCamera* cam);
 
- 
-
 	//View menu actions
 	void on_actionAxis_toggled();
 	void on_actionEdit_Mode_toggled();

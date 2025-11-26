@@ -32,10 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, I�igo Les.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SHAPECAD_H_
 #define SHAPECAD_H_
 
@@ -44,10 +43,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, I�igo Les.
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "BVH.h"
-#include "Point3D.h"
-#include "NormalVector.h"
-#include "trt.h"
 #include "Triangle.h"
+#include "trt.h"
 #include "TShape.h"
 
 /*! *****************************
@@ -82,10 +79,9 @@ class ShapeCAD : public TShape
 public:
 	ShapeCAD( );
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
@@ -95,18 +91,13 @@ public:
 	bool SetFacetList( std::vector< Triangle* > triangleList );
 
 	int	getFields(SoFieldList & fields) const;
-	
-	bool ValidateParamaterValue( std::string /*name*/, std::string /*value*/ ) const { return true; };
 
 
 protected:
 	static void updateTrinaglesList(void *data, SoSensor *);
-	//bool Near( const Triangle* t1, const Triangle* t2, Point3D referencePoint ) const;
 	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	void generatePrimitives(SoAction *action);
 	virtual ~ShapeCAD();
-
-
 
 private:
 
@@ -122,18 +113,7 @@ private:
 	SoFieldSensor* m_v3Sensor;
 	SoFieldSensor* m_normalSensor;
 
-/*
-	double m_xMin;
-	double m_xMax;
-	double m_yMin;
-	double m_yMax;
-	double m_zMin;
-	double m_zMax;
-	*/
-
-
 	BVH* m_pBVH;
-
 };
 
 

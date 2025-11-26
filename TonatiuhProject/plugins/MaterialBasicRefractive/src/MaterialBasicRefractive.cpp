@@ -35,21 +35,15 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QMessageBox>
-#include <QString>
-
-#include <Inventor/sensors/SoFieldSensor.h>
-
 #include "gc.h"
 
 #include "DifferentialGeometry.h"
 #include "MaterialBasicRefractive.h"
+#include "ParameterValueException.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
 #include "Transform.h"
-
 
 SO_NODE_SOURCE( MaterialBasicRefractive );
 
@@ -59,7 +53,6 @@ void MaterialBasicRefractive::initClass()
 }
 
 MaterialBasicRefractive::MaterialBasicRefractive()
-:m_sigmaOpt( 0 )
 {
 	SO_NODE_CONSTRUCTOR( MaterialBasicRefractive );
 	SO_NODE_ADD_FIELD( reflectivityFront, (0.0) );
@@ -69,9 +62,7 @@ MaterialBasicRefractive::MaterialBasicRefractive()
 	SO_NODE_ADD_FIELD( nFront, (0.0) );
 	SO_NODE_ADD_FIELD( nBack, (0.0) );
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
-	//SO_NODE_ADD_FIELD( m_sigmaSpecularity, (0.5) );
 
-	//SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
 	SO_NODE_ADD_FIELD( distribution, (NORMAL) );
@@ -83,99 +74,54 @@ MaterialBasicRefractive::MaterialBasicRefractive()
 	SO_NODE_ADD_FIELD( m_shininess, (0.2f) );
 	SO_NODE_ADD_FIELD( m_transparency, (0.0) );
 
-	SoFieldSensor* reflectivityFrontSensor = new SoFieldSensor( updateReflectivityFront, this );
-	reflectivityFrontSensor->setPriority( 1 );
-	reflectivityFrontSensor->attach( &reflectivityFront );
-	SoFieldSensor* transmissivityFrontSensor = new SoFieldSensor( updateTransmissivityFront, this );
-	transmissivityFrontSensor->setPriority( 1 );
-	transmissivityFrontSensor->attach( &transmissivityFront );
-
-	SoFieldSensor* reflectivityBackSensor = new SoFieldSensor( updateReflectivityBack, this );
-	reflectivityBackSensor->setPriority( 1 );
-	reflectivityBackSensor->attach( &reflectivityBack );
-	SoFieldSensor* transmissivityBackSensor = new SoFieldSensor( updateTransmissivityBack, this );
-	transmissivityBackSensor->setPriority( 1 );
-	transmissivityBackSensor->attach( &transmissivityBack );
-
-	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
-	m_ambientColorSensor->setPriority( 1 );
-	m_ambientColorSensor->attach( &m_ambientColor );
-	SoFieldSensor* m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
-	m_diffuseColorSensor->setPriority( 1 );
-	m_diffuseColorSensor->attach( &m_diffuseColor );
-	SoFieldSensor* m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
-	m_specularColorSensor->setPriority( 1 );
-	m_specularColorSensor->attach( &m_specularColor );
-	SoFieldSensor* m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
-	m_emissiveColorSensor->setPriority( 1 );
-	m_emissiveColorSensor->attach( &m_emissiveColor );
-	SoFieldSensor* m_shininessSensor = new SoFieldSensor( updateShininess, this );
-	m_shininessSensor->setPriority( 1 );
-	m_shininessSensor->attach( &m_shininess );
-	SoFieldSensor* m_transparencySensor = new SoFieldSensor( updateTransparency, this );
-	m_transparencySensor->setPriority( 1 );
-	m_transparencySensor->attach( &m_transparency );
 }
 
 MaterialBasicRefractive::~MaterialBasicRefractive()
 {
 }
 
-QString MaterialBasicRefractive::getIcon()
+std::string MaterialBasicRefractive::GetIcon()
 {
-	return QString(":icons/MaterialBasicRefractive.png");
+	return (":icons/MaterialBasicRefractive.png");
 }
 
-void MaterialBasicRefractive::updateReflectivityFront( void* data, SoSensor* )
+/*!
+ * @brief Validates material parameter value.
+ *
+ * Checks whether a given parameter value is acceptable for this material.
+ * If the value is invalid, a `ParameterValueException` is thrown.
+ *
+ * @param name The name of the parameter to validate.
+ * @param value The value of the parameter to validate.
+ * @return true if the parameter value is valid.
+ * @throws ParameterValueException if the parameter value is invalid.
+ */
+bool MaterialBasicRefractive::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
-	if( material->reflectivityFront.getValue() < 0.0 ) material->reflectivityFront = 0.0;
-   	if( material->reflectivityFront.getValue() > 1.0 ) material->reflectivityFront = 1.0;
-   	if( ( material->reflectivityFront.getValue() + material->transmissivityFront.getValue() ) > 1.0 )
-   	{
-   		material->reflectivityFront = 0.0;
-   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityFront") );
-   	}
+    if( ( name == "reflectivityFront" )  && ( ( std::stod( value ) < 0 ) || ( std::stod( value ) > 1 ) ) )
+		throw ParameterValueException( "reflectivityFront", " The value of the 'reflectivityFront' parameter must be in the range [0,1]" );
+    if( ( name == "reflectivityFront" )  && ( ( std::stod( value )  + transmissivityFront.getValue() ) > 1 ) )
+		throw ParameterValueException( "reflectivityFront", "The combined values of 'reflectivityFront' and 'transmissivityFront' cannot exceed 1" );
+		
+    if( ( name == "reflectivityBack" )  && ( ( std::stod( value ) < 0 ) || ( std::stod( value ) > 1 ) ) )
+		throw ParameterValueException( "reflectivityBack", " The value of the 'reflectivityBack' parameter must be in the range [0,1]" );
+    if( ( name == "reflectivityBack" )  && ( ( std::stod( value )  + transmissivityBack.getValue() ) > 1 ) )
+		throw ParameterValueException( "reflectivityBack", "The combined values of 'reflectivityBack' and 'transmissivityBack' cannot exceed 1" );
 
-}
+    if( ( name == "transmissivityFront" )  && ( ( std::stod( value ) < 0 ) || ( std::stod( value ) > 1 ) ) )
+		throw ParameterValueException( "transmissivityFront", " The value of the 'transmissivityFront' parameter must be in the range [0,1]" );
+    if( ( name == "transmissivityFront" )  && ( ( std::stod( value )  + reflectivityFront.getValue() ) > 1 ) )
+		throw ParameterValueException( "transmissivityFront", "The combined values of 'reflectivityFront' and 'transmissivityFront' cannot exceed 1" );
+		
+    if( ( name == "transmissivityBack" )  && ( ( std::stod( value ) < 0 ) || ( std::stod( value ) > 1 ) ) )
+		throw ParameterValueException( "transmissivityBack", " The value of the 'transmissivityBack' parameter must be in the range [0,1]" );
+    if( ( name == "transmissivityBack" )  && ( ( std::stod( value )  + reflectivityBack.getValue() ) > 1 ) )
+		throw ParameterValueException( "transmissivityBack", "The combined values of 'reflectivityBack' and 'transmissivityBack' cannot exceed 1" );
 
-void MaterialBasicRefractive::updateTransmissivityFront( void* data, SoSensor* )
-{
+    if( name == "sigmaSlope" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "sigmaSlope", " The 'sigmaSlope' must be a positive number" );
 
-	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
-	if( material->transmissivityFront.getValue() < 0.0 ) material->transmissivityFront = 0.0;
-   	if( material->transmissivityFront.getValue() > 1.0 ) material->transmissivityFront = 1.0;
-   	if( ( material->reflectivityFront.getValue() + material->transmissivityFront.getValue() ) > 1.0 )
-   	{
-   		material->transmissivityFront = 0.0;
-   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for TransmissivityFront") );
-   	}
-}
-
-void MaterialBasicRefractive::updateReflectivityBack( void* data, SoSensor* )
-{
-
-	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
-	if( material->reflectivityBack.getValue() < 0.0 ) material->reflectivityBack = 0.0;
-   	if( material->reflectivityBack.getValue() > 1.0 ) material->reflectivityBack = 1.0;
-   	if( ( material->reflectivityBack.getValue() + material->transmissivityBack.getValue() ) > 1.0 )
-   	{
-   			material->reflectivityBack = 0.0;
-			QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for ReflectivityBack") );
-   	}
-}
-
-void MaterialBasicRefractive::updateTransmissivityBack( void* data, SoSensor* )
-{
-	MaterialBasicRefractive* material = static_cast< MaterialBasicRefractive* >( data );
-	if( material->transmissivityBack.getValue() < 0.0 ) material->transmissivityBack = 0.0;
-   	if( material->transmissivityBack.getValue() > 1.0 ) material->transmissivityBack = 1.0;
-   	if( ( material->reflectivityBack.getValue() + material->transmissivityBack.getValue() ) > 1.0 )
-   	{
-   		material->transmissivityBack = 0.0;
-   		QMessageBox::warning( 0, QString("Tonatiuh Action"), QString( " Is not a valid value for TransmissivityBack") );
-   	}
-
+	return true;
 }
 
 void MaterialBasicRefractive::updateAmbientColor( void* data, SoSensor* )
@@ -216,7 +162,6 @@ void MaterialBasicRefractive::updateTransparency( void* data, SoSensor* )
 
 bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {
-
 	double randomNumber = rand.RandomDouble();
 	if( dg->shapeFrontSide )
 	{
@@ -245,7 +190,6 @@ bool MaterialBasicRefractive::OutputRay( const Ray& incident, DifferentialGeomet
 			return true;
 		}
 		else return false;
-
 	}
 }
 
@@ -254,7 +198,6 @@ Ray MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeom
 	NormalVector dgNormal;
 	if( dg->shapeFrontSide )	dgNormal = dg->normal;
 	else	dgNormal = - dg->normal;
-
 
 	//Compute reflected ray (local coordinates )
 	Ray reflected;
@@ -305,7 +248,6 @@ Ray MaterialBasicRefractive::ReflectedRay( const Ray& incident, DifferentialGeom
 
 Ray MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& /* rand */  ) const
 {
-
 	NormalVector s;
 	double n1;
 	double n2;
@@ -327,19 +269,7 @@ Ray MaterialBasicRefractive::RefractedtRay( const Ray& incident, DifferentialGeo
 	Ray refracted;
 	refracted.origin = dg->point;
 
-
 	double cosTheta = DotProduct( -incident.direction(), s );
-/*
-	double disc = ( cosTheta * cosTheta ) * ( ( n2 / n1 ) * ( n2 / n1 ) ) - 1;
-	if( n1 > n2 )
-	{
-		if( disc > 0 )refracted->setDirection( ( n1 / n2 ) * ( incident.direction() + ( cosTheta - sqrt( disc ) )* s ) );
-		else
-			refracted->setDirection( Normalize( incident.direction() + 2.0 * cosTheta * s ) );
-	}
-	else
-		refracted->setDirection( ( n1 / n2 ) * ( incident.direction() + ( cosTheta - sqrt( disc ) )* s ) );
-	*/
 
 	double sin2Theta = ( n1/ n2 ) * ( n1/ n2 )  * ( 1 - cosTheta  * cosTheta );
 	if( n1 > n2 )

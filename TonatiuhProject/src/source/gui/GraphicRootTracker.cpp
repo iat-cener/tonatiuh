@@ -35,27 +35,10 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <cmath>
-#include <iostream>
-
-#include <QString>
-
-#include <Inventor/SbLinear.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
+#include <Inventor/fields/SoSFRotation.h>
 
 #include "gc.h"
-
-#include "NormalVector.h"
-#include "Point3D.h"
 #include "GraphicRootTracker.h"
-#include "Transform.h"
-#include "TSceneKit.h"
-#include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( GraphicRootTracker );
 
@@ -74,11 +57,11 @@ GraphicRootTracker::GraphicRootTracker()
 	SO_NODE_ADD_FIELD( m_zenith, ( 90.0 ) );
 
 	//ConstructEngineOutput();
-	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
+	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f );
+	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation );
+	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f );
+	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation );
+	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f );
 
 
 }
@@ -105,11 +88,9 @@ void GraphicRootTracker::SetZenithAngle( trt::TONATIUH_REAL* zenithField )
 	m_zenith.connectFrom( zenithField );
 }
 
-
-QString GraphicRootTracker::getIcon()
+std::string GraphicRootTracker::GetIcon()
 {
-
-	return QString( QLatin1String( ":/icons/GraphicRootTracker.png" ) );
+	return ( ":/icons/GraphicRootTracker.png" );
 }
 
 void GraphicRootTracker::evaluate()
@@ -117,14 +98,12 @@ void GraphicRootTracker::evaluate()
 
 	if (!m_azimuth.isConnected() || !m_zenith.isConnected() ) return;
 
-	//double alpha = gc::Pi - GetAzimuth();
 	double azimuth = m_azimuth.getValue();
 	double alpha = gc::Pi - azimuth;
 
 	SbVec3f yAxis( 0.0, 1.0, 0.0 );
 	SbRotation yRotation( yAxis, alpha );
 	SbVec3f xAxis( 1.0, 0.0, 0.0 );
-	//SbRotation xRotation( xAxis, GetZenith() );
 	double zenith = m_zenith.getValue();
 	SbRotation xRotation( xAxis, zenith );
 

@@ -32,32 +32,23 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gc.h"
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
-#include "NormalVector.h"
 #include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeCone.h"
-
 
 SO_NODE_SOURCE(ShapeCone);
 
 void ShapeCone::initClass()
 {
-
 	SO_NODE_INIT_CLASS(ShapeCone, TShape, "TShape");
 }
 
@@ -73,7 +64,6 @@ ShapeCone::ShapeCone(  )
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
 	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
-
 }
 
 ShapeCone::~ShapeCone()
@@ -81,18 +71,11 @@ ShapeCone::~ShapeCone()
 
 }
 
-
-double ShapeCone::GetArea() const
-{
-	return -1;
-}
-
 /*!
  * Return the shape bounding box.
  */
 BBox ShapeCone::GetBBox() const
 {
-
 	double cosPhiMax = cos( phiMax.getValue() );
 	double sinPhiMax = sin( phiMax.getValue() );
 	double minradius = std::min( baseRadius.getValue(), topRadius.getValue());
@@ -111,10 +94,9 @@ BBox ShapeCone::GetBBox() const
 	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
-
-QString ShapeCone::GetIcon() const
+std::string ShapeCone::GetIcon() const
 {
-	return ":/icons/ShapeCone.png";
+	return ( ":/icons/ShapeCone.png" );
 }
 
 bool ShapeCone::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
@@ -245,14 +227,27 @@ bool ShapeCone::IntersectP( const Ray& worldRay ) const
 	return Intersect( worldRay, 0, 0 );
 }
 
+/*!
+* Returns the 3D coordintates por parameteric coordinates \a u and \a v
+*/
 Point3D ShapeCone::Sample( double u, double v ) const
 {
 	return GetPoint3D( u, v );
 }
 
+/*!
+ * @brief Validates a cone parameter value.
+ *
+ * Checks whether a given parameter value is acceptable for this shape.
+ * If the value is invalid, a `ParameterValueException` is thrown.
+ *
+ * @param name The name of the parameter to validate.
+ * @param value The value of the parameter to validate.
+ * @return true if the parameter value is valid.
+ * @throws ParameterValueException if the parameter value is invalid.
+ */
 bool ShapeCone::ValidateParamaterValue( std::string name, std::string value ) const
 {
-
     if( name == "baseRadius" && std::stod( value ) < 0 ) 
 		throw ParameterValueException( "baseRadius", " The radius of the cone base, 'baseRadius', must be a positive number" );
 	else if( name == "topRadius" && std::stod( value ) < 0 ) 
@@ -264,7 +259,6 @@ bool ShapeCone::ValidateParamaterValue( std::string name, std::string value ) co
 
 	return true;
 }
-
 
 Point3D ShapeCone::GetPoint3D (double u, double v) const
 {

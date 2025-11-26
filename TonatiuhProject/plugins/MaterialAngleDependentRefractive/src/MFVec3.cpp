@@ -36,7 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include "MFVec3.h"
 
 #if unix
@@ -46,24 +45,25 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		// This macro takes the name of the class and the name of the
 		// parent class
-			SO_MFIELD_INIT_CLASS(MFVec3, UserMField);
+		SO_MFIELD_INIT_CLASS(MFVec3, UserMField);
 	}
-
 
 	SbBool MFVec3::read1Value(SoInput * in, int idx)
 	{
-	   return( in->read( this->values[idx][0] ) && in->read( this->values[idx][1] ) && in->read( this->values[idx][2] ) );
+		return ( in->read(this->values[idx][0]) &&
+			in->read(this->values[idx][1]) &&
+			in->read(this->values[idx][2]) );
 	}
 
 	void MFVec3::write1Value(SoOutput * out, int idx) const
 	{
 		const SbVec3d & v = (*this)[idx];
-
+		
 		out->write(v[0]);
-		if (!out->isBinary())
+		if( !out->isBinary() )
 			out->write(' ');
 		out->write(v[1]);
-		if (!out->isBinary())
+		if( !out->isBinary() )
 			out->write(' ');
 		out->write(v[2]);
 	}
@@ -131,12 +131,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 		SO_MFIELD_INIT_CLASS(MFVec3, inherited);
 	}
 
-	SbBool MFVec3::read1Value( SoInput* in, int idx)
+	SbBool MFVec3::read1Value(SoInput * in, int idx)
 	{
-	    return( in->read( this->values[idx][0] ) && in->read( this->values[idx][1] ) && in->read( this->values[idx][2] ) );
+		return ( in->read(this->values[idx][0]) &&
+			in->read(this->values[idx][1]) &&
+			in->read(this->values[idx][2] ) );
 	}
 
-	void MFVec3::write1Value( SoOutput* out, int idx) const
+	void MFVec3::write1Value(SoOutput * out, int idx) const
 	{
 		const SbVec3f & v = (*this)[idx];
 
@@ -158,7 +160,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 		for(int i=0; i < numarg; i++)
 			this->values[start+i] = SbVec3f(xyz[i]);
-		this->valueChanged();
+
+	  	this->valueChanged();
 	}
 
 	void MFVec3::set1Value(int idx, float x, float y, float z)

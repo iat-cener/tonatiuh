@@ -35,25 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <cmath>
-
-#include <QString>
-
-#include <Inventor/SbLinear.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/fields/SoSFRotation.h>
 
 #include "gc.h"
-
-#include "NormalVector.h"
-#include "Point3D.h"
-#include "Transform.h"
-#include "TSceneTracker.h"
 #include "TSceneKit.h"
-#include "Vector3D.h"
+#include "TSceneTracker.h"
 
 SO_NODEENGINE_SOURCE( TSceneTracker );
 
@@ -87,39 +73,29 @@ TSceneTracker::~TSceneTracker()
 	m_zenith.disconnect();
 }
 
-QString TSceneTracker::getIcon()
+std::string TSceneTracker::GetIcon()
 {
-
-	return QLatin1String(":/icons/TSceneTracker.png");
+	return ( ":/icons/TSceneTracker.png" );
 }
 
 void TSceneTracker::evaluate()
 {
-
 	if ( !m_azimuth.isConnected() || !m_zenith.isConnected() ) return;
-	//SetAnglesToScene();
 
 	double azimuth = m_azimuth.getValue();
 	double zenith = m_zenith.getValue();
 
 	m_scene->UpdateSunPosition( azimuth, zenith );
 
-
-	//m_scene->azimuth.setValue( azimuth );
-
-	//double alpha = gc::Pi - GetAzimuth();
 	double alpha = gc::Pi - azimuth;
 
 	SbVec3f yAxis( 0.0, 1.0, 0.0 );
 	SbRotation yRotation( yAxis, -alpha );
 
 	SbVec3f xAxis( 1.0, 0.0, 0.0 );
-	//SbRotation xRotation( xAxis, -GetZenith() );
-	//m_scene->zenith.setValue( zenith );
 	SbRotation xRotation( xAxis, -zenith );
 
 	SbRotation rotation = yRotation * xRotation;
 
 	SetEngineOutputRotation(rotation);
-
 }

@@ -35,21 +35,18 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "gc.h"
 
 #include "DifferentialGeometry.h"
 #include "MaterialStandardRoughSpecular.h"
+#include "ParameterValueException.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
 #include "Transform.h"
 #include "Vector3D.h"
-
 
 SO_NODE_SOURCE(MaterialStandardRoughSpecular);
 
@@ -59,13 +56,18 @@ void MaterialStandardRoughSpecular::initClass()
 }
 
 MaterialStandardRoughSpecular::MaterialStandardRoughSpecular()
+:m_ambientColorSensor( 0 ),
+m_diffuseColorSensor( 0 ),
+m_specularColorSensor( 0 ),
+m_emissiveColorSensor( 0 ),
+m_shininessSensor( 0 ),
+m_transparencySensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR( MaterialStandardRoughSpecular );
 	SO_NODE_ADD_FIELD( reflectivity, (0.0) );
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
 	SO_NODE_ADD_FIELD( sigmaSpecularity, (0.0) );
 
-	//SO_NODE_DEFINE_ENUM_VALUE( Distribution, PILLBOX );
   	SO_NODE_DEFINE_ENUM_VALUE( Distribution, NORMAL );
   	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution) ;
 	SO_NODE_ADD_FIELD( distribution, (NORMAL) );
@@ -77,44 +79,64 @@ MaterialStandardRoughSpecular::MaterialStandardRoughSpecular()
 	SO_NODE_ADD_FIELD( mShininess, (0.2f) );
 	SO_NODE_ADD_FIELD( mTransparency, (0.0f) );
 
-	SoFieldSensor* m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
-	m_reflectivitySensor->setPriority( 1 );
-	m_reflectivitySensor->attach( &reflectivity );
-
-	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
+	m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
 	m_ambientColorSensor->setPriority( 1 );
 	m_ambientColorSensor->attach( &mAmbientColor );
-	SoFieldSensor* m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
+	m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
 	m_diffuseColorSensor->setPriority( 1 );
 	m_diffuseColorSensor->attach( &mDiffuseColor );
-	SoFieldSensor* m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
+	m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
 	m_specularColorSensor->setPriority( 1 );
 	m_specularColorSensor->attach( &mSpecularColor );
-	SoFieldSensor* m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
+	m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
 	m_emissiveColorSensor->setPriority( 1 );
 	m_emissiveColorSensor->attach( &mEmissiveColor );
-	SoFieldSensor* m_shininessSensor = new SoFieldSensor( updateShininess, this );
+	m_shininessSensor = new SoFieldSensor( updateShininess, this );
 	m_shininessSensor->setPriority( 1 );
 	m_shininessSensor->attach( &mShininess );
-	SoFieldSensor* m_transparencySensor = new SoFieldSensor( updateTransparency, this );
+	m_transparencySensor = new SoFieldSensor( updateTransparency, this );
 	m_transparencySensor->setPriority( 1 );
 	m_transparencySensor->attach( &mTransparency );
 }
 
 MaterialStandardRoughSpecular::~MaterialStandardRoughSpecular()
 {
+	delete m_ambientColorSensor;
+	delete m_diffuseColorSensor;
+	delete m_specularColorSensor;
+	delete m_emissiveColorSensor;
+	delete m_shininessSensor;
+	delete m_transparencySensor;
 }
 
-QString MaterialStandardRoughSpecular::getIcon()
+std::string MaterialStandardRoughSpecular::GetIcon()
 {
-	return QString(":icons/MaterialStandardRoughSpecular.png");
+	return ( ":icons/MaterialStandardRoughSpecular.png" );
 }
 
-void MaterialStandardRoughSpecular::updateReflectivity( void* data, SoSensor* )
+/*!
+ * @brief Validates material parameter value.
+ *
+ * Checks whether a given parameter value is acceptable for this material.
+ * If the value is invalid, a `ParameterValueException` is thrown.
+ *
+ * @param name The name of the parameter to validate.
+ * @param value The value of the parameter to validate.
+ * @return true if the parameter value is valid.
+ * @throws ParameterValueException if the parameter value is invalid.
+ */
+bool MaterialStandardRoughSpecular::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	MaterialStandardRoughSpecular* material = static_cast< MaterialStandardRoughSpecular* >( data );
-	if( material->reflectivity.getValue() < 0.0 ) material->reflectivity = 0.0;
-   	if( material->reflectivity.getValue() > 1.0 ) material->reflectivity = 1.0;
+    if( ( name == "reflectivity" )  && ( ( std::stod( value ) < 0 ) || ( std::stod( value ) > 1 ) ) )
+		throw ParameterValueException( "reflectivity", " The value of the 'reflectivity' parameter must be in the range [0,1]" );
+   
+    if( name == "sigmaSlope" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "sigmaSlope", " The 'sigmaSlope' must be a positive number" );
+   
+    if( name == "sigmaSpecularity" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "sigmaSpecularity", " The 'sigmaSlope' must be a positive number" );
+
+	return true;
 }
 
 void MaterialStandardRoughSpecular::updateAmbientColor( void* data, SoSensor* )

@@ -35,57 +35,86 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <cmath>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/misc/SoState.h>
 #include "TDefaultSunShape.h"
-
-#include <cmath>
-#include "tgc.h"
-#include "tgf.h"
-#include "Vector3D.h"
 
 SO_NODE_SOURCE(TDefaultSunShape);
 
+/*!
+ * @brief Initialize the TDefaultSunShape class in the system.
+ *
+ * Registers the class as a node type.
+ */
 void TDefaultSunShape::initClass()
 {
 	SO_NODE_INIT_CLASS(TDefaultSunShape, TSunShape, "TSunShape");
 }
 
+/*!
+ * @brief Constructor for TDefaultSunShape.
+ *
+ * Creates an object of a default sunshape.
+ */
 TDefaultSunShape::TDefaultSunShape( )
 {
 	SO_NODE_CONSTRUCTOR(TDefaultSunShape);
 }
 
+/*!
+ * @brief Destructor for TDefaultSunShape.
+ *
+ * Cleans up resources specific to this implementation.
+ */
 TDefaultSunShape::~TDefaultSunShape()
 {
 }
 
-//Light Interface
+/*!
+ * @brief Generate a ray direction based on the default sunshape.
+ *
+ * This implementation does not generate rays and is provided only to
+ * satisfy the abstract interface from TSunShape.
+ *
+ * @param direction Output parameter for the sampled direction (unused).
+ * @param rand Random number generator used to sample the distribution (unused).
+ */
 void TDefaultSunShape::GenerateRayDirection( Vector3D& /* direction */, RandomDeviate& /* rand */ ) const
 {
-
+ 	// Intentionally empty: no ray is generated
 }
 
+ /*!
+ * @brief Returns the irradiance value.
+ *
+ * This implementation does not provide a valid irradiance.
+ *
+ * @return Returns -1.0 to indicate that no valid value is available.
+ */
 double TDefaultSunShape::GetIrradiance() const
 {
 	return -1;
 }
 
+
+/*!
+ * @brief Get the maximum angular extent of the default sunshape.
+ *
+ * This implementation does not generate any rays, so the angular extent is 0.
+ *
+ * @return Returns 0.0.
+ */
 double TDefaultSunShape::GetThetaMax() const
 {
 	return 0.0;
 }
 
+/*!
+ * @brief Create a copy of this node.
+ *
+ * Overrides SoNode::copy(). Useful for duplicating the sunshape node.
+ * 
+ * @param copyConnections If true, connections to other nodes are also copied.
+ * @return Pointer to the newly created copy.
+ */
 SoNode* TDefaultSunShape::copy( SbBool copyConnections ) const
 {
 	// Use the standard version of the copy method to create

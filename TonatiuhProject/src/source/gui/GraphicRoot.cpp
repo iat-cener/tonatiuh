@@ -35,14 +35,12 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
 
 #include "gf.h"
-
 #include "GraphicRoot.h"
 #include "GraphicRootTracker.h"
 #include "TSceneKit.h"
@@ -86,7 +84,6 @@ GraphicRoot::GraphicRoot()
 	m_pSceneSeparator->addChild( m_pRootTransform );
 
 	m_pTracker = new GraphicRootTracker;
-	//m_pTracker->ref();
 	m_pTracker->ConnectParentTranform(m_pRootTransform);
 
 	m_pSelectionNode = new SoSelection;

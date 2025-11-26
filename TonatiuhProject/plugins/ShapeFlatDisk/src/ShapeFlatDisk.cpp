@@ -32,25 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
 
 #include "gc.h"
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeFlatDisk.h"
-#include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeFlatDisk);
 
@@ -74,11 +66,6 @@ ShapeFlatDisk::~ShapeFlatDisk()
 {
 }
 
-double ShapeFlatDisk::GetArea() const
-{
-	return ( gc::Pi * radius.getValue() * radius.getValue() );
-}
-
 /*!
  * Return the shape bounding box.
  */
@@ -90,10 +77,9 @@ BBox ShapeFlatDisk::GetBBox() const
 	return BBox( min, max );
 }
 
-
-QString ShapeFlatDisk::GetIcon() const
+std::string ShapeFlatDisk::GetIcon() const
 {
-	return ":/icons/ShapeFlatDisk.png";
+	return ( ":/icons/ShapeFlatDisk.png" );
 }
 
 bool ShapeFlatDisk::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
@@ -163,20 +149,18 @@ Point3D ShapeFlatDisk::Sample( double u, double v ) const
 	double x = sqrt( u ) * cos( gc::TwoPi * v ) * radius.getValue();
 	double z = sqrt( u ) * sin( gc::TwoPi * v ) * radius.getValue();
 	return Point3D( x, 0.0, z );
-	//return GetPoint3D( u, v );
 }
 
 Point3D ShapeFlatDisk::GetPoint3D (double u, double v) const
 {
-	if (OutOfRange( u, v ) ) gf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
+	if( OutOfRange( u, v ) ) gf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
 
 	return Point3D( v * radius.getValue() * cos( u * gc::TwoPi ), 0, v * radius.getValue() * sin( u * gc::TwoPi ) );
 }
 
 NormalVector ShapeFlatDisk::GetNormal (double u ,double v ) const
 {
-	if (OutOfRange( u, v ) ) gf::SevereError("Function ShapeFlatDisk::GetPoint3D called with invalid parameters" );
-	//return NormalVector( 0, 1, 0 );
+	if( OutOfRange( u, v ) ) gf::SevereError("Function ShapeFlatDisk::GetNormal called with invalid parameters" );
 
 	Vector3D dpdu ( -v * radius.getValue() * sin( u * gc::TwoPi ) * gc::TwoPi, 0.0, v * radius.getValue() * cos( u * gc::TwoPi ) * gc::TwoPi );
 	Vector3D dpdv ( radius.getValue()* cos( u * gc::TwoPi ), 0.0,  radius.getValue() * sin( u * gc::TwoPi ) );
@@ -304,4 +288,3 @@ void ShapeFlatDisk::generatePrimitives(SoAction *action)
     }
     endShape();
 }
-

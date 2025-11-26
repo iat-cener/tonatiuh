@@ -32,15 +32,14 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SHAPEPARABOLICDISHFACTORY_H_
 #define SHAPEPARABOLICDISHFACTORY_H_
 
-#include "TShapeFactory.h"
 #include "ShapeParabolicDish.h"
+#include "TShapeFactory.h"
 
 class ShapeParabolicDishFactory: public QObject, public TShapeFactory
 {

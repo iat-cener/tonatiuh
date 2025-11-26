@@ -39,10 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PHOTONMAPEXPORTFILEWIDGET_H_
 #define PHOTONMAPEXPORTFILEWIDGET_H_
 
-#include <QWidget>
-
 #include "PhotonMapExportParametersWidget.h"
-
 #include "ui_photonmapexportfilewidget.h"
 
 class PhotonMapExportFileWidget : public PhotonMapExportParametersWidget, private Ui::PhotonMapExportFileWidget

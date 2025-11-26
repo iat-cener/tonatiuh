@@ -44,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class SceneModel;
 class SoSceneKit;
 class TLightKit;
-class TShape;
 class TSunShape;
 
 //!  CmdLightKitModified class is the light definition command stored in the command stack.

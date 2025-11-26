@@ -49,12 +49,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "GraphicRootTracker.h"
 #include "MainWindow.h"
 #include "TCube.h"
-#include "TDefaultMaterial.h"
 #include "TDefaultSunShape.h"
 #include "TDefaultTracker.h"
 #include "TDefaultTransmissivity.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
+#include "TMaterial.h"
 #include "TSceneKit.h"
 #include "TSceneTracker.h"
 #include "TSeparatorKit.h"
@@ -64,7 +64,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TTransmissivity.h"
 #include "UserMField.h"
 #include "UserSField.h"
-
 
 #include <QScriptEngine>
 #include <QTextStream>
@@ -105,17 +104,12 @@ int main( int argc, char ** argv )
 
     splash->showMessage(QObject::tr("Loading libraries..."), topRight, Qt::black);
 
-
-    QApplication::addLibraryPath( QApplication::applicationDirPath()
-	        + QDir::separator() + "marble" );
-
 	SoQt::init( (QWidget *) NULL );
 
 	UserMField::initClass();
 	UserSField::initClass();
 	TSceneKit::initClass();
 	TMaterial::initClass();
-	TDefaultMaterial::initClass();
 	TSeparatorKit::initClass();
 	TShape::initClass();
 	TCube::initClass();
@@ -158,7 +152,6 @@ int main( int argc, char ** argv )
     		testDirectory.cd( "." );
 
     		QScriptEngine* interpreter = new QScriptEngine;
-
 
     		MainWindow* mw = new MainWindow( QLatin1String("") );
     		mw->SetPluginManager( &pluginManager );

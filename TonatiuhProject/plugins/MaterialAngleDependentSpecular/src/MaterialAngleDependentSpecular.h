@@ -42,17 +42,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <vector>
 
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "TMaterial.h"
 #include "MFVec2.h"
 #include "trt.h"
 
+class SoFieldSensor;
 class SoSensor;
 
 class MaterialAngleDependentSpecular : public TMaterial
@@ -61,16 +57,13 @@ class MaterialAngleDependentSpecular : public TMaterial
 
 public:
 	enum Distribution {
-		//PILLBOX = 0,
 		NORMAL = 1,
 	   };
 	MaterialAngleDependentSpecular( );
 	static void initClass();
 
-    QString getIcon();
+    std::string GetIcon();
     bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
-
-	//int	getFields(SoFieldList & fields) const;
 
     SoSFBool reflectivityFront;
     MFVec2 reflectivityFrontValues;
@@ -78,16 +71,14 @@ public:
     MFVec2 reflectivityBackValues;
 
 	trt::TONATIUH_REAL sigmaSlope;
+	
 	SoSFEnum distribution;
-	SoSFColor ambient_Color;
-	SoSFColor diffuse_Color;
-	SoSFColor specular_Color;
-	SoSFColor emissive_Color;
-	SoSFFloat shininessValue;
-	SoSFFloat transparencyValue;
-
-
-
+	SoMFColor ambient_Color;
+	SoMFColor diffuse_Color;
+	SoMFColor specular_Color;
+	SoMFColor emissive_Color;
+	SoMFFloat shininessValue;
+	SoMFFloat transparencyValue;
 
 protected:
    	virtual ~MaterialAngleDependentSpecular();
@@ -103,7 +94,6 @@ protected:
 	static void updateEmissiveColor( void* data, SoSensor* );
 	static void updateShininess( void* data, SoSensor* );
 	static void updateTransparency( void* data, SoSensor* );
-
 
 private:
 	SoFieldSensor* m_reflectivityFrontValuesSensor;
@@ -121,7 +111,5 @@ private:
 	std::vector< double > m_backReflectivityIncidenceAngle;
 	std::vector< double > m_backReflectivityValue;
 };
-
-
 
 #endif /* MATERIALANGLEDEPENDENTSPECULAR_H_ */

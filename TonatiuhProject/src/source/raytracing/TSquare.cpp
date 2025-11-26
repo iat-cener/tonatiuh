@@ -36,21 +36,13 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QString>
-
-#include <Inventor/SbLinear.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gf.h"
-
-#include "BBox.h"
-#include "NormalVector.h"
 #include "ParameterValueException.h"
-#include "Point3D.h"
 #include "TSquare.h"
-
 
 SO_NODE_SOURCE(TSquare);
 
@@ -70,12 +62,6 @@ TSquare::~TSquare()
 
 }
 
-double TSquare::GetArea() const
-{
-	return ( m_sideLength.getValue() * m_sideLength.getValue() );
-}
-
-
 BBox TSquare::GetBBox() const
 {
 	Point3D min = Point3D(-m_sideLength.getValue()/2,0.0, -m_sideLength.getValue()/2);
@@ -84,10 +70,9 @@ BBox TSquare::GetBBox() const
 	return BBox( min, max );
 }
 
-
-QString TSquare::GetIcon() const
+std::string TSquare::GetIcon() const
 {
-	return QLatin1String( ":/icons/icons/node.png" );
+	return ":/icons/icons/node.png";
 }
 
 bool TSquare::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGeometry* /*dg*/) const
@@ -100,10 +85,6 @@ bool TSquare::IntersectP( const Ray& objectRay ) const
 	return Intersect( objectRay, 0, 0 );
 }
 
-Point3D TSquare::Sample( double u, double v ) const
-{
-	return GetPoint3D( u, v );
-}
 bool TSquare::ValidateParamaterValue( std::string name, std::string value ) const
 {
 

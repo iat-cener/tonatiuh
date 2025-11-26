@@ -35,18 +35,19 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TSCENETRACKER_H_
 #define TSCENETRACKER_H_
 
+#include "TTracker.h"
 
+/*
 #include <Inventor/engines/SoSubNodeEngine.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-#include "TTracker.h"
 #include "trt.h"
 
 class QString;
+*/
 
 class TSceneTracker : public TTracker
 {
@@ -54,7 +55,7 @@ class TSceneTracker : public TTracker
 
 public:
     static void initClass();
-	QString getIcon();
+	std::string GetIcon();
 
 	//Constructor
 	TSceneTracker();
@@ -65,9 +66,6 @@ protected:
 
 private:
 	virtual void evaluate();
-
-	//trt::TONATIUH_REAL m_azimuth;
-	//trt::TONATIUH_REAL m_zenith;
 
 };
 

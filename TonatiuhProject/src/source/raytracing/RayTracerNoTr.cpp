@@ -36,15 +36,15 @@ Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Ji
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QPoint>
-
-#include "DifferentialGeometry.h"
+#include "InstanceNode.h"
 #include "ParallelRandomDeviate.h"
+#include "Photon.h"
 #include "Ray.h"
 #include "RayTracerNoTr.h"
-#include "TPhotonMap.h"
 #include "TLightShape.h"
+#include "TPhotonMap.h"
 #include "TSunShape.h"
+
 RayTracerNoTr::RayTracerNoTr( InstanceNode* rootNode,
 	       InstanceNode* lightNode,
 	       TLightShape* lightShape,

@@ -36,7 +36,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include "MFVec2.h"
 
 #if unix
@@ -46,13 +45,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		// This macro takes the name of the class and the name of the
 		// parent class
-			SO_MFIELD_INIT_CLASS(MFVec2, UserMField);
+		SO_MFIELD_INIT_CLASS(MFVec2, UserMField);
 	}
-
 
 	SbBool MFVec2::read1Value(SoInput * in, int idx)
 	{
-	    return( in->read(this->values[idx][0]) && in->read(this->values[idx][1]) );
+		return ( in->read(this->values[idx][0]) &&
+			in->read(this->values[idx][1]) );
 	}
 
 	void MFVec2::write1Value(SoOutput * out, int idx) const
@@ -64,7 +63,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 			out->write(' ');
 		out->write(v[1]);
 	}
-
 
 	void MFVec2::setValues(int start, int numarg, const double xy[][2])
 	{
@@ -84,7 +82,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 		this->set1Value(idx, SbVec2d(x, y));
 	}
 
-
 	void MFVec2::set1Value(int idx, const double xy[2])
 	{
 		this->set1Value(idx, SbVec2d(xy));
@@ -94,7 +91,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		this->setValue(SbVec2d(x, y));
 	}
-
 
 	void MFVec2::setValue(const double xy[2])
 	{
@@ -113,7 +109,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		m_firstDimensionName = firstDimension;
 		m_secondtDimensionName = secondDimension;
-
 	}
 
 #else
@@ -123,12 +118,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		// This macro takes the name of the class and the name of the
 		// parent class
-			SO_MFIELD_INIT_CLASS(MFVec2, inherited);
+		SO_MFIELD_INIT_CLASS(MFVec2, inherited);
 	}
 
 	SbBool MFVec2::read1Value(SoInput * in, int idx)
 	{
-	    return( in->read(this->values[idx][0]) && in->read(this->values[idx][1]) );
+	    return ( in->read(this->values[idx][0] ) &&
+			in->read(this->values[idx][1] ) );
 	}
 
 	void MFVec2::write1Value(SoOutput * out, int idx) const
@@ -141,7 +137,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 		out->write(v[1]);
 	}
 
-
 	void MFVec2::setValues(int start, int numarg, const float xy[][2])
 	{
 		if (start+numarg > this->maxNum)
@@ -152,14 +147,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 		for(int i=0; i < numarg; i++)
 			this->values[start+i] = SbVec2f(xy[i]);
 
-	  this->valueChanged();
+	  	this->valueChanged();
 	}
 
 	void MFVec2::set1Value(int idx, float x, float y)
 	{
 		this->set1Value(idx, SbVec2f(x, y));
 	}
-
 
 	void MFVec2::set1Value(int idx, const float xy[2])
 	{
@@ -170,7 +164,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		this->setValue(SbVec2f(x, y));
 	}
-
 
 	void MFVec2::setValue(const float xy[2])
 	{
@@ -189,7 +182,5 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	{
 		m_firstDimensionName = firstDimension;
 		m_secondtDimensionName = secondDimension;
-
 	}
 #endif
-

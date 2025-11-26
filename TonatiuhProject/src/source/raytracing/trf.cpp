@@ -35,32 +35,15 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <cmath>
-#include <vector>
-
-#include <QFile>
-#include <QTextStream>
-
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTransform.h>
 
-#include "InstanceNode.h"
-#include "Matrix4x4.h"
 #include "Photon.h"
-#include "TPhotonMap.h"
-#include "RandomDeviate.h"
-#include "Ray.h"
-#include "tgf.h"
-#include "TLightKit.h"
 #include "trf.h"
-#include "TShapeKit.h"
-
 
 SoSeparator* trf::DrawPhotonMapPoints( const TPhotonMap& map )
 {

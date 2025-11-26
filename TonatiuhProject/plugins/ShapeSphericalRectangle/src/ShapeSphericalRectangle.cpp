@@ -32,29 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <vector>
-#include <algorithm>
-
-#include <QMessageBox>
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
-#include "BBox.h"
 #include "gf.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
-#include "Vector3D.h"
-
-#include "DifferentialGeometry.h"
 #include "ShapeSphericalRectangle.h"
-
 
 SO_NODE_SOURCE(ShapeSphericalRectangle);
 
@@ -64,47 +52,21 @@ void ShapeSphericalRectangle::initClass()
 }
 
 ShapeSphericalRectangle::ShapeSphericalRectangle()
-:m_radiusSensor( 0 ),
- m_widthXSensor( 0 ),
- m_widthZSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeSphericalRectangle);
 	SO_NODE_ADD_FIELD( radius, (0.75) );
 	SO_NODE_ADD_FIELD( widthX, (1.0) );
 	SO_NODE_ADD_FIELD( widthZ, (1.0) );
 
-
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
 	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
-
-
-	m_radiusSensor = new SoFieldSensor(updateRadius, this);
-	m_radiusSensor->setPriority( 1 );
-	m_radiusSensor->attach( &radius );
-
-	m_widthXSensor = new SoFieldSensor(updateWidthX, this);
-	m_widthXSensor->setPriority( 1 );
-	m_widthXSensor->attach( &widthX );
-
-	m_widthZSensor = new SoFieldSensor(updateWidthZ, this);
-	m_widthZSensor->setPriority( 1 );
-	m_widthZSensor->attach( &widthZ );
 }
 
 ShapeSphericalRectangle::~ShapeSphericalRectangle()
 {
-	delete m_radiusSensor;
-	delete m_widthXSensor;
-	delete m_widthZSensor;
 }
-
-double ShapeSphericalRectangle::GetArea() const
-{
-	return -1;
-}
-
 
 BBox ShapeSphericalRectangle::GetBBox() const
 {
@@ -119,9 +81,9 @@ BBox ShapeSphericalRectangle::GetBBox() const
 	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
-QString ShapeSphericalRectangle::GetIcon() const
+std::string ShapeSphericalRectangle::GetIcon() const
 {
-	return ":/icons/ShapeSphericalRectangle.png";
+	return ( ":/icons/ShapeSphericalRectangle.png" );
 }
 
 bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
@@ -157,8 +119,7 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
     //Evaluate Tolerance
 	double tol = 0.00001;
 
-	double ymax = r - sqrt( r* r - ( wX / 2 ) * ( wX / 2 )
-													- ( wZ / 2 ) * ( wZ / 2 ) );
+	double ymax = r - sqrt( r* r - ( wX / 2 ) * ( wX / 2 ) - ( wZ / 2 ) * ( wZ / 2 ) );
 
 	//Compute possible hit position
 	Point3D hitPoint = objectRay( thit );
@@ -196,7 +157,7 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 	Vector3D dpdu = GetDPDU( u, v );
 	Vector3D dpdv = GetDPDV( u, v );
 
-	// Compute parabaloid \dndu and \dndv
+	// Compute \dndu and \dndv
 
 	Vector3D d2Pduu( 0.0,
 			( ( (-0.5 + u) * (-0.5 + u) * wX *  wX * wX *  wX ) / sqrt( aux * aux * aux ) )
@@ -239,7 +200,6 @@ bool ShapeSphericalRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 							   u, v, this);
 	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
-
 ///////////////////////////////////////////////////////////////////////////////////////
 
 	// Update _tHit_ for quadric intersection
@@ -252,38 +212,78 @@ bool ShapeSphericalRectangle::IntersectP( const Ray& objectRay ) const
 	return Intersect( objectRay, 0, 0 );
 }
 
+/*!
+* Returns the 3D coordintates por parameteric coordinates \a u and \a v
+*/
 Point3D ShapeSphericalRectangle::Sample( double u, double v ) const
 {
-	return GetPoint3D( u, v );
-}
-
-bool ShapeSphericalRectangle::OutOfRange( double u, double v ) const
-{
-	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
-}
-
-Point3D ShapeSphericalRectangle::GetPoint3D( double u, double v ) const
-{
 	if ( OutOfRange( u, v ) )	gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
-
 
 	double x = ( u - 0.5 )* widthX.getValue();
 	double z = ( v - 0.5 )* widthZ.getValue();
 	double y =  radius.getValue() - sqrt( radius.getValue() * radius.getValue() - x * x - z * z );
 
 	return Point3D( x, y, z );
+}
 
+/*!
+* Checks the cone parameters values. Checks the \a value of parameter \a name .
+*/
+bool ShapeSphericalRectangle::ValidateParamaterValue( std::string name, std::string value ) const
+{
+	double wX = widthX.getValue();
+	double wZ = widthZ.getValue();
+	double r = radius.getValue();
+
+    if( name == "radius" )
+	{
+		r = std::stod( value );
+		if( r < std::fabs( widthX.getValue() / 2 ) )
+			throw ParameterValueException( "radius", "Sphere radius must take values on the [widthX/2, Infinity) range" );
+		if( r < std::fabs( widthZ.getValue() / 2 ) ) 
+			throw ParameterValueException( "radius", "Sphere radius must take values on the [widthZ/2, Infinity) range" );
+
+		double radiusCircumference = ( wX * wX ) + ( wZ * wZ );
+		if( ( 4 * r * r ) < radiusCircumference ) 
+			throw ParameterValueException( "radius", "The combination of 'widthX' and 'widthZ' is too large for the specified 'radius'" );
+	}
+
+    if( name == "widthX" )
+	{
+		wX = std::stod( value );
+		if( std::stod( value ) > ( 2 * radius.getValue() ) ) 
+			throw ParameterValueException( "radius", "Sphere 'widthX' must take values on the (0, 2 *radius] range" );
+		double radiusCircumference = ( wX * wX ) + ( wZ * wZ );
+		if(  ( ( 4 * r * r ) ) < radiusCircumference ) 
+			throw ParameterValueException( "widthX", "The combination of 'widthX' and 'widthZ' is too large for the specified 'radius'" );
+	}
+
+    if( name == "widthZ" )
+	{
+		wZ = std::stod( value );
+		if ( std::stod( value ) > ( 2 * radius.getValue() ) ) 
+			throw ParameterValueException( "radius", "Sphere 'widthZ' must take values on the (0, 2 *radius] range" );
+		
+		double radiusCircumference = ( wX * wX ) + ( wZ * wZ );
+		if( ( 4 * r * r ) < radiusCircumference ) 
+			throw ParameterValueException( "widthZ", "The combination of 'widthX' and 'widthZ' is too large for the specified 'radius'" );
+	}
+
+	return true;
+}
+
+
+bool ShapeSphericalRectangle::OutOfRange( double u, double v ) const
+{
+	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1.0 ) );
 }
 
 NormalVector ShapeSphericalRectangle::GetNormal( double u, double v ) const
 {
-
 	Vector3D dpdu = GetDPDU( u, v );
 	Vector3D dpdv = GetDPDV( u, v );
-
 	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 }
-
 
 Vector3D ShapeSphericalRectangle::GetDPDU( double u, double v ) const
 {
@@ -303,48 +303,6 @@ Vector3D ShapeSphericalRectangle::GetDPDV( double u, double v ) const
 					- (-0.5 + v) * (-0.5 + v) * widthZ.getValue() *widthZ.getValue() ),
 			widthZ.getValue() );
 	return dpdv;
-}
-
-void ShapeSphericalRectangle::updateRadius( void *data, SoSensor* )
-{
-
-	ShapeSphericalRectangle* shapeSphericalRectangle = (ShapeSphericalRectangle *) data;
-	if( shapeSphericalRectangle->radius.getValue() < std::fabs( shapeSphericalRectangle->widthX.getValue() / 2 ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere radius must take values on the [widthX/2, Infinity) range. ") );
-		shapeSphericalRectangle->radius.setValue( shapeSphericalRectangle->widthX.getValue() / 2 );
-	}
-	if( fabs( shapeSphericalRectangle->radius.getValue() ) < std::fabs( shapeSphericalRectangle->widthZ.getValue() / 2 ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere y max value must take values on the [widthZ/2, Infinity) range. ") );
-
-		shapeSphericalRectangle->radius.setValue( shapeSphericalRectangle->widthZ.getValue() / 2 );
-	}
-
-}
-
-void ShapeSphericalRectangle::updateWidthX(void *data, SoSensor *)
-{
-
-	ShapeSphericalRectangle* shapeSphericalRectangle = (ShapeSphericalRectangle *) data;
-	if( ( 2 * shapeSphericalRectangle->radius.getValue() ) < shapeSphericalRectangle->widthX.getValue() )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere widthX must take values on the (0, 2 *radius] range. ") );
-		shapeSphericalRectangle->widthX.setValue( shapeSphericalRectangle->radius.getValue() * 2 );
-	}
-
-}
-
-void ShapeSphericalRectangle::updateWidthZ(void *data, SoSensor *)
-{
-
-	ShapeSphericalRectangle* shapeSphericalRectangle = (ShapeSphericalRectangle *) data;
-	if( ( 2 * shapeSphericalRectangle->radius.getValue()  ) < shapeSphericalRectangle->widthZ.getValue() )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Sphere widthZ must take values on the (0, 2 *radius] range. ") );
-		shapeSphericalRectangle->widthZ.setValue( shapeSphericalRectangle->radius.getValue() * 2 );
-	}
-
 }
 
 void ShapeSphericalRectangle::computeBBox( SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
@@ -384,8 +342,6 @@ void ShapeSphericalRectangle::generatePrimitives(SoAction *action)
     if (columns < 4) columns = 4;
     if (columns > 128) columns = 128;
 
- 	//const int rows = 15; // Number of points per row
-    //const int columns = 15; // Number of points per column
     const int totalPoints = (rows)*(columns); // Total points in the grid
 
     float vertex[totalPoints][6];
@@ -402,7 +358,7 @@ void ShapeSphericalRectangle::generatePrimitives(SoAction *action)
     	{
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
-    		Point3D point = GetPoint3D(ui, vj);
+    		Point3D point = Sample(ui, vj);
     		NormalVector normal;
     		if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
     		else	normal = GetNormal(ui, vj);
@@ -416,7 +372,6 @@ void ShapeSphericalRectangle::generatePrimitives(SoAction *action)
 
     		pv.setPoint( vertex[h][0], vertex[h][1], vertex[h][2] );
     		h++; //Increase h to the next point.
-
     	}
     }
 
@@ -468,5 +423,4 @@ void ShapeSphericalRectangle::generatePrimitives(SoAction *action)
 	}
 
 	endShape();
-
 }

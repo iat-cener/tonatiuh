@@ -1,8 +1,6 @@
 TEMPLATE = app
 
 
-CONFIG       += qt warn_on thread debug_and_release
-
 include( $$(TONATIUH_ROOT)/config.pri )
 
 TARGET = Tonatiuh   

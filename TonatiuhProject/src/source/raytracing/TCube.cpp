@@ -36,22 +36,13 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <QString>
-
-#include <Inventor/SbLinear.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/misc/SoState.h>
 
-#include "BBox.h"
-#include "NormalVector.h"
 #include "ParameterValueException.h"
-#include "Point3D.h"
-#include "TCube.h"
 #include "Ray.h"
-
-using namespace std;
+#include "TCube.h"
 
 SO_NODE_SOURCE(TCube);
 
@@ -90,22 +81,6 @@ TCube::~TCube()
 
 }
 
-
-double TCube::GetArea() const
-{
-	double frontArea = m_width.getValue() * m_height.getValue();
-	double leftArea = m_height.getValue() * m_depth.getValue();
-	double baseArea = m_depth.getValue() * m_depth.getValue();
-
-	return ( 2 * frontArea ) + ( 2 * leftArea ) + (2 * baseArea );
-
-}
-
-double TCube::GetVolume() const
-{
-	return m_width.getValue() * m_height.getValue() * m_depth.getValue();
-}
-
 /*!
  * Return the shape bounding box.
  */
@@ -126,9 +101,9 @@ BBox TCube::GetBBox() const
     return bBox;
 }
 
-QString TCube::GetIcon() const
+std::string TCube::GetIcon() const
 {
-	return QLatin1String( ":/icons/tcube.png" );
+	return ":/icons/tcube.png";
 }
 
 bool TCube::Intersect(const Ray& /*objectRay*/, double* /*tHit*/, DifferentialGeometry* /*dg*/) const
@@ -321,18 +296,6 @@ void TCube::generatePrimitives(SoAction *action)
 
      endShape();
 
-}
-
-Point3D TCube::Sample( double /*u1*/, double /*u2*/ ) const
-{
-	//Yet to be implemented
-	return Point3D( 0, 0, 0 );
-}
-
-Point3D TCube::GetPoint3D( double /*u1*/, double /*u2*/ ) const
-{
-	//Yet to be implemented
-	return Point3D( 0, 0, 0 );
 }
 
 NormalVector TCube::GetNormal(double /*u*/, double /*v*/ ) const

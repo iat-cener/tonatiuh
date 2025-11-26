@@ -40,11 +40,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #define TTRACKERFORAIMING_H_
 
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-
 
 #include "TTracker.h"
-#include "trt.h"
+
+class SoSensor;
 
 class TTrackerForAiming :  public TTracker
 {
@@ -60,7 +59,7 @@ public:
 	SoSFEnum typeOfAimingPoint;
 
 	static void updateTypeOfAimingPoint( void* data, SoSensor* );
-	virtual void SwitchAimingPointType() =0;
+	virtual void SwitchAimingPointType() = 0;
 	void SetAimingPointRelativity(bool relative);
 
 protected:

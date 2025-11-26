@@ -41,51 +41,53 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <vector>
 
-#include <QVector>
-#include <QMutex>
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SbMatrix.h>
-
 #include "BBox.h"
 #include "Transform.h"
 
 class RandomDeviate;
 class Ray;
 class SoNode;
-class TLightKit;
-class SceneModel;
+class QString;
 
-
-//!  InstanceNode class represents a instance of a node in the scene.
-/*! In a scene, a node can be shared by more that one parent. Each of these shared instances is represented in a scene as a InstanceNode object.
- * Any change made whitin a shared node is reflected in all node's InstanceNode.
-*/
-
+/*!
+ * @class InstanceNode
+ * @brief Represents an instance of a node in the scene.
+ *
+ * In a scene, a node can be shared by more than one parent. Each shared instance
+ * is represented as an InstanceNode object.
+ *
+ * Any change made within a shared node is reflected in all corresponding
+ * InstanceNode objects.
+ */
 class InstanceNode
 {
 public:
     InstanceNode( SoNode* node );
     ~InstanceNode();
-
-    void SetNode( SoNode* node );
-    void SetParent( InstanceNode* parent );
+    
     void AddChild( InstanceNode* child );
-    void InsertChild( int row, InstanceNode* instanceChild);
 
-    SoNode* GetNode() const;
-    InstanceNode* GetParent() const;
-    QString GetNodeURL() const;
-    void Print( int level ) const;
-
-    bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, InstanceNode** modelNode, Ray* outputRay );
-
-	void extendBoxForLight( SbBox3f * extendedBox );
+    InstanceNode* GetChild( int childIndex ) ;
+    int GetChildIndex( InstanceNode* child ) const;
     BBox GetIntersectionBBox();
     Transform GetIntersectionTransform();
+    SoNode* GetNode() const;
+    QString GetNodeURL() const;
+    InstanceNode* GetParent() const;
+
+    void InsertChild( int row, InstanceNode* instanceChild);
+    bool Intersect( const Ray& ray, RandomDeviate& rand, bool* isShapeFront, InstanceNode** modelNode, Ray* outputRay );
+    
+    int NumberOfChildren( ) const;
+    bool RemoveChild( int row );
+
     void SetIntersectionBBox( BBox nodeBBox );
     void SetIntersectionTransform( Transform nodeTransform );
+    void SetNode( SoNode* node );
+    void SetParent( InstanceNode* parent );
 
-    QVector< InstanceNode* > children;
+protected:
+    std::vector< InstanceNode* > m_children;
 
 private:
     SoNode* m_coinNode;
@@ -95,18 +97,49 @@ private:
     Transform m_transformOTW;
 };
 
-QDataStream & operator<< ( QDataStream & s, const InstanceNode& node );
-QDataStream & operator>> ( QDataStream & s, const InstanceNode& node );
 bool operator==( const InstanceNode& thisNode,const InstanceNode& otherNode );
 
+/*!
+ * @brief Sets the parent of the current object.
+ *
+ * @param parent Pointer to the node to assign as the current object's parent.
+ */
 inline void InstanceNode::SetParent( InstanceNode* parent )
 {
 	m_parent = parent;
 }
 
+/*!
+ * @brief Sets the current object's node.
+ *
+ * @param node Pointer to the node to assign to the current object.
+ */
 inline void InstanceNode::SetNode( SoNode* node )
 {
 	m_coinNode = node;
+}
+
+/*!
+ * @brief Returns the child node at a given index.
+ *
+ * @param index The position of the child node to retrieve.
+ * @return Pointer to the child node at the specified index, or nullptr if the index is out of bounds.
+ */
+inline InstanceNode* InstanceNode::GetChild( int childIndex )
+{
+    if( int( m_children.size() ) <= childIndex ) return nullptr;
+    
+    return ( m_children[childIndex] );
+}
+
+/*!
+ * @brief Returns the number of children of the node.
+ *
+ * @return The number of child nodes.
+ */
+inline int InstanceNode::NumberOfChildren( ) const
+{
+    return int( m_children.size() );
 }
 
 inline SoNode* InstanceNode::GetNode() const
@@ -114,13 +147,14 @@ inline SoNode* InstanceNode::GetNode() const
 	return m_coinNode;
 }
 
-/**
- * Returns parent instance.
+/*!
+ * @brief Returns the parent instance of the current node.
+ *
+ * @return Pointer to the parent instance.
  */
 inline InstanceNode* InstanceNode::GetParent() const
 {
 	return m_parent;
 }
-
 
 #endif /*INSTANCENODE_H_*/

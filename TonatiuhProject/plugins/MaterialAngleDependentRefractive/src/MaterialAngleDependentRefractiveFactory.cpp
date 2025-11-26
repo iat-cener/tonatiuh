@@ -36,13 +36,10 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include "MFVec3.h"
-#include "UserMField.h"
-
 #include <QIcon>
 
 #include "MaterialAngleDependentRefractiveFactory.h"
+#include "MFVec3.h"
 
 QString MaterialAngleDependentRefractiveFactory::TMaterialName() const
 {
@@ -59,8 +56,6 @@ MaterialAngleDependentRefractive* MaterialAngleDependentRefractiveFactory::Creat
 	static bool firstTime = true;
 	if ( firstTime )
 	{
-
-		//UserMField::initClass();
 		MFVec3::initClass();
 		MaterialAngleDependentRefractive::initClass();
 	    firstTime = false;

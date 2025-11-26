@@ -36,24 +36,15 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <iostream>
-
-#include <QString>
-
-#include <Inventor/lists/SoFieldList.h>
-#include <Inventor/fields/SoFieldContainer.h>
-
-#include "gc.h"
-#include "trt.h"
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "DifferentialGeometry.h"
+#include "gc.h"
 #include "MaterialAngleDependentSpecular.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
 #include "Transform.h"
-
 
 SO_NODE_SOURCE( MaterialAngleDependentSpecular );
 
@@ -82,13 +73,9 @@ MaterialAngleDependentSpecular::MaterialAngleDependentSpecular()
 	SO_NODE_ADD_FIELD(reflectivityBackValues, (0.0f, 0.0f) );
 	reflectivityBackValues.SetNames( QObject::tr("Angle [rad]" ), QObject::tr( "Reflectivity[0-1]" ) );
 
-
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
-	//SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
-	//SO_NODE_ADD_FIELD( distribution, (PILLBOX) );
-
 
 	SO_NODE_ADD_FIELD( ambient_Color, (0.2f, 0.2f, 0.2f) );
 	SO_NODE_ADD_FIELD( diffuse_Color, (0.8f, 0.8f, 0.8f) );
@@ -97,17 +84,13 @@ MaterialAngleDependentSpecular::MaterialAngleDependentSpecular()
 	SO_NODE_ADD_FIELD( shininessValue, (0.2f) );
 	SO_NODE_ADD_FIELD( transparencyValue, (0.0) );
 
-
-	/*
 	m_reflectivityFrontValuesSensor = new SoFieldSensor(  updateReflectivityFront,  this );
 	m_reflectivityFrontValuesSensor->setPriority( 1 );
 	m_reflectivityFrontValuesSensor->attach( &reflectivityFrontValues );
 
-
 	m_reflectivityBackValuesSensor = new SoFieldSensor(  updateReflectivityBack,  this );
 	m_reflectivityBackValuesSensor->setPriority( 1 );
 	m_reflectivityBackValuesSensor->attach( &reflectivityBackValues );
-	*/
 
 	m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
 	m_ambientColorSensor->setPriority( 1 );
@@ -127,7 +110,6 @@ MaterialAngleDependentSpecular::MaterialAngleDependentSpecular()
 	m_transparencySensor = new SoFieldSensor( updateTransparency, this );
 	m_transparencySensor->setPriority( 1 );
 	m_transparencySensor->attach( &transparencyValue );
-
 }
 
 MaterialAngleDependentSpecular::~MaterialAngleDependentSpecular()
@@ -143,11 +125,10 @@ MaterialAngleDependentSpecular::~MaterialAngleDependentSpecular()
 	delete m_transparencySensor;
 }
 
-QString MaterialAngleDependentSpecular::getIcon()
+std::string MaterialAngleDependentSpecular::GetIcon()
 {
-	return QString(":icons/MaterialAngleDependentSpecular.png");
+	return ( ":icons/MaterialAngleDependentSpecular.png" );
 }
-
 
 /*!
  * Linear interpolation of the vectors \a incidenceAnglesList and \a valuesList to obtaine the property value for the angle \a incidenceAngle.
@@ -200,13 +181,7 @@ double MaterialAngleDependentSpecular::OutputPropertyValue( std::vector< double 
  */
 void MaterialAngleDependentSpecular::updateReflectivityFront( void* data, SoSensor* )
 {
-	std::cout<<"MaterialAngleDependentSpecular::updateReflectivityFront"<<std::endl;
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
-
-	std::vector< double > oldFrontReflectivityIncidenceAngle = material->m_frontReflectivityIncidenceAngle;
-	std::vector< double > oldFrontReflectivityValue = material->m_frontReflectivityValue;
-
-
 	int numberOfValues = material->reflectivityFrontValues.getNum();
 
 	material->m_frontReflectivityIncidenceAngle.clear();
@@ -224,8 +199,6 @@ void MaterialAngleDependentSpecular::updateReflectivityFront( void* data, SoSens
 void MaterialAngleDependentSpecular::updateReflectivityBack( void* data, SoSensor* )
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
-
-
 	int numberOfValues = material->reflectivityBackValues.getNum();
 
 	material->m_backReflectivityIncidenceAngle.clear();
@@ -243,37 +216,37 @@ void MaterialAngleDependentSpecular::updateReflectivityBack( void* data, SoSenso
 void MaterialAngleDependentSpecular::updateAmbientColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
- 	material->ambientColor.setValue( material->ambient_Color.getValue() );
+ 	material->ambientColor.setValue( material->ambient_Color[0] );
 }
 
 void MaterialAngleDependentSpecular::updateDiffuseColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
- 	material->diffuseColor.setValue( material->diffuse_Color.getValue() );
+ 	material->diffuseColor.setValue( material->diffuse_Color[0] );
 }
 
 void MaterialAngleDependentSpecular::updateSpecularColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
- 	material->specularColor.setValue( material->specular_Color.getValue() );
+ 	material->specularColor.setValue( material->specular_Color[0] );
 }
 
 void MaterialAngleDependentSpecular::updateEmissiveColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
- 	material->emissiveColor.setValue( material->emissive_Color.getValue() );
+ 	material->emissiveColor.setValue( material->emissive_Color[0] );
 }
 
 void MaterialAngleDependentSpecular::updateShininess( void* data, SoSensor* )
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
- 	material->shininess.setValue( material->shininessValue.getValue() );
+ 	material->shininess.setValue( material->shininessValue[0] );
 }
 
 void MaterialAngleDependentSpecular::updateTransparency( void* data, SoSensor* )
 {
 	MaterialAngleDependentSpecular* material = static_cast< MaterialAngleDependentSpecular* >( data );
- 	material->transparency.setValue( material->transparencyValue.getValue() );
+ 	material->transparency.setValue( material->transparencyValue[0] );
 }
 
 /*
@@ -309,8 +282,6 @@ bool MaterialAngleDependentSpecular::OutputRay( const Ray& incident, Differentia
 	if ( randomNumber >= reflectivity  ) return ( false );
 
 	//Compute reflected ray (local coordinates )
-	//Ray* reflected = new Ray();
-	//reflected.origin = dg->point;
 	outputRay->origin = dg->point;
 
 	NormalVector normalVector;
@@ -353,7 +324,4 @@ bool MaterialAngleDependentSpecular::OutputRay( const Ray& incident, Differentia
 	double cosTheta = DotProduct( normalVector, incident.direction() );
 	outputRay->setDirection( Normalize( incident.direction() - 2.0 * normalVector * cosTheta ) );
 	return ( true );
-
 }
-
-

@@ -40,18 +40,33 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 SO_NODE_ABSTRACT_SOURCE(TMaterial);
 
+/*!
+ * @brief Initializes the TMaterial class in the nodes type system.
+ *
+ * This static function must be called once before using any TMaterial-derived
+ * nodes.
+ */
 void TMaterial::initClass()
 {
 	SO_NODE_INIT_ABSTRACT_CLASS(TMaterial, SoMaterial, "Material");
 
 }
 
+/*!
+ * @brief Constructor for TMaterial.
+ *
+ * Initializes the base material object. 
+ */
 TMaterial::TMaterial()
 {
-	//SO_NODE_CONSTRUCTOR( TMaterial );
 
 }
 
+/*!
+ * @brief Destructor for TMaterial.
+ *
+ * Cleans up resources associated with the base class.
+ */
 TMaterial::~TMaterial()
 {
 }

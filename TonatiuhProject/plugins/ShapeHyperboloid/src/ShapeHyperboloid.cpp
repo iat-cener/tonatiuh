@@ -32,26 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <cmath>
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gc.h"
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeHyperboloid.h"
-#include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeHyperboloid);
 
@@ -74,11 +65,6 @@ ShapeHyperboloid::ShapeHyperboloid( )
 
 ShapeHyperboloid::~ShapeHyperboloid()
 {
-}
-
-double ShapeHyperboloid::GetArea() const
-{
-	return -1.0;
 }
 
 /*!
@@ -109,9 +95,9 @@ BBox ShapeHyperboloid::GetBBox() const
 	return BBox( Point3D( xmin, ymin, zmin ), Point3D( xmax, ymax, zmax ) );
 }
 
-QString ShapeHyperboloid::GetIcon() const
+std::string ShapeHyperboloid::GetIcon() const
 {
-	return ":/icons/shapehyperboloid.png";
+	return ( ":/icons/shapehyperboloid.png" );
 }
 
 bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
@@ -172,7 +158,7 @@ bool ShapeHyperboloid::Intersect( const Ray& objectRay, double* tHit, Differenti
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function Cylinder::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeHyperboloid::Intersect(...) called with null pointers" );
 
 	// Find parametric representation of hyperbola hit
 	double u = yradius / ( reflectorMaxDiameter.getValue() / 2 );
@@ -250,7 +236,7 @@ bool ShapeHyperboloid::OutOfRange( double u, double v ) const
 Point3D ShapeHyperboloid::GetPoint3D (double u, double v) const
 {
 	if ( OutOfRange( u, v ) )
-		gf::SevereError( "Function Function Poligon::GetPoint3D called with invalid parameters" );
+		gf::SevereError( "Function Function ShapeHyperboloid::GetPoint3D called with invalid parameters" );
 
 	double cConic = fabs( distanceTwoFocus.getValue() /2 );
 	double aConic = cConic - focusLegth.getValue();

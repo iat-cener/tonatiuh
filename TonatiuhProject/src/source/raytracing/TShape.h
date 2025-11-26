@@ -43,13 +43,24 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodes/SoShape.h>
 
-struct BBox;
-struct DifferentialGeometry;
-struct NormalVector;
-struct Point3D;
-class QString;
-class Ray;
+#include "BBox.h"
+#include "DifferentialGeometry.h"
 
+/*!
+ * @class TShape
+ * @brief Abstract base class for all custom shapes in the scene.
+ *
+ * TShape defines the interface for 3D geometric objects that can be intersected and rendered.
+ *
+ * The subclasses of TShape must implement:
+ * - Bounding box computation (`GetBBox`, `computeBBox`).
+ * - Icon representation (`GetIcon`).
+ * - Ray intersection tests (`IntersectP`, `Intersect`).
+ * - Primitive generation for rendering (`generatePrimitives`).
+ *
+ * The class also provides an optional parameter validation mechanism via
+ * `ValidateParameterValue`.
+ */
 class TShape : public SoShape
 {
 	SO_NODE_ABSTRACT_HEADER(TShape);
@@ -58,12 +69,10 @@ public:
     static void initClass();
 
 	virtual BBox GetBBox() const = 0;
-	virtual QString GetIcon() const = 0;
+	virtual std::string GetIcon() const = 0;
 
 	virtual bool IntersectP( const Ray& objectRay ) const = 0;
 	virtual bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const = 0;
-	
-	virtual Point3D Sample( double u, double v ) const = 0;
 
 	virtual bool ValidateParamaterValue( std::string /*name*/, std::string /*value*/ ) const { return true; };
 

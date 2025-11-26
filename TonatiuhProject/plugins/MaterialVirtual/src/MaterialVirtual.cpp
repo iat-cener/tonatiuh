@@ -35,20 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/sensors/SoFieldSensor.h>
-
-#include "gc.h"
 
 #include "DifferentialGeometry.h"
 #include "MaterialVirtual.h"
-#include "RandomDeviate.h"
 #include "Ray.h"
-#include "tgf.h"
-#include "Transform.h"
-
 
 SO_NODE_SOURCE(MaterialVirtual);
 
@@ -58,6 +49,12 @@ void MaterialVirtual::initClass()
 }
 
 MaterialVirtual::MaterialVirtual()
+:m_ambientColorSensor( 0 ),
+m_diffuseColorSensor( 0 ),
+m_specularColorSensor( 0 ),
+m_emissiveColorSensor( 0 ),
+m_shininessSensor( 0 ),
+m_transparencySensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR( MaterialVirtual );
 
@@ -68,33 +65,39 @@ MaterialVirtual::MaterialVirtual()
 	SO_NODE_ADD_FIELD( m_shininess, (0.2f) );
 	SO_NODE_ADD_FIELD( m_transparency, (0.0f) );
 
-	SoFieldSensor* m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
+	m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
 	m_ambientColorSensor->setPriority( 1 );
 	m_ambientColorSensor->attach( &m_ambientColor );
-	SoFieldSensor* m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
+	m_diffuseColorSensor = new SoFieldSensor( updateDiffuseColor, this );
 	m_diffuseColorSensor->setPriority( 1 );
 	m_diffuseColorSensor->attach( &m_diffuseColor );
-	SoFieldSensor* m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
+	m_specularColorSensor = new SoFieldSensor( updateSpecularColor, this );
 	m_specularColorSensor->setPriority( 1 );
 	m_specularColorSensor->attach( &m_specularColor );
-	SoFieldSensor* m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
+	m_emissiveColorSensor = new SoFieldSensor( updateEmissiveColor, this );
 	m_emissiveColorSensor->setPriority( 1 );
 	m_emissiveColorSensor->attach( &m_emissiveColor );
-	SoFieldSensor* m_shininessSensor = new SoFieldSensor( updateShininess, this );
+	m_shininessSensor = new SoFieldSensor( updateShininess, this );
 	m_shininessSensor->setPriority( 1 );
 	m_shininessSensor->attach( &m_shininess );
-	SoFieldSensor* m_transparencySensor = new SoFieldSensor( updateTransparency, this );
+	m_transparencySensor = new SoFieldSensor( updateTransparency, this );
 	m_transparencySensor->setPriority( 1 );
 	m_transparencySensor->attach( &m_transparency );
 }
 
 MaterialVirtual::~MaterialVirtual()
 {
+	delete m_ambientColorSensor;
+	delete m_diffuseColorSensor;
+	delete m_specularColorSensor;
+	delete m_emissiveColorSensor;
+	delete m_shininessSensor;
+	delete m_transparencySensor;
 }
 
-QString MaterialVirtual::getIcon()
+std::string MaterialVirtual::GetIcon()
 {
-	return QString(":icons/MaterialVirtual.png");
+	return ( ":icons/MaterialVirtual.png" );
 }
 
 void MaterialVirtual::updateAmbientColor( void* data, SoSensor* )
@@ -139,5 +142,4 @@ bool MaterialVirtual::OutputRay( const Ray& incident, DifferentialGeometry* dg, 
 	outputRay->setDirection( incident.direction() );
 
 	return true;
-
 }

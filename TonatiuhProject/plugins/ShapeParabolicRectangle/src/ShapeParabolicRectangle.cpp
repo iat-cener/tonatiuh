@@ -32,27 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <vector>
-#include <algorithm>
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeParabolicRectangle.h"
-#include "Vector3D.h"
-
 
 SO_NODE_SOURCE(ShapeParabolicRectangle);
 
@@ -78,11 +67,6 @@ ShapeParabolicRectangle::~ShapeParabolicRectangle()
 {
 }
 
-double ShapeParabolicRectangle::GetArea() const
-{
-	return -1;
-}
-
 BBox ShapeParabolicRectangle::GetBBox() const
 {
 	double xmin = -widthX.getValue()/2;
@@ -99,9 +83,9 @@ BBox ShapeParabolicRectangle::GetBBox() const
 
 }
 
-QString ShapeParabolicRectangle::GetIcon() const
+std::string ShapeParabolicRectangle::GetIcon() const
 {
-	return ":/icons/ShapeParabolicRectangle.png";
+	return ( ":/icons/ShapeParabolicRectangle.png" );
 }
 
 bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
@@ -151,9 +135,7 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-	// Compute possible parabola hit position
-
-	// Find parametric representation of paraboloid hit
+// Find parametric representation of paraboloid hit
 	double u =  ( hitPoint.x  / wX ) + 0.5;
 	double v =  ( hitPoint.z  / wZ ) + 0.5;
 
@@ -192,9 +174,7 @@ bool ShapeParabolicRectangle::Intersect(const Ray& objectRay, double *tHit, Diff
 							   u, v, this);
 	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
-
 ///////////////////////////////////////////////////////////////////////////////////////
-
 	// Update _tHit_ for quadric intersection
 	*tHit = thit;
 	return true;

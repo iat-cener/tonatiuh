@@ -36,28 +36,15 @@ Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
 
-#include <iostream>
-#include <algorithm>
-#include <QFileDialog>
-#include <QTextStream>
-
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
-
-#include "BBox.h"
-#include "BezierPatch.h"
-#include "BVHPatch.h"
 #include "Curve.h"
 #include "CurveNetwork.h"
 #include "gf.h"
-#include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeBezierSurface.h"
-
-
 
 SO_NODE_SOURCE(ShapeBezierSurface);
 
@@ -89,7 +76,6 @@ ShapeBezierSurface::ShapeBezierSurface( )
 	m_pVSensor = new SoFieldSensor(updatePatchesList, this);
 	m_pVSensor->setPriority( 0 );
 	m_pVSensor->attach( &m_nOfVCurves );
-
 }
 
 ShapeBezierSurface::~ShapeBezierSurface()
@@ -110,14 +96,9 @@ ShapeBezierSurface::~ShapeBezierSurface()
 	delete m_pVSensor;
 }
 
-QString ShapeBezierSurface::GetIcon() const
+std::string ShapeBezierSurface::GetIcon() const
 {
 	return ":/icons/ShapeBezierSurface.png";
-}
-
-double ShapeBezierSurface::GetArea() const
-{
-	return -1;
 }
 
 BBox ShapeBezierSurface::GetBBox() const
@@ -235,8 +216,6 @@ bool ShapeBezierSurface::DefineSurfacePatches( std::vector< Point3D > inputData,
 
 }
 
-
-
 bool ShapeBezierSurface::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
 {
 	double tHitShape= objectRay.maxt; //Inf
@@ -264,15 +243,6 @@ Point3D ShapeBezierSurface::Sample( double /*u*/, double /*v*/ ) const
 {
 	return Point3D();
 }
-
-/*
-void ShapeBezierSurface::GLRender( SoGLRenderAction* action )
-{
-	for( int i = 0; i < m_surfacesVector.size(); ++i )
-		m_surfacesVector[i]->GLRender(action);
-
-}
-*/
 
 void ShapeBezierSurface::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/ )
 {
@@ -398,7 +368,6 @@ void ShapeBezierSurface::generatePrimitives(SoAction *action)
 
 }
 
-
 void ShapeBezierSurface::updatePatchesList( void *data, SoSensor* )
 {
 	ShapeBezierSurface* shapeBezier = (ShapeBezierSurface *) data;
@@ -498,4 +467,3 @@ void ShapeBezierSurface::updatePatchesList( void *data, SoSensor* )
 
 
 }
-

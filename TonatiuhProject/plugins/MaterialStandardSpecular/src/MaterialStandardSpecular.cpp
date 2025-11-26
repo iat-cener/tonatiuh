@@ -35,20 +35,17 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include "gc.h"
 
 #include "DifferentialGeometry.h"
+#include "gc.h"
 #include "MaterialStandardSpecular.h"
+#include "ParameterValueException.h"
 #include "RandomDeviate.h"
 #include "Ray.h"
 #include "tgf.h"
 #include "Transform.h"
-
 
 SO_NODE_SOURCE(MaterialStandardSpecular);
 
@@ -58,13 +55,17 @@ void MaterialStandardSpecular::initClass()
 }
 
 MaterialStandardSpecular::MaterialStandardSpecular()
-:m_sigmaOpt( 0 )
+:m_ambientColorSensor( 0 ),
+m_diffuseColorSensor( 0 ),
+m_specularColorSensor( 0 ),
+m_emissiveColorSensor( 0 ),
+m_shininessSensor( 0 ),
+m_transparencySensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR( MaterialStandardSpecular );
 	SO_NODE_ADD_FIELD( m_reflectivity, (0.0) );
 	SO_NODE_ADD_FIELD( m_sigmaSlope, (2.0) );
 
-	//SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE(m_distribution, Distribution);
 	SO_NODE_ADD_FIELD( m_distribution, (NORMAL) );
@@ -75,10 +76,6 @@ MaterialStandardSpecular::MaterialStandardSpecular()
 	SO_NODE_ADD_FIELD( m_emissiveColor, (0.0, 0.0, 0.0) );
 	SO_NODE_ADD_FIELD( m_shininess, (0.2f) );
 	SO_NODE_ADD_FIELD( m_transparency, (0.0f) );
-
-	m_reflectivitySensor = new SoFieldSensor( updateReflectivity, this );
-	m_reflectivitySensor->setPriority( 1 );
-	m_reflectivitySensor->attach( &m_reflectivity );
 
 	m_ambientColorSensor = new SoFieldSensor( updateAmbientColor, this );
 	m_ambientColorSensor->setPriority( 1 );
@@ -102,7 +99,6 @@ MaterialStandardSpecular::MaterialStandardSpecular()
 
 MaterialStandardSpecular::~MaterialStandardSpecular()
 {
-	delete m_reflectivitySensor;
 	delete m_ambientColorSensor;
 	delete m_diffuseColorSensor;
 	delete m_specularColorSensor;
@@ -111,16 +107,31 @@ MaterialStandardSpecular::~MaterialStandardSpecular()
 	delete m_transparencySensor;
 }
 
-QString MaterialStandardSpecular::getIcon()
+std::string MaterialStandardSpecular::GetIcon()
 {
-	return QLatin1String(":icons/MaterialStandardSpecular.png");
+	return ( ":icons/MaterialStandardSpecular.png");
 }
 
-void MaterialStandardSpecular::updateReflectivity( void* data, SoSensor* )
+/*!
+ * @brief Validates material parameter value.
+ *
+ * Checks whether a given parameter value is acceptable for this material.
+ * If the value is invalid, a `ParameterValueException` is thrown.
+ *
+ * @param name The name of the parameter to validate.
+ * @param value The value of the parameter to validate.
+ * @return true if the parameter value is valid.
+ * @throws ParameterValueException if the parameter value is invalid.
+ */
+bool MaterialStandardSpecular::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	MaterialStandardSpecular* material = static_cast< MaterialStandardSpecular* >( data );
-	if( material->m_reflectivity.getValue() < 0.0 ) material->m_reflectivity = 0.0;
-   	if( material->m_reflectivity.getValue() > 1.0 ) material->m_reflectivity = 1.0;
+    if( ( name == "m_reflectivity" )  && ( ( std::stod( value ) < 0 ) || ( std::stod( value ) > 1 ) ) )
+		throw ParameterValueException( "m_reflectivity", " The value of the 'm_reflectivity' parameter must be in the range [0,1]" );
+   
+    if( name == "m_sigmaSlope" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "m_sigmaSlope", " The 'm_sigmaSlope' must be a positive number" );
+
+	return true;
 }
 
 void MaterialStandardSpecular::updateAmbientColor( void* data, SoSensor* )

@@ -36,45 +36,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <QLineEdit>
 #include <QMessageBox>
-#include <iostream>
 
 #include "ContainerEditorMFVec2.h"
 #include "gc.h"
-
-
-/***************************************************************
- *  CustomPlainTextEdit
- ***************************************************************/
-
-/*!
- * Creates an editor object
- */
-CustomPlainTextEdit::CustomPlainTextEdit( QWidget* parent )
-:QLineEdit( parent )
-{
-}
-
-/*!
- * Destroys object
- */
-CustomPlainTextEdit::~CustomPlainTextEdit()
-{
-
-}
-
-/*!
- * Emits edition finished signal.
- */
-void CustomPlainTextEdit::focusOutEvent(QFocusEvent*  event )
-{
-	emit editingFinished( );
-	QLineEdit::focusOutEvent( event );
-
-
-}
 
 /***************************************************************
  *  ContainerEditor
@@ -85,38 +51,35 @@ void CustomPlainTextEdit::focusOutEvent(QFocusEvent*  event )
 ContainerEditorMFVec2::ContainerEditorMFVec2( QWidget* parent )
 :FieldEditor( parent )
 {
+	setObjectName( QLatin1String( "ContainerEditor" ) );
+	resize(879, 192);
+	
+	QSizePolicy sizePolicy( QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
+	sizePolicy.setHorizontalStretch( 0 );
+	sizePolicy.setVerticalStretch( 0 );
+	setMouseTracking(false);
+	setSizePolicy(sizePolicy);
+    setFocusPolicy(Qt::NoFocus);
+	
+	m_horizontalLayout = new QHBoxLayout( this );
+	m_horizontalLayout->setSpacing(0);
+    m_horizontalLayout->setObjectName(QLatin1String("horizontalLayout"));
+    m_horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
-	 setObjectName( QLatin1String( "ContainerEditor" ) );
-	 resize(879, 192);
+	m_valuesEdit = new QLineEdit( this );
+	m_valuesEdit->setObjectName(QLatin1String("valuesEdit"));
+	m_valuesEdit->setMouseTracking(false);
+	m_valuesEdit->setFocusPolicy(Qt::StrongFocus);
+	m_valuesEdit->setReadOnly( true );
+	m_horizontalLayout->addWidget( m_valuesEdit );
 
-	 QSizePolicy sizePolicy( QSizePolicy::Minimum, QSizePolicy::MinimumExpanding) ;
-	 sizePolicy.setHorizontalStretch( 0 );
-	 sizePolicy.setVerticalStretch( 0 );
-	 setMouseTracking(false);
-	 setSizePolicy(sizePolicy);
-     setFocusPolicy(Qt::NoFocus);
-
-     m_horizontalLayout = new QHBoxLayout( this );
-     m_horizontalLayout->setSpacing(0);
-     m_horizontalLayout->setObjectName(QLatin1String("horizontalLayout"));
-     m_horizontalLayout->setContentsMargins(0, 0, 0, 0);
-
-	 m_valuesEdit = new CustomPlainTextEdit(this);
-	 m_valuesEdit->setObjectName(QLatin1String("valuesEdit"));
-	 m_valuesEdit->setMouseTracking(false);
-	 m_valuesEdit->setFocusPolicy(Qt::WheelFocus);
-
-	 connect( m_valuesEdit, SIGNAL( editingFinished() ), this, SLOT( CloseEditor( ) ) );
-	 m_horizontalLayout->addWidget(m_valuesEdit);
-
-	 m_editButton = new QPushButton(this);
-	 m_editButton->setObjectName(QLatin1String("editButton"));
-	 m_editButton->setFocusPolicy(Qt::StrongFocus);
-	 m_editButton->setText( QLatin1String( "...") );
-	 m_horizontalLayout->addWidget(m_editButton);
+	m_editButton = new QPushButton(this);
+	m_editButton->setObjectName(QLatin1String("editButton"));
+	m_editButton->setFocusPolicy(Qt::StrongFocus);
+	m_editButton->setText( QLatin1String( "...") );
+	m_horizontalLayout->addWidget(m_editButton);
 
 	connect( m_editButton, SIGNAL( clicked() ), this, SLOT( OpenContainerViewer() ) );
-
 }
 
 /*!
@@ -144,7 +107,6 @@ void ContainerEditorMFVec2::SetData( QString value )
 	m_valuesEdit->setText( value );
 }
 
-
 /*!
  * Set headers laber to the editor.
  */
@@ -156,7 +118,7 @@ void ContainerEditorMFVec2::SetTitles( QStringList titles )
 /*
  * Closes editor if the elements of the editor are not active.
  */
-void ContainerEditorMFVec2::focusOutEvent(QFocusEvent*  event )
+void ContainerEditorMFVec2::focusOutEvent( QFocusEvent* event )
 {
 	QWidget::focusOutEvent( event );
 	CloseEditor();
@@ -186,11 +148,8 @@ void ContainerEditorMFVec2::OpenContainerViewer()
 	{
 		m_valuesEdit->setText( viewer.GetData( ) ) ;
 	}
-	m_valuesEdit->setFocus( Qt::ActiveWindowFocusReason );
+	setFocus();
 }
-
-
-
 
 /***************************************************************
  * ContainerViewerMFVec2
@@ -216,7 +175,6 @@ ContainerViewerMFVec2::~ContainerViewerMFVec2()
 {
 	delete m_delegate;
 }
-
 
 /*!
  * Return current values in the editor.
@@ -285,12 +243,10 @@ bool ContainerViewerMFVec2::SetData( QString value )
 	return true;
 }
 
-
 void ContainerViewerMFVec2::SetTitles( QStringList titles )
 {
 	variableValuesTable->setHorizontalHeaderLabels( titles );
 }
-
 
 /*!
  * Adds an empty row to the end of the table.
@@ -307,7 +263,6 @@ void ContainerViewerMFVec2::AddNewRow()
 
 	}
 }
-
 
 void ContainerViewerMFVec2::CloseViewer()
 {
@@ -332,7 +287,6 @@ void ContainerViewerMFVec2::DeleteSelectedRow()
 		variableValuesTable->removeRow( selectedRow );
 	}
 }
-
 
 /*!
  * Verifies if the table values are well defined.
@@ -404,7 +358,6 @@ bool ContainerViewerMFVec2::OkToContinue()
 	return ( true );
 }
 
-
 void ContainerViewerMFVec2::HelpMenu()
 {
 	QString message = QString( tr("Angles values\n"
@@ -415,7 +368,6 @@ void ContainerViewerMFVec2::HelpMenu()
 			"\t- must be defined between [0,1]" ) );
 	QMessageBox::information( this,  QLatin1String( "Tonatiuh" ), message );
 }
-
 
 /**************************************************************
  * DoubleValuesDelegate
@@ -442,9 +394,9 @@ DoubleValuesDelegate::~DoubleValuesDelegate()
 QWidget* DoubleValuesDelegate::createEditor( QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/ ) const
 {
 	QLineEdit* editor = new QLineEdit(parent);
-
+	
 	QDoubleValidator* validator = new QDoubleValidator();
-    validator->setLocale( QLocale("en_US") );
+	validator->setLocale( QLocale("en_US") );
 	validator->setNotation( QDoubleValidator::StandardNotation );
 	validator->setParent( editor );
 	editor->setValidator( validator );
@@ -460,7 +412,6 @@ void DoubleValuesDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
 	QLineEdit* lineEditor = static_cast<QLineEdit*>(editor);
 	lineEditor->setText( QString().setNum( value ) );
 }
-
 
 /*!
  * Sets the editor value to the item.

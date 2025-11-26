@@ -36,13 +36,10 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include "MFVec2.h"
-#include "UserMField.h"
-
 #include <QIcon>
 
 #include "MaterialAngleDependentSpecularFactory.h"
+#include "MFVec2.h"
 
 QString MaterialAngleDependentSpecularFactory::TMaterialName() const
 {
@@ -59,8 +56,6 @@ MaterialAngleDependentSpecular* MaterialAngleDependentSpecularFactory::CreateTMa
 	static bool firstTime = true;
 	if ( firstTime )
 	{
-
-		//UserMField::initClass();
 		MFVec2::initClass();
 		MaterialAngleDependentSpecular::initClass();
 	    firstTime = false;

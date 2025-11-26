@@ -35,14 +35,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFVec3f.h>
-
-#include <QString>
-
-#include "gc.h"
 
 #include "TDefaultTracker.h"
 
@@ -65,10 +58,6 @@ TDefaultTracker::TDefaultTracker()
 {
 	SO_NODEENGINE_CONSTRUCTOR(TDefaultTracker);
 
-	//SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
-	//SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
-
-	//ConstructEngineOutput();
 	// Define input fields and their default values
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
@@ -88,9 +77,9 @@ TDefaultTracker::~TDefaultTracker()
 /**
  * Returns the icon that represents the TDefaultTracker.
  */
-QString TDefaultTracker::getIcon()
+std::string TDefaultTracker::GetIcon()
 {
-	return QLatin1String(":/icons/HorizontalTracker.png");
+	return ( ":/icons/HorizontalTracker.png" );
 }
 
 /**
@@ -98,8 +87,5 @@ QString TDefaultTracker::getIcon()
  */
 void TDefaultTracker::evaluate()
 {
-	//if (!IsConnected()) return;
-
 	SetEngineOutputIdentity();
-
 }

@@ -35,11 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <QFile>
 #include <QMessageBox>
 
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
 
 #include "ComponentHeliostatField.h"
 #include "HeliostatFieldWizard.h"
@@ -54,7 +54,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TShapeKit.h"
 #include "TTracker.h"
 #include "TTrackerFactory.h"
-
+#include "Vector3D.h"
 
 bool comparePuntosPorX( std::pair< Point3D, Point3D > pA, std::pair< Point3D, Point3D > pB )
 {
@@ -797,7 +797,5 @@ TSeparatorKit* ComponentHeliostatField::OpenHeliostatComponent( QString fileName
 	TSeparatorKit* componentRoot = static_cast< TSeparatorKit* >( componentSeparator->getChild(0) );
 	componentRoot->ref();
 
-
    return componentRoot;
-
 }

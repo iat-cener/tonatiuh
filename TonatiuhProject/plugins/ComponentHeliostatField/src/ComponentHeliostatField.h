@@ -42,13 +42,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <vector>
 
+#include <QList>
+#include <QVariant>
+
 class PluginManager;
 class Point3D;
-class QString;
-class SoNode;
+class TMaterial;
 class TSeparatorKit;
 class TShapeFactory;
-class TMaterial;
 class TTrackerFactory;
 
 class ComponentHeliostatField
@@ -59,7 +60,7 @@ public:
 	~ComponentHeliostatField();
 
 	TSeparatorKit* CreateField();
-	TSeparatorKit* CreateField( QList< QVariant> argumentList);
+	TSeparatorKit* CreateField( QList<QVariant> argumentList );
 
 private:
 	void CreateHeliostatZones( std::vector< Point3D >  heliostatCenterList,

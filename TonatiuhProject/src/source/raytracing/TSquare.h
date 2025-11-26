@@ -51,14 +51,12 @@ class TSquare : public TShape
 public:
 	TSquare( );
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+	
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
-	Point3D Sample( double u, double v ) const;
 	
 	bool ValidateParamaterValue( std::string name, std::string value ) const;
 

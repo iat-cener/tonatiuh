@@ -12,16 +12,11 @@ INCLUDEPATH += . \
 # Input
 HEADERS = src/*.h \  	
            	$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.h \ 
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.h
+			$$(TONATIUH_ROOT)/src/source/raytracing/TShape.h 
 
 SOURCES = src/*.cpp  \   	
            	$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.cpp \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.cpp \ 
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.cpp
+           	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.cpp
 
 RESOURCES += src/ShapeCone.qrc	
 		

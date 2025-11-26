@@ -40,11 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef MATERIALANGLEDEPENDINGSPECULARFACTORY_H_
 #define MATERIALANGLEDEPENDINGSPECULARFACTORY_H_
 
-
-
-#include "TMaterialFactory.h"
 #include "MaterialAngleDependentSpecular.h"
-
+#include "TMaterialFactory.h"
 
 class MaterialAngleDependentSpecularFactory: public QObject, public TMaterialFactory
 {

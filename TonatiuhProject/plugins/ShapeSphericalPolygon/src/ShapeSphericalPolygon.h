@@ -33,25 +33,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SHAPESPHERICALPOLYGON_H_
 #define SHAPESPHERICALPOLYGON_H_
 
-#include <vector>
-
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 
 #include "TShape.h"
 #include "trt.h"
-
-class SoFieldSensor;
-class SoSensor;
 
 class ShapeSphericalPolygon : public TShape
 {
@@ -60,16 +52,16 @@ class ShapeSphericalPolygon : public TShape
 public:
 	ShapeSphericalPolygon();
 	static void initClass();
-    SoNode* copy( SbBool copyConnections ) const;
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+
 	BBox GetBBox() const;
-    QString GetIcon() const;
+    std::string GetIcon() const;
 
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
 	bool IntersectP( const Ray& objectRay ) const;
 
 	Point3D Sample( double u, double v ) const;
+
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	enum Side{
 		INSIDE = 0,
@@ -81,29 +73,14 @@ public:
 	SoSFInt32 polygonSides;
 	SoSFEnum activeSide;
 
-protected:
-	static void updatePolygonSides(void *data, SoSensor *);
-
 private:
    	~ShapeSphericalPolygon();
 
-	Point3D GetPoint3D( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
-	static void RadiusChanged( void* data, SoSensor* );
-	static void SidesChanged( void* data, SoSensor* );
-	static void SphereRadiusChanged( void* data, SoSensor* );
-
 	void generatePrimitives( SoAction* action );
 	void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center );
-
-	double m_lastValidSidesValue;
-	double m_lastValidSphereRadiusValue;
-
-	SoFieldSensor* m_radiusSensor;
-	SoFieldSensor* m_sidesSensor;
-	SoFieldSensor* m_sphereRadiusSensor;
 };
 
 #endif /*SHAPESPHERICALPOLYGON_H_*/

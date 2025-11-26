@@ -39,21 +39,24 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef SCRIPTRAYTRACER_H_
 #define SCRIPTRAYTRACER_H_
 
-#include <QMap>
 #include <QObject>
+
+class Document;
+class RandomDeviate;
+class RandomDeviateFactory;
+class SceneModel;
+class TPhotonMap;
+/*
+#include <QMap>
 #include <QPair>
 #include <QString>
 #include <QVector>
 
-class Document;
 class GraphicRoot;
 class InstanceNode;
-class RandomDeviate;
-class RandomDeviateFactory;
 class QScriptContext;
-class SceneModel;
-class TPhotonMap;
 class Transform;
+*/
 
 class ScriptRayTracer : public QObject
 {

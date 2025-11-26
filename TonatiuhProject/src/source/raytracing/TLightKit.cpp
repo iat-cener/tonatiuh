@@ -35,34 +35,24 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QImage>
 #include <QBrush>
-#include <QColor>
 #include <QImage>
-#include <QPaintEngine>
+#include <QPainter>
+#include <QPair>
+#include <QPointF>
 
 #include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoLabel.h>
 #include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoNodekitCatalog.h>
 
 #include "gc.h"
-
-#include "BBox.h"
-#include "Matrix4x4.h"
-#include "Point3D.h"
-#include "sunpos.h"
 #include "TDefaultSunShape.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
-#include "Transform.h"
 #include "TShapeKit.h"
-#include "TSquare.h"
+#include "Transform.h"
+#include "TSunShape.h"
 
 struct Polygon
 {
@@ -93,10 +83,7 @@ bool PixelInPolygon( int x, int y, Polygon p )
 	int nVert = 4;
 	for( int i = 0, j = nVert -1; i < nVert; j = i++ )
 	{
-		/*if( ( ( ( p.y[i] <= y ) && ( y < p.y[j] ) ) || ( ( p.y[j] <= y ) && ( y < p.y[i] ) ) ) &&
-				( x < ( p.x[j] - p.x[i] ) * ( y - p.y[i] ) / ( p.y[j] -p.y[i] ) + p.x[i] ) )
-			c = !c;
-		*/
+
 		if( ( ( p.y[i] > y ) != ( p.y[j] > y ) ) &&
 				( x < ( p.x[j] - p.x[i] )* ( y - p.y[i] ) / ( p.y[j] -p.y[i] ) + p.x[i] ) )
 			c = !c;
@@ -172,8 +159,6 @@ TLightKit::TLightKit()
  */
 TLightKit::~TLightKit()
 {
-	//void ChangePosition( QDateTime time, double longitude, double latitude );
-	//void SetDateTime( QDateTime time );
 
 }
 
@@ -262,11 +247,6 @@ void TLightKit::ComputeLightSourceArea( int widthDivisions, int heigthDivisions,
 
 	QPen pen( Qt::black );
 	painter.setPen( pen );
-
-	//painter.setRenderHint(   QPainter::Antialiasing);
-
-	//QPen pen( Qt::black, Qt::NoPen );
-	//painter.setPen( pen );
 
 	for( int s = 0; s < surfacesList.size(); s++ )
 	{

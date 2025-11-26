@@ -32,26 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QMessageBox>
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "gc.h"
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeParabolicDish.h"
-#include "Vector3D.h"
 
 SO_NODE_SOURCE(ShapeParabolicDish);
 
@@ -65,32 +57,17 @@ ShapeParabolicDish::ShapeParabolicDish()
 	SO_NODE_CONSTRUCTOR(ShapeParabolicDish);
 	SO_NODE_ADD_FIELD( focusLength, (0.125f));
 	SO_NODE_ADD_FIELD( dishMinRadius, (0.1f) );
-	m_lastMinRadius = 0.1;
 	SO_NODE_ADD_FIELD( dishMaxRadius, (0.5f) );
-	m_lastMaxRadius = 0.5;
 	SO_NODE_ADD_FIELD( phiMax, (gc::TwoPi) );
 
 	SO_NODE_DEFINE_ENUM_VALUE( Side, INSIDE );
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
 	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
-
-	SoFieldSensor* dishMinRadiusSensor = new SoFieldSensor( updateMinRadius, this );
-	dishMinRadiusSensor->setPriority( 1 );
-	dishMinRadiusSensor->attach( &dishMinRadius );
-	SoFieldSensor* dishMaxRadiusSensor = new SoFieldSensor( updateMaxRadius, this );
-	dishMaxRadiusSensor->setPriority( 1 );
-	dishMaxRadiusSensor->attach( &dishMaxRadius );
 }
 
 ShapeParabolicDish::~ShapeParabolicDish()
 {
-}
-
-
-double ShapeParabolicDish::GetArea() const
-{
-	return -1;
 }
 
 BBox ShapeParabolicDish::GetBBox() const
@@ -115,9 +92,9 @@ BBox ShapeParabolicDish::GetBBox() const
 
 }
 
-QString ShapeParabolicDish::GetIcon() const
+std::string ShapeParabolicDish::GetIcon() const
 {
-	return ":/icons/ShapeParabolicDish.png";
+	return ( ":/icons/ShapeParabolicDish.png" );
 }
 
 bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg) const
@@ -176,7 +153,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	double u = phi / pMax;
 	double v = ( radius - dishMinRadius.getValue() )  /( dishMaxRadius.getValue() - dishMinRadius.getValue() );
 
-	// Compute Circular Parabolic Facet \dpdu and \dpdv
+	// Compute \dpdu and \dpdv
 	double r = v * ( dishMaxRadius.getValue() - dishMinRadius.getValue() ) + dishMinRadius.getValue();
 	Vector3D dpdu( pMax * r * cos( pMax * u ),
 					0,
@@ -188,7 +165,7 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 					( dishMaxRadius.getValue() - dishMinRadius.getValue() ) * cos( pMax * u ) );
 
 
-	// Compute Circular Parabolic Facet \dndu and \dndv
+	// Compute \dndu and \dndv
 	Vector3D d2Pduu ( -pMax * pMax * r * sin( pMax * u ),
 			0.0,
 			-pMax* pMax * r * cos( pMax * u ) );
@@ -196,7 +173,6 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 					0.0,
 					-pMax * ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) * sin( pMax * u ) );
 	Vector3D d2Pdvv (0, ( ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) * ( dishMaxRadius.getValue()- dishMinRadius.getValue() ) ) /(2 * focusLength.getValue() ), 0 );
-
 
 	// Compute coefficients for fundamental forms
 	double E = DotProduct(dpdu, dpdu);
@@ -225,7 +201,6 @@ bool ShapeParabolicDish::Intersect(const Ray& objectRay, double* tHit, Different
 	                           u, v, this);
 	dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
-
 ///////////////////////////////////////////////////////////////////////////////////////
 
 	// Update _tHit_ for quadric intersection
@@ -239,14 +214,11 @@ bool ShapeParabolicDish::IntersectP( const Ray& worldRay ) const
 	return Intersect( worldRay, 0, 0 );
 }
 
+/*!
+* Returns the 3D coordintates por parameteric coordinates \a u and \a v
+*/
 Point3D ShapeParabolicDish::Sample( double u, double v ) const
 {
-	return GetPoint3D( u, v );
-}
-
-Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
-{
-
 	if ( OutOfRange( u, v ) )	gf::SevereError( "Function ShapeParabolicDish::GetPoint3D called with invalid parameters" );
 
 	double r = v * ( dishMaxRadius.getValue() - dishMinRadius.getValue() ) + dishMinRadius.getValue();
@@ -256,7 +228,26 @@ Point3D ShapeParabolicDish::GetPoint3D (double u, double v) const
 	double z = r * cos( u * phiMax.getValue() );
 
 	return Point3D (x, y, z);
+}
 
+/*!
+* Checks  \a value asigned to parameter \a name is valid value.
+*/
+bool ShapeParabolicDish::ValidateParamaterValue( std::string name, std::string value ) const
+{
+	 if( name == "dishMinRadius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "dishMinRadius", "The radius must be a positive number" );
+
+	if( name == "dishMinRadius" && std::stod( value ) > ( dishMaxRadius.getValue() ) )
+		throw ParameterValueException( "dishMinRadius", "Dish minimum radius cannot be greater than the maximum radius" );
+	
+	if( name == "dishMaxRadius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "dishMinRadius", "The radius must be a positive number" );
+
+	if( name == "dishMaxRadius" && std::stod( value ) < ( dishMinRadius.getValue() ) )
+		throw ParameterValueException( "dishMaxRadius", "Dish maximum radius cannot be in smaller than minimum radius" );
+	
+	return true;
 }
 
 NormalVector ShapeParabolicDish::GetNormal (double u, double v) const
@@ -337,7 +328,7 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
 
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
-    		Point3D point = GetPoint3D(ui, vj);
+    		Point3D point = Sample(ui, vj);
     		NormalVector normal;
     		if( activeSide.getValue() == 0 )	normal = GetNormal(ui, vj);
     		else	normal = -GetNormal(ui, vj);
@@ -398,30 +389,4 @@ void ShapeParabolicDish::generatePrimitives(SoAction *action)
 		shapeVertex(&pv);
     }
     endShape();
-}
-
-void ShapeParabolicDish::updateMinRadius( void* data, SoSensor* )
-{
-	ShapeParabolicDish* parabolicDish = static_cast< ShapeParabolicDish* >( data );
-	if( parabolicDish->dishMinRadius.getValue() >= parabolicDish->dishMaxRadius.getValue() )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Dish min radius is smaller than max radius. ") );
-		parabolicDish->dishMinRadius.setValue( parabolicDish->m_lastMinRadius );
-	}
-	else
-		parabolicDish->m_lastMinRadius = parabolicDish->dishMinRadius.getValue();
-
-}
-
-void ShapeParabolicDish::updateMaxRadius( void* data, SoSensor* )
-{
-	ShapeParabolicDish* parabolicDish = static_cast< ShapeParabolicDish* >( data );
-	if( parabolicDish->dishMinRadius.getValue() >= parabolicDish->dishMaxRadius.getValue() )
-		{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Dish max radius must be bigger than min radius. ") );
-		parabolicDish->dishMaxRadius.setValue( parabolicDish->m_lastMaxRadius );
-	}
-	else
-		parabolicDish->m_lastMaxRadius = parabolicDish->dishMinRadius.getValue();
-
 }

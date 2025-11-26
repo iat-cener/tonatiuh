@@ -43,8 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 class QString;
 class QIcon;
-class QWidget;
-class TShape;
 class TSunShape;
 
 class TSunShapeFactory

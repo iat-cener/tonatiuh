@@ -39,14 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef GRAPHICROOTTRACKER_H_
 #define GRAPHICROOTTRACKER_H_
 
-
-#include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/fields/SoSFVec3f.h>
-
 #include "TTracker.h"
-#include "trt.h"
-
-class QString;
 
 class GraphicRootTracker : public TTracker
 {
@@ -54,7 +47,7 @@ class GraphicRootTracker : public TTracker
 
 public:
     static void initClass();
-	QString getIcon();
+	std::string GetIcon();
 
 	//Constructor
 	GraphicRootTracker();

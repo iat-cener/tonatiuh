@@ -83,18 +83,18 @@ QWidget* ParametersDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 	{
 		UserSField* mField = static_cast< UserSField* >(field);
 
-		FieldEditor* fieldEdit = mField->GetEditor();
+		FieldEditor* fieldEdit = mField->GetEditor( parent);
 		fieldEdit->setGeometry(option.rect);
-		fieldEdit->setParent(parent);
+		//fieldEdit->setParent(parent);
 		return fieldEdit;
 	}
 	else if( field->getTypeId().isDerivedFrom( UserMField::getClassTypeId() ) )
 	{
 		UserMField* mField = static_cast< UserMField* >(field);
 
-		FieldEditor* fieldEdit = mField->GetEditor();
+		FieldEditor* fieldEdit = mField->GetEditor(parent);
 		fieldEdit->setGeometry(option.rect);
-		fieldEdit->setParent(parent);
+		//fieldEdit->setParent(parent);
 		return fieldEdit;
 	}
 	else

@@ -32,26 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QMessageBox>
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "gc.h"
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
 #include "ShapeSphericalPolygon.h"
-#include "Vector3D.h"
 
 
 SO_NODE_SOURCE(ShapeSphericalPolygon);
@@ -62,11 +54,6 @@ void ShapeSphericalPolygon::initClass()
 }
 
 ShapeSphericalPolygon::ShapeSphericalPolygon()
-:m_lastValidSidesValue( 6 ),
- m_lastValidSphereRadiusValue( 0.5 ),
- m_radiusSensor( 0 ),
- m_sidesSensor( 0 ),
- m_sphereRadiusSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR( ShapeSphericalPolygon );
 	SO_NODE_ADD_FIELD( sphereRadius, (0.5) );
@@ -77,40 +64,10 @@ ShapeSphericalPolygon::ShapeSphericalPolygon()
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
 	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
-
-    m_sphereRadiusSensor = new SoFieldSensor( SphereRadiusChanged, this );
-    m_sphereRadiusSensor->setPriority( 1 );
-    m_sphereRadiusSensor->attach( &sphereRadius );
-
-    m_radiusSensor = new SoFieldSensor( RadiusChanged, this );
-    m_radiusSensor->setPriority( 1 );
-    m_radiusSensor->attach( &radius );
-
-    m_sidesSensor = new SoFieldSensor( SidesChanged, this );
-    m_sidesSensor->setPriority( 1 );
-    m_sidesSensor->attach( &polygonSides );
 }
 
 ShapeSphericalPolygon::~ShapeSphericalPolygon()
 {
-	delete m_sphereRadiusSensor;
-	delete m_radiusSensor;
-	delete m_sidesSensor;
-}
-
-SoNode* ShapeSphericalPolygon::copy( SbBool copyConnections ) const
-{
-	// Use the standard version of the copy method to create
-	// a copy of this instance, including its field data
-	ShapeSphericalPolygon* newShapeSphericalPolygon = dynamic_cast< ShapeSphericalPolygon* >( SoNode::copy( copyConnections ) );
-
-	return newShapeSphericalPolygon;
-}
-
-
-double ShapeSphericalPolygon::GetArea() const
-{
-	return -1;
 }
 
 BBox ShapeSphericalPolygon::GetBBox() const
@@ -124,9 +81,9 @@ BBox ShapeSphericalPolygon::GetBBox() const
 	return BBox( Point3D( - xmax, - ymax, 0 ), Point3D( xmax, ymax, zmax) );
 }
 
-QString ShapeSphericalPolygon::GetIcon() const
+std::string ShapeSphericalPolygon::GetIcon() const
 {
-	return ":/icons/ShapeSphericalPolygon.png";
+	return ( ":/icons/ShapeSphericalPolygon.png" );
 }
 
 bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const
@@ -273,12 +230,10 @@ bool ShapeSphericalPolygon::IntersectP( const Ray& worldRay ) const
 	return Intersect( worldRay, 0, 0 );
 }
 
+/*!
+* Returns the 3D coordintates por parameteric coordinates \a u and \a v
+*/
 Point3D ShapeSphericalPolygon::Sample( double u, double v) const
-{
-	return GetPoint3D( u , v );
-}
-
-Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 {
 	if ( OutOfRange( u, v ) ) gf::SevereError( "Function ShapeSphericalPolygon::GetPoint3D called with invalid parameters" );
 
@@ -306,9 +261,30 @@ Point3D ShapeSphericalPolygon::GetPoint3D( double u, double v ) const
 	return Point3D( x, y, z );
 }
 
+/*!
+* Checks the cone parameters values. Checks the \a value of parameter \a name .
+*/
+bool ShapeSphericalPolygon::ValidateParamaterValue( std::string name, std::string value ) const
+{
+    if( name == "sphereRadius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "radius", "The polygon 'sphereRadius' value must be a positive value and largest than 'radius' value" );
+	else if( name == "sphereRadius" && std::stod( value ) < radius.getValue() ) 
+		throw ParameterValueException( "radius", "The polygon 'sphereRadius' value must be a positive value and largest than 'radius' value" );
+
+    if( name == "radius" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "radius", "The polygon 'radius' must be a positive value and less than 'sphereRadius' value" );
+	else if( name == "radius" && std::stod( value ) > sphereRadius.getValue() ) 
+		throw ParameterValueException( "radius", "The polygon 'radius' must be a positive value and less than 'sphereRadius' value" );
+
+    if( name == "polygonSides" && std::stod( value ) < 3 ) 
+		throw ParameterValueException( "polygonSides", "The polygon sides must be at least 3" );
+
+	return true;
+}
+
 NormalVector ShapeSphericalPolygon::GetNormal(  double u, double v  ) const
 {
-	Point3D point = GetPoint3D( u, v );
+	Point3D point = Sample( u, v );
 	Vector3D vector( point.x, point.y, point.z - sphereRadius.getValue());
 	return NormalVector( -point.x/ vector.length(), -point.y/vector.length(), -( point.z - sphereRadius.getValue() )/vector.length() );
 }
@@ -317,47 +293,6 @@ bool ShapeSphericalPolygon::OutOfRange( double u, double v ) const
 {
 	return ( ( u < 0.0 ) || ( u > 1.0 ) || ( v < 0.0 ) || ( v > 1 ) );
 }
-
-void ShapeSphericalPolygon::RadiusChanged( void* data, SoSensor* )
-{
-	ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
-
-	if( ( polygon->radius.getValue() <= 0.0 ) || ( polygon->radius.getValue() > polygon->sphereRadius.getValue() ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The polygon radius must be a positive value and less than radius value." ) );
-		polygon->sphereRadius.setValue( polygon->m_lastValidSphereRadiusValue );
-
-	}
-	else
-		polygon-> m_lastValidSphereRadiusValue = polygon->sphereRadius.getValue();
-}
-
-void ShapeSphericalPolygon::SidesChanged( void* data, SoSensor* )
-{
-    ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
-	if( polygon->polygonSides.getValue() < 3 )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The polygon sides must be at least 3." ) );
-		polygon->polygonSides.setValue( polygon->m_lastValidSidesValue );
-
-	}
-	else
-		polygon-> m_lastValidSidesValue = polygon->polygonSides.getValue();
-}
-
-void ShapeSphericalPolygon::SphereRadiusChanged( void* data, SoSensor* )
-{
-	ShapeSphericalPolygon* polygon = static_cast< ShapeSphericalPolygon* >( data );
-	if( ( polygon->sphereRadius.getValue() <= 0.0 ) || ( polygon->radius.getValue() > polygon->sphereRadius.getValue() ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "The polygon sphereRadius value must be a positive value and largest than radius value." ) );
-		polygon->sphereRadius.setValue( polygon->m_lastValidSphereRadiusValue );
-
-	}
-	else
-		polygon-> m_lastValidSphereRadiusValue = polygon->sphereRadius.getValue();
-}
-
 
 void ShapeSphericalPolygon::computeBBox(SoAction *, SbBox3f& box, SbVec3f& /*center*/ )
 {
@@ -413,7 +348,7 @@ void ShapeSphericalPolygon::generatePrimitives(SoAction *action)
 
 				vj = ( 1.0 /(double)(columns-1) ) * j;
 
-				Point3D point = GetPoint3D(ui, vj);
+				Point3D point = Sample(ui, vj);
 				NormalVector normal;
 				if( activeSide.getValue() == 0 )	normal = -GetNormal(ui, vj);
 				else	normal = GetNormal(ui, vj);

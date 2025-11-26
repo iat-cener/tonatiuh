@@ -135,6 +135,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "TSeparatorKit.h"
 #include "TShapeFactory.h"
 #include "TShapeKit.h"
+#include "TSunShape.h"
 #include "TSunShapeFactory.h"
 #include "TTracker.h"
 #include "TTrackerFactory.h"
@@ -328,7 +329,7 @@ void MainWindow::DefineSunLight()
 	if( !coinScene ) return;
 
 	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
-	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
+	InstanceNode* concentratorRoot = sceneInstance->GetChild( sceneInstance->NumberOfChildren() - 1 );
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
 	TLightKit* currentLight = 0;
@@ -987,7 +988,6 @@ void MainWindow::on_actionAbout_triggered()
 
 }
 
-
 /*!
  * Changes the number of the grid cells and grid cell dimensions.
  */
@@ -1011,7 +1011,7 @@ void MainWindow::ChangeGridSettings()
 
 			InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
 			if ( !sceneInstance )  return;
-			InstanceNode* rootInstance = sceneInstance->children[sceneInstance->children.size() -1 ];
+			InstanceNode* rootInstance = sceneInstance->GetChild( sceneInstance->NumberOfChildren() - 1 );
 			if ( !rootInstance )  return;
 
 			SoGetBoundingBoxAction* bbAction = new SoGetBoundingBoxAction( SbViewportRegion() ) ;
@@ -2571,7 +2571,7 @@ void MainWindow::ChangeModelScene()
 	InstanceNode* viewRootNode = m_sceneModel->NodeFromIndex( viewRootNodeIndex );
 	sceneModelView->setRootIndex( viewRootNodeIndex );
 
-	InstanceNode* concentratorRoot = viewRootNode->children[ 0 ];
+	InstanceNode* concentratorRoot = viewRootNode->GetChild( 0 );
 
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 }
@@ -2877,7 +2877,7 @@ bool MainWindow::ReadyForRaytracing( InstanceNode*& rootSeparatorInstance,
 	if ( !coinScene->getPart( "lightList[0]", false ) )	return false;
 	TLightKit* lightKit = static_cast< TLightKit* >( coinScene->getPart( "lightList[0]", false ) );
 
-	lightInstance = sceneInstance->children[0];
+	lightInstance = sceneInstance->GetChild( 0 );
 	if ( !lightInstance ) return false;
 
 	if( !lightKit->getPart( "tsunshape", false ) ) return false;
@@ -3563,7 +3563,7 @@ bool MainWindow::StartOver( const QString& fileName )
 {
 	InstanceNode* sceneInstance = m_sceneModel->NodeFromIndex( sceneModelView->rootIndex() );
 
-	InstanceNode* concentratorRoot = sceneInstance->children[ sceneInstance->children.size() -1 ];
+	InstanceNode* concentratorRoot = sceneInstance->GetChild( sceneInstance->NumberOfChildren() -1 );
 	m_selectionModel->setCurrentIndex( m_sceneModel->IndexFromNodeUrl( concentratorRoot->GetNodeURL() ), QItemSelectionModel::ClearAndSelect );
 
 	actionDisplayRays->setEnabled( false );

@@ -36,6 +36,7 @@
  Juana Amieva, Azael Mancillas, Cesar Cantu.
  ***************************************************************************/
 
+#include "Photon.h"
 #include "PhotonMapExport.h"
 #include "TPhotonMap.h"
 

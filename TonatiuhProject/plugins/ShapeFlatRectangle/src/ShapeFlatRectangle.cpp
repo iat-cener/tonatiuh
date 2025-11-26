@@ -32,25 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QString>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
 
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
 #include "Ray.h"
 #include "ShapeFlatRectangle.h"
-#include "Vector3D.h"
-
 
 SO_NODE_SOURCE(ShapeFlatRectangle);
 
@@ -75,11 +66,6 @@ ShapeFlatRectangle::~ShapeFlatRectangle()
 {
 }
 
-double ShapeFlatRectangle::GetArea() const
-{
-	return ( width.getValue() * height.getValue() );
-}
-
 /*!
  * Return the shape bounding box.
  */
@@ -91,10 +77,9 @@ BBox ShapeFlatRectangle::GetBBox() const
 	return BBox( min, max );
 }
 
-
-QString ShapeFlatRectangle::GetIcon() const
+std::string ShapeFlatRectangle::GetIcon() const
 {
-	return ":/icons/ShapeFlatRectangle.png";
+	return ( ":/icons/ShapeFlatRectangle.png" );
 }
 
 bool ShapeFlatRectangle::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
@@ -163,7 +148,7 @@ Point3D ShapeFlatRectangle::Sample( double u, double v ) const
 
 Point3D ShapeFlatRectangle::GetPoint3D (double u, double v) const
 {
-	if( OutOfRange( u, v ) ) 	gf::SevereError("Function ShapeFlatRectangle::GetPoint3D called with invalid parameters" );
+	if( OutOfRange( u, v ) )	gf::SevereError("Function ShapeFlatRectangle::GetPoint3D called with invalid parameters" );
 
 	double x = u * height.getValue() - (height.getValue()/2);
 	double z = (v * width.getValue()) - (width.getValue()/2);
@@ -177,7 +162,6 @@ NormalVector ShapeFlatRectangle::GetNormal (double /*u*/,double /*v*/ ) const
 	Vector3D dpdv ( width.getValue(), 0.0, 0.0 );
 
 	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
-
 }
 
 bool ShapeFlatRectangle::OutOfRange( double u, double v ) const
@@ -197,12 +181,10 @@ void ShapeFlatRectangle::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center )
     // Set the box to bound the two extreme points.
     box.setBounds(min, max);
 	center.setValue(0.0, 0.0, 0.0);
-
 }
 
 void ShapeFlatRectangle::generatePrimitives(SoAction *action)
 {
-
     SoPrimitiveVertex   pv;
 
     SoState  *state = action->getState();
@@ -295,5 +277,4 @@ void ShapeFlatRectangle::generatePrimitives(SoAction *action)
 		shapeVertex(&pv);
     }
     endShape();
-
 }

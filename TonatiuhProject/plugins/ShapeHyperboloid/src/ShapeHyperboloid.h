@@ -32,17 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
+#ifndef SHAPEHYPERBOLOID_H_
+#define SHAPEHYPERBOLOID_H_
 
-
-#ifndef ShapeHyperboloid_H_
-#define ShapeHyperboloid_H_
-
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 #include "trt.h"
@@ -62,10 +58,9 @@ public:
 
 	ShapeHyperboloid( );
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+	
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect( const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
@@ -76,8 +71,6 @@ public:
 	trt::TONATIUH_REAL distanceTwoFocus;
 	trt::TONATIUH_REAL reflectorMaxDiameter;
 	SoSFEnum activeSide;
-
-
 
 protected:
 	bool OutOfRange( double u, double v ) const;
@@ -93,4 +86,4 @@ private:
 	Vector3D Dpdv( double u, double v ) const;
 };
 
-#endif /* ShapeHyperboloid_H_ */
+#endif /* SHAPEHYPERBOLOID_H_*/

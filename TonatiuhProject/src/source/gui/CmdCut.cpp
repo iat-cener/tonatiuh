@@ -58,7 +58,7 @@ CmdCut::CmdCut( const QModelIndex& selectedIndex, SoNode*& clipboard, SceneModel
 
 	m_previousNode = clipboard ;
 
-	m_row = instanceNode->GetParent()->children.indexOf( instanceNode );
+	m_row = instanceNode->GetParent()->GetChildIndex( instanceNode );
 }
 
 /*!

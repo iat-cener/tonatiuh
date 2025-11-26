@@ -35,14 +35,10 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MATERIALSTANDARDSPECULAR_H_
 #define MATERIALSTANDARDSPECULAR_H_
 
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFString.h>
 
 #include "TMaterial.h"
 #include "trt.h"
@@ -50,21 +46,21 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class SoSensor;
 class SoFieldSensor;
 
-
 class MaterialStandardSpecular : public TMaterial
 {
 	SO_NODE_HEADER(MaterialStandardSpecular);
 
 public:
 	enum Distribution {
-		//PILLBOX = 0,
 		NORMAL = 1,
 	   };
 	MaterialStandardSpecular( );
 	static void initClass();
 
-    QString getIcon();
+    std::string GetIcon();
 	bool OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const;
+	
+    bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL m_reflectivity;
 	trt::TONATIUH_REAL m_sigmaSlope;
@@ -77,13 +73,9 @@ public:
 	SoMFFloat m_shininess;
 	SoMFFloat m_transparency ;
 
-
 protected:
    	virtual ~MaterialStandardSpecular();
 
-   	double m_sigmaOpt;
-
-	static void updateReflectivity( void* data, SoSensor* );
 	static void updateAmbientColor( void* data, SoSensor* );
 	static void updateDiffuseColor( void* data, SoSensor* );
 	static void updateSpecularColor( void* data, SoSensor* );
@@ -92,15 +84,12 @@ protected:
 	static void updateTransparency( void* data, SoSensor* );
 
 private:
-	SoFieldSensor* m_reflectivitySensor;
 	SoFieldSensor* m_ambientColorSensor;
 	SoFieldSensor* m_diffuseColorSensor;
 	SoFieldSensor* m_specularColorSensor;
 	SoFieldSensor* m_emissiveColorSensor;
 	SoFieldSensor* m_shininessSensor;
 	SoFieldSensor* m_transparencySensor;
-
-
 };
 
 #endif /*MATERIALSTANDARDSPECULAR_H_*/

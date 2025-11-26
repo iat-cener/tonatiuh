@@ -39,17 +39,12 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TLIGHTKIT_H_
 #define TLIGHTKIT_H_
 
-#include <QDateTime>
-#include <QPair>
 #include <QVector>
 
-#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodekits/SoLightKit.h>
 
-
 #include "trt.h"
-#include "TSunShape.h"
 
 struct BBox;
 class Transform;

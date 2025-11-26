@@ -32,10 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, I�igo Les.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SHAPECADFACTORY_H_
 #define SHAPECADFACTORY_H_
 
@@ -55,7 +54,7 @@ public:
    	QString TShapeName() const;
    	QIcon TShapeIcon() const;
    	ShapeCAD* CreateTShape( ) const;
-   	ShapeCAD* CreateTShape( int numberofParameters, QVariant parameters ) const;
+	ShapeCAD* CreateTShape( int numberofParameters, QVariant parametersList ) const;
    	bool IsFlat() { return false; }
 
 private:

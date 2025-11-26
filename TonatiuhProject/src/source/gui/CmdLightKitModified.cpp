@@ -35,15 +35,13 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <Inventor/nodekits/SoSceneKit.h>
-#include <Inventor/nodekits/SoNodeKitListPart.h>
-
-#include "gf.h"
 
 #include "CmdLightKitModified.h"
+#include "gf.h"
 #include "SceneModel.h"
 #include "TLightKit.h"
+#include "TSunShape.h"
 
 /**
  * Creates a new lightKit modification command that represents a new light defined as \a newLightKit to the \a scene.

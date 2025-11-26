@@ -36,15 +36,7 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QMessageBox>
-#include <QString>
-
-#include <Inventor/lists/SoFieldList.h>
-#include <Inventor/fields/SoFieldContainer.h>
-
-#include "gc.h"
-#include "trt.h"
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "DifferentialGeometry.h"
 #include "MaterialAngleDependentRefractive.h"
@@ -52,7 +44,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "Ray.h"
 #include "tgf.h"
 #include "Transform.h"
-
 
 SO_NODE_SOURCE( MaterialAngleDependentRefractive );
 
@@ -73,23 +64,18 @@ MaterialAngleDependentRefractive::MaterialAngleDependentRefractive()
 {
 	SO_NODE_CONSTRUCTOR( MaterialAngleDependentRefractive );
 
-	//SO_NODE_ADD_FIELD(reflectivityFront, (TRUE) );
 	SO_NODE_ADD_FIELD( nFront, (0.0) );
 	SO_NODE_ADD_FIELD(frontOpticValues, (0.0f, 0.0f, 0.0f) );
 	frontOpticValues.SetNames( QObject::tr("Angle [rad]" ), QObject::tr( "Reflectivity[0-1]" ), QObject::tr( "Transmissivity[0-1]" ) );
 
-	//SO_NODE_ADD_FIELD(reflectivityBack, (TRUE) );
 	SO_NODE_ADD_FIELD( nBack, (0.0) );
 	SO_NODE_ADD_FIELD(backOpticValues, (0.0f, 0.0f, 0.0f) );
 	backOpticValues.SetNames( QObject::tr("Angle [rad]" ), QObject::tr( "Reflectivity[0-1]" ), QObject::tr( "Transmissivity[0-1]" ) );
 
-
 	SO_NODE_ADD_FIELD( sigmaSlope, (2.0) );
-	//SO_NODE_DEFINE_ENUM_VALUE(Distribution, PILLBOX);
   	SO_NODE_DEFINE_ENUM_VALUE(Distribution, NORMAL);
   	SO_NODE_SET_SF_ENUM_TYPE( distribution, Distribution);
 	SO_NODE_ADD_FIELD( distribution, (NORMAL) );
-
 
 	SO_NODE_ADD_FIELD( ambient_Color, (0.2f, 0.2f, 0.2f) );
 	SO_NODE_ADD_FIELD( diffuse_Color, (0.8f, 0.8f, 0.8f) );
@@ -98,12 +84,9 @@ MaterialAngleDependentRefractive::MaterialAngleDependentRefractive()
 	SO_NODE_ADD_FIELD( shininessValue, (0.2f) );
 	SO_NODE_ADD_FIELD( transparencyValue, (0.0) );
 
-
-
 	m_frontOpticValuesSensor = new SoFieldSensor(  updateOpticFront,  this );
 	m_frontOpticValuesSensor->setPriority(0 );
 	m_frontOpticValuesSensor->attach( &frontOpticValues );
-
 
 	m_backOpticValuesSensor = new SoFieldSensor(  updateOpticBack,  this );
 	m_backOpticValuesSensor->setPriority( 0 );
@@ -127,8 +110,6 @@ MaterialAngleDependentRefractive::MaterialAngleDependentRefractive()
 	m_transparencySensor = new SoFieldSensor( updateTransparency, this );
 	m_transparencySensor->setPriority( 1 );
 	m_transparencySensor->attach( &transparencyValue );
-
-
 }
 
 MaterialAngleDependentRefractive::~MaterialAngleDependentRefractive()
@@ -144,11 +125,10 @@ MaterialAngleDependentRefractive::~MaterialAngleDependentRefractive()
 	delete m_transparencySensor;
 }
 
-QString MaterialAngleDependentRefractive::getIcon()
+std::string MaterialAngleDependentRefractive::GetIcon()
 {
-	return QString(":icons/MaterialAngleDependentSpecular.png");
+	return ( ":icons/MaterialAngleDependentSpecular.png" );
 }
-
 
 /*!
  * Linear interpolation of the vectors \a incidenceAnglesList and \a valuesList to obtaine the property value for the angle \a incidenceAngle.
@@ -186,12 +166,6 @@ std::vector < double > MaterialAngleDependentRefractive::OutputPropertyValue (st
 void MaterialAngleDependentRefractive::updateOpticFront( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
-
-	std::vector< double > oldFrontReflectivityIncidenceAngle = material->m_frontReflectivityIncidenceAngle;
-	std::vector< double > oldFrontReflectivityValue = material->m_frontReflectivityValue;
-	std::vector< double > oldFrontTransmissivityValue = material->m_frontTransmissivityValue;
-
-
 	int numberOfValues = material->frontOpticValues.getNum();
 
 	material->m_frontReflectivityIncidenceAngle.clear();
@@ -211,10 +185,6 @@ void MaterialAngleDependentRefractive::updateOpticFront( void* data, SoSensor* )
 void MaterialAngleDependentRefractive::updateOpticBack( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
-
-
-	//std::vector< double > m_backReflectivityIncidenceAngle;
-	//std::vector< double > m_backReflectivityValue;
 	int numberOfValues = material->backOpticValues.getNum();
 
 	material->m_backReflectivityIncidenceAngle.clear();
@@ -234,39 +204,38 @@ void MaterialAngleDependentRefractive::updateOpticBack( void* data, SoSensor* )
 void MaterialAngleDependentRefractive::updateAmbientColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
- 	material->ambientColor.setValue( material->ambient_Color.getValue() );
+ 	material->ambientColor.setValue( material->ambient_Color[0] );
 }
 
 void MaterialAngleDependentRefractive::updateDiffuseColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
- 	material->diffuseColor.setValue( material->diffuse_Color.getValue() );
+ 	material->diffuseColor.setValue( material->diffuse_Color[0] );
 }
 
 void MaterialAngleDependentRefractive::updateSpecularColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
- 	material->specularColor.setValue( material->specular_Color.getValue() );
+ 	material->specularColor.setValue( material->specular_Color[0] );
 }
 
 void MaterialAngleDependentRefractive::updateEmissiveColor( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
- 	material->emissiveColor.setValue( material->emissive_Color.getValue() );
+ 	material->emissiveColor.setValue( material->emissive_Color[0] );
 }
 
 void MaterialAngleDependentRefractive::updateShininess( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
- 	material->shininess.setValue( material->shininessValue.getValue() );
+ 	material->shininess.setValue( material->shininessValue[0] );
 }
 
 void MaterialAngleDependentRefractive::updateTransparency( void* data, SoSensor* )
 {
 	MaterialAngleDependentRefractive* material = static_cast< MaterialAngleDependentRefractive* >( data );
- 	material->transparency.setValue( material->transparencyValue.getValue() );
+ 	material->transparency.setValue( material->transparencyValue[0] );
 }
-
 
 bool MaterialAngleDependentRefractive::OutputRay( const Ray& incident, DifferentialGeometry* dg, RandomDeviate& rand, Ray* outputRay  ) const
 {

@@ -35,15 +35,13 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
-#include <QPoint>
-
-#include "DifferentialGeometry.h"
+#include "InstanceNode.h"
 #include "ParallelRandomDeviate.h"
+#include "Photon.h"
 #include "Ray.h"
 #include "RayTracer.h"
-#include "TPhotonMap.h"
 #include "TLightShape.h"
+#include "TPhotonMap.h"
 #include "TSunShape.h"
 #include "TTransmissivity.h"
 

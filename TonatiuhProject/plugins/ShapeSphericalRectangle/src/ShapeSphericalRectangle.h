@@ -32,23 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SHAPESPHERICALRECTANGLE_H_
 #define SHAPESPHERICALRECTANGLE_H_
 
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 #include "trt.h"
-
-class SoFieldSensor;
-class SoSensor;
-struct Vector3D;
 
 class ShapeSphericalRectangle : public TShape
 {
@@ -62,15 +55,16 @@ public:
 
 	ShapeSphericalRectangle();
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
 	Point3D Sample( double u, double v ) const;
+
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL radius;
 	trt::TONATIUH_REAL widthX;
@@ -78,24 +72,14 @@ public:
 	SoSFEnum activeSide;
 
 protected:
-	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 	Vector3D GetDPDU( double u, double v ) const;
 	Vector3D GetDPDV( double u, double v ) const;
 
-	static void updateRadius(void *data, SoSensor *);
-	static void updateWidthX(void *data, SoSensor *);
-	static void updateWidthZ(void *data, SoSensor *);
-
 	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	void generatePrimitives(SoAction *action);
    	~ShapeSphericalRectangle();
-
-private:
-	SoFieldSensor* m_radiusSensor;
-	SoFieldSensor* m_widthXSensor;
-	SoFieldSensor* m_widthZSensor;
 };
 
 #endif /*SHAPESPHERICALRECTANGLE_H_*/

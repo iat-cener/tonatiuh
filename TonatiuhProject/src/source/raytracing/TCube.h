@@ -39,8 +39,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef TCUBE_H_
 #define TCUBE_H_
 
-#include <Inventor/fields/SoSFDouble.h>
-
 #include "TShape.h"
 #include "trt.h"
 
@@ -51,14 +49,12 @@ class TCube : public TShape
 public:
 	TCube( );
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const;
+
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
-	Point3D Sample( double u1, double u2 ) const;
 	
 	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
@@ -67,7 +63,6 @@ public:
 	trt::TONATIUH_REAL m_depth;
 
 protected:
-	Point3D GetPoint3D (double u, double v) const;
 	NormalVector GetNormal(double u, double v) const;
 
 	void computeBBox( SoAction* action, SbBox3f& box, SbVec3f& center);

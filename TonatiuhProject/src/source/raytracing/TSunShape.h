@@ -41,11 +41,32 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/fields/SoSFDouble.h>
 
-#include "Vector3D.h"
-#include "RandomDeviate.h"
+class RandomDeviate;
+class Vector3D;
 
+/**
+ * @class TSunShape
+ * @brief Abstract base class representing class representing the solar radiation angular intensity distribution.
+ *
+ * The TSunShape class defines the interface for model the angular intensity distributio. The use of this class is
+ * for simulation where solar ray generation is required. 
+ *
+ * This class is **abstract** and cannot be instantiated directly. Concrete
+ * subclasses must implement ray-generation behavior and provide irradiance and
+ * angular-limit information.
+ *
+ * ### Responsibilities of Derived Classes
+ * - Provide a directional ray generator based on a specified angular emission
+ *   distribution and he maximum polar angle (theta) beyond which no rays are emitted.
+ * - Define the total irradiance emitted by the sun model.
+ *
+ * ### Usage
+ * A ray-tracing or sampling system will typically:
+ * 1. Request a new ray direction via GenerateRayDirection().
+ * 2. Apply bounding constraints using GetThetaMax().
+ * 3. Scale the resulting contribution using the irradiance value.
+ */
 class TSunShape : public SoNode
 {
 	  typedef SoNode inherited;
@@ -54,9 +75,35 @@ class TSunShape : public SoNode
 
 public:
     static void initClass();
-
+    /*!
+    * @brief Generate a random ray direction according to the sunshape.
+    *
+    * Pure virtual: must be implemented by derived classes to produce
+    * ray directions following the specific angular distribution of the sunshape.
+    * 
+    * @param direction Output parameter that will contain the sampled direction.
+    * @param rand Random number generator used to sample the distribution.
+    */
 	virtual void GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const = 0;
-	virtual double GetIrradiance() const = 0;
+
+    /*!
+    * @brief Get the irradiance for the sunshape.
+    *
+    * Pure virtual: derived classes must return the corresponding irradiance
+    * for their angular distribution.
+    * 
+    * @return Irradiance value in appropriate units.
+    */
+	virtual double GetIrradiance() const = 0;   
+    
+    /*!
+    * @brief Get the maximum angular extent of the sunshape.
+    *
+    * Pure virtual: derived classes must provide the angular limit
+    * beyond which the sunshape contributes no radiation.
+    * 
+    * @return Maximum polar angle (theta) in radians.
+    */
     virtual double GetThetaMax() const = 0;
 
 protected:

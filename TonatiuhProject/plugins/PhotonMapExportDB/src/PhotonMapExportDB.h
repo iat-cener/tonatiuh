@@ -39,12 +39,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #ifndef PHOTONMAPEXPORTDB_H_
 #define PHOTONMAPEXPORTDB_H_
 
-#include <QMap>
-#include <QString>
-
-#include <sqlite3.h>
-
 #include "PhotonMapExport.h"
+
+class InstanceNode;
+class sqlite3;
 
 class PhotonMapExportDB : public PhotonMapExport
 {

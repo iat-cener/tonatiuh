@@ -36,29 +36,20 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef MFVEC3_H_
 #define MFVEC3_H_
-
-#include <QStringList>
-
-#include <Inventor/SbVec3d.h>
-
-#include <Inventor/fields/SoSubField.h>
 
 #include "ContainerEditorMFVec3.h"
 #include "FieldEditor.h"
 #include "UserMField.h"
 
+#if unix
 
-#if unix//( defined(Q_WS_X11) || defined(Q_WS_MAC) )
-
+	#include <Inventor/SbVec3d.h>
 	class MFVec3 : public UserMField
 	{
 		  typedef UserMField inherited;
 		  SO_MFIELD_HEADER( MFVec3, SbVec3d, const SbVec3d &);
-
-
 
 	public:
 	  static void initClass(void);
@@ -73,9 +64,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 		QStringList GetNames( ) const;
 		void SetNames( QString firstDimension, QString secondDimension, QString thirdDimension );
 
-		FieldEditor* GetEditor() const
+		FieldEditor* GetEditor( QWidget* parent = 0 ) const
 		{
-			ContainerEditorMFVec3* editor = new ContainerEditorMFVec3();
+			ContainerEditorMFVec3* editor = new ContainerEditorMFVec3( parent );
 			editor->SetTitles( GetNames() );
 			return (editor) ;
 		}
@@ -109,9 +100,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 		QStringList GetNames( ) const;
 		void SetNames( QString firstDimension, QString secondDimension, QString thirdDimension );
 
-		FieldEditor* GetEditor() const
+		FieldEditor* GetEditor( QWidget* parent = 0 ) const
 		{
-			ContainerEditorMFVec3* editor = new ContainerEditorMFVec3();
+			ContainerEditorMFVec3* editor = new ContainerEditorMFVec3( parent );
 			editor->SetTitles( GetNames() );
 			return (editor) ;
 		}

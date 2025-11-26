@@ -32,16 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SHAPEFLARRECTANGULE_H_
 #define SHAPEFLARRECTANGULE_H_
 
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
 
 #include "TShape.h"
 #include "trt.h"
@@ -53,10 +50,9 @@ class ShapeFlatRectangle : public TShape
 public:
 	ShapeFlatRectangle( );
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
@@ -80,7 +76,6 @@ protected:
 	void generatePrimitives(SoAction *action);
 	void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 	~ShapeFlatRectangle();
-
 };
 
 #endif /*SHAPEFLARRECTANGULE_H_*/
