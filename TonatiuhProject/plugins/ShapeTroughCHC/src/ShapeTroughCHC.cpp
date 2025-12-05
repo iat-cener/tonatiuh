@@ -32,33 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <algorithm>
-#include <vector>
-
-#include <QIcon>
-#include <QMap>
-#include <QMessageBox>
-
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/SoPrimitiveVertex.h>
 
-
-#include "BBox.h"
 #include "gc.h"
 #include "gf.h"
 #include "Ray.h"
-#include "Transform.h"
-#include "Vector3D.h"
-
-#include "DifferentialGeometry.h"
 #include "ShapeTroughCHC.h"
-
+#include "Transform.h"
 
 double fPart( double alpha, double x, double r1, double theta, double r, double eccentricity )
 {
@@ -92,18 +77,10 @@ ShapeTroughCHC::ShapeTroughCHC()
 	SoFieldSensor* m_heightSensor = new SoFieldSensor(updateInternalValues, this);
 	m_heightSensor->setPriority( 1 );
 	m_heightSensor->attach( &height );
-
-
 }
 
 ShapeTroughCHC::~ShapeTroughCHC()
 {
-}
-
-
-double ShapeTroughCHC::GetArea() const
-{
-	return -1;
 }
 
 BBox ShapeTroughCHC::GetBBox() const
@@ -119,9 +96,9 @@ BBox ShapeTroughCHC::GetBBox() const
 	return BBox( Point3D( xMin, yMin, zMin ), Point3D( xMax, yMax, zMax ) );
 }
 
-QString ShapeTroughCHC::GetIcon() const
+std::string ShapeTroughCHC::GetIcon() const
 {
-	return ":/icons/ShapeTroughCHC.png";
+	return ( ":/icons/ShapeTroughCHC.png" );
 }
 
 bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
@@ -193,7 +170,6 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	}
 
 	// Find parametric representation of CHC concentrator hit
-
 	double sup = m_theta + 0.5* gc::Pi;
 	double inf = m_theta + m_phi;
 
@@ -205,12 +181,9 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	zmax = (lengthX1.getValue() / 2 ) + m* ( hitPoint.x - r1.getValue() );
 	double v = ( ( hitPoint.z / zmax ) + 1 )/ 2;
 
-
 	// Compute  \dpdu and \dpdv
 	Vector3D dpdu = GetDPDU( u, v );
 	Vector3D dpdv = GetDPDV( u, v );
-
-	// Compute cylinder \dndu and \dndv
 
 	//Not yet implemented
 	Vector3D d2Pduu( 0.0, 0.0, 0.0 );
@@ -249,7 +222,6 @@ bool ShapeTroughCHC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
     dg->shapeFrontSide = ( DotProduct( N, objectRay.direction() ) > 0 ) ? false : true;
 
 	return true;
-
 }
 
 bool ShapeTroughCHC::IntersectP( const Ray& objectRay ) const

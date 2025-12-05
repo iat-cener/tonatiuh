@@ -1,7 +1,6 @@
 TEMPLATE      = lib
-CONFIG       += plugin debug_and_release
-
-include( $$(TONATIUH_ROOT)/config.pri )
+CONFIG       += plugin
+include( ../../config.pri )
 
 INCLUDEPATH +=  . \
                 src \
@@ -11,10 +10,7 @@ INCLUDEPATH +=  . \
 
 # Input
 HEADERS = src/*.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/TTransmissivity.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/TTransmissivityFactory.h
-
+            $$(TONATIUH_ROOT)/src/source/raytracing/TTransmissivity.h 
 
 SOURCES = src/*.cpp \
             $$(TONATIUH_ROOT)/src/source/raytracing/TTransmissivity.cpp

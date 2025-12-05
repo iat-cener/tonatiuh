@@ -32,29 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <cmath>
-
-#include <QString>
-
-#include <Inventor/SbLinear.h>
-#include <Inventor/SoNodeKitPath.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/fields/SoSFMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
 
 #include "gc.h"
-#include "Transform.h"
-
 #include "TrackerOneAxis.h"
-#include "trf.h"
-#include "TSeparatorKit.h"
-#include "TSceneKit.h"
+
+#include "Transform.h"
+#include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( TrackerOneAxis );
 
@@ -86,9 +74,9 @@ TrackerOneAxis::~TrackerOneAxis()
 {
 }
 
-QString TrackerOneAxis::getIcon()
+std::string TrackerOneAxis::GetIcon()
 {
-	return QString(":/icons/TrackerOneAxis.png");
+	return ( ":/icons/TrackerOneAxis.png" );
 }
 
 void TrackerOneAxis::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
@@ -101,9 +89,6 @@ void TrackerOneAxis::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
 	Vector3D t;
 	if( fabs( DotProduct( s, p ) ) < 1.0 )
 	{
-		//n = ( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
-	//	n = Normalize( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
-		//t = Normalize( CrossProduct( p, n ) );
 		t = Normalize( CrossProduct( p, s ) );
 		n = Normalize( CrossProduct( t, p ) );
 	}
@@ -128,50 +113,4 @@ void TrackerOneAxis::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
 void TrackerOneAxis::evaluate()
 {
 
-	/*if (!IsConnected()) return;
-
-	SoSearchAction coinSearch;
-	coinSearch.setNode( this );
-
-	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
-	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
-		return;
-	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
-	parentPath->pop();
-
-	if( !parentPath ) return;
-
-	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
-	Transform worldToObject = objectToWorld.GetInverse();
-
-	Vector3D s = worldToObject( GetGobalSunVector() );
-	Vector3D p( 1.0f, 0.0f, 0.0f);
-
-	Vector3D n;
-	Vector3D t;
-	if( fabs( DotProduct( s, p ) ) < 1.0 )
-	{
-		//n = ( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
-	//	n = Normalize( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
-		//t = Normalize( CrossProduct( p, n ) );
-		t = Normalize( CrossProduct( p, s ) );
-		n = Normalize( CrossProduct( t, p ) );
-	}
-	else
-	{
-		t = Vector3D( 0.0f, 0.0f, 1.0f );
-		n = Normalize( CrossProduct( t, p ) );
-	}
-
-
-	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
-								n[0], n[1], n[2], 0.0,
-								p[0], p[1], p[2], 0.0,
-								0.0, 0.0, 0.0, 1.0 );
-
-	SoTransform* newTransform = new SoTransform();
-	newTransform->setMatrix( transformMatrix );
-
-	SetEngineOutput(newTransform);
-*/
 }

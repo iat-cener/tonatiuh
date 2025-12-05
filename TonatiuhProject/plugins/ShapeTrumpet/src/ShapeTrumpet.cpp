@@ -32,10 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 /*!
  * \class ShapeTrumpet.
  * \brief ShapeTrumpet class the trumpet surface representation.
@@ -49,23 +48,14 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
  * \param activeSide OUTSIDE
  *
 */
-#include <QMessageBox>
-#include <QString>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
-#include "BBox.h"
 #include "gf.h"
-#include "NormalVector.h"
-#include "Point3D.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
-#include "Vector3D.h"
-
-
-#include "DifferentialGeometry.h"
 #include "ShapeTrumpet.h"
 
 SO_NODE_SOURCE(ShapeTrumpet);
@@ -82,15 +72,6 @@ void ShapeTrumpet::initClass()
  * Creates a new trumpet shape.
  */
 ShapeTrumpet::ShapeTrumpet()
-:m_bHyperbola( 0 ),
- m_lastApertureValue( 0.25 ),
- m_lastFocusHyperbola( 0.32 ),
- m_lastHyperbolaHeightValue( 1.0 ),
- m_lastTruncationHeightValue( 0.0 ),
- m_apertureSensor( 0 ),
- m_fHSensor( 0 ),
- m_heightSensor( 0 ),
- m_truncationSensor( 0 )
 {
 	SO_NODE_CONSTRUCTOR(ShapeTrumpet);
 	SO_NODE_ADD_FIELD( a, (0.25) );
@@ -102,24 +83,6 @@ ShapeTrumpet::ShapeTrumpet()
 	SO_NODE_DEFINE_ENUM_VALUE( Side, OUTSIDE );
 	SO_NODE_SET_SF_ENUM_TYPE( activeSide, Side );
 	SO_NODE_ADD_FIELD( activeSide, (OUTSIDE) );
-
-
-	SetBHyperbola();
-
-
-	m_apertureSensor = new SoFieldSensor(updateApertureValue, this);
-	m_apertureSensor->setPriority( 1 );
-	m_apertureSensor->attach( &a );
-	m_fHSensor = new SoFieldSensor(updateFocusValue, this);
-	m_fHSensor->setPriority( 1 );
-	m_fHSensor->attach( &focusHyperbola );
-	m_heightSensor = new SoFieldSensor(updateHeightValue, this);
-	m_heightSensor->setPriority( 1 );
-	m_heightSensor->attach( &hyperbolaHeight );
-	m_truncationSensor = new SoFieldSensor(updateTruncationValue, this);
-	m_truncationSensor->setPriority( 1 );
-	m_truncationSensor->attach( &truncationHeight );
-
 }
 
 /*!
@@ -127,19 +90,7 @@ ShapeTrumpet::ShapeTrumpet()
  */
 ShapeTrumpet::~ShapeTrumpet()
 {
-	delete m_apertureSensor;
-	delete m_fHSensor;
-	delete m_heightSensor;
-	delete m_truncationSensor;
-}
 
-
-/*!
- * Shape area. //Not yet implemented.
- */
-double ShapeTrumpet::GetArea() const
-{
-	return -1;
 }
 
 /*!
@@ -147,12 +98,12 @@ double ShapeTrumpet::GetArea() const
  */
 BBox ShapeTrumpet::GetBBox() const
 {
+	double bHyperbola = sqrt( -( a.getValue() * a.getValue() ) + ( focusHyperbola.getValue() * focusHyperbola.getValue() ) ) ;
+
 	double xMin= - sqrt( a.getValue()  * a.getValue()  * ( 1 +
-			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
-					/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() ) / ( bHyperbola * bHyperbola ) ) ) );
 	double xMax = sqrt( a.getValue()  * a.getValue()  * ( 1 +
-			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
-					/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() ) / ( bHyperbola * bHyperbola ) ) ) );
 
 	double yMin = truncationHeight.getValue();
 	double yMax = hyperbolaHeight.getValue();
@@ -165,9 +116,9 @@ BBox ShapeTrumpet::GetBBox() const
 /*!
  * Returns shape icon file name.
  */
-QString ShapeTrumpet::GetIcon() const
+std::string ShapeTrumpet::GetIcon() const
 {
-	return QString( ":/icons/ShapeTrumpet.png" );
+	return ( ":/icons/ShapeTrumpet.png" );
 }
 
 /*!
@@ -182,17 +133,17 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	double tH = truncationHeight.getValue();
 	double hH = hyperbolaHeight.getValue();
 
-	double b = m_bHyperbola;
-
-	double A = ( ( b * b ) * ( objectRay.direction().x * objectRay.direction().x + objectRay.direction().z * objectRay.direction().z ) )
+	double bHyperbola = sqrt( -( a.getValue() * a.getValue() ) + ( focusHyperbola.getValue() * focusHyperbola.getValue() ) ) ;
+	
+	double A = ( ( bHyperbola * bHyperbola ) * ( objectRay.direction().x * objectRay.direction().x + objectRay.direction().z * objectRay.direction().z ) )
 				- ( ( objectRay.direction().y * objectRay.direction().y ) * ( a0 * a0 ) );
 
-	double B = ( (  2.0 * objectRay.origin.x * objectRay.direction().x +  2.0 *objectRay.origin.z * objectRay.direction().z ) * ( b * b ) )
+	double B = ( (  2.0 * objectRay.origin.x * objectRay.direction().x +  2.0 *objectRay.origin.z * objectRay.direction().z ) * ( bHyperbola * bHyperbola) )
 						- ( (  2.0 * objectRay.origin.y * objectRay.direction().y ) * ( a0 * a0 ) );
 
-	double C = ( ( objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z ) * ( b * b ) )
+	double C = ( ( objectRay.origin.x * objectRay.origin.x + objectRay.origin.z * objectRay.origin.z ) * ( bHyperbola * bHyperbola ) )
 			 - ( ( objectRay.origin.y * objectRay.origin.y ) * ( a0 * a0 )  )
-			 - ( ( a0 * a0 ) * ( b * b ) );
+			 - ( ( a0 * a0 ) * ( bHyperbola * bHyperbola ) );
 
 	// Solve quadratic equation for _t_ values
 	double t0, t1;
@@ -206,16 +157,12 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	//Evaluate Tolerance
 	double tol = 0.000001;
 
-	// Compute ShapeSphere hit position and $\phi$
+	// Compute hit position and $\phi$
 	Point3D hitPoint = objectRay( thit );
 
-	double rMin = sqrt( a0 * a0 * ( 1 +
-			( ( tH * tH )
-					/ ( b * b ) ) ) );
+	double rMin = sqrt( a0 * a0 * ( 1 + ( ( tH * tH ) / ( bHyperbola * bHyperbola ) ) ) );
 
-	double rMax = sqrt( a0 * a0 * ( 1 +
-			( ( hH * hH )
-					/ ( b * b ) ) ) );
+	double rMax = sqrt( a0 * a0 * ( 1 + ( ( hH * hH ) / ( bHyperbola * bHyperbola ) ) ) );
 
 	double length = sqrt( hitPoint.x * hitPoint.x + hitPoint.z * hitPoint.z );
 
@@ -256,19 +203,19 @@ bool ShapeTrumpet::Intersect(const Ray& objectRay, double* tHit, DifferentialGeo
 	// Compute cylinder \dndu and \dndv
 	double h2 = hH;
 	double h1 = tH;
-	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
-	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( bHyperbola * bHyperbola ) ) ) );
+	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( bHyperbola * bHyperbola ) ) ) );
 
 	double aux = aux1 + aux2;
 
-	double d2PduuY = - ( ( m_bHyperbola * m_bHyperbola * m_bHyperbola * m_bHyperbola * aux * aux * ( -aux1 + u * aux ) * ( -aux1 + u * aux ) )
+	double d2PduuY = - ( ( bHyperbola * bHyperbola * bHyperbola * bHyperbola * aux * aux * ( -aux1 + u * aux ) * ( -aux1 + u * aux ) )
 						/ ( a0 * a0 * a0 * a0 *
-								pow( m_bHyperbola * m_bHyperbola *
+								pow( bHyperbola * bHyperbola *
 										( -1 + ( ( ( -aux1 + u * aux ) * ( -aux1 + u * aux ) )
 												/ ( a0 * a0 ) ) ), 3.0/ 2 ) ) )
-					+ ( ( m_bHyperbola * m_bHyperbola * aux * aux )
+					+ ( ( bHyperbola * bHyperbola * aux * aux )
 						/ ( a0 * a0  *
-								sqrt( m_bHyperbola * m_bHyperbola *
+								sqrt( bHyperbola * bHyperbola *
 										( -1 + ( ( ( -aux1 + u * aux ) * ( -aux1 + u * aux ) )
 												/ ( a0 * a0 ) ) ) ) ) );
 	Vector3D d2Pduu(0 , d2PduuY, 0);
@@ -325,90 +272,39 @@ Point3D ShapeTrumpet::Sample( double u, double v ) const
 {
 	if( OutOfRange( u, v ) ) 	gf::SevereError("Function ShapeTrumpet::Sample called with invalid parameters" );
 
-	double rmin = sqrt(  a.getValue() * a.getValue() * ( 1 + ( ( truncationHeight.getValue() * truncationHeight.getValue() ) / ( m_bHyperbola * m_bHyperbola ) ) ) );
-	double rmax = sqrt(  a.getValue() * a.getValue() * ( 1 + ( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() ) / ( m_bHyperbola* m_bHyperbola ) ) ) );
+	double bHyperbola = sqrt( -( a.getValue() * a.getValue() ) + ( focusHyperbola.getValue() * focusHyperbola.getValue() ) ) ;
+
+	double rmin = sqrt(  a.getValue() * a.getValue() * ( 1 + ( ( truncationHeight.getValue() * truncationHeight.getValue() ) / ( bHyperbola * bHyperbola ) ) ) );
+	double rmax = sqrt(  a.getValue() * a.getValue() * ( 1 + ( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() ) / ( bHyperbola* bHyperbola ) ) ) );
 	double r = u * (rmax - rmin) + rmin;
 	double phi = v * gc::TwoPi;
 	double x = cos( phi ) * r;
-	double y = sqrt( ( ( ( r * r ) / ( a.getValue() * a.getValue() ) ) - 1 ) * m_bHyperbola * m_bHyperbola );
+	double y = sqrt( ( ( ( r * r ) / ( a.getValue() * a.getValue() ) ) - 1 ) * bHyperbola * bHyperbola );
 	double z = -sin( phi ) * r;
 	return Point3D( x, y, z  );
 }
 
 /*!
- * Checks whether the defined aperture parameter is a valid parameter.
- */
-void ShapeTrumpet::updateApertureValue( void *data, SoSensor *)
+* Checks the cone parameters values. Checks the \a value of parameter \a name .
+*/
+bool ShapeTrumpet::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	ShapeTrumpet* shape = (ShapeTrumpet *) data;
-	if( shape->a.getValue() < 0 )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Trumpet a must take positive value. ") );
-		shape->a.setValue( shape->m_lastApertureValue );
-	}
-	else
-		shape->m_lastApertureValue = shape->a.getValue();
+    if( name == "a" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "a", "The 'a' must be a positive number" );
 
+    if( ( name == "focusHyperbola" ) && ( ( std::stod( value ) < 0 )  || ( std::stod( value ) < a.getValue() ) ) )
+		throw ParameterValueException( "focusHyperbola", "Trumpet focus value must take values on the ( a, Infinity ) range" );
+		
+    if( ( name == "hyperbolaHeight" ) && ( std::stod( value ) < 0 ) )
+		throw ParameterValueException( "hyperbolaHeight", "Trumpet 'hyperbolaHeight' must take positive value" );
 
-	shape->SetBHyperbola();
-}
+    if( ( name == "hyperbolaHeight" ) && ( std::stod( value ) <= truncationHeight.getValue() ) )
+		throw ParameterValueException( "hyperbolaHeight", "Trumpet 'hyperbolaHeight' must take values on the ( truncationHeight, Infinity ) range" );
 
-/*!
- * Checks whether the defined focus parameter is a valid parameter.
- */
-void ShapeTrumpet::updateFocusValue( void *data, SoSensor *)
-{
-	ShapeTrumpet* shape = (ShapeTrumpet *) data;
-	if( ( shape->focusHyperbola.getValue() < 0 ) ||
-			( shape->focusHyperbola.getValue() <=  shape->a.getValue() ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Trumpet focus value must take values on the ( a, Infinity ) range. ") );
-		shape->focusHyperbola.setValue( shape->m_lastFocusHyperbola );
-	}
-	else
-		shape->m_lastFocusHyperbola = shape->focusHyperbola.getValue();
+    if( ( name == "truncationHeight" ) && ( std::stod( value ) >= hyperbolaHeight.getValue() ) )
+		throw ParameterValueException( "truncationHeight", "Trumpet 'truncationHeight' must take values on the [0, hyperbolaHeight ) range" );
 
-	shape->SetBHyperbola();
-}
-
-/*!
- * Checks whether the defined height parameter is a valid parameter.
- */
-void ShapeTrumpet::updateHeightValue( void *data, SoSensor *)
-{
-	ShapeTrumpet* shape = (ShapeTrumpet *) data;
-	if( shape->hyperbolaHeight.getValue() < 0 )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Trumpet height must take positive value. ") );
-		shape->hyperbolaHeight.setValue( shape->m_lastHyperbolaHeightValue );
-	}
-	else if( shape->hyperbolaHeight.getValue() <=  shape->truncationHeight.getValue() )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Trumpet  height must take values on the ( truncationHeight, Infinity ) range. ") );
-		shape->hyperbolaHeight.setValue( shape->m_lastHyperbolaHeightValue );
-	}
-	else
-		shape->m_lastHyperbolaHeightValue = shape->hyperbolaHeight.getValue();
-
-
-	shape->SetBHyperbola();
-}
-
-/*!
- * Checks whether the defined truncation height parameter is a valid parameter.
- */
-void ShapeTrumpet::updateTruncationValue( void *data, SoSensor *)
-{
-	ShapeTrumpet* shape = (ShapeTrumpet *) data;
-	if( ( shape->truncationHeight.getValue() < 0 ) || ( shape->truncationHeight.getValue() >= shape->hyperbolaHeight.getValue() ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Trumpet truncation must take values on the [0, hyperbolaHeight ) range. ") );
-		shape->truncationHeight.setValue( shape->m_lastTruncationHeightValue );
-	}
-	else
-		shape->m_lastTruncationHeightValue = shape->truncationHeight.getValue();
-
-	shape->SetBHyperbola();
+	return true;	
 }
 
 /*!
@@ -552,28 +448,23 @@ void ShapeTrumpet::generatePrimitives( SoAction *action )
 }
 
 /*!
- * Computes the asymptotic angle for the input parameters.
- */
-void ShapeTrumpet::SetBHyperbola()
-{
-	m_bHyperbola = sqrt( -( a.getValue() * a.getValue() ) + ( focusHyperbola.getValue() * focusHyperbola.getValue() ) ) ;
-}
-
-/*!
  * Returns dpdu vector for \a u and \a v valid parameters.
  */
 Vector3D ShapeTrumpet::GetDPDU( double u, double v ) const
 {
+	
+	double bHyperbola = sqrt( -( a.getValue() * a.getValue() ) + ( focusHyperbola.getValue() * focusHyperbola.getValue() ) ) ;
+
 	double a0 = a.getValue();
 	double h2 = hyperbolaHeight.getValue();
 	double h1 = truncationHeight.getValue();
-	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
-	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( bHyperbola * bHyperbola ) ) ) );
+	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( bHyperbola * bHyperbola ) ) ) );
 	double x = 	cos( gc::TwoPi * v ) * (  aux1 + aux2 );
 
 
-	double y = ( m_bHyperbola * m_bHyperbola * ( aux1 + aux2 ) * ( -aux1 + u * ( aux1 + aux2 ) ) )
-			/ ( a0 * a0 * sqrt( m_bHyperbola * m_bHyperbola * ( -1 + ( ( ( -aux1 + u * ( aux1 + aux2 ) )  * ( -aux1 + u * ( aux1 + aux2 ) ) ) / ( a0 * a0 ) ) ) ) );
+	double y = ( bHyperbola * bHyperbola * ( aux1 + aux2 ) * ( -aux1 + u * ( aux1 + aux2 ) ) )
+			/ ( a0 * a0 * sqrt( bHyperbola * bHyperbola * ( -1 + ( ( ( -aux1 + u * ( aux1 + aux2 ) )  * ( -aux1 + u * ( aux1 + aux2 ) ) ) / ( a0 * a0 ) ) ) ) );
 
 	double z = 	-sin( gc::TwoPi * v ) * (  aux1 + aux2 );
 
@@ -585,11 +476,12 @@ Vector3D ShapeTrumpet::GetDPDU( double u, double v ) const
  */
 Vector3D ShapeTrumpet::GetDPDV ( double u, double v ) const
 {
+	double bHyperbola = sqrt( -( a.getValue() * a.getValue() ) + ( focusHyperbola.getValue() * focusHyperbola.getValue() ) ) ;
 	double a0 = a.getValue();
 	double h2 = hyperbolaHeight.getValue();
 	double h1 = truncationHeight.getValue();
-	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
-	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( m_bHyperbola * m_bHyperbola ) ) ) );
+	double aux1 = - sqrt( a0 * a0 * (1 + ( ( h1 * h1 )/ ( bHyperbola * bHyperbola ) ) ) );
+	double aux2 = sqrt( a0 * a0 * (1 + ( ( h2 * h2 )/ ( bHyperbola * bHyperbola ) ) ) );
 
 	double x = - gc::TwoPi * sin( gc::TwoPi * v ) * ( -aux1 + u * ( aux1 + aux2 ) );
 	double y = 0;

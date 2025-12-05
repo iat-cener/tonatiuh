@@ -32,11 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-
 #ifndef SUNSHAPEBUIE_H_
 #define SUNSHAPEBUIE_H_
 
@@ -46,6 +44,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 class SoSensor;
 class SoFieldSensor;
 
+/*!
+ * @class SunshapeBuie
+ * @brief Implementation of the Buie sunshape model for solar radiation.
+ *
+ * SunshapeBuie is a concrete implementation of TSunShape based on the
+ * Buie model, which describes the angular distribution of solar radiation.
+ *
+ * The class allows adjustment of the circumsolar ratio (CSR) and irradiance.
+ */
 class SunshapeBuie : public TSunShape
 {
 	SO_NODE_HEADER(SunshapeBuie);

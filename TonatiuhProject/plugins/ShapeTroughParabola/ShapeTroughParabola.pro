@@ -1,7 +1,6 @@
 
 TEMPLATE      = lib
-CONFIG       += plugin debug_and_release
-
+CONFIG       += plugin
 include( ../../config.pri )
 
 INCLUDEPATH += . \
@@ -12,20 +11,14 @@ INCLUDEPATH += . \
 # Input
 HEADERS = src/*.h \	
            	$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.h \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.h \ 
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.h
+           	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.h 
 
 SOURCES = src/*.cpp  \ 
            	$$(TONATIUH_ROOT)/src/source/raytracing/DifferentialGeometry.cpp \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TMaterial.cpp \
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.cpp \ 
-           	$$(TONATIUH_ROOT)/src/source/raytracing/TShapeKit.cpp
+           	$$(TONATIUH_ROOT)/src/source/raytracing/TShape.cpp 
 
 RESOURCES += src/ShapeTroughParabola.qrc
 TARGET        = ShapeTroughParabola
-
  
 CONFIG(debug, debug|release) {
 	DESTDIR       = $$(TONATIUH_ROOT)/bin/debug/plugins/ShapeTroughParabola

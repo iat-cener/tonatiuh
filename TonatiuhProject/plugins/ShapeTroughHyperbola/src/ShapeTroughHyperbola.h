@@ -32,14 +32,12 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 
 #ifndef SHAPETROUGHHYPERBOLA_H_
 #define SHAPETROUGHHYPERBOLA_H_
-
-#include <QString>
 
 #include <Inventor/sensors/SoFieldSensor.h>
 
@@ -55,15 +53,16 @@ class ShapeTroughHyperbola: public TShape
 public:
 	ShapeTroughHyperbola( );
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
 	Point3D Sample( double u, double v) const;
+
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL a0;
 	trt::TONATIUH_REAL focusHyperbola;
@@ -72,16 +71,10 @@ public:
 	trt::TONATIUH_REAL zLengthXMin;
 	trt::TONATIUH_REAL zLengthXMax;
 
-
-
 protected:
-	static void updateApertureValue( void *data, SoSensor *);
-	static void updateFocusValue( void *data, SoSensor *);
-	static void updateLengthValues( void *data, SoSensor *);
 	static void updateHeightValue( void *data, SoSensor *);
 	static void updateTruncationValue( void *data, SoSensor *);
 
-	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
@@ -90,19 +83,8 @@ protected:
 	virtual ~ShapeTroughHyperbola();
 
 private:
-	void SetAsymptoticAngle();
 	Vector3D GetDPDU ( double u, double v ) const;
 	Vector3D GetDPDV ( double u, double v ) const;
-
-
-	double m_asymptoticAngle;
-	double m_lastApertureValue;
-	double m_lastFocusHyperbola;
-	double m_lastHyperbolaHeightValue;
-	double m_lastTruncationHeightValue;
-	double m_lastZLengthXMinValue;
-	double m_lastZLengthXMaxValue;
-
 };
 
 #endif /*SHAPETROUGHHYPERBOLA_H_*/

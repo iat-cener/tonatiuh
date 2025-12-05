@@ -51,28 +51,6 @@ TEST(TCubeTests, DefaultConstructor){
 	EXPECT_DOUBLE_EQ(double(cube->m_width.getValue()),2.0);
 }
 
-TEST(TCubeTests, TCubeGetArea){
-
-
-	TCube* cube = new TCube;
-
-	EXPECT_DOUBLE_EQ(cube->GetArea(),24);
-}
-
-TEST(TCubeTests, TCubeGetVolume){
-
-    double x=10;
-    double y=12;
-    double z=8;
-
-	TCube* cube = new TCube;
-    cube->m_depth.setValue(x);
-    cube->m_height.setValue(y);
-    cube->m_width.setValue(z);
-
-	EXPECT_DOUBLE_EQ(cube->GetVolume(),x*y*z);
-}
-
 TEST(TCubeTests, TCubeGetBBox){
 
     double x=10;

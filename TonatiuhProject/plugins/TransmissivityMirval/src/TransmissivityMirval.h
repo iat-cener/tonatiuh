@@ -35,13 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYMIRVAL_H_
 #define TRANSMISSIVITYMIRVAL_H_
 
 #include "trt.h"
 #include "TTransmissivity.h"
-
 
 class TransmissivityMirval : public TTransmissivity
 {
@@ -52,7 +50,6 @@ public:
     TransmissivityMirval();
 
 	bool IsTransmitted( double distance, RandomDeviate& rand ) const;
-
 
 protected:
     virtual ~TransmissivityMirval();

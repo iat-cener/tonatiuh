@@ -32,11 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-
 #ifndef SHAPETRUMPET_H_
 #define SHAPETRUMPET_H_
 
@@ -45,10 +43,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "trt.h"
 #include "TShape.h"
 
-class SoFieldSensor;
-class SoSensor;
-struct Vector3D;
-
 class ShapeTrumpet : public TShape
 {
 	SO_NODE_HEADER( ShapeTrumpet );
@@ -56,15 +50,16 @@ class ShapeTrumpet : public TShape
 public:
 	ShapeTrumpet();
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+	
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
 	bool IntersectP( const Ray& objectRay ) const;
 
 	Point3D Sample( double u, double v ) const;
+	
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	enum Side{
 		INSIDE = 0,
@@ -79,11 +74,6 @@ public:
 
 
 protected:
-	static void updateApertureValue( void *data, SoSensor* );
-	static void updateFocusValue( void *data, SoSensor* );
-	static void updateHeightValue( void *data, SoSensor* );
-	static void updateTruncationValue( void *data, SoSensor* );
-
 	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
@@ -92,22 +82,10 @@ protected:
 	virtual ~ShapeTrumpet();
 
 private:
-	void SetBHyperbola();
 	Vector3D GetDPDU ( double u, double v ) const;
 	Vector3D GetDPDV ( double u, double v ) const;
 
-	double m_bHyperbola;
-	double m_lastApertureValue;
-	double m_lastFocusHyperbola;
-	double m_lastHyperbolaHeightValue;
-	double m_lastTruncationHeightValue;
-	double m_lastZLengthXMinValue;
-	double m_lastZLengthXMaxValue;
 
-	SoFieldSensor* m_apertureSensor;
-	SoFieldSensor* m_fHSensor;
-	SoFieldSensor* m_heightSensor;
-	SoFieldSensor* m_truncationSensor;
 };
 
 #endif /* SHAPETRUMPET_H_ */

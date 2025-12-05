@@ -214,9 +214,9 @@ Point3D ShapeCylinder::Sample( double u, double v ) const
 */
 bool ShapeCylinder::ValidateParamaterValue( std::string name, std::string value ) const
 {
-    if( name == "radius" && std::stod( value ) < 0 ) 
+    if( name == "radius" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "radius", "The radius of the cylinder, must be a positive number" );
-	else if( name == "length" && std::stod( value ) < 0 ) 
+	else if( name == "length" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "length", "The length of the cylinder must be a positive number" );
 	else if( name == "phiMax" && std::stod( value ) < 0 ) 
 		throw ParameterValueException( "phiMax", "The angle to define the shape section must be a positive number" );

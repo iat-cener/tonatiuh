@@ -35,14 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYVITTITOEBIGGSFACTORY_H_
-#define TRANSMISSIVITYVITTITOEBIGGSTFACTORY_H_
+#define TRANSMISSIVITYVITTITOEBIGGSFACTORY_H_
 
 #include "TransmissivityVittitoeBiggs.h"
 #include "TTransmissivityFactory.h"
-
-class TransmissivityVittitoeBiggs;
 
 class TransmissivityVittitoeBiggsFactory : public QObject, public TTransmissivityFactory
 {

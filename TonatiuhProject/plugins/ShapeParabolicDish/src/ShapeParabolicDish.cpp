@@ -235,17 +235,21 @@ Point3D ShapeParabolicDish::Sample( double u, double v ) const
 */
 bool ShapeParabolicDish::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	 if( name == "dishMinRadius" && std::stod( value ) < 0 ) 
+	 if( name == "dishMinRadius" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "dishMinRadius", "The radius must be a positive number" );
 
-	if( name == "dishMinRadius" && std::stod( value ) > ( dishMaxRadius.getValue() ) )
-		throw ParameterValueException( "dishMinRadius", "Dish minimum radius cannot be greater than the maximum radius" );
+	if( name == "dishMinRadius" && std::stod( value ) >= ( dishMaxRadius.getValue() ) )
+		throw ParameterValueException( "dishMinRadius", "Dish minimum radius cannot be greater or equal than the maximum radius" );
 	
-	if( name == "dishMaxRadius" && std::stod( value ) < 0 ) 
+	if( name == "dishMaxRadius" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "dishMinRadius", "The radius must be a positive number" );
 
-	if( name == "dishMaxRadius" && std::stod( value ) < ( dishMinRadius.getValue() ) )
-		throw ParameterValueException( "dishMaxRadius", "Dish maximum radius cannot be in smaller than minimum radius" );
+	if( name == "dishMaxRadius" && std::stod( value ) <= ( dishMinRadius.getValue() ) )
+		throw ParameterValueException( "dishMaxRadius", "Dish maximum radius cannot be in smaller or equal than minimum radius" );
+;
+	if( name == "phiMax" && std::stod( value ) <= 0.0 )
+		throw ParameterValueException( "phiMax", "Dish section angle must be a positive value" );
+
 	
 	return true;
 }
@@ -287,6 +291,9 @@ void ShapeParabolicDish::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*
 
 void ShapeParabolicDish::generatePrimitives(SoAction *action)
 {
+	if( phiMax.getValue() > (gc::TwoPi) )
+		phiMax.setValue( gc::TwoPi );
+
     SoPrimitiveVertex   pv;
 
     // Access the state from the action.

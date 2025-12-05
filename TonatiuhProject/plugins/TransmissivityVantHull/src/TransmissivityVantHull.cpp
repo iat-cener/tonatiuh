@@ -35,7 +35,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <cmath>
 
 #include "TransmissivityVantHull.h"
@@ -66,7 +65,6 @@ TransmissivityVantHull::~TransmissivityVantHull()
 
 bool TransmissivityVantHull::IsTransmitted( double distance, RandomDeviate& rand ) const
 {
-
 	if( distance == HUGE_VAL )	return false;
 
 	double R = distance/ 1000;

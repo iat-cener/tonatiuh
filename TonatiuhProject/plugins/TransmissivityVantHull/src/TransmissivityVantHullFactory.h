@@ -35,14 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYFACTORYVANTHULL_H_
 #define TRANSMISSIVITYFACTORYVANTHULL_H_
 
 #include "TransmissivityVantHull.h"
 #include "TTransmissivityFactory.h"
-
-class TransmissivityVantHull;
 
 class TransmissivityVantHullFactory : public QObject, public TTransmissivityFactory
 {

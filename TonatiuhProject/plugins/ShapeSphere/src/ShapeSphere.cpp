@@ -236,26 +236,31 @@ Point3D ShapeSphere::Sample( double u, double v ) const
 */
 bool ShapeSphere::ValidateParamaterValue( std::string name, std::string value ) const
 {
-    if( name == "radius" && std::stod( value ) < 0 ) 
-		throw ParameterValueException( "radius", "The radius of the sphere, must be a positive number" );
-	else if( name == "radius" && std::stod( value ) < std::max( std::fabs( yMin.getValue() ), std::fabs( yMax.getValue() ) ) ) 
-		throw ParameterValueException( "radius", "The sphere radius must equal or greater than y values" );
+    if( name == "radius" )
+	{
+		if ( std::stod( value ) <= 0 ) 
+			throw ParameterValueException( "radius", "The radius of the sphere, must be a positive number" );
 		
-	else if( name == "yMin" && std::stod( value ) > ( yMax.getValue() ) )
+		double yMaxValue = std::max( std::fabs( yMin.getValue() ), std::fabs( yMax.getValue() ) );
+		if( std::stod( value )  < ( yMaxValue - 0.0000001 ) )
+			throw ParameterValueException( "radius", "The sphere radius must equal or greater than y values" );
+	}
+		
+	else if( name == "yMin" && std::stod( value ) >= ( yMax.getValue() ) )
 		throw ParameterValueException( "yMin", "The sphere's minimum y-value must be less than its maximum y-value" );
 	else if( name == "yMin" && std::stod( value ) < ( -radius.getValue() ) )
 		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
 	else if( name == "yMin" && std::stod( value ) > ( radius.getValue() ) )
 		throw ParameterValueException( "yMin", "The sphere's minimum y-value must lie within the range [-radius,radius]" );
 		
-	else if( name == "yMax" && std::stod( value ) < ( yMin.getValue() ) )
+	else if( name == "yMax" && std::stod( value ) <= ( yMin.getValue() ) )
 		throw ParameterValueException( "yMax", "The sphere's maximum y-value must be greater than its minimum y-value" );
 	else if( name == "yMax" && std::stod( value ) < ( -radius.getValue() ) )
 		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
 	else if( name == "yMax" && std::stod( value ) > ( radius.getValue() ) )
 		throw ParameterValueException( "yMax", "The sphere's maximum y-value must lie within the range [-radius,radius]" );
 		
-	else if( name == "phiMax" && std::stod( value ) < 0 )
+	else if( name == "phiMax" && std::stod( value ) <= 0 )
 		throw ParameterValueException( "phiMax", "The sphere’s generation angle must be a positive value" );
 
 	return true;
@@ -297,6 +302,13 @@ void ShapeSphere::computeBBox(SoAction*, SbBox3f& box, SbVec3f& /*center*/)
 
 void ShapeSphere::generatePrimitives(SoAction *action)
 {
+	if( phiMax.getValue() > (gc::TwoPi) )
+		phiMax.setValue( gc::TwoPi );
+	
+	double yMaxValue = std::max( std::fabs( yMin.getValue() ), std::fabs( yMax.getValue() ) );	
+	if( fabs( radius.getValue() - yMaxValue ) < 0.0000001 )
+		radius.setValue ( yMaxValue );
+
 	SoPrimitiveVertex   pv;
 	SoState  *state = action->getState();
 

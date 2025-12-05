@@ -32,19 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef TRACKERHELIOSTAT_H_
 #define TRACKERHELIOSTAT_H_
-
 
 #include <Inventor/fields/SoSFEnum.h>
 
 #include "TTrackerForAiming.h"
 
-class QString;
+class SoFieldSensor;
 
 class TrackerHeliostat : public TTrackerForAiming
 {
@@ -53,7 +51,7 @@ class TrackerHeliostat : public TTrackerForAiming
 
 public:
     static void initClass();
-	QString getIcon();
+	std::string GetIcon();
 
 	//Constructor
 	TrackerHeliostat();
@@ -78,9 +76,6 @@ private:
 
 	int m_previousAimingPointType;
 	SoFieldSensor* m_infoDisplayed;
-
-
-
 };
 
 #endif /* TRACKERHELIOSTAT_H_ */

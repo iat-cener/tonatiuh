@@ -32,36 +32,25 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include <algorithm>
+#include <map>
 #include <vector>
-
-#include <QIcon>
-#include <QMap>
-#include <QMessageBox>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
-#include "BBox.h"
-#include "gc.h"
 #include "gf.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
-#include "Vector3D.h"
-
-#include "DifferentialGeometry.h"
 #include "ShapeTroughCPC.h"
 
 double fPart( double theta, double a, double thetaI, Ray ray )
 {
-
 	//Caso 1a: RIGHT, If= FALSE
-
 	double xrd = ray.direction().x;
 	double xro = ray.origin.x;
 	double yrd = ray.direction().y;
@@ -106,8 +95,6 @@ ShapeTroughCPC::ShapeTroughCPC()
 	m_heightSensor = new SoFieldSensor(updateHeightValues, this);
 	m_heightSensor->setPriority( 0 );
 	m_heightSensor->attach( &height );
-
-
 }
 
 ShapeTroughCPC::~ShapeTroughCPC()
@@ -115,12 +102,6 @@ ShapeTroughCPC::~ShapeTroughCPC()
 	delete m_aSensor;
 	delete m_cMaxSensor;
 	delete m_heightSensor;
-}
-
-
-double ShapeTroughCPC::GetArea() const
-{
-	return -1;
 }
 
 BBox ShapeTroughCPC::GetBBox() const
@@ -136,14 +117,14 @@ BBox ShapeTroughCPC::GetBBox() const
 	return BBox( Point3D( xMin, yMin, zMin ), Point3D( xMax, yMax, zMax ) );
 }
 
-QString ShapeTroughCPC::GetIcon() const
+std::string ShapeTroughCPC::GetIcon() const
 {
-	return ":/icons/ShapeTroughCPC.png";
+	return ( ":/icons/ShapeTroughCPC.png" );
 }
 
 bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
 {
-	QMap< double, double > vectorTr;
+	std::map< double, double > vectorTr;
 
 	double inf = 2 * m_thetaI;
 	double sup = ( gc::Pi / 2 ) + m_thetaI;
@@ -151,36 +132,35 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	bool isRoot1 = findRoot( fPart, objectRay, a.getValue(), m_thetaI, inf, sup, 0, 500, &ts11 );
 	if( isRoot1 )
 	{
-
 		double tr11 = findThit( objectRay, ts11, true );
-		vectorTr.insert( tr11, ts11 );
+		vectorTr.insert( std::pair< double, double >( tr11, ts11 ) );
+		
 		double ts12;
 		if ( findRoot( fPart, objectRay, a.getValue(), m_thetaI, inf, ts11 - 0.00001, 0, 500, &ts12 ) )
 		{
 			double tr12  = findThit( objectRay, ts12, true );
-			vectorTr.insert( tr12, ts12 );
+			vectorTr.insert( std::pair< double, double >( tr12, ts12 ) );
 		}
 		else
 		{
 			if( findRoot( fPart, objectRay, a.getValue(), m_thetaI, ts11 + 0.00001, sup, 0, 500, &ts12 ) )
 			{
 				double tr12 = findThit( objectRay, ts12, true );
-				vectorTr.insert( tr12, ts12 );
+				vectorTr.insert( std::pair< double, double >( tr12, ts12 ) );
 			}
 		}
-
 	}
-
 
 	int nIntersections =  vectorTr.size();
 	if ( nIntersections == 0 ) return false;
-	QList< double > keys = vectorTr.keys();
-	QVector< double > keysVector = QVector<double>::fromList( keys );
-	std::vector<double> array( keysVector.begin(), keysVector.end() );
 
-
- 	std::sort(array.begin(), array.end());
-	double thit = array[0];
+	std::vector<double> keys;
+	keys.reserve( vectorTr.size() ); 
+	for( const auto& p : vectorTr )
+		  keys.push_back(p.first);
+	std::sort(keys.begin(), keys.end());
+	
+	double thit = keys[0];
 	int intersection = 0;
 	bool valid = false;
 	Point3D hitPoint;
@@ -191,18 +171,17 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	double ymin = 0.0;
 	double ymax = ( 2 * a.getValue() * cos(m_thetaI)* (1 + sin(m_thetaI ) ) )/(1 - cos( 2 * m_thetaI ) );
 
-	while(  ( intersection < vectorTr.size() ) && !valid )
+	while( ( intersection < nIntersections ) && !valid )
 	{
-
-		thit = array[intersection];
+		thit = keys[intersection];
 
 		if ( thit < 0 ) valid = false;
 		else
 		{
 			// Compute intersection distance along ray
-				//Evaluate Tolerance
+			//Evaluate Tolerance
 			double tol = 0.0001;
-			double theta = vectorTr.value( thit );
+			double theta = vectorTr[ thit ];
 			if( ( fabs( thit ) < tol ) || ( theta > ( gc::Pi / 2 + m_thetaI )  ) ) valid = false;
 			else
 			{
@@ -228,7 +207,7 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	}
 	if( !valid ) return false;
 
-	double theta = vectorTr.value( thit );
+	double theta = vectorTr[ thit ];
 
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
@@ -243,7 +222,6 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	double zmax = (lengthXMin.getValue() / 2 ) + m* ( hitPoint.x - xmin );
 	double v = ( ( hitPoint.z / zmax ) + 1 )/ 2;
 
-
 	// Compute  \dpdu and \dpdv
 	double dpduX = - 0.5 * a.getValue() * (gc::Pi - 2 * m_thetaI )* pow( (1 / cos( 0.25 * (-2 + u) * ( gc::Pi - 2 * m_thetaI  ) ) ), 3 )
 							* sin( 0.25 * u * ( gc::Pi  - 2 * m_thetaI ) ) * (1 + sin( m_thetaI ) );
@@ -254,7 +232,7 @@ bool ShapeTroughCPC::Intersect(const Ray& objectRay, double *tHit, DifferentialG
 	Vector3D dpdu(dpduX, dpduY, 0.0);
 	Vector3D dpdv(0.0, 0.0, 1.0);
 
-	// Compute cylinder \dndu and \dndv
+	// Compute \dndu and \dndv
 	double dpduuX = 0.125 * a.getValue() * (gc::Pi - 2 * m_thetaI ) * (gc::Pi - 2 * m_thetaI ) * pow( (1 / cos( 0.25 * (-2 + u) * ( gc::Pi - 2 * m_thetaI  ) ) ), 4 )
 								* ( -2 * sin( m_thetaI ) + sin( u * gc::Pi  / 2  + m_thetaI - u * m_thetaI ) ) * (1 + sin( m_thetaI ) );
 
@@ -303,7 +281,82 @@ bool ShapeTroughCPC::IntersectP( const Ray& objectRay ) const
 
 Point3D ShapeTroughCPC::Sample( double u, double v ) const
 {
-	return GetPoint3D( u, v );
+	if ( OutOfRange( u, v ) ) gf::SevereError( "Function ShapeTroughCPC::GetPoint3D called with invalid parameters" );
+
+	double xMin = a.getValue();
+	double xMax = ( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(m_thetaMin-m_thetaI) )
+			 / ( 1 - cos(m_thetaMin) ) )- a.getValue();
+
+	double theta =  u* ( ( gc::Pi / 2 + m_thetaI ) - m_thetaMin )+ m_thetaMin;
+	double x = ( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(theta-m_thetaI) )
+				 / ( 1 - cos(theta) ) )- a.getValue();
+	double y = ( 2 * a.getValue() * (1 + sin(m_thetaI) ) *cos(theta- m_thetaI) )
+				/( 1 - cos(theta) );
+
+	double m =  ( ( lengthXMax.getValue()/ 2 )- ( lengthXMin.getValue()/ 2 ) ) / ( xMax - xMin );
+	double zMax = ( lengthXMin.getValue()/ 2 ) + m* ( x - xMin );
+
+	double z = zMax * ( 2 * v -1 );
+
+	return Point3D (x, y, z);
+}
+
+/*!
+* Checks the cone parameters values. Checks the \a value of parameter \a name .
+*/
+bool ShapeTroughCPC::ValidateParamaterValue( std::string name, std::string value ) const
+{
+	if( name == "a" )
+	{
+		double newA = std::stod( value );
+		if( newA < 0 ) 
+			throw ParameterValueException( "a", "The 'a' parameter must be a positive number" );
+		
+		//Verify combination of parameters
+		double thetaI = asin( 1 / cMax.getValue() );
+		double theta2 = 2 * thetaI;
+		double hTheta2 = ( 2 * newA * (1 + sin( thetaI ) ) *cos( theta2 - thetaI ) ) /( 1 - cos( theta2 ) );
+		if( hTheta2 < height.getValue() )
+			throw ParameterValueException( "a", "The combination of parameter values with the new 'a' value exceeds the maximum allowed height" );
+	}
+
+	if( name == "cMax" )
+	{
+		double newCMax = std::stod( value ) ;
+		if( newCMax < 1.0 )
+			throw ParameterValueException( "cMax", "The 'cMax' parameter must be a positive number equal or greater than 1.0 " );	
+
+		double thetaI = asin( 1 / newCMax );
+		double theta2 = 2 * thetaI;
+		double hTheta2 = ( 2 * a.getValue() * (1 + sin( thetaI ) ) *cos( theta2 - thetaI ) ) /( 1 - cos( theta2 ) );
+		if( hTheta2 < height.getValue() )
+			throw ParameterValueException( "a", "The combination of parameter values with the new 'a' value exceeds the maximum allowed height" );
+	}
+
+	if( name == "lengthXMin" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "lengthXMin", "The 'lengthXMin' parameter must be a positive number" );	
+
+	if( name == "lengthXMin" && std::stod( value ) == 0  && lengthXMax.getValue() == 0 ) 
+		throw ParameterValueException( "lengthXMin", "Please enter non-zero values for both 'lengthXMin' and 'lengthXMax'" );	
+
+	if( name == "lengthXMax" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "lengthXMax", "The 'lengthXMax' parameter must be a positive number" );	
+
+	if( name == "lengthXMax" && std::stod( value ) == 0  && lengthXMin.getValue() == 0 ) 
+		throw ParameterValueException( "lengthXMax", "Please enter non-zero values for both 'lengthXMin' and 'lengthXMax'" );	
+
+	if( name == "height" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "height", "The 'height' parameter must be a positive number" );	
+
+
+	double thetaI = asin( 1 / cMax.getValue() );
+	double theta = 2 *  thetaI; 
+	double yMax = ( 2 * a.getValue() * (1 + sin( thetaI ) ) *cos( theta- thetaI ) ) / ( 1 - cos(theta) );
+
+	if( name == "height" && std::stod( value ) > yMax ) 
+		throw ParameterValueException( "radius", "The value of 'height' defined is greater than the maximum allowed for the combination of rest of parameters ( 0, " + std::to_string( yMax ) + "]" );
+
+	return true;
 }
 
 void ShapeTroughCPC::updateCMaxValues( void *data, SoSensor *)
@@ -311,13 +364,12 @@ void ShapeTroughCPC::updateCMaxValues( void *data, SoSensor *)
 	ShapeTroughCPC* shapeTroughCPC = (ShapeTroughCPC *) data;
 	shapeTroughCPC->m_thetaI = asin( 1 / shapeTroughCPC->cMax.getValue() );
 
-	double theta = 2 * shapeTroughCPC->m_thetaI;
 	double theta1 = gc::Pi/2 + shapeTroughCPC->m_thetaI;
 	double y1 = 0;
-	double theta2 = 2 * shapeTroughCPC->m_thetaI;
-	double y2 = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta - shapeTroughCPC->m_thetaI ) )
-			/( 1 - cos(theta2) );
 
+	double theta2 = 2 * shapeTroughCPC->m_thetaI;
+	double y2 = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta2 - shapeTroughCPC->m_thetaI ) )
+			/( 1 - cos(theta2) );
 
 	double y0 = shapeTroughCPC->height.getValue();
 
@@ -341,77 +393,31 @@ void ShapeTroughCPC::updateCMaxValues( void *data, SoSensor *)
 void ShapeTroughCPC::updateHeightValues( void *data, SoSensor *)
 {
 	ShapeTroughCPC* shapeTroughCPC = (ShapeTroughCPC *) data;
+	
+	double theta1 = gc::Pi/2 + shapeTroughCPC->m_thetaI;
+	double y1 = 0;
+	double theta2 = 2 * shapeTroughCPC->m_thetaI;
+	double y2 = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta2 - shapeTroughCPC->m_thetaI ) )
+			/( 1 - cos(theta2) );
 
-	double theta = 2 * shapeTroughCPC->m_thetaI;
-	double yMax = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta- shapeTroughCPC->m_thetaI ) )
-					/( 1 - cos(theta) );
-	if( shapeTroughCPC->height.getValue() > yMax )
+
+	double y0 = shapeTroughCPC->height.getValue();
+
+	int iterations = 0;
+	while( ( fabs( theta1 - theta2 ) > 0.00001 ) && ( iterations < 100 ) )
 	{
-			QString message = QString( "y must be equal or smaller than %1. " ).arg( yMax );
-			QMessageBox::warning( 0, QString( "Tonatiuh" ), message );
-			shapeTroughCPC->height.setValue( yMax  );
-			shapeTroughCPC->m_thetaMin = 2 * shapeTroughCPC->m_thetaI;
-	}
-	else if( shapeTroughCPC->height.getValue() < 0.0 )
-	{
-			QString message = QString( "y must be positive number. " );
-			QMessageBox::warning( 0, QString( "Tonatiuh" ), message );
-			shapeTroughCPC->height.setValue( yMax  );
-			shapeTroughCPC->m_thetaMin = 2 * shapeTroughCPC->m_thetaI;
-	}
-	else
-	{
-		double theta1 = gc::Pi/2 + shapeTroughCPC->m_thetaI;
-		double y1 = 0;
-		double theta2 = 2 * shapeTroughCPC->m_thetaI;
-		double y2 = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta - shapeTroughCPC->m_thetaI ) )
-				/( 1 - cos(theta2) );
+		double theta = ( theta1 + theta2 ) / 2 ;
 
-
-		double y0 = shapeTroughCPC->height.getValue();
-
-		int iterations = 0;
-		while( ( fabs( theta1 - theta2 ) > 0.00001 ) && ( iterations < 100 ) )
-		{
-			double theta = ( theta1 + theta2 ) / 2 ;
-
-			double y = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta - shapeTroughCPC->m_thetaI ) )
-					/( 1 - cos(theta) );
-
-			if( ( y >= y0 ) && ( y2 > y1 ) ) 	theta2 = theta;
-			else if( ( y >= y0 ) && ( y2 < y1 ) ) 		theta1 = theta;
-			else if( ( y < y0 ) && ( y2 > y1 ) ) 		theta1 = theta;
-			else	theta2 = theta;
-
-		}
-		shapeTroughCPC->m_thetaMin = ( theta1 + theta2 ) / 2;
-	}
-}
-
-
-Point3D ShapeTroughCPC::GetPoint3D( double u, double v ) const
-{
-	if ( OutOfRange( u, v ) ) gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
-
-
-	double xMin = a.getValue();
-	double xMax = ( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(m_thetaMin-m_thetaI) )
-			 / ( 1 - cos(m_thetaMin) ) )- a.getValue();
-
-	double theta =  u* ( ( gc::Pi / 2 + m_thetaI ) - m_thetaMin )+ m_thetaMin;
-	double x = ( (2 * a.getValue() * (1 + sin(m_thetaI) ) * sin(theta-m_thetaI) )
-				 / ( 1 - cos(theta) ) )- a.getValue();
-	double y = ( 2 * a.getValue() * (1 + sin(m_thetaI) ) *cos(theta- m_thetaI) )
+		double y = ( 2 * shapeTroughCPC->a.getValue() * (1 + sin(shapeTroughCPC->m_thetaI) ) *cos( theta - shapeTroughCPC->m_thetaI ) )
 				/( 1 - cos(theta) );
 
-	double m =  ( ( lengthXMax.getValue()/ 2 )- ( lengthXMin.getValue()/ 2 ) ) / ( xMax - xMin );
-	double zMax = ( lengthXMin.getValue()/ 2 ) + m* ( x - xMin );
+		if( ( y >= y0 ) && ( y2 > y1 ) ) 	theta2 = theta;
+		else if( ( y >= y0 ) && ( y2 < y1 ) ) 		theta1 = theta;
+		else if( ( y < y0 ) && ( y2 > y1 ) ) 		theta1 = theta;
+		else	theta2 = theta;
 
-	double z = zMax * ( 2 * v -1 );
-
-
-	return Point3D (x, y, z);
-
+	}
+	shapeTroughCPC->m_thetaMin = ( theta1 + theta2 ) / 2;
 }
 
 NormalVector ShapeTroughCPC::GetNormal (double u ,double /* v */) const
@@ -478,7 +484,7 @@ void ShapeTroughCPC::generatePrimitives(SoAction *action)
 
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
-    		Point3D point = GetPoint3D(ui, vj);
+    		Point3D point = Sample(ui, vj);
     		NormalVector normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;

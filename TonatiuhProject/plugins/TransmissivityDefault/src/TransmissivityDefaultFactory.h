@@ -35,14 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYDEFAULTFACTORY_H_
 #define TRANSMISSIVITYDEFAULTFACTORY_H_
 
 #include "TransmissivityDefault.h"
 #include "TTransmissivityFactory.h"
-
-class TransmissivityDefault;
 
 class TransmissivityDefaultFactory : public QObject, public TTransmissivityFactory
 {

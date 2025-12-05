@@ -32,21 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-
 #ifndef TRACKERLINEARFRESNEL_H_
 #define TRACKERLINEARFRESNEL_H_
 
-#include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/fields/SoSFEnum.h>
-
 #include "TTrackerForAiming.h"
-#include "trt.h"
 
-class QString;
+class SoFieldSensor;
 
 class TrackerLinearFresnel : public TTrackerForAiming
 {
@@ -54,7 +48,7 @@ class TrackerLinearFresnel : public TTrackerForAiming
 
 public:
     static void initClass();
-	QString getIcon();
+	std::string GetIcon();
 
 	//Constructor
 	TrackerLinearFresnel();

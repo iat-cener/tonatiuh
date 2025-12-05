@@ -35,14 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYFACTORYSENGUPTANREL_H_
 #define TRANSMISSIVITYFACTORYSENGUPTANREL_H_
 
 #include "TransmissivitySenguptaNREL.h"
 #include "TTransmissivityFactory.h"
-
-class TransmissivitySenguptaNREL;
 
 class TransmissivitySenguptaNRELFactory : public QObject, public TTransmissivityFactory
 {

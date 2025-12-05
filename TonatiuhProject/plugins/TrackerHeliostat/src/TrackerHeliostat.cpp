@@ -32,28 +32,23 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
-***************************************************************************/
-
-#include <cmath>
-
-#include <QString>
-
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
+**************************************************************************/
+#include <Inventor/SbMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
-#include "NormalVector.h"
 #include "Point3D.h"
 #include "TrackerHeliostat.h"
 #include "Transform.h"
 #include "Vector3D.h"
-#include "trf.h"
 
 SO_NODEENGINE_SOURCE( TrackerHeliostat );
 
 void TrackerHeliostat::initClass()
 {
-
 	SO_NODEENGINE_INIT_CLASS( TrackerHeliostat, TTrackerForAiming, "TTrackerForAiming" );
 }
 
@@ -94,17 +89,15 @@ TrackerHeliostat::TrackerHeliostat()
 
 }
 
-
 TrackerHeliostat::~TrackerHeliostat()
 {
 	delete m_infoDisplayed;
 	m_infoDisplayed = 0;
 }
 
-QString TrackerHeliostat::getIcon()
+std::string TrackerHeliostat::GetIcon()
 {
-
-	return QString(":/icons/TrackerHeliostat.png");
+	return ( ":/icons/TrackerHeliostat.png" );
 }
 
 void TrackerHeliostat::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
@@ -173,126 +166,12 @@ void TrackerHeliostat::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
 	SetEngineOutput(newTransform);
 }
 
-void TrackerHeliostat::evaluate()
-{
-	/*
-	if( !IsConnected() )	return;
-
-
-	SoSearchAction coinSearch;
-	coinSearch.setNode( this );
-
-
-	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
-	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
-		return;
-
-	SoNodeKitPath* parentPath = static_cast<SoNodeKitPath*>( nodePath );
-	parentPath->pop();
-
-	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
-
-
-	Transform worldToObject = objectToWorld.GetInverse();
-
-
-	Vector3D i = worldToObject( GetGobalSunVector() );
-
-	if( i.length() == 0.0f ) return;
-	i = Normalize(i);
-
-	Point3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
-	Vector3D r;
-	if( typeOfAimingPoint.getValue() == 0 ) //Absolute
-	{
-		r = Vector3D( worldToObject( focus ) );
-	}
-	else
-		r = Vector3D( focus );
-
-
-	if( r.length() == 0.0f ) return;
-	r = Normalize(r);
-
-	Vector3D n = ( i + r );
-	if( n.length() == 0.0f ) return;
-	n = Normalize( n );
-
-	Vector3D Axe1;
-	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 1 ))// YX or YZ
-		Axe1 = Vector3D( 0.0f, 1.0f, 0.0f );
-
-	else if (typeOfRotation.getValue() == 2 ) // XZ
-		Axe1 = Vector3D( 1.0f, 0.0f, 0.0f );
-
-	else // ZX
-		Axe1 = Vector3D(0.0f, 0.0f, 1.0f);
-
-	Vector3D t = CrossProduct( n, Axe1 );
-	//Vector3D t( n[2], 0.0f, -n[0] );
-	if( t.length() == 0.0f ) return;
-	t = Normalize(t);
-
-	Vector3D p = CrossProduct( t, n );
-	if (p.length() == 0.0f) return;
-	p = Normalize(p);
-
-	SbMatrix transformMatrix;
-	if ((typeOfRotation.getValue() == 0 ) || (typeOfRotation.getValue() == 3 ))// YX ou  ZX
-	{
-		 transformMatrix = SbMatrix( t[0], t[1], t[2], 0.0,
-								  n[0], n[1], n[2], 0.0,
-								  p[0], p[1], p[2], 0.0,
-								  0.0, 0.0, 0.0, 1.0 );
-	}
-	else // YZ
-	{
-		transformMatrix = SbMatrix( p[0], p[1], p[2], 0.0,
-								  n[0], n[1], n[2], 0.0,
-								  t[0], t[1], t[2], 0.0,
-								  0.0, 0.0, 0.0, 1.0 );
-	}
-
-
-	SoTransform* newTransform = new SoTransform();
-	newTransform->setMatrix( transformMatrix );
-
-	SetEngineOutput(newTransform);
-	*/
-}
-
 void TrackerHeliostat::SwitchAimingPointType()
 {
-	/*
 
-	if( !IsConnected() )	return;
+}
 
-	if( m_previousAimingPointType == typeOfAimingPoint.getValue() )	return;
-
-	SoSearchAction coinSearch;
-	coinSearch.setNode( this );
-
-	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
-	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
-		return;
-
-	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
-	parentPath->pop();
-
-	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
-
-	Point3D focus( aimingPoint.getValue( )[0], aimingPoint.getValue( )[1],aimingPoint.getValue( )[2] );
-	Point3D r;
-	if (typeOfAimingPoint.getValue() == 1)
-	{
-		Transform worldToObject = objectToWorld.GetInverse();
-		r = worldToObject( focus );
-	}
-	else
-		r = objectToWorld( focus );
-
-	aimingPoint.setValue( r.x, r.y, r.z );
-
-	m_previousAimingPointType = typeOfAimingPoint.getValue();
-	*/
+void TrackerHeliostat::evaluate()
+{
+	
 }

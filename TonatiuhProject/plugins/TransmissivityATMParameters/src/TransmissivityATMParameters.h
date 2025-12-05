@@ -35,13 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYFATMPARAMETERS_H_
 #define TRANSMISSIVITYFATMPARAMETERS_H_
 
 #include "trt.h"
 #include "TTransmissivity.h"
-
 
 class TransmissivityATMParameters : public TTransmissivity
 {
@@ -53,7 +51,6 @@ public:
 
 	bool IsTransmitted( double distance, RandomDeviate& rand ) const;
 
-	//trt::TONATIUH_BOOL ClearDay;
 	trt::TONATIUH_REAL atm1;
 	trt::TONATIUH_REAL atm2;
 	trt::TONATIUH_REAL atm3;

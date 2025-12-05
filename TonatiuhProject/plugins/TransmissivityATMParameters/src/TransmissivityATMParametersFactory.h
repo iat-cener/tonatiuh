@@ -35,7 +35,6 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYFACTORYATMPARAMETERS_H_
 #define TRANSMISSIVITYFACTORYATMPARAMETERS_H_
 
@@ -51,7 +50,6 @@ class TransmissivityATMParametersFactory : public QObject, public TTransmissivit
 #if QT_VERSION >= 0x050000 // pre Qt 5
     Q_PLUGIN_METADATA(IID "tonatiuh.TTransmissivityFactory")
 #endif
-
 
 public:
     QString TTransmissivityName() const;

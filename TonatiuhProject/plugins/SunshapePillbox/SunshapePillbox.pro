@@ -1,6 +1,6 @@
 
 TEMPLATE      = lib
-CONFIG       += plugin debug_and_release
+CONFIG       += plugin
 
 include( ../../config.pri )
 
@@ -11,9 +11,7 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS = src/*.h \
-            $$(TONATIUH_ROOT)/src/source/raytracing/trt.h \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TSunShape.h 
-
 
 SOURCES = src/*.cpp \
            	$$(TONATIUH_ROOT)/src/source/raytracing/TSunShape.cpp

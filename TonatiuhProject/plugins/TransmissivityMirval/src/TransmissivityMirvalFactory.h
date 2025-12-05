@@ -35,14 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYMIRVALFACTORY_H_
-#define TRANSMISSIVITYMIRVALDFACTORY_H_
+#define TRANSMISSIVITYMIRVALFACTORY_H_
 
 #include "TransmissivityMirval.h"
 #include "TTransmissivityFactory.h"
-
-class TransmissivityMirval;
 
 class TransmissivityMirvalFactory : public QObject, public TTransmissivityFactory
 {

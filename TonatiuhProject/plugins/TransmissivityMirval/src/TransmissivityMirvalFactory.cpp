@@ -35,12 +35,9 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #include <QIcon>
 
 #include "TransmissivityMirvalFactory.h"
-#include "TransmissivityMirval.h"
-
 
 QString TransmissivityMirvalFactory::TTransmissivityName() const
 {
@@ -62,7 +59,6 @@ TransmissivityMirval* TransmissivityMirvalFactory::CreateTTransmissivity( ) cons
 	    firstTime = false;
 	}
 	return new TransmissivityMirval;
-
 }
 
 #if QT_VERSION < 0x050000 // pre Qt 5

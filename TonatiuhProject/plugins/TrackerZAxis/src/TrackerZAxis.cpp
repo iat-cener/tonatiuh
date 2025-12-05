@@ -1,4 +1,4 @@
-	/***************************************************************************
+/***************************************************************************
 Copyright (C) 2008 by the Tonatiuh Software Development Team.
 
 This file is part of Tonatiuh.
@@ -32,37 +32,22 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <cmath>
-
-#include <QString>
-
-#include <Inventor/SbLinear.h>
-#include <Inventor/SoNodeKitPath.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/fields/SoSFMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
 
 #include "gc.h"
-#include "Transform.h"
-
 #include "TrackerZAxis.h"
-#include "trf.h"
-#include "TSeparatorKit.h"
-#include "TSceneKit.h"
+#include "Transform.h"
+#include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( TrackerZAxis );
 
 void TrackerZAxis::initClass()
 {
-	//TTracker::initClass();
 	SO_NODEENGINE_INIT_CLASS( TrackerZAxis, TTracker, "TTracker" );
-
 }
 
 TrackerZAxis::TrackerZAxis()
@@ -70,68 +55,42 @@ TrackerZAxis::TrackerZAxis()
 	SO_NODEENGINE_CONSTRUCTOR( TrackerZAxis );
 
 	// Define input fields and their default values
-	//SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
-	//SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
+	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
 
-	//ConstructEngineOutput();
 	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
 	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
 	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
-
 }
 
 TrackerZAxis::~TrackerZAxis()
 {
 }
 
-QString TrackerZAxis::getIcon()
+std::string TrackerZAxis::GetIcon()
 {
-	return QString(":/icons/TrackerZAxis.png");
+	return ( ":/icons/TrackerZAxis.png" );
 }
 
-void TrackerZAxis::evaluate()
+void TrackerZAxis::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
 {
-	/*
-	if (!IsConnected()) return;
-
-	SoSearchAction coinSearch;
-	coinSearch.setNode( this );
-
-	SoPath* nodePath = m_scene->GetSoPath( &coinSearch );
-	if( !nodePath || nodePath == 0 || nodePath->getLength() < 1)
-		return;
-
-	SoNodeKitPath* parentPath = static_cast< SoNodeKitPath* >( nodePath );
-	parentPath->pop();
-
-	if( !parentPath ) return;
-
-	Transform objectToWorld = trf::GetObjectToWorld( parentPath );
-	Transform worldToObject = objectToWorld.GetInverse();
-	nodePath->unref();
-
-
-	Vector3D s = worldToObject( GetGobalSunVector() );
+	Vector3D s = parentWT0( sunVectorW );
 	Vector3D p( 0.0f, 0.0f, 1.0f);
 
 	Vector3D n;
 	Vector3D t;
 	if( fabs( DotProduct( s, p ) ) < 1.0 )
 	{
-		//n = ( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
-	//	n = Normalize( s - ( DotProduct( s, p )*  p ) ) / ( sqrt( 1 - DotProduct( s, p ) * DotProduct( s, p ) ) );
-		//t = Normalize( CrossProduct( p, n ) );
-		t = Normalize( CrossProduct( p, s ) );
-		n = Normalize( CrossProduct( t, p ) );
+		t = Normalize( CrossProduct( s, p ) );
+		n = Normalize( CrossProduct( p, t ) );
 	}
 	else
 	{
-		t = Vector3D( 0.0f, 0.0f, 1.0f );
-		n = Normalize( CrossProduct( t, p ) );
+		t = Vector3D( 1.0f, 0.0f, 0.0f );
+		n = Vector3D( 0.0f, 1.0f, 0.0f );
 	}
-
 
 	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
 								n[0], n[1], n[2], 0.0,
@@ -142,5 +101,9 @@ void TrackerZAxis::evaluate()
 	newTransform->setMatrix( transformMatrix );
 
 	SetEngineOutput(newTransform);
-	*/
+}
+
+void TrackerZAxis::evaluate()
+{
+
 }

@@ -32,19 +32,14 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SUNSHAPEPILLBOX_H_
 #define SUNSHAPEPILLBOX_H_
 
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
-
-#include "TSunShape.h"
 #include "trt.h"
-
+#include "TSunShape.h"
 
 class SunshapePillbox : public TSunShape
 {

@@ -32,19 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez, 
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
- 
-#ifndef TRACKERONEAXIS_H_
+ #ifndef TRACKERONEAXIS_H_
 #define TRACKERONEAXIS_H_
 
-#include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/fields/SoSFVec3f.h>
-
 #include "TTracker.h"
-
-class QString; 
 
 class TrackerOneAxis : public TTracker
 {
@@ -52,7 +46,7 @@ class TrackerOneAxis : public TTracker
 	
 public:
     static void initClass();
-	QString getIcon();
+	std::string GetIcon();
 	
 	//Constructor
 	TrackerOneAxis();

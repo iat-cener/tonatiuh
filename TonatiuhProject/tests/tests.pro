@@ -1,6 +1,6 @@
 TEMPLATE = app
 CONFIG += console debug_and_release
-include( $$(TONATIUH_ROOT)/config.pri )
+include( ../config.pri )
 
 QT += script
 
@@ -32,7 +32,6 @@ CONFIG(debug, debug|release) {
                         $$(TONATIUH_ROOT)/debug/ScriptRayTracer.o \
                         $$(TONATIUH_ROOT)/debug/sunpos.o \
                         $$(TONATIUH_ROOT)/debug/TCube.o \
-                        $$(TONATIUH_ROOT)/debug/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultSunShape.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultTracker.o \
                         $$(TONATIUH_ROOT)/debug/TDefaultTransmissivity.o \
@@ -79,7 +78,6 @@ else {
                         $$(TONATIUH_ROOT)/release/ScriptRayTracer.o \
                         $$(TONATIUH_ROOT)/release/sunpos.o \
                         $$(TONATIUH_ROOT)/release/TCube.o \
-                        $$(TONATIUH_ROOT)/release/TDefaultMaterial.o \
                         $$(TONATIUH_ROOT)/release/TDefaultSunShape.o \
                         $$(TONATIUH_ROOT)/release/TDefaultTracker.o \
                         $$(TONATIUH_ROOT)/release/TDefaultTransmissivity.o \

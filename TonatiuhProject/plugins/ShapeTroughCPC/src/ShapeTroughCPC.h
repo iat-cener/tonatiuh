@@ -32,22 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SHAPETROUGHCPC_H_
 #define SHAPETROUGHCPC_H_
 
-#include <QString>
-
-#include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "trt.h"
 #include "TShape.h"
-
-class SoFieldSensor;
 
 class ShapeTroughCPC: public TShape
 {
@@ -56,15 +50,16 @@ class ShapeTroughCPC: public TShape
 public:
 	ShapeTroughCPC( );
 	static void initClass();
-	double GetArea() const;
-	double GetVolume() const {return 0.0;};
+
 	BBox GetBBox() const;
-	QString GetIcon() const;
+	std::string GetIcon() const;
 
 	bool Intersect(const Ray &ray, double *tHit, DifferentialGeometry *dg ) const;
 	bool IntersectP( const Ray &ray ) const;
 
 	Point3D Sample( double u, double v) const;
+	
+	bool ValidateParamaterValue( std::string name, std::string value ) const;
 
 	trt::TONATIUH_REAL a;
 	trt::TONATIUH_REAL cMax;
@@ -72,12 +67,10 @@ public:
 	trt::TONATIUH_REAL lengthXMax;
 	trt::TONATIUH_REAL height;
 
-
 protected:
 	static void updateCMaxValues( void *data, SoSensor *);
 	static void updateHeightValues( void *data, SoSensor *);
 
-	Point3D GetPoint3D ( double u, double v ) const;
 	NormalVector GetNormal( double u, double v ) const;
 	bool OutOfRange( double u, double v ) const;
 
@@ -95,7 +88,6 @@ private:
 	SoFieldSensor* m_aSensor;
 	SoFieldSensor* m_cMaxSensor;
 	SoFieldSensor* m_heightSensor;
-
 };
 
 #endif /*SHAPETROUGHCPC_H_*/

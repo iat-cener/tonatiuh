@@ -217,7 +217,7 @@ bool ShapeSphericalRectangle::IntersectP( const Ray& objectRay ) const
 */
 Point3D ShapeSphericalRectangle::Sample( double u, double v ) const
 {
-	if ( OutOfRange( u, v ) )	gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
+	if ( OutOfRange( u, v ) )	gf::SevereError( "Function ShapeSphericalRectangle::GetPoint3D called with invalid parameters" );
 
 	double x = ( u - 0.5 )* widthX.getValue();
 	double z = ( v - 0.5 )* widthZ.getValue();
@@ -250,6 +250,9 @@ bool ShapeSphericalRectangle::ValidateParamaterValue( std::string name, std::str
 
     if( name == "widthX" )
 	{
+		if( std::stod( value ) <= 0.0  ) 
+			throw ParameterValueException( "radius", "Sphere 'widthX' must take positive values" );
+
 		wX = std::stod( value );
 		if( std::stod( value ) > ( 2 * radius.getValue() ) ) 
 			throw ParameterValueException( "radius", "Sphere 'widthX' must take values on the (0, 2 *radius] range" );
@@ -260,6 +263,9 @@ bool ShapeSphericalRectangle::ValidateParamaterValue( std::string name, std::str
 
     if( name == "widthZ" )
 	{
+		if( std::stod( value ) <= 0.0  ) 
+			throw ParameterValueException( "radius", "Sphere 'widthZ' must take positive values" );
+			
 		wZ = std::stod( value );
 		if ( std::stod( value ) > ( 2 * radius.getValue() ) ) 
 			throw ParameterValueException( "radius", "Sphere 'widthZ' must take values on the (0, 2 *radius] range" );
@@ -271,7 +277,6 @@ bool ShapeSphericalRectangle::ValidateParamaterValue( std::string name, std::str
 
 	return true;
 }
-
 
 bool ShapeSphericalRectangle::OutOfRange( double u, double v ) const
 {

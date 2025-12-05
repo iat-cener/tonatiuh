@@ -35,13 +35,11 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu.
 ***************************************************************************/
-
 #ifndef TRANSMISSIVITYSENGUPTANREL_H_
 #define TRANSMISSIVITYSENGUPTANREL_H_
 
 #include "trt.h"
 #include "TTransmissivity.h"
-
 
 class TransmissivitySenguptaNREL : public TTransmissivity
 {

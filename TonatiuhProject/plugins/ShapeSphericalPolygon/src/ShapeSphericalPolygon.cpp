@@ -164,7 +164,7 @@ bool ShapeSphericalPolygon::Intersect( const Ray& objectRay, double* tHit, Diffe
 	// Now check if the fucntion is being called from IntersectP,
 	// in which case the pointers tHit and dg are 0
 	if( ( tHit == 0 ) && ( dg == 0 ) ) return true;
-	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeSphere::Intersect(...) called with null pointers" );
+	else if( ( tHit == 0 ) || ( dg == 0 ) ) gf::SevereError( "Function ShapeSphericalPolygon::Intersect(...) called with null pointers" );
 
 	double v = Vector3D( hitPoint).length()/ tPoint.length();
 

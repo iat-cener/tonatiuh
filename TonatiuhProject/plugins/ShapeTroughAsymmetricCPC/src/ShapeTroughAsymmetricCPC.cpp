@@ -207,7 +207,7 @@ Point3D ShapeTroughAsymmetricCPC::Sample( double u, double v ) const
 */
 bool ShapeTroughAsymmetricCPC::ValidateParamaterValue( std::string name, std::string value ) const
 {
-	if( name == "rInt" && std::stod( value ) < 0 ) 
+	if( name == "rInt" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "rInt", "The internal radius must be a positive number" );
 	else if( name == "rInt" && std::stod( value ) > rExt.getValue() ) 
 		throw ParameterValueException( "rInt", "The internal radius must be less than external radius value" );
@@ -217,13 +217,19 @@ bool ShapeTroughAsymmetricCPC::ValidateParamaterValue( std::string name, std::st
 	else if( name == "rExt" && std::stod( value ) < rInt.getValue() ) 
 		throw ParameterValueException( "rExt", "The internal radius must be greater than internal radius value" );
 
-	if( name == "acceptanceAngleCW" && std::stod( value ) < 0 ) 
+	if( name == "acceptanceAngleCW" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "acceptanceAngleCW", "The 'acceptanceAngleCW' must be a positive number" );
-		
-	if( name == "acceptanceAngleCCW" && std::stod( value ) < 0 ) 
+
+	if( name == "acceptanceAngleCW" && std::stod( value ) >= 0.5 * gc::Pi ) 
+		throw ParameterValueException( "acceptanceAngleCW", "Angles above 90° are not physically possible for a CPC concentrator" );
+
+	if( name == "acceptanceAngleCCW" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "acceptanceAngleCCW", "The 'acceptanceAngleCCW' must be a positive number" );
 
-	if( name == "length" && std::stod( value ) < 0 ) 
+	if( name == "acceptanceAngleCCW" && std::stod( value ) >= 0.5 * gc::Pi ) 
+		throw ParameterValueException( "acceptanceAngleCCW", "Angles above 90° are not physically possible for a CPC concentrator" );
+
+	if( name == "length" && std::stod( value ) <= 0 ) 
 		throw ParameterValueException( "length", "The 'length' must be a positive number" );
 	return true;
 }

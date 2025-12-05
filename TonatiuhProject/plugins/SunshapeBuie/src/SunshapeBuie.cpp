@@ -32,27 +32,36 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "gc.h"
-
+#include "RandomDeviate.h"
 #include "SunshapeBuie.h"
+#include "Vector3D.h"
 
 const double SunshapeBuie::m_minCRSValue = 0.000001;
 const double SunshapeBuie::m_maxCRSValue = 0.849;
 
-
 SO_NODE_SOURCE(SunshapeBuie);
 
+/*!
+ * @brief Initializes the SunshapeBuie class in the nodes type system.
+ *
+ * This static function must be called once before using the node.
+ */
 void SunshapeBuie::initClass()
 {
 	SO_NODE_INIT_CLASS(SunshapeBuie, TSunShape, "TSunShape");
 }
 
+/*!
+* @brief Constructor for SunshapeBuie.
+*
+* Initializes the Buie sunshape with default parameters.
+*/
 SunshapeBuie::SunshapeBuie( )
 {
 	SO_NODE_CONSTRUCTOR( SunshapeBuie );
@@ -67,53 +76,22 @@ SunshapeBuie::SunshapeBuie( )
 	if( csrValue >= m_minCRSValue && csrValue <= m_maxCRSValue ) updateState( csrValue );
 }
 
-void SunshapeBuie::updateState( double csrValue )
-{
-    m_thetaSD = 0.00465;
-    m_thetaCS = 0.0436;
-    m_deltaThetaCSSD = m_thetaCS - m_thetaSD;
-    m_integralA = 9.224724736098827/1000000.0;
-	m_chi = chiValue( csrValue );
-	m_k = kValue( m_chi );
-	m_gamma = gammaValue( m_chi );
-	m_etokTimes1000toGamma = exp( m_k ) * pow( 1000, m_gamma );
-    m_integralB = intregralB( m_k, m_gamma, m_thetaCS, m_thetaSD );
-    m_alpha = 1.0/( m_integralA + m_integralB );
-    m_heightRectangle1 = 1.001 * pdfTheta( 0.0038915695846209047 );
-    m_heightRectangle2 = pdfTheta( m_thetaSD );
-    m_probabilityRectangle1 = probabilityRectangle1(  m_thetaSD, m_heightRectangle1, (m_thetaCS - m_thetaSD), m_heightRectangle2 );
-}
-
+/*!
+* @brief Destructor for SunshapeBuie.
+*
+* Cleans up resources specific to the Buie implementation.
+*/
 SunshapeBuie::~SunshapeBuie()
 {
 	delete m_csrSensor;
 }
 
-//Light Interface
-void SunshapeBuie::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
-{
-	double phi = gc::TwoPi * rand.RandomDouble();
-    double theta = zenithAngle( rand );
-    double sinTheta = sin( theta );
-    double cosTheta = cos( theta );
-    double cosPhi = cos( phi );
-    double sinPhi = sin( phi );
-
-    direction.x = sinTheta*sinPhi;
-    direction.y = -cosTheta;
-    direction.z = sinTheta*cosPhi;
-}
-
-double SunshapeBuie::GetIrradiance( void ) const
-{
-	return irradiance.getValue();
-}
-
-double SunshapeBuie::GetThetaMax() const
-{
-	return m_thetaCS;
-}
-
+/*!
+* @brief Create a copy of this node.
+*
+* @param copyConnections If true, connections to other nodes are also copied.
+* @return Pointer to the newly created copy.
+*/
 SoNode* SunshapeBuie::copy( SbBool copyConnections ) const
 {
 	// Use the standard version of the copy method to create
@@ -140,6 +118,54 @@ SoNode* SunshapeBuie::copy( SbBool copyConnections ) const
 	return newSunShape;
 }
 
+/*!
+* @brief Generate a ray direction according to the Buie sunshape.
+*
+* @param direction Output parameter for the sampled direction.
+* @param rand Random number generator used to sample the distribution.
+*/
+void SunshapeBuie::GenerateRayDirection( Vector3D& direction, RandomDeviate& rand ) const
+{
+	double phi = gc::TwoPi * rand.RandomDouble();
+    double theta = zenithAngle( rand );
+    double sinTheta = sin( theta );
+    double cosTheta = cos( theta );
+    double cosPhi = cos( phi );
+    double sinPhi = sin( phi );
+
+    direction.x = sinTheta*sinPhi;
+    direction.y = -cosTheta;
+    direction.z = sinTheta*cosPhi;
+}
+
+/*!
+* @brief Get the irradiance of the sunshape.
+* 
+* @return Irradiance value.
+*/
+double SunshapeBuie::GetIrradiance( void ) const
+{
+	return irradiance.getValue();
+
+}
+
+/*!
+* @brief Get the maximum angular extent (theta) of the sunshape.
+*
+* @return Maximum angle in radians.
+*/
+double SunshapeBuie::GetThetaMax() const
+{
+	return m_thetaCS;
+}
+
+/*!
+ * @brief Validates the CSR value and updates internal parameters.
+ *
+ * Checks whether the provided circumsolar ratio (CSR) is within the
+ * allowed limits. If the value is valid, the method updates the
+ * internal state variables of the sunshape model accordingly.
+ */
 void SunshapeBuie::updateCSR(void *data, SoSensor *)
 {
 	SunshapeBuie* sunshape = ( SunshapeBuie* ) data;
@@ -180,9 +206,6 @@ double SunshapeBuie::chiValue( double csr ) const
 	return 0.004733749294807862 + csr * (4.716738065192151 + csr * (-463.506669149804 + csr * ( 24745.88727411664+
 	          csr * (-606122.7511711778 + 5521693.445014727 * csr ) ) ) );
 
-	/*return -4.7172422329669 * (-1.4070438092190156 + csr) * (0.0313462488977661 + csr) * (0.08846465256738223 + csr) *
-			( 0.7843687910540035 + (-1.2947513603654814 + csr ) * csr );
-			*/
 }
 
 double SunshapeBuie::phiSolarDisk( double theta ) const
@@ -231,4 +254,27 @@ double SunshapeBuie::probabilityRectangle1( double widthR1, double heightR1, dou
 	double areaR1 = widthR1 * heightR1;
 	double areaR2 = widthR2 * heightR2;
 	return areaR1 / ( areaR1 + areaR2 );
+}
+/*!
+ * @brief Updates the internal state of the Buie sunshape model based on a CSR value.
+ *
+ * This function recalculates all the key parameters of the SunshapeBuie model.
+ * 
+ * @param csrValue The circumsolar ratio value used to update the model parameters.
+ */
+void SunshapeBuie::updateState( double csrValue )
+{
+    m_thetaSD = 0.00465;
+    m_thetaCS = 0.0436;
+    m_deltaThetaCSSD = m_thetaCS - m_thetaSD;
+    m_integralA = 9.224724736098827/1000000.0;
+	m_chi = chiValue( csrValue );
+	m_k = kValue( m_chi );
+	m_gamma = gammaValue( m_chi );
+	m_etokTimes1000toGamma = exp( m_k ) * pow( 1000, m_gamma );
+    m_integralB = intregralB( m_k, m_gamma, m_thetaCS, m_thetaSD );
+    m_alpha = 1.0/( m_integralA + m_integralB );
+    m_heightRectangle1 = 1.001 * pdfTheta( 0.0038915695846209047 );
+    m_heightRectangle2 = pdfTheta( m_thetaSD );
+    m_probabilityRectangle1 = probabilityRectangle1(  m_thetaSD, m_heightRectangle1, (m_thetaCS - m_thetaSD), m_heightRectangle2 );
 }

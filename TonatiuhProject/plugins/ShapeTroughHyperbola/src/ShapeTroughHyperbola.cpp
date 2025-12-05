@@ -32,30 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <algorithm>
-#include <vector>
-
-#include <QIcon>
-#include <QMap>
-#include <QMessageBox>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
-#include "BBox.h"
 #include "gf.h"
+#include "ParameterValueException.h"
 #include "Ray.h"
-#include "Vector3D.h"
-
-#include "DifferentialGeometry.h"
 #include "ShapeTroughHyperbola.h"
-
 
 SO_NODE_SOURCE(ShapeTroughHyperbola);
 
@@ -65,68 +52,31 @@ void ShapeTroughHyperbola::initClass()
 }
 
 ShapeTroughHyperbola::ShapeTroughHyperbola()
-:m_asymptoticAngle( 0 ),
- m_lastApertureValue( 0.25 ),
- m_lastFocusHyperbola( 0.32 ),
- m_lastHyperbolaHeightValue( 1.0 ),
- m_lastTruncationHeightValue( 0.0 ),
- m_lastZLengthXMinValue(1.0),
- m_lastZLengthXMaxValue(1.0)
 {
 
 	SO_NODE_CONSTRUCTOR(ShapeTroughHyperbola);
-	SO_NODE_ADD_FIELD( a0, (m_lastApertureValue) );
-	SO_NODE_ADD_FIELD( focusHyperbola, ( m_lastFocusHyperbola ) );
-	SO_NODE_ADD_FIELD( truncationHeight, ( m_lastTruncationHeightValue ) );
-	SO_NODE_ADD_FIELD( hyperbolaHeight, ( m_lastHyperbolaHeightValue ) );
-	SO_NODE_ADD_FIELD( zLengthXMin, (m_lastZLengthXMinValue) );
-	SO_NODE_ADD_FIELD( zLengthXMax, (m_lastZLengthXMaxValue) );
-
-
-	SetAsymptoticAngle();
-
-	SoFieldSensor* m_apertureSensor = new SoFieldSensor(updateApertureValue, this);
-	m_apertureSensor->setPriority( 0 );
-	m_apertureSensor->attach( &a0 );
-	SoFieldSensor* m_fHSensor = new SoFieldSensor(updateFocusValue, this);
-	m_fHSensor->setPriority( 1 );
-	m_fHSensor->attach( &focusHyperbola );
-	SoFieldSensor* lengthSensor1 = new SoFieldSensor(updateLengthValues, this);
-	lengthSensor1->setPriority( 1 );
-	lengthSensor1->attach( &zLengthXMin );
-	SoFieldSensor* lengthSensor2 = new SoFieldSensor(updateLengthValues, this);
-	lengthSensor2->setPriority( 1 );
-	lengthSensor2->attach( &zLengthXMax );
-	SoFieldSensor* m_heightSensor = new SoFieldSensor(updateHeightValue, this);
-	m_heightSensor->setPriority( 1 );
-	m_heightSensor->attach( &hyperbolaHeight );
-	SoFieldSensor* m_truncationSensor = new SoFieldSensor(updateTruncationValue, this);
-	m_truncationSensor->setPriority( 1 );
-	m_truncationSensor->attach( &truncationHeight );
-
-
+	SO_NODE_ADD_FIELD( a0, ( 0.25 ) );
+	SO_NODE_ADD_FIELD( focusHyperbola, ( 0.32 ) );
+	SO_NODE_ADD_FIELD( truncationHeight, ( 0.0 ) );
+	SO_NODE_ADD_FIELD( hyperbolaHeight, ( 1.0 ) );
+	SO_NODE_ADD_FIELD( zLengthXMin, ( 1.0 ) );
+	SO_NODE_ADD_FIELD( zLengthXMax, (1.0 ) );
 }
 
 ShapeTroughHyperbola::~ShapeTroughHyperbola()
 {
 }
 
-
-double ShapeTroughHyperbola::GetArea() const
-{
-	return -1;
-}
-
 BBox ShapeTroughHyperbola::GetBBox() const
 {
-	double a = a0.getValue();
-	double b = a / tan( m_asymptoticAngle );
 
-	double xMin =  sqrt( a * a * ( 1 +
-			( ( truncationHeight.getValue() * truncationHeight.getValue() )
+	double a = a0.getValue();
+	double asymptoticAngle = asin( a / focusHyperbola.getValue() );
+	double b = a / tan( asymptoticAngle );
+
+	double xMin =  sqrt( a * a * ( 1 + ( ( truncationHeight.getValue() * truncationHeight.getValue() )
 					/ ( b* b ) ) ) );
-	double xMax = sqrt( a * a * ( 1 +
-			( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
+	double xMax = sqrt( a * a * ( 1 + ( ( hyperbolaHeight.getValue() * hyperbolaHeight.getValue() )
 					/ ( b* b ) ) ) );
 
 	double yMin = truncationHeight.getValue();
@@ -138,15 +88,16 @@ BBox ShapeTroughHyperbola::GetBBox() const
 	return BBox( Point3D( xMin, yMin, zMin ), Point3D( xMax, yMax, zMax ) );
 }
 
-QString ShapeTroughHyperbola::GetIcon() const
+std::string ShapeTroughHyperbola::GetIcon() const
 {
-	return ":/icons/ShapeTroughHyperbola.png";
+	return ( ":/icons/ShapeTroughHyperbola.png" );
 }
 
-bool ShapeTroughHyperbola::Intersect(const Ray& objectRay, double *tHit, DifferentialGeometry *dg) const
+bool ShapeTroughHyperbola::Intersect( const Ray& objectRay, double *tHit, DifferentialGeometry *dg ) const
 {
 	double a = a0.getValue();
-	double b = a / tan( m_asymptoticAngle );
+	double asymptoticAngle = asin( a / focusHyperbola.getValue() );
+	double b = a / tan( asymptoticAngle );
 
 	double A = ( ( b * b ) * ( objectRay.direction().x * objectRay.direction().x ) )
 				- ( ( objectRay.direction().y * objectRay.direction().y ) * ( a * a ) );
@@ -221,7 +172,7 @@ bool ShapeTroughHyperbola::Intersect(const Ray& objectRay, double *tHit, Differe
 	Vector3D dpdv = GetDPDV( u, v );
 
 	// Compute cylinder \dndu and \dndv
-	double tanAngle = tan( m_asymptoticAngle );
+	double tanAngle = tan( asymptoticAngle );
 	double h = hyperbolaHeight.getValue();
 	double t = truncationHeight.getValue();
 	double cotAngle = 1 / tanAngle;
@@ -278,94 +229,12 @@ bool ShapeTroughHyperbola::IntersectP( const Ray& objectRay ) const
 }
 
 Point3D ShapeTroughHyperbola::Sample( double u, double v ) const
-{
-	return GetPoint3D( u, v );
-}
-
-void ShapeTroughHyperbola::updateApertureValue( void *data, SoSensor *)
-{
-	ShapeTroughHyperbola* shape = (ShapeTroughHyperbola *) data;
-	if( shape->a0.getValue() < 0 )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Hyperbola Trough a0 must take positive value. ") );
-		shape->a0.setValue( shape->m_lastApertureValue );
-	}
-	else
-		shape->m_lastApertureValue = shape->a0.getValue();
-
-
-	shape->SetAsymptoticAngle();
-}
-
-void ShapeTroughHyperbola::updateFocusValue( void *data, SoSensor *)
-{
-	ShapeTroughHyperbola* shape = (ShapeTroughHyperbola *) data;
-	if( ( shape->focusHyperbola.getValue() < 0 ) ||
-			( shape->focusHyperbola.getValue() <=  shape->a0.getValue() ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Hyperbola Trough focus value must take values on the ( a0, Infinity ) range. ") );
-		shape->focusHyperbola.setValue( shape->m_lastFocusHyperbola );
-	}
-	else
-		shape->m_lastFocusHyperbola = shape->focusHyperbola.getValue();
-
-	shape->SetAsymptoticAngle();
-}
-
-void ShapeTroughHyperbola::updateLengthValues( void *data, SoSensor *)
-{
-	ShapeTroughHyperbola* shape = (ShapeTroughHyperbola *) data;
-	if( ( shape->zLengthXMin.getValue() < 0 ) || ( shape->zLengthXMax.getValue() < 0 ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Hyperbola Trough z length variables must take positive values. ") );
-		shape->zLengthXMin.setValue( shape->m_lastZLengthXMinValue );
-		shape->zLengthXMax.setValue( shape->m_lastZLengthXMaxValue );
-	}
-	else
-	{
-		shape->m_lastZLengthXMinValue = shape->zLengthXMin.getValue();
-		shape->m_lastZLengthXMaxValue = shape->zLengthXMax.getValue();
-	}
-}
-
-void ShapeTroughHyperbola::updateHeightValue( void *data, SoSensor *)
-{
-	ShapeTroughHyperbola* shape = (ShapeTroughHyperbola *) data;
-	if( shape->hyperbolaHeight.getValue() < 0 )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Hyperbola Trough height must take positive value. ") );
-		shape->hyperbolaHeight.setValue( shape->m_lastHyperbolaHeightValue );
-	}
-	else if( shape->hyperbolaHeight.getValue() <=  shape->truncationHeight.getValue() )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Hyperbola Trough  height must take values on the ( truncationHeight, Infinity ) range. ") );
-		shape->hyperbolaHeight.setValue( shape->m_lastHyperbolaHeightValue );
-	}
-	else
-		shape->m_lastHyperbolaHeightValue = shape->hyperbolaHeight.getValue();
-
-
-	shape->SetAsymptoticAngle();
-}
-void ShapeTroughHyperbola::updateTruncationValue( void *data, SoSensor *)
-{
-	ShapeTroughHyperbola* shape = (ShapeTroughHyperbola *) data;
-	if( ( shape->truncationHeight.getValue() < 0 ) || ( shape->truncationHeight.getValue() >= shape->hyperbolaHeight.getValue() ) )
-	{
-		QMessageBox::warning( 0, QString( "Tonatiuh" ), QString( "Hyperbola Trough truncation must take values on the [0, hyperbolaHeight ) range. ") );
-		shape->truncationHeight.setValue( shape->m_lastTruncationHeightValue );
-	}
-	else
-		shape->m_lastTruncationHeightValue = shape->truncationHeight.getValue();
-}
-
-
-Point3D ShapeTroughHyperbola::GetPoint3D( double u, double v ) const
-{
+{	
 	if ( OutOfRange( u, v ) ) gf::SevereError( "Function Poligon::GetPoint3D called with invalid parameters" );
 
 	double a = a0.getValue();
-	double b = a / tan( m_asymptoticAngle );
+	double asymptoticAngle = asin( a / focusHyperbola.getValue() );
+	double b = a / tan( asymptoticAngle );
 
 	double xmin =  sqrt( a * a * ( 1 +
 			( ( truncationHeight.getValue() * truncationHeight.getValue() )
@@ -380,7 +249,29 @@ Point3D ShapeTroughHyperbola::GetPoint3D( double u, double v ) const
 	double zMax = ( 0.5 * zLengthXMin.getValue() ) + m * ( x - xmin );
 	double z = zMax * ( 2 * v - 1 );
 	return Point3D (x, y, z);
+}
 
+bool ShapeTroughHyperbola::ValidateParamaterValue( std::string name, std::string value ) const
+{
+	if( name == "a0" && std::stod( value ) < 0 ) 
+		throw ParameterValueException( "a0", "Hyperbola Trough 'a0' parameter must take a positive number" );
+
+	if( name == "focusHyperbola" && std::stod( value ) < a0.getValue() ) 
+		throw ParameterValueException( "focusHyperbola", "Hyperbola Trough 'focusHyperbola' value must take values on the ( a0, Infinity ) range" );
+
+	if( name == "zLengthXMin" && std::stod( value ) <= 0.0 ) 
+		throw ParameterValueException( "zLengthXMin", "Hyperbola Trough z length variables must take positive values" );
+
+	if( name == "zLengthXMax" && std::stod( value ) <= 0.0 ) 
+		throw ParameterValueException( "zLengthXMax", "Hyperbola Trough z length variables must take positive values" );
+
+	if( name == "hyperbolaHeight" && std::stod( value ) <= truncationHeight.getValue() ) 
+		throw ParameterValueException( "hyperbolaHeight", "Hyperbola Trough 'hyperbolaHeight' must take values on the ( truncationHeight, Infinity ) range" );
+
+	if( name == "truncationHeight" && ( ( std::stod( value ) <= 0.0 ) || ( std::stod( value ) >= hyperbolaHeight.getValue() ) ) )
+		throw ParameterValueException( "truncationHeight", "Hyperbola Trough 'truncationHeight' must take values on the (0, hyperbolaHeight ) range" );
+
+	return true;
 }
 
 NormalVector ShapeTroughHyperbola::GetNormal (double u ,double v) const
@@ -391,7 +282,6 @@ NormalVector ShapeTroughHyperbola::GetNormal (double u ,double v) const
 	return Normalize( NormalVector( CrossProduct( dpdu, dpdv ) ) );
 
 }
-
 
 /*!
  * Returns true whether \a u and \a v are valid parameters.
@@ -444,7 +334,7 @@ void ShapeTroughHyperbola::generatePrimitives(SoAction *action)
 
     		vj = ( 1.0 /(double)(columns-1) ) * j;
 
-    		Point3D point = GetPoint3D(ui, vj);
+    		Point3D point = Sample(ui, vj);
     		NormalVector normal = GetNormal(ui, vj);
 
     		vertex[h][0] = point.x;
@@ -506,21 +396,14 @@ void ShapeTroughHyperbola::generatePrimitives(SoAction *action)
 
 		}
 	}
-
 	endShape();
-
-}
-
-void ShapeTroughHyperbola::SetAsymptoticAngle()
-{
-	m_asymptoticAngle = asin( a0.getValue() / focusHyperbola.getValue() );
 }
 
 Vector3D ShapeTroughHyperbola::GetDPDU( double u, double v ) const
 {
-
 	double a = a0.getValue();
-	double tanAngle = tan( m_asymptoticAngle );
+	double asymptoticAngle = asin( a / focusHyperbola.getValue() );
+	double tanAngle = tan( asymptoticAngle );
 	double h2 = hyperbolaHeight.getValue();
 	double h1 = truncationHeight.getValue();
 	double cotAngle = 1 / tanAngle;
@@ -528,17 +411,12 @@ Vector3D ShapeTroughHyperbola::GetDPDU( double u, double v ) const
 	double aux2 = sqrt( a * a * (1 + ( ( h2 * h2 * tanAngle * tanAngle )/ ( a * a ) ) ) );
 	double x = aux1 + aux2;
 
-
 	double y = ( cotAngle * cotAngle * x * ( -aux1 + u * x ) )
 			/ sqrt( a * a * cotAngle * cotAngle * ( -1 + ( ( ( -aux1 + u * x )  * ( -aux1 + u * x ) ) / ( a * a ) ) ) );
 
-
 	double z = (-0.5 * zLengthXMin.getValue() + 0.5 * zLengthXMax.getValue() ) * ( -1 + 2 * v );
 
-
 	return Vector3D( x, y, z );
-
-
 }
 
 Vector3D ShapeTroughHyperbola::GetDPDV ( double u, double /* v */ ) const
