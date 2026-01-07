@@ -33,16 +33,15 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #ifndef MATERIALVIRTUAL_H_
 #define MATERIALVIRTUAL_H_
 
-#include "TMaterial.h"
+#include <Inventor/sensors/SoFieldSensor.h>
 
-class SoSensor;
-class SoFieldSensor;
+#include "TMaterial.h"
 
 class MaterialVirtual : public TMaterial
 {

@@ -33,23 +33,20 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef MATERIALANGLEDEPENDENTSPECULAR_H_
 #define MATERIALANGLEDEPENDENTSPECULAR_H_
 
 #include <vector>
 
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "TMaterial.h"
 #include "MFVec2.h"
 #include "trt.h"
-
-class SoFieldSensor;
-class SoSensor;
 
 class MaterialAngleDependentSpecular : public TMaterial
 {

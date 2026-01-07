@@ -32,21 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, I�igo Les.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef FLUXANALYSIS_H_
 #define FLUXANALYSIS_H_
 
 #include <QString>
 
-class TSceneKit;
-class SceneModel;
-class InstanceNode;
-class RandomDeviate;
-class TPhotonMap;
-
+#include "InstanceNode.h"
+#include "SceneModel.h"
+#include "TPhotonMap.h"
+#include "TSceneKit.h"
 
 class FluxAnalysis
 {

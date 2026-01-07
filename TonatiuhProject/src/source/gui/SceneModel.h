@@ -32,26 +32,20 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SCENEMODEL_H_
 #define SCENEMODEL_H_
 
 #include <QAbstractItemModel>
 
-#include "tgc.h"
+#include <Inventor/nodes/SoSeparator.h>
 
-class InstanceNode;
-class QModelIndex;
-class SoBaseKit;
-class SoNode;
-class SoNodeKitPath;
-class SoSeparator;
-class TLightKit;
-class TSeparatorKit;
-class TSceneKit;
+#include "InstanceNode.h"
+#include "tgc.h"
+#include "TLightKit.h"
+#include "TSceneKit.h"
 
 class SceneModel : public QAbstractItemModel
 {

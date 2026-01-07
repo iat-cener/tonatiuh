@@ -40,10 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include <Inventor/fields/SoSFEnum.h>
 
-#include "TShape.h"
+#include "BBox.h"
 #include "trt.h"
-
-struct Vector3D;
+#include "TShape.h"
 
 class ShapeHyperboloid : public TShape
 {

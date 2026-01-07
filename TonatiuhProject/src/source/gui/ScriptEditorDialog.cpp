@@ -1,7 +1,7 @@
 /***************************************************************************
 Copyright (C) 2008 by the Tonatiuh Software Development Team.
 
-This FilesModelfile is part of Tonatiuh.
+This file is part of Tonatiuh.
 
 Tonatiuh program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,19 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <iostream>
-
-#include <QDateTime>
 #include <QScriptEngine>
 
-#include "FilesModel.h"
 #include "ScriptEditorDialog.h"
 #include "ScriptRayTracer.h"
-
 
 /**
  * Creates a dialog to edit scripts and run them. The list \a listRandomDeviateFactory is

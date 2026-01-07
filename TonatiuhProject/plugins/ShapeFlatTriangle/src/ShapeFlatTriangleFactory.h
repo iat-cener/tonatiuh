@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPEFLATTRIANGLEFACTORY_H_
 #define SHAPEFLATTRIANGLEFACTORY_H_
 
+#include <QObject>
+
 #include "TShapeFactory.h"
 #include "ShapeFlatTriangle.h"
 

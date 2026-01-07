@@ -32,68 +32,36 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <string>
-#include "Timer.h"
+#include <QIcon>
 
-// Timer Method Definitions
-Timer::Timer()
+#include "ShapeFlatRectangleFactory.h"
+
+QString ShapeFlatRectangleFactory::TShapeName() const
 {
-	#if defined( WIN32 )
-        // Windows Timer Initialization
-        QueryPerformanceFrequency( &m_performance_frequency );
-        m_oneoverfrequency = 1.0/((double)m_performance_frequency.QuadPart);
-	#endif
-
-        m_time0 = m_elapsed = 0;
-        m_running = 0;
+	return QString("Flat_Rectangle");
 }
 
-double Timer::GetTime()
+QIcon ShapeFlatRectangleFactory::TShapeIcon() const
 {
+	return QIcon(":/icons/ShapeFlatRectangle.png");
+}
 
-#if defined( WIN32 )
-        // Windows GetTime
-        QueryPerformanceCounter( &m_performance_counter );
-        return (double) m_performance_counter.QuadPart * m_oneoverfrequency;
-#else
-        // UNIX GetTime
-        gettimeofday( &m_timeofday, NULL );
-        return m_timeofday.tv_sec + m_timeofday.tv_usec / 1000000.0;
+ShapeFlatRectangle* ShapeFlatRectangleFactory::CreateTShape( ) const
+{
+	static bool firstTime = true;
+	if ( firstTime )
+	{
+	    ShapeFlatRectangle::initClass();
+	    firstTime = false;
+	}
+
+	return new ShapeFlatRectangle;
+}
+
+#if QT_VERSION < 0x050000 // pre Qt 5
+Q_EXPORT_PLUGIN2(ShapeFlatRectangle, ShapeFlatRectangleFactory)
 #endif
-}
 
-Timer::~Timer()
-{
-
-}
-
-void Timer::Start()
-{
-	m_running = 1;
-    m_time0 = GetTime();
-}
-
-void Timer::Stop()
-{
-	m_running = 0;
-	m_elapsed += GetTime() - m_time0;
-}
-
-void Timer::Reset()
-{
-	m_running = 0;
-    m_elapsed = 0;
-}
-
-double Timer::Time()
-{
-	if (m_running)
-    {
-    	Stop();
-        Start();
-    }
-    return m_elapsed;
-}

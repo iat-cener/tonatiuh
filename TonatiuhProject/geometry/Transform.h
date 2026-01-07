@@ -33,23 +33,18 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef TRANSFORM_H_
 #define TRANSFORM_H_
 
 #include <iostream>
 
+#include "BBox.h"
 #include "Matrix4x4.h"
+#include "Point3D.h"
 #include "Ptr.h"
-
-struct Point3D;
-struct Vector3D;
-struct NormalVector;
-class Ray;
-struct BBox;
 
 class Transform
 {

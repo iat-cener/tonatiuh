@@ -32,25 +32,22 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef TSHAPEKIT_H_
 #define TSHAPEKIT_H_
 
 #include <Inventor/nodekits/SoShapeKit.h>
-#include <QString>
 
-class RandomDeviate;
-class Ray;
+#include "RandomDeviate.h"
+#include "Ray.h"
 
 //!  TShapeKit class groups what is necessary to the shape.
 /*!
   TShapeKit groups the shape geometry, material and the transformation.
 
 */
-
 class TShapeKit : public SoShapeKit
 {
 	typedef SoShapeKit inherited;

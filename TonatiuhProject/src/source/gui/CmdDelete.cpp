@@ -32,22 +32,19 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include <Inventor/nodekits/SoBaseKit.h>
 
 #include "CmdDelete.h"
 #include "InstanceNode.h"
-#include "SceneModel.h"
 
 /**
  * Creates a new delete command that represents the \a selectedIndex node in the \a model deletion.
  *
  * If \a parent is not null, this command is appended to parent's child list and then owns this command.
  */
-
 CmdDelete::CmdDelete( const QModelIndex& selectedIndex, SceneModel& model, QUndoCommand* parent )
 : QUndoCommand("Delete", parent),  m_coinNode( 0 ), m_coinParent( 0 ), m_pModel(&model), m_row( -1 )
 {

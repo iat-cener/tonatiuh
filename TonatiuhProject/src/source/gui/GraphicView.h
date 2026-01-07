@@ -32,21 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef GRAPHICVIEW_H_
 #define GRAPHICVIEW_H_
 
 #include <QAbstractItemView>
 
-class GraphicRoot;
-class QModelIndex;
-class SbViewportRegion;
-class SoCamera;
-class SoQtExaminerViewer;
-class TSeparatorKit;
+#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+
+#include "GraphicRoot.h"
 
 //!  GraphicView class implements a 3D representation of items from a model.
 /*!

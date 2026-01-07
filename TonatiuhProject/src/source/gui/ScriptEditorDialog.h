@@ -32,32 +32,25 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-
 #ifndef SCRIPTEDITORDIALOG_H_
 #define SCRIPTEDITORDIALOG_H_
 
 #include <QDialog>
+#include <QScriptContext>
 #include <QScriptValue>
 
-#include "ui_scripteditordialog.h"
+#include "FilesModel.h"
+#include "RandomDeviateFactory.h"
 
-class FilesModel;
-class QItemSelectionModel;
-class QLineEdit;
-class QScriptContext;
-class QScriptEngine;
-class TPhotonMapFactory;
-class RandomDeviateFactory;
+#include "ui_scripteditordialog.h"
 
 //!  ScriptEditorDialog class is the dialog to edit and run scripts with Tonatiuh.
 /*!
   ScriptEditorDialog allow to the user open, edit, run and save scripts to automate the ray tracing.
 */
-
 class ScriptEditorDialog : public QDialog, private Ui::ScriptEditorDialog
 {
 	Q_OBJECT

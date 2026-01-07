@@ -32,20 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CELESTIALWIDGET_H
 #define CELESTIALWIDGET_H
 
+#include <QLabel>
 #include <QWidget>
 
+#include <Inventor/nodes/SoSeparator.h>
+
 #include "sunpos.h"
-
-class QLabel;
-class SoSeparator;
-
 
 class CelestialWidget : public QWidget
 {

@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SUNSHAPEPILLBOXFACTORY_H_
 #define SUNSHAPEPILLBOXFACTORY_H_
 
+#include <QObject>
+
 #include "SunshapePillbox.h"
 #include "TSunShapeFactory.h"
 

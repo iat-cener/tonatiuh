@@ -32,22 +32,10 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/nodekits/SoAppearanceKit.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoTransform.h>
-
-#include "DifferentialGeometry.h"
-#include "Ray.h"
-#include "TCube.h"
-#include "TMaterial.h"
-#include "TShape.h"
 #include "TShapeKit.h"
-
 
 SO_KIT_SOURCE(TShapeKit);
 
@@ -73,11 +61,8 @@ TShapeKit::TShapeKit()
 	SO_KIT_INIT_INSTANCE();
 
 	setPart("shape", NULL );
-
-	//SoTransform* transform = new SoTransform;
-	//setPart("transform",  NULL);
-
 }
+
 /*!
  * Destroys the TShapeKit object.
  */

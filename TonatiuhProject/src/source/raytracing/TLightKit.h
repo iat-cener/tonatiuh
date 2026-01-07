@@ -32,23 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef TLIGHTKIT_H_
 #define TLIGHTKIT_H_
-
-#include <QVector>
 
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodekits/SoLightKit.h>
 
+#include "Transform.h"
 #include "trt.h"
-
-struct BBox;
-class Transform;
-class TShapeKit;
+#include "TShapeKit.h"
 
 /*!
   \class TLightKit TLightKit.h TLightKit.h

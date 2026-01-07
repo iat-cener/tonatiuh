@@ -33,11 +33,13 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #ifndef MATERIALANGLEDEPENDINGREFRACTIVEFACTORY_H_
 #define MATERIALANGLEDEPENDINGREFRACTIVEFACTORY_H_
+
+#include <QObject>
 
 #include "MaterialAngleDependentRefractive.h"
 #include "TMaterialFactory.h"

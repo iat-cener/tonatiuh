@@ -32,9 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
+#include <Inventor/SbName.h>
+#include <Inventor/SbString.h>
+#include <Inventor/fields/SoField.h>
+
+#include "CmdModifyParameter.h"
+#include "gf.h"
 
 //!  CmdModifyParameter class is the parameter modification command stored in the command stack.
 /*!
@@ -42,17 +48,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
   This class saves the new value of the parameter and old one to restore the previous state.
    \sa CmdLightPositionModified
 */
-
-#include <Inventor/SbName.h>
-#include <Inventor/SbString.h>
-#include <Inventor/fields/SoField.h>
-#include <Inventor/nodes/SoNode.h>
-
-#include "gf.h"
-
-#include "CmdModifyParameter.h"
-#include "InstanceNode.h"
-#include "SceneModel.h"
 
 /**
  * CmdModifyParameter creates a new command that represents a scene node parameter value modification. This object saves the \a parameterName parameter value of \a nodeIndex node and the new one

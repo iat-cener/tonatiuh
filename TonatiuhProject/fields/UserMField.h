@@ -33,10 +33,9 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef USERMFIELD_H_
 #define USERMFIELD_H_
 
@@ -45,8 +44,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/fields/SoMField.h>
 
-class FieldEditor;
-class QWidget;
+#include "FieldEditor.h"
 
 class UserMField: public SoMField
 {

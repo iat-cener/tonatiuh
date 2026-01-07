@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPEPARABOLICRECTANGLEFACTORY_H_
 #define SHAPEPARABOLICRECTANGLEFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeParabolicRectangle.h"
 #include "TShapeFactory.h"
 

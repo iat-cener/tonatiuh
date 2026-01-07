@@ -32,18 +32,14 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <Inventor/nodes/SoSelection.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
 
-#include "gf.h"
 #include "GraphicRoot.h"
-#include "GraphicRootTracker.h"
-#include "TSceneKit.h"
+
+#include "gf.h"
 
 void selectionFinishCallback( void * userData, SoSelection* selection )
 {

@@ -32,25 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QItemSelectionModel>
 #include <QMessageBox>
 
-#include "gc.h"
-
-#include "FieldContainerWidget.h"
 #include "InstanceNode.h"
 #include "LightDialog.h"
-#include "SceneModel.h"
-#include "TLightKit.h"
-#include "TShape.h"
-#include "TShapeKit.h"
-#include "TShapeFactory.h"
-#include "TSunShape.h"
-#include "TSunShapeFactory.h"
 
 /**
  * Creates a new dialog for the light definition.

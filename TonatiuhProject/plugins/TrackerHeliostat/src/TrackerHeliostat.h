@@ -39,10 +39,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #define TRACKERHELIOSTAT_H_
 
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "TTrackerForAiming.h"
-
-class SoFieldSensor;
 
 class TrackerHeliostat : public TTrackerForAiming
 {
@@ -73,7 +72,7 @@ protected:
 
 private:
 	virtual void evaluate();
-
+	
 	int m_previousAimingPointType;
 	SoFieldSensor* m_infoDisplayed;
 };

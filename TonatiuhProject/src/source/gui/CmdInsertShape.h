@@ -32,24 +32,22 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDINSERTSHAPE_H_
 #define CMDINSERTSHAPE_H_
 
 #include <QUndoCommand>
 
-class SceneModel;
-class TShapeKit;
-class TShape;
+#include "SceneModel.h"
+#include "TShape.h"
+#include "TShapeKit.h"
 
 //!  CmdInsertShape class is the insert command for shapes stored in the command stack.
 /*!
   CmdInsertShape represents a single shape insertion action on a scene, insert a new shape node to the scene.
 */
-
 class CmdInsertShape : public QUndoCommand
 {
 public:

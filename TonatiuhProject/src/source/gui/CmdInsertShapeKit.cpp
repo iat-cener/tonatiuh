@@ -32,19 +32,12 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/nodekits/SoNodeKitListPart.h>
-
-#include "gf.h"
-
 #include "CmdInsertShapeKit.h"
+#include "gf.h"
 #include "InstanceNode.h"
-#include "SceneModel.h"
-#include "TShapeKit.h"
 
 /**
  * Creates a new shapekit insert command that adds a \a shapekit node to a node given with the \a parentIndex node in the \a model.

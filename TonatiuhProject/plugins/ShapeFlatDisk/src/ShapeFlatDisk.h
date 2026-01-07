@@ -40,8 +40,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include <Inventor/fields/SoSFEnum.h>
 
-#include "TShape.h"
 #include "trt.h"
+#include "TShape.h"
 
 class ShapeFlatDisk : public TShape
 {

@@ -32,45 +32,33 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <Inventor/SbVec3f.h>
+#include <QMainWindow>
+#include <QUndoStack>
+#include <QUndoView>
 
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoSelection.h>
+
+#include "Document.h"
+#include "GraphicRoot.h"
+#include "GraphicView.h"
+#include "InstanceNode.h"
+#include "PhotonMapExport.h"
+#include "PhotonMapExportSettings.h"
+#include "PluginManager.h"
 #include "tgc.h"
+#include "TLightShape.h"
+#include "TPhotonMap.h"
+#include "TSunShape.h"
+#include "TTransmissivity.h"
 
 #include "ui_mainwindow.h"
-
-class Document;
-class GraphicRoot;
-class GraphicView;
-class InstanceNode;
-class PhotonMapExport;
-class PluginManager;
-class QDir;
-class QUndoStack;
-class QUndoView;
-class RandomDeviate;
-class SoDragger;
-class SoSelection;
-class SoSeparator;
-class SoTransform;;
-class TComponentFactory;
-class TLightShape;
-class TMaterialFactory;
-class TPhotonMap;
-class PhotonToMemory;
-class TShapeFactory;
-class TSunShape;
-class TTrackerFactory;
-class TTransmissivity;
-class SoCamera;
-
-struct PhotonMapExportSettings;
 
 //!  Main window class.
 /*!
@@ -85,9 +73,7 @@ class MainWindow: public QMainWindow, private Ui::MainWindow
 public:
 	MainWindow( QString tonatiuhFile = 0, QWidget* parent = 0 );
     ~MainWindow();
-
-    void FinishManipulation( );
-    void StartManipulation( SoDragger* dragger );
+    
     void ExecuteScriptFile( QString tonatiuhScriptFile );
     void SetPluginManager( PluginManager* pluginManager );
 

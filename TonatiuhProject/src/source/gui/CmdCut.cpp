@@ -32,15 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include <Inventor/nodekits/SoBaseKit.h>
 
-#include "InstanceNode.h"
 #include "CmdCut.h"
-#include "SceneModel.h"
+#include "InstanceNode.h"
 
 /**
  * Creates a new cut command that represents the cut the node located with \a index from the \a model.

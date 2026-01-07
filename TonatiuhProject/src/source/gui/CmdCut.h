@@ -32,24 +32,21 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDCUT_H_
 #define CMDCUT_H_
 
 #include <QUndoCommand>
 
-class QModelIndex;
-class SceneModel;
+#include "SceneModel.h"
 
 //!  CmdCut class is the cut command stored in the command stack.
 /*!
   CmdCut represents a single cut action on a scene, removes selected node from the scene and stores it in the clipboard.
    \sa CmdCopy, CmdPaste, CmdDelete
 */
-
 class CmdCut : public QUndoCommand
 {
 public:

@@ -32,25 +32,21 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDINSERTSEPARATORKIT_H_
 #define CMDINSERTSEPARATORKIT_H_
 
 #include <QUndoCommand>
 
-class InstanceNode;
-class QModelIndex;
-class TSeparatorKit;
-class SceneModel;
+#include "SceneModel.h"
+#include "TSeparatorKit.h"
 
 //! CmdInsertSeparatorKit class is the insert command for TSeparatorKit nodes stored in the command stack.
 /*!
   CmdInsertSeparatorKit represents a single TSeparatorKit insertion action on a scene, insert a new TSeparatorKit node to the scene.
 */
-
 class CmdInsertSeparatorKit : public QUndoCommand
 {
 public:

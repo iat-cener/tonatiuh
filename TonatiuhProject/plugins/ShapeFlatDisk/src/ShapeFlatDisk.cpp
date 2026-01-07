@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include "gc.h"
 #include "gf.h"
-#include "Ray.h"
 #include "ShapeFlatDisk.h"
 
 SO_NODE_SOURCE(ShapeFlatDisk);

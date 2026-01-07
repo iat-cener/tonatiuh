@@ -36,13 +36,10 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimene
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include "Point3D.h"
 #include "TrackerLinearFresnel.h"
-#include "Transform.h"
-#include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( TrackerLinearFresnel );
 
@@ -158,12 +155,22 @@ void TrackerLinearFresnel::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
 	SetEngineOutput(newTransform);
 }
 
+/*!
+ * @brief Dummy implementation of a virtual function from SoNodeEngine.
+ *
+ * This function is only defined because it is a pure virtual function in
+ * SoNodeEngine. It is not used in this class. The evalutation is performed
+ * into Evaluate function.
+ */
 void TrackerLinearFresnel::evaluate()
 {
 	
 }
 
-
+/*!
+ * This function is only defined because it is a pure virtual function in
+ * TTrackerForAiming. It is not used in this class.
+ */
 void TrackerLinearFresnel::SwitchAimingPointType()
 {
 	

@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPETRUMPETFACTORY_H_
 #define SHAPETRUMPETFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeTrumpet.h"
 #include "TShapeFactory.h"
 

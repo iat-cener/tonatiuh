@@ -55,7 +55,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include "gf.h"
 #include "ParameterValueException.h"
-#include "Ray.h"
 #include "ShapeTrumpet.h"
 
 SO_NODE_SOURCE(ShapeTrumpet);

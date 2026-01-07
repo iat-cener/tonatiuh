@@ -32,29 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <QFile>
 #include <QMessageBox>
-
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTransform.h>
 
 #include "ComponentHeliostatField.h"
 #include "HeliostatFieldWizard.h"
-#include "PluginManager.h"
-#include "Point3D.h"
-#include "TMaterial.h"
-#include "TMaterialFactory.h"
-#include "trt.h"
 #include "TSeparatorKit.h"
-#include "TShape.h"
 #include "TShapeFactory.h"
-#include "TShapeKit.h"
-#include "TTracker.h"
-#include "TTrackerFactory.h"
-#include "Vector3D.h"
 
 bool comparePuntosPorX( std::pair< Point3D, Point3D > pA, std::pair< Point3D, Point3D > pB )
 {
@@ -65,7 +51,6 @@ bool comparePuntosPorZ( std::pair< Point3D, Point3D > pA, std::pair< Point3D, Po
 {
 	return ( pA.first.z < pB.first.z );
 }
-
 
 ComponentHeliostatField::ComponentHeliostatField( PluginManager* pPluginManager )
 :m_pPluginManager( pPluginManager )

@@ -32,42 +32,11 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <Inventor/nodekits/SoSceneKit.h>
-
-#include "Document.h"
-#include "gc.h"
-#include "InstanceNode.h"
-#include "RandomDeviate.h"
-#include "RandomDeviateFactory.h"
 #include "SceneModel.h"
 #include "ScriptRayTracer.h"
-#include "TLightKit.h"
-#include "TPhotonMap.h"
-/*
-#include <QFutureWatcher>
-#include <QMutex>
-#include <QPoint>
-#include <QScriptContext>
-#include <QtConcurrentMap>
-
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoSelection.h>
-
-#include "GraphicRoot.h"
-#include "RayTracer.h"
-#include "RayTracerNoTr.h"
-#include "tgf.h"
-#include "TLightShape.h"
-#include "trf.h"
-#include "TSeparatorKit.h"
-#include "TShape.h"
-#include "TSunShape.h"
-#include "TTransmissivity.h"
-*/
 
 ScriptRayTracer::ScriptRayTracer(  QVector< RandomDeviateFactory* > listRandomDeviateFactory )
 :

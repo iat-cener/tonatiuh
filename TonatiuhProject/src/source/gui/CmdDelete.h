@@ -32,25 +32,21 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDDELETE_H_
 #define CMDDELETE_H_
 
 #include <QUndoCommand>
 
-class QModelIndex;
-class SceneModel;
-
+#include "SceneModel.h"
 
 //!  CmdDelete class is the delete command stored in the command stack.
 /*!
   CmdDelete represents a single node delete action on a scene. Deletes a node from the scene and all children.
    \sa CmdCopy, CmdCut, CmdPaste
 */
-
 class CmdDelete : public QUndoCommand
 {
 public:

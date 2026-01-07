@@ -32,28 +32,21 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 /*!
  * \class CmdChangeNodeName
  * \brief CmdChangeNodeName is the command that represents a node name change.
  *
  *CmdChangeNodeName represents a change in a node from the scene. The node can be any one.
  */
-
-#include <QModelIndex>
-#include <QString>
-
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
 
-#include "gf.h"
-
 #include "CmdChangeNodeName.h"
+#include "gf.h"
 #include "InstanceNode.h"
-#include "SceneModel.h"
 
 /*!
  * Creates a new CmdChangeNodeName command.

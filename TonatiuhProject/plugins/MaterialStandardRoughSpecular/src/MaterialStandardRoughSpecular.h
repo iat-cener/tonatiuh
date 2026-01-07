@@ -32,20 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #ifndef MATERIALSTANDARDROUGHSPECULAR_H_
 #define MATERIALSTANDARDROUGHSPECULAR_H_
 
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "TMaterial.h"
 #include "trt.h"
-
-class SoSensor;
-class SoFieldSensor;
-class Vector3D;
+#include "Vector3D.h"
 
 class MaterialStandardRoughSpecular : public TMaterial
 {

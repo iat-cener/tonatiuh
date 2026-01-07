@@ -32,30 +32,20 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef LIGHTDIALOG_H_
 #define LIGHTDIALOG_H_
 
 #include <QDialog>
-#include <QMap>
 
+#include "SceneModel.h"
+#include "TLightKit.h"
+#include "TSunShapeFactory.h"
 
 #include "ui_lightdialog.h"
 
-class QComboBox;
-class QFrame;
-class QGroupBox;
-class QItemSelectionModel;
-class QTabWidget;
-class SceneModel;
-class TLightKit;
-class TShape;
-class TShapeFactory;
-class TSunShape;
-class TSunShapeFactory;
 
 //!  LightDialog class is the dialog to define the light parameters.
 /*!

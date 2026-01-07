@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPESPHERICALRECTANGLEFACTORY_H_
 #define SHAPESPHERICALRECTANGLEFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeSphericalRectangle.h"
 #include "TShapeFactory.h"
 

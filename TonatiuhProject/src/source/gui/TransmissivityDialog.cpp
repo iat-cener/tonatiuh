@@ -30,16 +30,14 @@ National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117)
 Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
-Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Martin.
+Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoField.h>
 
 #include "TransmissivityDialog.h"
-#include "TTransmissivityFactory.h"
 
 TransmissivityDialog::TransmissivityDialog( QVector< TTransmissivityFactory* > transmissivityFactoryList, QWidget* parent )
 :QDialog( parent ),

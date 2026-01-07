@@ -32,11 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QLabel>
 #include <QVBoxLayout>
 
 #include <Inventor/nodes/SoComplexity.h>
@@ -45,22 +43,15 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSphere.h>
-#include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoText3.h>
-#include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 
 #include "gc.h"
-
 #include "HorizontalWidget.h"
 #include "Point3D.h"
-#include "Ray.h"
-#include "Vector3D.h"
-
 
 HorizontalWidget::HorizontalWidget( QWidget* parent )
 :QWidget( parent ), sphereRadio( 120.0 ), m_azimuth( 0 ), m_zenith( 0 )

@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef POLYGONFACTORY_H_
 #define POLYGONFACTORY_H_
 
+#include <QObject>
+
 #include "TShapeFactory.h"
 #include "ShapeSphericalPolygon.h"
 

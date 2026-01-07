@@ -33,14 +33,12 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include "gc.h"
 #include "Point3D.h"
 #include "Vector3D.h"
-#include <iostream>
 
 Point3D::Point3D( double dx, double dy, double dz )
 : x(dx), y(dy), z(dz)

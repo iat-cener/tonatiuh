@@ -33,26 +33,22 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-
 #ifndef PLUGINMANAGER_H_
 #define PLUGINMANAGER_H_
 
-#include <QVector>
+#include <QDir>
 
-class PhotonMapExportFactory;
-class QDir;
-class QStringList;
-class RandomDeviateFactory;
-class TComponentFactory;
-class TMaterialFactory;
-class TShapeFactory;
-class TSunShapeFactory;
-class TTrackerFactory;
-class TTransmissivityFactory;
+#include "PhotonMapExportFactory.h"
+#include "RandomDeviateFactory.h"
+#include "TComponentFactory.h"
+#include "TMaterialFactory.h"
+#include "TShapeFactory.h"
+#include "TSunShapeFactory.h"
+#include "TTrackerFactory.h"
+#include "TTransmissivityFactory.h"
 
 class PluginManager
 {

@@ -32,34 +32,28 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, Inigo Les.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #include <QFileInfo>
 #include <QFutureWatcher>
-#include <QModelIndex>
 #include <QProgressDialog>
 #include <QtConcurrentMap>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoTransform.h>
 
 #include "FluxAnalysis.h"
-#include "gc.h"
-#include "InstanceNode.h"
 #include "Photon.h"
 #include "RayTracer.h"
 #include "RayTracerNoTr.h"
-#include "SceneModel.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
-#include "TPhotonMap.h"
 #include "trf.h"
-#include "TSceneKit.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 #include "TSunShape.h"
 #include "TTransmissivity.h"
+#include <QModelIndex>
 
 /******************************************
  * FluxAnalysis

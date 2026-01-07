@@ -32,26 +32,20 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef DOCUMENT_H_
 #define DOCUMENT_H_
 
 #include <QObject>
 
-class QString;
-class SoSelection;
-class SoSeparator;
-class TSceneKit;
-class TShapeKit;
+#include "TSceneKit.h"
 
 //!  Document class stores the application scene.
 /*!
  * This class is not yet documented.
 */
-
 class Document : public QObject
 {
     Q_OBJECT
@@ -77,8 +71,6 @@ private:
 
     TSceneKit* m_scene;
     bool m_isModified;
-
-
 };
 
 #endif /*DOCUMENT_H_*/

@@ -32,26 +32,24 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <QBrush>
 #include <QImage>
 #include <QPainter>
 #include <QPair>
 #include <QPointF>
+#include <QVector>
 
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTransform.h>
 
-#include "gc.h"
 #include "TDefaultSunShape.h"
 #include "TLightKit.h"
 #include "TLightShape.h"
-#include "TShapeKit.h"
-#include "Transform.h"
+#include "TShape.h"
 #include "TSunShape.h"
 
 struct Polygon

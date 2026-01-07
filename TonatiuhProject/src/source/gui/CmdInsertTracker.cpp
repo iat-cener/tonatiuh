@@ -32,21 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/nodekits/SoSceneKit.h>
-
-#include "gf.h"
-
 #include "CmdInsertTracker.h"
+#include "gf.h"
 #include "InstanceNode.h"
-#include "SceneModel.h"
 #include "TLightKit.h"
-#include "TTracker.h"
 
 /**
  * Creates a new tracker insert command that adds a \a tracker to a parent node with \a parentIndex in the \a model.

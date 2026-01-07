@@ -32,22 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef TSCENEKIT_H_
 #define TSCENEKIT_H_
 
 #include <Inventor/nodekits/SoSceneKit.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include "TSeparatorKit.h"
-#include "trt.h"
-#include "tgf.h"
 
-class QString;
-class Vector3D;
-class Transform;
+#include "Transform.h"
+#include "trt.h"
 
 class TSceneKit : public SoSceneKit
 {

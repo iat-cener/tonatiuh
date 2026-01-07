@@ -32,28 +32,23 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef RAYTRACEDIALOG_H_
 #define RAYTRACEDIALOG_H_
 
-#include <ui_raytracedialog.h>
-
 #include <QDialog>
-#include <QString>
-#include <QVector>
 
-class RandomDeviateFactory;
-class TPhotonMapFactory;
+#include "RandomDeviateFactory.h"
+
+#include "ui_raytracedialog.h"
 
 //!  RayTraceDialog class is the dialog to set ray trace options.
 /*!
   RayTraceDialog allow to the user modify ray tracer default options.
   The user can modify the number of ray to trace, draw and photon map options.
 */
-
 class RayTraceDialog: public QDialog, private Ui::RayTraceDialog
 {
     Q_OBJECT

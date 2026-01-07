@@ -32,22 +32,20 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #include <QMessageBox>
 #include <QIcon>
 
-#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/actions/SoSearchAction.h>
 
 #include "gf.h"
-#include "InstanceNode.h"
-#include "SceneModel.h"
 #include "PathWrapper.h"
-#include "TLightKit.h"
+#include "SceneModel.h"
 #include "TMaterial.h"
-#include "TSceneKit.h"
 #include "TSceneTracker.h"
+#include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 
@@ -135,8 +133,6 @@ void SceneModel::SetLight()
 void SceneModel::SetConcentrator()
 {
 	SoNodeKitListPart* coinPartList = static_cast< SoNodeKitListPart* >( m_coinScene->getPart( "childList", true ) );
-
-	//TSeparatorKit* separatorKit;
 	if ( coinPartList && coinPartList->getNumChildren() == 0 )
 	{
 		//Create Sun coordinate system node

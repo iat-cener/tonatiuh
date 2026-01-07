@@ -30,53 +30,21 @@ National Renewable Energy Centre (CENER) on February, 20, 2007 (MOU#NREL-07-117)
 Since June 2006, the development of Tonatiuh is being led by the CENER, under the
 direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
-Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victlor Martin.
+Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier GQUrlarcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <iostream>
-
-#include <QCloseEvent>
-#include <QDir>
-#include <QFileDialog>
-#include <QFuture>
-#include <QFutureWatcher>
+#include <QFileInfo>
 #include <QMessageBox>
-#include <QMutex>
-#include <QPluginLoader>
-#include <QProgressDialog>
-#include <QSettings>
 #include <QtConcurrentMap>
-#include <QTime>
-#include <QUndoStack>
-#include <QUndoView>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/draggers/SoDragger.h>
-#include <Inventor/manips/SoCenterballManip.h>
-#include <Inventor/manips/SoHandleBoxManip.h>
-#include <Inventor/manips/SoJackManip.h>
-#include <Inventor/manips/SoTabBoxManip.h>
-#include <Inventor/manips/SoTrackballManip.h>
-#include <Inventor/manips/SoTransformBoxManip.h>
-#include <Inventor/manips/SoTransformerManip.h>
-#include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoSelection.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodekits/SoSceneKit.h>
-
-#include "gc.h"
-#include "gf.h"
-#include "Ray.h"
-#include "Transform.h"
 
 #include "ActionInsertComponent.h"
 #include "ActionInsertMaterial.h"
@@ -97,63 +65,23 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "CmdModifyParameter.h"
 #include "CmdPaste.h"
 #include "CmdTransmissivityModified.h"
-#include "Document.h"
-#include "ExportDialog.h"
 #include "ExportPhotonMapSettingsDialog.h"
-#include "FluxAnalysis.h"
 #include "FluxAnalysisDialog.h"
-#include "GraphicView.h"
-#include "GraphicRoot.h"
+#include "gf.h"
 #include "GridSettingsDialog.h"
-#include "InstanceNode.h"
 #include "LightDialog.h"
 #include "MainWindow.h"
-#include "PhotonMapExport.h"
 #include "PhotonMapExportFactory.h"
-#include "PhotonMapExportSettings.h"
-#include "PluginManager.h"
-#include "ProgressUpdater.h"
-#include "RandomDeviate.h"
 #include "RandomDeviateFactory.h"
 #include "RayTraceDialog.h"
 #include "RayTracer.h"
 #include "RayTracerNoTr.h"
-#include "SceneModel.h"
 #include "ScriptEditorDialog.h"
 #include "SunPositionCalculatorDialog.h"
-#include "TComponentFactory.h"
-#include "TDefaultTracker.h"
 #include "tgf.h"
-#include "TLightKit.h"
-#include "TLightShape.h"
-#include "TMaterial.h"
-#include "TMaterialFactory.h"
-#include "TPhotonMap.h"
 #include "TransmissivityDialog.h"
-#include "trf.h"
-#include "TSceneKit.h"
-#include "TSeparatorKit.h"
-#include "TShapeFactory.h"
-#include "TShapeKit.h"
-#include "TSunShape.h"
-#include "TSunShapeFactory.h"
-#include "TTracker.h"
-#include "TTrackerFactory.h"
-#include "TTransmissivity.h"
 #include "TTransmissivityFactory.h"
-
-
-void startManipulator(void *data, SoDragger* dragger )
-{
-	MainWindow* mainwindow = static_cast< MainWindow* >( data );
-	mainwindow->StartManipulation( dragger );
-}
-
-void finishManipulator(void *data, SoDragger* /*dragger*/ )
-{
-	MainWindow* mainwindow = static_cast< MainWindow* >( data );
-	mainwindow->FinishManipulation( );
-}
+#include "trf.h"
 
 /*!
  * Creates a new MainWindow object.
@@ -229,29 +157,6 @@ MainWindow::~MainWindow()
 	delete m_pPhotonMap;
 }
 
-/*!
- * Finish the manipulation of the current selected node.
- */
-void MainWindow::FinishManipulation( )
-{
-	QModelIndex currentIndex = sceneModelView->currentIndex();
-	SoBaseKit* coinNode = static_cast< SoBaseKit* >( m_sceneModel->NodeFromIndex(currentIndex)->GetNode() );
-
-	SoTransform* nodeTransform = static_cast< SoTransform* >( coinNode->getPart( "transform", true ) );
-
-	QUndoCommand* command = new QUndoCommand();
-
-	QString translationValue = QString( "%1 %2 %3" ).arg( QString::number( nodeTransform->translation.getValue()[0] ),
-														QString::number( nodeTransform->translation.getValue()[1] ),
-														QString::number( nodeTransform->translation.getValue()[2] ) );
-	new CmdModifyParameter( nodeTransform, QString( "translation" ), translationValue, m_sceneModel, command );
-	m_commandStack->push( command );
-
-	UpdateLightSize();
-	m_document->SetDocumentModified( true );
-
-}
-
 void MainWindow::ExecuteScriptFile( QString tonatiuhScriptFile )
 {
 	//New();
@@ -271,53 +176,6 @@ void MainWindow::SetPluginManager( PluginManager* pluginManager )
 	m_pPluginManager = pluginManager;
 	if( m_pPluginManager )	SetupPluginsManager();
 
-}
-
-/*!
- * Starts manipulating current selected node with \a dragger.
- */
-void MainWindow::StartManipulation( SoDragger* dragger )
-{
-	SoSearchAction coinSearch;
-	coinSearch.setNode( dragger );
-	coinSearch.setInterest( SoSearchAction::FIRST);
-
-	coinSearch.apply( m_graphicsRoot->GetNode() );
-
-	SoPath* coinScenePath = coinSearch.getPath( );
-	if( !coinScenePath ) gf::SevereError( "PathFromIndex Null coinScenePath." );
-
-	SoNodeKitPath* nodePath = static_cast< SoNodeKitPath* > ( coinScenePath );
-	if( !nodePath ) gf::SevereError( "PathFromIndex Null nodePath." );
-
-
-	nodePath->truncate(nodePath->getLength()-1 );
-	SoBaseKit* coinNode =  static_cast< SoBaseKit* > ( nodePath->getTail() );
-
-	QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodePath );
-	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
-
-	SoNode* manipulator = coinNode->getPart( "transform", true );
-	m_manipulators_Buffer = new QStringList();
-
-	SoFieldList fieldList;
-    int totalFields = manipulator->getFields( fieldList );
-
-    SoField* pField = 0;
-    SbName fieldName;
-    SbString fieldValue = "null";
-
-
-	for( int index = 0; index < totalFields; ++index )
-	{
-		pField = fieldList.get( index );
-		if( pField )
-		{
-
-    		pField->get( fieldValue );
-			m_manipulators_Buffer->push_back(QString( fieldValue.getString() ) );
-		}
-	}
 }
 
 /*!
@@ -743,12 +601,9 @@ void MainWindow::SelectionFinish( SoSelection* selection )
     	m_selectionModel->setCurrentIndex( currentIndex , QItemSelectionModel::ClearAndSelect );
     	return;
     }
-
-    if(nodeKitPath->getTail()->getTypeId().isDerivedFrom(SoDragger::getClassTypeId() ) ) return;
-
-    QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
-
-
+	
+	QModelIndex nodeIndex = m_sceneModel->IndexFromPath( *nodeKitPath );
+	
 	if ( !nodeIndex.isValid() ) return;
 	m_selectionModel->setCurrentIndex( nodeIndex , QItemSelectionModel::ClearAndSelect );
 	m_selectionModel->select( nodeIndex , QItemSelectionModel::ClearAndSelect );
@@ -2581,8 +2436,6 @@ void MainWindow::ChangeModelScene()
  */
 void MainWindow::CalculateSunPosition()
 {
-#ifndef NO_MARBLE
-
 	SoSceneKit* coinScene = m_document->GetSceneKit();
 	if( !coinScene->getPart( "lightList[0]", false ) ) return;
 
@@ -2590,10 +2443,6 @@ void MainWindow::CalculateSunPosition()
 	connect( &sunposDialog, SIGNAL( changeSunLight( double, double ) ) , this, SLOT( ChangeSunPosition( double, double ) ) );
 
 	sunposDialog.exec();
-
-
-#endif /* NO_MARBLE*/
-
 }
 
 /*!

@@ -32,21 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, I�igo Les.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef TRIANGLE_H_
 #define TRIANGLE_H_
 
-
 #include "BBox.h"
+#include "DifferentialGeometry.h"
 #include "NormalVector.h"
 #include "Point3D.h"
 #include "Vector3D.h"
-
-class DifferentialGeometry;
-class Ray;
 
 class Triangle
 {
@@ -65,7 +61,6 @@ public:
 	bool Intersect( const Ray& objectRay, double* tHit, DifferentialGeometry* dg ) const;
 
 private:
-
 	BBox m_bbox;
 	Point3D m_centoid;
 	NormalVector m_normal;
@@ -73,13 +68,11 @@ private:
 	Point3D m_v2;
 	Point3D m_v3;
 
-
 	Vector3D m_vE1;
 	Vector3D m_vE2;
 	Vector3D m_vW1;
 
 	double m_tol;
 };
-
 
 #endif /* TRIANGLE_H_ */

@@ -32,15 +32,11 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <Inventor/nodekits/SoBaseKit.h>
-
 #include "CmdCopy.h"
 #include "InstanceNode.h"
-#include "SceneModel.h"
 
 /**
  * Creates a new copy command that represents the copy of the node located with \a index in the \a model to the \a clipborad.

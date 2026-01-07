@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPEPARABOLICDISHFACTORY_H_
 #define SHAPEPARABOLICDISHFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeParabolicDish.h"
 #include "TShapeFactory.h"
 

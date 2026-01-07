@@ -33,19 +33,20 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #ifndef MFVEC3_H_
 #define MFVEC3_H_
 
+#include <Inventor/SbVec3d.h>
+#include <Inventor/SbVec3f.h>
+
 #include "ContainerEditorMFVec3.h"
-#include "FieldEditor.h"
 #include "UserMField.h"
 
 #if unix
 
-	#include <Inventor/SbVec3d.h>
 	class MFVec3 : public UserMField
 	{
 		  typedef UserMField inherited;
@@ -80,7 +81,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 
 #else
 
-	#include <Inventor/SbVec3f.h>
 	class MFVec3 : public UserMField
 	{
 		typedef UserMField inherited;

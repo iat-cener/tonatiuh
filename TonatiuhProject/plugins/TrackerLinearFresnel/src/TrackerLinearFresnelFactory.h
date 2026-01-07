@@ -35,10 +35,10 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-
 #ifndef TRACKERLINEARFRESNELFACTORY_H_
 #define TRACKERLINEARFRESNELFACTORY_H_
+
+#include <QObject>
 
 #include "TrackerLinearFresnel.h"
 #include "TTrackerFactory.h"

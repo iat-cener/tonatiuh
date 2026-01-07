@@ -33,18 +33,19 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #ifndef MFVEC2_H_
 #define MFVEC2_H_
 
+#include <Inventor/SbVec2d.h>
+#include <Inventor/SbVec2f.h>
+
 #include "ContainerEditorMFVec2.h"
-#include "FieldEditor.h"
 #include "UserMField.h"
 
 #if unix
-	#include <Inventor/SbVec2d.h>
 
 	class MFVec2 : public UserMField
 	{
@@ -77,7 +78,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 	};
 
 #else
-	#include <Inventor/SbVec2f.h>
 
 	class MFVec2 : public UserMField
 	{

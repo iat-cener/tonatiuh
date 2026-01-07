@@ -6,8 +6,8 @@ SUBDIRS = ComponentHeliostatField \
 			MaterialAngleDependentSpecular \
 			MaterialBasicRefractive \
 			MaterialOneSideSpecular \
-			MaterialStandardSpecular \
             MaterialStandardRoughSpecular \
+			MaterialStandardSpecular \
             MaterialVirtual \
 			PhotonMapExportDB \
 			PhotonMapExportFile \

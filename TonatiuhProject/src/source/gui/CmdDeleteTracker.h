@@ -32,27 +32,25 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDDELETETRACKER_H_
 #define CMDDELETETRACKER_H_
 
 #include <QUndoCommand>
 
-class QModelIndex;
-class SoSceneKit;
-class SceneModel;
-class TSeparatorKit;
-class TTracker;
+#include <Inventor/nodekits/SoSceneKit.h>
+
+#include "SceneModel.h"
+#include "TSeparatorKit.h"
+#include "TTracker.h"
 
 //!  CmdDeleteTracker class is the delete command for trackers nodes stored in the command stack.
 /*!
   CmdDeleteTracker represents a single tracker node delete action on a scene. Deletes a node from the scene.
    \sa CmdDelete, CmdCopy, CmdCut, CmdPaste
 */
-
 class CmdDeleteTracker : public QUndoCommand
 {
 public:

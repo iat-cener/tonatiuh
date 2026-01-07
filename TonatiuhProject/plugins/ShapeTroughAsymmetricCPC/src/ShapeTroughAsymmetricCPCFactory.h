@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPETROUGHASYMMETRICCPCFACTORY_H_
 #define SHAPETROUGHASYMMETRICCPCFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeTroughAsymmetricCPC.h"
 #include "TShapeFactory.h"
 

@@ -38,9 +38,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef TRACKERLINEARFRESNEL_H_
 #define TRACKERLINEARFRESNEL_H_
 
-#include "TTrackerForAiming.h"
+#include <Inventor/sensors/SoFieldSensor.h>
 
-class SoFieldSensor;
+#include "TTrackerForAiming.h"
 
 class TrackerLinearFresnel : public TTrackerForAiming
 {

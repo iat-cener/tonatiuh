@@ -32,24 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef RAYTRACERNOTR_H_
 #define RAYTRACERNOTR_H_
 
-#include <QVector>
-
-#include "Transform.h"
-
-class InstanceNode;
-class ParallelRandomDeviate;
-class QMutex;
-class RandomDeviate;
-class TLightShape;
-class TPhotonMap;
-class TSunShape;
+#include "InstanceNode.h"
+#include "ParallelRandomDeviate.h"
+#include "TLightShape.h"
+#include "TPhotonMap.h"
+#include "TSunShape.h"
 
 class RayTracerNoTr
 {

@@ -32,19 +32,19 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDLIGHTKITMODIFIED_H_
 #define CMDLIGHTKITMODIFIED_H_
 
 #include <QUndoCommand>
 
-class SceneModel;
-class SoSceneKit;
-class TLightKit;
-class TSunShape;
+#include <Inventor/nodekits/SoSceneKit.h>
+
+#include "SceneModel.h"
+#include "TLightKit.h"
+#include "TSunShape.h"
 
 //!  CmdLightKitModified class is the light definition command stored in the command stack.
 /*!
@@ -52,7 +52,6 @@ class TSunShape;
   a modificaiton of the light position on the scene or change on the sun shape parameters value.
    \sa CmdLightPositionModified
 */
-
 class CmdLightKitModified : public QUndoCommand
 {
 public:

@@ -32,23 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <Inventor/nodekits/SoSceneKit.h>
-
 #include "CmdLightKitModified.h"
 #include "gf.h"
-#include "SceneModel.h"
-#include "TLightKit.h"
-#include "TSunShape.h"
 
 /**
  * Creates a new lightKit modification command that represents a new light defined as \a newLightKit to the \a scene.
  *
  * If the model has not previous light a light node is added to \a sceneModel.
  */
-
 CmdLightKitModified::CmdLightKitModified( TLightKit* newLightKit, SoSceneKit* scene, SceneModel& sceneModel, QUndoCommand* parent )
 : QUndoCommand("Modify LightKit", parent),
   m_previousLightKit( false ),

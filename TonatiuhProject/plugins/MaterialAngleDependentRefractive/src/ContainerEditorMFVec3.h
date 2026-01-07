@@ -33,10 +33,9 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CONTAINEREDITORMFVEC3_H_
 #define CONTAINEREDITORMFVEC3_H_
 
@@ -86,7 +85,6 @@ private:
 /***************************************************************
  * ContainerViewer
  ***************************************************************/
-
 class DoubleValuesDelegate;
 class ContainerViewerMFVec3: public QDialog, private Ui::ContainerViewerMFVec3
 {

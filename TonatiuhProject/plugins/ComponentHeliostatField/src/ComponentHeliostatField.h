@@ -32,25 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-
 #ifndef COMPONENTHELIOSTATFIELD_H_
 #define COMPONENTHELIOSTATFIELD_H_
 
-#include <vector>
-
-#include <QList>
-#include <QVariant>
-
-class PluginManager;
-class Point3D;
-class TMaterial;
-class TSeparatorKit;
-class TShapeFactory;
-class TTrackerFactory;
+#include "PluginManager.h"
 
 class ComponentHeliostatField
 {

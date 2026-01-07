@@ -1,7 +1,8 @@
 TEMPLATE = lib
-CONFIG       += debug_and_release
+CONFIG       += warn_on thread      
+CONFIG       -= qt
+QT -= core
 
-CONFIG       += qt warn_on thread debug_and_release
 CONFIG(debug, debug|release) {
 	OBJECTS_DIR = $$(TONATIUH_ROOT)/debug
 	MOC_DIR = $$(TONATIUH_ROOT)/debug
@@ -14,15 +15,11 @@ else {
 	OBJMOC = $$(TONATIUH_ROOT)/release
 	RCC_DIR  = $$(TONATIUH_ROOT)/release
 }
-	
-#include( ../config.pri )
 
 TARGET = geometry   
 
 DEPENDPATH += . \
                 $$(TONATIUH_ROOT)
-
- 
 
 
 

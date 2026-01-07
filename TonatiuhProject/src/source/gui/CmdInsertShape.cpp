@@ -32,16 +32,11 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include "gf.h"
-
 #include "CmdInsertShape.h"
-#include "SceneModel.h"
-#include "TShape.h"
-#include "TShapeKit.h"
+#include "gf.h"
 
 /**
  * Creates a new shape insert command that adds a \a shape to \a shapekit node in the \a model.

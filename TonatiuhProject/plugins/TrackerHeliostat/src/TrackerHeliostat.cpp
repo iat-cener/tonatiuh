@@ -35,15 +35,10 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 **************************************************************************/
-#include <Inventor/SbMatrix.h>
 #include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 
 #include "Point3D.h"
 #include "TrackerHeliostat.h"
-#include "Transform.h"
-#include "Vector3D.h"
 
 SO_NODEENGINE_SOURCE( TrackerHeliostat );
 
@@ -100,6 +95,22 @@ std::string TrackerHeliostat::GetIcon()
 	return ( ":/icons/TrackerHeliostat.png" );
 }
 
+/*!
+ * @brief Computes the transformation matrix for the tracker-associated node
+ *        to reorient its Y-axis so that reflected rays aim at the heliostat
+ *        target point.
+ *
+ * The transformation is computed using the given \a sunVectorW and the parent
+ * transformation \a parentWTO.
+ *
+ * The sun vector is expressed in world coordinates. The parent transformation
+ * converts coordinates from the global (world) reference system to the local
+ * coordinate system of the node.
+ *
+ * @param sunVectorW Direction of the sun expressed in world coordinates.
+ * @param parentWTO Transformation matrix that converts from world to local
+ *                  coordinates.
+ */
 void TrackerHeliostat::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
 {
 	Vector3D i = parentWT0( sunVectorW );
@@ -166,11 +177,22 @@ void TrackerHeliostat::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
 	SetEngineOutput(newTransform);
 }
 
+/*!
+ * This function is only defined because it is a pure virtual function in
+ * TTrackerForAiming. It is not used in this class.
+ */
 void TrackerHeliostat::SwitchAimingPointType()
 {
 
 }
 
+/*!
+ * @brief Dummy implementation of a virtual function from SoNodeEngine.
+ *
+ * This function is only defined because it is a pure virtual function in
+ * SoNodeEngine. It is not used in this class. The evalutation is performed
+ * into Evaluate function.
+ */
 void TrackerHeliostat::evaluate()
 {
 	

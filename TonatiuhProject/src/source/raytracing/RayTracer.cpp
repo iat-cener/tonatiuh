@@ -32,18 +32,11 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Iï¿½aki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include "InstanceNode.h"
-#include "ParallelRandomDeviate.h"
 #include "Photon.h"
-#include "Ray.h"
 #include "RayTracer.h"
-#include "TLightShape.h"
-#include "TPhotonMap.h"
-#include "TSunShape.h"
-#include "TTransmissivity.h"
 
 RayTracer::RayTracer( InstanceNode* rootNode,
 	       InstanceNode* lightNode,

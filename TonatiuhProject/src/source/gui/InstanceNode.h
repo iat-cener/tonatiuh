@@ -32,22 +32,21 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef INSTANCENODE_H_
 #define INSTANCENODE_H_
 
 #include <vector>
 
-#include "BBox.h"
-#include "Transform.h"
+#include <QString>
 
-class RandomDeviate;
-class Ray;
-class SoNode;
-class QString;
+#include <Inventor/nodes/SoNode.h>
+
+#include "BBox.h"
+#include "RandomDeviate.h"
+#include "Transform.h"
 
 /*!
  * @class InstanceNode

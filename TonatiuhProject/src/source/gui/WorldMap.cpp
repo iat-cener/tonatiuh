@@ -32,26 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <iostream>
-
-#include <QColor>
-#include <QLabel>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QString>
 #include <QToolTip>
-#include <QVBoxLayout>
 
 #include "gc.h"
-
-#include "Image.h"
 #include "WorldMap.h"
-
-#include <iostream>
 
 WorldMap::WorldMap(QWidget* widget)
 	:QWidget(widget), m_rightAscension( 0 ), m_declination( 0 ), m_azimuth( 0 ), m_zenith( 0 )

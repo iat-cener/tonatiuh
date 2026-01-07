@@ -33,19 +33,10 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
- 
-#include <algorithm>
-
-#include <QPair>
-#include <QVarLengthArray>
-
-
-#include "BezierPatch.h"
 #include "CurveNetwork.h"
-#include "Vector3D.h"
 
 CurveNetwork::CurveNetwork( int order )
 : m_order( order )

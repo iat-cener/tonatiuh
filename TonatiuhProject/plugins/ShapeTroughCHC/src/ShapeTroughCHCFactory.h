@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPETROUGHTCHCFACTORY_H_
 #define SHAPETROUGHTCHCFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeTroughCHC.h"
 #include "TShapeFactory.h"
 

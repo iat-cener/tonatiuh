@@ -32,17 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef TGF_H_
 #define TGF_H_
 
-class SbMatrix;
-class RandomDeviate;
-class SoTransform;
-class Transform;
+#include <Inventor/nodes/SoTransform.h>
+
+#include "Transform.h"
+#include "RandomDeviate.h"
 
 namespace tgf
 {

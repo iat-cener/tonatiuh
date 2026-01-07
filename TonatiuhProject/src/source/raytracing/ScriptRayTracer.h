@@ -32,31 +32,17 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef SCRIPTRAYTRACER_H_
 #define SCRIPTRAYTRACER_H_
 
 #include <QObject>
 
-class Document;
-class RandomDeviate;
-class RandomDeviateFactory;
-class SceneModel;
-class TPhotonMap;
-/*
-#include <QMap>
-#include <QPair>
-#include <QString>
-#include <QVector>
-
-class GraphicRoot;
-class InstanceNode;
-class QScriptContext;
-class Transform;
-*/
+#include "Document.h"
+#include "RandomDeviateFactory.h"
+#include "TPhotonMap.h"
 
 class ScriptRayTracer : public QObject
 {

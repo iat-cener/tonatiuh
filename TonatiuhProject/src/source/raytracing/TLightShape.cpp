@@ -32,31 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <QString>
-#include <QVector>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-
-#include <math.h>
 
 #include "gf.h"
-
-#include "BBox.h"
-#include "DifferentialGeometry.h"
-#include "Ray.h"
 #include "TLightShape.h"
-#include "Transform.h"
-#include "TShapeKit.h"
-#include "Vector3D.h"
-
-
 
 SO_NODE_SOURCE(TLightShape);
 

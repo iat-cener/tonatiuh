@@ -32,21 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDPASTE_H_
 #define CMDPASTE_H_
 
 #include <QUndoCommand>
 
+#include "SceneModel.h"
 #include "tgc.h"
-
-class InstanceNode;
-class QModelIndex;
-class SceneModel;
-class SoBaseKit;
 
 //!  CmdPaste class is the paste command stored in the command stack.
 /*!
@@ -54,7 +49,6 @@ class SoBaseKit;
 	If the tgc::Shared parameter defined to the command, the node at the clipboard is shared between the previous parents and the new parent. tgc::Copy to create a new node before the paste.
    \sa CmdCopy, CmdCut, CmdDelete
 */
-
 class CmdPaste : public QUndoCommand
 {
 public:

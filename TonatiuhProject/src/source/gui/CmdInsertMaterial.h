@@ -32,24 +32,22 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef CMDINSERTMATERIAL_H_
 #define CMDINSERTMATERIAL_H_
 
 #include <QUndoCommand>
 
-class SceneModel;
-class TShapeKit;
-class TMaterial;
+#include "SceneModel.h"
+#include "TMaterial.h"
+#include "TShapeKit.h"
 
 //! CmdInsertMaterial class is the insert command for materials stored in the command stack.
 /*!
   CmdInsertShape represents a single material insertion action on a scene, insert a new material node to the scene.
 */
-
 class CmdInsertMaterial : public QUndoCommand
 {
 public:

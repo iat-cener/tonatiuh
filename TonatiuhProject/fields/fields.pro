@@ -1,18 +1,41 @@
 TEMPLATE = lib
-CONFIG       += debug_and_release
+CONFIG       += warn_on thread      
 
-CONFIG       += qt warn_on thread debug_and_release
+
 CONFIG(debug, debug|release) {
 	OBJECTS_DIR = $$(TONATIUH_ROOT)/debug
 	MOC_DIR = $$(TONATIUH_ROOT)/debug
 	OBJMOC = $$(TONATIUH_ROOT)/debug
 	RCC_DIR = $$(TONATIUH_ROOT)/debug
+	DESTDIR = $$(TONATIUH_ROOT)/bin/debug
 }
 else { 
 	OBJECTS_DIR = $$(TONATIUH_ROOT)/release
 	MOC_DIR = $$(TONATIUH_ROOT)/release
 	OBJMOC = $$(TONATIUH_ROOT)/release
 	RCC_DIR  = $$(TONATIUH_ROOT)/release
+	DESTDIR= $$(TONATIUH_ROOT)/bin/release
+}
+
+
+CONFIG(debug, debug|release) {
+    QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
+    QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage
+} 
+else{
+	macx{
+		QMAKE_CFLAGS_RELEASE -= -O2 
+    	QMAKE_CFLAGS_RELEASE += -O3 -mfpmath=sse
+		QMAKE_CXXFLAGS_RELEASE -= -O2
+		QMAKE_CXXFLAGS_RELEASE += -O3 -mfpmath=sse
+	}
+	else{
+   		QMAKE_CFLAGS_RELEASE -= -O2 
+    	QMAKE_CFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
+		QMAKE_CXXFLAGS_RELEASE -= -O2
+		QMAKE_CXXFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
+	}
+	
 }
 
 COMPILER = $$(COMPILER)
@@ -48,12 +71,6 @@ win32 {
 	DEFINES+= COIN_DLL SOQT_DLL
 }
 
-CONFIG(debug, debug|release) {
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/debug -lgeometry 
-}else{
-   	LIBS += -L$$(TONATIUH_ROOT)/bin/release -lgeometry
-}
-
 COMPILER = $$(COMPILER)
 contains( COMPILER, MSVC ) {
 	CONFIG(debug, debug|release) {
@@ -68,25 +85,6 @@ else {
 
 }
 
-CONFIG(debug, debug|release) {
-    QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
-    QMAKE_CXXFLAGS +=-fprofile-arcs -ftest-coverage
-} 
-else{
-	macx{
-		QMAKE_CFLAGS_RELEASE -= -O2 
-    	QMAKE_CFLAGS_RELEASE += -O3 -mfpmath=sse
-		QMAKE_CXXFLAGS_RELEASE -= -O2
-		QMAKE_CXXFLAGS_RELEASE += -O3 -mfpmath=sse
-	}
-	else{
-   		QMAKE_CFLAGS_RELEASE -= -O2 
-    	QMAKE_CFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
-		QMAKE_CXXFLAGS_RELEASE -= -O2
-		QMAKE_CXXFLAGS_RELEASE += -O3 -march=native -mfpmath=sse
-	}
-	
-}
 
 
 TARGET = fields   
@@ -95,15 +93,6 @@ TARGET = fields
 HEADERS += *.h \
 
 SOURCES += *.cpp 
-          
- 
-
-CONFIG(debug, debug|release) {
-	DESTDIR = $$(TONATIUH_ROOT)/bin/debug
-}
-else{
-	DESTDIR= $$(TONATIUH_ROOT)/bin/release
-}
 
 
 QMAKE_CLEAN += *.rc *.aps object_script*    

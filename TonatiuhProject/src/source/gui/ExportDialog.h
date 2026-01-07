@@ -32,17 +32,16 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef EXPORTDIALOG_H_
 #define EXPORTDIALOG_H_
 
 #include <QDialog>
-#include <QItemSelectionModel>
 
 #include "SceneModel.h"
+
 #include "ui_exportdialog.h"
 
 //!  ExportDialog class is the dialog to define the photon map export mode.
