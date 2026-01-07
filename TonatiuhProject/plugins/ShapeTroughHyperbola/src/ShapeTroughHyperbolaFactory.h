@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPETROUGHTHYPERBOLAFACTORY_H_
 #define SHAPETROUGHTHYPERBOLAFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeTroughHyperbola.h"
 #include "TShapeFactory.h"
 

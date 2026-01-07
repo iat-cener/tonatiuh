@@ -32,27 +32,13 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include <algorithm>
-#include <iostream>
 #include <map>
 
-//#include <QMap>
-//#include <QVector>
-
-#include <Inventor/actions/SoAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/fields/SoMFVec3d.h>
-
 #include "BezierPatch.h"
-#include "DifferentialGeometry.h"
-#include "NormalVector.h"
-#include "Ray.h"
-#include "Vector3D.h"
 
 BezierPatch::BezierPatch()
 :m_nIterations( 100 )

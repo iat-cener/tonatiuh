@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef TRACKERZAXISFACTORY_H_
 #define TRACKERZAXISFACTORY_H_
 
+#include <QObject>
+
 #include "TrackerZAxis.h"
 #include "TTrackerFactory.h"
 

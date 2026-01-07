@@ -33,19 +33,15 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #include <cmath>
 
 #include "BBox.h"
-#include "Ray.h"
 #include "gc.h"
 #include "Vector3D.h"
 #include "Point3D.h"
-
-
 
 BBox::BBox()
 : pMin( gc::Infinity, gc::Infinity, gc::Infinity ),

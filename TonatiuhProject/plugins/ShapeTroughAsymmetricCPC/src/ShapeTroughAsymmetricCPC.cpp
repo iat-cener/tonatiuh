@@ -45,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #include "gc.h"
 #include "gf.h"
 #include "ParameterValueException.h"
-#include "Ray.h"
 #include "ShapeTroughAsymmetricCPC.h"
 
 double fPart( double alpha, double x, double r1, double theta, double r, double eccentricity )

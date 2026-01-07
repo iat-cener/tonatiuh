@@ -35,12 +35,8 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <Inventor/sensors/SoFieldSensor.h>
-
 #include "gc.h"
-#include "RandomDeviate.h"
 #include "SunshapeBuie.h"
-#include "Vector3D.h"
 
 const double SunshapeBuie::m_minCRSValue = 0.000001;
 const double SunshapeBuie::m_maxCRSValue = 0.849;

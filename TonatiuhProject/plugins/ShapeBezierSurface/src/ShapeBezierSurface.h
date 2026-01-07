@@ -32,10 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, I�aki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
-***************** unsigned **********************************************************/
-
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
+***************************************************************************/
 #ifndef SHAPEBEZIERPATCH_H_
 #define SHAPEBEZIERPATCH_H_
 
@@ -44,8 +43,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include "BBox.h"
 #include "BezierPatch.h"
 #include "BVHPatch.h"
+#include "DifferentialGeometry.h"
 #include "trt.h"
 #include "TShape.h"
 

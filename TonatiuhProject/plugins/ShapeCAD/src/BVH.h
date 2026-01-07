@@ -32,10 +32,9 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
+Contributors: Javier Garcia-Barberena, IÃ±aki Perez, IÃ±igo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, IÃ±igo Les.
 ***************************************************************************/
-
 #ifndef BVH_H_
 #define BVH_H_
 
@@ -43,8 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include "BBox.h"
 #include "Triangle.h"
-
-class DifferentialGeometry;
 
 /*! *****************************
  * class BVHNode

@@ -35,14 +35,13 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
+#ifndef SHAPEHYPERBOLOIDFACTORY_H_
+#define SHAPEHYPERBOLOIDFACTORY_H_
 
-
-#ifndef ShapeHyperboloidFACTORY_H_
-#define ShapeHyperboloidFACTORY_H_
+#include <QObject>
 
 #include "ShapeHyperboloid.h"
 #include "TShapeFactory.h"
-
 
 class ShapeHyperboloidFactory: public QObject, public TShapeFactory
 {
@@ -59,4 +58,4 @@ public:
    	bool IsFlat() { return false; }
 };
 
-#endif /* ShapeHyperboloidFACTORY_H_ */
+#endif /* SHAPEHYPERBOLOIDFACTORY_H_ */

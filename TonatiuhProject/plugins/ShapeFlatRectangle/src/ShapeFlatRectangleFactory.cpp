@@ -35,79 +35,33 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <Inventor/fields/SoSFRotation.h>
+#include <QIcon>
 
-#include "gc.h"
-#include "TrackerZAxis.h"
+#include "ShapeFlatRectangleFactory.h"
 
-SO_NODEENGINE_SOURCE( TrackerZAxis );
-
-void TrackerZAxis::initClass()
+QString ShapeFlatRectangleFactory::TShapeName() const
 {
-	SO_NODEENGINE_INIT_CLASS( TrackerZAxis, TTracker, "TTracker" );
+	return QString("Flat_Rectangle");
 }
 
-TrackerZAxis::TrackerZAxis()
+QIcon ShapeFlatRectangleFactory::TShapeIcon() const
 {
-	SO_NODEENGINE_CONSTRUCTOR( TrackerZAxis );
-
-	// Define input fields and their default values
-	SO_NODE_ADD_FIELD( m_azimuth, ( gc::Pi ) );
-	SO_NODE_ADD_FIELD( m_zenith, ( 0.0 ) );
-
-	SO_NODEENGINE_ADD_OUTPUT( outputTranslation, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputRotation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleFactor, SoSFVec3f);
-	SO_NODEENGINE_ADD_OUTPUT( outputScaleOrientation, SoSFRotation);
-	SO_NODEENGINE_ADD_OUTPUT( outputCenter, SoSFVec3f);
+	return QIcon(":/icons/ShapeFlatRectangle.png");
 }
 
-TrackerZAxis::~TrackerZAxis()
+ShapeFlatRectangle* ShapeFlatRectangleFactory::CreateTShape( ) const
 {
-}
-
-std::string TrackerZAxis::GetIcon()
-{
-	return ( ":/icons/TrackerZAxis.png" );
-}
-
-void TrackerZAxis::Evaluate( Vector3D sunVectorW, Transform parentWT0 )
-{
-	Vector3D s = parentWT0( sunVectorW );
-	Vector3D p( 0.0f, 0.0f, 1.0f);
-
-	Vector3D n;
-	Vector3D t;
-	if( fabs( DotProduct( s, p ) ) < 1.0 )
+	static bool firstTime = true;
+	if ( firstTime )
 	{
-		t = Normalize( CrossProduct( s, p ) );
-		n = Normalize( CrossProduct( p, t ) );
-	}
-	else
-	{
-		t = Vector3D( 1.0f, 0.0f, 0.0f );
-		n = Vector3D( 0.0f, 1.0f, 0.0f );
+	    ShapeFlatRectangle::initClass();
+	    firstTime = false;
 	}
 
-	SbMatrix transformMatrix( t[0], t[1], t[2], 0.0,
-								n[0], n[1], n[2], 0.0,
-								p[0], p[1], p[2], 0.0,
-								0.0, 0.0, 0.0, 1.0 );
-
-	SoTransform* newTransform = new SoTransform();
-	newTransform->setMatrix( transformMatrix );
-
-	SetEngineOutput(newTransform);
+	return new ShapeFlatRectangle;
 }
 
-/*!
- * @brief Dummy implementation of a virtual function from SoNodeEngine.
- *
- * This function is only defined because it is a pure virtual function in
- * SoNodeEngine. It is not used in this class. The evalutation is performed
- * into Evaluate function.
- */
-void TrackerZAxis::evaluate()
-{
+#if QT_VERSION < 0x050000 // pre Qt 5
+Q_EXPORT_PLUGIN2(ShapeFlatRectangle, ShapeFlatRectangleFactory)
+#endif
 
-}

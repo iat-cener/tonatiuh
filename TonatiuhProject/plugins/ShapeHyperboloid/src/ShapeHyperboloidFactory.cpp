@@ -36,6 +36,7 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimene
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #include <QIcon>
+
 #include "ShapeHyperboloidFactory.h"
 
 QString ShapeHyperboloidFactory::TShapeName() const

@@ -35,14 +35,12 @@ Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Marti
 Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/SoPrimitiveVertex.h>
 
-#include "gc.h"
 #include "gf.h"
 #include "ParameterValueException.h"
-#include "Ray.h"
 #include "ShapeCone.h"
 
 SO_NODE_SOURCE(ShapeCone);

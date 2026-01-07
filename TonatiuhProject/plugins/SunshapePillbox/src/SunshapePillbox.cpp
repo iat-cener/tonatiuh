@@ -36,9 +36,7 @@ Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimene
 Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
 #include "gc.h"
-#include "RandomDeviate.h"
 #include "SunshapePillbox.h"
-#include "Vector3D.h"
 
 SO_NODE_SOURCE(SunshapePillbox);
 

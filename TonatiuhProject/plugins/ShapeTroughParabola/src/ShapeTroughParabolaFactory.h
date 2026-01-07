@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPETROUGHPARABOLAFACTORY_H_
 #define SHAPETROUGHPARABOLAFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeTroughParabola.h"
 #include "TShapeFactory.h"
 

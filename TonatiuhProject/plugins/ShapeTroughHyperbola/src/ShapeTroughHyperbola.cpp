@@ -41,7 +41,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include "gf.h"
 #include "ParameterValueException.h"
-#include "Ray.h"
 #include "ShapeTroughHyperbola.h"
 
 SO_NODE_SOURCE(ShapeTroughHyperbola);

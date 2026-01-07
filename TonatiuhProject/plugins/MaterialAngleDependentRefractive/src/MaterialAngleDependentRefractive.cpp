@@ -33,17 +33,11 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-#include <Inventor/sensors/SoFieldSensor.h>
-
-#include "DifferentialGeometry.h"
 #include "MaterialAngleDependentRefractive.h"
-#include "RandomDeviate.h"
-#include "Ray.h"
 #include "tgf.h"
-#include "Transform.h"
 
 SO_NODE_SOURCE( MaterialAngleDependentRefractive );
 

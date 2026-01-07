@@ -33,15 +33,10 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
-#include <math.h>
-
 #include "Curve.h"
-#include "Point3D.h"
-#include "Vector3D.h"
 
 Curve::Curve( std::vector< Point3D> curvePoints, std::vector< double> knots )
 :m_controlPointsList( curvePoints.size()+2 ), m_knotList( knots )

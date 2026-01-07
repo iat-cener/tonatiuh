@@ -45,7 +45,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include "gf.h"
 #include "ParameterValueException.h"
-#include "Ray.h"
 #include "ShapeTroughCPC.h"
 
 double fPart( double theta, double a, double thetaI, Ray ray )

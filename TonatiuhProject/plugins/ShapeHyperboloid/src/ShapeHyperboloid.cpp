@@ -39,9 +39,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
-#include "gc.h"
 #include "gf.h"
-#include "Ray.h"
 #include "ShapeHyperboloid.h"
 
 SO_NODE_SOURCE(ShapeHyperboloid);

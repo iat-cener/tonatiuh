@@ -32,21 +32,18 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef BEZIERPATCH_H_
 #define BEZIERPATCH_H_
 
 #include <vector>
 
-#include "Point3D.h"
-#include "Vector3D.h"
+#include <Inventor/actions/SoAction.h>
 
 #include "BBox.h"
-#include "TShape.h"
-
+#include "DifferentialGeometry.h"
 
 class BezierPatch //: public SoNurbsSurface
 {

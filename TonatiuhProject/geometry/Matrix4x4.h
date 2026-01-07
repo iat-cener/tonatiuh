@@ -33,16 +33,16 @@ Manager of the Solar Thermal Energy Department of CENER.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef MATRIX4X4_H_
 #define MATRIX4X4_H_
 
 #include <iostream>
-#include "RefCount.h"
+
 #include "Ptr.h"
+#include "RefCount.h"
 
 class Matrix4x4 : public RefCount
 {
@@ -66,7 +66,6 @@ public:
 
 Ptr<Matrix4x4> Mul( const Ptr<Matrix4x4>& m1, const Ptr<Matrix4x4>& m2 );
 std::ostream& operator<<( std::ostream& os, const Matrix4x4& matrix );
-
 
 #endif /*MATRIX4X4_H_*/
 

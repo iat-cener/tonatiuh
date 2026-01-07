@@ -38,11 +38,10 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SUNSHAPEBUIE_H_
 #define SUNSHAPEBUIE_H_
 
+#include <Inventor/sensors/SoFieldSensor.h>
+
 #include "TSunShape.h"
 #include "trt.h"
-
-class SoSensor;
-class SoFieldSensor;
 
 /*!
  * @class SunshapeBuie

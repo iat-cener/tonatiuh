@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPECADFACTORY_H_
 #define SHAPECADFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeCAD.h"
 #include "Triangle.h"
 #include "TShapeFactory.h"

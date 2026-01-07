@@ -32,17 +32,15 @@ direction of Dr. Blanco, now Director of CENER Solar Thermal Energy Department.
 
 Developers: Manuel J. Blanco (mblanco@cener.com), Amaia Mutuberria, Victor Martin.
 
-Contributors: Javier Garcia-Barberena, Inaki Perez, Inigo Pagola,  Gilda Jimenez,
-Juana Amieva, Azael Mancillas, Cesar Cantu.
+Contributors: Javier Garcia-Barberena, Iñaki Perez, Iñigo Pagola, Gilda Jimenez,
+Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 ***************************************************************************/
-
 #ifndef PHOTONMAPEXPORTDB_H_
 #define PHOTONMAPEXPORTDB_H_
 
-#include "PhotonMapExport.h"
+#include <sqlite3.h>
 
-class InstanceNode;
-class sqlite3;
+#include "PhotonMapExport.h"
 
 class PhotonMapExportDB : public PhotonMapExport
 {

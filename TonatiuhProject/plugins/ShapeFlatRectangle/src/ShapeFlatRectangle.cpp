@@ -40,7 +40,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include "gf.h"
-#include "Ray.h"
 #include "ShapeFlatRectangle.h"
 
 SO_NODE_SOURCE(ShapeFlatRectangle);

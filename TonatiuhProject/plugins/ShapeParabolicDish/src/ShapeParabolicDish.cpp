@@ -42,7 +42,6 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #include "gc.h"
 #include "gf.h"
 #include "ParameterValueException.h"
-#include "Ray.h"
 #include "ShapeParabolicDish.h"
 
 SO_NODE_SOURCE(ShapeParabolicDish);

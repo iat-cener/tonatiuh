@@ -38,6 +38,8 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef SHAPESPHEREFACTORY_H_
 #define SHAPESPHEREFACTORY_H_
 
+#include <QObject>
+
 #include "ShapeSphere.h"
 #include "TShapeFactory.h"
 
