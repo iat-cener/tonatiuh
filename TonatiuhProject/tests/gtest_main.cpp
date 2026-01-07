@@ -51,17 +51,13 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #include "TMaterial.h"
 #include "TSceneKit.h"
 #include "TSceneTracker.h"
+#include "TSeparatorKit.h"
 #include "TShape.h"
 #include "TShapeKit.h"
 #include "TSquare.h"
 #include "TSunShape.h"
 #include "TTrackerForAiming.h"
 #include "TTransmissivity.h"
-
-/*
-
-#include "TSeparatorKit.h"
-*/
 
 int main(int argc, char **argv )
 {
