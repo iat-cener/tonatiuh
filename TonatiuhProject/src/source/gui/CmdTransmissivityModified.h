@@ -38,7 +38,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 #ifndef CMDTRANSMISSIVITYMODIFIED_H_
 #define CMDTRANSMISSIVITYMODIFIED_H_
 
-//!  CmdTransmissivityModified class is the transmissivity definition command stored in the command stack.
+//!  CmdTransmissivityModified is the transmissivity definition command stored in the command stack.
 /*!
   CmdTransmissivityModified represents a modification of the scene transmissivity. The modification could be a new transmissivity definition,
   or a modificaiton of the transmissivity parameters values.

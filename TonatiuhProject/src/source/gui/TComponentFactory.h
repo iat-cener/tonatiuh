@@ -40,10 +40,9 @@ Juana Amieva, Azael Mancillas, Cesar Cantu, Iñigo Les.
 
 #include <QtPlugin>
 
+#include "TSeparatorKit.h"
+
 class PluginManager;
-class QString;
-class QIcon;
-class TSeparatorKit;
 
 class TComponentFactory
 {
@@ -56,6 +55,5 @@ public:
 };
 
 Q_DECLARE_INTERFACE( TComponentFactory, "tonatiuh.TComponentFactory")
-
 
 #endif /* TCOMPONENTFACTORY_H_ */
