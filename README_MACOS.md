@@ -159,9 +159,3 @@ The test suite needed one change: the modern Google Test library requires C++17,
 ### Step 7. We packaged it
 
 An app on someone else's Mac cannot depend on Homebrew or on files in our home folder. The script `package_macos.sh` copies every library and plugin inside the app bundle and rewrites the internal paths so the app finds everything inside itself. Then it signs the app and builds the DMG. We tested the packaged app with no special environment at all, opened a sample solar furnace scene, ran a ray trace and saw the rays drawn in 3D. That was the finish line.
-
-### The DMG file is available withn this project:
-
-```
-
-```
