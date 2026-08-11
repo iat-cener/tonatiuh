@@ -122,6 +122,7 @@ Juana Amieva, Azael Mancillas, Cesar Cantu.
 #include "SceneModel.h"
 #include "ScriptEditorDialog.h"
 #include "SunPositionCalculatorDialog.h"
+#include "sunpos.h"
 #include "TComponentFactory.h"
 #include "TDefaultTracker.h"
 #include "tgf.h"

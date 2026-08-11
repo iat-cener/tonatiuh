@@ -3,6 +3,11 @@ VERSION = 2.2.4
 # Define the preprocessor macro to get the application version in our application.
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
+macx {
+	DEFINES += NO_MARBLE
+	QMAKE_MACOSX_DEPLOYMENT_TARGET = 14.6
+}
+
 COMPILER = $$(COMPILER)
 contains( COMPILER, MSVC ) {
 	COINDIR = $$(COINDIR)
@@ -62,10 +67,10 @@ CONFIG(debug, debug|release) {
 } 
 else{
 	macx{
-		QMAKE_CFLAGS_RELEASE -= -O2 
-    	QMAKE_CFLAGS_RELEASE += -O3 -mfpmath=sse
+		QMAKE_CFLAGS_RELEASE -= -O2
+    	QMAKE_CFLAGS_RELEASE += -O3
 		QMAKE_CXXFLAGS_RELEASE -= -O2
-		QMAKE_CXXFLAGS_RELEASE += -O3 -mfpmath=sse
+		QMAKE_CXXFLAGS_RELEASE += -O3
 	}
 	else{
    		QMAKE_CFLAGS_RELEASE -= -O2 
@@ -92,8 +97,8 @@ contains( CONFIG, plugin ){
 		RCC_DIR  = $$(TONATIUH_ROOT)/release/plugins
 	}
 
-	QMAKE_CLAGS+= -fPIC
-	QMAKE_CXXLAGS+= -fPIC
+	QMAKE_CFLAGS += -fPIC
+	QMAKE_CXXFLAGS += -fPIC
 	INCLUDEPATH += $$(TONATIUH_ROOT)/plugin
 
 	CONFIG(debug, debug|release) {	

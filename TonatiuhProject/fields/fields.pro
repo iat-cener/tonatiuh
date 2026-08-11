@@ -74,10 +74,10 @@ CONFIG(debug, debug|release) {
 } 
 else{
 	macx{
-		QMAKE_CFLAGS_RELEASE -= -O2 
-    	QMAKE_CFLAGS_RELEASE += -O3 -mfpmath=sse
+		QMAKE_CFLAGS_RELEASE -= -O2
+    	QMAKE_CFLAGS_RELEASE += -O3
 		QMAKE_CXXFLAGS_RELEASE -= -O2
-		QMAKE_CXXFLAGS_RELEASE += -O3 -mfpmath=sse
+		QMAKE_CXXFLAGS_RELEASE += -O3
 	}
 	else{
    		QMAKE_CFLAGS_RELEASE -= -O2 
