@@ -2,7 +2,7 @@
 
 # News #
 
-## Tonatiuh release 2.2.4 is now available! ##
+## Tonatiuh release 2.2.4 is now available! for MacOS with ARM processors ##
 
 In this release some bugs have been solved. The most relevant one is a bugs in ShapeCAD instersection algorithm only visible in some operating systems. In addition, Pillbox distribution function removed from material errors in order to avoid some simulations errors by using this distribution function
  
