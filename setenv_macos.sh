@@ -1,8 +1,8 @@
 #!/bin/bash
-# Entorno de compilación de Tonatiuh en macOS (Apple Silicon)
-# Uso:  source setenv_macos.sh   (funciona en zsh y bash, desde cualquier directorio)
+# Build environment for Tonatiuh on macOS (Apple Silicon)
+# Usage:  source setenv_macos.sh   (works in zsh and bash, from any directory)
 
-# Ruta de este script, compatible con zsh y bash
+# Path of this script, compatible with zsh and bash
 if [ -n "$ZSH_VERSION" ]; then
   _SETENV_DIR="$(cd "$(dirname "${(%):-%N}")" && pwd)"
 elif [ -n "$BASH_SOURCE" ]; then
