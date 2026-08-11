@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console debug_and_release
+CONFIG += console debug_and_release c++17
 include( $$(TONATIUH_ROOT)/config.pri )
 
 QT += script

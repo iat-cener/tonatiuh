@@ -42,4 +42,9 @@ TonatiuhProject/.qmake.stash
 TonatiuhProject/release/moc_predefs.h
 TonatiuhProject/release/plugins/moc_predefs.h
 *.gcno
-*.h
+
+# macOS build outputs
+dist/
+TonatiuhProject/bin/
+TonatiuhProject/debug/
+TonatiuhProject/release/
