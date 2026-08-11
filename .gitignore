@@ -48,3 +48,4 @@ dist/
 TonatiuhProject/bin/
 TonatiuhProject/debug/
 TonatiuhProject/release/
+.DS_Store
